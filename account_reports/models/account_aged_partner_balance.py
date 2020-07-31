@@ -3,19 +3,40 @@
 
 from odoo import models, api, fields, _
 from odoo.tools.misc import format_date
+
 from dateutil.relativedelta import relativedelta
-from collections import OrderedDict
+from itertools import chain
 
 
 class ReportAccountAgedPartner(models.AbstractModel):
     _name = "account.aged.partner"
     _description = "Aged Partner Balances"
-    _inherit = 'account.report'
+    _inherit = 'account.accounting.report'
+    _order = "partner_name, report_date asc, move_name desc"
 
     filter_date = {'mode': 'single', 'filter': 'today'}
     filter_unfold_all = False
     filter_partner = True
     order_selected_column = {'default': 0}
+
+    partner_id = fields.Many2one('res.partner')
+    partner_name = fields.Char(group_operator='max')
+    partner_trust = fields.Char(group_operator='max')
+    payment_id = fields.Many2one('account.payment')
+    report_date = fields.Date(group_operator='max')
+    expected_pay_date = fields.Date(string='Exp. Date')
+    move_type = fields.Char()
+    move_name = fields.Char(group_operator='max')
+    journal_code = fields.Char(group_operator='max')
+    account_name = fields.Char(group_operator='max')
+    account_code = fields.Char(group_operator='max')
+    report_currency_id = fields.Many2one('res.currency')
+    period0 = fields.Monetary(string='As of: ')
+    period1 = fields.Monetary(string='1 - 30')
+    period2 = fields.Monetary(string='31 - 60')
+    period3 = fields.Monetary(string='61 - 90')
+    period4 = fields.Monetary(string='91 - 120')
+    period5 = fields.Monetary(string='Older')
 
     @api.model
     def _get_templates(self):
@@ -23,28 +44,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
         templates = super(ReportAccountAgedPartner, self)._get_templates()
         templates['main_template'] = 'account_reports.template_aged_partner_balance_report'
         return templates
-
-    @api.model
-    def _parse_partner_line_id(self, line_id):
-        if line_id:
-            trailing_id = line_id.split('_')[-1]
-            if str.isdigit(trailing_id):
-                return int(trailing_id)
-            else:
-                return False
-        else:
-            return None
-
-    ####################################################
-    # OPTIONS
-    ####################################################
-
-    @api.model
-    def _get_options_domain(self, options):
-        # OVERRIDE
-        domain = super(ReportAccountAgedPartner, self)._get_options_domain(options)
-        domain.append(('account_id.internal_type', '=', options['filter_account_type']))
-        return domain
 
     ####################################################
     # QUERIES
@@ -66,7 +65,6 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
         Then, return the values as an sql floating table to use it directly in queries.
 
-        :param options: The report options.
         :return: A floating sql query representing the report's periods.
         '''
         def minus_days(date_obj, days):
@@ -83,469 +81,139 @@ class ReportAccountAgedPartner(models.AbstractModel):
             (minus_days(date, 121),  False),
         ]
 
-        period_table = ','.join("(%s, %s, %s)" % (
-            period[0] and "'%s'" % period[0] or 'NULL',
-            period[1] and "'%s'" % period[1] or 'NULL',
-            i,
-        ) for i, period in enumerate(period_values))
-        return '(VALUES %s) AS period_table(date_start, date_stop, period_index)' % period_table
+        period_table = ('(VALUES %s) AS period_table(date_start, date_stop, period_index)' %
+                        ','.join("(%s, %s, %s)" for i, period in enumerate(period_values)))
+        params = list(chain.from_iterable(
+            (period[0] or None, period[1] or None, i)
+            for i, period in enumerate(period_values)
+        ))
+        return self.env.cr.mogrify(period_table, params).decode(self.env.cr.connection.encoding)
 
     @api.model
-    def _do_query_amls(self, options, expanded_partner_id=None, domain=None):
-        ''' Fetch the unfolded account.move.lines.
-        :param options:             The report options.
-        :param expanded_partner_id: The res.partner record's id corresponding to the expanded line.
-        :return:                    A map partner_id => fetched rows.
-        '''
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-        sign = 1 if options['filter_account_type'] == 'receivable' else -1
-
-        groupby_partner_aml = OrderedDict()
-
-        if not domain:
-            domain = []
-        if expanded_partner_id is not None:
-            domain.append(('partner_id', '=', expanded_partner_id))
-        elif unfold_all:
-            pass
-        elif options['unfolded_lines']:
-            domain.append(('partner_id', 'in', [self._parse_partner_line_id(line_id) for line_id in options['unfolded_lines']]))
-        else:
-            return groupby_partner_aml
-
-        tables, where_clause, params = self._query_get(options, domain=domain)
-        ct_query = self._get_query_currency_table(options)
-        period_query = self._get_query_period_table(options)
-
-        # ===================================================================================================
-        # 1) Fetch the balance for each period.
-        # ===================================================================================================
-
-        query = '''
+    def _get_sql(self):
+        options = self.env.context['report_options']
+        query = ("""
             SELECT
-                account_move_line.id,
-                account_move_line.partner_id,
-                account_move_line.payment_id,
-                account_move_line.date,
-                account_move_line.date_maturity,
-                account_move_line.expected_pay_date,
-                account_move_line__move_id.move_type AS move_type,
-                account_move_line__move_id.name AS move_name,
-                journal.code AS journal_code,
-                account.name AS account_name,
-                account.code AS account_code,
-                period_table.period_index,
-                ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance
-            FROM ''' + tables + '''
-            JOIN ''' + ct_query + ''' ON currency_table.company_id = account_move_line.company_id
-            JOIN ''' + period_query + ''' ON
-                (
-                    period_table.date_start IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                )
-                AND
-                (
-                    period_table.date_stop IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
-                )
-            JOIN account_journal journal ON journal.id = account_move_line.journal_id
-            JOIN account_account account ON account.id = account_move_line.account_id
-            WHERE ''' + where_clause + '''
-            ORDER BY account_move_line.partner_id, COALESCE(account_move_line.date_maturity, account_move_line.date), account_move_line.id
-        '''
-
-        seen_aml_ids = set()
-
-        self._cr.execute(query, params)
-        for res in self._cr.dictfetchall():
-            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
-            seen_aml_ids.add(res['id'])
-            groupby_partner_aml.setdefault(partner_id, OrderedDict())
-            res['period_amounts'] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-            res['period_amounts'][res['period_index']] = sign * res['balance']
-            groupby_partner_aml[partner_id][res['id']] = res
-
-        # ===================================================================================================
-        # 2) Fetch the reconciliation for each period and subtract them from the balance to compute
-        # the amount due at the report's date.
-        # ===================================================================================================
-
-        if seen_aml_ids:
-            query = '''
-                SELECT
-                    part.debit_move_id AS id,
-                    account_move_line.partner_id,
-                    period_table.period_index,
-                    SUM(ROUND(part.amount * currency_table.rate, currency_table.precision)) AS amount
-                FROM account_partial_reconcile part
-                JOIN account_move_line ON account_move_line.id = part.debit_move_id
-                JOIN ''' + ct_query + ''' ON currency_table.company_id = part.company_id
-                JOIN ''' + period_query + ''' ON
-                    (
-                        period_table.date_start IS NULL 
-                        OR 
-                        COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                    )
-                    AND
-                    (
-                        period_table.date_stop IS NULL 
-                        OR 
-                        COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
-                    )
-                WHERE part.debit_move_id IN %s AND part.max_date <= %s
-                GROUP BY part.debit_move_id, account_move_line.partner_id, period_table.period_index
-                
-                UNION ALL
-                
-                SELECT
-                    part.credit_move_id AS id,
-                    account_move_line.partner_id,
-                    period_table.period_index,
-                    SUM(ROUND(-part.amount * currency_table.rate, currency_table.precision)) AS amount
-                FROM account_partial_reconcile part
-                JOIN account_move_line ON account_move_line.id = part.credit_move_id
-                JOIN ''' + ct_query + ''' ON currency_table.company_id = part.company_id
-                JOIN ''' + period_query + ''' ON
-                    (
-                        period_table.date_start IS NULL 
-                        OR 
-                        COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                    )
-                    AND
-                    (
-                        period_table.date_stop IS NULL 
-                        OR 
-                        COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
-                    )
-                WHERE part.credit_move_id IN %s AND part.max_date <= %s
-                GROUP BY part.credit_move_id, account_move_line.partner_id, period_table.period_index
-            '''
-
-            self._cr.execute(query, [tuple(seen_aml_ids), options['date']['date_to']] * 2)
-            for res in self._cr.dictfetchall():
-                partner_id = res['partner_id'] or False # Map empty result with False instead of None.
-                groupby_partner_aml[partner_id][res['id']]['period_amounts'][res['period_index']] -= sign * res['amount']
-
-        return dict((k, list(v.values())) for k, v in groupby_partner_aml.items())
-
-    @api.model
-    def _do_query_groupby(self, options, expanded_partner_id=None):
-        ''' Fetch the account.move.lines grouped by partners.
-        :param options:             The report options.
-        :param expanded_partner_id: The res.partner record's id corresponding to the expanded line.
-        :return:                    A map partner_id => fetched rows.
-        '''
-        sign = 1 if options['filter_account_type'] == 'receivable' else -1
-
-        if expanded_partner_id is not None:
-            domain = [('partner_id', '=', expanded_partner_id)]
-        else:
-            domain = []
-
-        groupby_partner = {}
-
-        tables, where_clause, params = self._query_get(options, domain=domain)
-        ct_query = self._get_query_currency_table(options)
-        period_query = self._get_query_period_table(options)
-
-        # ===================================================================================================
-        # 1) Fetch the balance for each period.
-        # ===================================================================================================
-
-        query = '''
-            SELECT
-                partner.id AS partner_id,
+                {move_line_fields},
+                account_move_line.partner_id AS partner_id,
                 partner.name AS partner_name,
                 COALESCE(trust_property.value_text, 'normal') AS partner_trust,
-                SUM(CASE WHEN period_table.period_index = 0 
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period0,
-                SUM(CASE WHEN period_table.period_index = 1 
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period1,
-                SUM(CASE WHEN period_table.period_index = 2 
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period2,
-                SUM(CASE WHEN period_table.period_index = 3 
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period3,
-                SUM(CASE WHEN period_table.period_index = 4 
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period4,
-                SUM(CASE WHEN period_table.period_index = 5
-                    THEN ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period5
-            FROM ''' + tables + '''
-            JOIN ''' + ct_query + ''' ON currency_table.company_id = account_move_line.company_id
-            JOIN ''' + period_query + ''' ON 
-                (
-                    period_table.date_start IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                )
-                AND
-                (
-                    period_table.date_stop IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
-                )
-            LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id
+                COALESCE(account_move_line.currency_id, journal.currency_id) AS report_currency_id,
+                account_move_line.payment_id AS payment_id,
+                COALESCE(account_move_line.date_maturity, account_move_line.date) AS report_date,
+                account_move_line.expected_pay_date AS expected_pay_date,
+                move.move_type AS move_type,
+                move.name AS move_name,
+                journal.code AS journal_code,
+                account.name AS account_name,
+                account.code AS account_code,""" + ','.join([("""
+                CASE WHEN period_table.period_index = {i}
+                THEN %(sign)s * ROUND((
+                    account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0)
+                ) * currency_table.rate, currency_table.precision)
+                ELSE 0 END AS period{i}""").format(i=i) for i in range(6)]) + """
+            FROM account_move_line
+            JOIN account_move move ON account_move_line.move_id = move.id
+            JOIN account_journal journal ON journal.id = account_move_line.journal_id
+            JOIN account_account account ON account.id = account_move_line.account_id
+            JOIN res_partner partner ON partner.id = account_move_line.partner_id
             LEFT JOIN ir_property trust_property ON (
-                trust_property.res_id = 'res.partner,'|| partner.id
-                AND
-                trust_property.name = 'trust'
-                AND 
-                trust_property.company_id = %s
+                trust_property.res_id = 'res.partner,'|| account_move_line.partner_id
+                AND trust_property.name = 'trust'
+                AND trust_property.company_id = account_move_line.company_id
             )
-            WHERE ''' + where_clause + '''
-            GROUP BY partner.id, partner.name, partner_trust
-            HAVING SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) != 0
-            ORDER BY UPPER(partner.name)
-        '''
-
-        self._cr.execute(query, [self.env.company.id] + params)
-        for res in self._cr.dictfetchall():
-            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
-            res['period0'] *= sign
-            res['period1'] *= sign
-            res['period2'] *= sign
-            res['period3'] *= sign
-            res['period4'] *= sign
-            res['period5'] *= sign
-            groupby_partner[partner_id] = res
-
-        # Nothing to fetch, break.
-        if not groupby_partner:
-            return []
-
-        # ===================================================================================================
-        # 2) Fetch the reconciliation for each period and subtract them from the balance to compute
-        # the amount due at the report's date.
-        # ===================================================================================================
-
-        domain = [('partner_id', 'in', list(groupby_partner.keys()))]
-        tables, where_clause, params = self._query_get(options, domain=domain)
-
-        query = '''
-            SELECT
-                account_move_line.partner_id AS partner_id,
-                SUM(CASE WHEN period_table.period_index = 0 
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period0,
-                SUM(CASE WHEN period_table.period_index = 1 
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period1,
-                SUM(CASE WHEN period_table.period_index = 2 
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period2,
-                SUM(CASE WHEN period_table.period_index = 3 
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period3,
-                SUM(CASE WHEN period_table.period_index = 4 
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period4,
-                SUM(CASE WHEN period_table.period_index = 5
-                    THEN ROUND(part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period5
-            FROM ''' + tables + '''
-            JOIN account_partial_reconcile part ON part.debit_move_id = account_move_line.id
-            JOIN ''' + ct_query + ''' ON currency_table.company_id = account_move_line.company_id
-            JOIN ''' + period_query + ''' ON 
-                (
-                    period_table.date_start IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                )
-                AND
-                (
-                    period_table.date_stop IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
-                )
-            WHERE ''' + where_clause + ''' AND part.max_date <= %s
-            GROUP BY account_move_line.partner_id
-            
-            UNION ALL
-            
-            SELECT
-                account_move_line.partner_id AS partner_id,
-                SUM(CASE WHEN period_table.period_index = 0 
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period0,
-                SUM(CASE WHEN period_table.period_index = 1 
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period1,
-                SUM(CASE WHEN period_table.period_index = 2 
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period2,
-                SUM(CASE WHEN period_table.period_index = 3 
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period3,
-                SUM(CASE WHEN period_table.period_index = 4 
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period4,
-                SUM(CASE WHEN period_table.period_index = 5
-                    THEN ROUND(-part.amount * currency_table.rate, currency_table.precision) 
-                    ELSE 0 END) AS period5
-            FROM ''' + tables + '''
-            JOIN account_partial_reconcile part ON part.credit_move_id = account_move_line.id
-            JOIN ''' + ct_query + ''' ON currency_table.company_id = account_move_line.company_id
-            JOIN ''' + period_query + ''' ON 
-                (
-                    period_table.date_start IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-                )
-                AND
-                (
-                    period_table.date_stop IS NULL 
-                    OR 
-                    COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)                  
-                )
-            WHERE ''' + where_clause + ''' AND part.max_date <= %s
-            GROUP BY account_move_line.partner_id
-        '''
-
-        self._cr.execute(query, (params + [options['date']['date_to']]) * 2)
-        for res in self._cr.dictfetchall():
-            partner_id = res['partner_id'] or False # Map empty result with False instead of None.
-            groupby_partner[partner_id]['period0'] -= sign * res['period0']
-            groupby_partner[partner_id]['period1'] -= sign * res['period1']
-            groupby_partner[partner_id]['period2'] -= sign * res['period2']
-            groupby_partner[partner_id]['period3'] -= sign * res['period3']
-            groupby_partner[partner_id]['period4'] -= sign * res['period4']
-            groupby_partner[partner_id]['period5'] -= sign * res['period5']
-
-        # ===================================================================================================
-        # 3) Fetch the unfolded lines.
-        # ===================================================================================================
-
-        for partner_id, aml_rows in self._do_query_amls(options, expanded_partner_id=expanded_partner_id, domain=domain).items():
-            groupby_partner[partner_id]['aml_lines'] = aml_rows
-
-        return list(groupby_partner.values())
+            JOIN {currency_table} ON currency_table.company_id = account_move_line.company_id
+            LEFT JOIN LATERAL (
+                SELECT part.amount, part.debit_move_id
+                FROM account_partial_reconcile part
+            ) part_debit ON part_debit.debit_move_id = account_move_line.id
+            LEFT JOIN LATERAL (
+                SELECT part.amount, part.credit_move_id
+                FROM account_partial_reconcile part
+            ) part_credit ON part_credit.credit_move_id = account_move_line.id
+            JOIN {period_table} ON (
+                period_table.date_start IS NULL
+                OR COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
+            )
+            AND (
+                period_table.date_stop IS NULL
+                OR COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
+            )
+            WHERE account.internal_type = %(account_type)s
+            GROUP BY account_move_line.id, partner.id, trust_property.id, journal.id, move.id, account.id,
+                     period_table.period_index, currency_table.rate, currency_table.precision
+        """).format(
+            move_line_fields=self._get_move_line_fields('account_move_line'),
+            currency_table=self.env['res.currency']._get_query_currency_table(options),
+            period_table=self._get_query_period_table(options),
+        )
+        params = {
+            'account_type': options['filter_account_type'],
+            'sign': 1 if options['filter_account_type'] == 'receivable' else -1,
+        }
+        return self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
 
     ####################################################
     # COLUMNS/LINES
     ####################################################
-
     @api.model
-    def _get_report_partner_line(self, options, row):
-        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
-
-        total = row['period0'] + row['period1'] + row['period2'] + row['period3'] + row['period4'] + row['period5']
-        columns = [
-            {'name': self.format_value(row['period0']), 'no_format': row['period0'], 'class': 'number'},
-            {'name': self.format_value(row['period1']), 'no_format': row['period1'], 'class': 'number'},
-            {'name': self.format_value(row['period2']), 'no_format': row['period2'], 'class': 'number'},
-            {'name': self.format_value(row['period3']), 'no_format': row['period3'], 'class': 'number'},
-            {'name': self.format_value(row['period4']), 'no_format': row['period4'], 'class': 'number'},
-            {'name': self.format_value(row['period5']), 'no_format': row['period5'], 'class': 'number'},
-            {'name': self.format_value(total), 'no_format': total, 'class': 'number'},
+    def _get_column_details(self, options):
+        return [
+            self._header_column(),
+            self._field_column('report_date'),
+            self._field_column('journal_code', name="Journal"),
+            self._field_column('account_name', name="Account"),
+            self._field_column('expected_pay_date'),
+            self._field_column('period0', name=_("As of: %s") % format_date(self.env, options['date']['date_to'])),
+            self._field_column('period1', sortable=True),
+            self._field_column('period2', sortable=True),
+            self._field_column('period3', sortable=True),
+            self._field_column('period4', sortable=True),
+            self._field_column('period5', sortable=True),
+            self._custom_column(  # Avoid doing twice the sub-select in the view
+                name=_('Total'),
+                classes=['number'],
+                formatter=self.format_value,
+                getter=(lambda v: v['period0'] + v['period1'] + v['period2'] + v['period3'] + v['period4'] + v['period5']),
+                sortable=True,
+            ),
         ]
-        return {
-            'id': 'partner_%s' % (row['partner_id'] or False),
-            'partner_id': row['partner_id'],
-            'name': row['partner_name'][:128] if row['partner_name'] else _('Unknown Partner'),
-            'columns': columns,
-            'level': 2,
-            'trust': row['partner_trust'],
-            'unfoldable': True,
-            'unfolded': 'partner_%s' % row['partner_id'] in options['unfolded_lines'] or unfold_all,
-            'colspan': 5,
-        }
 
-    @api.model
-    def _get_report_move_line(self, options, row):
-        if row['payment_id']:
-            caret_type = 'account.payment'
-        else:
-            caret_type = 'account.move'
-
-        columns = [
-            {'name': format_date(self.env, row['date_maturity'] or row['date']), 'class': 'date'},
-            {'name': row['journal_code']},
-            {'name': '%s %s' % (row['account_code'], row['account_name'])},
-            {'name': format_date(self.env, row['expected_pay_date']) or '-', 'class': 'date'},
+    def _get_hierarchy_details(self, options):
+        return [
+            self._hierarchy_level('partner_id', foldable=True, namespan=5),
+            self._hierarchy_level('id'),
         ]
-        columns += [{'name': self.format_value(amount, blank_if_zero=True), 'no_format': amount, 'class': 'number'} for amount in row['period_amounts']]
-        columns.append({'name': '', 'no_format': 0.0})
-        return {
-            'id': row['id'],
-            'parent_id': 'partner_%s' % (row['partner_id'] or False),
-            'name': row['move_name'],
-            'columns': columns,
-            'caret_options': caret_type,
-            'level': 4,
-        }
 
-    @api.model
-    def _get_report_total_line(self, options, totals):
-        columns = []
-        final_total = 0.0
-        for total in totals:
-            columns.append({'name': self.format_value(total), 'no_format': total})
-            final_total += total
-        columns.append({'name': self.format_value(final_total), 'no_format': final_total})
-        return {
-            'id': 'total',
-            'class': 'total',
-            'name': _('Total'),
-            'columns': columns,
-            'colspan': 5,
-            'level': 2,
-        }
+    def _show_line(self, report_dict, value_dict, current, options):
+        current = dict(current)
+        # Don't display an aml report line with all zero amounts.
+        all_zero = all(value_dict[f] == 0 for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5'])
+        return super()._show_line(report_dict, value_dict, current, options) and not all_zero or 'id' not in current
 
-    @api.model
-    def _get_columns_name(self, options):
-        columns = [
-            {},
-            {'name': _("Due Date"), 'class': 'date', 'style': 'white-space:nowrap;'},
-            {'name': _("Journal"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
-            {'name': _("Account"), 'class': '', 'style': 'text-align:center; white-space:nowrap;'},
-            {'name': _("Exp. Date"), 'class': 'date', 'style': 'white-space:nowrap;'},
-            {'name': _("As of: %s", format_date(self.env, options['date']['date_to'])), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("1 - 30"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("31 - 60"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("61 - 90"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("91 - 120"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("Older"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-            {'name': _("Total"), 'class': 'number sortable', 'style': 'white-space:nowrap;'},
-        ]
-        return columns
+    def _format_partner_id_line(self, res, value_dict, options):
+        res['name'] = value_dict['partner_name'][:128] if value_dict['partner_name'] else _('Unknown Partner')
+        res['trust'] = value_dict['partner_trust']
 
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        expanded_partner_id = self._parse_partner_line_id(line_id)
-        lines = []
-        totals = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        for partner_row in self._do_query_groupby(options, expanded_partner_id=expanded_partner_id):
-            totals[0] += partner_row['period0']
-            totals[1] += partner_row['period1']
-            totals[2] += partner_row['period2']
-            totals[3] += partner_row['period3']
-            totals[4] += partner_row['period4']
-            totals[5] += partner_row['period5']
-            lines.append(self._get_report_partner_line(options, partner_row))
+    def _format_id_line(self, res, value_dict, options):
+        res['name'] = value_dict['move_name']
+        res['caret_options'] = 'account.payment' if value_dict.get('payment_id') else 'account.move'
+        for col in res['columns']:
+            if col.get('no_format') == 0:
+                col['name'] = ''
+        res['columns'][-1]['name'] = ''
 
-            for aml_row in partner_row.pop('aml_lines', []):
-                # Don't display an aml report line with all zero amounts.
-                if self.env.company.currency_id.is_zero(sum(aml_row['period_amounts'])):
-                    continue
-                lines.append(self._get_report_move_line(options, aml_row))
-
-        if not line_id:
-            lines.append(self._get_report_total_line(options, totals))
-
-        return lines
+    def _format_total_line(self, res, value_dict, options):
+        res['name'] = _('Total')
+        res['colspan'] = 5
+        res['columns'] = res['columns'][4:]
 
 
-class ReportAccountAgedReceivable(models.AbstractModel):
+class ReportAccountAgedReceivable(models.Model):
     _name = "account.aged.receivable"
     _description = "Aged Receivable"
     _inherit = "account.aged.partner"
+    _auto = False
 
     @api.model
     def _get_options(self, previous_options=None):
@@ -566,10 +234,11 @@ class ReportAccountAgedReceivable(models.AbstractModel):
         return templates
 
 
-class ReportAccountAgedPayable(models.AbstractModel):
+class ReportAccountAgedPayable(models.Model):
     _name = "account.aged.payable"
     _description = "Aged Payable"
     _inherit = "account.aged.partner"
+    _auto = False
 
     @api.model
     def _get_options(self, previous_options=None):

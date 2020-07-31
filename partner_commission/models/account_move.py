@@ -28,7 +28,7 @@ class AccountMove(models.Model):
         purchase = self.env['purchase.order'].sudo().search(self._get_commission_purchase_order_domain(), limit=1)
 
         if not purchase:
-            purchase = self.env['purchase.order'].sudo().create({
+            purchase = self.env['purchase.order'].with_context(mail_create_nosubscribe=True).sudo().create({
                 'partner_id': self.referrer_id.id,
                 'currency_id': self.currency_id.id,
                 'company_id': self.company_id.id,

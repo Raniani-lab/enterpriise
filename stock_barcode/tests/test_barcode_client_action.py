@@ -1464,3 +1464,33 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(productlot1_quant.quantity, 1.0)
         self.assertEqual(productlot1_quant.lot_id.name, 'toto-42')
         self.assertEqual(productlot1_quant.location_id.id, self.stock_location.id)
+
+    def test_inventory_keyboard_shortcuts(self):
+        """ Test keyboard shortcuts for increment buttons
+        Inventory behavior for keyboard shortcuts/increment buttons differs from picking in that
+        increment buttons are never hidden based on settings/Shift key pressed status.
+        """
+        # create an inventory to test on
+        # make some stock
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 1)
+        self.assertEqual(len(self.env['stock.quant']._gather(self.product1, self.stock_location)), 1.0)
+        self.assertEqual(self.env['stock.quant']._get_available_quantity(self.product1, self.stock_location), 1.0)
+
+        # remove them with an inventory adjustment
+        inventory = self.env['stock.inventory'].create({
+            'name': 'inventory keyboard shortcut',
+            'location_ids': [(4, self.stock_location.id)],
+            'product_ids': [(4, self.product1.id)],
+        })
+        inventory.action_start()
+
+        url = '/web#model=stock.inventory&inventory_id=%s&action=stock_barcode_inventory_client_action' % inventory.id
+
+        self.start_tour(url, 'test_inventory_keyboard_shortcuts', login='admin', timeout=180)
+        product1_quant = self.env['stock.quant'].search([
+            ('product_id', '=', self.product1.id),
+            ('quantity', '>', 0)
+        ])
+        self.assertEqual(len(product1_quant), 1)
+        self.assertEqual(product1_quant.quantity, 1.0)
+        self.assertEqual(product1_quant.location_id.id, self.stock_location.id)

@@ -1912,7 +1912,9 @@ var ClientAction = AbstractAction.extend({
 
     /**
      * Listens for:
-     * 1. Shift being pushed to display capitalized letters only
+     * 1. Shift being pushed for:
+     *      a. case "model == inventory": display capitalized shortcut letters only (show both buttons)
+     *      b. case "model == picking/batch.picking": display add remaining qty buttons only (show only 1 button)
      * 2. Letter being clicked to trigger corresponding product increment button.
      *
      * Assumptions:
@@ -1927,16 +1929,12 @@ var ClientAction = AbstractAction.extend({
      * @param {KeyboardEvent} keyDownEvent
      */
     _onKeyDown: function (keyDownEvent) {
-        if (this.linesWidget &&
+        if (this.currentState.group_barcode_keyboard_shortcuts &&
+            this.linesWidget &&
             !keyDownEvent.repeat && !keyDownEvent.ctrlKey &&
             !keyDownEvent.altKey && !keyDownEvent.metaKey) {
             if (keyDownEvent.key === "Shift") {
-                const addUnits = this.$el.find('.o_add_unit');
-                const otherButtons = this.$el.find('.o_add_reserved, .o_remove_unit');
-                addUnits.find(":first-child").hide();
-                addUnits.removeClass("o_shortcut_displayed");
-                otherButtons.find(":first-child").show();
-                otherButtons.addClass("o_shortcut_displayed");
+                this.linesWidget._applyShiftKeyDown();
             }
             else if ("abcdefghijklmnopqrstuvwxyz".includes(keyDownEvent.key.toLowerCase())) {
                 let $button;
@@ -1963,14 +1961,9 @@ var ClientAction = AbstractAction.extend({
      * @param {KeyboardEvent} keyUpEvent
      */
     _onKeyUp: function (keyUpEvent) {
-        if (this.linesWidget) {
+        if (this.currentState.group_barcode_keyboard_shortcuts && this.linesWidget) {
             if (keyUpEvent.key === 'Shift') {
-                const addUnits = this.$el.find('.o_add_unit');
-                const otherButtons = this.$el.find('.o_add_reserved, .o_remove_unit');
-                addUnits.find(":first-child").show();
-                addUnits.addClass("o_shortcut_displayed");
-                otherButtons.find(":first-child").hide();
-                otherButtons.removeClass("o_shortcut_displayed");
+                this.linesWidget._applyShiftKeyUp();
             }
         }
     },

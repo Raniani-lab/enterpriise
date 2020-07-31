@@ -310,6 +310,7 @@ var LinesWidget = Widget.extend({
                 model: this.model,
                 groups: this.groups,
                 isPickingRelated: this.isPickingRelated,
+                istouchSupported: this.istouchSupported,
             }));
             $body.prepend($lines);
             for (const line of $lines) {
@@ -317,7 +318,7 @@ var LinesWidget = Widget.extend({
                     this._updateIncrementButtons($(line));
                 }
             }
-            if (this.groups.group_barcode_keyboard_shortcuts && !this.istouchSupported) {
+            if (!this.istouchSupported && this.groups.group_barcode_keyboard_shortcuts) {
                 this._assignKeyboardShortcuts($lines);
             }
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
@@ -589,6 +590,9 @@ var LinesWidget = Widget.extend({
      * @param {jQueryElement} $line
      */
     _updateIncrementButtons: function ($line) {
+        if (this.istouchSupported && !this.groups.group_barcode_keyboard_shortcuts) {
+            return;
+        }
         const id = $line.data('id');
         const qtyDone = parseFloat($line.find('.qty-done').text());
         const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
@@ -608,20 +612,13 @@ var LinesWidget = Widget.extend({
                 // Updates the remaining quantities...
                 const $button = $line.find('.o_add_reserved');
                 const qty = line.product_uom_qty - qtyDone;
-                if (qty != 1) {
-                    $button.data('reserved', qty);
-                    if ($button.attr('shortcutKey')) {
-                        // Make sure shortcut still doesn't show when incrementing a product
-                        if ($button.find(":first-child").is(":hidden")) {
-                            $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
-                            $button.find(":first-child").hide();
-                        } else {
-                            $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
-                        }
-                    } else {
-                        $button.text(`+ ${qty}`);
-                    }
+                $button.data('reserved', qty);
+                if ($button.attr('shortcutKey')) {
+                    $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
                 } else {
+                    $button.text(`+ ${qty}`);
+                }
+                if (qty === 1) {
                     // hide button to avoid having two +1 buttons
                     $button.hide();
                 }
@@ -653,11 +650,16 @@ var LinesWidget = Widget.extend({
         });
     },
 
+    //--------------------------------------------------------------------------
+    // Keyboard Shortcut
+    //--------------------------------------------------------------------------
+
     /**
      * Assignment function for keyboard shortcuts for increment buttons. Some hacking is required
-     * due to dynamic display of letters based on whether "Shift" is pushed or not. Order of the
-     * assigned letters is based on user setting and only uses the 26 English letters regardless
-     * of selected keyboard
+     * due to dynamic display of letters based on whether "Shift" is pushed or not (in
+     * "model == inventory" case). Order of the assigned letters is based on user setting and only
+     * uses the 26 English letters regardless of selected keyboard. For "model != inventory" only 1
+     * button at most will be displayed when keyboard shortcuts are used.
      *
      * @private
      */
@@ -671,25 +673,77 @@ var LinesWidget = Widget.extend({
             candidateLetters = "abcdefghijklmnopqrstuvwxyz";
         }
         let letterIndex = 0;
+        let shortcutKey = true;
         for (const line of $lines) {
             if (line.dataset && !$(line).hasClass('o_line_qty_completed')) {
                 let addUnit = $(line).find('.o_add_unit');
                 let otherButton = $(line).find('.o_add_reserved, .o_remove_unit');
 
-                if (addUnit.length || otherButton.length) {
-                    let shortcutKey = candidateLetters[letterIndex];
+                if ((addUnit.length || otherButton.length) && shortcutKey != false) {
+                    shortcutKey = candidateLetters[letterIndex];
                     addUnit.attr('shortcutKey', shortcutKey);
                     addUnit.html(addUnit.text() + "<span><br/>" + shortcutKey + "</span>");
                     // dynamically set css to handle centering text when letters appear/disappear (i.e. "Shift is pushed")
                     addUnit.addClass("o_shortcut_displayed");
                     otherButton.attr('shortcutKey', shortcutKey.toUpperCase());
                     otherButton.html(otherButton.text() + "<span><br/>" +  shortcutKey.toUpperCase() + "</span>");
-                    otherButton.children(":first").hide();
+                    if (this.model === 'stock.inventory') {
+                        otherButton.children(":first").hide();
+                    } else {
+                        otherButton.addClass("o_shortcut_displayed");
+                    }
                     letterIndex++;
                 }
                 if (letterIndex >= candidateLetters.length) {
-                    break;
+                    shortcutKey = false;
                 }
+                if (this.model != 'stock.inventory') {
+                    otherButton.hide();
+                }
+            }
+        }
+    },
+
+    /**
+     * Handles visualization of increment buttons when shift button pushed
+     *
+     * @private
+     */
+    _applyShiftKeyDown: function () {
+        if (! this.istouchSupported) {
+            if (this.model === 'stock.inventory') {
+                const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
+                const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
+                addUnits.find(":first-child").hide();
+                addUnits.removeClass("o_shortcut_displayed");
+                removeUnits.find(":first-child").show();
+                removeUnits.addClass("o_shortcut_displayed");
+            } else {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                $lines.find('.o_add_unit').hide();
+                $lines.find('.o_add_reserved').show();
+            }
+        }
+    },
+
+    /**
+     * Handles visualization of increment buttons when shift button released
+     *
+     * @private
+     */
+    _applyShiftKeyUp: function () {
+        if (! this.istouchSupported) {
+            if (this.model === 'stock.inventory') {
+                const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
+                const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
+                addUnits.find(":first-child").show();
+                addUnits.addClass("o_shortcut_displayed");
+                removeUnits.find(":first-child").hide();
+                removeUnits.removeClass("o_shortcut_displayed");
+            } else {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                $lines.find('.o_add_unit').show();
+                $lines.find('.o_add_reserved').hide();
             }
         }
     },

@@ -59,12 +59,15 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
 
     @api.model
     def _compute_move_vals(self):
-        line_dict = self.env['account.multicurrency.revaluation.report']._get_grouped_values(exclude=True, options=self._context).get(1)
+        options = self._context
+        self = self.with_context(report_options=options)
+        line_dict = self.env['account.multicurrency.revaluation']._get_values(options=options, line_id='report_include-True')['children'][('report_include', True)]
+        value_getter = self.env['account.multicurrency.revaluation']._get_column_details(options=options)[-1].getter
         move_lines = []
-        if line_dict:
-            for currency_id, account_info in line_dict.items():
-                for account_id, values in account_info.items():
-                    balance = values[3]
+        if line_dict and line_dict['children']:
+            for (_key, currency_id), account_info in line_dict['children'].items():
+                for (_key, account_id), values in account_info['children'].items():
+                    balance = value_getter(values['values'])
                     if not float_is_zero(balance, precision_digits=self.company_id.currency_id.decimal_places):
                         move_lines.append((0, 0, {
                             'name': _('Provision for {for_cur} (1 {comp_cur} = {rate} {for_cur})').format(

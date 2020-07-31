@@ -15,7 +15,7 @@
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line.get('account_id') or line['id']" action="open_general_ledger" class="dropdown-item">General Ledger</a></li>
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line.get('account_id') or line['id']" t-att-data-financial_group_line_id="line.get('model') == 'account.financial.html.report' and line.get('parent_id')" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
     <li t-if="line['caret_options'] == 'account.move'">
-      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.move" action="open_document" class="dropdown-item">View</a>
+      <a role="menuitem" tabindex="-1" t-att-data-id="line.get('line_id') or line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.move" action="open_document" class="dropdown-item">View</a>
     </li>
     <li t-if="line['caret_options'] == 'account.payment'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.payment" action="open_document" class="dropdown-item">View Payment</a>
@@ -28,11 +28,6 @@
     </li>
     <li t-if="line['caret_options'] == 'tax.report.line'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_tax_report_line" class="dropdown-item">Audit</a>
-    </li>
-    <li t-if="line['caret_options'] == 'account.multicurrency'">
-      <a role="menuitem" tabindex="-1" t-att-data-id="line['account_id']" action="open_general_ledger" class="dropdown-item">General Ledger</a>
-      <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 1">Exclude from adjustment/provisions entries</a>
-      <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 0">Include in adjustment/provisions entries</a>
     </li>
     <li t-if="line['caret_options'] == 'account.bank.statement'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" data-object="account.bank.statement" action="open_document" class="dropdown-item">View Bank Statement</a></li>
     <li t-if="line['caret_options'] == 'account.analytic.account'">
@@ -415,7 +410,10 @@
 </template>
 <template id="line_template_multicurrency_report" inherit_id="account_reports.line_template" primary="True">
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="'currency_id' in line" t-att-data-id="line.get('currency_id')" action="view_currency" class="no_print oe_link_reports"> ⇒ Rates</a>
+        &amp;nbsp;<a t-if="'currency_id' in line and not 'account_id' in line" t-att-data-id="line['currency_id']" action="view_currency" class="no_print oe_link_reports">⇒ Rates</a>
+        &amp;nbsp;<a t-if="'account_id' in line" t-att-data-id="line['account_id']" action="open_general_ledger" class="no_print oe_link_reports">⇒ General Ledger</a>
+        &amp;nbsp;<a t-if="'currency_id' in line and 'account_id' in line and line.get('included') == 1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="no_print oe_link_reports" title="Exclude from adjustment/provisions entries">Exclude</a>
+        <a t-if="'currency_id' in line and 'account_id' in line and line.get('included') == 0" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="no_print oe_link_reports" title="Include in adjustment/provisions entries">Include</a>
     </xpath>
 </template>
 

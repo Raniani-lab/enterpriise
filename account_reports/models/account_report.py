@@ -845,9 +845,14 @@ class AccountReport(models.AbstractModel):
             params = {}
         ctx = self.env.context.copy()
         ctx.pop('id', '')
+        ctx['default_filter_accounts'] = self.env['account.account'].browse(params.get('id', 0)).code or ''
         action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_general_ledger")
         options['unfolded_lines'] = ['account_%s' % (params.get('id', ''),)]
         options['unfold_all'] = False
+        if 'date' in options and options['date']['mode'] == 'single':
+            # If we are coming from a report with a single date, we need to change the options to ranged
+            options['date']['mode'] = 'range'
+            options['date']['period_type'] = 'fiscalyear'
         ctx.update({'model': 'account.general.ledger'})
         action.update({'options': options, 'context': ctx, 'ignore_session': 'read'})
         return action

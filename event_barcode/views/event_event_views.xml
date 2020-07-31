@@ -18,7 +18,7 @@
                     string="Registration Desk"
                     type="action"
                     class="oe_stat_button"
-                    icon="fa-sign-in"
+                    icon="fa-mobile"
                     context="{'default_event_id': active_id}"/>
             </div>
         </field>

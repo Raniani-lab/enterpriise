@@ -25,7 +25,7 @@
                     <t t-if="not walls" groups="base.group_user">
                         <div class="col-md-12 text-center">
                             <h1><b>Hey! No wall found</b></h1>
-                            <button class="btn btn-primary o-tw-wall-create"><i class="fa fa-plus-circle" /> Create Now</button>
+                            <a href="/web#action=website_twitter_wall.website_twitter_wall_action" class="btn btn-primary o-tw-wall-create"><i class="fa fa-plus-circle" /> Create Now</a>
                         </div>
                     </t>
                     <div class="col-sm-6 col-md-4 mt16" t-foreach="walls" t-as="wall">
@@ -53,6 +53,7 @@
             <script src="//platform.twitter.com/widgets.js" charset="utf-8" />
         </t>
         <t t-call="website.layout">
+            <div class="o-tw-container">
             <div class="o-tw-toggle o-tw-storify-cover o-tw-cover" t-attf-style="background-image: url(#{website.image_url(wall, 'image')});">
                 <div class="o-tw-shadow" >
                     <div class="container">
@@ -139,6 +140,7 @@
                 <div class="row text-center o-tw-toggle">
                     <t t-call="website.pager" />
                 </div>
+            </div>
             </div>
         </t>
     </template>

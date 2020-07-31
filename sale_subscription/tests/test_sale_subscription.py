@@ -297,7 +297,7 @@ class TestSubscription(TestSubscriptionCommon):
         # 6 to 2 weeks: 100
         # 2weeks - today : 120
         date_log = datetime.date.today() - relativedelta(weeks=16)
-        self.env['sale.subscription.log'].create({
+        self.env['sale.subscription.log'].sudo().create({
             'event_type': '1_change',
             'event_date': date_log,
             'create_date': date_log,
@@ -311,7 +311,7 @@ class TestSubscription(TestSubscriptionCommon):
         })
 
         date_log = datetime.date.today() - relativedelta(weeks=6)
-        self.env['sale.subscription.log'].create({
+        self.env['sale.subscription.log'].sudo().create({
             'event_type': '1_change',
             'event_date': date_log,
             'create_date': date_log,
@@ -326,7 +326,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         self.subscription.recurring_monthly = 120.0
         date_log = datetime.date.today() - relativedelta(weeks=2)
-        self.env['sale.subscription.log'].create({
+        self.env['sale.subscription.log'].sudo().create({
             'event_type': '1_change',
             'event_date': date_log,
             'create_date': date_log,

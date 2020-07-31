@@ -38,7 +38,7 @@ class TestFsmFlowStock(TestFsmFlowSale):
             'company_id': cls.env.company.id,
         })
 
-        cls.warehouse = cls.env['stock.warehouse'].search([('company_id', '=', cls.env.user.id)], limit=1)
+        cls.warehouse = cls.env['stock.warehouse'].search([('company_id', '=', cls.env.company.id)], limit=1)
         inventory = cls.env['stock.inventory'].create({
             'name': 'Initial inventory',
             'line_ids': [(0, 0, {

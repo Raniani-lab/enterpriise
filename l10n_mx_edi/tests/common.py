@@ -1,74 +1,74 @@
 # coding: utf-8
 
-from odoo.addons.account.tests.common import AccountTestCommon
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
+from odoo.tools import misc
+
+import base64
+import os
 
 
 @tagged('post_install', '-at_install')
-class InvoiceTransactionCase(AccountTestCommon):
-    def setUp(self):
-        super(InvoiceTransactionCase, self).setUp()
-        self.manager_billing = self.env['res.users'].with_context(no_reset_password=True).create({  # noqa
-            'name': 'Manager billing mx',
-            'login': 'mx_billing_manager',
-            'email': 'mx_billing_manager@yourcompany.com',
-            'company_id': self.env.ref('base.main_company').id,
-            'groups_id': [(6, 0, [
-                self.ref('account.group_account_manager'),
-                self.ref('account.group_account_user'),
-                self.ref('base.group_system'),
-                self.ref('base.group_partner_manager')
-            ])]
+class InvoiceTransactionCase(AccountTestInvoicingCommon):
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref='l10n_mx.mx_coa'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.certificate = cls.env['l10n_mx_edi.certificate'].create({
+            'content': base64.encodebytes(misc.file_open(os.path.join('l10n_mx_edi', 'demo', 'pac_credentials', 'certificate.cer'), 'rb').read()),
+            'key': base64.encodebytes(misc.file_open(os.path.join('l10n_mx_edi', 'demo', 'pac_credentials', 'certificate.key'), 'rb').read()),
+            'password': '12345678a',
         })
 
-        self.uid = self.manager_billing
-        self.tax_model = self.env['account.tax']
-        self.partner_agrolait = self.env.ref("base.res_partner_address_4")
-        self.partner_agrolait.type = 'invoice'
-        self.partner_agrolait.parent_id.street_name = 'Street Parent'
-        self.product = self.env.ref("product.product_product_3")
-        self.company = self.env.company
-        self.account_settings = self.env['res.config.settings']
-        self.tax_positive = self.tax_model.create({
+        cls.company_data['company'].write({
+            'country_id': cls.env.ref('base.mx').id,
+            'vat': 'EKU9003173C9',
+            'zip': '37200',
+            'l10n_mx_edi_pac': 'finkok',
+            'l10n_mx_edi_pac_test_env': True,
+            'l10n_mx_edi_certificate_ids': [(6, 0, cls.certificate.ids)],
+        })
+
+        cls.tax_model = cls.env['account.tax']
+        cls.partner_agrolait = cls.env.ref("base.res_partner_address_4")
+        cls.partner_agrolait.type = 'invoice'
+        cls.partner_agrolait.parent_id.street_name = 'Street Parent'
+        cls.product = cls.env.ref("product.product_product_3")
+        cls.company = cls.env.company
+        cls.account_settings = cls.env['res.config.settings']
+        cls.tax_positive = cls.tax_model.create({
             'name': 'IVA(16%) VENTAS TEST',
             'description': 'IVA(16%)',
             'amount': 16,
             'amount_type': 'percent',
             'type_tax_use': 'sale',
         })
-        self.tax_positive.l10n_mx_cfdi_tax_type = 'Tasa'
-        self.tax_negative = self.tax_model.create({
+        cls.tax_positive.l10n_mx_cfdi_tax_type = 'Tasa'
+        cls.tax_negative = cls.tax_model.create({
             'name': 'ISR',
             'amount_type': 'percent',
             'amount': -10,
             'l10n_mx_cfdi_tax_type': 'Tasa',
         })
-        self.product.taxes_id = [self.tax_positive.id, self.tax_negative.id]
-        self.product.unspsc_code_id = self.ref(
-            'product_unspsc.unspsc_code_01010101')
-        self.payment_term = self.env.ref('account.account_payment_term_30days')
+        cls.product.taxes_id = [cls.tax_positive.id, cls.tax_negative.id]
+        cls.product.unspsc_code_id = cls.env.ref('product_unspsc.unspsc_code_01010101').id
+        cls.payment_term = cls.env.ref('account.account_payment_term_30days')
         # force PPD
-        self.payment_term.line_ids.days = 90
-        self.company.l10n_mx_edi_fiscal_regime = '601'
-        self.payment_method_cash = self.env.ref(
+        cls.payment_term.line_ids.days = 90
+        cls.company.l10n_mx_edi_fiscal_regime = '601'
+        cls.payment_method_cash = cls.env.ref(
             'l10n_mx_edi.payment_method_efectivo')
-        self.account_payment = self.env['res.partner.bank'].create({
-            'acc_number': '123456789',
-            'partner_id': self.partner_agrolait.id,
+        cls.account_payment = cls.env['res.partner.bank'].create({
+            'acc_number': 'TEST123456789',
+            'partner_id': cls.partner_agrolait.id,
         })
-        self.rate_model = self.env['res.currency.rate']
-        self.mxn = self.env.ref('base.MXN')
-        self.usd = self.env.ref('base.USD')
-        self.ova = self.env['account.account'].search([
-            ('user_type_id', '=', self.env.ref(
+        cls.rate_model = cls.env['res.currency.rate']
+        cls.mxn = cls.env.ref('base.MXN')
+        cls.usd = cls.env.ref('base.USD')
+        cls.ova = cls.env['account.account'].search([
+            ('user_type_id', '=', cls.env.ref(
                 'account.data_account_type_current_assets').id)], limit=1)
-        self.user_billing = self.env['res.users'].with_context(no_reset_password=True).create({  # noqa
-            'name': 'User billing mx',
-            'login': 'mx_billing_user',
-            'email': 'mx_billing_user@yourcompany.com',
-            'company_id': self.env.ref('base.main_company').id,
-            'groups_id': [(6, 0, [self.ref('account.group_account_invoice')])]
-        })
 
     def set_currency_rates(self, mxn_rate, usd_rate):
         date = (self.env['l10n_mx_edi.certificate'].sudo().
@@ -86,9 +86,9 @@ class InvoiceTransactionCase(AccountTestCommon):
         if currency_id is None:
             currency_id = self.usd.id
         self.partner_agrolait.lang = None
-        invoice = self.env['account.move'].with_env(self.env(user=self.user_billing)).with_context(default_move_type=inv_type).create({
+        invoice = self.env['account.move'].create({
             'partner_id': self.partner_agrolait.id,
-            'type': inv_type,
+            'move_type': inv_type,
             'currency_id': currency_id,
             'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
             'l10n_mx_edi_partner_bank_id': self.account_payment.id,
@@ -101,37 +101,3 @@ class InvoiceTransactionCase(AccountTestCommon):
             })],
         })
         return invoice
-        # TODO: fix that...
-        # self.env['account.move.line'].create({
-        #     'name': 'Test Tax for Customer Invoice',
-        #     'debit': 0.0,
-        #     'credit': 0.0,
-        #     'account_id': self.ova.id,
-        #     'invoice_id': invoice.id,
-        # })
-
-    def xml_merge_dynamic_items(self, xml, xml_expected):
-        xml_expected.attrib['Fecha'] = xml.attrib['Fecha']
-        xml_expected.attrib['Sello'] = xml.attrib['Sello']
-        xml_expected.attrib['Serie'] = xml.attrib['Serie']
-        xml_expected.Complemento = xml.Complemento
-
-    def xml2dict(self, xml):
-        """Receive 1 lxml etree object and return a dict string.
-        This method allow us have a precise diff output"""
-        def recursive_dict(element):
-            return (element.tag,
-                    dict((recursive_dict(e) for e in element.getchildren()),
-                         ____text=(element.text or '').strip(), **element.attrib))
-        return dict([recursive_dict(xml)])
-
-    def assertEqualXML(self, xml_real, xml_expected):
-        """Receive 2 objectify objects and show a diff assert if exists."""
-        xml_expected = self.xml2dict(xml_expected)
-        xml_real = self.xml2dict(xml_real)
-        # "self.maxDiff = None" is used to get a full diff from assertEqual method
-        # This allow us get a precise and large log message of where is failing
-        # expected xml vs real xml More info:
-        # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
-        self.maxDiff = None
-        self.assertEqual(xml_real, xml_expected)

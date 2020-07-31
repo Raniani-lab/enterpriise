@@ -658,7 +658,7 @@ class AccountMove(models.Model):
             # At this moment, the attachment contains the file size in its 'datas' field because
             # to save some memory, the attachment will store its data on the physical disk.
             # To avoid this problem, we read the 'datas' directly on the disk.
-            datas = attachment_id._file_read(attachment_id.store_fname) if attachment_id else None
+            datas = attachment_id.with_context(bin_size=False).datas if attachment_id else None
             inv.l10n_mx_edi_cfdi_uuid = None
             if not datas:
                 if attachment_id:
@@ -710,7 +710,7 @@ class AccountMove(models.Model):
             price = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
             tax_line = {tax['id']: tax for tax in line.tax_ids.compute_all(
                 price, line.currency_id, line.quantity, line.product_id, line.partner_id, self.move_type in ('in_refund', 'out_refund'))['taxes']}
-            for tax in line.tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
+            for tax in line.tax_ids.flatten_taxes_hierarchy().filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)

@@ -46,10 +46,10 @@
                 <cfdi:Conceptos>
                     <t t-foreach="record.invoice_line_ids.filtered(lambda inv: not inv.display_type)" t-as="line">
                         <cfdi:Concepto
-                            t-att-ClaveProdServ="line.product_id.unspsc_code_id.code"
+                            t-att-ClaveProdServ="'01010101' if (line.is_rounding_line and not line.product_id) else line.product_id.unspsc_code_id.code"
                             t-att-NoIdentificacion="record._get_string_cfdi(line.product_id.default_code or '')"
                             t-att-Cantidad="'%.6f' % line.quantity"
-                            t-att-ClaveUnidad="line.product_uom_id.unspsc_code_id.code"
+                            t-att-ClaveUnidad="'H87' if (line.is_rounding_line and not line.product_id) else line.product_uom_id.unspsc_code_id.code"
                             t-att-Unidad="record._get_string_cfdi(line.product_uom_id.name, 20)"
                             t-att-Descripcion="record._get_string_cfdi(line.name, 1000)"
                             t-att-ValorUnitario="'%.*f' % (decimal_precision, subtotal_wo_discount(line)/line.quantity) if line.quantity else 0.0"

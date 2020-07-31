@@ -101,10 +101,10 @@ class AccountPayment(models.Model):
         'with a financial institution define the bank account used in this '
         'payment.')
 
-    def post(self):
+    def action_post(self):
         """Generate CFDI to payment after that invoice is paid"""
         res = super(AccountPayment, self.with_context(
-            l10n_mx_edi_manual_reconciliation=False)).post()
+            l10n_mx_edi_manual_reconciliation=False)).action_post()
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
             partner = record.journal_id.l10n_mx_address_issued_id or record.company_id.partner_id.commercial_partner_id
             tz = self.env['account.move']._l10n_mx_edi_get_timezone(

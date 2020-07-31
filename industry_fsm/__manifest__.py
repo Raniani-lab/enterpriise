@@ -34,4 +34,5 @@ Adds the following options:
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],
+    'post_init_hook': 'create_field_service_project',
 }

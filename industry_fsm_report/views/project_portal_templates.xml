@@ -60,12 +60,6 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
                                 </header>
                                 <main class="modal-body" id="sign-dialog">
-                                    <p>
-                                        <span>By signing this proposal, I agree to the following terms:</span>
-                                        <ul>
-                                            <li><span>Accepted on the behalf of:</span> <b t-field="task.partner_id.commercial_partner_id"/></li>
-                                        </ul>
-                                    </p>
                                     <t t-call="portal.signature_form">
                                         <t t-set="call_url" t-value="task.get_portal_url(suffix='/worksheet/sign/%s' % source)"/>
                                         <t t-set="default_name" t-value="task.partner_id.name"/>

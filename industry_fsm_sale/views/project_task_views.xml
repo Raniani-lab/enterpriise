@@ -15,8 +15,8 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No task to Invoice
-            </p><p>All tasks were invoiced</p>
+                No tasks found. Let's create one!
+            </p><p>Invoice your time and material to your customers once your interventions are completed.</p>
         </field>
     </record>
 
@@ -80,6 +80,13 @@
             'fsm_mode': True,
             'search_default_filter_to_sell': True,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No products found. Let's create one!
+            </p><p>
+                Track and reinvoice the material used to complete an intervention.
+            </p>
+        </field>
     </record>
 
     <menuitem id="fsm_menu_settings_product"

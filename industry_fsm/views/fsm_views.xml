@@ -9,12 +9,12 @@
                 <field name="name"/>
                 <field name="project_id" readonly="1"/>
                 <field name="partner_id"/>
-                <field name="user_id" optional="show"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show" invisible="context.get('user_invisible', False)"/>
                 <field name="planned_date_begin" optional="hide"/>
                 <field name="planned_date_end" optional="hide"/>
                 <field name="effective_hours" optional="hide"/>
                 <field name="date_deadline" optional="hide"/>
-                <field name="stage_id" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
+                <field name="stage_id" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
                 <field name="company_id"  optional="show" groups="base.group_multi_company" readonly="1"/>
@@ -168,10 +168,11 @@
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
             'search_default_planned_today': True,
+            'fsm_task_kanban_whole_date': False,
         }</field>
         <field name="help" type="html">
-            <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
-            <p>You can create one for yourself by clicking on Create.</p>
+            <p class='o_view_nocontent_smiling_face'>No tasks found. Let's create one!</p>
+            <p>Find here your tasks planned for the following days.</p>
         </field>
     </record>
 
@@ -220,7 +221,15 @@
         <field name="context">{
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
+            'fsm_task_kanban_whole_date':False,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tasks found. Let's create one!
+            </p><p>
+                Find here your itinerary for today's tasks.
+            </p>
+        </field>
     </record>
 
     <record id="project_task_action_fsm_map_view_map" model="ir.actions.act_window.view">
@@ -280,13 +289,14 @@
         <field name="context">{
             'fsm_mode': True,
             'default_user_id': False,
-            'fsm_task_kanban_whole_date': 1,
+            'fsm_task_kanban_whole_date': True,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tasks found. Let's create one!
             </p><p>
-                There are currently no tasks, click on create to create one
+                To get things done, use activities and status on tasks.<br/>
+                Chat in real time or by email to collaborate efficiently.
             </p>
         </field>
     </record>
@@ -333,8 +343,8 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No task to schedule
-            </p><p>Click Create to start a new task</p>
+                No tasks found. Let's create one!
+            </p><p>Schedule tasks and assign them to your workers.</p>
         </field>
     </record>
 
@@ -374,6 +384,13 @@
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context" eval="{'search_default_groupby_user': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="help" type="html">
+            <p class='o_view_nocontent_smiling_face'>
+                No tasks found
+            </p><p>
+                Let's start your planning by adding a new task.
+            </p>
+        </field>
     </record>
 
     <record id="project_task_action_planning_groupby_user_gantt" model="ir.actions.act_window.view">
@@ -419,6 +436,13 @@
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context" eval="{'search_default_groupby_project': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+        <field name="help" type="html">
+            <p class='o_view_nocontent_smiling_face'>
+                No tasks found
+            </p><p>
+                Let's start your planning by adding a new task.
+            </p>
+        </field>
     </record>
 
     <record id="project_task_action_planning_groupby_project_gantt" model="ir.actions.act_window.view">
@@ -493,6 +517,10 @@
             'default_allow_timesheet_timer': True,
             'tree_view_ref': 'industry_fsm.project_view_tree_primary',
         }</field>
+        <field name="help" type="html">
+            <p class='o_view_nocontent_smiling_face'>No projects found. Let's create one!</p>
+            <p>Projects regroup tasks on the same topic and each have their own dashboard.</p>
+        </field>
     </record>
 
     <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">

@@ -12,10 +12,10 @@
                 <field name="quantity_decreasable"/>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_record_top')]" position="after">
-                <div class="o_kanban_record_bottom">
+                <div class="o_kanban_record_bottom" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
                     <div class="oe_kanban_bottom_left"/>
                     <div class="oe_kanban_bottom_right">
-                        <button class="btn" type="object" name="action_assign_serial" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
+                        <button class="btn" type="object" name="action_assign_serial">
                             <i t-att-class="record.serial_missing.raw_value and 'fa fa-list text-danger' or 'fa fa-list text-success'" title="Serial"></i>
                         </button>
                     </div>

@@ -10,6 +10,12 @@ const session = require('web.session');
 const Timer = require('timer.Timer');
 
 TimesheetUom.FieldTimesheetTime.include({
+
+    init: function() {
+        this._super.apply(this, arguments);
+        this.rendererIsSample = arguments[0].state.isSample; // This only works with list_views.
+    },
+
     willstart() {
         const timePromise = this._rpc({
             model: 'timer.timer',
@@ -29,7 +35,7 @@ TimesheetUom.FieldTimesheetTime.include({
         // Check if the timer_start exists and it's not false
         // In other word, when user clicks on play button, this button
         // launches the "action_timer_start".
-        if (this.recordData.timer_start && !this.recordData.timer_pause) {
+        if (this.recordData.timer_start && !this.recordData.timer_pause && !this.rendererIsSample) {
             this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
             this._startTimeCounter();
         }

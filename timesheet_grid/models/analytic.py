@@ -650,9 +650,9 @@ class AnalyticLine(models.Model):
             context.update(grid_anchor=oldest_timesheet.date)
 
         if (type_view == 'week'):
-            name = 'Timesheets from Last Week to Validate'
+            name = 'Timesheets to Validate'
         elif type_view == 'month':
-            name = 'Timesheets from Last Month to Validate'
+            name = 'Timesheets to Validate'
             context['grid_range'] = 'month'
 
         action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
@@ -668,7 +668,8 @@ class AnalyticLine(models.Model):
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "context": context,
-
+            "help": '<p class="o_view_nocontent_smiling_face">No activities to validate.</p><p>Congratulations, you are up to date.<br/>' +
+                'Let\'s wait for your employees to start new activities.</p>',
         })
         return action
 
@@ -677,7 +678,7 @@ class AnalyticLine(models.Model):
 
             2 access rights give access to validate timesheets:
 
-            1. See all timesheets: in this access right, the user can't validate all timesheets,
+            1. Approver: in this access right, the user can't validate all timesheets,
             he can validate the timesheets where he is the manager or timesheet responsible of the
             employee who is assigned to this timesheets or the user is the owner of the project.
             Furthermore, the user can validate his own timesheets.

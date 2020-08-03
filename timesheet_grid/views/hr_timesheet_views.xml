@@ -11,6 +11,7 @@
                 <xpath expr="/tree" position="attributes">
                     <attribute name="decoration-muted">validated</attribute>
                     <attribute name="js_class">timesheet_tree</attribute>
+                    <attribute name="sample">1</attribute>
                 </xpath>
                 <xpath expr="/tree" position="inside">
                     <field name="id" invisible="1"/>
@@ -53,6 +54,7 @@
             <field name="arch" type="xml">
                 <kanban position="attributes">
                     <attribute name="js_class">timesheet_kanban_view</attribute>
+                    <attribute name="sample">1</attribute>
                 </kanban>
                 <xpath expr="/kanban" position="inside">
                     <field name="timer_start" invisible="1"/>
@@ -388,21 +390,18 @@
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Record a new activity
-                </p><p>
-                    Track your working hours by projects every day and invoice this time to your customers.
+                    No activities found. Let's start a new one!
                 </p>
-                <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
-                <div>
-                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                <p>
+                Track your working hours by projects every day and invoice this time to your customers.
+              </p>
+              <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+               <div>
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link">
                         <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
                     </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
-                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
-                    </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
-                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
-                    </a>
+                    <img alt="Apple App Store" class="img img-fluid h-100 o_config_app_store" style="cursor: pointer;" src="project/static/src/img/app_store.png"/>
+                    <img alt="Google Play Store" class="img img-fluid h-100 o_config_play_store" style="cursor: pointer;" src="project/static/src/img/play_store.png"/>
                 </div>
             </field>
         </record>
@@ -428,21 +427,18 @@
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Record a new activity
-                </p><p>
-                    Track your working hours by projects every day and invoice this time to your customers.
+                    No activities found. Let's start a new one!
                 </p>
-                <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
-                <div>
-                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                <p>
+                Track your working hours by projects every day and invoice this time to your customers.
+              </p>
+              <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+               <div>
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link">
                         <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
                     </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
-                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
-                    </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
-                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
-                    </a>
+                    <img alt="Apple App Store" class="img img-fluid h-100 o_config_app_store" style="cursor: pointer;" src="project/static/src/img/app_store.png"/>
+                    <img alt="Google Play Store" class="img img-fluid h-100 o_config_play_store" style="cursor: pointer;" src="project/static/src/img/play_store.png"/>
                 </div>
             </field>
         </record>
@@ -475,15 +471,11 @@
                 </p>
                 <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
                 <div>
-                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank">
+                    <a href="http://www.odoo.com/page/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link">
                         <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
                     </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=ios" target="_blank">
-                        <img alt="Apple App Store" class="img img-fluid h-100" src="project/static/src/img/app_store.png"/>
-                    </a>
-                    <a href="http://www.odoo.com/page/timesheet?platform=android" target="_blank">
-                        <img alt="Google Play Store" class="img img-fluid h-100" src="project/static/src/img/play_store.png"/>
-                    </a>
+                    <img alt="Apple App Store" class="img img-fluid h-100 o_config_app_store" style="cursor: pointer;" src="project/static/src/img/app_store.png"/>
+                    <img alt="Google Play Store" class="img img-fluid h-100 o_config_play_store" style="cursor: pointer;" src="project/static/src/img/play_store.png"/>
                 </div>
             </field>
         </record>
@@ -500,7 +492,7 @@
         </record>
 
         <record id="action_timesheet_previous_week" model="ir.actions.act_window">
-            <field name="name">Timesheets from Last Week to Validate</field>
+            <field name="name">Timesheets to Validate</field>
             <field name="res_model">account.analytic.line</field>
             <field name="view_mode">grid,tree</field>
             <field name="domain">[('is_timesheet', '=', True)]</field>
@@ -510,6 +502,15 @@
                 'search_default_nonvalidated': True,
                 'search_default_my_team_timesheet': True,
             }</field>
+            <field name="help" type="html">
+                <p>
+                    No activities to validate.
+                </p>
+                <p>
+                    Congratulations, you are up to date. <br/>
+                    Let's wait for your employees to start new activities.
+                </p>
+            </field>
         </record>
 
         <record id="timesheet_action_view_previous_week_grid" model="ir.actions.act_window.view">
@@ -535,7 +536,7 @@
 
 
         <record id="action_timesheet_previous_month" model="ir.actions.act_window">
-            <field name="name">Timesheets from Last Month to Validate</field>
+            <field name="name">Timesheets to Validate</field>
             <field name="res_model">account.analytic.line</field>
             <field name="view_mode">grid,tree</field>
             <field name="domain">[('is_timesheet', '=', True)]</field>
@@ -545,6 +546,15 @@
                 'search_default_nonvalidated': True,
                 'search_default_my_team_timesheet': True,
             }</field>
+            <field name="help" type="html">
+                <p>
+                    No activities to validate.
+                </p>
+                <p>
+                    Congratulations, you are up to date. <br/>
+                    Let's wait for your employees to start new activities.
+                </p>
+            </field>
         </record>
 
         <record id="timesheet_action_view_previous_month_grid" model="ir.actions.act_window.view">
@@ -626,6 +636,20 @@ action = model._action_open_to_validate_timesheet_view()
             <field name="state">code</field>
             <field name="code">
 action = model._action_open_to_validate_timesheet_view('month')
+            </field>
+        </record>
+
+        <record id="timesheet_grid_validate_all_timesheets" model="ir.actions.server">
+            <field name="name">Validate</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="binding_model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="groups_id" eval="[(4,ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    action = records.action_validate_timesheet()
             </field>
         </record>
 

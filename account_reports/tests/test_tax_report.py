@@ -12,6 +12,12 @@ class TestTaxReport(TestAccountReportsCommon):
     def setUpClass(cls):
         super().setUpClass()
 
+        cls.fiscal_country = cls.env['res.country'].create({
+            'name': "L'Île de la Mouche",
+            'code': 'YY',
+        })
+        cls.company_data['company'].country_id = cls.fiscal_country
+
         cls.tax_account = cls.env['account.account'].create({
             'name': 'tax_account',
             'code': 'taxtax',
@@ -207,10 +213,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
     def test_tax_report_grid(self):
         company = self.company_data['company']
-        company.country_id = self.env['res.country'].create({
-            'name': "L'Île de la Mouche",
-            'code': 'YY',
-        })
 
         # We generate a tax report with the following layout
         #/Base
@@ -473,19 +475,14 @@ class TestTaxReport(TestAccountReportsCommon):
         by the report; we want to ensure their sign is managed properly.
         """
         today = fields.Date.today()
-        test_country = self.env['res.country'].create({
-            'name': "Side 3",
-            'code': 'ZE',
-        })
 
-        company = self.env.user.company_id
-        company.country_id = test_country
+        company = self.company_data['company']
         partner = self.env['res.partner'].create({'name': 'Char Aznable'})
 
         # Create a tax report
         tax_report = self.env['account.tax.report'].create({
             'name': 'Test',
-            'country_id': test_country.id,
+            'country_id': self.fiscal_country.id,
         })
 
         # We create some report lines
@@ -556,19 +553,14 @@ class TestTaxReport(TestAccountReportsCommon):
         separetely, so not cancelling it).
         """
         today = fields.Date.today()
-        test_country = self.env['res.country'].create({
-            'name': "Side 3",
-            'code': 'ZE',
-        })
 
-        company = self.env.user.company_id
-        company.country_id = test_country
+        company = self.company_data['company']
         partner = self.env['res.partner'].create({'name': 'Char Aznable'})
 
         # Create a tax report
         tax_report = self.env['account.tax.report'].create({
             'name': 'Test',
-            'country_id': test_country.id,
+            'country_id': self.fiscal_country.id,
         })
 
         # We create some report lines
@@ -639,19 +631,14 @@ class TestTaxReport(TestAccountReportsCommon):
         of a payment.
         """
         today = fields.Date.today()
-        test_country = self.env['res.country'].create({
-            'name': "Side 3",
-            'code': 'ZE',
-        })
 
-        company = self.env.user.company_id
-        company.country_id = test_country
+        company = self.company_data['company']
         partner = self.env['res.partner'].create({'name': 'Char Aznable'})
 
         # Create a tax report
         tax_report = self.env['account.tax.report'].create({
             'name': 'Test',
-            'country_id': test_country.id,
+            'country_id': self.fiscal_country.id,
         })
 
         # We create some report lines

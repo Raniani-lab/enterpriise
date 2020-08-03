@@ -45,7 +45,7 @@ class ResCompany(models.Model):
         company.
         """
         self.ensure_one()
-        return self.env['account.tax.report'].search([('country_id', '=', self.get_fiscal_country().id)])
+        return self.env['account.tax.report'].search([('country_id', '=', self.account_tax_fiscal_country_id.id)])
 
     def write(self, values):
         # in case the user want to change the journal or the periodicity without changing the date, we should change the next_activity
@@ -54,4 +54,5 @@ class ResCompany(models.Model):
             if (values.get('account_tax_periodicity', company.account_tax_periodicity) != company.account_tax_periodicity \
             or values.get('account_tax_periodicity_journal_id', company.account_tax_periodicity_journal_id.id) != company.account_tax_periodicity_journal_id.id):
                 values['account_tax_original_periodicity_reminder_day'] = False
+
         return super(ResCompany, self).write(values)

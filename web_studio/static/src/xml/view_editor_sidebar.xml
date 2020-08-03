@@ -207,6 +207,7 @@
                         <option t-att-selected="widget.state.attrs.mode === 'day' ? 'selected' : undefined" value="day">day</option>
                         <option t-att-selected="widget.state.attrs.mode === 'week' ? 'selected' : undefined" value="week">week</option>
                         <option t-att-selected="widget.state.attrs.mode === 'month' ? 'selected' : undefined" value="month">month</option>
+                        <option t-att-selected="widget.state.attrs.mode === 'year' ? 'selected' : undefined" value="year">year</option>
                     </select>
                 </div>
             </t>

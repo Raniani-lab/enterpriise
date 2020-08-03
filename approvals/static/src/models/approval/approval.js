@@ -41,6 +41,18 @@ function factory(dependencies) {
             }
             this.delete();
         }
+
+        //----------------------------------------------------------------------
+        // Private
+        //----------------------------------------------------------------------
+
+        /**
+         * @override
+         */
+        static _createRecordLocalId(data) {
+            return `${this.modelName}_${data.id}`;
+        }
+
     }
 
     Approval.fields = {

@@ -301,7 +301,6 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
 
         /**
          * Given some group values, return to which group level they belong.
-         * @param {number} groupIndex top level group index
          * @param {Array<string>} groupValues
          * @returns {number}
          */
@@ -318,12 +317,12 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
          */
         withLabel(field, fieldValue, label) {
             const labels = Object.assign({}, this._labels);
-            labels[field] = Object.assign(labels[field], { [fieldValue]: label });
+            labels[field] = Object.assign({}, labels[field], { [fieldValue]: label });
             return new PivotCache({
                 cols: this._cols,
-                colStructure: this.colStructure,
-                fields: this.fields,
-                groupBys: this.groupBys,
+                colStructure: this._colStructure,
+                fields: this._fields,
+                groupBys: this._groupBys,
                 labels: labels,
                 modelLabel: this._modelLabel,
                 rows: this._rows,

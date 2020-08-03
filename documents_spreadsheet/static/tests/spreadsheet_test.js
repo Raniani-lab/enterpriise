@@ -80,6 +80,11 @@ odoo.define("web.spreadsheet_tests", function (require) {
                             searchable: true,
                             group_operator: "sum",
                         },
+                        product: {
+                            relation: "product",
+                            string: "Product",
+                            type: "many2one",
+                        },
                         probability: {
                             string: "Probability",
                             type: "integer",
@@ -99,6 +104,21 @@ odoo.define("web.spreadsheet_tests", function (require) {
                             foo: 1,
                             bar: 110,
                             probability: 11,
+                        },
+                    ],
+                },
+                product: {
+                    fields: {
+                        name: { string: "Product Name", type: "char" },
+                    },
+                    records: [
+                        {
+                            id: 37,
+                            display_name: "xphone",
+                        },
+                        {
+                            id: 41,
+                            display_name: "xpad",
                         },
                     ],
                 },
@@ -498,6 +518,46 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.equal(model.getters.getCell(2, 2).value, 10);
             assert.equal(model.getters.getCell(1, 3).value, 11);
             assert.equal(model.getters.getCell(2, 3).value, 10);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Pivot cache is correctly copied", async function (assert) {
+            assert.expect(18);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const { cache } = model.getters.getPivot(1);
+            const newCache = cache.withLabel("product", 37, "My amazing product");
+            assert.equal(newCache.getRows(), cache.getRows());
+            assert.equal(newCache.getRowCount(), cache.getRowCount());
+            assert.equal(newCache.getColLevelIdentifier(0), cache.getColLevelIdentifier(0));
+            assert.equal(newCache.getField("product"), cache.getField("product"));
+            assert.equal(cache.getGroupLabel("product", 37), undefined);
+            assert.equal(newCache.getGroupLabel("product", 37), "My amazing product");
+            assert.ok(newCache.isGroupLabelLoaded("product", 37));
+            assert.notOk(cache.isGroupLabelLoaded("product", 37));
+            assert.deepEqual(
+                newCache.isGroupedByDate(["product"]),
+                cache.isGroupedByDate(["product"])
+            );
+            assert.equal(newCache.getMeasureName(0), cache.getMeasureName(0));
+            assert.equal(newCache.getColGroupHierarchy(0, 1), cache.getColGroupHierarchy(0, 1));
+            assert.equal(newCache.getRowValues(0), cache.getRowValues(0));
+            assert.equal(newCache.getColGroupByLevels(), cache.getColGroupByLevels());
+            assert.equal(newCache.getTopHeaderCount(), cache.getTopHeaderCount());
+            assert.equal(newCache.getTopGroupIndex(), cache.getTopGroupIndex());
+            assert.equal(newCache.getRowIndex("bar"), cache.getRowIndex("bar"));
+            assert.deepEqual(newCache.getFieldValues("product"), cache.getFieldValues("product"));
+            assert.deepEqual(newCache.getColumnValues(0), cache.getColumnValues(0));
             actionManager.destroy();
         });
 

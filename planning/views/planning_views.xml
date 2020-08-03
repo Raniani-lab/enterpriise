@@ -344,7 +344,7 @@
             (0, 0, {'view_mode': 'calendar', 'view_id': ref('planning_view_my_calendar')}),
             (0, 0, {'view_mode': 'tree'}),
             (0, 0, {'view_mode': 'form'})]"/>
-        <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1}</field>
+        <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
     </record>
 
     <record id="planning_action_my_gantt" model="ir.actions.act_window">
@@ -372,7 +372,7 @@
         <field name="name">Schedule by Employee</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_employee': 1}</field>
+        <field name="context">{'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
     </record>
 
         <record id="planning_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
@@ -386,7 +386,7 @@
         <field name="name">Schedule by Role</field>
         <field name="res_model">planning.slot</field>
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True}</field>
+        <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
     </record>
 
         <record id="planning_action_schedule_by_role_view_gantt" model="ir.actions.act_window.view">

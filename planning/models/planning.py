@@ -51,7 +51,7 @@ class Planning(models.Model):
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     manager_id = fields.Many2one(related='employee_id.parent_id')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
-    role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True)
+    role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')
     color = fields.Integer("Color", related='role_id.color')
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
@@ -661,22 +661,40 @@ class Planning(models.Model):
         }
 
     def _read_group_employee_id(self, employees, domain, order):
+        dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
         employee_ids = self.env.context.get('filter_employee_ids', False)
-        if (employees == self.env.user.employee_id or not employees) and not employee_ids:
-            return employees
         employee_domain = [('id', 'in', employee_ids)] if employee_ids else []
         all_employees = self.env['hr.employee'].search(employee_domain)
-        if employee_ids:
+        if employee_ids or len(all_employees) < 20:
             return all_employees
-        elif len(all_employees) >= 20:
-            start_date_list = [dom[2] for dom in domain if dom[0] == 'start_datetime']
-            start_date = start_date_list[-1] if start_date_list else datetime.now()
-            start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
-            min_date = start_date - timedelta(days=30)
-            max_date = start_date + timedelta(days=30)
-            return self.env['planning.slot'].search([('start_datetime', '>=', min_date), ('start_datetime', '<=', max_date)]).mapped('employee_id')
+        elif self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            filters = self._expand_domain_dates(domain)
+            return self.env['planning.slot'].search(filters).mapped('employee_id')
         return employees
 
+    def _read_group_role_id(self, roles, domain, order):
+        dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
+        if self._context.get('planning_expand_role') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            filters = self._expand_domain_dates(domain)
+            return self.env['planning.slot'].search(filters).mapped('role_id')
+        return roles
+
+    def _expand_domain_dates(self, domain):
+        filters = []
+        for dom in domain:
+            if len(dom) == 3 and dom[0] == 'start_datetime' and dom[1] == '<=':
+                max_date = dom[2] if dom[2] else datetime.now()
+                max_date = max_date if isinstance(max_date, date) else datetime.strptime(max_date, '%Y-%m-%d %H:%M:%S')
+                max_date = max_date + timedelta(days=30)
+                filters.append((dom[0], dom[1], max_date))
+            elif len(dom) == 3 and dom[0] == 'end_datetime' and dom[1] == '>=':
+                min_date = dom[2] if dom[2] else datetime.now()
+                min_date = min_date if isinstance(min_date, date) else datetime.strptime(min_date, '%Y-%m-%d %H:%M:%S')
+                min_date = min_date - timedelta(days=30)
+                filters.append((dom[0], dom[1], min_date))
+            else:
+                filters.append(dom)
+        return filters
 
     def _format_start_end_datetime(self, record_env, tz=None, lang_code=False):
         destination_tz = pytz.timezone(tz)

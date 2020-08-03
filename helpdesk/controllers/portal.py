@@ -17,9 +17,13 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
         if values.get('sales_user', False):
             values['title'] = _("Salesperson")
+        return values
+
+    def _prepare_home_portal_values(self):
+        values = super(CustomerPortal, self)._prepare_home_portal_values()
+        values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
         return values
 
     def _ticket_get_page_view_values(self, ticket, access_token, **kwargs):
@@ -96,7 +100,7 @@ class CustomerPortal(CustomerPortal):
             domain = searchbar_filters[filterby]['domain']
 
         # archive groups - Default Group By 'create_date'
-        archive_groups = self._get_archive_groups('helpdesk.ticket', domain)
+        archive_groups = self._get_archive_groups('helpdesk.ticket', domain) if values.get('my_details') else []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 

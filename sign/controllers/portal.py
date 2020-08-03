@@ -15,8 +15,8 @@ from odoo.osv.expression import AND
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_portal_layout_values(self):
-        values = super(CustomerPortal, self)._prepare_portal_layout_values()
+    def _prepare_home_portal_values(self):
+        values = super(CustomerPortal, self)._prepare_home_portal_values()
         partner_id = request.env.user.partner_id
         values['sign_count'] = request.env['sign.request.item'].sudo().search_count([
             ('partner_id', '=', partner_id.id), ('state', '!=', 'draft')

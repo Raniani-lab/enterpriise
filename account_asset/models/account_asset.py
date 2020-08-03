@@ -118,6 +118,8 @@ class AccountAsset(models.Model):
                 raise UserError(_("All the lines should be posted"))
             if any(account != record.original_move_line_ids[0].account_id for account in record.original_move_line_ids.mapped('account_id')):
                 raise UserError(_("All the lines should be from the same account"))
+            if any(type != record.original_move_line_ids[0].move_id.move_type for type in record.original_move_line_ids.mapped('move_id.move_type')):
+                raise UserError(_("All the lines should be from the same move type"))
             record.account_asset_id = record.original_move_line_ids[0].account_id
             record.display_model_choice = record.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)])
             record.display_account_asset_id = False

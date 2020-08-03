@@ -579,3 +579,40 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         move.action_post()
         self.assertEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)
+
+    def test_asset_credit_note(self):
+        """Test the generated entries created from an in_refund invoice with deferred expense."""
+        account_asset_model_fixedassets_test0 = self.env['account.asset'].create({
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'name': 'Hardware - 3 Years',
+            'method_number': 3,
+            'method_period': '12',
+            'state': 'model',
+        })
+
+        self.company_data['default_account_assets'].create_asset = "validate"
+        self.company_data['default_account_assets'].asset_model = account_asset_model_fixedassets_test0
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_refund',
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Refund Insurance claim',
+                'account_id': self.company_data['default_account_assets'].id,
+                'price_unit': 450,
+                'quantity': 1,
+            })],
+        })
+        invoice.action_post()
+        depreciation_lines = self.env['account.move.line'].search([
+            ('account_id', '=', account_asset_model_fixedassets_test0.account_depreciation_id.id),
+            ('move_id.asset_id', '=', invoice.asset_ids.id),
+            ('debit', '=', 150),
+        ])
+        self.assertEqual(
+            len(depreciation_lines), 3,
+            'Three entries with a debit of 150 must be created on the Deferred Expense Account'
+        )

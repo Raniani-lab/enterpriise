@@ -178,6 +178,8 @@ class AccountMove(models.Model):
         # Keep the partner on the original invoice if there is only one
         partner = asset.original_move_line_ids.mapped('partner_id')
         partner = partner[:1] if len(partner) <= 1 else self.env['res.partner']
+        if asset.original_move_line_ids and asset.original_move_line_ids[0].move_id.move_type in ['in_refund', 'out_refund']:
+            amount = -amount
         move_line_1 = {
             'name': asset.name,
             'partner_id': partner.id,

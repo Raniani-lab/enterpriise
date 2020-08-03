@@ -12,6 +12,13 @@ class HelpdeskTeam(models.Model):
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
     timesheet_timer = fields.Boolean('Timesheet Timer', default=True)
+    display_timesheet_timer = fields.Boolean(compute='_compute_display_timesheet_timer')
+
+    @api.depends('use_helpdesk_timesheet')
+    def _compute_display_timesheet_timer(self):
+        is_uom_hour = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_hour')
+        for team in self:
+            team.display_timesheet_timer = team.use_helpdesk_timesheet and is_uom_hour
 
     @api.depends('use_helpdesk_timesheet')
     def _compute_timesheet_timer(self):
@@ -79,6 +86,10 @@ class HelpdeskTicket(models.Model):
     total_hours_spent = fields.Float(compute='_compute_total_hours_spent', default=0)
 
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
+    encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
+
+    def _compute_encode_uom_in_days(self):
+        self.encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')
 
     @api.depends('display_timesheet_timer', 'timer_start', 'timer_pause', 'total_hours_spent')
     def _compute_display_timer_buttons(self):
@@ -105,10 +116,10 @@ class HelpdeskTicket(models.Model):
                     else:
                         ticket.display_timer_start_primary = False
 
-    @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids')
+    @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids', 'encode_uom_in_days')
     def _compute_display_timesheet_timer(self):
         for ticket in self:
-            ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and ticket.timesheet_timer
+            ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and ticket.timesheet_timer and not ticket.encode_uom_in_days
 
     @api.depends('project_id', 'company_id')
     def _compute_related_task_ids(self):

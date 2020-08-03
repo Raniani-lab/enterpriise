@@ -157,6 +157,10 @@ class SocialStreamPostFacebook(models.Model):
         ).json()
         result['likes'] = {'summary': {'total_count': result.get('like_count', 0)}}
 
+        inner_comments = result.get('comments', {}).get('data', [])
+        for inner_comment in inner_comments:
+            inner_comment['likes'] = {'summary': {'total_count': inner_comment.get('like_count', 0)}}
+
         return result
 
     def _like_facebook_object(self, object_id, like):

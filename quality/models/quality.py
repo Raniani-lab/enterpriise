@@ -272,6 +272,7 @@ class QualityCheck(models.Model):
         if self.point_id:
             self.product_id = self.point_id.product_ids[:1]
             self.team_id = self.point_id.team_id.id
+            self.test_type_id = self.point_id.test_type_id.id
 
     @api.model
     def create(self, vals):

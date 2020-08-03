@@ -256,6 +256,7 @@
                         <group>
                             <field name="picking_id"/>
                             <field name="point_id"/>
+                            <field string="Type" name="test_type_id" widget="selection" attrs="{'readonly': [('point_id', '!=', False)]}"/>
                             <field name="control_date" invisible="1"/>
                             <field name="team_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>

@@ -13,20 +13,20 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
              * of a column is part of its group hierarchy which are used to build the headers.
              * e.g. a pivot grouped by partner then stage
              * [
-             *      [   partner = 10 > stage = 2 > measure = "planned_revenue"
+             *      [   partner = 10 > stage = 2 > measure = "expected_revenue"
              *          ["10"],
              *          ["10", "2"],
-             *          ["10", "2", "planned_revenue"],
+             *          ["10", "2", "expected_revenue"],
              *      ],
-             *      [   partner = 12 > stage = 2 > measure = "planned_revenue"
+             *      [   partner = 12 > stage = 2 > measure = "expected_revenue"
              *          ["12"],
              *          ["12", "2"],
-             *          ["12", "2", "planned_revenue"],
+             *          ["12", "2", "expected_revenue"],
              *      ],
-             *      [   partner = 12 > stage = 3 > measure = "planned_revenue"
+             *      [   partner = 12 > stage = 3 > measure = "expected_revenue"
              *          ["12"],
              *          ["12", "3"],
-             *          ["12", "3", "planned_revenue"],
+             *          ["12", "3", "expected_revenue"],
              *      ],
              * ]
              **/
@@ -127,13 +127,13 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
              * Measures references by the groupBys data structure.
              * They are referenced by their index.
              * [
-             *      { planned_revenue: 4500, count: 1},
-             *      { planned_revenue: 500, count: 1},
-             *      { planned_revenue: 100, count: 2},
-             *      { planned_revenue: 1000, count: 1},
-             *      { planned_revenue: 25000, count: 5},
-             *      { planned_revenue: 70000, count: 2},
-             *      { planned_revenue: 25000, count: 5},
+             *      { expected_revenue: 4500, count: 1},
+             *      { expected_revenue: 500, count: 1},
+             *      { expected_revenue: 100, count: 2},
+             *      { expected_revenue: 1000, count: 1},
+             *      { expected_revenue: 25000, count: 5},
+             *      { expected_revenue: 70000, count: 2},
+             *      { expected_revenue: 25000, count: 5},
              * ]
              */
             this._values = data.values;
@@ -262,7 +262,7 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
 
         /**
          * Returns the hierarchy from a subgroup to a topgroup.
-         * e.g. ["17", "05/2020", "true", "planned_revenue"]
+         * e.g. ["17", "05/2020", "true", "expected_revenue"]
          * @param {number} topGroupIndex
          * @param {number} subgroupIndex
          */

@@ -4,7 +4,7 @@
 {
     'name': 'Sweden - Accounting Reports',
     'version': '1.0',
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'author': "XCLUDE",
     'website': "https://www.xclude.se",
     'description': """

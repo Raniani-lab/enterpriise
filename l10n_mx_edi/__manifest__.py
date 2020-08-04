@@ -3,7 +3,7 @@
 {
     'name': 'EDI for Mexico',
     'version': '0.2',
-    'category': 'Hidden',
+    'category': 'Accounting/Localizations/EDI',
     'summary': 'Mexican Localization for EDI documents',
     'description': """
 EDI Mexican Localization

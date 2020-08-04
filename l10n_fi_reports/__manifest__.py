@@ -9,7 +9,7 @@ Accounting reports for Finland
 ================================
 
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'depends': ['l10n_fi', 'account_reports'],
     'data': [
         'data/balance_sheet.xml',

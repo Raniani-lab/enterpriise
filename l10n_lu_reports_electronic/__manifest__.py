@@ -7,7 +7,7 @@
 Electronic Accounting reports for Luxembourg
 ============================================
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'depends': ['l10n_lu_reports'],
     'data': [
         'data/ir_cron_data.xml',

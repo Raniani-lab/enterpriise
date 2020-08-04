@@ -5,7 +5,7 @@
     'name': 'Singapore - Accounting Reports',
     'version': '1.1',
     'author': 'Tech Receptives',
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'description': """
 Accounting reports for Singapore
 ================================

@@ -7,7 +7,7 @@
 Accounting reports for Luxembourg
 =================================
     """,
-    'category': 'Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'depends': ['l10n_lu', 'account_reports'],
     'data': [
         'data/account_financial_html_report_pl.xml',

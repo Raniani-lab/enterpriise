@@ -4,7 +4,7 @@
 {
     'name': 'Luxembourg Standard Audit File for Tax',
     'version': '1.0',
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations/Reporting',
     'description': """
     Under Construction
     """,

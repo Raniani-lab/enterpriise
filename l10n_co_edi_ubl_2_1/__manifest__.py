@@ -3,7 +3,7 @@
 {
     'name': 'Electronic invoicing for Colombia with Carvajal UBL 2.1',
     'version': '0.1',
-    'category': 'Accounting',
+    'category': 'Accounting/Localizations/EDI',
     'summary': 'Colombian Localization for EDI documents UBL 2.1',
     'depends': ['l10n_co_edi', 'base_address_city', 'product_unspsc'],
     'data': [

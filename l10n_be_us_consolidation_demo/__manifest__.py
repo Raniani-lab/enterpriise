@@ -4,7 +4,7 @@
 {
     'name': 'Account Consolidation Demo Data',
     'version': '1.0',
-    'category': 'Accounting/Accounting',
+    'category': 'Hidden',
     'sequence': 50,
     'summary': 'Account Consolidation Demo Data using a Belgium and a US company',
     'depends': ['account_consolidation', 'l10n_be', 'l10n_generic_coa'],

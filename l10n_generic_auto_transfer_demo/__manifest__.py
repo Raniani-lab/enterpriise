@@ -10,7 +10,7 @@ Account Automatic Transfers Demo
 ================================
 Demo data for account automatic transfers module
     """,
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations',
     'data': [],
     'demo': [
         'data/data.xml'

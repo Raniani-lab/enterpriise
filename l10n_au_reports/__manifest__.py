@@ -4,7 +4,7 @@
 {
     'name': 'Australian Reports - Accounting',
     'version': '1.1',
-    'category': 'Localization',
+    'category': 'Accounting/Localizations/Reporting',
     'description': """
 Australian Accounting Module
 ============================

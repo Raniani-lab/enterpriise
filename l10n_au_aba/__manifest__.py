@@ -101,7 +101,7 @@ Use
     When validating a batch payment, the ABA file will be generated.  It can
     be regenerated.  This file can then be uploaded to the bank.
 """,
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations/EDI',
     'version': '1.0',
     'depends': ['account_batch_payment', 'l10n_au'],
     'data': [

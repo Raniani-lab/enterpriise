@@ -7,7 +7,7 @@
 Generate Electronic Invoice with custom numbers
     ''',
     'version': '1.0',
-    'category': 'Hidden',
+    'category': 'Accounting/Localizations/EDI',
     'depends': [
         'stock_landed_costs',
         'sale_management',

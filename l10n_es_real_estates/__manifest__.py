@@ -6,7 +6,7 @@
 This module allows the user to add real estate related data to the Spanish localization and generates a mod 347 report.
     """,
 
-    'category': 'Accounting/Accounting',
+    'category': 'Accounting/Localizations',
     'version': '0.1',
     'depends': ['l10n_es_reports'],
     'data': [

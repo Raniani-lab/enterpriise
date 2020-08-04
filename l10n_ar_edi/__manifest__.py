@@ -2,7 +2,7 @@
 {
     "name": "Argentinian Electronic Invoicing",
     'version': '1.0',
-    'category': 'Localization',
+    'category': 'Accounting/Localizations/EDI',
     'sequence': 14,
     'author': 'ADHOC SA',
     'description': """

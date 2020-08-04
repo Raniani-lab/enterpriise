@@ -3,7 +3,7 @@
     'name': 'Argentinian Accounting Reports',
     'version': '1.0',
     'author': 'ADHOC SA',
-    'category': 'Accounting/Localizations',
+    'category': 'Accounting/Localizations/Reporting',
     'summary': 'Reporting for Argentinian Localization',
     'description': """
 Add VAT Book report which is a legal requirement in Argentine and that holds the VAT detail info of sales or purchases made in a period of time.

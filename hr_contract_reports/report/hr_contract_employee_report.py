@@ -79,7 +79,7 @@ class HrContractEmployeeReport(models.Model):
                     FROM hr_contract WHERE state != 'cancel'
                     GROUP BY employee_id) start on (start.employee_id = c.employee_id)
                  %s
-                CROSS JOIN generate_series(c.date_start, COALESCE(c.date_end, current_date + interval '1 year'), interval '1 month') serie
+                CROSS JOIN generate_series(c.date_start, (CASE WHEN c.date_end IS NULL THEN current_date + interval '1 year' ELSE (CASE WHEN date_part('day', c.date_end) < date_part('day', c.date_start) THEN c.date_end + interval '1 month' ELSE c.date_end END) END), interval '1 month') serie
         """ % from_clause
 
         return '(SELECT * %s FROM (SELECT %s FROM %s) in_query)' % (outer, select_, from_)

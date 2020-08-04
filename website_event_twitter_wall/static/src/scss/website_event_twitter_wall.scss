@@ -1,0 +1,49 @@
+.o_wevent_event .o-tw-container {
+    .o-tw-cover {
+        display: none !important;
+    }
+
+    .container .o-tw-toggle {
+        margin-left: 0px;
+        &:first-of-type {
+            display: none !important;
+        }
+    }
+
+    /** TODO AWA
+    * The following rules will allow the first col-4 to take
+    * the full available width in mobile (= up to md breakpoint).
+    * Because it simply cannot fit all the content in a smaller view.
+    * This should be cleaned in master and implemented with an appropriate
+    * combination of col-12 / col-md-4 / col-md-none.
+    */
+    .row.container-fluid {
+        .col-4:nth-child(1) {
+            flex: 1;
+            max-width: 100%;
+        }
+
+        .col-4:nth-child(2), .col-4:nth-child(3) {
+            display: none;
+        }
+
+        @include media-breakpoint-up(md) {
+            .col-4:nth-child(1) {
+                flex: 0 0 33.33333333%;
+                max-width: 33.33333333%;
+            }
+
+            .col-4:nth-child(2), .col-4:nth-child(3) {
+                display: block;
+            }
+        }
+    }
+
+    .o-tw-tweet span {
+        visibility: hidden;
+    }
+}
+
+.o-tw-view-live .o_wevent_event > .navbar {
+    display: none;
+}

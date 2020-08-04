@@ -22,8 +22,8 @@
         <field name="arch" type="xml">
             <tree string="Deferred Expenses Models">
                 <field name="name" string="Expense Name"/>
-                <field name="account_depreciation_id" string="Expense Account"/>
-                <field name="account_depreciation_expense_id" string="Deferred Expense Account"/>
+                <field name="account_depreciation_id" string="Deferred Expense Account"/>
+                <field name="account_depreciation_expense_id" string="Expense Account"/>
                 <field name="method_number" string="Number of Recognitions"/>
                 <field name="method_period" string="Period length"/>
                 <field name="state" invisible="1"/>
@@ -80,7 +80,7 @@
             </field>
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>
-                <attribute name="help">Account used to record the deferred income</attribute>
+                <attribute name="help">Account used to record the deferred expense</attribute>
             </field>
             <field name="book_value" position="attributes">
                 <attribute name="string">Deferred Expense Amount</attribute>

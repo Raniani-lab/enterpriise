@@ -7,7 +7,7 @@ from odoo import api, fields, models, _
 class AccountAccount(models.Model):
     _inherit = 'account.account'
 
-    asset_model = fields.Many2one('account.asset', domain=lambda self: [('state', '=', 'model'), ('asset_type', '=', self.asset_type)], help="If this is selected, an asset will be created automatically when Journal Items on this account are posted.")
+    asset_model = fields.Many2one('account.asset', domain=lambda self: [('state', '=', 'model'), ('asset_type', '=', self.asset_type)], help="If this is selected, an expense/revenue will be created automatically when Journal Items on this account are posted.")
     create_asset = fields.Selection([('no', 'No'), ('draft', 'Create in draft'), ('validate', 'Create and validate')], required=True, default='no')
     can_create_asset = fields.Boolean(compute="_compute_can_create_asset", help="""Technical field specifying if the account can generate asset depending on it's type. It is used in the account form view.""")
     form_view_ref = fields.Char(compute='_compute_can_create_asset')

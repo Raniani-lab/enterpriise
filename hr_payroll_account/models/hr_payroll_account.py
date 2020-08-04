@@ -96,7 +96,7 @@ class HrPayslip(models.Model):
                             if not debit_line:
                                 debit_line = {
                                     'name': line.name,
-                                    'partner_id': False,
+                                    'partner_id': line.partner_id.id,
                                     'account_id': debit_account_id,
                                     'journal_id': slip.struct_id.journal_id.id,
                                     'date': date,
@@ -124,7 +124,7 @@ class HrPayslip(models.Model):
                             if not credit_line:
                                 credit_line = {
                                     'name': line.name,
-                                    'partner_id': False,
+                                    'partner_id': line.partner_id.id,
                                     'account_id': credit_account_id,
                                     'journal_id': slip.struct_id.journal_id.id,
                                     'date': date,

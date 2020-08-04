@@ -57,8 +57,8 @@ class CL8ColumnsReport(models.AbstractModel):
         """
         parameters = {
             'company_id': self.env.company.id,
-            'date_from': self._context['date_from'],
-            'date_to': self._context['date_to']
+            'date_from': options['date']['date_from'],
+            'date_to': options['date']['date_to']
         }
         journal_ids = self.env['account.journal'].search([]).ids
         analytic_ids = self.env['account.analytic.account'].search([]).ids

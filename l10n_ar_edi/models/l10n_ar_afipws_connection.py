@@ -61,8 +61,8 @@ class L10nArAfipwsConnection(models.Model):
                             'testing': "https://wswhomo.afip.gov.ar/wsfev1/service.asmx?WSDL"},
                    'wsfex': {'production': "https://servicios1.afip.gov.ar/wsfexv1/service.asmx?WSDL",
                              'testing': "https://wswhomo.afip.gov.ar/wsfexv1/service.asmx?WSDL"},
-                   'wsbfe': {'production': "http://servicios1.afip.gov.ar/wsbfev1/service.asmx?WSDL",
-                             'testing': "http://wswhomo.afip.gov.ar/wsbfev1/service.asmx?WSDL"},
+                   'wsbfe': {'production': "https://servicios1.afip.gov.ar/wsbfev1/service.asmx?WSDL",
+                             'testing': "https://wswhomo.afip.gov.ar/wsbfev1/service.asmx?WSDL"},
                    'wscdc': {'production': "https://servicios1.afip.gov.ar/WSCDC/service.asmx?WSDL",
                              'testing': "https://wswhomo.afip.gov.ar/WSCDC/service.asmx?WSDL"}}
         return ws_data.get(afip_ws, {}).get(environment_type)

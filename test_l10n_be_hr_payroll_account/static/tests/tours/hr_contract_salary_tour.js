@@ -155,7 +155,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Unchoose Public Transportation",
             trigger: 'input[name="fold_public_transport_reimbursed_amount"]',
-            extra_trigger: 'input[name="Gross"][value="2966.99"]',
+            extra_trigger: 'input[name="Gross"][value="2976.62"]',
             run: 'click',
         },
         {

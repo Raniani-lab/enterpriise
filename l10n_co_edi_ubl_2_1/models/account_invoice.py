@@ -236,6 +236,14 @@ class AccountInvoice(models.Model):
         notas.insert(4, '7.- %s' % (self.company_id.website))
         return notas
 
+    def _l10n_co_edi_get_company_address(self, partner):
+        """
+        Function forms address of the company avoiding duplicity. contact_address attribute holds the complete address
+        of company, which should not be used.
+        Information like city, state which is already sent in other tags should be excluded from the company's address.
+        """
+        return '%s %s' % (partner.street or '', partner.street2 or '')
+
 
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.move.line'

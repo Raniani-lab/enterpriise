@@ -57,7 +57,7 @@
                 <EMI_7 t-esc="company_partner.l10n_co_edi_commercial_name or company_partner.name"/>
                 <EMI_8/>
                 <EMI_9/>
-                <EMI_10 t-esc="company_partner.contact_address"/>
+                <EMI_10 t-esc="invoice._l10n_co_edi_get_company_address(company_partner)"/>
                 <EMI_11 t-esc="str(company_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                 <EMI_12/>
                 <EMI_13 t-esc="company_partner.city_id.name"/>
@@ -112,7 +112,7 @@
                 <ADQ_8 t-esc="invoice_partner.name"/>
                 <ADQ_9 t-esc="invoice_partner.name"/>
                 <t t-if="invoice_partner.vat != '222222222222'">
-                    <ADQ_10 t-esc="invoice_partner.contact_address"/>
+                    <ADQ_10 t-esc="invoice._l10n_co_edi_get_company_address(invoice_partner)"/>
                     <ADQ_11 t-esc="str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>
                     <ADQ_12/>
                     <ADQ_13 t-esc="invoice_partner.city"/>

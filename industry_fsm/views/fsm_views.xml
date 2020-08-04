@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <tree string="Tasks" multi_edit="1" sample="1">
                 <field name="name"/>
-                <field name="project_id" invisible="context.get('user_invisible', False)" readonly="1"/>
+                <field name="project_id" readonly="1"/>
                 <field name="partner_id"/>
-                <field name="user_id" optional="show" invisible="context.get('user_invisible', False)"/>
+                <field name="user_id" optional="show"/>
                 <field name="planned_date_begin" optional="hide"/>
                 <field name="planned_date_end" optional="hide"/>
                 <field name="effective_hours" optional="hide"/>
@@ -283,7 +283,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new task
+                No tasks found. Let's create one!
             </p><p>
                 There are currently no tasks, click on create to create one
             </p>

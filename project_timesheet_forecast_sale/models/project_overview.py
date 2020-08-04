@@ -27,7 +27,7 @@ class ProjectOverview(models.Model):
         if any(self.mapped('allow_forecast')):
             # add headers
             result['header'] += [{
-                'label': _('Remaining \n (Forecasts incl.)'),
+                'label': _('Remaining (Planning incl.)'),
                 'tooltip': _('What is still to deliver based on sold hours, hours already done and forecasted hours. Equals to sold hours - done hours - forecasted hours.'),
             }]
 

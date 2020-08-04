@@ -555,7 +555,7 @@
         <field name="name">mrp.eco.view.graph</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <graph string="ECO Analysis">
+            <graph string="ECO Analysis" sample="1">
                 <!--<field name="company_id" type="row"/>-->
                 <field name="stage_id" type="row"/>
                 <field name="product_tmpl_id" type="col"/>

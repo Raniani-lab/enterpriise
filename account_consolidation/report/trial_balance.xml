@@ -32,7 +32,7 @@
             <field name="name">account_consolidation.trial_balance.report.grid</field>
             <field name="model">consolidation.journal.line</field>
             <field name="arch" type="xml">
-                <graph string="Trial Balance">
+                <graph string="Trial Balance" sample="1">
                     <field name="group_id" type="row"/>
                     <field name="journal_id" type="row"/>
                     <field name="amount" type="measure"/>

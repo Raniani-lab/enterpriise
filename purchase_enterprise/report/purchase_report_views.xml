@@ -7,7 +7,7 @@
             <field name="model">purchase.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="purchase.view_purchase_order_graph"/>
                     <group>
                         <group>

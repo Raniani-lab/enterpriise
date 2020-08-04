@@ -6,7 +6,7 @@
             <field name="model">hr.payroll.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="hr_payroll.payroll_report_view_graph"/>
                     <group>
                         <group>
@@ -59,7 +59,7 @@
             <field name="name">payroll.report.graph</field>
             <field name="model">hr.payroll.report</field>
             <field name="arch" type="xml">
-                <graph string="Payroll Analysis" type="line">
+                <graph string="Payroll Analysis" type="line" sample="1">
                     <field name="date_from" type="row"/>
                     <field name="net_wage" type="measure"/>
                 </graph>

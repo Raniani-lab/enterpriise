@@ -31,7 +31,7 @@
         <field name="name">Events</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
-            <graph string="Appointments" type="bar">
+            <graph string="Appointments" type="bar" sample="1">
                 <field name="start" type="row"/>
             </graph>
         </field>

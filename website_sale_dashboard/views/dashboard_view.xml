@@ -6,7 +6,7 @@
              <field name="name">sale.report.graph</field>
              <field name="model">sale.report</field>
              <field name="arch" type="xml">
-                 <graph string="Sales Analysis" type="line">
+                 <graph string="Sales Analysis" type="line" sample="1">
                      <field name="date" interval="day" type="row"/>
                      <field name="price_subtotal" type="measure"/>
                  </graph>
@@ -31,7 +31,7 @@
             <field name="model">sale.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard js_class="website_sale_dashboard" banner_route="/website_sale_dashboard/website_sale_dashboard_onboarding">
+                <dashboard js_class="website_sale_dashboard" banner_route="/website_sale_dashboard/website_sale_dashboard_onboarding" sample="1">
                     <view type="graph" ref="website_sale_dashboard.view_online_sales_graph"/>
                     <group>
                         <group>

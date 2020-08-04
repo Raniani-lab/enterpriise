@@ -20,7 +20,7 @@
             <field name="model">sale.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="sale.view_order_product_graph"/>
                     <group>
                         <group>

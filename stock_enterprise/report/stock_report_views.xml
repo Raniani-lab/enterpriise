@@ -21,7 +21,7 @@
             <field name="name">stock.report.view.graph</field>
             <field name="model">stock.report</field>
             <field name="arch" type="xml">
-                <graph type="line">
+                <graph type="line" sample="1">
                     <field name="date_done" interval="week" type="row"/>
                 </graph>
             </field>
@@ -96,7 +96,7 @@
             <field name="model">stock.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="stock_enterprise.stock_report_graph_view"/>
                     <group col="1">
                         <group col="4">

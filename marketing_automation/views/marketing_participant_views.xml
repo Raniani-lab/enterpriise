@@ -175,7 +175,7 @@
         <field name="name">marketing.participant.view.graph</field>
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
-            <graph string="Participant summary" type="pie">
+            <graph string="Participant summary" type="pie" sample="1">
                 <field name="model_id"/>
                 <field name="state"/>
             </graph>

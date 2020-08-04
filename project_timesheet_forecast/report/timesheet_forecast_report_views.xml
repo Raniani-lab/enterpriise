@@ -26,7 +26,7 @@
         <field name="name">timesheet.forecast.report.graph</field>
         <field name="model">project.timesheet.forecast.report.analysis</field>
         <field name="arch" type="xml">
-            <graph string="Timesheet and Planning Analysis" type="bar">
+            <graph string="Timesheet and Planning Analysis" type="bar" sample="1">
                 <field name="entry_date" type="row"/>
                 <field name="number_hours" type="measure"/>
             </graph>

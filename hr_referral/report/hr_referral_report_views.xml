@@ -6,7 +6,7 @@
             <field name="model">hr.referral.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="hr_referral.employee_referral_report_view_graph"/>
                     <group>
                         <group col="3">
@@ -49,7 +49,7 @@
             <field name="name">employee.referral.report.view.graph</field>
             <field name="model">hr.referral.report</field>
             <field name="arch" type="xml">
-                <graph string="Employees Analysis" type="bar">
+                <graph string="Employees Analysis" type="bar" sample="1">
                     <field name="medium_id" type="row"/>
                     <field name="referral_state" type="row"/>
                     <field name="applicant_id" type="measure"/>

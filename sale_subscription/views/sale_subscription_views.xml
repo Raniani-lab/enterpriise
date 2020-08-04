@@ -149,7 +149,7 @@
         <field name="name">sale.subscription.graph</field>
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
-            <graph string="Subscriptions">
+            <graph string="Subscriptions" sample="1">
                 <field name="partner_id"/>
                 <field name="recurring_total" type="measure"/>
                 <field name="recurring_total_incl" type="measure"/>

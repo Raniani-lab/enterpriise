@@ -6,7 +6,7 @@
             <field name="model">hr.contract.employee.report</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="hr_contract_reports.contract_employee_report_view_graph"/>
                     <group>
                         <group col="4">
@@ -50,7 +50,7 @@
             <field name="name">contract.employee.report.view.graph</field>
             <field name="model">hr.contract.employee.report</field>
             <field name="arch" type="xml">
-                <graph string="Employees Analysis" type="line">
+                <graph string="Employees Analysis" type="line" sample="1">
                     <field name="date" type="row"/>
                     <field name="count_new_employee" type="measure"/>
                 </graph>

@@ -16,7 +16,7 @@
          <field name="name">subscription.report.graph</field>
          <field name="model">sale.subscription.report</field>
          <field name="arch" type="xml">
-             <graph>
+             <graph sample="1">
                  <field name="template_id" type="row"/>
                  <field name="recurring_monthly" type="measure"/>
              </graph>

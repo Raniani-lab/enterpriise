@@ -17,7 +17,7 @@
         <field name="name">planning.slot.report.graph</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <graph string="Planning Analysis" type="bar">
+            <graph string="Planning Analysis" type="bar" sample="1">
                 <field name="start_datetime" type="row"/>
                 <field name="allocated_hours" type="measure"/>
             </graph>

@@ -5,7 +5,7 @@
         <field name="model">fleet.vehicle.cost.report</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-           <dashboard>
+           <dashboard sample="1">
                 <view type="graph" ref="fleet.fleet_costs_report_view_graph"/>
                 <group>
                     <group>

@@ -45,7 +45,7 @@
         <field name="name">marketing.trace.view.graph</field>
         <field name="model">marketing.trace</field>
         <field name="arch" type="xml">
-            <graph>
+            <graph sample="1">
                 <field name="activity_id" type="row"/>
                 <field name="state" type="row"/>
             </graph>

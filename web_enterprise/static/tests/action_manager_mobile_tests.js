@@ -107,7 +107,7 @@ odoo.define('web.action_manager_mobile_tests', function (require) {
             assert.verifySteps([
                 '/web/action/load',
                 'load_views',
-                'default_get', // default_get to open form view
+                'onchange', // default_get/onchange to open form view
                 '/web/dataset/search_read', // search read when coming back to Kanban
             ]);
 

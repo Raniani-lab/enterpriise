@@ -181,5 +181,5 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
             "type_labes": month and ['TVA_LICM', 'TVA_PSIM'] or ['TVA_LICT', 'TVA_PSIT'],
         })
 
-        rendered_content = self.env['ir.qweb'].render('l10n_lu_reports_electronic.IntrastatLuXMLReport', xml_data)
+        rendered_content = self.env['ir.qweb']._render('l10n_lu_reports_electronic.IntrastatLuXMLReport', xml_data)
         return b"<?xml version='1.0' encoding='utf-8'?>" + rendered_content

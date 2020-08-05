@@ -826,6 +826,90 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('basic grid view, displayed footer as a barchart', async function (assert) {
+        assert.expect(3);
+
+        this.data['analytic.line'].records.push({
+            id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4,
+        });
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `<grid string="Timesheet" barchart_total="1" adjustment="object" adjust_name="adjust_grid">
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            currentDate: "2017-01-25",
+        });
+
+        assert.containsN(grid, '.o_grid_total_bar', 7, "should have a 7 div in the footer");
+
+        // max height value is 90%
+        assert.strictEqual(grid.el.querySelectorAll('tfoot .o_grid_total_bar')[2].style.height, '90%',
+            "third column should have 90% height for total bar");
+
+        // null value have 0px height
+        assert.strictEqual(window.getComputedStyle(grid.el.querySelector('tfoot .o_grid_cell_null > .o_grid_total_bar')).height, '0px',
+            "null value column should have 0% height for total bar");
+
+        grid.destroy();
+    });
+
+    QUnit.test('compute correct cell value of barchart total', async function (assert) {
+        assert.expect(2);
+
+        this.data['analytic.line'].records.push({
+            id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4,
+        });
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `<grid string="Timesheet" barchart_total="1" adjustment="object" adjust_name="adjust_grid">
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            currentDate: "2017-01-25",
+        });
+
+        let cell = grid.el.querySelector('tbody tr:nth-child(2) td:nth-child(2) .o_grid_cell_container');
+        let div = cell.querySelector('div.o_grid_input');
+
+        await testUtils.dom.triggerEvent(div, 'focus');
+        let input = cell.querySelector('input.o_grid_input');
+        await testUtils.fields.editInput(input, "5:45");
+
+        await testUtils.dom.triggerEvent(input, 'blur');
+        assert.strictEqual(grid.el.querySelector('tfoot .o_grid_total_bar').style.height, '45%',
+            "height of first total bar should be correctly computed");
+
+        cell = grid.el.querySelector('tbody tr:nth-child(2) td:nth-child(5) .o_grid_cell_container');
+        div = cell.querySelector('div.o_grid_input');
+
+        await testUtils.dom.triggerEvent(div, 'focus');
+        input = cell.querySelector('input.o_grid_input');
+        await testUtils.fields.editInput(input, "3:50");
+
+        await testUtils.dom.triggerEvent(input, 'blur');
+        assert.strictEqual(grid.el.querySelector('tfoot td:nth-child(5) .o_grid_total_bar').style.height, '30%',
+            "height of fourth cell should be correctly computed");
+
+        grid.destroy();
+    });
+
     QUnit.test('row and column are highlighted when hovering a cell', async function (assert) {
         assert.expect(29);
 

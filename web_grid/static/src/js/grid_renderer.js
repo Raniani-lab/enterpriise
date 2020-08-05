@@ -228,6 +228,19 @@ odoo.define('web_grid.GridRenderer', function (require) {
             const cellField = this.props.fields[this.props.cellField];
             return fieldUtils.parse[this.formatType](value, cellField, this.props.cellComponentOptions);
         }
+        /**
+         * measure the height value of footer cell if hasBarChartTotal="true"
+         * max height value is 90%
+         *
+         * @private
+         * @param {number} index
+         * @returns {number} height: to be used as css percentage
+         */
+        _totalHeight(index) {
+            const maxCount = Math.max(...Object.values(this.props.totals.columns));
+            const factor = maxCount ? (90 / maxCount) : 0;
+            return factor * this.props.totals.columns[index];
+        }
 
         //----------------------------------------------------------------------
         // Handlers
@@ -321,6 +334,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
 
     GridRenderer.defaultProps = {
         cellComponentOptions: {},
+        hasBarChartTotal: false,
         hideColumnTotal: false,
         hideLineTotal: false,
     };
@@ -339,6 +353,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
         colField: String,
         fields: Object,
         groupBy: Array,
+        hasBarChartTotal: Boolean,
         hideColumnTotal: Boolean,
         hideLineTotal: Boolean,
         measureLabel: {

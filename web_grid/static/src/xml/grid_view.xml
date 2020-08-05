@@ -34,12 +34,11 @@
                 <t t-if="props.isGrouped" t-call="web_grid.GroupedGridBody"/>
                 <t t-else="" t-call="web_grid.UnGroupedGridBody"/>
                 <tfoot t-if="!props.hideColumnTotal">
-                    <tr>
-                        <td>
-                            <t t-if="props.totals" t-esc="measureLabel"/>
-                        </td>
+                    <tr t-att-class="{o_total_barchart: props.hasBarChartTotal}">
+                        <td/>
                         <t t-foreach="columns" t-as="column" t-key="column_index">
                             <t t-set="total_cells" t-value="_formatCellContentTotals(column_index)"/>
+                            <t t-if="props.hasBarChartTotal" t-set="totalHeight" t-value="_totalHeight(column_index)"/>
                             <td t-att-class="{
                                 'o_grid_current': column.is_current,
                                 'o_grid_unavailable': column.is_unavailable,
@@ -48,6 +47,8 @@
                                 }">
                                 <t t-if="hasComponent">
                                     <t t-component="component"
+                                        hasBarChartTotal="props.hasBarChartTotal"
+                                        cellHeight="props.hasBarChartTotal ? totalHeight : 0"
                                         cellValue="total_cells.value"
                                         readonly="cellReadOnly"
                                         isInput="state.editMode and state.currentPath===cellPath"
@@ -56,7 +57,16 @@
                                         path="cellPath"
                                         isTotal="true"/>
                                     </t>
-                                <t t-else="" t-esc="_format(total_cells.value)"/>
+                                <t t-else="">
+                                    <div t-if="props.hasBarChartTotal"
+                                        class="o_grid_total_bar"
+                                        t-att-style="'height:' + totalHeight + '%;'">
+                                        <span t-if="totalHeight"
+                                            class="o_grid_total_title position-absolute px-1"
+                                            t-esc="_format(total_cells.value)"/>
+                                    </div>
+                                    <div t-else="" t-esc="_format(total_cells.value)"/>
+                                </t>
                             </td>
                         </t>
                         <t t-if="props.range !== 'day' and !props.hideLineTotal">
@@ -73,7 +83,7 @@
                                         nodeOptions="props.cellComponentOptions"
                                         path="cellPath"
                                         isTotal="true"/>
-                                    </t>
+                                </t>
                                 <div t-else="">
                                     <t t-esc="_format(gridTotal.value)"/>
                                 </div>
@@ -262,7 +272,14 @@
 
     <t t-name="web_grid.BaseGridComponent" owl="1">
         <t t-if="props.isTotal">
-            <div t-esc="_format(props.cellValue)"/>
+            <div t-if="props.hasBarChartTotal"
+                class="o_grid_total_bar"
+                t-att-style="'height:' + props.cellHeight + '%;'">
+                <span t-if="props.cellHeight"
+                    class="o_grid_total_title position-absolute px-1"
+                    t-esc="_format(props.cellValue)"/>
+            </div>
+            <div t-else="" t-esc="_format(props.cellValue)"/>
         </t>
         <t t-elif="!props.readonly">
             <t t-if="props.isInput">
@@ -296,8 +313,17 @@
         </t>
 	</t>
 
-    <div t-name="web_grid.FloatToggleComponent" class="btn-block" owl="1">
-        <t t-if="props.isTotal" t-esc="_format(props.cellValue)"/>
+    <t t-name="web_grid.FloatToggleComponent" class="btn-block" owl="1">
+        <t t-if="props.isTotal">
+            <div t-if="props.hasBarChartTotal"
+                class="o_grid_total_bar"
+                t-att-style="'height:' + props.cellHeight + '%;'">
+                <span t-if="props.cellHeight"
+                    class="o_grid_total_title position-absolute px-1"
+                    t-esc="_format(props.cellValue)"/>
+            </div>
+            <div t-else="" t-esc="_format(props.cellValue)"/>
+        </t>
         <t t-else="">
             <button
                 class="o_grid_float_toggle btn btn-default d-inline-block w-100 text-right pr-0"
@@ -308,7 +334,7 @@
                 <t t-esc="_format(state.value)"/>
             </button>
         </t>
-	</div>
+	</t>
 
     <t t-name="grid.GridArrows">
         <div>

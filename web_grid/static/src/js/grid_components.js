@@ -109,17 +109,24 @@ odoo.define('web_grid.components', function (require) {
         }
     }
     BaseGridComponent.defaultProps = {
+        cellHeight: 0,
         cellValue: 0,
+        hasBarChartTotal: false,
         readonly: false,
         isTotal: false,
         nodeOptions: {}
     };
     BaseGridComponent.props = {
+        cellHeight: {
+            type: Number,
+            optional: true
+        },
         cellValue: {
             type: Number,
             optional: true
         },
         fieldInfo: Object,
+        hasBarChartTotal: Boolean,
         isInput: Boolean,
         nodeOptions: Object,
         path: {

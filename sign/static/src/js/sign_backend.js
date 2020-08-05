@@ -967,7 +967,8 @@ odoo.define('sign.template', function(require) {
                 var status = {
                     cp_content: {$buttons: self.$buttons},
                 };
-                self.updateControlPanel(status);
+                return self.updateControlPanel(status);
+            }).then(function () {
                 self.initialize_content();
                 self.createTemplateTagsField();
                 if(self.$('iframe').length) {
@@ -1178,16 +1179,15 @@ odoo.define('sign.DocumentBackend', function (require) {
 
                 var init_page = function() {
                     if(self.$el.parents('html').length) {
-                        self.refresh_cp();
-                        framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
-                        var def;
-                        if(!self.documentPage) {
-                            self.documentPage = new (self.get_document_class())(self);
-                            def = self.documentPage.attachTo(self.$el);
-                        } else {
-                            def = self.documentPage.initialize_iframe();
-                        }
-                        def.then(function() {
+                        self.refresh_cp().then(function () {
+                            framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
+                            if (!self.documentPage) {
+                                self.documentPage = new (self.get_document_class())(self);
+                                return self.documentPage.attachTo(self.$el);
+                            } else {
+                                return self.documentPage.initialize_iframe();
+                            }
+                        }).then(function () {
                             framework.unblockUI();
                         });
                     }
@@ -1202,7 +1202,7 @@ odoo.define('sign.DocumentBackend', function (require) {
         },
 
         refresh_cp: function () {
-            this.updateControlPanel({
+            return this.updateControlPanel({
                 cp_content: this.cp_content,
             });
         },

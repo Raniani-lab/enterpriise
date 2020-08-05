@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, fields
-
+from odoo.osv import expression
 
 class SlotPlanningSelectSend(models.TransientModel):
     _name = 'slot.planning.select.send'
@@ -13,11 +13,12 @@ class SlotPlanningSelectSend(models.TransientModel):
         res = super().default_get(default_fields)
         if 'employee_ids' in default_fields and res.get('slot_id') and 'employee_ids' not in res:
             slot = self.env['planning.slot'].browse(res['slot_id'])
-            if slot and slot.role_id:
-                res['employee_ids'] = self.env['hr.employee'].sudo().search([
-                    '|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', slot.role_id.id),
-                    ('company_id', '=', slot.company_id), ('work_email', '!=', False),
-                ]).ids
+            if slot:
+                domain = [('company_id', '=', slot.company_id.id), ('work_email', '!=', False)]
+                if slot.role_id:
+                    domain = expression.AND([domain,
+                        ['|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', slot.role_id.id)]])
+                res['employee_ids'] = self.env['hr.employee'].sudo().search(domain).ids
         return res
 
     slot_id = fields.Many2one('planning.slot', "Shifts", required=True, readonly=True)

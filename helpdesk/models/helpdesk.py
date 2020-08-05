@@ -134,8 +134,9 @@ class HelpdeskTeam(models.Model):
 
     @api.constrains('assign_method', 'member_ids', 'visibility_member_ids')
     def _check_member_assignation(self):
-        if not self.member_ids and not self.visibility_member_ids and self.assign_method != 'manual':
-            raise ValidationError(_("You must have team members assigned to change the assignment method."))
+        for team in self:
+            if not team.member_ids and not team.visibility_member_ids and team.assign_method != 'manual':
+                raise ValidationError(_("You must assign members to team %s before changing the assignment method.", team.display_name))
 
     # ------------------------------------------------------------
     # ORM overrides

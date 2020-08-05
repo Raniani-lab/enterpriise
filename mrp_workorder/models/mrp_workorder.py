@@ -6,7 +6,7 @@ import ast
 from odoo import api, fields, models, _
 from odoo.osv import expression
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_round
+from odoo.tools import float_compare, float_round, float_is_zero
 
 
 class MrpWorkcenter(models.Model):
@@ -722,3 +722,8 @@ class MrpProductionWorkcenterLine(models.Model):
         res = super()._action_confirm()
         self.filtered(lambda wo: not wo.check_ids)._create_checks()
         return res
+
+    def _update_qty_producing(self, quantity):
+        if float_is_zero(quantity, precision_rounding=self.product_uom_id.rounding):
+            self.check_ids.unlink()
+        super()._update_qty_producing(quantity)

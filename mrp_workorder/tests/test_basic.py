@@ -1232,6 +1232,9 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         production_table_form.product_uom_id = dining_table.uom_id
         production_table = production_table_form.save()
         production_table.action_confirm()
+        mo_form = Form(production_table)
+        mo_form.qty_producing = 1
+        production_table = mo_form.save()
 
         # Create work order
         production_table.button_plan()

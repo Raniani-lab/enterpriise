@@ -325,7 +325,9 @@ odoo.define('sign.template', function(require) {
     var EditablePDFIframe = PDFIframe.extend({
         init: function() {
             this._super.apply(this, arguments);
-
+            if (this.editMode) {
+                document.body.classList.add('o_block_scroll');
+            }
             this.customPopovers = {};
             this.events = _.extend(this.events || {}, {
                 'itemChange .o_sign_sign_item': function (e) {
@@ -361,6 +363,13 @@ odoo.define('sign.template', function(require) {
                     this.$iframe.trigger('templateChange');
                 },
             });
+        },
+
+        destroy: function() {
+            this._super(...arguments);
+            if (this.editMode) {
+                document.body.classList.remove('o_block_scroll');
+            }
         },
 
         doPDFPostLoad: function() {

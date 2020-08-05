@@ -38,7 +38,7 @@
                                     </a>
                                     <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
                                         <t t-if="widget.editable" groups="base.group_no_one"><a role="menuitem" type="edit" class="dropdown-item">Properties</a></t>
-                                        <a role="menuitem" type="object" name="go_to_custom_template" class="dropdown-item" context="{'sign_edit_call': 'sign_template_edit'}">Modify Template</a>
+                                        <a role="menuitem" type="object" name="go_to_custom_template" class="d-none d-md-block dropdown-item" context="{'sign_edit_call': 'sign_template_edit'}">Modify Template</a>
                                         <a role="menuitem" type="object" name="open_requests" class="dropdown-item">Signed Documents</a>
                                         <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                             <t t-if="!record.active.raw_value">Restore</t>

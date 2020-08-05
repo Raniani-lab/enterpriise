@@ -21,13 +21,13 @@ class MassMailing(models.Model):
             if self.env.context.get('default_marketing_activity_id'):
                 activity = self.env['marketing.activity'].browse(self.env.context['default_marketing_activity_id'])
                 vals = {
-                    'mass_mailing_id': self.id,
+                    'mass_mailing_id': mass_mailing.id,
                     'campaign_id': activity.campaign_id.utm_campaign_id.id,
                     'source_id': activity.utm_source_id.id,
-                    'medium_id': self.medium_id.id,
+                    'medium_id': mass_mailing.medium_id.id,
                 }
-                res[mass_mailing.id] = self.env['link.tracker'].convert_links(
-                    self.body_html or '',
+                res[mass_mailing.id] = mass_mailing._shorten_links(
+                    mass_mailing.body_html or '',
                     vals,
                     blacklist=['/unsubscribe_from_list']
                 )

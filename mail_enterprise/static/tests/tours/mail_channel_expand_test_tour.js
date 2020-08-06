@@ -11,8 +11,7 @@ const tour = require('web_tour.tour');
  */
 tour.register('mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js', {
     test: true,
-    url: "/web",
-}, [ {
+}, [{
     content: "Click on chat window header expand button to open channel in Discuss",
     trigger: '.o_ChatWindow:has(.o_ChatWindowHeader_name:contains("test-mail-channel-expand-tour")) .o_ChatWindowHeader_commandExpand',
 }, {

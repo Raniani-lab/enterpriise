@@ -11,7 +11,8 @@ class AccountGenericTaxReport(models.AbstractModel):
         parent_condition = super()._get_grids_refund_sql_condition()
         return """(%s)
                   OR (
-                    EXISTS(SELECT id FROM pos_session WHERE pos_session.move_id = account_move.id)
+                    (EXISTS(SELECT id FROM pos_session WHERE pos_session.move_id = account_move.id)
+                    OR EXISTS(SELECT id FROM pos_order WHERE pos_order.account_move = account_move.id))
                     AND account_move.move_type = 'entry'
                     AND debit > 0)
         """ % parent_condition

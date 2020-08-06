@@ -34,5 +34,5 @@ class TestPlanningForm(TestCommonPlanning):
       )
       with Form(self.env['planning.slot'].with_user(user).with_context(context)) as slot:
         # until we find a proper way to do it:
-        self.assertEqual(slot.start_datetime, str(start), "It should not have been adjusted to the employee's calendar")
-        self.assertEqual(slot.end_datetime, str(end), "It should not have been adjusted to the employee's calendar")
+        self.assertEqual(slot.start_datetime, start, "It should not have been adjusted to the employee's calendar")
+        self.assertEqual(slot.end_datetime, end, "It should not have been adjusted to the employee's calendar")

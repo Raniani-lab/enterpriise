@@ -76,8 +76,7 @@ class TestHR(common.TransactionCase):
 
     def create_leave(self, user, leave_type, start, end, employee=None):
         employee = employee or user.employee_id
-        leave_form = Form(self.env['hr.leave'].with_user(user))
-        leave_form.employee_id = employee
+        leave_form = Form(self.env['hr.leave'].with_context(default_employee_id=employee.id).with_user(user))
         leave_form.holiday_status_id = leave_type
         leave_form.date_from = start
         leave_form.date_to = end

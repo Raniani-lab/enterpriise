@@ -38,7 +38,7 @@
                 </div>
                 <div class="col o_gantt_header_slots">
                     <div class="row no-gutters">
-                        <div class="col text-center p-2">
+                        <div class="col text-center p-2 font-weight-bold">
                             <t t-esc="widget._getFocusDateFormat()"/>
                         </div>
                     </div>

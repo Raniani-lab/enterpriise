@@ -52,10 +52,13 @@
                     date_start="start_datetime"
                     date_stop="stop_datetime"
                     default_group_by="employee_id"
+                    thumbnails="{'employee_id': 'image_128'}"
+                    decoration-info="state in ['confirm', 'validate1']"
                     color="employee_id"
                     display_unavailability="True"
                     sample="1">
                     <field name="name"/>
+                    <field name="state" invisible="1"/>
 
                 <templates>
                     <div t-name="gantt-popover" class="container-fluid p-0">
@@ -84,19 +87,10 @@
         <!-- Add gantt view mode to the hr.holidays dashboard -->
         <record id="hr_holidays.action_hr_holidays_dashboard" model="ir.actions.act_window">
             <field name="view_mode">gantt,calendar</field>
-            <field name="context">{}</field>
-        </record>
-
-        <record id="hr_holidays.hr_leave_action_all" model="ir.actions.act_window">
-            <field name="view_mode">tree,kanban,form,gantt,calendar,activity</field>
         </record>
 
         <record id="hr_holidays.hr_leave_action_action_approve_department" model="ir.actions.act_window">
             <field name="view_mode">tree,kanban,gantt,form,calendar,activity</field>
         </record>
-        <record id="hr_holidays.hr_leave_action_payroll" model="ir.actions.act_window">
-            <field name="view_mode">tree,kanban,gantt,form,calendar,activity</field>
-        </record>
-
     </data>
 </odoo>

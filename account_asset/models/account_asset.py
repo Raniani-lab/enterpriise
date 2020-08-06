@@ -125,6 +125,12 @@ class AccountAsset(models.Model):
         for record in self:
             record.acquisition_date = record.acquisition_date or min(record.original_move_line_ids.mapped('date') + [record.prorata_date or record.first_depreciation_date or fields.Date.today()])
 
+    @api.onchange('original_move_line_ids')
+    def _onchange_original_move_line_ids(self):
+        # Force the recompute
+        self.acquisition_date = False
+        self._compute_acquisition_date()
+
     @api.depends('original_move_line_ids')
     def _compute_name(self):
         for record in self:

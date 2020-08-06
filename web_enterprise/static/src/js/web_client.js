@@ -264,13 +264,13 @@ return AbstractWebClient.extend({
         if (display === this.homeMenuManagerDisplayed) {
             return;
         }
-        this.homeMenuManagerDisplayed = display;
-        this.menu.toggle_mode(display, this.action_manager.getCurrentAction() !== null);
-        this.el.classList.toggle('o_home_menu_background', display);
 
         if (display) {
             await this.clear_uncommitted_changes();
             core.bus.trigger('will_show_home_menu');
+
+            // Potential changes have been discarded -> the home menu will be displayed
+            this.homeMenuManagerDisplayed = true;
 
             // Save the current scroll position
             this.scrollPosition = this.getScrollPosition();
@@ -297,6 +297,8 @@ return AbstractWebClient.extend({
             this.trigger_up('webclient_started');
             core.bus.trigger('show_home_menu');
         } else {
+            this.homeMenuManagerDisplayed = false;
+
             // Detach the home_menu
             this.homeMenuManager.unmount();
             core.bus.trigger('will_hide_home_menu');
@@ -309,6 +311,8 @@ return AbstractWebClient.extend({
             this.trigger_up('scrollTo', this.scrollPosition);
             core.bus.trigger('hide_home_menu');
         }
+        this.menu.toggle_mode(display, this.action_manager.getCurrentAction() !== null);
+        this.el.classList.toggle("o_home_menu_background", display);
     },
     _onShowHomeMenu: function () {
         this.toggleHomeMenu(true);

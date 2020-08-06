@@ -152,7 +152,7 @@
         <field name="name">9. Imputación de subvenciones de inmovilizado no financiero y otras</field>
         <field name="code">es_profit_and_loss_line_9</field>
         <field name="parent_id" ref="es_profit_and_loss_line_sum_a"/>
-        <field name="domain" eval="[('account_id.code','=like','746%')]"/>
+        <field name="domain" eval="[('account_id.code','=like','746%'), ('account_id.code','not like','7461%')]"/>
         <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="show_domain">foldable</field>
@@ -231,7 +231,7 @@
         <field name="name">a) Imputación de subvenciones, donaciones y legados de carácter financiero</field>
         <field name="code">es_profit_and_loss_line_13a</field>
         <field name="parent_id" ref="es_profit_and_loss_line_13"/>
-        <field name="domain" eval="[('account_id.code', '=like', '746%')]"/>
+        <field name="domain" eval="[('account_id.code', '=like', '7461%')]"/>
         <field name="formulas">-sum</field>
         <field name="groupby">account_id</field>
         <field name="show_domain">foldable</field>

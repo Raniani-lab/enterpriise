@@ -127,10 +127,18 @@ var ReportEditorAction = AbstractAction.extend({
         var self = this;
         this.env.modelName = this.report.model;
 
+        // TODO: Since 13.0, journal entries are also considered as 'account.move',
+        // therefore must filter result to remove them; otherwise not possible
+        // to print invoices and hard to lookup for them if lot of journal entries.
+        var domain = [];
+        if (self.report.model === 'account.move') {
+            domain = [['type', '!=', 'entry']];
+        }
+
         return this._rpc({
             model: self.report.model,
             method: 'search',
-            args: [[]],
+            args: [domain],
             context: session.user_context,
         }).then(function (result) {
             self.env.ids = result;

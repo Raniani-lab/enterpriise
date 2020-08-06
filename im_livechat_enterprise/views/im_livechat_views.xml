@@ -62,6 +62,11 @@
             <field name="name">Dashboard</field>
             <field name="res_model">im_livechat.report.channel</field>
             <field name="view_mode">dashboard</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No data yet!
+                </p>
+            </field>
         </record>
 
         <record id="im_livechat_report_channel_dashboard_action_dashboard" model="ir.actions.act_window.view">

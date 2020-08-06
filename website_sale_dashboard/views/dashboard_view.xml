@@ -77,6 +77,11 @@
             <field name="context">{
                 'search_default_confirmed': 1,
                 'search_default_filter_date': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No data yet!
+                </p>
+            </field>
         </record>
 
         <record id="website.menu_website_dashboard" model="ir.ui.menu">

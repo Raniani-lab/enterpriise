@@ -198,6 +198,11 @@
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
         <field name="view_mode">graph,pivot,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No data yet!
+            </p>
+        </field>
     </record>
 
     <!-- Participant for mail buttons (sent, ...) action -->

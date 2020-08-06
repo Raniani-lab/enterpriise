@@ -59,7 +59,7 @@ class MXReportAccountCoa(models.AbstractModel):
             ('deprecated', '=', False),
             ('company_id', 'in', self.env.companies.ids),
         ])
-        accounts.extend(accounts.company_id.account_cash_basis_base_account_id.ids)
+        accounts |= accounts.company_id.account_cash_basis_base_account_id
 
         if accounts:
             lines.append({

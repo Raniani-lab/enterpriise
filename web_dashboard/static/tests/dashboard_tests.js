@@ -338,6 +338,31 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
+    QUnit.test("Aggregates are not transmitted to the control panel", async function (assert) {
+        assert.expect(2);
+
+        this.data.test_report.fields.sold.searchable = true;
+        const dashboard = await createView({
+            arch: `
+                <dashboard>
+                    <group>
+                        <aggregate name="sold_aggregate" field="sold"/>
+                    </group>
+                </dashboard>`,
+            data: this.data,
+            model: "test_report",
+            View: DashboardView,
+        });
+
+        await cpHelpers.toggleFilterMenu(dashboard);
+        await cpHelpers.toggleAddCustomFilter(dashboard);
+
+        assert.containsOnce(dashboard, ".o_generator_menu_field > option[value=sold]");
+        assert.containsNone(dashboard, ".o_generator_menu_field > option[value=sold_aggregate]");
+
+        dashboard.destroy();
+    });
+
     QUnit.test('basic rendering of a formula tag inside a group', async function (assert) {
         assert.expect(8);
 

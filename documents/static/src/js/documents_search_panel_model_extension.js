@@ -57,7 +57,7 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
          */
         getSelectedTagIds() {
             const { values } = this.getSections(isTagFilter)[0];
-            return [...values.values()].filter((value) => value.checked);
+            return [...values.values()].filter((value) => value.checked).map((value) => value.id);
         }
 
         /**

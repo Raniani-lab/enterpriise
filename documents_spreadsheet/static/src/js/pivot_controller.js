@@ -13,6 +13,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const _t = core._t;
     const GridModel = spreadsheet.Model;
     const pluginRegistry = spreadsheet.registries.pluginRegistry;
+    const uuidv4 = spreadsheet.helpers.uuidv4;
 
     PivotController.include({
         init() {
@@ -101,7 +102,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 evalContext: { env: this.renderer.env },
             });
             if (!isNewModel) {
-                model.dispatch("CREATE_SHEET", { activate: true });
+                model.dispatch("CREATE_SHEET", { activate: true, id: uuidv4() });
             }
             return model;
         },

@@ -8,6 +8,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
     const { createActionManager, fields, nextTick, dom, createView } = testUtils;
     const pluginRegistry = o_spreadsheet.registries.pluginRegistry;
     const cellMenuRegistry = o_spreadsheet.registries.cellMenuRegistry;
+    const uuidv4 = o_spreadsheet.helpers.uuidv4;
 
     function mockRPCFn (route, args) {
         if (args.method === "search_read" && args.model === "ir.model") {
@@ -376,13 +377,13 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true });
+            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true, id: uuidv4() });
             model.dispatch("SELECT_CELL", { col: 0, row: 0 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getNumberCols(), 5);
-            assert.equal(model.getters.getNumberRows(), 5);
+            assert.equal(model.getters.getNumberCols(model.getters.getActiveSheet()), 5);
+            assert.equal(model.getters.getNumberRows(model.getters.getActiveSheet()), 5);
             assert.equal(model.getters.getCell(1, 2).content, `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
             actionManager.destroy();

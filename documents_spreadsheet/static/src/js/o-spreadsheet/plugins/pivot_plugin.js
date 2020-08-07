@@ -857,7 +857,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _resizeSheet(pivot, anchor) {
             const colLimit = pivot.cache.getTopHeaderCount() + pivot.measures.length + 1;
-            const numberCols = this.getters.getNumberCols();
+            const numberCols = this.getters.getNumberCols(this.getters.getActiveSheet());
             const deltaCol = numberCols - anchor[0];
             if (deltaCol < colLimit) {
                 this.dispatch("ADD_COLUMNS", {
@@ -868,7 +868,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 });
             }
             const rowLimit = pivot.cache.getRowCount() + pivot.cache.getColGroupByLevels() + 2;
-            const numberRows = this.getters.getNumberRows();
+            const numberRows = this.getters.getNumberRows(this.getters.getActiveSheet());
             const deltaRow = numberRows - anchor[1];
             if (deltaRow < rowLimit) {
                 this.dispatch("ADD_ROWS", {

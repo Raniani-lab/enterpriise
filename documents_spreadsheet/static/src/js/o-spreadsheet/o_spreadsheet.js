@@ -690,7 +690,7 @@
             return true;
         }, (arg) => (arg !== null ? cb(strictToBoolean(arg)) : true));
     }
-    function getPredicate(descr) {
+    function getPredicate(descr, isQuery) {
         let operator;
         let operand;
         let subString = descr.substring(0, 2);
@@ -717,6 +717,9 @@
         }
         const result = { operator, operand };
         if (typeof operand === "string") {
+            if (isQuery) {
+                operand += "*";
+            }
             result.regexp = operandToRegExp(operand);
         }
         return result;
@@ -788,13 +791,22 @@
      * function with the parameters "i" and "j".
      *
      * Syntax:
-     * visitMatchingRanges([range1, predicate1, range2, predicate2, ...], cb(i,j))
-     * - range1 (range): The range to check against criterion1.
+     * visitMatchingRanges([range1, predicate1, range2, predicate2, ...], cb(i,j), likeSelection)
+     *
+     * - range1 (range): The range to check against predicate1.
      * - predicate1 (string): The pattern or test to apply to range1.
      * - range2: (range, optional, repeatable) ranges to check.
      * - predicate2 (string, optional, repeatable): Additional pattern or test to apply to range2.
+     *
+     * - cb(i: number, j: number) => void: the callback function.
+     *
+     * - isQuery (boolean) indicates if the comparison with a string should be done as a SQL-like query.
+     * (Ex1 isQuery = true, predicate = "abc", element = "abcde": predicate match the element),
+     * (Ex2 isQuery = false, predicate = "abc", element = "abcde": predicate not match the element).
+     * (Ex3 isQuery = true, predicate = "abc", element = "abc": predicate match the element),
+     * (Ex4 isQuery = false, predicate = "abc", element = "abc": predicate match the element).
      */
-    function visitMatchingRanges(args, cb) {
+    function visitMatchingRanges(args, cb, isQuery = false) {
         const countArg = args.length;
         if (countArg % 2 === 1) {
             throw new Error(_lt(`Function [[FUNCTION_NAME]] expects criteria_range and criterion to be in pairs.`));
@@ -808,7 +820,7 @@
                 throw new Error(_lt(`Function [[FUNCTION_NAME]] expects criteria_range to have the same dimension`));
             }
             const description = toString(args[i + 1]);
-            predicates.push(getPredicate(description));
+            predicates.push(getPredicate(description, isQuery));
         }
         for (let i = 0; i < dimRow; i++) {
             for (let j = 0; j < dimCol; j++) {
@@ -1250,6 +1262,2113 @@
         NOT: NOT,
         OR: OR,
         XOR: XOR
+    });
+
+    // Note: dataY and dataX may not have the same dimension
+    function covariance(dataY, dataX, isSample) {
+        let flatDataY = [];
+        let flatDataX = [];
+        let lenY = 0;
+        let lenX = 0;
+        visitAny(dataY, (y) => {
+            flatDataY.push(y);
+            lenY += 1;
+        });
+        visitAny(dataX, (x) => {
+            flatDataX.push(x);
+            lenX += 1;
+        });
+        if (lenY !== lenX) {
+            throw new Error(_lt(`[[FUNCTION_NAME]] has mismatched argument count ${lenY} vs ${lenX}.`));
+        }
+        let count = 0;
+        let sumY = 0;
+        let sumX = 0;
+        for (let i = 0; i < lenY; i++) {
+            const valueY = flatDataY[i];
+            const valueX = flatDataX[i];
+            if (typeof valueY === "number" && typeof valueX === "number") {
+                count += 1;
+                sumY += valueY;
+                sumX += valueX;
+            }
+        }
+        if (count === 0 || (isSample && count === 1)) {
+            throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
+        }
+        const averageY = sumY / count;
+        const averageX = sumX / count;
+        let acc = 0;
+        for (let i = 0; i < lenY; i++) {
+            const valueY = flatDataY[i];
+            const valueX = flatDataX[i];
+            if (typeof valueY === "number" && typeof valueX === "number") {
+                acc += (valueY - averageY) * (valueX - averageX);
+            }
+        }
+        return acc / (count - (isSample ? 1 : 0));
+    }
+    function variance(args, isSample, textAs0) {
+        let count = 0;
+        let sum = 0;
+        const reduceFuction = textAs0 ? reduceNumbersTextAs0 : reduceNumbers;
+        sum = reduceFuction(args, (acc, a) => {
+            count += 1;
+            return acc + a;
+        }, 0);
+        if (count === 0 || (isSample && count === 1)) {
+            throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
+        }
+        const average = sum / count;
+        return (reduceFuction(args, (acc, a) => acc + Math.pow(a - average, 2), 0) /
+            (count - (isSample ? 1 : 0)));
+    }
+    // -----------------------------------------------------------------------------
+    // AVEDEV
+    // -----------------------------------------------------------------------------
+    const AVEDEV = {
+        description: _lt("Average magnitude of deviations from mean."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            const sum = reduceNumbers(arguments, (acc, a) => {
+                count += 1;
+                return acc + a;
+            }, 0);
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVEDEV caused a divide by zero error.`));
+            }
+            const average = sum / count;
+            return reduceNumbers(arguments, (acc, a) => acc + Math.abs(average - a), 0) / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // AVERAGE
+    // -----------------------------------------------------------------------------
+    const AVERAGE = {
+        description: _lt(`Numerical average value in a dataset, ignoring text.`),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the average value.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            const sum = reduceNumbers(arguments, (acc, a) => {
+                count += 1;
+                return acc + a;
+            }, 0);
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVERAGE caused a divide by zero error.`));
+            }
+            return sum / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // AVERAGE.WEIGHTED
+    // -----------------------------------------------------------------------------
+    const rangeError = _lt(`AVERAGE.WEIGHTED has mismatched range sizes.`);
+    const negativeWeightError = _lt(`AVERAGE.WEIGHTED expects the weight to be positive or equal to 0.`);
+    const AVERAGE_WEIGHTED = {
+        description: _lt(`Weighted average.`),
+        args: args(`
+      values (number, range<number>) ${_lt("Values to average.")}
+      weights (number, range<number>) ${_lt("Weights for each corresponding value.")}
+      additional_values (number, range<number>, optional, repeating) ${_lt("Additional values to average with weights.")}
+    `),
+        // @compatibility: on google sheets, args difinitions are next:
+        // additional_values (number, range<number>, optional, repeating) Additional values to average.
+        // additional_weights (number, range<number>, optional, repeating) Additional weights.
+        returns: ["NUMBER"],
+        compute: function () {
+            let sum = 0;
+            let count = 0;
+            let value;
+            let weight;
+            if (arguments.length % 2 === 1) {
+                throw new Error(_lt(`Wrong number of arguments. Expected an even number of arguments.`));
+            }
+            for (let n = 0; n < arguments.length - 1; n += 2) {
+                value = arguments[n];
+                weight = arguments[n + 1];
+                // if (typeof value != typeof weight) {
+                //   throw new Error(rangeError);
+                // }
+                if (Array.isArray(value)) {
+                    if (!Array.isArray(weight)) {
+                        throw new Error(rangeError);
+                    }
+                    let dimColValue = value.length;
+                    let dimLinValue = value[0].length;
+                    if (dimColValue !== weight.length || dimLinValue != weight[0].length) {
+                        throw new Error(rangeError);
+                    }
+                    for (let i = 0; i < dimColValue; i++) {
+                        for (let j = 0; j < dimLinValue; j++) {
+                            let subValue = value[i][j];
+                            let subWeight = weight[i][j];
+                            let subValueIsNumber = typeof subValue === "number";
+                            let subWeightIsNumber = typeof subWeight === "number";
+                            // typeof subValue or subWeight can be 'number' or 'undefined'
+                            if (subValueIsNumber !== subWeightIsNumber) {
+                                throw new Error(_lt(`AVERAGE.WEIGHTED expects number values.`));
+                            }
+                            if (subWeightIsNumber) {
+                                if (subWeight < 0) {
+                                    throw new Error(negativeWeightError);
+                                }
+                                sum += subValue * subWeight;
+                                count += subWeight;
+                            }
+                        }
+                    }
+                }
+                else {
+                    weight = toNumber(weight);
+                    value = toNumber(value);
+                    if (weight < 0) {
+                        throw new Error(negativeWeightError);
+                    }
+                    sum += value * weight;
+                    count += weight;
+                }
+            }
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVERAGE.WEIGHTED caused a divide by zero error.`));
+            }
+            return sum / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // AVERAGEA
+    // -----------------------------------------------------------------------------
+    const AVERAGEA = {
+        description: _lt(`Numerical average value in a dataset.`),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the average value.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            const sum = reduceNumbersTextAs0(arguments, (acc, a) => {
+                count += 1;
+                return acc + a;
+            }, 0);
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVERAGEA caused a divide by zero error.`));
+            }
+            return sum / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // AVERAGEIF
+    // -----------------------------------------------------------------------------
+    const AVERAGEIF = {
+        description: _lt(`Average of values depending on criteria.`),
+        args: args(`
+      criteria_range (any, range) ${_lt("The range to check against criterion.")}
+      criterion (string) ${_lt("The pattern or test to apply to criteria_range.")}
+      average_range (any, range, optional, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (criteria_range, criterion, average_range = undefined) {
+            if (average_range === undefined) {
+                average_range = criteria_range;
+            }
+            let count = 0;
+            let sum = 0;
+            visitMatchingRanges([criteria_range, criterion], (i, j) => {
+                const value = average_range[i][j];
+                if (typeof value === "number") {
+                    count += 1;
+                    sum += value;
+                }
+            });
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVERAGEIF caused a divide by zero error.`));
+            }
+            return sum / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // AVERAGEIFS
+    // -----------------------------------------------------------------------------
+    const AVERAGEIFS = {
+        description: _lt(`Average of values depending on multiple criteria.`),
+        args: args(`
+      average_range (any, range) ${_lt("The range to average.")}
+      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
+      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
+      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+    `),
+        // @compatibility: on google sheets, args definitions are next:
+        // average_range (any, range) The range to average.
+        // criteria_range1 (any, range) The range to check against criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1.
+        // criteria_range2 (any, range, optional, repeating) Additional ranges to check.
+        // criterion2 (string, optional, repeating) Additional criteria to check.
+        returns: ["NUMBER"],
+        compute: function (average_range, ...args) {
+            let count = 0;
+            let sum = 0;
+            visitMatchingRanges(args, (i, j) => {
+                const value = average_range[i][j];
+                if (typeof value === "number") {
+                    count += 1;
+                    sum += value;
+                }
+            });
+            if (count === 0) {
+                throw new Error(_lt(`Evaluation of function AVERAGEIFS caused a divide by zero error.`));
+            }
+            return sum / count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNT
+    // -----------------------------------------------------------------------------
+    const COUNT = {
+        description: _lt(`The number of numeric values in dataset.`),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range to consider when counting.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when counting.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            for (let n of arguments) {
+                if (Array.isArray(n)) {
+                    for (let i of n) {
+                        for (let j of i) {
+                            if (typeof j === "number") {
+                                count += 1;
+                            }
+                        }
+                    }
+                }
+                else if (typeof n !== "string" || isNumber(n)) {
+                    count += 1;
+                }
+            }
+            return count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTA
+    // -----------------------------------------------------------------------------
+    const COUNTA = {
+        description: _lt(`The number of values in a dataset.`),
+        args: args(`
+    value1 (any, range) ${_lt("The first value or range to consider when counting.")}
+    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider when counting.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return reduceArgs(arguments, (acc, a) => (a !== undefined && a !== null ? acc + 1 : acc), 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COVAR
+    // -----------------------------------------------------------------------------
+    // Note: Unlike the VAR function which corresponds to the variance over a sample (VAR.S),
+    // the COVAR function corresponds to the covariance over an entire population (COVAR.P)
+    const COVAR = {
+        description: _lt(`The covariance of a dataset.`),
+        args: args(`
+    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
+    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (data_y, data_x) {
+            return covariance(data_y, data_x, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COVARIANCE.P
+    // -----------------------------------------------------------------------------
+    const COVARIANCE_P = {
+        description: _lt(`The covariance of a dataset.`),
+        args: args(`
+    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
+    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (data_y, data_x) {
+            return covariance(data_y, data_x, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COVARIANCE.S
+    // -----------------------------------------------------------------------------
+    const COVARIANCE_S = {
+        description: _lt(`The sample covariance of a dataset.`),
+        args: args(`
+    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
+    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (data_y, data_x) {
+            return covariance(data_y, data_x, true);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // LARGE
+    // -----------------------------------------------------------------------------
+    const LARGE = {
+        description: _lt("Nth largest element from a data set."),
+        args: args(`
+      data (any, range) ${_lt("Array or range containing the dataset to consider.")}
+      n (number) ${_lt("The rank from largest to smallest of the element to return.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (data, n) {
+            n = Math.trunc(toNumber(n));
+            let largests = [];
+            let index;
+            let count = 0;
+            visitAny(data, (d) => {
+                if (typeof d === "number") {
+                    index = dichotomicPredecessorSearch(largests, d);
+                    largests.splice(index + 1, 0, d);
+                    count++;
+                    if (count > n) {
+                        largests.shift();
+                        count--;
+                    }
+                }
+            });
+            const result = largests.shift();
+            if (result === undefined) {
+                throw new Error(_lt(`LARGE has no valid input data.`));
+            }
+            if (count < n) {
+                throw new Error(_lt(`Function LARGE parameter 2 value ${n} is out of range.`));
+            }
+            return result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MAX
+    // -----------------------------------------------------------------------------
+    const MAX = {
+        description: _lt("Maximum value in a numeric dataset."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the maximum value.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            const result = reduceNumbers(arguments, (acc, a) => (acc < a ? a : acc), -Infinity);
+            return result === -Infinity ? 0 : result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MAXA
+    // -----------------------------------------------------------------------------
+    const MAXA = {
+        description: _lt("Maximum numeric value in a dataset."),
+        args: args(`
+      value1 (any, range) ${_lt("The first value or range to consider when calculating the maximum value.")}
+      value2 (ant, range, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let maxa = -Infinity;
+            for (let n of arguments) {
+                if (Array.isArray(n)) {
+                    for (let i of n) {
+                        for (let j of i) {
+                            if (j != undefined) {
+                                j = typeof j === "number" ? j : 0;
+                                if (maxa < j) {
+                                    maxa = j;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    n = toNumber(n);
+                    if (maxa < n) {
+                        maxa = n;
+                    }
+                }
+            }
+            return maxa === -Infinity ? 0 : maxa;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MAXIFS
+    // -----------------------------------------------------------------------------
+    const MAXIFS = {
+        description: _lt("Returns the maximum value in a range of cells, filtered by a set of criteria."),
+        args: args(`
+      range (any, range) ${_lt("The range of cells from which the maximum will be determined.")}
+      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
+      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+    `),
+        // @compatibility: on google sheets, args definitions are next:
+        // range (any, range) The range of cells from which the maximum will be determined.
+        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
+        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
+        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
+        returns: ["NUMBER"],
+        compute: function (range, ...args) {
+            let result = -Infinity;
+            visitMatchingRanges(args, (i, j) => {
+                const value = range[i][j];
+                if (typeof value === "number") {
+                    result = result < value ? value : result;
+                }
+            });
+            return result === -Infinity ? 0 : result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MIN
+    // -----------------------------------------------------------------------------
+    const MIN = {
+        description: _lt("Minimum value in a numeric dataset."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the minimum value.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            const result = reduceNumbers(arguments, (acc, a) => (a < acc ? a : acc), Infinity);
+            return result === Infinity ? 0 : result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MINA
+    // -----------------------------------------------------------------------------
+    const MINA = {
+        description: _lt("Minimum numeric value in a dataset."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the minimum value.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let mina = Infinity;
+            for (let n of arguments) {
+                if (Array.isArray(n)) {
+                    for (let i of n) {
+                        for (let j of i) {
+                            if (j != undefined) {
+                                j = typeof j === "number" ? j : 0;
+                                if (j < mina) {
+                                    mina = j;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    n = toNumber(n);
+                    if (n < mina) {
+                        mina = n;
+                    }
+                }
+            }
+            return mina === Infinity ? 0 : mina;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MINIFS
+    // -----------------------------------------------------------------------------
+    const MINIFS = {
+        description: _lt("Returns the minimum value in a range of cells, filtered by a set of criteria."),
+        args: args(`
+      range (any, range) ${_lt("The range of cells from which the minimum will be determined.")}
+      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
+      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+    `),
+        // @compatibility: on google sheets, args definitions are next:
+        // range (any, range) The range of cells from which the minimum will be determined.
+        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
+        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
+        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
+        returns: ["NUMBER"],
+        compute: function (range, ...args) {
+            let result = Infinity;
+            visitMatchingRanges(args, (i, j) => {
+                const value = range[i][j];
+                if (typeof value === "number") {
+                    result = result > value ? value : result;
+                }
+            });
+            return result === Infinity ? 0 : result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SMALL
+    // -----------------------------------------------------------------------------
+    const SMALL = {
+        description: _lt("Nth smallest element in a data set."),
+        args: args(`
+      data (any, range) ${_lt("The array or range containing the dataset to consider.")}
+      n (number) ${_lt("The rank from smallest to largest of the element to return.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (data, n) {
+            n = Math.trunc(toNumber(n));
+            let largests = [];
+            let index;
+            let count = 0;
+            visitAny(data, (d) => {
+                if (typeof d === "number") {
+                    index = dichotomicPredecessorSearch(largests, d);
+                    largests.splice(index + 1, 0, d);
+                    count++;
+                    if (count > n) {
+                        largests.pop();
+                        count--;
+                    }
+                }
+            });
+            const result = largests.pop();
+            if (result === undefined) {
+                throw new Error(_lt(`SMALL has no valid input data.`));
+            }
+            if (count < n) {
+                throw new Error(_lt(`Function SMALL parameter 2 value ${n} is out of range.`));
+            }
+            return result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEV
+    // -----------------------------------------------------------------------------
+    const STDEV = {
+        description: _lt("Standard deviation."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VAR.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEV.P
+    // -----------------------------------------------------------------------------
+    const STDEV_P = {
+        description: _lt("Standard deviation of entire population."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VAR_P.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEV.S
+    // -----------------------------------------------------------------------------
+    const STDEV_S = {
+        description: _lt("Standard deviation."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VAR_S.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEVA
+    // -----------------------------------------------------------------------------
+    const STDEVA = {
+        description: _lt("Standard deviation of sample (text as 0)."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VARA.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEVP
+    // -----------------------------------------------------------------------------
+    const STDEVP = {
+        description: _lt("Standard deviation of entire population."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VARP.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // STDEVPA
+    // -----------------------------------------------------------------------------
+    const STDEVPA = {
+        description: _lt("Standard deviation of entire population (text as 0)."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.sqrt(VARPA.compute(...arguments));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VAR
+    // -----------------------------------------------------------------------------
+    const VAR = {
+        description: _lt("Variance."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, true, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VAR.P
+    // -----------------------------------------------------------------------------
+    const VAR_P = {
+        description: _lt("Variance of entire population."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, false, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VAR.S
+    // -----------------------------------------------------------------------------
+    const VAR_S = {
+        description: _lt("Variance."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, true, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VARA
+    // -----------------------------------------------------------------------------
+    const VARA = {
+        description: _lt("Variance of sample (text as 0)."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, true, true);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VARP
+    // -----------------------------------------------------------------------------
+    const VARP = {
+        description: _lt("Variance of entire population."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, false, false);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // VARPA
+    // -----------------------------------------------------------------------------
+    const VARPA = {
+        description: _lt("Variance of entire population (text as 0)."),
+        args: args(`
+    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
+    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return variance(arguments, false, true);
+        },
+    };
+
+    var statistical = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        AVEDEV: AVEDEV,
+        AVERAGE: AVERAGE,
+        AVERAGE_WEIGHTED: AVERAGE_WEIGHTED,
+        AVERAGEA: AVERAGEA,
+        AVERAGEIF: AVERAGEIF,
+        AVERAGEIFS: AVERAGEIFS,
+        COUNT: COUNT,
+        COUNTA: COUNTA,
+        COVAR: COVAR,
+        COVARIANCE_P: COVARIANCE_P,
+        COVARIANCE_S: COVARIANCE_S,
+        LARGE: LARGE,
+        MAX: MAX,
+        MAXA: MAXA,
+        MAXIFS: MAXIFS,
+        MIN: MIN,
+        MINA: MINA,
+        MINIFS: MINIFS,
+        SMALL: SMALL,
+        STDEV: STDEV,
+        STDEV_P: STDEV_P,
+        STDEV_S: STDEV_S,
+        STDEVA: STDEVA,
+        STDEVP: STDEVP,
+        STDEVPA: STDEVPA,
+        VAR: VAR,
+        VAR_P: VAR_P,
+        VAR_S: VAR_S,
+        VARA: VARA,
+        VARP: VARP,
+        VARPA: VARPA
+    });
+
+    // -----------------------------------------------------------------------------
+    // ACOS
+    // -----------------------------------------------------------------------------
+    const ACOS = {
+        description: _lt("Inverse cosine of a value, in radians."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse cosine. Must be between -1 and 1, inclusive.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (Math.abs(_value) > 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values are between -1 and 1 inclusive.`));
+            }
+            return Math.acos(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ACOSH
+    // -----------------------------------------------------------------------------
+    const ACOSH = {
+        description: _lt("Inverse hyperbolic cosine of a number."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse hyperbolic cosine. Must be greater than or equal to 1.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (_value < 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. It should be greater than or equal to 1.`));
+            }
+            return Math.acosh(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ACOT
+    // -----------------------------------------------------------------------------
+    const ACOT = {
+        description: _lt("Inverse cotangent of a value."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse cotangent.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            const sign = Math.sign(_value) || 1;
+            // ACOT has two possible configurations:
+            // @compatibility Excel: return Math.PI / 2 - Math.atan(toNumber(_value));
+            // @compatibility Google: return sign * Math.PI / 2 - Math.atan(toNumber(_value));
+            return (sign * Math.PI) / 2 - Math.atan(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ACOTH
+    // -----------------------------------------------------------------------------
+    const ACOTH = {
+        description: _lt("Inverse hyperbolic cotangent of a value."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse hyperbolic cotangent. Must not be between -1 and 1, inclusive.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (Math.abs(_value) <= 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values cannot be between -1 and 1 inclusive.`));
+            }
+            return Math.log((_value + 1) / (_value - 1)) / 2;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ASIN
+    // -----------------------------------------------------------------------------
+    const ASIN = {
+        description: _lt("Inverse sine of a value, in radians."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse sine. Must be between -1 and 1, inclusive.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (Math.abs(_value) > 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values are between -1 and 1 inclusive.`));
+            }
+            return Math.asin(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ASINH
+    // -----------------------------------------------------------------------------
+    const ASINH = {
+        description: _lt("Inverse hyperbolic sine of a number."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse hyperbolic sine.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.asinh(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ATAN
+    // -----------------------------------------------------------------------------
+    const ATAN = {
+        description: _lt("Inverse tangent of a value, in radians."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse tangent.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.atan(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ATAN2
+    // -----------------------------------------------------------------------------
+    const ATAN2 = {
+        description: _lt("Angle from the X axis to a point (x,y), in radians."),
+        args: args(`
+    x (number) ${_lt("The x coordinate of the endpoint of the line segment for which to calculate the angle from the x-axis.")}
+    y (number) ${_lt("The y coordinate of the endpoint of the line segment for which to calculate the angle from the x-axis.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (x, y) {
+            const _x = toNumber(x);
+            const _y = toNumber(y);
+            if (_x === 0 && _y === 0) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] caused a divide by zero error.`));
+            }
+            return Math.atan2(_y, _x);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ATANH
+    // -----------------------------------------------------------------------------
+    const ATANH = {
+        description: _lt("Inverse hyperbolic tangent of a number."),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the inverse hyperbolic tangent. Must be between -1 and 1, exclusive.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (Math.abs(_value) >= 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values are between -1 and 1 exclusive.`));
+            }
+            return Math.atanh(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // CEILING
+    // -----------------------------------------------------------------------------
+    const CEILING = {
+        description: _lt(`Rounds number up to nearest multiple of factor.`),
+        args: args(`
+    value (number) ${_lt("The value to round up to the nearest integer multiple of factor.")}
+    factor (number, optional, default=1) ${_lt("The number to whose multiples value will be rounded.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value, factor = 1) {
+            const _value = toNumber(value);
+            const _factor = toNumber(factor);
+            if (_value > 0 && _factor < 0) {
+                throw new Error(_lt(`Function CEILING expects the parameter '${CEILING.args[1].name}' to be positive when parameter '${CEILING.args[0].name}' is positive. Change '${CEILING.args[1].name}' from [${_factor}] to a positive value.`));
+            }
+            return _factor ? Math.ceil(_value / _factor) * _factor : 0;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // CEILING.MATH
+    // -----------------------------------------------------------------------------
+    const CEILING_MATH = {
+        description: _lt(`Rounds number up to nearest multiple of factor.`),
+        args: args(`
+    number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
+    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded. The sign of significance will be ignored.")}
+    mode (number, optional, default=0) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded towards zero. Otherwise, it is rounded away from zero.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (number, significance = 1, mode = 0) {
+            let _significance = toNumber(significance);
+            if (_significance === 0) {
+                return 0;
+            }
+            const _number = toNumber(number);
+            _significance = Math.abs(_significance);
+            if (_number >= 0) {
+                return Math.ceil(_number / _significance) * _significance;
+            }
+            const _mode = toNumber(mode);
+            if (_mode === 0) {
+                return -Math.floor(Math.abs(_number) / _significance) * _significance;
+            }
+            return -Math.ceil(Math.abs(_number) / _significance) * _significance;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // CEILING.PRECISE
+    // -----------------------------------------------------------------------------
+    const CEILING_PRECISE = {
+        description: _lt(`Rounds number up to nearest multiple of factor.`),
+        args: args(`
+    number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
+    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (number, significance) {
+            return CEILING_MATH.compute(number, significance, 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COS
+    // -----------------------------------------------------------------------------
+    const COS = {
+        description: _lt("Cosine of an angle provided in radians."),
+        args: args(`
+    angle (number) ${_lt("The angle to find the cosine of, in radians.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            return Math.cos(toNumber(angle));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COSH
+    // -----------------------------------------------------------------------------
+    const COSH = {
+        description: _lt("Hyperbolic cosine of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic cosine of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.cosh(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COT
+    // -----------------------------------------------------------------------------
+    const COT = {
+        description: _lt("Cotangent of an angle provided in radians."),
+        args: args(`
+    angle (number) ${_lt("The angle to find the cotangent of, in radians.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            const _angle = toNumber(angle);
+            if (_angle === 0) {
+                throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
+            }
+            return 1 / Math.tan(_angle);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COTH
+    // -----------------------------------------------------------------------------
+    const COTH = {
+        description: _lt("Hyperbolic cotangent of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic cotangent of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (_value === 0) {
+                throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
+            }
+            return 1 / Math.tanh(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTBLANK
+    // -----------------------------------------------------------------------------
+    const COUNTBLANK = {
+        description: _lt("Number of empty values."),
+        args: args(`
+    value1 (any, range) ${_lt("The first value or range in which to count the number of blanks.")}
+    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges in which to count the number of blanks.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return reduceArgs(arguments, (acc, a) => (a === null || a === undefined || a === "" ? acc + 1 : acc), 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTIF
+    // -----------------------------------------------------------------------------
+    const COUNTIF = {
+        description: _lt("A conditional count across a range."),
+        args: args(`
+    range (any, range) ${_lt("The range that is tested against criterion.")}
+    criterion (string) ${_lt("The pattern or test to apply to range.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            visitMatchingRanges(arguments, (i, j) => {
+                count += 1;
+            });
+            return count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTIFS
+    // -----------------------------------------------------------------------------
+    const COUNTIFS = {
+        description: _lt("Count values depending on multiple criteria."),
+        args: args(`
+    criteria_range (any, range) ${_lt("The range to check against criterion1.")}
+    criterion (string) ${_lt("The pattern or test to apply to criteria_range1.")}
+    additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+  `),
+        // @compatibility: on google sheets, args definitions are next:
+        // criteria_range1 (any, range) The range to check against criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1.
+        // criteria_range2 (any, range, optional repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
+        // criterion2 (string, optional repeating) Additional criteria to check.
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            visitMatchingRanges(arguments, (i, j) => {
+                count += 1;
+            });
+            return count;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTUNIQUE
+    // -----------------------------------------------------------------------------
+    function isDefined(value) {
+        switch (value) {
+            case undefined:
+                return false;
+            case "":
+                return false;
+            case null:
+                return false;
+            default:
+                return true;
+        }
+    }
+    const COUNTUNIQUE = {
+        description: _lt("Counts number of unique values in a range."),
+        args: args(`
+    value1 (any, range) ${_lt("The first value or range to consider for uniqueness.")}
+    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider for uniqueness.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return reduceArgs(arguments, (acc, a) => (isDefined(a) ? acc.add(a) : acc), new Set()).size;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // COUNTUNIQUEIFS
+    // -----------------------------------------------------------------------------
+    const COUNTUNIQUEIFS = {
+        description: _lt("Counts number of unique values in a range, filtered by a set of criteria."),
+        args: args(`
+    range (any, range) ${_lt("The range of cells from which the number of unique values will be counted.")}
+    criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+    criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
+    additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+  `),
+        // @compatibility: on google sheets, args definitions are next:
+        // range (any, range) The range of cells from which the number of unique values will be counted.
+        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
+        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
+        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
+        returns: ["NUMBER"],
+        compute: function (range, ...args) {
+            let uniqueValues = new Set();
+            visitMatchingRanges(args, (i, j) => {
+                const value = range[i][j];
+                if (isDefined(value)) {
+                    uniqueValues.add(value);
+                }
+            });
+            return uniqueValues.size;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // CSC
+    // -----------------------------------------------------------------------------
+    const CSC = {
+        description: _lt("Cosecant of an angle provided in radians."),
+        args: args(`
+    angle (number) ${_lt("The angle to find the cosecant of, in radians.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            const _angle = toNumber(angle);
+            if (_angle === 0) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] caused a divide by zero error.`));
+            }
+            return 1 / Math.sin(_angle);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // CSCH
+    // -----------------------------------------------------------------------------
+    const CSCH = {
+        description: _lt("Hyperbolic cosecant of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic cosecant of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (_value === 0) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] caused a divide by zero error.`));
+            }
+            return 1 / Math.sinh(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DECIMAL
+    // -----------------------------------------------------------------------------
+    const decimalErrorParameter2 = (parameterName, base, value) => _lt(`Function DECIMAL expects the parameter '${parameterName}' to be a valid base ${base} representation. Change '${parameterName}' from [${value}] to a valid base ${base} representation.`);
+    const DECIMAL = {
+        description: _lt("Converts from another base to decimal."),
+        args: args(`
+    value (string) ${_lt("The number to convert.")},
+    base (number) ${_lt("The base to convert the value from.")},
+  `),
+        returns: ["NUMBER"],
+        compute: function (value, base) {
+            let _base = toNumber(base);
+            _base = Math.floor(_base);
+            if (_base < 2 || _base > 36) {
+                throw new Error(_lt(`Function DECIMAL expects the parameter '${DECIMAL.args[1].name}' to be between 2 and 36 inclusive. Change '${DECIMAL.args[1].name}' from [${_base}] to a value between 2 and 36.`));
+            }
+            const _value = toString(value);
+            if (_value === "") {
+                return 0;
+            }
+            /**
+             * @compatibility: on Google sheets, expects the parameter 'value' to be positive.
+             * Return error if 'value' is positive.
+             * Remove '-?' in the next regex to catch this error.
+             */
+            if (!_value.match(/^-?[a-z0-9]+$/i)) {
+                throw new Error(decimalErrorParameter2(DECIMAL.args[0].name, _base, _value));
+            }
+            const deci = parseInt(_value, _base);
+            if (isNaN(deci)) {
+                throw new Error(decimalErrorParameter2(DECIMAL.args[0].name, _base, _value));
+            }
+            return deci;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DEGREES
+    // -----------------------------------------------------------------------------
+    const DEGREES = {
+        description: _lt(`Converts an angle value in radians to degrees.`),
+        args: args(`
+    angle (number)  ${_lt("The angle to convert from radians to degrees.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            return (toNumber(angle) * 180) / Math.PI;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // EXP
+    // -----------------------------------------------------------------------------
+    const EXP = {
+        description: _lt(`Euler's number, e (~2.718) raised to a power.`),
+        args: args(`
+    value (number) ${_lt("The exponent to raise e.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.exp(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // FLOOR
+    // -----------------------------------------------------------------------------
+    const FLOOR = {
+        description: _lt(`Rounds number down to nearest multiple of factor.`),
+        args: args(`
+    value (number) ${_lt("The value to round down to the nearest integer multiple of factor.")}
+    factor (number, optional, default=1) ${_lt("The number to whose multiples value will be rounded.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value, factor = 1) {
+            const _value = toNumber(value);
+            const _factor = toNumber(factor);
+            if (_value > 0 && _factor < 0) {
+                throw new Error(_lt(`Function FLOOR expects the parameter '${FLOOR.args[1].name}' to be positive when parameter '${FLOOR.args[0].name}' is positive. Change '${FLOOR.args[1].name}' from [${_factor}] to a positive value.`));
+            }
+            return _factor ? Math.floor(_value / _factor) * _factor : 0;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // FLOOR.MATH
+    // -----------------------------------------------------------------------------
+    const FLOOR_MATH = {
+        description: _lt(`Rounds number down to nearest multiple of factor.`),
+        args: args(`
+    number (number) ${_lt("The value to round down to the nearest integer multiple of significance.")}
+    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded. The sign of significance will be ignored.")}
+    mode (number, optional, default=0) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded away from zero. Otherwise, it is rounded towards zero.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (number, significance = 1, mode = 0) {
+            let _significance = toNumber(significance);
+            if (_significance === 0) {
+                return 0;
+            }
+            const _number = toNumber(number);
+            _significance = Math.abs(_significance);
+            if (_number >= 0) {
+                return Math.floor(_number / _significance) * _significance;
+            }
+            const _mode = toNumber(mode);
+            if (_mode === 0) {
+                return -Math.ceil(Math.abs(_number) / _significance) * _significance;
+            }
+            return -Math.floor(Math.abs(_number) / _significance) * _significance;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // FLOOR.PRECISE
+    // -----------------------------------------------------------------------------
+    const FLOOR_PRECISE = {
+        description: _lt(`Rounds number down to nearest multiple of factor.`),
+        args: args(`
+    number (number) ${_lt("The value to round down to the nearest integer multiple of significance.")}
+    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (number, significance = 1) {
+            return FLOOR_MATH.compute(number, significance, 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ISEVEN
+    // -----------------------------------------------------------------------------
+    const ISEVEN = {
+        description: _lt(`Whether the provided value is even.`),
+        args: args(`
+    value (number) ${_lt("The value to be verified as even.")}
+  `),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            const _value = strictToNumber(value);
+            return Math.floor(Math.abs(_value)) & 1 ? false : true;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ISO.CEILING
+    // -----------------------------------------------------------------------------
+    const ISO_CEILING = {
+        description: _lt(`Rounds number up to nearest multiple of factor.`),
+        args: args(`
+      number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
+      significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (number, significance) {
+            return CEILING_MATH.compute(number, significance, 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ISODD
+    // -----------------------------------------------------------------------------
+    const ISODD = {
+        description: _lt(`Whether the provided value is even.`),
+        args: args(`
+    value (number) ${_lt("The value to be verified as even.")}
+  `),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            const _value = strictToNumber(value);
+            return Math.floor(Math.abs(_value)) & 1 ? true : false;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // LN
+    // -----------------------------------------------------------------------------
+    const LN = {
+        description: _lt(`The logarithm of a number, base e (euler's number).`),
+        args: args(`
+    value (number) ${_lt("The value for which to calculate the logarithm, base e.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (_value <= 0) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. It should be greater than 0.`));
+            }
+            return Math.log(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // MOD
+    // -----------------------------------------------------------------------------
+    const MOD = {
+        description: _lt(`Modulo (remainder) operator.`),
+        args: args(`
+      dividend (number) ${_lt("The number to be divided to find the remainder.")}
+      divisor (number) ${_lt("The number to divide by.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (dividend, divisor) {
+            const _divisor = toNumber(divisor);
+            if (_divisor === 0) {
+                throw new Error(_lt(`Function MOD expects the parameter '${MOD.args[1].name}' to be different from 0. Change '${MOD.args[1].name}' to a value other than 0.`));
+            }
+            const _dividend = toNumber(dividend);
+            const modulus = _dividend % _divisor;
+            // -42 % 10 = -2 but we want 8, so need the code below
+            if ((modulus > 0 && _divisor < 0) || (modulus < 0 && _divisor > 0)) {
+                return modulus + _divisor;
+            }
+            return modulus;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ODD
+    // -----------------------------------------------------------------------------
+    const ODD = {
+        description: _lt(`Rounds a number up to the nearest odd integer.`),
+        args: args(`
+      value (number) ${_lt("The value to round to the next greatest odd number.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            let temp = Math.ceil(Math.abs(_value));
+            temp = temp & 1 ? temp : temp + 1;
+            return _value < 0 ? -temp : temp;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // PI
+    // -----------------------------------------------------------------------------
+    const PI = {
+        description: _lt(`The number pi.`),
+        args: [],
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.PI;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // POWER
+    // -----------------------------------------------------------------------------
+    const POWER = {
+        description: _lt(`A number raised to a power.`),
+        args: args(`
+      base (number) ${_lt("The number to raise to the exponent power.")}
+      exponent (number) ${_lt("The exponent to raise base to.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (base, exponent) {
+            const _base = toNumber(base);
+            const _exponent = toNumber(exponent);
+            if (_base >= 0) {
+                return Math.pow(_base, _exponent);
+            }
+            if (!Number.isInteger(_exponent)) {
+                throw new Error(_lt(`Function POWER expects the parameter '${POWER.args[1].name}' to be an integer when parameter '${POWER.args[0].name}' is negative. Change '${POWER.args[1].name}' from [${_exponent}] to an integer value.`));
+            }
+            return Math.pow(_base, _exponent);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // PRODUCT
+    // -----------------------------------------------------------------------------
+    const PRODUCT = {
+        description: _lt("Result of multiplying a series of numbers together."),
+        args: args(`
+      factor1 (number, range<number>) ${_lt("The first number or range to calculate for the product.")}
+      factor2 (number, range<number>, optional, repeating) ${_lt("More numbers or ranges to calculate for the product.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            let count = 0;
+            let acc = 1;
+            for (let n of arguments) {
+                if (Array.isArray(n)) {
+                    for (let i of n) {
+                        for (let j of i) {
+                            if (typeof j === "number") {
+                                acc *= j;
+                                count += 1;
+                            }
+                        }
+                    }
+                }
+                else if (n !== null) {
+                    acc *= strictToNumber(n);
+                    count += 1;
+                }
+            }
+            if (count === 0) {
+                return 0;
+            }
+            return acc;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // RAND
+    // -----------------------------------------------------------------------------
+    const RAND = {
+        description: _lt("A random number between 0 inclusive and 1 exclusive."),
+        args: [],
+        returns: ["NUMBER"],
+        compute: function () {
+            return Math.random();
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // RANDBETWEEN
+    // -----------------------------------------------------------------------------
+    const RANDBETWEEN = {
+        description: _lt("Random integer between two values, inclusive."),
+        args: args(`
+      low (number) ${_lt("The low end of the random range.")}
+      high (number) ${_lt("The high end of the random range.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (low, high) {
+            let _low = toNumber(low);
+            if (!Number.isInteger(_low)) {
+                _low = Math.ceil(_low);
+            }
+            let _high = toNumber(high);
+            if (!Number.isInteger(_high)) {
+                _high = Math.floor(_high);
+            }
+            if (_high < _low) {
+                throw new Error(_lt(`Function RANDBETWEEN parameter '${RANDBETWEEN.args[1].name}' value is ${_high}. It should be greater than or equal to [${_low}].`));
+            }
+            return _low + Math.ceil((_high - _low + 1) * Math.random()) - 1;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ROUND
+    // -----------------------------------------------------------------------------
+    const ROUND = {
+        description: _lt("Rounds a number according to standard rules."),
+        args: args(`
+      value (number) ${_lt("The value to round to places number of places.")}
+      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value, places = 0) {
+            const _value = toNumber(value);
+            let _places = toNumber(places);
+            const absValue = Math.abs(_value);
+            let tempResult;
+            if (_places === 0) {
+                tempResult = Math.round(absValue);
+            }
+            else {
+                if (!Number.isInteger(_places)) {
+                    _places = Math.trunc(_places);
+                }
+                tempResult = Math.round(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
+            }
+            return _value >= 0 ? tempResult : -tempResult;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ROUNDDOWN
+    // -----------------------------------------------------------------------------
+    const ROUNDDOWN = {
+        description: _lt(`Rounds down a number.`),
+        args: args(`
+      value (number) ${_lt("The value to round to places number of places, always rounding down.")}
+      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value, places = 0) {
+            const _value = toNumber(value);
+            let _places = toNumber(places);
+            const absValue = Math.abs(_value);
+            let tempResult;
+            if (_places === 0) {
+                tempResult = Math.floor(absValue);
+            }
+            else {
+                if (!Number.isInteger(_places)) {
+                    _places = Math.trunc(_places);
+                }
+                tempResult = Math.floor(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
+            }
+            return _value >= 0 ? tempResult : -tempResult;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // ROUNDUP
+    // -----------------------------------------------------------------------------
+    const ROUNDUP = {
+        description: _lt(`Rounds up a number.`),
+        args: args(`
+      value (number) ${_lt("The value to round to places number of places, always rounding up.")}
+      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value, places) {
+            const _value = toNumber(value);
+            let _places = toNumber(places);
+            const absValue = Math.abs(_value);
+            let tempResult;
+            if (_places === 0) {
+                tempResult = Math.ceil(absValue);
+            }
+            else {
+                if (!Number.isInteger(_places)) {
+                    _places = Math.trunc(_places);
+                }
+                tempResult = Math.ceil(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
+            }
+            return _value >= 0 ? tempResult : -tempResult;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SEC
+    // -----------------------------------------------------------------------------
+    const SEC = {
+        description: _lt("Secant of an angle provided in radians."),
+        args: args(`
+    angle (number) ${_lt("The angle to find the secant of, in radians.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            return 1 / Math.cos(toNumber(angle));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SECH
+    // -----------------------------------------------------------------------------
+    const SECH = {
+        description: _lt("Hyperbolic secant of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic secant of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return 1 / Math.cosh(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SIN
+    // -----------------------------------------------------------------------------
+    const SIN = {
+        description: _lt("Sine of an angle provided in radians."),
+        args: args(`
+      angle (number) ${_lt("The angle to find the sine of, in radians.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            return Math.sin(toNumber(angle));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SINH
+    // -----------------------------------------------------------------------------
+    const SINH = {
+        description: _lt("Hyperbolic sine of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic sine of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.sinh(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SQRT
+    // -----------------------------------------------------------------------------
+    const SQRT = {
+        description: _lt("Positive square root of a positive number."),
+        args: args(`
+      value (number) ${_lt("The number for which to calculate the positive square root.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            const _value = toNumber(value);
+            if (_value < 0) {
+                throw new Error(_lt(`Function SQRT parameter '${SQRT.args[0].name}' value is negative. It should be positive or zero. Change '${SQRT.args[0].name}' from [${_value}] to a positive value.`));
+            }
+            return Math.sqrt(_value);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SUM
+    // -----------------------------------------------------------------------------
+    const SUM = {
+        description: _lt("Sum of a series of numbers and/or cells."),
+        args: args(`
+      value1 (number, range<number>) ${_lt("The first number or range to add together.")}
+      value2 (number, range<number>, optional, repeating) ${_lt("Additional numbers or ranges to add to value1.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function () {
+            return reduceNumbers(arguments, (acc, a) => acc + a, 0);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SUMIF
+    // -----------------------------------------------------------------------------
+    const SUMIF = {
+        description: _lt("A conditional sum across a range."),
+        args: args(`
+      criteria_range (any, range) ${_lt("The range which is tested against criterion.")}
+      criterion (string) ${_lt("The pattern or test to apply to range.")}
+      sum_range (any, range, optional, default=criteria_range) ${_lt("The range to be summed, if different from range.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (criteria_range, criterion, sum_range = undefined) {
+            if (sum_range === undefined) {
+                sum_range = criteria_range;
+            }
+            let sum = 0;
+            visitMatchingRanges([criteria_range, criterion], (i, j) => {
+                const value = sum_range[i][j];
+                if (typeof value === "number") {
+                    sum += value;
+                }
+            });
+            return sum;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // SUMIFS
+    // -----------------------------------------------------------------------------
+    const SUMIFS = {
+        description: _lt("Sums a range depending on multiple criteria."),
+        args: args(`
+      sum_range (any, range) ${_lt("The range to sum.")}
+      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
+      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
+      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+    `),
+        // @compatibility: on google sheets, args definitions are next:
+        // sum_range (any, range) The range to sum.
+        // criteria_range1 (any, range) The range to check against criterion1.
+        // criterion1 (string) The pattern or test to apply to criteria_range1.
+        // criteria_range2 (any, range, optional, repeating) Additional ranges to check.
+        // criterion2 (string, optional, repeating) Additional criteria to check.
+        returns: ["NUMBER"],
+        compute: function (sum_range, ...args) {
+            let sum = 0;
+            visitMatchingRanges(args, (i, j) => {
+                const value = sum_range[i][j];
+                if (typeof value === "number") {
+                    sum += value;
+                }
+            });
+            return sum;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // TAN
+    // -----------------------------------------------------------------------------
+    const TAN = {
+        description: _lt("Tangent of an angle provided in radians."),
+        args: args(`
+    angle (number) ${_lt("The angle to find the tangent of, in radians.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (angle) {
+            return Math.tan(toNumber(angle));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // TANH
+    // -----------------------------------------------------------------------------
+    const TANH = {
+        description: _lt("Hyperbolic tangent of any real number."),
+        args: args(`
+    value (number) ${_lt("Any real value to calculate the hyperbolic tangent of.")}
+  `),
+        returns: ["NUMBER"],
+        compute: function (value) {
+            return Math.tanh(toNumber(value));
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // TRUNC
+    // -----------------------------------------------------------------------------
+    const TRUNC = {
+        description: _lt("Truncates a number."),
+        args: args(`
+      value (number) ${_lt("The value to be truncated.")}
+      places (number, optional, default=0) ${_lt("The number of significant digits to the right of the decimal point to retain.")}
+    `),
+        returns: ["NUMBER"],
+        compute: function (value, places = 0) {
+            const _value = toNumber(value);
+            let _places = toNumber(places);
+            if (_places === 0) {
+                return Math.trunc(_value);
+            }
+            if (!Number.isInteger(_places)) {
+                _places = Math.trunc(_places);
+            }
+            return Math.trunc(_value * Math.pow(10, _places)) / Math.pow(10, _places);
+        },
+    };
+
+    var math = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        ACOS: ACOS,
+        ACOSH: ACOSH,
+        ACOT: ACOT,
+        ACOTH: ACOTH,
+        ASIN: ASIN,
+        ASINH: ASINH,
+        ATAN: ATAN,
+        ATAN2: ATAN2,
+        ATANH: ATANH,
+        CEILING: CEILING,
+        CEILING_MATH: CEILING_MATH,
+        CEILING_PRECISE: CEILING_PRECISE,
+        COS: COS,
+        COSH: COSH,
+        COT: COT,
+        COTH: COTH,
+        COUNTBLANK: COUNTBLANK,
+        COUNTIF: COUNTIF,
+        COUNTIFS: COUNTIFS,
+        COUNTUNIQUE: COUNTUNIQUE,
+        COUNTUNIQUEIFS: COUNTUNIQUEIFS,
+        CSC: CSC,
+        CSCH: CSCH,
+        DECIMAL: DECIMAL,
+        DEGREES: DEGREES,
+        EXP: EXP,
+        FLOOR: FLOOR,
+        FLOOR_MATH: FLOOR_MATH,
+        FLOOR_PRECISE: FLOOR_PRECISE,
+        ISEVEN: ISEVEN,
+        ISO_CEILING: ISO_CEILING,
+        ISODD: ISODD,
+        LN: LN,
+        MOD: MOD,
+        ODD: ODD,
+        PI: PI,
+        POWER: POWER,
+        PRODUCT: PRODUCT,
+        RAND: RAND,
+        RANDBETWEEN: RANDBETWEEN,
+        ROUND: ROUND,
+        ROUNDDOWN: ROUNDDOWN,
+        ROUNDUP: ROUNDUP,
+        SEC: SEC,
+        SECH: SECH,
+        SIN: SIN,
+        SINH: SINH,
+        SQRT: SQRT,
+        SUM: SUM,
+        SUMIF: SUMIF,
+        SUMIFS: SUMIFS,
+        TAN: TAN,
+        TANH: TANH,
+        TRUNC: TRUNC
+    });
+
+    function getMatchingCells(database, field, criteria) {
+        // Exemple :
+        //
+        // # DATABASE             # CRITERIA          # field = "C"
+        //
+        // | A | B | C |          | A | C |
+        // |===========|          |=======|
+        // | 1 | x | j |          |<2 | j |
+        // | 1 | Z | k |          |   | 7 |
+        // | 5 | y | 7 |
+        // 1 - Select coordinates of database columns
+        const indexColNameDB = new Map();
+        const dimRowDB = database.length;
+        for (let indexCol = dimRowDB - 1; indexCol >= 0; indexCol--) {
+            indexColNameDB.set(toString(database[indexCol][0]).toUpperCase(), indexCol);
+        } // Ex: indexColNameDB = {A => 0, B => 1, C => 2}
+        // 2 - Check if the field parameter exists in the column names of the database
+        const typeofField = typeof field;
+        let index;
+        if (typeofField === "number") {
+            // field may either be a text label corresponding to a column header in the
+            // first row of database or a numeric index indicating which column to consider,
+            // where the first column has the value 1.
+            index = Math.trunc(field) - 1;
+            if (index < 0 || index > dimRowDB - 1) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 2 value is ${field}. Valid values are between 1 and ${dimRowDB} inclusive.`));
+            }
+        }
+        else {
+            const colName = typeofField === "string" ? field.toUpperCase() : field;
+            index = indexColNameDB.get(colName);
+            if (index === undefined) {
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one of: ${[
+                ...indexColNameDB.keys(),
+            ]
+                .map((v) => "'" + v + "'")
+                .join(", ")}.`));
+            }
+        } // Ex: index = 2
+        // 3 - For each criteria row, find database row that correspond
+        const dimColCriteria = criteria[0].length;
+        if (dimColCriteria < 2) {
+            throw new Error(_lt(`[[FUNCTION_NAME]] criteria range must be at least 2 rows.`));
+        }
+        let matchingRows = new Set();
+        const dimColDB = database[0].length;
+        for (let indexRow = 1; indexRow < dimColCriteria; indexRow++) {
+            let args = [];
+            let existColNameDB = true;
+            for (let indexCol = 0; indexCol < criteria.length; indexCol++) {
+                const curentName = toString(criteria[indexCol][0]).toUpperCase();
+                const indexColDB = indexColNameDB.get(curentName);
+                const criter = criteria[indexCol][indexRow];
+                if (criter !== undefined) {
+                    if (indexColDB !== undefined) {
+                        args.push([database[indexColDB].slice(1, dimColDB)]);
+                        args.push(criter);
+                    }
+                    else {
+                        existColNameDB = false;
+                        break;
+                    }
+                }
+            }
+            // Ex: args1 = [[1,1,5], "<2", ["j","k",7], "j"]
+            // Ex: args2 = [["j","k",7], "7"]
+            if (existColNameDB) {
+                if (args.length > 0) {
+                    visitMatchingRanges(args, (i, j) => {
+                        matchingRows.add(j);
+                    }, true);
+                }
+                else {
+                    // return indices of each database row when a criteria table row is void
+                    matchingRows = new Set(Array(dimColDB - 1).keys());
+                    break;
+                }
+            }
+        } // Ex: matchingRows = {0, 2}
+        // 4 - return for each database row corresponding, the cells corresponding to
+        // the field parameter
+        const fieldCol = database[index];
+        // Ex: fieldCol = ["C", "j", "k", 7]
+        const matchingCells = [...matchingRows].map((x) => fieldCol[x + 1]);
+        // Ex: matchingCells = ["j", 7]
+        return matchingCells;
+    }
+    const databaseArgs = args(`
+  database (array) ${_lt("The array or range containing the data to consider, structured in such a way that the first row contains the labels for each column's values.")}
+  field (any) ${_lt("Indicates which column in database contains the values to be extracted and operated on.")}
+  criteria (array) ${_lt("An array or range containing zero or more criteria to filter the database values by before operating.")}
+`);
+    // -----------------------------------------------------------------------------
+    // DAVERAGE
+    // -----------------------------------------------------------------------------
+    const DAVERAGE = {
+        description: _lt("Average of a set of values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return AVERAGE.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DCOUNT
+    // -----------------------------------------------------------------------------
+    const DCOUNT = {
+        description: _lt("Counts values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return COUNT.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DCOUNTA
+    // -----------------------------------------------------------------------------
+    const DCOUNTA = {
+        description: _lt("Counts values and text from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return COUNTA.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DGET
+    // -----------------------------------------------------------------------------
+    const DGET = {
+        description: _lt("Single value from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            if (cells.length > 1) {
+                throw new Error(_lt(`More than one match found in DGET evaluation.`));
+            }
+            return cells[0];
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DMAX
+    // -----------------------------------------------------------------------------
+    const DMAX = {
+        description: _lt("Maximum of values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return MAX.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DMIN
+    // -----------------------------------------------------------------------------
+    const DMIN = {
+        description: _lt("Minimum of values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return MIN.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DPRODUCT
+    // -----------------------------------------------------------------------------
+    const DPRODUCT = {
+        description: _lt("Product of values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return PRODUCT.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DSTDEV
+    // -----------------------------------------------------------------------------
+    const DSTDEV = {
+        description: _lt("Standard deviation of population sample from table."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return STDEV.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DSTDEVP
+    // -----------------------------------------------------------------------------
+    const DSTDEVP = {
+        description: _lt("Standard deviation of entire population from table."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return STDEVP.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DSUM
+    // -----------------------------------------------------------------------------
+    const DSUM = {
+        description: _lt("Sum of values from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return SUM.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DVAR
+    // -----------------------------------------------------------------------------
+    const DVAR = {
+        description: _lt("Variance of population sample from table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return VAR.compute([cells]);
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // DVARP
+    // -----------------------------------------------------------------------------
+    const DVARP = {
+        description: _lt("Variance of a population from a table-like range."),
+        args: databaseArgs,
+        returns: ["NUMBER"],
+        compute: function (database, field, criteria) {
+            const cells = getMatchingCells(database, field, criteria);
+            return VARP.compute([cells]);
+        },
+    };
+
+    var database = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        DAVERAGE: DAVERAGE,
+        DCOUNT: DCOUNT,
+        DCOUNTA: DCOUNTA,
+        DGET: DGET,
+        DMAX: DMAX,
+        DMIN: DMIN,
+        DPRODUCT: DPRODUCT,
+        DSTDEV: DSTDEV,
+        DSTDEVP: DSTDEVP,
+        DSUM: DSUM,
+        DVAR: DVAR,
+        DVARP: DVARP
     });
 
     // -----------------------------------------------------------------------------
@@ -2265,690 +4384,6 @@
     });
 
     // -----------------------------------------------------------------------------
-    // CEILING
-    // -----------------------------------------------------------------------------
-    const CEILING = {
-        description: _lt(`Rounds number up to nearest multiple of factor.`),
-        args: args(`
-    value (number) ${_lt("The value to round up to the nearest integer multiple of factor.")}
-    factor (number, optional, default=1) ${_lt("The number to whose multiples value will be rounded.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (value, factor = 1) {
-            const _value = toNumber(value);
-            const _factor = toNumber(factor);
-            if (_value > 0 && _factor < 0) {
-                throw new Error(_lt(`Function CEILING expects the parameter '${CEILING.args[1].name}' to be positive when parameter '${CEILING.args[0].name}' is positive. Change '${CEILING.args[1].name}' from [${_factor}] to a positive value.`));
-            }
-            return _factor ? Math.ceil(_value / _factor) * _factor : 0;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // CEILING.MATH
-    // -----------------------------------------------------------------------------
-    const CEILING_MATH = {
-        description: _lt(`Rounds number up to nearest multiple of factor.`),
-        args: args(`
-    number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
-    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded. The sign of significance will be ignored.")}
-    mode (number, optional, default=0) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded towards zero. Otherwise, it is rounded away from zero.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (number, significance = 1, mode = 0) {
-            let _significance = toNumber(significance);
-            if (_significance === 0) {
-                return 0;
-            }
-            const _number = toNumber(number);
-            _significance = Math.abs(_significance);
-            if (_number >= 0) {
-                return Math.ceil(_number / _significance) * _significance;
-            }
-            const _mode = toNumber(mode);
-            if (_mode === 0) {
-                return -Math.floor(Math.abs(_number) / _significance) * _significance;
-            }
-            return -Math.ceil(Math.abs(_number) / _significance) * _significance;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // CEILING.PRECISE
-    // -----------------------------------------------------------------------------
-    const CEILING_PRECISE = {
-        description: _lt(`Rounds number up to nearest multiple of factor.`),
-        args: args(`
-    number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
-    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (number, significance) {
-            return CEILING_MATH.compute(number, significance, 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COS
-    // -----------------------------------------------------------------------------
-    const COS = {
-        description: _lt("Cosine of an angle provided in radians."),
-        args: args(`
-    angle (number) ${_lt("The angle to find the cosine of, in radians.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (angle) {
-            return Math.cos(toNumber(angle));
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTBLANK
-    // -----------------------------------------------------------------------------
-    const COUNTBLANK = {
-        description: _lt("Number of empty values."),
-        args: args(`
-    value1 (any, range) ${_lt("The first value or range in which to count the number of blanks.")}
-    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges in which to count the number of blanks.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return reduceArgs(arguments, (acc, a) => (a === null || a === undefined || a === "" ? acc + 1 : acc), 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTIF
-    // -----------------------------------------------------------------------------
-    const COUNTIF = {
-        description: _lt("A conditional count across a range."),
-        args: args(`
-    range (any, range) ${_lt("The range that is tested against criterion.")}
-    criterion (string) ${_lt("The pattern or test to apply to range.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            visitMatchingRanges(arguments, (i, j) => {
-                count += 1;
-            });
-            return count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTIFS
-    // -----------------------------------------------------------------------------
-    const COUNTIFS = {
-        description: _lt("Count values depending on multiple criteria."),
-        args: args(`
-    criteria_range (any, range) ${_lt("The range to check against criterion1.")}
-    criterion (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-    additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-  `),
-        // @compatibility: on google sheets, args definitions are next:
-        // criteria_range1 (any, range) The range to check against criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1.
-        // criteria_range2 (any, range, optional repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
-        // criterion2 (string, optional repeating) Additional criteria to check.
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            visitMatchingRanges(arguments, (i, j) => {
-                count += 1;
-            });
-            return count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTUNIQUE
-    // -----------------------------------------------------------------------------
-    function isDefined(value) {
-        switch (value) {
-            case undefined:
-                return false;
-            case "":
-                return false;
-            case null:
-                return false;
-            default:
-                return true;
-        }
-    }
-    const COUNTUNIQUE = {
-        description: _lt("Counts number of unique values in a range."),
-        args: args(`
-    value1 (any, range) ${_lt("The first value or range to consider for uniqueness.")}
-    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider for uniqueness.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return reduceArgs(arguments, (acc, a) => (isDefined(a) ? acc.add(a) : acc), new Set()).size;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTUNIQUEIFS
-    // -----------------------------------------------------------------------------
-    const COUNTUNIQUEIFS = {
-        description: _lt("Counts number of unique values in a range, filtered by a set of criteria."),
-        args: args(`
-    range (any, range) ${_lt("The range of cells from which the number of unique values will be counted.")}
-    criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
-    criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-    additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-  `),
-        // @compatibility: on google sheets, args definitions are next:
-        // range (any, range) The range of cells from which the number of unique values will be counted.
-        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
-        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
-        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
-        returns: ["NUMBER"],
-        compute: function (range, ...args) {
-            let uniqueValues = new Set();
-            visitMatchingRanges(args, (i, j) => {
-                const value = range[i][j];
-                if (isDefined(value)) {
-                    uniqueValues.add(value);
-                }
-            });
-            return uniqueValues.size;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // DECIMAL
-    // -----------------------------------------------------------------------------
-    const decimalErrorParameter2 = (parameterName, base, value) => _lt(`Function DECIMAL expects the parameter '${parameterName}' to be a valid base ${base} representation. Change '${parameterName}' from [${value}] to a valid base ${base} representation.`);
-    const DECIMAL = {
-        description: _lt("Converts from another base to decimal."),
-        args: args(`
-    value (string) ${_lt("The number to convert.")},
-    base (number) ${_lt("The base to convert the value from.")},
-  `),
-        returns: ["NUMBER"],
-        compute: function (value, base) {
-            let _base = toNumber(base);
-            _base = Math.floor(_base);
-            if (_base < 2 || _base > 36) {
-                throw new Error(_lt(`Function DECIMAL expects the parameter '${DECIMAL.args[1].name}' to be between 2 and 36 inclusive. Change '${DECIMAL.args[1].name}' from [${_base}] to a value between 2 and 36.`));
-            }
-            const _value = toString(value);
-            if (_value === "") {
-                return 0;
-            }
-            /**
-             * @compatibility: on Google sheets, expects the parameter 'value' to be positive.
-             * Return error if 'value' is positive.
-             * Remove '-?' in the next regex to catch this error.
-             */
-            if (!_value.match(/^-?[a-z0-9]+$/i)) {
-                throw new Error(decimalErrorParameter2(DECIMAL.args[0].name, _base, _value));
-            }
-            const deci = parseInt(_value, _base);
-            if (isNaN(deci)) {
-                throw new Error(decimalErrorParameter2(DECIMAL.args[0].name, _base, _value));
-            }
-            return deci;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // DEGREES
-    // -----------------------------------------------------------------------------
-    const DEGREES = {
-        description: _lt(`Converts an angle value in radians to degrees.`),
-        args: args(`
-    angle (number)  ${_lt("The angle to convert from radians to degrees.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (angle) {
-            return (toNumber(angle) * 180) / Math.PI;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // FLOOR
-    // -----------------------------------------------------------------------------
-    const FLOOR = {
-        description: _lt(`Rounds number down to nearest multiple of factor.`),
-        args: args(`
-    value (number) ${_lt("The value to round down to the nearest integer multiple of factor.")}
-    factor (number, optional, default=1) ${_lt("The number to whose multiples value will be rounded.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (value, factor = 1) {
-            const _value = toNumber(value);
-            const _factor = toNumber(factor);
-            if (_value > 0 && _factor < 0) {
-                throw new Error(_lt(`Function FLOOR expects the parameter '${FLOOR.args[1].name}' to be positive when parameter '${FLOOR.args[0].name}' is positive. Change '${FLOOR.args[1].name}' from [${_factor}] to a positive value.`));
-            }
-            return _factor ? Math.floor(_value / _factor) * _factor : 0;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // FLOOR.MATH
-    // -----------------------------------------------------------------------------
-    const FLOOR_MATH = {
-        description: _lt(`Rounds number down to nearest multiple of factor.`),
-        args: args(`
-    number (number) ${_lt("The value to round down to the nearest integer multiple of significance.")}
-    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded. The sign of significance will be ignored.")}
-    mode (number, optional, default=0) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded away from zero. Otherwise, it is rounded towards zero.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (number, significance = 1, mode = 0) {
-            let _significance = toNumber(significance);
-            if (_significance === 0) {
-                return 0;
-            }
-            const _number = toNumber(number);
-            _significance = Math.abs(_significance);
-            if (_number >= 0) {
-                return Math.floor(_number / _significance) * _significance;
-            }
-            const _mode = toNumber(mode);
-            if (_mode === 0) {
-                return -Math.ceil(Math.abs(_number) / _significance) * _significance;
-            }
-            return -Math.floor(Math.abs(_number) / _significance) * _significance;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // FLOOR.PRECISE
-    // -----------------------------------------------------------------------------
-    const FLOOR_PRECISE = {
-        description: _lt(`Rounds number down to nearest multiple of factor.`),
-        args: args(`
-    number (number) ${_lt("The value to round down to the nearest integer multiple of significance.")}
-    significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (number, significance = 1) {
-            return FLOOR_MATH.compute(number, significance, 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ISEVEN
-    // -----------------------------------------------------------------------------
-    const ISEVEN = {
-        description: _lt(`Whether the provided value is even.`),
-        args: args(`
-    value (number) ${_lt("The value to be verified as even.")}
-  `),
-        returns: ["BOOLEAN"],
-        compute: function (value) {
-            const _value = strictToNumber(value);
-            return Math.floor(Math.abs(_value)) & 1 ? false : true;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ISO.CEILING
-    // -----------------------------------------------------------------------------
-    const ISO_CEILING = {
-        description: _lt(`Rounds number up to nearest multiple of factor.`),
-        args: args(`
-      number (number) ${_lt("The value to round up to the nearest integer multiple of significance.")}
-      significance (number, optional, default=1) ${_lt("The number to whose multiples number will be rounded.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (number, significance) {
-            return CEILING_MATH.compute(number, significance, 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ISODD
-    // -----------------------------------------------------------------------------
-    const ISODD = {
-        description: _lt(`Whether the provided value is even.`),
-        args: args(`
-    value (number) ${_lt("The value to be verified as even.")}
-  `),
-        returns: ["BOOLEAN"],
-        compute: function (value) {
-            const _value = strictToNumber(value);
-            return Math.floor(Math.abs(_value)) & 1 ? true : false;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MOD
-    // -----------------------------------------------------------------------------
-    const MOD = {
-        description: _lt(`Modulo (remainder) operator.`),
-        args: args(`
-      dividend (number) ${_lt("The number to be divided to find the remainder.")}
-      divisor (number) ${_lt("The number to divide by.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (dividend, divisor) {
-            const _divisor = toNumber(divisor);
-            if (_divisor === 0) {
-                throw new Error(_lt(`Function MOD expects the parameter '${MOD.args[1].name}' to be different from 0. Change '${MOD.args[1].name}' to a value other than 0.`));
-            }
-            const _dividend = toNumber(dividend);
-            const modulus = _dividend % _divisor;
-            // -42 % 10 = -2 but we want 8, so need the code below
-            if ((modulus > 0 && _divisor < 0) || (modulus < 0 && _divisor > 0)) {
-                return modulus + _divisor;
-            }
-            return modulus;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ODD
-    // -----------------------------------------------------------------------------
-    const ODD = {
-        description: _lt(`Rounds a number up to the nearest odd integer.`),
-        args: args(`
-      value (number) ${_lt("The value to round to the next greatest odd number.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value) {
-            const _value = toNumber(value);
-            let temp = Math.ceil(Math.abs(_value));
-            temp = temp & 1 ? temp : temp + 1;
-            return _value < 0 ? -temp : temp;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // PI
-    // -----------------------------------------------------------------------------
-    const PI = {
-        description: _lt(`The number pi.`),
-        args: [],
-        returns: ["NUMBER"],
-        compute: function () {
-            return Math.PI;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // POWER
-    // -----------------------------------------------------------------------------
-    const POWER = {
-        description: _lt(`A number raised to a power.`),
-        args: args(`
-      base (number) ${_lt("The number to raise to the exponent power.")}
-      exponent (number) ${_lt("The exponent to raise base to.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (base, exponent) {
-            const _base = toNumber(base);
-            const _exponent = toNumber(exponent);
-            if (_base >= 0) {
-                return Math.pow(_base, _exponent);
-            }
-            if (!Number.isInteger(_exponent)) {
-                throw new Error(_lt(`Function POWER expects the parameter '${POWER.args[1].name}' to be an integer when parameter '${POWER.args[0].name}' is negative. Change '${POWER.args[1].name}' from [${_exponent}] to an integer value.`));
-            }
-            return Math.pow(_base, _exponent);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // RAND
-    // -----------------------------------------------------------------------------
-    const RAND = {
-        description: _lt("A random number between 0 inclusive and 1 exclusive."),
-        args: [],
-        returns: ["NUMBER"],
-        compute: function () {
-            return Math.random();
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // RANDBETWEEN
-    // -----------------------------------------------------------------------------
-    const RANDBETWEEN = {
-        description: _lt("Random integer between two values, inclusive."),
-        args: args(`
-      low (number) ${_lt("The low end of the random range.")}
-      high (number) ${_lt("The high end of the random range.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (low, high) {
-            let _low = toNumber(low);
-            if (!Number.isInteger(_low)) {
-                _low = Math.ceil(_low);
-            }
-            let _high = toNumber(high);
-            if (!Number.isInteger(_high)) {
-                _high = Math.floor(_high);
-            }
-            if (_high < _low) {
-                throw new Error(_lt(`Function RANDBETWEEN parameter '${RANDBETWEEN.args[1].name}' value is ${_high}. It should be greater than or equal to [${_low}].`));
-            }
-            return _low + Math.ceil((_high - _low + 1) * Math.random()) - 1;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ROUND
-    // -----------------------------------------------------------------------------
-    const ROUND = {
-        description: _lt("Rounds a number according to standard rules."),
-        args: args(`
-      value (number) ${_lt("The value to round to places number of places.")}
-      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value, places = 0) {
-            const _value = toNumber(value);
-            let _places = toNumber(places);
-            const absValue = Math.abs(_value);
-            let tempResult;
-            if (_places === 0) {
-                tempResult = Math.round(absValue);
-            }
-            else {
-                if (!Number.isInteger(_places)) {
-                    _places = Math.trunc(_places);
-                }
-                tempResult = Math.round(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
-            }
-            return _value >= 0 ? tempResult : -tempResult;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ROUNDDOWN
-    // -----------------------------------------------------------------------------
-    const ROUNDDOWN = {
-        description: _lt(`Rounds down a number.`),
-        args: args(`
-      value (number) ${_lt("The value to round to places number of places, always rounding down.")}
-      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value, places = 0) {
-            const _value = toNumber(value);
-            let _places = toNumber(places);
-            const absValue = Math.abs(_value);
-            let tempResult;
-            if (_places === 0) {
-                tempResult = Math.floor(absValue);
-            }
-            else {
-                if (!Number.isInteger(_places)) {
-                    _places = Math.trunc(_places);
-                }
-                tempResult = Math.floor(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
-            }
-            return _value >= 0 ? tempResult : -tempResult;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // ROUNDUP
-    // -----------------------------------------------------------------------------
-    const ROUNDUP = {
-        description: _lt(`Rounds up a number.`),
-        args: args(`
-      value (number) ${_lt("The value to round to places number of places, always rounding up.")}
-      places (number, optional, default=0) ${_lt("The number of decimal places to which to round.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value, places) {
-            const _value = toNumber(value);
-            let _places = toNumber(places);
-            const absValue = Math.abs(_value);
-            let tempResult;
-            if (_places === 0) {
-                tempResult = Math.ceil(absValue);
-            }
-            else {
-                if (!Number.isInteger(_places)) {
-                    _places = Math.trunc(_places);
-                }
-                tempResult = Math.ceil(absValue * Math.pow(10, _places)) / Math.pow(10, _places);
-            }
-            return _value >= 0 ? tempResult : -tempResult;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SIN
-    // -----------------------------------------------------------------------------
-    const SIN = {
-        description: _lt("Sine of an angle provided in radians."),
-        args: args(`
-      angle (number) ${_lt("The angle to find the sine of, in radians.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (angle) {
-            return Math.sin(toNumber(angle));
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SQRT
-    // -----------------------------------------------------------------------------
-    const SQRT = {
-        description: _lt("Positive square root of a positive number."),
-        args: args(`
-      value (number) ${_lt("The number for which to calculate the positive square root.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value) {
-            const _value = toNumber(value);
-            if (_value < 0) {
-                throw new Error(_lt(`Function SQRT parameter '${SQRT.args[0].name}' value is negative. It should be positive or zero. Change '${SQRT.args[0].name}' from [${_value}] to a positive value.`));
-            }
-            return Math.sqrt(_value);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SUM
-    // -----------------------------------------------------------------------------
-    const SUM = {
-        description: _lt("Sum of a series of numbers and/or cells."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first number or range to add together.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional numbers or ranges to add to value1.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return reduceNumbers(arguments, (acc, a) => acc + a, 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SUMIF
-    // -----------------------------------------------------------------------------
-    const SUMIF = {
-        description: _lt("A conditional sum across a range."),
-        args: args(`
-      criteria_range (any, range) ${_lt("The range which is tested against criterion.")}
-      criterion (string) ${_lt("The pattern or test to apply to range.")}
-      sum_range (any, range, optional, default=criteria_range) ${_lt("The range to be summed, if different from range.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (criteria_range, criterion, sum_range = undefined) {
-            if (sum_range === undefined) {
-                sum_range = criteria_range;
-            }
-            let sum = 0;
-            visitMatchingRanges([criteria_range, criterion], (i, j) => {
-                const value = sum_range[i][j];
-                if (typeof value === "number") {
-                    sum += value;
-                }
-            });
-            return sum;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SUMIFS
-    // -----------------------------------------------------------------------------
-    const SUMIFS = {
-        description: _lt("Sums a range depending on multiple criteria."),
-        args: args(`
-      sum_range (any, range) ${_lt("The range to sum.")}
-      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
-      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-    `),
-        // @compatibility: on google sheets, args definitions are next:
-        // sum_range (any, range) The range to sum.
-        // criteria_range1 (any, range) The range to check against criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1.
-        // criteria_range2 (any, range, optional, repeating) Additional ranges to check.
-        // criterion2 (string, optional, repeating) Additional criteria to check.
-        returns: ["NUMBER"],
-        compute: function (sum_range, ...args) {
-            let sum = 0;
-            visitMatchingRanges(args, (i, j) => {
-                const value = sum_range[i][j];
-                if (typeof value === "number") {
-                    sum += value;
-                }
-            });
-            return sum;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // TRUNC
-    // -----------------------------------------------------------------------------
-    const TRUNC = {
-        description: _lt("Truncates a number."),
-        args: args(`
-      value (number) ${_lt("The value to be truncated.")}
-      places (number, optional, default=0) ${_lt("The number of significant digits to the right of the decimal point to retain.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (value, places = 0) {
-            const _value = toNumber(value);
-            let _places = toNumber(places);
-            if (_places === 0) {
-                return Math.trunc(_value);
-            }
-            if (!Number.isInteger(_places)) {
-                _places = Math.trunc(_places);
-            }
-            return Math.trunc(_value * Math.pow(10, _places)) / Math.pow(10, _places);
-        },
-    };
-
-    var math = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        CEILING: CEILING,
-        CEILING_MATH: CEILING_MATH,
-        CEILING_PRECISE: CEILING_PRECISE,
-        COS: COS,
-        COUNTBLANK: COUNTBLANK,
-        COUNTIF: COUNTIF,
-        COUNTIFS: COUNTIFS,
-        COUNTUNIQUE: COUNTUNIQUE,
-        COUNTUNIQUEIFS: COUNTUNIQUEIFS,
-        DECIMAL: DECIMAL,
-        DEGREES: DEGREES,
-        FLOOR: FLOOR,
-        FLOOR_MATH: FLOOR_MATH,
-        FLOOR_PRECISE: FLOOR_PRECISE,
-        ISEVEN: ISEVEN,
-        ISO_CEILING: ISO_CEILING,
-        ISODD: ISODD,
-        MOD: MOD,
-        ODD: ODD,
-        PI: PI,
-        POWER: POWER,
-        RAND: RAND,
-        RANDBETWEEN: RANDBETWEEN,
-        ROUND: ROUND,
-        ROUNDDOWN: ROUNDDOWN,
-        ROUNDUP: ROUNDUP,
-        SIN: SIN,
-        SQRT: SQRT,
-        SUM: SUM,
-        SUMIF: SUMIF,
-        SUMIFS: SUMIFS,
-        TRUNC: TRUNC
-    });
-
-    // -----------------------------------------------------------------------------
     // ADD
     // -----------------------------------------------------------------------------
     const ADD = {
@@ -3221,702 +4656,6 @@
         UMINUS: UMINUS,
         UNARY_PERCENT: UNARY_PERCENT,
         UPLUS: UPLUS
-    });
-
-    // Note: dataY and dataX may not have the same dimension
-    function covariance(dataY, dataX, isSample) {
-        let flatDataY = [];
-        let flatDataX = [];
-        let lenY = 0;
-        let lenX = 0;
-        visitAny(dataY, (y) => {
-            flatDataY.push(y);
-            lenY += 1;
-        });
-        visitAny(dataX, (x) => {
-            flatDataX.push(x);
-            lenX += 1;
-        });
-        if (lenY !== lenX) {
-            throw new Error(_lt(`[[FUNCTION_NAME]] has mismatched argument count ${lenY} vs ${lenX}.`));
-        }
-        let count = 0;
-        let sumY = 0;
-        let sumX = 0;
-        for (let i = 0; i < lenY; i++) {
-            const valueY = flatDataY[i];
-            const valueX = flatDataX[i];
-            if (typeof valueY === "number" && typeof valueX === "number") {
-                count += 1;
-                sumY += valueY;
-                sumX += valueX;
-            }
-        }
-        if (count === 0 || (isSample && count === 1)) {
-            throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
-        }
-        const averageY = sumY / count;
-        const averageX = sumX / count;
-        let acc = 0;
-        for (let i = 0; i < lenY; i++) {
-            const valueY = flatDataY[i];
-            const valueX = flatDataX[i];
-            if (typeof valueY === "number" && typeof valueX === "number") {
-                acc += (valueY - averageY) * (valueX - averageX);
-            }
-        }
-        return acc / (count - (isSample ? 1 : 0));
-    }
-    function variance(args, isSample, textAs0) {
-        let count = 0;
-        let sum = 0;
-        const reduceFuction = textAs0 ? reduceNumbersTextAs0 : reduceNumbers;
-        sum = reduceFuction(args, (acc, a) => {
-            count += 1;
-            return acc + a;
-        }, 0);
-        if (count === 0 || (isSample && count === 1)) {
-            throw new Error(_lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
-        }
-        const average = sum / count;
-        return (reduceFuction(args, (acc, a) => acc + Math.pow(a - average, 2), 0) /
-            (count - (isSample ? 1 : 0)));
-    }
-    // -----------------------------------------------------------------------------
-    // AVEDEV
-    // -----------------------------------------------------------------------------
-    const AVEDEV = {
-        description: _lt("Average magnitude of deviations from mean."),
-        args: args(`
-    value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
-    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            const sum = reduceNumbers(arguments, (acc, a) => {
-                count += 1;
-                return acc + a;
-            }, 0);
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVEDEV caused a divide by zero error.`));
-            }
-            const average = sum / count;
-            return reduceNumbers(arguments, (acc, a) => acc + Math.abs(average - a), 0) / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // AVERAGE
-    // -----------------------------------------------------------------------------
-    const AVERAGE = {
-        description: _lt(`Numerical average value in a dataset, ignoring text.`),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the average value.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            const sum = reduceNumbers(arguments, (acc, a) => {
-                count += 1;
-                return acc + a;
-            }, 0);
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVERAGE caused a divide by zero error.`));
-            }
-            return sum / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // AVERAGE.WEIGHTED
-    // -----------------------------------------------------------------------------
-    const rangeError = _lt(`AVERAGE.WEIGHTED has mismatched range sizes.`);
-    const negativeWeightError = _lt(`AVERAGE.WEIGHTED expects the weight to be positive or equal to 0.`);
-    const AVERAGE_WEIGHTED = {
-        description: _lt(`Weighted average.`),
-        args: args(`
-      values (number, range<number>) ${_lt("Values to average.")}
-      weights (number, range<number>) ${_lt("Weights for each corresponding value.")}
-      additional_values (number, range<number>, optional, repeating) ${_lt("Additional values to average with weights.")}
-    `),
-        // @compatibility: on google sheets, args difinitions are next:
-        // additional_values (number, range<number>, optional, repeating) Additional values to average.
-        // additional_weights (number, range<number>, optional, repeating) Additional weights.
-        returns: ["NUMBER"],
-        compute: function () {
-            let sum = 0;
-            let count = 0;
-            let value;
-            let weight;
-            if (arguments.length % 2 === 1) {
-                throw new Error(_lt(`Wrong number of arguments. Expected an even number of arguments.`));
-            }
-            for (let n = 0; n < arguments.length - 1; n += 2) {
-                value = arguments[n];
-                weight = arguments[n + 1];
-                // if (typeof value != typeof weight) {
-                //   throw new Error(rangeError);
-                // }
-                if (Array.isArray(value)) {
-                    if (!Array.isArray(weight)) {
-                        throw new Error(rangeError);
-                    }
-                    let dimColValue = value.length;
-                    let dimLinValue = value[0].length;
-                    if (dimColValue !== weight.length || dimLinValue != weight[0].length) {
-                        throw new Error(rangeError);
-                    }
-                    for (let i = 0; i < dimColValue; i++) {
-                        for (let j = 0; j < dimLinValue; j++) {
-                            let subValue = value[i][j];
-                            let subWeight = weight[i][j];
-                            let subValueIsNumber = typeof subValue === "number";
-                            let subWeightIsNumber = typeof subWeight === "number";
-                            // typeof subValue or subWeight can be 'number' or 'undefined'
-                            if (subValueIsNumber !== subWeightIsNumber) {
-                                throw new Error(_lt(`AVERAGE.WEIGHTED expects number values.`));
-                            }
-                            if (subWeightIsNumber) {
-                                if (subWeight < 0) {
-                                    throw new Error(negativeWeightError);
-                                }
-                                sum += subValue * subWeight;
-                                count += subWeight;
-                            }
-                        }
-                    }
-                }
-                else {
-                    weight = toNumber(weight);
-                    value = toNumber(value);
-                    if (weight < 0) {
-                        throw new Error(negativeWeightError);
-                    }
-                    sum += value * weight;
-                    count += weight;
-                }
-            }
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVERAGE.WEIGHTED caused a divide by zero error.`));
-            }
-            return sum / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // AVERAGEA
-    // -----------------------------------------------------------------------------
-    const AVERAGEA = {
-        description: _lt(`Numerical average value in a dataset.`),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the average value.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            const sum = reduceNumbersTextAs0(arguments, (acc, a) => {
-                count += 1;
-                return acc + a;
-            }, 0);
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVERAGEA caused a divide by zero error.`));
-            }
-            return sum / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // AVERAGEIF
-    // -----------------------------------------------------------------------------
-    const AVERAGEIF = {
-        description: _lt(`Average of values depending on criteria.`),
-        args: args(`
-      criteria_range (any, range) ${_lt("The range to check against criterion.")}
-      criterion (string) ${_lt("The pattern or test to apply to criteria_range.")}
-      average_range (any, range, optional, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (criteria_range, criterion, average_range = undefined) {
-            if (average_range === undefined) {
-                average_range = criteria_range;
-            }
-            let count = 0;
-            let sum = 0;
-            visitMatchingRanges([criteria_range, criterion], (i, j) => {
-                const value = average_range[i][j];
-                if (typeof value === "number") {
-                    count += 1;
-                    sum += value;
-                }
-            });
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVERAGEIF caused a divide by zero error.`));
-            }
-            return sum / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // AVERAGEIFS
-    // -----------------------------------------------------------------------------
-    const AVERAGEIFS = {
-        description: _lt(`Average of values depending on multiple criteria.`),
-        args: args(`
-      average_range (any, range) ${_lt("The range to average.")}
-      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
-      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-    `),
-        // @compatibility: on google sheets, args definitions are next:
-        // average_range (any, range) The range to average.
-        // criteria_range1 (any, range) The range to check against criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1.
-        // criteria_range2 (any, range, optional, repeating) Additional ranges to check.
-        // criterion2 (string, optional, repeating) Additional criteria to check.
-        returns: ["NUMBER"],
-        compute: function (average_range, ...args) {
-            let count = 0;
-            let sum = 0;
-            visitMatchingRanges(args, (i, j) => {
-                const value = average_range[i][j];
-                if (typeof value === "number") {
-                    count += 1;
-                    sum += value;
-                }
-            });
-            if (count === 0) {
-                throw new Error(_lt(`Evaluation of function AVERAGEIFS caused a divide by zero error.`));
-            }
-            return sum / count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNT
-    // -----------------------------------------------------------------------------
-    const COUNT = {
-        description: _lt(`The number of numeric values in dataset.`),
-        args: args(`
-    value1 (number, range<number>) ${_lt("The first value or range to consider when counting.")}
-    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when counting.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let count = 0;
-            for (let n of arguments) {
-                if (Array.isArray(n)) {
-                    for (let i of n) {
-                        for (let j of i) {
-                            if (typeof j === "number") {
-                                count += 1;
-                            }
-                        }
-                    }
-                }
-                else if (typeof n !== "string" || isNumber(n)) {
-                    count += 1;
-                }
-            }
-            return count;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COUNTA
-    // -----------------------------------------------------------------------------
-    const COUNTA = {
-        description: _lt(`The number of values in a dataset.`),
-        args: args(`
-    value1 (any, range) ${_lt("The first value or range to consider when counting.")}
-    value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider when counting.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return reduceArgs(arguments, (acc, a) => (a !== undefined && a !== null ? acc + 1 : acc), 0);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COVAR
-    // -----------------------------------------------------------------------------
-    // Note: Unlike the VAR function which corresponds to the variance over a sample (VAR.S),
-    // the COVAR function corresponds to the covariance over an entire population (COVAR.P)
-    const COVAR = {
-        description: _lt(`The covariance of a dataset.`),
-        args: args(`
-    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
-    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (data_y, data_x) {
-            return covariance(data_y, data_x, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COVARIANCE.P
-    // -----------------------------------------------------------------------------
-    const COVARIANCE_P = {
-        description: _lt(`The covariance of a dataset.`),
-        args: args(`
-    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
-    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (data_y, data_x) {
-            return covariance(data_y, data_x, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // COVARIANCE.S
-    // -----------------------------------------------------------------------------
-    const COVARIANCE_S = {
-        description: _lt(`The sample covariance of a dataset.`),
-        args: args(`
-    data_y (any, range) ${_lt("The range representing the array or matrix of dependent data.")}
-    data_x (any, range) ${_lt("The range representing the array or matrix of independent data.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function (data_y, data_x) {
-            return covariance(data_y, data_x, true);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // LARGE
-    // -----------------------------------------------------------------------------
-    const LARGE = {
-        description: _lt("Nth largest element from a data set."),
-        args: args(`
-      data (any, range) ${_lt("Array or range containing the dataset to consider.")}
-      n (number) ${_lt("The rank from largest to smallest of the element to return.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (data, n) {
-            n = Math.trunc(toNumber(n));
-            let largests = [];
-            let index;
-            let count = 0;
-            visitAny(data, (d) => {
-                if (typeof d === "number") {
-                    index = dichotomicPredecessorSearch(largests, d);
-                    largests.splice(index + 1, 0, d);
-                    count++;
-                    if (count > n) {
-                        largests.shift();
-                        count--;
-                    }
-                }
-            });
-            const result = largests.shift();
-            if (result === undefined) {
-                throw new Error(_lt(`LARGE has no valid input data.`));
-            }
-            if (count < n) {
-                throw new Error(_lt(`Function LARGE parameter 2 value ${n} is out of range.`));
-            }
-            return result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MAX
-    // -----------------------------------------------------------------------------
-    const MAX = {
-        description: _lt("Maximum value in a numeric dataset."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the maximum value.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            const result = reduceNumbers(arguments, (acc, a) => (acc < a ? a : acc), -Infinity);
-            return result === -Infinity ? 0 : result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MAXA
-    // -----------------------------------------------------------------------------
-    const MAXA = {
-        description: _lt("Maximum numeric value in a dataset."),
-        args: args(`
-      value1 (any, range) ${_lt("The first value or range to consider when calculating the maximum value.")}
-      value2 (ant, range, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let maxa = -Infinity;
-            for (let n of arguments) {
-                if (Array.isArray(n)) {
-                    for (let i of n) {
-                        for (let j of i) {
-                            if (j != undefined) {
-                                j = typeof j === "number" ? j : 0;
-                                if (maxa < j) {
-                                    maxa = j;
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    n = toNumber(n);
-                    if (maxa < n) {
-                        maxa = n;
-                    }
-                }
-            }
-            return maxa === -Infinity ? 0 : maxa;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MAXIFS
-    // -----------------------------------------------------------------------------
-    const MAXIFS = {
-        description: _lt("Returns the maximum value in a range of cells, filtered by a set of criteria."),
-        args: args(`
-      range (any, range) ${_lt("The range of cells from which the maximum will be determined.")}
-      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
-      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-    `),
-        // @compatibility: on google sheets, args definitions are next:
-        // range (any, range) The range of cells from which the maximum will be determined.
-        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
-        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
-        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
-        returns: ["NUMBER"],
-        compute: function (range, ...args) {
-            let result = -Infinity;
-            visitMatchingRanges(args, (i, j) => {
-                const value = range[i][j];
-                if (typeof value === "number") {
-                    result = result < value ? value : result;
-                }
-            });
-            return result === -Infinity ? 0 : result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MIN
-    // -----------------------------------------------------------------------------
-    const MIN = {
-        description: _lt("Minimum value in a numeric dataset."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the minimum value.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            const result = reduceNumbers(arguments, (acc, a) => (a < acc ? a : acc), Infinity);
-            return result === Infinity ? 0 : result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MINA
-    // -----------------------------------------------------------------------------
-    const MINA = {
-        description: _lt("Minimum numeric value in a dataset."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range to consider when calculating the minimum value.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            let mina = Infinity;
-            for (let n of arguments) {
-                if (Array.isArray(n)) {
-                    for (let i of n) {
-                        for (let j of i) {
-                            if (j != undefined) {
-                                j = typeof j === "number" ? j : 0;
-                                if (j < mina) {
-                                    mina = j;
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    n = toNumber(n);
-                    if (n < mina) {
-                        mina = n;
-                    }
-                }
-            }
-            return mina === Infinity ? 0 : mina;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // MINIFS
-    // -----------------------------------------------------------------------------
-    const MINIFS = {
-        description: _lt("Returns the minimum value in a range of cells, filtered by a set of criteria."),
-        args: args(`
-      range (any, range) ${_lt("The range of cells from which the minimum will be determined.")}
-      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
-      criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      additional_values (any, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
-    `),
-        // @compatibility: on google sheets, args definitions are next:
-        // range (any, range) The range of cells from which the minimum will be determined.
-        // criteria_range1 (any, range) The range of cells over which to evaluate criterion1.
-        // criterion1 (string) The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.
-        // criteria_range2 (any, range, optional, repeating) Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.
-        // criterion2 (string, optional, repeating) The pattern or test to apply to criteria_range2.
-        returns: ["NUMBER"],
-        compute: function (range, ...args) {
-            let result = Infinity;
-            visitMatchingRanges(args, (i, j) => {
-                const value = range[i][j];
-                if (typeof value === "number") {
-                    result = result > value ? value : result;
-                }
-            });
-            return result === Infinity ? 0 : result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // SMALL
-    // -----------------------------------------------------------------------------
-    const SMALL = {
-        description: _lt("Nth smallest element in a data set."),
-        args: args(`
-      data (any, range) ${_lt("The array or range containing the dataset to consider.")}
-      n (number) ${_lt("The rank from smallest to largest of the element to return.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function (data, n) {
-            n = Math.trunc(toNumber(n));
-            let largests = [];
-            let index;
-            let count = 0;
-            visitAny(data, (d) => {
-                if (typeof d === "number") {
-                    index = dichotomicPredecessorSearch(largests, d);
-                    largests.splice(index + 1, 0, d);
-                    count++;
-                    if (count > n) {
-                        largests.pop();
-                        count--;
-                    }
-                }
-            });
-            const result = largests.pop();
-            if (result === undefined) {
-                throw new Error(_lt(`SMALL has no valid input data.`));
-            }
-            if (count < n) {
-                throw new Error(_lt(`Function SMALL parameter 2 value ${n} is out of range.`));
-            }
-            return result;
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VAR
-    // -----------------------------------------------------------------------------
-    const VAR = {
-        description: _lt("Variance."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, true, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VAR.P
-    // -----------------------------------------------------------------------------
-    const VAR_P = {
-        description: _lt("Variance of entire population."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range of the population.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, false, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VAR.S
-    // -----------------------------------------------------------------------------
-    const VAR_S = {
-        description: _lt("Variance."),
-        args: args(`
-      value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
-      value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
-    `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, true, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VARA
-    // -----------------------------------------------------------------------------
-    const VARA = {
-        description: _lt("Variance of sample (text as 0)."),
-        args: args(`
-    value1 (number, range<number>) ${_lt("The first value or range of the sample.")}
-    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the sample.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, true, true);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VARP
-    // -----------------------------------------------------------------------------
-    const VARP = {
-        description: _lt("Variance of entire population."),
-        args: args(`
-    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
-    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, false, false);
-        },
-    };
-    // -----------------------------------------------------------------------------
-    // VARPA
-    // -----------------------------------------------------------------------------
-    const VARPA = {
-        description: _lt("Variance of entire population (text as 0)."),
-        args: args(`
-    value1 (number, range<number>) ${_lt("The first value or range of the population.")}
-    value2 (number, range<number>, optional, repeating) ${_lt("Additional values or ranges to include in the population.")}
-  `),
-        returns: ["NUMBER"],
-        compute: function () {
-            return variance(arguments, false, true);
-        },
-    };
-
-    var statistical = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        AVEDEV: AVEDEV,
-        AVERAGE: AVERAGE,
-        AVERAGE_WEIGHTED: AVERAGE_WEIGHTED,
-        AVERAGEA: AVERAGEA,
-        AVERAGEIF: AVERAGEIF,
-        AVERAGEIFS: AVERAGEIFS,
-        COUNT: COUNT,
-        COUNTA: COUNTA,
-        COVAR: COVAR,
-        COVARIANCE_P: COVARIANCE_P,
-        COVARIANCE_S: COVARIANCE_S,
-        LARGE: LARGE,
-        MAX: MAX,
-        MAXA: MAXA,
-        MAXIFS: MAXIFS,
-        MIN: MIN,
-        MINA: MINA,
-        MINIFS: MINIFS,
-        SMALL: SMALL,
-        VAR: VAR,
-        VAR_P: VAR_P,
-        VAR_S: VAR_S,
-        VARA: VARA,
-        VARP: VARP,
-        VARPA: VARPA
     });
 
     // -----------------------------------------------------------------------------
@@ -4220,6 +4959,7 @@
     });
 
     const functions = {
+        database,
         date,
         info,
         lookup,
@@ -4318,6 +5058,728 @@
     BasePlugin.layers = [];
     BasePlugin.getters = [];
     BasePlugin.modes = ["headless", "normal", "readonly"];
+
+    /**
+     * Clipboard Plugin
+     *
+     * This clipboard manages all cut/copy/paste interactions internal to the
+     * application, and with the OS clipboard as well.
+     */
+    class ClipboardPlugin extends BasePlugin {
+        constructor() {
+            super(...arguments);
+            this.status = "empty";
+            this.zones = [];
+            this.originSheet = this.workbook.activeSheet.id;
+            this._isPaintingFormat = false;
+            this.onlyFormat = false;
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            if (cmd.type === "PASTE") {
+                return this.isPasteAllowed(cmd.target);
+            }
+            return {
+                status: "SUCCESS",
+            };
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "COPY":
+                    this.cutOrCopy(cmd.target, false);
+                    break;
+                case "CUT":
+                    this.cutOrCopy(cmd.target, true);
+                    break;
+                case "PASTE":
+                    const onlyFormat = "onlyFormat" in cmd ? !!cmd.onlyFormat : this._isPaintingFormat;
+                    this._isPaintingFormat = false;
+                    this.onlyFormat = onlyFormat;
+                    if (cmd.interactive) {
+                        this.interactivePaste(cmd.target);
+                    }
+                    else {
+                        this.pasteFromModel(cmd.target);
+                    }
+                    break;
+                case "PASTE_CELL":
+                    this.pasteCell(cmd.origin, cmd.col, cmd.row, cmd.cut);
+                    break;
+                case "PASTE_FROM_OS_CLIPBOARD":
+                    this.pasteFromClipboard(cmd.target, cmd.text);
+                    break;
+                case "ACTIVATE_PAINT_FORMAT":
+                    this._isPaintingFormat = true;
+                    this.cutOrCopy(cmd.target, false);
+                    break;
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        /**
+         * Format the current clipboard to a string suitable for being pasted in other
+         * programs.
+         *
+         * - add a tab character between each concecutive cells
+         * - add a newline character between each line
+         *
+         * Note that it returns \t if the clipboard is empty. This is necessary for the
+         * clipboard copy event to add it as data, otherwise an empty string is not
+         * considered as a copy content.
+         */
+        getClipboardContent() {
+            if (!this.cells) {
+                return "\t";
+            }
+            return (this.cells
+                .map((cells) => {
+                return cells.map((c) => (c.cell ? this.getters.getCellText(c.cell) : "")).join("\t");
+            })
+                .join("\n") || "\t");
+        }
+        getPasteZones(target) {
+            if (!this.cells) {
+                return target;
+            }
+            const height = this.cells.length;
+            const width = this.cells[0].length;
+            const selection = target[target.length - 1];
+            const pasteZones = [];
+            let col = selection.left;
+            let row = selection.top;
+            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
+            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
+            for (let x = 1; x <= repX; x++) {
+                for (let y = 1; y <= repY; y++) {
+                    pasteZones.push({
+                        left: col,
+                        top: row,
+                        right: col - 1 + x * width,
+                        bottom: row - 1 + y * height,
+                    });
+                }
+            }
+            return pasteZones;
+        }
+        isPaintingFormat() {
+            return this._isPaintingFormat;
+        }
+        // ---------------------------------------------------------------------------
+        // Private methods
+        // ---------------------------------------------------------------------------
+        cutOrCopy(zones, cut) {
+            const tops = new Set(zones.map((z) => z.top));
+            const bottoms = new Set(zones.map((z) => z.bottom));
+            const areZonesCompatible = tops.size === 1 && bottoms.size === 1;
+            let clippedZones = areZonesCompatible ? zones : [zones[zones.length - 1]];
+            clippedZones = clippedZones.map((z) => Object.assign({}, z));
+            const cells = [];
+            let { top, bottom } = clippedZones[0];
+            for (let r = top; r <= bottom; r++) {
+                const row = [];
+                cells.push(row);
+                for (let zone of clippedZones) {
+                    let { left, right } = zone;
+                    for (let c = left; c <= right; c++) {
+                        const cell = this.getters.getCell(c, r);
+                        row.push({
+                            cell: cell ? Object.assign({}, cell) : null,
+                            col: c,
+                            row: r,
+                        });
+                    }
+                }
+            }
+            this.status = "visible";
+            this.shouldCut = cut;
+            this.zones = clippedZones;
+            this.cells = cells;
+            this.originSheet = this.workbook.activeSheet.id;
+        }
+        pasteFromClipboard(target, content) {
+            this.status = "invisible";
+            const values = content
+                .replace(/\r/g, "")
+                .split("\n")
+                .map((vals) => vals.split("\t"));
+            const { left: activeCol, top: activeRow } = target[0];
+            for (let i = 0; i < values.length; i++) {
+                for (let j = 0; j < values[i].length; j++) {
+                    const xc = toXC(activeCol + j, activeRow + i);
+                    this.dispatch("SET_VALUE", { xc, text: values[i][j] });
+                }
+            }
+        }
+        isPasteAllowed(target) {
+            const { zones, cells, status } = this;
+            // cannot paste if we have a clipped zone larger than a cell and multiple
+            // zones selected
+            if (!zones || !cells || status === "empty") {
+                return { status: "CANCELLED", reason: 10 /* EmptyClipboard */ };
+            }
+            else if (target.length > 1 && (cells.length > 1 || cells[0].length > 1)) {
+                return { status: "CANCELLED", reason: 9 /* WrongPasteSelection */ };
+            }
+            return { status: "SUCCESS" };
+        }
+        pasteFromModel(target) {
+            const { cells, shouldCut } = this;
+            if (!cells) {
+                return;
+            }
+            this.status = shouldCut ? "empty" : "invisible";
+            if (shouldCut) {
+                this.clearCutZone();
+            }
+            const height = cells.length;
+            const width = cells[0].length;
+            if (target.length > 1) {
+                for (let zone of target) {
+                    for (let i = zone.left; i <= zone.right; i++) {
+                        for (let j = zone.top; j <= zone.bottom; j++) {
+                            this.pasteZone(width, height, i, j);
+                        }
+                    }
+                }
+                return;
+            }
+            const selection = target[target.length - 1];
+            let col = selection.left;
+            let row = selection.top;
+            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
+            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
+            for (let x = 0; x < repX; x++) {
+                for (let y = 0; y < repY; y++) {
+                    this.pasteZone(width, height, col + x * width, row + y * height);
+                }
+            }
+            if (height > 1 || width > 1) {
+                const newSelection = {
+                    left: col,
+                    top: row,
+                    right: col + repX * width - 1,
+                    bottom: row + repY * height - 1,
+                };
+                const [anchorCol, anchorRow] = this.getters.getSelection().anchor;
+                const newCol = clip(anchorCol, col, col + repX * width - 1);
+                const newRow = clip(anchorRow, row, row + repY * height - 1);
+                this.dispatch("SET_SELECTION", {
+                    anchor: [newCol, newRow],
+                    zones: [newSelection],
+                });
+            }
+        }
+        clearCutZone() {
+            for (let row of this.cells) {
+                for (let cell of row) {
+                    if (cell) {
+                        this.dispatch("CLEAR_CELL", {
+                            sheet: this.originSheet,
+                            col: cell.col,
+                            row: cell.row,
+                        });
+                    }
+                }
+            }
+        }
+        pasteZone(width, height, col, row) {
+            const { cols, rows } = this.workbook.activeSheet;
+            // first, add missing cols/rows if needed
+            const missingRows = height + row - rows.length;
+            if (missingRows > 0) {
+                this.dispatch("ADD_ROWS", {
+                    row: rows.length - 1,
+                    sheet: this.workbook.activeSheet.id,
+                    quantity: missingRows,
+                    position: "after",
+                });
+            }
+            const missingCols = width + col - cols.length;
+            if (missingCols > 0) {
+                this.dispatch("ADD_COLUMNS", {
+                    column: cols.length - 1,
+                    sheet: this.workbook.activeSheet.id,
+                    quantity: missingCols,
+                    position: "after",
+                });
+            }
+            // then, perform the actual paste operation
+            for (let r = 0; r < height; r++) {
+                const rowCells = this.cells[r];
+                for (let c = 0; c < width; c++) {
+                    const originCell = rowCells[c];
+                    this.dispatch("PASTE_CELL", {
+                        origin: originCell.cell,
+                        originCol: originCell.col,
+                        originRow: originCell.row,
+                        col: col + c,
+                        row: row + r,
+                        sheet: this.originSheet,
+                        cut: this.shouldCut,
+                    });
+                }
+            }
+        }
+        pasteCell(origin, col, row, cut) {
+            const targetCell = this.getters.getCell(col, row);
+            if (origin) {
+                let content = origin.content || "";
+                if (origin.type === "formula") {
+                    const offsetX = col - origin.col;
+                    const offsetY = row - origin.row;
+                    content = this.getters.applyOffset(content, offsetX, offsetY);
+                }
+                if (this.onlyFormat) {
+                    content = targetCell ? targetCell.content : "";
+                }
+                let newCell = {
+                    style: origin.style,
+                    border: origin.border,
+                    format: origin.format,
+                    sheet: this.workbook.activeSheet.id,
+                    col: col,
+                    row: row,
+                    content,
+                };
+                this.dispatch("UPDATE_CELL", newCell);
+            }
+            if (!origin && targetCell) {
+                if (this.onlyFormat) {
+                    if (targetCell.style || targetCell.border) {
+                        this.history.updateCell(targetCell, "style", undefined);
+                        this.history.updateCell(targetCell, "border", undefined);
+                    }
+                }
+                else {
+                    this.dispatch("CLEAR_CELL", {
+                        sheet: this.workbook.activeSheet.id,
+                        col: col,
+                        row: row,
+                    });
+                }
+            }
+        }
+        interactivePaste(target) {
+            const result = this.dispatch("PASTE", { target, onlyFormat: false });
+            if (result.status === "CANCELLED") {
+                if (result.reason === 9 /* WrongPasteSelection */) {
+                    this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
+                }
+                if (result.reason === 1 /* WillRemoveExistingMerge */) {
+                    this.ui.askConfirmation(_lt("Pasting here will remove existing merge(s). Paste anyway?"), () => this.dispatch("PASTE", { target, onlyFormat: false, force: true }));
+                }
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Grid rendering
+        // ---------------------------------------------------------------------------
+        drawGrid(renderingContext) {
+            const { viewport, ctx, thinLineWidth } = renderingContext;
+            const zones = this.zones;
+            if (this.status !== "visible" ||
+                !zones.length ||
+                this.originSheet !== this.getters.getActiveSheet()) {
+                return;
+            }
+            ctx.save();
+            ctx.setLineDash([8, 5]);
+            ctx.strokeStyle = "#3266ca";
+            ctx.lineWidth = 3.3 * thinLineWidth;
+            for (const zone of zones) {
+                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                if (width > 0 && height > 0) {
+                    ctx.strokeRect(x, y, width, height);
+                }
+            }
+            ctx.restore();
+        }
+    }
+    ClipboardPlugin.layers = [2 /* Clipboard */];
+    ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat", "getPasteZones"];
+    ClipboardPlugin.modes = ["normal", "readonly"];
+
+    // -----------------------------------------------------------------------------
+    // Constants
+    // -----------------------------------------------------------------------------
+    class ConditionalFormatPlugin extends BasePlugin {
+        constructor() {
+            super(...arguments);
+            this.isStale = true;
+            this.cfRules = {};
+            // stores the computed styles in the format of computedStyles.sheetName.cellXC = Style
+            this.computedStyles = {};
+            /**
+             * Execute the predicate to know if a conditional formatting rule should be applied to a cell
+             */
+            this.rulePredicate = {
+                CellIsRule: (cell, rule) => {
+                    switch (rule.operator) {
+                        case "BeginsWith":
+                            if (!cell && rule.values[0] === "") {
+                                return false;
+                            }
+                            return cell && cell.value.startsWith(rule.values[0]);
+                        case "EndsWith":
+                            if (!cell && rule.values[0] === "") {
+                                return false;
+                            }
+                            return cell && cell.value.endsWith(rule.values[0]);
+                        case "Between":
+                            return cell && cell.value >= rule.values[0] && cell.value <= rule.values[1];
+                        case "NotBetween":
+                            return !(cell && cell.value >= rule.values[0] && cell.value <= rule.values[1]);
+                        case "ContainsText":
+                            return cell && cell.value && cell.value.toString().indexOf(rule.values[0]) > -1;
+                        case "NotContains":
+                            return cell && cell.value && cell.value.toString().indexOf(rule.values[0]) == -1;
+                        case "GreaterThan":
+                            return cell && cell.value > rule.values[0];
+                        case "GreaterThanOrEqual":
+                            return cell && cell.value >= rule.values[0];
+                        case "LessThan":
+                            return cell && cell.value < rule.values[0];
+                        case "LessThanOrEqual":
+                            return cell && cell.value <= rule.values[0];
+                        case "NotEqual":
+                            if (!cell && rule.values[0] === "") {
+                                return false;
+                            }
+                            return cell && cell.value != rule.values[0];
+                        case "Equal":
+                            if (!cell && rule.values[0] === "") {
+                                return true;
+                            }
+                            return cell && cell.value == rule.values[0];
+                        default:
+                            console.warn(_lt(`Not implemented operator ${rule.operator} for kind of conditional formatting:  ${rule.type}`));
+                    }
+                    return false;
+                },
+            };
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        handle(cmd) {
+            switch (cmd.type) {
+                case "ACTIVATE_SHEET":
+                    const activeSheet = cmd.to;
+                    this.computedStyles[activeSheet] = this.computedStyles[activeSheet] || {};
+                    this.isStale = true;
+                    break;
+                case "CREATE_SHEET":
+                    this.cfRules[cmd.id] = [];
+                    this.isStale = true;
+                    break;
+                case "ADD_CONDITIONAL_FORMAT":
+                    this.addConditionalFormatting(cmd.cf, cmd.sheet);
+                    this.isStale = true;
+                    break;
+                case "REMOVE_CONDITIONAL_FORMAT":
+                    this.removeConditionalFormatting(cmd.id, cmd.sheet);
+                    this.isStale = true;
+                    break;
+                case "REMOVE_COLUMNS":
+                    this.adaptcfRules(cmd.sheet, (range) => updateRemoveColumns(range, cmd.columns));
+                    this.isStale = true;
+                    break;
+                case "REMOVE_ROWS":
+                    this.adaptcfRules(cmd.sheet, (range) => updateRemoveRows(range, cmd.rows));
+                    this.isStale = true;
+                    break;
+                case "ADD_COLUMNS":
+                    const column = cmd.position === "before" ? cmd.column : cmd.column + 1;
+                    this.adaptcfRules(cmd.sheet, (range) => updateAddColumns(range, column, cmd.quantity));
+                    this.isStale = true;
+                    break;
+                case "ADD_ROWS":
+                    const row = cmd.position === "before" ? cmd.row : cmd.row + 1;
+                    this.adaptcfRules(cmd.sheet, (range) => updateAddRows(range, row, cmd.quantity));
+                    this.isStale = true;
+                    break;
+                case "PASTE_CELL":
+                    this.pasteCf(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.sheet, cmd.cut);
+                    break;
+                case "EVALUATE_CELLS":
+                case "UPDATE_CELL":
+                case "UNDO":
+                case "REDO":
+                    this.isStale = true;
+                    break;
+            }
+        }
+        finalize() {
+            if (this.isStale && this.currentMode !== "headless") {
+                this.computeStyles();
+                this.isStale = false;
+            }
+        }
+        import(data) {
+            for (let sheet of data.sheets) {
+                this.cfRules[sheet.id] = sheet.conditionalFormats;
+            }
+        }
+        export(data) {
+            if (data.sheets) {
+                for (let sheet of data.sheets) {
+                    if (this.cfRules[sheet.id]) {
+                        sheet.conditionalFormats = this.cfRules[sheet.id];
+                    }
+                }
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        /**
+         * Returns all the conditional format rules defined for the current sheet
+         */
+        getConditionalFormats() {
+            return this.cfRules[this.workbook.activeSheet.id];
+        }
+        /**
+         * Returns the conditional style property for a given cell reference in the active sheet or
+         * undefined if this cell doesn't have a conditional style set.
+         */
+        getConditionalStyle(xc) {
+            return (this.computedStyles[this.workbook.activeSheet.id] &&
+                this.computedStyles[this.workbook.activeSheet.id][xc]);
+        }
+        getRulesSelection(selection) {
+            const ruleIds = new Set();
+            selection.forEach((zone) => {
+                const zoneRuleId = this.getRulesByZone(zone);
+                zoneRuleId.forEach((ruleId) => {
+                    ruleIds.add(ruleId);
+                });
+            });
+            return Array.from(ruleIds);
+        }
+        getRulesByZone(zone) {
+            const ruleIds = new Set();
+            for (let row = zone.top; row <= zone.bottom; row++) {
+                for (let col = zone.left; col <= zone.right; col++) {
+                    const cellRulesId = this.getRulesByCell(toXC(col, row));
+                    cellRulesId.forEach((ruleId) => {
+                        ruleIds.add(ruleId);
+                    });
+                }
+            }
+            return ruleIds;
+        }
+        getRulesByCell(cellXc) {
+            const currentSheet = this.workbook.activeSheet.id;
+            const rulesId = new Set();
+            for (let cf of this.cfRules[currentSheet]) {
+                for (let ref of cf.ranges) {
+                    const zone = toZone(ref);
+                    for (let row = zone.top; row <= zone.bottom; row++) {
+                        for (let col = zone.left; col <= zone.right; col++) {
+                            let xc = toXC(col, row);
+                            if (cellXc == xc) {
+                                rulesId.add(cf.id);
+                            }
+                        }
+                    }
+                }
+            }
+            return rulesId;
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        /**
+         * Add or replace a conditional format rule
+         */
+        addConditionalFormatting(cf, sheet) {
+            const currentCF = this.cfRules[sheet].slice();
+            const replaceIndex = currentCF.findIndex((c) => c.id === cf.id);
+            if (replaceIndex > -1) {
+                currentCF.splice(replaceIndex, 1, cf);
+            }
+            else {
+                currentCF.push(cf);
+            }
+            this.history.updateLocalState(["cfRules", sheet], currentCF);
+        }
+        /**
+         * Execute the complete color scale for the range of the conditional format for a 2 colors rule
+         */
+        applyColorScale(range, rule) {
+            const minValue = Number(this.getters.evaluateFormula(`=min(${range})`));
+            const maxValue = Number(this.getters.evaluateFormula(`=max(${range})`));
+            if (Number.isNaN(minValue) || Number.isNaN(maxValue)) {
+                return;
+            }
+            const deltaValue = maxValue - minValue;
+            if (!deltaValue) {
+                return;
+            }
+            const deltaColorR = ((rule.minimum.color >> 16) % 256) - ((rule.maximum.color >> 16) % 256);
+            const deltaColorG = ((rule.minimum.color >> 8) % 256) - ((rule.maximum.color >> 8) % 256);
+            const deltaColorB = (rule.minimum.color % 256) - (rule.maximum.color % 256);
+            const colorDiffUnitR = deltaColorR / deltaValue;
+            const colorDiffUnitG = deltaColorG / deltaValue;
+            const colorDiffUnitB = deltaColorB / deltaValue;
+            const zone = toZone(range);
+            for (let row = zone.top; row <= zone.bottom; row++) {
+                for (let col = zone.left; col <= zone.right; col++) {
+                    const cell = this.workbook.activeSheet.rows[row].cells[col];
+                    if (cell && cell.value && !Number.isNaN(Number.parseFloat(cell.value))) {
+                        const r = Math.round(((rule.minimum.color >> 16) % 256) - colorDiffUnitR * (cell.value - minValue));
+                        const g = Math.round(((rule.minimum.color >> 8) % 256) - colorDiffUnitG * (cell.value - minValue));
+                        const b = Math.round((rule.minimum.color % 256) - colorDiffUnitB * (cell.value - minValue));
+                        const color = (r << 16) | (g << 8) | b;
+                        this.computedStyles[this.workbook.activeSheet.id][cell.xc] =
+                            this.computedStyles[this.workbook.activeSheet.id][cell.xc] || {};
+                        this.computedStyles[this.workbook.activeSheet.id][cell.xc].fillColor =
+                            "#" + colorNumberString(color);
+                    }
+                }
+            }
+        }
+        /**
+         * Compute the styles according to the conditional formatting.
+         * This computation must happen after the cell values are computed if they change
+         *
+         * This result of the computation will be in the state.cell[XC].conditionalStyle and will be the union of all the style
+         * properties of the rules applied (in order).
+         * So if a cell has multiple conditional formatting applied to it, and each affect a different value of the style,
+         * the resulting style will have the combination of all those values.
+         * If multiple conditional formatting use the same style value, they will be applied in order so that the last applied wins
+         */
+        computeStyles() {
+            const currentSheet = this.workbook.activeSheet.id;
+            this.computedStyles[currentSheet] = {};
+            for (let cf of this.cfRules[currentSheet]) {
+                try {
+                    switch (cf.rule.type) {
+                        case "ColorScaleRule":
+                            for (let range of cf.ranges) {
+                                this.applyColorScale(range, cf.rule);
+                            }
+                            break;
+                        default:
+                            for (let ref of cf.ranges) {
+                                const zone = toZone(ref);
+                                for (let row = zone.top; row <= zone.bottom; row++) {
+                                    for (let col = zone.left; col <= zone.right; col++) {
+                                        const pr = this.rulePredicate[cf.rule.type];
+                                        let cell = this.workbook.activeSheet.rows[row].cells[col];
+                                        let xc = toXC(col, row);
+                                        if (pr && pr(cell, cf.rule)) {
+                                            // we must combine all the properties of all the CF rules applied to the given cell
+                                            this.computedStyles[currentSheet][xc] = Object.assign(this.computedStyles[currentSheet][xc] || {}, cf.rule.style);
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+                catch (_) {
+                    // we don't care about the errors within the evaluation of a rule
+                }
+            }
+        }
+        adaptcfRules(sheet, updateCb) {
+            const currentCfs = this.cfRules[sheet];
+            const newCfs = [];
+            for (let cf of currentCfs) {
+                const updatedRanges = [];
+                for (let range of cf.ranges) {
+                    const updatedRange = updateCb(range);
+                    if (updatedRange) {
+                        updatedRanges.push(updatedRange);
+                    }
+                }
+                if (updatedRanges.length === 0) {
+                    continue;
+                }
+                cf.ranges = updatedRanges;
+                newCfs.push(cf);
+            }
+            this.history.updateLocalState(["cfRules", sheet], newCfs);
+        }
+        removeConditionalFormatting(id, sheet) {
+            const cfIndex = this.cfRules[sheet].findIndex((s) => s.id === id);
+            if (cfIndex !== -1) {
+                const currentCF = this.cfRules[sheet].slice();
+                currentCF.splice(cfIndex, 1);
+                this.history.updateLocalState(["cfRules", sheet], currentCF);
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Copy/Cut/Paste and Merge
+        // ---------------------------------------------------------------------------
+        pasteCf(originCol, originRow, col, row, originSheet, cut) {
+            const xc = toXC(col, row);
+            for (let rule of this.cfRules[originSheet]) {
+                for (let range of rule.ranges) {
+                    if (isInside(originCol, originRow, toZone(range))) {
+                        const cf = rule;
+                        const toRemoveRange = [];
+                        if (cut) {
+                            //remove from current rule
+                            toRemoveRange.push(toXC(originCol, originRow));
+                        }
+                        if (originSheet === this.workbook.activeSheet.id) {
+                            this.adaptRules(originSheet, cf, [xc], toRemoveRange);
+                        }
+                        else {
+                            this.adaptRules(this.workbook.activeSheet.id, cf, [xc], []);
+                            this.adaptRules(originSheet, cf, [], toRemoveRange);
+                        }
+                    }
+                }
+            }
+        }
+        adaptRules(sheet, cf, toAdd, toRemove) {
+            if (toAdd.length === 0 && toRemove.length === 0) {
+                return;
+            }
+            const replaceIndex = this.cfRules[sheet].findIndex((c) => c.id === cf.id);
+            let currentRanges = [];
+            if (replaceIndex > -1) {
+                currentRanges = this.cfRules[sheet][replaceIndex].ranges;
+            }
+            currentRanges = currentRanges.concat(toAdd);
+            const newRange = recomputeZones(currentRanges, toRemove);
+            this.addConditionalFormatting({
+                id: cf.id,
+                rule: cf.rule,
+                stopIfTrue: cf.stopIfTrue,
+                ranges: newRange,
+            }, sheet);
+        }
+    }
+    ConditionalFormatPlugin.getters = ["getConditionalFormats", "getConditionalStyle", "getRulesSelection"];
+
+    // Colors
+    const BACKGROUND_GRAY_COLOR = "#f5f5f5";
+    const BACKGROUND_HEADER_COLOR = "#F8F9FA";
+    const BACKGROUND_HEADER_SELECTED_COLOR = "#E8EAED";
+    const BACKGROUND_HEADER_ACTIVE_COLOR = "#595959";
+    const TEXT_HEADER_COLOR = "#666666";
+    const SELECTION_BORDER_COLOR = "#3266ca";
+    // Dimensions
+    const MIN_ROW_HEIGHT = 10;
+    const MIN_COL_WIDTH = 5;
+    const HEADER_HEIGHT = 26;
+    const HEADER_WIDTH = 60;
+    const TOPBAR_HEIGHT = 63;
+    const BOTTOMBAR_HEIGHT = 36;
+    const DEFAULT_CELL_WIDTH = 96;
+    const DEFAULT_CELL_HEIGHT = 23;
+    const SCROLLBAR_WIDTH = 15;
+    // Fonts
+    const DEFAULT_FONT_WEIGHT = "400";
+    const DEFAULT_FONT_SIZE = 10;
+    const HEADER_FONT_SIZE = 11;
+    const DEFAULT_FONT = "'Roboto', arial";
 
     /**
      * Tokenizer
@@ -4615,7 +6077,7 @@
     }
 
     const functions$2 = functionRegistry.content;
-    const UNARY_OPERATORS = ["-"];
+    const UNARY_OPERATORS = ["-", "+"];
     const OP_PRIORITY = {
         "^": 30,
         "*": 20,
@@ -4781,6 +6243,31 @@
         }
         return result;
     }
+    /**
+     * Converts an ast formula to the corresponding string
+     */
+    function astToFormula(ast) {
+        switch (ast.type) {
+            case "FUNCALL":
+            case "ASYNC_FUNCALL":
+                const args = ast.args.map((arg) => astToFormula(arg));
+                return `${ast.value}(${args.join(",")})`;
+            case "NUMBER":
+                return ast.value.toString();
+            case "STRING":
+                return ast.value;
+            case "BOOLEAN":
+                return ast.value ? "TRUE" : "FALSE";
+            case "UNARY_OPERATION":
+                return ast.value + astToFormula(ast.right);
+            case "BIN_OPERATION":
+                return astToFormula(ast.left) + ast.value + astToFormula(ast.right);
+            case "REFERENCE":
+                return ast.sheet ? `${ast.sheet}!${ast.value}` : ast.value;
+            default:
+                return ast.value;
+        }
+    }
 
     const functions$3 = functionRegistry.content;
     const OPERATOR_MAP = {
@@ -4799,6 +6286,7 @@
     };
     const UNARY_OPERATOR_MAP = {
         "-": "UMINUS",
+        "+": "UPLUS",
     };
     // -----------------------------------------------------------------------------
     // COMPILER
@@ -4921,749 +6409,6 @@
         return new Constructor("cell", "range", "ctx", code.join("\n"));
     }
 
-    // -----------------------------------------------------------------------------
-    // Misc
-    // -----------------------------------------------------------------------------
-    function applyOffset(formula, offsetX, offsetY, maxX, maxY) {
-        const tokens = tokenize(formula);
-        return tokens
-            .map((t) => {
-            if (t.type === "SYMBOL" && cellReference.test(t.value)) {
-                const xc = t.value.replace(/\$/g, "");
-                let [x, y] = toCartesian(xc);
-                const freezeCol = t.value.startsWith("$");
-                const freezeRow = t.value.includes("$", 1);
-                x += freezeCol ? 0 : offsetX;
-                y += freezeRow ? 0 : offsetY;
-                if (x < 0 || x >= maxX || y < 0 || y >= maxY) {
-                    return "#REF";
-                }
-                return (freezeCol ? "$" : "") + numberToLetters(x) + (freezeRow ? "$" : "") + String(y + 1);
-            }
-            return t.value;
-        })
-            .join("");
-    }
-
-    /**
-     * Clipboard Plugin
-     *
-     * This clipboard manages all cut/copy/paste interactions internal to the
-     * application, and with the OS clipboard as well.
-     */
-    class ClipboardPlugin extends BasePlugin {
-        constructor() {
-            super(...arguments);
-            this.status = "empty";
-            this.zones = [];
-            this.originSheet = this.workbook.activeSheet.id;
-            this._isPaintingFormat = false;
-            this.onlyFormat = false;
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        allowDispatch(cmd) {
-            if (cmd.type === "PASTE") {
-                return this.isPasteAllowed(cmd.target);
-            }
-            return {
-                status: "SUCCESS",
-            };
-        }
-        handle(cmd) {
-            switch (cmd.type) {
-                case "COPY":
-                    this.cutOrCopy(cmd.target, false);
-                    break;
-                case "CUT":
-                    this.cutOrCopy(cmd.target, true);
-                    break;
-                case "PASTE":
-                    const onlyFormat = "onlyFormat" in cmd ? !!cmd.onlyFormat : this._isPaintingFormat;
-                    this._isPaintingFormat = false;
-                    this.onlyFormat = onlyFormat;
-                    if (cmd.interactive) {
-                        this.interactivePaste(cmd.target);
-                    }
-                    else {
-                        this.pasteFromModel(cmd.target);
-                    }
-                    break;
-                case "PASTE_CELL":
-                    this.pasteCell(cmd.origin, cmd.col, cmd.row, cmd.cut);
-                    break;
-                case "PASTE_FROM_OS_CLIPBOARD":
-                    this.pasteFromClipboard(cmd.target, cmd.text);
-                    break;
-                case "ACTIVATE_PAINT_FORMAT":
-                    this._isPaintingFormat = true;
-                    this.cutOrCopy(cmd.target, false);
-                    break;
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        /**
-         * Format the current clipboard to a string suitable for being pasted in other
-         * programs.
-         *
-         * - add a tab character between each concecutive cells
-         * - add a newline character between each line
-         *
-         * Note that it returns \t if the clipboard is empty. This is necessary for the
-         * clipboard copy event to add it as data, otherwise an empty string is not
-         * considered as a copy content.
-         */
-        getClipboardContent() {
-            if (!this.cells) {
-                return "\t";
-            }
-            return (this.cells
-                .map((cells) => {
-                return cells.map((c) => (c.cell ? this.getters.getCellText(c.cell) : "")).join("\t");
-            })
-                .join("\n") || "\t");
-        }
-        getPasteZones(target) {
-            if (!this.cells) {
-                return target;
-            }
-            const height = this.cells.length;
-            const width = this.cells[0].length;
-            const selection = target[target.length - 1];
-            const pasteZones = [];
-            let col = selection.left;
-            let row = selection.top;
-            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-            for (let x = 1; x <= repX; x++) {
-                for (let y = 1; y <= repY; y++) {
-                    pasteZones.push({
-                        left: col,
-                        top: row,
-                        right: col - 1 + x * width,
-                        bottom: row - 1 + y * height,
-                    });
-                }
-            }
-            return pasteZones;
-        }
-        isPaintingFormat() {
-            return this._isPaintingFormat;
-        }
-        // ---------------------------------------------------------------------------
-        // Private methods
-        // ---------------------------------------------------------------------------
-        cutOrCopy(zones, cut) {
-            const tops = new Set(zones.map((z) => z.top));
-            const bottoms = new Set(zones.map((z) => z.bottom));
-            const areZonesCompatible = tops.size === 1 && bottoms.size === 1;
-            let clippedZones = areZonesCompatible ? zones : [zones[zones.length - 1]];
-            clippedZones = clippedZones.map((z) => Object.assign({}, z));
-            const cells = [];
-            let { top, bottom } = clippedZones[0];
-            for (let r = top; r <= bottom; r++) {
-                const row = [];
-                cells.push(row);
-                for (let zone of clippedZones) {
-                    let { left, right } = zone;
-                    for (let c = left; c <= right; c++) {
-                        const cell = this.getters.getCell(c, r);
-                        row.push({
-                            cell: cell ? Object.assign({}, cell) : null,
-                            col: c,
-                            row: r,
-                        });
-                    }
-                }
-            }
-            this.status = "visible";
-            this.shouldCut = cut;
-            this.zones = clippedZones;
-            this.cells = cells;
-            this.originSheet = this.workbook.activeSheet.id;
-        }
-        pasteFromClipboard(target, content) {
-            this.status = "invisible";
-            const values = content
-                .replace(/\r/g, "")
-                .split("\n")
-                .map((vals) => vals.split("\t"));
-            const { left: activeCol, top: activeRow } = target[0];
-            for (let i = 0; i < values.length; i++) {
-                for (let j = 0; j < values[i].length; j++) {
-                    const xc = toXC(activeCol + j, activeRow + i);
-                    this.dispatch("SET_VALUE", { xc, text: values[i][j] });
-                }
-            }
-        }
-        isPasteAllowed(target) {
-            const { zones, cells, status } = this;
-            // cannot paste if we have a clipped zone larger than a cell and multiple
-            // zones selected
-            if (!zones || !cells || status === "empty") {
-                return { status: "CANCELLED", reason: 10 /* EmptyClipboard */ };
-            }
-            else if (target.length > 1 && (cells.length > 1 || cells[0].length > 1)) {
-                return { status: "CANCELLED", reason: 9 /* WrongPasteSelection */ };
-            }
-            return { status: "SUCCESS" };
-        }
-        pasteFromModel(target) {
-            const { cells, shouldCut } = this;
-            if (!cells) {
-                return;
-            }
-            this.status = shouldCut ? "empty" : "invisible";
-            if (shouldCut) {
-                this.clearCutZone();
-            }
-            const height = cells.length;
-            const width = cells[0].length;
-            if (target.length > 1) {
-                for (let zone of target) {
-                    for (let i = zone.left; i <= zone.right; i++) {
-                        for (let j = zone.top; j <= zone.bottom; j++) {
-                            this.pasteZone(width, height, i, j);
-                        }
-                    }
-                }
-                return;
-            }
-            const selection = target[target.length - 1];
-            let col = selection.left;
-            let row = selection.top;
-            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-            for (let x = 0; x < repX; x++) {
-                for (let y = 0; y < repY; y++) {
-                    this.pasteZone(width, height, col + x * width, row + y * height);
-                }
-            }
-            if (height > 1 || width > 1) {
-                const newSelection = {
-                    left: col,
-                    top: row,
-                    right: col + repX * width - 1,
-                    bottom: row + repY * height - 1,
-                };
-                const [anchorCol, anchorRow] = this.getters.getSelection().anchor;
-                const newCol = clip(anchorCol, col, col + repX * width - 1);
-                const newRow = clip(anchorRow, row, row + repY * height - 1);
-                this.dispatch("SET_SELECTION", {
-                    anchor: [newCol, newRow],
-                    zones: [newSelection],
-                });
-            }
-        }
-        clearCutZone() {
-            for (let row of this.cells) {
-                for (let cell of row) {
-                    if (cell) {
-                        this.dispatch("CLEAR_CELL", {
-                            sheet: this.originSheet,
-                            col: cell.col,
-                            row: cell.row,
-                        });
-                    }
-                }
-            }
-        }
-        pasteZone(width, height, col, row) {
-            const { cols, rows } = this.workbook.activeSheet;
-            // first, add missing cols/rows if needed
-            const missingRows = height + row - rows.length;
-            if (missingRows > 0) {
-                this.dispatch("ADD_ROWS", {
-                    row: rows.length - 1,
-                    sheet: this.workbook.activeSheet.id,
-                    quantity: missingRows,
-                    position: "after",
-                });
-            }
-            const missingCols = width + col - cols.length;
-            if (missingCols > 0) {
-                this.dispatch("ADD_COLUMNS", {
-                    column: cols.length - 1,
-                    sheet: this.workbook.activeSheet.id,
-                    quantity: missingCols,
-                    position: "after",
-                });
-            }
-            // then, perform the actual paste operation
-            for (let r = 0; r < height; r++) {
-                const rowCells = this.cells[r];
-                for (let c = 0; c < width; c++) {
-                    const originCell = rowCells[c];
-                    this.dispatch("PASTE_CELL", {
-                        origin: originCell.cell,
-                        originCol: originCell.col,
-                        originRow: originCell.row,
-                        col: col + c,
-                        row: row + r,
-                        sheet: this.originSheet,
-                        cut: this.shouldCut,
-                    });
-                }
-            }
-        }
-        pasteCell(origin, col, row, cut) {
-            const { cols, rows } = this.workbook.activeSheet;
-            const targetCell = this.getters.getCell(col, row);
-            if (origin) {
-                let content = origin.content || "";
-                if (origin.type === "formula") {
-                    const offsetX = col - origin.col;
-                    const offsetY = row - origin.row;
-                    content = applyOffset(content, offsetX, offsetY, cols.length, rows.length);
-                }
-                if (this.onlyFormat) {
-                    content = targetCell ? targetCell.content : "";
-                }
-                let newCell = {
-                    style: origin.style,
-                    border: origin.border,
-                    format: origin.format,
-                    sheet: this.workbook.activeSheet.id,
-                    col: col,
-                    row: row,
-                    content,
-                };
-                this.dispatch("UPDATE_CELL", newCell);
-            }
-            if (!origin && targetCell) {
-                if (this.onlyFormat) {
-                    if (targetCell.style || targetCell.border) {
-                        this.history.updateCell(targetCell, "style", undefined);
-                        this.history.updateCell(targetCell, "border", undefined);
-                    }
-                }
-                else {
-                    this.dispatch("CLEAR_CELL", {
-                        sheet: this.workbook.activeSheet.id,
-                        col: col,
-                        row: row,
-                    });
-                }
-            }
-        }
-        interactivePaste(target) {
-            const result = this.dispatch("PASTE", { target, onlyFormat: false });
-            if (result.status === "CANCELLED") {
-                if (result.reason === 9 /* WrongPasteSelection */) {
-                    this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
-                }
-                if (result.reason === 1 /* WillRemoveExistingMerge */) {
-                    this.ui.askConfirmation(_lt("Pasting here will remove existing merge(s). Paste anyway?"), () => this.dispatch("PASTE", { target, onlyFormat: false, force: true }));
-                }
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Grid rendering
-        // ---------------------------------------------------------------------------
-        drawGrid(renderingContext) {
-            const { viewport, ctx, thinLineWidth } = renderingContext;
-            const zones = this.zones;
-            if (this.status !== "visible" ||
-                !zones.length ||
-                this.originSheet !== this.getters.getActiveSheet()) {
-                return;
-            }
-            ctx.save();
-            ctx.setLineDash([8, 5]);
-            ctx.strokeStyle = "#3266ca";
-            ctx.lineWidth = 3.3 * thinLineWidth;
-            for (const zone of zones) {
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
-                if (width > 0 && height > 0) {
-                    ctx.strokeRect(x, y, width, height);
-                }
-            }
-            ctx.restore();
-        }
-    }
-    ClipboardPlugin.layers = [2 /* Clipboard */];
-    ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat", "getPasteZones"];
-    ClipboardPlugin.modes = ["normal", "readonly"];
-
-    // -----------------------------------------------------------------------------
-    // Constants
-    // -----------------------------------------------------------------------------
-    class ConditionalFormatPlugin extends BasePlugin {
-        constructor() {
-            super(...arguments);
-            this.isStale = true;
-            this.cfRules = {};
-            // stores the computed styles in the format of computedStyles.sheetName.cellXC = Style
-            this.computedStyles = {};
-            /**
-             * Execute the predicate to know if a conditional formatting rule should be applied to a cell
-             */
-            this.rulePredicate = {
-                CellIsRule: (cell, rule) => {
-                    switch (rule.operator) {
-                        case "BeginsWith":
-                            if (!cell && rule.values[0] === "") {
-                                return false;
-                            }
-                            return cell && cell.value.startsWith(rule.values[0]);
-                        case "EndsWith":
-                            if (!cell && rule.values[0] === "") {
-                                return false;
-                            }
-                            return cell && cell.value.endsWith(rule.values[0]);
-                        case "Between":
-                            return cell && cell.value >= rule.values[0] && cell.value <= rule.values[1];
-                        case "NotBetween":
-                            return !(cell && cell.value >= rule.values[0] && cell.value <= rule.values[1]);
-                        case "ContainsText":
-                            return cell && cell.value && cell.value.toString().indexOf(rule.values[0]) > -1;
-                        case "NotContains":
-                            return cell && cell.value && cell.value.toString().indexOf(rule.values[0]) == -1;
-                        case "GreaterThan":
-                            return cell && cell.value > rule.values[0];
-                        case "GreaterThanOrEqual":
-                            return cell && cell.value >= rule.values[0];
-                        case "LessThan":
-                            return cell && cell.value < rule.values[0];
-                        case "LessThanOrEqual":
-                            return cell && cell.value <= rule.values[0];
-                        case "NotEqual":
-                            if (!cell && rule.values[0] === "") {
-                                return false;
-                            }
-                            return cell && cell.value != rule.values[0];
-                        case "Equal":
-                            if (!cell && rule.values[0] === "") {
-                                return true;
-                            }
-                            return cell && cell.value == rule.values[0];
-                        default:
-                            console.warn(_lt(`Not implemented operator ${rule.operator} for kind of conditional formatting:  ${rule.type}`));
-                    }
-                    return false;
-                },
-            };
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        handle(cmd) {
-            switch (cmd.type) {
-                case "ACTIVATE_SHEET":
-                    const activeSheet = cmd.to;
-                    this.computedStyles[activeSheet] = this.computedStyles[activeSheet] || {};
-                    this.cfRules[activeSheet] = this.cfRules[activeSheet] || [];
-                    this.isStale = true;
-                    break;
-                case "ADD_CONDITIONAL_FORMAT":
-                    this.addConditionalFormatting(cmd.cf, cmd.sheet);
-                    this.isStale = true;
-                    break;
-                case "REMOVE_CONDITIONAL_FORMAT":
-                    this.removeConditionalFormatting(cmd.id, cmd.sheet);
-                    this.isStale = true;
-                    break;
-                case "REMOVE_COLUMNS":
-                    this.adaptcfRules(cmd.sheet, (range) => updateRemoveColumns(range, cmd.columns));
-                    this.isStale = true;
-                    break;
-                case "REMOVE_ROWS":
-                    this.adaptcfRules(cmd.sheet, (range) => updateRemoveRows(range, cmd.rows));
-                    this.isStale = true;
-                    break;
-                case "ADD_COLUMNS":
-                    const column = cmd.position === "before" ? cmd.column : cmd.column + 1;
-                    this.adaptcfRules(cmd.sheet, (range) => updateAddColumns(range, column, cmd.quantity));
-                    this.isStale = true;
-                    break;
-                case "ADD_ROWS":
-                    const row = cmd.position === "before" ? cmd.row : cmd.row + 1;
-                    this.adaptcfRules(cmd.sheet, (range) => updateAddRows(range, row, cmd.quantity));
-                    this.isStale = true;
-                    break;
-                case "PASTE_CELL":
-                    this.pasteCf(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.sheet, cmd.cut);
-                    break;
-                case "EVALUATE_CELLS":
-                case "UPDATE_CELL":
-                case "UNDO":
-                case "REDO":
-                    this.isStale = true;
-                    break;
-            }
-        }
-        finalize() {
-            if (this.isStale && this.currentMode !== "headless") {
-                this.computeStyles();
-                this.isStale = false;
-            }
-        }
-        import(data) {
-            for (let sheet of data.sheets) {
-                this.cfRules[sheet.id] = sheet.conditionalFormats;
-            }
-        }
-        export(data) {
-            if (data.sheets) {
-                for (let sheet of data.sheets) {
-                    if (this.cfRules[sheet.id]) {
-                        sheet.conditionalFormats = this.cfRules[sheet.id];
-                    }
-                }
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        /**
-         * Returns all the conditional format rules defined for the current sheet
-         */
-        getConditionalFormats() {
-            return this.cfRules[this.workbook.activeSheet.id];
-        }
-        /**
-         * Returns the conditional style property for a given cell reference in the active sheet or
-         * undefined if this cell doesn't have a conditional style set.
-         */
-        getConditionalStyle(xc) {
-            return (this.computedStyles[this.workbook.activeSheet.id] &&
-                this.computedStyles[this.workbook.activeSheet.id][xc]);
-        }
-        getRulesSelection(selection) {
-            const ruleIds = new Set();
-            selection.forEach((zone) => {
-                const zoneRuleId = this.getRulesByZone(zone);
-                zoneRuleId.forEach((ruleId) => {
-                    ruleIds.add(ruleId);
-                });
-            });
-            return Array.from(ruleIds);
-        }
-        getRulesByZone(zone) {
-            const ruleIds = new Set();
-            for (let row = zone.top; row <= zone.bottom; row++) {
-                for (let col = zone.left; col <= zone.right; col++) {
-                    const cellRulesId = this.getRulesByCell(toXC(col, row));
-                    cellRulesId.forEach((ruleId) => {
-                        ruleIds.add(ruleId);
-                    });
-                }
-            }
-            return ruleIds;
-        }
-        getRulesByCell(cellXc) {
-            const currentSheet = this.workbook.activeSheet.id;
-            const rulesId = new Set();
-            for (let cf of this.cfRules[currentSheet]) {
-                for (let ref of cf.ranges) {
-                    const zone = toZone(ref);
-                    for (let row = zone.top; row <= zone.bottom; row++) {
-                        for (let col = zone.left; col <= zone.right; col++) {
-                            let xc = toXC(col, row);
-                            if (cellXc == xc) {
-                                rulesId.add(cf.id);
-                            }
-                        }
-                    }
-                }
-            }
-            return rulesId;
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        /**
-         * Add or replace a conditional format rule
-         */
-        addConditionalFormatting(cf, sheet) {
-            const currentCF = this.cfRules[sheet].slice();
-            const replaceIndex = currentCF.findIndex((c) => c.id === cf.id);
-            if (replaceIndex > -1) {
-                currentCF.splice(replaceIndex, 1, cf);
-            }
-            else {
-                currentCF.push(cf);
-            }
-            this.history.updateLocalState(["cfRules", sheet], currentCF);
-        }
-        /**
-         * Execute the complete color scale for the range of the conditional format for a 2 colors rule
-         */
-        applyColorScale(range, rule) {
-            const minValue = Number(this.getters.evaluateFormula(`=min(${range})`));
-            const maxValue = Number(this.getters.evaluateFormula(`=max(${range})`));
-            if (Number.isNaN(minValue) || Number.isNaN(maxValue)) {
-                return;
-            }
-            const deltaValue = maxValue - minValue;
-            if (!deltaValue) {
-                return;
-            }
-            const deltaColorR = ((rule.minimum.color >> 16) % 256) - ((rule.maximum.color >> 16) % 256);
-            const deltaColorG = ((rule.minimum.color >> 8) % 256) - ((rule.maximum.color >> 8) % 256);
-            const deltaColorB = (rule.minimum.color % 256) - (rule.maximum.color % 256);
-            const colorDiffUnitR = deltaColorR / deltaValue;
-            const colorDiffUnitG = deltaColorG / deltaValue;
-            const colorDiffUnitB = deltaColorB / deltaValue;
-            const zone = toZone(range);
-            for (let row = zone.top; row <= zone.bottom; row++) {
-                for (let col = zone.left; col <= zone.right; col++) {
-                    const cell = this.workbook.activeSheet.rows[row].cells[col];
-                    if (cell && cell.value && !Number.isNaN(Number.parseFloat(cell.value))) {
-                        const r = Math.round(((rule.minimum.color >> 16) % 256) - colorDiffUnitR * (cell.value - minValue));
-                        const g = Math.round(((rule.minimum.color >> 8) % 256) - colorDiffUnitG * (cell.value - minValue));
-                        const b = Math.round((rule.minimum.color % 256) - colorDiffUnitB * (cell.value - minValue));
-                        const color = (r << 16) | (g << 8) | b;
-                        this.computedStyles[this.workbook.activeSheet.id][cell.xc] =
-                            this.computedStyles[this.workbook.activeSheet.id][cell.xc] || {};
-                        this.computedStyles[this.workbook.activeSheet.id][cell.xc].fillColor =
-                            "#" + colorNumberString(color);
-                    }
-                }
-            }
-        }
-        /**
-         * Compute the styles according to the conditional formatting.
-         * This computation must happen after the cell values are computed if they change
-         *
-         * This result of the computation will be in the state.cell[XC].conditionalStyle and will be the union of all the style
-         * properties of the rules applied (in order).
-         * So if a cell has multiple conditional formatting applied to it, and each affect a different value of the style,
-         * the resulting style will have the combination of all those values.
-         * If multiple conditional formatting use the same style value, they will be applied in order so that the last applied wins
-         */
-        computeStyles() {
-            const currentSheet = this.workbook.activeSheet.id;
-            this.computedStyles[currentSheet] = {};
-            for (let cf of this.cfRules[currentSheet]) {
-                try {
-                    switch (cf.rule.type) {
-                        case "ColorScaleRule":
-                            for (let range of cf.ranges) {
-                                this.applyColorScale(range, cf.rule);
-                            }
-                            break;
-                        default:
-                            for (let ref of cf.ranges) {
-                                const zone = toZone(ref);
-                                for (let row = zone.top; row <= zone.bottom; row++) {
-                                    for (let col = zone.left; col <= zone.right; col++) {
-                                        const pr = this.rulePredicate[cf.rule.type];
-                                        let cell = this.workbook.activeSheet.rows[row].cells[col];
-                                        let xc = toXC(col, row);
-                                        if (pr && pr(cell, cf.rule)) {
-                                            // we must combine all the properties of all the CF rules applied to the given cell
-                                            this.computedStyles[currentSheet][xc] = Object.assign(this.computedStyles[currentSheet][xc] || {}, cf.rule.style);
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                    }
-                }
-                catch (_) {
-                    // we don't care about the errors within the evaluation of a rule
-                }
-            }
-        }
-        adaptcfRules(sheet, updateCb) {
-            const currentCfs = this.cfRules[sheet];
-            const newCfs = [];
-            for (let cf of currentCfs) {
-                const updatedRanges = [];
-                for (let range of cf.ranges) {
-                    const updatedRange = updateCb(range);
-                    if (updatedRange) {
-                        updatedRanges.push(updatedRange);
-                    }
-                }
-                if (updatedRanges.length === 0) {
-                    continue;
-                }
-                cf.ranges = updatedRanges;
-                newCfs.push(cf);
-            }
-            this.history.updateLocalState(["cfRules", sheet], newCfs);
-        }
-        removeConditionalFormatting(id, sheet) {
-            const cfIndex = this.cfRules[sheet].findIndex((s) => s.id === id);
-            if (cfIndex !== -1) {
-                const currentCF = this.cfRules[sheet].slice();
-                currentCF.splice(cfIndex, 1);
-                this.history.updateLocalState(["cfRules", sheet], currentCF);
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Copy/Cut/Paste and Merge
-        // ---------------------------------------------------------------------------
-        pasteCf(originCol, originRow, col, row, originSheet, cut) {
-            const xc = toXC(col, row);
-            for (let rule of this.cfRules[originSheet]) {
-                for (let range of rule.ranges) {
-                    if (isInside(originCol, originRow, toZone(range))) {
-                        const cf = rule;
-                        const toRemoveRange = [];
-                        if (cut) {
-                            //remove from current rule
-                            toRemoveRange.push(toXC(originCol, originRow));
-                        }
-                        if (originSheet === this.workbook.activeSheet.id) {
-                            this.adaptRules(originSheet, cf, [xc], toRemoveRange);
-                        }
-                        else {
-                            this.adaptRules(this.workbook.activeSheet.id, cf, [xc], []);
-                            this.adaptRules(originSheet, cf, [], toRemoveRange);
-                        }
-                    }
-                }
-            }
-        }
-        adaptRules(sheet, cf, toAdd, toRemove) {
-            if (toAdd.length === 0 && toRemove.length === 0) {
-                return;
-            }
-            const replaceIndex = this.cfRules[sheet].findIndex((c) => c.id === cf.id);
-            let currentRanges = [];
-            if (replaceIndex > -1) {
-                currentRanges = this.cfRules[sheet][replaceIndex].ranges;
-            }
-            currentRanges = currentRanges.concat(toAdd);
-            const newRange = recomputeZones(currentRanges, toRemove);
-            this.addConditionalFormatting({
-                id: cf.id,
-                rule: cf.rule,
-                stopIfTrue: cf.stopIfTrue,
-                ranges: newRange,
-            }, sheet);
-        }
-    }
-    ConditionalFormatPlugin.getters = ["getConditionalFormats", "getConditionalStyle", "getRulesSelection"];
-
-    // Colors
-    const BACKGROUND_GRAY_COLOR = "#f5f5f5";
-    const BACKGROUND_HEADER_COLOR = "#F8F9FA";
-    const BACKGROUND_HEADER_SELECTED_COLOR = "#E8EAED";
-    const BACKGROUND_HEADER_ACTIVE_COLOR = "#595959";
-    const TEXT_HEADER_COLOR = "#666666";
-    // Dimensions
-    const MIN_ROW_HEIGHT = 10;
-    const MIN_COL_WIDTH = 5;
-    const HEADER_HEIGHT = 26;
-    const HEADER_WIDTH = 60;
-    const TOPBAR_HEIGHT = 63;
-    const BOTTOMBAR_HEIGHT = 36;
-    const DEFAULT_CELL_WIDTH = 96;
-    const DEFAULT_CELL_HEIGHT = 23;
-    const SCROLLBAR_WIDTH = 15;
-    // Fonts
-    const DEFAULT_FONT_WEIGHT = "400";
-    const DEFAULT_FONT_SIZE = 10;
-    const HEADER_FONT_SIZE = 11;
-    const DEFAULT_FONT = "'Roboto', arial";
-
     const nbspRegexp = new RegExp(String.fromCharCode(160), "g");
     const MIN_PADDING = 3;
     /**
@@ -5706,7 +6451,7 @@
                     this.history.updateState(["activeSheet"], this.workbook.sheets[cmd.to]);
                     break;
                 case "CREATE_SHEET":
-                    const sheet = this.createSheet(cmd.name || `Sheet${this.workbook.visibleSheets.length + 1}`, cmd.cols || 26, cmd.rows || 100);
+                    const sheet = this.createSheet(cmd.id, cmd.name || `Sheet${this.workbook.visibleSheets.length + 1}`, cmd.cols || 26, cmd.rows || 100);
                     this.sheetIds[this.workbook.sheets[sheet].name] = sheet;
                     if (cmd.activate) {
                         this.dispatch("ACTIVATE_SHEET", { from: this.workbook.activeSheet.id, to: sheet });
@@ -5788,6 +6533,44 @@
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
+        applyOffset(formula, offsetX, offsetY) {
+            const tokens = tokenize(formula);
+            return tokens
+                .map((t) => {
+                if (t.type === "SYMBOL" && cellReference.test(t.value)) {
+                    const [xc, sheetRef] = t.value.replace(/\$/g, "").split("!").reverse();
+                    let sheetId;
+                    if (sheetRef) {
+                        const sheet = this.getters.getSheets().find((sheet) => sheet.name === sheetRef);
+                        if (!sheet) {
+                            return "#REF";
+                        }
+                        sheetId = sheet.id;
+                    }
+                    else {
+                        sheetId = this.getters.getActiveSheet();
+                    }
+                    let [x, y] = toCartesian(xc);
+                    const freezeCol = t.value.startsWith("$");
+                    const freezeRow = t.value.includes("$", 1);
+                    x += freezeCol ? 0 : offsetX;
+                    y += freezeRow ? 0 : offsetY;
+                    if (x < 0 ||
+                        x >= this.getters.getNumberCols(sheetId) ||
+                        y < 0 ||
+                        y >= this.getters.getNumberRows(sheetId)) {
+                        return "#REF";
+                    }
+                    return ((sheetRef ? `${sheetRef}!` : "") +
+                        (freezeCol ? "$" : "") +
+                        numberToLetters(x) +
+                        (freezeRow ? "$" : "") +
+                        String(y + 1));
+                }
+                return t.value;
+            })
+                .join("");
+        }
         getCell(col, row, sheetName) {
             let r;
             if (!sheetName) {
@@ -5884,11 +6667,11 @@
         getColCells(col) {
             return this.workbook.activeSheet.rows.reduce((acc, cur) => (cur.cells[col] ? acc.concat(cur.cells[col]) : acc), []);
         }
-        getNumberCols() {
-            return this.workbook.activeSheet.cols.length;
+        getNumberCols(sheetId) {
+            return this.workbook.sheets[sheetId].cols.length;
         }
-        getNumberRows() {
-            return this.workbook.activeSheet.rows.length;
+        getNumberRows(sheetId) {
+            return this.workbook.sheets[sheetId].rows.length;
         }
         getColsZone(start, end) {
             return {
@@ -5990,13 +6773,23 @@
             // This is necessary because we have to delete elements in correct order:
             // begin with the end.
             rows.sort((a, b) => b - a);
-            for (let row of rows) {
+            const consecutiveRows = rows.reduce((groups, currentRow, index, rows) => {
+                if (currentRow - rows[index - 1] === -1) {
+                    const lastGroup = groups[groups.length - 1];
+                    lastGroup.push(currentRow);
+                }
+                else {
+                    groups.push([currentRow]);
+                }
+                return groups;
+            }, []);
+            for (let group of consecutiveRows) {
                 // Update all the formulas.
-                this.updateAllFormulasVertically(row, -1);
+                this.updateAllFormulasVertically(group[0], -group.length);
                 // Move the cells.
-                this.moveCellsVertically(row, -1);
+                this.moveCellVerticallyBatched(group[group.length - 1], group[0]);
                 // Effectively delete the element and recompute the left-right/top-bottom.
-                this.processRowsHeaderDelete(row);
+                group.map((row) => this.processRowsHeaderDelete(row));
             }
         }
         addColumns(sheetID, column, position, quantity) {
@@ -6025,6 +6818,30 @@
                     sheet: this.workbook.activeSheet.id,
                     col: cell.col + step,
                     row: cell.row,
+                    content: cell.content,
+                    border: cell.border,
+                    style: cell.style,
+                    format: cell.format,
+                };
+            });
+        }
+        /**
+         * Move all the cells that are from the row under `deleteToRow` up to `deleteFromRow`
+         *
+         * b.e.
+         * move vertically with delete from 3 and delete to 5 will first clear all the cells from lines 3 to 5,
+         * then take all the row starting at index 6 and add them back at index 3
+         *
+         * @param deleteFromRow the row index from which to start deleting
+         * @param deleteToRow the row index until which the deleting must continue
+         */
+        moveCellVerticallyBatched(deleteFromRow, deleteToRow) {
+            return this.processCellsToMove(({ row }) => row >= deleteFromRow, ({ row }) => row > deleteToRow, (cell) => {
+                return {
+                    type: "UPDATE_CELL",
+                    sheet: this.workbook.activeSheet.id,
+                    col: cell.col,
+                    row: cell.row - (deleteToRow - deleteFromRow + 1),
                     content: cell.content,
                     border: cell.border,
                     style: cell.style,
@@ -6157,7 +6974,7 @@
         updateAllFormulasVertically(base, step) {
             return this.visitFormulas((value, sheet) => {
                 let [x, y] = toCartesian(value);
-                if (y === base && step === -1) {
+                if (base + step < y && y <= base) {
                     return "#REF";
                 }
                 if (y > base) {
@@ -6169,7 +6986,8 @@
         processCellsToMove(shouldDelete, shouldAdd, buildCellToAdd) {
             const deleteCommands = [];
             const addCommands = [];
-            for (let [xc, cell] of Object.entries(this.workbook.activeSheet.cells)) {
+            for (let xc in this.workbook.activeSheet.cells) {
+                let cell = this.workbook.activeSheet.cells[xc];
                 if (shouldDelete(cell)) {
                     const [col, row] = toCartesian(xc);
                     deleteCommands.push({
@@ -6280,9 +7098,9 @@
             this.history.updateSheet(_sheet, ["cells", xc], cell);
             this.history.updateSheet(_sheet, ["rows", row, "cells", col], cell);
         }
-        createSheet(name, cols, rows) {
+        createSheet(id, name, cols, rows) {
             const sheet = {
-                id: uuidv4(),
+                id,
                 name,
                 cells: {},
                 colNumber: cols,
@@ -6429,12 +7247,14 @@
                     merges: [],
                     cells: cells,
                     conditionalFormats: [],
+                    figures: [],
                 };
             });
             data.activeSheet = this.workbook.activeSheet.id;
         }
     }
     CorePlugin.getters = [
+        "applyOffset",
         "getColsZone",
         "getRowsZone",
         "getCell",
@@ -8697,7 +9517,7 @@
             ctx.fillStyle = "#f3f7fe";
             const onlyOneCell = zones.length === 1 && zones[0].left === zones[0].right && zones[0].top === zones[0].bottom;
             ctx.fillStyle = onlyOneCell ? "#f3f7fe" : "#e9f0ff";
-            ctx.strokeStyle = "#3266ca";
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
             ctx.lineWidth = 1.5 * thinLineWidth;
             ctx.globalCompositeOperation = "multiply";
             for (const zone of zones) {
@@ -8784,7 +9604,7 @@
                     break;
             }
             return Object.assign({}, data, {
-                content: applyOffset(data.content, x, y, getters.getNumberCols(), getters.getNumberRows()),
+                content: getters.applyOffset(data.content, x, y),
             });
         },
     });
@@ -9139,6 +9959,10 @@
         }
         return _lt(`${number} Rows above`);
     };
+    const ROW_INSERT_ROWS_BEFORE_NAME = (env) => {
+        const number = getRowsNumber(env);
+        return number === 1 ? _lt("Insert row above") : _lt(`Insert ${number} rows above`);
+    };
     const CELL_INSERT_ROWS_BEFORE_NAME = (env) => {
         const number = getRowsNumber(env);
         if (number === 1) {
@@ -9173,6 +9997,10 @@
         }
         return _lt(`${number} Rows below`);
     };
+    const ROW_INSERT_ROWS_AFTER_NAME = (env) => {
+        const number = getRowsNumber(env);
+        return number === 1 ? _lt("Insert row below") : _lt(`Insert ${number} rows below`);
+    };
     const INSERT_ROWS_AFTER_ACTION = (env) => {
         const activeRows = env.getters.getActiveRows();
         let row;
@@ -9199,6 +10027,10 @@
             return _lt("Column left");
         }
         return _lt(`${number} Columns left`);
+    };
+    const COLUMN_INSERT_COLUMNS_BEFORE_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        return number === 1 ? _lt("Insert column left") : _lt(`Insert ${number} columns left`);
     };
     const CELL_INSERT_COLUMNS_BEFORE_NAME = (env) => {
         const number = getColumnsNumber(env);
@@ -9234,6 +10066,10 @@
         }
         return _lt(`${number} Columns right`);
     };
+    const COLUMN_INSERT_COLUMNS_AFTER_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        return number === 1 ? _lt("Insert column right") : _lt(`Insert ${number} columns right`);
+    };
     const INSERT_COLUMNS_AFTER_ACTION = (env) => {
         const activeCols = env.getters.getActiveCols();
         let column;
@@ -9258,7 +10094,7 @@
     // Sheets
     //------------------------------------------------------------------------------
     const CREATE_SHEET_ACTION = (env) => {
-        env.dispatch("CREATE_SHEET", { activate: true });
+        env.dispatch("CREATE_SHEET", { activate: true, id: uuidv4() });
     };
     //------------------------------------------------------------------------------
     // Style/Format
@@ -9391,12 +10227,12 @@
         action: DELETE_CONTENT_COLUMNS_ACTION,
     })
         .add("add_column_before", {
-        name: MENU_INSERT_COLUMNS_BEFORE_NAME,
+        name: COLUMN_INSERT_COLUMNS_BEFORE_NAME,
         sequence: 80,
         action: INSERT_COLUMNS_BEFORE_ACTION,
     })
         .add("add_column_after", {
-        name: MENU_INSERT_COLUMNS_AFTER_NAME,
+        name: COLUMN_INSERT_COLUMNS_AFTER_NAME,
         sequence: 90,
         action: INSERT_COLUMNS_AFTER_ACTION,
     });
@@ -9445,12 +10281,12 @@
         action: DELETE_CONTENT_ROWS_ACTION,
     })
         .add("add_row_before", {
-        name: MENU_INSERT_ROWS_BEFORE_NAME,
+        name: ROW_INSERT_ROWS_BEFORE_NAME,
         sequence: 80,
         action: INSERT_ROWS_BEFORE_ACTION,
     })
         .add("add_row_after", {
-        name: MENU_INSERT_ROWS_AFTER_NAME,
+        name: ROW_INSERT_ROWS_AFTER_NAME,
         sequence: 90,
         action: INSERT_ROWS_AFTER_ACTION,
     });
@@ -9551,22 +10387,26 @@
         name: MENU_INSERT_ROWS_BEFORE_NAME,
         sequence: 10,
         action: INSERT_ROWS_BEFORE_ACTION,
+        isVisible: (env) => env.getters.getActiveCols().size === 0,
     })
         .addChild("insert_row_after", ["insert"], {
         name: MENU_INSERT_ROWS_AFTER_NAME,
         sequence: 20,
         action: INSERT_ROWS_AFTER_ACTION,
+        isVisible: (env) => env.getters.getActiveCols().size === 0,
         separator: true,
     })
         .addChild("insert_column_before", ["insert"], {
         name: MENU_INSERT_COLUMNS_BEFORE_NAME,
         sequence: 30,
         action: INSERT_COLUMNS_BEFORE_ACTION,
+        isVisible: (env) => env.getters.getActiveRows().size === 0,
     })
         .addChild("insert_column_after", ["insert"], {
         name: MENU_INSERT_COLUMNS_AFTER_NAME,
         sequence: 40,
         action: INSERT_COLUMNS_AFTER_ACTION,
+        isVisible: (env) => env.getters.getActiveRows().size === 0,
         separator: true,
     })
         .addChild("insert_sheet", ["insert"], {
@@ -9911,9 +10751,9 @@
                     <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
         </div>
     </div>
-    <div class="o-cf-buttons">
-      <button t-on-click="onCancel" class="o-cf-button o-cf-cancel" t-esc="env._t('${terms.CANCEL}')"></button>
-      <button t-on-click="onSave" class="o-cf-button o-cf-save" t-esc="env._t('${terms.SAVE}')"></button>
+    <div class="o-sidePanelButtons">
+      <button t-on-click="onCancel" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${terms.CANCEL}')"></button>
+      <button t-on-click="onSave" class="o-sidePanelButton o-cf-save" t-esc="env._t('${terms.SAVE}')"></button>
     </div>
 </div>
 `;
@@ -9947,26 +10787,6 @@
   .o-cf-preview-line {
     border: 1px solid darkgrey;
     padding: 10px;
-  }
-  .o-cf-buttons {
-    padding: 12px;
-    text-align: right;
-    border-bottom: 1px solid #ccc;
-    .o-cf-button {
-      border: 1px solid lightgrey;
-      padding: 0px 20px 0px 20px;
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 14px;
-      height: 36px;
-      line-height: 16px;
-      background: white;
-      cursor: pointer;
-      margin-left: 8px;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
   }
 `;
     class CellIsRuleEditor extends Component$1 {
@@ -10091,9 +10911,9 @@
           <t t-set="threshold" t-value="state.maximum" ></t>
           <t t-set="thresholdType" t-value="'maximum'" ></t>
       </t>
-      <div class="o-cf-buttons">
-        <button t-on-click="onCancel" class="o-cf-button o-cf-cancel">Cancel</button>
-        <button t-on-click="onSave" class="o-cf-button o-cf-save">Save</button>
+      <div class="o-sidePanelButtons">
+        <button t-on-click="onCancel" class="o-sidePanelButton o-cf-cancel">Cancel</button>
+        <button t-on-click="onSave" class="o-sidePanelButton o-cf-save">Save</button>
       </div>
   </div>`;
     const CSS$1 = css$2 /* scss */ `
@@ -10119,26 +10939,6 @@
   .o-cf-preview-gradient {
     border: 1px solid darkgrey;
     padding: 10px;
-  }
-  .o-cf-buttons {
-    padding: 5px;
-    text-align: right;
-    border-bottom: 1px solid #ccc;
-    .o-cf-button {
-      border: 1px solid lightgrey;
-      padding: 0px 20px 0px 20px;
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 14px;
-      height: 36px;
-      line-height: 16px;
-      background: white;
-      cursor: pointer;
-      margin-right: 16px;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
   }
 `;
     class ColorScaleRuleEditor extends Component$2 {
@@ -10460,7 +11260,7 @@
       }
       .o-cf-delete{
         height: 56px;
-        left: 250px;
+        left: 90%;
         line-height: 56px;
         position: absolute;
       }
@@ -10578,25 +11378,6 @@
                 CellIsRule: CellIsRuleEditor,
                 ColorScaleRule: ColorScaleRuleEditor,
             };
-            this.defaultCellIsRule = {
-                rule: {
-                    type: "CellIsRule",
-                    operator: "Equal",
-                    values: [],
-                    style: { fillColor: "#FF0000" },
-                },
-                ranges: [this.getters.getSelectedZones().map(this.getters.zoneToXC).join(",")],
-                id: uuidv4(),
-            };
-            this.defaultColorScaleRule = {
-                rule: {
-                    minimum: { type: "value", color: 0 },
-                    maximum: { type: "value", color: 0xeeffee },
-                    type: "ColorScaleRule",
-                },
-                ranges: [this.getters.getSelectedZones().map(this.getters.zoneToXC).join(",")],
-                id: uuidv4(),
-            };
             if (props.selection && this.getters.getRulesSelection(props.selection).length === 1) {
                 this.openCf(this.getters.getRulesSelection(props.selection)[0]);
             }
@@ -10678,17 +11459,40 @@
                 this.state.currentRanges = this.state.currentCF.ranges;
             }
         }
+        defaultCellIsRule() {
+            return {
+                rule: {
+                    type: "CellIsRule",
+                    operator: "Equal",
+                    values: [],
+                    style: { fillColor: "#FF0000" },
+                },
+                ranges: this.getters.getSelectedZones().map(this.getters.zoneToXC),
+                id: uuidv4(),
+            };
+        }
+        defaultColorScaleRule() {
+            return {
+                rule: {
+                    minimum: { type: "value", color: 0 },
+                    maximum: { type: "value", color: 0xeeffee },
+                    type: "ColorScaleRule",
+                },
+                ranges: this.getters.getSelectedZones().map(this.getters.zoneToXC),
+                id: uuidv4(),
+            };
+        }
         onAdd() {
             this.state.mode = "add";
-            this.state.currentCF = Object.assign({}, this.defaultCellIsRule);
+            this.state.currentCF = this.defaultCellIsRule();
             this.state.currentRanges = this.state.currentCF.ranges;
         }
         setRuleType(ruleType) {
             if (ruleType === "ColorScaleRule") {
-                this.state.currentCF = Object.assign({}, this.defaultColorScaleRule);
+                this.state.currentCF = this.defaultColorScaleRule();
             }
             if (ruleType === "CellIsRule") {
-                this.state.currentCF = Object.assign({}, this.defaultCellIsRule);
+                this.state.currentCF = this.defaultCellIsRule();
             }
             this.state.toRuleType = ruleType;
         }
@@ -10705,6 +11509,43 @@
         title: "Conditional formatting",
         Body: ConditionalFormattingPanel,
     });
+
+    const { xml: xml$5, css: css$5 } = owl.tags;
+    const TEMPLATE$4 = xml$5 /* xml */ `
+  <div class="o-fig-text">
+    <p t-esc="props.figure.data"/>
+  </div>
+`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    const CSS$4 = css$5 /* scss */ `
+  .o-fig-text {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background-color: #eee;
+    position: absolute;
+
+    > p {
+      margin: 5px;
+    }
+  }
+`;
+    class TextFigure extends owl.Component {
+    }
+    TextFigure.template = TEMPLATE$4;
+    TextFigure.style = CSS$4;
+
+    const figureRegistry = new Registry();
+    // figureRegistry.add("ConditionalFormatting", {
+    //   title: "Conditional formatting",
+    //   Body: ConditionalFormattingPanel,
+    // });
+    //
+    figureRegistry.add("text", { Component: TextFigure });
+
+    const topbarComponentRegistry = new Registry();
 
     /**
      * This class is used to generate the next values to autofill.
@@ -10895,7 +11736,7 @@
             }
             if (row === zone.bottom) {
                 col = zone.right;
-                if (col <= this.getters.getNumberCols()) {
+                if (col <= this.getters.getNumberCols(this.getters.getActiveSheet())) {
                     let right = this.getters.getCell(col + 1, row);
                     while (right && right.content) {
                         row += 1;
@@ -11420,6 +12261,84 @@
     SelectionInputPlugin.layers = [1 /* Highlights */];
     SelectionInputPlugin.getters = ["getSelectionInput", "getSelectionInputValue"];
 
+    class FigurePlugin extends BasePlugin {
+        constructor() {
+            super(...arguments);
+            this.selectedFigureId = null;
+            this.figures = {};
+            this.sheetFigures = {};
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        handle(cmd) {
+            switch (cmd.type) {
+                case "CREATE_FIGURE":
+                    this.history.updateLocalState(["figures", cmd.figure.id], cmd.figure);
+                    const sheetFigures = (this.sheetFigures[cmd.sheet] || []).slice();
+                    sheetFigures.push(cmd.figure);
+                    this.history.updateLocalState(["sheetFigures", cmd.sheet], sheetFigures);
+                    break;
+                case "UPDATE_FIGURE":
+                    if (cmd.x !== undefined) {
+                        this.history.updateLocalState(["figures", cmd.id, "x"], Math.max(cmd.x, 0));
+                    }
+                    if (cmd.y !== undefined) {
+                        this.history.updateLocalState(["figures", cmd.id, "y"], Math.max(cmd.y, 0));
+                    }
+                    break;
+                case "SELECT_FIGURE":
+                    this.selectedFigureId = cmd.id;
+                    break;
+                // some commands should not remove the current selection
+                case "EVALUATE_CELLS":
+                    break;
+                default:
+                    this.selectedFigureId = null;
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getFigures(viewport) {
+            const result = [];
+            const figures = this.sheetFigures[this.workbook.activeSheet.id] || [];
+            const { offsetX, offsetY, width, height } = viewport;
+            for (let figure of figures) {
+                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
+                    continue;
+                }
+                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
+                    continue;
+                }
+                result.push(figure);
+            }
+            return result;
+        }
+        getSelectedFigureId() {
+            return this.selectedFigureId;
+        }
+        // ---------------------------------------------------------------------------
+        // Import/Export
+        // ---------------------------------------------------------------------------
+        import(data) {
+            for (let sheet of data.sheets) {
+                const figList = [];
+                for (let f of sheet.figures) {
+                    this.figures[f.id] = f;
+                    figList.push(f);
+                }
+                this.sheetFigures[sheet.id] = figList;
+            }
+        }
+        export(data) {
+            for (let sheetData of data.sheets) {
+                sheetData.figures = this.sheetFigures[sheetData.id] || [];
+            }
+        }
+    }
+    FigurePlugin.getters = ["getFigures", "getSelectedFigureId"];
+
     const pluginRegistry = new Registry()
         .add("core", CorePlugin)
         .add("evaluation", EvaluationPlugin)
@@ -11432,14 +12351,15 @@
         .add("selectionInput", SelectionInputPlugin)
         .add("conditional formatting", ConditionalFormatPlugin)
         .add("grid renderer", RendererPlugin)
-        .add("autofill", AutofillPlugin);
+        .add("autofill", AutofillPlugin)
+        .add("figures", FigurePlugin);
 
     /**
      * This is the current state version number. It should be incremented each time
      * a breaking change is made in the way the state is handled, and an upgrade
      * function should be defined
      */
-    const CURRENT_VERSION = 4;
+    const CURRENT_VERSION = 5;
     /**
      * This function tries to load anything that could look like a valid workbook
      * data object. It applies any migrations, if needed, and return a current,
@@ -11512,6 +12432,17 @@
                 return data;
             },
         },
+        {
+            // add figures object in each sheets
+            from: 4,
+            to: 5,
+            applyMigration(data) {
+                for (let sheet of data.sheets) {
+                    sheet.figures = sheet.figures || [];
+                }
+                return data;
+            },
+        },
     ];
     // -----------------------------------------------------------------------------
     // Helpers
@@ -11527,6 +12458,7 @@
             rows: {},
             merges: [],
             conditionalFormats: [],
+            figures: [],
         };
     }
     function createEmptyWorkbookData() {
@@ -11723,10 +12655,16 @@
                             }
                         }
                         this.status = 1 /* Running */;
-                        this.handlers.forEach((h) => h.beforeHandle(command));
-                        this.handlers.forEach((h) => h.handle(command));
+                        for (const h of this.handlers) {
+                            h.beforeHandle(command);
+                        }
+                        for (const h of this.handlers) {
+                            h.handle(command);
+                        }
                         this.status = 2 /* Finalizing */;
-                        this.handlers.forEach((h) => h.finalize(command));
+                        for (const h of this.handlers) {
+                            h.finalize(command);
+                        }
                         this.status = 0 /* Ready */;
                         if (this.config.mode !== "headless") {
                             this.trigger("update");
@@ -11734,8 +12672,12 @@
                         break;
                     case 1 /* Running */:
                     case 3 /* Interactive */:
-                        this.handlers.forEach((h) => h.beforeHandle(command));
-                        this.handlers.forEach((h) => h.handle(command));
+                        for (const h of this.handlers) {
+                            h.beforeHandle(command);
+                        }
+                        for (const h of this.handlers) {
+                            h.handle(command);
+                        }
                         break;
                     case 2 /* Finalizing */:
                         throw new Error(_lt("Nope. Don't do that"));
@@ -11805,7 +12747,7 @@
         drawGrid(context) {
             // we make sure here that the viewport is properly positioned: the offsets
             // correspond exactly to a cell
-            this.getters.snapViewportToCell(context.viewport);
+            context.viewport = this.getters.snapViewportToCell(context.viewport);
             for (let [renderer, layer] of this.renderers) {
                 renderer.drawGrid(context, layer);
             }
@@ -11836,7 +12778,7 @@
         return !!ev.target && parent.contains(ev.target);
     }
 
-    const { xml: xml$5, css: css$5 } = owl.tags;
+    const { xml: xml$6, css: css$6 } = owl.tags;
     const { useExternalListener: useExternalListener$2, useRef } = owl.hooks;
     const MENU_WIDTH = 200;
     const MENU_ITEM_HEIGHT = 32;
@@ -11844,7 +12786,7 @@
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$4 = xml$5 /* xml */ `
+    const TEMPLATE$5 = xml$6 /* xml */ `
     <div>
       <div class="o-menu" t-att-style="style">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
@@ -11875,7 +12817,7 @@
         t-ref="subMenuRef"
         t-on-close="subMenu.isOpen=false"/>
     </div>`;
-    const CSS$4 = css$5 /* scss */ `
+    const CSS$5 = css$6 /* scss */ `
   .o-menu {
     position: absolute;
     width: ${MENU_WIDTH}px;
@@ -12051,20 +12993,20 @@
             }
         }
     }
-    Menu.template = TEMPLATE$4;
+    Menu.template = TEMPLATE$5;
     Menu.components = { Menu };
-    Menu.style = CSS$4;
+    Menu.style = CSS$5;
     Menu.defaultProps = {
         depth: 1,
     };
 
     const { Component: Component$5 } = owl;
-    const { xml: xml$6, css: css$6 } = owl.tags;
+    const { xml: xml$7, css: css$7 } = owl.tags;
     const { useState: useState$3 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$5 = xml$6 /* xml */ `
+    const TEMPLATE$6 = xml$7 /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
     <span class="o-add-sheet" t-on-click="addSheet">${PLUS}</span>
     <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
@@ -12088,7 +13030,7 @@
           menuItems="menuState.menuItems"
           t-on-close="menuState.isOpen=false"/>
   </div>`;
-    const CSS$5 = css$6 /* scss */ `
+    const CSS$6 = css$7 /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
     padding-left: ${HEADER_WIDTH}px;
@@ -12119,6 +13061,7 @@
       padding: 0 15px;
       height: ${BOTTOMBAR_HEIGHT}px;
       line-height: ${BOTTOMBAR_HEIGHT}px;
+      user-select: none;
 
       &.active {
         color: #484;
@@ -12152,7 +13095,7 @@
             this.menuState = useState$3({ isOpen: false, position: null, menuItems: [] });
         }
         addSheet() {
-            this.env.dispatch("CREATE_SHEET", { activate: true });
+            this.env.dispatch("CREATE_SHEET", { activate: true, id: uuidv4() });
         }
         activateSheet(name) {
             this.env.dispatch("ACTIVATE_SHEET", { from: this.getters.getActiveSheet(), to: name });
@@ -12173,12 +13116,12 @@
             };
         }
     }
-    BottomBar.template = TEMPLATE$5;
-    BottomBar.style = CSS$5;
+    BottomBar.template = TEMPLATE$6;
+    BottomBar.style = CSS$6;
     BottomBar.components = { Menu };
 
     const { Component: Component$6, useState: useState$4 } = owl;
-    const { xml: xml$7, css: css$7 } = owl.tags;
+    const { xml: xml$8, css: css$8 } = owl.tags;
     const functions$4 = functionRegistry.content;
     const providerRegistry = new Registry();
     providerRegistry.add("functions", async function () {
@@ -12192,7 +13135,7 @@
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$6 = xml$7 /* xml */ `
+    const TEMPLATE$7 = xml$8 /* xml */ `
   <div t-att-class="{'o-autocomplete-dropdown':state.values.length}" >
     <t t-foreach="state.values" t-as="v" t-key="v.text">
         <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="fillValue(v_index)">
@@ -12201,7 +13144,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$6 = css$7 /* scss */ `
+    const CSS$7 = css$8 /* scss */ `
   .o-autocomplete-dropdown {
     width: 260px;
     margin: 4px;
@@ -12279,8 +13222,8 @@
             }
         }
     }
-    TextValueProvider.template = TEMPLATE$6;
-    TextValueProvider.style = CSS$6;
+    TextValueProvider.template = TEMPLATE$7;
+    TextValueProvider.style = CSS$7;
 
     class ContentEditableHelper {
         constructor(el) {
@@ -12413,7 +13356,7 @@
 
     const { Component: Component$7 } = owl;
     const { useRef: useRef$1, useState: useState$5 } = owl.hooks;
-    const { xml: xml$8, css: css$8 } = owl.tags;
+    const { xml: xml$9, css: css$9 } = owl.tags;
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
     const StringColor = "#f6cd61";
@@ -12429,7 +13372,7 @@
         LEFT_PAREN: OperatorColor,
         RIGHT_PAREN: OperatorColor,
     };
-    const TEMPLATE$7 = xml$8 /* xml */ `
+    const TEMPLATE$8 = xml$9 /* xml */ `
 <div class="o-composer-container" t-att-style="containerStyle">
     <div class="o-composer"
       t-att-style="composerStyle"
@@ -12454,7 +13397,7 @@
     />
 </div>
   `;
-    const CSS$7 = css$8 /* scss */ `
+    const CSS$8 = css$9 /* scss */ `
   .o-composer-container {
     box-sizing: border-box;
     position: absolute;
@@ -12820,8 +13763,8 @@
             this.selectionEnd = selection.end;
         }
     }
-    Composer.template = TEMPLATE$7;
-    Composer.style = CSS$7;
+    Composer.template = TEMPLATE$8;
+    Composer.style = CSS$8;
     Composer.components = { TextValueProvider };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -12834,7 +13777,7 @@
     }
 
     const { Component: Component$8 } = owl;
-    const { xml: xml$9, css: css$9 } = owl.tags;
+    const { xml: xml$a, css: css$a } = owl.tags;
     const { useState: useState$6 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // Resizer component
@@ -13042,7 +13985,7 @@
             };
         }
     }
-    ColResizer.template = xml$9 /* xml */ `
+    ColResizer.template = xml$a /* xml */ `
     <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
       t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.isActive">
@@ -13052,7 +13995,7 @@
         </div>
       </t>
     </div>`;
-    ColResizer.style = css$9 /* scss */ `
+    ColResizer.style = css$a /* scss */ `
     .o-col-resizer {
       position: absolute;
       top: 0;
@@ -13143,7 +14086,7 @@
             };
         }
     }
-    RowResizer.template = xml$9 /* xml */ `
+    RowResizer.template = xml$a /* xml */ `
     <div class="o-row-resizer" t-on-mousemove.self="onMouseMove"  t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
     t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.isActive">
@@ -13153,7 +14096,7 @@
         </div>
       </t>
     </div>`;
-    RowResizer.style = css$9 /* scss */ `
+    RowResizer.style = css$a /* scss */ `
     .o-row-resizer {
       position: absolute;
       top: ${HEADER_HEIGHT}px;
@@ -13183,13 +14126,13 @@
             this.env.dispatch("SELECT_ALL");
         }
     }
-    Overlay.template = xml$9 /* xml */ `
+    Overlay.template = xml$a /* xml */ `
     <div class="o-overlay">
       <ColResizer viewport="props.viewport"/>
       <RowResizer viewport="props.viewport"/>
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
-    Overlay.style = css$9 /* scss */ `
+    Overlay.style = css$a /* scss */ `
     .o-overlay {
       .all {
         position: absolute;
@@ -13204,19 +14147,19 @@
     Overlay.components = { ColResizer, RowResizer };
 
     const { Component: Component$9 } = owl;
-    const { xml: xml$a, css: css$a } = owl.tags;
+    const { xml: xml$b, css: css$b } = owl.tags;
     const { useState: useState$7 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$8 = xml$a /* xml */ `
+    const TEMPLATE$9 = xml$b /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
     <t t-set="lastValue" t-value="env.getters.getLastValue()"/>
     <div t-if="lastValue" class="o-autofill-nextvalue" t-att-style="styleNextvalue" t-esc="lastValue" tabindex="-1"/>
   </div>
 `;
-    const CSS$8 = css$a /* scss */ `
+    const CSS$9 = css$b /* scss */ `
   .o-autofill {
     height: 6px;
     width: 6px;
@@ -13284,8 +14227,9 @@
                 const col = this.env.getters.getColIndex(ev.clientX - position.left, this.props.viewport.left);
                 const row = this.env.getters.getRowIndex(ev.clientY - position.top, this.props.viewport.top);
                 if (lastCol !== col || lastRow !== row) {
-                    lastCol = clip(col, 0, this.env.getters.getNumberCols());
-                    lastRow = clip(row, 0, this.env.getters.getNumberRows());
+                    const sheetId = this.env.getters.getActiveSheet();
+                    lastCol = clip(col, 0, this.env.getters.getNumberCols(sheetId));
+                    lastRow = clip(row, 0, this.env.getters.getNumberRows(sheetId));
                     this.env.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
                 }
             };
@@ -13295,8 +14239,8 @@
             this.env.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = TEMPLATE$8;
-    Autofill.style = CSS$8;
+    Autofill.template = TEMPLATE$9;
+    Autofill.style = CSS$9;
 
     class ScrollBar {
         constructor(el, direction) {
@@ -13316,6 +14260,171 @@
         }
     }
 
+    const { xml: xml$c, css: css$c } = owl.tags;
+    const { useState: useState$8 } = owl;
+    const TEMPLATE$a = xml$c /* xml */ `
+<div>
+    <t t-foreach="getFigures()" t-as="info" t-key="info.id">
+        <div
+          class="o-figure-wrapper"
+          t-att-style="getStyle(info)"
+          t-on-mousedown="onMouseDown(info.figure)" >
+            <div
+              class="o-figure"
+              t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
+              t-att-style="getDims(info)">
+              <t t-component="figureRegistry.get(info.figure.tag).Component"
+                t-key="info.id"
+                figure="info.figure" />
+              <t t-if="info.isSelected">
+                  <div class="o-anchor o-topRight"></div>
+                  <div class="o-anchor o-topLeft"></div>
+                  <div class="o-anchor o-bottomRight"></div>
+                  <div class="o-anchor o-bottomLeft"></div>
+              </t>
+            </div>
+        </div>
+    </t>
+</div>
+`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    const ANCHOR_SIZE = 8;
+    const BORDER_WIDTH = 1;
+    const ACTIVE_BORDER_WIDTH = 2;
+    const CSS$a = css$c /*SCSS*/ `
+  .o-figure-wrapper {
+    overflow: hidden;
+  }
+
+  .o-figure {
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+
+    &.active {
+      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+      z-index: 1;
+    }
+
+    &.o-dragging {
+      opacity: 0.9;
+      cursor: grabbing;
+    }
+
+    .o-anchor {
+      z-index: 1000;
+      position: absolute;
+      outline: ${BORDER_WIDTH}px solid white;
+      width: ${ANCHOR_SIZE}px;
+      height: ${ANCHOR_SIZE}px;
+      background-color: #1a73e8;
+      &.o-topRight {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: ne-resize;
+      }
+      &.o-topLeft {
+        top: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: nw-resize;
+      }
+      &.o-bottomRight {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: se-resize;
+      }
+      &.o-bottomLeft {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: sw-resize;
+      }
+    }
+  }
+`;
+    class FiguresContainer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.figureRegistry = figureRegistry;
+            this.dnd = useState$8({
+                figureId: "",
+                x: 0,
+                y: 0,
+            });
+            this.getters = this.env.getters;
+            this.dispatch = this.env.dispatch;
+        }
+        getFigures() {
+            const selectedId = this.getters.getSelectedFigureId();
+            return this.getters.getFigures(this.props.viewport).map((f) => ({
+                id: f.id,
+                isSelected: f.id === selectedId,
+                figure: f,
+            }));
+        }
+        getDims(info) {
+            const borders = 2 * (info.isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            const figure = info.figure;
+            return `width:${figure.width + borders}px;height:${figure.height + borders}px`;
+        }
+        getStyle(info) {
+            const { figure, isSelected } = info;
+            const { width, height } = figure;
+            const { offsetX, offsetY } = this.props.viewport;
+            const target = figure.id === this.dnd.figureId ? this.dnd : figure;
+            let x = target.x - offsetX + HEADER_WIDTH - 1;
+            let y = target.y - offsetY + HEADER_HEIGHT - 1;
+            // width and height of wrapper need to be adjusted so we do not overlap
+            // with headers
+            const correctionX = Math.max(0, HEADER_WIDTH - x);
+            x += correctionX - ANCHOR_SIZE / 2;
+            const correctionY = Math.max(0, HEADER_HEIGHT - y);
+            y += correctionY - ANCHOR_SIZE / 2;
+            if (width < 0 || height < 0) {
+                return `position:absolute;display:none;`;
+            }
+            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
+        }
+        mounted() {
+            // horrible, but necessary
+            // the following line ensures that we render the figures with the correct
+            // viewport.  The reason is that whenever we initialize the grid
+            // component, we do not know yet the actual size of the viewport, so the
+            // first owl rendering is done with an empty viewport.  Only then we can
+            // compute which figures should be displayed, so we have to force a
+            // new rendering
+            this.render();
+        }
+        onMouseDown(figure, ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            this.dispatch("SELECT_FIGURE", { id: figure.id });
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            const onMouseMove = (ev) => {
+                this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
+                this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                this.dispatch("UPDATE_FIGURE", { id: figure.id, x: this.dnd.x, y: this.dnd.y });
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+    }
+    FiguresContainer.template = TEMPLATE$a;
+    FiguresContainer.style = CSS$a;
+    FiguresContainer.components = {};
+
     /**
      * The Grid component is the main part of the spreadsheet UI. It is responsible
      * for displaying the actual grid, rendering it, managing events, ...
@@ -13326,8 +14435,8 @@
      * - a horizontal resizer (to resize columns)
      * - a vertical resizer (same, for rows)
      */
-    const { Component: Component$a, useState: useState$8 } = owl;
-    const { xml: xml$b, css: css$b } = owl.tags;
+    const { Component: Component$a, useState: useState$9 } = owl;
+    const { xml: xml$d, css: css$d } = owl.tags;
     const { useRef: useRef$2, onMounted, onWillUnmount } = owl.hooks;
     const registries = {
         ROW: rowMenuRegistry,
@@ -13346,7 +14455,7 @@
         let lastMoved = 0;
         let tooltipCol, tooltipRow;
         const canvasRef = useRef$2("canvas");
-        const tooltip = useState$8({ isOpen: false, text: "", style: "" });
+        const tooltip = useState$9({ isOpen: false, text: "", style: "" });
         let interval;
         function updateMousePosition(e) {
             x = e.offsetX;
@@ -13446,8 +14555,8 @@
     // -----------------------------------------------------------------------------
     // TEMPLATE
     // -----------------------------------------------------------------------------
-    const TEMPLATE$9 = xml$b /* xml */ `
-  <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown">
+    const TEMPLATE$b = xml$d /* xml */ `
+  <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel">
     <t t-if="getters.getEditionMode() !== 'inactive'">
       <Composer t-ref="composer" t-on-composer-unmounted="focus" viewport="snappedViewport"/>
     </t>
@@ -13456,7 +14565,7 @@
       t-on-dblclick="onDoubleClick"
       tabindex="-1"
       t-on-contextmenu="onCanvasContextMenu"
-      t-on-wheel="onMouseWheel" />
+       />
     <t t-if="errorTooltip.isOpen">
       <div class="o-error-tooltip" t-esc="errorTooltip.text" t-att-style="errorTooltip.style"/>
     </t>
@@ -13469,6 +14578,7 @@
       position="menuState.position"
       t-on-close.stop="menuState.isOpen=false"/>
     <t t-set="gridSize" t-value="getters.getGridSize()"/>
+    <FiguresContainer viewport="snappedViewport" model="props.model"  />
     <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
       <div t-attf-style="width:1px;height:{{gridSize[1]}}px"/>
     </div>
@@ -13479,7 +14589,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$9 = css$b /* scss */ `
+    const CSS$b = css$d /* scss */ `
   .o-grid {
     position: relative;
     overflow: hidden;
@@ -13506,6 +14616,7 @@
     .o-scrollbar {
       position: absolute;
       overflow: auto;
+      z-index: 2;
       &.vertical {
         right: 0;
         top: ${SCROLLBAR_WIDTH + 1}px;
@@ -13527,7 +14638,7 @@
     class Grid extends Component$a {
         constructor() {
             super(...arguments);
-            this.menuState = useState$8({
+            this.menuState = useState$9({
                 isOpen: false,
                 position: null,
                 menuItems: [],
@@ -13650,7 +14761,7 @@
                 this.hScrollbar.scroll = this.viewport.offsetX;
                 this.vScrollbar.scroll = this.viewport.offsetY;
             }
-            this.snappedViewport = this.getters.snapViewportToCell(this.snappedViewport);
+            this.snappedViewport = this.getters.snapViewportToCell(this.viewport);
             // drawing grid on canvas
             const canvas = this.canvas.el;
             const dpr = window.devicePixelRatio || 1;
@@ -13847,14 +14958,14 @@
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
     }
-    Grid.template = TEMPLATE$9;
-    Grid.style = CSS$9;
-    Grid.components = { Composer, Overlay, Menu, Autofill };
+    Grid.template = TEMPLATE$b;
+    Grid.style = CSS$b;
+    Grid.components = { Composer, Overlay, Menu, Autofill, FiguresContainer };
 
     const { Component: Component$b } = owl;
-    const { xml: xml$c, css: css$c } = owl.tags;
-    const { useState: useState$9 } = owl.hooks;
-    const TEMPLATE$a = xml$c /* xml */ `
+    const { xml: xml$e, css: css$e } = owl.tags;
+    const { useState: useState$a } = owl.hooks;
+    const TEMPLATE$c = xml$e /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
@@ -13867,7 +14978,7 @@
       <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
     </div>
   </div>`;
-    const CSS$a = css$c /* scss */ `
+    const CSS$c = css$e /* scss */ `
   .o-sidePanel {
     display: flex;
     flex-direction: column;
@@ -13876,18 +14987,19 @@
     border: 1px solid darkgray;
     .o-sidePanelHeader {
       padding: 6px;
-      height: 41px;
+      height: 30px;
+      background-color: #f8f9fa;
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid darkgray;
       font-weight: bold;
       .o-sidePanelTitle {
         font-weight: bold;
-        padding: 10px;
+        padding: 5px 10px;
         font-size: 1.2rem;
       }
       .o-sidePanelClose {
-        padding: 11px 15px;
+        padding: 5px 10px;
         cursor: pointer;
         &:hover {
           background-color: WhiteSmoke;
@@ -13898,17 +15010,37 @@
       overflow: auto;
       width: 100%;
       height: 100%;
-      padding: 6px;
     }
-    .o-sidePanelFooter {
-      padding: 6px;
+
+    .o-sidePanelButtons {
+      padding: 5px;
+      text-align: right;
+      border-bottom: 1px solid #ccc;
+      .o-sidePanelButton {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        cursor: pointer;
+        margin-right: 8px;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-sidePanelButton:last-child {
+        margin-right: 0px;
+      }
     }
   }
 `;
     class SidePanel extends Component$b {
         constructor() {
             super(...arguments);
-            this.state = useState$9({
+            this.state = useState$a({
                 panel: sidePanelRegistry.get(this.props.component),
             });
         }
@@ -13921,11 +15053,11 @@
                 : this.state.panel.title;
         }
     }
-    SidePanel.template = TEMPLATE$a;
-    SidePanel.style = CSS$a;
+    SidePanel.template = TEMPLATE$c;
+    SidePanel.style = CSS$c;
 
-    const { Component: Component$c, useState: useState$a, hooks: hooks$2 } = owl;
-    const { xml: xml$d, css: css$d } = owl.tags;
+    const { Component: Component$c, useState: useState$b, hooks: hooks$2 } = owl;
+    const { xml: xml$f, css: css$f } = owl.tags;
     const { useExternalListener: useExternalListener$3, useRef: useRef$3 } = hooks$2;
     const FORMATS = [
         { name: "auto", text: "Automatic" },
@@ -13948,7 +15080,7 @@
             this.dispatch = this.env.dispatch;
             this.getters = this.env.getters;
             this.style = {};
-            this.state = useState$a({
+            this.state = useState$b({
                 menuState: { isOpen: false, position: null, menuItems: [] },
                 activeTool: "",
             });
@@ -13964,6 +15096,11 @@
             this.menus = [];
             this.menuRef = useRef$3("menuRef");
             useExternalListener$3(window, "click", this.onClick);
+        }
+        get topbarComponents() {
+            return topbarComponentRegistry
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
         async willStart() {
             this.updateCellState();
@@ -14002,7 +15139,9 @@
             const width = this.el.clientWidth;
             const height = this.el.parentElement.clientHeight;
             this.state.menuState.position = { x, y, width, height };
-            this.state.menuState.menuItems = topbarMenuRegistry.getChildren(menu, this.env);
+            this.state.menuState.menuItems = topbarMenuRegistry
+                .getChildren(menu, this.env)
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
             this.isSelectingMenu = true;
             this.openedEl = ev.target;
         }
@@ -14039,7 +15178,9 @@
             else {
                 this.currentFormat = "auto";
             }
-            this.menus = topbarMenuRegistry.getAll();
+            this.menus = topbarMenuRegistry
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
         getMenuName(menu) {
             return topbarMenuRegistry.getName(menu, this.env);
@@ -14099,24 +15240,31 @@
             this.dispatch("REDO");
         }
     }
-    TopBar.template = xml$d /* xml */ `
+    TopBar.template = xml$f /* xml */ `
     <div class="o-spreadsheet-topbar">
-      <!-- Menus -->
-      <div class="o-topbar-menus">
-        <t t-foreach="menus" t-as="menu" t-key="menu_index">
-          <div t-if="menu.children.length !== 0"
-            class="o-topbar-menu"
-            t-on-click="toggleContextMenu(menu)"
-            t-on-mouseover="onMenuMouseOver(menu)"
-            t-att-data-id="menu.id">
-          <t t-esc="getMenuName(menu)"/>
+      <div class="o-topbar-top">
+        <!-- Menus -->
+        <div class="o-topbar-topleft">
+          <t t-foreach="menus" t-as="menu" t-key="menu_index">
+            <div t-if="menu.children.length !== 0"
+              class="o-topbar-menu"
+              t-on-click="toggleContextMenu(menu)"
+              t-on-mouseover="onMenuMouseOver(menu)"
+              t-att-data-id="menu.id">
+            <t t-esc="getMenuName(menu)"/>
+          </div>
+          </t>
+          <Menu t-if="state.menuState.isOpen"
+                position="state.menuState.position"
+                menuItems="state.menuState.menuItems"
+                t-ref="menuRef"
+                t-on-close="state.menuState.isOpen=false"/>
         </div>
-        </t>
-        <Menu t-if="state.menuState.isOpen"
-              position="state.menuState.position"
-              menuItems="state.menuState.menuItems"
-              t-ref="menuRef"
-              t-on-close="state.menuState.isOpen=false"/>
+        <div class="o-topbar-topright">
+          <div t-foreach="topbarComponents" t-as="comp" t-key="comp_index">
+            <t t-component="comp.component"/>
+          </div>
+        </div>
       </div>
       <!-- Toolbar and Cell Content -->
       <div class="o-topbar-toolbar">
@@ -14205,31 +15353,39 @@
 
       </div>
     </div>`;
-    TopBar.style = css$d /* scss */ `
+    TopBar.style = css$f /* scss */ `
     .o-spreadsheet-topbar {
       background-color: white;
       display: flex;
       flex-direction: column;
       font-size: 13px;
 
-      /* Menus */
-      .o-topbar-menus {
+      .o-topbar-top {
         border-bottom: 1px solid #e0e2e4;
         display: flex;
         padding: 2px 10px;
+        justify-content: space-between;
 
-        .o-topbar-menu {
-          padding: 4px 6px;
-          margin: 0 2px;
-          cursor: pointer;
+        /* Menus */
+        .o-topbar-topleft {
+          display: flex;
+          .o-topbar-menu {
+            padding: 4px 6px;
+            margin: 0 2px;
+            cursor: pointer;
+          }
+
+          .o-topbar-menu:hover {
+            background-color: #f1f3f4;
+            border-radius: 2px;
+          }
         }
 
-        .o-topbar-menu:hover {
-          background-color: #f1f3f4;
-          border-radius: 2px;
+        .o-topbar-topright {
+          display: flex;
+          justify-content: flex-end;
         }
       }
-
       /* Toolbar + Cell Content */
       .o-topbar-toolbar {
         border-bottom: 1px solid #e0e2e4;
@@ -14369,14 +15525,14 @@
   `;
     TopBar.components = { ColorPicker, Menu };
 
-    const { Component: Component$d, useState: useState$b } = owl;
+    const { Component: Component$d, useState: useState$c } = owl;
     const { useRef: useRef$4, useExternalListener: useExternalListener$4 } = owl.hooks;
-    const { xml: xml$e, css: css$e } = owl.tags;
+    const { xml: xml$g, css: css$g } = owl.tags;
     const { useSubEnv } = owl.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$b = xml$e /* xml */ `
+    const TEMPLATE$d = xml$g /* xml */ `
   <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
     <TopBar t-on-click="focusGrid" class="o-two-columns"/>
     <Grid model="model" t-ref="grid" t-att-class="{'o-two-columns': !sidePanel.isOpen}"/>
@@ -14386,7 +15542,7 @@
            panelProps="sidePanel.panelProps"/>
     <BottomBar class="o-two-columns"/>
   </div>`;
-    const CSS$b = css$e /* scss */ `
+    const CSS$d = css$g /* scss */ `
   .o-spreadsheet {
     display: grid;
     grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
@@ -14423,13 +15579,14 @@
                 evalContext: { env: this.env },
             });
             this.grid = useRef$4("grid");
-            this.sidePanel = useState$b({ isOpen: false, panelProps: {} });
+            this.sidePanel = useState$c({ isOpen: false, panelProps: {} });
             // last string that was cut or copied. It is necessary so we can make the
             // difference between a paste coming from the sheet itself, or from the
             // os clipboard
             this.clipBoardString = "";
             useSubEnv({
                 openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
+                toggleSidePanel: (panel, panelProps = {}) => this.toggleSidePanel(panel, panelProps),
                 dispatch: this.model.dispatch,
                 getters: this.model.getters,
                 _t: Spreadsheet._t,
@@ -14452,6 +15609,14 @@
             this.sidePanel.component = panel;
             this.sidePanel.panelProps = panelProps;
             this.sidePanel.isOpen = true;
+        }
+        toggleSidePanel(panel, panelProps) {
+            if (this.sidePanel.isOpen && panel === this.sidePanel.component) {
+                this.sidePanel.isOpen = false;
+            }
+            else {
+                this.openSidePanel(panel, panelProps);
+            }
         }
         focusGrid() {
             this.grid.comp.focus();
@@ -14506,8 +15671,8 @@
             }
         }
     }
-    Spreadsheet.template = TEMPLATE$b;
-    Spreadsheet.style = CSS$b;
+    Spreadsheet.template = TEMPLATE$d;
+    Spreadsheet.style = CSS$d;
     Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel };
     Spreadsheet._t = t;
 
@@ -14529,6 +15694,7 @@
         sidePanelRegistry,
         sheetMenuRegistry,
         topbarMenuRegistry,
+        topbarComponentRegistry,
     };
     const helpers = {
         args,
@@ -14547,14 +15713,15 @@
     exports.Model = Model;
     exports.Spreadsheet = Spreadsheet;
     exports.__info__ = __info__;
+    exports.astToFormula = astToFormula;
     exports.helpers = helpers;
     exports.parse = parse;
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.3.0';
-    exports.__info__.date = '2020-07-16T12:35:38.019Z';
-    exports.__info__.hash = '7945fb1';
+    exports.__info__.version = '0.4.0';
+    exports.__info__.date = '2020-08-12T08:34:26.985Z';
+    exports.__info__.hash = 'c89c99a';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

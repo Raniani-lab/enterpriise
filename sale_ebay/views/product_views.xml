@@ -100,7 +100,7 @@
       <field name="inherit_id" ref="product.product_template_tree_view"/>
       <field name="arch" type="xml">
         <xpath expr="//field[@name='activity_exception_decoration']" position="before">
-          <field name="ebay_listing_status" optional="show"/>
+          <field name="ebay_listing_status" optional="hide"/>
         </xpath>
       </field>
     </record>

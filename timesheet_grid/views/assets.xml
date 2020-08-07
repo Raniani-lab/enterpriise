@@ -8,6 +8,9 @@
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_renderer.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_view.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_model.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_controller.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_view.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_header_component.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_start_component.js"/>

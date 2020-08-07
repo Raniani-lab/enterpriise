@@ -1,4 +1,4 @@
-odoo.define('timesheet_grid.GridRenderer', function (require) {
+odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     "use strict";
 
     const utils = require('web.utils');
@@ -6,13 +6,10 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
     const { useState, useExternalListener, useRef } = owl.hooks;
-    const { debounce } = owl.utils;
 
-
-
-    class TimesheetGridRenderer extends GridRenderer {
+    class TimerGridRenderer extends GridRenderer {
         constructor(parent, props) {
-            super(parent, props);
+            super(...arguments);
             useExternalListener(window, 'keydown', this._onKeydown);
             useExternalListener(window, 'keyup', this._onKeyup);
 
@@ -165,7 +162,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             }
             this._match_line();
         }
-        async _onClickLineButton (taskId, projectId) {
+        async _onClickLineButton(taskId, projectId) {
             if (this.stateTimer.addTimeMode === true) {
                 this.timesheetId = await this.rpc({
                     model: 'account.analytic.line',
@@ -192,7 +189,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 this.timerHeader.comp.stopButton.el.focus();
             }
         }
-        async _onTimerStarted () {
+        async _onTimerStarted() {
             this.stateTimer.timerRunning = true;
             this.stateTimer.addTimeMode = false;
             this.stateTimer.startSeconds = Math.floor(Date.now() / 1000);
@@ -223,7 +220,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             this._match_line();
             this.stateTimer.readOnly = false;
         }
-        async _onTimerUnlink () {
+        async _onTimerUnlink() {
             if (this.timesheetId !== false) {
                 this.trigger('unlink_timer', {
                     timesheetId: this.timesheetId,
@@ -240,7 +237,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             this.stateTimer.readOnly = false;
             this.stateTimer.projectWarning = false;
         }
-        _onNewDescription (data) {
+        _onNewDescription(data) {
             this.stateTimer.description = data.detail;
             if (this.timesheetId) {
                 this.trigger('update_timer_description', {
@@ -249,7 +246,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
                 });
             }
         }
-        async _onNewTimerValue (data) {
+        async _onNewTimerValue(data) {
             const seconds = Math.floor(Date.now() / 1000) - this.stateTimer.startSeconds;
             const toAdd = data.detail * 3600 - seconds;
             this.stateTimer.startSeconds = this.stateTimer.startSeconds - toAdd;
@@ -312,7 +309,8 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             }
         }
     }
-    TimesheetGridRenderer.props = Object.assign({}, GridRenderer.props, {
+
+    TimerGridRenderer.props = Object.assign({}, GridRenderer.props, {
         serverTime: {
             type: String,
             optional: true
@@ -330,10 +328,11 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             optional: true
         },
     });
-    TimesheetGridRenderer.components = {
+
+    TimerGridRenderer.components = {
         TimerHeaderComponent,
         TimerStartComponent,
     };
 
-    return TimesheetGridRenderer;
+    return TimerGridRenderer;
 });

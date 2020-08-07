@@ -1,7 +1,7 @@
 odoo.define('timesheet_grid.timesheet_grid_tests', function (require) {
 "use strict";
 
-var TimesheetTimerGridView = require('timesheet_grid.GridView');
+var TimesheetTimerGridView = require('timesheet_grid.TimerGridView');
 var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
@@ -65,7 +65,7 @@ QUnit.module('Views', {
         _.debounce = this.underscoreDebounce;
     }
 }, function () {
-    QUnit.module('TimesheetGridView');
+    QUnit.module('TimesheetTimerGridView');
 
     QUnit.test('basic timesheet timer grid view', async function (assert) {
         assert.expect(14);

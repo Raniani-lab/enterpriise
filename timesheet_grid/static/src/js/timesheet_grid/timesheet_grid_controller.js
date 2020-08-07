@@ -1,82 +1,30 @@
 odoo.define('timesheet_grid.GridController', function (require) {
     "use strict";
 
-    const core = require('web.core');
-    const _t = core._t;
-    const utils = require('web.utils');
-
     const GridController = require('web_grid.GridController');
 
     const TimesheetGridController = GridController.extend({
-        custom_events: Object.assign({}, GridController.prototype.custom_events, {
-            update_timer: '_onUpdateTimer',
-            update_timer_description: '_onUpdateTimerDescription',
-            add_time_timer: '_onAddTimeTimer',
-            stop_timer: '_onStopTimer',
-            unlink_timer: '_onUnlinkTimer',
-        }),
-
-        //----------------------------------------------------------------------
-        // Handlers
-        //----------------------------------------------------------------------
-
-        /**
-         * @constructor
-         */
-        init: function () {
-            this._super.apply(this, arguments);
-            this._onClickTimerButton = _.debounce(this._onClickTimerButton, 500);
-        },
-
-        /**
-         * If we update an existing line, we update the view.
-         *
-         * @private
-         */
-        _onUpdateTimer: async function () {
-            const state = await this.model.actionTimer(this.model.get());
-            await this.renderer.update(state);
-            this.updateButtons(state);
-        },
-        _onUpdateTimerDescription: function (event) {
-            const timesheetId = event.data.timesheetId;
-            const description = event.data.description;
-            this.model._changeTimerDescription(timesheetId, description);
-        },
-        _onAddTimeTimer: function (event) {
-            const timesheetId = event.data.timesheetId;
-            const time = event.data.time;
-            this.model._addTimeTimer(timesheetId, time);
-        },
-        _onStopTimer: async function (event) {
-            const timesheetId = event.data.timesheetId;
-            await this.model._stopTimer(timesheetId);
-            await this.reload();
-        },
-        _onUnlinkTimer: function (event) {
-            const timesheetId = event.data.timesheetId;
-            this.model._unlinkTimer(timesheetId);
-        }
-    });
-
-    const TimesheetGridValidateController = TimesheetGridController.extend({
         /**
          * @override
          */
-        renderButtons: function ($node) {
-            this._super.apply(this, arguments);
+        renderButtons($node) {
+            this._super(...arguments);
             this.$buttons.on('click', '.o_timesheet_validate', this._onValidateButtonClicked.bind(this));
         },
 
         /**
          * @override
          */
-        updateButtons: function () {
+        updateButtons() {
             this._super(...arguments);
             this.$buttons.find('.o_timesheet_validate').removeClass('grid_arrow_button');
         },
 
-        _onValidateButtonClicked: function (e) {
+        // -------------------------------------------------------------------------
+        // Private
+        // -------------------------------------------------------------------------
+
+        _onValidateButtonClicked(e) {
             e.stopPropagation();
 
             return this.mutex.exec(async () => {
@@ -96,8 +44,5 @@ odoo.define('timesheet_grid.GridController', function (require) {
     });
 
 
-    return {
-        TimesheetGridController: TimesheetGridController,
-        TimesheetGridValidateController: TimesheetGridValidateController
-    };
+    return TimesheetGridController;
 });

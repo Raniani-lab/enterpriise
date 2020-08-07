@@ -110,6 +110,7 @@ class AccountMove(models.Model):
             return_info = inv._l10n_ar_do_afip_ws_request_cae(client, auth, transport)
             if return_info:
                 error_invoice = inv
+                validated -= inv
                 break
 
             # If we get CAE from AFIP then we make commit because we need to save the information returned by AFIP
@@ -134,7 +135,7 @@ class AccountMove(models.Model):
 * These invoices weren\'t validated:
 %(invalide_invoices)s
 """,
-                    invoice_name="\n   * ".join(validated.mapped('name')),
+                    validate_invoices="\n   * ".join(validated.mapped('name')),
                     invalide_invoices="\n   * ".join([
                         _("%s: %r amount %s", item.display_name, item.partner_id.name, item.amount_total_signed) for item in unprocess
                     ])

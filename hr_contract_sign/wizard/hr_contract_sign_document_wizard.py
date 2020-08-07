@@ -20,6 +20,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 list_template.append(template.id)
         return [('id', 'in', list_template)]
 
+    @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
         if 'responsible_id' in fields_list and not defaults.get('responsible_id') and defaults.get('contract_id'):

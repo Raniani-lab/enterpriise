@@ -15,8 +15,13 @@ Tour.register('account_followup_reports_widgets', {
             run: function () {}
         },
         {
+            content: 'disable second default filters to have true content in list view',
+            trigger: ".o_facet_remove:last",
+            run: 'click',
+        },
+        {
             content: 'click first item',
-            trigger: ".o_list_view .o_data_row",
+            trigger: ".o_list_view .o_data_row:not(.o_sample_data_disabled)",
             run: 'click'
         },
         {

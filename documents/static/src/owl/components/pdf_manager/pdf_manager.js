@@ -512,14 +512,13 @@ class PdfManager extends owl.Component {
             type: 'file',
             name: 'files[]',
             multiple: 'multiple',
+            accept: 'application/pdf',
         });
         $uploadInput.on('change', async e => {
             const files = $uploadInput[0].files;
             $uploadInput.remove();
             for (const file of files) {
-                if (file.type === 'application/pdf') {
-                    await this._addFile(file.name, { file });
-                }
+                await this._addFile(file.name, { file });
             }
         });
         $uploadInput.click();

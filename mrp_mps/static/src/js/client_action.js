@@ -1,6 +1,8 @@
 odoo.define('mrp_mps.ClientAction', function (require) {
 'use strict';
 
+const { ComponentWrapper } = require('web.OwlCompatibility');
+
 var concurrency = require('web.concurrency');
 var core = require('web.core');
 var Pager = require('web.Pager');
@@ -19,6 +21,9 @@ var ClientAction = AbstractAction.extend({
     hasControlPanel: true,
     loadControlPanel: true,
     withSearchBar: true,
+    custom_events: _.extend({}, AbstractAction.prototype.custom_events, {
+        pager_changed: '_onPagerChanged',
+    }),
     events: {
         'change .o_mrp_mps_input_forcast_qty': '_onChangeForecast',
         'change .o_mrp_mps_input_replenish_qty': '_onChangeToReplenish',
@@ -51,6 +56,7 @@ var ClientAction = AbstractAction.extend({
         this.state = false;
 
         this.active_ids = [];
+        this.pager = false;
         this.recordsPager = false;
         this.mutex = new concurrency.Mutex();
 
@@ -81,39 +87,40 @@ var ClientAction = AbstractAction.extend({
         });
     },
 
-    start: function () {
-        return this._super(...arguments).then(() => {
-            if (this.state.length == 0) {
-                this.$el.find('.o_mrp_mps').append($(QWeb.render('mrp_mps_nocontent_helper')));
-            }
-            this.update_cp();
-            this.renderPager();
-        });
+    start: async function () {
+        await this._super(...arguments);
+        if (this.state.length == 0) {
+            this.$el.find('.o_mrp_mps').append($(QWeb.render('mrp_mps_nocontent_helper')));
+        }
+        await this.update_cp();
+        await this.renderPager();
     },
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
-    
+
     /**
+     * Create the Pager and render it. It needs the records information to determine the size.
+     * It also needs the controlPanel to be rendered in order to append the pager to it.
      */
-     renderPager: function () {
-         var self = this;
-         this.pager = new Pager(this, this.recordsPager.length, 1, defaultPagerSize);
-         this.pager.on('pager_changed', this, function (newState) {
-            var current_min = newState.current_min - 1;
-            this.active_ids = self.recordsPager.slice(current_min, current_min + newState.limit).map(i => i.id);
-            this._reloadContent();
-         });
-         this.$pager = $('<div>', {
-             class: 'o_mrp_mps_pager float-right',
-         });
-         this.pager.appendTo(this.$pager).then(function () {
-             self.pager.enable();
-         });
-         this.$pager.appendTo(this._controlPanel.$el.find('.o_cp_right'));
-     },
+    renderPager: async function () {
+        const currentMinimum = 1;
+        const limit = defaultPagerSize;
+        const size = this.recordsPager.length;
+
+        this.pager = new ComponentWrapper(this, Pager, { currentMinimum, limit, size });
+
+        await this.pager.mount(document.createDocumentFragment());
+        const pagerContainer = Object.assign(document.createElement('span'), {
+            className: 'o_mrp_mps_pager float-right',
+        });
+        pagerContainer.appendChild(this.pager.el);
+        this.$pager = pagerContainer;
+
+        this._controlPanelWrapper.el.querySelector('.o_cp_pager').append(pagerContainer);
+    },
 
     /**
      * Update the control panel in order to add the 'replenish' button and a
@@ -131,11 +138,11 @@ var ClientAction = AbstractAction.extend({
         this.$buttons.find('.o_mrp_mps_create').on('click', self._onClickCreate.bind(self));
         this.$searchview_buttons = $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: self.groups}));
         this.$searchview_buttons.find('.o_mps_mps_show_line').on('click', self._onChangeCompany.bind(self));
-        this.updateControlPanel({
+        return this.updateControlPanel({
             title: _t('Master Production Schedule'),
             cp_content: {
                 $buttons: this.$buttons,
-                $searchview_buttons: this.$searchview_buttons
+                $searchview_buttons: this.$searchview_buttons,
             },
         });
     },
@@ -714,6 +721,14 @@ var ClientAction = AbstractAction.extend({
             table = $('tr');
         }
         table.find('.o_mrp_mps_hover').removeClass('o_mrp_mps_hover');
+    },
+
+    _onPagerChanged: function (ev) {
+        let { currentMinimum, limit } = ev.data;
+        this.pager.update({ currentMinimum, limit });
+        currentMinimum = currentMinimum - 1;
+        this.active_ids = this.recordsPager.slice(currentMinimum, currentMinimum + limit).map(i => i.id);
+        this._reloadContent();
     },
 
     /**

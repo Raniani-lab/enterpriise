@@ -54,6 +54,10 @@ table > tbody.o_grid_section > tr {
     }
 }
 .o_grid_view {
+    .o_standalone_avatar_employee {
+        display: inline-flex;
+    }
+
     button.btn_timer_line {
         border: 1px solid $o-brand-primary;
         border-radius:0.12em;

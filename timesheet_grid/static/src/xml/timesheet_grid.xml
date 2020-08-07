@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
+    
+    <t t-name="timesheet_grid.GroupedGridBody" t-inherit="web_grid.GroupedGridBody" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th" position="replace">
+            <th>
+                <t t-if="grid.__label">
+                    <t t-if="showEmployeeAvatar">
+                        <StandaloneAvatarEmployeeAdapter Component="widgetComponents.StandaloneM2OAvatarEmployee" value="grid.__label"/>
+                    </t>
+                    <t t-else="" t-esc="grid.__label[1]"/>
+                </t>
+                <t t-else="">Undefined</t>
+            </th>
+        </xpath>
+    </t>
 
     <t t-name="timesheet_grid.GridRenderer" t-inherit="web_grid.GridRenderer" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('o_view_nocontent')]" position="before">
@@ -85,6 +99,15 @@
                 <TimerStartComponent path="pathrow" index="rowlabel_index" runningIndex="stateTimer.indexRunning"
                     addTimeMode="stateTimer.addTimeMode" t-on-timer-started-from-line="_onClickStartTimerFromLine"/>
             </th>
+        </xpath>
+        <xpath expr="//div[@t-att-title='label']/t[@t-if='label']" position="replace">
+            <t t-if="label">
+                <t t-if="showEmployeeAvatar">
+                    <t t-set="employee" t-value="grid.rows[rowlabel_index].values.employee_id" />
+                    <StandaloneAvatarEmployeeAdapter Component="widgetComponents.StandaloneM2OAvatarEmployee" value="employee"/>
+                </t>
+                <t t-else="" t-esc="label"/>
+            </t>
         </xpath>
     </t>
 

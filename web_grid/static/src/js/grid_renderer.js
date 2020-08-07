@@ -349,8 +349,6 @@ odoo.define('web_grid.GridRenderer', function (require) {
             type: String,
             optional: true
         },
-        thumbnails: Object,
-        thumbnailsUrls: Object,
         range: String,
         context: Object,
         arch: Object,

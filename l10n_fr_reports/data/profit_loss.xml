@@ -28,7 +28,7 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_2</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7011%'), '|', ('account_id.code', '=like', '7012%'), '|', ('account_id.code', '=like', '702%'), '|', ('account_id.code', '=like', '703%'), '|', ('account_id.code', '=like', '7041%'), '|', ('account_id.code', '=like', '7042%'), '|', ('account_id.code', '=like', '705%'), '|', ('account_id.code', '=like', '706%'), '|', ('account_id.code', '=like', '7091%'), '|', ('account_id.code', '=like', '7092%'), '|', ('account_id.code', '=like', '7094%'), '|', ('account_id.code', '=like', '7095%'), '|', ('account_id.code', '=like', '7096%'), ('account_id.code', '=like', '7098%')]"/>
+    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7011%'), '|', ('account_id.code', '=like', '7012%'), '|', ('account_id.code', '=like', '702%'), '|', ('account_id.code', '=like', '703%'), '|', ('account_id.code', '=like', '7041%'), '|', ('account_id.code', '=like', '7042%'), '|', ('account_id.code', '=like', '705%'), '|', ('account_id.code', '=like', '706%'), '|', ('account_id.code', '=like', '708%'), '|', ('account_id.code', '=like', '7091%'), '|', ('account_id.code', '=like', '7092%'), '|', ('account_id.code', '=like', '7094%'), '|', ('account_id.code', '=like', '7095%'), '|', ('account_id.code', '=like', '7096%'), ('account_id.code', '=like', '7098%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp3" model="account.financial.html.report.line">
     <field name="name">Production Stockée</field>

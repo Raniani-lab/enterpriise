@@ -1,6 +1,4 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from psycopg2 import sql
-
 from odoo import tools, models, fields, api, _
 
 
@@ -71,7 +69,7 @@ class AccountArVatLine(models.Model):
         # we use tax_ids for base amount instead of tax_base_amount for two reasons:
         # * zero taxes do not create any aml line so we can't get base for them with tax_base_amount
         # * we use same method as in odoo tax report to avoid any possible discrepancy with the computed tax_base_amount
-        query = """
+        sql = """CREATE or REPLACE VIEW account_ar_vat_line as (
 SELECT
     am.id,
     (CASE WHEN lit.l10n_ar_afip_code = '80' THEN rp.vat ELSE null END) as cuit,
@@ -141,6 +139,5 @@ GROUP BY
     am.id, art.name, rp.id, lit.id
 ORDER BY
     am.date, am.name
-        """
-        q = sql.SQL("CREATE or REPLACE VIEW {} as ({})".format(sql.Identifier(self._table), sql.SQL(query)))
-        cr.execute(q)
+        )"""
+        cr.execute(sql)

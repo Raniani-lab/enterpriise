@@ -4,10 +4,10 @@
             <link rel="stylesheet" type="text/scss" href="/timesheet_grid/static/src/scss/timesheet_grid.scss"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom.js"></script>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom_timer.js"/>
-            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/model.js"/>
-            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/controller.js"/>
-            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/renderer.js"/>
-            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/view.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_renderer.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_view.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_header_component.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timer_start_component.js"/>

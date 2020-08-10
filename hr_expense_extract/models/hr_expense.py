@@ -294,3 +294,25 @@ class HrExpense(models.Model):
             'type': 'ir.actions.act_url',
             'url': url,
         }
+
+    @api.model
+    def get_empty_list_help(self, help):
+        if self.env.user.has_group('hr_expense.group_hr_expense_manager'):
+            action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
+            return """
+<p class="o_view_nocontent_expense_receipt">
+    Did you try the mobile app?
+</p>
+<p>Snap pictures of your receipts and let Odoo<br/> automatically create expenses for you.</p>
+<p class="d-block d-sm-none">
+    <a href="https://apps.apple.com/be/app/odoo/id1272543640" target="_blank">
+        <img alt="Apple App Store" class="img img-fluid h-100" src="/hr_expense/static/img/app_store.png"/>
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.odoo.mobile" target="_blank">
+        <img alt="Google Play Store" class="img img-fluid h-100" src="/hr_expense/static/img/play_store.png"/>
+    </a>
+</p>
+<p>
+    <a type="action" name="%(action_id)s" class="btn btn-primary text-white">Try Sample Receipt</a>
+</p>""" % {'action_id': action_id}
+        return super().get_empty_list_help(help)

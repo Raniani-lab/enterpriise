@@ -7,8 +7,6 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Resend For Digitalization" type="object"
-                attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
                 <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}"/>
             </xpath>
@@ -29,6 +27,8 @@
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
+                    <button name="retry_ocr" class="oe_highlight" string="Resend For Digitalization" type="object"
+                    attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
                     You don't have enough credit to extract data from your invoice.
                     <div class="clearfix"/>

@@ -310,21 +310,27 @@ class SocialPost(models.Model):
         """ This method will check if all live.posts related to the post are completed ('posted' / 'failed').
         If it's the case, we can mark the post itself as 'posted'. """
 
-        posts_to_complete = self.env['social.post']
-        posts_failed = []
-        for post in self:
-            for live_post in post.live_post_ids:
-                if live_post.state in ['posted', 'failed']:
-                    if live_post.state == 'failed':
-                        posts_failed.append('<br>  - ' + live_post.display_name)
-                    posts_to_complete |= post
+        posts_to_complete = self.filtered(
+            lambda post: all(
+                live_post.state in ('posted', 'failed')
+                for live_post in post.live_post_ids
+            )
+        )
+
+        for post in posts_to_complete:
+            posts_failed = '<br>'.join([
+                '  - ' + live_post.display_name
+                for live_post in post.live_post_ids
+                if live_post.state == 'failed'
+            ])
+
+            if posts_failed:
+                post._message_log(body=_("Message posted partially. These are the ones that couldn't be posted: <br>%s", posts_failed))
+            else:
+                post._message_log(body=_("Message posted"))
 
         if posts_to_complete:
             posts_to_complete.sudo().write({'state': 'posted'})
-            if posts_failed:
-                posts_to_complete._message_log(body=_("Message posted partially. These are the ones that couldn't be posted: %s", ''.join(posts_failed)))
-            else:
-                posts_to_complete._message_log(body=_("Message posted"))
 
     @api.model
     def _cron_publish_scheduled(self):

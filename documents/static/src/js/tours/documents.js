@@ -12,7 +12,7 @@ tour.register('documents_tour', {
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents."),
     position: 'bottom',
 }, { // equivalent to '.o_search_panel_category_value:contains('Internal')' but language agnostic.
-    trigger: '.o_search_panel_category_value[data-id="1"]',
+    trigger: '.o_search_panel_category_value:eq(2)',
     content: _t("Select the Internal workspace."),
     position: 'bottom',
 }, {
@@ -24,12 +24,12 @@ tour.register('documents_tour', {
         $('.o_close_btn').click();
     },
 }, { // equivalent to '.o_search_panel_filter_value:contains('Inbox')' but language agnostic.
-    trigger: '.o_search_panel_filter_value[data-value-id="1"]',
+    trigger: '.o_search_panel_filter_value:eq(0)',
     extra_trigger: '.o_search_panel_label',
     content: _t("Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"),
     position: 'bottom',
     run: function (actions) {
-        $('.o_search_panel_filter_value[data-value-id="1"] .o_search_panel_label_title').click();
+        $('.o_search_panel_filter_value:eq(0) .o_search_panel_label_title').click();
     },
 }, {
     trigger: '.o_kanban_record:contains(invoice.png)',

@@ -201,8 +201,7 @@ class SocialPost(models.Model):
         if vals_list:
             sources = self.env['utm.source'].create({
                 'name': "Post %s_%s" % (fields.datetime.now(), i)
-                for i in range(len(vals_list))
-            })
+            } for i in range(len(vals_list)))
 
             for index, vals in enumerate(vals_list):
                 vals['utm_source_id'] = sources[index].id

@@ -17,7 +17,7 @@
         <field name="name">quality.alert.view.kanban</field>
         <field name="model">quality.alert</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" sample='1'>
                 <field name="description"/>
                 <field name="user_id"/>
                 <field name="stage_id"/>
@@ -488,10 +488,10 @@
         </field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new quality check
+              No quality check found
             </p><p>
-              Note that the easiest way to create a quality check is to do it directly from a logistic operation,
-              thanks to the use of quality control points.
+              Define Quality Control Points in order to automatically generate
+              quality checks at the right logistic operation: transfers, manufacturing orders.
             </p>
         </field>
     </record>
@@ -523,10 +523,10 @@
         <field name="view_mode">tree,kanban,form,pivot,graph</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new quality check
+              No quality check found
             </p><p>
-              Note that the easiest way to create a quality check is to do it directly from a logistic operation,
-              thanks to the use of quality control points.
+              Define Quality Control Points in order to automatically generate
+              quality checks at the right logistic operation: transfers, manufacturing orders.
             </p>
         </field>
     </record>
@@ -956,7 +956,10 @@
         <field name="context">{'search_default_groupby_team_id': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new quality control point
+              No quality control point found
+            </p><p>
+              Quality control points define the quality checks which should be
+              performed at each operation, for your different products.
             </p>
         </field>
     </record>

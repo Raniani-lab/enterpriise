@@ -9,7 +9,11 @@
         <field name="context">{'search_default_type_id': [active_id], 'default_type_id': active_id}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>
@@ -22,7 +26,11 @@
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>
@@ -35,7 +43,11 @@
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>
@@ -48,7 +60,11 @@
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>
@@ -289,7 +305,7 @@
         <field name="name">mrp.eco.kanban</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false" sample="1">
                 <field name="name"/>
                 <field name="bom_id"/>
                 <field name="effectivity_date"/>
@@ -569,7 +585,11 @@
         <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>
@@ -580,7 +600,11 @@
         <field name="view_mode">graph,pivot</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a new engineering change order
+              No engineering change order found
+            </p><p>
+              Manage your products and bills of materials changes with the ECO's.
+              Gather the related documentation and receive the necessary approvals
+              before applying your changes.
             </p>
         </field>
     </record>

@@ -66,7 +66,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-              Create a bill of materials
+              No bill of materials found. Let's create one!
             </p><p>
               Bills of materials allow you to define the list of required components
               used to make a finished product; through a manufacturing

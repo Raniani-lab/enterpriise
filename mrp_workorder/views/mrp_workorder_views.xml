@@ -281,11 +281,16 @@
         <field name="domain">[('state', 'not in', ['done', 'cancel'])]</field>
         <field name="context">{'search_default_workcenter_id': active_id}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Start a new work order
-            </p><p>
-                Plan some work orders from your manufacturing orders.
-            </p>
+          <p class="o_view_nocontent_workorder">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p><p>
+            Use the table work center control panel to register operations in the shop floor directly.
+            The tablet provides worksheets for your workers and allow them to scrap products, track time,
+            launch a maintenance request, perform quality tests, etc.
+          </p>
         </field>
     </record>
 
@@ -304,6 +309,55 @@
           </p>
         </field>
     </record>
+
+    <!-- override to change the no content image -->
+    <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production_specific">
+         <field name="help" type="html">
+          <p class="o_view_nocontent_workorder">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p><p>
+            Use the table work center control panel to register operations in the shop floor directly.
+            The tablet provides worksheets for your workers and allow them to scrap products, track time,
+            launch a maintenance request, perform quality tests, etc.
+          </p>
+        </field>
+    </record>
+
+    <!-- override to change the no content image -->
+    <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_workcenter">
+         <field name="help" type="html">
+          <p class="o_view_nocontent_workorder">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p><p>
+            Use the table work center control panel to register operations in the shop floor directly.
+            The tablet provides worksheets for your workers and allow them to scrap products, track time,
+            launch a maintenance request, perform quality tests, etc.
+          </p>
+        </field>
+    </record>
+
+    <!-- override to change the no content image -->
+    <record model="ir.actions.act_window" id="mrp.action_mrp_workorder_production">
+         <field name="help" type="html">
+          <p class="o_view_nocontent_workorder">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p><p>
+            Use the table work center control panel to register operations in the shop floor directly.
+            The tablet provides worksheets for your workers and allow them to scrap products, track time,
+            launch a maintenance request, perform quality tests, etc.
+          </p>
+        </field>
+    </record>
+
 
     <template id="quality_check_view_form_css" name="quality.check.view.form.css" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">

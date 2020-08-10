@@ -67,8 +67,8 @@ class ShiftController(http.Controller):
             'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, tz=employee_tz.zone, dt_format=dt_format),
             'notification_text': message in ['assign', 'unassign', 'already_assign'],
             'message_slug': message,
-            'has_role': any([s.role_id.id for s in open_slots]),
-            'has_note': any([s.name for s in open_slots]),
+            'has_role': any(s.role_id for s in open_slots),
+            'has_note': any(s.name for s in open_slots),
         }
 
     @http.route('/planning/<string:token_planning>/<string:token_employee>/assign/<int:slot_id>', type="http", auth="public", website=True)

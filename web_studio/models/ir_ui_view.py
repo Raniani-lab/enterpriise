@@ -630,7 +630,7 @@ class View(models.Model):
                         continue
 
                     if is_moved(node) or \
-                            any([is_moved(x) for x in node.iterancestors()]):
+                            any(is_moved(x) for x in node.iterancestors()):
                         # nothing to do here, the node will be moved in the '+'
                         continue
 
@@ -674,7 +674,7 @@ class View(models.Model):
                     if node.tag == 'attributes':
                         continue
 
-                    if any([is_moved(x) for x in node.iterancestors()]):
+                    if any(is_moved(x) for x in node.iterancestors()):
                         # moved attributes will be computed afterwards because
                         # the move xpaths don't support children
                         # (see @get_node_attributes_diff)

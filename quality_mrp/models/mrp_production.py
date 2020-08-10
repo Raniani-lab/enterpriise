@@ -46,7 +46,7 @@ class MrpProduction(models.Model):
 
     def button_mark_done(self):
         for order in self:
-            if any([(x.quality_state == 'none') for x in order.check_ids]):
+            if any(x.quality_state == 'none' for x in order.check_ids):
                 raise UserError(_('You still need to do the quality checks!'))
         return super(MrpProduction, self).button_mark_done()
 

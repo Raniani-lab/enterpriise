@@ -55,7 +55,7 @@ class DataCleaningModel(models.Model):
     @api.onchange('res_model_id')
     def _onchange_res_model_id(self):
         self.ensure_one()
-        if any([rule.field_id.model_id != self.res_model_id for rule in self.rule_ids]):
+        if any(rule.field_id.model_id != self.res_model_id for rule in self.rule_ids):
             self.rule_ids = [(5, 0, 0)]
 
     def _compute_records_to_clean(self):

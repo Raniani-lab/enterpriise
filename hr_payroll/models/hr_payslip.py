@@ -103,7 +103,7 @@ class HrPayslip(models.Model):
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
-        if any(self.filtered(lambda payslip: payslip.date_from > payslip.date_to)):
+        if any(payslip.date_from > payslip.date_to for payslip in self):
             raise ValidationError(_("Payslip 'Date From' must be earlier 'Date To'."))
 
     def action_payslip_draft(self):
@@ -170,7 +170,7 @@ class HrPayslip(models.Model):
         return res
 
     def unlink(self):
-        if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
+        if any(payslip.state not in ('draft', 'cancel') for payslip in self):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
         return super(HrPayslip, self).unlink()
 

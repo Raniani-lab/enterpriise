@@ -22,6 +22,6 @@ class ShiftControllerProject(ShiftController):
             new_employee_fullcalendar_data.append(slot_data)
         result['employee_slots_fullcalendar_data'] = new_employee_fullcalendar_data
         open_slots = result['open_slots_ids']
-        result['has_project'] = any([s.project_id.id for s in open_slots])
-        result['has_task'] = any([s.task_id.id for s in open_slots])
+        result['has_project'] = any(s.project_id for s in open_slots)
+        result['has_task'] = any(s.task_id for s in open_slots)
         return result

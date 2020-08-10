@@ -79,7 +79,7 @@ class DataCleaningRecord(models.Model):
                 current_value = original_record[record.field_name] or ''
                 suggested_value = record._render_value(current_value)
                 suggested_value_display = suggested_value
-                if any([rule_id.action == 'trim' for rule_id in record.rule_ids]):
+                if any(rule_id.action == 'trim' for rule_id in record.rule_ids):
                     # non-breaking space, to render multiple spaces in the backend
                     current_value = current_value.replace(' ', '\u00a0').replace('\t', '\u00a0')
                     suggested_value_display = suggested_value_display.replace(' ', '\u00a0').replace('\t', '\u00a0')

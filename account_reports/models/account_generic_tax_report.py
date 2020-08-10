@@ -641,7 +641,7 @@ class generic_tax_report(models.AbstractModel):
         period_number = len(options['comparison'].get('periods'))
         line_id = 0
         for tp in types:
-            if not any([tax.get('show') for key, tax in groups[tp].items()]):
+            if not any(tax.get('show') for key, tax in groups[tp].items()):
                 continue
             sign = tp == 'sale' and -1 or 1
             lines.append({

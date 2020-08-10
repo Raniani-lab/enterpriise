@@ -43,7 +43,7 @@ class SaleOrder(models.Model):
         return action
 
     def action_draft(self):
-        if any([order.state == 'cancel' and any([line.subscription_id and line.subscription_id.stage_id.category != 'in_progress' for line in order.order_line]) for order in self]):
+        if any(order.state == 'cancel' and any(line.subscription_id and line.subscription_id.stage_id.category != 'in_progress' for line in order.order_line) for order in self):
             raise UserError(_('You cannot set to draft a canceled quotation linked to subscriptions. Please create a new quotation.'))
         return super(SaleOrder, self).action_draft()
 

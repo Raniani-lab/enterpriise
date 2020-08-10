@@ -69,7 +69,7 @@
         <!-- Template for journals filter -->
         <template id="search_template_consolidation_journals">
             <t t-set="has_a_selected_period"
-               t-value="options.get('periods', False) and any([period.get('selected') for period in options['periods']])"/>
+               t-value="options.get('periods', False) and any(period.get('selected') for period in options['periods'])"/>
             <t t-if="not has_a_selected_period">
                 <a type="button" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-book"/>

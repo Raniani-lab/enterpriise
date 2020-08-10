@@ -90,7 +90,7 @@ class DataMergeModel(models.Model):
     @api.onchange('res_model_id')
     def _onchange_res_model_id(self):
         self._check_prevent_merge()
-        if any([rule.field_id.model_id != self.res_model_id for rule in self.rule_ids]):
+        if any(rule.field_id.model_id != self.res_model_id for rule in self.rule_ids):
             self.rule_ids = [(5, 0, 0)]
 
     def _compute_records_to_merge_count(self):
@@ -268,7 +268,7 @@ class DataMergeModel(models.Model):
                 #   The group with records A B C already exists:
                 #       1/ If group_to_create equals A B, do not create a new group
                 #       2/ If group_to_create equals A D, create the new group (A D is not a subset of A B C)
-                if any([group_to_create <= x for x in done_groups_res_ids]):
+                if any(group_to_create <= x for x in done_groups_res_ids):
                     continue
 
                 group = self.env['data_merge.group'].with_context(prefetch_fields=False).create({'model_id': dm_model.id})

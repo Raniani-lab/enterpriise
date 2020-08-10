@@ -30,7 +30,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         consolidation_journals = options.get('consolidation_journals', None)
         # TEST CONSOLIDATION JOURNAL FILTER
         self.assertEqual(len(consolidation_journals), len(self.journals))
-        self.assertFalse(any([j['selected'] for j in consolidation_journals]))
+        self.assertFalse(any(j['selected'] for j in consolidation_journals))
         expected_journals = (
             self.journals['be'][selected_period_index],
             self.journals['us'][selected_period_index]

@@ -475,7 +475,7 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         self._check_sn_uniqueness()
         self._check_company()
-        if any([(x.quality_state == 'none') for x in self.check_ids]):
+        if any(x.quality_state == 'none' for x in self.check_ids):
             raise UserError(_('You still need to do the quality checks!'))
         if float_compare(self.qty_producing, 0, precision_rounding=self.product_uom_id.rounding) <= 0:
             raise UserError(_('Please set the quantity you are currently producing. It should be different from zero.'))

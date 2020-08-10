@@ -51,7 +51,7 @@
                             <td width="70%" class="o_mail_logo_container o_mail_h_padding o_mail_v_padding">
                                 <a style="text-decor
                                     ation:none;float:none;" href="http://www.example.com">
-                                     <img border="0" src="/mass_mailing_themes/static/src/img/theme_newsletter/s_default_image_logo.png" style="height:auto;max-width:400px;" alt="Logo"/>
+                                     <img border="0" src="/mass_mailing_themes/static/src/img/theme_newsletter/s_default_image_logo.png" style="height:auto;max-width:400px;"/>
                                 </a>
                             </td>
                             <td width="30%" class="text-right o_mail_no_resize">
@@ -186,7 +186,7 @@
                     <tr>
                         <td width="70%"  class="o_mail_logo_container o_mail_h_padding o_mail_v_padding">
                             <a t-att-href="(company_id.website) or '#'" style="text-decoration:none;float:none;">
-                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_logo.png" style="height:auto;max-width:400px;" alt="Logo" />
+                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_logo.png" style="height:auto;max-width:400px;" />
                             </a>
                         </td>
                         <td width="30%" class="text-right o_mail_no_resize">
@@ -205,7 +205,7 @@
                         <tr>
                             <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
                                 <a href="#">
-                                    <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image"/>
+                                    <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_banner.jpg" class="d-block mx-auto"/>
                                 </a>
                             </td>
                         </tr>
@@ -332,7 +332,7 @@
                     <tr>
                         <td width="70%"  class="o_mail_logo_container o_mail_h_padding o_mail_v_padding">
                             <a t-att-href="(company_id.website) or '#'" style="text-decoration:none;float:none;">
-                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_tech/s_default_image_logo.png" style="height:auto;max-width:400px;" alt="Logo" />
+                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_tech/s_default_image_logo.png" style="height:auto;max-width:400px;" />
                             </a>
                         </td>
                         <td width="30%" class="text-right o_mail_no_resize">
@@ -350,7 +350,7 @@
                     <tbody>
                       <tr>
                           <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
-                                <img src="/mass_mailing_themes/static/src/img/theme_tech/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image" />
+                                <img src="/mass_mailing_themes/static/src/img/theme_tech/s_default_image_block_banner.jpg" class="d-block mx-auto" />
                           </td>
                       </tr>
                     </tbody>
@@ -428,7 +428,7 @@
                     <tr>
                         <td width="70%"  class="o_mail_logo_container o_mail_h_padding o_mail_v_padding">
                             <a t-att-href="(company_id.website) or '#'" style="text-decoration:none;float:none;">
-                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_logo.png" style="height:auto;max-width:400px;" alt="Logo" />
+                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_logo.png" style="height:auto;max-width:400px;" />
                             </a>
                         </td>
                         <td width="30%" class="text-right o_mail_no_resize">
@@ -447,7 +447,7 @@
                         <tr>
                             <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
                                 <a href="#">
-                                    <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image"/>
+                                    <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_banner.jpg" class="d-block mx-auto"/>
                                 </a>
                             </td>
                         </tr>
@@ -660,7 +660,7 @@
                         <td width="20%"><strong>N°258</strong></td>
                         <td valign="center" width="60%" class="text-center o_mail_v_padding">
                             <a t-att-href="(company_id.website) or '#'" style="text-decoration:none;">
-                                <img border="0" src="/mass_mailing_themes/static/src/img/theme_bold/s_default_image_logo.png" style="height:auto;width:auto" alt="Logo" />
+                                <img border="0" src="/mass_mailing_themes/static/src/img/theme_bold/s_default_image_logo.png" style="height:auto;width:auto" />
                             </a>
                         </td>
                         <td width="20%" style="text-align:right"><strong>2017</strong></td>
@@ -675,7 +675,7 @@
                         <tr>
                             <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
                                 <a href="#">
-                                    <img src="/mass_mailing_themes/static/src/img/theme_bold/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image"/>
+                                    <img src="/mass_mailing_themes/static/src/img/theme_bold/s_default_image_block_banner.jpg" class="d-block mx-auto"/>
                                 </a>
                             </td>
                         </tr>
@@ -738,7 +738,7 @@
                         <tr>
                             <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
                                 <a href="#">
-                                    <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image"/>
+                                    <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_banner.jpg" class="d-block mx-auto"/>
                                 </a>
                             </td>
                         </tr>
@@ -897,7 +897,7 @@
                     <tr>
                         <td width="70%"  class="o_mail_logo_container o_mail_h_padding o_mail_v_padding">
                             <a t-att-href="(company_id.website) or '#'" style="text-decoration:none;float:none;">
-                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_logo.png" style="height:auto;max-width:400px;" alt="Logo" />
+                                 <img border="0" src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_logo.png" style="height:auto;max-width:400px;" />
                             </a>
                         </td>
                         <td width="30%" class="text-right o_mail_no_resize">
@@ -916,7 +916,7 @@
                         <tr>
                             <td width="100%" valign="top" class="o_mail_full_width_padding o_mail_no_colorpicker">
                                 <a href="#">
-                                    <img src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_block_banner.jpg" class="d-block mx-auto" alt="Banner Image"/>
+                                    <img src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_block_banner.jpg" class="d-block mx-auto"/>
                                 </a>
                             </td>
                         </tr>

@@ -280,6 +280,7 @@
         <field name="model">hr.appraisal</field>
         <field name="arch" type="xml">
             <gantt
+                js_class="hr_gantt"
                 color="employee_id"
                 date_start="date_close"
                 date_stop="date_close"

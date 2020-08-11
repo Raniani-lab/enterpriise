@@ -291,7 +291,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     checkFormValidity() {
-        const requiredEmptyInput = $("input:required").toArray().find(input => input.value === '');
+        const requiredEmptyInput = $("input:required").toArray().find(input => input.value === '' && input.name !== '' && input.type !== 'checkbox');
         const requiredEmptySelect = $("select:required").toArray().find(select => $(select).val() === '');
         const email = $("input[name='email']").val();
         const atpos = email.indexOf("@");

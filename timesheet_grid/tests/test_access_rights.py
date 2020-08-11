@@ -62,6 +62,10 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'allow_timesheets': True,
             'privacy_visibility': 'followers',
         })
+        # Prevent access right errors in test_access_rights_for_* methods
+        allowed_ids = self.user_approver | self.user_employee | self.user_manager
+        self.project_follower.allowed_internal_user_ids = [(6, 0, allowed_ids.ids)]
+
 
     def test_access_rights_for_employee(self):
         """ Check the operations of employee with the lowest access
@@ -105,7 +109,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         # check if the updating is correct
         self.assertEqual(timesheet_user1.unit_amount, 5)
-        
+
         # employee 1 remove his timesheet
         timesheet_user1.with_user(self.user_employee).unlink()
 

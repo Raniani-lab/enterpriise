@@ -130,6 +130,15 @@ BATCH/00002
 601647855635
 O-BTN.validate
 
+BATCH/00001
+601647855652
+CLUSTER-PACK-1
+601647855653
+CLUSTER-PACK-1
+601647855651
+CLUSTER-PACK-2
+O-BTN.validate
+
 BARCODES
 
 cat > barcodes_demo_header_pg_2.ps << HEADER
@@ -152,6 +161,24 @@ cat > barcodes_demo_header_pg_2.ps << HEADER
 (601647855635) 85 498 showCode
 (Validate) 230 557 showTitle
 (O-BTN.validate) 271 498 showCode
+
+(Batch picking with cluster pickings (activate Batch Pickings and Delivery Packages)) 45 467 showLabel
+(BATCH/00001) 45 447 showTitle
+(BATCH/00001) 85 388 showCode
+(Cabinet with Doors) 230 447 showTitle
+(601647855652) 271 388 showCode
+(CLUSTER-PACK-1) 415 447 showTitle
+(CLUSTER-PACK-1) 456 388 showCode
+(Acoustic Bloc Screens) 45 337 showTitle
+(601647855653) 85 278 showCode
+(CLUSTER-PACK-1) 230 337 showTitle
+(CLUSTER-PACK-1) 271 278 showCode
+(Four Person Desk) 415 337 showTitle
+(601647855651) 456 278 showCode
+(CLUSTER-PACK-2) 45 227 showTitle
+(CLUSTER-PACK-2) 85 168 showCode
+(Validate) 230 227 showTitle
+(O-BTN.validate) 271 168 showCode
 
 (Don't have any barcode scanner? Right click on your screen > Inspect > Console and type the following command:) 45 35 showFooter
 (   odoo.__DEBUG__.services["web.core"].bus.trigger("barcode_scanned", "setyourbarcodehere", \$(".o_web_client")[0])) 45 25 showFooter

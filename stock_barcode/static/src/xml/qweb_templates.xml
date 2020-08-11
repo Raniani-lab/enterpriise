@@ -124,7 +124,7 @@
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
-                        <div t-if="line.package_id || line.result_package_id">
+                        <div t-if="line.package_id || line.result_package_id" name="package">
                             <i class="fa fa-fw fa-archive"/>
                             <t t-if="line.package_id" t-esc="line.package_id[1]"/>
                             <t t-if="isPickingRelated">

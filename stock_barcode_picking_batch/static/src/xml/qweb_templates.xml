@@ -13,6 +13,15 @@
                 <span class="o_picking_label" t-esc="line.picking_id.name"/>
             </div>
         </t>
+
+        <t t-jquery="div[name='package']" t-operation="attributes">
+            <attribute name="t-if">line.package_id || line.result_package_id || line.suggested_package</attribute>
+        </t>
+        <t t-jquery="div[name='package']" t-operation="append">
+            <t t-if="!line.result_package_id &amp;&amp; line.suggested_package">
+                <span class="text-muted" t-esc="' ' + line.suggested_package + ' ?'"/>
+            </t>
+        </t>
     </t>
 
     <t t-extend="stock_barcode_settings_widget">

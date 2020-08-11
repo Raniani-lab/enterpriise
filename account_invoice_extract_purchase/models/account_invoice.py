@@ -3,6 +3,8 @@
 from odoo import api, models
 from odoo.tests.common import Form
 
+TOLERANCE = 0.02  # tolerance applied to the total when searching for a matching purchase order
+
 
 class AccountMove(models.Model):
     _inherit = ['account.move']
@@ -19,7 +21,8 @@ class AccountMove(models.Model):
         else:
             partner_id = self.find_partner_id_with_name(supplier_ocr)
         if self.move_type == 'in_invoice' and partner_id and total_ocr:
-            purchase_id_domain = [('company_id', '=', self.company_id.id), ('partner_id', 'child_of', [partner_id]), ('amount_total', '=', total_ocr)]
+            purchase_id_domain = [('company_id', '=', self.company_id.id), ('partner_id', 'child_of', [partner_id]),
+                                  ('amount_total', '>=', total_ocr - TOLERANCE), ('amount_total', '<=', total_ocr + TOLERANCE), ('state', '=', 'purchase')]
             matching_po = self.env['purchase.order'].search(purchase_id_domain)
             if len(matching_po) == 1:
                 with Form(self) as move_form:

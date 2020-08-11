@@ -25,7 +25,7 @@
         </record>
 
         <record id="purchase_report_action_dashboard" model="ir.actions.act_window">
-            <field name="name">Purchase Analysis</field>
+            <field name="name">Dashboard</field>
             <field name="res_model">purchase.report</field>
             <field name="view_mode">dashboard,pivot,graph</field>
             <field name="search_view_id" ref="purchase.view_purchase_order_search"/>
@@ -41,8 +41,13 @@
             </field>
         </record>
 
-        <record id="purchase.purchase_report" model="ir.ui.menu">
-            <field name="action" ref="purchase_report_action_dashboard"/>
+        <!-- Add dashboard to purchase reporting -->
+        <record id="purchase.action_purchase_order_report_all" model="ir.actions.act_window">
+            <field name="view_mode">graph,pivot,dashboard</field>
         </record>
+
+        <!-- Dashboard reporting view -->
+        <menuitem id="purchase_report_menu_dashboard" name="Dashboard" action="purchase_report_action_dashboard" parent="purchase.purchase_report_main" sequence="0"/>
+
     </data>
 </odoo>

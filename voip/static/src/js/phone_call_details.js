@@ -325,7 +325,8 @@ const PhoneCallDetails = Widget.extend({
             },
             res_id: this.activityId,
         }, {
-            fullscreen: config.device.isMobile
+            fullscreen: config.device.isMobile,
+            on_close: () => Component.env.bus.trigger('voip_reload_chatter'),
         });
     },
     /**

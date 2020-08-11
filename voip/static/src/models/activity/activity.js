@@ -4,6 +4,7 @@ odoo.define('voip/static/src/models/activity/activity.js', function (require) {
 const {
     registerClassPatchModel,
     registerFieldPatchModel,
+    registerInstancePatchModel,
 } = require('mail/static/src/model/model_core.js');
 const { attr } = require('mail/static/src/model/model_field.js');
 
@@ -26,6 +27,39 @@ registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activi
 
 registerFieldPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
     phone: attr(),
+});
+
+registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
+
+    /**
+     * @override
+     */
+    _created() {
+        const res = this._super(...arguments);
+        this.env.bus.on('voip_reload_chatter', this, this._onReloadChatter);
+        return res;
+    },
+    /**
+     * @override
+     */
+    _willDelete() {
+        this.env.bus.off('voip_reload_chatter', this, this._onReloadChatter);
+        return this._super(...arguments);
+    },
+
+    //----------------------------------------------------------------------
+    // Handlers
+    //----------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    _onReloadChatter() {
+        if (!this.chatter) {
+            return;
+        }
+        this.chatter.refreshActivities();
+    },
 });
 
 });

@@ -7,7 +7,6 @@
             <script type="text/javascript" src="/voip/static/src/bugfix/bugfix.js"></script>
 
             <script type="text/javascript" src="/voip/static/src/components/activity/activity.js"></script>
-            <script type="text/javascript" src="/voip/static/src/js/activity.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/call_center_field.js"/>
             <script type="text/javascript" src="/voip/static/src/js/dialing_panel.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/phone_call.js"></script>

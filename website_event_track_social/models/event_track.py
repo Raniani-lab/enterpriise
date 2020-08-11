@@ -122,6 +122,7 @@ class Track(models.Model):
                 'push_notification_image': track.website_image if track.website_image else False,
                 'account_ids': [(4, social_account.id)],
                 'post_method': 'scheduled',
+                'state': 'scheduled',
                 'use_visitor_timezone': False,
                 'scheduled_date': track.date - relativedelta(minutes=track.push_reminder_delay),
                 'event_track_id': track.id

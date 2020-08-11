@@ -33,6 +33,7 @@ var DashboardModel = BasicModel.extend({
         record.compare = this.dataPoint.compare;
         record.comparisonData = this.dataPoint.comparisonData;
         record.variationData = this.dataPoint.variationData;
+        record.isSample = this.isSampleModel;
         return record;
      },
     /**
@@ -94,14 +95,20 @@ var DashboardModel = BasicModel.extend({
         });
     },
     /**
-     * @param  {Array[]} range
      * @param  {Array[]} aggregateDomain
+     * @param  {Array[]} range
      * @return {Array[]}
      */
-    _getReadGroupDomain: function (range, aggregateDomain) {
+    _getReadGroupDomain: function (aggregateDomain, range) {
         return Domain.prototype.normalizeArray(this.dataPoint.domain)
-            .concat(aggregateDomain)
-            .concat(Domain.prototype.normalizeArray(new Domain(range).toArray()));
+            .concat(range)
+            .concat(Domain.prototype.normalizeArray(new Domain(aggregateDomain).toArray()));
+    },
+    /**
+     * @override
+     */
+    _isEmpty() {
+        return this.dataPoint.count === 0;
     },
     /**
      * @override
@@ -110,7 +117,12 @@ var DashboardModel = BasicModel.extend({
     _load: function (dataPoint) {
         var self = this;
 
-        var domainMapping = {};
+        let count = 0;
+        const domainMapping = {};
+        if (this.useSampleModel) {
+            // force to do a read_group RPC without domain to determine if there is data to display
+            domainMapping['[]'] = [];
+        }
         var fieldsInfo = dataPoint.fieldsInfo.dashboard;
         _.each(dataPoint.aggregates, function (aggregateName) {
             var domain = fieldsInfo[aggregateName].domain;
@@ -133,6 +145,7 @@ var DashboardModel = BasicModel.extend({
                 domain: self._getReadGroupDomain(domain, self.dataPoint.timeRange),
                 fields: fields,
             }).then(function (result) {
+                count = count + (domain === '[]' ? result.__count : 0);
                 _.extend(self.dataPoint.data, _.pick(result, aggregateNames));
             }));
             if (dataPoint.compare) {
@@ -140,12 +153,14 @@ var DashboardModel = BasicModel.extend({
                     domain: self._getReadGroupDomain(domain, self.dataPoint.comparisonTimeRange),
                     fields: fields,
                 }).then(function (result) {
+                    count = count + (domain === '[]' ? result.__count : 0);
                     _.extend(self.dataPoint.comparisonData, _.pick(result, aggregateNames));
                 }));
             }
         });
 
         return Promise.all(defs).then(function () {
+            self.dataPoint.count = count;
             self._evaluateFormulas(dataPoint);
             if (dataPoint.compare) {
                 var value, comparisonValue;
@@ -168,6 +183,7 @@ var DashboardModel = BasicModel.extend({
     _makeDataPoint: function (params) {
         var dataPoint = this._super.apply(this, arguments);
         dataPoint.aggregates = params.aggregates;
+        dataPoint.count = 0;
         dataPoint.formulas = params.formulas;
         dataPoint.comparisonData = {};
         dataPoint.variationData = {};

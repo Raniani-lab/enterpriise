@@ -62,6 +62,7 @@ var DashboardController = AbstractController.extend({
             res_model: this.modelName,
             type: 'ir.actions.act_window',
             views: [[false, data.viewType]],
+            useSampleModel: false, // disable sample data when zooming on a sub view
         };
         if (!_.isEmpty(ev.data.additionalMeasures)) {
             action.flags = {

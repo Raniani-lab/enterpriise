@@ -17,6 +17,7 @@ var QWeb = core.qweb;
 
 var DashboardRenderer = FormRenderer.extend({
     className: "o_dashboard_view",
+    sampleDataTargets: ['.o_subview', '.o_group'],
     events: {
         'click .o_aggregate.o_clickable': '_onAggregateClicked',
     },
@@ -32,6 +33,7 @@ var DashboardRenderer = FormRenderer.extend({
         this._super.apply(this, arguments);
         this.mode = 'readonly';
         this.subFieldsViews = params.subFieldsViews;
+        this.subViewRefs = params.subViewRefs;
         this.additionalMeasures = params.additionalMeasures;
         this.subControllers = {};
         this.subControllersContext = _.pick(state.context || {}, 'pivot', 'graph', 'cohort');
@@ -147,6 +149,20 @@ var DashboardRenderer = FormRenderer.extend({
         }
         var $result = $('<label>', {text: text});
         return $result;
+    },
+    /**
+     * @private
+     */
+    _renderNoContentHelper: function () {
+        const templateName = this.noContentHelp ? "web.ActionHelper" : "web.NoContentHelper";
+        const context = this.noContentHelp ? { noContentHelp: this.noContentHelp } : {};
+        const template = document.createElement('template');
+        // FIXME: retrieve owl qweb instance via the env set on Component s.t.
+        // it also works in the tests (importing 'web.env' wouldn't). This won't
+        // be necessary as soon as this rendering will be written in owl.
+        const OwlQweb = owl.Component.env.qweb;
+        template.innerHTML = OwlQweb.renderToString(templateName, context);
+        this.el.append(template.content.firstChild);
     },
     /**
      * Renders a statistic (from an aggregate or a formula) with its label.
@@ -331,6 +347,7 @@ var DashboardRenderer = FormRenderer.extend({
             isEmbedded: true,
             additionalMeasures: this.additionalMeasures,
             searchQuery: searchQuery,
+            useSampleModel: Boolean(this.state.isSample),
         };
         var SubView = viewRegistry.get(viewType);
         var subView = new SubView(this.subFieldsViews[viewType], subViewParams);
@@ -360,6 +377,9 @@ var DashboardRenderer = FormRenderer.extend({
             _.invoke(oldControllers, 'destroy');
             if (self.isInDOM) {
                 _.invoke(self.subControllers, 'on_attach_callback');
+            }
+            if (self.state.isSample) {
+                self._renderNoContentHelper();
             }
         });
     },
@@ -423,11 +443,11 @@ var DashboardRenderer = FormRenderer.extend({
         ev.stopPropagation();
         var viewType = $(ev.currentTarget).attr('viewType');
         var controller = this.subControllers[viewType];
+        // For now the views embedded in a dashboard can be of type cohort, graph, pivot. The
+        // getOwnedQueryParams method of their controller does not export anything but a context.
+        const controllerContext = controller.getOwnedQueryParams().context;
         this.trigger_up('open_view', {
-            // for now the views embedded in a dashboard can be of type
-            // cohort, graph, pivot. The getOwnedQueryParams method of their controller
-            // does not export anything but a context.
-            context: _.extend({}, this.state.context, controller.getOwnedQueryParams().context),
+            context: Object.assign({}, this.state.context, controllerContext, this.subViewRefs),
             viewType: viewType,
             additionalMeasures: this.additionalMeasures,
         });

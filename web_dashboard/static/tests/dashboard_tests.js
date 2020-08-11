@@ -1332,6 +1332,7 @@ QUnit.module('Views', {
                         res_model: 'test_report',
                         type: 'ir.actions.act_window',
                         views: [[false, 'graph']],
+                        useSampleModel: false,
                     };
                     assert.deepEqual(ev.data.action, expectedAction,
                         "should execute an action with correct params");
@@ -1401,6 +1402,7 @@ QUnit.module('Views', {
                         res_model: 'test_report',
                         type: 'ir.actions.act_window',
                         views: [[false, 'cohort']],
+                        useSampleModel: false,
                     };
                     assert.deepEqual(ev.data.action, expectedAction,
                         "should execute an action with correct params");
@@ -2522,7 +2524,7 @@ QUnit.module('Views', {
                         views: [[false, "list"], [false, "form"]],
                         view_mode: 'list',
                         target: 'current',
-                        context: { pivot_view_ref: "some_xmlid" },
+                        context: {},
                         domain: [],
                     });
                 },
@@ -2635,6 +2637,123 @@ QUnit.module('Views', {
         await cpHelpers.toggleMenuItemOption(dashboard, 'Date', 'Day');
         assert.notOk(cpHelpers.isOptionSelected(dashboard, 'Date', 'Day'));
         assert.ok(cpHelpers.isOptionSelected(dashboard, 'Date', 'Quarter'));
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('empty dashboard view with sub views', async function (assert) {
+        assert.expect(7);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="graph"/>
+                    <view type="pivot"/>
+                </dashboard>`,
+            archs: {
+                'test_report,false,graph': '<graph><field name="categ_id"/></graph>',
+                'test_report,false,pivot': '<pivot><field name="categ_id" type="row"/></pivot>',
+            },
+            domain: [['id', '<', 0]],
+            viewOptions: {
+                action: {
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] .o_view_nocontent');
+        assert.containsNone(dashboard, '.o_subview[type=pivot] .o_view_nocontent .abc');
+        assert.containsNone(dashboard, '.o_view_nocontent .abc');
+
+        await dashboard.reload({ domain: [] });
+
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] table');
+        assert.containsNone(dashboard, '.o_view_nocontent .abc');
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('empty dashboard view with sub views and sample data', async function (assert) {
+        assert.expect(9);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard sample="1">
+                    <view type="graph"/>
+                    <view type="pivot"/>
+                </dashboard>`,
+            archs: {
+                'test_report,false,graph': '<graph><field name="categ_id"/></graph>',
+                'test_report,false,pivot': '<pivot><field name="categ_id" type="row"/></pivot>',
+            },
+            domain: [['id', '<', 0]],
+            viewOptions: {
+                action: {
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.hasClass(dashboard.el, 'o_view_sample_data');
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] table');
+        assert.containsOnce(dashboard, '.o_view_nocontent .abc');
+
+        await dashboard.reload({ domain: [['id', '<', -10]] }); // new domain, still matching nothing
+
+        assert.doesNotHaveClass(dashboard.el, 'o_view_sample_data');
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] .o_view_nocontent');
+        assert.containsNone(dashboard, '.o_subview[type=pivot] .o_view_nocontent .abc');
+        assert.containsNone(dashboard, '.o_view_nocontent .abc');
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('non empty dashboard view with sub views and sample data', async function (assert) {
+        assert.expect(9);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard sample="1">
+                    <view type="graph"/>
+                    <view type="pivot"/>
+                </dashboard>`,
+            archs: {
+                'test_report,false,graph': '<graph><field name="categ_id"/></graph>',
+                'test_report,false,pivot': '<pivot><field name="categ_id" type="row"/></pivot>',
+            },
+            viewOptions: {
+                action: {
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.doesNotHaveClass(dashboard.el, 'o_view_sample_data');
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] table');
+        assert.containsNone(dashboard, '.o_view_nocontent .abc');
+
+        await dashboard.reload({ domain: [['id', '<', 0]] });
+
+        assert.doesNotHaveClass(dashboard.el, 'o_view_sample_data');
+        assert.containsOnce(dashboard, '.o_subview[type=graph] canvas');
+        assert.containsOnce(dashboard, '.o_subview[type=pivot] .o_view_nocontent');
+        assert.containsNone(dashboard, '.o_subview[type=pivot] .o_view_nocontent .abc');
+        assert.containsNone(dashboard, '.o_view_nocontent .abc');
 
         dashboard.destroy();
     });

@@ -47,7 +47,7 @@
 
         <div class="container-fluid">
             <button t-if="current_request_item and current_request_item.state == 'sent' and not hasItems" type="button" class="o_sign_sign_document_button btn btn-primary">Sign Document</button>
-            <div class="row o_sign_page_info">
+            <div class="row o_sign_page_info mobile-hide">
                 <div class="col-lg-4">
                     <div class="o_sign_request_from">
                          <span t-if="portal" class="o_sign_breadcrumb"><a t-attf-href="/my/signature/{{current_request_item.id}}?{{ keep_query() }}"
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4 mobile-hide">
                     <div class="o_sign_request_from">
                         <img class="float-left mr-2 mt-1" t-attf-src="data:image/png;base64,#{sign_request.create_uid.partner_id.image_128}" alt="Signature" style="max-width: 32px;"/>
                         <t t-if="sign_request.create_uid.partner_id.name">Requested by <b><t t-esc="sign_request.create_uid.partner_id.name"/></b><br/></t>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="o_sign_signer_status_wrapper col-lg-4 d-flex justify-content-end flex-wrap">
+                <div class="o_sign_signer_status_wrapper col-lg-4 d-flex justify-content-end flex-wrap mobile-hide">
                     <t t-if="sign_request.state != 'signed'">
                         <t t-foreach="sign_request.request_item_ids" t-as="sign">
                             <div t-if="sign.state != 'completed'" class="o_sign_signer_status clearfix pl-4 d-flex" t-att-data-id="sign.id">
@@ -150,24 +150,26 @@
             </t>
             <div class="o_sign_document">
                 <header>
-                    <div>
-                        <div class="col-lg-4">
+                    <div class="container-fluid">
+                    <div class="d-flex justify-content-between flex-fill">
+                        <div class="col-lg-4 justify-content-start">
                             <div class="o_logo">
                                 <a href="/"><img src="/logo.png" alt="Logo"/></a>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 justify-content-center mobile-hide">
                         <div t-if="sign_request" class="o_sign_header_instruction">
                             <t t-if="not current_request_item">Need to sign? Check your inbox to get your secure access</t>
                             <t t-if="current_request_item and current_request_item.state == 'sent'">Please Review And Act On This Document</t>
                             <t t-if="current_request_item and current_request_item.state == 'completed'">You have completed the document</t>
                         </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 justify-content-end">
                         <div class="o_odoo">
                             <a href="https://www.odoo.com/page/sign?utm_source=db&amp;utm_medium=sign"><img src="/sign/static/img/odoo_signed.png" alt="Signed"/></a>
                         </div>
                         </div>
+                    </div>
                     </div>
                 </header>
                 <t t-call="sign._doc_sign"/>

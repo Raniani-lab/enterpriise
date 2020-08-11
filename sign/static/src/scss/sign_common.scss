@@ -172,4 +172,12 @@
         justify-content: flex-start;
     }
 }
-     
+@media only screen and (max-width:650px) {
+    .mobile-hide{
+        display: none !important;
+    }
+    .flex-fill {
+        flex: none;
+    }
+}
+

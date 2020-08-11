@@ -75,7 +75,7 @@ For Development information go to http://www.afip.gob.ar/fe/documentos/WSBFEv1%2
 
 """,
     'depends': [
-        'l10n_ar', 'account_debit_note',
+        'l10n_ar',
     ],
     'external_dependencies': {
         'python': ['pyOpenSSL', 'zeep']

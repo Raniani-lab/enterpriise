@@ -53,6 +53,7 @@ class SocialTwitterCase(SocialCase):
         return cls.env.ref('social_twitter.social_media_twitter')
 
     def test_remove_mentions(self):
+        # without `ignore_mention` parameter
         assert_results = [
             ["@mister hello", "@ mister hello"],
             ["111@mister hello", "111@mister hello"],
@@ -60,6 +61,25 @@ class SocialTwitterCase(SocialCase):
             ["hello@gmail.com hello @mister", "hello@gmail.com hello @ mister"],
             ["#@mister hello", "#@mister hello"],
             ["@aa @bb @cc", "@ aa @ bb @ cc"],
+            ["@@test", "@@ test"],
+            ['"@test"', '"@ test"'],
         ]
         for message, expected in assert_results:
             self.assertEqual(self.env["social.live.post"]._remove_mentions(message), expected)
+
+        # with `ignore_mention` parameter
+        assert_results = [
+            ["@mister hello", ["mister"], "@mister hello"],
+            ["@mister hello", ["MISTER"], "@mister hello"],
+            ["@mistER hello", ["@MistEr"], "@mistER hello"],
+            ["@ mister this_is_an_email@mister7f.com @kiwi", ["kiwi"], "@ mister this_is_an_email@mister7f.com @kiwi"],
+            ["this_is_an_email@mister7f.com @mister @kiwi", ["kiwi"], "this_is_an_email@mister7f.com @ mister @kiwi"],
+            ["@Mister hello @miste ", ["mister"], "@Mister hello @ miste "],
+            ["@Mister hello @miste @TEST", ["mister", "test"], "@Mister hello @ miste @TEST"],
+            # will remove `mister_kiwi_12` but must keep `mister_kiwi_123`
+            ["special mention @mister_kiwi_123 @mister_kiwi_12", ["mister_kiwi_123"], "special mention @mister_kiwi_123 @ mister_kiwi_12"],
+            ["@mister_kiwi_123 @mister_kiwi_12", ["mister_kiwi_123"], "@mister_kiwi_123 @ mister_kiwi_12"],
+            ["@mister_kiwi_12 @mister_kiwi_123", ["mister_kiwi_123"], "@ mister_kiwi_12 @mister_kiwi_123"],
+        ]
+        for message, ignore, expected in assert_results:
+            self.assertEqual(self.env["social.live.post"]._remove_mentions(message, ignore), expected)

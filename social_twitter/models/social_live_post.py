@@ -114,6 +114,26 @@ class SocialLivePostTwitter(models.Model):
             live_post.write(values)
 
     @api.model
-    def _remove_mentions(self, message):
-        """Remove mentions in the Tweet message."""
-        return re.sub(r'(^|[^\w\#])@(\w)', r'\1@ \2', message)
+    def _remove_mentions(self, message, ignore_mentions=None):
+        """Remove mentions in the Tweet message.
+
+        :param message: text message in which we will look for mention
+        :param ignore_mentions: do not remove those mentions if found
+        """
+        if ignore_mentions:
+            # keep only safe (mention consistent) chars in `ignore_mention`
+            ignore_mentions = [
+                re.sub(r'[^\w]', '', mention).lower()
+                for mention in ignore_mentions
+            ]
+
+        mention_regex = r'(^|[^\w#])@(%s)\b'
+
+        remove_mentions = [
+            match[2] for match in re.finditer(mention_regex % r'\w+', message)
+            if not ignore_mentions or match[2].lower() not in ignore_mentions
+        ]
+
+        for mention in remove_mentions:
+            message = re.sub(mention_regex % mention, r'\1@ \2', message)
+        return message

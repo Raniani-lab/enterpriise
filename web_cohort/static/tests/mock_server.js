@@ -99,7 +99,7 @@ MockServer.include({
                     columns.push({
                         'value': '-',
                         'churn_value': '-',
-                        'percentage': '-',
+                        'percentage': '',
                     });
                     continue;
                 }
@@ -142,7 +142,7 @@ MockServer.include({
                 if (kwargs.mode === 'churn') {
                     percentage = 1 - percentage;
                 }
-                percentage = (100 * percentage).toFixed(1);
+                percentage = Number((100 * percentage).toFixed(1));
                 columnsAvg[column]['percentage'] += percentage;
                 columnsAvg[column]['count'] += 1;
                 columns.push({

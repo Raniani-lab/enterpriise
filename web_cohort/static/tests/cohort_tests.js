@@ -542,5 +542,93 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
+    QUnit.test('empty cohort view with action helper', async function (assert) {
+        assert.expect(4);
+
+        const cohort = await createView({
+            View: CohortView,
+            model: "subscription",
+            data: this.data,
+            arch: '<cohort date_start="start" date_stop="stop"/>',
+            domain: [['id', '<', 0]],
+            viewOptions: {
+                action: {
+                    context: {},
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.containsOnce(cohort, '.o_view_nocontent .abc');
+        assert.containsNone(cohort, 'table');
+
+        await cohort.reload({ domain: [] });
+
+        assert.containsNone(cohort, '.o_view_nocontent .abc');
+        assert.containsOnce(cohort, 'table');
+
+        cohort.destroy();
+    });
+
+    QUnit.test('empty cohort view with sample data', async function (assert) {
+        assert.expect(7);
+
+        const cohort = await createView({
+            View: CohortView,
+            model: "subscription",
+            data: this.data,
+            arch: '<cohort sample="1" date_start="start" date_stop="stop"/>',
+            domain: [['id', '<', 0]],
+            viewOptions: {
+                action: {
+                    context: {},
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.hasClass(cohort.el, 'o_view_sample_data');
+        assert.containsOnce(cohort, '.o_view_nocontent .abc');
+        assert.containsOnce(cohort, 'table.o_sample_data_disabled');
+
+        await cohort.reload({ domain: [] });
+
+        assert.doesNotHaveClass(cohort.el, 'o_view_sample_data');
+        assert.containsNone(cohort, '.o_view_nocontent .abc');
+        assert.containsOnce(cohort, 'table');
+        assert.doesNotHaveClass(cohort.$('table'), 'o_sample_data_disabled');
+
+        cohort.destroy();
+    });
+
+    QUnit.test('non empty cohort view with sample data', async function (assert) {
+        assert.expect(7);
+
+        const cohort = await createView({
+            View: CohortView,
+            model: "subscription",
+            data: this.data,
+            arch: '<cohort sample="1" date_start="start" date_stop="stop"/>',
+            viewOptions: {
+                action: {
+                    context: {},
+                    help: '<p class="abc">click to add a foo</p>'
+                }
+            },
+        });
+
+        assert.doesNotHaveClass(cohort.el, 'o_view_sample_data');
+        assert.containsNone(cohort, '.o_view_nocontent .abc');
+        assert.containsOnce(cohort, 'table');
+        assert.doesNotHaveClass(cohort.$('table'), 'o_sample_data_disabled');
+
+        await cohort.reload({ domain: [['id', '<', 0]] });
+
+        assert.doesNotHaveClass(cohort.el, 'o_view_sample_data');
+        assert.containsOnce(cohort, '.o_view_nocontent .abc');
+        assert.containsNone(cohort, 'table');
+
+        cohort.destroy();
+    });
 });
 });

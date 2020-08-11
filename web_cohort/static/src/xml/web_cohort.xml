@@ -38,7 +38,7 @@
     </t>
 
     <div t-name="web_cohort.CohortRenderer" class="o_cohort_view" owl="1">
-        <div t-if="_hasContent()">
+        <div t-if="props.hasContent">
             <div t-if="props.comparisonReport &amp;&amp; (props.comparisonReport.rows.length || props.report.rows.length)" class="table-responsive">
                 <t t-call="CohortView.tableTitle">
                     <t t-set="title" t-value="props.rangeDescription"/>
@@ -71,9 +71,12 @@
                 No data available.
             </div>
         </div>
-        <div t-else="">
-            <t t-call="web.NoContentHelper"/>
-        </div>
+        <t t-if="!props.hasContent or (props.isSample and !props.isEmbedded)">
+            <t t-if="props.noContentHelp" t-call="web.ActionHelper">
+                <t t-set="noContentHelp" t-value="props.noContentHelp"/>
+            </t>
+            <t t-else="" t-call="web.NoContentHelper"/>
+        </t>
     </div>
 
     <t t-name="CohortView.tableTitle" owl="1">

@@ -6,19 +6,16 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
     const patchMixin = require('web.patchMixin');
 
     class CohortRenderer extends OwlAbstractRenderer {
+
+        constructor() {
+            super(...arguments);
+            this.sampleDataTargets = ['table'];
+        }
+
         //--------------------------------------------------------------------------
         // Private
         //--------------------------------------------------------------------------
 
-        /**
-         * Used to determine whether or not to display the no content helper.
-         *
-         * @returns {boolean}
-         */
-        _hasContent() {
-            return this.props.report.rows.length ||
-                (this.props.comparisonReport && this.props.comparisonReport.rows.length);
-        }
         /**
          * @param {integer} value
          * @returns {Array} first integers from 0 to value-1

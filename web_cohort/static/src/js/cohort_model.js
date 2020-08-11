@@ -14,7 +14,12 @@ var CohortModel = AbstractModel.extend({
     */
     __get: function () {
         const { rangeDescription, comparisonRangeDescription } = this.timeRanges;
-        return Object.assign(this.data, { rangeDescription, comparisonRangeDescription });
+        return Object.assign({}, this.data, {
+            hasContent: !this._isEmpty(),
+            isSample: this.isSampleModel,
+            rangeDescription,
+            comparisonRangeDescription
+        });
     },
     /**
      * @override
@@ -107,7 +112,10 @@ var CohortModel = AbstractModel.extend({
             this.data.comparisonReport = comparisonReport;
         });
     },
-
+    /**
+     * @private
+     * @returns {Array[]}
+     */
     _getDomains: function () {
         const { range, comparisonRange } = this.timeRanges;
         if (!range) {
@@ -117,6 +125,16 @@ var CohortModel = AbstractModel.extend({
             this.domain.concat(range),
             this.domain.concat(comparisonRange),
         ];
+    },
+    /**
+     * @override
+     */
+    _isEmpty() {
+        let rowCount = this.data.report.rows.length;
+        if (this.data.comparisonReport) {
+            rowCount += this.data.comparisonReport.rows.length;
+        }
+        return rowCount === 0;
     },
 });
 

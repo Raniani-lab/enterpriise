@@ -35,4 +35,11 @@
             </div>
         </t>
     </t>
+    <t t-name="social.StreamPostReply" t-extend="social.StreamPostReply">
+        <t t-jquery="form" t-operation="append">
+            <input t-if="comment &amp;&amp; comment.from &amp;&amp; comment.from.screen_name"
+                type="hidden" name="answering_to"
+                t-att-value="isCommentReply ? comment.from.screen_name : ''"/>
+        </t>
+    </t>
 </odoo>

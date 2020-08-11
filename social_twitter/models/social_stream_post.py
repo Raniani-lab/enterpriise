@@ -41,7 +41,6 @@ class SocialStreamPostTwitter(models.Model):
     def _twitter_comment_add(self, stream, comment_id, message):
         self.ensure_one()
         tweet_id = comment_id or self.twitter_tweet_id
-        message = self.env["social.live.post"]._remove_mentions(message)
         params = {
             'status': message,
             'in_reply_to_status_id': tweet_id,

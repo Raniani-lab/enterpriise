@@ -59,8 +59,10 @@ class L10nARVatBook(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        journal_type = self.env.context.get('journal_type', 'sale')
-        options.update({'journal_type': journal_type})
+        journal_type = options.get('journal_type')
+        if not journal_type:
+            journal_type = self.env.context.get('journal_type', 'sale')
+            options.update({'journal_type': journal_type})
         lines = []
         line_id = 0
         sign = 1.0 if journal_type == 'purchase' else -1.0

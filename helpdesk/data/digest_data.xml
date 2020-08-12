@@ -8,17 +8,17 @@
 
     <data>
         <record id="digest_tip_helpdesk_0" model="digest.tip">
-            <field name="name">Helpdesk: Create tickets from incoming emails</field>
-            <field name="sequence">5</field>
+            <field name="name">Tip: Create tickets from incoming emails</field>
+            <field name="sequence">1800</field>
+            <field name="group_id" ref="helpdesk.group_helpdesk_manager" />
             <field name="tip_description" type="html">
 <div>
-    % set email_alias = object.env['helpdesk.team'].search([('alias_name', '!=', False)],limit=1).alias_id.display_name
-    % if email_alias
-    <b class="font-16" style="font-size: 20px;line-height: 30px"> Create tickets from incoming emails</b>
-    <p class="font-12" style="color:#888888;font-size: 15px; line-height: 25px; margin-top: 0">Emails sent to <strong>${email_alias}</strong> generate new tickets in your Helpdesk funnel.</p>
-    <div style="text-align:center;margin-top:5px;margin-bottom:10px;">
-        <a href="mailto:${email_alias}" target="_blank" style="display:inline-block;background-color:#875a7b;line-height:40px;text-decoration: none;color: #ffffff;border-radius: 3px;font-size:13px;font-weight:bold;text-align:center; padding:0 10px;">Try it now</a>
-    </div>
+    % set record = object.env['helpdesk.team'].search([('alias_name', '!=', False)],limit=1)
+    <b class="tip_title">Tip: Create tickets from incoming emails</b>
+    % if record and record.alias_domain
+    <p class="tip_content">Emails sent to <a href="mailto:${record.alias_id.display_name}" target="_blank" style="color: #875a7b; text-decoration: none;">${record.alias_id.display_name}</a> generate tickets in your pipeline.</p>
+    % else
+    <p class="tip_content">Emails sent to a Helpdesk Team alias generate tickets in your pipeline.</p>
     % endif
 </div>
             </field>

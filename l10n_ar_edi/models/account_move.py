@@ -143,8 +143,13 @@ class AccountMove(models.Model):
                 self._cr.commit()
 
         if error_invoice:
-            msg = _('We couldn\'t validate the invoice "%s" (Draft Invoice *%s) in AFIP. This is what we get:\n%s'
-                    '\n\nPlease make the required corrections and try again') % (inv.partner_id.name, inv.id, return_info)
+            if error_invoice.exists():
+                msg = _('We couldn\'t validate the invoice "%s" (Draft Invoice *%s) in AFIP') % (
+                    error_invoice.partner_id.name, error_invoice.id)
+            else:
+                msg = _('We couldn\'t validate the invoice in AFIP.')
+            msg += _('This is what we get:\n%s\n\nPlease make the required corrections and try again') % (return_info)
+
             # if we've already validate any invoice, we've commit and we want to inform which invoices were validated
             # which one were not and the detail of the error we get. This ins neccesary because is not usual to have a
             # raise with changes commited on databases
@@ -320,7 +325,12 @@ class AccountMove(models.Model):
             if afip_result not in ['A', 'O']:
                 if not self.env.context.get('l10n_ar_invoice_skip_commit'):
                     self.env.cr.rollback()
-                inv.sudo().write({'l10n_ar_afip_xml_request': xml_request, 'l10n_ar_afip_xml_response': xml_response})
+                if inv.exists():
+                    # Only save the xml_request/xml_response fields if the invoice exists.
+                    # It is possible that the invoice will rollback as well e.g. when it is automatically created:
+                    #   * creating credit note with full reconcile option
+                    #   * creating/validating an invoice from subscription/sales
+                    inv.sudo().write({'l10n_ar_afip_xml_request': xml_request, 'l10n_ar_afip_xml_response': xml_response})
                 if not self.env.context.get('l10n_ar_invoice_skip_commit'):
                     self.env.cr.commit()
                 return return_info

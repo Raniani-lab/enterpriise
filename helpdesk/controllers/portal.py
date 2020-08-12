@@ -98,8 +98,6 @@ class CustomerPortal(CustomerPortal):
         else:
             domain = searchbar_filters[filterby]['domain']
 
-        # archive groups - Default Group By 'create_date'
-        archive_groups = self._get_archive_groups('helpdesk.ticket', domain) if values.get('my_details') else []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
@@ -143,7 +141,6 @@ class CustomerPortal(CustomerPortal):
             'page_name': 'ticket',
             'default_url': '/my/tickets',
             'pager': pager,
-            'archive_groups': archive_groups,
             'searchbar_sortings': searchbar_sortings,
             'searchbar_filters': searchbar_filters,
             'searchbar_inputs': searchbar_inputs,

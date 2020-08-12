@@ -34,7 +34,6 @@ class CustomerPortal(CustomerPortal):
 
         domain = self._get_subscription_domain(partner)
 
-        archive_groups = self._get_archive_groups('sale.subscription', domain) if values.get('my_details') else []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
@@ -75,7 +74,6 @@ class CustomerPortal(CustomerPortal):
             'accounts': accounts,
             'page_name': 'subscription',
             'pager': pager,
-            'archive_groups': archive_groups,
             'default_url': '/my/subscription',
             'searchbar_sortings': searchbar_sortings,
             'sortby': sortby,

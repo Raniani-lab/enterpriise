@@ -76,15 +76,24 @@ class IotDevice(models.Model):
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
     screen_url = fields.Char('Screen URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
     manual_measurement = fields.Boolean('Manual Measurement', compute="_compute_manual_measurement", help="Manually read the measurement from the device")
+    is_scanner = fields.Boolean(string='Is scanner', compute="_compute_is_scanner", inverse="_set_scanner" , help="Manually the device type between keyboard or scanner")
 
     def name_get(self):
         return [(i.id, "[" + i.iot_id.name +"] " + i.name) for i in self]
+
+    @api.depends('type')
+    def _compute_is_scanner(self):
+        for device in self:
+            device.is_scanner = True if device.type == 'scanner' else False
+
+    def _set_scanner(self):
+        for device in self:
+            device.type = 'scanner' if device.is_scanner else 'keyboard'
 
     @api.depends('manufacturer')
     def _compute_manual_measurement(self):
         for device in self:
             device.manual_measurement = device.manufacturer == 'Adam'
-
 
 class IrActionReport(models.Model):
     _inherit = 'ir.actions.report'

@@ -37,7 +37,9 @@ var IotDeviceFormController = FormController.extend({
      */
     _updateKeyboardLayout: function () {
         var keyboard_layout = this.renderer.state.data.keyboard_layout;
+        var is_scanner = this.renderer.state.data.is_scanner;
         var iot_device = new DeviceProxy(this, { iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
+        iot_device.action({'action': 'update_is_scanner', 'is_scanner': is_scanner});
         if (keyboard_layout) {
             return this._rpc({
                 model: 'iot.keyboard.layout',

@@ -128,6 +128,7 @@
                             <field name="iot_ip" invisible="True"/>
                             <field name="identifier" readonly="True"/>
                             <field name="type"/>
+                            <field name="is_scanner" attrs="{'invisible': [('type', 'not in', ['keyboard', 'scanner'])]}" widget="boolean_toggle"/>
                             <field name="manufacturer" attrs="{'invisible': [('manufacturer', '=', '')]}"/>
                             <field name="connection"/>
                             <field name="connected"/>

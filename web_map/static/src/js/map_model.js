@@ -26,7 +26,7 @@ const MapModel = AbstractModel.extend({
     __load: function (params) {
         this.data.count = 0;
         this.data.offset = 0;
-        this.data.limit = 80;
+        this.data.limit = params.limit;
         this.partnerToCache = [];
         this.partnerIds = [];
         this.resPartnerField = params.resPartnerField;

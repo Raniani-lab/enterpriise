@@ -27,6 +27,9 @@
             <optional>
                 <attribute name="hide_title"/>
             </optional>
+            <optional>
+                <attribute name="limit"/>
+            </optional>
             <zeroOrMore>
                 <optional>
                     <ref name="field"/>

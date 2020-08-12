@@ -41,6 +41,9 @@ const MapView = AbstractView.extend({
 
         const routing = ["true", "True", "1"].includes(this.arch.attrs.routing);
 
+        this.loadParams.limit = this.arch.attrs.limit ?
+            parseInt(this.arch.attrs.limit, 10) :
+            params.limit || 80;
         this.loadParams.routing = routing;
         this.rendererParams.routing = routing;
         this.rendererParams.numbering = this.arch.attrs.routing ? true : false;

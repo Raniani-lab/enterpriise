@@ -868,6 +868,26 @@ QUnit.module('mapView', {
         map.destroy();
     });
 
+    QUnit.test('Change load limit', async function (assert) {
+        assert.expect(2);
+
+        this.data['project.task'].records = this.data['project.task'].threeRecords.records;
+        this.data['res.partner'].records = this.data['res.partner'].twoRecordsAddressCoordinates;
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id" limit="2"/>',
+            session: {
+                map_box_token: 'token'
+            },
+        });
+
+        assert.strictEqual(cpHelpers.getPagerValue(map), '1-2');
+        assert.strictEqual(cpHelpers.getPagerSize(map), '3');
+
+        map.destroy();
+    });
 
     //--------------------------------------------------------------------------
     // Renderer testing

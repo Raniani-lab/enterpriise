@@ -154,12 +154,12 @@
             <!-- Sales order item is invisible if it's a fsm task. In that case we show the sale order. -->
              <xpath expr="//field[@name='sale_line_id']" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', ('is_fsm', '=', True), ('partner_id', '=', False)]}
+                    {'invisible': ['|', '|', '|', ('sale_order_id', '=', False), '&amp;', ('bill_type', '=', 'customer_project'), ('pricing_type', '=', 'employee_rate'), ('is_fsm', '=', True), ('partner_id', '=', False)], 'readonly': [('sale_order_id', '=', False)]}
                 </attribute>
             </xpath>
             <xpath expr="//field[@name='sale_order_id']" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', ('is_fsm', '=', False), ('partner_id', '=', False)], 'readonly': ['|', ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
+                    {'invisible': [('is_fsm', '=', False)], 'readonly': ['|', '|', ('sale_order_id', '!=', False), ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
                 </attribute>
             </xpath>
         </field>

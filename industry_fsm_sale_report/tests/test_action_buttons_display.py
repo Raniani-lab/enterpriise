@@ -309,7 +309,7 @@ class TestTimerButtons(SavepointCase):
         self.assertFalse(self.task.display_create_invoice_secondary)
         self.task.sale_order_id.state = old_state
 
-        # only visible if the Bill from tasks feature is enabled on the project
+        # only visible if the Billable feature is enabled on the project
         self.project.allow_billable = False
         self.assertFalse(self.task.display_create_invoice_primary)
         self.assertFalse(self.task.display_create_invoice_secondary)
@@ -370,7 +370,7 @@ class TestTimerButtons(SavepointCase):
         self.assertTrue(self.project.partner_id)
         self.assertFalse(self.project.sale_line_id)
         self.assertFalse(self.project.sale_order_id)
-        self.assertTrue(self.project.display_create_order)
+        self.assertFalse(self.project.display_create_order)
 
     def test_create_sale_order_02(self):
         # If allow_billable is true, "create sales order' should not be visible on tasks and project
@@ -380,8 +380,8 @@ class TestTimerButtons(SavepointCase):
         self.assertFalse(self.project.display_create_order)
         self.assertFalse(self.task.display_create_order)
 
-        # If allow_billable is false, "create sales order' should be visible on project
+        # If allow_billable is false, "create sales order' should not be visible on project
         # but no on the tasks. There we could be on project rate, on employee rate
         self.project.allow_billable = False
-        self.assertTrue(self.project.display_create_order)
+        self.assertFalse(self.project.display_create_order)
         self.assertFalse(self.task.display_create_order)

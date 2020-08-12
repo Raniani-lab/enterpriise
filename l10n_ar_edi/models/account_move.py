@@ -654,11 +654,19 @@ class AccountMove(models.Model):
                 res.update({'Opcionales': ArrayOfOpcional(optionals)})
         return res
 
-    def _get_starting_sequence(self):
-        """ If journal is an electronic type will consult last number in AFIP and create the sequence from there """
-        if self.journal_id.l10n_latam_use_documents and self.env.company.country_id == self.env.ref('base.ar') and self.journal_id.l10n_ar_afip_ws:
-            if self.l10n_latam_document_type_id:
-                last_number = self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id)
-                return "%s %05d-%08d" % (self.l10n_latam_document_type_id.doc_code_prefix, self.journal_id.l10n_ar_afip_pos_number, last_number)
-            return ""
-        return super()._get_starting_sequence()
+    def _is_argentina_electronic_invoice(self):
+        return bool(self.journal_id.l10n_latam_use_documents and self.env.company.country_id == self.env.ref('base.ar') and self.journal_id.l10n_ar_afip_ws)
+
+    def _get_last_sequence_from_afip(self):
+        """ Get last number from AFIP, this will be applied only when the account.move state = 'posted' in order to only
+        connect to AFIP when the invoice has been posted, in the other case will return a sequence with number 0 """
+        last_number = self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id) if self.state == 'posted' else 0
+        return "%s %05d-%08d" % (self.l10n_latam_document_type_id.doc_code_prefix, self.journal_id.l10n_ar_afip_pos_number, last_number)
+
+    def _get_last_sequence(self, relaxed=False):
+        """ For argentina electronic invoice, if there is not sequence already then consult the last number from AFIP
+        @return: string with the sequence, something like 'FA-A 00001-00000011' """
+        res = super()._get_last_sequence(relaxed=relaxed)
+        if not res and self._is_argentina_electronic_invoice() and self.l10n_latam_document_type_id:
+            res = self._get_last_sequence_from_afip()
+        return res

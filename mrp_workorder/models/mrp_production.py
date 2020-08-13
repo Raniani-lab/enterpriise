@@ -34,6 +34,9 @@ class MrpProduction(models.Model):
         if checks_not_process:
             error_msg = _('Please go in the Operations tab and perform the following work orders and their quality checks:\n')
             for check in checks_not_process:
-                error_msg += check.title or check.name + '\n'
+                error_msg += check.workorder_id.workcenter_id.name + ' - ' + check.name
+                if check.title:
+                    error_msg += ' - ' + check.title
+                error_msg += '\n'
             raise UserError(error_msg)
         return super()._button_mark_done_sanity_checks()

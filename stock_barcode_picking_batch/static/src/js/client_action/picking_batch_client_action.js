@@ -84,7 +84,7 @@ const BatchPickingClientAction = PickingClientAction.extend({
      * @override
      */
     _isControlButtonsEnabled: function () {
-        return this.mode !== 'draft';
+        return this.mode !== 'draft' && this._super();
     },
 
     /**

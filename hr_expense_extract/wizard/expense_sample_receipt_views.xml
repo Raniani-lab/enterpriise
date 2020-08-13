@@ -7,15 +7,27 @@
             <form string="Try Sample Receipt">
                 <h4 class="mb-5">Let's try a sample receipt to test the automated processing of expenses with Artificial Intelligence.</h4>
                 <h5>Choose a receipt:</h5>
-                <div class="d-flex justify-content-around">
-                    <button type="object" name="action_choose_sample_1"
-                        style="background-image: url('/hr_expense_extract/static/img/sample_1.jpeg' ); background-size: 250px 330px; height: 336px; width: 254px;"/>
-                    <button type="object" name="action_choose_sample_2"
-                        style="background-image: url('/hr_expense_extract/static/img/sample_2.jpeg' ); background-size: 250px 330px; height: 336px; width: 254px;"/>
-                    <button type="object" name="action_choose_sample_3"
-                        style="background-image: url('/hr_expense_extract/static/img/sample_3.jpeg' ); background-size: 250px 330px; height: 336px; width: 254px;"/>
-                    <button type="object" name="action_choose_sample_4"
-                        style="background-image: url('/hr_expense_extract/static/img/sample_4.jpeg' ); background-size: 250px 330px; height: 336px; width: 254px;"/>
+                <div class="container-fluid">
+                    <div class="row">
+                            <div class="d-flex justify-content-between align-content-center o_expense_flex">
+                            <div class="p-2 flex-grow-1">
+                                <button type="object" name="action_choose_sample_1"
+                                        class="o_extract_sample o_extract_sample_1"/>
+                            </div>
+                            <div class="p-2 flex-grow-1">
+                                <button type="object" name="action_choose_sample_2"
+                                        class="o_extract_sample o_extract_sample_2"/>
+                            </div>
+                            <div class="p-2 flex-grow-1">
+                                <button type="object" name="action_choose_sample_3"
+                                        class="o_extract_sample o_extract_sample_3"/>
+                            </div>
+                            <div class="p-2 flex-grow-1">
+                                <button type="object" name="action_choose_sample_4"
+                                        class="o_extract_sample o_extract_sample_4"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </field>

@@ -492,7 +492,7 @@ class AccountCashFlowReport(models.AbstractModel):
         self.flush()
 
         unfold_all = self._context.get('print_mode') or options.get('unfold_all')
-        currency_table_query = self._get_query_currency_table(options)
+        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
         lines_to_compute = self._get_lines_to_compute(options)
 
         tag_operating_id = self.env.ref('account.account_tag_operating').id

@@ -340,7 +340,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
         # Create the currency table.
         # As the currency table is the same whatever the comparisons, create it only once.
-        ct_query = self._get_query_currency_table(options)
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
 
         # ============================================
         # 1) Get sums for all accounts.
@@ -522,7 +522,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
         new_options = self._force_strict_range(options)
         tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        ct_query = self._get_query_currency_table(options)
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
         query = '''
             SELECT
                 account_move_line.id,

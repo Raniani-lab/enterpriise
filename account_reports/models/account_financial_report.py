@@ -978,7 +978,7 @@ class AccountFinancialReportLine(models.Model):
         groupby_clause = ','.join('account_move_line.%s' % gb for gb in groupby_list)
         groupby_field = self.env['account.move.line']._fields[self.groupby]
 
-        ct_query = AccountFinancialReportHtml._get_query_currency_table(options_list[0])
+        ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
         financial_report = self._get_financial_report()
 
         # Prepare a query by period as the date is different for each comparison.
@@ -1063,7 +1063,7 @@ class AccountFinancialReportLine(models.Model):
         AccountFinancialReportHtml = self.financial_report_id
         groupby_list = AccountFinancialReportHtml._get_options_groupby_fields(options_list[0])
         groupby_clause = ','.join('account_move_line.%s' % gb for gb in groupby_list)
-        ct_query = AccountFinancialReportHtml._get_query_currency_table(options_list[0])
+        ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
         financial_report = self._get_financial_report()
 
         # Prepare a query by period as the date is different for each comparison.

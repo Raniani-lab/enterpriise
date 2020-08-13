@@ -118,7 +118,7 @@ class ReportPartnerLedger(models.AbstractModel):
             domain = []
 
         # Create the currency table.
-        ct_query = self._get_query_currency_table(options)
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
 
         # Get sums for all partners.
         # period: [('date' <= options['date_to']), ('date' >= options['date_from'])]
@@ -181,7 +181,7 @@ class ReportPartnerLedger(models.AbstractModel):
 
         new_options = self._get_options_sum_balance(options)
         tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        ct_query = self._get_query_currency_table(options)
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
 
         query = '''
             SELECT

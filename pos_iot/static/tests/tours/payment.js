@@ -123,7 +123,7 @@ tour.register('payment_terminals_tour', {
         trigger: '.button.next.highlight:contains("Validate")',
     }, {
         content: "Check that we're on the receipt screen",
-        trigger: '.button.next.highlight:contains("Next Order")',
+        trigger: '.receipt-screen .button.next.highlight:contains("New Order")',
         run: function() {}
     }]);
 });

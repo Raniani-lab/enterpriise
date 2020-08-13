@@ -304,12 +304,12 @@ class HrExpense(models.Model):
     Did you try the mobile app?
 </p>
 <p>Snap pictures of your receipts and let Odoo<br/> automatically create expenses for you.</p>
-<p class="d-block d-sm-none">
+<p>
     <a href="https://apps.apple.com/be/app/odoo/id1272543640" target="_blank">
-        <img alt="Apple App Store" class="img img-fluid h-100" src="/hr_expense/static/img/app_store.png"/>
+        <img alt="Apple App Store" class="img img-fluid h-100 o_expense_apple_store" src="/hr_expense/static/img/app_store.png"/>
     </a>
     <a href="https://play.google.com/store/apps/details?id=com.odoo.mobile" target="_blank">
-        <img alt="Google Play Store" class="img img-fluid h-100" src="/hr_expense/static/img/play_store.png"/>
+        <img alt="Google Play Store" class="img img-fluid h-100 o_expense_google_store" src="/hr_expense/static/img/play_store.png"/>
     </a>
 </p>
 <p>

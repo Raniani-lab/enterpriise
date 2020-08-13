@@ -19,7 +19,7 @@ class VoipPhonecall(models.Model):
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.uid)
     partner_id = fields.Many2one('res.partner', 'Contact')
     activity_id = fields.Many2one('mail.activity', 'Linked Activity')
-    mail_message_id = fields.Many2one('mail.message', 'Linked Chatter Message')
+    mail_message_id = fields.Many2one('mail.message', 'Linked Chatter Message', index=True)
     note = fields.Html('Note')
     duration = fields.Float('Duration', help="Duration in minutes.")
     phone = fields.Char('Phone')

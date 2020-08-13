@@ -11,6 +11,7 @@ class CL8ColumnsReport(models.AbstractModel):
 
     filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_journals = True
+    filter_all_entries = False
 
     def _get_report_name(self):
         return _("Balance Tributario (8 columnas)")

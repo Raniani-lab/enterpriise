@@ -177,6 +177,7 @@ QUnit.module('Views', {
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
         assert.expect(1);
 
+        this.data.test_time_range.records = [];
         this.data.test_report.records = [];
 
         var dashboard = await createView({

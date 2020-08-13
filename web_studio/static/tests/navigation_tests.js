@@ -3,11 +3,14 @@ odoo.define('web_studio.navigation_tests', function (require) {
 
 var bus = require('web_studio.bus');
 var testUtils = require('web.test_utils');
-const { start } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
 
+QUnit.module('web_studio', {}, function () {
 QUnit.module('Studio Navigation', {
-    beforeEach: function () {
-        this.data = {
+    beforeEach() {
+        beforeEach(this);
+
+        Object.assign(this.data, {
             partner: {
                 fields: {
                     foo: {string: "Foo", type: "char"},
@@ -32,7 +35,7 @@ QUnit.module('Studio Navigation', {
                     {id: 9, name: 'Fluttershy'},
                 ],
             },
-        };
+        });
 
         this.actions = [{
             id: 1,
@@ -78,6 +81,9 @@ QUnit.module('Studio Navigation', {
             'partner,false,search': '<search><field name="foo" string="Foo"/></search>',
             'pony,false,search': '<search></search>',
         };
+    },
+    afterEach() {
+        afterEach(this);
     },
 }, function () {
     QUnit.module('Misc');
@@ -475,6 +481,7 @@ QUnit.module('Studio Navigation', {
 
         actionManager.destroy();
     });
+});
 });
 
 });

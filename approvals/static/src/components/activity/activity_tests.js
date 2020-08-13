@@ -6,9 +6,10 @@ const components = {
 };
 
 const {
-    afterEach: utilsAfterEach,
-    beforeEach: utilsBeforeEach,
-    start: utilsStart,
+    afterEach,
+    beforeEach,
+    createRootComponent,
+    start,
 } = require('mail/static/src/utils/test_utils.js');
 
 QUnit.module('approvals', {}, function () {
@@ -16,17 +17,17 @@ QUnit.module('components', {}, function () {
 QUnit.module('activity', {}, function () {
 QUnit.module('activity_tests.js', {
     beforeEach() {
-        utilsBeforeEach(this);
+        beforeEach(this);
+
         this.createActivityComponent = async activity => {
-            const ActivityComponent = components.Activity;
-            ActivityComponent.env = this.env;
-            this.component = new ActivityComponent(null, {
-                activityLocalId: activity.localId,
+            await createRootComponent(this, components.Activity, {
+                props: { activityLocalId: activity.localId },
+                target: this.widget.el,
             });
-            await this.component.mount(this.widget.el);
         };
+
         this.start = async params => {
-            let { env, widget } = await utilsStart(Object.assign({}, params, {
+            const { env, widget } = await start(Object.assign({}, params, {
                 data: this.data,
             }));
             this.env = env;
@@ -34,14 +35,7 @@ QUnit.module('activity_tests.js', {
         };
     },
     afterEach() {
-        utilsAfterEach(this);
-        if (this.component) {
-            this.component.destroy();
-        }
-        if (this.widget) {
-            this.widget.destroy();
-        }
-        this.env = undefined;
+        afterEach(this);
     },
 });
 
@@ -54,7 +48,7 @@ QUnit.test('activity with approval to be made by logged user', async function (a
         approver_status: 'pending',
         approver_id: 12,
         can_write: true,
-        user_id: [this.env.session.uid, "Eden Hazard"],
+        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);
@@ -237,7 +231,6 @@ QUnit.test('approve approval', async function (assert) {
                 assert.strictEqual(args.args[0].length, 1);
                 assert.strictEqual(args.args[0][0], 12);
                 assert.step('action_approve');
-                return;
             }
             return this._super(...arguments);
         },
@@ -247,7 +240,7 @@ QUnit.test('approve approval', async function (assert) {
         approver_status: 'pending',
         approver_id: 12,
         can_write: true,
-        user_id: [this.env.session.uid, "Eden Hazard"],
+        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);
@@ -277,7 +270,6 @@ QUnit.test('refuse approval', async function (assert) {
                 assert.strictEqual(args.args[0].length, 1);
                 assert.strictEqual(args.args[0][0], 12);
                 assert.step('action_refuse');
-                return;
             }
             return this._super(...arguments);
         },
@@ -287,7 +279,7 @@ QUnit.test('refuse approval', async function (assert) {
         approver_status: 'pending',
         approver_id: 12,
         can_write: true,
-        user_id: [this.env.session.uid, "Eden Hazard"],
+        user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
     await this.createActivityComponent(activity);

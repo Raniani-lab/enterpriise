@@ -2,21 +2,28 @@ odoo.define('documents.systray.ActivityMenuTests', function (require) {
 "use strict";
 
 var ActivityMenu = require('mail.systray.ActivityMenu');
-const { start } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
 
 var testUtils = require('web.test_utils');
 
-QUnit.module('mail', {}, function () {
-
-    QUnit.module('DocumentsActivityMenu', {});
+QUnit.module('documents', {}, function () {
+    QUnit.module('documents_systray_activity_menu_tests.js', {
+        beforeEach() {
+            beforeEach(this);
+        },
+        afterEach() {
+            afterEach(this);
+        },
+    });
 
     QUnit.test('activity menu widget: documents request button', async function (assert) {
         assert.expect(4);
 
         const { widget } = await start({
-            mockRPC: function (route, args) {
+            data: this.data,
+            async mockRPC(route, args) {
                 if (args.method === 'systray_get_activities') {
-                    return Promise.resolve([]);
+                    return [];
                 }
                 return this._super.apply(this, arguments);
             },

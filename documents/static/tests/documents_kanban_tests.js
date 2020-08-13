@@ -6,12 +6,16 @@ const DocumentsKanbanController = require('documents.DocumentsKanbanController')
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
-const KanbanView = require('web.KanbanView');
 
-const { afterNextRender } = require('mail/static/src/utils/test_utils.js');
+const {
+    afterEach,
+    afterNextRender,
+    beforeEach,
+} = require('mail/static/src/utils/test_utils.js');
 
 const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
+const KanbanView = require('web.KanbanView');
 const NotificationService = require('web.NotificationService');
 const RamStorage = require('web.RamStorage');
 const relationalFields = require('web.relational_fields');
@@ -29,25 +33,6 @@ function autocompleteLength() {
     return $el.find('li').length;
 }
 
-/**
- * FIXME: Duplicate function from 'mail.owl.testUtils'
- *
- * @param {jQueryElement} $fileInput
- * @param {Object} file
- */
-function inputFiles($fileInput, files) {
-    const dataTransfer = new window.DataTransfer();
-    for (const file of files) {
-        dataTransfer.items.add(file);
-    }
-    $fileInput[0].files = dataTransfer.files;
-    const versionRaw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-    const chromeVersion = versionRaw ? parseInt(versionRaw[2], 10) : false;
-    if (!chromeVersion || chromeVersion >= 73) {
-        $fileInput[0].dispatchEvent(new Event('change'));
-    }
-}
-
 function searchValue(el, value) {
     var matches = typeof el === 'string' ? $(el) : el;
     if (matches.length !== 1) {
@@ -56,11 +41,11 @@ function searchValue(el, value) {
     matches.val(value).trigger('keydown');
 }
 
+QUnit.module('documents', {}, function () {
+QUnit.module('documents_kanban_tests.js', {
+    beforeEach() {
+        beforeEach(this);
 
-QUnit.module('Views');
-
-QUnit.module('DocumentsViews', {
-    beforeEach: function () {
         this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
         this.patchDocumentXHR = (mockedXHRs, customSend) => {
             DocumentsKanbanController.prototype._createXhr = () => {
@@ -73,20 +58,20 @@ QUnit.module('DocumentsViews', {
                 return xhr;
             };
         };
-        this.data = {
+        Object.assign(this.data, {
             'documents.document': {
                 fields: {
                     active: {string: "Active", type: 'boolean', default: true},
                     available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
                     file_size: {string: "Size", type: 'integer'},
                     folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
-                    lock_uid: {string: "Locked by", type: "many2one", relation: 'user'},
+                    lock_uid: { string: "Locked by", type: "many2one", relation: 'res.users' },
                     message_follower_ids: {string: "Followers", type: 'one2many', relation: 'mail.followers'},
                     message_ids: {string: "Messages", type: 'one2many', relation: 'mail.message'},
                     mimetype: {string: "Mimetype", type: 'char', default: ''},
                     name: {string: "Name", type: 'char', default: ' '},
-                    owner_id: {string: "Owner", type: "many2one", relation: 'user'},
-                    partner_id: {string: "Related partner", type: 'many2one', relation: 'user'},
+                    owner_id: { string: "Owner", type: "many2one", relation: 'res.users' },
+                    partner_id: { string: "Related partner", type: 'many2one', relation: 'res.partner' },
                     previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
                     public: {string: "Is public", type: 'boolean'},
                     res_id: {string: "Resource id", type: 'integer'},
@@ -103,51 +88,31 @@ QUnit.module('DocumentsViews', {
                         selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']]},
                 },
                 records: [
-                    {id: 1, name: 'yop', file_size: 30000, owner_id: 1, partner_id: 2,
+                    {id: 1, name: 'yop', file_size: 30000, owner_id: 11, partner_id: 12,
                         public: true, res_id: 1, res_model: 'task', res_model_name: 'Task', activity_ids: [1],
                         activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
                         available_rule_ids: [1, 2, 4]},
-                    {id: 2, name: 'blip', file_size: 20000, owner_id: 2, partner_id: 2,
+                    {id: 2, name: 'blip', file_size: 20000, owner_id: 12, partner_id: 12,
                         public: false, res_id: 2, mimetype: 'application/pdf', res_model: 'task', res_model_name: 'Task',
                         res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1]},
-                    {id: 3, name: 'gnap', file_size: 15000, lock_uid: 3, owner_id: 2, partner_id: 1,
+                    {id: 3, name: 'gnap', file_size: 15000, lock_uid: 13, owner_id: 12, partner_id: 11,
                         public: false, res_id: 2, res_model: 'documents.document', res_model_name: 'Task',
                         res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3, 4]},
-                    {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 1, partner_id: 3,
+                    {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 11, partner_id: 13,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
                         res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
-                    {id: 5, name: 'zip', file_size: 40000, lock_uid: 1, owner_id: 2, partner_id: 2,
+                    {id: 5, name: 'zip', file_size: 40000, lock_uid: 11, owner_id: 12, partner_id: 12,
                         public: false, res_id: 3, res_model: false, res_model_name: false,
                         res_name: false, tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 4]},
-                    {id: 6, name: 'pom', file_size: 70000, partner_id: 3,
+                    {id: 6, name: 'pom', file_size: 70000, partner_id: 13,
                         public: true, res_id: 1, res_model: 'documents.document', res_model_name: 'Document',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: []},
-                    {id: 8, active: false, name: 'wip', file_size: 70000, owner_id: 3, partner_id: 3,
+                    {id: 8, active: false, name: 'wip', file_size: 70000, owner_id: 13, partner_id: 13,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
                     {id: 9, active: false, name: 'zorro', file_size: 20000, mimetype: 'image/png',
-                        owner_id: 3, partner_id: 3, public: true, res_id: false, res_model: false,
+                        owner_id: 13, partner_id: 13, public: true, res_id: false, res_model: false,
                         res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
-                ],
-            },
-            "ir.attachment": {
-                fields: {
-                    res_id: {string: "Resource id", type: 'integer'},
-                    res_model: {string: "Model (technical)", type: 'char'},
-                    name: {string: "name", type: 'char'},
-                    create_date: {string: "name", type: 'char'},
-                    create_uid: {string: "Created By", type: "many2one", relation: 'user' },
-                },
-                records: [],
-            },
-            'user': {
-                fields: {
-                    display_name: {string: "Name", type: 'char'},
-                },
-                records: [
-                    {id: 1, display_name: 'Hazard'},
-                    {id: 2, display_name: 'Lukaku'},
-                    {id: 3, display_name: 'De Bruyne'},
                 ],
             },
             'task': {
@@ -231,47 +196,26 @@ QUnit.module('DocumentsViews', {
                     {id: 4, display_name: 'One record rule', limited_to_single_record: true},
                 ],
             },
-            'mail.followers': {
-                fields: {},
-                records: [],
-            },
-            'mail.message': {
-                fields: {
-                    body: {string: "Body", type: 'char'},
-                    model: {string: "Related Document Model", type: 'char'},
-                    res_id: {string: "Related Document ID", type: 'integer'},
-                    message_type: {string:"Message Type", type: 'char'},
-                },
-                records: [],
-            },
-            'mail.activity': {
-                fields: {
-                    activity_type_id: { string: "Activity type", type: "many2one", relation: "mail.activity.type" },
-                    create_uid: { string: "Created By", type: "many2one", relation: 'partner' },
-                    display_name: { string: "Display name", type: "char" },
-                    date_deadline: { string: "Due Date", type: "date" },
-                    can_write: { string: "Can write", type: "boolean" },
-                    user_id: { string: "Assigned to", type: "many2one", relation: 'partner' },
-                    state: {
-                        string: 'State',
-                        type: 'selection',
-                        selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']],
-                    },
-                },
-            },
-            'mail.activity.type': {
-                fields: {
-                    name: { string: "Name", type: "char" },
-                },
-                records: [
-                    { id: 1, name: "Type 1" },
-                    { id: 2, name: "Type 2" },
-                ],
-            },
-        };
+        });
+
+        this.data['res.partner'].records.push(
+            { id: 11, display_name: 'Hazard' },
+            { id: 12, display_name: 'Lukaku' },
+            { id: 13, display_name: 'De Bruyne' }
+        );
+        this.data['res.users'].records.push(
+            { id: 11, display_name: 'Hazard', partner_id: 11 },
+            { id: 12, display_name: 'Lukaku', partner_id: 12 },
+            { id: 13, display_name: 'De Bruyne', partner_id: 13 }
+        );
+        this.data['mail.activity.type'].records.push(
+            { id: 11, name: "Type 1" },
+            { id: 12, name: "Type 2" }
+        );
     },
     afterEach() {
         DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
+        afterEach(this);
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {
@@ -652,7 +596,7 @@ QUnit.module('DocumentsViews', {
     QUnit.test('can share current domain', async function (assert) {
         assert.expect(2);
 
-        const domain = ['owner_id', '=', 2];
+        const domain = ['owner_id', '=', 12];
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -1142,6 +1086,7 @@ QUnit.module('DocumentsViews', {
     QUnit.test('document inspector: locked records', async function (assert) {
         assert.expect(6);
 
+        this.data.currentUserId = 11;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -1152,7 +1097,7 @@ QUnit.module('DocumentsViews', {
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
-                uid: 1,
+                uid: this.data.currentUserId,
             },
         });
 
@@ -1189,6 +1134,7 @@ QUnit.module('DocumentsViews', {
         assert.expect(5);
 
         var self = this;
+        this.data.currentUserId = 11;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -1199,13 +1145,13 @@ QUnit.module('DocumentsViews', {
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
-                uid: 1,
+                uid: this.data.currentUserId,
             },
             mockRPC: function (route, args) {
                 if (args.method === 'toggle_lock') {
                     assert.deepEqual(args.args, [1], "should call method for the correct record");
                     var record = self.data['documents.document'].records.find((d) => d.id === 1);
-                    record.lock_uid = record.lock_uid ? false : 1;
+                    record.lock_uid = record.lock_uid ? false : 11;
                     return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
@@ -1295,7 +1241,7 @@ QUnit.module('DocumentsViews', {
                     count++;
                     switch (count) {
                         case 1:
-                            assert.deepEqual(args.args, [[1], {owner_id: 3}],
+                            assert.deepEqual(args.args, [[1], {owner_id: 13}],
                                 "should save the change directly");
                             break;
                         case 2:
@@ -1408,7 +1354,7 @@ QUnit.module('DocumentsViews', {
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
-                    assert.deepEqual(args.args, [[1, 2], {owner_id: 3}],
+                    assert.deepEqual(args.args, [[1, 2], {owner_id: 13}],
                         "should save the change directly");
                 }
                 return this._super.apply(this, arguments);
@@ -1625,6 +1571,7 @@ QUnit.module('DocumentsViews', {
     QUnit.test('document inspector: remove tag', async function (assert) {
         assert.expect(4);
 
+        this.data.currentUserId = 11;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -1646,7 +1593,7 @@ QUnit.module('DocumentsViews', {
                 return this._super.apply(this, arguments);
             },
             session: {
-                uid: 1,
+                uid: this.data.currentUserId,
             },
         });
 
@@ -1855,12 +1802,13 @@ QUnit.module('DocumentsViews', {
     QUnit.test('document inspector: displays the right amount of single record rules', async function (assert) {
         assert.expect(2);
 
+        this.data.currentUserId = 11;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
             session: {
-                uid: 1,
+                uid: this.data.currentUserId,
             },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1897,15 +1845,16 @@ QUnit.module('DocumentsViews', {
             id: 54,
             name: 'lockedByAnother',
             folder_id: 1,
-            lock_uid: 3,
+            lock_uid: 13,
             available_rule_ids: [1, 2, 4]
         });
+        this.data.currentUserId = 12;
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
             session: {
-                uid: 2,
+                uid: this.data.currentUserId,
             },
             arch: `
                 <kanban><templates><t t-name="kanban-box">
@@ -2085,10 +2034,10 @@ QUnit.module('DocumentsViews', {
         assert.expect(2);
 
         this.data['documents.document'].records[0].message_ids = [101, 102];
-        this.data['mail.message'].records = [
-            {body: "Message 1", id: 101, model: 'documents.document', res_id: 1},
-            {body: "Message 2", id: 102, model: 'documents.document', res_id: 1},
-        ];
+        this.data['mail.message'].records.push(
+            { body: "Message 1", id: 101, model: 'documents.document', res_id: 1 },
+            { body: "Message 2", id: 102, model: 'documents.document', res_id: 1 }
+        );
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -2224,7 +2173,7 @@ QUnit.module('DocumentsViews', {
     QUnit.test('document chatter: render the activity button 2', async function (assert) {
         assert.expect(8);
 
-        this.data['mail.activity'].records = [{
+        this.data['mail.activity'].records.push({
             id: 1,
             display_name: "An activity",
             date_deadline: moment().format("YYYY-MM-DD"),
@@ -2233,7 +2182,7 @@ QUnit.module('DocumentsViews', {
             create_uid: 2,
             can_write: true,
             activity_type_id: 1,
-        }];
+        });
         this.data.partner = {
             fields: {
                 display_name: { string: "Displayed name", type: "char" },
@@ -2375,10 +2324,10 @@ QUnit.module('DocumentsViews', {
         assert.expect(6);
 
         this.data['documents.document'].records[0].message_ids = [101, 102];
-        this.data['mail.message'].records = [
-            {body: "Message on 'yop'", id: 101, model: 'documents.document', res_id: 1},
-            {body: "Message on 'blip'", id: 102, model: 'documents.document', res_id: 2},
-        ];
+        this.data['mail.message'].records.push(
+            { body: "Message on 'yop'", id: 101, model: 'documents.document', res_id: 1 },
+            { body: "Message on 'blip'", id: 102, model: 'documents.document', res_id: 2 }
+        );
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -2901,7 +2850,7 @@ QUnit.module('DocumentsViews', {
             "tag selector should be checked");
 
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            1, "should have records in the renderer");
+            4, "should have records in the renderer");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
 
@@ -2918,7 +2867,7 @@ QUnit.module('DocumentsViews', {
             assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
                         "tag selector should still be checked");
             assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            1, "should still have the same records in the renderer");
+            4, "should still have the same records in the renderer");
 
             kanban.destroy();
             done();
@@ -3093,12 +3042,13 @@ QUnit.module('DocumentsViews', {
         assert.expect(5);
 
         const documentId = 23;
-        this.data['documents.document'].records = [{
+        this.data['documents.document'].records = []; // reset incompatible setup
+        this.data['documents.document'].records.push({
             folder_id: 1,
             id: documentId,
             name: 'request',
             type: 'empty',
-        }];
+        });
 
         const file = await testUtils.file.createFile({
             name: 'text.txt',
@@ -3107,7 +3057,7 @@ QUnit.module('DocumentsViews', {
         });
 
         const ORIGINAL_PROMPT_FILE_INPUT = DocumentsKanbanController.prototype._promptFileInput;
-        DocumentsKanbanController.prototype._promptFileInput = $input => inputFiles($input, [file]);
+        DocumentsKanbanController.prototype._promptFileInput = $input => testUtils.file.inputFiles($input[0], [file]);
 
         this.patchDocumentXHR([], () => assert.step('xhrSend'));
 
@@ -3342,7 +3292,7 @@ QUnit.module('DocumentsViews', {
             id: 99,
             name: 'oldYoutubeVideo',
             create_date: '2019-12-09 14:13:21',
-            create_uid: 2,
+            create_uid: 12,
         });
 
         const kanban = await createDocumentsView({
@@ -3514,6 +3464,7 @@ QUnit.module('DocumentsViews', {
 
         kanban.destroy();
     });
+});
 });
 
 });

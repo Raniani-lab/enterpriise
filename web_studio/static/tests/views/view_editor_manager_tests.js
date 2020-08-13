@@ -1,6 +1,8 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
+const { afterEach, beforeEach } = require('mail/static/src/utils/test_utils.js');
+
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
@@ -13,11 +15,12 @@ var session = require('web.session');
 
 var studioTestUtils = require('web_studio.testUtils');
 
-QUnit.module('Studio', {}, function () {
-
+QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
-    beforeEach: function () {
-        this.data = {
+    beforeEach() {
+        beforeEach(this);
+
+        Object.assign(this.data, {
             coucou: {
                 fields: {
                     display_name: {
@@ -92,20 +95,6 @@ QUnit.module('ViewEditorManager', {
                     display_name: "jacques",
                 }],
             },
-            'ir.attachment': {
-                fields: {
-                    name: {string: "Name", type: "char"},
-                },
-                records: [{
-                        id: 1,
-                        name: "1.png"
-                    },
-                    {
-                        id: 2,
-                        name: "2.png"
-                    },
-                ]
-            },
             tasks: {
                 fields: {
                     name: {string: 'Name', type: 'char'},
@@ -113,7 +102,7 @@ QUnit.module('ViewEditorManager', {
                     description: {string: 'Description', type: 'char'},
                 },
                 records: [
-                    {id: 1, name: 'Chhagan', partner_id: 1, description: 'shaktiman'},
+                    {id: 1, name: 'Chhagan', partner_id: 11, description: 'shaktiman'},
                 ],
             },
             'res.groups': {
@@ -162,7 +151,20 @@ QUnit.module('ViewEditorManager', {
                     },
                 ]
             },
-        };
+        });
+
+        this.data['ir.attachment'].records = [
+            { id: 1, name: "1.png" },
+            { id: 2, name: "2.png" },
+        ];
+        this.data['res.partner'].records.push({
+            display_name: 'Dustin',
+            id: 11,
+            image_128: 'D Artagnan',
+        });
+    },
+    afterEach() {
+        afterEach(this);
     },
 }, function () {
 
@@ -2768,24 +2770,15 @@ QUnit.module('ViewEditorManager', {
                     <field name="display_name"/>
                     <img
                         t-if="false"
-                        t-att-src="kanban_image('res.partner', 'image', record.partner_id.raw_value)"
+                        t-att-src="kanban_image('res.partner', 'image_128', record.partner_id.raw_value)"
                         class="oe_kanban_avatar"/>
                 </t>
             </templates>
         </kanban>
-        `
-        // We have to add relational model specifically named 'res.parter' or
-        // 'res.users' because it is hard-coded in the kanban record editor.
-        this.data['res.partner'] = {
-            fields: {
-                display_name: {type: "char", string: "Display Name"},
-                image: {type: "binary", string: "Image"},
-            },
-            records: [{id: 1, display_name: 'Dustin', image:'D Artagnan'}],
-        };
+        `;
 
         this.data.coucou.fields.partner_id = {string: 'Res Partner', type: 'many2one', relation: 'res.partner'};
-        this.data.coucou.records = [{id: 1, display_name:'Eleven', partner_id: 1}];
+        this.data.coucou.records = [{ id: 1, display_name: 'Eleven', partner_id: 11}];
         const vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
             model: 'coucou',
@@ -2800,16 +2793,14 @@ QUnit.module('ViewEditorManager', {
         assert.expect(8);
         // We have to add relational model specifically named 'res.parter' or
         // 'res.users' because it is hard-coded in the kanban record editor.
-        this.data['res.partner'] = {
-            fields: {
-                display_name: {type: "char", string: "Display Name"},
-                image: {type: "binary", string: "Image"},
-            },
-            records: [{id: 1, display_name: 'Dustin', image:'D Artagnan'}],
-        };
+        this.data['res.partner'].records.push({
+            display_name: 'Dustin',
+            id: 1,
+            image_128: 'D Artagnan',
+        });
 
         this.data.coucou.fields.partner_id = {string: 'Res Partner', type: 'many2one', relation: 'res.partner'};
-        this.data.coucou.records = [{id: 1, display_name:'Eleven', partner_id: 1}];
+        this.data.coucou.records = [{ id: 1, display_name: 'Eleven', partner_id: 11 }];
 
 
         var arch = "<kanban>" +
@@ -2848,7 +2839,7 @@ QUnit.module('ViewEditorManager', {
                                         "<field name='display_name'/>" +
                                         "<div class='oe_kanban_bottom_right'>" +
                                             "<div>test</div>" + // dummy div to make sure img is deleted (otherwise parent div of only child will be deleted)
-                                            "<img t-att-src='kanban_image(\"res.partner\", \"image\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
+                                            "<img t-att-src='kanban_image(\"res.partner\", \"image_128\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
                                         "</div>" +
                                     "</div>" +
                                 "</t>" +
@@ -3561,20 +3552,12 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('marker popup fields in editor sidebar', async function (assert) {
         assert.expect(12);
 
-        this.data['res.partner'] = {
-            fields: {
-                display_name: {string: 'Display Name', type: 'char'},
-                partner_latitude: {string: 'Latitude', type: 'float'},
-                partner_longitude: {string: 'Longitude', type: 'float'},
-                contact_address_complete: {string: 'Address', type: 'char'},
-            },
-            records: [{
-                id: 1,
-                display_name: 'Magan',
-                partner_latitude: 10.0,
-                partner_longitude: 10.5,
-            }],
-        };
+        const partner = this.data['res.partner'].records.find(partner => partner.id === 11);
+        Object.assign(partner, {
+            display_name: 'Magan',
+            partner_latitude: 10.0,
+            partner_longitude: 10.5,
+        });
 
         let fieldsView;
         const vem = await studioTestUtils.createViewEditorManager({
@@ -5608,7 +5591,7 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('edit one2many list view that uses parent key', async function (assert) {
+    QUnit.test('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
         assert.expect(3);
 
         this.data.coucou.records = [{
@@ -5974,7 +5957,6 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 });
-
 });
 
 });

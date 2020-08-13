@@ -83,8 +83,6 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                                 bar: false,
                                 date: "2016-12-11",
                                 product_id: 41,
-                                customer: 1,
-                                computed_field: 19,
                                 probability: 15,
                             },
                         ],

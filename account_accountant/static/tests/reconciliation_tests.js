@@ -217,6 +217,7 @@ var db = {
     },
     'account.reconcile.model': {
         fields: {
+            company_id: {string: "Company", type: 'many2one', relation: 'res.company'},
             id: {string: "ID", type: 'integer'},
             name: {string: "Button Label", type: 'char'},
             rule_type: {string: "Type", type: 'selection', selection: [['writeoff_button', 'Create a Button'], ['writeoff_suggestion', 'Write off Suggestion'], ['invoice_matching', 'Invoice matching']], default:'writeoff_button'},
@@ -224,12 +225,12 @@ var db = {
             analytic_tag_ids: {string: 'Analytic tags', type: 'many2many', relation: 'account.analytic.tag'},
         },
         records: [
-            {'id': 4, 'display_name': "Int\u00e9rrets", 'rule_type': 'writeoff_button', 'name': "Int\u00e9rrets", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
-            {'id': 2, 'display_name': "Perte et Profit", 'rule_type': 'writeoff_button', 'name': "Perte et Profit", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
-            {'id': 5, 'display_name': "Fs bank", 'rule_type': 'writeoff_button', 'name': "Fs bank", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
-            {'id': 8, 'display_name': "Caisse Sand.", 'rule_type': 'writeoff_button', 'name': "Caisse Sand.", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
-            {'id': 3, 'display_name': "ATOS", 'rule_type': 'writeoff_button', 'name': "ATOS", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"]},
-            {'id': 10, 'display_name': "Double", 'rule_type': 'writeoff_button', 'name': "Double", 'match_journal_ids': [], 'company_id': [1, "Demo SPRL"], 'analytic_tag_ids': [1,2]},
+            {'id': 4, 'display_name': "Int\u00e9rrets", 'rule_type': 'writeoff_button', 'name': "Int\u00e9rrets", 'match_journal_ids': [], 'company_id': 1},
+            {'id': 2, 'display_name': "Perte et Profit", 'rule_type': 'writeoff_button', 'name': "Perte et Profit", 'match_journal_ids': [], 'company_id': 1},
+            {'id': 5, 'display_name': "Fs bank", 'rule_type': 'writeoff_button', 'name': "Fs bank", 'match_journal_ids': [], 'company_id': 1},
+            {'id': 8, 'display_name': "Caisse Sand.", 'rule_type': 'writeoff_button', 'name': "Caisse Sand.", 'match_journal_ids': [], 'company_id': 1},
+            {'id': 3, 'display_name': "ATOS", 'rule_type': 'writeoff_button', 'name': "ATOS", 'match_journal_ids': [], 'company_id': 1},
+            {'id': 10, 'display_name': "Double", 'rule_type': 'writeoff_button', 'name': "Double", 'match_journal_ids': [], 'company_id': 1, 'analytic_tag_ids': [1,2]},
         ],
     },
     'account.reconciliation.widget': {

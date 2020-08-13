@@ -52,7 +52,7 @@ QUnit.module('Views', {
     },
 }, function () {
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
-        assert.expect(37);
+        assert.expect(34);
 
         const kanban = await createView({
             View: KanbanView,
@@ -78,7 +78,9 @@ QUnit.module('Views', {
                 `,
             },
             mockRPC(route, {method}) {
-                assert.step(method || route);
+                if (method && method.includes('search_panel_')) {
+                    assert.step(method);
+                }
                 return this._super.apply(this, arguments);
             },
         });
@@ -90,7 +92,6 @@ QUnit.module('Views', {
         assert.verifySteps([
             "search_panel_select_range",
             "search_panel_select_multi_range",
-            "/web/dataset/search_read",
         ]);
 
         assert.containsOnce($sp, ".fa.fa-filter");
@@ -118,7 +119,6 @@ QUnit.module('Views', {
         assert.verifySteps([
             "search_panel_select_range",
             "search_panel_select_multi_range",
-            "/web/dataset/search_read",
         ]);
 
         // select filter
@@ -127,7 +127,6 @@ QUnit.module('Views', {
         assert.verifySteps([
             "search_panel_select_range",
             "search_panel_select_multi_range",
-            "/web/dataset/search_read",
         ]);
 
         // close with back button

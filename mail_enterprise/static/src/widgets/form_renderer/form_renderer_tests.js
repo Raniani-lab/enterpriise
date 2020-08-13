@@ -2,16 +2,15 @@ odoo.define('mail_enterprise/static/src/widgets/form_renderer/form_renderer_test
 "use strict";
 
 const {
-    afterEach: utilsAfterEach,
+    afterEach,
     afterNextRender,
-    beforeEach: utilsBeforeEach,
+    beforeEach,
     start,
 } = require('mail/static/src/utils/test_utils.js');
 
 const config = require('web.config');
 const FormView = require('web.FormView');
 const {
-    dom: { triggerEvent },
     fields: { editInput },
 } = require('web.test_utils');
 
@@ -20,7 +19,8 @@ QUnit.module('widgets', {}, function () {
 QUnit.module('form_renderer', {}, function () {
 QUnit.module('form_renderer_tests.js', {
     beforeEach() {
-        utilsBeforeEach(this);
+        beforeEach(this);
+
         // FIXME archs could be removed once task-2248306 is done
         // The mockServer will try to get the list view
         // of every relational fields present in the main view.
@@ -28,53 +28,42 @@ QUnit.module('form_renderer_tests.js', {
         // but they still need to be defined.
         this.createView = async (viewParams, ...args) => {
             await afterNextRender(async () => {
-                const viewArgs = Object.assign({
-                    archs: {
-                        'mail.activity,false,list': '<tree/>',
-                        'mail.followers,false,list': '<tree/>',
-                        'mail.message,false,list': '<tree/>',
-                    }},
+                const viewArgs = Object.assign(
+                    {
+                        archs: {
+                            'mail.activity,false,list': '<tree/>',
+                            'mail.followers,false,list': '<tree/>',
+                            'mail.message,false,list': '<tree/>',
+                        },
+                    },
                     viewParams,
                 );
-                const { widget } = await start(viewArgs, ...args);
+                const { env, widget } = await start(viewArgs, ...args);
+                this.env = env;
                 this.widget = widget;
             });
         };
     },
     afterEach() {
-        if (this.widget) {
-            this.widget.destroy();
-        }
-        utilsAfterEach(this);
+        afterEach(this);
     },
 });
 
 QUnit.test('Message list loads new messages on scroll', async function (assert) {
     assert.expect(8);
 
-    this.data['res.partner'].records = [{
-        activity_ids: [],
-        id: 1,
-        display_name: "Partner 1",
+    this.data['res.partner'].records.push({
+        id: 11,
+        display_name: "Partner 11",
         description: [...Array(60).keys()].join('\n'),
-        message_ids: [],
-        message_follower_ids: [],
-    }];
-
-    const messages = [...Array(60).keys()].map(id => {
-        return {
-            author_id: [10, "Demo User"],
-            body: `<p>Message ${id + 1}</p>`,
-            date: "2019-04-20 10:00:00",
-            id: id + 1,
-            message_type: 'comment',
-            model: 'res.partner',
-            record_name: 'Partner 1',
-            res_id: 1,
-        };
     });
-    this.data['mail.message'].records = messages;
-
+    for (let i = 0; i < 60; i++) {
+        this.data['mail.message'].records.push({
+            id: i + 1,
+            model: 'res.partner',
+            res_id: 11,
+        });
+    }
     await this.createView({
         data: this.data,
         hasView: true,
@@ -93,7 +82,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             </form>
         `,
         viewOptions: {
-            currentId: 1,
+            currentId: 11,
         },
         config: {
             device: { size_class: config.device.SIZES.XXL },
@@ -150,35 +139,24 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
 QUnit.test('Message list scroll position is kept when switching record', async function (assert) {
     assert.expect(10);
 
-    this.data['res.partner'].records = [{
-        activity_ids: [],
-        id: 1,
-        display_name: "Partner 1",
-        description: [...Array(60).keys()].join('\n'),
-        message_ids: [],
-        message_follower_ids: [],
-    }, {
-        activity_ids: [],
-        id: 2,
-        display_name: "Partner 2",
-        message_ids: [],
-        message_follower_ids: [],
-    }];
-
-    const messages = [...Array(60).keys()].map(id => {
-        return {
-            author_id: [10, "Demo User"],
-            body: `<p>Message ${id + 1}</p>`,
-            date: "2019-04-20 10:00:00",
-            id: id + 1,
-            message_type: 'comment',
+    this.data['res.partner'].records.push(
+        {
+            id: 11,
+            display_name: "Partner 11",
+            description: [...Array(60).keys()].join('\n'),
+        },
+        {
+            id: 12,
+            display_name: "Partner 12",
+        }
+    );
+    for (let i = 0; i < 60; i++) {
+        this.data['mail.message'].records.push({
+            id: i + 1,
             model: 'res.partner',
-            record_name: `Partner ${id % 2 ? 1 : 2}`,
-            res_id: id % 2 ? 1 : 2,
-        };
-    });
-    this.data['mail.message'].records = messages;
-
+            res_id: i % 2 ? 11 : 12,
+        });
+    }
     await this.createView({
         data: this.data,
         hasView: true,
@@ -197,8 +175,8 @@ QUnit.test('Message list scroll position is kept when switching record', async f
             </form>
         `,
         viewOptions: {
-            currentId: 1,
-            ids: [1, 2],
+            currentId: 11,
+            ids: [11, 12],
         },
         config: {
             device: { size_class: config.device.SIZES.XXL },
@@ -208,7 +186,6 @@ QUnit.test('Message list scroll position is kept when switching record', async f
         },
     });
 
-    const formViewEl = document.querySelector('.o_form_view');
     const controllerContentEl = document.querySelector('.o_content');
 
     assert.hasClass(document.querySelector('.o_FormRenderer_chatterContainer'), 'o-aside',
@@ -216,8 +193,8 @@ QUnit.test('Message list scroll position is kept when switching record', async f
     );
     assert.strictEqual(
         document.querySelector('.breadcrumb-item.active').textContent,
-        'Partner 1',
-        "Form view should display partner 'Partner 1'"
+        'Partner 11',
+        "Form view should display partner 'Partner 11'"
     );
     assert.strictEqual(controllerContentEl.scrollTop, 0,
         "The controller container should not be scrolled"
@@ -242,8 +219,8 @@ QUnit.test('Message list scroll position is kept when switching record', async f
     );
     assert.strictEqual(
         document.querySelector('.breadcrumb-item.active').textContent,
-        'Partner 2',
-        "Form view should display partner 'Partner 2'"
+        'Partner 12',
+        "Form view should display partner 'Partner 12'"
     );
     assert.strictEqual(document.querySelector('.o_ThreadViewer_messageList').scrollTop, 0,
         "The message list scroll should have been reset after changing record with the pager"
@@ -267,29 +244,21 @@ QUnit.test('Message list scroll position is kept when switching record', async f
 QUnit.test('Message list is scrolled to new message after posting a message', async function (assert) {
     assert.expect(10);
 
-    this.data['res.partner'].records = [{
+    this.data['res.partner'].records.push({
         activity_ids: [],
-        id: 1,
-        display_name: "Partner 1",
+        id: 11,
+        display_name: "Partner 11",
         description: [...Array(60).keys()].join('\n'),
         message_ids: [],
         message_follower_ids: [],
-    }];
-
-    const messages = [...Array(60).keys()].map(id => {
-        return {
-            author_id: [10, "Demo User"],
-            body: `<p>Message ${id + 1}</p>`,
-            date: "2019-04-20 10:00:00",
-            id: id + 1,
-            message_type: 'comment',
-            model: 'res.partner',
-            record_name: 'Partner 1',
-            res_id: 1,
-        };
     });
-    this.data['mail.message'].records = messages;
-
+    for (let i = 0; i < 60; i++) {
+        this.data['mail.message'].records.push({
+            id: i + 1,
+            model: 'res.partner',
+            res_id: 11,
+        });
+    }
     await this.createView({
         data: this.data,
         hasView: true,
@@ -311,7 +280,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             </form>
         `,
         viewOptions: {
-            currentId: 1,
+            currentId: 11,
         },
         config: {
             device: { size_class: config.device.SIZES.XXL },
@@ -327,7 +296,6 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         }
     });
     const controllerContentEl = document.querySelector('.o_content');
-    const formViewEl = document.querySelector('.o_form_view');
 
     assert.hasClass(document.querySelector('.o_FormRenderer_chatterContainer'), 'o-aside',
         "chatter should be aside"

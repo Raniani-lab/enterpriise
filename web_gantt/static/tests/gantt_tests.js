@@ -74,7 +74,6 @@ QUnit.module('Views', {
                     name: {string: 'Name', type: 'char'},
                     start: {string: 'Start Date', type: 'datetime'},
                     stop: {string: 'Stop Date', type: 'datetime'},
-                    progress: {string: "progress", type: "integer"},
                     time: {string: "Time", type: "float"},
                     stage: {string: 'Stage', type: 'selection', selection: [['todo', 'To Do'], ['in_progress', 'In Progress'], ['done', 'Done'], ['cancel', 'Cancelled']]},
                     project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
@@ -3643,7 +3642,7 @@ QUnit.module('Views', {
         var secondStartDateUTC = moment.utc(secondStartDateUTCString);
         var secondStartDateLocalString = secondStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
         this.data.tasks.records.push({
-            id: 99,
+            id: 100,
             name: 'DST Task 2',
             start: secondStartDateUTCString,
             stop: '2019-03-31 03:30:00',
@@ -3690,7 +3689,7 @@ QUnit.module('Views', {
         var secondStartDateUTC = moment.utc(secondStartDateUTCString);
         var secondStartDateLocalString = secondStartDateUTC.local().format('YYYY-MM-DD hh:mm:ss');
         this.data.tasks.records.push({
-            id: 99,
+            id: 100,
             name: 'DST Task 2',
             start: secondStartDateUTCString,
             stop: '2019-10-27 03:30:00',

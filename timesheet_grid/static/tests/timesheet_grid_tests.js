@@ -36,7 +36,7 @@ QUnit.module('Views', {
             'project.task': {
                 fields: {
                     name: {string: "Task Name", type: "char"},
-                    project_id: {string: "Project", type: "many2one", relation: "project"},
+                    project_id: {string: "Project", type: "many2one", relation: "project.project"},
                 },
                 records: [
                     {id: 1, display_name: "BS task", project_id: 31},

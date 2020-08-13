@@ -4,23 +4,26 @@ odoo.define('documents.mobile_tests', function (require) {
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const { createDocumentsView } = require('documents.test_utils');
 
+const { afterEach, beforeEach } = require('mail/static/src/utils/test_utils.js');
+
 const { dom, nextTick } = require('web.test_utils');
 
-QUnit.module('Views');
-
-QUnit.module('DocumentsKanbanViewMobile', {
+QUnit.module('documents', {}, function () {
+QUnit.module('documents_kanban_mobile_tests.js', {
     beforeEach() {
-        this.data = {
+        beforeEach(this);
+
+        Object.assign(this.data, {
             'documents.document': {
                 fields: {
                     available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
                     folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
                     name: {string: "Name", type: 'char', default: ' '},
-                    owner_id: {string: "Owner", type: "many2one", relation: 'user'},
-                    partner_id: {string: "Related partner", type: 'many2one', relation: 'user'},
                     previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
                     res_model: {string: "Model (technical)", type: 'char'},
                     tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
+                    owner_id: { string: "Owner", type: "many2one", relation: 'res.users' },
+                    partner_id: { string: "Related partner", type: 'many2one', relation: 'res.partner' },
                 },
                 records: [
                     {id: 1, available_rule_ids: []},
@@ -31,15 +34,10 @@ QUnit.module('DocumentsKanbanViewMobile', {
                 fields: {},
                 records: [],
             },
-            "ir.attachment": {
-                fields: {},
-                records: [],
-            },
-            'user': {
-                fields: {},
-                records: [],
-            },
-        };
+        });
+    },
+    afterEach() {
+        afterEach(this);
     },
 }, function () {
     QUnit.test('basic rendering on mobile', async function (assert) {
@@ -145,6 +143,7 @@ QUnit.module('DocumentsKanbanViewMobile', {
 
         kanban.destroy();
     });
+});
 });
 
 });

@@ -146,9 +146,9 @@ QUnit.module('Views', {
         var nbReadGroup = 0;
         var nbReadGrid = 0;
 
-        this.data['analytic.line'].records.push([
+        this.data['analytic.line'].records.push(
             {id: 6, project_id: 142, task_id: 12, date: "2017-01-31", unit_amount: 3.5},
-        ]);
+        );
 
         this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">' +
                 '<field name="project_id" type="row" section="1"/>' +
@@ -801,7 +801,7 @@ QUnit.module('Views', {
     QUnit.test('basic grid view, hide column/row total', async function (assert) {
         assert.expect(3);
 
-        this.data['analytic.line'].records.push({ id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, });
+        this.data['analytic.line'].records.push({ id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4 });
         const grid = await createView({
             View: GridView,
             model: 'analytic.line',
@@ -836,7 +836,7 @@ QUnit.module('Views', {
         this.data['analytic.line'].records.push({
             id: 8, project_id: 142, task_id: 54,
             date: "2017-01-25", unit_amount: 4,
-            employee_id: 101, validated: true,
+            validated: true,
         });
 
         const grid = await createView({
@@ -931,7 +931,7 @@ QUnit.module('Views', {
         assert.expect(4);
         var done = assert.async();
         this.data['analytic.line'].fields.validated = {string: "Validation", type: "boolean"};
-        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, validated: true});
+        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, validated: true});
         var grid = await createView({
             View: GridView,
             model: 'analytic.line',
@@ -1444,7 +1444,7 @@ QUnit.module('Views', {
     QUnit.test('create/edit disabled for readonly grid view', async function (assert) {
         assert.expect(4);
         this.data['analytic.line'].fields.validated = {string: "Validation", type: "boolean"};
-        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, validated: true});
+        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, validated: true});
 
         var grid = await createView({
             View: GridView,
@@ -1483,9 +1483,9 @@ QUnit.module('Views', {
         var nbReadGroup = 0;
         var nbReadGrid = 0;
 
-        this.data['analytic.line'].records.push([
-            {id: 6, project_id: 142, task_id: 12, date: "2020-06-23", unit_amount: 3.5},
-        ]);
+        this.data['analytic.line'].records.push(
+            {id: 6, project_id: 142, task_id: 12, date: "2020-06-23", unit_amount: 3.5}
+        );
 
         this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">' +
                 '<field name="project_id" type="row" section="1"/>' +

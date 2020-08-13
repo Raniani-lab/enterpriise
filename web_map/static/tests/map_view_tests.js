@@ -19,7 +19,7 @@ QUnit.module('mapView', {
                     another_partner_id: { string: "another relation", type: "many2one", relation: 'res.partner}' },
                 },
                 records: [
-                    { id: 1, display_name: "project", partner_id: [1] }
+                    { id: 1, display_name: "project", partner_id: 1 }
                 ],
                 oneRecord: {
                     records: [

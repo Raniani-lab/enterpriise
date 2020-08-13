@@ -7,7 +7,8 @@ const utils = require('web.utils');
 
 const { createComponent } = testUtils;
 
-QUnit.module('DocumentsPdfManager', {
+QUnit.module('documents', {}, function () {
+QUnit.module('documents_pdf_manager_tests.js', {
     beforeEach() {
         utils.patch(PdfManager, 'documents_pdf_manager_tests', {
             async _loadAssets() { },
@@ -137,6 +138,7 @@ QUnit.module('DocumentsPdfManager', {
 
         pdfManager.destroy();
     });
+});
 });
 
 });

@@ -29,6 +29,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
                 partner: {
                     fields: {
                         id: {string: "ID", type: "integer"},
+                        image: { string: "Image", type: "binary" },
                         display_name: {string: "Displayed name", type: "char"},
                     },
                     records: [

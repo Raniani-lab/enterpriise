@@ -304,7 +304,6 @@ QUnit.module('Facebook Comments', {
                     formatted_published_date: "2019-08-20 14:17:00",
                     message: 'Message 2 Images',
                     media_type: 'facebook',
-                    social_stream_post_image: '["photos.com/image1.png","photos.com/image2.png"]',
                     facebook_author_id: 2,
                     facebook_likes_count: 10,
                     facebook_user_likes: false,

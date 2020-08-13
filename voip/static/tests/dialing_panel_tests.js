@@ -1,7 +1,7 @@
 odoo.define('voip.tests_panel', function (require) {
 "use strict";
 
-const { start } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
 
 const DialingPanel = require('voip.DialingPanel');
 const UserAgent = require('voip.UserAgent');
@@ -32,6 +32,8 @@ async function createDialingPanel(params) {
 QUnit.module('voip', {}, function () {
 QUnit.module('DialingPanel', {
     beforeEach() {
+        beforeEach(this);
+
         this.onaccepted = undefined;
         this.recentList = {};
         // generate 3 records
@@ -80,6 +82,7 @@ QUnit.module('DialingPanel', {
     },
     afterEach() {
         testUtils.mock.unpatch(UserAgent);
+        afterEach(this);
     },
 }, function () {
 
@@ -93,6 +96,7 @@ QUnit.test('autocall flow', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
+        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -379,6 +383,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
+        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -408,7 +413,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
                     assert.step('create_from_recent');
                     return;
                 }
-                if (args.method === 'get_recent_list'){
+                if (args.method === 'get_recent_list') {
                     return self.recentList;
                 }
                 if (args.method === 'get_next_activities_list') {
@@ -511,6 +516,7 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
+        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };

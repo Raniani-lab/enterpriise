@@ -2,7 +2,9 @@ odoo.define('account_invoice_extract.FormViewTests', function (require) {
 "use strict";
 
 const {
+    afterEach,
     afterNextRender,
+    beforeEach,
     nextAnimationFrame,
     start,
 } = require('mail/static/src/utils/test_utils.js');
@@ -15,9 +17,11 @@ const config = require('web.config');
 const testUtils = require('web.test_utils');
 
 QUnit.module('account_invoice_extract', {}, function () {
-QUnit.module('FormView', {
-    beforeEach: function () {
-        this.data = {
+QUnit.module('invoice_extract_form_view_tests.js', {
+    beforeEach() {
+        beforeEach(this);
+
+        Object.assign(this.data, {
             'account.move': {
                 fields: {
                     amount_total: { string: 'Amount Total', type: 'integer' },
@@ -28,60 +32,41 @@ QUnit.module('FormView', {
                     display_name: { string: 'Name', type: 'string' },
                     invoice_id: { string: 'InvoiceId', type: 'string' },
                     message_attachment_count: { string: 'Attachment count', type: 'integer' },
-                    message_ids: {
-                        string: 'messages',
-                        type: 'one2many',
-                        relation: 'mail.message',
-                        relation_field: 'res_id',
-                    },
+                    message_ids: { string: 'messages', type: 'one2many', relation: 'mail.message', relation_field: 'res_id' },
+                    message_main_attachment_id: { string: "Main Attachment", type: 'many2one', relation: 'ir.attachment' },
                 },
                 records: [{
                     amount_total: 100,
-                    currency_id: [2, 'USD'],
+                    currency_id: 2,
                     date: '1984-12-15',
                     date_due: '1984-12-20',
-                    invoice_date: '1984-12-15',
                     display_name: 'MyInvoice',
-                    invoice_id: 'INV_15/26/34',
                     id: 2,
+                    invoice_date: '1984-12-15',
+                    invoice_id: 'INV_15/26/34',
                     message_attachment_count: 1,
-                    message_ids: [1]
+                    message_ids: [1],
+                    message_main_attachment_id: 1,
                 }],
             },
-            'mail.message': {
+            'res.currency': {
                 fields: {
-                    // attachment_ids: { string: 'Attachments', type: 'one2many', relation: 'ir.attachment'},
-                    author_id: { string: '', type: '' },
-                    body: { string: '', type: 'string' },
-                    date: { string: 'Date', type: 'date' },
-                    displayed_author: { string: '', type: 'string' },
-                    is_note: { string: '', type: 'boolean' },
-                    is_discussion: { string: '', type: 'boolean' },
-                    is_starred: { string: 'Starred', type: 'boolean' },
-                    model: { string: 'Document Model', type: 'string' },
-                    res_id: { string: 'Document ID', type: 'integer' },
+                    name: { string: "Name" },
                 },
-                records: [{
-                    attachment_ids: [{
-                        filename: 'image1.jpg',
-                        id:1,
-                        mimetype: 'image/jpeg',
-                        name: 'Test Image 1',
-                        url: '/web/content/1?download=true',
-                    }],
-                    author_id: [1, "Kamlesh Sulochan"],
-                    body: "Attachment viewer test",
-                    date: "2016-12-20 09:35:40",
-                    displayed_author: "Kamlesh Sulochan",
-                    id: 1,
-                    is_note: false,
-                    is_discussion: true,
-                    is_starred: false,
-                    model: 'account.move',
-                    res_id: 2,
-                }],
-            }
-        };
+                records: [{ id: 2, name: "USD" }],
+            },
+        });
+        this.data['ir.attachment'].records.push({
+            id: 1,
+            mimetype: 'image/jpeg',
+            res_id: 2,
+            res_model: 'account.move',
+        });
+        this.data['mail.message'].records.push({
+            attachment_ids: [1],
+            model: 'account.move',
+            res_id: 2,
+        });
 
         testUtils.mock.patch(FormRenderer, {
             /**
@@ -98,6 +83,7 @@ QUnit.module('FormView', {
     },
     afterEach: function () {
         testUtils.mock.unpatch(FormRenderer);
+        afterEach(this);
     },
 }, function () {
 
@@ -127,11 +113,9 @@ QUnit.module('FormView', {
                     size_class: config.device.SIZES.XXL,
                 },
             },
-            mockRPC: function (route, args) {
+            mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'search_read') {
-                    return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
@@ -247,11 +231,9 @@ QUnit.module('FormView', {
                     size_class: config.device.SIZES.XXL,
                 },
             },
-            mockRPC: function (route, args) {
+            mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'search_read') {
-                    return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
@@ -335,11 +317,9 @@ QUnit.module('FormView', {
                     size_class: config.device.SIZES.XXL,
                 },
             },
-            mockRPC: function (route, args) {
+            mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'search_read') {
-                    return Promise.resolve([this.data['mail.message'].records[0].attachment_ids[0]]);
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
@@ -397,7 +377,7 @@ QUnit.module('FormView', {
             data: this.data,
             arch: `<form string="Account Invoice">
                     <div class="o_success_ocr"/>
-                    <div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>
+                    <div class="o_attachment_preview" options="{'order': 'desc'}"></div>
                     <div class="oe_chatter">
                         <field name="message_ids"/>
                     </div>
@@ -415,27 +395,8 @@ QUnit.module('FormView', {
             async mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return invoiceExtractTestUtils.createBoxesData();
-                } else if (args.method === 'search_read') {
-                    return [this.data['mail.message'].records[0].attachment_ids[0]];
                 } else if (args.method === 'register_as_main_attachment') {
                     return true;
-                } else if (args.method === 'message_post') {
-                    return [5];
-                } else if (args.method === 'message_format') {
-                    return [{
-                        attachment_ids: [{
-                            filename: 'invoice.pdf',
-                            id: 2,
-                            mimetype: 'application/pdf',
-                            name: 'INV007/2018',
-                            url: '/web/content/1?download=true',
-                        }],
-                        body: 'Blah"',
-                        date: "2016-12-20 10:35:40",
-                        id: 5,
-                        model: 'partner',
-                        res_id: 2,
-                    }];
                 }
                 return this._super(...arguments);
             },

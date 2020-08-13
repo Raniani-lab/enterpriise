@@ -3,7 +3,6 @@ odoo.define('documents.test_utils', function (require) {
 
 const AbstractStorageService = require('web.AbstractStorageService');
 const RamStorage = require('web.RamStorage');
-const {createView} = require('web.test_utils');
 
 const { start } = require('mail/static/src/utils/test_utils.js');
 

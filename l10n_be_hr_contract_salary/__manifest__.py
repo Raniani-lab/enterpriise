@@ -18,6 +18,7 @@
         'wizard/generate_simulation_link_views.xml',
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',
+        'views/hr_contract_salary_templates.xml',
         'views/res_config_settings_views.xml',
     ],
     'demo': [

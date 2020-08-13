@@ -200,3 +200,8 @@ class HrContractSalary(HrContractSalary):
             vehicle_contract.cost_frequency = 'no'
             vehicle_contract.purchaser_id = employee.address_home_id.id
         return contract
+
+    def _get_compute_results(self, new_contract):
+        result = super()._get_compute_results(new_contract)
+        result['double_holiday_wage'] = round(new_contract.double_holiday_wage, 2)
+        return result

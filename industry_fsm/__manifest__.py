@@ -18,6 +18,7 @@ Adds the following options:
 
     """,
     'category': 'Services/Field Service',
+    'sequence': 170,
     'version': '1.0',
     'depends': ['project_enterprise', 'timesheet_grid', 'base_geolocalize'],
     'data': [

@@ -4,6 +4,7 @@
 {
     'name': 'Social Marketing',
     'category': 'Marketing/Social Marketing',
+    'sequence': 175,
     'summary': 'Manage your social media and website visitors',
     'version': '1.0',
     'description': """Manage your social media and website visitors""",

@@ -5,7 +5,7 @@
     'name': 'Appraisal',
     'version': '1.0',
     'category': 'Human Resources/Appraisals',
-    'sequence': 31,
+    'sequence': 180,
     'summary': 'Assess your employees',
     'website': 'https://www.odoo.com/page/appraisal',
     'depends': ['hr', 'calendar', 'web_gantt'],

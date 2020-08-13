@@ -5,6 +5,7 @@
     'name': 'Data Cleaning',
     'version': '1.0',
     'category': 'Productivity/Data Cleaning',
+    'sequence': 135,
     'summary': """Easily format text data across multiple records. Find duplicate records and easily merge them.""",
     'description': """Easily format text data across multiple records. Find duplicate records and easily merge them.""",
     'depends': ['web', 'mail', 'phone_validation'],

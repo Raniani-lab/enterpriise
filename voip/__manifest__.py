@@ -12,6 +12,7 @@ Allows to make call from next activities or with click-to-dial.
     """,
 
     'category': 'Productivity/VOIP',
+    'sequence': 280,
     'version': '2.0',
 
     # any module necessary for this one to work correctly

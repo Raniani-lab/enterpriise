@@ -5,6 +5,7 @@
     'name': 'Employee Referral',
     'version': '1.0',
     'category': 'Human Resources/Referrals',
+    'sequence': 235,
     'summary': 'Let your employees share job positions and refer their friends',
     'description': """Let your employees share job positions and refer their friends""",
     'website': ' ',

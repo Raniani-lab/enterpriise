@@ -4,6 +4,7 @@
     'name': "United States Postal Service (USPS) Shipping",
     'description': "Send your shippings through USPS and track them online",
     'category': 'Inventory/Delivery',
+    'sequence': 305,
     'version': '1.0',
     'application': True,
     'depends': ['delivery', 'mail'],

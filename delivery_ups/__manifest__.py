@@ -4,6 +4,7 @@
     'name': "UPS Shipping",
     'description': "Send your shippings through UPS and track them online",
     'category': 'Inventory/Delivery',
+    'sequence': 275,
     'version': '1.0',
     'application': True,
     'depends': ['delivery', 'mail'],

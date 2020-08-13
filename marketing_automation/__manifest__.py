@@ -6,6 +6,7 @@
     'summary': "Build automated mailing campaigns",
     'website': 'https://www.odoo.com/page/marketing-automation',
     'category': "Marketing/Marketing Automation",
+    'sequence': 195,
     'depends': ['mass_mailing'],
     'data': [
         'security/marketing_automation_security.xml',

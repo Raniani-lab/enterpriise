@@ -4,6 +4,7 @@
     'name': 'Sign',
     'version': '1.0',
     'category': 'Sales/Sign',
+    'sequence': 105,
     'summary': "Send documents to sign online and handle filled copies",
     'description': """
 Sign and complete your documents easily. Customize your documents with text and signature fields and send them to your recipients.\n

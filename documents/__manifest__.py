@@ -10,6 +10,7 @@
 
     'author': "Odoo",
     'category': 'Productivity/Documents',
+    'sequence': 80,
     'version': '1.0',
     'application': True,
     'website': 'https://www.odoo.com/page/documents',

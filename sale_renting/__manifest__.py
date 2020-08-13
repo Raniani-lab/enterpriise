@@ -14,6 +14,7 @@
     'website': "https://www.odoo.com",
 
     'category': 'Sales/Sales',
+    'sequence': 160,
     'version': '1.0',
 
     'depends': ['sale'],

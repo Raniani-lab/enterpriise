@@ -2,6 +2,7 @@
 {
     'name': "Consolidation",
     'category': 'Accounting/Accounting',
+    'sequence': 205,
     'summary': """All you need to make financial consolidation""",
     'description': """All you need to make financial consolidation""",
     'author': "Odoo S.A.",

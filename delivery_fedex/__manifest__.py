@@ -4,6 +4,7 @@
     'name': "Fedex Shipping",
     'description': "Send your shippings through Fedex and track them online",
     'category': 'Inventory/Delivery',
+    'sequence': 295,
     'version': '1.0',
     'application': True,
     'depends': ['delivery', 'mail'],

@@ -17,6 +17,7 @@ Key Features
     * FBM: Delivery notifications are sent to Amazon for each confirmed picking (partial delivery friendly).
 """,
     'category': 'Sales/Sales',
+    'sequence': 320,
     'version': '1.0',
     'application': True,
     'depends': ['sale_management', 'stock'],

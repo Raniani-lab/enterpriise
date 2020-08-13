@@ -4,7 +4,7 @@
 {
     'name': "Purchase Stock Enterprise",
     'version': "1.0",
-    'category': "Operations/Purchase",
+    'category': "Inventory/Purchase",
     'summary': "Customized Dashboard for Purchase Stock",
     'description': "",
     'depends': ['purchase_enterprise', 'purchase_stock'],

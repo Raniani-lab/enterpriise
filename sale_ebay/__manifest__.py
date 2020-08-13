@@ -26,6 +26,7 @@ Key Features
   # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/data/ir_module_category_data.xml
   # for the full list
   'category': 'Sales/Sales',
+  'sequence': 325,
   'version': '1.0',
   'application': True,
 

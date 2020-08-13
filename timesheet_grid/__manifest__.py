@@ -11,6 +11,7 @@
     'version': '1.0',
     'depends': ['web_grid', 'hr_timesheet', 'timer'],
     'category': 'Services/Timesheets',
+    'sequence': 65,
     'data': [
         'data/mail_data.xml',
         'security/timesheet_security.xml',

@@ -8,6 +8,7 @@
     Schedule your teams and employees with shift.
     """,
     'category': 'Human Resources/Planning',
+    'sequence': 130,
     'version': '1.0',
     'depends': ['hr', 'web_gantt', 'digest'],
     'data': [

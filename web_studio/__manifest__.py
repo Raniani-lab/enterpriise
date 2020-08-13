@@ -17,6 +17,7 @@ simple and graphical way. It has two main features:
 Note: Only the admin user is allowed to make those customizations.
 """,
     'category': 'Customizations/Studio',
+    'sequence': 75,
     'version': '1.0',
     'depends': [
         'base_automation',

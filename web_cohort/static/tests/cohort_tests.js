@@ -217,6 +217,44 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
+    QUnit.test('cohort view without attribute invisible on field', async function (assert) {
+        assert.expect(3);
+
+        var cohort = await createView({
+            View: CohortView,
+            model: 'subscription',
+            data: this.data,
+            arch: `<cohort string="Subscription" date_start="start" date_stop="stop"/>`,
+        });
+
+        await testUtils.dom.click(cohort.$('.btn-group:first button'));
+        assert.containsN(cohort, '.o_cohort_measures_list button', 2);
+        assert.containsOnce(cohort, '.o_cohort_measures_list button[data-field="recurring"]');
+        assert.containsOnce(cohort, '.o_cohort_measures_list button[data-field="__count__"]');
+
+        cohort.destroy();
+    });
+
+    QUnit.test('cohort view with attribute invisible on field', async function (assert) {
+        assert.expect(2);
+
+        var cohort = await createView({
+            View: CohortView,
+            model: 'subscription',
+            data: this.data,
+            arch: `
+                <cohort string="Subscription" date_start="start" date_stop="stop">
+                    <field name="recurring" invisible="1"/>
+                </cohort>`,
+        });
+
+        await testUtils.dom.click(cohort.$('.btn-group:first button'));
+        assert.containsOnce(cohort, '.o_cohort_measures_list button');
+        assert.containsNone(cohort, '.o_cohort_measures_list button[data-field="recurring"]');
+
+        cohort.destroy();
+    });
+
     QUnit.test('export cohort', async function (assert) {
         assert.expect(6);
 

@@ -23,13 +23,13 @@
                     </div>
                 </button>
             </xpath>
-            <button name="preference_change_password" position="before">
+            <header position="inside">
                 <field name="employee_ids" invisible="1"/>
                 <button name="action_send_appraisal_request"
                     string="Request Appraisal"
                     type="object"
                     class="btn btn-primary"/>
-            </button>
+            </header>
     </field>
     </record>
 </odoo>

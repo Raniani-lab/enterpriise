@@ -42,7 +42,12 @@ var DashboardView = BasicView.extend({
 
         // pass all measurable fields to subviews
         var fields = this.fieldsInfo.dashboard;
-        var additionalMeasures = _.pluck(_.filter(fields, {realType: 'many2one'}), 'field');
+        const additionalMeasures = [];
+        for (const f of Object.values(fields)) {
+            if (!f.invisible) {
+                additionalMeasures.push(f.field);
+            }
+        }
         this.rendererParams.additionalMeasures = additionalMeasures;
 
         // generate sub view refs to add in the context to fetch the adequate views

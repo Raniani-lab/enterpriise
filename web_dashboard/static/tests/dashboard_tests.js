@@ -439,6 +439,63 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
+    QUnit.test('graph tag without aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="graph" ref="some_xmlid"/>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,graph': `
+                    <graph>
+                        <field name="categ_id"/>
+                        <field name="sold" invisible="1"/>
+                    </graph>`,
+            },
+        });
+
+        await testUtils.dom.click(dashboard.$('.o_graph_measures_list button'));
+        assert.containsNone(dashboard, '.o_menu_item:contains("Sold")',
+            "the sold field should be invisible in the measures");
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('graph tag with aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="graph" ref="some_xmlid"/>
+                    <group>
+                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                    </group>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,graph': `
+                    <graph>
+                        <field name="categ_id"/>
+                        <field name="sold" invisible="1"/>
+                    </graph>`,
+            }
+        });
+
+        await testUtils.dom.click(dashboard.$('.o_graph_measures_list button'));
+        assert.containsOnce(dashboard, '.o_menu_item:contains("Sold")',
+            "the sold field should be in the measures");
+
+        dashboard.destroy();
+    });
+
     QUnit.test('basic rendering of a pivot tag', async function (assert) {
         assert.expect(11);
 
@@ -475,6 +532,63 @@ QUnit.module('Views', {
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'read_group', 'read_group']);
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('pivot tag without aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="pivot" ref="some_xmlid"/>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,pivot': `
+                    <pivot>
+                        <field name="categ_id" type="row"/>
+                        <field name="sold" invisible="1"/>
+                    </pivot>`,
+            },
+        });
+
+        await testUtils.dom.click(dashboard.$('button:contains("Measures")'));
+        assert.containsNone(dashboard, '.o_pivot_measures_list a:contains("Sold")',
+            "the sold field should be invisible in the measures");
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('pivot tag with aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="pivot" ref="some_xmlid"/>
+                    <group>
+                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                    </group>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,pivot': `
+                    <pivot>
+                        <field name="categ_id" type="row"/>
+                        <field name="sold" invisible="1"/>
+                    </pivot>`,
+            },
+        });
+
+        await testUtils.dom.click(dashboard.$('button:contains("Measures")'));
+        assert.containsOnce(dashboard, '.o_pivot_measures_list a:contains("Sold")',
+            "the sold field should be in the measures");
 
         dashboard.destroy();
     });
@@ -520,6 +634,77 @@ QUnit.module('Views', {
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'get_cohort_data']);
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('cohort tag without aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
+        this.data.test_report.fields.transformation_date = {type: 'date', string: 'Transormation Date'};
+
+        this.data.test_report.records[0].create_date = '2018-05-01';
+        this.data.test_report.records[1].create_date = '2018-05-01';
+        this.data.test_report.records[0].transformation_date = '2018-07-03';
+        this.data.test_report.records[1].transformation_date = '2018-06-23';
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="cohort" ref="some_xmlid"/>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,cohort': `
+                    <cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week">
+                        <field name="sold" invisible="1"/>
+                    </cohort>`,
+            },
+        });
+
+        await testUtils.dom.click(dashboard.$('button:contains("Measures")'));
+        assert.containsNone(dashboard, '.o_cohort_measures_list button[data-field="sold"]',
+            "the sold field should be invisible in the measures");
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('cohort tag with aggregate and invisible field', async function (assert) {
+        assert.expect(1);
+
+        this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
+        this.data.test_report.fields.transformation_date = {type: 'date', string: 'Transormation Date'};
+
+        this.data.test_report.records[0].create_date = '2018-05-01';
+        this.data.test_report.records[1].create_date = '2018-05-01';
+        this.data.test_report.records[0].transformation_date = '2018-07-03';
+        this.data.test_report.records[1].transformation_date = '2018-06-23';
+
+        const dashboard = await createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: `
+                <dashboard>
+                    <view type="cohort" ref="some_xmlid"/>
+                    <group>
+                        <aggregate name="sold" string="Avg Sold" group_operator="avg" field="sold"/>
+                    </group>
+                </dashboard>`,
+            archs: {
+                'test_report,some_xmlid,cohort': `
+                    <cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week">
+                        <field name="sold" invisible="1"/>
+                    </cohort>`,
+            },
+        });
+
+        await testUtils.dom.click(dashboard.$('button:contains("Measures")'));
+        assert.containsOnce(dashboard, '.o_cohort_measures_list button[data-field="sold"]',
+            "the sold field should be in the measures");
 
         dashboard.destroy();
     });

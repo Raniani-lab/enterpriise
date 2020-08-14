@@ -16,56 +16,47 @@ class MrpCostStructure(models.AbstractModel):
             mos = productions.filtered(lambda m: m.product_id == product)
             total_cost = 0.0
 
-            #get the cost of operations
+            # Get operations details + cost
             operations = []
             Workorders = self.env['mrp.workorder'].search([('production_id', 'in', mos.ids)])
             if Workorders:
-                query_str = """SELECT w.operation_id, op.name, partner.name, sum(t.duration), wc.costs_hour
+                query_str = """SELECT wo.id, op.id, wo.name, partner.name, sum(t.duration), wc.costs_hour
                                 FROM mrp_workcenter_productivity t
-                                LEFT JOIN mrp_workorder w ON (w.id = t.workorder_id)
-                                LEFT JOIN mrp_workcenter wc ON (wc.id = t.workcenter_id )
+                                LEFT JOIN mrp_workorder wo ON (wo.id = t.workorder_id)
+                                LEFT JOIN mrp_workcenter wc ON (wc.id = t.workcenter_id)
                                 LEFT JOIN res_users u ON (t.user_id = u.id)
                                 LEFT JOIN res_partner partner ON (u.partner_id = partner.id)
-                                LEFT JOIN mrp_routing_workcenter op ON (w.operation_id = op.id)
+                                LEFT JOIN mrp_routing_workcenter op ON (wo.operation_id = op.id)
                                 WHERE t.workorder_id IS NOT NULL AND t.workorder_id IN %s
-                                GROUP BY w.operation_id, op.name, partner.name, t.user_id, wc.costs_hour
-                                ORDER BY op.name, partner.name
+                                GROUP BY wo.id, op.id, wo.name, wc.costs_hour, partner.name, t.user_id
+                                ORDER BY wo.name, partner.name
                             """
                 self.env.cr.execute(query_str, (tuple(Workorders.ids), ))
-                for op_id, op_name, user, duration, cost_hour in self.env.cr.fetchall():
-                    operations.append([user, op_id, op_name, duration / 60.0, cost_hour])
+                for wo_id, op_id, wo_name, user, duration, cost_hour in self.env.cr.fetchall():
+                    operations.append([user, op_id, wo_name, duration / 60.0, cost_hour])
 
-            #get the cost of raw material effectively used
+            # Get the cost of raw material effectively used
             raw_material_moves = []
             query_str = """SELECT
                                 sm.product_id,
                                 mo.id,
-                                sm.bom_line_id,
-                                COALESCE(sum(boml.product_qty * mo.product_qty), 0) as bom_line_qty,
                                 abs(SUM(svl.quantity)),
                                 abs(SUM(svl.value))
                              FROM stock_move AS sm
                        INNER JOIN stock_valuation_layer AS svl ON svl.stock_move_id = sm.id
-                       LEFT JOIN mrp_bom_line AS boml ON boml.id = sm.bom_line_id
                        LEFT JOIN mrp_production AS mo on sm.raw_material_production_id = mo.id
                             WHERE sm.raw_material_production_id in %s AND sm.state != 'cancel' AND sm.product_qty != 0 AND scrapped != 't'
-                         GROUP BY sm.bom_line_id, sm.product_id, boml.id, mo.id"""
+                         GROUP BY sm.product_id, mo.id"""
             self.env.cr.execute(query_str, (tuple(mos.ids), ))
-            for product_id, mo_id, bom_line_id, bom_line_qty, qty, cost in self.env.cr.fetchall():
-                bom = self.env['mrp.bom.line'].browse(bom_line_id).bom_id
-                mo = self.env['mrp.production'].browse(mo_id)
-                if bom and bom.product_uom_id != mo.product_uom_id:
-                    bom_line_qty = mo.product_uom_id._compute_quantity(bom_line_qty, bom.product_uom_id)
+            for product_id, mo_id, qty, cost in self.env.cr.fetchall():
                 raw_material_moves.append({
-                    'qty': bom_line_qty if bom else qty,
+                    'qty': qty,
                     'cost': cost,
                     'product_id': ProductProduct.browse(product_id),
-                    'bom_line_id': bom_line_id,
-                    'extra_qty': qty - bom_line_qty if bom else 0.0,
                 })
                 total_cost += cost
 
-            #get the cost of scrapped materials
+            # Get the cost of scrapped materials
             scraps = StockMove.search([('production_id', 'in', mos.ids), ('scrapped', '=', True), ('state', '=', 'done')])
             uom = mos and mos[0].product_uom_id
             mo_qty = 0

@@ -5072,7 +5072,8 @@
             this.zones = [];
             this.originSheet = this.workbook.activeSheet.id;
             this._isPaintingFormat = false;
-            this.onlyFormat = false;
+            this.pasteOnlyValue = false;
+            this.pasteOnlyFormat = false;
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -5094,9 +5095,10 @@
                     this.cutOrCopy(cmd.target, true);
                     break;
                 case "PASTE":
+                    this.pasteOnlyValue = "onlyValue" in cmd && !!cmd.onlyValue;
                     const onlyFormat = "onlyFormat" in cmd ? !!cmd.onlyFormat : this._isPaintingFormat;
                     this._isPaintingFormat = false;
-                    this.onlyFormat = onlyFormat;
+                    this.pasteOnlyFormat = !this.pasteOnlyValue && onlyFormat;
                     if (cmd.interactive) {
                         this.interactivePaste(cmd.target);
                     }
@@ -5105,7 +5107,7 @@
                     }
                     break;
                 case "PASTE_CELL":
-                    this.pasteCell(cmd.origin, cmd.col, cmd.row, cmd.cut);
+                    this.pasteCell(cmd.origin, cmd.col, cmd.row, cmd.onlyValue, cmd.onlyFormat);
                     break;
                 case "PASTE_FROM_OS_CLIPBOARD":
                     this.pasteFromClipboard(cmd.target, cmd.text);
@@ -5319,38 +5321,68 @@
                         row: row + r,
                         sheet: this.originSheet,
                         cut: this.shouldCut,
+                        onlyValue: this.pasteOnlyValue,
+                        onlyFormat: this.pasteOnlyFormat,
                     });
                 }
             }
         }
-        pasteCell(origin, col, row, cut) {
+        pasteCell(origin, col, row, onlyValue, onlyFormat) {
             const targetCell = this.getters.getCell(col, row);
             if (origin) {
+                let style = origin.style;
+                let border = origin.border;
+                let format = origin.format;
                 let content = origin.content || "";
-                if (origin.type === "formula") {
+                if (onlyValue) {
+                    style = targetCell ? targetCell.style : undefined;
+                    border = targetCell ? targetCell.border : undefined;
+                    format = targetCell ? targetCell.format : undefined;
+                    if (targetCell) {
+                        if (targetCell.type === "date") {
+                            format = targetCell.value.format;
+                        }
+                    }
+                    if (origin.type === "formula" || origin.type === "date") {
+                        content = this.valueToContent(origin.value);
+                    }
+                }
+                else if (onlyFormat) {
+                    content = targetCell ? targetCell.content : "";
+                }
+                else if (origin.type === "formula") {
                     const offsetX = col - origin.col;
                     const offsetY = row - origin.row;
                     content = this.getters.applyOffset(content, offsetX, offsetY);
                 }
-                if (this.onlyFormat) {
-                    content = targetCell ? targetCell.content : "";
-                }
                 let newCell = {
-                    style: origin.style,
-                    border: origin.border,
-                    format: origin.format,
+                    style: style,
+                    border: border,
+                    format: format,
                     sheet: this.workbook.activeSheet.id,
                     col: col,
                     row: row,
-                    content,
+                    content: content,
                 };
                 this.dispatch("UPDATE_CELL", newCell);
             }
             if (!origin && targetCell) {
-                if (this.onlyFormat) {
-                    if (targetCell.style || targetCell.border) {
+                if (onlyValue) {
+                    if (targetCell.content) {
+                        //this.history.updateCell(targetCell, "content", undefined);
+                        this.history.updateCell(targetCell, "content", "");
+                        this.history.updateCell(targetCell, "value", "");
+                    }
+                }
+                else if (onlyFormat) {
+                    if (targetCell.style) {
                         this.history.updateCell(targetCell, "style", undefined);
+                    }
+                    if (targetCell.border) {
                         this.history.updateCell(targetCell, "border", undefined);
+                    }
+                    if (targetCell.format) {
+                        this.history.updateCell(targetCell, "format", undefined);
                     }
                 }
                 else {
@@ -5360,6 +5392,20 @@
                         row: row,
                     });
                 }
+            }
+        }
+        valueToContent(cellValue) {
+            switch (typeof cellValue) {
+                case "number":
+                    return cellValue.toString();
+                case "string":
+                    return cellValue;
+                case "boolean":
+                    return cellValue ? "TRUE" : "FALSE";
+                case "object":
+                    return cellValue.value.toString();
+                default:
+                    return "";
             }
         }
         interactivePaste(target) {
@@ -5501,7 +5547,9 @@
                     this.isStale = true;
                     break;
                 case "PASTE_CELL":
-                    this.pasteCf(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.sheet, cmd.cut);
+                    if (!cmd.onlyValue) {
+                        this.pasteCf(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.sheet, cmd.cut);
+                    }
                     break;
                 case "EVALUATE_CELLS":
                 case "UPDATE_CELL":
@@ -5946,13 +5994,13 @@
     }
 
     /**
-     * add on each token the length, start and end
-     * also matches the opening to its closing parenthesis (using the same number)
+     * Add the following informations on tokens:
+     * - length
+     * - start
+     * - end
      */
-    function mapLengthAndParents(tokens) {
+    function enrichTokens(tokens) {
         let current = 0;
-        let maxParen = 1;
-        const stack = [];
         return tokens.map((x) => {
             const len = x.value.toString().length;
             const token = Object.assign({}, x, {
@@ -5961,15 +6009,18 @@
                 length: len,
             });
             current = token.end;
-            if (token.type === "LEFT_PAREN") {
-                stack.push(maxParen);
-                token.parenIndex = maxParen;
-                maxParen++;
-            }
-            else if (token.type === "RIGHT_PAREN") {
-                token.parenIndex = stack.pop();
-            }
             return token;
+        });
+    }
+    /**
+     * Remove informations added on EnrichedToken to make a Token
+     */
+    function toSimpleTokens(composerTokens) {
+        return composerTokens.map((x) => {
+            return {
+                type: x.type,
+                value: x.value,
+            };
         });
     }
     /**
@@ -5977,7 +6028,7 @@
      * The range can be
      *  ?spaces symbol ?spaces operator: ?spaces symbol ?spaces
      */
-    function mergeSymbolsIntoRanges(result) {
+    function mergeSymbolsIntoRanges(result, removeSpace = false) {
         let operator = undefined;
         let refStart = undefined;
         let refEnd = undefined;
@@ -6010,6 +6061,7 @@
                                 length: result[i - 1].end - result[startIncludingSpaces].start,
                                 value: result
                                     .slice(startIncludingSpaces, i)
+                                    .filter((x) => !removeSpace || x.type !== "SPACE")
                                     .map((x) => x.value)
                                     .join(""),
                             };
@@ -6059,6 +6111,7 @@
                 length: result[i].end - result[startIncludingSpaces].start,
                 value: result
                     .slice(startIncludingSpaces, i + 1)
+                    .filter((x) => !removeSpace || x.type !== "SPACE")
                     .map((x) => x.value)
                     .join(""),
             };
@@ -6067,13 +6120,43 @@
         return result;
     }
     /**
+     * Take the result of the tokenizer and transform it to be usable in the
+     * manipulations of range
+     *
+     * @param formula
+     */
+    function rangeTokenize(formula) {
+        const tokens = tokenize(formula);
+        return toSimpleTokens(mergeSymbolsIntoRanges(enrichTokens(tokens), true));
+    }
+
+    /**
+     * add on each token the length, start and end
+     * also matches the opening to its closing parenthesis (using the same number)
+     */
+    function mapParenthesis(tokens) {
+        let maxParen = 1;
+        const stack = [];
+        return tokens.map((token) => {
+            if (token.type === "LEFT_PAREN") {
+                stack.push(maxParen);
+                token.parenIndex = maxParen;
+                maxParen++;
+            }
+            else if (token.type === "RIGHT_PAREN") {
+                token.parenIndex = stack.pop();
+            }
+            return token;
+        });
+    }
+    /**
      * Take the result of the tokenizer and transform it to be usable in the composer.
      *
      * @param formula
      */
     function composerTokenize(formula) {
         const tokens = tokenize(formula);
-        return mergeSymbolsIntoRanges(mapLengthAndParents(tokens));
+        return mergeSymbolsIntoRanges(mapParenthesis(enrichTokens(tokens)));
     }
 
     const functions$2 = functionRegistry.content;
@@ -6422,6 +6505,116 @@
             super(...arguments);
             this.sheetIds = {};
             this.showFormulas = false;
+            // ---------------------------------------------------------------------------
+            // Cols/Rows addition/deletion offsets manipulation
+            // ---------------------------------------------------------------------------
+            /**
+             * Update a reference by applying an offset to the column
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added or -1 if removed
+             */
+            this.updateColumnsRef = (ref, sheet, base, step) => {
+                let x = toCartesian(ref)[0];
+                if (x === base && step === -1) {
+                    return "#REF";
+                }
+                return this.updateReference(ref, x > base ? step : 0, 0, this.getSheetIdByName(sheet), false);
+            };
+            /**
+             * Update a part of a range by appling an offset. If the current column is
+             * removed, adapt the range accordingly
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added or -1 if removed
+             * @param direction 1 if it's the left part, -1 if it's the right part
+             */
+            this.updateColumnsRangePart = (ref, sheet, base, step, direction) => {
+                let [x, y] = toCartesian(ref);
+                if (x === base && step === -1) {
+                    x += direction;
+                }
+                return this.updateColumnsRef(toXC(x, y), sheet, base, step);
+            };
+            /**
+             * Update a full range by appling an offset.
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added or -1 if removed
+             */
+            this.updateColumnsRange = (ref, sheet, base, step) => {
+                let [left, right] = ref.split(":");
+                left = this.updateColumnsRangePart(left, sheet, base, step, 1);
+                right = this.updateColumnsRangePart(right, sheet, base, step, -1);
+                if (left === "#REF" || right === "#REF") {
+                    return "#REF";
+                }
+                if (left === right) {
+                    return left;
+                }
+                return `${left}:${right}`;
+            };
+            /**
+             * Update a reference by applying an offset to the row
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added or -1 if removed
+             */
+            this.updateRowsRef = (ref, sheet, base, step) => {
+                let y = toCartesian(ref)[1];
+                if (base + step < y && y <= base) {
+                    return "#REF";
+                }
+                return this.updateReference(ref, 0, y > base ? step : 0, this.getSheetIdByName(sheet), false);
+            };
+            /**
+             * Update a part of a range by appling an offset. If the current row is
+             * removed, adapt the range accordingly
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added/removed (negative when removed)
+             * @param direction 1 if it's the left part, -1 if it's the right part
+             */
+            this.updateRowsRangePart = (value, sheet, base, step, direction) => {
+                let [x, y] = toCartesian(value);
+                if (base + step < y && y <= base) {
+                    if (direction === -1) {
+                        y = Math.max(base, y) + step;
+                    }
+                    step = 0;
+                }
+                return this.updateRowsRef(toXC(x, y), sheet, base, step);
+            };
+            /**
+             * Update a full range by appling an offset.
+             *
+             * @param ref Reference to update
+             * @param sheet Id of the sheet, if cross-sheet reference
+             * @param base Index of the element added/removed
+             * @param step Number of elements added/removed (negative when removed)
+             */
+            this.updateRowsRange = (value, sheet, base, step) => {
+                let [left, right] = value.split(":");
+                left = this.updateRowsRangePart(left, sheet, base, step, 1);
+                right = this.updateRowsRangePart(right, sheet, base, step, -1);
+                if (left === "#REF" || right === "#REF") {
+                    return "#REF";
+                }
+                if (left === right) {
+                    return left;
+                }
+                return `${left}:${right}`;
+            };
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -6534,38 +6727,15 @@
         // Getters
         // ---------------------------------------------------------------------------
         applyOffset(formula, offsetX, offsetY) {
-            const tokens = tokenize(formula);
-            return tokens
+            return rangeTokenize(formula)
                 .map((t) => {
                 if (t.type === "SYMBOL" && cellReference.test(t.value)) {
-                    const [xc, sheetRef] = t.value.replace(/\$/g, "").split("!").reverse();
-                    let sheetId;
-                    if (sheetRef) {
-                        const sheet = this.getters.getSheets().find((sheet) => sheet.name === sheetRef);
-                        if (!sheet) {
-                            return "#REF";
-                        }
-                        sheetId = sheet.id;
+                    const [xcs, sheetName] = t.value.split("!").reverse();
+                    const sheetId = this.getSheetIdByName(sheetName);
+                    if (xcs.includes(":")) {
+                        return this.updateRange(xcs, offsetX, offsetY, sheetId);
                     }
-                    else {
-                        sheetId = this.getters.getActiveSheet();
-                    }
-                    let [x, y] = toCartesian(xc);
-                    const freezeCol = t.value.startsWith("$");
-                    const freezeRow = t.value.includes("$", 1);
-                    x += freezeCol ? 0 : offsetX;
-                    y += freezeRow ? 0 : offsetY;
-                    if (x < 0 ||
-                        x >= this.getters.getNumberCols(sheetId) ||
-                        y < 0 ||
-                        y >= this.getters.getNumberRows(sheetId)) {
-                        return "#REF";
-                    }
-                    return ((sheetRef ? `${sheetRef}!` : "") +
-                        (freezeCol ? "$" : "") +
-                        numberToLetters(x) +
-                        (freezeRow ? "$" : "") +
-                        String(y + 1));
+                    return this.updateReference(xcs, offsetX, offsetY, sheetId);
                 }
                 return t.value;
             })
@@ -6650,6 +6820,12 @@
          */
         getActiveSheet() {
             return this.workbook.activeSheet.id;
+        }
+        getSheetName(sheetId) {
+            return this.workbook.sheets[sheetId] && this.workbook.sheets[sheetId].name;
+        }
+        getSheetIdByName(name) {
+            return name && this.sheetIds[name];
         }
         getSheets() {
             const { visibleSheets, sheets } = this.workbook;
@@ -6751,7 +6927,7 @@
             columns.sort((a, b) => b - a);
             for (let column of columns) {
                 // Update all the formulas.
-                this.updateAllFormulasHorizontally(column, -1);
+                this.updateColumnsFormulas(column, -1);
                 // Move the cells.
                 this.moveCellsHorizontally(column, -1);
                 // Effectively delete the element and recompute the left-right.
@@ -6785,7 +6961,7 @@
             }, []);
             for (let group of consecutiveRows) {
                 // Update all the formulas.
-                this.updateAllFormulasVertically(group[0], -group.length);
+                this.updateRowsFormulas(group[0], -group.length);
                 // Move the cells.
                 this.moveCellVerticallyBatched(group[group.length - 1], group[0]);
                 // Effectively delete the element and recompute the left-right/top-bottom.
@@ -6794,7 +6970,7 @@
         }
         addColumns(sheetID, column, position, quantity) {
             // Update all the formulas.
-            this.updateAllFormulasHorizontally(position === "before" ? column - 1 : column, quantity);
+            this.updateColumnsFormulas(position === "before" ? column - 1 : column, quantity);
             // Move the cells.
             this.moveCellsHorizontally(position === "before" ? column : column + 1, quantity);
             // Recompute the left-right/top-bottom.
@@ -6805,7 +6981,7 @@
                 this.addEmptyRow();
             }
             // Update all the formulas.
-            this.updateAllFormulasVertically(position === "before" ? row - 1 : row, quantity);
+            this.updateRowsFormulas(position === "before" ? row - 1 : row, quantity);
             // Move the cells.
             this.moveCellsVertically(position === "before" ? row : row + 1, quantity);
             // Recompute the left-right/top-bottom.
@@ -6959,28 +7135,20 @@
             const path = ["activeSheet", "rows"];
             this.history.updateState(path, newRows);
         }
-        updateAllFormulasHorizontally(base, step) {
+        updateColumnsFormulas(base, step) {
             return this.visitFormulas((value, sheet) => {
-                let [x, y] = toCartesian(value);
-                if (x === base && step === -1) {
-                    return "#REF";
+                if (value.includes(":")) {
+                    return this.updateColumnsRange(value, sheet, base, step);
                 }
-                if (x > base) {
-                    x += step;
-                }
-                return this.getNewRef(value, sheet, x, y);
+                return this.updateColumnsRef(value, sheet, base, step);
             });
         }
-        updateAllFormulasVertically(base, step) {
+        updateRowsFormulas(base, step) {
             return this.visitFormulas((value, sheet) => {
-                let [x, y] = toCartesian(value);
-                if (base + step < y && y <= base) {
-                    return "#REF";
+                if (value.includes(":")) {
+                    return this.updateRowsRange(value, sheet, base, step);
                 }
-                if (y > base) {
-                    y += step;
-                }
-                return this.getNewRef(value, sheet, x, y);
+                return this.updateRowsRef(value, sheet, base, step);
             });
         }
         processCellsToMove(shouldDelete, shouldAdd, buildCellToAdd) {
@@ -7140,6 +7308,41 @@
         // Helpers
         // ---------------------------------------------------------------------------
         /**
+         * Update a range with some offsets
+         */
+        updateRange(symbol, offsetX, offsetY, sheetId) {
+            let [left, right] = symbol.split(":");
+            left = this.updateReference(left, offsetX, offsetY, sheetId);
+            right = this.updateReference(right, offsetX, offsetY, sheetId);
+            if (left === "#REF" || right === "#REF") {
+                return "#REF";
+            }
+            return `${left}:${right}`;
+        }
+        /**
+         * Update a reference with some offsets.
+         */
+        updateReference(symbol, offsetX, offsetY, sheetId, updateFreeze = true) {
+            const xc = symbol.replace(/\$/g, "");
+            let [x, y] = toCartesian(xc);
+            const freezeCol = symbol.startsWith("$");
+            const freezeRow = symbol.includes("$", 1);
+            x += freezeCol && updateFreeze ? 0 : offsetX;
+            y += freezeRow && updateFreeze ? 0 : offsetY;
+            if (x < 0 ||
+                x >= this.getters.getNumberCols(sheetId || this.getters.getActiveSheet()) ||
+                y < 0 ||
+                y >= this.getters.getNumberRows(sheetId || this.getters.getActiveSheet())) {
+                return "#REF";
+            }
+            const sheetName = sheetId && this.getters.getSheetName(sheetId);
+            return ((sheetName ? `${sheetName}!` : "") +
+                (freezeCol ? "$" : "") +
+                numberToLetters(x) +
+                (freezeRow ? "$" : "") +
+                String(y + 1));
+        }
+        /**
          * Apply a function to update the formula on every cells of every sheets which
          * contains a formula
          * @param cb Update formula function to apply
@@ -7150,7 +7353,7 @@
                 const sheet = sheets[sheetId];
                 for (let [xc, cell] of Object.entries(sheet.cells)) {
                     if (cell.type === "formula") {
-                        const content = tokenize(cell.content)
+                        const content = rangeTokenize(cell.content)
                             .map((t) => {
                             if (t.type === "SYMBOL" && cellReference.test(t.value)) {
                                 let [value, sheetRef] = t.value.split("!").reverse();
@@ -7179,11 +7382,6 @@
                     }
                 }
             }
-        }
-        getNewRef(value, sheet, x, y) {
-            const fixedCol = value.startsWith("$");
-            const fixedRow = value.includes("$", 1);
-            return `${sheet ? sheet + "!" : ""}${fixedCol ? "$" : ""}${numberToLetters(x)}${fixedRow ? "$" : ""}${String(y + 1)}`;
         }
         // ---------------------------------------------------------------------------
         // Import/Export
@@ -7261,6 +7459,8 @@
         "getCellText",
         "zoneToXC",
         "getActiveSheet",
+        "getSheetName",
+        "getSheetIdByName",
         "getSheets",
         "getCol",
         "getRow",
@@ -7363,6 +7563,7 @@
             this.col = 0;
             this.row = 0;
             this.mode = "inactive";
+            this.sheet = "";
             this.currentContent = "";
         }
         // ---------------------------------------------------------------------------
@@ -7371,7 +7572,9 @@
         beforeHandle(cmd) {
             switch (cmd.type) {
                 case "ACTIVATE_SHEET":
-                    this.stopEdition();
+                    if (this.mode !== "selecting") {
+                        this.stopEdition();
+                    }
                     break;
             }
         }
@@ -7418,6 +7621,9 @@
         getCurrentContent() {
             return this.currentContent;
         }
+        getEditionSheet() {
+            return this.sheet;
+        }
         // ---------------------------------------------------------------------------
         // Misc
         // ---------------------------------------------------------------------------
@@ -7432,6 +7638,7 @@
             const [col, row] = this.getters.getPosition();
             this.col = col;
             this.row = row;
+            this.sheet = this.getters.getActiveSheet();
         }
         stopEdition() {
             if (this.mode !== "inactive") {
@@ -7461,7 +7668,7 @@
                         }
                     }
                     this.dispatch("UPDATE_CELL", {
-                        sheet: this.workbook.activeSheet.id,
+                        sheet: this.sheet,
                         col,
                         row,
                         content,
@@ -7469,11 +7676,14 @@
                 }
                 else {
                     this.dispatch("UPDATE_CELL", {
-                        sheet: this.workbook.activeSheet.id,
+                        sheet: this.sheet,
                         content: "",
                         col,
                         row,
                     });
+                }
+                if (this.getters.getActiveSheet() !== this.sheet) {
+                    this.dispatch("ACTIVATE_SHEET", { from: this.getters.getActiveSheet(), to: this.sheet });
                 }
             }
         }
@@ -7483,7 +7693,7 @@
         }
     }
     EditionPlugin.layers = [1 /* Highlights */];
-    EditionPlugin.getters = ["getEditionMode", "getCurrentContent"];
+    EditionPlugin.getters = ["getEditionMode", "getCurrentContent", "getEditionSheet"];
     EditionPlugin.modes = ["normal", "readonly"];
 
     function* makeObjectIterator(obj) {
@@ -9831,6 +10041,7 @@
             env.dispatch("PASTE", { target, interactive: true });
         }
     };
+    const PASTE_VALUE_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), onlyValue: true });
     const PASTE_FORMAT_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), onlyFormat: true });
     const DELETE_CONTENT_ACTION = (env) => env.dispatch("DELETE_CONTENT", {
         sheet: env.getters.getActiveSheet(),
@@ -10142,9 +10353,14 @@
         sequence: 40,
         separator: true,
     })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
         .addChild("paste_format_only", ["paste_special"], {
         name: _lt("Paste format only"),
-        sequence: 10,
+        sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
         .add("add_row_before", {
@@ -10206,9 +10422,14 @@
         sequence: 40,
         separator: true,
     })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
         .addChild("paste_format_only", ["paste_special"], {
         name: _lt("Paste format only"),
-        sequence: 10,
+        sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
         .add("conditional_formatting", {
@@ -10260,9 +10481,14 @@
         sequence: 40,
         separator: true,
     })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
         .addChild("paste_format_only", ["paste_special"], {
         name: _lt("Paste format only"),
-        sequence: 10,
+        sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
         .add("conditional_formatting", {
@@ -10362,6 +10588,11 @@
         name: _lt("Paste special"),
         sequence: 60,
         separator: true,
+    })
+        .addChild("paste_special_value", ["edit", "paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
     })
         .addChild("paste_special_format", ["edit", "paste_special"], {
         name: _lt("Paste format only"),
@@ -11934,8 +12165,12 @@
             }
             return Object.keys(ranges)
                 .map((r1c1) => {
-                const zone = this.getters.expandZone(toZone(r1c1));
-                return { zone, color: ranges[r1c1] };
+                const [xc, sheet] = r1c1.split("!").reverse();
+                const sheetId = sheet
+                    ? this.getters.getSheetIdByName(sheet)
+                    : this.getters.getActiveSheet();
+                const zone = this.getters.expandZone(toZone(xc));
+                return { zone, color: ranges[r1c1], sheet: sheetId };
             })
                 .filter((x) => x.zone.top >= 0 &&
                 x.zone.left >= 0 &&
@@ -11984,7 +12219,7 @@
             // rendering selection highlights
             const { ctx, viewport, thinLineWidth } = renderingContext;
             ctx.lineWidth = 3 * thinLineWidth;
-            for (let h of this.highlights) {
+            for (let h of this.highlights.filter((highlight) => highlight.sheet === this.getters.getActiveSheet())) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
@@ -13648,8 +13883,12 @@
                             break;
                         case "SYMBOL":
                             let value = token.value;
-                            if (rangeReference.test(value)) {
-                                const refSanitized = value.replace(/\$/g, "");
+                            const [xc, sheet] = value.split("!").reverse();
+                            if (rangeReference.test(xc)) {
+                                const refSanitized = (sheet
+                                    ? `${sheet}!`
+                                    : `${this.getters.getSheetName(this.getters.getEditionSheet())}!`) +
+                                    xc.replace(/\$/g, "");
                                 if (!refUsed[refSanitized]) {
                                     refUsed[refSanitized] = colors[lastUsedColorIndex];
                                     lastUsedColorIndex = ++lastUsedColorIndex % colors.length;
@@ -13723,6 +13962,10 @@
             if (this.refSelectionStart) {
                 this.selectionStart = this.refSelectionStart;
             }
+            if (this.getters.getEditionSheet() !== this.getters.getActiveSheet()) {
+                const sheetName = this.getters.getSheetName(this.getters.getActiveSheet());
+                selection = `${sheetName}!${selection}`;
+            }
             this.addText(selection);
             this.processContent();
         }
@@ -13770,10 +14013,16 @@
     function startDnd(onMouseMove, onMouseUp) {
         const _onMouseUp = (ev) => {
             onMouseUp(ev);
+            window.removeEventListener("mouseup", _onMouseUp);
+            window.removeEventListener("dragstart", _onDragStart);
             window.removeEventListener("mousemove", onMouseMove);
         };
+        function _onDragStart(ev) {
+            ev.preventDefault();
+        }
+        window.addEventListener("mouseup", _onMouseUp);
+        window.addEventListener("dragstart", _onDragStart);
         window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("mouseup", _onMouseUp, { once: true });
     }
 
     const { Component: Component$8 } = owl;
@@ -14791,13 +15040,20 @@
         // ---------------------------------------------------------------------------
         // Zone selection with mouse
         // ---------------------------------------------------------------------------
+        getCartesianCoordinates(ev) {
+            const rect = this.el.getBoundingClientRect();
+            const x = ev.pageX - rect.left;
+            const y = ev.pageY - rect.top;
+            const colIndex = this.getters.getColIndex(x, this.snappedViewport.left);
+            const rowIndex = this.getters.getRowIndex(y, this.snappedViewport.top);
+            return [colIndex, rowIndex];
+        }
         onMouseDown(ev) {
             if (ev.button > 0) {
                 // not main button, probably a context menu
                 return;
             }
-            const col = this.getters.getColIndex(ev.offsetX, this.snappedViewport.left);
-            const row = this.getters.getRowIndex(ev.offsetY, this.snappedViewport.top);
+            const [col, row] = this.getCartesianCoordinates(ev);
             if (col < 0 || row < 0) {
                 return;
             }
@@ -14814,8 +15070,7 @@
             let prevCol = col;
             let prevRow = row;
             const onMouseMove = (ev) => {
-                const col = this.getters.getColIndex(ev.offsetX, this.snappedViewport.left);
-                const row = this.getters.getRowIndex(ev.offsetY, this.snappedViewport.top);
+                const [col, row] = this.getCartesianCoordinates(ev);
                 if (col < 0 || row < 0) {
                     return;
                 }
@@ -14842,8 +15097,7 @@
             startDnd(onMouseMove, onMouseUp);
         }
         onDoubleClick(ev) {
-            const col = this.getters.getColIndex(ev.offsetX, this.snappedViewport.left);
-            const row = this.getters.getRowIndex(ev.offsetY, this.snappedViewport.top);
+            const [col, row] = this.getCartesianCoordinates(ev);
             if (this.clickedCol === col && this.clickedRow === row) {
                 this.dispatch("START_EDITION");
             }
@@ -14918,8 +15172,7 @@
         // ---------------------------------------------------------------------------
         onCanvasContextMenu(ev) {
             ev.preventDefault();
-            const col = this.getters.getColIndex(ev.offsetX, this.snappedViewport.left);
-            const row = this.getters.getRowIndex(ev.offsetY, this.snappedViewport.top);
+            const [col, row] = this.getCartesianCoordinates(ev);
             if (col < 0 || row < 0) {
                 return;
             }
@@ -15719,9 +15972,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.4.0';
-    exports.__info__.date = '2020-08-12T08:34:26.985Z';
-    exports.__info__.hash = 'c89c99a';
+    exports.__info__.version = '0.4.1';
+    exports.__info__.date = '2020-08-14T10:04:53.190Z';
+    exports.__info__.hash = '0c74956';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

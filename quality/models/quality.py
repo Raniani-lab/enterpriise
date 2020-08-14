@@ -396,5 +396,9 @@ class QualityAlert(models.Model):
             team_id = self.env['quality.alert.team'].browse(self.env.context.get('active_id')).exists().id
         if team_id:
             domain = OR([domain, ['|', ('team_ids', '=', False), ('team_ids', 'in', team_id)]])
+        elif not stages:
+            # if enter here, means we won't get any team_id and stage_id to search
+            # so search stage without team_ids instead
+            domain = [('team_ids', '=', False)]
         stage_ids = stages._search(domain, order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)

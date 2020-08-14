@@ -186,10 +186,6 @@ class AccountBankStatementImport(models.TransientModel):
             st_vals['journal_id'] = journal.id
             if not st_vals.get('reference'):
                 st_vals['reference'] = " ".join(self.attachment_ids.mapped('name'))
-            if st_vals.get('number'):
-                #build the full name like BNK/2016/00135 by just giving the number '135'
-                st_vals['name'] = journal.sequence_id.with_context(ir_sequence_date=st_vals.get('date')).get_next_char(st_vals['number'])
-                del(st_vals['number'])
             for line_vals in st_vals['transactions']:
                 unique_import_id = line_vals.get('unique_import_id')
                 if unique_import_id:
@@ -230,9 +226,16 @@ class AccountBankStatementImport(models.TransientModel):
             if len(filtered_st_lines) > 0:
                 # Remove values that won't be used to create records
                 st_vals.pop('transactions', None)
+                number = st_vals.pop('number', None)
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
                 statement = BankStatement.create(st_vals)
+                if number and number.isdecimal():
+                    statement._set_next_sequence()
+                    format, format_values = statement._get_sequence_format_param(statement.name)
+                    format_values['seq'] = int(number)
+                    #build the full name like BNK/2016/00135 by just giving the number '135'
+                    statement.name = format.format(**format_values)
                 if statement.balance_end == statement.balance_end_real:
                     statement.button_post()
                 statement_line_ids.extend(statement.line_ids.ids)

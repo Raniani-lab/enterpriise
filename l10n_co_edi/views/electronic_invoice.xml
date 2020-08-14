@@ -203,7 +203,7 @@
                 <DRF_1 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_number"/>
                 <DRF_2 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_date"/>
                 <DRF_3 t-esc="invoice.journal_id.l10n_co_edi_dian_authorization_end_date"/>
-                <DRF_4 t-esc="invoice._l10n_co_edi_get_invoice_journal_prefix()"/>
+                <DRF_4 t-esc="invoice.sequence_prefix"/>
                 <DRF_5 t-esc="invoice.journal_id.l10n_co_edi_min_range_number"/>
                 <DRF_6 t-esc="invoice.journal_id.l10n_co_edi_max_range_number"/>
             </DRF>

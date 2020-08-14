@@ -3,7 +3,6 @@ import io
 import xml.dom.minidom
 import zipfile
 import pytz
-import re
 import requests
 
 from collections import defaultdict
@@ -11,7 +10,7 @@ from datetime import timedelta
 from os import listdir
 
 from odoo import api, fields, models, tools, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_TIME_FORMAT
 from odoo.tools.float_utils import float_compare
 from .carvajal_request import CarvajalRequest, CarvajalException
@@ -224,8 +223,7 @@ class AccountMove(models.Model):
 
         try:
             request = self._l10n_co_edi_create_carvajal_request()
-            journal_prefix = self._l10n_co_edi_get_invoice_journal_prefix()
-            response = request.download(journal_prefix, self.name, carvajal_type)
+            response = request.download(self.sequence_prefix, self.name, carvajal_type)
         except CarvajalException as e:
             invoice_download_msg = _('Electronic invoice download failed. Message from Carvajal:<br/>%s', e)
             attachments = []
@@ -410,21 +408,6 @@ class AccountMove(models.Model):
 
         identification_type = partner.l10n_latam_identification_type_id.l10n_co_document_code
         return IDENTIFICATION_TYPE_TO_CARVAJAL_CODE[identification_type] if identification_type else ''
-
-    def _l10n_co_edi_get_invoice_journal_prefix(self):
-        self.ensure_one()
-        if self._sequence_field not in self._fields or not self._fields[self._sequence_field].store:
-            raise ValidationError(_('%s is not a stored field', self._sequence_field))
-        where_string, param = self._get_last_sequence_domain(relaxed=True)
-
-        query = "SELECT {field} FROM {table} {where_string} ORDER BY {field} DESC LIMIT 1 FOR UPDATE".format(table=self._table, where_string=where_string, field=self._sequence_field)
-
-        self.flush([self._sequence_field])
-        self.env.cr.execute(query, param)
-        current_sequence = (self.env.cr.fetchone() or [None])[0]
-
-        sequence = re.match(self._sequence_fixed_regex, current_sequence)
-        return sequence.group('prefix1')
 
     def _l10n_co_edi_generate_xml(self):
         '''Renders the XML that will be sent to Carvajal.'''

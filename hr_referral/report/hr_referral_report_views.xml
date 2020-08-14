@@ -35,7 +35,7 @@
             <field name="name">employee.referral.report.view.pivot</field>
             <field name="model">hr.referral.report</field>
             <field name="arch" type="xml">
-                <pivot string="Employees Analysis" disable_linking="True">
+                <pivot string="Employees Analysis" disable_linking="True" sample="1">
                     <field name="ref_user_id" type="row"/>
                     <field name="earned_points" type="measure"/>
                     <field name="employee_referral_hired" type="measure"/>

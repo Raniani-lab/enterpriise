@@ -71,7 +71,7 @@
         <field name="name">sale.subscription.cohort</field>
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
-            <cohort string="Subscription" date_start="date_start" date_stop="date" interval="month" />
+            <cohort string="Subscription" date_start="date_start" date_stop="date" interval="month" sample="1"/>
         </field>
     </record>
 
@@ -161,7 +161,7 @@
         <field name="name">sale.subscription.pivot</field>
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
-            <pivot string="Subscriptions">
+            <pivot string="Subscriptions" sample="1">
                 <field name="partner_id"/>
                 <field name="recurring_total" type="measure"/>
                 <field name="recurring_total_incl" type="measure"/>

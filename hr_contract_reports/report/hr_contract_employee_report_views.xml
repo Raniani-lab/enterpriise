@@ -36,7 +36,7 @@
             <field name="name">contract.employee.report.view.pivot</field>
             <field name="model">hr.contract.employee.report</field>
             <field name="arch" type="xml">
-                <pivot string="Employees Analysis" disable_linking="True">
+                <pivot string="Employees Analysis" disable_linking="True" sample="1">
                     <field name="department_id" type="row"/>
                     <field name="employee_id" type="measure"/>
                     <field name="wage" type="measure"/>

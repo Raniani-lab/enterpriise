@@ -56,7 +56,7 @@
         <field name="name">marketing.trace.view.pivot</field>
         <field name="model">marketing.trace</field>
         <field name="arch" type="xml">
-            <pivot>
+            <pivot sample="1">
                 <field name="state" type="row"/>
                 <field name="activity_id" type="col"/>
             </pivot>

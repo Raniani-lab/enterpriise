@@ -34,7 +34,7 @@
             <field name="name">hr.recruitment.report.pivot</field>
             <field name="model">hr.recruitment.report</field>
             <field name="arch" type="xml">
-                <pivot string="Recruitment Analysis" disable_linking="True">
+                <pivot string="Recruitment Analysis" disable_linking="True" sample="1">
                     <field name="job_id" type="row"/>
                     <field name="count" type="measure"/>
                     <field name="hired" type="measure"/>

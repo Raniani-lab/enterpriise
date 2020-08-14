@@ -41,7 +41,7 @@
         <field name="name">calendar.event.pivot</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
-            <pivot string="Appointments" display_quantity="true">
+            <pivot string="Appointments" display_quantity="true" sample="1">
                 <field name="start" type="row"/>
             </pivot>
         </field>

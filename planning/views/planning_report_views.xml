@@ -5,7 +5,7 @@
         <field name="name">planning.slot.report.pivot</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <pivot string="Planning Analysis">
+            <pivot string="Planning Analysis" sample="1">
                 <field name="start_datetime" interval="month" type="row"/>
                 <field name="employee_id" type="col"/>
                 <field name="allocated_hours" type="measure"/>

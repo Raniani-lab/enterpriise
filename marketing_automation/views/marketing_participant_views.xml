@@ -186,7 +186,7 @@
         <field name="name">marketing.participant.view.pivot</field>
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
-            <pivot string="Participant summary">
+            <pivot string="Participant summary" sample="1">
                 <field name="campaign_id" type="col"/>
                 <field name="state" type="row"/>
             </pivot>

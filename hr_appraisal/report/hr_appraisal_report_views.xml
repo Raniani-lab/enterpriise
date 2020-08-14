@@ -4,7 +4,7 @@
             <field name="name">hr.appraisal.report.pivot</field>
             <field name="model">hr.appraisal.report</field>
             <field name="arch" type="xml">
-            <pivot string="Appraisal Analysis" disable_linking="True">
+            <pivot string="Appraisal Analysis" disable_linking="True" sample="1">
                  <field name="employee_id" type="row"/>
                  <field name="create_date" interval="month" type="col"/>
              </pivot>

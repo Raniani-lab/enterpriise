@@ -5,7 +5,7 @@
            <field name="name">sale.rental.report.pivot</field>
            <field name="model">sale.rental.report</field>
            <field name="arch" type="xml">
-               <pivot string="Rental Analysis" disable_linking="True">
+               <pivot string="Rental Analysis" disable_linking="True" sample="1">
                    <field name="date" type="row" interval="day"/>
                    <field name="quantity" type="measure"/>
                    <field name="qty_delivered" type="measure"/>

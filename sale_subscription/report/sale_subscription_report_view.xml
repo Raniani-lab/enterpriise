@@ -4,7 +4,7 @@
          <field name="name">subscription.report.pivot</field>
          <field name="model">sale.subscription.report</field>
          <field name="arch" type="xml">
-             <pivot disable_linking="True">
+             <pivot disable_linking="True" sample="1">
                  <field name="template_id" type="row"/>
                  <field name="user_id" type="col"/>
                  <field name="recurring_monthly" type="measure"/>
@@ -27,7 +27,7 @@
         <field name="name">sale.subscription.report.cohort</field>
         <field name="model">sale.subscription.report</field>
         <field name="arch" type="xml">
-            <cohort string="Subscription" date_start="date_start" date_stop="date_end" interval="month" />
+            <cohort string="Subscription" date_start="date_start" date_stop="date_end" interval="month" sample="1"/>
         </field>
     </record>
 

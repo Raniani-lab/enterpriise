@@ -60,7 +60,7 @@
             <field name="name">crm.lead.graph.view</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <graph string="Opportunities">
+                <graph string="Opportunities" sample="1">
                     <field name="stage_id" type="row"/>
                     <field name="date_deadline" interval="month" type="row"/>
                     <field name="color" invisible="1"/>
@@ -72,7 +72,7 @@
             <field name="name">crm.lead.pivot.view</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <pivot string="Leads" display_quantity="true">
+                <pivot string="Leads" display_quantity="true" sample="1">
                     <field name="user_id" type="row"/>
                     <field name="expected_revenue" type="measure"/>
                     <field name="prorated_revenue" type="measure"/>
@@ -86,7 +86,7 @@
             <field name="name">crm.lead.graph.view</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <graph string="leads" type="line">
+                <graph string="leads" type="line" sample="1">
                     <field name="create_date" interval="week" type="row"/>
                     <field name="color" invisible="1"/>
                 </graph>
@@ -108,7 +108,7 @@
             <field name="model">crm.lead</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="crm_enterprise.crm_opportunity_view_graph"/>
                     <group>
                         <group>
@@ -137,7 +137,7 @@
             <field name="model">crm.lead</field>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <dashboard>
+                <dashboard sample="1">
                     <view type="graph" ref="crm_enterprise.crm_lead_view_graph"/>
                     <group>
                         <group>
@@ -165,7 +165,7 @@
             <field name="name">crm.lead.view.cohort</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <cohort string="Opportunities" date_start="create_date" date_stop="date_closed" interval="week" mode="churn">
+                <cohort string="Opportunities" date_start="create_date" date_stop="date_closed" interval="week" mode="churn" sample="1">
                     <field name="color" invisible="1"/>
                 </cohort>
             </field>

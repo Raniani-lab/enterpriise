@@ -542,7 +542,7 @@
         <field name="name">mrp.eco.view.pivot</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <pivot string="ECO Analysis">
+            <pivot string="ECO Analysis" sample="1">
                 <!--<field name="company_id" type="row"/>-->
                 <field name="stage_id" type="col"/>
                 <field name="product_tmpl_id" type="row"/>

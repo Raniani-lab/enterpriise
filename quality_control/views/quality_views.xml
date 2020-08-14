@@ -145,7 +145,7 @@
          <field name="name">quality.alert.view.pivot</field>
          <field name="model">quality.alert</field>
          <field name="arch" type="xml">
-             <pivot string="Quality Alert Analysis">
+             <pivot string="Quality Alert Analysis" sample="1">
                  <field name="stage_id" type="col"/>
                  <field name="team_id" type="row"/>
              </pivot>
@@ -435,7 +435,7 @@
          <field name="name">quality.check.view.pivot</field>
          <field name="model">quality.check</field>
          <field name="arch" type="xml">
-             <pivot string="Quality Check Analysis">
+             <pivot string="Quality Check Analysis" sample="1">
                  <field name="control_date" type="col" interval="day"/>
                  <field name="product_id" type="row"/>
              </pivot>

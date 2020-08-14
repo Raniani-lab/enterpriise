@@ -329,7 +329,7 @@ Budgets
         <field name="name">crossovered.budget.line.pivot</field>
         <field name="model">crossovered.budget.lines</field>
         <field name="arch" type="xml">
-            <pivot string="Budget Lines">
+            <pivot string="Budget Lines" sample="1">
                 <field name="crossovered_budget_id" type="row"/>
                 <field name="planned_amount"  type="measure" string="Planned amount"/>
                 <field name="theoritical_amount"  type="measure" string="Theoritical amount"/>

@@ -12,7 +12,7 @@
         <field name="name">l10n_be.attachment.salary.report.pivot</field>
         <field name="model">l10n_be.attachment.salary.report</field>
         <field name="arch" type="xml">
-            <pivot string="Attachment of Salary" disable_linking="True">
+            <pivot string="Attachment of Salary" disable_linking="True" sample="1">
                 <field name="payslip_end_date" invisible="1"/>
                 <field name="employee_id" type="row"/>
                 <field name="payslip_id"  type="col"/>

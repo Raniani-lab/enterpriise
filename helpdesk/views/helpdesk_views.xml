@@ -270,7 +270,7 @@
         <field name="name">helpdesk.ticket.pivot</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Helpdesk Tickets">
+            <pivot string="Helpdesk Tickets" sample="1">
                 <field name="create_date" type="row" interval="day"/>
                 <field name="stage_id" type="col"/>
                 <field name="color" invisible="1"/>
@@ -293,7 +293,7 @@
         <field name="name">helpdesk.ticket.view.cohort</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <cohort string="Tickets" date_start="create_date" date_stop="close_date" interval="week"/>
+            <cohort string="Tickets" date_start="create_date" date_stop="close_date" interval="week" sample="1"/>
         </field>
     </record>
 
@@ -301,7 +301,7 @@
         <field name="name">helpdesk.ticket.pivot.analysis</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Helpdesk Ticket Analysis">
+            <pivot string="Helpdesk Ticket Analysis" sample="1">
                 <field name="team_id" type="row"/>
                 <field name="stage_id" type="col"/>
                 <field name="color" invisible="1"/>
@@ -788,7 +788,7 @@
         <field name="name">helpdesk.ticket.pivot</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Performance Analysis">
+            <pivot string="Performance Analysis" sample="1">
                 <field name="stage_id" type="col"/>
                 <field name="name"/>
                 <field name="close_hours" type="measure"/>

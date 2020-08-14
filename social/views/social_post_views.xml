@@ -142,7 +142,7 @@
         <field name="name">social.post.view.pivot</field>
         <field name="model">social.post</field>
         <field name="arch" type="xml">
-            <pivot string="Social Posts">
+            <pivot string="Social Posts" sample="1">
                 <field name="create_date" type="row"/>
             </pivot>
         </field>

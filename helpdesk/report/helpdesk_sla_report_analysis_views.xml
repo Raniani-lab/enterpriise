@@ -5,7 +5,7 @@
         <field name="name">helpdesk.sla.report.analysis.pivot</field>
         <field name="model">helpdesk.sla.report.analysis</field>
         <field name="arch" type="xml">
-        <pivot string="SLA Status Analysis" disable_linking="True">
+        <pivot string="SLA Status Analysis" disable_linking="True" sample="1">
             <field name="team_id" type="row"/>
             <field name="create_date" interval="month" type="col"/>
             <field name="ticket_failed" type="measure"/>

@@ -31,7 +31,7 @@
             <field name="name">stock.report.view.pivot</field>
             <field name="model">stock.report</field>
             <field name="arch" type="xml">
-                <pivot string="Stock Overview">
+                <pivot string="Stock Overview" sample="1">
                     <field name="operation_type" type="col"/>
                     <field name="categ_id" type="row"/>
                     <field name="cycle_time" type="measure"/>
@@ -128,7 +128,7 @@
             <field name="name">stock.report.cohort.view</field>
             <field name="model">stock.report</field>
             <field name="arch" type="xml">
-                <cohort string="Report" date_start="creation_date" date_stop="date_done" interval="day" mode="churn"/>
+                <cohort string="Report" date_start="creation_date" date_stop="date_done" interval="day" mode="churn" sample="1"/>
             </field>
         </record>
 

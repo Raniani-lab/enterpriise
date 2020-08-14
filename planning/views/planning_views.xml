@@ -278,7 +278,7 @@
         <field name="name">planning.slot.pivot</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <pivot string="Planning Analysis">
+            <pivot string="Planning Analysis" sample="1">
                 <field name="start_datetime" interval="week" type="col"/>
                 <field name="allocated_hours" type="measure"/>
                 <field name="allocated_percentage" type="measure"/>

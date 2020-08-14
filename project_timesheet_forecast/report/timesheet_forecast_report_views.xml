@@ -12,7 +12,7 @@
          <field name="name">timesheet.forecast.report.pivot</field>
          <field name="model">project.timesheet.forecast.report.analysis</field>
          <field name="arch" type="xml">
-             <pivot string="Timesheet and Planning Analysis">
+             <pivot string="Timesheet and Planning Analysis" sample="1">
                  <field name="entry_date" interval="month" type="col"/>
                  <field name="employee_id" type="row"/>
                  <field name="planned_hours" type="measure"/>

@@ -221,7 +221,7 @@
         <field name="name">l10n_be.meal.voucher.report</field>
         <field name="model">l10n_be.meal.voucher.report</field>
         <field name="arch" type="xml">
-            <pivot string="Meal Vouchers" disable_linking="True">
+            <pivot string="Meal Vouchers" disable_linking="True" sample="1">
                 <field name="employee_id" type="row"/>
                 <field name="day"  type="col"/>
             </pivot>

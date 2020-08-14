@@ -5,6 +5,7 @@
         <field name="model">sign.template.share</field>
         <field name="arch" type="xml">
             <form string="Multiple Signature Requests">
+                <field name="template_id" invisible="1"/>
                 <span class="text-muted" attrs="{'invisible': [('url', '=', False)]}">Share this link and Odoo will create a new document per person who clicks on the link. The link is private, only those that receive the link will be able to sign it.</span>
                 <group attrs="{'invisible': [('url', '=', False)]}">
                     <field name="url" widget="CopyClipboardChar" readonly="1"/>

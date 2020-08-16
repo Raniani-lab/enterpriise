@@ -197,7 +197,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click o_kanban_record_has_image_fill o_kanban_card_appraisal">
-                            <field name="image_128" widget="image" class="o_kanban_image_fill_left" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}"/>
+                            <field name="image_128" widget="image" class="o_kanban_image_fill_left" options="{'background': true, 'preventClicks': false}"/>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'done')]}">
                                 <span class="bg-success">Done</span>
                             </div>

@@ -132,7 +132,7 @@ var ReportEditorAction = AbstractAction.extend({
         // to print invoices and hard to lookup for them if lot of journal entries.
         var domain = [];
         if (self.report.model === 'account.move') {
-            domain = [['type', '!=', 'entry']];
+            domain = [['move_type', '!=', 'entry']];
         }
 
         return this._rpc({

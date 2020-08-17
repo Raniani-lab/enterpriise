@@ -84,6 +84,7 @@
             </xpath>
             <xpath expr="//gantt" position="attributes">
                 <attribute name="decoration-danger">is_fsm and planning_overlap &gt; 0</attribute>
+                <attribute name="total_row">True</attribute>
             </xpath>
         </field>
     </record>

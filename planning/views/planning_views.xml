@@ -234,6 +234,7 @@
                 color="color"
                 plan="false"
                 string="Schedule"
+                total_row="True"
                 scales="day,week,month,year"
                 precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}"
                 decoration-info="not is_published"

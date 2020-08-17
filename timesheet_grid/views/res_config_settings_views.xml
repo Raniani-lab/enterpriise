@@ -16,6 +16,7 @@
                         </div>
                         <div class="o_setting_right_pane">
                             <label for="reminder_user_allow"/>
+                            <span class="fa fa-lg fa-building-o " title="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted" id="reminder_user_allow">
                                 Send a periodical email reminder to timesheet users
                             </div>
@@ -35,6 +36,7 @@
                         </div>
                         <div class="o_setting_right_pane">
                             <label for="reminder_manager_allow"/>
+                            <span class="fa fa-lg fa-building-o " title="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted" id="reminder_manager_allow">
                                 Send a periodical email reminder to timesheet managers
                             </div>

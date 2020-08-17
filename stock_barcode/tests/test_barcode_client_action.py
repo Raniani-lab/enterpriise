@@ -1476,7 +1476,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
             ('location_id', '=', product_weight.property_stock_inventory.id),
         ])
 
-        self.assertEqual(quantity.qty_done, 12.345)
+        self.assertEqual(quantity.qty_done, 12.35)
 
     def test_inventory_package(self):
         """ Simulate an adjustment where a package is scanned and edited """

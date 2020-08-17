@@ -19,7 +19,9 @@ class Track(models.Model):
     push_reminder_delay = fields.Integer('Push Reminter Delay',
         help="How many minutes before the start of the talk do you want to send the reminder?",
         compute='_compute_push_reminder_fields', store=True, readonly=False)
-    push_reminder_posts = fields.One2many('social.post', 'event_track_id', string="Push Reminders")
+    push_reminder_posts = fields.One2many(
+        'social.post', 'event_track_id', string="Push Reminders",
+        groups="social.group_social_user")
 
     @api.depends('event_id')
     def _compute_firebase_enable_push_notifications(self):

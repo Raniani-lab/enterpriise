@@ -16,7 +16,7 @@
         <t t-if="page['state'] == 'cancelled'">
             <div class="o-watermark">VOID</div>
         </t>
-        <div class="sequence_number" t-if="page['sequence_number']" t-esc="page['sequence_number']" />
+        <div class="sequence_number" t-if="page['sequence_number'] and page['manual_sequencing']" t-esc="page['sequence_number']" />
         <div class="ckus_date" t-esc="page['date']"/>
         <div class="ckus_payee_name" t-esc="page['partner_name']"/>
         <div class="ckus_amount">
@@ -69,7 +69,7 @@
             </tbody>
         </table>
         <div class="stub_total_amount">Check Amount:
-            <t t-esc="page['amount']"/>
+            <span class="text-nowrap"><t t-esc="page['amount']"/></span>
         </div>
     </div>
 </template>

@@ -57,7 +57,7 @@
                         <group string="Current Values" attrs="{'invisible': [('state', '=', 'model')]}">
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="salvage_value" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible': ['|', ('asset_type','!=','purchase'), ('state', '=', 'model')]}"/>
-                            <field name="value_residual" widget="monetary" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}"/>
+                            <field name="value_residual" force_save="1" widget="monetary" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}"/>
                             <field name="book_value" widget="monetary" required="1" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}"/>
                         </group>
                         <group string="Depreciation Method">

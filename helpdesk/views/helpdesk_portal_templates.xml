@@ -17,12 +17,12 @@
         </xpath>
     </template>
 
-    <template id="portal_my_home_helpdesk_ticket" name="Portal My Home : Helpdesk Ticket" inherit_id="portal.portal_my_home" priority="50">
+    <template id="portal_my_home_helpdesk_ticket" name="Show Tickets" customize_show="True" inherit_id="portal.portal_my_home" priority="50">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-if="ticket_count" t-call="portal.portal_docs_entry">
+            <t  t-call="portal.portal_docs_entry">
                 <t t-set="title">Tickets</t>
                 <t t-set="url" t-value="'/my/tickets'"/>
-                <t t-set="count" t-value="ticket_count"/>
+                <t t-set="placeholder_count" t-value="'ticket_count'"/>
             </t>
         </xpath>
     </template>

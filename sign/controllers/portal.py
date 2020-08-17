@@ -15,12 +15,13 @@ from odoo.osv.expression import AND
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_home_portal_values(self):
-        values = super(CustomerPortal, self)._prepare_home_portal_values()
-        partner_id = request.env.user.partner_id
-        values['sign_count'] = request.env['sign.request.item'].sudo().search_count([
-            ('partner_id', '=', partner_id.id), ('state', '!=', 'draft')
-        ])
+    def _prepare_home_portal_values(self, counters):
+        values = super(CustomerPortal, self)._prepare_home_portal_values(counters)
+        if 'sign_count' in counters:
+            partner_id = request.env.user.partner_id
+            values['sign_count'] = request.env['sign.request.item'].sudo().search_count([
+                ('partner_id', '=', partner_id.id), ('state', '!=', 'draft')
+            ])
         return values
 
     @http.route(['/my/signatures', '/my/signatures/page/<int:page>'], type='http', auth='user', website=True)

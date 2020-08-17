@@ -13,12 +13,12 @@
         </xpath>
     </template>
 
-    <template id="portal_my_home_sign" name="Portal My Home : Sign Requests" inherit_id="portal.portal_my_home" priority="60">
+    <template id="portal_my_home_sign" name="Show Signatures" customize_show="True" inherit_id="portal.portal_my_home" priority="60">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-if="sign_count" t-call="portal.portal_docs_entry">
+            <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Signatures</t>
                 <t t-set="url" t-value="'/my/signatures'"/>
-                <t t-set="count" t-value="sign_count"/>
+                <t t-set="placeholder_count" t-value="'sign_count'"/>
             </t>
         </xpath>
     </template>

@@ -9,7 +9,6 @@ from odoo.http import request
 from odoo.tools.translate import _
 from odoo.tools import groupby as groupbyelem
 from odoo.addons.portal.controllers.portal import pager as portal_pager, CustomerPortal
-from odoo.addons.portal.controllers.mail import _message_post_helper
 from odoo.osv.expression import OR
 
 
@@ -21,9 +20,10 @@ class CustomerPortal(CustomerPortal):
             values['title'] = _("Salesperson")
         return values
 
-    def _prepare_home_portal_values(self):
-        values = super(CustomerPortal, self)._prepare_home_portal_values()
-        values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        if 'ticket_count' in counters:
+            values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
         return values
 
     def _ticket_get_page_view_values(self, ticket, access_token, **kwargs):
@@ -36,7 +36,6 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/tickets', '/my/tickets/page/<int:page>'], type='http', auth="user", website=True)
     def my_helpdesk_tickets(self, page=1, date_begin=None, date_end=None, sortby=None, filterby='all', search=None, groupby='none', search_in='content', **kw):
         values = self._prepare_portal_layout_values()
-        user = request.env.user
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},

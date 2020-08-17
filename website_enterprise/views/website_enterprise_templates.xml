@@ -18,7 +18,12 @@
 
     <template id="user_navbar_inherit_website_enterprise" inherit_id="website.user_navbar">
         <xpath expr="//div[@id='o_new_content_menu_choices']/div/div">
-            <div groups="base.group_system" name="module_website_calendar" t-att-data-module-id="env.ref('base.module_website_calendar').id" t-att-data-module-shortdesc="env.ref('base.module_website_calendar').shortdesc" class="col-md-4 mb8 o_new_content_element">
+            <t t-set='mod' t-value="env.ref('base.module_website_calendar')" />
+            <div groups="base.group_system"
+                 name="module_website_calendar"
+                 t-att-data-module-id="mod.id"
+                 t-att-data-module-shortdesc="mod.shortdesc"
+                 class="col-md-4 mb8 o_new_content_element">
                 <a href="#" data-action="new_appointment">
                     <i class="fa fa-calendar"/>
                     <p>Appointment Form</p>

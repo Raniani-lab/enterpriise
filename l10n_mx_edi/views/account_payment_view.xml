@@ -8,6 +8,7 @@
             <group name="group2" position="inside">
                 <!-- Invisible fields -->
                 <field name="l10n_mx_edi_force_generate_cfdi" invisible="1"/>
+                <field name="reconciled_invoice_ids" invisible="1"/>
 
                 <!-- Visible fields -->
                 <field name="l10n_mx_edi_payment_method_id"
@@ -34,7 +35,11 @@
                 <button name="action_l10n_mx_edi_force_generate_cfdi" type="object"
                         string="Force CFDI" class="oe_link"
                         groups="account.group_account_invoice"
-                        attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'), ('country_code', '!=', 'MX'), ('l10n_mx_edi_force_generate_cfdi', '=', True)]}"/>
+                        attrs="{'invisible': ['|', '|', '|',
+                                              ('state', '!=', 'posted'),
+                                              ('country_code', '!=', 'MX'),
+                                              ('reconciled_invoice_ids', '=', []),
+                                              ('l10n_mx_edi_force_generate_cfdi', '=', True)]}"/>
             </group>
         </field>
     </record>

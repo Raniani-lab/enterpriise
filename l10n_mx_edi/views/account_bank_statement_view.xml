@@ -11,12 +11,12 @@
                     <field name="l10n_mx_edi_force_generate_cfdi" invisible="1" />
 
                     <field name="l10n_mx_edi_payment_method_id"
-                           attrs="{'invisible': [('country_code', '!=', 'MX')], 'readonly': [('state', 'in', ('confirm', 'posted'))]}"/>
+                           attrs="{'column_invisible': [('country_code', '!=', 'MX')], 'readonly': [('state', 'in', ('confirm', 'posted'))]}"/>
 
                     <button name="action_l10n_mx_edi_force_generate_cfdi" type="object"
                            string="Force CFDI" class="oe_link"
                            groups="account.group_account_invoice"
-                           attrs="{'invisible': ['|', '|', ('state', 'not in', ('posted', 'confirm')), ('country_code', '!=', 'MX'), ('l10n_mx_edi_force_generate_cfdi', '=', True)]}"/>
+                           attrs="{'column_invisible': ['|', ('parent.state', 'not in', ('posted', 'confirm')), ('country_code', '!=', 'MX')], 'invisible':[('l10n_mx_edi_force_generate_cfdi', '=', True)]}"/>
                 </xpath>
             </field>
         </record>

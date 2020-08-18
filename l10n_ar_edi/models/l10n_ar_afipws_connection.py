@@ -3,7 +3,6 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 from lxml import builder
 from lxml import etree
-from OpenSSL import crypto
 from zeep import transports
 import time
 import datetime
@@ -12,6 +11,11 @@ import zeep
 import logging
 
 _logger = logging.getLogger(__name__)
+
+try:
+    from OpenSSL import crypto
+except ImportError:
+    _logger.warning('OpenSSL library not found. If you plan to use l10n_ar_edi, please install the library from https://pypi.python.org/pypi/pyOpenSSL')
 
 
 class ARTransport(transports.Transport):

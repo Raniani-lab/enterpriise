@@ -3,13 +3,17 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.modules.module import get_module_resource
 from datetime import datetime
-from OpenSSL import crypto
 import base64
 import random
 import logging
 
 
 _logger = logging.getLogger(__name__)
+
+try:
+    from OpenSSL import crypto
+except ImportError:
+    _logger.warning('OpenSSL library not found. If you plan to use l10n_ar_edi, please install the library from https://pypi.python.org/pypi/pyOpenSSL')
 
 
 class ResCompany(models.Model):

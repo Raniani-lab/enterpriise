@@ -85,7 +85,8 @@
             <xpath expr="//page[@id='other_tab']//group[@name='accounting_info_group']" position="after">
                 <group string="Extraction Information"
                        name="extraction_info_group"
-                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}">
+                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"
+                       groups="base.group_no_one">
                     <field name="extract_remote_id"/>
                 </group>
             </xpath>

@@ -8,7 +8,7 @@ var PosScaleDummy = DeviceProxy.extend({
     action: function () { },
     remove_listener: function () { },
     add_listener: function (callback) {
-        setTimeout(callback({
+        setTimeout(() => callback({
             status: 'ok',
             value: 2.35
         }), 1000);

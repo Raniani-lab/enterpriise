@@ -174,7 +174,7 @@
      * Return true if two zones overlap, false otherwise.
      */
     function overlap(z1, z2) {
-        if (z1.bottom < z2.top || z2.bottom < z2.top) {
+        if (z1.bottom < z2.top || z2.bottom < z1.top) {
             return false;
         }
         if (z1.right < z2.left || z2.right < z1.left) {
@@ -401,13 +401,17 @@
         }
         return n.toLocaleString("en-US", { useGrouping: false, maximumFractionDigits: 10 });
     }
+    const maximumDecimalPlaces = 20;
     function formatDecimal(n, decimals, sep = "") {
         if (n < 0) {
             return "-" + formatDecimal(-n, decimals);
         }
-        const exponentString = `${n.toLocaleString("fullwide", { useGrouping: false })}e${decimals}`;
-        const value = Math.round(Number(exponentString));
-        let result = Number(`${value}e-${decimals}`).toFixed(decimals);
+        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
+        let result = n.toLocaleString("fullwide", {
+            minimumFractionDigits: maxDecimals,
+            maximumFractionDigits: maxDecimals,
+            useGrouping: false,
+        });
         if (sep) {
             let p = result.indexOf(".");
             result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
@@ -6622,11 +6626,11 @@
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "REMOVE_COLUMNS":
-                    return this.workbook.activeSheet.cols.length > cmd.columns.length
+                    return this.workbook.sheets[cmd.sheet].cols.length > cmd.columns.length
                         ? { status: "SUCCESS" }
                         : { status: "CANCELLED", reason: 5 /* NotEnoughColumns */ };
                 case "REMOVE_ROWS":
-                    return this.workbook.activeSheet.rows.length > cmd.rows.length
+                    return this.workbook.sheets[cmd.sheet].rows.length > cmd.rows.length
                         ? { status: "SUCCESS" }
                         : { status: "CANCELLED", reason: 6 /* NotEnoughRows */ };
                 case "CREATE_SHEET":
@@ -6704,11 +6708,11 @@
                     break;
                 case "REMOVE_COLUMNS":
                     this.removeColumns(cmd.sheet, cmd.columns);
-                    this.history.updateState(["activeSheet", "colNumber"], this.workbook.activeSheet.colNumber - cmd.columns.length);
+                    this.history.updateState(["sheets", cmd.sheet, "colNumber"], this.workbook.sheets[cmd.sheet].colNumber - cmd.columns.length);
                     break;
                 case "REMOVE_ROWS":
                     this.removeRows(cmd.sheet, cmd.rows);
-                    this.history.updateState(["activeSheet", "rowNumber"], this.workbook.activeSheet.rowNumber - cmd.rows.length);
+                    this.history.updateState(["sheets", cmd.sheet, "rowNumber"], this.workbook.sheets[cmd.sheet].rowNumber - cmd.rows.length);
                     break;
                 case "ADD_COLUMNS":
                     this.addColumns(cmd.sheet, cmd.column, cmd.position, cmd.quantity);
@@ -6759,7 +6763,7 @@
         }
         getCellText(cell) {
             const value = this.showFormulas ? cell.content : cell.value;
-            const shouldFormat = value && cell.format && !cell.error && !cell.pending;
+            const shouldFormat = (value || value === 0) && cell.format && !cell.error && !cell.pending;
             const dateTimeFormat = shouldFormat && cell.format.match(/y|m|d|:/);
             const numberFormat = shouldFormat && !dateTimeFormat;
             switch (typeof value) {
@@ -6927,11 +6931,11 @@
             columns.sort((a, b) => b - a);
             for (let column of columns) {
                 // Update all the formulas.
-                this.updateColumnsFormulas(column, -1);
+                this.updateColumnsFormulas(column, -1, sheetID);
                 // Move the cells.
-                this.moveCellsHorizontally(column, -1);
+                this.moveCellsHorizontally(column, -1, sheetID);
                 // Effectively delete the element and recompute the left-right.
-                this.manageColumnsHeaders(column, -1);
+                this.manageColumnsHeaders(column, -1, sheetID);
             }
         }
         /**
@@ -6961,37 +6965,37 @@
             }, []);
             for (let group of consecutiveRows) {
                 // Update all the formulas.
-                this.updateRowsFormulas(group[0], -group.length);
+                this.updateRowsFormulas(group[0], -group.length, sheetID);
                 // Move the cells.
-                this.moveCellVerticallyBatched(group[group.length - 1], group[0]);
+                this.moveCellVerticallyBatched(group[group.length - 1], group[0], sheetID);
                 // Effectively delete the element and recompute the left-right/top-bottom.
-                group.map((row) => this.processRowsHeaderDelete(row));
+                group.map((row) => this.processRowsHeaderDelete(row, sheetID));
             }
         }
         addColumns(sheetID, column, position, quantity) {
             // Update all the formulas.
-            this.updateColumnsFormulas(position === "before" ? column - 1 : column, quantity);
+            this.updateColumnsFormulas(position === "before" ? column - 1 : column, quantity, sheetID);
             // Move the cells.
-            this.moveCellsHorizontally(position === "before" ? column : column + 1, quantity);
+            this.moveCellsHorizontally(position === "before" ? column : column + 1, quantity, sheetID);
             // Recompute the left-right/top-bottom.
-            this.manageColumnsHeaders(column, quantity);
+            this.manageColumnsHeaders(column, quantity, sheetID);
         }
         addRows(sheetID, row, position, quantity) {
             for (let i = 0; i < quantity; i++) {
                 this.addEmptyRow();
             }
             // Update all the formulas.
-            this.updateRowsFormulas(position === "before" ? row - 1 : row, quantity);
+            this.updateRowsFormulas(position === "before" ? row - 1 : row, quantity, sheetID);
             // Move the cells.
-            this.moveCellsVertically(position === "before" ? row : row + 1, quantity);
+            this.moveCellsVertically(position === "before" ? row : row + 1, quantity, sheetID);
             // Recompute the left-right/top-bottom.
             this.processRowsHeaderAdd(row, quantity);
         }
-        moveCellsHorizontally(base, step) {
+        moveCellsHorizontally(base, step, sheetID) {
             return this.processCellsToMove((cell) => cell.col >= base, (cell) => cell.col !== base || step !== -1, (cell) => {
                 return {
                     type: "UPDATE_CELL",
-                    sheet: this.workbook.activeSheet.id,
+                    sheet: sheetID,
                     col: cell.col + step,
                     row: cell.row,
                     content: cell.content,
@@ -6999,7 +7003,7 @@
                     style: cell.style,
                     format: cell.format,
                 };
-            });
+            }, sheetID);
         }
         /**
          * Move all the cells that are from the row under `deleteToRow` up to `deleteFromRow`
@@ -7010,12 +7014,13 @@
          *
          * @param deleteFromRow the row index from which to start deleting
          * @param deleteToRow the row index until which the deleting must continue
+         * @param the sheet from which to remove
          */
-        moveCellVerticallyBatched(deleteFromRow, deleteToRow) {
+        moveCellVerticallyBatched(deleteFromRow, deleteToRow, sheetID) {
             return this.processCellsToMove(({ row }) => row >= deleteFromRow, ({ row }) => row > deleteToRow, (cell) => {
                 return {
                     type: "UPDATE_CELL",
-                    sheet: this.workbook.activeSheet.id,
+                    sheet: this.workbook.sheets[sheetID].id,
                     col: cell.col,
                     row: cell.row - (deleteToRow - deleteFromRow + 1),
                     content: cell.content,
@@ -7023,13 +7028,13 @@
                     style: cell.style,
                     format: cell.format,
                 };
-            });
+            }, sheetID);
         }
-        moveCellsVertically(base, step) {
+        moveCellsVertically(base, step, sheetID) {
             return this.processCellsToMove((cell) => cell.row >= base, (cell) => cell.row !== base || step !== -1, (cell) => {
                 return {
                     type: "UPDATE_CELL",
-                    sheet: this.workbook.activeSheet.id,
+                    sheet: sheetID,
                     col: cell.col,
                     row: cell.row + step,
                     content: cell.content,
@@ -7037,16 +7042,17 @@
                     style: cell.style,
                     format: cell.format,
                 };
-            });
+            }, sheetID);
         }
-        manageColumnsHeaders(base, step) {
+        manageColumnsHeaders(base, step, sheetID) {
             const cols = [];
             let start = 0;
             let colIndex = 0;
-            for (let i in this.workbook.activeSheet.cols) {
+            const sheet = this.workbook.sheets[sheetID];
+            for (let i in sheet.cols) {
                 if (parseInt(i, 10) === base) {
                     if (step !== -1) {
-                        const { size } = this.workbook.activeSheet.cols[colIndex];
+                        const { size } = sheet.cols[colIndex];
                         for (let a = 0; a < step; a++) {
                             cols.push({
                                 name: numberToLetters(colIndex),
@@ -7062,7 +7068,7 @@
                         continue;
                     }
                 }
-                const { size } = this.workbook.activeSheet.cols[i];
+                const { size } = sheet.cols[i];
                 cols.push({
                     name: numberToLetters(colIndex),
                     size,
@@ -7072,15 +7078,16 @@
                 start += size;
                 colIndex++;
             }
-            this.history.updateState(["activeSheet", "cols"], cols);
+            this.history.updateState(["sheets", sheetID, "cols"], cols);
         }
-        processRowsHeaderDelete(index) {
+        processRowsHeaderDelete(index, sheetID) {
             const rows = [];
             let start = 0;
             let rowIndex = 0;
-            const cellsQueue = this.workbook.activeSheet.rows.map((row) => row.cells);
-            for (let i in this.workbook.activeSheet.rows) {
-                const row = this.workbook.activeSheet.rows[i];
+            const sheet = this.workbook.sheets[sheetID];
+            const cellsQueue = sheet.rows.map((row) => row.cells);
+            for (let i in sheet.rows) {
+                const row = sheet.rows[i];
                 const { size } = row;
                 if (parseInt(i, 10) === index) {
                     continue;
@@ -7095,7 +7102,7 @@
                 });
                 start += size;
             }
-            this.history.updateState(["activeSheet", "rows"], rows);
+            this.history.updateState(["sheets", sheetID, "rows"], rows);
         }
         processRowsHeaderAdd(index, quantity) {
             const rows = [];
@@ -7135,32 +7142,33 @@
             const path = ["activeSheet", "rows"];
             this.history.updateState(path, newRows);
         }
-        updateColumnsFormulas(base, step) {
-            return this.visitFormulas((value, sheet) => {
+        updateColumnsFormulas(base, step, sheetID) {
+            return this.visitFormulas(this.workbook.sheets[sheetID].name, (value, sheet) => {
                 if (value.includes(":")) {
                     return this.updateColumnsRange(value, sheet, base, step);
                 }
                 return this.updateColumnsRef(value, sheet, base, step);
             });
         }
-        updateRowsFormulas(base, step) {
-            return this.visitFormulas((value, sheet) => {
+        updateRowsFormulas(base, step, sheetID) {
+            return this.visitFormulas(this.workbook.sheets[sheetID].name, (value, sheet) => {
                 if (value.includes(":")) {
                     return this.updateRowsRange(value, sheet, base, step);
                 }
                 return this.updateRowsRef(value, sheet, base, step);
             });
         }
-        processCellsToMove(shouldDelete, shouldAdd, buildCellToAdd) {
+        processCellsToMove(shouldDelete, shouldAdd, buildCellToAdd, sheetId) {
             const deleteCommands = [];
             const addCommands = [];
-            for (let xc in this.workbook.activeSheet.cells) {
-                let cell = this.workbook.activeSheet.cells[xc];
+            const sheet = this.workbook.sheets[sheetId];
+            for (let xc in sheet.cells) {
+                let cell = sheet.cells[xc];
                 if (shouldDelete(cell)) {
                     const [col, row] = toCartesian(xc);
                     deleteCommands.push({
                         type: "CLEAR_CELL",
-                        sheet: this.workbook.activeSheet.id,
+                        sheet: sheet.id,
                         col,
                         row,
                     });
@@ -7347,8 +7355,8 @@
          * contains a formula
          * @param cb Update formula function to apply
          */
-        visitFormulas(cb) {
-            const { sheets, activeSheet } = this.workbook;
+        visitFormulas(sheetNameToFind, cb) {
+            const { sheets } = this.workbook;
             for (let sheetId in sheets) {
                 const sheet = sheets[sheetId];
                 for (let [xc, cell] of Object.entries(sheet.cells)) {
@@ -7359,11 +7367,11 @@
                                 let [value, sheetRef] = t.value.split("!").reverse();
                                 if (sheetRef) {
                                     sheetRef = sanitizeSheet(sheetRef);
-                                    if (sheetRef === activeSheet.name) {
+                                    if (sheetRef === sheetNameToFind) {
                                         return cb(value, sheetRef);
                                     }
                                 }
-                                else if (activeSheet.id === sheet.id) {
+                                else if (this.sheetIds[sheetNameToFind] === sheet.id) {
                                     return cb(value, undefined);
                                 }
                             }
@@ -8056,6 +8064,9 @@
                 case "SET_FORMATTER":
                     this.setFormatter(cmd.sheet, cmd.target, cmd.formatter);
                     break;
+                case "SET_DECIMAL":
+                    this.setDecimal(cmd.sheet, cmd.target, cmd.step);
+                    break;
                 case "ADD_COLUMNS":
                     const start_col = cmd.position === "before" ? cmd.column - 1 : cmd.column;
                     const end_col = start_col + cmd.quantity + 1;
@@ -8292,6 +8303,144 @@
                 }
             }
         }
+        /**
+         * This function allows to adjust the quantity of decimal places after a decimal
+         * point on cells containing number value. It does this by changing the cells
+         * format. Values aren't modified.
+         *
+         * The change of the decimal quantity is done one by one, the sign of the step
+         * variable indicates whether we are increasing or decreasing.
+         *
+         * If several cells are in the zone, the format resulting from the change of the
+         * first cell (with number type) will be applied to the whole zone.
+         */
+        setDecimal(sheet, zones, step) {
+            // Find the first cell with a number value and get the format
+            const numberFormat = this.searchNumberFormat(zones);
+            if (numberFormat !== undefined) {
+                // Depending on the step sign, increase or decrease the decimal representation
+                // of the format
+                const newFormat = this.changeDecimalFormat(numberFormat, step);
+                // Aply the new format on the whole zone
+                this.setFormatter(sheet, zones, newFormat);
+            }
+        }
+        /**
+         * Take a range of cells and return the format of the first cell containing a
+         * number value. Returns a default format if the cell hasn't format. Returns
+         * undefined if no number value in the range.
+         */
+        searchNumberFormat(zones) {
+            for (let zone of zones) {
+                for (let row = zone.top; row <= zone.bottom; row++) {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        const cell = this.getters.getCell(col, row);
+                        if (cell &&
+                            (cell.type === "number" || (cell.type === "formula" && typeof cell.value === "number"))) {
+                            return cell.format || this.setDefaultNumberFormat(cell.value);
+                        }
+                    }
+                }
+            }
+            return undefined;
+        }
+        /**
+         * Function used to give the default format of a cell with a number for value.
+         * It is considered that the default format of a number is 0 followed by as many
+         * 0 as there are decimal places.
+         *
+         * Exemple:
+         * - 1 --> '0'
+         * - 123 --> '0'
+         * - 12345 --> '0'
+         * - 42.1 --> '0.0'
+         * - 456.0001 --> '0.0000'
+         */
+        setDefaultNumberFormat(cellValue) {
+            const strValue = cellValue.toString();
+            const parts = strValue.split(".");
+            if (parts.length === 1) {
+                return "0";
+            }
+            return "0." + Array(parts[1].length + 1).join("0");
+        }
+        /**
+         * This function take a cell format representation and return a new format representtion
+         * with more or lesse decimal places.
+         *
+         * If the format doesn't look like a digital format (means that not contain '0')
+         * or if this one cannot be increased or decreased, the returned format will be
+         * the same.
+         *
+         * This function aims to work with all possible formats as well as custom formats.
+         *
+         * Examples of format changed by this function:
+         * - "0" (step = 1) --> "0.0"
+         * - "0.000%" (step = 1) --> "0.0000%"
+         * - "0.00" (step = -1) --> "0.0"
+         * - "0%" (step = -1) --> "0%"
+         * - "#,##0.0" (step = -1) --> "#,##0"
+         * - "#,##0;0.0%;0.000" (step = -1) --> "#,##0.0;0.00%;0.0000"
+         */
+        changeDecimalFormat(format, step) {
+            const sign = Math.sign(step);
+            // According to the representation of the cell format. A format can contain
+            // up to 4 sub-formats which can be applied depending on the value of the cell
+            // (among positive / negative / zero / text), each of these sub-format is separated
+            // by ';' in the format. We need to make the change on each sub-format.
+            const subFormats = format.split(";");
+            let newSubFormats = [];
+            for (let subFormat of subFormats) {
+                const decimalPointPosition = subFormat.indexOf(".");
+                const exponentPosition = subFormat.toUpperCase().indexOf("E");
+                let newSubFormat;
+                // the 1st step is to find the part of the zeros located before the
+                // exponent (when existed)
+                const subPart = exponentPosition > -1 ? subFormat.slice(0, exponentPosition) : subFormat;
+                const zerosAfterDecimal = decimalPointPosition > -1 ? subPart.slice(decimalPointPosition).match(/0/g).length : 0;
+                // the 2nd step is to add (or remove) zero after the last zeros obtained in
+                // step 1
+                const lastZeroPosition = subPart.lastIndexOf("0");
+                if (lastZeroPosition > -1) {
+                    if (sign > 0) {
+                        // in this case we want to add decimal information
+                        if (zerosAfterDecimal < maximumDecimalPlaces) {
+                            newSubFormat =
+                                subFormat.slice(0, lastZeroPosition + 1) +
+                                    (zerosAfterDecimal === 0 ? ".0" : "0") +
+                                    subFormat.slice(lastZeroPosition + 1);
+                        }
+                        else {
+                            newSubFormat = subFormat;
+                        }
+                    }
+                    else {
+                        // in this case we want to remove decimal information
+                        if (zerosAfterDecimal > 0) {
+                            // remove last zero
+                            newSubFormat =
+                                subFormat.slice(0, lastZeroPosition) + subFormat.slice(lastZeroPosition + 1);
+                            // if a zero always exist after decimal point else remove decimal point
+                            if (zerosAfterDecimal === 1) {
+                                newSubFormat =
+                                    newSubFormat.slice(0, decimalPointPosition) +
+                                        newSubFormat.slice(decimalPointPosition + 1);
+                            }
+                        }
+                        else {
+                            // zero after decimal isn't present, we can't remove zero
+                            newSubFormat = subFormat;
+                        }
+                    }
+                }
+                else {
+                    // no zeros are present in this format, we do nothing
+                    newSubFormat = subFormat;
+                }
+                newSubFormats.push(newSubFormat);
+            }
+            return newSubFormats.join(";");
+        }
         // ---------------------------------------------------------------------------
         // Grid Manipulation
         // ---------------------------------------------------------------------------
@@ -8518,14 +8667,12 @@
          */
         expandZone(zone) {
             let { left, right, top, bottom } = zone;
-            let result = { left, right, top, bottom };
             const sheet = this.workbook.activeSheet;
-            for (let i = left; i <= right; i++) {
-                for (let j = top; j <= bottom; j++) {
-                    let mergeId = sheet.mergeCellMap[toXC(i, j)];
-                    if (mergeId) {
-                        result = union(sheet.merges[mergeId], result);
-                    }
+            let result = { left, right, top, bottom };
+            for (let id in sheet.merges) {
+                const merge = sheet.merges[id];
+                if (overlap(merge, result)) {
+                    result = union(merge, result);
                 }
             }
             return isEqual(result, zone) ? result : this.expandZone(result);
@@ -15367,8 +15514,13 @@
             }
             this.closeMenus();
         }
-        toggleFormat(format) {
-            setStyle(this.env, { [format]: !this.style[format] });
+        toogleStyle(style) {
+            setStyle(this.env, { [style]: !this.style[style] });
+        }
+        toogleFormat(format) {
+            const formatter = FORMATS.find((f) => f.name === format);
+            const value = (formatter && formatter.value) || "";
+            setFormatter(this.env, value);
         }
         toggleAlign(align) {
             setStyle(this.env, { ["align"]: align });
@@ -15462,10 +15614,15 @@
         setFormat(ev) {
             const format = ev.target.dataset.format;
             if (format) {
-                const formatter = FORMATS.find((f) => f.name === format);
-                const value = (formatter && formatter.value) || "";
-                setFormatter(this.env, value);
+                this.toogleFormat(format);
             }
+        }
+        setDecimal(step) {
+            this.dispatch("SET_DECIMAL", {
+                sheet: this.getters.getActiveSheet(),
+                target: this.getters.getSelectedZones(),
+                step: step,
+            });
         }
         paintFormat() {
             this.dispatch("ACTIVATE_PAINT_FORMAT", {
@@ -15528,8 +15685,11 @@
           <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
           <div class="o-tool" title="Clear Format" t-on-click="clearFormatting()">${CLEAR_FORMAT_ICON}</div>
           <div class="o-divider"/>
-          <div class="o-tool o-dropdown" title="Format" t-on-click="toggleDropdownTool('formatTool')">
-            <div class="o-text-icon">Format ${TRIANGLE_DOWN_ICON}</div>
+          <div class="o-tool" title="Format as percent" t-on-click="toogleFormat('percent')">%</div>
+          <div class="o-tool" title="Decrease decimal places" t-on-click="setDecimal(-1)">.0</div>
+          <div class="o-tool" title="Increase decimal places" t-on-click="setDecimal(+1)">.00</div>
+          <div class="o-tool o-dropdown" title="More formats" t-on-click="toggleDropdownTool('formatTool')">
+            <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
             <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
               <t t-foreach="formats" t-as="format" t-key="format.name">
                 <div t-att-data-format="format.name" t-att-class="{active: currentFormat === format.name}"><t t-esc="format.text"/></div>
@@ -15547,9 +15707,9 @@
             </div>
           </div>
           <div class="o-divider"/>
-          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="toggleFormat('bold')">${BOLD_ICON}</div>
-          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="toggleFormat('italic')">${ITALIC_ICON}</div>
-          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="toggleFormat('strikethrough')">${STRIKE_ICON}</div>
+          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="toogleStyle('bold')">${BOLD_ICON}</div>
+          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="toogleStyle('italic')">${ITALIC_ICON}</div>
+          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="toogleStyle('strikethrough')">${STRIKE_ICON}</div>
           <div class="o-tool o-dropdown o-with-color">
             <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="toggleDropdownTool('textColorTool')">${TEXT_COLOR_ICON}</span>
             <ColorPicker t-if="state.activeTool === 'textColorTool'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
@@ -15972,9 +16132,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.4.1';
-    exports.__info__.date = '2020-08-14T10:04:53.190Z';
-    exports.__info__.hash = '0c74956';
+    exports.__info__.version = '0.5.0';
+    exports.__info__.date = '2020-08-18T14:19:47.273Z';
+    exports.__info__.hash = '9ece1cc';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

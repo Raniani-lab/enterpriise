@@ -186,8 +186,8 @@
 
         <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive pull-right" title="Archive"/>
         <t t-else="">
-            <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/> <small>Delete</small></button>
-            <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/> <small>Restore</small></button>
+            <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/></button>
+            <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/></button>
         </t>
     </div>
 </t>

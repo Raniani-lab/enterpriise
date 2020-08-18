@@ -4,14 +4,14 @@
         <template id="tim_section">
             <TIM t-if="move_lines" t-foreach="move_lines.keys()" t-as="move_line">
                 <TIM_1 t-esc="'true' if retention else 'false'"/>
-                <TIM_2 t-esc="'%.2f' % sum(abs(rec.balance) for rec in move_lines.get(move_line))"/>
+                <TIM_2 t-esc="'%.2f' % sum(abs(rec.amount_currency or rec.balance) for rec in move_lines.get(move_line))"/>
                 <TIM_3 t-esc="invoice.currency_id.name"/>
 
                 <IMP t-foreach="move_lines.get(move_line)" t-as="line">
                     <IMP_1 t-esc="line.tax_line_id.l10n_co_edi_type.code"/>
-                    <IMP_2 t-esc="'%.2f' % (abs(line.balance * 100 / 15) if line.tax_line_id.l10n_co_edi_type.code == '05' else line.tax_base_amount)"/>
+                    <IMP_2 t-esc="'%.2f' % (abs((line.amount_currency or line.balance) * 100 / 15) if line.tax_line_id.l10n_co_edi_type.code == '05' else line.tax_base_amount if line.currency_id == line.company_id.currency_id else line.company_id.currency_id._convert(line.tax_base_amount, line.currency_id, line.company_id, invoice.invoice_date))"/>
                     <IMP_3 t-esc="invoice.currency_id.name"/>
-                    <IMP_4 t-esc="'%.2f' % abs(line.balance)"/>
+                    <IMP_4 t-esc="'%.2f' % abs(line.amount_currency or line.balance)"/>
                     <IMP_5 t-esc="invoice.currency_id.name"/>
                     <t t-if="line.tax_line_id.amount_type == 'fixed'">
                         <IMP_7 t-esc="'1'"/>

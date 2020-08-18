@@ -180,4 +180,13 @@
         sequence="30"
         parent="planning.planning_menu_schedule"
         action="planning_action_schedule_by_project"/>
+
+    <!--  override of the schedule by employee menu entry to take into account the option
+          project_forecast_display_allocated_time  -->
+        <menuitem
+            id="planning.planning_menu_schedule_by_employee"
+            name="By Employee"
+            sequence="10"
+            parent="planning.planning_menu_schedule"
+            action="project_forecast_action_schedule_by_employee"/>
 </odoo>

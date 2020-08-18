@@ -3,7 +3,7 @@
 
 import requests
 
-from odoo import models, fields
+from odoo import models, fields, _
 from odoo.http import request
 from werkzeug.urls import url_join
 
@@ -69,11 +69,24 @@ class SocialStreamPostTwitter(models.Model):
             timeout=5
         )
 
-        tweet = result.json()
+        if result.ok:
+            return self.env['social.media']._format_tweet(result.json())
 
-        formatted_tweet = self.env['social.media']._format_tweet(tweet)
+        # Parse the code error returned by the Twitter API.
+        errors = result.json().get('errors')
+        if errors and errors[0].get('code'):
+            ERROR_MESSAGES = {
+                170: _("The tweet is empty. Add a message and try posting again."),
+                187: _("Looks like this Tweet is a duplicate. Edit its content and try posting again."),
+            }
+            message = errors[0].get('message') or _("Code %i", errors[0].get('code'))
+            return {
+                'error': ERROR_MESSAGES.get(
+                    errors[0]['code'],
+                    _("An error occurred (%s)", message))
+            }
 
-        return formatted_tweet
+        return {'error': _('Unknown error')}
 
     def _twitter_comment_fetch(self, page=1):
         """ As of today (07/2019) Twitter does not provide an endpoint to get the 'answers' to a tweet.

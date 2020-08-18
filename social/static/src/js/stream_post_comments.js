@@ -470,25 +470,30 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
             type: 'POST'
         }).then(function (comment) {
             comment = JSON.parse(comment);
-            var $newMessage = $(QWeb.render("social.StreamPostComment", {
-                widget: self,
-                comment: comment,
-                isSubComment: isCommentReply
-            }));
 
-            if (isCommentReply) {
-                self._addCommentReply($textarea, $newMessage);
-            } else if (isEdit) {
-                var $targetComment = $textarea.closest('.o_social_comment');
-                $targetComment.after($newMessage);
-                $targetComment.remove();
+            if (comment.error) {
+                self.displayNotification({message: comment.error, type: 'danger'});
             } else {
-                self.$('.o_social_comments_messages').prepend($newMessage);
+                const $newMessage = $(QWeb.render("social.StreamPostComment", {
+                    comment: comment,
+                    isSubComment: isCommentReply,
+                    widget: self,
+                }));
+
+                if (isCommentReply) {
+                    self._addCommentReply($textarea, $newMessage);
+                } else if (isEdit) {
+                    const $targetComment = $textarea.closest('.o_social_comment');
+                    $targetComment.after($newMessage);
+                    $targetComment.remove();
+                } else {
+                    self.$('.o_social_comments_messages').prepend($newMessage);
+                }
+                $textarea.val('');
+                $replyEl.find('.o_social_comment_image_preview').addClass('d-none');
+                $replyEl.find('.o_input_file').val('');
             }
 
-            $textarea.val('');
-            $replyEl.find('.o_social_comment_image_preview').addClass('d-none');
-            $replyEl.find('.o_input_file').val('');
             $textarea.prop('disabled', false);
             $textarea.focus();
             return comment;

@@ -40,11 +40,6 @@ class PlanningShift(models.Model):
         ('project_required_if_task', "CHECK( (task_id IS NOT NULL AND project_id IS NOT NULL) OR (task_id IS NULL) )", "If the planning is linked to a task, the project must be set too."),
     ]
 
-    def _read_group_task_id(self, tasks, domain, order):
-        if not self.env.context.get('active_ids'):
-            return self.env['project.task']
-        return self.env['project.task'].browse(self.env.context.get('active_ids'))
-
     @api.depends('task_id', 'allocated_hours', 'project_id')
     def _compute_forecast_hours(self):
         for slot in self:
@@ -90,6 +85,8 @@ class PlanningShift(models.Model):
         return projects
 
     def _read_group_task_id(self, tasks, domain, order):
+        if 'show_tasks_without_slot' in self.env.context and 'active_ids' in self.env.context:
+            return self.env['project.task'].browse(self.env.context.get('active_ids'))
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
         if self._context.get('planning_expand_task') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
             filters = self._expand_domain_dates(domain)

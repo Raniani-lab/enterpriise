@@ -314,7 +314,8 @@ class HrExpense(models.Model):
         <img alt="Google Play Store" class="img img-fluid h-100 o_expense_google_store" src="/hr_expense/static/img/play_store.png"/>
     </a>
 </p>
+%(mail_alias)s
 <p>
     <a type="action" name="%(action_id)s" class="btn btn-primary text-white">Try Sample Receipt</a>
-</p>""" % {'action_id': action_id}
+</p>""" % {'action_id': action_id, 'mail_alias': self._get_empty_list_mail_alias()}
         return super().get_empty_list_help(help)

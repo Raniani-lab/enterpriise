@@ -26,7 +26,7 @@ class PlanningRecurrency(models.Model):
     @api.constrains('company_id', 'slot_ids')
     def _check_multi_company(self):
         for recurrency in self:
-            if not all(recurrency.company_id == planning.company_id for planning in recurrency.slot_ids):
+            if any(recurrency.company_id != planning.company_id for planning in recurrency.slot_ids):
                 raise ValidationError(_('An shift must be in the same company as its recurrency.'))
 
     def name_get(self):

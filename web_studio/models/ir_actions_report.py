@@ -43,7 +43,7 @@ class IrActionsReport(models.Model):
 
         if report_model is None:
             parts = report_model_name.split('_copy_')
-            if not all(part.isdecimal() for part in parts[1:]):
+            if any(not part.isdecimal() for part in parts[1:]):
                 return report_model
             report_model_name = parts[0]
             report_model = self.env.get(report_model_name)

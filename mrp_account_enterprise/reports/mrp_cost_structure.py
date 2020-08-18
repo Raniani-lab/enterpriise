@@ -60,7 +60,7 @@ class MrpCostStructure(models.AbstractModel):
             scraps = StockMove.search([('production_id', 'in', mos.ids), ('scrapped', '=', True), ('state', '=', 'done')])
             uom = mos and mos[0].product_uom_id
             mo_qty = 0
-            if not all(m.product_uom_id.id == uom.id for m in mos):
+            if any(m.product_uom_id.id != uom.id for m in mos):
                 uom = product.uom_id
                 for m in mos:
                     qty = sum(m.move_finished_ids.filtered(lambda mo: mo.state == 'done' and mo.product_id == product).mapped('product_uom_qty'))
@@ -93,7 +93,7 @@ class MrpCostStructure(models.AbstractModel):
             .browse(docids)\
             .filtered(lambda p: p.state != 'cancel')
         res = None
-        if all([production.state == 'done' for production in productions]):
+        if all(production.state == 'done' for production in productions):
             res = self.get_lines(productions)
         return {'lines': res}
 

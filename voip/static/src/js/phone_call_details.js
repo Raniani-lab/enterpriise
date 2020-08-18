@@ -426,7 +426,7 @@ const PhoneCallDetails = Widget.extend({
         } else {
             this.do_action({
                 context: {
-                    default_email: this.email,
+                    default_email: this.email || false,
                     default_phone: this.phoneNumber,
                     default_mobile: this.mobileNumber,
                 },

@@ -264,7 +264,8 @@ class SignItemType(models.Model):
 
     default_width = fields.Float(string="Default Width", digits=(4, 3), required=True, default=0.150)
     default_height = fields.Float(string="Default Height", digits=(4, 3), required=True, default=0.015)
-    auto_field = fields.Char(string="Automatic Partner Field", help="Partner field to use to auto-complete the fields of this type")
+    auto_field = fields.Char(string="Auto-fill Partner Field",
+        help="Technical name of the field on the partner model to auto-complete this signature field at the time of signature.")
 
 
 class SignItemParty(models.Model):

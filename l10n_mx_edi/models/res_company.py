@@ -5,7 +5,7 @@ import logging
 import requests
 
 from lxml import etree, objectify
-from werkzeug import url_quote
+from werkzeug.urls import url_quote
 from os.path import join
 
 from odoo import api, fields, models, tools, SUPERUSER_ID

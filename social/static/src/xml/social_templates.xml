@@ -179,7 +179,9 @@
                     </div>
                 </div>
                 <div t-attf-class="d-flex align-items-center #{isCommentEdit? 'mt-3 mb-5' : 'mt-2'}">
-                    <small class="text-600">Press Enter to post. Press Shift+Enter to insert a Line Break.</small>
+                    <small class="o_social_textarea_message text-600">
+                        Press Enter to post. Press Shift+Enter to insert a Line Break.
+                    </small>
                     <div t-if="isCommentEdit" class="o_social_comment_commands ml-3">
                         <a t-attf-class="o_social_edit_comment_cancel btn btn-sm btn-outline-secondary"
                             href="#"

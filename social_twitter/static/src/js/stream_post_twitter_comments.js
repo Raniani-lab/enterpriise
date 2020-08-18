@@ -6,15 +6,27 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
     var StreamPostComments = require('@social/js/stream_post_comments')[Symbol.for("default")];
 
     var StreamPostTwitterComments = StreamPostComments.extend({
+        MAX_ALLOWED_REPLIES: 3,
+
         init: function (parent, options) {
             this.accountId = options.accountId;
             this.streamId = options.streamId;
             this.hasMoreComments = options.hasMoreComments;
             this.page = 1;
-            this.allComments = options.allComments;
+            this.allComments = options.allComments || [];
             this.commentsCount = options.commentsCount;
             this.comments = this.allComments.slice(0, this.commentsCount);
+            this.allCommentsFlatten = this.allComments.reduce((result, currentComment) => {
+                if (currentComment.comments) {
+                    const subComments = currentComment.comments.data;
+                    result.push(currentComment, ...subComments);
+                } else {
+                    result.push(currentComment);
+                }
+                return result;
+            }, []);
             this.mediaType = 'twitter';
+            this.twitterTweetId = options.originalPost.twitterTweetId;
 
             this.options = _.defaults(options || {}, {
                 title: _t('Twitter Comments'),
@@ -32,10 +44,11 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             var pageInfoDef = this._rpc({
                 model: 'social.account',
                 method: 'read',
-                args: [this.accountId, ['name', 'twitter_user_id']],
+                args: [this.accountId, ['name', 'twitter_user_id', 'twitter_screen_name']],
             }).then(function (result) {
                 self.accountName = result[0].name;
                 self.twitterUserId = result[0].twitter_user_id;
+                self.twitterUserScreenName = result[0].twitter_screen_name;
 
                 return Promise.resolve();
             });
@@ -133,6 +146,55 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
                 self.$('.o_social_load_more_comments').hide();
             }
         },
+
+        //--------------------------------------------------------------------------
+        // Override
+        //--------------------------------------------------------------------------
+
+        /**
+         * Check if we do not already answer too many times to the same tweet
+         * to not spam the Twitter users.
+         */
+        _addComment: function ($textarea, isCommentReply, commentId, isEdit) {
+            const tweetId = isCommentReply ? commentId : this.twitterTweetId;
+            const existingAnswers = this.allCommentsFlatten.filter((comment) =>
+                comment.from && comment.from.screen_name === this.twitterUserScreenName
+                && comment.in_reply_to_status_id_str === tweetId
+            );
+
+            if (existingAnswers.length >= this.MAX_ALLOWED_REPLIES) {
+                this._showSpamMessage($textarea);
+                return;
+            }
+
+            return this._super.apply(this, arguments).then((comment) => {
+                this.allCommentsFlatten.push(comment);
+
+                if (existingAnswers.length >= this.MAX_ALLOWED_REPLIES - 1) {
+                    this._showSpamMessage($textarea);
+                }
+            });
+        },
+
+        /**
+          * Display the spam warning message bellow the textarea.
+          **/
+        _showSpamMessage($textarea) {
+            $textarea
+                .closest('.o_social_write_reply')
+                .find('.o_social_textarea_message')
+                .text(_t("You can comment only three times a tweet as it may be considered as spamming by Twitter"))
+                .addClass('text-danger')
+                .removeClass('text-600');
+
+            $textarea.prop('disabled', true);
+
+            $textarea
+                .closest('.o_social_write_reply')
+                .find('.o_social_comment_controls')
+                .css('pointer-events', 'none');
+        },
+
     });
 
     return StreamPostTwitterComments;

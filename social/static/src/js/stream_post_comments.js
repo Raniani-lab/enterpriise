@@ -463,7 +463,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
             formData.append('existing_attachment_id', existingAttachmentId);
         }
 
-        this._ajaxRequest(this.getAddCommentEndpoint(), {
+        return this._ajaxRequest(this.getAddCommentEndpoint(), {
             data: formData,
             processData: false,
             contentType: false,
@@ -491,6 +491,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
             $replyEl.find('.o_input_file').val('');
             $textarea.prop('disabled', false);
             $textarea.focus();
+            return comment;
         });
     },
 

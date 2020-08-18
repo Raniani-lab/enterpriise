@@ -67,7 +67,7 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click oe_kanban_content">
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('progression', '!=', '100')]}">
-                                <span class="bg-success">Done!</span>
+                                <span class="bg-success">Done</span>
                             </div>
                             <div class="o_dropdown_kanban dropdown" groups="base.group_user">
                                 <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">

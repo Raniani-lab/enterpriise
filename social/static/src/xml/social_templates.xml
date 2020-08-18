@@ -33,7 +33,7 @@
             </t>
         </t>
         <t t-else="">
-            <div class="text-black-50 text-center">
+            <div class="o_social_no_comment_message text-black-50 text-center">
                 No comments yet.
             </div>
         </t>

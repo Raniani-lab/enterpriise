@@ -167,6 +167,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         var commentId = $textarea.data('commentId');
 
         this._addComment($textarea, isCommentReply, commentId, isCommentEdit);
+        this.$('.o_social_no_comment_message').remove();
     },
 
     /**

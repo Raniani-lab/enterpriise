@@ -38,6 +38,7 @@ var CohortView = AbstractView.extend({
 
         var fields = this.fields;
         var attrs = this.arch.attrs;
+        const additionalMeasures = params.additionalMeasures || [];
 
         if (!attrs.date_start) {
             throw new Error(_lt('Cohort view has not defined "date_start" attribute.'));
@@ -54,6 +55,22 @@ var CohortView = AbstractView.extend({
                 measures[name] = field.string;
             }
         });
+
+        this.arch.children.forEach(field => {
+            let fieldName = field.attrs.name;
+            // Remove invisible fields from the measures
+            if (
+                !additionalMeasures.includes(fieldName) &&
+                field.attrs.invisible && py.eval(field.attrs.invisible)
+            ) {
+                delete measures[fieldName];
+                return;
+            }
+            if (fieldName in measures && field.attrs.string) {
+                measures[fieldName] = field.attrs.string;
+            }
+        });
+
         measures.__count__ = _t('Count');
         this.rendererParams.measures = measures;
         this.rendererParams.intervals = intervals;

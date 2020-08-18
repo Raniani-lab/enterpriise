@@ -63,6 +63,7 @@
                 <graph string="Opportunities">
                     <field name="stage_id" type="row"/>
                     <field name="date_deadline" interval="month" type="row"/>
+                    <field name="color" invisible="1"/>
                 </graph>
             </field>
         </record>
@@ -76,6 +77,7 @@
                     <field name="expected_revenue" type="measure"/>
                     <field name="prorated_revenue" type="measure"/>
                     <field name="day_close" type="measure"/>
+                    <field name="color" invisible="1"/>
                 </pivot>
             </field>
         </record>
@@ -86,6 +88,7 @@
             <field name="arch" type="xml">
                 <graph string="leads" type="line">
                     <field name="create_date" interval="week" type="row"/>
+                    <field name="color" invisible="1"/>
                 </graph>
             </field>
         </record>
@@ -162,7 +165,9 @@
             <field name="name">crm.lead.view.cohort</field>
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
-                <cohort string="Opportunities" date_start="create_date" date_stop="date_closed" interval="week" mode="churn"/>
+                <cohort string="Opportunities" date_start="create_date" date_stop="date_closed" interval="week" mode="churn">
+                    <field name="color" invisible="1"/>
+                </cohort>
             </field>
         </record>
 

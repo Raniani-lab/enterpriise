@@ -67,6 +67,11 @@ class generic_tax_report(models.AbstractModel):
                           AND "account_move_line".tax_exigible AND repartition.use_in_tax_closing
                     GROUP BY tax.tax_group_id, "account_move_line".tax_line_id, tax.name, "account_move_line".account_id
                 """
+
+        period_start, period_end = self.env.company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
+        options['date']['date_from'] = fields.Date.to_string(period_start)
+        options['date']['date_to'] = fields.Date.to_string(period_end)
+
         tables, where_clause, where_params = self._query_get(options)
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
@@ -167,18 +172,11 @@ class generic_tax_report(models.AbstractModel):
         return line_ids_vals
 
     def _find_create_move(self, date_from, date_to, company_id):
-        move = self.env['account.move'].search([('is_tax_closing', '=', True), ('date', '>=', date_from), ('date', '<=', date_to)], limit=1, order='date desc')
+        move = self.env['account.move'].search([('tax_closing_end_date', '>=', date_from), ('tax_closing_end_date', '<=', date_to)], limit=1, order='date desc')
         if len(move):
             return move
         else:
-            next_date_deadline = date_to + relativedelta(days=company_id.account_tax_periodicity_reminder_day)
-            vals = {
-                'company_id': company_id,
-                'account_tax_periodicity': company_id.account_tax_periodicity,
-                'account_tax_periodicity_journal_id': company_id.account_tax_periodicity_journal_id,
-                'account_tax_periodicity_next_deadline': next_date_deadline,
-            }
-            return self.env['res.config.settings']._create_edit_tax_reminder(vals)
+            return company_id._create_edit_tax_reminder(date_to)
 
     def _generate_tax_closing_entry(self, options, move=False, raise_on_empty=False):
         """ This method is used to automatically post a move for the VAT declaration by doing the following

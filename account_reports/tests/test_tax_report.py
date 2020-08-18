@@ -17,6 +17,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'code': 'YY',
         })
         cls.company_data['company'].country_id = cls.fiscal_country
+        cls.company_data['company'].account_tax_periodicity = 'trimester'
 
         cls.tax_account = cls.env['account.account'].create({
             'name': 'tax_account',
@@ -164,7 +165,11 @@ class TestTaxReport(TestAccountReportsCommon):
             .use_in_tax_closing = True
 
         report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
+
+        # We set the tax report's options so that it opens a period within the first trimester.
+        # This period will be used to find the tax period, and the dates from this
+        # period will be used to create the tax closing entry (hence finding the entries on 2016-01-01 here)
+        options = self._init_options(report, fields.Date.from_string('2016-01-05'), fields.Date.from_string('2016-02-22'))
 
         # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
         # to return an empty attachment.
@@ -173,9 +178,11 @@ class TestTaxReport(TestAccountReportsCommon):
             vat_closing_move = report._generate_tax_closing_entry(options)
 
             self.assertRecordValues(vat_closing_move, [{
-                'date': fields.Date.from_string('2016-12-31'),
+                'date': fields.Date.from_string('2016-03-31'),
+                'tax_closing_end_date': fields.Date.from_string('2016-03-31'),
                 'journal_id': self.company_data['company'].account_tax_periodicity_journal_id.id,
             }])
+
             self.assertRecordValues(vat_closing_move.line_ids, [
                 # sale_tax_percentage_incl_1
                 {'debit': 200.0,    'credit': 0.0,      'account_id': self.tax_account.id},

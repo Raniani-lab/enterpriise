@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare, float_round, ormcache
 
@@ -78,6 +78,12 @@ class SaleOrder(models.Model):
                         })
                     line.tax_id = tax
         return True
+
+    def add_option_to_order_with_taxcloud(self):
+        self.ensure_one()
+        # portal user call this method with sudo
+        if self.fiscal_position_id.is_taxcloud and self._uid == SUPERUSER_ID:
+            self.validate_taxes_on_sales_order()
 
 
 class SaleOrderLine(models.Model):

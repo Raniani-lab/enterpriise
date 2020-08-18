@@ -108,7 +108,7 @@ class AccountMove(models.Model):
         invoice_list = []
         auto_validate = []
         for move in self:
-            if not move.is_invoice():
+            if not move.is_invoice() or move.move_type in ('out_invoice', 'out_refund'):
                 continue
 
             for move_line in move.line_ids:

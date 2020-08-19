@@ -66,10 +66,17 @@ class TestAmazon(TransactionCase):
                    new=_get_available_marketplace_api_refs_mock):
             self.account = self.env['amazon.account'].create({
                 'name': "TestAccountName",
-                **dict.fromkeys(('seller_key', 'access_key', 'secret_key'), ''),
+                **dict.fromkeys(('seller_key', 'auth_token'), ''),
                 'base_marketplace_id': 1,
                 'company_id': self.env.company.id,
             })
+
+    def test_check_credentials_succeed(self):
+        """ Test the credentials check with valid credentials. """
+        with patch(
+                'odoo.addons.sale_amazon.models.mws_connector.do_account_credentials_check',
+                new=lambda *args, **kwargs: False):
+            self.assertTrue(self.account.action_check_credentials()) 
 
     def test_update_marketplaces_no_change(self):
         """ Test the available marketplaces synchronization with no change. """
@@ -515,6 +522,7 @@ class TestAmazon(TransactionCase):
             'state_id': self.env['res.country.state'].search(
                 [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1).id,
             'phone': '+1 234-567-8910 ext. 12345',
+            'customer_rank': 1,
             'company_id': self.account.company_id.id,
             'amazon_email': 'iliketurtles@marketplace.amazon.com',
         })
@@ -537,6 +545,7 @@ class TestAmazon(TransactionCase):
             'state_id': self.env['res.country.state'].search(
                 [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1).id,
             'phone': '+1 234-567-8910 ext. 12345',
+            'customer_rank': 1,
             'company_id': self.account.company_id.id,
             'amazon_email': 'iliketurtles@marketplace.amazon.com',
         }
@@ -595,6 +604,7 @@ class TestAmazon(TransactionCase):
         self.assertEqual(contact.country_id.code, 'US')
         self.assertEqual(contact.state_id.code, 'CA')
         self.assertEqual(contact.phone, '+1 234-567-8910 ext. 12345')
+        self.assertEqual(contact.customer_rank, 1)
         self.assertEqual(contact.company_id.id, self.account.company_id.id)
         self.assertEqual(contact.amazon_email, 'iliketurtles@marketplace.amazon.com')
 
@@ -632,9 +642,25 @@ class TestAmazon(TransactionCase):
         self.assertFalse(contact.street)
         self.assertFalse(contact.street2)
         self.assertFalse(contact.phone)
+        self.assertEqual(contact.customer_rank, 0)
         self.assertEqual(contact.company_id.id, self.account.company_id.id)
         self.assertFalse(contact.amazon_email)
     
+    def test_get_partners_arbitrary_fields(self):
+        """ Test the partners search with all PII filled but in arbitrary fields. """
+        contact, _delivery = self.account._get_partners(dict(
+            BASE_ORDER_DATA,
+            ShippingAddress=dict(
+                BASE_ORDER_DATA['ShippingAddress'],
+                AddressLine1={'value': None},
+                AddressLine2={'value': '123 RainBowMan Street'})
+        ), '123456789')
+        self.assertFalse(contact.street)
+        self.assertTrue(contact.street2)
+        self.assertTrue(contact.phone)
+        self.assertTrue(contact.customer_rank)
+        self.assertTrue(contact.amazon_email) 
+
     def test_get_amazon_offer_search(self):
         """ Test the offer search. """
         marketplace = self.env['amazon.marketplace'].search([('api_ref', '=', 'ATVPDKIKX0DER')])

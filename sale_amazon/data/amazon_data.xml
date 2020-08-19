@@ -58,6 +58,13 @@
         <field name="api_ref">A1F83G8C2ARO7P</field>
         <field name="tax_included">True</field>
     </record>
+    <record id="marketplace_NL" model="amazon.marketplace">
+        <field name="name">Netherlands</field>
+        <field name="code">NL</field>
+        <field name="domain">Amazon.nl</field>
+        <field name="api_ref">A1805IZSGTT6HS</field>
+        <field name="tax_included">True</field>
+    </record>
 
     <!-- Default products -->
     <record id="default_product" model="product.product">
@@ -101,4 +108,11 @@
             <p>If the problem persists, contact <a href="https://www.odoo.com/help/">Odoo support</a>.</p>
         </field>
     </record>
+
+    <!-- IAP Proxy Endpoint -->
+    <record id="proxy_url" model="ir.config_parameter">
+        <field name="key">sale_amazon.proxy_url</field>
+        <field name="value">https://iap-services.odoo.com/amazon/forward_request</field>
+    </record>
+
 </odoo>

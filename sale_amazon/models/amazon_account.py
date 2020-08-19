@@ -26,11 +26,10 @@ class AmazonAccount(models.Model):
     seller_key = fields.Char(
         "Seller ID", help="The Merchant ID of the Amazon Seller Central account", required=True,
         groups="base.group_system")
-    access_key = fields.Char(
-        "Access Key", help="The Access Key ID of the Amazon Seller Central account", required=True,
-        groups="base.group_system")
-    secret_key = fields.Char(
-        "Secret Key", help="The Secret Key of the Amazon Seller Central account", required=True,
+    auth_token = fields.Char(
+        string="Authorization Token",
+        help="The MWS Authorization Token of the Amazon Seller Central account for Odoo",
+        required=True,
         groups="base.group_system")
     
     available_marketplace_ids = fields.Many2many(
@@ -123,8 +122,8 @@ class AmazonAccount(models.Model):
         # Fetch available marketplaces and set them all as active marketplaces
         # In the process, check the credentials and raise if they are incorrect
         base_marketplace = self.env['amazon.marketplace'].browse([vals['base_marketplace_id']])
-        available_marketplaces, rate_limit_reached = self._get_available_marketplaces(
-            vals['seller_key'], vals['access_key'], vals['secret_key'], base_marketplace, True)
+        available_marketplaces, _rate_limit_reached = self._get_available_marketplaces(
+            vals['seller_key'], vals['auth_token'], base_marketplace, True)
         vals.update(dict.fromkeys(
             ['available_marketplace_ids', 'active_marketplace_ids'],
             [(6, 0, available_marketplaces.ids)])
@@ -161,9 +160,9 @@ class AmazonAccount(models.Model):
         return super(AmazonAccount, self).create(vals)
     
     def write(self, vals):
-        if any(key in vals for key in ('seller_key', 'access_key', 'secret_key')):
+        if any(key in vals for key in ('seller_key', 'auth_token')):
             self.action_check_credentials(
-                vals.get('seller_key'), vals.get('access_key'), vals.get('secret_key'))
+                vals.get('seller_key'), vals.get('auth_token'))
         return super(AmazonAccount, self).write(vals)
     
     def toggle_active(self):
@@ -194,15 +193,18 @@ class AmazonAccount(models.Model):
             'context': {'create': False},
         }
     
-    def action_check_credentials(
-            self, seller_key=None, access_key=None, secret_key=None):
+    def action_check_credentials(self, seller_key=None, auth_token=None):
         """ Check the credentials validity. Use that of the account if not passed in arguments. """
         self.check_access_rights('write')
         for account in self:
             error_message = _("An error was encountered when preparing the connection to Amazon.")
             sellers_api = mwsc.get_api_connector(
-                mws.Sellers, access_key or account.access_key, secret_key or account.secret_key,
-                seller_key or account.seller_key, account.base_marketplace_id.code, error_message)
+                mws.Sellers,
+                seller_key or account.seller_key,
+                auth_token or account.auth_token,
+                account.base_marketplace_id.code,
+                error_message,
+                **self._build_get_api_connector_kwargs())
             error_message = _("The authentication to the Amazon Marketplace Web Service failed. "
                               "Please verify your credentials.")
             if mwsc.do_account_credentials_check(sellers_api, error_message):
@@ -217,12 +219,26 @@ class AmazonAccount(models.Model):
             }
         }
 
+    @api.model
+    def _build_get_api_connector_kwargs(self):
+        """ Build the extra kwargs passed to `mws_connector.get_api_connector`.
+
+        Proxy-related parameters are included in the returned kwargs to be added in a patched
+        `__init__`; these parameters will be used in the patched `make_request` to be included
+        in the request to the Odoo proxy.
+        """
+        IrConfigParam_sudo = self.env['ir.config_parameter'].sudo()
+        return {
+            'proxy_url': IrConfigParam_sudo.get_param('sale_amazon.proxy_url'),
+            'db_uuid': IrConfigParam_sudo.get_param('database.uuid'),
+            'db_enterprise_code': IrConfigParam_sudo.get_param('database.enterprise_code'),
+        } 
+
     def action_update_available_marketplaces(self):
         """ Update available marketplaces and assign new ones to the account. """
         for account in self:
             available_marketplaces, rate_limit_reached = self._get_available_marketplaces(
-                account.seller_key, account.access_key, account.secret_key,
-                account.base_marketplace_id, False)
+                account.seller_key, account.auth_token, account.base_marketplace_id, False)
             if not rate_limit_reached:
                 new_marketplaces = available_marketplaces - account.available_marketplace_ids
                 account.write({'available_marketplace_ids': [(6, 0, available_marketplaces.ids)]})
@@ -255,8 +271,12 @@ class AmazonAccount(models.Model):
                 continue  # Synchronization of orders requires at least one marketplace
             error_message = _("An error was encountered when preparing the connection to Amazon.")
             orders_api = mwsc.get_api_connector(
-                mws.Orders, account.access_key, account.secret_key, account.seller_key,
-                account.base_marketplace_id.code, error_message)
+                mws.Orders,
+                account.seller_key,
+                account.auth_token,
+                account.base_marketplace_id.code,
+                error_message,
+                **self._build_get_api_connector_kwargs())
     
             # The last sync date of the account is used as a lower bound on the orders' last status
             # update date. The upper bound is determined by the API and disclosed in the response.
@@ -314,11 +334,16 @@ class AmazonAccount(models.Model):
 
     @api.model
     def _get_available_marketplaces(
-            self, seller_key, access_key, secret_key, marketplace, raise_if_rate_limit_reached):
+            self, seller_key, auth_token, marketplace, raise_if_rate_limit_reached):
         available_marketplaces = None
         error_message = _("An error was encountered when preparing the connection to Amazon.")
         sellers_api = mwsc.get_api_connector(
-            mws.Sellers, access_key, secret_key, seller_key, marketplace.code, error_message)
+            mws.Sellers,
+            seller_key,
+            auth_token,
+            marketplace.code,
+            error_message,
+            **self._build_get_api_connector_kwargs())
         error_message = _("The authentication to the Amazon Marketplace Web Service failed. "
                           "Please verify your credentials.")
         available_marketplace_api_refs, rate_limit_reached = mwsc. \
@@ -361,9 +386,10 @@ class AmazonAccount(models.Model):
         
         if not rate_limit_reached:
             try:
-                # Create the sale order if needed and if the status is not 'Canceled'
-                order, order_found, amazon_status = self._get_order(
-                    order_data, items_data, amazon_order_ref)
+                with self.env.cr.savepoint():
+                    # Create the sale order if needed and if the status is not 'Canceled'
+                    order, order_found, amazon_status = self._get_order(
+                        order_data, items_data, amazon_order_ref)
             except Exception as error:
                 sync_failure = True
                 _logger.exception(error)
@@ -408,7 +434,8 @@ class AmazonAccount(models.Model):
             state = 'done' if fulfillment_channel == 'AFN' else 'sale'
             shipping_product = self._get_product(
                 shipping_code, 'shipping_product', 'Shipping', 'service')
-            currency = self.env['res.currency'].search([('name', '=', currency_code)], limit=1)
+            currency = self.env['res.currency'].with_context(active_test=False).search(
+                [('name', '=', currency_code)], limit=1)
             pricelist = self._get_pricelist(currency)
             contact_partner, delivery_partner = self._get_partners(order_data, amazon_order_ref)
             fiscal_position = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
@@ -616,6 +643,7 @@ class AmazonAccount(models.Model):
             'country_id': country.id,
             'state_id': state.id,
             'phone': phone if not anonymized_customer else None,
+            'customer_rank': 1 if not anonymized_customer else 0,
             'company_id': self.company_id.id,
             'amazon_email': anonymized_email if not anonymized_customer else None,
         }

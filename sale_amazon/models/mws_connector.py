@@ -3,9 +3,10 @@
 from datetime import datetime
 import dateutil.parser
 import logging
+from requests.exceptions import Timeout 
 from xml.etree import ElementTree
 
-from odoo import exceptions
+from odoo import _, exceptions
 
 from odoo.addons.sale_amazon.lib import mws
 
@@ -20,11 +21,11 @@ XSI = 'http://www.w3.org/2001/XMLSchema-instance'
 FEED_ENCODING = 'iso-8859-1'
 
 
-def get_api_connector(
-        api_class, access_key, secret_key, seller_key, marketplace_code, error_message, **kwargs):
+def get_api_connector(api_class, seller_key, auth_token, marketplace_code, error_message, **kwargs):
     """ Safely create and return a connector to the adequate regional MWS API. """
     try:
-        return api_class(access_key, secret_key, seller_key, region=marketplace_code, **kwargs)
+        return api_class(
+            None, None, seller_key, auth_token=auth_token, region=marketplace_code, **kwargs)
     except mws.MWSError:
         _raise_mws_error(error_message)
 
@@ -63,10 +64,10 @@ def generate_order_fulfillment_feed(
 def do_account_credentials_check(sellers_api, error_message):
     """
     Test the seller id of an account together with the API keys and raises if invalid.
-    The ListMarketplaceParticipations operation is used to verify the credentials because it is
+    The ListMarketplaceParticipations operation is used to verify the credentials because it
     combines a light response and a decent rate limit, allowing for several checks in a short time.
     """
-    request_response, rate_limit_reached = _send_request(
+    _request_response, rate_limit_reached = _send_request(
         sellers_api.list_marketplace_participations, 'Sellers', error_message)
     return rate_limit_reached
 
@@ -127,22 +128,28 @@ def get_orders_data(orders_api, marketplace_api_refs, updated_after, error_messa
 
 def get_items_data(orders_api, amazon_order_ref, error_message, next_token=None):
     """ Retrieve a batch of order items from Amazon Seller Central. """
-    items_data = []
-    request_response, rate_limit_reached = _send_request(
-        orders_api.list_order_items, 'Orders', error_message, amazon_order_id=amazon_order_ref,
-        next_token=next_token)
-    if request_response:
-        if not request_response.response.ok:
-            _raise_requests_error(error_message, request_response.response)
-        elif not rate_limit_reached:
-            parsed_data = request_response.parsed
-            next_token = get_string_value(parsed_data, 'NextToken')
-            items_parsed_data = get_raw_data(parsed_data, ('OrderItems', 'OrderItem'))
-            if isinstance(items_parsed_data, dict):  # Single element in response
-                items_data.append(items_parsed_data)
-            elif isinstance(items_parsed_data, list):  # Multiple elements in response
-                items_data += items_parsed_data
-    return items_data, next_token, rate_limit_reached
+    try:
+        items_data = []
+        request_response, rate_limit_reached = _send_request(
+            orders_api.list_order_items, 'Orders', error_message, amazon_order_id=amazon_order_ref,
+            next_token=next_token)
+        if request_response:
+            if not request_response.response.ok:
+                _raise_requests_error(error_message, request_response.response)
+            elif not rate_limit_reached:
+                parsed_data = request_response.parsed
+                next_token = get_string_value(parsed_data, 'NextToken')
+                items_parsed_data = get_raw_data(parsed_data, ('OrderItems', 'OrderItem'))
+                if isinstance(items_parsed_data, dict):  # Single element in response
+                    items_data.append(items_parsed_data)
+                elif isinstance(items_parsed_data, list):  # Multiple elements in response
+                    items_data += items_parsed_data
+        return items_data, next_token, rate_limit_reached
+    except Timeout:  # The proxy timed-out
+        # Fake a rate limit reached error as it is also transient and this kind of error puts a stop
+        # to the synchronization loop
+        rate_limit_reached = True
+        return [], None, rate_limit_reached
 
 
 def submit_feed(feeds_api, xml_feed, feed_type, error_message):
@@ -171,11 +178,38 @@ def _send_request(api_function, api_section, error_message, **kwargs):
     try:
         request_response = api_function(**kwargs)
     except mws.MWSError as error:
+        if not _is_sent_by_amazon(error):
+            # Don't try to parse response content as an XML because it's not
+            _raise_requests_error(error_message, error.response) 
         if _is_request_throttled(error, api_section):
             rate_limit_reached = True
         else:
             _raise_mws_error(error_message, error, api_section)
     return request_response, rate_limit_reached
+
+
+def _is_sent_by_amazon(mws_error):
+    """ Return True if the embedded response contains an XML-formatted error message.
+    
+    Useful to check if an error happened on Amazon's side or on the proxy.
+    """
+    if 700 <= mws_error.response.status_code <= 799:  # Custom Odoo proxy error
+        _logger.exception(
+            f"proxy responded with status code {mws_error.response.status_code} to: {mws_error}"
+        )
+        if mws_error.response.status_code == 730:  # Forbidden
+            raise exceptions.UserError(
+                _("You don't have an active subscription. Please buy one here: %s") %
+                'https://www.odoo.com/buy'
+            )
+        elif mws_error.response.status_code == 740:  # Bad Request
+            raise exceptions.UserError(_("The Odoo proxy received a malformed request."))
+        elif mws_error.response.status_code == 750:  # Internal Error
+            raise exceptions.UserError(_("The Odoo proxy encountered an internal server error."))
+        else:  # This is unexpected, we should probably have a custom message for this code
+            raise exceptions.UserError(_("The Odoo proxy encountered an unhandled error."))
+    else:  # not a proxy problem, check if response is consistent with what we expect from Amazon
+        return 'xml' in mws_error.response.text 
 
 
 def _is_request_throttled(mws_error, api_section):
@@ -201,7 +235,6 @@ def _raise_requests_error(message, response):
     error_log = message + " HTTP error code: %s Response content: %s" % (
         response.status_code, response.text
     )
-    _logger.exception(error_log)
     raise exceptions.UserError(error_log)
 
 

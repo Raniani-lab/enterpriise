@@ -50,8 +50,12 @@ class StockPicking(models.Model):
         """ Send the order confirmation feed to Amazon for a batch of orders. """
         error_message = _("An error was encountered when preparing the connection to Amazon.")
         feeds_api = mwsc.get_api_connector(
-            mws.Feeds, account.access_key, account.secret_key, account.seller_key,
-            account.base_marketplace_id.code, error_message)
+            mws.Feeds,
+            account.seller_key,
+            account.auth_token,
+            account.base_marketplace_id.code,
+            error_message,
+            **account._build_get_api_connector_kwargs())
         for picking in self:
             amazon_order_ref = picking.sale_id.amazon_order_ref
             items_data = picking.move_lines.filtered('sale_line_id.amazon_item_ref').mapped(

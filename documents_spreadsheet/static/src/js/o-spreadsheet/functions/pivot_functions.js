@@ -118,7 +118,11 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
      */
     async function _getValue(pivot, rpc, field, value) {
         const undef = _t("(Undefined)");
-        if (!(pivot.cache.isGroupLabelLoaded(field, value)) && pivot.cache.getField(field.split(":")[0]).relation) {
+        if (
+            !pivot.cache.isGroupLabelLoaded(field, value) &&
+            pivot.cache.getField(field.split(":")[0]).relation &&
+            value !== "false"
+        ) {
             await pivotUtils.fetchLabel(pivot, rpc, field, value);
         }
         if (["date", "datetime"].includes(pivot.cache.getField(field.split(":")[0]).type)) {

@@ -90,7 +90,8 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
             }
 
             /**
-             * Display name of many2one records. Useless for non many2one fields.
+             * Promises resolving to display name of many2one records.
+             * Useless for non many2one fields.
              * {
              *      partner: {
              *          10: "Raoul",
@@ -199,14 +200,14 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
          * Return the label of a group.
          * @param {string} groupBy e.g. create_date:month
          * @param {string} groupValue e.g. "05/2020"
-         * @returns {string}
+         * @returns {Promise<string> | undefined}
          */
         getGroupLabel(groupBy, groupValue) {
             return this._labels[groupBy][groupValue];
         }
 
         /**
-         * Check if the label of group is loaded
+         * Check if the label of group is loaded or being loaded.
          * @param {string} groupBy
          * @param {string} groupValue
          * @returns {boolean}

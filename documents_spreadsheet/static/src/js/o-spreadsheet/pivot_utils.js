@@ -137,16 +137,16 @@
      * @param {string} field Name of the field
      * @param {string} value Value
      *
-     * @returns {string}
+     * @returns {Promise<string>}
      */
     async function fetchLabel(pivot, rpc, field, value) {
         const model = pivot.cache.getField(field).relation;
-        const result = await rpc({
+        const label = rpc({
             model,
             method: 'name_get',
             args: [parseInt(value, 10)],
-        });
-        pivot.cache = pivot.cache.withLabel(field, value, result && result[0] && result[0][1] || undefined);
+        }).then((result) => result && result[0] && result[0][1] || undefined);
+        pivot.cache = pivot.cache.withLabel(field, value, label);
         return pivot.cache.getGroupLabel(field, value);
     }
 

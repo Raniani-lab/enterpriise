@@ -811,5 +811,114 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.equal(filter.value, defaultValue);
         });
 
+        QUnit.test("Name is only fetched once", async function (assert) {
+            assert.expect(7);
+            const [ actionManager, model ] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                    <pivot>
+                        <field name="bar" type="col"/>
+                        <field name="foo" type="row"/>
+                        <field name="product" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                mockRPC: function (route, args) {
+                    if (args.method === "name_get" && args.model === "product") {
+                        assert.step(`name_get_product_${args.args[0]}`)
+                    }
+                    return this._super(...arguments);
+                },
+            });
+            model.dispatch("ADD_PIVOT_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "Filter",
+                    fields: {
+                        1: {
+                            field: "product",
+                            type: "many2one",
+                        }
+                    },
+                }
+            });
+            await testUtils.nextTick();
+            const [sheet] = model.getters.getSheets();
+            // It contains product twice
+            assert.equal(sheet.cells.A4.content, `=PIVOT.HEADER("1","foo","1","product","37")`);
+            assert.equal(sheet.cells.A5.content, `=PIVOT.HEADER("1","foo","1","product","41")`);
+            assert.equal(sheet.cells.A7.content, `=PIVOT.HEADER("1","foo","12","product","37")`);
+            assert.equal(sheet.cells.A8.content, `=PIVOT.HEADER("1","foo","12","product","41")`);
+            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                id: "42",
+                value: [17],
+            });
+            await testUtils.nextTick();
+
+            // But it only fetches names once
+            assert.verifySteps([
+                "name_get_product_37",
+                "name_get_product_41",
+            ]);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Name is not fetched if related record is not assigned", async function (assert) {
+            assert.expect(6);
+            this.data.partner.records[0].product = false
+            const [ actionManager, model ] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                    <pivot>
+                        <field name="bar" type="col"/>
+                        <field name="foo" type="row"/>
+                        <field name="product" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                mockRPC: function (route, args) {
+                    if (args.method === "name_get" && args.model === "product") {
+                        assert.step(`name_get_product_${args.args[0]}`)
+                    }
+                    return this._super(...arguments);
+                },
+            });
+            model.dispatch("ADD_PIVOT_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "Filter",
+                    fields: {
+                        1: {
+                            field: "product",
+                            type: "many2one",
+                        }
+                    },
+                }
+            });
+            await testUtils.nextTick();
+            const [sheet] = model.getters.getSheets();
+            // It contains undefined headers
+            assert.equal(sheet.cells.A4.content, `=PIVOT.HEADER("1","foo","1","product","41")`);
+            assert.equal(sheet.cells.A5.content, `=PIVOT.HEADER("1","foo","1","product","false")`);
+            assert.equal(sheet.cells.A7.content, `=PIVOT.HEADER("1","foo","12","product","41")`);
+            assert.equal(sheet.cells.A8.content, `=PIVOT.HEADER("1","foo","12","product","false")`);
+            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                id: "42",
+                value: [17],
+            });
+            await testUtils.nextTick();
+
+            // It only fetch names for defined records
+            assert.verifySteps([
+                "name_get_product_41",
+            ]);
+            actionManager.destroy();
+        });
+
+
     });
 });

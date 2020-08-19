@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Refactor this into widgets.xml for consistency ? -->
+
 <templates>
 
 <div t-name="timesheet_grid.timer_project_task" class="d-inline-flex timer_m2o">

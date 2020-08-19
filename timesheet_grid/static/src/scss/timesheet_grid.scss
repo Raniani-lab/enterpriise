@@ -116,3 +116,17 @@ table > tbody.o_grid_section > tr {
         margin-top: 2.3px;
     }
 }
+
+.o_grid_section_subtext {
+    font-size: 0.9rem;
+    color: $o-main-color-muted;
+    z-index: 100; /* the element needs to be hoverable to display the title attribute. */
+    &:before {
+        content: "\00a0\00a0";
+    }
+}
+
+.o_grid_section_subtext_not_enough_hours {
+    color: rgb(220, 105, 101) !important;
+    opacity: 0.8;
+}

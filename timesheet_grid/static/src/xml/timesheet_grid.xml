@@ -6,7 +6,7 @@
             <th>
                 <t t-if="grid.__label">
                     <t t-if="showEmployeeAvatar">
-                        <StandaloneAvatarEmployeeAdapter Component="widgetComponents.StandaloneM2OAvatarEmployee" value="grid.__label"/>
+                        <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="grid.__label" workingHoursData="props.workingHoursData[grid.__label[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="grid_index" rangeContext="props.range" />
                     </t>
                     <t t-else="" t-esc="grid.__label[1]"/>
                 </t>
@@ -104,7 +104,7 @@
             <t t-if="label">
                 <t t-if="showEmployeeAvatar">
                     <t t-set="employee" t-value="grid.rows[rowlabel_index].values.employee_id" />
-                    <StandaloneAvatarEmployeeAdapter Component="widgetComponents.StandaloneM2OAvatarEmployee" value="employee"/>
+                    <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="employee" workingHoursData="props.workingHoursData[employee[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="rowlabel_index" rangeContext="props.range"/>
                 </t>
                 <t t-else="" t-esc="label"/>
             </t>

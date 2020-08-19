@@ -22,6 +22,8 @@
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js"/>
 
             <script type="text/javascript" src="/timesheet_grid/static/src/js/tours/timesheet_grid.js"/>
+
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/widgets/timesheets_m2o_avatar_employee.js"/>
         </xpath>
     </template>
 

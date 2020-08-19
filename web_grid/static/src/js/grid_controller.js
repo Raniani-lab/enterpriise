@@ -158,6 +158,15 @@ var GridController = AbstractController.extend({
             on_saved: this.reload.bind(this, {}),
         }).open();
     },
+
+    /**
+     * If something needs to be done when a new value has been set, it can be done here
+     * @param ev the event that triggered the update
+     */
+    _cellHasBeenUpdated(ev) {
+        // Currently overriden in timesheet_grid.timesheet_grid_controller
+    },
+
     /**
      * @private
      * @param {OdooEvent} e
@@ -170,10 +179,11 @@ var GridController = AbstractController.extend({
             value: utils.into(state.data, event.data.cell_path).value,
             cell_path: event.data.cell_path,
         }, event.data.value)
-        .then(function () {
+        .then(() => {
             if (event.data.doneCallback !== undefined) {
                 event.data.doneCallback();
             }
+            this._cellHasBeenUpdated(event);
         })
         .guardedCatch(function () {
             if (event.data.doneCallback !== undefined) {
@@ -296,6 +306,7 @@ var GridController = AbstractController.extend({
             return;
         }
         this.currentRange = $target.attr('data-name');
+
         this.update({range: this.currentRange});
     },
 });

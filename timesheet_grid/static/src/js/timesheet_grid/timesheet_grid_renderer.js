@@ -3,23 +3,31 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
 
     const { ComponentAdapter } = require('web.OwlCompatibility');
     const GridRenderer = require('web_grid.GridRenderer');
-    const StandaloneM2OAvatarEmployee = require('hr.StandaloneM2OAvatarEmployee');
+    const TimesheetM2OAvatarEmployee = require('timesheet_grid.TimesheetM2OAvatarEmployee');
 
-    class StandaloneAvatarEmployeeAdapter extends ComponentAdapter {
+    class TimesheetM2OAvatarEmployeeAdapter extends ComponentAdapter {
+
         /**
          * @override
          */
-        updateWidget(nextProps) {
-            const state = nextProps.value;
-            return this.widget.avatarWidget.reinitialize(state);
+        async updateWidget(nextProps) {
+            await this.widget.update(nextProps);
         }
+
+        /**
+         * @override
+         */
+        get widgetArgs() {
+            return [this.props.value, this.props.rowIndex, this.props.rangeContext, this.props.timeBoundariesContext, this.props.workingHoursData];
+        }
+
     }
 
     class TimesheetGridRenderer extends GridRenderer {
         constructor(parent, props) {
             super(...arguments);
             this.widgetComponents = {
-                StandaloneM2OAvatarEmployee
+                TimesheetM2OAvatarEmployee: TimesheetM2OAvatarEmployee
             };
         }
 
@@ -49,7 +57,21 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             return empIdGroupIndex === this.label_index;
         }
     }
-    TimesheetGridRenderer.components = { StandaloneAvatarEmployeeAdapter };
+
+    TimesheetGridRenderer.components = {
+        TimesheetM2OAvatarEmployeeAdapter
+    };
+
+    TimesheetGridRenderer.props = Object.assign({}, GridRenderer.props, {
+        workingHoursData: Object,
+        timeBoundariesContext: {
+            type: Object,
+            shape: {
+                start: String,
+                end: String,
+            },
+        },
+    });
 
     return TimesheetGridRenderer;
 });

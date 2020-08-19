@@ -4,6 +4,15 @@ odoo.define('timesheet_grid.GridController', function (require) {
     const GridController = require('web_grid.GridController');
 
     const TimesheetGridController = GridController.extend({
+
+        /**
+         * @override
+         */
+        _cellHasBeenUpdated(ev) {
+            this._super(...arguments);
+            this.update({ onlyHoursData: true });
+        },
+
         /**
          * @override
          */

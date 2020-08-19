@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, time
+from decimal import Decimal, ROUND_HALF_UP
 
 from odoo import api, fields, models
 from odoo.tools import float_round
@@ -66,6 +67,63 @@ class Employee(models.Model):
             result[employee.id]['working_hours'] = float_round(working_hours, 2)
         return result
 
+
+    @api.model
+    def get_timesheet_and_working_hours_for_employees(self, employees_grid_data, date_start, date_stop):
+        """
+        Method called by the timesheet avatar widget on the frontend in gridview to get information
+        about the hours employees have worked and should work.
+
+        :return: Dictionary of dictionary
+                 for each employee id =>
+                     number of units to work,
+                     what unit type are we using
+                     the number of worked units by the employees
+        """
+        result = {}
+
+        start_datetime = fields.Datetime.from_string(date_start)
+        end_datetime = fields.Datetime.from_string(date_stop)
+
+        uom = str(self.env.company.timesheet_encode_uom_id.name).lower()
+
+        employee_ids = [employee_data['employee_id'] for employee_data in employees_grid_data]
+        employees = self.env['hr.employee'].browse(employee_ids)
+        hours_per_day_per_employee = {}
+
+        employees_work_days_data = employees._get_work_days_data_batch(start_datetime, end_datetime)
+
+        for employee in employees:
+            units_to_work = float(employees_work_days_data[employee.id]['hours'])
+
+            # Adjustments if we work with a different unit of measure
+            if uom == 'days':
+                hours_per_day_per_employee[employee.id] = employee.resource_calendar_id.hours_per_day
+                units_to_work = units_to_work / hours_per_day_per_employee[employee.id]
+                rounding = len(str(self.env.company.timesheet_encode_uom_id.rounding).split('.')[1])
+                units_to_work = round(units_to_work, rounding)
+
+            result[employee.id] = {'units_to_work': units_to_work, 'uom': uom}
+
+        self.env.cr.execute("""
+                    SELECT aal.employee_id as employee_id, COALESCE(SUM(aal.unit_amount), 0) as worked_hours
+                    FROM account_analytic_line aal
+                    WHERE aal.employee_id IN %s AND date >= %s AND date <= %s
+                    GROUP BY aal.employee_id
+                """, (tuple(employee_ids), date_start, date_stop))
+
+        for data_row in self.env.cr.dictfetchall():
+
+            worked_hours = data_row['worked_hours']
+
+            if uom == 'days':
+                worked_hours /= hours_per_day_per_employee[data_row['employee_id']]
+                rounding = len(str(self.env.company.timesheet_encode_uom_id.rounding).split('.')[1])
+                worked_hours = round(worked_hours, rounding)
+
+            result[data_row['employee_id']]['worked_hours'] = worked_hours
+
+        return result
 
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'

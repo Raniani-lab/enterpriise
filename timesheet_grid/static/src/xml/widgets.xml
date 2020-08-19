@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates>
+    <t t-name="timesheet_grid.Many2OneAvatarHoursSubfield">
+        <span t-attf-class="o_grid_section_subtext {{ (not_enough_hours) ? 'o_grid_section_subtext_not_enough_hours' : '' }}" t-att-title="title">
+            <t t-esc="number"/>
+            <t t-esc="unit"/>
+            <t t-if="range">/
+                <t t-esc="range"/>
+            </t>
+        </span>
+    </t>
+</templates>

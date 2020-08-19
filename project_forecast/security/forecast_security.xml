@@ -5,7 +5,7 @@
         <record id="group_project_forecast_display_allocate_time" model="res.groups">
             <field name="name">Allocated time percentage Gantt</field>
             <field name="comment">Display Employee's allocated time percentage in the Gantt view</field>
-            <field name="category_id" ref="base.module_category_administration_administration"/>
+            <field name="category_id" ref="base.module_category_hidden"/>
         </record>
     </data>
 </odoo>

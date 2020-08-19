@@ -12,16 +12,11 @@
                     <div class="col-lg-6 col-12 o_setting_box">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
-                            <label for="default_holidays" string="Advantages"/>
+                            <label for="default_commission_on_target" string="Advantages"/>
                             <div class="text-muted">
                                 Configure Default Values for Belgian Advantages
                             </div>
                             <group class="mt16" name="default_advantages">
-                                <label for="default_holidays"/>
-                                <div>
-                                    <field name="default_holidays" nolabel="1"/>
-                                    <span>days / year</span>
-                                </div>
                                 <label for="default_commission_on_target"/>
                                 <div>
                                     <field name="default_commission_on_target" nolabel="1"/>

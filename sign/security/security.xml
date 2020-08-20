@@ -41,14 +41,14 @@
         <record id="ir_rule_sign_template_access_group_sign_employee" model="ir.rule">
             <field name="name">sign.template: group_sign_employee: seen template access</field>
             <field name="model_id" ref="sign.model_sign_template"/>
-            <field name="domain_force">[('group_ids', 'in', [user.groups_id.ids])]</field>
+            <field name="domain_force">[('group_ids', 'in', user.groups_id.ids)]</field>
             <field name="groups" eval="[(4, ref('sign.group_sign_employee'))]"/>
         </record>
 
         <record id="ir_rule_sign_template_item_access_group_sign_employee" model="ir.rule">
             <field name="name">sign.template: group_sign_employee: seen template item access</field>
             <field name="model_id" ref="sign.model_sign_item"/>
-            <field name="domain_force">['|', ('template_id.group_ids', 'in', [user.groups_id.ids]), ('create_uid', '=', user.id)]</field>
+            <field name="domain_force">['|', ('template_id.group_ids', 'in', user.groups_id.ids), ('create_uid', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('sign.group_sign_employee'))]"/>
         </record>
 

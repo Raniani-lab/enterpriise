@@ -20,12 +20,13 @@ class Document(models.Model):
     attachment_id = fields.Many2one('ir.attachment', ondelete='cascade', auto_join=True, copy=False)
     attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
     attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
+    is_editable_attachment = fields.Boolean(default=False, help='True if we can edit the link attachment.')
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
     mimetype = fields.Char(related='attachment_id.mimetype', default='application/octet-stream')
     res_model = fields.Char('Resource Model', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
-    res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_id", store=True)
+    res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
     res_name = fields.Char('Resource Name', related='attachment_id.res_name')
     index_content = fields.Text(related='attachment_id.index_content')
     description = fields.Text('Attachment Description', related='attachment_id.description', readonly=False)
@@ -90,17 +91,17 @@ class Document(models.Model):
                 record.res_model = attachment.res_model
                 record.res_id = attachment.res_id
 
-    def _inverse_res_id(self):
-        for record in self:
-            attachment = record.attachment_id.with_context(no_document=True)
-            if attachment:
-                attachment.res_id = record.res_id
 
     def _inverse_res_model(self):
         for record in self:
             attachment = record.attachment_id.with_context(no_document=True)
             if attachment:
+                # Avoid inconsistency in the data.
+                # In case a check_access is done between res_id and res_model modification,
+                # an access error can be received. (Mail causes this check_access)
+                attachment.res_id = False
                 attachment.res_model = record.res_model
+                attachment.res_id = record.res_id
 
     @api.onchange('url')
     def _onchange_url(self):
@@ -173,7 +174,7 @@ class Document(models.Model):
     def _compute_res_model_name(self):
         for record in self:
             if record.res_model:
-                model = self.env['ir.model'].name_search(record.res_model, limit=1)
+                model = self.env['ir.model'].name_search(record.res_model, operator='=', limit=1)
                 if model:
                     record.res_model_name = model[0][1]
                 else:
@@ -400,6 +401,11 @@ class Document(models.Model):
                     record.previous_attachment_ids = [(4, record.attachment_id.id, False)]
                 if 'datas' in vals:
                     old_attachment = record.attachment_id.copy()
+                    # removes the link between the old attachment and the record.
+                    old_attachment.write({
+                        'res_model': 'documents.document',
+                        'res_id': record.id,
+                    })
                     record.previous_attachment_ids = [(4, old_attachment.id, False)]
             elif vals.get('datas') and not vals.get('attachment_id'):
                 res_model = vals.get('res_model', record.res_model or 'documents.document')

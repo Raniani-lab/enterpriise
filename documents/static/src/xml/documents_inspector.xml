@@ -143,10 +143,14 @@
     <td class="o_inspector_label align-middle">
         <label t-att-title="res_model" class="o_inspector_model_name"><i class="o_documents_model_color fa fa-file-text"/> <t t-esc="res_model"/></label>
     </td>
-    <td class="o_inspector_value w-100">
-        <div class="o_inspector_model">
-            <span class="o_inspector_object_name" t-att-title="res_name"><t t-esc="res_name || res_model"/></span>
-        </div>
+    <td class="w-100 o_inspector_trigger_hover_target o_inspector_model_flex" >
+        <span t-att-class="'o_inspector_model  o_inspector_object_name ' + (is_editable_attachment ?  'o_inspector_model_editable' : '')" t-att-title="res_name"><t t-esc="res_name || res_model"/></span>
+        <t t-if="is_editable_attachment">
+            <span class="o_inspector_model_buttons">
+                <span class="o_inspector_model_button o_inspector_model_edit fa fa-pencil"></span>
+                <span class="o_inspector_model_button o_inspector_model_delete fa-fw pl-1">&#215;</span>
+            </span>
+        </t>
     </td>
 </t>
 

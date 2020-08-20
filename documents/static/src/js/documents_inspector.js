@@ -39,6 +39,8 @@ const DocumentsInspector = Widget.extend({
         'click .o_inspector_object_name': '_onOpenResource',
         'click .o_preview_available': '_onOpenPreview',
         'click .o_document_pdf': '_onOpenPDF',
+        'click .o_inspector_model_edit': '_onEditModel',
+        'click .o_inspector_model_delete': '_onDeleteModel',
         'mouseover .o_inspector_trigger_hover': '_onMouseoverRule',
         'mouseout .o_inspector_trigger_hover': '_onMouseoutRule',
     },
@@ -311,8 +313,19 @@ const DocumentsInspector = Widget.extend({
         const options = {
             res_model: resModelName,
             res_name: this.records[0].data.res_name,
+            is_editable_attachment: false,
         };
-        $modelContainer.append(qweb.render('documents.DocumentsInspector.resModel', options));
+
+        this._rpc({
+            model: this.records[0].data.res_model,
+            method: 'check_access_rights',
+            args: ['write', false]
+        }).then((res) => {
+            options['is_editable_attachment'] = (res && this.records[0].data.is_editable_attachment && !this._isLocked);
+            $modelContainer.append(qweb.render('documents.DocumentsInspector.resModel', options));
+        }).catch(() => {
+            $modelContainer.append(qweb.render('documents.DocumentsInspector.resModel', options));
+        });
     },
     /**
      * @private
@@ -591,6 +604,15 @@ const DocumentsInspector = Widget.extend({
         });
     },
     /**
+     * Remove the link between the document and its record.
+     * @param {MouseEvent} ev
+     */
+    _onDeleteModel: function (ev) {
+        this.trigger_up('delete_model', {
+            documentId: this.records[0].data['id'],
+        });
+    },
+    /**
      * Download the selected documents (zipped if there are several documents).
      *
      * @private
@@ -598,6 +620,15 @@ const DocumentsInspector = Widget.extend({
     _onDownload: function () {
         this.trigger_up('download', {
             resIds: this.records.map(record => record.res_id),
+        });
+    },
+    /**
+     * Opens a wizard to edit the record linked to the document.
+     * @param {MouseEvent} ev
+     */
+    _onEditModel: function (ev) {
+        this.trigger_up('edit_model', {
+            document: this.records[0].data,
         });
     },
     /**

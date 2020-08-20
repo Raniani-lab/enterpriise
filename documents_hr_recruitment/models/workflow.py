@@ -5,7 +5,6 @@ from odoo import fields, models
 class WorkflowActionRuleApplicant(models.Model):
     _inherit = ['documents.workflow.rule']
 
-    has_business_option = fields.Boolean(default=True, compute='_get_business')
     create_model = fields.Selection(selection_add=[('hr.applicant', "Applicant")])
 
     def create_record(self, documents=None):

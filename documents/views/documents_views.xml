@@ -73,6 +73,7 @@
                 <field name="res_name"/>
                 <field name="activity_ids"/>
                 <field name="activity_state"/>
+                <field name="is_editable_attachment"/>
                 <templates>
                     <t t-name="kanban-box">
                         <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
@@ -613,14 +614,14 @@
                             </page>
                             <page string="Actions" name="actions">
                                 <group>
-                                    <field name="has_business_option" invisible="1"/>
                                     <group>
                                         <field name="partner_id"/>
                                         <field name="user_id"/>
                                     </group>
                                     <group>
                                         <field name="folder_id"/>
-                                        <field name="create_model" attrs="{ 'invisible' : [('has_business_option', '=', False)]}"/>
+                                        <field name="create_model"/>
+                                        <field name="link_model" attrs="{'invisible' : [('create_model', '!=', 'link.to.record')]}"/>
                                     </group>
                                 </group>
                                 <group>

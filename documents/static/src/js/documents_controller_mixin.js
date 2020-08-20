@@ -14,6 +14,7 @@ const config = require('web.config');
 const fileUploadMixin = require('web.fileUploadMixin');
 const session = require('web.session');
 const { ComponentWrapper } = require('web.OwlCompatibility');
+const Dialog = require('web.Dialog');
 
 class ChatterContainerWrapperComponent extends ComponentWrapper {}
 
@@ -32,9 +33,11 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     },
     custom_events: Object.assign({}, fileUploadMixin.custom_events, {
         archive_records: '_onArchiveRecords',
+        delete_model: '_onDeleteModel',
         delete_records: '_onDeleteRecords',
         document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
         download: '_onDownload',
+        edit_model: '_onEditModel',
         get_search_panel_tags: '_onGetSearchPanelTags',
         history_item_delete: '_onHistoryItemDelete',
         history_item_download: '_onHistoryItemDownload',
@@ -368,7 +371,13 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             return;
         }
         if (_.isObject(result)) {
-            await this.do_action(result);
+            if (result.hasOwnProperty('warning')) {
+                let documents = result['warning']['documents'].map((d) => `<li>${d}</li>`);
+                this.do_warn(result['warning']['title'], `<ul>${documents.join('')}</ul>`);
+                this.reload();
+            } else {
+                await this.do_action(result, { on_close: () => this.reload() });
+            }
         } else {
             await this.reload();
         }
@@ -571,6 +580,25 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         });
     },
     /**
+     * Remove the link between the document (documentId) and its record.
+     * @param {OdooEvent} ev
+     * @param {Object} ev.data.documentId link to remove for the document with this id
+     */
+    _onDeleteModel: function (ev) {
+        Dialog.confirm(this, _t("Are you confirm deletion ?"), {
+            confirm_callback: () => {
+                var documentIds = [ev.data.documentId];
+                this._rpc({
+                    model: 'documents.workflow.rule',
+                    method: 'unlink_record',
+                    args: [documentIds]
+                }).then(() => {
+                    this.reload();
+                });
+            },
+        });
+    },
+    /**
      * @private
      * @param {OdooEvent} ev
      * @param {Object[]} ev.data.records objects with keys 'id' (the localId)
@@ -717,6 +745,47 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             dataTransfer: ev.originalEvent.dataTransfer,
             lockedCount,
             draggedRecordIds,
+        });
+    },
+    /**
+     * Opens a wizard to edit the record linked to the document.
+     * @param {OdooEvent} ev
+     * @param {Object} ev.data.document document to edit
+     */
+    _onEditModel: function (ev) {
+        ev.stopPropagation();
+        const document = ev.data.document;
+        let defaultResourceRef = `${document['res_model']},${document['res_id']}`;
+        if (defaultResourceRef.includes('undefined')) {
+            defaultResourceRef = false;
+        }
+        this._rpc({
+            model: 'ir.model',
+            method: 'search_read',
+            domain: [
+                ['model', '=', document['res_model']],
+            ],
+            fields: ['id'],
+            limit: 1,
+        }).then((models) => {
+            let action = {
+                    name: _t('Edit the linked Record'),
+                    type: 'ir.actions.act_window',
+                    res_model: 'documents.link_to_record_wizard',
+                    views: [[false, 'form']],
+                    target: 'new',
+                    context:{
+                        'default_document_ids': [document['id']],
+                        'default_resource_ref': defaultResourceRef,
+                        'default_is_readonly_model': true,
+                        'default_model_id': models[0].id,
+                        }
+                    };
+            this.do_action(action, {
+                on_close: () => {
+                    this.reload();
+                }
+            });
         });
     },
     /**

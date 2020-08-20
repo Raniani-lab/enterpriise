@@ -5,7 +5,6 @@ from odoo import models, fields, api, exceptions
 class WorkflowActionRuleAccount(models.Model):
     _inherit = ['documents.workflow.rule']
 
-    has_business_option = fields.Boolean(default=True, compute='_get_business')
     create_model = fields.Selection(selection_add=[('account.move.in_invoice', "Vendor bill"),
                                                    ('account.move.out_invoice', 'Customer invoice'),
                                                    ('account.move.in_refund', 'Vendor Credit Note'),

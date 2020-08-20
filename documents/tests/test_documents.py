@@ -165,6 +165,43 @@ class TestCaseDocuments(TransactionCase):
         self.assertEqual(self.document_gif.folder_id.id, self.folder_b.id, "failed at workflow rule set folder gif")
         self.assertEqual(self.document_txt.folder_id.id, self.folder_b.id, "failed at workflow rule set folder txt")
 
+    def test_documents_rules_link_to_record(self):
+        """
+        Tests a documents.workflow.rule that links a document to a record.
+        """
+        workflow_rule_link = self.env['documents.workflow.rule'].create({
+            'domain_folder_id': self.folder_a.id,
+            'name': 'workflow rule on link to record',
+            'condition_type': 'criteria',
+            'create_model': 'link.to.record',
+        })
+        user_admin_doc = new_test_user(self.env, login='Test admin documents', groups='documents.group_documents_manager,base.group_partner_manager')
+        documents_to_link = [self.document_gif, self.document_txt]
+        res_model = 'res.partner'
+        record = {
+            'res_model': res_model,
+            'res_model_id': self.env['ir.model'].name_search(res_model, operator='=', limit=1)[0],
+            'res_id': self.env[res_model].search([], limit=1).id,
+        }
+        link_to_record_ctx = workflow_rule_link.apply_actions([doc.id for doc in documents_to_link])['context']
+        link_to_record_wizard = self.env['documents.link_to_record_wizard'].with_user(user_admin_doc)\
+                                                                           .with_context(link_to_record_ctx).create({})
+        # Link record to document_gif and document_txt
+        link_to_record_wizard.model_id = record['res_model_id']
+        link_to_record_wizard.resource_ref = '%s,%s' % (record['res_model'], record['res_id'])
+        link_to_record_wizard.link_to()
+
+        for doc in documents_to_link:
+            self.assertEqual(doc.res_model, record['res_model'], "bad model linked to the document")
+            self.assertEqual(doc.res_id, record['res_id'], "bad record linked to the document")
+
+        # Removes the link between document_gif and record
+        workflow_rule_link.unlink_record([self.document_gif.id])
+        self.assertNotEqual(self.document_gif.res_model, record['res_model'],
+                            "the link between document_gif and its record was not correctly removed")
+        self.assertNotEqual(self.document_gif.res_id, record['res_id'],
+                            "the link between document_gif and its record was not correctly removed")
+
     def test_documents_rule_display(self):
         """
         tests criteria of rules

@@ -33,6 +33,7 @@
         'views/templates.xml',
         'views/activity_views.xml',
         'wizard/request_activity_views.xml',
+        'wizard/link_to_record_views.xml',
     ],
 
     'qweb': [

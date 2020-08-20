@@ -52,12 +52,14 @@ const DocumentsViewMixin = {
                     display_name: {},
                     note: {},
                     limited_to_single_record: {},
+                    create_model: {},
                 },
             },
             relatedFields: {
                 display_name: {type: 'string'},
                 note: {type: 'string'},
                 limited_to_single_record: {type: 'boolean'},
+                create_model: {type: 'string'},
             },
             viewType: 'default',
         }, this.fieldsInfo[this.viewType].available_rule_ids);

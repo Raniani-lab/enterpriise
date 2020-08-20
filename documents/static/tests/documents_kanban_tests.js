@@ -86,33 +86,41 @@ QUnit.module('documents_kanban_tests.js', {
                         relation_field: 'res_id'},
                     activity_state: {string: 'State', type: 'selection',
                         selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']]},
+                    is_editable_attachment: {string: "Is Editable Attachment", type: 'boolean'},
                 },
                 records: [
                     {id: 1, name: 'yop', file_size: 30000, owner_id: 11, partner_id: 12,
                         public: true, res_id: 1, res_model: 'task', res_model_name: 'Task', activity_ids: [1],
                         activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
-                        available_rule_ids: [1, 2, 4]},
+                        available_rule_ids: [1, 2, 4], is_editable_attachment: true},
                     {id: 2, name: 'blip', file_size: 20000, owner_id: 12, partner_id: 12,
                         public: false, res_id: 2, mimetype: 'application/pdf', res_model: 'task', res_model_name: 'Task',
-                        res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1]},
+                        res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1],
+                        is_editable_attachment: false},
                     {id: 3, name: 'gnap', file_size: 15000, lock_uid: 13, owner_id: 12, partner_id: 11,
                         public: false, res_id: 2, res_model: 'documents.document', res_model_name: 'Task',
-                        res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3, 4]},
+                        res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3, 4],
+                        is_editable_attachment: false},
                     {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 11, partner_id: 13,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
-                        res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
+                        res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [],
+                        is_editable_attachment: false},
                     {id: 5, name: 'zip', file_size: 40000, lock_uid: 11, owner_id: 12, partner_id: 12,
                         public: false, res_id: 3, res_model: false, res_model_name: false,
-                        res_name: false, tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 4]},
+                        res_name: false, tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 4],
+                        is_editable_attachment: false},
                     {id: 6, name: 'pom', file_size: 70000, partner_id: 13,
                         public: true, res_id: 1, res_model: 'documents.document', res_model_name: 'Document',
-                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: []},
+                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: [],
+                        is_editable_attachment: false},
                     {id: 8, active: false, name: 'wip', file_size: 70000, owner_id: 13, partner_id: 13,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
-                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
+                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [],
+                        is_editable_attachment: false},
                     {id: 9, active: false, name: 'zorro', file_size: 20000, mimetype: 'image/png',
                         owner_id: 13, partner_id: 13, public: true, res_id: false, res_model: false,
-                        res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
+                        res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1,
+                        available_rule_ids: [], is_editable_attachment: false},
                 ],
             },
             'task': {
@@ -1999,6 +2007,69 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsOnce(kanban, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
         await testUtils.dom.click(kanban.$('.o_inspector_rule .o_inspector_trigger_rule'));
+
+        kanban.destroy();
+    });
+
+    QUnit.test('document inspector: checks the buttons deleting/editing a link between a document and a record', async function (assert) {
+        // Check the display of the edit and delete buttons of a link between a document and its record.
+        // Check the operation of the delete link button.
+        assert.expect(6);
+
+        var kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `<kanban><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                        <field name="is_editable_attachment" invisible="1"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: function (route, args) {
+                if (args.method === 'check_access_rights') {
+                    return Promise.resolve(true);
+                } else if (args.model === 'documents.workflow.rule' && args.method === 'unlink_record') {
+                    this.data['documents.document'].records = this.data['documents.document'].records.map(r => {
+                        if (r.id === args.args[0]) {
+                            r.res_model = 'documents.document';
+                            r.res_id = false;
+                            r.is_editable_attachment = false;
+                        }
+                        return r;
+                    });
+                    return Promise.resolve();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // Document with an editable link.
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+        assert.containsOnce(kanban, '.o_inspector_model_button.o_inspector_model_edit',
+            "should display the edit button of the link between the document and the record on the inspector.");
+        assert.containsOnce(kanban, '.o_inspector_model_button.o_inspector_model_delete',
+            "should display the delete button of the link between the document and the record on the inspector.");
+
+        // Delete the link
+        await testUtils.dom.click(kanban.$('.o_inspector_model_delete'));
+        await testUtils.dom.click($('.modal-footer .btn-primary'));
+        assert.containsNone(kanban, 'o_inspector_custom_field .o_model_container',
+            "should display no records link to the document");
+
+        // Document with a non-editable link
+        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        assert.containsNone(kanban, 'o_inspector_custom_field .o_model_container',
+            "should display a record link to the document");
+        assert.containsNone(kanban, '.o_inspector_model_button.o_inspector_model_edit',
+            "should not display the edit button of the link between the document and the record on the inspector.");
+        assert.containsNone(kanban, '.o_inspector_model_button.o_inspector_model_delete',
+            "should not display the delete button of the link between the document and the record on the inspector.");
 
         kanban.destroy();
     });

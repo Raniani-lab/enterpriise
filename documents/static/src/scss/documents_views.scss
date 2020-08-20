@@ -30,6 +30,7 @@ $o-dms-inspector-bg-dark: #2E2E2E;
 $o-dms-inspector-bg-darker: #1A1A1A;
 
 $o-dms-progress-bar-height: 15px;
+$o-dms-inspector-width-model-button: 30px;
 
 ////// ========== Search Panel ==============
 ////// ======================================
@@ -351,6 +352,29 @@ $o-dms-progress-bar-height: 15px;
             }
         }
 
+        .o_inspector_model_flex {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: $o-dms-p-small;
+
+            .o_inspector_model_buttons {
+                padding-right: 1.8px;
+                width: $o-dms-inspector-width-model-button;
+
+                .o_inspector_model_button {
+                    opacity: 0.5;
+                    color: $o-dms-inspector-txt-light;
+                    font-size: 13px;
+
+                    &:hover {
+                        opacity: 1;
+                        cursor:pointer;
+                    }
+                }
+            }
+        }
+
         .o_inspector_fields {
             .o_field_widget {
                 width: 100%;
@@ -495,6 +519,10 @@ $o-dms-progress-bar-height: 15px;
             padding: $o-dms-p-tiny;
             @include o-hover-text-color(lighten($o-brand-primary, 5%), $o-brand-primary);
             @include o-text-overflow(block, $o-dms-inspector-width - $o-dms-inspector-label-breakpoint - $o-dms-p*2);
+        }
+
+        .o_inspector_model_editable {
+            @include o-text-overflow(block, $o-dms-inspector-width - $o-dms-inspector-label-breakpoint - $o-dms-p*4 - $o-dms-inspector-width-model-button);
         }
     }
 }

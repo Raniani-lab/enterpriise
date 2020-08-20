@@ -433,6 +433,10 @@ odoo.define('sign.template', function(require) {
                         self.$fieldTypeToolbar.prependTo(self.$('body'));
                         self.$('#outerContainer').addClass('o_sign_field_type_toolbar_visible');
                         const smoothScrollOptions = {
+                            scrollBoundaries: {
+                                right: false,
+                                left: false
+                            },
                             jQueryDraggableOptions: {
                                 cancel: false,
                                 distance: 0,
@@ -558,6 +562,10 @@ odoo.define('sign.template', function(require) {
                 $signatureItem.toggleClass('ui-selected');
             });
             const smoothScrollOptions = {
+                scrollBoundaries: {
+                    right: false,
+                    left: false
+                },
                 jQueryDraggableOptions: {
                     containment: "parent",
                     distance: 0,

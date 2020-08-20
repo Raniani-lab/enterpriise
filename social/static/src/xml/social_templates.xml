@@ -344,7 +344,7 @@
             <div class="pt-3 pb-2 px-4 d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <img class="mr-2" width="16" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/16x16" alt="Social Media"/>
-                    <h5 class="d-inline m-0" t-esc="socialAccount.name"/>
+                    <h5 class="o_social_stream_post_author_name d-block text-truncate m-0" t-esc="socialAccount.name" t-att-title="socialAccount.name"/>
                 </div>
                 <div class="d-flex align-items-center ml-4">
                     <a t-if="socialAccount.stats_link" t-att-href="socialAccount.stats_link" class="small" target="_blank">

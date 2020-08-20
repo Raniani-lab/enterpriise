@@ -54,7 +54,7 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <t t-set="author_info">
                                         <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>
-                                        <span class="text-truncate ml-2" t-esc="record.author_name.value or 'Unknown'"/>
+                                        <span class="o_social_stream_post_author_name text-truncate ml-2" t-esc="record.author_name.value or 'Unknown'" t-att-title="record.author_name.value or 'Unknown'"/>
                                     </t>
 
                                     <div class="o_social_author_information d-flex align-items-center">

@@ -157,6 +157,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     }
 }
 
+.o_social_stream_post_author_name {
+    max-width: 190px;
+}
+
 .o_stream_post_kanban_refresh_now .fa-spinner {
     margin-left: 5px;
 }

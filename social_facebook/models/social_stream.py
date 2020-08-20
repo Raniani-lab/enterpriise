@@ -73,8 +73,11 @@ class SocialStreamFacebook(models.Model):
                 existing_post.write(values)
             else:
                 # attachments are only extracted for new posts
-                values.update(self._extract_facebook_attachments(post))
-                posts_to_create.append(values)
+                attachments = self._extract_facebook_attachments(post)
+                if attachments or values['message']:
+                    # do not create post without content
+                    values.update(attachments)
+                    posts_to_create.append(values)
 
         stream_posts = self.env['social.stream.post'].sudo().create(posts_to_create)
         return any(stream_post.stream_id.create_uid.id == self.env.uid for stream_post in stream_posts)

@@ -264,7 +264,7 @@ class HrExpense(models.Model):
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachments],
                 'file_names': [x.name for x in attachments],
-                'user_infos': [],
+                'user_infos': user_infos,
                 }
             try:
                 result = iap_tools.iap_jsonrpc(endpoint, params=params)

@@ -12,7 +12,7 @@
     'description': "",
     'depends': [
         'website_event_social',
-        'website_event_track_session',
+        'website_event_track',
     ],
     'data': [
         'views/event_track_views.xml'

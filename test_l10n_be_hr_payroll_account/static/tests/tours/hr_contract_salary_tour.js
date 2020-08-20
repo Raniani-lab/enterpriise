@@ -54,6 +54,11 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text Experienced Developer (BE)',
         },
         {
+            content: "Select Recruitment Tab",
+            trigger: '.o_notebook ul > li > a:contains(Recruitment)',
+            run: 'click',
+        },
+        {
             content: "Contract Template",
             trigger: '.o_field_widget.o_field_many2one[name=default_contract_id]',
             run: function (actions) {
@@ -825,8 +830,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Confirm Employee Creation",
-            trigger: ".btn-primary:contains('Ok')",
-            extra_trigger: 'h4.modal-title:contains("Confirmation")',
+            trigger: ".o_control_panel button.o_form_button_save",
             run: 'click'
         },
         {
@@ -837,6 +841,22 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             content: "Manager",
             trigger: '.o_field_widget.o_field_many2one[name=parent_id]',
+            run: function (actions) {
+                actions.text("Mitchell", this.$anchor.find("input"));
+            },
+        },
+        {
+            trigger: ".ui-autocomplete > li > a:contains(Mitchell)",
+            auto: true,
+        },
+        {
+            content: "Add Private Address",
+            trigger: ".nav-link:contains('Private Information')",
+            run: 'click',
+        },
+        {
+            content: "Address",
+            trigger: '.o_field_widget.o_field_many2one[name=address_home_id]',
             run: function (actions) {
                 actions.text("Mitchell", this.$anchor.find("input"));
             },

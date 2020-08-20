@@ -11,7 +11,7 @@ class DemoUtmCampaign(models.Model):
 
     def _compute_clicks_count(self):
         """ Bypass the computation for our demo campaign. """
-        demo_campaign = self.env.ref('social_demo.social_utm_campaign', raise_if_not_found=False)
+        demo_campaign = self.env.ref('social_demo.social_utm_campaign', raise_if_not_found=False) or self.env['utm.campaign']
         for campaign in self:
             if campaign == demo_campaign:
                 campaign.click_count = random.randint(30000, 40000)

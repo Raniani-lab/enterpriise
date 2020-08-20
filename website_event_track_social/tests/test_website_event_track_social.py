@@ -5,7 +5,7 @@ from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.addons.website_event_track_online.tests.common import TestEventTrackOnlineCommon
+from odoo.addons.website_event_track.tests.common import TestEventTrackOnlineCommon
 from werkzeug.urls import url_join
 
 

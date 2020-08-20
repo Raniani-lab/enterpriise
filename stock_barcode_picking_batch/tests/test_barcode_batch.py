@@ -209,9 +209,41 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         Change the location when all products of the page has been scanned.
         """
         batch_form = Form(self.env['stock.picking.batch'])
+        # Adds two quantities for product tracked by SN.
+        sn1 = self.env['stock.production.lot'].create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn2 = self.env['stock.production.lot'].create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        inv_line_data = {
+            'product_id': self.productserial1.id,
+            'product_uom_id': self.uom_unit.id,
+            'product_qty': 1,
+            'location_id': self.shelf1.id,
+        }
+        inventory = self.env['stock.inventory'].create({
+            'name': 'Inv. productserial1',
+            'line_ids': [
+                (0, 0, dict(inv_line_data, prod_lot_id=sn1.id)),
+                (0, 0, dict(inv_line_data, prod_lot_id=sn2.id)),
+            ],
+        })
+        inventory.action_start()
+        inventory.action_validate()
+
+        # Creates a delivery for a product tracked by SN, the purpose is to
+        # reserve sn1 and scan sn2 instead.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.productserial1
+            move.product_uom_qty = 1
+        picking_delivery_sn = picking_form.save()
+        picking_delivery_sn.name = 'picking_delivery_sn'
+        picking_delivery_sn.action_confirm()
+        picking_delivery_sn.action_assign()
+
         batch_form.picking_ids.add(self.picking_delivery_1)
         batch_form.picking_ids.add(self.picking_delivery_2)
         batch_form.picking_ids.add(self.picking_delivery_package)
+        batch_form.picking_ids.add(picking_delivery_sn)
         batch_delivery = batch_form.save()
         self.assertEqual(
             batch_delivery.picking_type_id.id,
@@ -219,8 +251,8 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             "Batch picking must take the picking type of its sub-pickings"
         )
         batch_delivery.action_confirm()
-        self.assertEqual(len(batch_delivery.move_ids), 6)
-        self.assertEqual(len(batch_delivery.move_line_ids), 9)
+        self.assertEqual(len(batch_delivery.move_ids), 7)
+        self.assertEqual(len(batch_delivery.move_line_ids), 10)
         packaged_move_lines = batch_delivery.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product5.id)
         self.assertEqual(len(packaged_move_lines), 2)
         self.assertEqual(packaged_move_lines.package_id.id, self.package1.id)

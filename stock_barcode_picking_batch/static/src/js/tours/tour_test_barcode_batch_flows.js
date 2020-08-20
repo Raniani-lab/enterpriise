@@ -189,7 +189,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-LHOOQ'
     },
     {
-        trigger: '.o_barcode_line:nth-child(3).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]:contains("SN-LHOOQ")',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -206,7 +206,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-OQPAPT'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]:contains("SN-OQPAPT")',
         run: function() {
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productserial1'});
@@ -224,7 +224,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productlot1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(6).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]',
         run: function() {
             currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
@@ -254,7 +254,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0001'
     },
     {
-        trigger: '.o_barcode_line:nth-child(6).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]:contains("lot0001")',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -363,7 +363,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0002'
     },
     {
-        trigger: '.o_barcode_line:nth-child(7).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]:contains("lot0002")',
         run: function() {
             const $lines =  helper.getLines({barcode: 'productlot1'});
             helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
@@ -382,7 +382,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             currentViewState = updateState(defaultViewState, {
-                linesCount: 3,
+                linesCount: 4,
                 pager: '1/5',
                 pageSummary: 'From WH/Stock/Section 1',
                 next: {
@@ -397,9 +397,12 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             });
             checkState(currentViewState);
             const $lineFromPicking1 = helper.getLines({index: 1});
-            const $linesFromPicking2 = helper.getLines({from: 2});
+            const $linesFromPicking2 = helper.getLines({from: 2, to: 3});
+            const $linesFromPickingSN = helper.getLines({index: 4});
             helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
             helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
+            helper.assertLinesBelongTo($linesFromPickingSN, 'picking_delivery_sn');
+            helper.assert($linesFromPickingSN.find('.o_line_lot_name').text(), 'sn1');
         },
     },
     // Scan product1 x2, product4 x1
@@ -416,12 +419,20 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         run: 'scan product4'
     },
 
+    // Scan wrong SN.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn2'
+    },
+
     {
         trigger: '.o_next_page.btn-primary',
         run: function () {
             currentViewState.next.isHighlighted = true;
             currentViewState.scanMessage = 'scan_more_src';
             checkState(currentViewState);
+            const $linesFromPickingSN = helper.getLines({index: 4});
+            helper.assert($linesFromPickingSN.find('.o_line_lot_name').text(), 'sn2');
         },
     },
 

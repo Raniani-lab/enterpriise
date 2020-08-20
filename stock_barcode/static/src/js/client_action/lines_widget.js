@@ -180,7 +180,8 @@ var LinesWidget = Widget.extend({
     setLotName: function(id_or_virtual_id, lotName) {
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
         var $lotName = $line.find('.o_line_lot_name');
-        if (!$lotName.text()) {
+        var lineLotName = $lotName.text();
+        if (!lineLotName || lineLotName != lotName) {
             var $span = $('<span>', {class: 'o_line_lot_name', text: lotName});
             $lotName.replaceWith($span);
         }

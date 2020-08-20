@@ -32,11 +32,19 @@ var LinesWidget = Widget.extend({
         this.groups = parent.groups;
         this.model = parent.actionParams.model;
         this.show_entire_packs = parent.show_entire_packs;
+        this.keyboard_layout = parent.keyboard_layout;
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
+        this.isImmediatePicking = parent.isImmediatePicking ? true : false;
         this.sourceLocations = parent.sourceLocations;
         this.destinationLocations = parent.destinationLocations;
+        // detect if touchscreen (more complicated than one would expect due to browser differences...)
+        this.istouchSupported = 'ontouchend' in document ||
+                               'ontouchstart' in document ||
+                               'ontouchstart' in window ||
+                               navigator.maxTouchPoints > 0 ||
+                               navigator.msMaxTouchPoints > 0;
     },
 
     start: function () {
@@ -65,9 +73,11 @@ var LinesWidget = Widget.extend({
         this._highlightLine($line, doNotClearLineHighlight);
 
         this._handleControlButtons();
+        this._updateIncrementButtons($line);
 
         if (qty === 0) {
             this._toggleScanMessage('scan_lot');
+            this._highlightLotIcon($line);
         } else if (this.mode === 'receipt') {
             this._toggleScanMessage('scan_more_dest');
         } else if (['delivery', 'inventory'].indexOf(this.mode) >= 0) {
@@ -77,8 +87,6 @@ var LinesWidget = Widget.extend({
         } else if (this.mode === 'no_multi_locations') {
             this._toggleScanMessage('scan_products');
         }
-
-        this._updateIncrementButtons($line);
     },
 
     /**
@@ -107,6 +115,7 @@ var LinesWidget = Widget.extend({
 
         if (lineDescription.qty_done === 0) {
             this._toggleScanMessage('scan_lot');
+            this._highlightLotIcon($line);
         } else if (this.mode === 'receipt') {
             this._toggleScanMessage('scan_more_dest');
         } else if (['delivery', 'inventory'].indexOf(this.mode) >= 0) {
@@ -159,8 +168,8 @@ var LinesWidget = Widget.extend({
      */
     clearLineHighlight: function () {
         var $body = this.$el.filter('.o_barcode_lines');
-        // Remove the highlight from the other line.
-        $body.find('.o_highlight').removeClass('o_highlight');
+        // Remove the highlight from the other line + picking specific border if exists.
+        $body.find('.o_highlight').removeClass('o_highlight').css("box-shadow", "");
     },
 
     /**
@@ -179,13 +188,19 @@ var LinesWidget = Widget.extend({
     },
 
     getProductLines: function (lines) {
-        if (! this.show_entire_packs) {
-            return lines;
+        // only applies to pickings
+        if (this.show_entire_packs) {
+            return this._sortProductLines(_.filter(lines, function (line) {
+                return ! line.package_id;
+            }));
         }
 
-        return _.filter(lines, function (line) {
-            return ! line.package_id;
-        });
+        if (this.model != 'stock.inventory') {
+            // expects a picking (may fail otherwise)
+            return this._sortProductLines(lines);
+        } else {
+            return lines;
+        }
     },
 
     getPackageLines: function (lines) {
@@ -295,13 +310,17 @@ var LinesWidget = Widget.extend({
                 model: this.model,
                 groups: this.groups,
                 isPickingRelated: this.isPickingRelated,
+                istouchSupported: this.istouchSupported,
             }));
+            $body.prepend($lines);
             for (const line of $lines) {
                 if (line.dataset) {
                     this._updateIncrementButtons($(line));
                 }
             }
-            $body.prepend($lines);
+            if (!this.istouchSupported && this.groups.group_barcode_keyboard_shortcuts) {
+                this._assignKeyboardShortcuts($lines);
+            }
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
             $lines.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
         }
@@ -378,6 +397,53 @@ var LinesWidget = Widget.extend({
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
         if (_.indexOf(this._getErrorName(), message) > -1) {
             this.$('.o_barcode_pic > .fa, .o_barcode_icon').toggleClass('d-none');
+        }
+        if (this.model != 'stock.inventory') {
+            this._highlightNextExpected(message);
+        }
+    },
+
+    /**
+     * Highline the next expected action to aid in flow understanding
+     * based on the current help message. For now this is implemented as:
+     *  - highlight the next non-completed product
+     *  - all messages except the 'scan_lot' message will do this since the lot icon
+     *    to highlight is dependent on the last product scanned
+     *
+     * Note that products not part of original picking cannot ever be
+     * "completed".
+     *
+     * @private
+     * @param {string} message
+     */
+    _highlightNextExpected: function(message) {
+        if (message != 'scan_lot') {
+            this.$('.o_next_expected').removeClass('o_next_expected');
+            if (! this._isReservationProcessed()) {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                for (const line of $lines) {
+                    // do not include lines not part of original picking as "next_expected"
+                    if ($(line).find('.o_barcode_scanner_qty').text().indexOf('/') != -1) {
+                        $(line).find('.fa-tags').addClass('o_next_expected');
+                        break;
+                    }
+                }
+            }
+        }
+    },
+
+
+    /**
+     * Highline the lot/sn icon in $line. Needs to be separate from _highlightNextExpected
+     *  so we know from which line to highlight the lot/sn icon.
+     *
+     * @private
+     * @param {jQueryElement} $line
+     */
+    _highlightLotIcon: function ($line) {
+        this.$('.o_next_expected').removeClass('o_next_expected');
+        if ($line) {
+            $line.find('.fa-barcode').addClass('o_next_expected');
         }
     },
 
@@ -487,7 +553,11 @@ var LinesWidget = Widget.extend({
 
         var isReservationProcessed;
         if ($line.find('.o_barcode_scanner_qty').text().indexOf('/') === -1) {
-            isReservationProcessed = false;
+            if (this.isPickingRelated && !this.isImmediatePicking) {
+                isReservationProcessed = 1;  // product not part of initial transfer
+            } else {
+                isReservationProcessed = false; // there are no initial transfer products
+            }
         } else {
             isReservationProcessed = this._isReservationProcessedLine($line);
         }
@@ -497,12 +567,20 @@ var LinesWidget = Widget.extend({
         } else {
             $line.toggleClass('o_highlight_green', true);
             $line.toggleClass('o_highlight_red', false);
+            if ($line.attr('data-picking-id')) {
+                // determine picking specific color dynamically since border-color is set in template
+                // we must use a more specific css value than 'border-color' for firefox for some reason
+                $line.css("box-shadow", "inset 0px 0px 0px 3px " +  $line.css('border-top-color'));
+            }
         }
 
-        // Scroll to `$line`.
-        $body.animate({
-            scrollTop: $body.scrollTop() + $line.position().top - $body.height()/2 + $line.height()/2
-        }, 500);
+        // don't move to done lines since they're at the bottom of list
+        if (!$line.hasClass('o_line_completed')) {
+            // Scroll to `$line`.
+            $body.animate({
+                scrollTop: $body.scrollTop() + $line.position().top - $body.height()/2 + $line.height()/2
+            }, 500);
+        }
     },
 
     /**
@@ -512,6 +590,9 @@ var LinesWidget = Widget.extend({
      * @param {jQueryElement} $line
      */
     _updateIncrementButtons: function ($line) {
+        if (this.istouchSupported && !this.groups.group_barcode_keyboard_shortcuts) {
+            return;
+        }
         const id = $line.data('id');
         const qtyDone = parseFloat($line.find('.qty-done').text());
         const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
@@ -532,13 +613,141 @@ var LinesWidget = Widget.extend({
                 const $button = $line.find('.o_add_reserved');
                 const qty = line.product_uom_qty - qtyDone;
                 $button.data('reserved', qty);
-                $button.text(`+ ${qty}`);
+                if ($button.attr('shortcutKey')) {
+                    $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
+                } else {
+                    $button.text(`+ ${qty}`);
+                }
+                if (qty === 1) {
+                    // hide button to avoid having two +1 buttons
+                    $button.hide();
+                }
             } else {
-                // ...or hides the buttons if they are now useless.
+                // hides the buttons since they are now useless.
                 $line.find('.o_line_button').hide();
+                // flag line so we know it doesn't need a shortcut key
+                $line.addClass('o_line_qty_completed');
+                if (!(line.product_id.tracking === 'serial' || line.product_id.tracking === 'lot') || line.lot_name ) {
+                    // move line to bottom of list
+                    $line.parent().append($line);
+                    // class for css
+                    $line.addClass('o_line_completed');
+                }
             }
         }
     },
+
+    /**
+     * Sorting function for picking lines. This is designed to be extended for additional
+     * sorting criteria. This function sorts by display_name. Unfortunately we cannot just have
+     * a extendable compare function since this doesn't seem to work with the Odoo module system.
+     *
+     * @private
+     */
+    _sortProductLines: function (lines) {
+        return lines.sort(function(a,b) {
+            return a.display_name.localeCompare(b.display_name, {ignorePunctuation: true});
+        });
+    },
+
+    //--------------------------------------------------------------------------
+    // Keyboard Shortcut
+    //--------------------------------------------------------------------------
+
+    /**
+     * Assignment function for keyboard shortcuts for increment buttons. Some hacking is required
+     * due to dynamic display of letters based on whether "Shift" is pushed or not (in
+     * "model == inventory" case). Order of the assigned letters is based on user setting and only
+     * uses the 26 English letters regardless of selected keyboard. For "model != inventory" only 1
+     * button at most will be displayed when keyboard shortcuts are used.
+     *
+     * @private
+     */
+    _assignKeyboardShortcuts: function ($lines) {
+        let candidateLetters;
+        if (this.keyboard_layout === 'qwerty') {
+            candidateLetters = "qwertyuiopasdfghjklzxcvbnm";
+        } else if (this.keyboard_layout === 'azerty') {
+            candidateLetters = "azertyuiopqsdfghjklmwxcvbn,";
+        } else {
+            candidateLetters = "abcdefghijklmnopqrstuvwxyz";
+        }
+        let letterIndex = 0;
+        let shortcutKey = true;
+        for (const line of $lines) {
+            if (line.dataset && !$(line).hasClass('o_line_qty_completed')) {
+                let addUnit = $(line).find('.o_add_unit');
+                let otherButton = $(line).find('.o_add_reserved, .o_remove_unit');
+
+                if ((addUnit.length || otherButton.length) && shortcutKey != false) {
+                    shortcutKey = candidateLetters[letterIndex];
+                    addUnit.attr('shortcutKey', shortcutKey);
+                    addUnit.html(addUnit.text() + "<span><br/>" + shortcutKey + "</span>");
+                    // dynamically set css to handle centering text when letters appear/disappear (i.e. "Shift is pushed")
+                    addUnit.addClass("o_shortcut_displayed");
+                    otherButton.attr('shortcutKey', shortcutKey.toUpperCase());
+                    otherButton.html(otherButton.text() + "<span><br/>" +  shortcutKey.toUpperCase() + "</span>");
+                    if (this.model === 'stock.inventory') {
+                        otherButton.children(":first").hide();
+                    } else {
+                        otherButton.addClass("o_shortcut_displayed");
+                    }
+                    letterIndex++;
+                }
+                if (letterIndex >= candidateLetters.length) {
+                    shortcutKey = false;
+                }
+                if (this.model != 'stock.inventory') {
+                    otherButton.hide();
+                }
+            }
+        }
+    },
+
+    /**
+     * Handles visualization of increment buttons when shift button pushed
+     *
+     * @private
+     */
+    _applyShiftKeyDown: function () {
+        if (! this.istouchSupported) {
+            if (this.model === 'stock.inventory') {
+                const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
+                const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
+                addUnits.find(":first-child").hide();
+                addUnits.removeClass("o_shortcut_displayed");
+                removeUnits.find(":first-child").show();
+                removeUnits.addClass("o_shortcut_displayed");
+            } else {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                $lines.find('.o_add_unit').hide();
+                $lines.find('.o_add_reserved').show();
+            }
+        }
+    },
+
+    /**
+     * Handles visualization of increment buttons when shift button released
+     *
+     * @private
+     */
+    _applyShiftKeyUp: function () {
+        if (! this.istouchSupported) {
+            if (this.model === 'stock.inventory') {
+                const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
+                const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
+                addUnits.find(":first-child").show();
+                addUnits.addClass("o_shortcut_displayed");
+                removeUnits.find(":first-child").hide();
+                removeUnits.removeClass("o_shortcut_displayed");
+            } else {
+                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
+                $lines.find('.o_add_unit').show();
+                $lines.find('.o_add_reserved').hide();
+            }
+        }
+    },
+
 
     //--------------------------------------------------------------------------
     // Handlers

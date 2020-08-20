@@ -22,12 +22,12 @@ const BatchPickingClientAction = PickingClientAction.extend({
 
     willStart: function () {
         const res = this._super.apply(this, arguments);
-        res.then(() => {
+        return res.then(() => {
             if (this.currentState.state === 'draft') {
                 this.mode = 'draft';
             }
+            return this._getReusablePackageBarcodes();
         });
-        return res;
     },
 
     //--------------------------------------------------------------------------
@@ -42,6 +42,22 @@ const BatchPickingClientAction = PickingClientAction.extend({
         values.default_batch_id = this.currentState.id;
         values.default_picking_id = this.currentState.picking_ids[0].id;
         return values;
+    },
+
+    /**
+     * Make an rpc to get the package barcodes and afterwards set `this.reusablePackagesByBarcode`.
+     *
+     * @private
+     * @return {Promise}
+     */
+    _getReusablePackageBarcodes: function () {
+        return this._rpc({
+            'model': 'stock.quant.package',
+            'method': 'get_reusable_packages_by_barcode',
+            'args': [],
+        }).then(res => {
+            this.reusablePackagesByBarcode = res;
+        });
     },
 
     /**
@@ -68,7 +84,7 @@ const BatchPickingClientAction = PickingClientAction.extend({
      * @override
      */
     _isControlButtonsEnabled: function () {
-        return this.mode !== 'draft';
+        return this.mode !== 'draft' && this._super();
     },
 
     /**
@@ -120,6 +136,64 @@ const BatchPickingClientAction = PickingClientAction.extend({
      */
     _validate: function () {
         this._super({ barcode_view: true });
+    },
+
+    // -------------------------------------------------------------------------
+    // Private: flow steps
+    // -------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    _step_lot: function (barcode, linesActions) {
+        // Bypass this step if needed.
+        let prom = Promise.reject();
+        if (this.reusablePackagesByBarcode[barcode]) {
+            prom = this._step_reusable_package(barcode, linesActions);
+        }
+        return prom.catch(this._super.bind(this, ...arguments));
+    },
+
+    /**
+     * @override
+     */
+    _step_product: function (barcode, linesActions) {
+        // Bypass this step if needed.
+        if (this.reusablePackagesByBarcode[barcode]) {
+            return this._step_reusable_package(barcode, linesActions);
+        }
+        return this._super(...arguments);
+    },
+
+    /**
+     * Checks if user scanned a reusable package barcode.
+     *
+     * @param {string} barcode
+     * @param {Array} linesActions
+     * @returns {Promise}
+     */
+    _step_reusable_package: function (barcode, linesActions) {
+        const reusablePackage = this.reusablePackagesByBarcode[barcode];
+        if (!reusablePackage) {
+            // No reusable package found.
+            return Promise.reject();
+        }
+        if (reusablePackage.location_id && reusablePackage.location_id[0] !== this.currentState.location_dest_id.id) {
+            return Promise.reject(_t("The scanned package must not be assigned to a location or must be assigned to the current dest location."));
+        }
+        // Set the result package on the last scanned line.
+        const lineId = this.scannedLines[this.scannedLines.length - 1];
+        const lines = this.pages[this.currentPageIndex].lines;
+        const currentLine = lines.find(line => line.id === lineId);
+        // No line found -> Need to scan a product first.
+        if (!currentLine) {
+            return Promise.reject();
+        }
+        linesActions.push([
+            this.linesWidget._applyClusterPackages,
+            [currentLine.id || currentLine.virtualId, reusablePackage],
+        ]);
+        return Promise.resolve({linesActions: linesActions});
     },
 
     //--------------------------------------------------------------------------

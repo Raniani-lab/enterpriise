@@ -1240,6 +1240,49 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         line_owner = move_line.owner_id
         self.assertEqual(line_owner.id, self.owner.id)
 
+    def test_picking_keyboard_shortcuts(self):
+        """ Test keyboard shortcuts for increment buttons
+        By default, keyboard shortcuts are active and set to "QWERTY" keyboard.
+        """
+        clean_access_rights(self.env)
+
+        # Creates a new product.
+        product3 = self.env['product.product'].create({
+            'name': 'product3',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product3',
+        })
+
+        # Creates some quants.
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3)
+        self.env['stock.quant']._update_available_quantity(product3, self.stock_location, 4)
+
+        # Create the delivery transfer.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 2
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 3
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = product3
+            move.product_uom_qty = 4
+
+        delivery_picking = delivery_form.save()
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_picking_keyboard_shortcuts', login='admin', timeout=180)
+
+        self.assertEqual(len(delivery_picking.move_line_ids), 3)
+        self.assertEqual(delivery_picking.move_line_ids.mapped('qty_done'), [2, 3, 4])
+
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
@@ -1421,3 +1464,33 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(productlot1_quant.quantity, 1.0)
         self.assertEqual(productlot1_quant.lot_id.name, 'toto-42')
         self.assertEqual(productlot1_quant.location_id.id, self.stock_location.id)
+
+    def test_inventory_keyboard_shortcuts(self):
+        """ Test keyboard shortcuts for increment buttons
+        Inventory behavior for keyboard shortcuts/increment buttons differs from picking in that
+        increment buttons are never hidden based on settings/Shift key pressed status.
+        """
+        # create an inventory to test on
+        # make some stock
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 1)
+        self.assertEqual(len(self.env['stock.quant']._gather(self.product1, self.stock_location)), 1.0)
+        self.assertEqual(self.env['stock.quant']._get_available_quantity(self.product1, self.stock_location), 1.0)
+
+        # remove them with an inventory adjustment
+        inventory = self.env['stock.inventory'].create({
+            'name': 'inventory keyboard shortcut',
+            'location_ids': [(4, self.stock_location.id)],
+            'product_ids': [(4, self.product1.id)],
+        })
+        inventory.action_start()
+
+        url = '/web#model=stock.inventory&inventory_id=%s&action=stock_barcode_inventory_client_action' % inventory.id
+
+        self.start_tour(url, 'test_inventory_keyboard_shortcuts', login='admin', timeout=180)
+        product1_quant = self.env['stock.quant'].search([
+            ('product_id', '=', self.product1.id),
+            ('quantity', '>', 0)
+        ])
+        self.assertEqual(len(product1_quant), 1)
+        self.assertEqual(product1_quant.quantity, 1.0)
+        self.assertEqual(product1_quant.location_id.id, self.stock_location.id)

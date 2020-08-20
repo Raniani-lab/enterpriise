@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from operator import itemgetter
+
 from odoo import api, fields, models, _
 
 
@@ -37,6 +39,54 @@ class StockPickingBatch(models.Model):
             'res_id': self.id,
         }
 
+    @api.model
+    def open_new_batch_picking(self):
+        """ Creates a new batch picking and opens client action to select its pickings.
+
+        :return: the action used to select pickings for the new batch picking
+        :rtype: dict
+        """
+        picking_batch = self.env['stock.picking.batch'].create({})
+        action = self.env.ref('stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action').read()[0]
+        action = dict(action, target='fullscreen', context={'active_id': picking_batch.id})
+        action = {'action': action}
+        return action
+
+    @api.model
+    def action_get_new_batch_status(self, picking_batch_id):
+        """ Return the initial state of a new batch picking as a dict. """
+        picking_batch = self.env['stock.picking.batch'].browse(picking_batch_id)
+        picking_states = dict(self.env['stock.picking'].fields_get(['state'])['state']['selection'])
+        allowed_picking_ids = picking_batch.allowed_picking_ids.filtered(lambda p: p.state == 'assigned')
+        allowed_picking_types = sorted(allowed_picking_ids.mapped('picking_type_id').read(['name']), key=itemgetter('name'))
+        allowed_picking_ids = sorted(allowed_picking_ids.read(['name', 'user_id', 'state', 'picking_type_id']), key=itemgetter('name'))
+        # convert to selection label
+        for picking in allowed_picking_ids:
+            picking["state"] = picking_states[picking["state"]]
+
+        return {
+            'picking_batch_name': picking_batch.name,
+            'allowed_picking_ids': allowed_picking_ids,
+            'allowed_picking_types': allowed_picking_types,
+        }
+
+    @api.model
+    def action_confirm_batch_picking(self, picking_batch_id, picking_ids=None):
+        """ Confirms selected pickings for a batch picking.
+
+        Errors are expected to be handled in parent class and automatically stops batch confirmation
+        and pickings.write(...). If picking_ids=None or picking_ids.types not the same => expect UserError.
+
+        :params picking_batch_id: newly created batch
+        :params picking_ids: pickings ids to add to new batch
+        :return: boolean if successful
+        """
+        if picking_ids:
+            pickings = self.env['stock.picking'].browse(picking_ids)
+            pickings.write({'batch_id': picking_batch_id})
+        picking_batch = self.env['stock.picking.batch'].browse(picking_batch_id)
+        return picking_batch.action_confirm()
+
     def _define_picking_colors(self):
         """ Defines a color hue for each picking. These values will be used to
         color picking batch lines in barcode app.
@@ -57,6 +107,10 @@ class StockPickingBatch(models.Model):
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
         """
+        if self.env.context.get('company_id'):
+            company = self.env['res.company'].browse(self.env.context['company_id'])
+        else:
+            company = self.env.company
         picking_colors = self._define_picking_colors()
         fields_to_read = self._get_fields_to_read()
         batch_pickings = self.read(fields_to_read)
@@ -80,14 +134,14 @@ class StockPickingBatch(models.Model):
                     }
                     move_line['color_hue'] = picking_colors[picking['id']]
                     batch_picking['move_line_ids'].append(move_line)
-            # ...then sort them to be sure they are always in the same order client side.
-            batch_picking['move_line_ids'] = sorted(batch_picking['move_line_ids'], key=lambda line: line['picking_id']['id'])
 
             batch_picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             batch_picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             batch_picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
             batch_picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             batch_picking['group_uom'] = self.env.user.has_group('uom.group_uom')
+            batch_picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')
+            batch_picking['keyboard_layout'] = company.keyboard_layout
             if batch_picking['picking_type_id']:
                 batch_picking['use_create_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_create_lots
                 batch_picking['use_existing_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_existing_lots

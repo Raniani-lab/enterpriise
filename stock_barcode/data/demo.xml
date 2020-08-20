@@ -44,6 +44,21 @@
         <record id="product.product_product_27" model="product.product">
             <field name="barcode">601647855648</field>
         </record>
+        <record id="product.product_product_9" model="product.product">
+            <field name="barcode">601647855649</field>
+        </record>
+        <record id="product.product_product_6" model="product.product">
+            <field name="barcode">601647855650</field>
+        </record>
+        <record id="product.consu_delivery_03" model="product.product">
+            <field name="barcode">601647855651</field>
+        </record>
+        <record id="product.product_product_10" model="product.product">
+            <field name="barcode">601647855652</field>
+        </record>
+        <record id="product.product_product_25" model="product.product">
+            <field name="barcode">601647855653</field>
+        </record>
 
         <record id="demo_package" model="stock.quant.package" />
 

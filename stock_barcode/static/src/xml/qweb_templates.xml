@@ -4,13 +4,15 @@
     <t t-name="stock_barcode_header_widget">
         <div class="o_barcode_header navbar navbar-expand navbar-dark">
             <nav class="navbar-nav mr-auto">
-                <a tabindex="" class="nav-link o_exit mr-4"><i class="fa fa-chevron-left"/></a>
+                <button class="nav-link btn o_exit mr-4"><i class="fa fa-chevron-left"/></button>
+                <!-- keep same look and feel when in settings mode so users are less likely to get confused -->
+                <button class="nav-link btn o_close o_hidden mr-4"><i class="fa fa-chevron-left"/></button>
                 <span class="o_title navbar-text text-white" t-esc="widget.title"/>
             </nav>
             <nav class="navbar-nav">
-                <a tabindex="" class="nav-link o_show_information mr-4"><i class="fa fa-info-circle"/></a>
-                <a tabindex="" class="nav-link o_show_settings"><i class="fa fa-bars"/></a>
-                <a tabindex="" class="nav-link o_close o_hidden"><i class="fa fa-times"/></a>
+                <button class="nav-link btn o_show_information mr-4"><i class="fa fa-info-circle"/></button>
+                <button class="nav-link btn o_show_settings"><i class="fa fa-bars"/></button>
+                <button class="nav-link btn o_close o_hidden"><i class="fa fa-times"/></button>
             </nav>
         </div>
     </t>
@@ -40,7 +42,7 @@
                 <span class="o_hidden o_scan_message o_scan_message_scan_more_dest">Scan more products, or scan the destination location</span>
                 <span class="o_hidden o_scan_message o_scan_message_scan_more_src">Scan more products, or scan a new source location</span>
                 <span class="o_hidden o_scan_message o_scan_message_scan_lot">Scan the serial or lot number of the product</span>
-                <span class="o_hidden o_scan_message o_scan_message_scan_src">Scan the source location</span>
+                <span class="o_hidden o_scan_message o_scan_message_scan_src">Scan the source location, or scan a product</span>
                 <span class="o_hidden o_scan_message o_scan_message_picking_already_done"><span class="fa fa-exclamation-triangle"/> This picking is already done</span>
                 <span class="o_hidden o_scan_message o_scan_message_picking_already_cancelled"><span class="fa fa-exclamation-triangle"/> This picking is already cancelled</span>
                 <span class="o_hidden o_scan_message o_scan_message_inv_already_done"><span class="fa fa-exclamation-triangle"/> This inventory adjustment is already done</span>
@@ -122,7 +124,7 @@
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
                         </div>
-                        <div t-if="line.package_id || line.result_package_id">
+                        <div t-if="line.package_id || line.result_package_id" name="package">
                             <i class="fa fa-fw fa-archive"/>
                             <t t-if="line.package_id" t-esc="line.package_id[1]"/>
                             <t t-if="isPickingRelated">
@@ -134,28 +136,30 @@
                             <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"/>
                         </div>
                         <div t-if="line.product_id.tracking !== 'none'">
-                            <i class="fa fa-barcode"/>
+                            <i class="fa fa-fw fa-barcode"/>
                             <span class="o_line_lot_name" t-esc="(line.lot_id &amp;&amp; line.lot_id[1]) || (line.prod_lot_id &amp;&amp;line.prod_lot_id[1]) || line.lot_name || ''"/>
                         </div>
                     </div>
                     <div t-if="line.partner_id">
                         <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"/>
                     </div>
-                    <div t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
-                        class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4">
-                        + 1
-                    </div>
-                    <div t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
-                        - 1
-                    </div>
-                    <div t-if="isPickingRelated &amp;&amp; line.product_uom_qty &amp;&amp; line.product_id.tracking != 'serial'"
-                        class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"
-                        t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
-                        <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>
-                    </div>
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
                         <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-2x fa-pencil"/></a>
                     </div>
+                    <t t-if="!istouchSupported || groups.group_barcode_keyboard_shortcuts">
+                        <div t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
+                            class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4">
+                            + 1
+                        </div>
+                        <div t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
+                            - 1
+                        </div>
+                        <div t-if="isPickingRelated &amp;&amp; line.product_uom_qty &amp;&amp; line.product_id.tracking != 'serial'"
+                            class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"
+                            t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
+                            <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>
+                        </div>
+                    </t>
                 </div>
             </t>
         </t>

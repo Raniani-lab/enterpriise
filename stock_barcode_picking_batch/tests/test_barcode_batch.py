@@ -17,8 +17,10 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         clean_access_rights(self.env)
         grp_lot = self.env.ref('stock.group_production_lot')
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
 
         # Create some products
         self.product3 = self.env['product.product'].create({
@@ -173,3 +175,148 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
 
         url = self._get_batch_client_action_url(batch_delivery.id)
         self.start_tour(url, 'test_barcode_batch_delivery_1', login='admin', timeout=180)
+
+    def test_put_in_pack_from_multiple_pages(self):
+        """ A batch picking of 2 internal pickings where prod1 and prod2 are reserved in shelf1 and shelf2,
+        processing all these products and then hitting put in pack should move them all in the new pack.
+
+        This is a copy of the stock_barcode `test_put_in_pack_from_multiple_pages` test with exception that
+        there are 2 internal pickings containing the 2 products. We expect the same UI and behavior with the
+        batch's `put_in_pack` button as we do with a single internal transfer so we re-use the same exact tour.
+        Note that batch `put_in_pack` logic is not the same as it is for pickings.
+        """
+        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf2, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 1)
+
+        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move1 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_multiple_pages',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': internal_picking.id,
+        })
+        internal_picking2 = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_multiple_pages',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': internal_picking2.id,
+        })
+
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+        internal_picking2.action_confirm()
+        internal_picking2.action_assign()
+
+        batch_form = Form(self.env['stock.picking.batch'])
+        batch_form.picking_ids.add(internal_picking)
+        batch_form.picking_ids.add(internal_picking2)
+        batch_internal = batch_form.save()
+
+        batch_internal.action_confirm()
+        self.assertEqual(len(batch_internal.move_ids), 2)
+
+        url = self._get_batch_client_action_url(batch_internal.id)
+
+        self.start_tour(url, 'test_put_in_pack_from_multiple_pages', login='admin', timeout=180)
+
+        pack = self.env['stock.quant.package'].search([])[-1]
+        self.assertEqual(len(pack.quant_ids), 2)
+        self.assertEqual(sum(pack.quant_ids.mapped('quantity')), 4)
+
+    def test_put_in_pack_before_dest(self):
+        """ A batch picking of 2 internal pickings where prod1 and prod2 are reserved in shelf1 and shelf3,
+        and have different move destinations. Processing the products and then put in pack should open a choose
+        destination wizard which will help make sure the package ends up where its expected.
+
+        This is a copy of the stock_barcode `test_put_in_pack_before_dest` test with exception that
+        there are 2 internal pickings containing the 2 products. We expect the same UI and behavior with the
+        batch's `put_in_pack` button as we do with a single internal transfer so we re-use the same exact tour.
+        For some reason the order of the move lines in the destination wizard is different, so we swap the expected
+        destination in this test (since it doesn't matter).
+        """
+        self.picking_type_internal.active = True
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
+
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move1 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_before_dest',
+            'location_id': self.shelf1.id,
+            'location_dest_id': self.shelf2.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking.id,
+        })
+        internal_picking2 = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_before_dest',
+            'location_id': self.shelf3.id,
+            'location_dest_id': self.shelf4.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking2.id,
+        })
+
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+        internal_picking2.action_confirm()
+        internal_picking2.action_assign()
+
+        batch_form = Form(self.env['stock.picking.batch'])
+        batch_form.picking_ids.add(internal_picking)
+        batch_form.picking_ids.add(internal_picking2)
+        batch_internal = batch_form.save()
+
+        batch_internal.action_confirm()
+        self.assertEqual(len(batch_internal.move_ids), 2)
+
+        url = self._get_batch_client_action_url(batch_internal.id)
+
+        self.start_tour(url, 'test_put_in_pack_before_dest', login='admin', timeout=180)
+        pack = self.env['stock.quant.package'].search([])[-1]
+        self.assertEqual(len(pack.quant_ids), 2)
+        self.assertEqual(pack.location_id, self.shelf4)
+
+    def test_batch_create(self):
+        """ Create a batch picking via barcode app from scratch """
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_batch_create', login='admin', timeout=180)
+        self.assertEqual(self.picking_delivery_1.batch_id, self.picking_delivery_2.batch_id)
+        batch_delivery = self.picking_delivery_1.batch_id
+        self.assertEqual(len(batch_delivery.move_ids), 5)
+        self.assertEqual(len(batch_delivery.move_line_ids), 7)

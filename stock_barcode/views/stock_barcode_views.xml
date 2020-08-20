@@ -65,6 +65,13 @@
             'search_default_available': 1,
             'force_detailed_view': True
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new transfer
+            </p><p>
+                Transfers allow you to move products from one location to another.
+            </p>
+        </field>
     </record>
 
     <!-- Kanban view to access operations by operation type -->
@@ -75,7 +82,7 @@
         <field name="mode">primary</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile oe_background_grey o_emphasize_colors" create="0">
+            <kanban class="o_kanban_mobile oe_background_grey o_emphasize_colors" create="0" sample="1">
                 <field name="display_name"/>
                 <field name="color"/>
                 <field name="count_picking_ready"/>

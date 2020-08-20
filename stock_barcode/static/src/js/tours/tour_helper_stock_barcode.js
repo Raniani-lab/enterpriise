@@ -26,6 +26,11 @@ function getLine (description) {
     return $res;
 }
 
+function triggerKeydown(eventKey, shiftkey=false) {
+    document.querySelector('.o_barcode_client_action')
+        .dispatchEvent(new window.KeyboardEvent('keydown', { bubbles: true, key: eventKey, shiftKey: shiftkey}));
+}
+
 function assert (current, expected, info) {
     if (current !== expected) {
         fail(info + ': "' + current + '" instead of "' + expected + '".');
@@ -251,6 +256,7 @@ return {
     assertValidateVisible: assertValidateVisible,
     fail: fail,
     getLine: getLine,
+    triggerKeydown: triggerKeydown,
 };
 
 });

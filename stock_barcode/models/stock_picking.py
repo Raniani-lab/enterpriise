@@ -29,6 +29,10 @@ class StockPicking(models.Model):
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
         """
+        if self.env.context.get('company_id'):
+            company = self.env['res.company'].browse(self.env.context['company_id'])
+        else:
+            company = self.env.company
         picking_fields_to_read = self._get_picking_fields_to_read()
         move_line_ids_fields_to_read = self._get_move_line_ids_fields_to_read()
         pickings = self.read(picking_fields_to_read)
@@ -64,6 +68,8 @@ class StockPicking(models.Model):
             picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
             picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             picking['group_uom'] = self.env.user.has_group('uom.group_uom')
+            picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')
+            picking['keyboard_layout'] = company.keyboard_layout
             picking['use_create_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_create_lots
             picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
             picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs
@@ -287,6 +293,7 @@ class StockPicking(models.Model):
             'state',
             'picking_type_code',
             'company_id',
+            'immediate_transfer',
         ]
 
     @api.model

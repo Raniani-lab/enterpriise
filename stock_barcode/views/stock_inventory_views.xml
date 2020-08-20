@@ -130,7 +130,7 @@
         <field name="model">stock.inventory</field>
         <field name="priority">1000</field>
         <field name="arch" type="xml">
-            <kanban js_class="stock_barcode_list_kanban" class="o_kanban_mobile o_stock_barcode_kanban" import="false">
+            <kanban js_class="stock_barcode_list_kanban" class="o_kanban_mobile o_stock_barcode_kanban" import="false" sample="1">
                 <field name="name"/>
                 <field name="date"/>
                 <field name="state"/>
@@ -167,6 +167,13 @@
         <field name="context">{
             'form_view_initial_mode': 'edit',
         }</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_barcode_scanner">
+            No inventory adjustment found
+          </p><p>
+            Let's create an inventory adjustment in order to add products to your inventory or adjust the current quantities in stock.
+          </p>
+        </field>
     </record>
 
 </data></odoo>

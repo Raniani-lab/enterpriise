@@ -4,10 +4,6 @@
     height: 100%;
     background-color: white;
 
-    .o_invisible {
-        visibility: hidden;
-    }
-
     .o_strong {
         font-weight: bold;
     }
@@ -176,6 +172,11 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                text-transform: none;
+
+                &.o_shortcut_displayed {
+                    padding-top: 14px;
+                }
             }
 
             &.o_barcode_line_package {
@@ -194,27 +195,29 @@
                     }
                 }
             }
+
+            &.o_line_completed {
+                background: #F5F5F5;
+            }
+
+            .o_next_expected {
+                color: #00A09D;
+                opacity: 1 !important;
+            }
         }
 
         &.o_js_has_highlight .o_barcode_line.o_highlight {
-            background-color: $gray-100;
 
             &.o_highlight_red {
                 background-color: rgba(theme-color('danger'), 0.25);
-                border-color: theme-color('danger');
+                box-shadow: inset 0px 0px 0px 3px theme-color('danger');
             }
             &.o_highlight_green {
-                border-top: 2px solid $o-brand-secondary;
-                border-bottom: 2px solid $o-brand-secondary;
+                box-shadow: inset 0px 0px 0px 3px $o-brand-secondary;
             }
-            margin-bottom: 0;
 
             .product-label, .o_barcode_scanner_qty {
                 color: $headings-color;
-            }
-
-            .o_barcode_scanner_qty {
-                font-size: 1.2em;
             }
 
             .qty-done, .product_qty {
@@ -245,7 +248,7 @@
                 padding-top: 5px;
             }
             .o_field_widget {
-                font-size: 1.2em;
+                font-size: 1em;
                 .btn.fa {
                     font-size: 1em;
                 }
@@ -338,8 +341,8 @@
                     border: 1px solid $o-form-lightsecondary;
 
                     @include media-breakpoint-up(sm) {
-                        min-width: 260px;
-                        max-width: 260px;
+                        min-width: 510px;
+                        max-width: 510px;
                     }
                 }
 

@@ -70,7 +70,9 @@ var PickingClientAction = ClientAction.extend({
                 (picking_type_code === 'incoming') && (picking_state === 'done') ||
                 (picking_type_code === 'outgoing') && (picking_state !== 'done') ||
                 (picking_type_code === 'internal')
-            )
+            );
+
+            self.isImmediatePicking = self.currentState.immediate_transfer;
         });
         return res;
     },
@@ -227,6 +229,7 @@ var PickingClientAction = ClientAction.extend({
         return true;
     },
 
+
     /**
      * @override
      */
@@ -344,6 +347,7 @@ var PickingClientAction = ClientAction.extend({
         });
     },
 
+
     /**
      *
      */
@@ -356,8 +360,8 @@ var PickingClientAction = ClientAction.extend({
         this.mutex.exec(function () {
             return self._save().then(function () {
                 return self._rpc({
-                    'model': 'stock.picking',
-                    'method': 'put_in_pack',
+                    'model': self.actionParams.model,
+                    'method': 'action_put_in_pack',
                     'args': [[self.actionParams.id]],
                     kwargs: {
                         context: _.extend({}, self.context || {}, {barcode_view: true})
@@ -587,7 +591,7 @@ var PickingClientAction = ClientAction.extend({
 
     /**
      * Handles the `Put in pack` OdooEvent. It makes an RPC call
-     * to the method 'put_in_pack' to create a pack and link move lines to it.
+     * to the method 'action_put_in_pack' to create a pack and link move lines to it.
      *
      * @private
      * @param {OdooEvent} ev

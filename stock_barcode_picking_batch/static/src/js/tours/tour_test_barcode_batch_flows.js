@@ -74,8 +74,8 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
                 },
             });
             checkState(currentViewState);
-            const $linesFromFirstPicking = $( helper.getLines({to: 3}));
-            const $linesFromSecondPicking = $( helper.getLines({from: 4}));
+            const $linesFromFirstPicking = $(helper.getLines({index: [1, 4, 5]}));
+            const $linesFromSecondPicking = $(helper.getLines({from: 2, to: 3}));
             helper.assertLinesBelongTo($linesFromFirstPicking, 'picking_receipt_1');
             helper.assertLinesBelongTo($linesFromSecondPicking, 'picking_receipt_2');
         },
@@ -101,14 +101,14 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(1).o_highlight[data-barcode="product1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
             helper.assert($lines.length, 2, "Expect 2 lines for product1");
             helper.assertLineIsHighlighted($lines, true);
-            helper.assertLineQty($($lines[0]), '1');
+            helper.assertLineQty($($lines[1]), '1');
         }
     },
 
@@ -125,7 +125,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="product1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
@@ -163,7 +163,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productserial1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(2).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]',
         run: function() {
             currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
@@ -184,7 +184,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-LHOOQ'
     },
     {
-        trigger: '.o_barcode_line:nth-child(2).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -192,8 +192,8 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             helper.assert($lines.length, 2, "Expect 2 lines for productserial1");
             const $line1 = $($lines[0]);
             const $line2 = $($lines[1]);
-            helper.assertLineQty($line1, '1');
-            helper.assertLineQty($line2, '0');
+            helper.assertLineQty($line1, '0');
+            helper.assertLineQty($line2, '1');
         }
     },
     {
@@ -201,7 +201,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan SN-OQPAPT'
     },
     {
-        trigger: '.o_barcode_line:nth-child(3).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productserial1'});
@@ -219,12 +219,12 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productlot1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(5).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_lot';
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productlot1'});
-            helper.assert($lines.length, 1, "Expect 2 lines for productlot1");
+            helper.assert($lines.length, 1, "Expect 1 lines for productlot1");
             const $line1 = $($lines[0]);
             helper.assertLineQty($line1, '0');
             helper.assertLineIsHighlighted($line1, true);
@@ -249,12 +249,12 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0001'
     },
     {
-        trigger: '.o_barcode_line:nth-child(5).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'productlot1'});
-            helper.assert($lines.length, 1, "Expect 2 lines for productlot1");
+            helper.assert($lines.length, 1, "Expect 1 lines for productlot1");
             const $line1 = $($lines[0]);
             helper.assertLineQty($line1, '4');
             helper.assertLineIsHighlighted($line1, true);
@@ -300,7 +300,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: '.o_save',
     },
     {
-        trigger: '.o_barcode_line:nth-child(6)',
+        trigger: '.o_barcode_lines',
         run: function() {
             currentViewState.linesCount = 6;
             checkState(currentViewState);
@@ -358,7 +358,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0002'
     },
     {
-        trigger: '.o_barcode_line:nth-child(6).o_highlight[data-barcode="productlot1"]',
+        trigger: '.o_barcode_lines',
         run: function() {
             const $lines =  helper.getLines({barcode: 'productlot1'});
             helper.assert($lines.length, 2, "Expect 2 lines for productlot1");
@@ -526,6 +526,75 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState.validate.isHighlighted = true;
             currentViewState.scanMessage = 'scan_more_src';
             checkState(currentViewState);
+        },
+    },
+]);
+
+tour.register('test_batch_create', {test: true}, [
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+
+    {
+        trigger: '.button_batch_transfer',
+    },
+
+    {
+        trigger: '.o-kanban-button-new',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+           const $pickingTypes = $('.o_barcode_picking_type');
+           helper.assert($pickingTypes.length, 2, "Should contain Delivery Orders and Receipts");
+        },
+    },
+    // select picking type
+    {
+        trigger: '.o_barcode_line_title:contains("Delivery Orders")'
+    },
+
+    {
+        trigger: '.o_confirm'
+    },
+
+    // select 2 delivery orders
+    {
+        trigger: '.o_barcode_line_title:contains("picking_delivery_1")',
+    },
+
+    {
+        trigger: '.o_barcode_line_title:contains("picking_delivery_2")',
+    },
+
+    {
+        trigger: '.o_confirm'
+    },
+
+    // from here should be the same as test_barcode_batch_delivery_1 => just check that it initially looks the same
+    {
+        trigger: '.o_picking_label',
+        run: function () {
+            currentViewState = updateState(defaultViewState, {
+                linesCount: 3,
+                pager: '1/4',
+                pageSummary: 'From WH/Stock/Section 1',
+                next: {
+                    isEnabled: true,
+                    isVisible: true,
+                },
+                previous: {
+                    isEnabled: true,
+                    isVisible: true
+                },
+                scanMessage: 'scan_src',
+            });
+            checkState(currentViewState);
+            const $lineFromPicking1 = helper.getLines({index: 1});
+            const $linesFromPicking2 = helper.getLines({from: 2});
+            helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
+            helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
         },
     },
 ]);

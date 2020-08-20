@@ -30,14 +30,14 @@ class TestDeliveryUPS(TransactionCase):
 
     def wiz_put_in_pack(self, picking):
         """ Helper to use the 'choose.delivery.package' wizard
-        in order to call the '_put_in_pack' method.
+        in order to call the 'action_put_in_pack' method.
         """
-        wiz_action = picking.put_in_pack()
+        wiz_action = picking.action_put_in_pack()
         self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
             'delivery_packaging_id': picking.carrier_id.ups_default_packaging_id.id
         })
-        wiz.put_in_pack()
+        wiz.action_put_in_pack()
 
     def test_01_ups_basic_flow(self):
         SaleOrder = self.env['sale.order']

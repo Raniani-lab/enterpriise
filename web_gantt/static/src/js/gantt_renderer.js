@@ -137,6 +137,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 $previousRow = row.$el;
             });
             _.invoke(oldRows, 'destroy');
+            self._setRowsDroppable();
         });
     },
 

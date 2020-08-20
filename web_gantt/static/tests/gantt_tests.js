@@ -3963,5 +3963,55 @@ QUnit.module('Views', {
 
         gantt.destroy();
     });
+
+    QUnit.test('move a pill in multi-level grop row after collapse and expand grouped row', async function (assert) {
+        assert.expect(6);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            groupBy: ['project_id', 'stage'],
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    assert.deepEqual(args.args[0], [7],
+                        "should write on the correct record");
+                    assert.deepEqual(args.args[1], {
+                        project_id: 1,
+                        start: "2018-12-02 10:30:12",
+                        stop: "2018-12-02 18:29:59",
+                    }, "all modified fields should be correctly set");
+                }
+                return this._super.apply(this, arguments);
+            },
+            domain: [['id', 'in', [1, 7]]],
+        });
+
+        assert.containsN(gantt, '.o_gantt_pill', 4,
+            "there should be two pills (task 1 and task 7) and two pills for group header combined");
+
+        await testUtils.dom.click(gantt.$('.o_gantt_row_container > .o_gantt_row:first .o_gantt_row_title'));
+        assert.doesNotHaveClass(gantt.$('.o_gantt_row_container > .o_gantt_row:first'), 'open',
+        "'Project 1' group should be collapsed");
+        await testUtils.dom.click(gantt.$('.o_gantt_row_container > .o_gantt_row:first .o_gantt_row_title'));
+        assert.hasClass(gantt.$('.o_gantt_row_container > .o_gantt_row:first'), 'open',
+            "'Project 1' group should be expanded");
+
+        // move a pill (task 7) in the other row and in the the next cell (+1 day)
+        const cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        const cellHeight = gantt.$('.o_gantt_cell:first').height();
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.o_gantt_pill[data-id=7]'),
+            gantt.$('.o_gantt_pill[data-id=1]'),
+            { position: { left: cellWidth, top: -cellHeight } },
+        );
+        assert.containsOnce(gantt, '.o_gantt_row_group', 1, "should have one group row");
+
+        gantt.destroy();
+    });
 });
 });

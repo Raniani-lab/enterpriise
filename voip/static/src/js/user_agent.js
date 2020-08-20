@@ -179,7 +179,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this.trigger_up('sip_rejected', this._currentCallParams);
         }
         if (!this._isOutgoing) {
-            this._currentInviteSession.reject();
+            this._currentInviteSession.reject({ statusCode: 603 });
         }
     },
     /**
@@ -482,7 +482,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _rejectInvite(inviteSession) {
         if (!this._isOutgoing) {
             this._audioIncomingRingtone.pause();
-            inviteSession.reject();
+            inviteSession.reject({ statusCode: 603 });
         }
     },
     /**
@@ -698,7 +698,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._ignoreIncoming ||
             this._callState === CALL_STATE.ONGOING_CALL
         ) {
-            inviteSession.reject();
+            inviteSession.reject({ statusCode: 603 });
             return;
         }
 

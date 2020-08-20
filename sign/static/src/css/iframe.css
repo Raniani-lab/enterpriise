@@ -355,7 +355,6 @@ textarea.o_sign_sign_item {
 .ui-draggable-dragging .ui-draggable-handle,
 .o_sign_sign_item_to_add.ui-draggable-dragging,
 .o_sign_sign_item.ui-draggable-dragging { /* jQuery UI */
-    transform: rotate(3deg);
     box-shadow: 0 5px 25px -10px black;
     transition: box-shadow 0.3s;
     cursor: grabbing;

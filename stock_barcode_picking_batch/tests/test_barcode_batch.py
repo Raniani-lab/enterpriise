@@ -35,6 +35,23 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'categ_id': self.env.ref('product.product_category_all').id,
             'barcode': 'product4',
         })
+        self.product5 = self.env['product.product'].create({
+            'name': 'product5',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product5',
+        })
+
+        # Create locations dedicated to package
+        self.shelf5 = self.env['stock.location'].create({
+            'name': 'Section 5',
+            'location_id': self.stock_location.id,
+            'barcode': 'shelf5',
+        })
+
+        # Create some packages
+        self.package1 = self.env['stock.quant.package'].create({'name': 'p5pack01'})
+        self.package2 = self.env['stock.quant.package'].create({'name': 'p5pack02'})
 
         # Create some quants (for deliveries)
         Quant = self.env['stock.quant']
@@ -67,6 +84,17 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'product_id': self.product4.id,
             'location_id': self.shelf4.id,
             'inventory_quantity': 1
+        })
+        Quant.with_context(inventory_mode=True).create({
+            'product_id': self.product5.id,
+            'location_id': self.shelf5.id,
+            'package_id': self.package1.id,
+            'inventory_quantity': 4,
+        })
+        Quant.with_context(inventory_mode=True).create({
+            'product_id': self.product5.id,
+            'location_id': self.shelf5.id,
+            'inventory_quantity': 4,
         })
 
         # Create a first receipt for 2 products.
@@ -126,9 +154,29 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.picking_delivery_2.action_confirm()
         self.picking_delivery_2.action_assign()
 
+        # Create a delivery dedicated to package testing.
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product5
+            move.product_uom_qty = 8
+        self.picking_delivery_package = picking_form.save()
+        self.picking_delivery_package.action_confirm()
+        self.picking_delivery_package.action_assign()
+
+        # Create another quant with package after reservation to test scan
+        # unexpected package in the Barcode App.
+        Quant.with_context(inventory_mode=True).create({
+            'product_id': self.product5.id,
+            'location_id': self.shelf5.id,
+            'package_id': self.package2.id,
+            'inventory_quantity': 4,
+        })
+
         # Changes name of pickings to be able to track them on the tour
         self.picking_delivery_1.name = 'picking_delivery_1'
         self.picking_delivery_2.name = 'picking_delivery_2'
+        self.picking_delivery_package.name = 'picking_delivery_package'
 
     def _get_batch_client_action_url(self, batch_id):
         return '/web#model=stock.picking.batch&picking_batch_id=%s&action=stock_barcode_picking_batch_client_action' % batch_id
@@ -163,6 +211,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         batch_form = Form(self.env['stock.picking.batch'])
         batch_form.picking_ids.add(self.picking_delivery_1)
         batch_form.picking_ids.add(self.picking_delivery_2)
+        batch_form.picking_ids.add(self.picking_delivery_package)
         batch_delivery = batch_form.save()
         self.assertEqual(
             batch_delivery.picking_type_id.id,
@@ -170,8 +219,11 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             "Batch picking must take the picking type of its sub-pickings"
         )
         batch_delivery.action_confirm()
-        self.assertEqual(len(batch_delivery.move_ids), 5)
-        self.assertEqual(len(batch_delivery.move_line_ids), 7)
+        self.assertEqual(len(batch_delivery.move_ids), 6)
+        self.assertEqual(len(batch_delivery.move_line_ids), 9)
+        packaged_move_lines = batch_delivery.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product5.id)
+        self.assertEqual(len(packaged_move_lines), 2)
+        self.assertEqual(packaged_move_lines.package_id.id, self.package1.id)
 
         url = self._get_batch_client_action_url(batch_delivery.id)
         self.start_tour(url, 'test_barcode_batch_delivery_1', login='admin', timeout=180)
@@ -240,7 +292,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
 
         self.start_tour(url, 'test_put_in_pack_from_multiple_pages', login='admin', timeout=180)
 
-        pack = self.env['stock.quant.package'].search([])[-1]
+        pack = self.env['stock.quant.package'].search([('location_id', '=', self.stock_location.id)], limit=1)
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(sum(pack.quant_ids.mapped('quantity')), 4)
 
@@ -305,7 +357,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         url = self._get_batch_client_action_url(batch_internal.id)
 
         self.start_tour(url, 'test_put_in_pack_before_dest', login='admin', timeout=180)
-        pack = self.env['stock.quant.package'].search([])[-1]
+        pack = self.env['stock.quant.package'].search([('location_id', '=', self.shelf2.id)], limit=1)
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(pack.location_id, self.shelf2)
 

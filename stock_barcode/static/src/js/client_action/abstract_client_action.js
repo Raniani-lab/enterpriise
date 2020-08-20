@@ -885,7 +885,7 @@ var ClientAction = AbstractAction.extend({
                     line.product_qty += params.product.qty || 1;
                 }
             }
-        } else if (this._isAbleToCreateNewLine()) {
+        } else {
             isNewLine = true;
             // Create a line with the processed quantity.
             if (params.product.tracking === 'none' ||
@@ -918,16 +918,6 @@ var ClientAction = AbstractAction.extend({
             'lineDescription': line,
             'isNewLine': isNewLine,
         };
-    },
-
-    /**
-     * Defines if the model is able to create new lines on the fly.
-     *
-     * @private
-     * @returns {boolean}
-     */
-    _isAbleToCreateNewLine: function () {
-        return true;
     },
 
     /**

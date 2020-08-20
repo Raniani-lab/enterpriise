@@ -36,6 +36,16 @@ const BatchPickingClientAction = PickingClientAction.extend({
     /**
      * @override
      */
+    _createLineCommand: function (line) {
+        const lineCommand = this._super(...arguments);
+        const vals = lineCommand[2];
+        vals.picking_id = vals.picking_id.id;
+        return lineCommand;
+    },
+
+    /**
+     * @override
+     */
     _getAddLineDefaultValues: function (currentPage) {
         const values = this._super(currentPage);
         values.default_batch_id = this.currentState.id;
@@ -86,13 +96,6 @@ const BatchPickingClientAction = PickingClientAction.extend({
     /**
      * @override
      */
-    _isAbleToCreateNewLine: function () {
-        return false;
-    },
-
-    /**
-     * @override
-     */
     _isControlButtonsEnabled: function () {
         return this.mode !== 'draft' && this._super();
     },
@@ -113,6 +116,20 @@ const BatchPickingClientAction = PickingClientAction.extend({
             return [];
         }
         return this._super.apply(this, arguments);
+    },
+
+    /**
+     * @override
+     */
+    _makeNewLine: function () {
+        const newLine = this._super(...arguments);
+        const currentPage = this.pages[this.currentPageIndex];
+        // As the picking id is mandatory on the move line (otherwize the batch can't retrieve it)
+        // but we can't know on which picking the new line must belong, we take the picking id (and
+        // its color) from the first line of the page by default.
+        // The user can still change it from the form view afterward.
+        const {picking_id, color_hue} = currentPage.lines[0];
+        return Object.assign(newLine, {picking_id: picking_id, color_hue: color_hue});
     },
 
     /**

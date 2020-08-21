@@ -37,7 +37,7 @@ class HrContract(models.Model):
     wishlist_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
-    new_car = fields.Boolean('Request a new car')
+    new_car = fields.Boolean('Requested a new car')
     new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model", domain=lambda self: self._get_possible_model_domain())
     max_unused_cars = fields.Integer(compute='_compute_max_unused_cars')
     acquisition_date = fields.Date(related='car_id.acquisition_date', readonly=False, groups="fleet.fleet_group_manager")

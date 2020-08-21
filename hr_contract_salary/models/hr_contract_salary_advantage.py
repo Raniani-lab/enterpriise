@@ -22,6 +22,7 @@ class HrContractSalaryAdvantage(models.Model):
             ('ttype', '=', 'binary')]
 
     name = fields.Char(translate=True)
+    active = fields.Boolean(default=True)
     res_field_id = fields.Many2one(
         'ir.model.fields', string="Advantage Field", domain=_get_field_domain, ondelete='cascade', required=True,
         help='Contract field linked to this advantage')

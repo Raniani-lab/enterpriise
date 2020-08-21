@@ -103,7 +103,7 @@
         <field name="license_plate">1-JFC-095</field>
         <field name="acquisition_date" eval="time.strftime('%Y-01-01')"/>
         <field name="co2">88</field>
-        <field name="driver_id" ref="res_partner_laurie_poiret"/>
+        <field name="driver_id" ref="res_partner_laurie_poiret_private_address"/>
         <field name="car_value">38000</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>

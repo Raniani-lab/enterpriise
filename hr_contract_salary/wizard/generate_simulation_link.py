@@ -59,6 +59,8 @@ class GenerateSimulationLink(models.TransientModel):
     applicant_id = fields.Many2one('hr.applicant')
     job_title = fields.Char("Job Title", compute='_compute_from_contract_id', store=True, readonly=False)
 
+    contract_start_date = fields.Date()
+
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
     url = fields.Char('Simulation link', compute='_compute_url')
 
@@ -71,7 +73,7 @@ class GenerateSimulationLink(models.TransientModel):
                 wizard.email_to = wizard.applicant_id.email_from
 
     def _get_url_triggers(self):
-        return ['applicant_id', 'final_yearly_costs', 'employee_contract_id', 'job_title']
+        return ['applicant_id', 'final_yearly_costs', 'employee_contract_id', 'job_title', 'contract_start_date']
 
     @api.depends(lambda self: [key for key in self._fields.keys()])
     def _compute_url(self):

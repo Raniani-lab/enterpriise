@@ -12,6 +12,9 @@ class GenerateSimulationLink(models.TransientModel):
         ('CDI', 'CDI'),
         ('CDD', 'CDD')], string="Contract Type", default="PFI")
 
+    new_car = fields.Boolean(string="Force New Cars List", help="The employee will be able to choose a new car even if the maximum number of used cars available is reached.")
+    car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
+
     def _get_url_triggers(self):
         res = super()._get_url_triggers()
-        return res + ['contract_type']
+        return res + ['new_car', 'car_id', 'contract_type']

@@ -12,6 +12,9 @@ from odoo.tools import consteq
 from odoo.tools.image import image_data_uri
 from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import get_current_url
+from urllib.parse import urlparse, parse_qs
+from datetime import datetime
+
 
 
 class SignContract(Sign):
@@ -424,6 +427,11 @@ class HrContractSalary(http.Controller):
             })
         self._update_personal_info(employee, contract, personal_infos, no_name_write=bool(kw.get('employee')))
         new_contract = request.env['hr.contract'].sudo().new(self._get_new_contract_values(contract, employee, contract_values))
+
+        if 'original_link' in kw:
+            start_date = parse_qs(urlparse(kw['original_link']).query).get('contract_start_date', False)
+            if start_date:
+                new_contract.date_start = datetime.strptime(start_date[0], '%Y-%m-%d').date()
 
         new_contract.wage_with_holidays = contract_values['wage']
         new_contract.final_yearly_costs = float(contract_values['final_yearly_costs'] or 0.0)

@@ -74,7 +74,8 @@ class HrContractSalary(HrContractSalary):
 
     def _get_advantages(self, contract):
         res = super()._get_advantages(contract)
-        if contract.available_cars_amount < contract.max_unused_cars:
+        force_new_car = request.httprequest.args.get('new_car', False)
+        if force_new_car or contract.available_cars_amount < contract.max_unused_cars:
             res -= request.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_new_car')
         return res
 
@@ -85,6 +86,11 @@ class HrContractSalary(HrContractSalary):
             contract._get_available_vehicles_domain(contract.employee_id.address_home_id)).sorted(key=lambda car: car.total_depreciated_cost)
         available_bikes = request.env['fleet.vehicle'].sudo().search(
             contract._get_available_vehicles_domain(contract.employee_id.address_home_id, vehicle_type='bike')).sorted(key=lambda car: car.total_depreciated_cost)
+        force_car = request.httprequest.args.get('car_id', False)
+        force_car_id = False
+        if int(force_car):
+            force_car_id = request.env['fleet.vehicle'].sudo().browse(int(force_car))
+            available_cars |= force_car_id
         dropdown_options['company_car_total_depreciated_cost'] = [(
             'old-%s' % (car.id),
             '%s/%s/ \u2022 %s € \u2022 %s%s' % (
@@ -125,15 +131,19 @@ class HrContractSalary(HrContractSalary):
         ) for model in can_be_requested_models]
         dropdown_options['company_bike_depreciated_cost'] += new_bike_options
 
-        if contract.available_cars_amount < contract.max_unused_cars:
+        force_new_car = request.httprequest.args.get('new_car', False)
+        if force_new_car or contract.available_cars_amount < contract.max_unused_cars:
             dropdown_options['company_car_total_depreciated_cost'] += new_car_options
         else:
             dropdown_options['wishlist_car_total_depreciated_cost'] = new_car_options
             initial_values['fold_wishlist_car_total_depreciated_cost'] = False
             initial_values['wishlist_car_total_depreciated_cost'] = 0
 
-
-        if contract.car_id:
+        if force_car_id:
+            initial_values['select_company_car_total_depreciated_cost'] = 'old-%s' % force_car_id.id
+            initial_values['fold_company_car_total_depreciated_cost'] = True
+            initial_values['company_car_total_depreciated_cost'] = force_car_id.total_depreciated_cost
+        elif contract.car_id:
             initial_values['select_company_car_total_depreciated_cost'] = 'old-%s' % contract.car_id.id
             initial_values['fold_company_car_total_depreciated_cost'] = True
             initial_values['company_car_total_depreciated_cost'] = contract.car_id.total_depreciated_cost

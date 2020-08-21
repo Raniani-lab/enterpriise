@@ -32,7 +32,8 @@ class EventEvent(models.Model):
     def _update_website_menus(self, menus_update_by_field=None):
         super(EventEvent, self)._update_website_menus(menus_update_by_field=menus_update_by_field)
         for event in self:
-            event._update_website_menu_entry('social_menu', 'social_menu_ids', '_get_social_menu_entries')
+            if event.menu_id and (not menus_update_by_field or event in menus_update_by_field.get('social_menu')):
+                event._update_website_menu_entry('social_menu', 'social_menu_ids', '_get_social_menu_entries')
 
     def _get_menu_type_field_matching(self):
         res = super(EventEvent, self)._get_menu_type_field_matching()

@@ -31,3 +31,31 @@ class Product(models.Model):
         products_to_read = {product['id']: product for product in products_to_read}
         to_add.extend([dict(t[0], **products_to_read[t[1]]) for t in to_read])
         return {product.pop('barcode'): product for product in products + to_add}
+
+    def read_product_and_package(self, lot_ids=False, fetch_product=False):
+        """ Fetch product and/or package fields value used by the barcode app.
+
+        :param lot_ids: list of `stock.production.lot` ids, used to retrieve package and owner
+        :type lot_ids: list, optional
+        :param fetch_product: set on True to read product's fields used by barcode.
+        :type fetch_product: bool, optional
+
+        :return: product and/or package info.
+        :rtype: dict
+        """
+        res = {}
+        if fetch_product:
+            product = self.read(['display_name', 'uom_id', 'tracking'])
+            res['product'] = product[0]
+        if lot_ids:
+            quant = self.env['stock.quant'].search_read(
+                [
+                    ('lot_id', 'in', lot_ids),
+                    ('location_id.usage', '=', 'internal'),
+                    ('product_id', '=', self.id),
+                ],
+                ['package_id', 'owner_id'],
+                limit=1,
+            )
+            res['quant'] = quant[0]
+        return res

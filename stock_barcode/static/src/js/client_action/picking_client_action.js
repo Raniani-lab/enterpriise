@@ -259,6 +259,7 @@ var PickingClientAction = ClientAction.extend({
             },
             'package_id': params.package_id,
             'result_package_id': params.result_package_id,
+            'owner_id': params.owner_id,
             'state': 'assigned',
             'reference': this.name,
             'virtual_id': virtualId,

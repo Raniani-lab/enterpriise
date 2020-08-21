@@ -438,6 +438,86 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.start_tour(url, 'test_receipt_reserved_1', login='admin', timeout=180)
             self.assertEqual(CALL_COUNT, 1)
 
+    def test_delivery_lot_with_package(self):
+        """ Have a delivery for on product tracked by SN, scan a non-reserved SN
+        and check the new created line has the right SN's package & owner.
+        """
+        clean_access_rights(self.env)
+        grp_lot = self.env.ref('stock.group_production_lot')
+        grp_owner = self.env.ref('stock.group_tracking_owner')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_owner.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        # Creates 4 serial numbers and adds 2 qty. for the reservation.
+        snObj = self.env['stock.production.lot']
+        sn1 = snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn2 = snObj.create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn3 = snObj.create({'name': 'sn3', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        sn4 = snObj.create({'name': 'sn4', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+        package1 = self.env['stock.quant.package'].create({'name': 'pack_sn_1'})
+        package2 = self.env['stock.quant.package'].create({'name': 'pack_sn_2'})
+        partner = self.env['res.partner'].create({'name': 'Particulier'})
+        inv_line_data = {
+            'product_id': self.productserial1.id,
+            'product_uom_id': self.uom_unit.id,
+            'product_qty': 1,
+            'location_id': self.stock_location.id,
+        }
+        inventory = self.env['stock.inventory'].create({
+            'name': 'Inv. productserial1',
+            'line_ids': [
+                (0, 0, dict(inv_line_data, prod_lot_id=sn1.id, package_id=package1.id)),
+                (0, 0, dict(inv_line_data, prod_lot_id=sn2.id, package_id=package1.id)),
+            ],
+        })
+        inventory.action_start()
+        inventory.action_validate()
+
+        # Creates and confirms the delivery.
+        delivery_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        self.env['stock.move'].create({
+            'name': self.productserial1.name,
+            'product_id': self.productserial1.id,
+            'product_uom_qty': 2,
+            'product_uom': self.productserial1.uom_id.id,
+            'picking_id': delivery_picking.id,
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+        })
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+        # Add 2 more qty. after the reservation.
+        inventory = self.env['stock.inventory'].create({
+            'name': 'Inv. productserial1',
+            'line_ids': [
+                (0, 0, dict(inv_line_data, prod_lot_id=sn3.id, package_id=package2.id)),
+                (0, 0, dict(inv_line_data, prod_lot_id=sn4.id, package_id=package2.id, partner_id=partner.id)),
+            ],
+        })
+        inventory.action_start()
+        inventory.action_validate()
+
+        # Runs the tour.
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_delivery_lot_with_package', login='admin', timeout=180)
+
+        # Checks move lines values after delivery was completed.
+        self.assertEqual(delivery_picking.state, "done")
+        move_line_1 = delivery_picking.move_line_ids[0]
+        move_line_2 = delivery_picking.move_line_ids[1]
+        self.assertEqual(move_line_1.lot_id, sn3)
+        self.assertEqual(move_line_1.package_id, package2)
+        self.assertEqual(move_line_1.owner_id.id, False)
+        self.assertEqual(move_line_2.lot_id, sn4)
+        self.assertEqual(move_line_2.package_id, package2)
+        self.assertEqual(move_line_2.owner_id, partner)
+
     def test_delivery_reserved_1(self):
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')

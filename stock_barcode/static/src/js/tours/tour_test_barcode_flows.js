@@ -1221,6 +1221,85 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 ]);
 
+tour.register('test_delivery_lot_with_package', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action:contains("sn2")',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            var $line1 = $('.o_barcode_line').eq(0);
+            var $line2 = $('.o_barcode_line').eq(1);
+            helper.assert($line1.find('.o_line_lot_name').text(), 'sn1');
+            helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+            helper.assert($line2.find('.o_line_lot_name').text(), 'sn2');
+            helper.assert($line2.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn3'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn4'
+    },
+
+    {
+        trigger: '.o_barcode_client_action:contains("sn4")',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertScanMessage('scan_products');
+            var $line1 = $('.o_barcode_line').eq(0);
+            var $line2 = $('.o_barcode_line').eq(1);
+            var $line3 = $('.o_barcode_line').eq(2);
+            var $line4 = $('.o_barcode_line').eq(3);
+            helper.assert($line1.find('.o_line_lot_name').text(), 'sn4');
+            helper.assert($line1.find('.fa-user-o').parent().text().trim(), "Particulier");
+            helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_2"), true);
+            helper.assert($line2.find('.o_line_lot_name').text(), 'sn3');
+            helper.assert($line2.find('.fa-user-o').parent().text().trim(), "");
+            helper.assert($line2.find('.fa-archive').parent().text().includes("pack_sn_2"), true);
+            helper.assert($line3.find('.o_line_lot_name').text(), 'sn1');
+            helper.assert($line3.find('.fa-user-o').parent().text().trim(), "");
+            helper.assert($line3.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+            helper.assert($line4.find('.o_line_lot_name').text(), 'sn2');
+            helper.assert($line4.find('.fa-user-o').parent().text().trim(), "");
+            helper.assert($line4.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+        }
+    },
+
+    // Open the form view to trigger a save
+    {
+        trigger: '.o_barcode_line:eq(0) .fa-pencil',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function() {
+            helper.assert($('input[name="qty_done"]').val(), "1");
+            helper.assert($('div[name="package_id"] input').val(), "pack_sn_2");
+            helper.assert($('div[name="result_package_id"] input').val(), "");
+            helper.assert($('div[name="owner_id"] input').val(), "Particulier");
+            helper.assert($('div[name="lot_id"] input').val(), "sn4");
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification.bg-success'
+    },
+]);
+
 tour.register('test_delivery_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

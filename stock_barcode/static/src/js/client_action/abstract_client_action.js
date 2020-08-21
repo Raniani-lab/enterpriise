@@ -1344,24 +1344,50 @@ var ClientAction = AbstractAction.extend({
             });
         };
 
-        var readProduct = function (product_id) {
+        var readProductQuant = function (product_id, lots) {
+            var advanceSettings = self.groups.group_tracking_lot || self.groups.group_tracking_owner;
             var product_barcode = _.findKey(self.productsByBarcode, function (product) {
                 return product.id === product_id;
             });
+            var product = false;
+            var prom = Promise.resolve();
 
             if (product_barcode) {
-                var product = self.productsByBarcode[product_barcode];
+                product = self.productsByBarcode[product_barcode];
                 product.barcode = product_barcode;
-                return Promise.resolve(product);
-            } else {
-                return self._rpc({
+            }
+
+            if (!product || advanceSettings) {
+                var lot_ids = _.map(lots, function (lot) {
+                    return lot.id;
+                });
+                prom = self._rpc({
                     model: 'product.product',
-                    method: 'read',
+                    method: 'read_product_and_package',
                     args: [product_id],
-                }).then(function (product) {
-                    return Promise.resolve(product[0]);
+                    kwargs: {
+                        lot_ids: advanceSettings ? lot_ids : false,
+                        fetch_product: !(product),
+                    },
                 });
             }
+
+            return prom.then(function (res) {
+                product = product || res.product;
+                var lot = _.find(lots, function (lot) {
+                    return lot.product_id[0] === product.id;
+                });
+                var data = {
+                    lot_id: lot.id,
+                    lot_name: lot.display_name,
+                    product: product
+                };
+                if (res && res.quant) {
+                    data.package_id = res.quant.package_id;
+                    data.owner_id = res.quant.owner_id;
+                }
+                return Promise.resolve(data);
+            });
         };
 
         var getLotInfo = function (lots) {
@@ -1381,12 +1407,7 @@ var ClientAction = AbstractAction.extend({
             if (! product_id.length) {
                 product_id = [lots[0].product_id[0]];
             }
-            return readProduct(product_id[0]).then(function (product) {
-                var lot = _.find(lots, function (lot) {
-                    return lot.product_id[0] === product.id;
-                });
-                return Promise.resolve({lot_id: lot.id, lot_name: lot.display_name, product: product});
-            });
+            return readProductQuant(product_id[0], lots);
         };
 
         var searchRead = function (barcode) {
@@ -1466,7 +1487,9 @@ var ClientAction = AbstractAction.extend({
                 'product': product,
                 'barcode': lot_info.product.barcode,
                 'lot_id': lot_info.lot_id,
-                'lot_name': lot_info.lot_name
+                'lot_name': lot_info.lot_name,
+                'owner_id': lot_info.owner_id,
+                'package_id': lot_info.package_id,
             });
             if (res.isNewLine) {
                 self.scannedLines.push(res.lineDescription.virtual_id);

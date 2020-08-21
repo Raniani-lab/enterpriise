@@ -2,17 +2,6 @@ from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 import calendar
 
-
-class AccountTaxReportActivity(models.Model):
-    _inherit = "mail.activity"
-
-    def _get_vat_report_action_to_open(self, company_id):
-        if company_id.country_id.code == 'BE':
-            return self.env["ir.actions.actions"]._for_xml_id("l10n_be_reports.action_account_report_be_vat")
-        else:
-            return super(AccountTaxReportActivity, self)._get_vat_report_action_to_open(company_id)
-
-
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 

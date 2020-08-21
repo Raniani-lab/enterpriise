@@ -12,7 +12,7 @@
     'description': "",
     'depends': [
         'website_twitter_wall',
-        'website_event_track_online',
+        'website_event',
     ],
     'data': [
         'views/assets.xml',
@@ -24,4 +24,5 @@
     ],
     'application': False,
     'installable': True,
+    'auto_install': True,
 }

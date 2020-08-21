@@ -7,7 +7,7 @@
         <field name="target">fullscreen</field>
     </record>
 
-    <record model="ir.ui.view" id="event_event_view_form_inherit_barcode">
+    <record id="event_event_view_form" model="ir.ui.view">
         <field name="name">event.event.view.form.inherit.barcode</field>
         <field name="inherit_id" ref="event.view_event_form"/>
         <field name="model">event.event</field>

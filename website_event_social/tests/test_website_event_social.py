@@ -3,10 +3,10 @@
 
 from ast import literal_eval
 
-from odoo.addons.website_event_track_online.tests.common import TestEventTrackOnlineCommon
+from odoo.addons.website_event.tests.common import TestEventOnlineCommon
 
 
-class TestTrackPush(TestEventTrackOnlineCommon):
+class TestTrackPush(TestEventOnlineCommon):
     def test_track_push(self):
         """" Test 'Send Push to Attendees' action and verify that it correctly
         targets all visitors that are registered to the event """

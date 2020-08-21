@@ -118,8 +118,9 @@ class assets_report(models.AbstractModel):
             depreciation_closing = al['depreciated_end']
             depreciation_minus = 0.0
 
-            asset_opening = al['asset_original_value'] if al['max_date_before'] else 0.0
-            asset_add = 0.0 if al['max_date_before'] else al['asset_original_value']
+            opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
+            asset_opening = al['asset_original_value'] if opening else 0.0
+            asset_add = 0.0 if opening else al['asset_original_value']
             asset_minus = 0.0
 
             if al['import_depreciated']:
@@ -132,8 +133,9 @@ class assets_report(models.AbstractModel):
                 depreciation_opening += child['depreciated_start'] - child['depreciation']
                 depreciation_closing += child['depreciated_end']
 
-                asset_opening += child['asset_original_value'] if child['max_date_before'] else 0.0
-                asset_add += 0.0 if child['max_date_before'] else child['asset_original_value']
+                opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
+                asset_opening += child['asset_original_value'] if opening else 0.0
+                asset_add += 0.0 if opening else child['asset_original_value']
 
             depreciation_add = depreciation_closing - depreciation_opening
             asset_closing = asset_opening + asset_add
@@ -221,7 +223,6 @@ class assets_report(models.AbstractModel):
                        asset.original_value as asset_original_value,
                        COALESCE(asset.first_depreciation_date_import, asset.first_depreciation_date) as asset_date,
                        asset.already_depreciated_amount_import as import_depreciated,
-                       max_date_before.date as max_date_before,
                        asset.disposal_date as asset_disposal_date,
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,

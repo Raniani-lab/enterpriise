@@ -209,20 +209,6 @@
         </field>
     </record>
 
-    <record id="quality_check_failure_message" model="ir.ui.view">
-        <field name="name">quality.check.failure.message</field>
-        <field name="model">quality.check</field>
-        <field name="priority">1000</field>
-        <field name="arch" type="xml">
-            <form>
-                <field name="failure_message"/>
-                <footer>
-                    <button special="cancel" string="OK" class="btn-primary"/>
-                </footer>
-            </form>
-        </field>
-   </record>
-
     <!-- QUALITY.CHECK -->
    <record id="quality_check_view_form" model="ir.ui.view">
         <field name="name">quality.check.view.form</field>

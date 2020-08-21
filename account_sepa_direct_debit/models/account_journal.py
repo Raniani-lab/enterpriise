@@ -7,13 +7,6 @@ from odoo import models
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    def get_batch_payment_methods_list(self):
-        """ Overridden from account_batch_payment to include SDD payment method
-        """
-        rslt = super(AccountJournal, self).get_batch_payment_methods_list()
-        rslt.append('sdd')
-        return rslt
-
     def _default_inbound_payment_methods(self):
         """ We set SDD as default inbound  payment method on new bank journals.
         """

@@ -47,19 +47,4 @@
         </field>
     </record>
 
-    <record id="mrp_mps_stock_move_tree_view" model="ir.ui.view" >
-        <field name="name">mrp.mps.stock.move.tree.view</field>
-        <field name="model">stock.move</field>
-        <field name="priority">1000</field>
-        <field name="arch" type="xml">
-            <tree create="0">
-                <field name="reference"/>
-                <field name="date"/>
-                <field name="product_uom_qty" string="Quantity"/>
-                <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
 </odoo>

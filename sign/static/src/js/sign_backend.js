@@ -542,8 +542,7 @@ odoo.define('sign.template', function(require) {
                     }
                 });
                 if (self.customPopovers[itemId]) {
-                    self.customPopovers[itemId].$currentTarget.popover('hide');
-                    self.customPopovers[itemId] = false;
+                    self._closePopover(itemId);
                 } else {
                     self.customPopovers[itemId] = new SignItemCustomPopover(self, self.parties, {'field_name': $signatureItem[0]['field-name'], 'field_type': $signatureItem[0]['field-type']}, self.select_options);
                     self.customPopovers[itemId].create($signatureItem);
@@ -604,6 +603,7 @@ odoo.define('sign.template', function(require) {
         enableCustomBar: function($item) {
             var self = this;
 
+            const itemId = $item.data('itemId');
             $item.on('dragstart resizestart', function(e, ui) {
                 var $target = $(e.target);
                 if (!$target.hasClass('ui-draggable') && !$target.hasClass('ui-resizable')) {
@@ -611,9 +611,15 @@ odoo.define('sign.template', function(require) {
                     // Let the event propagate to its parents
                     return;
                 }
+                if(self.customPopovers[itemId]) {
+                    self._closePopover(itemId);
+                }
                 start.call(self, ui.helper);
             });
             $item.find('.o_sign_config_area .fa.fa-arrows').on('mousedown', function(e) {
+                if(self.customPopovers[itemId]) {
+                    self._closePopover(itemId);
+                }
                 start.call(self, $item);
                 process.call(self, $item);
             });
@@ -658,6 +664,11 @@ odoo.define('sign.template', function(require) {
                 this.$vBarLeft.hide();
                 this.$vBarRight.hide();
             }
+        },
+
+        _closePopover(itemId) {
+            this.customPopovers[itemId].$currentTarget.popover('hide');
+            this.customPopovers[itemId] = false;
         },
 
         updateSignItem: function($signatureItem) {

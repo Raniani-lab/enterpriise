@@ -44,22 +44,22 @@ class HrContractEmployeeReport(models.Model):
             c.wage AS wage,
             CASE WHEN serie = start.contract_start THEN 1 ELSE 0 END as count_new_employee,
             CASE WHEN date_part('month', exit.contract_end) = date_part('month', serie) AND date_part('year', exit.contract_end) = date_part('year', serie) THEN 1 ELSE 0 END as count_employee_exit,
-            date_start,
-            date_end,
+            c.date_start,
+            c.date_end,
             exit.contract_end as date_end_contract,
             start.contract_start,
             CASE
-                WHEN date_part('month', date_start) = date_part('month', serie) AND date_part('year', date_start) = date_part('year', serie)
-                    THEN (31 - LEAST(date_part('day', date_start), 30)) / 30
-                WHEN date_end IS NULL THEN 1
-                WHEN date_part('month', date_end) = date_part('month', serie) AND date_part('year', date_end) = date_part('year', serie)
-                    THEN (LEAST(date_part('day', date_end), 30) / 30)
+                WHEN date_part('month', c.date_start) = date_part('month', serie) AND date_part('year', c.date_start) = date_part('year', serie)
+                    THEN (31 - LEAST(date_part('day', c.date_start), 30)) / 30
+                WHEN c.date_end IS NULL THEN 1
+                WHEN date_part('month', c.date_end) = date_part('month', serie) AND date_part('year', c.date_end) = date_part('year', serie)
+                    THEN (LEAST(date_part('day', c.date_end), 30) / 30)
                 ELSE 1 END as age_sum,
             serie::DATE as date,
             EXTRACT(EPOCH FROM serie)/2628028.8 AS start_date_months, -- 2628028.8 = 3600 * 24 * 30.417 (30.417 is the mean number of days in a month)
             CASE
-                WHEN date_end IS NOT NULL AND date_part('month', date_end) = date_part('month', serie) AND date_part('year', date_end) = date_part('year', serie) THEN
-                    EXTRACT(EPOCH FROM (date_end))/2628028.8
+                WHEN c.date_end IS NOT NULL AND date_part('month', c.date_end) = date_part('month', serie) AND date_part('year', c.date_end) = date_part('year', serie) THEN
+                    EXTRACT(EPOCH FROM (c.date_end))/2628028.8
                 ELSE
                     EXTRACT(EPOCH FROM (date_trunc('month', serie) + interval '1 month' - interval '1 day'))/2628028.8
                 END AS end_date_months

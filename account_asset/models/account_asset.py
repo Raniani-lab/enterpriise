@@ -244,7 +244,7 @@ class AccountAsset(models.Model):
             if asset.state in ['open', 'paused', 'close']:
                 raise UserError(_(
                     'You cannot delete a document that is in %s state.',
-                    self._fields['state']._description_selection(self.env).get(asset.state)
+                    dict(self._fields['state']._description_selection(self.env)).get(asset.state)
                 ))
             for line in asset.original_move_line_ids:
                 body = _('A document linked to %s has been deleted: ') % (line.name or _('this move'))

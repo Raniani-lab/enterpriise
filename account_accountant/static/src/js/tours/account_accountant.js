@@ -65,7 +65,6 @@ odoo.define('account_accountant.tour', function (require) {
     );
 
     tour.register('account_accountant_tour_upload_ocr_step', {
-            skip_enabled: true,
             rainbowMan: false,
         },
         [

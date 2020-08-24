@@ -23,24 +23,25 @@ class SocialFacebookController(http.Controller):
     @fragment_to_query_string
     @http.route(['/social_facebook/callback'], type='http', auth='user')
     def facebook_account_callback(self, access_token=None, is_extended_token=False, **kw):
+        """ Facebook returns to the callback URL with all its own arguments as hash parameters.
+        We use this very handy 'fragment_to_query_string' decorator to convert them to server readable parameters. """
         if not request.env.user.has_group('social.group_social_manager'):
             return request.render('social.social_http_error_view',
                                   {'error_message': _('Unauthorized. Please contact your administrator. ')})
 
-        if not access_token:
-            return request.render(
-                'social.social_http_error_view',
-                {'error_message': _('Facebook did not provide a valid access token.')})
+        if kw.get('error') != 'access_denied':
+            if not access_token:
+                return request.render(
+                    'social.social_http_error_view',
+                    {'error_message': _('Facebook did not provide a valid access token.')})
 
-        """ Facebook returns to the callback URL with all its own arguments as hash parameters.
-        We use this very handy 'fragment_to_query_string' decorator to convert them to server readable parameters. """
+            if access_token:
+                media = request.env.ref('social_facebook.social_media_facebook')
 
-        media = request.env.ref('social_facebook.social_media_facebook')
-
-        try:
-            self._create_facebook_accounts(access_token, media, is_extended_token)
-        except SocialValidationException as e:
-            return request.render('social.social_http_error_view', {'error_message': str(e)})
+                try:
+                    self._create_facebook_accounts(access_token, media, is_extended_token)
+                except SocialValidationException as e:
+                    return request.render('social.social_http_error_view', {'error_message': str(e)})
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,

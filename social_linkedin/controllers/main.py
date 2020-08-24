@@ -26,23 +26,24 @@ class SocialLinkedin(http.Controller):
             return request.render('social.social_http_error_view',
                                   {'error_message': _('Unauthorized. Please contact your administrator.')})
 
-        if not access_token and not code:
-            return request.render('social.social_http_error_view',
-                                  {'error_message': _('LinkedIn did not provide a valid access token.')})
+        if kw.get('error') not in ('user_cancelled_authorize', 'user_cancelled_login'):
+            if not access_token and not code:
+                return request.render('social.social_http_error_view',
+                                      {'error_message': _('LinkedIn did not provide a valid access token.')})
 
-        media = request.env.ref('social_linkedin.social_media_linkedin')
+            media = request.env.ref('social_linkedin.social_media_linkedin')
 
-        if media._compute_linkedin_csrf() != state:
-            return request.render('social.social_http_error_view',
-                                  {'error_message': _('There was a security issue during your request.')})
+            if media._compute_linkedin_csrf() != state:
+                return request.render('social.social_http_error_view',
+                                      {'error_message': _('There was a security issue during your request.')})
 
-        if not access_token:
-            try:
-                access_token = self._get_linkedin_access_token(code, media)
-            except SocialValidationException as e:
-                return request.render('social.social_http_error_view', {'error_message': str(e)})
+            if not access_token:
+                try:
+                    access_token = self._get_linkedin_access_token(code, media)
+                except SocialValidationException as e:
+                    return request.render('social.social_http_error_view', {'error_message': str(e)})
 
-        request.env['social.account']._create_linkedin_accounts(access_token, media)
+            request.env['social.account']._create_linkedin_accounts(access_token, media)
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,

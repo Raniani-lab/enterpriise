@@ -24,7 +24,12 @@ class EventEvent(models.Model):
     def _compute_social_menu(self):
         """ If the main menu is checked and we have a twitter wall configured: show 'Social' menu entry """
         for event in self:
-            event.social_menu = event.website_menu and event.twitter_wall_id
+            if not event.twitter_wall_id:
+                event.social_menu = False
+            elif event.website_menu and (event.website_menu != event._origin.website_menu or not event.social_menu):
+                event.social_menu = True
+            elif not event.social_menu:
+                event.social_menu = False
 
     def _get_menu_update_fields(self):
         return super(EventEvent, self)._get_menu_update_fields() + ['social_menu']

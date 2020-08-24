@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from http.client import BadStatusLine
 from logging import getLogger
 from psycopg2 import InternalError, OperationalError
-from werkzeug.urls import url_encode
+from werkzeug.urls import url_join
 
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
@@ -27,7 +27,9 @@ class WebsiteTwitterWall(models.Model):
     description = fields.Text(translate=True)
     is_live = fields.Boolean(help="Is live mode on/off", default=True)
     active = fields.Boolean(default=True)
-    search_pattern = fields.Char('Search string', help='The search criteria to get the tweets you want. You can use the Twitter query operators.')
+    search_pattern = fields.Char('Search string',
+        help='The search criteria to get the tweets you want. You can use the Twitter query operators.\n'
+             'You can also use the special "favorites:screen_name" operator to get the favorited tweets of "screen_name".')
     mode = fields.Selection([('recent', 'Recent'), ('popular', 'Popular'), ('mixed', 'Mixed')], default='recent', string='Type of tweets', help="Most recent tweets, most popular tweets, or both")
     image = fields.Binary()
     tweet_ids = fields.Many2many('website.twitter.tweet', string='Tweets')
@@ -77,18 +79,34 @@ class WebsiteTwitterWall(models.Model):
                 self.access_token = response.json().get('access_token')
             except requests.exceptions.HTTPError:
                 raise UserError(_('The Twitter authentication failed. Please check your API key and secret.'))
-        params = {
-            'q': self.search_pattern,
-            'result_type': self.mode,
-        }
+
+        params = {'result_type': self.mode}
         if self.tweet_ids:
             params['since_id'] = self.tweet_ids[0].tweet_id
-        response = requests.get('https://api.twitter.com/1.1/search/tweets.json?' + url_encode(params), headers={'Authorization': 'Bearer %s' % self.access_token})
+
+        is_favorite_search = 'favorites:' in self.search_pattern \
+                              and len(self.search_pattern.split('favorites:')) > 0
+        if is_favorite_search:
+            endpoint = 'favorites/list.json'
+            params['screen_name'] = self.search_pattern.split('favorites:')[1]
+        else:
+            endpoint = 'search/tweets.json'
+            params['q'] = self.search_pattern
+
+        response = requests.get(
+            url_join('https://api.twitter.com/1.1/', endpoint),
+            params=params,
+            headers={'Authorization': 'Bearer %s' % self.access_token})
+
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError:
             raise UserError(_('The tweets search failed. Check your credentials and access token'))
-        return response.json().get('statuses')
+
+        if is_favorite_search:
+            return response.json()
+        else:
+            return response.json().get('statuses')
 
     def process_tweet(self, tweet_id, wall_ids):
         Tweet = self.env['website.twitter.tweet']

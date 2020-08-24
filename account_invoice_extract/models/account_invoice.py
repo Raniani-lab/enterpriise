@@ -7,6 +7,7 @@ from odoo.tests.common import Form
 from odoo.tools.misc import clean_context
 import logging
 import re
+import json
 
 _logger = logging.getLogger(__name__)
 
@@ -252,6 +253,8 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.payment_reference
         elif field == "iban":
             text_to_send["content"] = self.partner_bank_id.acc_number if self.partner_bank_id else False
+        elif field == "SWIFT_code":
+            text_to_send["content"] = self.partner_bank_id.bank_bic if self.partner_bank_id else False
         elif field == "invoice_lines":
             text_to_send = {'lines': []}
             for il in self.invoice_line_ids:
@@ -294,7 +297,8 @@ class AccountMove(models.Model):
                     'currency': record.get_validation('currency'),
                     'payment_ref': record.get_validation('payment_ref'),
                     'iban': record.get_validation('iban'),
-                    'merged_lines': self.company_id.extract_single_line_per_tax,
+                    'SWIFT_code': record.get_validation('SWIFT_code'),
+                    'merged_lines': self.env.company.extract_single_line_per_tax,
                     'invoice_lines': record.get_validation('invoice_lines')
                 }
                 params = {
@@ -640,6 +644,7 @@ class AccountMove(models.Model):
         vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
+        SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
         vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
@@ -671,10 +676,19 @@ class AccountMove(models.Model):
                                 if bank_account.partner_id == move_form.partner_id.id:
                                     move_form.partner_bank_id = bank_account
                             else:
-                                move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
-                                    'partner_id': move_form.partner_id.id,
-                                    'acc_number': iban_ocr,
-                                })
+                                vals = {
+                                        'partner_id': move_form.partner_id.id,
+                                        'acc_number': iban_ocr
+                                       }
+                                if SWIFT_code_ocr:
+                                    bank_id = self.env['res.bank'].search([('bic', '=', SWIFT_code_ocr['bic'])], limit=1)
+                                    if bank_id.exists():
+                                        vals['bank_id'] = bank_id.id
+                                    if not bank_id.exists() and SWIFT_code_ocr['verified_bic']:
+                                        country_id = self.env['res.country'].search([('code', '=', SWIFT_code_ocr['country_code'])], limit=1)
+                                        if country_id.exists():
+                                            vals['bank_id'] = self.env['res.bank'].create({'name': SWIFT_code_ocr['name'], 'country': country_id.id, 'city': SWIFT_code_ocr['city'], 'bic': SWIFT_code_ocr['bic']}).id
+                                move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == str(self._get_default_invoice_date())):

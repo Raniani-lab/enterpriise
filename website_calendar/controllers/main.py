@@ -122,9 +122,9 @@ class WebsiteCalendar(http.Controller):
                 'email': email,
             })
 
-        description = ('Country: %s\n'
-                       'Mobile: %s\n'
-                       'Email: %s\n' % (country_name, phone, email))
+        description = (_('Country: %s') + '\n' +
+                       _('Mobile: %s') + '\n' +
+                       _('Email: %s') + '\n') % (country_name, phone, email)
         for question in appointment_type.question_ids:
             key = 'question_' + str(question.id)
             if question.question_type == 'checkbox':

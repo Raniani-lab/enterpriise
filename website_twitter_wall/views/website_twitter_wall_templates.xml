@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Add twitter wall link under connect with us -->
-    <template id="twitter_wall_footer_custom" inherit_id="website.footer_custom" name="Footer Twitter Wall Link">
-        <xpath expr="//div[@id='connect']/ul/*[1]" position="after">
-            <li><a href="/twitter_walls">Twitter wall</a></li>
-        </xpath>
-    </template>
-
     <!-- Assets frontend for twitter wall -->
     <template id="assets_frontend" inherit_id="website.assets_frontend" name="Twitter Wall Assets">
         <xpath expr="." position="inside">

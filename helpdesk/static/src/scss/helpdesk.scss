@@ -15,6 +15,9 @@
         border-bottom: 1px solid #CED4DA;
         background-color: $o-view-background-color;
         z-index: 10;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
 
         .o_welcome_message {
             width: 100%;
@@ -68,12 +71,16 @@
             @include media-breakpoint-up(md) {
                 width: 50%;
             }
+            @include media-breakpoint-up(lg) {
+                display: inline-block;
+                float: none;
+            }
 
             > table {
                 margin-bottom: 0;
-                table-layout: fixed;
                 border-spacing: $sale-table-spacing 0px;
                 border-collapse: separate;
+                white-space: initial;
                 > tbody > tr > td {
                     vertical-align: middle;
                     text-align: center;

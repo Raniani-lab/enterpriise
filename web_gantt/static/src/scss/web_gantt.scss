@@ -542,6 +542,10 @@ $gantt-unavailability-bg: $gray-200;
         }
     }
 
+    .o_view_nocontent {
+        z-index: 11; // as we have z-index: 10 on header container so z-index: header + 1;
+    }
+
     // Suggest the browsers to print background graphics (IE users will still
     // need to go to their settings in order to print them)
     -webkit-print-color-adjust: exact;  /* Chrome, Safari */

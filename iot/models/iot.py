@@ -17,7 +17,6 @@ class IotBox(models.Model):
     device_count = fields.Integer(compute='_compute_device_count')
     ip = fields.Char('Domain Address', readonly=True)
     ip_url = fields.Char('IoT Box Home Page', readonly=True, compute='_compute_ip_url')
-    screen_url = fields.Char('Screen URL', help="Url of the page that will be displayed by hdmi port of the box.")
     drivers_auto_update = fields.Boolean('Automatic drivers update', help='Automatically update drivers when the IoT Box boots', default=True)
     version = fields.Char('Image Version', readonly=True)
     company_id = fields.Many2one('res.company', 'Company')
@@ -74,7 +73,7 @@ class IotDevice(models.Model):
     company_id = fields.Many2one('res.company', 'Company', related="iot_id.company_id")
     connected = fields.Boolean(string='Status', help='If device is connected to the IoT Box', readonly=True)
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
-    screen_url = fields.Char('Display URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
+    display_url = fields.Char('Display URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
     manual_measurement = fields.Boolean('Manual Measurement', compute="_compute_manual_measurement", help="Manually read the measurement from the device")
     is_scanner = fields.Boolean(string='Is scanner', compute="_compute_is_scanner", inverse="_set_scanner" , help="Manually the device type between keyboard or scanner")
 

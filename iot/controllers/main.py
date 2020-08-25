@@ -50,7 +50,7 @@ class IoTController(http.Controller):
         if iotbox:
             iot_devices = iotbox.device_ids.filtered(lambda device: device.type == 'display')
             for device in iot_devices:
-                urls[device.identifier] = device.screen_url
+                urls[device.identifier] = device.display_url
         return json.dumps(urls)
 
     @http.route('/iot/setup', type='json', auth='public')

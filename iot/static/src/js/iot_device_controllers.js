@@ -56,9 +56,9 @@ var IoTDeviceFormController = FormController.extend({
      * Send an action to the device to update the screen url
      */
     _updateDisplayUrl: function () {
-        var screen_url = this.renderer.state.data.screen_url;
+        var display_url = this.renderer.state.data.display_url;
         var iot_device = new DeviceProxy(this, { iot_ip: this.renderer.state.data.iot_ip, identifier: this.renderer.state.data.identifier });
-        return iot_device.action({'action': 'update_url', 'url': screen_url});
+        return iot_device.action({'action': 'update_url', 'url': display_url});
     },
 });
 

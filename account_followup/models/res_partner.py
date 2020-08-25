@@ -172,7 +172,7 @@ class ResPartner(models.Model):
     def _query_followup_level(self, all_partners=False):
         # Allow mocking the current day for testing purpose.
         today = fields.Date.context_today(self)
-        if not self.ids:
+        if not self.ids and not all_partners:
             return {}
 
         sql = """

@@ -130,10 +130,13 @@ class AccountGenericTaxReport(models.AbstractModel):
         # Iterate on the report lines, using this mapping
         for line in lines:
             if line['id'] in lines_grids_map and not currency_id.is_zero(line['columns'][0]['name']):
-                grids_list.append((lines_grids_map[line['id']], line['columns'][0]['name']))
+                grids_list.append((lines_grids_map[line['id']],
+                                   line['columns'][0]['name'],
+                                   line['columns'][0].get('carryover_bounds', False),
+                                   line.get('tax_report_line', False)))
 
         if options.get('grid91') and not currency_id.is_zero(options['grid91']):
-            grids_list.append(('91', options['grid91']))
+            grids_list.append(('91', options['grid91'], False, None))
 
         # We are ignoring all grids that have 0 as values, but the belgian government always require a value at
         # least in either the grid 71 or 72. So in the case where both are set to 0, we are adding the grid 71 in the
@@ -142,10 +145,17 @@ class AccountGenericTaxReport(models.AbstractModel):
             grids_list.append(('71', 0))
 
         grids_list = sorted(grids_list, key=lambda a: a[0])
-        for item in grids_list:
+        for code, amount, carryover_bounds, tax_line in grids_list:
+            if carryover_bounds:
+                amount, dummy = self.get_amounts_after_carryover(tax_line, amount,
+                                                                 carryover_bounds, options, 0)
+                # Do not add grids that became 0 after carry over
+                if amount == 0:
+                    continue
+
             grid_amount_data = {
-                    'code': item[0],
-                    'amount': '%.2f' % abs(item[1]),
+                    'code': code,
+                    'amount': '%.2f' % amount,
                     }
             rslt += '\n\t\t\t<ns2:Amount GridNumber="%(code)s">%(amount)s</ns2:Amount''>' % (grid_amount_data)
 

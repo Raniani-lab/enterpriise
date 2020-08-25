@@ -169,7 +169,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
             self.fail('\n'.join(errors))
 
     @classmethod
-    def _create_tax_report_line(cls, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
+    def _create_tax_report_line(cls, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None, carry_over_condition=None):
         """ Creates a tax report line
         """
         create_vals = {
@@ -186,5 +186,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
             create_vals['code'] = code
         if formula:
             create_vals['formula'] = formula
+        if carry_over_condition:
+            create_vals['carry_over_condition_method'] = carry_over_condition
 
         return cls.env['account.tax.report.line'].create(create_vals)

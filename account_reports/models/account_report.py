@@ -1255,6 +1255,18 @@ class AccountReport(models.AbstractModel):
             'model': self,
         }
 
+    def _format_lines_for_display(self, lines, options):
+        """
+        This method should be overridden in a report in order to apply specific formatting when printing
+        the report lines.
+
+        Used for example by the carryover functionnality in the generic tax report.
+        :param lines: A list with the lines for this report.
+        :param options: The options for this report.
+        :return: The formatted list of lines
+        """
+        return lines
+
     def get_html(self, options, line_id=None, additional_context=None):
         '''
         return the html value of report, or html value of unfolded line
@@ -1285,6 +1297,9 @@ class AccountReport(models.AbstractModel):
             lines = self._create_hierarchy(lines, options)
         if options.get('selected_column'):
             lines = self._sort_lines(lines, options)
+
+        lines = self._format_lines_for_display(lines, options)
+
         render_values['lines'] = {'columns_header': headers, 'lines': lines}
 
         # Manage footnotes.

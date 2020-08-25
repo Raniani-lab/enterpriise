@@ -14,3 +14,4 @@ from . import test_financial_report
 from . import test_reconciliation_report
 from . import test_multicurrencies_revaluation_report
 from . import test_tour_account_reports
+from . import test_tax_report_carryover

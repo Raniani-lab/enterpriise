@@ -223,6 +223,12 @@
                 <t t-set="cell_classes" t-value="(cell.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or ''))"/>
                 <td t-att-class="'o_account_report_line ' + cell_classes + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
                     t-att-style="cell.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                    <t t-if="cell.get('info_tooltip')">
+                        <span data-toggle="tooltip" data-placement="left"
+                                   t-att-title="cell.get('info_tooltip')">
+                                <i class="fa fa-info-circle" style="color:#008784;"/>
+                        </span>
+                    </t>
                     <span class="o_account_report_column_value" t-att-title="cell.get('title')">
                         <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
                     </span>

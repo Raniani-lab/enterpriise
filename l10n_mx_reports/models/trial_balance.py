@@ -307,6 +307,7 @@ class MxReportAccountTrial(models.AbstractModel):
         comparison_table += options.get('comparison') and options['comparison'].get('periods') or []
         for account, periods_results in accounts_results:
             grouped_accounts.setdefault(account, [])
+            periods_results.reverse()
             for i, res in enumerate(periods_results):
                 account_init_bal = res.get('initial_balance', {})
                 if i == 0:

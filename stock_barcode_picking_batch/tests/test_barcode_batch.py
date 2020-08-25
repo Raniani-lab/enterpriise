@@ -307,7 +307,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_put_in_pack_before_dest', login='admin', timeout=180)
         pack = self.env['stock.quant.package'].search([])[-1]
         self.assertEqual(len(pack.quant_ids), 2)
-        self.assertEqual(pack.location_id, self.shelf4)
+        self.assertEqual(pack.location_id, self.shelf2)
 
     def test_batch_create(self):
         """ Create a batch picking via barcode app from scratch """

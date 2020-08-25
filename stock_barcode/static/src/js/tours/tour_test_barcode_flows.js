@@ -3244,6 +3244,27 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
+        trigger: '.o_field_widget[name="location_dest_id"] input',
+        run: 'text Section 2',
+    },
+
+    {
+        trigger: '.ui-menu-item > a:contains("Section 2")',
+        auto: true,
+        in_modal: false,
+    },
+
+    {
+        trigger: '.o_field_widget[name="location_dest_id"]',
+        run: function () {
+            helper.assert(
+                $('.o_field_widget[name="location_dest_id"] input').val(),
+                'WH/Stock/Section 2'
+            );
+        },
+    },
+
+    {
         trigger: '.btn-primary',
     },
 

@@ -67,20 +67,21 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('C. Fixed assets',                             -920.0),
-                ('I. Intangible assets',                        -920.0),
-                ('1. Costs of development',                     -920.0),
-                ('Total I. Intangible assets',                  -920.0),
-                ('Total C. Fixed assets',                       -920.0),
-                ('TOTAL (ASSETS)',                              -920.0),
-                ('A. Capital and reserves',                     -1070.0),
-                ('III. Revaluation reserve',                    -1150.0),
-                ('IV. Reserves',                                -120.0),
-                ('1. Legal reserve',                            -120.0),
-                ('Total IV. Reserves',                          -120.0),
-                ('VI. Profit or loss for the financial year',   200.0),
-                ('Total A. Capital and reserves',               -1070.0),
-                ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',   -1070.0),
+                ('D. Current assets',                           1306.0),
+                ('II. Debtors',                                 1306.0),
+                ('1. Trade debtors',                            1170.0),
+                ('a) becoming due and payable within one year', 1170.0),
+                ('4. Other debtors',                            136.0),
+                ('a) becoming due and payable within one year', 136.0),
+                ('TOTAL (ASSETS)',                              1306.0),
+                ('A. Capital and reserves',                      200.0),
+                ('VI. Profit or loss for the financial year',    200.0),
+                ('C. Creditors',                                 1106.0),
+                ('4. Trade creditors',                           936.0),
+                ('a) becoming due and payable within one year',  936.0),
+                ('8. Other creditors',                           170.0),
+                ('a) Tax authorities',                           170.0),
+                ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',    1306.0),
             ],
         )
 
@@ -93,18 +94,18 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
             #   Name                                                                    Balance
             [   0,                                                                      1],
             [
+                ('1. Net turnover',                                                     1000.0),
                 ('5. Raw materials and consumables and other external expenses',        -800.0),
                 ('a) Raw materials and consumables',                                    -800.0),
-                ('Total 5. Raw materials and consumables and other external expenses',  -800.0),
-                ('16. Profit or loss after taxation',                                   -800.0),
-                ('18. Profit or loss for the financial year',                           -800.0),
+                ('16. Profit or loss after taxation',                                    200.0),
+                ('18. Profit or loss for the financial year',                            200.0),
             ],
         )
 
     def test_intrastat_report(self):
-        l_tax = self.env['account.tax'].search([('name', '=', '0-IC-S-G'), '|', ("active", "=", True), ("active", "=", False)])
-        t_tax = self.env['account.tax'].search([('name', '=', '0-ICT-S-G'), '|', ("active", "=", True), ("active", "=", False)])
-        s_tax = self.env['account.tax'].search([('name', '=', '0-IC-S-S'), '|', ("active", "=", True), ("active", "=", False)])
+        l_tax = self.env['account.tax'].search([('company_id', '=', self.company_data['company'].id), ('name', '=', '0-IC-S-G'), '|', ("active", "=", True), ("active", "=", False)])
+        t_tax = self.env['account.tax'].search([('company_id', '=', self.company_data['company'].id), ('name', '=', '0-ICT-S-G'), '|', ("active", "=", True), ("active", "=", False)])
+        s_tax = self.env['account.tax'].search([('company_id', '=', self.company_data['company'].id), ('name', '=', '0-IC-S-S'), '|', ("active", "=", True), ("active", "=", False)])
         l_tax.active = t_tax.active = s_tax.active = True
 
         product_1 = self.env['product.product'].create({'name': 'product_1', 'lst_price': 300.0})
@@ -123,7 +124,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         partner_lu = self.env['res.partner'].create({
             'name': 'Partner LU',
             'country_id': self.env.ref('base.lu').id,
-            'vat': 'LU12345678',
+            'vat': 'LU12345613',
         })
         partner_us = self.env['res.partner'].create({
             'name': 'Partner US',
@@ -143,7 +144,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         ]
 
         for inv in invoices:
-            move_form = Form(self.env['account.move'].with_context(default_type='out_invoice'))
+            move_form = Form(self.env['account.move'].with_context(default_move_type='out_invoice'))
             move_form.invoice_date = date_today
             move_form.partner_id = inv['partner']
             with move_form.invoice_line_ids.new() as line_form:
@@ -175,5 +176,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
             ['Partner FR', 'FR', '00000000190', 'T', '500.00 €'],
             ['Partner BE', 'BE', '0477472701', 'S', '700.00 €'],
             ['Partner FR', 'FR', '00000000190', 'S', '700.00 €'],
+            ['Partner LU', 'LU', '12345613', 'S', '700.00 €'],
+            ['Partner US', '', '', 'S', '700.00 €']
         ]
         self.assertListEqual(expected, result, 'Wrong values for Luxembourg intrastat report.')

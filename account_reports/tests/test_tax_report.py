@@ -174,7 +174,6 @@ class TestTaxReport(TestAccountReportsCommon):
         # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
         # to return an empty attachment.
         with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=_get_vat_report_attachments):
-            m = self.move_sale.line_ids.tax_repartition_line_id
             vat_closing_move = report._generate_tax_closing_entry(options)
 
             self.assertRecordValues(vat_closing_move, [{
@@ -215,6 +214,37 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Purchases',                               '',             ''),
 
                 ('purchase_tax_group',                      2000.0,         1120.0),
+            ],
+        )
+
+    def test_generic_tax_report_comparisons(self):
+        invoices = self.env['account.move'].create([{
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': invoice_date,
+            'date': invoice_date,
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.product_a.id,
+                'price_unit': price_unit,
+                'tax_ids': [(6, 0, self.sale_tax_percentage_excl.ids)],
+            })],
+        } for invoice_date, price_unit in (('2019-01-01', 100.0), ('2019-02-01', 1000.0), ('2019-03-01', 10000.0))])
+        invoices.action_post()
+
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'))
+        options = self._update_comparison_filter(options, report, 'previous_period', 2)
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                        NET             TAX             NET             TAX             NET             TAX
+            [   0,                                          1,              2,              3,              4,              5,              6],
+            [
+                ('Sales',                                   '',             '',             '',             '',             '',             ''),
+                ('sale_tax_percentage_excl (10.0)',         10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
+
+                ('Purchases',                               '',             '',             '',             '',             '',             ''),
+                ('purchase_tax_group',                      0.0,            0.0,            0.0,            0.0,            0.0,            0.0),
             ],
         )
 

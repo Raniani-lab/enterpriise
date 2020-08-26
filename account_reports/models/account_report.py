@@ -154,7 +154,7 @@ class AccountReport(models.AbstractModel):
         return periods_options_list
 
     @api.model
-    def _get_dates_period(self, options, date_from, date_to, mode, period_type=None):
+    def _get_dates_period(self, options, date_from, date_to, mode, period_type=None, strict_range=False):
         '''Compute some information about the period:
         * The name to display on the report.
         * The period type (e.g. quarter) if not specified explicitly.
@@ -217,6 +217,7 @@ class AccountReport(models.AbstractModel):
             'string': string,
             'period_type': period_type,
             'mode': mode,
+            'strict_range': strict_range,
             'date_from': date_from and fields.Date.to_string(date_from) or False,
             'date_to': fields.Date.to_string(date_to),
         }
@@ -230,6 +231,7 @@ class AccountReport(models.AbstractModel):
         '''
         period_type = period_vals['period_type']
         mode = period_vals['mode']
+        strict_range = period_vals.get('strict_range', False)
         date_from = fields.Date.from_string(period_vals['date_from'])
         date_to = date_from - datetime.timedelta(days=1)
 
@@ -237,13 +239,13 @@ class AccountReport(models.AbstractModel):
             # Don't pass the period_type to _get_dates_period to be able to retrieve the account.fiscal.year record if
             # necessary.
             company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(date_to)
-            return self._get_dates_period(options, company_fiscalyear_dates['date_from'], company_fiscalyear_dates['date_to'], mode)
+            return self._get_dates_period(options, company_fiscalyear_dates['date_from'], company_fiscalyear_dates['date_to'], mode, strict_range=strict_range)
         if period_type in ('month', 'today', 'custom'):
-            return self._get_dates_period(options, *date_utils.get_month(date_to), mode, period_type='month')
+            return self._get_dates_period(options, *date_utils.get_month(date_to), mode, period_type='month', strict_range=strict_range)
         if period_type == 'quarter':
-            return self._get_dates_period(options, *date_utils.get_quarter(date_to), mode, period_type='quarter')
+            return self._get_dates_period(options, *date_utils.get_quarter(date_to), mode, period_type='quarter', strict_range=strict_range)
         if period_type == 'year':
-            return self._get_dates_period(options, *date_utils.get_fiscal_year(date_to), mode, period_type='year')
+            return self._get_dates_period(options, *date_utils.get_fiscal_year(date_to), mode, period_type='year', strict_range=strict_range)
         return None
 
     @api.model
@@ -256,6 +258,7 @@ class AccountReport(models.AbstractModel):
         '''
         period_type = period_vals['period_type']
         mode = period_vals['mode']
+        strict_range = period_vals.get('strict_range', False)
         date_from = fields.Date.from_string(period_vals['date_from'])
         date_from = date_from - relativedelta(years=1)
         date_to = fields.Date.from_string(period_vals['date_to'])
@@ -263,7 +266,7 @@ class AccountReport(models.AbstractModel):
 
         if period_type == 'month':
             date_from, date_to = date_utils.get_month(date_to)
-        return self._get_dates_period(options, date_from, date_to, mode, period_type=period_type)
+        return self._get_dates_period(options, date_from, date_to, mode, period_type=period_type, strict_range=strict_range)
 
     @api.model
     def _init_filter_date(self, options, previous_options=None):
@@ -277,6 +280,7 @@ class AccountReport(models.AbstractModel):
         options_filter = previous_date.get('filter') or self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
         date_from = fields.Date.to_date(previous_date.get('date_from') or self.filter_date.get('date_from'))
         date_to = fields.Date.to_date(previous_date.get('date_to') or self.filter_date.get('date_to'))
+        strict_range = previous_date.get('strict_range', False)
 
         # Create date option for each company.
         period_type = False
@@ -297,7 +301,7 @@ class AccountReport(models.AbstractModel):
             # options_filter == 'custom' && mode == 'single'
             date_from = date_utils.get_month(date_to)[0]
 
-        options['date'] = self._get_dates_period(options, date_from, date_to, mode, period_type=period_type)
+        options['date'] = self._get_dates_period(options, date_from, date_to, mode, period_type=period_type, strict_range=strict_range)
         if 'last' in options_filter:
             options['date'] = self._get_dates_previous_period(options, options['date'])
         options['date']['filter'] = options_filter
@@ -347,7 +351,8 @@ class AccountReport(models.AbstractModel):
             else:
                 date_from_obj = fields.Date.from_string(date_from)
                 date_to_obj = fields.Date.from_string(date_to)
-                period_vals = self._get_dates_period(options, date_from_obj, date_to_obj, previous_period['mode'])
+                strict_range = previous_period.get('strict_range', False)
+                period_vals = self._get_dates_period(options, date_from_obj, date_to_obj, previous_period['mode'], strict_range=strict_range)
             options['comparison']['periods'].append(period_vals)
             previous_period = period_vals
 
@@ -1267,7 +1272,8 @@ class AccountReport(models.AbstractModel):
     def format_date(self, options, dt_filter='date'):
         date_from = fields.Date.from_string(options[dt_filter]['date_from'])
         date_to = fields.Date.from_string(options[dt_filter]['date_to'])
-        return self._get_dates_period(options, date_from, date_to, options['date']['mode'])['string']
+        strict_range = options['date'].get('strict_range', False)
+        return self._get_dates_period(options, date_from, date_to, options['date']['mode'], strict_range=strict_range)['string']
 
     def print_pdf(self, options):
         return {

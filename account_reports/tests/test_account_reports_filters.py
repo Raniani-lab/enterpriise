@@ -61,6 +61,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_month',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -73,6 +74,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_month',
                 'date_from': '2017-11-01',
                 'date_to': '2017-11-30',
+                'strict_range': False,
             },
         )
 
@@ -86,6 +88,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'Oct 2017',
@@ -93,6 +96,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-10-01',
                     'date_to': '2017-10-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -107,6 +111,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'Dec 2015',
@@ -114,6 +119,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-12-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -132,6 +138,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -148,6 +155,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_quarter',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -160,6 +168,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_quarter',
                 'date_from': '2017-07-01',
                 'date_to': '2017-09-30',
+                'strict_range': False,
             },
         )
 
@@ -173,6 +182,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'Q2\N{NO-BREAK SPACE}2017',
@@ -180,6 +190,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -194,6 +205,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'Q4\N{NO-BREAK SPACE}2015',
@@ -201,6 +213,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -218,6 +231,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -234,6 +248,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -246,6 +261,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2016-01-01',
                 'date_to': '2016-12-31',
+                'strict_range': False,
             },
         )
 
@@ -259,6 +275,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': '2015',
@@ -266,6 +283,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -280,6 +298,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': '2015',
@@ -287,6 +306,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -304,6 +324,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -323,6 +344,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-07-01',
                 'date_to': '2018-06-30',
+                'strict_range': False,
             },
         )
 
@@ -335,6 +357,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2016-07-01',
                 'date_to': '2017-06-30',
+                'strict_range': False,
             },
         )
 
@@ -348,6 +371,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
                 {
                     'string': '2015 - 2016',
@@ -355,6 +379,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -369,6 +394,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
                 {
                     'string': '2015 - 2016',
@@ -376,6 +402,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -394,6 +421,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -421,6 +449,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -433,6 +462,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2017-07-01',
                 'date_to': '2017-09-30',
+                'strict_range': False,
             },
         )
 
@@ -446,6 +476,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'custom 2',
@@ -453,6 +484,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -467,6 +499,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'custom 8',
@@ -474,6 +507,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -491,6 +525,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -512,6 +547,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-01-01',
                 'date_to': '2017-01-15',
+                'strict_range': False,
             },
         )
 
@@ -530,6 +566,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'Nov 2016',
@@ -537,6 +574,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-11-01',
                     'date_to': '2016-11-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -556,6 +594,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-01-15',
+                    'strict_range': False,
                 },
                 {
                     'string': 'From %s\nto  %s' % (format_date(self.env, '2015-01-01'), format_date(self.env, '2015-01-15')),
@@ -563,6 +602,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-01-15',
+                    'strict_range': False,
                 },
             ],
         )
@@ -586,6 +626,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -603,6 +644,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -620,6 +662,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -639,6 +682,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2016-07-01',
                 'date_to': '2017-06-30',
+                'strict_range': False,
             },
         )
 
@@ -662,6 +706,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -681,6 +726,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'today',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-30',
+                'strict_range': False,
             },
         )
 
@@ -694,6 +740,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-10-31'),
@@ -701,6 +748,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-10-01',
                     'date_to': '2017-10-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -715,6 +763,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-30'),
@@ -722,6 +771,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-12-01',
                     'date_to': '2015-12-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -739,6 +789,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': False,
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -755,6 +806,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_month',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -768,6 +820,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-10-31'),
@@ -775,6 +828,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-10-01',
                     'date_to': '2017-10-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -789,6 +843,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -796,6 +851,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-12-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -812,6 +868,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_quarter',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -825,6 +882,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-06-30'),
@@ -832,6 +890,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -846,6 +905,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -853,6 +913,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -869,6 +930,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -882,6 +944,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -889,6 +952,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -903,6 +967,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -910,6 +975,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -929,6 +995,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-07-01',
                 'date_to': '2018-06-30',
+                'strict_range': False,
             },
         )
 
@@ -942,6 +1009,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-06-30'),
@@ -949,6 +1017,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -963,6 +1032,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-06-30'),
@@ -970,6 +1040,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -997,6 +1068,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
+                'strict_range': False,
             },
         )
 
@@ -1010,6 +1082,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
+                    'strict_range': False,
                 },
                 {
                     'string': 'custom 2',
@@ -1017,6 +1090,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -1031,6 +1105,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'custom 8',
@@ -1038,6 +1113,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
+                    'strict_range': False,
                 },
             ],
         )
@@ -1058,6 +1134,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2018-01-01',
                 'date_to': '2018-01-15',
+                'strict_range': False,
             },
         )
 
@@ -1075,6 +1152,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-12-01',
                     'date_to': '2017-12-31',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-11-30'),
@@ -1082,6 +1160,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
+                    'strict_range': False,
                 },
             ],
         )
@@ -1100,6 +1179,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-01-01',
                     'date_to': '2017-01-15',
+                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-01-15'),
@@ -1107,6 +1187,7 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-01-15',
+                    'strict_range': False,
                 },
             ],
         )

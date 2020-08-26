@@ -424,7 +424,7 @@ class ProductTemplate(models.Model):
                 img = Image.open(data)
                 good_image = (max(img.size) >= 500 and
                               sum(img.size) <= 12000 and
-                              img.size[0] * img.size[1] <= 12000 and
+                              data.getbuffer().nbytes <= 12e6 and
                               (not img.format == 'JPEG' or img.mode == 'RGB'))
                 return good_image
             except Exception as e:

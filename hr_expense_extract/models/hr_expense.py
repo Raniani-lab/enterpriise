@@ -299,7 +299,7 @@ class HrExpense(models.Model):
 
     @api.model
     def get_empty_list_help(self, help):
-        if self.env.user.has_group('hr_expense.group_hr_expense_manager'):
+        if self.env.user.has_group('hr_expense.group_hr_expense_manager') and "o_view_nocontent_empty_folder" not in help:
             action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
             return """
 <p class="o_view_nocontent_expense_receipt">

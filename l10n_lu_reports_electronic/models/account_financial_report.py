@@ -22,13 +22,15 @@ class ReportAccountFinancialReport(models.Model):
     def _get_lu_electronic_report_values(self, options):
 
         def _format_amount(amount):
-            return "{:.2f}".format(amount).replace('.', ',')
+            return "{:.2f}".format(amount).replace('.', ',') if amount else '0,00'
 
         lu_template_values = super()._get_lu_electronic_report_values(options)
 
         # Add comparison filter to get data from last year
-        self.filter_comparison = {'filter': 'same_last_year', 'number_period': 1}
-        self._init_filter_comparison(options)
+        self._init_filter_comparison(options, {**options, 'comparison': {
+            'filter': 'same_last_year',
+            'number_period': 1,
+        }})
 
         lines = self._get_table(options)[1]
 
@@ -54,8 +56,8 @@ class ReportAccountFinancialReport(models.Model):
             # First dict will be holding current year's balance and second one will be holding previous year's balance.
             if len(split_line_code) > 1:
                 values.update({
-                    split_line_code[2]: {'value': _format_amount(columns[0]['no_format_name']), 'field_type': 'number'}, # current year balance
-                    str(int(split_line_code[2]) + 1): {'value': _format_amount(columns[1]['no_format_name']), 'field_type': 'number'} # previous year balance
+                    split_line_code[2]: {'value': _format_amount(columns[0]['no_format']), 'field_type': 'number'}, # current year balance
+                    str(int(split_line_code[2]) + 1): {'value': _format_amount(columns[1]['no_format']), 'field_type': 'number'} # previous year balance
                 })
 
         lu_template_values.update({

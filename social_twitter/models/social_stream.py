@@ -17,17 +17,14 @@ class SocialStreamTwitter(models.Model):
     # TODO awa: clean unused 'social.twitter.account' in a cron job
     twitter_followed_account_id = fields.Many2one('social.twitter.account')
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        social_streams = super(SocialStreamTwitter, self).create(vals_list)
-        # Todo: clean in master and use api.constrains instead
+    @api.constrains('stream_type_id', 'twitter_followed_account_id')
+    def _check_twitter_followed_account_id(self):
         if any(
             stream.stream_type_id.stream_type in ('twitter_follow', 'twitter_likes')
             and not stream.twitter_followed_account_id
-            for stream in social_streams
+            for stream in self
         ):
             raise UserError(_("Please select a Twitter account for this stream type."))
-        return social_streams
 
     def _apply_default_name(self):
         for stream in self:

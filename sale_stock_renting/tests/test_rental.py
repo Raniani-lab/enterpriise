@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common
 from odoo import fields
 from datetime import timedelta
@@ -95,13 +96,14 @@ class TestRentalCommon(common.SingleTransactionCase):
 
         cls.cust1 = cls.env['res.partner'].create({'name': 'test_rental_1'})
         # cls.cust2 = cls.env['res.partner'].create({'name': 'test_rental_2'})
-        # user_group_employee = cls.env.ref('base.group_user')
 
-        cls.user_id = cls.env['res.users'].with_context({'no_reset_password': True, 'mail_create_nosubscribe': True}).create({
-            'name': 'Rental',
-            'login': 'renter',
-            'email': 'sale.rental@example.com',
-            'notification_type': 'inbox'})
+        cls.user_id = mail_new_test_user(
+            cls.env,
+            name='Rental',
+            login='renter',
+            email='sale.rental@example.com',
+            notification_type='inbox',
+        )
 
         cls.sale_order_id = cls.env['sale.order'].create({
             'partner_id': cls.cust1.id,

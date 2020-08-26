@@ -1,7 +1,8 @@
 from psycopg2 import IntegrityError
 
+from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tests.common import SavepointCase, new_test_user
+from odoo.tests.common import SavepointCase
 from odoo.tools import mute_logger
 
 class TestStudioApproval(SavepointCase):
@@ -24,10 +25,10 @@ class TestStudioApproval(SavepointCase):
             'name': 'Approval Manager',
             'implied_ids': [(4, cls.group_user.id)],
         })
-        cls.user = new_test_user(
+        cls.user = mail_new_test_user(
             cls.env, login='Employee',
             groups="base.group_user,base.group_partner_manager", context=creation_context)
-        cls.manager = new_test_user(
+        cls.manager = mail_new_test_user(
             cls.env, login='Manager',
             groups="base.group_user,base.group_partner_manager", context=creation_context)
         cls.user.write({

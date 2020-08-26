@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'EDI for Mexico',
-    'version': '0.2',
+    'version': '0.3',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Mexican Localization for EDI documents',
     'description': """

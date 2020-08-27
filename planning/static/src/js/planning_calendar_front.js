@@ -26,6 +26,9 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         this._super.apply(this, arguments);
     },
     start: function () {
+       if ($('.message_slug').attr('value')) {
+           $("#PlanningToast").toast('show');
+       }
        this._super.apply(this, arguments);
        this.calendarElement = this.$(".o_calendar_widget")[0];
        const employeeSlotsFcData = JSON.parse($('.employee_slots_fullcalendar_data').attr('value'));

@@ -64,6 +64,13 @@
             'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 
         <record id="planning_menu_schedule_by_role" model="ir.actions.act_window.view">

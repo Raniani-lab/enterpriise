@@ -83,7 +83,7 @@
                         </div>
                     </group>
                     <group>
-                        <field name="name" string="" placeholder="Additional message"/>
+                        <field name="name" string="" placeholder="Additional message" nolabel="1"/>
                     </group>
                 </sheet>
             </form>
@@ -362,9 +362,10 @@
             (0, 0, {'view_mode': 'form'})]"/>
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No shift found <br/>
-                Let's start your planning by adding a new shift
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
             </p>
         </field>
     </record>
@@ -375,9 +376,9 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_my_shifts': 1}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No shift found <br/>
-                Let's start your planning by adding a new shift
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found</p><p>
+                Let's start your planning by adding a new shift.
             </p>
         </field>
     </record>
@@ -402,9 +403,9 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No shift found <br/>
-                Let's start your planning by adding a new shift
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found</p><p>
+                Let's start your planning by adding a new shift.
             </p>
         </field>
     </record>
@@ -422,9 +423,9 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban</field>
         <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No shift found <br/>
-                Let's start your planning by adding a new shift
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found</p><p>
+                Let's start your planning by adding a new shift.
             </p>
         </field>
     </record>
@@ -449,9 +450,9 @@
         <field name="res_model">planning.role</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No roles found <br/>
-                Define the different roles filled by your employees
+            <p class="o_view_nocontent_smiling_face">
+                No roles found</p><p>
+                Define the different roles filled by your employees.
             </p>
         </field>
     </record>
@@ -462,9 +463,9 @@
         <field name="view_mode">tree</field>
         <field name="search_view_id" ref="planning_slot_template_view_search"/>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No shift templates found <br/>
-                Encode your shifts in one click by using templates
+            <p class="o_view_nocontent_smiling_face">
+                No shift templates found</p><p>
+                Encode your shifts in one click by using templates.
             </p>
         </field>
     </record>

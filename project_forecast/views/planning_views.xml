@@ -106,9 +106,10 @@
     </record>
 
     <record id="planning_view_gantt_no_sample" model="ir.ui.view">
-        <field name="name">planning.slot.gantt.inherit</field>
+        <field name="name">planning.slot.gantt.inherit.nosample</field>
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="/gantt" position="attributes">
                 <attribute name="sample">0</attribute>
@@ -125,6 +126,13 @@
             'search_default_group_by_project': 1, 'planning_groupby_project': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 
         <record id="planning_action_schedule_by_project_view_gantt" model="ir.actions.act_window.view">
@@ -138,16 +146,24 @@
             <field name="name">Schedule by Employee</field>
             <field name="res_model">planning.slot</field>
             <field name="view_mode">gantt,calendar,tree,form,kanban</field>
+            <field name="view_id" ref="project_forecast.planning_view_gantt"/>
             <field name="context">{
                 'search_default_group_by_employee': 1, 'planning_groupby_employee': True, 'planning_expand_employee': 1, 'planning_expand_role': 1,
                 'planning_expand_project': 1, 'planning_expand_task': 1
             }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No shifts found
+                </p><p>
+                    Let's start your planning by adding a new shift.
+                </p>
+            </field>
         </record>
 
         <record id="project_forecast_action_schedule_by_employee_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt_inherit"/>
+            <field name="view_id" ref="planning_view_gantt"/>
             <field name="act_window_id" ref="project_forecast_action_schedule_by_employee"/>
         </record>
 
@@ -157,6 +173,13 @@
             'search_default_my_shifts': 1, 'search_default_open_shifts': 1,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 
     <record id="planning.planning_action_schedule_by_employee" model="ir.actions.act_window">
@@ -164,6 +187,13 @@
             'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1,
             'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 
     <record id="planning.planning_action_schedule_by_role" model="ir.actions.act_window">
@@ -171,6 +201,13 @@
             'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
         }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 
     <!-- menus -->

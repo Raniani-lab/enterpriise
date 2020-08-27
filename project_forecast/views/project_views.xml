@@ -101,5 +101,12 @@
         <field name="view_id" ref="project_forecast.planning_view_gantt_no_sample"/>
         <field name="domain">[('task_id', 'in', active_ids)]</field>
         <field name="context">{'search_default_group_by_task': 1, 'hide_open_shift': 1, 'show_tasks_without_slot': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No shifts found
+            </p><p>
+                Let's start your planning by adding a new shift.
+            </p>
+        </field>
     </record>
 </odoo>

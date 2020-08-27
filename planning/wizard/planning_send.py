@@ -41,7 +41,7 @@ class PlanningSend(models.TransientModel):
 
     def action_send(self):
         if not self.employee_ids:
-            raise UserError(_('There are no shifts to send during the selected period.'))
+            raise UserError(_('Select the employees you would like to send the planning to.'))
         if self.include_unassigned:
             slot_to_send = self.slot_ids.filtered(lambda s: not s.employee_id or s.employee_id in self.employee_ids)
         else:

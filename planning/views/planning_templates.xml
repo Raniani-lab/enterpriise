@@ -142,31 +142,24 @@
     <template id="planning_shift_notification" name="Shift notification">
         <t t-if="notification_text">
             <t t-if="message_slug in ['assign', 'unassign']">
-                <div class="alert alert-success" role="alert">
-                    <t t-if="message_slug == 'assign'">
-                        You were successfully assigned this open shift.<i class="fa fa-check-circle text-success"></i>
-                    </t>
-                    <t t-if="message_slug == 'unassign'">
-                        This shift is no longer assigned to you.
-                    </t>
-                    <t t-if="message_slug == 'already_assign'">
-                        This shift is already assigned to another employee.
-                    </t>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        &amp;times;
-                    </button>
-                </div>
+                <t t-set="o_toast_color" t-value="'bg-success'"/>
             </t>
             <t t-else="">
-                <div class="alert alert-danger" role="alert">
-                    <t t-if="message_slug == 'already_assign'">
-                        This shift is already assigned to another employee.
-                    </t>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        &amp;times;
-                    </button>
-                </div>
+                <t t-set="o_toast_color" t-value="'bg-danger'"/>
             </t>
+            <div t-att-class="'toast o_planning_toast ' + o_toast_color" role="alert" id="PlanningToast" data-delay="3000">
+                <div class="toast-body">
+                    <t t-if="message_slug == 'assign'">
+                        <i class="fa fa-check-circle text-success"/> You were successfully assigned this open shift.
+                    </t>
+                    <t t-if="message_slug == 'unassign'">
+                        <i class="fa fa-check-circle text-success"/> This shift is no longer assigned to you.
+                    </t>
+                    <t t-if="message_slug == 'already_assign'">
+                        <i class="fa fa-exclamation-circle text-warning"/> This shift is already assigned to another employee.
+                    </t>
+                </div>
+            </div>
         </t>
     </template>
 

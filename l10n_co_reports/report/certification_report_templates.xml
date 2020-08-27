@@ -40,7 +40,10 @@
                             <div class="row">
                                 <div class="col-12">
                                     Durante el año gravable de <t t-esc="current_year"/>, practicó en la ciudad de
-                                    <t t-esc="env.company.city"/> retención en la fuente a
+                                    <t t-esc="env.company.city"/>
+                                    <span t-if="report_name.endswith('fuente')"> retención en la fuente a</span>
+                                    <span t-if="report_name.endswith('ica')"> retención de ICA a</span>
+                                    <span t-if="report_name.endswith('iva')"> retención de IVA a</span>
                                     <t t-esc="partner['partner_id'].display_name"/> con NIT:
                                     <t t-esc="partner['partner_id'].vat"/>.
                                 </div>

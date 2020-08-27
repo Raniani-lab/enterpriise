@@ -103,33 +103,38 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
         return False if error else True
 
     def sepa_direct_debit_s2s_form_process(self, data):
+        partner_id = int(data['partner_id'])
         if not data.get('mandate_id'):
             iban = sanitize_account_number(data['iban'])
 
             # will raise a ValidationError given an invalid format
             validate_iban(iban)
 
-            partner_id = int(data.get('partner_id'))
             mandate = self._create_or_find_mandate(iban, partner_id)
         else:
+            partner = self.env['res.partner'].browse(partner_id).sudo()
             mandate = self.env['sdd.mandate'].browse(data['mandate_id'])
             # since we're in a sudoed env, we need to add a few checks
-            if mandate.partner_id.id != data['partner_id']:
+            if mandate.partner_id != partner.commercial_partner_id:
                 raise AccessError(_('Identity mismatch'))
+        iban_mask = 'X'*(len(data['iban'])-4) + data['iban'][-4:]
         payment_token = self.env['payment.token'].sudo().create({
             'sdd_mandate_id': mandate.id,
-            'name': data['iban'],
+            'name': _('Direct Debit: ') + iban_mask,
             'acquirer_ref': mandate.name,
             'acquirer_id': int(data['acquirer_id']),
-            'partner_id': int(data['partner_id']),
+            'partner_id': partner_id,
         })
         return payment_token
 
     def _create_or_find_mandate(self, iban, partner_id):
         self.ensure_one()
         ResPartnerBank = self.env['res.partner.bank'].sudo()
+        commercial_partner_id = self.env['res.partner'].browse(partner_id).sudo().commercial_partner_id.id
+
         partner_bank = ResPartnerBank.search([
-            ('sanitized_acc_number', '=', sanitize_account_number(iban))], limit=1)
+            ('sanitized_acc_number', '=', sanitize_account_number(iban)),
+            ('partner_id', 'child_of', commercial_partner_id)], limit=1)
         if not partner_bank:
             partner_bank = ResPartnerBank.create({
                 'acc_number': iban,
@@ -141,12 +146,12 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
             ('state', 'not in', ['closed', 'revoked']),
             ('start_date', '<=', datetime.now()),
             '|', ('end_date', '>=', datetime.now()), ('end_date', '=', None),
-            ('partner_id', '=', partner_id),
+            ('partner_id', '=', commercial_partner_id),
             ('partner_bank_id', '=', partner_bank.id),
             '|', ('one_off', '=', False), ('payment_ids', '=', False)], limit=1)
         if not mandate:
             mandate = self.env['sdd.mandate'].sudo().create({
-                'partner_id': partner_id,
+                'partner_id': commercial_partner_id,
                 'partner_bank_id': partner_bank.id,
                 'start_date': datetime.now(),
                 'payment_journal_id': self.journal_id.id,
@@ -174,7 +179,7 @@ class PaymentTxSepaDirectDebit(models.Model):
         if not mandate:
             raise ValidationError(_('No SEPA Direct Debit mandate selected'))
 
-        if mandate.partner_id != self.partner_id:
+        if mandate.partner_id != self.partner_id.commercial_partner_id:
             raise ValidationError(_('Mandate owner and customer do not match'))
 
         if not mandate.verified or not mandate.state == 'active' or (mandate.end_date and mandate.end_date > fields.Datetime.now()):
@@ -295,6 +300,22 @@ class SDDMandate(models.Model):
         template = self.env.ref('payment_sepa_direct_debit.mail_template_sepa_notify_validation')
         self.write({'state': 'active', 'verified': True})
         template.send_mail(self.id)
+
+    def _update_mandate(self, code=None, phone=None, signer=None, signature=None):
+        # This method will call _sign then _confirm and add a log in the chatter in case of an update
+        # We need to call _sign first as it will add the current user as a follower
+        self.ensure_one()
+        self._sign(signature=signature, signer=signer)
+        self._confirm(code=code, phone=phone)
+
+        msg_list = []
+        if (signature and signer):
+            msg_list.append(_('The mandate was signed by %s') % signer)
+        if (code and phone):
+            msg_list.append(_('The mandate was validated with phone number %s') % phone)
+
+        if msg_list:
+            self._message_log(body='\n'.join(msg_list))
 
     def write(self, vals):
         res = super(SDDMandate, self).write(vals)

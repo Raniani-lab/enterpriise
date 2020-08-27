@@ -68,8 +68,7 @@ class SepaDirectDebitController(http.Controller):
                 'partner_id': int(partner_id) or request.env.user.partner_id,
             })
             mandate = token.sdd_mandate_id
-            mandate._sign(signature=signature, signer=signer)
-            mandate._confirm(code=validation_code, phone=phone)
+            mandate._update_mandate(signature=signature, signer=signer, code=validation_code, phone=phone)
             mandate_id = mandate.id
         except UserError as e:
             return {

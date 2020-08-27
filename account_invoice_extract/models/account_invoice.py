@@ -2,7 +2,7 @@
 
 from odoo import api, exceptions, fields, models, _
 from odoo.addons.iap.tools import iap_tools
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
 from odoo.tools.misc import clean_context
 import logging

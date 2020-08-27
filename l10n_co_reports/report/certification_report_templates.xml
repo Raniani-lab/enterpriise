@@ -125,7 +125,7 @@
                             </div>
                             <div class="row" style="margin-top: 50px;">
                                 <div class="col-12" t-if="report_name.endswith('fuente')">
-                                    Señor contribuyente: Favor tener en cuenta que la base certificada por nostotros corresponde a la somatida a retención durante el periodo gravable según las normas vigentes sobre la materia y podría ser diferente a lo facturado por usted durante el mismo periodo. al declarar tenerlo presente.
+                                    Señor contribuyente: Favor tener en cuenta que la base certificada por nosotros corresponde a la sometida a retención durante el periodo gravable según las normas vigentes sobre la materia y podría ser diferente a lo facturado por usted durante el mismo periodo. al declarar tenerlo presente.
                                 </div>
                                 <div class="col-12">
                                     El presente certificado se expide on concordancia con las disposiciones legales contenidas en al artículo 381 del Estatuto Tributario.

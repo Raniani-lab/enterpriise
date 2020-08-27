@@ -184,18 +184,25 @@ class SocialStreamTwitter(models.Model):
                 lookup_endpoint_ul,
                 params=params
             )
-            result = requests.post(
+            response = requests.post(
                 lookup_endpoint_ul,
                 data=params,
                 headers=headers
             )
-
-            favorites_by_id.update({
-                tweet.get('id_str'): {
-                    'favorited': tweet.get('favorited', False)
-                }
-                for tweet in result.json()
-            })
+            try:
+                response.raise_for_status()
+                result = response.json()
+                if not (isinstance(result, dict) and result.get('errors')):
+                    favorites_by_id.update({
+                        tweet.get('id_str'): {
+                            'favorited': tweet.get('favorited', False)
+                        }
+                        for tweet in result
+                    })
+            except requests.HTTPError:
+                # we let it fail silently because the lookup doesn't do anything essential, unless
+                # checking the # of likes, so we can continue, instead of stopping the process.
+                pass
 
             page += 1
 

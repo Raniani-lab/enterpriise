@@ -214,7 +214,7 @@
     </t>
 
     <t t-name="web_grid.Cell" owl="1">
-        <td t-att-class="{o_grid_current: cell.is_current, o_grid_unavailable: col.is_unavailable}">
+        <td t-att-class="{o_grid_current: cell.is_current, o_grid_unavailable: cell.is_unavailable}">
             <t t-set="cellPath" t-value="path.concat([rowIndex, cell_index]).join('.')"/>
             <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
             <div t-att-class="_getCellClassMap(cell)">

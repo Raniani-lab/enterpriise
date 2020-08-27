@@ -28,7 +28,7 @@
                 <sheet>
                     <div class="oe_title">
                         <label class="oe_edit_only" for="name"/>
-                        <h1><field name="name" readonly="1" placeholder="e.g. Birthdate"/></h1>
+                        <h1><field name="name" placeholder="e.g. Birthdate"/></h1>
                     </div>
                     <group>
                         <group>
@@ -40,7 +40,7 @@
                         <group>
                         	<field name="value_type"/>
                             <field name="advantage_ids" attrs="{'invisible': [('value_type', '!=', 'sum')]}" widget="many2many_tags"/>
-                            <field name="code" attrs="{'invisible': [('value_type', 'not in', ['payslip', 'contract'])]}"/>
+                            <field name="code" attrs="{'invisible': [('value_type', 'not in', ['payslip', 'contract'])], 'required': [('value_type', 'in', ['payslip', 'contract'])]}"/>
                             <field name="fixed_value" attrs="{'invisible': [('value_type', '!=', 'fixed')]}"/>
                         </group>
                     </group>

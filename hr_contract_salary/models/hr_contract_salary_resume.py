@@ -27,7 +27,7 @@ class HrContractSalaryResume(models.Model):
         ('monthly_total', 'Monthly Total'),
         ('sum', 'Sum of Advantages Values')], required=True, default='fixed')
     advantage_ids = fields.Many2many('hr.contract.salary.advantage')
-    code = fields.Char(required=True)
+    code = fields.Char()
     fixed_value = fields.Char()
     category_id = fields.Many2one('hr.contract.salary.resume.category', required=True)
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")

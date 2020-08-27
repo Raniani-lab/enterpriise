@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account.tests.account_test_xml import AccountTestEdiCommon
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
 from odoo import fields
@@ -10,7 +9,7 @@ from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
-class TestLuSaftReport(AccountTestEdiCommon, TestAccountReportsCommon):
+class TestLuSaftReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):

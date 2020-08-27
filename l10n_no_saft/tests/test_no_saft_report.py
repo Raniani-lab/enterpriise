@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.addons.account.tests.account_test_xml import AccountTestEdiCommon
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
 from odoo import fields
@@ -9,7 +8,7 @@ from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
-class TestNoSaftReport(AccountTestEdiCommon, TestAccountReportsCommon):
+class TestNoSaftReport(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_no.no_chart_template'):
@@ -107,7 +106,7 @@ class TestNoSaftReport(AccountTestEdiCommon, TestAccountReportsCommon):
                                 <Telephone>+47 11 11 11 11</Telephone>
                             </Contact>
                         </Company>
-                        <DefaultCurrencyCode>EUR</DefaultCurrencyCode>
+                        <DefaultCurrencyCode>NOK</DefaultCurrencyCode>
                         <SelectionCriteria>
                             <SelectionStartDate>2019-01-01</SelectionStartDate>
                             <SelectionEndDate>2019-12-31</SelectionEndDate>

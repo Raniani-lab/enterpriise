@@ -47,6 +47,8 @@ class SocialPostTwitter(models.Model):
         twitter_tweet_ids = [twitter_tweet_id for twitter_tweet_id in self.live_post_ids.mapped('twitter_tweet_id') if twitter_tweet_id]
         if twitter_tweet_ids:
             return expression.OR([domain, [('twitter_tweet_id', 'in', twitter_tweet_ids)]])
+        else:
+            return domain
 
     @api.model
     def _prepare_post_content(self, message, media_type, **kw):

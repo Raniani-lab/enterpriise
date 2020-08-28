@@ -50,6 +50,8 @@ class SocialPostFacebook(models.Model):
         facebook_post_ids = [facebook_post_id for facebook_post_id in self.live_post_ids.mapped('facebook_post_id') if facebook_post_id]
         if facebook_post_ids:
             return expression.OR([domain, [('facebook_post_id', 'in', facebook_post_ids)]])
+        else:
+            return domain
 
     def _format_images_facebook(self, facebook_account_id, facebook_access_token):
         self.ensure_one()

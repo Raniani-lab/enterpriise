@@ -8,9 +8,9 @@ var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
 
+const { createView } = testUtils;
 const cpHelpers = testUtils.controlPanel;
 var createActionManager = testUtils.createActionManager;
-var createView = testUtils.createView;
 var patchDate = testUtils.mock.patchDate;
 
 var FieldFloat = BasicFields.FieldFloat;
@@ -161,7 +161,7 @@ QUnit.module('Views', {
         var chartTitle = dashboard.$('.o_pie_chart .o_graph_renderer label').text();
         assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
-        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var chart = dashboard.renderer.widgets[0].controller.renderer.componentRef.comp.chart;
         var legendText = $(chart.generateLegend()).text().trim();
         assert.strictEqual(legendText, "FirstSecond",
             "there should be two legend items");
@@ -188,7 +188,7 @@ QUnit.module('Views', {
                       '<widget name="pie_chart" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
         });
-        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var chart = dashboard.renderer.widgets[0].controller.renderer.componentRef.comp.chart;
         var legendText = $(chart.generateLegend()).text().trim();
         assert.strictEqual(legendText, "No data",
             "the legend should contain the item 'No data'");
@@ -202,7 +202,6 @@ QUnit.module('Views', {
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
         assert.expect(7);
 
-        var self = this;
         var dashboard = await createView({
             View: DashboardView,
             model: 'test_report',
@@ -216,7 +215,7 @@ QUnit.module('Views', {
                       '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
             mockRPC: function (route, args){
-                if (route == '/web/dataset/call_kw/test_report/read_group') {
+                if (route === '/web/dataset/call_kw/test_report/read_group') {
                     assert.deepEqual(args.args, []);
                     assert.deepEqual(args.model,"test_report");
                     assert.deepEqual(args.method,"read_group");
@@ -238,7 +237,7 @@ QUnit.module('Views', {
         assert.strictEqual($('.o_pie_chart .o_graph_renderer label').text(), "Products sold",
             "the title of the graph should be displayed");
 
-        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var chart = dashboard.renderer.widgets[0].controller.renderer.componentRef.comp.chart;
         var legendText = $(chart.generateLegend()).text().trim();
         assert.strictEqual(legendText, "FirstSecond",
             "there should be two legend items");
@@ -344,6 +343,7 @@ QUnit.module('Views', {
 
         this.data.test_report.fields.sold.searchable = true;
         const dashboard = await createView({
+            View: DashboardView,
             arch: `
                 <dashboard>
                     <group>
@@ -352,7 +352,6 @@ QUnit.module('Views', {
                 </dashboard>`,
             data: this.data,
             model: "test_report",
-            View: DashboardView,
         });
 
         await cpHelpers.toggleFilterMenu(dashboard);
@@ -458,7 +457,7 @@ QUnit.module('Views', {
                     </graph>`,
             },
         });
-
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
         await testUtils.dom.click(dashboard.$('.o_graph_measures_list button'));
         assert.containsNone(dashboard, '.o_menu_item:contains("Sold")',
             "the sold field should be invisible in the measures");
@@ -488,7 +487,7 @@ QUnit.module('Views', {
                     </graph>`,
             }
         });
-
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
         await testUtils.dom.click(dashboard.$('.o_graph_measures_list button'));
         assert.containsOnce(dashboard, '.o_menu_item:contains("Sold")',
             "the sold field should be in the measures");
@@ -1146,7 +1145,13 @@ QUnit.module('Views', {
                 return this._super.apply(this, arguments);
             },
         });
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Sold)'), 'selected',
             "sold measure should be active in graph view");
         assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Untaxed)'), 'selected',
@@ -1158,7 +1163,13 @@ QUnit.module('Views', {
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in both subviews
         await testUtils.dom.click(dashboard.$('.o_aggregate[name=untaxed]'));
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         assert.doesNotHaveClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Sold)'), 'selected',
             "sold measure should not be active in graph view");
         assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Untaxed)'), 'selected',
@@ -1296,10 +1307,7 @@ QUnit.module('Views', {
         assert.expect(14);
 
         this.data.test_report.fields.untaxed_2 = {string: "Untaxed_2", type: 'float', store: true};
-
-        _.each(this.data.test_report.records, function (record) {
-            record.untaxed_2 = 3.1415;
-        });
+        this.data.test_report.records.forEach(record => record.untaxed_2 = 3.1415);
 
         var dashboard = await createView({
             View: DashboardView,
@@ -1526,11 +1534,12 @@ QUnit.module('Views', {
             },
         });
 
-        var chart = dashboard.renderer.subControllers.graph.renderer.chart;
+        var chart = dashboard.renderer.subControllers.graph.renderer.componentRef.comp.chart;
         assert.strictEqual(chart.config.type, 'bar', 'should have rendered the graph in "bar" mode');
         // switch to pie mode
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button[data-mode=pie]'));
-        chart = dashboard.renderer.subControllers.graph.renderer.chart;
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+        chart = dashboard.renderer.subControllers.graph.renderer.componentRef.comp.chart;
         assert.strictEqual(chart.config.type, 'pie', 'should have rendered the graph in "pie" mode');
 
         // select 'untaxed' as measure
@@ -1660,6 +1669,8 @@ QUnit.module('Views', {
             },
         });
 
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
 
         assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item:contains(Product)',
@@ -1715,6 +1726,8 @@ QUnit.module('Views', {
             type: 'ir.actions.act_window',
             views: [[false, 'dashboard']],
         });
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
         // select 'untaxed' as measure in graph view
         await testUtils.dom.click($('.o_graph_buttons button:contains(Measures)'));
@@ -1883,6 +1896,8 @@ QUnit.module('Views', {
             },
         });
 
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         assert.deepEqual(dashboard.getOwnedQueryParams().context.graph, {
             graph_mode: 'bar',
             graph_measure: '__count__',
@@ -2006,7 +2021,7 @@ QUnit.module('Views', {
         });
 
         // check mode
-        assert.strictEqual(dashboard.renderer.subControllers.graph.renderer.state.mode,
+        assert.strictEqual(dashboard.renderer.subControllers.graph.renderer.componentRef.comp.props.mode,
             "line", "should be in line chart mode");
         assert.doesNotHaveClass(dashboard.$('button[data-mode="bar"]'), 'active',
             'bar chart button should not be active');
@@ -2216,15 +2231,23 @@ QUnit.module('Views', {
             },
         });
 
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
         await testUtils.dom.click(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1));
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
         await cpHelpers.toggleFilterMenu(dashboard);
         await cpHelpers.toggleMenuItem(dashboard, 0);
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
+
         assert.hasClass(dashboard.$('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1), 'selected',
             'groupby should be unselected');
 
@@ -2574,6 +2597,7 @@ QUnit.module('Views', {
                     `,
                 },
             mockRPC: function (route, args) {
+                var def = this._super.apply(this, arguments);
 
                 function _readGroup(expectedDomain, readGroupResult) {
                     assert.deepEqual(args.kwargs.fields, ['some_value:sum(sold)'], "should read the correct field");
@@ -2588,7 +2612,6 @@ QUnit.module('Views', {
                     });
                 }
 
-                var def = this._super.apply(this, arguments);
                 if (args.method === 'read_group') {
                     nbReadGroup++;
                     if (nbReadGroup === 1) {
@@ -2749,6 +2772,8 @@ QUnit.module('Views', {
         });
         const el = dashboard.el;
 
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons button')[1]);
         await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1]);
         await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons .o_menu_item .o_item_option > a')[4]);
@@ -2757,6 +2782,8 @@ QUnit.module('Views', {
         await cpHelpers.toggleFilterMenu(dashboard);
         await cpHelpers.toggleMenuItem(dashboard, 0);
 
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(el.querySelectorAll('.o_graph_buttons button')[1]);
         assert.doesNotHaveClass(el.querySelectorAll('.o_graph_buttons .o_menu_item > a')[1], 'selected',
             'groupby should be still unselected');
@@ -2764,7 +2791,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('groupbys in "Group By" menu of graph subviews', async function (assert) {
-        assert.expect(16);
+        assert.expect(17);
 
         this.data.test_time_range.fields.categ_id.store = true;
         this.data.test_time_range.fields.categ_id.sortable = true;
@@ -2776,7 +2803,7 @@ QUnit.module('Views', {
             ['categ_id', 'date:day'], //graph view keeps only finer option when fetching data
             ['date:day'],
             ['date:quarter'],
-        ]
+        ];
 
         const dashboard = await createView({
             View: DashboardView,
@@ -2798,7 +2825,12 @@ QUnit.module('Views', {
         });
 
         assert.containsOnce(dashboard, '.o_subview .o_graph_buttons',
-            "should have rendered the graph view's buttons");
+            "should contain the buttons container");
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
+        assert.containsOnce(dashboard, '.o_subview .o_graph_buttons .o_group_by_menu:contains("Group By")',
+            "graph button should have been rendered");
 
         await cpHelpers.toggleGroupByMenu(dashboard);
 

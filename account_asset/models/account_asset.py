@@ -487,7 +487,7 @@ class AccountAsset(models.Model):
             tracked_fields = ref_tracked_fields.copy()
             if asset.method == 'linear':
                 del(tracked_fields['method_progress_factor'])
-            dummy, tracking_value_ids = asset._message_track(tracked_fields, dict.fromkeys(fields))
+            dummy, tracking_value_ids = asset._mail_track(tracked_fields, dict.fromkeys(fields))
             asset_name = {
                 'purchase': (_('Asset created'), _('An asset has been created for this move:')),
                 'sale': (_('Deferred revenue created'), _('A deferred revenue has been created for this move:')),
@@ -580,7 +580,7 @@ class AccountAsset(models.Model):
                 commands.append((0, 0, vals))
                 asset.write({'depreciation_move_ids': commands, 'method_number': asset_sequence})
                 tracked_fields = self.env['account.asset'].fields_get(['method_number'])
-                changes, tracking_value_ids = asset._message_track(tracked_fields, old_values)
+                changes, tracking_value_ids = asset._mail_track(tracked_fields, old_values)
                 if changes:
                     asset.message_post(body=_('Asset sold or disposed. Accounting entry awaiting for validation.'), tracking_value_ids=tracking_value_ids)
                 move_ids += self.env['account.move'].search([('asset_id', '=', asset.id), ('state', '=', 'draft')]).ids

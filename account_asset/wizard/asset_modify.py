@@ -151,7 +151,7 @@ class AssetModify(models.TransientModel):
         for child in self.asset_id.children_ids:
             child.compute_depreciation_board()
         tracked_fields = self.env['account.asset'].fields_get(old_values.keys())
-        changes, tracking_value_ids = self.asset_id._message_track(tracked_fields, old_values)
+        changes, tracking_value_ids = self.asset_id._mail_track(tracked_fields, old_values)
         if changes:
             self.asset_id.message_post(body=_('Depreciation board modified') + '<br>' + self.name, tracking_value_ids=tracking_value_ids)
         return {'type': 'ir.actions.act_window_close'}

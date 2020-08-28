@@ -437,12 +437,12 @@ class SaleSubscription(models.Model):
         subscriptions = self.search([('stage_category', '=', 'progress')])
         subscriptions._compute_kpi()
 
-    def _message_track(self, tracked_fields, initial):
+    def _mail_track(self, tracked_fields, initial):
         """ For a given record, fields to check (tuple column name, column info)
                 and initial values, return a structure that is a tuple containing :
                  - a set of updated column names
                  - a list of ORM (0, 0, values) commands to create 'mail.tracking.value' """
-        res = super()._message_track(tracked_fields, initial)
+        res = super()._mail_track(tracked_fields, initial)
         updated_fields = res[0]
         commands = res[1]
         for sub in self:

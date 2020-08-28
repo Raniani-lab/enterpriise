@@ -15,6 +15,7 @@ and social-related sub modules. It will test interactions between all those modu
         'social_push_notifications',
         'social_twitter',
         'social_youtube',
+        'social_crm',
     ],
     'installable': True,
     'application': False,

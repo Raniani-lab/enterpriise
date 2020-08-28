@@ -86,6 +86,14 @@ var StreamPostInstagramComments = StreamPostComments.extend({
         return true;
     },
 
+    isCommentAuthor: function (comment) {
+        return comment.from.id === this.instagramAccountId;
+    },
+
+    isPostAuthor: function (post) {
+        return true;  // can only display your own posts currently
+    },
+
     canAddImage: function () {
         return false;
     },

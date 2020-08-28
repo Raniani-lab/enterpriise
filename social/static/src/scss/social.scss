@@ -54,7 +54,6 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
                     display: none;
                 }
             }
-
         }
     }
 
@@ -371,9 +370,12 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     overflow-x: hidden;
     font-family: $o-social-font-family-reset;
 
-    .o_social_comment_controls, .o_social_manage_comment {
+    .o_social_comment_controls, .o_social_manage_comment, .o_social_manage_post {
         .dropdown-toggle:after {
             content: none;
+        }
+        .dropdown-item{
+            color: #666666;
         }
     }
 
@@ -440,6 +442,10 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             min-width: 0; // allow text-truncate on flexbox
         }
 
+        .o_social_manage_post {
+            margin-left: auto;
+        }
+
         .o_social_stream_post_image img {
             cursor: pointer;
 
@@ -461,16 +467,12 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_social_comment_message {
         .o_social_manage_comment {
-            visibility: hidden;
-            height: 0;
+            margin: auto 0 auto auto;
         }
 
         .o_social_comment_text {
-            overflow: hidden;
-        }
-
-        &.o_social_comment_manageable:hover .o_social_manage_comment {
-            visibility: visible;
+            height: fit-content;
+            margin: auto 0;
         }
     }
 

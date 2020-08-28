@@ -176,20 +176,14 @@ class SocialPost(models.Model):
         """ We use the first 20 chars of the message (or "Post" if no message yet).
         We also add "(Draft)" at the end if the post is still in draft state. """
         result = []
-        state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
-        draft_translated = state_description_values.get('draft')
         for post in self:
-            name = _('Post')
-            if post.message:
-                if len(post.message) < 20:
-                    name = post.message
-                else:
-                    name = post.message[:20] + '...'
-
-            if post.state == 'draft':
-                name += ' (' + draft_translated + ')'
-
-            result.append((post.id, name))
+            result.append((
+                post.id,
+                self._prepare_post_name(
+                    post.message,
+                    state=post.state if post.state == 'draft' else False
+                )
+            ))
 
         return result
 
@@ -216,13 +210,12 @@ class SocialPost(models.Model):
            any(vals.get('state', 'draft') != 'draft' for vals in vals_list):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
 
-        if vals_list:
-            sources = self.env['utm.source'].create({
-                'name': "Post %s_%s" % (fields.datetime.now(), i)
-            } for i in range(len(vals_list)))
+        sources = self.env['utm.source'].create([{
+            'name': self._prepare_post_name(vals.get('message'), include_datetime=True)
+        } for vals in vals_list])
 
-            for index, vals in enumerate(vals_list):
-                vals['utm_source_id'] = sources[index].id
+        for source, vals in zip(sources, vals_list):
+            vals['utm_source_id'] = source.id
 
         res = super(SocialPost, self).create(vals_list)
 
@@ -343,6 +336,27 @@ class SocialPost(models.Model):
             'post_id': self.id,
             'account_id': account.id,
         } for account in self.account_ids]
+
+    @api.model
+    def _prepare_post_name(self, message, state=False, include_datetime=False):
+        name = _('Post')
+        if message:
+            message = message.replace('\n', ' ')  # replace carriage returns as needed name is usually a Char
+            if len(message) < 24:
+                name = message
+            else:
+                name = message[:20] + '...'
+
+        if state:
+            state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
+            state_translated = state_description_values.get(state)
+            name += ' (' + state_translated + ')'
+
+        if include_datetime:
+            context_now = fields.Datetime.context_timestamp(self, fields.Datetime.now())
+            name += ' ' + fields.Datetime.to_string(context_now)
+
+        return name
 
     def _get_company_domain(self):
         self.ensure_one()

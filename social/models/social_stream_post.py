@@ -84,3 +84,14 @@ class SocialStreamPost(models.Model):
             return _format_time_ago(self.env, (datetime.now() - published_date), add_direction=False)
         else:
             return format_date(self.env, published_date)
+
+    def _fetch_matching_post(self):
+        """ This method is meant to be overridden by underlying social implementations.
+        It returns the social.post linked to this social.stream.post if any, by matching
+        the social media specific ID of the social.stream.post to its social.live.post counterpart.
+
+        This can't be easily built dinamically since all social media implementations have their own
+        specific IDs, that we don't want to mix. """
+
+        self.ensure_one()
+        return self.env['social.post']

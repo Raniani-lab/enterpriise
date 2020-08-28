@@ -38,6 +38,7 @@ var StreamPostKanbanController = KanbanController.extend({
         var isSocialManagerPromise = this.getSession()
             .user_has_group('social.group_social_manager').then(function (hasGroup) {
                 self.isSocialManager = hasGroup;
+                return Promise.resolve();
         });
 
         var hasAccountsPromise = this._rpc({

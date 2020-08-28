@@ -31,7 +31,7 @@ StreamPostKanbanController.include({
                 {
                     commentsCount: self.commentsCount,
                     postId: postId,
-                    accountId: result.accountId,
+                    accountId: $target.data("linkedinAccountId"),
                     postAuthorImage: result.postAuthorImage,
                     currentUserUrn: result.currentUserUrn,
                     originalPost: $target.data(),

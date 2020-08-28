@@ -96,6 +96,14 @@ var StreamPostYoutubeComments = StreamPostComments.extend({
         return false;
     },
 
+    isCommentAuthor: function (comment) {
+        return comment && comment.from.id === this.youtubeChannelId;
+    },
+
+    isPostAuthor: function (post) {
+        return true;  // can only display your own posts currently
+    },
+
     showMoreComments: function () {
         return this.nextPageToken;
     },

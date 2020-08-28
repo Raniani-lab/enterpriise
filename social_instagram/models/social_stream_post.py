@@ -102,6 +102,16 @@ class SocialStreamPostInstagram(models.Model):
     # MISC / UTILITY
     # ========================================================
 
+    def _fetch_matching_post(self):
+        self.ensure_one()
+
+        if self.account_id.media_type == 'instagram' and self.instagram_post_id:
+            return self.env['social.live.post'].search(
+                [('instagram_post_id', '=', self.instagram_post_id)], limit=1
+            ).post_id
+        else:
+            return super(SocialStreamPostInstagram, self)._fetch_matching_post()
+
     def _instagram_format_comment(self, comment):
         return {
             'id': comment.get('id'),

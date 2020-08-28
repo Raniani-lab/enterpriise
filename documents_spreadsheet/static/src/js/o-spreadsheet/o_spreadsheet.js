@@ -113,6 +113,7 @@
     function clip(val, min, max) {
         return val < min ? min : val > max ? max : val;
     }
+    const DEBUG = {};
 
     /**
      * Convert from a cartesian reference to a Zone
@@ -407,7 +408,7 @@
             return "-" + formatDecimal(-n, decimals);
         }
         const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
-        let result = n.toLocaleString("fullwide", {
+        let result = n.toLocaleString("en-US", {
             minimumFractionDigits: maxDecimals,
             maximumFractionDigits: maxDecimals,
             useGrouping: false,
@@ -1003,6 +1004,7 @@
         let types = [];
         let isOptional = false;
         let isRepeating = false;
+        let isLazy = false;
         let defaultVal;
         for (let param of parts[2].split(",")) {
             const key = param.trim().toUpperCase();
@@ -1018,6 +1020,9 @@
             }
             else if (key === "REPEATING") {
                 isRepeating = true;
+            }
+            else if (key === "LAZY") {
+                isLazy = true;
             }
             else if (key.startsWith("DEFAULT=")) {
                 const value = param.trim().slice(8);
@@ -1035,6 +1040,9 @@
         }
         if (isRepeating) {
             result.repeating = true;
+        }
+        if (isLazy) {
+            result.lazy = true;
         }
         if (defaultVal !== undefined) {
             result.default = defaultVal;
@@ -1059,6 +1067,23 @@
         }
     }
 
+    // -----------------------------------------------------------------------------
+    // ISERROR
+    // -----------------------------------------------------------------------------
+    const ISERROR = {
+        description: _lt("Whether a value is an error."),
+        args: args(`value (any, lazy) ${_lt("The value to be verified as an error type.")}`),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            try {
+                value();
+                return false;
+            }
+            catch (e) {
+                return true;
+            }
+        },
+    };
     // -----------------------------------------------------------------------------
     // ISLOGICAL
     // -----------------------------------------------------------------------------
@@ -1106,6 +1131,7 @@
 
     var info = /*#__PURE__*/Object.freeze({
         __proto__: null,
+        ISERROR: ISERROR,
         ISLOGICAL: ISLOGICAL,
         ISNONTEXT: ISNONTEXT,
         ISNUMBER: ISNUMBER,
@@ -1159,12 +1185,33 @@
         description: _lt("Returns value depending on logical expression."),
         args: args(`
       logical_expression (boolean) ${_lt("An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE.")}
-      value_if_true (any) ${_lt("The value the function returns if logical_expression is TRUE.")}
-      value_if_false (any, optional, default=FALSE) ${_lt("The value the function returns if logical_expression is FALSE.")}
+      value_if_true (any, lazy) ${_lt("The value the function returns if logical_expression is TRUE.")}
+      value_if_false (any, lazy, optional, default=FALSE) ${_lt("The value the function returns if logical_expression is FALSE.")}
     `),
         returns: ["ANY"],
-        compute: function (logical_expression, value_if_true, value_if_false = false) {
-            const result = toBoolean(logical_expression) ? value_if_true : value_if_false;
+        compute: function (logical_expression, value_if_true, value_if_false = () => false) {
+            const result = toBoolean(logical_expression) ? value_if_true() : value_if_false();
+            return result === null ? "" : result;
+        },
+    };
+    // -----------------------------------------------------------------------------
+    // IFERROR
+    // -----------------------------------------------------------------------------
+    const IFERROR = {
+        description: _lt("Value if it is not an error, otherwise 2nd argument."),
+        args: args(`
+    value (any, lazy) ${_lt("The value to return if value itself is not an error.")}
+    value_if_error (any, lazy, optional, default="") ${_lt("The value the function returns if value is an error.")}
+  `),
+        returns: ["ANY"],
+        compute: function (value, value_if_error = () => "") {
+            let result;
+            try {
+                result = value();
+            }
+            catch (e) {
+                result = value_if_error();
+            }
             return result === null ? "" : result;
         },
     };
@@ -1174,9 +1221,9 @@
     const IFS = {
         description: _lt("Returns a value depending on multiple logical expressions."),
         args: args(`
-      condition1 (boolean) ${_lt("The first condition to be evaluated. This can be a boolean, a number, an array, or a reference to any of those.")}
-      value1 (any) ${_lt("The returned value if condition1 is TRUE.")}
-      additional_values (any, optional, repeating) ${_lt("Additional conditions and values to be evaluated if the previous ones are FALSE.")}
+      condition1 (boolean, lazy) ${_lt("The first condition to be evaluated. This can be a boolean, a number, an array, or a reference to any of those.")}
+      value1 (any, lazy) ${_lt("The returned value if condition1 is TRUE.")}
+      additional_values (any, lazy, optional, repeating) ${_lt("Additional conditions and values to be evaluated if the previous ones are FALSE.")}
     `),
         // @compatibility: on google sheets, args definitions are next:
         // condition1 (boolean) The first condition to be evaluated. This can be a boolean, a number, an array, or a reference to any of those.
@@ -1189,8 +1236,8 @@
                 throw new Error(_lt(`Wrong number of arguments. Expected an even number of arguments.`));
             }
             for (let n = 0; n < arguments.length - 1; n += 2) {
-                if (toBoolean(arguments[n])) {
-                    return arguments[n + 1];
+                if (toBoolean(arguments[n]())) {
+                    return arguments[n + 1]();
                 }
             }
             throw new Error(_lt(`No match.`));
@@ -1262,6 +1309,7 @@
         WAIT: WAIT,
         AND: AND,
         IF: IF,
+        IFERROR: IFERROR,
         IFS: IFS,
         NOT: NOT,
         OR: OR,
@@ -5545,6 +5593,13 @@
                     this.adaptcfRules(cmd.sheet, (range) => updateAddColumns(range, column, cmd.quantity));
                     this.isStale = true;
                     break;
+                case "AUTOFILL_CELL":
+                    const sheet = this.getters.getActiveSheet();
+                    const cfOrigin = this.getRulesByCell(toXC(cmd.originCol, cmd.originRow));
+                    for (const cf of cfOrigin) {
+                        this.adaptRules(sheet, cf, [toXC(cmd.col, cmd.row)], []);
+                    }
+                    break;
                 case "ADD_ROWS":
                     const row = cmd.position === "before" ? cmd.row : cmd.row + 1;
                     this.adaptcfRules(cmd.sheet, (range) => updateAddRows(range, row, cmd.quantity));
@@ -5614,9 +5669,9 @@
             const ruleIds = new Set();
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
-                    const cellRulesId = this.getRulesByCell(toXC(col, row));
-                    cellRulesId.forEach((ruleId) => {
-                        ruleIds.add(ruleId);
+                    const cellRules = this.getRulesByCell(toXC(col, row));
+                    cellRules.forEach((rule) => {
+                        ruleIds.add(rule.id);
                     });
                 }
             }
@@ -5632,7 +5687,7 @@
                         for (let col = zone.left; col <= zone.right; col++) {
                             let xc = toXC(col, row);
                             if (cellXc == xc) {
-                                rulesId.add(cf.id);
+                                rulesId.add(cf);
                             }
                         }
                     }
@@ -6375,6 +6430,12 @@
         "-": "UMINUS",
         "+": "UPLUS",
     };
+    // this cache contains all compiled function code, grouped by "structure". For
+    // example, "=2*sum(A1:A4)" and "=2*sum(B1:B4)" are compiled into the same
+    // structural function.
+    //
+    // It is only exported for testing purposes
+    const functionCache = {};
     // -----------------------------------------------------------------------------
     // COMPILER
     // -----------------------------------------------------------------------------
@@ -6384,6 +6445,9 @@
         let nextId = 1;
         const code = [`// ${str}`];
         let isAsync = false;
+        let cacheKey = "";
+        let cellRefs = [];
+        let rangeRefs = [];
         if (ast.type === "BIN_OPERATION" && ast.value === ":") {
             throw new Error(_lt("Invalid formula"));
         }
@@ -6405,8 +6469,9 @@
             let argDescr;
             for (let i = 0; i < args.length; i++) {
                 const arg = args[i];
-                let argValue = compileAST(arg);
                 argDescr = fn.args[i] || argDescr;
+                const isLazy = argDescr && argDescr.lazy;
+                let argValue = compileAST(arg, isLazy);
                 if (arg.type === "REFERENCE") {
                     const types = argDescr.type;
                     const hasRange = types.find((t) => t === "RANGE" ||
@@ -6417,7 +6482,7 @@
                         argValue = `[[${argValue}]]`;
                     }
                 }
-                result.push(argValue === "" ? `""` : argValue);
+                result.push(argValue);
             }
             const isRepeating = fn.args.length ? fn.args[fn.args.length - 1].repeating : false;
             let minArg = 0;
@@ -6434,27 +6499,38 @@
             }
             return result;
         }
-        function compileAST(ast) {
-            let id, left, right, args, fnName;
+        function compileAST(ast, isLazy = false) {
+            let id, left, right, args, fnName, statement;
+            if (ast.type !== "REFERENCE" && !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
+                cacheKey += "_" + ast.value;
+            }
             if (ast.debug) {
+                cacheKey += "?";
                 code.push("debugger;");
             }
             switch (ast.type) {
                 case "BOOLEAN":
                 case "NUMBER":
                 case "STRING":
-                    return ast.value;
+                    if (!isLazy) {
+                        return ast.value;
+                    }
+                    id = nextId++;
+                    statement = `${ast.value}`;
+                    break;
                 case "REFERENCE":
                     id = nextId++;
+                    cacheKey += "__REF";
                     const sheetId = ast.sheet ? sheets[ast.sheet] : sheet;
-                    code.push(`let _${id} = cell('${ast.value}', \`${sheetId}\`)`);
+                    const refIdx = cellRefs.push([ast.value, sheetId]) - 1;
+                    statement = `cell(${refIdx})`;
                     break;
                 case "FUNCALL":
                     id = nextId++;
                     args = compileFunctionArgs(ast);
                     fnName = ast.value.toUpperCase();
                     code.push(`ctx.__lastFnCalled = '${fnName}'`);
-                    code.push(`let _${id} = ctx['${fnName}'](${args})`);
+                    statement = `ctx['${fnName}'](${args})`;
                     break;
                 case "ASYNC_FUNCALL":
                     id = nextId++;
@@ -6462,38 +6538,63 @@
                     args = compileFunctionArgs(ast);
                     fnName = ast.value.toUpperCase();
                     code.push(`ctx.__lastFnCalled = '${fnName}'`);
-                    code.push(`let _${id} = await ctx['${fnName}'](${args})`);
+                    statement = `await ctx['${fnName}'](${args})`;
                     break;
                 case "UNARY_OPERATION":
                     id = nextId++;
                     right = compileAST(ast.right);
                     fnName = UNARY_OPERATOR_MAP[ast.value];
                     code.push(`ctx.__lastFnCalled = '${fnName}'`);
-                    code.push(`let _${id} = ctx['${fnName}']( ${right})`);
+                    statement = `ctx['${fnName}']( ${right})`;
                     break;
                 case "BIN_OPERATION":
                     id = nextId++;
                     if (ast.value === ":") {
+                        cacheKey += "__RANGE";
                         const sheetName = ast.left.type === "REFERENCE" && ast.left.sheet;
                         const sheetId = sheetName ? sheets[sheetName] : sheet;
-                        code.push(`let _${id} = range('${ast.left.value}', '${ast.right.value}', \`${sheetId}\`);`);
+                        const rangeIdx = rangeRefs.push([ast.left.value, ast.right.value, sheetId]) - 1;
+                        statement = `range(${rangeIdx});`;
                     }
                     else {
                         left = compileAST(ast.left);
                         right = compileAST(ast.right);
                         fnName = OPERATOR_MAP[ast.value];
                         code.push(`ctx.__lastFnCalled = '${fnName}'`);
-                        code.push(`let _${id} = ctx['${fnName}'](${left}, ${right})`);
+                        statement = `ctx['${fnName}'](${left}, ${right})`;
                     }
                     break;
                 case "UNKNOWN":
-                    return "null";
+                    if (!isLazy) {
+                        return "null";
+                    }
+                    id = nextId++;
+                    statement = `null`;
+                    break;
             }
+            code.push(`let _${id} = ` + (isLazy ? `()=> ` : ``) + statement);
             return `_${id}`;
         }
         code.push(`return ${compileAST(ast)};`);
-        const Constructor = isAsync ? AsyncFunction : Function;
-        return new Constructor("cell", "range", "ctx", code.join("\n"));
+        let baseFunction = functionCache[cacheKey];
+        if (!baseFunction) {
+            const Constructor = isAsync ? AsyncFunction : Function;
+            baseFunction = new Constructor("cell", "range", "ctx", code.join("\n"));
+            functionCache[cacheKey] = baseFunction;
+        }
+        const resultFn = (cell, range, ctx) => {
+            const cellFn = (idx) => {
+                const [xc, sheetId] = cellRefs[idx];
+                return cell(xc, sheetId);
+            };
+            const rangeFn = (idx) => {
+                const [xc1, xc2, sheetId] = rangeRefs[idx];
+                return range(xc1, xc2, sheetId);
+            };
+            return baseFunction(cellFn, rangeFn, ctx);
+        };
+        resultFn.async = isAsync;
+        return resultFn;
     }
 
     const nbspRegexp = new RegExp(String.fromCharCode(160), "g");
@@ -6559,6 +6660,11 @@
                 if (left === "#REF" || right === "#REF") {
                     return "#REF";
                 }
+                const columnLeft = toCartesian(left)[0];
+                const columnRight = toCartesian(right)[0];
+                if (columnLeft > columnRight) {
+                    return "#REF";
+                }
                 if (left === right) {
                     return left;
                 }
@@ -6612,6 +6718,11 @@
                 left = this.updateRowsRangePart(left, sheet, base, step, 1);
                 right = this.updateRowsRangePart(right, sheet, base, step, -1);
                 if (left === "#REF" || right === "#REF") {
+                    return "#REF";
+                }
+                const rowLeft = toCartesian(left)[1];
+                const rowRight = toCartesian(right)[1];
+                if (rowLeft > rowRight) {
                     return "#REF";
                 }
                 if (left === right) {
@@ -7251,9 +7362,7 @@
                     cell.error = undefined;
                     try {
                         cell.formula = compile(content, sheet, this.sheetIds);
-                        if (cell.formula instanceof AsyncFunction) {
-                            cell.async = true;
-                        }
+                        cell.async = cell.formula.async;
                     }
                     catch (e) {
                         cell.value = "#BAD_EXPR";
@@ -7749,6 +7858,9 @@
              */
             this.COMPUTED = new Set();
             this.evalContext = config.evalContext;
+            DEBUG.evaluation = {
+                isIdle: () => this.loadingCells === 0,
+            };
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -8380,7 +8492,7 @@
          * - "0.00" (step = -1) --> "0.0"
          * - "0%" (step = -1) --> "0%"
          * - "#,##0.0" (step = -1) --> "#,##0"
-         * - "#,##0;0.0%;0.000" (step = -1) --> "#,##0.0;0.00%;0.0000"
+         * - "#,##0;0.0%;0.000" (step = 1) --> "#,##0.0;0.00%;0.0000"
          */
         changeDecimalFormat(format, step) {
             const sign = Math.sign(step);
@@ -8854,7 +8966,7 @@
             const sheet = this.workbook.sheets[sheetId];
             for (let merge of Object.values(sheet.merges)) {
                 const xc = merge.topLeft;
-                const topLeft = this.workbook.activeSheet.cells[xc];
+                const topLeft = sheet.cells[xc];
                 if (!topLeft) {
                     continue;
                 }
@@ -10562,7 +10674,6 @@
         name: _lt("Paste"),
         sequence: 30,
         action: PASTE_ACTION,
-        separator: true,
     })
         .add("paste_special", {
         name: _lt("Paste special"),
@@ -10579,30 +10690,31 @@
         sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 50,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-    })
-        .add("delete_column", {
-        name: REMOVE_COLUMNS_NAME,
-        sequence: 60,
-        action: REMOVE_COLUMNS_ACTION,
-    })
-        .add("clear_column", {
-        name: DELETE_CONTENT_COLUMNS_NAME,
-        sequence: 70,
-        action: DELETE_CONTENT_COLUMNS_ACTION,
-    })
         .add("add_column_before", {
         name: COLUMN_INSERT_COLUMNS_BEFORE_NAME,
-        sequence: 80,
+        sequence: 50,
         action: INSERT_COLUMNS_BEFORE_ACTION,
     })
         .add("add_column_after", {
         name: COLUMN_INSERT_COLUMNS_AFTER_NAME,
-        sequence: 90,
+        sequence: 60,
         action: INSERT_COLUMNS_AFTER_ACTION,
+    })
+        .add("delete_column", {
+        name: REMOVE_COLUMNS_NAME,
+        sequence: 70,
+        action: REMOVE_COLUMNS_ACTION,
+    })
+        .add("clear_column", {
+        name: DELETE_CONTENT_COLUMNS_NAME,
+        sequence: 80,
+        action: DELETE_CONTENT_COLUMNS_ACTION,
+        separator: true,
+    })
+        .add("conditional_formatting", {
+        name: _lt("Conditional formatting"),
+        sequence: 90,
+        action: OPEN_CF_SIDEPANEL_ACTION,
     });
 
     const rowMenuRegistry = new MenuItemRegistry();
@@ -10621,7 +10733,6 @@
         name: _lt("Paste"),
         sequence: 30,
         action: PASTE_ACTION,
-        separator: true,
     })
         .add("paste_special", {
         name: _lt("Paste special"),
@@ -10638,30 +10749,31 @@
         sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 50,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-    })
-        .add("delete_row", {
-        name: REMOVE_ROWS_NAME,
-        sequence: 60,
-        action: REMOVE_ROWS_ACTION,
-    })
-        .add("clear_row", {
-        name: DELETE_CONTENT_ROWS_NAME,
-        sequence: 70,
-        action: DELETE_CONTENT_ROWS_ACTION,
-    })
         .add("add_row_before", {
         name: ROW_INSERT_ROWS_BEFORE_NAME,
-        sequence: 80,
+        sequence: 50,
         action: INSERT_ROWS_BEFORE_ACTION,
     })
         .add("add_row_after", {
         name: ROW_INSERT_ROWS_AFTER_NAME,
-        sequence: 90,
+        sequence: 60,
         action: INSERT_ROWS_AFTER_ACTION,
+    })
+        .add("delete_row", {
+        name: REMOVE_ROWS_NAME,
+        sequence: 70,
+        action: REMOVE_ROWS_ACTION,
+    })
+        .add("clear_row", {
+        name: DELETE_CONTENT_ROWS_NAME,
+        sequence: 80,
+        action: DELETE_CONTENT_ROWS_ACTION,
+        separator: true,
+    })
+        .add("conditional_formatting", {
+        name: _lt("Conditional formatting"),
+        sequence: 90,
+        action: OPEN_CF_SIDEPANEL_ACTION,
     });
 
     const sheetMenuRegistry = new MenuItemRegistry();
@@ -12668,6 +12780,12 @@
                     if (cmd.y !== undefined) {
                         this.history.updateLocalState(["figures", cmd.id, "y"], Math.max(cmd.y, 0));
                     }
+                    if (cmd.width !== undefined) {
+                        this.history.updateLocalState(["figures", cmd.id, "width"], cmd.width);
+                    }
+                    if (cmd.height !== undefined) {
+                        this.history.updateLocalState(["figures", cmd.id, "height"], cmd.height);
+                    }
                     break;
                 case "SELECT_FIGURE":
                     this.selectedFigureId = cmd.id;
@@ -13066,7 +13184,7 @@
                 }
                 return { status: "SUCCESS" };
             };
-            window.model = this; // to debug. remove this someday
+            DEBUG.model = this;
             const workbookData = load(data);
             this.workbook = createEmptyWorkbook();
             const history = new WHistory(this.workbook);
@@ -13786,6 +13904,7 @@
     padding: 0;
     margin: 0;
     border: 0;
+    z-index: 5;
     .o-composer {
       caret-color: black;
       box-sizing: border-box;
@@ -13839,8 +13958,7 @@
             this.rect = this.getters.getRect(this.zone, this.props.viewport);
         }
         mounted() {
-            // @ts-ignore
-            window.composer = this;
+            DEBUG.composer = this;
             const el = this.composerRef.el;
             this.contentHelper.updateEl(el);
             const currentContent = this.getters.getCurrentContent();
@@ -14673,10 +14791,14 @@
                 t-key="info.id"
                 figure="info.figure" />
               <t t-if="info.isSelected">
-                  <div class="o-anchor o-topRight"></div>
-                  <div class="o-anchor o-topLeft"></div>
-                  <div class="o-anchor o-bottomRight"></div>
-                  <div class="o-anchor o-bottomLeft"></div>
+                  <div class="o-anchor o-top" t-on-mousedown.stop="resize(info.figure, 0,-1)"/>
+                  <div class="o-anchor o-topRight" t-on-mousedown.stop="resize(info.figure, 1,-1)"/>
+                  <div class="o-anchor o-right" t-on-mousedown.stop="resize(info.figure, 1,0)"/>
+                  <div class="o-anchor o-bottomRight" t-on-mousedown.stop="resize(info.figure, 1,1)"/>
+                  <div class="o-anchor o-bottom" t-on-mousedown.stop="resize(info.figure, 0,1)"/>
+                  <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="resize(info.figure, -1,1)"/>
+                  <div class="o-anchor o-left" t-on-mousedown.stop="resize(info.figure, -1,0)"/>
+                  <div class="o-anchor o-topLeft" t-on-mousedown.stop="resize(info.figure, -1,-1)"/>
               </t>
             </div>
         </div>
@@ -14689,6 +14811,7 @@
     const ANCHOR_SIZE = 8;
     const BORDER_WIDTH = 1;
     const ACTIVE_BORDER_WIDTH = 2;
+    const MIN_FIG_SIZE = 80;
     const CSS$a = css$c /*SCSS*/ `
   .o-figure-wrapper {
     overflow: hidden;
@@ -14718,25 +14841,45 @@
       width: ${ANCHOR_SIZE}px;
       height: ${ANCHOR_SIZE}px;
       background-color: #1a73e8;
+      &.o-top {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: 50%;
+        cursor: n-resize;
+      }
       &.o-topRight {
         top: -${ANCHOR_SIZE / 2}px;
         right: -${ANCHOR_SIZE / 2}px;
         cursor: ne-resize;
       }
-      &.o-topLeft {
-        top: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: nw-resize;
+      &.o-right {
+        right: -${ANCHOR_SIZE / 2}px;
+        top: 50%;
+        cursor: e-resize;
       }
       &.o-bottomRight {
         bottom: -${ANCHOR_SIZE / 2}px;
         right: -${ANCHOR_SIZE / 2}px;
         cursor: se-resize;
       }
+      &.o-bottom {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: 50%;
+        cursor: s-resize;
+      }
       &.o-bottomLeft {
         bottom: -${ANCHOR_SIZE / 2}px;
         left: -${ANCHOR_SIZE / 2}px;
         cursor: sw-resize;
+      }
+      &.o-left {
+        bottom: 50%;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: w-resize;
+      }
+      &.o-topLeft {
+        top: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: nw-resize;
       }
     }
   }
@@ -14749,6 +14892,8 @@
                 figureId: "",
                 x: 0,
                 y: 0,
+                width: 0,
+                height: 0,
             });
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
@@ -14762,23 +14907,24 @@
             }));
         }
         getDims(info) {
-            const borders = 2 * (info.isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            const figure = info.figure;
-            return `width:${figure.width + borders}px;height:${figure.height + borders}px`;
+            const { figure, isSelected } = info;
+            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
+            return `width:${width + borders}px;height:${height + borders}px`;
         }
         getStyle(info) {
             const { figure, isSelected } = info;
-            const { width, height } = figure;
             const { offsetX, offsetY } = this.props.viewport;
-            const target = figure.id === this.dnd.figureId ? this.dnd : figure;
+            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
+            const { width, height } = target;
             let x = target.x - offsetX + HEADER_WIDTH - 1;
             let y = target.y - offsetY + HEADER_HEIGHT - 1;
             // width and height of wrapper need to be adjusted so we do not overlap
             // with headers
             const correctionX = Math.max(0, HEADER_WIDTH - x);
-            x += correctionX - ANCHOR_SIZE / 2;
+            x += correctionX;
             const correctionY = Math.max(0, HEADER_HEIGHT - y);
-            y += correctionY - ANCHOR_SIZE / 2;
+            y += correctionY;
             if (width < 0 || height < 0) {
                 return `position:absolute;display:none;`;
             }
@@ -14795,6 +14941,40 @@
             // new rendering
             this.render();
         }
+        resize(figure, dirX, dirY, ev) {
+            ev.stopPropagation();
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
+            const onMouseMove = (ev) => {
+                const deltaX = dirX * (ev.clientX - initialX);
+                const deltaY = dirY * (ev.clientY - initialY);
+                this.dnd.width = Math.max(figure.width + deltaX, MIN_FIG_SIZE);
+                this.dnd.height = Math.max(figure.height + deltaY, MIN_FIG_SIZE);
+                if (dirX < 0) {
+                    this.dnd.x = figure.x - deltaX;
+                }
+                if (dirY < 0) {
+                    this.dnd.y = figure.y - deltaY;
+                }
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                const update = { id: figure.id, x: this.dnd.x, y: this.dnd.y };
+                if (dirX) {
+                    update.width = this.dnd.width;
+                }
+                if (dirY) {
+                    update.height = this.dnd.height;
+                }
+                this.dispatch("UPDATE_FIGURE", update);
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
         onMouseDown(figure, ev) {
             if (ev.button > 0) {
                 // not main button, probably a context menu
@@ -14806,6 +14986,8 @@
             this.dnd.figureId = figure.id;
             this.dnd.x = figure.x;
             this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
             const onMouseMove = (ev) => {
                 this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
                 this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
@@ -16125,6 +16307,7 @@
     exports.BasePlugin = BasePlugin;
     exports.Model = Model;
     exports.Spreadsheet = Spreadsheet;
+    exports.__DEBUG__ = DEBUG;
     exports.__info__ = __info__;
     exports.astToFormula = astToFormula;
     exports.helpers = helpers;
@@ -16132,9 +16315,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.5.0';
-    exports.__info__.date = '2020-08-18T14:19:47.273Z';
-    exports.__info__.hash = '9ece1cc';
+    exports.__info__.version = '0.6.0';
+    exports.__info__.date = '2020-08-28T06:59:02.659Z';
+    exports.__info__.hash = '67b4f31';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

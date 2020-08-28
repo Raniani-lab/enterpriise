@@ -105,7 +105,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     const allMessages = document.querySelectorAll('.o_MessageList_message');
     const lastMessage = allMessages[allMessages.length - 1];
 
-    const messageList = document.querySelector('.o_ThreadViewer_messageList');
+    const messageList = document.querySelector('.o_ThreadView_messageList');
     await afterNextRender(async () => {
         // This will trigger the DOM Event "scroll"
         messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
@@ -199,11 +199,11 @@ QUnit.test('Message list scroll position is kept when switching record', async f
     assert.strictEqual(controllerContentEl.scrollTop, 0,
         "The controller container should not be scrolled"
     );
-    assert.strictEqual(document.querySelector('.o_ThreadViewer_messageList').scrollTop, 0,
+    assert.strictEqual(document.querySelector('.o_ThreadView_messageList').scrollTop, 0,
         "The top of the message list should be visible"
     );
 
-    const messageList = document.querySelector('.o_ThreadViewer_messageList');
+    const messageList = document.querySelector('.o_ThreadView_messageList');
     await afterNextRender(async () => {
         messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
     });
@@ -222,7 +222,7 @@ QUnit.test('Message list scroll position is kept when switching record', async f
         'Partner 12',
         "Form view should display partner 'Partner 12'"
     );
-    assert.strictEqual(document.querySelector('.o_ThreadViewer_messageList').scrollTop, 0,
+    assert.strictEqual(document.querySelector('.o_ThreadView_messageList').scrollTop, 0,
         "The message list scroll should have been reset after changing record with the pager"
     );
     assert.strictEqual(controllerContentEl.scrollTop, 0,
@@ -232,7 +232,7 @@ QUnit.test('Message list scroll position is kept when switching record', async f
     await afterNextRender(() =>
         document.querySelector('.o_pager_previous').click()
     );
-    const messageListScrollTop = document.querySelector('.o_ThreadViewer_messageList').scrollTop;
+    const messageListScrollTop = document.querySelector('.o_ThreadView_messageList').scrollTop;
     assert.ok(messageListScrollTop >= messageListScrollTopBeforeSwitch - 50,
         "The record's scroll position should have been more or less restored, within a margin"
     );
@@ -303,7 +303,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     assert.strictEqual(controllerContentEl.scrollTop, 0,
         "The controller container should not be scrolled"
     );
-    assert.strictEqual(document.querySelector('.o_ThreadViewer_messageList').scrollTop, 0,
+    assert.strictEqual(document.querySelector('.o_ThreadView_messageList').scrollTop, 0,
         "The top of the message list is visible"
     );
 
@@ -314,7 +314,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         "The controller container should not be scrolled"
     );
 
-    const messageList = document.querySelector('.o_ThreadViewer_messageList');
+    const messageList = document.querySelector('.o_ThreadView_messageList');
     await afterNextRender(async () => {
         // This will trigger the DOM Event "scroll"
         messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
@@ -345,7 +345,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     assert.strictEqual(controllerContentEl.scrollTop, 0,
         "The controller container should not be scrolled after sending a message"
     );
-    assert.strictEqual(document.querySelector('.o_ThreadViewer_messageList').scrollTop, 0,
+    assert.strictEqual(document.querySelector('.o_ThreadView_messageList').scrollTop, 0,
         "The top of the message list should be visible after sending a message"
     );
 });

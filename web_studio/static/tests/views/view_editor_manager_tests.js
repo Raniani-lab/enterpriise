@@ -3497,8 +3497,8 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.view_type, 'graph',
             "view type should be graph");
         return concurrency.delay(0).then(function () {
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_controller');
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_controller .o_graph_canvas_container canvas',
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
                 "the graph should be a child of its container");
             vem.destroy();
             done();

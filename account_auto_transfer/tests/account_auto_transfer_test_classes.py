@@ -4,20 +4,24 @@ from uuid import uuid4
 
 from odoo.tests import common
 
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-class AccountAutoTransferTestCase(common.TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.journal = self.env['account.journal'].create({'type': 'bank', 'name': 'bank', 'code': 'BANK'})
-        self.transfer_model = self.env['account.transfer.model'].create({
+
+class AccountAutoTransferTestCase(AccountTestInvoicingCommon):
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.journal = cls.env['account.journal'].create({'type': 'bank', 'name': 'bank', 'code': 'BANK'})
+        cls.transfer_model = cls.env['account.transfer.model'].create({
             'name': 'Test Transfer',
             'date_start': '2019-06-01',
             'frequency': 'month',
-            'journal_id': self.journal.id
+            'journal_id': cls.journal.id
         })
-        self.master_account_index = 0
-        self.slave_account_index = 1
-        self.origin_accounts, self.destination_accounts = self._create_accounts()
+        cls.master_account_index = 0
+        cls.slave_account_index = 1
+        cls.origin_accounts, cls.destination_accounts = cls._create_accounts(cls)
 
     def _assign_origin_accounts(self):
         self.transfer_model.write({

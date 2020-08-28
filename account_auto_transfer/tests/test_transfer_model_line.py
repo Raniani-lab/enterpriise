@@ -12,9 +12,11 @@ from odoo.tests import tagged
 # ############################################################################ #
 @tagged('post_install', '-at_install')
 class MoveModelLineTestCase(AccountAutoTransferTestCase):
-    def setUp(self):
-        super().setUp()
-        self._assign_origin_accounts()
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+        cls._assign_origin_accounts(cls)
 
     def test__get_transfer_move_lines_values_same_aaccounts(self):
         amounts = [4242.42, 1234.56]

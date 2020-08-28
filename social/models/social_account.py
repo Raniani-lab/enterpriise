@@ -18,7 +18,6 @@ class SocialAccount(models.Model):
 
     _name = 'social.account'
     _description = 'Social Account'
-    _inherits = {'utm.medium': 'utm_medium_id'}
 
     def _get_default_company(self):
         """When the user is redirected to the callback URL of the different media,
@@ -37,6 +36,7 @@ class SocialAccount(models.Model):
                 return company_id
         return self.env.company
 
+    name = fields.Char('Name', required=True)
     active = fields.Boolean("Active", default=True)
     media_id = fields.Many2one('social.media', string="Social Media", required=True, readonly=True,
         help="Related Social Media (Facebook, Twitter, ...).", ondelete='cascade')
@@ -88,9 +88,45 @@ class SocialAccount(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        """Every account has a unique corresponding utm.medium for statistics
+        computation purposes. This way, it will be possible to see every leads
+        or quotations generated through a particular account."""
+
+        if all(vals.get('media_id') and vals.get('name') for vals in vals_list):
+            # as 'media_id' and 'name' are required fields, we will let the 'create' handle the error
+            # if they are not present
+            media_all = self.env['social.media'].search([('id', 'in', [vals.get('media_id') for vals in vals_list])])
+            media_names = {
+                social_media.id: social_media.name
+                for social_media in media_all
+            }
+
+            medium_all = self.env['utm.medium'].create([{
+                "name": "[%(media_name)s] %(account_name)s" % {
+                    "media_name": media_names.get(vals['media_id']),
+                    "account_name": vals['name']
+                }
+            } for vals in vals_list])
+
+            for vals, medium in zip(vals_list, medium_all):
+                vals['utm_medium_id'] = medium.id
+
         res = super(SocialAccount, self).create(vals_list)
         res._compute_statistics()
         return res
+
+    def write(self, vals):
+        """ If name is updated, reflect the change on medium_id (see #create method). """
+        if vals.get('name'):
+            for social_account in self.filtered(lambda social_account: social_account.utm_medium_id):
+                social_account.utm_medium_id.write({
+                    'name': "[%(media_name)s] %(account_name)s" % {
+                        "media_name": social_account.media_id.name,
+                        "account_name": vals['name']
+                    }
+                })
+
+        return super(SocialAccount, self).write(vals)
 
     @api.model
     def refresh_statistics(self):

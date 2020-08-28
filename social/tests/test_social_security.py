@@ -51,7 +51,7 @@ class TestAccess(common.SocialCase):
         with self.assertRaises(AccessError):
             self.env['social.live.post'].create({'post_id': self.social_post.id, 'account_id': self.social_account.id})
         with self.assertRaises(AccessError):
-            self.env['social.account'].create({'name': 'An account'})
+            self.env['social.account'].create({'name': 'An account', 'media_id': self.social_media.id})
         with self.assertRaises(AccessError):
             self.env['social.media'].create({'name': 'A media'})
         with self.assertRaises(AccessError):
@@ -130,7 +130,7 @@ class TestAccess(common.SocialCase):
         with self.assertRaises(AccessError):
             self.env['social.live.post'].create({'post_id': self.social_post.id, 'account_id': self.social_account.id})
         with self.assertRaises(AccessError):
-            self.env['social.account'].create({'name': 'An account'})
+            self.env['social.account'].create({'name': 'An account', 'media_id': self.social_media.id})
         with self.assertRaises(AccessError):
             self.env['social.media'].create({'name': 'A media'})
         with self.assertRaises(AccessError):

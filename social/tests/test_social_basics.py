@@ -6,6 +6,7 @@ from datetime import timedelta
 from odoo import fields
 from odoo.addons.social.tests import common
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
+from odoo.tests.common import users
 
 
 class TestSocialBasics(common.SocialCase, CronMixinCase):
@@ -39,6 +40,28 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
         self.assertEqual(captured_trigger.call_at, scheduled_date + timedelta(hours=1))
         self.assertEqual(captured_trigger.cron_id, self.env.ref('social.ir_cron_post_scheduled'))
 
+    @users('social_manager')
+    def test_social_account_internals(self):
+        """ Test social account creation, notably medium generation """
+        vals_list = [{
+            'name': 'TestAccount_%d' % x,
+            'media_id': self.social_media.id,
+        } for x in range(0, 5)]
+        accounts = self.env['social.account'].create(vals_list)
+        self.assertEqual(len(accounts.utm_medium_id), 5)
+        self.assertEqual(
+            set(accounts.mapped('utm_medium_id.name')),
+            set(["[%s] TestAccount_%d" % (self.social_media.name, x) for x in range(0, 5)])
+        )
+
+        first_account = accounts[0]
+        first_account.write({'name': 'Some Updated Name'})
+        self.assertEqual(
+            first_account.utm_medium_id.name,
+            "[%s] Some Updated Name" % self.social_media.name
+        )
+
+    @users('social_user')
     def test_social_post_create_multi(self):
         """ Ensure that a 'multi' creation of 2 social.posts also
         creates 2 associated utm.sources. """

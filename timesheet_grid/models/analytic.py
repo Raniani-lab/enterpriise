@@ -399,6 +399,7 @@ class AnalyticLine(models.Model):
 
         # We force the date rules to be always met
         for rule in domain:
+            rule = list(rule)
             if len(rule) == 3 and rule[0] == 'date':
                 if rule[1] == '=':
                     rule[1] = '<='
@@ -448,6 +449,7 @@ class AnalyticLine(models.Model):
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
         # We force the date rules to be always met
         for rule in domain:
+            rule = list(rule)
             if len(rule) == 3 and rule[0] == 'date':
                 if rule[1] == '=':
                     rule[1] = '<='

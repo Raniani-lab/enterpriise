@@ -9,10 +9,14 @@ const session = require('web.session');
 
 const Timer = require('timer.Timer');
 
-TimesheetUom.FieldTimesheetTime.include({
-
-    init: function() {
+/**
+ * Extend float time widget to add the using of a timer for duration
+ * (unit_amount) field.
+ */
+const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
+    init: function () {
         this._super.apply(this, arguments);
+        this.isTimerRunning = this.record.data.is_timer_running;
         this.rendererIsSample = arguments[0].state.isSample; // This only works with list_views.
     },
 
@@ -28,52 +32,6 @@ TimesheetUom.FieldTimesheetTime.include({
             this._super(...arguments),
             timePromise,
         ]);
-    },
-
-    _render: async function () {
-        await this._super.apply(this, arguments);
-        // Check if the timer_start exists and it's not false
-        // In other word, when user clicks on play button, this button
-        // launches the "action_timer_start".
-        if (this.recordData.timer_start && !this.recordData.timer_pause && !this.rendererIsSample) {
-            this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
-            this._startTimeCounter();
-        }
-    },
-    /**
-     * @override
-     */
-    destroy: function () {
-        clearTimeout(this.timer);
-        this._super.apply(this, arguments);
-    },
-    _startTimeCounter: function () {
-        if (this.time) {
-            this.timer = setInterval(() => {
-                this.time.addSecond();
-                if (this.$el.children().length) {
-                    this.$el.contents()[1].replaceWith(this.time.toString());
-                } else {
-                    this.$el.text(this.time.toString());
-                }
-                this.$el.addClass('font-weight-bold text-danger');
-            }, 1000);
-        } else {
-            clearTimeout(this.timer);
-            this.$el.removeClass('font-weight-bold text-danger');
-        }
-    },
-})
-
-
-/**
- * Extend float time widget to add the using of a timer for duration
- * (unit_amount) field.
- */
-const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
-    init: function () {
-        this._super.apply(this, arguments);
-        this.isTimerRunning = this.record.data.is_timer_running;
     },
 
     _render: async function () {
@@ -103,6 +61,13 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
             button.on('click', this._onToggleButton.bind(this));
             this.$el.prepend(button);
         }
+        // Check if the timer_start exists and it's not false
+        // In other word, when user clicks on play button, this button
+        // launches the "action_timer_start".
+        if (this.recordData.timer_start && !this.recordData.timer_pause && !this.rendererIsSample) {
+            this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
+            this._startTimeCounter();
+        }
     },
 
     _onToggleButton: async function (event) {
@@ -129,7 +94,31 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
 
     _getActionButton: function () {
         return this.isTimerRunning ? 'action_timer_stop' : 'action_timer_start';
-    }
+    },
+
+    /**
+     * @override
+     */
+    destroy: function () {
+        clearTimeout(this.timer);
+        this._super.apply(this, arguments);
+    },
+    _startTimeCounter: function () {
+        if (this.time) {
+            this.timer = setInterval(() => {
+                this.time.addSecond();
+                if (this.$el.children().length) {
+                    this.$el.contents()[1].replaceWith(this.time.toString());
+                } else {
+                    this.$el.text(this.time.toString());
+                }
+                this.$el.addClass('font-weight-bold text-danger');
+            }, 1000);
+        } else {
+            clearTimeout(this.timer);
+            this.$el.removeClass('font-weight-bold text-danger');
+        }
+    },
 
 });
 

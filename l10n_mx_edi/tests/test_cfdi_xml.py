@@ -17,7 +17,7 @@ class TestEdiResults(TestMxEdiCommon):
         with freeze_time(self.frozen_today):
             self.invoice.action_post()
 
-            generated_files = self._process_documents_web_services(self.invoice)
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 
@@ -32,7 +32,7 @@ class TestEdiResults(TestMxEdiCommon):
             })
             self.invoice.action_post()
 
-            generated_files = self._process_documents_web_services(self.invoice)
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 
@@ -56,7 +56,7 @@ class TestEdiResults(TestMxEdiCommon):
 
             self.invoice.action_post()
 
-            generated_files = self._process_documents_web_services(self.invoice)
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 
@@ -91,7 +91,7 @@ class TestEdiResults(TestMxEdiCommon):
             self._process_documents_web_services(self.invoice)
             self.invoice.l10n_mx_edi_cfdi_uuid = '123456789'
 
-            generated_files = self._process_documents_web_services(self.payment.move_id)
+            generated_files = self._process_documents_web_services(self.payment.move_id, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 
@@ -116,7 +116,7 @@ class TestEdiResults(TestMxEdiCommon):
             self._process_documents_web_services(self.invoice)
             self.invoice.l10n_mx_edi_cfdi_uuid = '123456789'
 
-            generated_files = self._process_documents_web_services(self.statement_line.move_id)
+            generated_files = self._process_documents_web_services(self.statement_line.move_id, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 

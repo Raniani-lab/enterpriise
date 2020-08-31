@@ -15,7 +15,7 @@ class TestEdiResults(TestMxExtendedEdiCommon):
             self.invoice.partner_id.l10n_mx_edi_external_trade = True
             self.invoice.action_post()
 
-            generated_files = self._process_documents_web_services(self.invoice)
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 
@@ -79,7 +79,7 @@ class TestEdiResults(TestMxExtendedEdiCommon):
 
             self.invoice.action_post()
 
-            generated_files = self._process_documents_web_services(self.invoice)
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
             self.assertTrue(generated_files)
             cfdi = generated_files[0]
 

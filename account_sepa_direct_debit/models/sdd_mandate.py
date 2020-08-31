@@ -107,6 +107,10 @@ class SDDMandate(models.Model):
         ''' Retrieve the invoices reconciled to the payments through the reconciliation (account.partial.reconcile). '''
         stored_mandates = self.filtered('id')
         if not stored_mandates:
+            self.paid_invoices_nber = 0
+            self.payments_to_collect_nber = 0
+            self.paid_invoice_ids = False
+            self.payment_ids = False
             return
         self.env['account.move'].flush(['sdd_mandate_id', 'move_type'])
 

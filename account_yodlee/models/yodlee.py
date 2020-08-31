@@ -320,7 +320,7 @@ class YodleeProviderAccount(models.Model):
                     })
                     account_added += self.env['account.online.journal'].create(vals)
                 else:
-                    account_search.env['account.online.journal'].write(vals)
+                    account_search.write(vals)
                     # Also retrieve transaction if status is SUCCESS
                     if vals.get('yodlee_status_code') == 0 and account_search.journal_ids:
                         transactions_count = account_search.retrieve_transactions()

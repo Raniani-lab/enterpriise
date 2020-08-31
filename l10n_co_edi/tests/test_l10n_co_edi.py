@@ -44,7 +44,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
             'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
             'l10n_co_edi_representation_type_id': cls.env.ref('l10n_co_edi.representation_type_0').id,
             'l10n_co_edi_establishment_type_id': cls.env.ref('l10n_co_edi.establishment_type_0').id,
-            'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_0').id])],
+            'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_1').id])],
             'l10n_co_edi_customs_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.customs_type_0').id])],
             'l10n_co_edi_large_taxpayer': True,
         })
@@ -65,7 +65,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
             'l10n_latam_identification_type_id': cls.env.ref('l10n_co.rut'),
             'l10n_co_edi_representation_type_id': cls.env.ref('l10n_co_edi.representation_type_0').id,
             'l10n_co_edi_establishment_type_id': cls.env.ref('l10n_co_edi.establishment_type_0').id,
-            'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_0').id])],
+            'l10n_co_edi_obligation_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.obligation_type_1').id])],
             'l10n_co_edi_customs_type_ids': [(6, 0, [cls.env.ref('l10n_co_edi.customs_type_0').id])],
             'l10n_co_edi_large_taxpayer': True,
         })

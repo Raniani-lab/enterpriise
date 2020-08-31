@@ -13,7 +13,7 @@ class IrActionsReport(models.Model):
     def _render_qweb_html(self, docids, data=None):
         if data and data.get('full_branding'):
             self = self.with_context(full_branding=True)
-        if data and data.get('studio') and self.report_type == 'qweb-pdf':
+        if data and data.get('studio') and self.sudo().report_type == 'qweb-pdf':
             data['report_type'] = 'pdf'
         return super(IrActionsReport, self)._render_qweb_html(docids, data)
 

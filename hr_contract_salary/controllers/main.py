@@ -456,6 +456,7 @@ class HrContractSalary(http.Controller):
 
     def _get_compute_results(self, new_contract):
         result = {}
+        result['wage_with_holidays'] = round(new_contract.wage_with_holidays, 2)
         resume_lines = request.env['hr.contract.salary.resume'].search([
             '|',
             ('structure_type_id', '=', False),

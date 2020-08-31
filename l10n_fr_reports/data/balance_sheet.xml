@@ -826,7 +826,7 @@
         <field name="code">AUTRES_CREANCES_BRUTD</field>
         <field name="level" eval="3" />
         <field name="sequence" eval="4"/>
-        <field name="domain" eval="['|', ('account_id.code', '=like', '428%'), '|', ('account_id.code', '=like', '438%'), '|', ('account_id.code', '=like', '443%'), '|', ('account_id.code', '=like', '444%'), '|', ('account_id.code', '=like', '445%'), '|', ('account_id.code', '=like', '448%'), '|', ('account_id.code', '=like', '451%'), '|', ('account_id.code', '=like', '456%'), '|', ('account_id.code', '=like', '467%'), '|', ('account_id.code', '=like', '468%'), ('account_id.code', '=like', '478%'), '!', ('account_id.code', '=like', '4562%')]"/>
+        <field name="domain" eval="['|', ('account_id.code', '=like', '428%'), '|', ('account_id.code', '=like', '438%'), '|', ('account_id.code', '=like', '443%'), '|', ('account_id.code', '=like', '444%'), '|', ('account_id.code', '=like', '445%'), '|', ('account_id.code', '=like', '448%'), '|', ('account_id.code', '=like', '451%'), '|', ('account_id.code', '=like', '455%'), '|', ('account_id.code', '=like', '456%'), '|', ('account_id.code', '=like', '467%'), '|', ('account_id.code', '=like', '468%'), ('account_id.code', '=like', '478%'), '!', ('account_id.code', '=like', '4562%')]"/>
         <field name="formulas">sum_if_pos</field>
         <field name="groupby">account_id</field>
         <field name="show_domain">never</field>

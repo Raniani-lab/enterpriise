@@ -65,20 +65,27 @@
                                 <span class="o_form_label">Feedback Templates</span>
                                 <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
                                 <div class="text-muted">
-                                    Configure Feedback Templates by Job
+                                    Configure General Feedback Template
                                 </div>
                                 <group>
-                                    <group string="Employee Feedback Template">
-                                        <field name="appraisal_employee_feedback_template" class="w-100" nolabel="1"/>
+                                    <group>
+                                        <div>
+                                            <label for="appraisal_employee_feedback_template" class="font-weight-bold" string="Employee Feedback Template"/>
+                                            <field name="appraisal_employee_feedback_template" class="w-100" nolabel="1"/>
+                                        </div>
                                     </group>
-                                    <group string="Manager Feedback Template">
-                                        <field name="appraisal_manager_feedback_template" class="w-100" nolabel="1"/>
+                                    <group>
+                                        <div>
+                                            <label for="appraisal_manager_feedback_template" class="font-weight-bold" string="Manager Feedback Template"/>
+                                            <field name="appraisal_manager_feedback_template" class="w-100" nolabel="1"/>
+                                        </div>
                                     </group>
                                 </group>
                                 <div class="content-group">
-                                    <div class="mt8">
-                                        <button name="%(hr.action_hr_job)d" icon="fa-arrow-right" type="action" string="Jobs Configuration" class="btn-link"/>
+                                    <div class="text-muted">
+                                        Or Configure Feedback Templates by Job
                                     </div>
+                                    <button name="%(hr.action_hr_job)d" icon="fa-arrow-right" type="action" string="Jobs Configuration" class="btn-link"/>
                                 </div>
                             </div>
                         </div>

@@ -88,6 +88,18 @@
                     </period>
                 </periods>
                 <!-- The XAF XSD only supports 2 decimal places -->
+                <openingBalance>
+                    <opBalDate><t t-esc="date_from" /></opBalDate>
+                    <linesCount><t t-esc="opening_lines_count" /></linesCount>
+                    <totalDebit><t t-esc="round(opening_debit, 2)" /></totalDebit>
+                    <totalCredit><t t-esc="round(opening_credit, 2)" /></totalCredit>
+                    <obLine t-foreach="opening_lines" t-as="line">
+                        <nr><t t-esc="line['id']" /></nr>
+                        <accID><t t-esc="line['account_code']" /></accID>
+                        <amnt><t t-esc="round(abs(line['balance']), 2)" /></amnt>
+                        <amntTp><t t-esc="'C' if line['balance'] &lt; 0 else 'D'" /></amntTp>
+                    </obLine>
+                </openingBalance>
                 <transactions>
                     <linesCount t-esc="moves_count"/>
                     <totalDebit t-esc="round(moves_debit, 2)"/>

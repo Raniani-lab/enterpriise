@@ -62,6 +62,46 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         def change_date_time(record):
             return record.write_date.strftime('%Y-%m-%dT%H:%M:%S')
 
+        def get_opening_balance_vals(company, date_from):
+            self.env.cr.execute("""
+                SELECT acc.id AS account_id,
+                       acc.code AS account_code,
+                       COUNT(*) AS lines_count,
+                       SUM(aml.debit) AS sum_debit,
+                       SUM(aml.credit) AS sum_credit
+                FROM account_move_line aml
+                JOIN account_account acc ON aml.account_id = acc.id
+                JOIN account_account_type acc_type ON acc_type.id = acc.user_type_id
+                JOIN account_move move on move.id = aml.move_id
+                WHERE acc_type.include_initial_balance
+                AND move.state = 'posted'
+                AND move.company_id = %s
+                AND aml.date < %s
+                GROUP BY acc.id
+            """, (company.id, date_from))
+
+            opening_lines = []
+            lines_count = 0
+            sum_debit = 0
+            sum_credit = 0
+            for query_res in self.env.cr.dictfetchall():
+                lines_count += query_res['lines_count']
+                sum_debit += query_res['sum_debit']
+                sum_credit += query_res['sum_credit']
+
+                opening_lines.append({
+                    'id': query_res['account_id'],
+                    'account_code': query_res['account_code'],
+                    'balance': query_res['sum_debit'] - query_res['sum_credit'],
+                })
+
+            return {
+                'opening_lines_count': lines_count,
+                'opening_debit': sum_debit,
+                'opening_credit': sum_credit,
+                'opening_lines': opening_lines,
+            }
+
         company_id = self.env.company
 
         msgs = []
@@ -112,6 +152,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             journal_x_moves[journal] = self.env['account.move'].search(
                 [('date', '>=', date_from), ('date', '<=', date_to), ('state', '=', 'posted'), ('journal_id', '=', journal.id)])
         values = {
+            **get_opening_balance_vals(company_id, date_from),
             'company_id': company_id,
             'partner_ids': partner_ids,
             'account_ids': account_ids,

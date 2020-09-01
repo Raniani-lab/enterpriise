@@ -1,4 +1,4 @@
-odoo.define('account_accountant_reports_widgets.tour', function (require) {
+odoo.define('account_reports_widgets.tour', function (require) {
 "use strict";
 
 var tour = require('web_tour.tour');

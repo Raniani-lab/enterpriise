@@ -12,3 +12,4 @@ from . import test_consolidated_journals_report
 from . import test_financial_report
 from . import test_reconciliation_report
 from . import test_multicurrencies_revaluation_report
+from . import test_tour_account_reports

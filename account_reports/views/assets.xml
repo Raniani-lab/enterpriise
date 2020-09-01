@@ -17,5 +17,11 @@
             </xpath>
         </template>
 
+        <template id="assets_tests" name="Account Reports Assets Tests" inherit_id="web.assets_tests">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/account_reports/static/tests/tours/account_reports_widgets.js"></script>
+            </xpath>
+        </template>
+
     </data>
 </odoo>

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:45+0000\n"
-"PO-Revision-Date: 2020-02-13 08:45+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,15 @@ msgid ""
 msgstr ""
 
 #. module: documents_hr_recruitment
+#: model:ir.model,name:documents_hr_recruitment.model_documents_workflow_rule
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+
+#. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_applicant
+#: model:ir.model.fields.selection,name:documents_hr_recruitment.selection__documents_workflow_rule__create_model__hr_applicant
 msgid "Applicant"
 msgstr ""
 
@@ -49,13 +57,46 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: documents_hr_recruitment
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr ""
+
+#. module: documents_hr_recruitment
+#: model:documents.workflow.rule,name:documents_hr_recruitment.documents_applicant_rule
+msgid "Create an Applicant"
+msgstr ""
+
+#. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Default Tags"
 msgstr ""
 
 #. module: documents_hr_recruitment
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule__display_name
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_applicant__display_name
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_job__display_name
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__display_name
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
+msgstr ""
+
+#. module: documents_hr_recruitment
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule__has_business_option
+msgid "Has Business Option"
+msgstr ""
+
+#. module: documents_hr_recruitment
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule__id
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_applicant__id
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_job__id
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__id
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__id
+msgid "ID"
 msgstr ""
 
 #. module: documents_hr_recruitment
@@ -66,6 +107,15 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_job
 msgid "Job Position"
+msgstr ""
+
+#. module: documents_hr_recruitment
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule____last_update
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_applicant____last_update
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_hr_job____last_update
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company____last_update
+#: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: documents_hr_recruitment

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:18+0000\n"
-"PO-Revision-Date: 2019-09-27 09:18+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -168,9 +168,14 @@ msgstr ""
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/consolidation_coa.py:0
+#, python-format
+msgid "Account Mapping: %(chart)s"
+msgstr ""
+
+#. module: account_consolidation
 #: code:addons/account_consolidation/models/res_company.py:0
 #, python-format
-msgid "Account Mapping: "
+msgid "Account Mapping: %(company)s"
 msgstr ""
 
 #. module: account_consolidation
@@ -515,6 +520,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_tree
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Consolidation"
 msgstr ""
@@ -759,7 +765,9 @@ msgid "Display Dates"
 msgstr ""
 
 #. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_account_account__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report__display_name
+#: model:ir.model.fields,field_description:account_consolidation.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__display_name
@@ -769,6 +777,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__display_name
+#: model:ir.model.fields,field_description:account_consolidation.field_res_company__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -892,7 +901,7 @@ msgstr ""
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/res_company.py:0
 #, python-format
-msgid "Historical Rates: "
+msgid "Historical Rates: %(company)s"
 msgstr ""
 
 #. module: account_consolidation
@@ -903,7 +912,9 @@ msgid ""
 msgstr ""
 
 #. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_account_account__id
 #: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report__id
+#: model:ir.model.fields,field_description:account_consolidation.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__id
@@ -913,6 +924,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__id
+#: model:ir.model.fields,field_description:account_consolidation.field_res_company__id
 msgid "ID"
 msgstr ""
 
@@ -989,7 +1001,9 @@ msgid "Just done"
 msgstr ""
 
 #. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_account_account____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report____last_update
+#: model:ir.model.fields,field_description:account_consolidation.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period____last_update
@@ -999,6 +1013,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate____last_update
+#: model:ir.model.fields,field_description:account_consolidation.field_res_company____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -1383,6 +1398,13 @@ msgid "Target Currency"
 msgstr ""
 
 #. module: account_consolidation
+#: code:addons/account_consolidation/models/consolidation_period.py:0
+#, python-format
+msgid ""
+"The Composed Analysis Period must be different from the Analysis Period"
+msgstr ""
+
+#. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
 msgid "The Scope of Consolidation"
 msgstr ""
@@ -1507,6 +1529,12 @@ msgstr ""
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
+#, python-format
+msgid "You can't delete an auto-generated journal entry."
+msgstr ""
+
+#. module: account_consolidation
+#: code:addons/account_consolidation/models/consolidation_journal.py:0
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
 msgid "You can't edit an auto-generated journal entry."
@@ -1529,10 +1557,4 @@ msgstr ""
 #: code:addons/account_consolidation/static/src/xml/fields_templates.xml:0
 #, python-format
 msgid "unmapped accounts"
-msgstr ""
-
-#. module: account_consolidation
-#: code:addons/account_consolidation/models/consolidation_journal.py:0
-#, python-format
-msgid "You can't delete an auto-generated journal entry."
 msgstr ""

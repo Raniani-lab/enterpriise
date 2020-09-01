@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.3+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-21 10:50+0000\n"
-"PO-Revision-Date: 2020-04-21 10:50+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,18 @@ msgid "Can show the ocr send button"
 msgstr ""
 
 #. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Choose a receipt."
+msgstr ""
+
+#. module: hr_expense_extract
+#: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
+msgid "Choose a receipt:"
+msgstr ""
+
+#. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_res_company
 msgid "Companies"
 msgstr ""
@@ -58,11 +70,13 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__create_uid
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__create_date
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__create_date
 msgid "Created on"
 msgstr ""
@@ -78,7 +92,12 @@ msgid "Digitalize on demand only"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
+#: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__display_name
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__display_name
+#: model:ir.model.fields,field_description:hr_expense_extract.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__display_name
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -143,7 +162,12 @@ msgid "Generated Expense"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__id
+#: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__id
+#: model:ir.model.fields,field_description:hr_expense_extract.field_ir_attachment__id
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__id
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__id
 msgid "ID"
 msgstr ""
 
@@ -153,18 +177,32 @@ msgid "Id of the request to IAP-OCR"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt____last_update
+#: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense____last_update
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words____last_update
+#: model:ir.model.fields,field_description:hr_expense_extract.field_ir_attachment____last_update
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_company____last_update
+#: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__write_uid
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__write_date
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
+msgid ""
+"Let's try a sample receipt to test the automated processing of expenses with"
+" Artificial Intelligence."
 msgstr ""
 
 #. module: hr_expense_extract
@@ -184,8 +222,57 @@ msgid "Not enough credit"
 msgstr ""
 
 #. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Now, register the payment."
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid ""
+"Once approved, the accountant will post the journal entries in their "
+"accounting."
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Once the accountant approves, he will reimburse you."
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Report this expense to your manager for validation."
+msgstr ""
+
+#. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Resend For Digitalization"
+msgstr ""
+
+#. module: hr_expense_extract
+#: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
+#, python-format
+msgid "Sample Employee"
+msgstr ""
+
+#. module: hr_expense_extract
+#: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
+#, python-format
+msgid "Sample Receipt: %s"
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Select a payment method."
 msgstr ""
 
 #. module: hr_expense_extract
@@ -241,6 +328,24 @@ msgid ""
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt
+#: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
+msgid "Try Sample Receipt"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.model,name:hr_expense_extract.model_expense_sample_receipt
+msgid "Try Sample Receipts"
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Try the AI with a sample receipt."
+msgstr ""
+
+#. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Unsupported image format"
@@ -259,6 +364,13 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation
 msgid "Waiting validation"
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Wasting time recording your receipts? Let’s try a better way."
 msgstr ""
 
 #. module: hr_expense_extract
@@ -286,6 +398,13 @@ msgstr ""
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You must send the same quantity of documents and file names"
+msgstr ""
+
+#. module: hr_expense_extract
+#. openerp-web
+#: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
+#, python-format
+msgid "Your manager will have to approve or refuse the expense report."
 msgstr ""
 
 #. module: hr_expense_extract

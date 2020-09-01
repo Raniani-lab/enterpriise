@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 08:05+0000\n"
+"POT-Creation-Date: 2020-09-01 07:40+0000\n"
+"PO-Revision-Date: 2020-09-01 07:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -46,6 +46,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:web_dashboard.selection__ir_ui_view__type__dashboard
 #, python-format
 msgid "Dashboard"
+msgstr ""
+
+#. module: web_dashboard
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view__display_name
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_http__display_name
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_ui_view__display_name
+msgid "Display Name"
 msgstr ""
 
 #. module: web_dashboard
@@ -89,10 +96,17 @@ msgid "Help:"
 msgstr ""
 
 #. module: web_dashboard
-#. openerp-web
-#: code:addons/web_dashboard/static/src/js/dashboard_controller.js:0
-#, python-format
-msgid "Incorrect Operation"
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view__id
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_http__id
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_ui_view__id
+msgid "ID"
+msgstr ""
+
+#. module: web_dashboard
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view____last_update
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_http____last_update
+#: model:ir.model.fields,field_description:web_dashboard.field_ir_ui_view____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: web_dashboard
@@ -147,11 +161,4 @@ msgstr ""
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:0
 #, python-format
 msgid "Widget:"
-msgstr ""
-
-#. module: web_dashboard
-#. openerp-web
-#: code:addons/web_dashboard/static/src/js/dashboard_controller.js:0
-#, python-format
-msgid "You cannot apply a filter from this view."
 msgstr ""

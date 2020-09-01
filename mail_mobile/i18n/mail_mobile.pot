@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-19 10:07+0000\n"
-"PO-Revision-Date: 2020-02-19 10:07+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,6 +40,14 @@ msgid "Disable link redirection to mobile app"
 msgstr ""
 
 #. module: mail_mobile
+#: model:ir.model.fields,field_description:mail_mobile.field_ir_http__display_name
+#: model:ir.model.fields,field_description:mail_mobile.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:mail_mobile.field_res_partner__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_mail_thread
 msgid "Email Thread"
 msgstr ""
@@ -55,10 +63,26 @@ msgid "HTTP Routing"
 msgstr ""
 
 #. module: mail_mobile
+#: model:ir.model.fields,field_description:mail_mobile.field_ir_http__id
+#: model:ir.model.fields,field_description:mail_mobile.field_mail_thread__id
+#: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__id
+#: model:ir.model.fields,field_description:mail_mobile.field_res_partner__id
+msgid "ID"
+msgstr ""
+
+#. module: mail_mobile
 #: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
 msgid ""
 "If disabled, you won't be able to open external URL's in the Android/iOS "
 "mobile app (e.g. \"View Task\" button in email)."
+msgstr ""
+
+#. module: mail_mobile
+#: model:ir.model.fields,field_description:mail_mobile.field_ir_http____last_update
+#: model:ir.model.fields,field_description:mail_mobile.field_mail_thread____last_update
+#: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:mail_mobile.field_res_partner____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: mail_mobile

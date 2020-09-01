@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.2+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 08:46+0000\n"
-"PO-Revision-Date: 2020-02-13 08:46+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,12 +41,16 @@ msgid "Created on"
 msgstr ""
 
 #. module: product_unspsc
+#: model:ir.model.fields,field_description:product_unspsc.field_product_template__display_name
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__display_name
+#: model:ir.model.fields,field_description:product_unspsc.field_uom_uom__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: product_unspsc
+#: model:ir.model.fields,field_description:product_unspsc.field_product_template__id
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__id
+#: model:ir.model.fields,field_description:product_unspsc.field_uom_uom__id
 msgid "ID"
 msgstr ""
 
@@ -56,7 +60,9 @@ msgid "Indicate if this code could be used in products or in UoM"
 msgstr ""
 
 #. module: product_unspsc
+#: model:ir.model.fields,field_description:product_unspsc.field_product_template____last_update
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code____last_update
+#: model:ir.model.fields,field_description:product_unspsc.field_uom_uom____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -112,7 +118,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product_unspsc.field_product_product__unspsc_code_id
 #: model:ir.model.fields,field_description:product_unspsc.field_product_template__unspsc_code_id
 #: model:ir.model.fields,field_description:product_unspsc.field_uom_uom__unspsc_code_id
-msgid "UNSPSC code"
+msgid "UNSPSC Product Category"
 msgstr ""
 
 #. module: product_unspsc

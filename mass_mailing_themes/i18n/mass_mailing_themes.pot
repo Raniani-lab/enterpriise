@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:16+0000\n"
-"PO-Revision-Date: 2019-12-16 10:16+0000\n"
+"POT-Creation-Date: 2020-09-01 07:40+0000\n"
+"PO-Revision-Date: 2020-09-01 07:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -69,21 +69,21 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid ""
-"<span class=\"fa fa-compass fa-2x text-delta\" aria-label=\"Choose\" "
+"<span class=\"fa fa-compass fa-2x text-o-color-4\" aria-label=\"Choose\" "
 "title=\"Choose\"/>"
 msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid ""
-"<span class=\"fa fa-credit-card fa-2x text-delta\" aria-label=\"Order\" "
+"<span class=\"fa fa-credit-card fa-2x text-o-color-4\" aria-label=\"Order\" "
 "title=\"Order\"/>"
 msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid ""
-"<span class=\"fa fa-smile-o fa-2x text-delta\" aria-label=\"Enjoy!\" "
+"<span class=\"fa fa-smile-o fa-2x text-o-color-4\" aria-label=\"Enjoy!\" "
 "title=\"Enjoy!\"/>"
 msgstr ""
 
@@ -135,16 +135,6 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "BBQ Mix"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "Banner Image"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -213,15 +203,6 @@ msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "Facebook"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Gibson Les Paul Junior"
 msgstr ""
 
@@ -243,25 +224,6 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "KEYNOTE SPEAKERS"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "LinkedIn"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "Logo"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -435,15 +397,6 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Tomato Soup"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "Twitter"
 msgstr ""
 
 #. module: mass_mailing_themes

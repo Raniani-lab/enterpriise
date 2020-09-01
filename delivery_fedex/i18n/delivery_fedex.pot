@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.3+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-21 10:49+0000\n"
-"PO-Revision-Date: 2020-04-21 10:49+0000\n"
+"POT-Creation-Date: 2020-09-01 07:39+0000\n"
+"PO-Revision-Date: 2020-09-01 07:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -70,6 +70,12 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_key
 msgid "Developer Key"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__display_name
+#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__display_name
+msgid "Display Name"
 msgstr ""
 
 #. module: delivery_fedex
@@ -232,6 +238,12 @@ msgid "Go to"
 msgstr ""
 
 #. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__id
+#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__id
+msgid "ID"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__international_economy
 msgid "INTERNATIONAL_ECONOMY"
 msgstr ""
@@ -259,6 +271,12 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
 msgid "Label Type"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier____last_update
+#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: delivery_fedex
@@ -438,7 +456,7 @@ msgstr ""
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
-msgid "Shipment N° %s has been cancelled"
+msgid "Shipment #%s has been cancelled"
 msgstr ""
 
 #. module: delivery_fedex

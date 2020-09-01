@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server saas~13.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-09-01 07:40+0000\n"
+"PO-Revision-Date: 2020-09-01 07:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -53,6 +53,18 @@ msgstr ""
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
+msgstr ""
+
+#. module: social_push_notifications
+#: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_account__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_media__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_post__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_utm_campaign__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_website__display_name
+#: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__display_name
+msgid "Display Name"
 msgstr ""
 
 #. module: social_push_notifications
@@ -138,6 +150,18 @@ msgid "Google Chrome ·"
 msgstr ""
 
 #. module: social_push_notifications
+#: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_account__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_media__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_post__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_utm_campaign__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_website__id
+#: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__id
+msgid "ID"
+msgstr ""
+
+#. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Icon"
 msgstr ""
@@ -145,6 +169,18 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Key File"
+msgstr ""
+
+#. module: social_push_notifications
+#: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_account____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_media____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_social_post____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_utm_campaign____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_website____last_update
+#: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: social_push_notifications
@@ -262,6 +298,14 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notifications_preview
 msgid "Push Notifications Preview"
+msgstr ""
+
+#. module: social_push_notifications
+#: code:addons/social_push_notifications/models/social_account.py:0
+#, python-format
+msgid ""
+"Push Notifications require the `firebase_admin` Python library (version >=2.17.0).\n"
+"You need to install it on your system to be able to use this module."
 msgstr ""
 
 #. module: social_push_notifications

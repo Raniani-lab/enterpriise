@@ -62,6 +62,16 @@ file_filter = account_consolidation/i18n/<lang>.po
 source_file = account_consolidation/i18n/account_consolidation.pot
 source_lang = en
 
+[odoo-master.account_disallowed_expenses]
+file_filter = account_disallowed_expenses/i18n/<lang>.po
+source_file = account_disallowed_expenses/i18n/account_disallowed_expenses.pot
+source_lang = en
+
+[odoo-master.account_disallowed_expenses_fleet]
+file_filter = account_disallowed_expenses_fleet/i18n/<lang>.po
+source_file = account_disallowed_expenses_fleet/i18n/account_disallowed_expenses_fleet.pot
+source_lang = en
+
 [odoo-master.account_followup]
 file_filter = account_followup/i18n/<lang>.po
 source_file = account_followup/i18n/account_followup.pot
@@ -105,6 +115,16 @@ source_lang = en
 [odoo-master.account_reports]
 file_filter = account_reports/i18n/<lang>.po
 source_file = account_reports/i18n/account_reports.pot
+source_lang = en
+
+[odoo-master.account_reports_cash_basis]
+file_filter = account_reports_cash_basis/i18n/<lang>.po
+source_file = account_reports_cash_basis/i18n/account_reports_cash_basis.pot
+source_lang = en
+
+[odoo-master.account_saft]
+file_filter = account_saft/i18n/<lang>.po
+source_file = account_saft/i18n/account_saft.pot
 source_lang = en
 
 [odoo-master.account_sepa]
@@ -170,6 +190,11 @@ source_lang = en
 [odoo-master.currency_rate_live]
 file_filter = currency_rate_live/i18n/<lang>.po
 source_file = currency_rate_live/i18n/currency_rate_live.pot
+source_lang = en
+
+[odoo-master.data_cleaning]
+file_filter = data_cleaning/i18n/<lang>.po
+source_file = data_cleaning/i18n/data_cleaning.pot
 source_lang = en
 
 [odoo-master.data_merge]
@@ -267,14 +292,14 @@ file_filter = documents_sign/i18n/<lang>.po
 source_file = documents_sign/i18n/documents_sign.pot
 source_lang = en
 
+[odoo-master.documents_spreadsheet]
+file_filter = documents_spreadsheet/i18n/<lang>.po
+source_file = documents_spreadsheet/i18n/documents_spreadsheet.pot
+source_lang = en
+
 [odoo-master.event_barcode]
 file_filter = event_barcode/i18n/<lang>.po
 source_file = event_barcode/i18n/event_barcode.pot
-source_lang = en
-
-[odoo-master.event_barcode_mobile]
-file_filter = event_barcode_mobile/i18n/<lang>.po
-source_file = event_barcode_mobile/i18n/event_barcode_mobile.pot
 source_lang = en
 
 [odoo-master.event_enterprise]
@@ -337,6 +362,11 @@ file_filter = hr_appraisal/i18n/<lang>.po
 source_file = hr_appraisal/i18n/hr_appraisal.pot
 source_lang = en
 
+[odoo-master.hr_appraisal_survey]
+file_filter = hr_appraisal_survey/i18n/<lang>.po
+source_file = hr_appraisal_survey/i18n/hr_appraisal_survey.pot
+source_lang = en
+
 [odoo-master.hr_contract_reports]
 file_filter = hr_contract_reports/i18n/<lang>.po
 source_file = hr_contract_reports/i18n/hr_contract_reports.pot
@@ -360,6 +390,11 @@ source_lang = en
 [odoo-master.hr_expense_extract]
 file_filter = hr_expense_extract/i18n/<lang>.po
 source_file = hr_expense_extract/i18n/hr_expense_extract.pot
+source_lang = en
+
+[odoo-master.hr_expense_predict_product]
+file_filter = hr_expense_predict_product/i18n/<lang>.po
+source_file = hr_expense_predict_product/i18n/hr_expense_predict_product.pot
 source_lang = en
 
 [odoo-master.hr_holidays_gantt]
@@ -417,6 +452,11 @@ file_filter = industry_fsm/i18n/<lang>.po
 source_file = industry_fsm/i18n/industry_fsm.pot
 source_lang = en
 
+[odoo-master.industry_fsm_forecast]
+file_filter = industry_fsm_forecast/i18n/<lang>.po
+source_file = industry_fsm_forecast/i18n/industry_fsm_forecast.pot
+source_lang = en
+
 [odoo-master.industry_fsm_report]
 file_filter = industry_fsm_report/i18n/<lang>.po
 source_file = industry_fsm_report/i18n/industry_fsm_report.pot
@@ -450,6 +490,11 @@ source_lang = en
 [odoo-master.mail_github]
 file_filter = mail_github/i18n/<lang>.po
 source_file = mail_github/i18n/mail_github.pot
+source_lang = en
+
+[odoo-master.mail_mobile]
+file_filter = mail_mobile/i18n/<lang>.po
+source_file = mail_mobile/i18n/mail_mobile.pot
 source_lang = en
 
 [odoo-master.marketing_automation]
@@ -502,9 +547,9 @@ file_filter = mrp_workorder_iot/i18n/<lang>.po
 source_file = mrp_workorder_iot/i18n/mrp_workorder_iot.pot
 source_lang = en
 
-[odoo-master.mail_mobile]
-file_filter = mail_mobile/i18n/<lang>.po
-source_file = mail_mobile/i18n/mail_mobile.pot
+[odoo-master.partner_commission]
+file_filter = partner_commission/i18n/<lang>.po
+source_file = partner_commission/i18n/partner_commission.pot
 source_lang = en
 
 [odoo-master.payment_sepa_direct_debit]
@@ -657,6 +702,11 @@ file_filter = sale_renting/i18n/<lang>.po
 source_file = sale_renting/i18n/sale_renting.pot
 source_lang = en
 
+[odoo-master.sale_renting_crm]
+file_filter = sale_renting_crm/i18n/<lang>.po
+source_file = sale_renting_crm/i18n/sale_renting_crm.pot
+source_lang = en
+
 [odoo-master.sale_renting_sign]
 file_filter = sale_renting_sign/i18n/<lang>.po
 source_file = sale_renting_sign/i18n/sale_renting_sign.pot
@@ -782,6 +832,11 @@ file_filter = stock_intrastat/i18n/<lang>.po
 source_file = stock_intrastat/i18n/stock_intrastat.pot
 source_lang = en
 
+[odoo-master.timer]
+file_filter = timer/i18n/<lang>.po
+source_file = timer/i18n/timer.pot
+source_lang = en
+
 [odoo-master.timesheet_grid]
 file_filter = timesheet_grid/i18n/<lang>.po
 source_file = timesheet_grid/i18n/timesheet_grid.pot
@@ -862,9 +917,24 @@ file_filter = website_enterprise/i18n/<lang>.po
 source_file = website_enterprise/i18n/website_enterprise.pot
 source_lang = en
 
+[odoo-master.website_event_social]
+file_filter = website_event_social/i18n/<lang>.po
+source_file = website_event_social/i18n/website_event_social.pot
+source_lang = en
+
 [odoo-master.website_event_track_gantt]
 file_filter = website_event_track_gantt/i18n/<lang>.po
 source_file = website_event_track_gantt/i18n/website_event_track_gantt.pot
+source_lang = en
+
+[odoo-master.website_event_track_social]
+file_filter = website_event_track_social/i18n/<lang>.po
+source_file = website_event_track_social/i18n/website_event_track_social.pot
+source_lang = en
+
+[odoo-master.website_event_twitter_wall]
+file_filter = website_event_twitter_wall/i18n/<lang>.po
+source_file = website_event_twitter_wall/i18n/website_event_twitter_wall.pot
 source_lang = en
 
 [odoo-master.website_helpdesk]

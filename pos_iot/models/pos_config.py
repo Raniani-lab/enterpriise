@@ -9,7 +9,7 @@ class PosConfig(models.Model):
 
     iface_print_via_proxy = fields.Boolean(compute="_compute_print_via_proxy")
     iface_printer_id = fields.Many2one('iot.device', domain="[('type', '=', 'printer'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    iface_customer_facing_display = fields.Boolean(compute="_compute_customer_facing_display")
+    iface_customer_facing_display_via_proxy = fields.Boolean(compute="_compute_customer_facing_display_via_proxy")
     iface_display_id = fields.Many2one('iot.device', domain="[('type', '=', 'display'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     iface_scan_via_proxy = fields.Boolean(compute="_compute_scan_via_proxy")
     iface_scanner_ids = fields.Many2many('iot.device', domain="[('type', '=', 'scanner'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
@@ -25,9 +25,9 @@ class PosConfig(models.Model):
             config.iface_print_via_proxy = config.iface_printer_id.id is not False
 
     @api.depends('iface_display_id')
-    def _compute_customer_facing_display(self):
+    def _compute_customer_facing_display_via_proxy(self):
         for config in self:
-            config.iface_customer_facing_display = config.iface_display_id.id is not False
+            config.iface_customer_facing_display_via_proxy = config.iface_display_id.id is not False
 
     @api.depends('iface_scanner_ids')
     def _compute_scan_via_proxy(self):

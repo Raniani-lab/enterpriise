@@ -3,7 +3,6 @@
     <template id="assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/pos_iot/static/src/js/barcode_reader.js"></script>
-            <script type="text/javascript" src="/pos_iot/static/src/js/Chrome.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/ClientScreenButton.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/customer_display.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/DebugWidget.js"></script>

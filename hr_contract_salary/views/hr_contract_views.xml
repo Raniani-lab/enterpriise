@@ -151,8 +151,9 @@
             (0, 0, {'view_mode': 'form', 'sequence': 2, 'view_id': ref('hr_contract_view_form_contract_templates')})]"/>
         <field name="search_view_id" ref="hr_contract.hr_contract_view_search"/>
         <field name="help" type="html">
-          <p class="oe_view_nocontent_create">
-            Click here to create new contracts.
+          <p class="o_view_nocontent_smiling_face">
+              No Template found</p><p>
+                Let's create one
           </p>
         </field>
     </record>

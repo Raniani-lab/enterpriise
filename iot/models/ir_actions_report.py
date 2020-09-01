@@ -33,3 +33,8 @@ class IrActionReport(models.Model):
         result['id'] = self.id
         result['device_id'] = device.identifier
         return result
+
+    def _get_readable_fields(self):
+        return super()._get_readable_fields() | {
+            "device_id",
+        }

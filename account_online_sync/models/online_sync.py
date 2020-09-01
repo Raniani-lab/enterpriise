@@ -40,6 +40,7 @@ class ProviderAccount(models.Model):
 
     def open_action(self, action_name, number_added):
         action = self.env['ir.actions.act_window']._for_xml_id(action_name)
+        self.env[action["res_model"]].check_access_rights('write')
         ctx = self.env.context.copy()
         ctx.update({'default_number_added': number_added})
         action.update({'context': ctx})

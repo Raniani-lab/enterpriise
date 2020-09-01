@@ -103,14 +103,14 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             AND l.date >= %s
             AND l.date <= %s
             AND l.company_id = %s
-            AND m.state != 'draft'
+            AND m.state = 'posted'
         """
         self.env.cr.execute(total_query, (date_from, date_to, company_id.id,))
         moves_count, moves_debit, moves_credit = self.env.cr.fetchall()[0]
         journal_x_moves = {}
         for journal in journal_ids:
             journal_x_moves[journal] = self.env['account.move'].search(
-                [('date', '>=', date_from), ('date', '<=', date_to), ('state', '!=', 'draft'), ('journal_id', '=', journal.id)])
+                [('date', '>=', date_from), ('date', '<=', date_to), ('state', '=', 'posted'), ('journal_id', '=', journal.id)])
         values = {
             'company_id': company_id,
             'partner_ids': partner_ids,

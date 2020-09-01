@@ -193,6 +193,9 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
          * @returns {Array<string>}
          */
         getFieldValues(fieldName) {
+            if (!(fieldName in this._fieldValues)) {
+                throw new Error(`Cannot find any pivot values for field "${fieldName}"`);
+            }
             return this._fieldValues[fieldName];
         }
 

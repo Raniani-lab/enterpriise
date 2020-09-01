@@ -34,7 +34,7 @@ class AccountBankStatementImport(models.TransientModel):
     @api.onchange('attachment_ids')
     def _onchange_data_file(self):
         file_contents = self.attachment_ids.mapped('datas')
-        self.show_qif_date_format = any(self._check_qif(content) for content in file_contents)
+        self.show_qif_date_format = any(self._check_qif(base64.b64decode(content)) for content in file_contents)
 
     def _find_additional_data(self, *args):
         """ As .QIF format does not allow us to detect the journal, we need to let the user choose it.

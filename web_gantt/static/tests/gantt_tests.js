@@ -7,6 +7,7 @@ var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
 var testUtils = require('web.test_utils');
 
+const createActionManager = testUtils.createActionManager;
 const patchDate = testUtils.mock.patchDate;
 
 var initialDate = new Date(2018, 11, 20, 8, 0, 0);
@@ -685,6 +686,77 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$el.text(), content);
 
         gantt.destroy();
+    });
+
+    QUnit.test('empty gantt with sample data and default_group_by', async function (assert) {
+        assert.expect(5);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
+            viewOptions: {
+                initialDate: new Date(),
+            },
+            domain: Domain.FALSE_DOMAIN,
+        });
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+
+        const content = gantt.$el.text();
+
+        // trigger a reload via the search bar
+        await testUtils.controlPanel.validateSearch(gantt);
+
+        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual(gantt.$el.text(), content);
+
+        gantt.destroy();
+    });
+
+    QUnit.test('empty gantt with sample data and default_group_by (switch view)', async function (assert) {
+        assert.expect(7);
+
+        const actionManager = await createActionManager({
+            data: this.data,
+            archs: {
+                'tasks,false,gantt': '<gantt date_start="start" date_stop="stop" sample="1" default_group_by="project_id"/>',
+                'tasks,false,list': '<list/>',
+                'tasks,false,search': '<search/>',
+            },
+        });
+
+        await actionManager.doAction({
+            name: 'Gantt',
+            res_model: 'tasks',
+            type: 'ir.actions.act_window',
+            views: [[false, 'gantt'], [false, 'list']],
+        });
+
+        // the gantt view should be in sample mode
+        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
+        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = actionManager.$el.text();
+
+        // switch to list view
+        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_list'));
+
+        assert.containsOnce(actionManager, '.o_list_view');
+
+        // go back to gantt view
+        await testUtils.dom.click(actionManager.el.querySelector('.o_cp_bottom_right .o_switch_view.o_gantt'));
+
+        assert.containsOnce(actionManager, '.o_gantt_view');
+
+        // the gantt view should be still in sample mode
+        assert.hasClass(actionManager.$('.o_view_controller'), 'o_view_sample_data');
+        assert.ok(actionManager.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual(actionManager.$('.o_view_controller').text(), content);
+
+        actionManager.destroy();
     });
 
     QUnit.test('empty gantt with sample="1"', async function (assert) {

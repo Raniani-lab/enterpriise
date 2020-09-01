@@ -121,15 +121,16 @@ var GanttModel = AbstractModel.extend({
         this.SCALES = params.SCALES;
 
         this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
-        if (!params.groupedBy || !params.groupedBy.length) {
-            params.groupedBy = this.defaultGroupBy;
+        let groupedBy = params.groupedBy;
+        if (!groupedBy || !groupedBy.length) {
+            groupedBy = this.defaultGroupBy;
         }
-        params.groupedBy = this._filterDateInGroupedBy(params.groupedBy);
+        groupedBy = this._filterDateInGroupedBy(groupedBy);
 
         this.ganttData = {
             dateStartField: params.dateStartField,
             dateStopField: params.dateStopField,
-            groupedBy: params.groupedBy,
+            groupedBy,
             fields: params.fields,
             dynamicRange: params.dynamicRange,
         };

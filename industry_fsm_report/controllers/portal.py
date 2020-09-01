@@ -25,7 +25,7 @@ class CustomerPortal(portal.CustomerPortal):
         worksheet_map = {}
         if task_sudo.worksheet_template_id:
             x_model = task_sudo.worksheet_template_id.model_id.model
-            worksheet = request.env[x_model].sudo().search([('x_task_id', '=', task_sudo.id)], limit=1, order="create_date DESC")  # take the last one
+            worksheet = request.env[x_model].sudo().search([('x_project_task_id', '=', task_sudo.id)], limit=1, order="create_date DESC")  # take the last one
             worksheet_map[task_sudo.id] = worksheet
 
         return request.render("industry_fsm_report.portal_my_worksheet", {'worksheet_map': worksheet_map, 'task': task_sudo, 'message': message, 'source': source})

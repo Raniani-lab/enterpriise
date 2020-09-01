@@ -166,7 +166,7 @@ class TestTimerButtons(TransactionCase):
         worksheet = self.env[self.task.worksheet_template_id.model_id.model].create({
             'x_name': 'This is a name',
             'x_comments': 'This is a comment',
-            'x_task_id': self.task.id,
+            'x_project_task_id': self.task.id,
         })
         # YTI FIXME: The triggers on the compute method are foireux
         self.task._compute_worksheet_count()
@@ -202,7 +202,7 @@ class TestTimerButtons(TransactionCase):
         worksheet = self.env[self.task.worksheet_template_id.model_id.model].create({
             'x_name': 'This is a name',
             'x_comments': 'This is a comment',
-            'x_task_id': self.task.id,
+            'x_project_task_id': self.task.id,
         })
         # YTI FIXME: The triggers on the compute method are foireux
         self.task._compute_worksheet_count()
@@ -273,7 +273,7 @@ class TestTimerButtons(TransactionCase):
         worksheet = self.env[self.task.worksheet_template_id.model_id.model].create({
             'x_name': 'This is a name',
             'x_comments': 'This is a comment',
-            'x_task_id': self.task.id,
+            'x_project_task_id': self.task.id,
         })
         self.task._compute_worksheet_count()
         self.task._fsm_ensure_sale_order()

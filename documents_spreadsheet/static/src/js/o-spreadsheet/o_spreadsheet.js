@@ -396,23 +396,35 @@
         }
         return n;
     }
+    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
+        useGrouping: false,
+        maximumFractionDigits: 10,
+    });
     function formatStandardNumber(n) {
         if (Number.isInteger(n)) {
             return n.toString();
         }
-        return n.toLocaleString("en-US", { useGrouping: false, maximumFractionDigits: 10 });
+        return decimalStandardRepresentation.format(n);
     }
+    // this is a cache than can contains decimal representation formats
+    // from 0 (minimum) to 20 (maximum) digits after the decimal point
+    let decimalRepresentations = [];
     const maximumDecimalPlaces = 20;
     function formatDecimal(n, decimals, sep = "") {
         if (n < 0) {
             return "-" + formatDecimal(-n, decimals);
         }
         const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
-        let result = n.toLocaleString("en-US", {
-            minimumFractionDigits: maxDecimals,
-            maximumFractionDigits: maxDecimals,
-            useGrouping: false,
-        });
+        let formatter = decimalRepresentations[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: maxDecimals,
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            decimalRepresentations[maxDecimals] = formatter;
+        }
+        let result = formatter.format(n);
         if (sep) {
             let p = result.indexOf(".");
             result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
@@ -5915,12 +5927,12 @@
             if (tokenCount > 100) {
                 throw new Error(_lt("This formula has over 100 parts. It can't be processed properly, consider splitting it into multiple cells"));
             }
-            let token = tokenizeDebugger(chars) ||
-                tokenizeSpace(chars) ||
+            let token = tokenizeSpace(chars) ||
                 tokenizeMisc(chars) ||
                 tokenizeOperator(chars) ||
                 tokenizeNumber(chars) ||
                 tokenizeString(chars) ||
+                tokenizeDebugger(chars) ||
                 tokenizeSymbol(chars);
             if (!token) {
                 token = { type: "UNKNOWN", value: chars.shift() };
@@ -5936,15 +5948,15 @@
         }
         return null;
     }
+    const misc = {
+        ",": "COMMA",
+        "(": "LEFT_PAREN",
+        ")": "RIGHT_PAREN",
+    };
     function tokenizeMisc(chars) {
-        const misc = {
-            ",": "COMMA",
-            "(": "LEFT_PAREN",
-            ")": "RIGHT_PAREN",
-        };
         if (chars[0] in misc) {
-            const value = chars[0];
-            const type = misc[chars.shift()];
+            const value = chars.shift();
+            const type = misc[value];
             return { type, value };
         }
         return null;
@@ -5977,8 +5989,7 @@
     function tokenizeString(chars) {
         if (chars[0] === '"') {
             const startChar = chars.shift();
-            const letters = [];
-            letters.push(startChar);
+            const letters = [startChar];
             while (chars[0] && (chars[0] !== startChar || letters[letters.length - 1] === "\\")) {
                 letters.push(chars.shift());
             }
@@ -5992,6 +6003,7 @@
         }
         return null;
     }
+    const separatorRegexp = /\w|\.|!|\$/;
     /**
      * A "Symbol" is just basically any word-like element that can appear in a
      * formula, which is not a string. So:
@@ -6009,27 +6021,29 @@
         // there are two main cases to manage: either something which starts with
         // a ', like 'Sheet 2'A2, or a word-like element.
         if (chars[0] === "'") {
-            result.push(chars.shift());
+            let lastChar = chars.shift();
+            result.push(lastChar);
             while (chars[0]) {
-                let char = chars.shift();
-                result.push(char);
-                if (char === "'") {
+                lastChar = chars.shift();
+                result.push(lastChar);
+                if (lastChar === "'") {
                     if (chars[0] && chars[0] === "'") {
-                        result.push(chars.shift());
+                        lastChar = chars.shift();
+                        result.push(lastChar);
                     }
                     else {
                         break;
                     }
                 }
             }
-            if (result[result.length - 1] !== "'") {
+            if (lastChar !== "'") {
                 return {
                     type: "UNKNOWN",
                     value: result.join(""),
                 };
             }
         }
-        while (chars[0] && chars[0].match(/\w|\.|!|\$/)) {
+        while (chars[0] && chars[0].match(separatorRegexp)) {
             result.push(chars.shift());
         }
         if (result.length) {
@@ -6040,9 +6054,10 @@
         }
         return null;
     }
+    const whiteSpaceRegexp = /\s/;
     function tokenizeSpace(chars) {
         let length = 0;
-        while (chars[0] && chars[0].match(/\s/)) {
+        while (chars[0] && chars[0].match(whiteSpaceRegexp)) {
             length++;
             chars.shift();
         }
@@ -6643,7 +6658,8 @@
                 if (x === base && step === -1) {
                     x += direction;
                 }
-                return this.updateColumnsRef(toXC(x, y), sheet, base, step);
+                const [xcRef] = this.updateColumnsRef(toXC(x, y), sheet, base, step).split("!").reverse();
+                return xcRef;
             };
             /**
              * Update a full range by appling an offset.
@@ -6668,7 +6684,8 @@
                 if (left === right) {
                     return left;
                 }
-                return `${left}:${right}`;
+                const range = `${left}:${right}`;
+                return sheet ? `${sheet}!${range}` : range;
             };
             /**
              * Update a reference by applying an offset to the row
@@ -6703,7 +6720,8 @@
                     }
                     step = 0;
                 }
-                return this.updateRowsRef(toXC(x, y), sheet, base, step);
+                const [xcRef] = this.updateRowsRef(toXC(x, y), sheet, base, step).split("!").reverse();
+                return xcRef;
             };
             /**
              * Update a full range by appling an offset.
@@ -6728,7 +6746,8 @@
                 if (left === right) {
                     return left;
                 }
-                return `${left}:${right}`;
+                const range = `${left}:${right}`;
+                return sheet ? `${sheet}!${range}` : range;
             };
         }
         // ---------------------------------------------------------------------------
@@ -11032,88 +11051,100 @@
     const { css, xml } = owl.tags;
     const COLORS = [
         [
+            "#000000",
+            "#434343",
+            "#666666",
+            "#999999",
+            "#b7b7b7",
+            "#cccccc",
+            "#d9d9d9",
+            "#efefef",
+            "#f3f3f3",
             "#ffffff",
-            "#000100",
-            "#e7e5e6",
-            "#445569",
-            "#5b9cd6",
-            "#ed7d31",
-            "#a5a5a5",
-            "#ffc001",
-            "#4371c6",
-            "#71ae47",
         ],
         [
-            "#f2f2f2",
-            "#7f7f7f",
-            "#d0cecf",
-            "#d5dce4",
-            "#deeaf6",
-            "#fce5d5",
-            "#ededed",
-            "#fff2cd",
-            "#d9e2f3",
-            "#e3efd9",
+            "#980000",
+            "#ff0000",
+            "#ff9900",
+            "#ffff00",
+            "#00ff00",
+            "#00ffff",
+            "#4a86e8",
+            "#0000ff",
+            "#9900ff",
+            "#ff00ff",
         ],
         [
-            "#d8d8d8",
-            "#595959",
-            "#afabac",
-            "#adb8ca",
-            "#bdd7ee",
-            "#f7ccac",
-            "#dbdbdb",
-            "#ffe59a",
-            "#b3c6e7",
-            "#c5e0b3",
+            "#e6b8af",
+            "#f4cccc",
+            "#fce5cd",
+            "#fff2cc",
+            "#d9ead3",
+            "#d0e0e3",
+            "#c9daf8",
+            "#cfe2f3",
+            "#d9d2e9",
+            "#ead1dc",
         ],
         [
-            "#bfbfbf",
-            "#3f3f3f",
-            "#756f6f",
-            "#8596b0",
-            "#9cc2e6",
-            "#f4b184",
-            "#c9c9c9",
-            "#fed964",
-            "#8eaada",
-            "#a7d08c",
+            "#dd7e6b",
+            "#ea9999",
+            "#f9cb9c",
+            "#ffe599",
+            "#b6d7a8",
+            "#a2c4c9",
+            "#a4c2f4",
+            "#9fc5e8",
+            "#b4a7d6",
+            "#d5a6bd",
         ],
         [
-            "#a5a5a5",
-            "#262626",
-            "#3a3839",
-            "#333f4f",
-            "#2e75b5",
-            "#c45a10",
-            "#7b7b7b",
-            "#bf8e01",
-            "#2f5596",
-            "#538136",
+            "#cc4125",
+            "#e06666",
+            "#f6b26b",
+            "#ffd966",
+            "#93c47d",
+            "#76a5af",
+            "#6d9eeb",
+            "#6fa8dc",
+            "#8e7cc3",
+            "#c27ba0",
         ],
         [
-            "#7f7f7f",
-            "#0c0c0c",
-            "#171516",
-            "#222a35",
-            "#1f4e7a",
-            "#843c0a",
-            "#525252",
-            "#7e6000",
-            "#203864",
-            "#365624",
+            "#a61c00",
+            "#cc0000",
+            "#e69138",
+            "#f1c232",
+            "#6aa84f",
+            "#45818e",
+            "#3c78d8",
+            "#3d85c6",
+            "#674ea7",
+            "#a64d79",
         ],
         [
-            "#c00000",
-            "#fe0000",
-            "#fdc101",
-            "#ffff01",
-            "#93d051",
-            "#00b04e",
-            "#01b0f1",
-            "#0170c1",
-            "#012060",
-            "#7030a0",
+            "#85200c",
+            "#990000",
+            "#b45f06",
+            "#bf9000",
+            "#38761d",
+            "#134f5c",
+            "#1155cc",
+            "#0b5394",
+            "#351c75",
+            "#741b47",
+        ],
+        [
+            "#5b0f00",
+            "#660000",
+            "#783f04",
+            "#7f6000",
+            "#274e13",
+            "#0c343d",
+            "#1c4587",
+            "#073763",
+            "#20124d",
+            "#4c1130",
         ],
     ];
     class ColorPicker extends Component {
@@ -11143,15 +11174,18 @@
       left: 0;
       z-index: 10;
       box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-      background-color: #f6f6f6;
+      background-color: white;
+      padding: 6px 0px;
 
       .o-color-picker-line {
         display: flex;
         padding: 3px 6px;
         .o-color-picker-line-item {
-          width: 16px;
-          height: 16px;
-          margin: 1px 3px;
+          width: 18px;
+          height: 18px;
+          margin: 0px 2px;
+          border-radius: 50px;
+          border: 1px solid #c0c0c0;
           &:hover {
             background-color: rgba(0, 0, 0, 0.08);
             outline: 1px solid gray;
@@ -16315,9 +16349,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.6.0';
-    exports.__info__.date = '2020-08-28T06:59:02.659Z';
-    exports.__info__.hash = '67b4f31';
+    exports.__info__.version = '0.6.1';
+    exports.__info__.date = '2020-09-01T07:18:21.718Z';
+    exports.__info__.hash = '0972340';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

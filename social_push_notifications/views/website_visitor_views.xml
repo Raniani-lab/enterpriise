@@ -81,5 +81,6 @@
         name="Visitors"
         parent="social.menu_social_global"
         action="website.website_visitors_action"
-        sequence="25"/>
+        sequence="25"
+        groups="website.group_website_publisher"/>
 </data></odoo>

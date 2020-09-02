@@ -44,14 +44,16 @@ tour.register('sign_tour', {
     position: "bottom",
 }, {
     trigger: 'iframe .o_sign_sign_item_navigator',
+    alt_trigger: "iframe .o_sign_sign_item[placeholder='" + _t("Date") + "']",
     content: _t("Your name has been auto-completed. Let’s continue!"),
     position: "bottom",
 }, {
     trigger: 'iframe .o_sign_sign_item_navigator',
-    content: _t("You don’t like the format for the date? Don’t hesitate to modify it!<br>Let’s sign the document!"),
+    content: _t("Let’s sign the document!"),
     position: "bottom",
 }, {
     trigger: 'iframe .o_sign_sign_item_navigator',
+    alt_trigger: 'iframe .o_sign_sign_item[data-signature]',
     content: _t("Draw your most beautiful signature!<br>You can also create one automatically or load a signature from your computer."),
     position: "bottom",
 }, {

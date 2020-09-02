@@ -76,7 +76,7 @@ class AccountAsset(models.Model):
         help='Note that this date does not alter the computation of the first journal entry in case of prorata temporis assets. It simply changes its accounting date',
     )
     acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True)
-    disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]},)
+    disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]}, compute="_compute_disposal_date", store=True)
 
     # model-related fields
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
@@ -92,6 +92,15 @@ class AccountAsset(models.Model):
     already_depreciated_amount_import = fields.Monetary(help="In case of an import from another software, you might need to use this field to have the right depreciation table report. This is the value that was already depreciated with entries not computed from this model")
     depreciation_number_import = fields.Integer(help="In case of an import from another software, provide the number of depreciations already done before starting with Odoo.")
     first_depreciation_date_import = fields.Date(help="In case of an import from another software, provide the first depreciation date in it.")
+
+    @api.depends('depreciation_move_ids.date', 'state')
+    def _compute_disposal_date(self):
+        for asset in self:
+            if asset.state == 'close':
+                dates = asset.depreciation_move_ids.filtered(lambda m: m.date).mapped('date')
+                asset.disposal_date = dates and max(dates)
+            else:
+                asset.disposal_date = False
 
     @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type')
     def _compute_value(self):
@@ -594,7 +603,7 @@ class AccountAsset(models.Model):
             raise UserError(_("You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s)."))
         full_asset = self + self.children_ids
         move_ids = full_asset._get_disposal_moves([invoice_line_id] * len(full_asset), disposal_date)
-        full_asset.write({'state': 'close', 'disposal_date': disposal_date})
+        full_asset.write({'state': 'close'})
         if move_ids:
             return self._return_disposal_view(move_ids)
 
@@ -604,7 +613,7 @@ class AccountAsset(models.Model):
     def set_to_running(self):
         if self.depreciation_move_ids and not max(self.depreciation_move_ids, key=lambda m: m.date).asset_remaining_value == 0:
             self.env['asset.modify'].create({'asset_id': self.id, 'name': _('Reset to running')}).modify()
-        self.write({'state': 'open', 'disposal_date': False})
+        self.write({'state': 'open'})
 
     def resume_after_pause(self):
         """ Sets an asset in 'paused' state back to 'open'.

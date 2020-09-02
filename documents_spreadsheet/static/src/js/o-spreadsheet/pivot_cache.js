@@ -8,7 +8,7 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
         constructor(data) {
             this._modelLabel = data.modelLabel;
             /**
-             * Here is an exemple of a possible cols structure in the PivotCache.
+             * Here is an example of a possible cols structure in the PivotCache.
              * Each element of the array describes a spreadsheet column. Each element
              * of a column is part of its group hierarchy which are used to build the headers.
              * e.g. a pivot grouped by partner then stage
@@ -149,7 +149,7 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
              * Contains the domain of the values used during the evaluation of the formula =Pivot(...)
              * Is used to know if a pivot cell is missing or not
              * */
-            
+
             this._usedValueDomains = new Set();
             /**
              * Contains the domain of the headers used during the evaluation of the formula =Pivot.header(...)

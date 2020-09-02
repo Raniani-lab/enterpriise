@@ -6,6 +6,7 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
     const DomainSelector = require("web.DomainSelector");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
+    const { sprintf } = require("web.utils");
     const { time_to_str } = require('web.time');
 
     const _t = core._t;
@@ -59,7 +60,9 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
          * @returns measure formatted
          */
         formatMeasure(measure) {
-            return measure.field === "__count" ? _t("Count") : this.pivot.cache.getField(measure.field).string;
+            if (this.pivot && this.pivot.cache) {
+                return measure.field === "__count" ? _t("Count") : this.pivot.cache.getField(measure.field).string;
+            }
         }
 
         /**
@@ -79,14 +82,20 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
         refreshMeasures(id) {
             this.env.dispatch("REFRESH_PIVOT", { id });
         }
+
+        getPivotName() {
+            if (this.pivot && this.pivot.cache) {
+                const modelName = this.pivot.cache.getModelLabel();
+                return sprintf(_t("%s (#%s)"), modelName, this.pivot && this.pivot.id);
+            }
+        }
     }
     PivotSidePanel.template = "documents_spreadsheet.PivotSidePanel";
     PivotSidePanel.components = { DomainComponentAdapter };
 
     sidePanelRegistry.add("PIVOT_PROPERTIES_PANEL", {
         title: (env) => {
-            const pivot = env.getters.getSelectedPivot();
-            return _.str.sprintf(_t("Pivot properties (#%s)"), pivot && pivot.id);
+            return _t("Pivot properties");
         },
         Body: PivotSidePanel,
     });

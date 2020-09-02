@@ -507,7 +507,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
         });
 
         QUnit.test("Open pivot properties properties", async function (assert) {
-            assert.expect(12);
+            assert.expect(14);
 
             const [actionManager, model, env] = await createSpreadsheetFromPivot({
                 model: "partner",
@@ -527,11 +527,14 @@ odoo.define("web.spreadsheet_tests", function (require) {
             })
             await nextTick();
             const title = actionManager.el.querySelector(".o-sidePanelTitle").innerText;
-            assert.equal(title, "Pivot properties (#1)");
+            assert.equal(title, "Pivot properties");
 
             const sections = actionManager.el.querySelectorAll(".o_side_panel_section");
-            assert.equal(sections.length, 4, "it should have 4 sections");
-            const [pivotModel, domain, dimensions, measures] = sections;
+            assert.equal(sections.length, 5, "it should have 5 sections");
+            const [pivotName, pivotModel, domain, dimensions, measures] = sections;
+
+            assert.equal(pivotName.children[0].innerText, "Pivot name");
+            assert.equal(pivotName.children[1].innerText, "partner (#1)");
 
             assert.equal(pivotModel.children[0].innerText, "Model");
             assert.equal(pivotModel.children[1].innerText, "partner (partner)");

@@ -408,5 +408,12 @@
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('step_view_form')})]"/>
         <field name="search_view_id" ref="view_routing_steps_search"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_steps">
+            No manufacturing steps defined yet!
+          </p><p>
+            Use steps to show instructions on a worksheet to operators, or trigger quality checks at specific steps of the work order.
+          </p>
+        </field>
     </record>
 </odoo>

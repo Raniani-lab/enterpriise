@@ -191,7 +191,7 @@ QUnit.module('documents_kanban_tests.js', {
                     {id: 2, name: 'Share2', folder_id: 1, alias_id: 2},
                     {id: 3, name: 'Share3', folder_id: 2, alias_id: 3},
                 ],
-                create_share: function () {
+                open_share_popup: function () {
                     return Promise.resolve();
                 },
             },
@@ -628,8 +628,9 @@ QUnit.module('documents_kanban_tests.js', {
                 '</t></templates></kanban>',
             domain: [domain],
             mockRPC: function (route, args) {
-                if (args.method === 'create_share') {
+                if (args.method === 'open_share_popup') {
                     assert.deepEqual(args.args, [{
+                        document_ids: false,
                         domain: [
                             "&",
                                 domain,
@@ -1077,7 +1078,7 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
-                if (args.method === 'create_share') {
+                if (args.method === 'open_share_popup') {
                     assert.deepEqual(args.args, [{
                         document_ids: [[6, 0, [1, 2]]],
                         folder_id: 1,

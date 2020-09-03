@@ -90,6 +90,8 @@ class DocumentShare(models.Model):
         if self.type == 'domain':
             record_domain = literal_eval(self.domain)
             domains.append(record_domain)
+            if self.action == 'download':
+                domains.append([('type', '!=', 'empty')])
         else:
             share_ids = limited_self.document_ids.ids
             search_ids = search_ids.intersection(share_ids) if search_ids else share_ids
@@ -183,6 +185,18 @@ class DocumentShare(models.Model):
             })
         return values
 
+    def _get_share_popup(self, context, vals):
+        view_id = self.env.ref('documents.share_view_form_popup').id
+        return {
+            'context': context,
+            'res_model': 'documents.share',
+            'target': 'new',
+            'name': _('Share selected records') if vals.get('type') == 'ids' else _('Share domain'),
+            'res_id': self.id if self else False,
+            'type': 'ir.actions.act_window',
+            'views': [[view_id, 'form']], 
+        }
+
     def send_share_by_mail(self, template_xmlid):
         self.ensure_one()
         request_template = self.env.ref(template_xmlid, raise_if_not_found=False)
@@ -197,20 +211,24 @@ class DocumentShare(models.Model):
         return share
 
     @api.model
-    def create_share(self, vals):
+    def open_share_popup(self, vals):
         """
-        creates a share link and returns a view.
-        :return: a form action that opens the share window to display the URL and the settings.
+        returns a view.
+        :return: a form action that opens the share window to display the settings.
         """
+        new_context = dict(self.env.context)
+        new_context.update({
+            'default_owner_id': self.env.uid,
+            'default_folder_id': vals.get('folder_id'),
+            'default_type': vals.get('type', 'domain'),
+            'default_domain': vals.get('domain') if vals.get('type', 'domain') == 'domain' else False,
+            'default_document_ids': vals.get('document_ids', False),
+        })
+        return self._get_share_popup(new_context, vals)
 
-        share = self.create(vals)
-        view_id = self.env.ref('documents.share_view_form_popup').id
-        return {
-            'context': self._context,
-            'res_model': 'documents.share',
-            'target': 'new',
-            'name': _('Share selected records') if vals.get('type') == 'ids' else _('Share domain'),
-            'res_id': share.id,
-            'type': 'ir.actions.act_window',
-            'views': [[view_id, 'form']],
-        }
+    def action_delete_shares(self):
+        self.unlink()
+
+    def action_generate_url(self):
+        #Reload the wizard view to display the generated full url.
+        return self._get_share_popup(self.env.context, {'type': self.type})

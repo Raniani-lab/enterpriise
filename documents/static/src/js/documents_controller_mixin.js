@@ -339,7 +339,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }
         const result = await this._rpc({
             model: 'documents.share',
-            method: 'create_share',
+            method: 'open_share_popup',
             args: [vals],
         });
         this.do_action(result, {
@@ -541,7 +541,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             domain: state.domain,
             folder_id: this.searchModel.get('selectedFolderId'),
             tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
-            type: 'domain',
+            type: this._selectedRecordIds.length ? 'ids' : 'domain',
+            document_ids: this._selectedRecordIds.length ? [[6, 0, this._selectedRecordIds]] : false,
         });
     },
     /**

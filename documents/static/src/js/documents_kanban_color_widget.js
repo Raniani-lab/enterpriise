@@ -3,10 +3,9 @@ odoo.define('documents.Many2ManyColorWidget', function (require) {
 
     const fieldRegistry = require('web.field_registry');
 
-    const { KanbanFieldMany2ManyTags } = require('web.relational_fields');
+    const { KanbanFieldMany2ManyTags, FieldMany2ManyTags } = require('web.relational_fields');
 
-    const Many2ManyColorWidget = KanbanFieldMany2ManyTags.extend({
-
+    const Many2ManyColorMixin = {
         /**
          * @override
          */
@@ -43,8 +42,12 @@ odoo.define('documents.Many2ManyColorWidget', function (require) {
                 }
             }
         },
-    });
+    };
+
+    const Many2ManyColorWidget = KanbanFieldMany2ManyTags.extend(Many2ManyColorMixin);
+    const ListMany2ManyColorWidget = FieldMany2ManyTags.extend(Many2ManyColorMixin);
 
     fieldRegistry.add('documents_many2many_tags', Many2ManyColorWidget);
+    fieldRegistry.add('documents_tree_many2many_tags', ListMany2ManyColorWidget);
 
 });

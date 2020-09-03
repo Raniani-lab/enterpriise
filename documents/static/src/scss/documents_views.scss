@@ -521,3 +521,7 @@ $o-dms-progress-bar-height: 15px;
     flex: 0 0 $o-dms-chatter-width;
     padding-top: 5px;
 }
+
+.o_form_view .o_conf_mail {
+    color: $link-color;
+}

@@ -233,11 +233,8 @@ class TestCaseDocuments(TransactionCase):
             'tag_ids': [(6, 0, [])],
             'type': 'domain',
         }
-        action_folder = self.env['documents.share'].create_share(vals)
-        result_share_folder = self.env['documents.share'].search([('folder_id', '=', self.folder_b.id)])
-        result_share_folder_act = self.env['documents.share'].browse(action_folder['res_id'])
-        self.assertEqual(result_share_folder.id, result_share_folder_act.id, "failed at share link by folder")
-        self.assertEqual(result_share_folder_act.type, 'domain', "failed at share link type domain")
+        self.documents_share_links_a = self.env['documents.share'].create(vals)
+        self.assertEqual(self.documents_share_links_a.type, 'domain', "failed at share link type domain")
 
         # by Folder with upload and activites
         vals = {
@@ -254,12 +251,11 @@ class TestCaseDocuments(TransactionCase):
             'activity_date_deadline_range_type': 'days',
             'activity_user_id': self.env.user.id,
         }
-        action_folder_with_upload = self.env['documents.share'].create_share(vals)
-        share_folder_with_upload = self.env['documents.share'].browse(action_folder_with_upload['res_id'])
-        self.assertTrue(share_folder_with_upload.exists(), 'failed at upload folder creation')
-        self.assertEqual(share_folder_with_upload.activity_type_id.name, 'To validate',
+        self.share_folder_with_upload = self.env['documents.share'].create(vals)
+        self.assertTrue(self.share_folder_with_upload.exists(), 'failed at upload folder creation')
+        self.assertEqual(self.share_folder_with_upload.activity_type_id.name, 'To validate',
                          'failed at activity type for upload documents')
-        self.assertEqual(share_folder_with_upload.state, 'live', "failed at share_link live")
+        self.assertEqual(self.share_folder_with_upload.state, 'live', "failed at share_link live")
 
         # by documents
         vals = {
@@ -268,11 +264,10 @@ class TestCaseDocuments(TransactionCase):
             'date_deadline': '2001-11-05',
             'type': 'ids',
         }
-        action_documents = self.env['documents.share'].create_share(vals)
-        result_share_documents_act = self.env['documents.share'].browse(action_documents['res_id'])
+        self.result_share_documents_act = self.env['documents.share'].create(vals)
 
         # Expiration date
-        self.assertEqual(result_share_documents_act.state, 'expired', "failed at share_link expired")
+        self.assertEqual(self.result_share_documents_act.state, 'expired', "failed at share_link expired")
 
     def test_request_activity(self):
         """

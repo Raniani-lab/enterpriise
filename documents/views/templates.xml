@@ -39,6 +39,7 @@
 
             <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
             <t t-set="shareType" t-value="shareType or ''"/>
+            <t t-set="share_redirect_URL" t-value="base_url + '/document/share/' + share_id + '/' + token"/>
             <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex position-relative container ' + shareType">
                 <header class="mt8">
                     <span class="o_company_logo" t-field="res_company.logo" t-options="{'widget': 'image'}" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
@@ -50,11 +51,11 @@
                                 <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/><span class="caret"/>
                             </a>
                             <ul class="dropdown-menu js_usermenu" role="menu">
-                                <li id="o_logout"><a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a></li>
+                                <li id="o_logout"><a t-attf-href="/web/session/logout?redirect={{share_redirect_URL}}" role="menuitem">Logout</a></li>
                             </ul>
                         </li>
                         <li t-ignore="true" t-if="user_id._is_public()">
-                            <a href="/web/login" class="col-sm-6 o_docs_btn">Login</a>
+                            <a t-attf-href="/web/login?redirect={{share_redirect_URL}}" class="col-sm-6 o_docs_btn">Login</a>
                         </li>
                     </ul>
                 </header>
@@ -142,7 +143,7 @@
                     </div>
                 </t>
             </div>
-            <div class="text-center col-sm-12 visible-xs">
+            <div class="text-center col-sm-12 d-sm-none">
                 <div class="row no-gutters justify-content-center">
                     <div class="mr-3">
                         <form class="o_docs_upload_wrapper position-relative d-inline-block" t-if="upload" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}" method="POST">

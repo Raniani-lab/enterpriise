@@ -247,7 +247,7 @@
                   sample="1">
                 <field name="name" string="Document" required="True"/>
                 <field name="url" optional="hide"/>
-                <field name="tag_ids" widget="documents_many2many_tags"/>
+                <field name="tag_ids" widget="documents_tree_many2many_tags"/>
                 <field name="partner_id"/>
                 <field name="owner_id" widget="many2one_avatar_user"/>
                 <field name="lock_uid" optional="hide"/>
@@ -378,12 +378,15 @@
         <field name="name">share tree</field>
         <field name="model">documents.share</field>
         <field name="arch" type="xml">
-            <tree create="false">
+            <tree create="false" default_order="create_date desc">
+                <header>
+                    <button name="action_delete_shares" type="object" string="Delete"/>
+                </header>
                 <field name="folder_id"/>
                 <field name="name"/>
                 <field name="type"/>
                 <field name="action"/>
-                <field name="create_uid"/>
+                <field name="create_uid" widget="many2one_avatar_user"/>
                 <field name="create_date"/>
                 <field name="state" widget="badge" decoration-success="state == 'live'"/>
             </tree>
@@ -396,11 +399,13 @@
         <field name="arch" type="xml">
             <form class="o_share_form" create="false">
                 <sheet class="o_share_sheet">
-                    <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
+                    <group class="o_url_group">
+                        <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
+                    </group>
                     <group>
                         <group>
                         <field name="can_upload" invisible="1"/>
-                        <field name="type" groups="base.group_no_one"/>
+                        <field name="type" invisible="1"/>
                         <field name="name" placeholder="Name of the share link"/>
                         <field name="action" widget="radio" attrs="{'invisible' : ['|', ('type', 'in', ['ids']), ('can_upload', '=', False)]}"/>
                         </group>
@@ -418,7 +423,7 @@
                                         </div>
                                     </div>
                                     <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <a type="action" name='%(settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
+                                        <button name="%(settings_action)d" icon="fa-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
                                     </div>
                                 </div>
                                 </div>
@@ -463,24 +468,27 @@
         <field name="arch" type="xml">
             <form class="o_share_form">
                 <sheet class="o_share_sheet">
+                    <group class="o_url_group">
+                        <label string="URL" for="full_url" attrs="{'invisible': [('id', '!=', False)]}"/>
+                        <button string="Generate URL" type="object" name="action_generate_url" class="btn btn-primary o_generate_url_btn" 
+                            attrs="{'invisible': [('id', '!=', False)]}"/>
+                        <field name="full_url" widget="CopyClipboardChar" readonly="1" attrs="{'invisible': [('id', '=', False)]}"/>
+                    </group>
                     <group>
                         <label string="Shared" for="folder_id"/>
                         <div class="o_documents_content d-flex align-items-baseline">
                             <i class="fa fa fa-folder o_documents_folder_color mr-2" title="Workspace"/>
-                            <field name="folder_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="folder_id" readonly="1" options="{'no_open': True}" class="w-100"/>
                             <i class="fa fa-tag o_documents_tag_color ml-2" attrs="{'invisible': [('tag_ids', '=', [])]}" title="Tags"/>
                             <field name="tag_ids" readonly="1" widget="many2many_tags"/>
                         </div>
                     </group>
-                    <group class="o_url_group">
-                        <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
-                    </group>
                     <group>
                         <group>
-                        <field name="can_upload" invisible="1"/>
-                        <field name="type" groups="base.group_no_one"/>
-                        <field name="name" placeholder="Name of the share link"/>
-                        <field name="action" widget="radio" attrs="{'invisible' : ['|', ('type', 'in', ['ids']), ('can_upload', '=', False)]}"/>
+                            <field name="can_upload" invisible="1"/>
+                            <field name="type" invisible="1"/>
+                            <field name="name" placeholder="Name of the share link"/>
+                            <field name="action" widget="radio" attrs="{'invisible' : ['|', ('type', 'in', ['ids']), ('can_upload', '=', False)]}"/>
                         </group>
                         <group>
                             <field name="date_deadline" widget="date"/>
@@ -495,7 +503,7 @@
                                         </div>
                                     </div>
                                     <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <a type="action" name='%(settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
+                                        <button name="%(settings_action)d" icon="fa-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
                                     </div>
                                 </div>
                             </div>
@@ -528,6 +536,7 @@
                     <field name="document_ids" invisible="1" readonly="1"/>
                     <footer>
                         <button special="save" string="Done" class="btn btn-primary"/>
+                        <button type="object" name="action_delete_shares" string="Cancel" class="btn btn-secondary"/>
                     </footer>
                 </sheet>
             </form>

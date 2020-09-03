@@ -326,7 +326,7 @@ class Document(models.Model):
             'document_ids': [(6, 0, self.ids)],
             'folder_id': self.folder_id.id,
         }
-        return self.env['documents.share'].create_share(vals)
+        return self.env['documents.share'].open_share_popup(vals)
 
     def open_resource(self):
         self.ensure_one()

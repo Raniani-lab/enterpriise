@@ -20,16 +20,25 @@ class CreateTask(models.TransientModel):
         if 'project_id' in fields_list and not defaults.get('project_id'):
             task_default = self.env['project.task'].with_context(fsm_mode=True).default_get(['project_id'])
             defaults.update({'project_id': task_default.get('project_id', False)})
+        partner_id = defaults.get('partner_id')
+        if partner_id:
+            delivery = self.env['res.partner'].browse(partner_id).address_get(['delivery']).get('delivery')
+            if delivery:
+                defaults.update({'partner_id': delivery})
         return defaults
 
-    def action_generate_task(self):
+    def _generate_task_values(self):
         self.ensure_one()
-        return self.env['project.task'].create({
+        return {
             'name': self.name,
             'helpdesk_ticket_id': self.helpdesk_ticket_id.id,
             'project_id': self.project_id.id,
             'partner_id': self.partner_id.id,
-        })
+        }
+
+    def action_generate_task(self):
+        self.ensure_one()
+        return self.env['project.task'].create(self._generate_task_values())
 
     def action_generate_and_view_task(self):
         self.ensure_one()

@@ -7,7 +7,14 @@ from odoo import models, api, fields, _
 class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
+    @api.model
+    def _default_fsm_project_id(self):
+        project = self.env['project.project'].search([('is_fsm', '=', True)], limit=1)
+        return project
+
     use_fsm = fields.Boolean('Onsite Interventions', help='Convert tickets into Field Service tasks')
+    fsm_project_id = fields.Many2one('project.project', string='FSM Project', domain=[('is_fsm', '=', True)],
+    default=_default_fsm_project_id)
 
 
 class HelpdeskTicket(models.Model):
@@ -52,5 +59,6 @@ class HelpdeskTicket(models.Model):
                 'default_user_id': False,
                 'default_partner_id': self.partner_id.id if self.partner_id else False,
                 'default_name': self.name,
+                'default_project_id': self.team_id.fsm_project_id.id,
             }
         }

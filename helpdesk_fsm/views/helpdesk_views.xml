@@ -37,6 +37,10 @@
                                 <div class="text-muted">
                                     Plan Field Service tasks from tickets
                                 </div>
+                                <div attrs="{'invisible': [('use_fsm', '=', False)]}" class="mt-2">
+                                    <label for="fsm_project_id" string="Project" />
+                                    <field name="fsm_project_id" attrs="{'required': [('use_fsm', '=', True)]}" context="{'default_is_fsm': True}" />
+                                </div>
                             </div>
                         </div>
                     </div>

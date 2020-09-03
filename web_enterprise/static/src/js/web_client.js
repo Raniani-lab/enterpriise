@@ -166,8 +166,14 @@ return AbstractWebClient.extend({
         if (!_.isEqual(this._current_state, stringstate)) {
             const state = $.bbq.getState(true);
             if (state.action || (state.model && (state.view_type || state.id))) {
-                return this.menu_dp.add(this.action_manager.loadState(state, !!this._current_state))
-                    .then(() => {
+                let menuDpRejected = false;
+                const loadStateProm = this.action_manager.loadState(state, !!this._current_state)
+                    .guardedCatch(() => {
+                        if (!menuDpRejected) {
+                            this.toggleHomeMenu(true);
+                        }
+                    });
+                return this.menu_dp.add(loadStateProm).then(() => {
                         if (state.menu_id) {
                             if (state.menu_id !== this.menu.current_primary_menu) {
                                 core.bus.trigger('change_menu_section', state.menu_id);
@@ -182,7 +188,7 @@ return AbstractWebClient.extend({
                         return this.toggleHomeMenu(false);
                     })
                     .guardedCatch(() => {
-                        return this.toggleHomeMenu(true);
+                        menuDpRejected = true;
                     });
             } else if (state.menu_id) {
                 const action_id = this.menu.menu_id_to_action_id(state.menu_id);

@@ -33,7 +33,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <field name="picking_type_ids" position="replace">
-                <field name="picking_type_ids" widget="many2many_tags" domain="[('code', '=', 'mrp_operation')]"/>
+                <field name="picking_type_ids" widget="many2many_tags" domain="[('code', '=', 'mrp_operation'), ('company_id', '=', company_id)]"/>
             </field>
         </field>
     </record>

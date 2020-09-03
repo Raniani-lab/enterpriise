@@ -2055,8 +2055,9 @@ QUnit.module('documents_kanban_tests.js', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
-
+        await afterNextRender(() => 
+            testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'))
+        );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
         assert.containsN(kanban, '.o_document_chatter_container .o_Chatter .o_Message', 2,
@@ -2346,8 +2347,9 @@ QUnit.module('documents_kanban_tests.js', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
-
+        await afterNextRender(() => 
+            testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'))
+        );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',
@@ -2356,11 +2358,9 @@ QUnit.module('documents_kanban_tests.js', {
             "Message on 'yop'", "should display the correct message");
 
         // select another record
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
+        await afterNextRender(() => 
+            testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'))
+        );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',

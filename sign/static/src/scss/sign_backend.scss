@@ -96,7 +96,7 @@
         @include media-breakpoint-down(sm) {
             position: static;
             .o_sign_pdf_iframe {
-                flex: 0 0 500px;
+                flex: 0 0 100%;
             }
         }
         background-color: $o-view-background-color;

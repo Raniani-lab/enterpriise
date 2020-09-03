@@ -74,6 +74,9 @@
 
 @include media-breakpoint-down(sm) {
     .o_control_panel {
+        > div.o_cp_bottom {
+            min-height: auto;
+        }
         &.o_mobile_sticky {
             @include o-position-sticky();
             z-index: 10;

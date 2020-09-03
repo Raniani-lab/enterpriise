@@ -284,7 +284,7 @@
             </FE1>
 
             <t t-set="ite_counter" t-value="1"/>
-            <ITE t-foreach="invoice.invoice_line_ids" t-as="line">
+            <ITE t-foreach="invoice.invoice_line_ids.filtered(lambda line: not line.display_type)" t-as="line">
                     <ITE_1 t-esc="ite_counter"/>
                     <ITE_2/>
                     <ITE_3 t-esc="line.quantity"/>

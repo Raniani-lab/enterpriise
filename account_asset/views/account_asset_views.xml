@@ -116,6 +116,7 @@
                                     <field name="name"/>
                                     <field name="debit" widget="monetary"/>
                                     <field name="credit" widget="monetary"/>
+                                    <field name="company_currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

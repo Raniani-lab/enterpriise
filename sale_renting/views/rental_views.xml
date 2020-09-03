@@ -152,6 +152,7 @@
           <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1"/>
           <field name="rental_status" widget='badge' decoration-info="rental_status == 'draft' or rental_status == 'sent'" decoration-warning="rental_status == 'pickup'" decoration-success="rental_status == 'return'"/>
           <field name="state" invisible="1"/>
+          <field name="currency_id" invisible="1"/>
         </tree>
       </field>
     </record>

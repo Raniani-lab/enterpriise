@@ -108,10 +108,10 @@ class AccountMove(models.Model):
         invoice_list = []
         auto_validate = []
         for move in self:
-            if not move.is_invoice() or move.move_type in ('out_invoice', 'out_refund'):
+            if not move.is_invoice():
                 continue
 
-            for move_line in move.line_ids:
+            for move_line in move.line_ids.filtered(lambda line: not (move.move_type in ('out_invoice', 'out_refund') and line.account_id.user_type_id.internal_group == 'asset')):
                 if (
                     move_line.account_id
                     and (move_line.account_id.can_create_asset)

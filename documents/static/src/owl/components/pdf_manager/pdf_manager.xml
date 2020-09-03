@@ -24,13 +24,12 @@
                         t-on-click="_onClickGlobalAdd" t-if="!env.isSmall">
                         <span>Add File</span>
                     </button>
-                    <button class="btn btn-danger me-2 text-uppercase"
+                    <button class="btn btn-danger me-2 fa fa-archive"
                         t-att-class="{'o_pdf_manager_button': !env.isSmall}"
-                        aria-label="Discard"
-                        title="Discard"
+                        aria-label="Archive"
+                        title="Archive"
                         t-att-disabled="state.uploadingLock"
-                        t-on-click="_onClickGlobalClose">
-                        <span>Discard</span>
+                        t-on-click.stop="_onArchive">
                     </button>
                 </span>
             </div>
@@ -83,6 +82,12 @@
             t-on-click="_onClickSplit">
             Split
             <span t-if="state.uploadingLock" class="fa fa-circle-o-notch fa-spin"/>
+        </button>
+        <button class="btn btn-link text-uppercase"
+            name="exit"
+            t-att-class="{'o_pdf_manager_button': !isMobile}"
+            t-att-disabled="state.uploadingLock"
+            t-on-click="_onClickExit">Close
         </button>
         <t t-foreach="props.rules" t-as="rule" t-key="rule.id">
             <button class="btn"

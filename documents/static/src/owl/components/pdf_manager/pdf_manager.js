@@ -42,11 +42,19 @@ export class PdfManager extends Component {
             viewedPage: undefined,
             // whether to archive the original documents.
             archive: true,
+            // Whether to keep the document(s) or not.
+            keepDocument: true,
             // the anchor of the page selection, used to determine the record from which record selections should occur
             anchorId: undefined,
             // shift keys held down.
             lShiftKeyDown: false,
             rShiftKeyDown: false,
+            // Whether there are remaining pages to process.
+            remaining: false,
+            // Whether exit was clicked or not.
+            isExit: false,
+            //name of the opened document
+            fileName: '',
         });
         /*
          * This object will be processed and sent to the backend.
@@ -63,6 +71,11 @@ export class PdfManager extends Component {
         onMounted(() => {
             document.addEventListener('keydown', this._onGlobalKeydown);
             document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
+
+            if (this.props.documents.length === 1) {
+                this.state.fileName = this._removePdfExtension(this.props.documents[0].name);
+            }
+
             for (const pdf_document of this.props.documents) {
                 this._addFile(pdf_document.name, {
                     url: `/documents/content/${pdf_document.id}`,
@@ -107,6 +120,20 @@ export class PdfManager extends Component {
     // Private
     //----------------------------------------------------------------------
 
+
+    /**
+     * use to remove .pdf extention from file name
+     *
+     * @private
+     * @param {String} name
+     */
+     _removePdfExtension(name) {
+        const extIndex = name.lastIndexOf('.pdf');
+        if (extIndex >= 0) {
+            name = name.substring(0, extIndex);
+        }
+        return name;
+    }
     /**
      * @public
      * @param {String} name
@@ -131,11 +158,8 @@ export class PdfManager extends Component {
         } else if (documentId) {
             this._newFiles[fileId] = { type: 'document', documentId };
         }
-        name = name || _t("New File");
-        const extIndex = name.indexOf('.pdf');
-        if (extIndex >= 0) {
-            name = name.substring(0, extIndex);
-        }
+        name = this._removePdfExtension(name || _t("New File"));
+
         const pageCount = pdf.numPages;
         const { pageIds, newPages } = this._createPages({ fileId, name, pageCount });
         this._newFiles[fileId].pageIds = this._newFiles[fileId].activePageIds = pageIds;
@@ -183,17 +207,25 @@ export class PdfManager extends Component {
      */
     async _applyChanges(ruleId) {
         const processedPageIds = this.activePageIds;
-        if (processedPageIds.length === 0) {
+        if (processedPageIds.length === 0 && !this.state.isExit) {
             this._displayErrorNotification(_t("No document has been selected"));
             return;
         }
-        const pageIds = this.ignoredPageIds;
-
-        for (const pageId of pageIds) {
-            this._removePage(pageId);
+        let pageIds;
+        if (this.state.isExit) {
+            pageIds = this.activePageIds.concat(this.ignoredPageIds);
+        } else {
+            pageIds = this.ignoredPageIds;
+            for (const pageId of pageIds) {
+                this._removePage(pageId);
+            }
         }
-        const exit = !pageIds.length;
+        const exit = this.state.isExit || !pageIds.length;
 
+        let fileName = _t("Remaining Pages");
+        if (this.state.fileName) {
+            fileName = this.state.fileName + " " + fileName;
+        }
 
         try {
             const result = await this._sendChanges({ exit, ruleId });
@@ -204,18 +236,19 @@ export class PdfManager extends Component {
                 for (const pageId of processedPageIds) {
                     this._removePage(pageId, { fromFile: true });
                 }
-                this._createGroup({ name: _t("Remaining Pages"), pageIds, isSelected: true });
+                this._createGroup({ name: fileName, pageIds, isSelected: true });
             } else {
                 this.props.close();
             }
         } catch (error) {
             this._displayErrorNotification(error.message || error);
             if (pageIds.length) {
-                this._createGroup({ name: _t("Remaining Pages"), pageIds: pageIds, isSelected: true });
+                this._createGroup({ name: fileName, pageIds: pageIds, isSelected: true });
             }
         } finally {
             this.state.uploadingLock = false;
             this.state.anchorId = undefined;
+            this.state.remaining = true;
         }
     }
     /**
@@ -260,7 +293,7 @@ export class PdfManager extends Component {
      */
     _createPages({ fileId, name, pageCount }) {
         let groupId;
-        let groupName = name;
+        let groupName = name + '-p1';
         let groupLock = false;
         //returns:
         const pageIds = [];
@@ -454,7 +487,16 @@ export class PdfManager extends Component {
             }
         }
         const fileGroups = JSON.parse(JSON.stringify(this.state.groupData));
-        const newFiles = Object.values(fileGroups);
+        let newFiles = [{'groupId': '', 'name': '', 'pageIds': []}];
+        if (this.state.isExit) {
+            newFiles[0].groupId = Object.keys(fileGroups)[0];
+            newFiles[0].name = fileGroups[newFiles[0].groupId].name;
+            for (const key in fileGroups) {
+                newFiles[0]['pageIds'] = newFiles[0]['pageIds'].concat(fileGroups[key].pageIds);
+            }
+        } else {
+            newFiles = Object.values(fileGroups);
+        }
         newFiles.forEach((newFile) => {
             newFile.new_pages = [];
             for (const pageId of newFile.pageIds) {
@@ -489,6 +531,7 @@ export class PdfManager extends Component {
                 tag_ids: document.tag_ids.currentIds,
                 owner_id: document.owner_id[0],
                 partner_id: document.partner_id[0],
+                active: this.state.keepDocument,
             }));
 
             xhr.send(data);
@@ -533,6 +576,7 @@ export class PdfManager extends Component {
      * @param {MouseEvent} ev
      */
     async _onFileInputChange(ev) {
+        this.state.fileName = "";
         ev.stopPropagation();
         if (!ev.target.files.length) {
             return;
@@ -544,12 +588,26 @@ export class PdfManager extends Component {
         ev.target.value = null;
     }
     /**
+     * Come back to the document app
+     *
      * @private
-     * @param {MouseEvent} ev
      */
-    _onClickGlobalClose(ev) {
-        ev.stopPropagation();
-        this.props.close();
+    _onClickExit() {
+        this.state.isExit = true;
+        if (this.state.remaining) {
+            this.state.keepDocument = true;
+            this._applyChanges();
+        } else {
+            this.props.close();
+        }
+    }
+
+    /**
+     * @private
+     */
+    _onArchive() {
+        this.state.keepDocument = false;
+        this._applyChanges();
     }
     /**
      * @private
@@ -663,6 +721,7 @@ export class PdfManager extends Component {
      */
     _onClickSplit(ev) {
         ev.stopPropagation();
+        this.state.keepDocument = true;
         this._applyChanges();
     }
     /**

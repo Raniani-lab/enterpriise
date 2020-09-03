@@ -7453,6 +7453,8 @@
             if (left === "#REF" || right === "#REF") {
                 return "#REF";
             }
+            //As updateReference put the sheet in the ref, we need to remove it from the right part
+            right = right.split("!").pop();
             return `${left}:${right}`;
         }
         /**
@@ -7980,6 +7982,9 @@
                 computeValue(cell, sheetId);
             }
             function handleError(e, cell) {
+                if (!(e instanceof Error)) {
+                    e = new Error(e);
+                }
                 if (PENDING.has(cell)) {
                     PENDING.delete(cell);
                     self.loadingCells--;
@@ -8056,6 +8061,7 @@
                 getters: this.getters,
             });
             const sheets = this.workbook.sheets;
+            const PENDING = this.PENDING;
             function readCell(xc, sheet) {
                 let cell;
                 const s = sheets[sheet];
@@ -8071,6 +8077,9 @@
                 return getCellValue(cell, sheet);
             }
             function getCellValue(cell, sheetId) {
+                if (cell.async && cell.error && !PENDING.has(cell)) {
+                    throw new Error(_lt("This formula depends on invalid values"));
+                }
                 computeValue(cell, sheetId);
                 if (cell.error) {
                     throw new Error(_lt("This formula depends on invalid values"));
@@ -16349,9 +16358,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.6.1';
-    exports.__info__.date = '2020-09-01T07:18:21.718Z';
-    exports.__info__.hash = '0972340';
+    exports.__info__.version = '0.6.2';
+    exports.__info__.date = '2020-09-03T12:32:12.496Z';
+    exports.__info__.hash = '2a34f7f';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

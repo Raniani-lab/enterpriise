@@ -11,8 +11,8 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
     init: function(parent, context) {
         this._super(parent, context);
         this.search_allowed = true;
-        this.starred_inst = context.starred_inst;
-        this.sync_error_message = context.sync_error_message;
+        this.starred_inst = context.params.starred_inst;
+        this.sync_error_message = context.params.sync_error_message;
         this.results = this.starred_inst; // First shown results are the starred institutions
         if (context.context !== undefined) {
             this.context = context.context;

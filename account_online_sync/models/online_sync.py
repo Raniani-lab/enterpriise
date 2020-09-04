@@ -376,11 +376,13 @@ class AccountJournal(models.Model):
             'type': 'ir.actions.client',
             'tag': 'online_sync_institution_selector',
             'name': _('Add a Bank Account'),
-            'starred_inst': starred_inst,
-            'sync_error_message': sync_error_message,
+            'params': {
+                'starred_inst': starred_inst,
+                'sync_error_message': sync_error_message,
+            },
             'target': 'new',
             'context': ctx,
-            }
+        }
 
     def manual_sync(self):
         if self.account_online_journal_id:

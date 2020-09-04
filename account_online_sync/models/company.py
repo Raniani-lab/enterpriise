@@ -2,7 +2,7 @@
 
 from odoo import api, models, fields, _
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, RedirectWarning
 
 class ResCompany(models.Model):
     _inherit = "res.company"
@@ -20,6 +20,10 @@ class ResCompany(models.Model):
             bank_journal = self.env['account.journal'].search([('company_id','=', company.id), ('type','=','bank')], limit=1)
 
         if not bank_journal:
-            raise UserError(_("No bank journal could be found! Please install a chart of accounts first, in order to create one."))
+            any_journal = self.env['account.journal'].search([('company_id', '=', company.id)], limit=1)
+            if not any_journal:
+                action = self.env.ref('account.action_account_config')
+                raise RedirectWarning(_('You should install a fiscal localization first.'), action.id,  _('Accounting Settings'))
+            raise UserError(_('It looks like a bank account is missing.'))
 
         return bank_journal.action_choose_institution()

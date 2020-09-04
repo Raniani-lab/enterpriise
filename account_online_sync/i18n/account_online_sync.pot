@@ -804,3 +804,21 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "You should install a fiscal localization first."
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "Accounting Settings"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "It looks like a bank account is missing."
+msgstr ""

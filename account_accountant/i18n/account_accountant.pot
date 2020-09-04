@@ -651,7 +651,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
-msgid "Let’s see how a bill look like in form view."
+msgid "Let’s see how a bill looks like in form view."
 msgstr ""
 
 #. module: account_accountant

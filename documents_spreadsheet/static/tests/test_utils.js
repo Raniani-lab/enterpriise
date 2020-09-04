@@ -43,11 +43,13 @@ odoo.define("documents_spreadsheet.test_utils", function (require) {
         await nextTick();
         const spreadSheetComponent = actionManager.getCurrentController().widget
             .spreadsheetComponent.componentRef.comp;
-        const model = spreadSheetComponent.spreadsheet.comp.model;
+        const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp
+        const model = oSpreadsheetComponent.model;
         const env = Object.assign(spreadSheetComponent.env, {
             getters: model.getters,
             dispatch: model.dispatch,
             services: model.config.evalContext.env.services,
+            openSidePanel: oSpreadsheetComponent.openSidePanel.bind(oSpreadsheetComponent),
         });
         return [actionManager, model, env];
     }

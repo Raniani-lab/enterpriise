@@ -529,6 +529,49 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
+        QUnit.test("Open pivot properties properties", async function (assert) {
+            assert.expect(12);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                    <pivot display_quantity="true">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const A3 = model.getters.getCell(0, 2);
+            model.dispatch("SELECT_PIVOT", { cell: A3 });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+                pivot: model.getters.getSelectedPivot(),
+            })
+            await nextTick();
+            const title = actionManager.el.querySelector(".o-sidePanelTitle").innerText;
+            assert.equal(title, "Pivot properties (#1)");
+
+            const sections = actionManager.el.querySelectorAll(".o_side_panel_section");
+            assert.equal(sections.length, 4, "it should have 4 sections");
+            const [pivotModel, domain, measures, dimensions] = sections;
+
+            assert.equal(pivotModel.children[0].innerText, "Model");
+            assert.equal(pivotModel.children[1].innerText, "partner (partner)");
+
+            assert.equal(domain.children[0].innerText, "Domain");
+            assert.equal(domain.children[1].innerText, "Match all records");
+
+            assert.equal(measures.children[0].innerText, "Measures");
+            assert.equal(measures.children[1].innerText, "Count");
+            assert.equal(measures.children[2].innerText, "Probability");
+
+            assert.equal(dimensions.children[0].innerText, "Dimensions");
+            assert.equal(dimensions.children[1].innerText, "Bar");
+            assert.equal(dimensions.children[2].innerText, "Foo");
+            actionManager.destroy();
+        });
+
         QUnit.test("Pivot cache is correctly copied", async function (assert) {
             assert.expect(18);
 

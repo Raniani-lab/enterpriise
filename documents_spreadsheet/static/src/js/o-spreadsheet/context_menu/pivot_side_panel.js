@@ -58,7 +58,7 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
          * @returns measure formatted
          */
         formatMeasure(measure) {
-            return this.pivot.cache.getField(measure.field).string || _t("Count");
+            return measure.field === "__count" ? _t("Count") : this.pivot.cache.getField(measure.field).string;
         }
     }
     PivotSidePanel.template = "documents_spreadsheet.PivotSidePanel";

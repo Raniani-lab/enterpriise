@@ -12,7 +12,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
     def _get_options(self, previous_options=None):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates
-        period_domain = [('date_from', '>', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
+        period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
         rg = self.env['fleet.disallowed.expenses.rate'].read_group(period_domain, ['rate'], 'vehicle_id')
         options['multi_rate_in_period'] = options['multi_rate_in_period'] or any(cat['vehicle_id_count'] > 1 for cat in rg)
         return options
@@ -51,10 +51,10 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         split = line_id.split('_')
         if len(split) > 2 and split[2] == 'vehicle':
             current['vehicle'] = int(split[3])
-        if len(split) > 4 and split[4] == 'account':
-            current['account'] = int(split[5])
-        if len(split) > 6 and split[6] == 'rate':
-            current['fleet_rate'] = float(split[7])
+            if len(split) > 4 and split[4] == 'account':
+                current['account'] = int(split[5])
+                if len(split) > 6 and split[6] == 'rate':
+                    current['fleet_rate'] = float(split[7])
         return current
 
     def _build_line_id(self, current, parent=False):
@@ -64,8 +64,8 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
             res += '_vehicle_' + str(current['vehicle'])
             if current.get('account'):
                 res += '_account_' + str(current['account'])
-            if current.get('fleet_rate') is not None:
-                res += '_rate_' + str(current['fleet_rate'])
+                if current.get('fleet_rate') is not None:
+                    res += '_rate_' + str(current['fleet_rate'])
         return '_'.join(res.split('_')[:-2]) if parent else res
 
     def _set_line(self, options, values, lines, current, totals):

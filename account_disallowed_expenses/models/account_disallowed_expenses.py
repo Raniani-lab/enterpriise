@@ -2,8 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
-
+from odoo.osv import expression
 
 class AccountDisallowedExpensesCategory(models.Model):
     _name = 'account.disallowed.expenses.category'
@@ -45,6 +44,16 @@ class AccountDisallowedExpensesCategory(models.Model):
             name = '%s - %s (%s)' % (record.code, record.name, rate)
             result.append((record.id, name))
         return result
+
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', ('code', '=ilike', name.split(' ')[0] + '%'), ('name', operator, name)]
+            if operator in expression.NEGATIVE_TERM_OPERATORS:
+                domain = ['&', '!'] + domain[1:]
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     def action_account_select(self):
         self.ensure_one()

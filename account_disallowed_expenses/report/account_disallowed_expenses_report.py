@@ -37,7 +37,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
     def _get_options(self, previous_options=None):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates
-        period_domain = [('date_from', '>', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
+        period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
         rg = self.env['account.disallowed.expenses.rate'].read_group(period_domain, ['rate'], 'category_id')
         options['multi_rate_in_period'] = any(cat['category_id_count'] > 1 for cat in rg)
         return options
@@ -66,7 +66,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
             JOIN account_move move ON aml.move_id = move.id
             JOIN account_account account ON aml.account_id = account.id
             JOIN account_disallowed_expenses_category category ON account.disallowed_expenses_category_id = category.id
-            JOIN account_disallowed_expenses_rate rate ON rate.id = (
+            LEFT JOIN account_disallowed_expenses_rate rate ON rate.id = (
                 SELECT r2.id FROM account_disallowed_expenses_rate r2
                 LEFT JOIN account_disallowed_expenses_category c2 ON r2.category_id = c2.id
                 WHERE r2.date_from <= aml.date
@@ -78,7 +78,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
               AND aml.date >= %(date_from)s AND aml.date <= %(date_to)s
               AND move.state != 'cancel'"""
         where += current.get('category') and """
-              AND category_id = %(category)s""" or ""
+              AND category.id = %(category)s""" or ""
         where += current.get('account') and """
               AND aml.account_id = %(account)s""" or ""
         where += current.get('account_rate') and """
@@ -100,16 +100,16 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         current = {'category': int(split[1])}
         if len(split) > 2 and split[2] == 'account':
             current['account'] = int(split[3])
-        if len(split) > 4 and split[4] == 'rate':
-            current['account_rate'] = float(split[5])
+            if len(split) > 4 and split[4] == 'rate':
+                current['account_rate'] = float(split[5])
         return current
 
     def _build_line_id(self, current, parent=False):
         res = 'category_' + str(current['category'])
         if current.get('account'):
             res += '_account_' + str(current['account'])
-        if current.get('account_rate'):
-            res += '_rate_' + str(current['account_rate'])
+            if current.get('account_rate'):
+                res += '_rate_' + str(current['account_rate'])
         return '_'.join(res.split('_')[:-2]) if parent else res
 
     @api.model

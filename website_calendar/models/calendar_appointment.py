@@ -57,8 +57,10 @@ class CalendarAppointmentType(models.Model):
             appointment_type.appointment_count = mapped_data.get(appointment_type.id, 0)
 
     def _compute_website_url(self):
+        super(CalendarAppointmentType, self)._compute_website_url()
         for appointment_type in self:
-            appointment_type.website_url = '/calendar/%s/appointment' % (slug(appointment_type),)
+            if appointment_type.id :
+                appointment_type.website_url = '/calendar/%s/appointment' % (slug(appointment_type),)
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class PickingType(models.Model):
@@ -23,6 +23,7 @@ class PickingType(models.Model):
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
+    @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         message = super(StockPicking, self).message_post(**kwargs)
         if message.attachment_ids and 'Label' in message.attachment_ids.name and self.picking_type_id.iot_printer_id:

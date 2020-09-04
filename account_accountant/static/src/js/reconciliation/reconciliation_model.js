@@ -596,6 +596,7 @@ var StatementModel = BasicModel.extend({
         }
         line.mode = (id || line.mode !== "create") && isNaN(id) ? 'create' : 'match_rp';
         defs.push(this._computeLine(line));
+        self._refresh_partial_rec_preview(line);
         return Promise.all(defs).then(function() {
             return self.changeMode(handle, line.mode, true);
         })
@@ -1070,6 +1071,10 @@ var StatementModel = BasicModel.extend({
             line.visible = true;
             line.limitMoveLines = self.limitMoveLines;
             _.extend(line, data);
+
+            // Now that extend() has filled in the reconciliation propositions, we need to handle their reconciliation
+            self._refresh_partial_rec_preview(line);
+
             self._formatLineProposition(line, line.reconciliation_proposition);
             if (!line.reconciliation_proposition.length) {
                 delete line.reconciliation_proposition;
@@ -1114,6 +1119,31 @@ var StatementModel = BasicModel.extend({
             );
         });
         return Promise.all(defs);
+    },
+    /**
+    * Refresh partial reconciliation data for the reconciliation propositions of
+    * the provided reconciliation widget line.
+    **/
+    _refresh_partial_rec_preview: function (line) {
+        var st_line_balance_left = line.st_line.amount;
+        _.each(line.reconciliation_proposition, function (proposition) {
+            var prop_amount = st_line_balance_left < 0 ? proposition.credit : proposition.debit;
+            var prop_impact = Math.min(Math.abs(st_line_balance_left), prop_amount);
+            var signed_impact = prop_impact * (proposition.credit > 0 ? -1 : 1);
+
+            st_line_balance_left -= signed_impact;
+
+            if (prop_impact > 0 && prop_impact != prop_amount) {
+                // Then it'll be a partial reconciliation
+                proposition.partial_amount = signed_impact;
+                proposition.partial_amount_str = field_utils.format.monetary(Math.abs(proposition.partial_amount), {}, {currency_id: line.st_line.currency_id});
+            }
+            else {
+                delete proposition.partial_amount;
+                delete proposition.partial_amount_str;
+            }
+        });
+
     },
     /**
      * Format the server value then compute the line
@@ -1618,6 +1648,7 @@ var ManualModel = StatementModel.extend({
         }
         line.mode = (id || line.mode !== "create") && isNaN(id) ? 'create' : 'match';
         defs.push(this._computeLine(line));
+        self._refresh_partial_rec_preview(line);
         return Promise.all(defs).then(function() {
             return self.changeMode(handle, line.mode, true);
         })

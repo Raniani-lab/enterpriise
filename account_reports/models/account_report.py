@@ -923,7 +923,7 @@ class AccountReport(models.AbstractModel):
                         'search_default_journal_id': selected_journals,
                     })
 
-            domain = expression.normalize_domain(ast.literal_eval(action.get('domain', '[]')))
+            domain = expression.normalize_domain(ast.literal_eval(action.get('domain') or '[]'))
             if options.get('analytic_accounts'):
                 analytic_ids = [int(r) for r in options['analytic_accounts']]
                 domain = expression.AND([domain, [('analytic_account_id', 'in', analytic_ids)]])

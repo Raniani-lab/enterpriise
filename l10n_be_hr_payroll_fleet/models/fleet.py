@@ -80,7 +80,7 @@ class FleetVehicle(models.Model):
         fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
         co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
         co2_fee = co2_fee_min
-        if fuel_type and fuel_type not in ['electric', 'hybrid']:
+        if fuel_type and fuel_type in ['gasoline', 'diesel', 'lpg']:
             health_indice = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice')
             health_indice_reference = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice_reference')
             co2_fee = ((co2 * 9.0) - fuel_coefficient.get(fuel_type)) * health_indice / health_indice_reference / 12.0
@@ -155,10 +155,10 @@ class FleetVehicle(models.Model):
             car_value = car_value * age_coefficient
             # Compute atn value from corrected car_value
             magic_coeff = 6.0 / 7.0  # Don't ask me why
-            if fuel_type == 'electric':
+            if fuel_type in ['electric', 'hydrogen']:
                 atn = car_value * 0.04 * magic_coeff
             else:
-                if fuel_type in ['diesel', 'hybrid']:
+                if fuel_type in ['diesel', 'hybrid', 'plug_in_hybrid_diesel']:
                     reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_diesel', date)
                 else:
                     reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_petrol_lpg', date)
@@ -195,7 +195,18 @@ class FleetVehicleModel(models.Model):
     default_recurring_cost_amount_depreciated = fields.Float(string="Cost (Depreciated)",
         help="Default recurring cost amount that should be applied to a new vehicle from this model")
     default_co2 = fields.Float(string="CO2 emissions")
-    default_fuel_type = fields.Selection([('gasoline', 'Gasoline'), ('diesel', 'Diesel'), ('lpg', 'LPG'), ('electric', 'Electric'), ('hybrid', 'Hybrid')], 'Default Fuel Type', default='diesel', help='Fuel Used by the vehicle')
+    default_fuel_type = fields.Selection([
+        ('gasoline', 'Gasoline'),
+        ('diesel', 'Diesel'),
+        ('lpg', 'LPG'),
+        ('electric', 'Electric'),
+        ('hybrid', 'Hybrid'),
+        ('plug_in_hybrid_diesel', 'Plug-in Hybrid Diesel'),
+        ('plug_in_hybrid_gasoline', 'Plug-in Hybrid Gasoline'),
+        ('full_hybrid_gasoline', 'Full Hybrid Gasoline'),
+        ('cng', 'CNG'),
+        ('hydrogen', 'Hydrogen'),
+        ], 'Default Fuel Type', default='diesel', help='Fuel Used by the vehicle')
     default_car_value = fields.Float(string="Catalog Value (VAT Incl.)")
     can_be_requested = fields.Boolean(string="Can be requested", help="Can be requested on a contract as a new vehicle")
     default_atn = fields.Float(compute='_compute_atn', string="ATN")

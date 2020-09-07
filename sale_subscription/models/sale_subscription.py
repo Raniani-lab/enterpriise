@@ -890,7 +890,7 @@ class SaleSubscription(models.Model):
                         cr.commit()
 
                     # if we reach the end date of the subscription then we close it and avoid to charge it
-                    if subscription.date and subscription.date <= current_date:
+                    if automatic and subscription.date and subscription.date <= current_date:
                         subscription.set_close()
                         continue
 

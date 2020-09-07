@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import logging
+import threading
 
 from odoo import api, fields, models
+
+
+_logger = logging.getLogger(__name__)
 
 
 class PurchaseOrder(models.Model):
@@ -53,9 +58,11 @@ class PurchaseOrder(models.Model):
                 ('state', '=', 'draft'),
             ])
 
-            to_confirm = self.env['purchase.order']
-            for po in purchases:
-                if po.invoice_commission_count:
-                    to_confirm |= po
-
-            to_confirm.button_confirm()
+            for po in purchases.filtered(lambda p: p.invoice_commission_count > 0):
+                try:
+                    po.button_confirm()
+                    auto_commit = not getattr(threading.currentThread(), 'testing', False)
+                    if auto_commit:
+                        self.env.cr.commit()
+                except:
+                    _logger.exception('_cron_confirm_purchase_orders: PO (id=%s) could not be confirmed', po.id)

@@ -118,6 +118,14 @@ class HrContract(models.Model):
         date_stop = datetime.combine(fields.Datetime.to_datetime(date_stop), datetime.max.time())
 
         for contract in self:
+            # In case the date_generated_from == date_generated_to, move it to the date_start to
+            # avoid trying to generate several months/years of history for old contracts for which
+            # we've never generated the work entries.
+            if contract.date_generated_from == contract.date_generated_to:
+                contract.write({
+                    'date_generated_from': date_start,
+                    'date_generated_to': date_start,
+                })
             # For each contract, we found each interval we must generate
             contract_start = fields.Datetime.to_datetime(contract.date_start)
             contract_stop = datetime.combine(fields.Datetime.to_datetime(contract.date_end or datetime.max.date()), datetime.max.time())

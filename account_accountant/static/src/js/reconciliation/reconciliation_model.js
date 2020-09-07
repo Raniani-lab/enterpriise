@@ -540,28 +540,37 @@ var StatementModel = BasicModel.extend({
             method: 'get_reconciliation_dict_from_model',
             args: [reconcile_model_id, line.st_line.id, -line.balance.amount],
         }).then(function(result) {
-            var lastBaseLineId = null;
-            _.each(result, function(r) {
-                r.id = _.uniqueId('createLine');
-                r.display = true;
-                r.invalid = false;
-                r.__tax_to_recompute = false;
-                r.amount = r.credit - r.debit;
-                r.base_amount = r.amount;
-                if (!r.tax_repartition_line_id) {
-                    lastBaseLineId = r.id;
-                    r.__focus = true;
-                } else {
-                    r.is_tax = true;
-                    r.link = lastBaseLineId;
-                }
-            })
-            line.reconciliation_proposition.push(...result);
-            line.reconcile_model_id = reconcile_model_id;
-            var prop = _.last(_.filter(line.reconciliation_proposition, '__focus'))
-            line.createForm = _.pick(prop, self.quickCreateFields);
-            return self._computeLine(line);
+            return self.prepare_propositions_from_server(line, result);
         })
+    },
+    /**
+    * Prepares a the reconciliation propositions for a line from the data
+    * returned by the server (get_reconciliation_dict_from_model).
+    */
+    prepare_propositions_from_server: function (widget_line, server_lines) {
+        var lastBaseLineId = null;
+        _.each(server_lines, function(r) {
+            r.id = _.uniqueId('createLine');
+            r.display = true;
+            r.invalid = false;
+            r.__tax_to_recompute = false;
+            r.amount = -r.balance;
+            r.base_amount = r.amount;
+            if (!r.tax_repartition_line_id) {
+                lastBaseLineId = r.id;
+                r.__focus = true;
+            } else {
+                r.is_tax = true;
+                r.link = lastBaseLineId;
+            }
+        })
+        widget_line.reconciliation_proposition.push(...server_lines);
+        if (server_lines.length > 0) {
+            widget_line.reconcile_model_id = server_lines[0].reconcile_model_id;
+        }
+        var prop = _.last(_.filter(widget_line.reconciliation_proposition, '__focus'))
+        widget_line.createForm = _.pick(prop, this.quickCreateFields);
+        return this._computeLine(widget_line);
     },
     /**
      * Remove a proposition and switch to an active mode ('create' or 'match_rp' or 'match_other')
@@ -1104,7 +1113,10 @@ var StatementModel = BasicModel.extend({
                     return true;
                 })
                 .then(function(){
-                    return data.write_off ? self.quickCreateProposition(line.handle, data.model_id) : true;
+                    if (data.write_off_vals) {
+                        return self.prepare_propositions_from_server(line, data.write_off_vals)
+                    }
+                    return true;
                 })
                 .then(function() {
                     // If still no partner set, take the one from context, if it exists

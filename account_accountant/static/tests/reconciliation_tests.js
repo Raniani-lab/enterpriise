@@ -329,16 +329,16 @@ var db = {
             var today = new moment().utc().format();
             if (model_id === 3) {
                 return [
-                    {id: 'createLine100', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [{id: 6, display_name: "Tax 20.00%"}], __tax_to_recompute: false, date: today, name: 'ATOS Banque', credit: 1145.63, debit: 0, __focus: false},
-                    {id: 'createLine101', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Banque Tax 20.00%', credit: 229.13, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine100'},
-                    {id: 'createLine102', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [{id: 7, display_name: "Tax 10.00% include"}], force_tax_included: true, __tax_to_recompute: false, date: today, name: 'ATOS Frais', credit: 26.78, debit: 0, __focus: true},
-                    {id: 'createLine103', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Frais Tax 10.00% include', credit: 2.68, debit: 0, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine102'},
+                    {id: 'createLine100', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [{id: 6, display_name: "Tax 20.00%"}], __tax_to_recompute: false, date: today, name: 'ATOS Banque', credit: 1145.63, debit: 0, balance:-1145.63, __focus: false},
+                    {id: 'createLine101', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Banque Tax 20.00%', credit: 229.13, debit: 0, balance:-229.13, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine100'},
+                    {id: 'createLine102', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [{id: 7, display_name: "Tax 10.00% include"}], force_tax_included: true, __tax_to_recompute: false, date: today, name: 'ATOS Frais', credit: 26.78, debit: 0, balance:-26.78, __focus: true},
+                    {id: 'createLine103', reconcile_model_id: 3, invalid: false, display: true, tax_repartition_line_id: true, is_tax: true, account_code: '101300', account_id: {id: 288, display_name: "101300 Tax Paid"}, date: today, name: 'ATOS Frais Tax 10.00% include', credit: 2.68, debit: 0, balance: -2.68, __focus: false, tax_repartition_line_id: true, is_tax: true, link: 'createLine102'},
                 ];
             };
             if (model_id === 10) {
                 return [
-                    {id: 'createLine110', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [], date: today, name: 'Double Banque', credit: 1145.63, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
-                    {id: 'createLine111', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [], date: today, name: 'Double Frais', credit: 29.37, debit: 0, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                    {id: 'createLine110', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101120', account_id: {id: 285, display_name: "101120 Stock Interim Account (Received)"}, tax_ids: [], date: today, name: 'Double Banque', credit: 1145.63, debit: 0, balance: -1145.63, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
+                    {id: 'createLine111', reconcile_model_id: 10, invalid: false, display: true, tax_repartition_line_id: false, is_tax: false, account_code: '101130', account_id: {id: 286, display_name: "101130 Stock Interim Account (Delivered)"}, tax_ids: [], date: today, name: 'Double Frais', credit: 29.37, debit: 0, balance: -29.37, __focus: true, analytic_tag_ids: [{id: 1, display_name: "Come together"}, {id: 2, display_name: "Right now"}]},
                 ];
             };
             return {};
@@ -459,6 +459,7 @@ var data_widget = [
                 'journal_id': [1, "Customer Invoices"],
                 'amount_str': "$ 650.00",
                 'debit': 650.0,
+                'balance': 650.0,
                 'account_id': [287, "101200 Account Receivable"],
                 'account_code': "101200",
                 'ref': "",

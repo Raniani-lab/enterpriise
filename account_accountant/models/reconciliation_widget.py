@@ -178,14 +178,25 @@ class AccountReconciliation(models.AbstractModel):
                     'st_line': self._get_statement_line(line),
                     'reconciliation_proposition': [self._prepare_js_reconciliation_widget_move_line(line, aml) for aml in amls],
                     'model_id': matching_amls[line.id].get('model') and matching_amls[line.id]['model'].id,
-                    'write_off': matching_amls[line.id].get('status') == 'write_off',
                 }
-                if not line.partner_id and partner_map.get(line.id):
-                    partner = self.env['res.partner'].browse(partner_map[line.id])
+
+                # Add partner info if necessary
+                line_partner = matching_amls[line.id].get('partner')
+
+                if not line_partner and partner_map.get(line.id):
+                    line_partner = self.env['res.partner'].browse(partner_map[line.id])
+
+                if line_partner:
                     line_vals.update({
-                        'partner_id': partner.id,
-                        'partner_name': partner.name,
+                        'partner_id': line_partner.id,
+                        'partner_name': line_partner.name,
                     })
+
+                # Add writeoff info if necessary
+                if matching_amls[line.id].get('status') == 'write_off':
+                    line_vals['write_off_vals'] = matching_amls[line.id]['write_off_vals']
+                    self._complete_write_off_vals_for_widget(line_vals['write_off_vals'])
+
                 results['lines'].append(line_vals)
 
         return results
@@ -983,6 +994,11 @@ class AccountReconciliation(models.AbstractModel):
         st_line = self.env['account.bank.statement.line'].browse(st_line)
         model = self.env['account.reconcile.model'].browse(model_id)
         new_aml_dicts = model._get_write_off_move_lines_dict(st_line, residual_balance)
+        self._complete_write_off_vals_for_widget(new_aml_dicts)
+        return new_aml_dicts
+
+    @api.model
+    def _complete_write_off_vals_for_widget(self, new_aml_dicts):
         for line in new_aml_dicts:
             balance = line.get('balance', 0.0)
             line.update({
@@ -1001,8 +1017,6 @@ class AccountReconciliation(models.AbstractModel):
                     line[x2m_name] = [{'display_name': r.display_name, 'id': r.id} for r in x2m_records]
             if 'reconcile_model_id' in line:
                 line['to_check'] = self.env['account.reconcile.model'].browse(line['reconcile_model_id']).to_check
-
-        return new_aml_dicts
 
     @api.model
     def open_rec_model_creation_widget(self, rec_propositions, st_line_amount, to_check):

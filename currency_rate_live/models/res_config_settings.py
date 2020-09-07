@@ -36,13 +36,14 @@ class ResCompany(models.Model):
         ('boc', 'Bank Of Canada'),
         ('xe_com', 'xe.com'),
         ('bnr', 'National Bank Of Romania'),
+        ('mindicador', 'Chilean mindicador.cl'),
     ], default='ecb', string='Service Provider')
 
     @api.model
     def create(self, vals):
         ''' Change the default provider depending on the company data.'''
         if vals.get('country_id') and 'currency_provider' not in vals:
-            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr'}
+            code_providers = {'CH' : 'fta', 'MX': 'banxico', 'CA' : 'boc', 'RO': 'bnr', 'CL': 'mindicador'}
             cc = self.env['res.country'].browse(vals['country_id']).code.upper()
             if cc in code_providers:
                 vals['currency_provider'] = code_providers[cc]
@@ -50,23 +51,17 @@ class ResCompany(models.Model):
 
     @api.model
     def set_special_defaults_on_install(self):
-        ''' At module isntallation, set the default provider depending on the company country.'''
+        ''' At module installation, set the default provider depending on the company country.'''
         all_companies = self.env['res.company'].search([])
+        currency_providers = {
+            'CH': 'fta',  # Sets FTA as the default provider for every swiss company that was already installed
+            'MX': 'banxico',  # Sets Banxico as the default provider for every mexican company already installed
+            'CA': 'boc',  # Bank of Canada
+            'RO': 'bnr',
+            'CL': 'mindicador',
+        }
         for company in all_companies:
-            if company.country_id.code == 'CH':
-                # Sets FTA as the default provider for every swiss company that was already installed
-                company.currency_provider = 'fta'
-            elif company.country_id.code == 'MX':
-                # Sets Banxico as the default provider for every mexican company that was already installed
-                company.currency_provider = 'banxico'
-            elif company.country_id.code == 'CA':
-                # Bank of Canada
-                company.currency_provider = 'boc'
-            elif company.country_id.code == 'RO':
-                # Set National Bank of Romania for every romanian company that was already installed
-                company.currency_provider = 'bnr'
-            else:
-                company.currency_provider = 'ecb'
+            company.currency_provider = currency_providers.get(company.country_id.code, 'ecb')
 
     def update_currency_rates(self):
         ''' This method is used to update all currencies given by the provider.
@@ -367,6 +362,56 @@ class ResCompany(models.Model):
                     )
         if rslt and 'RON' in available_currency_names:
             rslt['RON'] = (1.0, rate_date)
+        return rslt
+
+    def _parse_mindicador_data(self, available_currencies):
+        """Parse function for mindicador.cl provider for Chile
+        * Regarding needs of rates in Chile there will be one rate per day, except for UTM index (one per month)
+        * The value of the rate is the "official" rate
+        * The base currency is always CLP but with the inverse 1/rate.
+        * The webservice returns the following currency rates:
+            - EUR
+            - USD (Dolar Observado)
+            - UF (Unidad de Fomento)
+            - UTM (Unidad Tributaria Mensual)
+        """
+        logger = _logger.getChild('mindicador')
+        icp = self.env['ir.config_parameter'].sudo()
+        server_url = icp.get_param('mindicador_api_url')
+        if not server_url:
+            server_url = 'https://mindicador.cl/api'
+            icp.set_param('mindicador_api_url', server_url)
+        foreigns = {
+            "USD": "dolar",
+            "EUR": "euro",
+            "UF": "uf",
+            "UTM": "utm",
+        }
+        available_currency_names = available_currencies.mapped('name')
+        logger.debug('mindicador: available currency names: %s', available_currency_names)
+        today_date = fields.Date.context_today(self.with_context(tz='America/Santiago'))
+        rslt = {
+            'CLP': (1.0, fields.Date.to_string(today_date)),
+        }
+        request_date = today_date.strftime('%d-%m-%Y')
+        for index, currency in foreigns.items():
+            if index not in available_currency_names:
+                logger.debug('Index %s not in available currency name', index)
+                continue
+            url = server_url + '/%s/%s' % (currency, request_date)
+            try:
+                res = requests.get(url, timeout=30)
+                res.raise_for_status()
+            except Exception as e:
+                return False
+            if 'html' in res.text:
+                return False
+            data_json = res.json()
+            if not data_json['serie']:
+                continue
+            date = data_json['serie'][0]['fecha'][:10]
+            rate = data_json['serie'][0]['valor']
+            rslt[index] = (1.0 / rate,  date)
         return rslt
 
     @api.model

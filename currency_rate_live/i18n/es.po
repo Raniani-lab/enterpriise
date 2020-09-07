@@ -1,36 +1,52 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* currency_rate_live
-# 
+#
 # Translators:
 # Martin Trigaux, 2019
 # Cristopher Cravioto <ccr@odoo.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2019\n"
+"POT-Creation-Date: 2020-09-17 03:34+0000\n"
+"PO-Revision-Date: 2020-09-17 00:39-0300\n"
+"Last-Translator: Daniel Blanco <daniel@blancomartin.cl>\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: es\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid ""
-"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa "
-"fa-fw fa-refresh\"/>"
+"<i title=\"Functional Documentation\" role=\"img\" aria-label=\"Functional "
+"Documentation\" class=\"fa fa-arrow-right\"/> Functional Documentation"
+msgstr ""
+"<i title=\"Functional Documentation\" role=\"img\" aria-label=\"Functional "
+"Documentation\" class=\"fa fa-arrow-right\"/> Documentación Funcional"
+
+
+#. module: currency_rate_live
+#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
+msgid ""
+"<i title=\"Update now\" role=\"img\" aria-label=\"Update now\" class=\"fa fa-"
+"fw fa-refresh\"/>"
 msgstr ""
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
 msgstr ""
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__sbif
+msgid "Chilean mindicador.cl"
+msgstr "mindicador.cl Chile"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company

@@ -38,7 +38,8 @@ QUnit.module('form_renderer_tests.js', {
                     },
                     viewParams,
                 );
-                const { env, widget } = await start(viewArgs, ...args);
+                const { afterEvent, env, widget } = await start(viewArgs, ...args);
+                this.afterEvent = afterEvent;
                 this.env = env;
                 this.widget = widget;
             });
@@ -293,7 +294,14 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
                 assert.step('message_post');
             }
             return this._super.call(this, ...arguments);
-        }
+        },
+        waitUntilEvent: {
+            eventName: 'o-component-message-list-thread-cache-changed',
+            message: "should wait until partner 11 thread displayed its messages",
+            predicate: ({ threadViewer }) => {
+                return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+            },
+        },
     });
     const controllerContentEl = document.querySelector('.o_content');
 
@@ -314,16 +322,29 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         "The controller container should not be scrolled"
     );
 
+    await this.afterEvent({
+        eventName: 'o-component-message-list-more-messages-loaded',
+        func: () => {
+            const messageList = document.querySelector('.o_ThreadView_messageList');
+            messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+        },
+        message: "should wait until partner 11 thread loaded more messages",
+        predicate: ({ threadViewer }) => {
+            return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+        },
+    });
+    await this.afterEvent({
+        eventName: 'o-component-message-list-scrolled',
+        func: () => {
+            const messageList = document.querySelector('.o_ThreadView_messageList');
+            messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+        },
+        message: "should wait until partner 11 thread scrolled to bottom",
+        predicate: ({ threadViewer }) => {
+            return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+        },
+    });
     const messageList = document.querySelector('.o_ThreadView_messageList');
-    await afterNextRender(async () => {
-        // This will trigger the DOM Event "scroll"
-        messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
-    });
-    await afterNextRender(async () => {
-        // Trigger a second time to get to the bottom, the first time
-        // extended the list with new messages
-        messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
-    });
     assert.strictEqual(
         messageList.scrollTop,
         messageList.scrollHeight - messageList.offsetHeight,

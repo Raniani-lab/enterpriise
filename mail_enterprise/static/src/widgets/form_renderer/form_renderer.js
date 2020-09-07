@@ -77,9 +77,14 @@ FormRenderer.include({
      * @returns {boolean}
      */
     _isChatterAside() {
+        const parent = this._chatterContainerTarget && this._chatterContainerTarget.parentNode;
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
-            !this.attachmentViewer
+            !this.attachmentViewer &&
+            // We also test the existance of parent.classList. At start of the
+            // form_renderer, parent is a DocumentFragment and not the parent of
+            // the chatter. DocumentFragment doesn't have a classList property.
+            !(parent && parent.classList && parent.classList.contains('o_form_sheet'))
         );
     },
     /**
@@ -117,12 +122,7 @@ FormRenderer.include({
      */
     _makeChatterContainerProps() {
         const props = this._super(...arguments);
-        // Cannot rely on _isChatterAside as this.attachmentViewer is
-        // not loaded yet
-        const isChatterAside = (
-            config.device.size_class >= config.device.SIZES.XXL &&
-            !this.$attachmentPreview
-        );
+        const isChatterAside = this._isChatterAside();
         return Object.assign(props, {
             hasExternalBorder: !isChatterAside,
             hasMessageListScrollAdjust: isChatterAside,

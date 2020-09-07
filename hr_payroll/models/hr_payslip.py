@@ -22,10 +22,10 @@ class HrPayslip(models.Model):
 
     struct_id = fields.Many2one('hr.payroll.structure', string='Structure',
         readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
-        help='Defines the rules that have to be applied to this payslip, accordingly '
-             'to the contract chosen. If you let empty the field contract, this field isn\'t '
-             'mandatory anymore and thus the rules applied will be all the rules set on the '
-             'structure of all contracts of the employee valid for the chosen period')
+        help='Defines the rules that have to be applied to this payslip, according '
+             'to the contract chosen. If the contract is empty, this field isn\'t '
+             'mandatory anymore and all the valid rules on the structures '
+             'of the employe contracts will be applied.')
     struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
     wage_type = fields.Selection(related='struct_type_id.wage_type')
     name = fields.Char(string='Payslip Name', readonly=True, required=True,
@@ -486,9 +486,9 @@ class HrPayslipInput(models.Model):
     input_type_id = fields.Many2one('hr.payslip.input.type', string='Description', required=True, domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
     _allowed_input_type_ids = fields.Many2many('hr.payslip.input.type', related='payslip_id.struct_id.input_line_type_ids')
     code = fields.Char(related='input_type_id.code', required=True, help="The code that can be used in the salary rules")
-    amount = fields.Float(help="It is used in computation. For e.g. A rule for sales having "
-                               "1% commission of basic salary for per product can defined in expression "
-                               "like result = inputs.SALEURO.amount * contract.wage*0.01.")
+    amount = fields.Float(help="It is used in computation. E.g. a rule for salesmen having "
+                               "1%% commission of basic salary per product can defined in expression "
+                               "like: result = inputs.SALEURO.amount * contract.wage * 0.01.")
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this input")
 
@@ -498,7 +498,7 @@ class HrPayslipInputType(models.Model):
 
     name = fields.Char(string='Description', required=True)
     code = fields.Char(required=True, help="The code that can be used in the salary rules")
-    struct_ids = fields.Many2many('hr.payroll.structure', string='Avaibility in Structure', help='This input will be only available in those structure. If empty, it will be available in all payslip.')
+    struct_ids = fields.Many2many('hr.payroll.structure', string='Availability in Structure', help='This input will be only available in those structure. If empty, it will be available in all payslip.')
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
 
 

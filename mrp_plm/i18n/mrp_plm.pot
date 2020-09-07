@@ -1589,7 +1589,7 @@ msgstr ""
 #, python-format
 msgid ""
 "There is no available image to be set as cover. Add an image as an "
-"attachment to the the engineering order."
+"attachment to the engineering order."
 msgstr ""
 
 #. module: mrp_plm

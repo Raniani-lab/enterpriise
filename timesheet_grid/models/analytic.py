@@ -221,7 +221,7 @@ class AnalyticLine(models.Model):
         from_datetime, dummy = make_aware(start_dt)
         to_datetime, dummy = make_aware(end_dt)
         # We need to display in grey the unavailable full days
-        # We start by getting the avaibility intervals to avoid false positive with range outside the office hours
+        # We start by getting the availability intervals to avoid false positive with range outside the office hours
         items = self.env.company.resource_calendar_id._work_intervals(from_datetime, to_datetime)
         # get the dates where some work can be done in the interval. It returns a list of sets.
         available_dates = list(map(lambda item: {item[0].date(), item[1].date()}, items))

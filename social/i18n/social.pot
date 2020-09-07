@@ -1194,7 +1194,7 @@ msgstr ""
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream__sequence
-msgid "Sequence used to order streams (mainly for the 'Feed' kanban view."
+msgid "Sequence used to order streams (mainly for the 'Feed' kanban view)"
 msgstr ""
 
 #. module: social

@@ -18,7 +18,7 @@ class SocialStream(models.Model):
     name = fields.Char("Title", translate=True)
     media_id = fields.Many2one('social.media', string="Social Media", required=True)
     media_image = fields.Binary(related='media_id.image', string="The related Social Media's image")
-    sequence = fields.Integer('Sequence', help="Sequence used to order streams (mainly for the 'Feed' kanban view.")
+    sequence = fields.Integer('Sequence', help="Sequence used to order streams (mainly for the 'Feed' kanban view)")
     account_id = fields.Many2one('social.account', 'Social Account', required=True, ondelete='cascade')
     stream_type_id = fields.Many2one('social.stream.type', string="Type", required=True, ondelete='cascade')
     stream_type_type = fields.Char(related='stream_type_id.stream_type')

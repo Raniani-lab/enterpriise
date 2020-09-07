@@ -18,7 +18,7 @@
                         </t>
                     </div>
                     <div t-if="attachment_ids.length == 0">
-                        There is no available image to be set as cover. Add an image as an attachment to the the engineering order.
+                        There is no available image to be set as cover. Add an image as an attachment to the engineering order.
                     </div>
                 </div>
             </main>

@@ -106,7 +106,7 @@
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="icon">fa fa-mobile</field>
         <field name="display_type">radio</field>
-        <field name="description">This BASE subscription include unlimited Internet, calls and SMS in Belgium + Rooming trough Europe (International Communications are excluded).</field>
+        <field name="description">This BASE subscription include unlimited Internet, calls and SMS in Belgium + Roaming trough Europe (International Communications are excluded).</field>
         <field name="requested_documents_field_ids" model="ir.model.fields" eval="[
             (4, obj().search([('model', '=', 'hr.contract'), ('name', '=', 'mobile_invoice')]).id),
             (4, obj().search([('model', '=', 'hr.contract'), ('name', '=', 'sim_card')]).id)]"/>

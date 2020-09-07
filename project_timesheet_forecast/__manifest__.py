@@ -12,8 +12,7 @@
 Compare timesheets and plannings
 ================================
 
-Better plan your futur plannings by observing the number of hours pressed
-on old plannings.
+Better plan your future schedules by considering time effectively spent on old plannings
 
 """,
     'data': [

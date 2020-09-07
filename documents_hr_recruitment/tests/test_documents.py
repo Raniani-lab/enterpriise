@@ -36,7 +36,7 @@ class TestCaseDocumentsBridgeRecruitment(TransactionCase):
         doc = self.env['documents.document'].search([('attachment_id', '=', attachment.id)])
 
         self.assertTrue(doc, "It should have created a document")
-        self.assertEqual(doc.folder_id, self.folder, "It should be in the the correct folder")
+        self.assertEqual(doc.folder_id, self.folder, "It should be in the correct folder")
 
     def test_applicant_attachment(self):
         """
@@ -57,4 +57,4 @@ class TestCaseDocumentsBridgeRecruitment(TransactionCase):
         doc = self.env['documents.document'].search([('attachment_id', '=', attachment.id)])
 
         self.assertTrue(doc, "It should have created a document")
-        self.assertEqual(doc.folder_id, self.folder, "It should be in the the correct folder")
+        self.assertEqual(doc.folder_id, self.folder, "It should be in the correct folder")

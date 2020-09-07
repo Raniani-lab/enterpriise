@@ -17,7 +17,7 @@ Once it is defined, you can automatically print recalls every day through simply
 ------------------------------------------------------------------------------------------------------
     Payment Follow-Up / Send Email and letters
 
-It will generate a PDF / send emails / set manual actions according to the the different levels
+It will generate a PDF / send emails / set manual actions according to the different levels
 of recall defined. You can define different policies for different companies.
 
 """,

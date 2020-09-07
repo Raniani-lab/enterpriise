@@ -21,7 +21,7 @@ class HrApplicant(models.Model):
             "views": [[False, "tree"], [False, "form"]],
             "domain": [["applicant_id", "=", self.id], '|', ["active", "=", False], ["active", "=", True]],
             "name": "Proposed Contracts",
-            "context": {'default_employee_id': self.emp_id.id},
+            "context": {'default_employee_id': self.emp_id.id, 'default_applicant_id': self.id},
         }
 
     def _compute_proposed_contracts_count(self):

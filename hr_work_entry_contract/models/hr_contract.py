@@ -69,6 +69,12 @@ class HrContract(models.Model):
         for leave in leaves:
             start = max(leave.date_from, datetime.combine(self.date_start, datetime.min.time()))
             end = min(leave.date_to, datetime.combine(self.date_end or date.max, datetime.max.time()))
+            # Could happen when a leave is configured on the interface on a day for which the
+            # employee is not supposed to work, i.e. no attendance_ids on the calendar.
+            # In that case, do try to generate an empty work entry, as this would raise a
+            # sql constraint error
+            if start == end:
+                continue
             leave_entry_type = self._get_leave_work_entry_type(leave)
             contract_vals += [dict([
                 ('name', "%s%s" % (leave_entry_type.name + ": " if leave_entry_type else "", employee.name)),

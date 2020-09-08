@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import pytz
 
@@ -147,3 +147,45 @@ class TestWorkeEntryHolidaysWorkEntry(TestWorkEntryHolidaysBase):
             'groups_id': [(6, 0, [self.env.ref('hr_contract.group_hr_contract_manager').id, self.env.ref('base.group_user').id])],
         })
         self.env['hr.employee'].with_user(user).generate_work_entries('2019-12-01', '2019-12-31')
+
+    def test_work_entries_generation_if_parent_leave_zero_hours(self):
+        # Test case: The employee has a parental leave at 0 hours per week
+        # The employee has a leave during that period
+
+        employee = self.env['hr.employee'].create({'name': 'My employee'})
+        calendar = self.env['resource.calendar'].create({
+            'name': 'Parental 0h',
+            'attendance_ids': False,
+        })
+        employee.resource_calendar_id = calendar
+        contract = self.env['hr.contract'].create({
+            'date_start': self.start.date() - relativedelta(years=1),
+            'name': 'Contract - Parental 0h',
+            'resource_calendar_id': calendar.id,
+            'wage': 1000,
+            'employee_id': employee.id,
+            'state': 'open',
+        })
+
+        leave_type = self.env['hr.leave.type'].create({
+            'name': 'Sick',
+            'request_unit': 'hour',
+            'leave_validation_type': 'both',
+            'allocation_type': 'no',
+        })
+
+        leave = self.env['hr.leave'].create({
+            'name': "Sick 1 that doesn't make sense, but it's the prod so YOLO",
+            'employee_id': employee.id,
+            'holiday_status_id': leave_type.id,
+            'request_date_from': date(2020, 9, 4),
+            'request_date_to': date(2020, 9, 4),
+            'number_of_days': 1,
+        })
+        leave._compute_date_from_to()
+        leave.action_approve()
+        leave.action_validate()
+
+        work_entries = contract._generate_work_entries(date(2020, 7, 1), date(2020, 9, 30))
+
+        self.assertEqual(len(work_entries), 0)

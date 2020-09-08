@@ -24,9 +24,10 @@ odoo.define("documents_spreadsheet.DocumentsControllerMixin", function (require)
          */
         updateButtons() {
             const selectedFolderId = this.searchModel.get("selectedFolderId");
+            const hasButtonAccess = this.searchModel.get('hasButtonAccess');
             this.$buttons[0].querySelector(
                 ".o_documents_kanban_spreadsheet"
-            ).disabled = !selectedFolderId;
+            ).disabled = !selectedFolderId || !hasButtonAccess;
         },
 
         //--------------------------------------------------------------------------

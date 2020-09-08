@@ -9,7 +9,7 @@ QUnit.module("documents_spreadsheet kanban", {}, () => {
     QUnit.test("download spreadsheet from the document inspector", async function (assert) {
         assert.expect(3);
         const pyEnv = await startServer();
-        const documentsFolderId1 = pyEnv["documents.folder"].create({});
+        const documentsFolderId1 = pyEnv["documents.folder"].create({has_write_access: true});
         const documentsDocumentId1 = pyEnv["documents.document"].create({
             name: "My spreadsheet",
             raw: "{}",
@@ -55,7 +55,7 @@ QUnit.module("documents_spreadsheet kanban", {}, () => {
     QUnit.test("thumbnail size in document side panel", async function (assert) {
         assert.expect(9);
         const pyEnv = await startServer();
-        const documentsFolderId1 = pyEnv["documents.folder"].create({});
+        const documentsFolderId1 = pyEnv["documents.folder"].create({has_write_access: true});
         pyEnv["documents.document"].create([
             {
                 name: "My spreadsheet",

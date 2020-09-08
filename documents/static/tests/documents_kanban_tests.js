@@ -80,12 +80,12 @@ QUnit.module('documents_kanban_tests.js', {
             { display_name: 'De Bruyne', partner_id: resPartnerIds[2] }
         ]);
         const documentsFolderIds = pyEnv['documents.folder'].create([
-            { name: 'Workspace1', description: '_F1-test-description_' },
-            { name: 'Workspace2' },
+            { name: 'Workspace1', description: '_F1-test-description_', has_write_access: true },
+            { name: 'Workspace2', has_write_access: true },
         ]);
         documentsFolderIds.push(
             pyEnv['documents.folder'].create([
-                { name: 'Workspace3', parent_folder_id: documentsFolderIds[0] },
+                { name: 'Workspace3', parent_folder_id: documentsFolderIds[0], has_write_access: true },
             ])
         );
         const [documentsFacetId1, documentsFacetId2] = pyEnv['documents.facet'].create([

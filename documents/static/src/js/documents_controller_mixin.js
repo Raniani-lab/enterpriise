@@ -439,10 +439,11 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      */
     updateButtons() {
         const selectedFolderId = this.searchModel.get('selectedFolderId');
-        this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !selectedFolderId);
-        this.$buttons.find('.o_documents_kanban_url').prop('disabled', !selectedFolderId);
-        this.$buttons.find('.o_documents_kanban_request').prop('disabled', !selectedFolderId);
-        this.$buttons.find('.o_documents_kanban_share_domain').prop('disabled', !selectedFolderId);
+        const hasButtonAccess = this.searchModel.get('hasButtonAccess');
+        this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !selectedFolderId || !hasButtonAccess);
+        this.$buttons.find('.o_documents_kanban_url').prop('disabled', !selectedFolderId || !hasButtonAccess);
+        this.$buttons.find('.o_documents_kanban_request').prop('disabled', !selectedFolderId || !hasButtonAccess);
+        this.$buttons.find('.o_documents_kanban_share_domain').prop('disabled', !selectedFolderId || !hasButtonAccess);
     },
     /**
      * Update chatter part visually. Chatter only exists in single selection, and it is always open in that case.
@@ -788,7 +789,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             .filter(record => !record.data.lock_uid || record.data.lock_uid === session.uid)
             .map(record => record.res_id);
         const draggedRecordIds = _.intersection(this._selectedRecordIds, unlockedRecordIds);
-        if (draggedRecordIds.length === 0) {
+        const hasButtonAccess = this.searchModel.get('hasButtonAccess');
+        if (draggedRecordIds.length === 0 || !hasButtonAccess) {
             ev.preventDefault();
             return;
         }
@@ -903,8 +905,10 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const documents = ev.data.recordList;
         const recordId = ev.data.recordId;
         const rules = this._getRules(documents);
+        const hasButtonAccess = this.searchModel.get('hasButtonAccess');
         const documentViewer = new DocumentViewer(this, documents, recordId, {
             openPdfManager: ev.data.openPdfManager,
+            hasButtonAccess: hasButtonAccess,
             rules,
         });
         await documentViewer.appendTo(this.$('.o_documents_view'));

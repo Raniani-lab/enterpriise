@@ -117,6 +117,13 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
         // there are pending 'multiSave' requests
         this.pendingSavingRequests = 0;
 
+        const folders = params.folders.filter(folder =>
+            this.records.map(record => record.data.folder_id.data && record.data.folder_id.data.id).includes(folder.id)
+        );
+        this.disableInspector = folders.every(folder =>
+            folder.has_write_access
+        );
+
         this._isLocked = this.records.some(record =>
              record.data.lock_uid && record.data.lock_uid.res_id !== session.uid
         );
@@ -136,7 +143,7 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
             this._renderHeader(),
             this._super(...arguments)
         ]);
-        this.$('.o_inspector_table .o_input').prop('disabled', this._isLocked);
+        this.$('.o_inspector_table .o_input').prop('disabled', this._isLocked || !this.disableInspector);
     },
 
     //--------------------------------------------------------------------------
@@ -350,7 +357,7 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
      * @private
      */
     _renderRules: function () {
-        if (!this.currentFolder || this._isLocked) {
+        if (!this.currentFolder || this._isLocked || !this.disableInspector) {
            return;
         }
         for (const rule of this._rules) {
@@ -411,7 +418,7 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
                 },
             });
 
-            const disabled = this._isLocked || (this.records.length === 1 && !this.records[0].data.active);
+            const disabled = this._isLocked || (this.records.length === 1 && !this.records[0].data.active) || !this.disableInspector;
             $tags.closest('.o_inspector_custom_field').toggleClass('o_disabled', disabled);
 
             this.$tagInput.appendTo($tags);
@@ -535,12 +542,15 @@ const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
      */
     _updateButtons: function () {
         const binary = this.records.some(record => record.data.type === 'binary');
-        if (this._isLocked) {
+        if (this._isLocked || !this.disableInspector) {
             this.$('.o_inspector_replace').prop('disabled', true);
             this.$('.o_inspector_delete').prop('disabled', true);
             this.$('.o_inspector_archive').prop('disabled', true);
             this.$('.o_inspector_lock').prop('disabled', true);
             this.$('.o_inspector_table .o_field_widget').prop('disabled', true);
+            this.$('.o_inspector_split').prop('disabled', !this.disableInspector);
+            this.$('.o_inspector_download').prop('disabled', !this.disableInspector);
+            this.$('.o_inspector_share').prop('disabled', !this.disableInspector);
         }
         if (!binary && (this.records.length > 1 || (this.records.length && this.records[0].data.type === 'empty'))) {
             this.$('.o_inspector_download').prop('disabled', true);

@@ -65,6 +65,7 @@ class DocumentFolder(models.Model):
     user_specific_write = fields.Boolean(string="Own Documents Only (Write)",
                                     compute='_compute_user_specific_write', store=True, readonly=False,
                                     help="Limit Write Groups to the documents of which they are owner.")
+    has_write_access = fields.Boolean('Document User Upload Rights', compute="_compute_has_write_access")
 
     #stat buttons
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
@@ -106,6 +107,18 @@ class DocumentFolder(models.Model):
         for folder in self:
             if not folder.user_specific:
                 folder.user_specific_write = False
+
+    @api.depends('group_ids', 'read_group_ids')
+    @api.depends_context('uid')
+    def _compute_has_write_access(self):
+        current_user_groups_ids = self.env.user.groups_id
+        has_write_access = self.user_has_groups('documents.group_documents_manager')
+        if has_write_access:
+            self.has_write_access = True
+            return
+        for record in self:
+            folder_has_groups = not record.group_ids and not record.read_group_ids or (record.group_ids & current_user_groups_ids)
+            record.has_write_access = folder_has_groups
 
     def _compute_action_count(self):
         read_group_var = self.env['documents.workflow.rule'].read_group(

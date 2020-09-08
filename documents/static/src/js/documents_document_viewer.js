@@ -28,7 +28,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
      * @param {boolean} param3.openPdfManager
      * @param {Object[]} param3.rules the workflow rules that can be applied to the documents
      */
-    init(parent, attachments, activeAttachmentID, { openPdfManager, rules } = {}) {
+    init(parent, attachments, activeAttachmentID, { openPdfManager, hasButtonAccess, rules } = {}) {
         this._super(...arguments);
         this.modelName = 'documents.document';
         this._documents = attachments;
@@ -38,6 +38,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
         this._newDocumentIds = [];
         this._pdfManager = undefined;
         this._workflowRules = rules.filter((rule) => rule.create_model !== "link.to.record");
+        this.hasButtonAccess = hasButtonAccess;
     },
 
     /**

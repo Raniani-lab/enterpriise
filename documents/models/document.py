@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.osv import expression
 from odoo.tools import image_process
 import base64
@@ -396,6 +396,11 @@ class Document(models.Model):
         return documents
 
     def write(self, vals):
+        if vals.get('folder_id') and not self.env.is_superuser():
+            folder = self.env['documents.folder'].browse(vals.get('folder_id'))
+            if not folder.has_write_access:
+                raise AccessError(_("You don't have the right to move documents to that workspace."))
+
         attachment_id = vals.get('attachment_id')
         if attachment_id:
             self.ensure_one()
@@ -463,7 +468,7 @@ class Document(models.Model):
     def search_panel_select_range(self, field_name, **kwargs):
         if field_name == 'folder_id':
             enable_counters = kwargs.get('enable_counters', False)
-            fields = ['display_name', 'description', 'parent_folder_id']
+            fields = ['display_name', 'description', 'parent_folder_id', 'has_write_access']
             available_folders = self.env['documents.folder'].search([])
             folder_domain = expression.OR([[('parent_folder_id', 'parent_of', available_folders.ids)], [('id', 'in', available_folders.ids)]])
             # also fetches the ancestors of the available folders to display the complete folder tree for all available folders.

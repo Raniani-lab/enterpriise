@@ -15,6 +15,7 @@ async function getDocumentBasicData() {
     const documentsFolderId1 = pyEnv["documents.folder"].create({
         name: "Workspace1",
         description: "Workspace",
+        has_write_access: true,
     });
     const mailAliasId1 = pyEnv["mail.alias"].create({ alias_name: "hazard@rmcf.es" });
     pyEnv["documents.share"].create({
@@ -209,7 +210,7 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
 
     QUnit.test("Can create a blank spreadsheet from template dialog", async function (assert) {
         const pyEnv = await startServer();
-        const documentsFolderId1 = pyEnv["documents.folder"].create({});
+        const documentsFolderId1 = pyEnv["documents.folder"].create({has_write_access: true});
         pyEnv["documents.document"].create({
             name: "My spreadsheet",
             raw: "{}",

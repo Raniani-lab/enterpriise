@@ -362,3 +362,24 @@ class TestCaseSecurity(TransactionCase):
             with self.assertRaises(IntegrityError):
                 with self.cr.savepoint():
                     folder.write({'user_specific_write': True})
+
+    def test_folder_has_write_access(self):
+        """
+        Tests that user has right write  access for folder using `has_write_access`.
+        """
+
+        # No groups on folder
+        folder = self.env['documents.folder'].create({
+            'name': 'Test Folder',
+        })
+
+        self.assertTrue(folder.with_user(self.document_manager).has_write_access, "Document manager should have write access on folder")
+        self.assertTrue(folder.with_user(self.document_user).has_write_access, "Document user should have write access on folder")
+
+        # manager can write and arbitary group can read
+        folder.write({
+            'group_ids': [(6, 0, [self.ref('documents.group_documents_manager')])],
+            'read_group_ids': [(6, 0, [self.arbitrary_group.id])],
+        })
+        self.assertTrue(folder.with_user(self.document_manager).has_write_access, "Document manager should have write access on folder")
+        self.assertFalse(folder.with_user(self.document_user).has_write_access, "Document user should not have write access on folder")

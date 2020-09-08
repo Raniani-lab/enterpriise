@@ -24,6 +24,7 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
                 case "selectedFolderId": return this.getSelectedFolderId();
                 case "selectedTagIds": return this.getSelectedTagIds();
                 case "tags": return this.getTags();
+                case "hasButtonAccess": return this.hasButtonAccess();
             }
             return super.get(...arguments);
         }
@@ -73,6 +74,17 @@ odoo.define("documents/static/src/js/documents_search_panel_model_extension", fu
                     return a.group_sequence - b.group_sequence;
                 }
             });
+        }
+
+        /**
+         * Check selected folder has write access right or not
+         * @returns {boolean}
+         */
+        hasButtonAccess() {
+            const values = this.getFolders();
+            const activeFolderId = this.getSelectedFolderId();
+            const folder = values.find(folder => folder.id === activeFolderId);
+            return folder.has_write_access;
         }
 
         /**

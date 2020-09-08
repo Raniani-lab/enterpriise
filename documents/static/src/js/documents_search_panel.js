@@ -141,6 +141,15 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
                     type: "warning",
                 });
             }
+            const destinationFolder = this.model.get('folders').find(folder => folder.id == valueId);
+            const hasButtonAccess = this.model.get("hasButtonAccess");
+            if (!hasButtonAccess || (destinationFolder && destinationFolder.has_write_access === false)) {
+                return this.env.services.notification.notify({
+                    title: this.env._t("Access Error"),
+                    message: this.env._t("You don't have the right to move documents to that workspace"),
+                    type: "warning",
+                });
+            }
             if (fieldName === "folder_id") {
                 this.model.dispatch("updateRecordFolderId", data.recordIds, valueId);
             } else {

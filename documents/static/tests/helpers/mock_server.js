@@ -110,7 +110,7 @@ patch(MockServer.prototype, 'documents', {
     mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
         if (model === 'documents.document' && fieldName === 'folder_id') {
             const enableCounters = kwargs.enable_counters || false;
-            const fields = ['display_name', 'description', 'parent_folder_id'];
+            const fields = ['display_name', 'description', 'parent_folder_id', 'has_write_access'];
             const records = this.mockSearchRead('documents.folder', [[], fields], {});
 
             let domainImage = new Map();

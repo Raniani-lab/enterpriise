@@ -108,7 +108,7 @@ class SDDMandate(models.Model):
         stored_mandates = self.filtered('id')
         if not stored_mandates:
             return
-        self.env['account.move'].flush()
+        self.env['account.move'].flush(['sdd_mandate_id', 'move_type'])
 
         self._cr.execute('''
             SELECT

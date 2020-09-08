@@ -40,6 +40,7 @@ class RentalOrderLine(models.Model):
                 virtual_available_at_date = max(rentable_qty - rented_qty_during_period, 0)
             line.virtual_available_at_date = virtual_available_at_date
             line.scheduled_date = False
+            line.forecast_expected_date = False
             line.free_qty_today = False
             line.qty_available_today = False
             line.warehouse_id = False

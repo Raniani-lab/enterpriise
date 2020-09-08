@@ -136,6 +136,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         invoice = self.env['account.move'].create({
             'partner_id': self.company_data_2['company'].partner_id.id,
             'move_type': 'out_invoice',
+            'invoice_date': '2020-08-31',
             'invoice_user_id': self.salesperson.id,
             'name': 'OC 123',
             'invoice_payment_term_id': self.env.ref('account.account_payment_term_end_following_month').id,
@@ -165,6 +166,6 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         # probably due to a change in an underlying tax " which seems
         # to be expected when generating refunds.
         with mute_logger('odoo.addons.account.models.account_invoice'):
-            credit_note = invoice._reverse_moves()
+            credit_note = invoice._reverse_moves([{'invoice_date': '2020-08-31'}])
 
         self._validate_and_compare(credit_note, 'TEST/00002', 'accepted_credit_note.xml')

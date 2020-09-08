@@ -2,11 +2,16 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import dateutil.parser
+import logging
 import requests
 import urllib.parse
 
-from odoo import api, models, fields
+
+from odoo import _, api, models, fields
+from odoo.exceptions import UserError
 from werkzeug.urls import url_join
+
+_logger = logging.getLogger(__name__)
 
 
 class SocialStreamPostFacebook(models.Model):
@@ -52,7 +57,21 @@ class SocialStreamPostFacebook(models.Model):
         if next_records_token:
             params['after'] = next_records_token
 
-        result_json = requests.get(comments_endpoint_url, params).json()
+        result = requests.get(comments_endpoint_url, params)
+        result_json = result.json()
+
+        if not result.ok:
+            _logger.error("An error occurred while fetching the comment: %s" % result.text)
+
+            error_message = _('An error occurred.')
+
+            if result_json.get('error'):
+                error_code = result_json['error'].get('code')
+                error_subcode = result_json['error'].get('error_subcode')
+                if error_code == 100 and error_subcode == 33:
+                    error_message = _("Post not found. It could be because the post has been deleted on the Social Platform.")
+
+            raise UserError(error_message)
 
         for comment in result_json.get('data'):
             comment['likes'] = {'summary': {'total_count': comment.get('like_count', 0)}}

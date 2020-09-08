@@ -138,6 +138,12 @@ msgid "Name"
 msgstr ""
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream.py:0
+#, python-format
+msgid "Please select a Twitter account for this stream type."
+msgstr ""
+
+#. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "Post Image"
 msgstr ""

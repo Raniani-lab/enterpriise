@@ -36,6 +36,12 @@ msgid "Actual Facebook ID of the post"
 msgstr ""
 
 #. module: social_facebook
+#: code:addons/social_facebook/models/social_stream_post.py:0
+#, python-format
+msgid "An error occurred."
+msgstr ""
+
+#. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App ID"
 msgstr ""
@@ -211,6 +217,12 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Post Image"
+msgstr ""
+
+#. module: social_facebook
+#: code:addons/social_facebook/models/social_stream_post.py:0
+#, python-format
+msgid "Post not found. It could be because the post has been deleted on the Social Platform."
 msgstr ""
 
 #. module: social_facebook

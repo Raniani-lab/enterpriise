@@ -4,7 +4,8 @@
 import dateutil.parser
 import requests
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from werkzeug.urls import url_join
 
 
@@ -15,6 +16,18 @@ class SocialStreamTwitter(models.Model):
     twitter_followed_account_search = fields.Char('Search User')
     # TODO awa: clean unused 'social.twitter.account' in a cron job
     twitter_followed_account_id = fields.Many2one('social.twitter.account')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        social_streams = super(SocialStreamTwitter, self).create(vals_list)
+        # Todo: clean in master and use api.constrains instead
+        if any(
+            stream.stream_type_id.stream_type in ('twitter_follow', 'twitter_likes')
+            and not stream.twitter_followed_account_id
+            for stream in social_streams
+        ):
+            raise UserError(_("Please select a Twitter account for this stream type."))
+        return social_streams
 
     def _apply_default_name(self):
         for stream in self:

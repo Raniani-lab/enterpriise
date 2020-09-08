@@ -16,6 +16,11 @@ QUnit.module('Studio Navigation', {
                     foo: {string: "Foo", type: "char"},
                     date: {string: "Date", type: "date"},
                     bar: {string: "Bar", type: "many2one", relation: 'partner'},
+                    type: {
+                        string: "Type",
+                        type: "selection",
+                        selection: [['contact', "Contact"], ['invoice', "Invoice"], ['delivery', "Delivery"]],
+                    },
                 },
                 records: [
                     {id: 1, display_name: "First record", foo: "yop"},
@@ -28,6 +33,12 @@ QUnit.module('Studio Navigation', {
             pony: {
                 fields: {
                     name: {string: 'Name', type: 'char'},
+                    partner_ids: {string: "Bar", type: "one2many", relation: 'partner'},
+                    type: {
+                        string: "Type",
+                        type: "selection",
+                        selection: [['foo', "Foo"], ['bar', "Bar"]],
+                    },
                 },
                 records: [
                     {id: 4, name: 'Twilight Sparkle'},
@@ -71,10 +82,18 @@ QUnit.module('Studio Navigation', {
                     '<group>' +
                         '<field name="display_name"/>' +
                         '<field name="foo"/>' +
+                        '<field name="bar"/>' +
                     '</group>' +
                 '</form>',
             'pony,false,form': '<form>' +
                     '<field name="name"/>' +
+                    "<field name='partner_ids'>" +
+                            "<form>" +
+                                "<sheet>" +
+                                    "<field name='display_name'/>" +
+                                "</sheet>" +
+                            "</form>" +
+                        "</field>" +
                 '</form>',
 
             // search views
@@ -481,6 +500,64 @@ QUnit.module('Studio Navigation', {
 
         actionManager.destroy();
     });
+
+    QUnit.test('open Studio with editable form view and check context propagation', async function (assert) {
+        assert.expect(5);
+
+        this.actions.push({
+            id: 43,
+            name: 'Pony Action 43',
+            res_model: 'pony',
+            type: 'ir.actions.act_window',
+            views: [[false, 'form']],
+            context: "{'default_type': 'foo'}",
+            res_id: 4,
+        });
+
+
+        const { widget: actionManager } = await start({
+            hasActionManager: true,
+            actions: this.actions,
+            archs: this.archs,
+            data: this.data,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/chatter_allowed') {
+                    return Promise.resolve(true);
+                }
+                if (route === '/web_studio/get_studio_view_arch') {
+                    return Promise.resolve();
+                }
+                if (route === '/web/dataset/call_kw/pony/read') {
+                    assert.strictEqual(args.kwargs.context.hasOwnProperty("default_type"), true,
+                    "'default_type' context value should be available")
+                }
+                if (route === '/web/dataset/call_kw/partner/onchange') {
+                    assert.strictEqual(args.kwargs.context.hasOwnProperty("default_type"), false,
+                    "'default_x' context value should not be propaged to x2m model")
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        await actionManager.doAction(43);
+        await actionManager.doAction('action_web_studio_action_editor', {
+            action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
+            viewType: 'form',
+        });
+
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
+            "the form view should be opened");
+
+        await testUtils.dom.click(actionManager.$('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click(actionManager.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
+            "the form view should be opened");
+
+        actionManager.destroy();
+    });
+
 });
 });
 

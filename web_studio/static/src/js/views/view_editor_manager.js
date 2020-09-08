@@ -1154,9 +1154,14 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // and a new view means a new basic model (the reference to the parent
         // will thus lost). This is why we reuse the same model and specify a
         // `parentID` (see @_onOpenOne2ManyRecord in FormController).
+
+        // Remove default_* keys from parent context to avoid issue of same field name in x2m.
+        var context = _.omit(data.getContext(), function (val, key) {
+            return _.str.startsWith(key, 'default_');
+        });
         this.x2mViewParams = {
             currentId: data.res_id,
-            context: data.getContext(),
+            context: context,
             ids: data.res_ids,
             model: this.editor.model,  // reuse the same BasicModel instance
             modelName: this.x2mModel,

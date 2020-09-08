@@ -54,11 +54,17 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     isColumn = true;
                     steps = rule.current;
             }
+            const content = getters.getNextValue(data.content, isColumn, steps);
             return {
-                style: undefined,
-                format: undefined,
-                border: undefined,
-                content: getters.getNextValue(data.content, isColumn, steps),
+                cellData: {
+                    style: undefined,
+                    format: undefined,
+                    border: undefined,
+                    content,
+                },
+                tooltip: {
+                    props: { content },
+                }
             };
         },
     }).add("PIVOT_POSITION_UPDATER", {
@@ -87,7 +93,12 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     return before + Math.max(parseInt(position) + rule.current, 1) + after;
                 }
             );
-            return Object.assign({}, data, { content });
+            return {
+                cellData: Object.assign({}, data, { content }),
+                tooltip: {
+                    props: { content },
+                }
+            }
         },
     });
 });

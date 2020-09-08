@@ -25,6 +25,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 dialog: {
                     isDisplayed: false,
                     title: undefined,
+                    isEditText: false,
+                    inputContent: undefined,
                 },
             });
             this.spreadsheet = useRef("spreadsheet");
@@ -59,6 +61,18 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             };
             this.state.dialog.isDisplayed = true;
         }
+
+        editText(ev) {
+            this.dialogContent = undefined;
+            this.state.dialog.title = ev.detail.title;
+            this.state.dialog.isEditText = true;
+            this.state.inputContent = ev.detail.placeholder;
+            this.confirmDialog = () => {
+                this.closeDialog();
+                ev.detail.callback(this.state.inputContent);
+            };
+            this.state.dialog.isDisplayed = true;
+        }
         /**
          * Close the dialog.
          */
@@ -67,6 +81,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.confirmDialog = () => true;
             this.state.dialog.title = undefined;
             this.state.dialog.isDisplayed = false;
+            this.state.dialog.isEditText = false;
         }
         /**
          * Retrieve the spreadsheet_data and the thumbnail associated to the

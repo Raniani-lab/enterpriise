@@ -24,6 +24,7 @@
                      t-on-ask-confirmation="askConfirmation"
                      t-on-notify-user="notifyUser"
                      t-on-save-content="saveData"
+                     t-on-edit-text="editText"
                      t-ref="spreadsheet"
         />
         <Dialog t-if="state.dialog.isDisplayed"
@@ -31,7 +32,8 @@
             title="state.dialog.title || 'Odoo Spreadsheet'"
             t-on-dialog-closed.stop="closeDialog"
             >
-            <div t-esc="dialogContent"/>
+            <div t-if="dialogContent" t-esc="dialogContent"/>
+            <input t-if="state.dialog.isEditText" type="text" class="form-control" t-model="state.inputContent"/>
             <t t-set="buttons">
                 <button class="btn btn-primary" t-on-click="confirmDialog">Confirm</button>
                 <button class="btn btn-secondary" t-on-click="closeDialog">Cancel</button>

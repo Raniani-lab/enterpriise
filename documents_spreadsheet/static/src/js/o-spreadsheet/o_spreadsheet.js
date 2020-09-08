@@ -1,6 +1,29 @@
 (function (exports, owl) {
     'use strict';
 
+    function _interopNamespace(e) {
+        if (e && e.__esModule) { return e; } else {
+            var n = Object.create(null);
+            if (e) {
+                Object.keys(e).forEach(function (k) {
+                    if (k !== 'default') {
+                        var d = Object.getOwnPropertyDescriptor(e, k);
+                        Object.defineProperty(n, k, d.get ? d : {
+                            enumerable: true,
+                            get: function () {
+                                return e[k];
+                            }
+                        });
+                    }
+                });
+            }
+            n['default'] = e;
+            return Object.freeze(n);
+        }
+    }
+
+    var owl__namespace = /*#__PURE__*/_interopNamespace(owl);
+
     /*
      * usage: every string should be translated either with _lt if they are registered with a registry at
      *  the load of the app or with Spreadsheet._t in the templates. Spreadsheet._t is exposed in the
@@ -121,10 +144,12 @@
      * Examples:
      *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
      *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
      *
-     *  TODO VSC: Support 'Sheet!' reference
      */
     function toZone(xc) {
+        xc = xc.split("!").pop();
         const ranges = xc.replace("$", "").split(":");
         let top, bottom, left, right;
         let c = toCartesian(ranges[0].trim());
@@ -5284,10 +5309,10 @@
             // cannot paste if we have a clipped zone larger than a cell and multiple
             // zones selected
             if (!zones || !cells || status === "empty") {
-                return { status: "CANCELLED", reason: 10 /* EmptyClipboard */ };
+                return { status: "CANCELLED", reason: 12 /* EmptyClipboard */ };
             }
             else if (target.length > 1 && (cells.length > 1 || cells[0].length > 1)) {
-                return { status: "CANCELLED", reason: 9 /* WrongPasteSelection */ };
+                return { status: "CANCELLED", reason: 11 /* WrongPasteSelection */ };
             }
             return { status: "SUCCESS" };
         }
@@ -5475,7 +5500,7 @@
         interactivePaste(target) {
             const result = this.dispatch("PASTE", { target, onlyFormat: false });
             if (result.status === "CANCELLED") {
-                if (result.reason === 9 /* WrongPasteSelection */) {
+                if (result.reason === 11 /* WrongPasteSelection */) {
                     this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
                 }
                 if (result.reason === 1 /* WillRemoveExistingMerge */) {
@@ -5582,6 +5607,16 @@
                     break;
                 case "CREATE_SHEET":
                     this.cfRules[cmd.id] = [];
+                    this.isStale = true;
+                    break;
+                case "DUPLICATE_SHEET":
+                    this.history.updateLocalState(["cfRules", cmd.id], this.cfRules[cmd.sheet].slice());
+                    this.isStale = true;
+                    break;
+                case "DELETE_SHEET":
+                    const cfRules = Object.assign({}, this.cfRules);
+                    delete cfRules[cmd.sheet];
+                    this.history.updateLocalState(["cfRules"], cfRules);
                     this.isStale = true;
                     break;
                 case "ADD_CONDITIONAL_FORMAT":
@@ -5884,11 +5919,13 @@
     const BACKGROUND_HEADER_ACTIVE_COLOR = "#595959";
     const TEXT_HEADER_COLOR = "#666666";
     const SELECTION_BORDER_COLOR = "#3266ca";
+    const HEADER_BORDER_COLOR = "#C0C0C0";
+    const CELL_BORDER_COLOR = "#E2E3E3";
     // Dimensions
     const MIN_ROW_HEIGHT = 10;
     const MIN_COL_WIDTH = 5;
     const HEADER_HEIGHT = 26;
-    const HEADER_WIDTH = 60;
+    const HEADER_WIDTH = 48;
     const TOPBAR_HEIGHT = 63;
     const BOTTOMBAR_HEIGHT = 36;
     const DEFAULT_CELL_WIDTH = 96;
@@ -6764,10 +6801,26 @@
                         ? { status: "SUCCESS" }
                         : { status: "CANCELLED", reason: 6 /* NotEnoughRows */ };
                 case "CREATE_SHEET":
+                case "DUPLICATE_SHEET":
                     const { visibleSheets, sheets } = this.workbook;
-                    return !cmd.name || visibleSheets.findIndex((id) => sheets[id].name === cmd.name) === -1
+                    return !cmd.name || !visibleSheets.find((id) => sheets[id].name === cmd.name)
                         ? { status: "SUCCESS" }
-                        : { status: "CANCELLED", reason: 7 /* WrongSheetName */ };
+                        : { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
+                case "MOVE_SHEET":
+                    const currentIndex = this.workbook.visibleSheets.findIndex((id) => id === cmd.sheet);
+                    if (currentIndex === -1) {
+                        return { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
+                    }
+                    return (cmd.direction === "left" && currentIndex === 0) ||
+                        (cmd.direction === "right" && currentIndex === this.workbook.visibleSheets.length - 1)
+                        ? { status: "CANCELLED", reason: 9 /* WrongSheetMove */ }
+                        : { status: "SUCCESS" };
+                case "RENAME_SHEET":
+                    return this.isRenameAllowed(cmd);
+                case "DELETE_SHEET":
+                    return this.workbook.visibleSheets.length > 1
+                        ? { status: "SUCCESS" }
+                        : { status: "CANCELLED", reason: 7 /* NotEnoughSheets */ };
                 default:
                     return { status: "SUCCESS" };
             }
@@ -6778,10 +6831,32 @@
                     this.history.updateState(["activeSheet"], this.workbook.sheets[cmd.to]);
                     break;
                 case "CREATE_SHEET":
-                    const sheet = this.createSheet(cmd.id, cmd.name || `Sheet${this.workbook.visibleSheets.length + 1}`, cmd.cols || 26, cmd.rows || 100);
+                    const sheet = this.createSheet(cmd.id, cmd.name || this.generateSheetName(), cmd.cols || 26, cmd.rows || 100);
                     this.sheetIds[this.workbook.sheets[sheet].name] = sheet;
                     if (cmd.activate) {
                         this.dispatch("ACTIVATE_SHEET", { from: this.workbook.activeSheet.id, to: sheet });
+                    }
+                    break;
+                case "MOVE_SHEET":
+                    this.moveSheet(cmd.sheet, cmd.direction);
+                    break;
+                case "RENAME_SHEET":
+                    if (cmd.interactive) {
+                        this.interactiveRenameSheet(cmd.sheet, _lt("Rename Sheet"));
+                    }
+                    else {
+                        this.renameSheet(cmd.sheet, cmd.name);
+                    }
+                    break;
+                case "DUPLICATE_SHEET":
+                    this.duplicateSheet(cmd.sheet, cmd.id, cmd.name);
+                    break;
+                case "DELETE_SHEET":
+                    if (cmd.interactive) {
+                        this.interactiveDeleteSheet(cmd.sheet);
+                    }
+                    else {
+                        this.deleteSheet(cmd.sheet);
                     }
                     break;
                 case "DELETE_CONTENT":
@@ -7402,6 +7477,17 @@
             this.history.updateSheet(_sheet, ["cells", xc], cell);
             this.history.updateSheet(_sheet, ["rows", row, "cells", col], cell);
         }
+        generateSheetName() {
+            let i = 1;
+            const names = this.getSheets().map((s) => s.name);
+            const baseName = _lt("Sheet");
+            let name = `${baseName}${i}`;
+            while (names.includes(name)) {
+                name = `${baseName}${i}`;
+                i++;
+            }
+            return name;
+        }
         createSheet(id, name, cols, rows) {
             const sheet = {
                 id,
@@ -7415,11 +7501,114 @@
                 mergeCellMap: {},
             };
             const visibleSheets = this.workbook.visibleSheets.slice();
-            visibleSheets.push(sheet.id);
+            const index = visibleSheets.findIndex((id) => this.workbook.activeSheet.id === id);
+            visibleSheets.splice(index + 1, 0, sheet.id);
             const sheets = this.workbook.sheets;
             this.history.updateState(["visibleSheets"], visibleSheets);
             this.history.updateState(["sheets"], Object.assign({}, sheets, { [sheet.id]: sheet }));
             return sheet.id;
+        }
+        moveSheet(sheetId, direction) {
+            const visibleSheets = this.workbook.visibleSheets.slice();
+            const currentIndex = visibleSheets.findIndex((id) => id === sheetId);
+            const sheet = visibleSheets.splice(currentIndex, 1);
+            visibleSheets.splice(currentIndex + (direction === "left" ? -1 : 1), 0, sheet[0]);
+            this.history.updateState(["visibleSheets"], visibleSheets);
+        }
+        isRenameAllowed(cmd) {
+            if (cmd.interactive) {
+                return { status: "SUCCESS" };
+            }
+            if (!cmd.name) {
+                return { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
+            }
+            return this.workbook.visibleSheets.findIndex((id) => this.workbook.sheets[id].name === cmd.name) === -1
+                ? { status: "SUCCESS" }
+                : { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
+        }
+        interactiveRenameSheet(sheet, title) {
+            const placeholder = this.getSheetName(sheet);
+            this.ui.editText(title, placeholder, (name) => {
+                if (!name) {
+                    return;
+                }
+                const result = this.dispatch("RENAME_SHEET", { sheet, name });
+                const sheetName = this.getSheetName(sheet);
+                if (result.status === "CANCELLED" && sheetName !== name) {
+                    this.interactiveRenameSheet(sheet, _lt("Please enter a valid sheet name"));
+                }
+            });
+        }
+        renameSheet(sheetId, name) {
+            const sheet = this.workbook.sheets[sheetId];
+            const oldName = sheet.name;
+            this.history.updateSheet(sheet, ["name"], name);
+            const sheetIds = Object.assign({}, this.sheetIds);
+            sheetIds[name] = sheet.id;
+            delete sheetIds[oldName];
+            this.history.updateLocalState(["sheetIds"], sheetIds);
+            this.visitAllFormulasSymbols((value) => {
+                let [val, sheetRef] = value.split("!").reverse();
+                if (sheetRef) {
+                    sheetRef = sanitizeSheet(sheetRef);
+                    if (sheetRef === oldName) {
+                        if (val.includes(":")) {
+                            return this.updateRange(val, 0, 0, sheet.id);
+                        }
+                        return this.updateReference(val, 0, 0, sheet.id);
+                    }
+                }
+                return value;
+            });
+        }
+        duplicateSheet(fromId, toId, toName) {
+            const sheet = this.workbook.sheets[fromId];
+            const newSheet = JSON.parse(JSON.stringify(sheet));
+            newSheet.id = toId;
+            newSheet.name = toName;
+            const visibleSheets = this.workbook.visibleSheets.slice();
+            const currentIndex = visibleSheets.findIndex((id) => id === fromId);
+            visibleSheets.splice(currentIndex + 1, 0, newSheet.id);
+            this.history.updateState(["visibleSheets"], visibleSheets);
+            this.history.updateState(["sheets"], Object.assign({}, this.workbook.sheets, { [newSheet.id]: newSheet }));
+            const sheetIds = Object.assign({}, this.sheetIds);
+            sheetIds[newSheet.name] = newSheet.id;
+            this.history.updateLocalState(["sheetIds"], sheetIds);
+            this.dispatch("ACTIVATE_SHEET", { from: this.workbook.activeSheet.id, to: toId });
+        }
+        interactiveDeleteSheet(sheetId) {
+            this.ui.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
+                this.dispatch("DELETE_SHEET", { sheet: sheetId });
+            });
+        }
+        deleteSheet(sheetId) {
+            const name = this.workbook.sheets[sheetId].name;
+            const sheets = Object.assign({}, this.workbook.sheets);
+            delete sheets[sheetId];
+            this.history.updateState(["sheets"], sheets);
+            const visibleSheets = this.workbook.visibleSheets.slice();
+            const currentIndex = visibleSheets.findIndex((id) => id === sheetId);
+            visibleSheets.splice(currentIndex, 1);
+            this.history.updateState(["visibleSheets"], visibleSheets);
+            const sheetIds = Object.assign({}, this.sheetIds);
+            delete sheetIds[name];
+            this.history.updateLocalState(["sheetIds"], sheetIds);
+            this.visitAllFormulasSymbols((value) => {
+                let [, sheetRef] = value.split("!").reverse();
+                if (sheetRef) {
+                    sheetRef = sanitizeSheet(sheetRef);
+                    if (sheetRef === name) {
+                        return "#REF";
+                    }
+                }
+                return value;
+            });
+            if (this.getActiveSheet() === sheetId) {
+                this.dispatch("ACTIVATE_SHEET", {
+                    from: sheetId,
+                    to: visibleSheets[Math.max(0, currentIndex - 1)],
+                });
+            }
         }
         clearZones(sheet, zones) {
             // TODO: get cells from the actual sheet
@@ -7473,37 +7662,25 @@
                 y >= this.getters.getNumberRows(sheetId || this.getters.getActiveSheet())) {
                 return "#REF";
             }
-            const sheetName = sheetId && this.getters.getSheetName(sheetId);
+            let sheetName = sheetId && this.getters.getSheetName(sheetId);
+            if (sheetName && sheetName.includes(" ")) {
+                sheetName = `'${sheetName}'`;
+            }
             return ((sheetName ? `${sheetName}!` : "") +
                 (freezeCol ? "$" : "") +
                 numberToLetters(x) +
                 (freezeRow ? "$" : "") +
                 String(y + 1));
         }
-        /**
-         * Apply a function to update the formula on every cells of every sheets which
-         * contains a formula
-         * @param cb Update formula function to apply
-         */
-        visitFormulas(sheetNameToFind, cb) {
-            const { sheets } = this.workbook;
-            for (let sheetId in sheets) {
-                const sheet = sheets[sheetId];
+        visitAllFormulasSymbols(cb) {
+            for (let sheetId in this.workbook.sheets) {
+                const sheet = this.workbook.sheets[sheetId];
                 for (let [xc, cell] of Object.entries(sheet.cells)) {
                     if (cell.type === "formula") {
                         const content = rangeTokenize(cell.content)
                             .map((t) => {
                             if (t.type === "SYMBOL" && cellReference.test(t.value)) {
-                                let [value, sheetRef] = t.value.split("!").reverse();
-                                if (sheetRef) {
-                                    sheetRef = sanitizeSheet(sheetRef);
-                                    if (sheetRef === sheetNameToFind) {
-                                        return cb(value, sheetRef);
-                                    }
-                                }
-                                else if (this.sheetIds[sheetNameToFind] === sheet.id) {
-                                    return cb(value, undefined);
-                                }
+                                return cb(t.value, sheet.id);
                             }
                             return t.value;
                         })
@@ -7520,6 +7697,26 @@
                     }
                 }
             }
+        }
+        /**
+         * Apply a function to update the formula on every cells of every sheets which
+         * contains a formula
+         * @param cb Update formula function to apply
+         */
+        visitFormulas(sheetNameToFind, cb) {
+            this.visitAllFormulasSymbols((content, sheetId) => {
+                let [value, sheetRef] = content.split("!").reverse();
+                if (sheetRef) {
+                    sheetRef = sanitizeSheet(sheetRef);
+                    if (sheetRef === sheetNameToFind) {
+                        return cb(value, sheetRef);
+                    }
+                }
+                else if (this.sheetIds[sheetNameToFind] === sheetId) {
+                    return cb(value, undefined);
+                }
+                return content;
+            });
         }
         // ---------------------------------------------------------------------------
         // Import/Export
@@ -7726,7 +7923,9 @@
                     });
                     break;
                 case "STOP_COMPOSER_SELECTION":
-                    this.mode = "editing";
+                    if (this.mode === "selecting") {
+                        this.mode = "editing";
+                    }
                     break;
                 case "START_EDITION":
                     this.startEdition(cmd.text);
@@ -9279,8 +9478,8 @@
             // background grid
             offsetX -= HEADER_WIDTH;
             offsetY -= HEADER_HEIGHT;
-            ctx.lineWidth = 0.4 * thinLineWidth;
-            ctx.strokeStyle = "#222";
+            ctx.lineWidth = 2 * thinLineWidth;
+            ctx.strokeStyle = CELL_BORDER_COLOR;
             ctx.beginPath();
             // vertical lines
             const lineHeight = Math.min(height, rows[bottom].end - offsetY);
@@ -9443,6 +9642,7 @@
             ctx.lineTo(HEADER_WIDTH, height);
             ctx.moveTo(0, HEADER_HEIGHT);
             ctx.lineTo(width, HEADER_HEIGHT);
+            ctx.strokeStyle = HEADER_BORDER_COLOR;
             ctx.stroke();
             ctx.beginPath();
             // column text + separator
@@ -9627,7 +9827,7 @@
                     if (outOfBound) {
                         return {
                             status: "CANCELLED",
-                            reason: 8 /* SelectionOutOfBound */,
+                            reason: 10 /* SelectionOutOfBound */,
                         };
                     }
                     break;
@@ -9637,7 +9837,7 @@
                     if (index < 0 || index >= this.workbook.activeSheet.cols.length) {
                         return {
                             status: "CANCELLED",
-                            reason: 8 /* SelectionOutOfBound */,
+                            reason: 10 /* SelectionOutOfBound */,
                         };
                     }
                     break;
@@ -9647,7 +9847,7 @@
                     if (index < 0 || index >= this.workbook.activeSheet.rows.length) {
                         return {
                             status: "CANCELLED",
-                            reason: 8 /* SelectionOutOfBound */,
+                            reason: 10 /* SelectionOutOfBound */,
                         };
                     }
                     break;
@@ -10069,13 +10269,20 @@
         .add("INCREMENT_MODIFIER", {
         apply: (rule, data) => {
             rule.current += rule.increment;
-            return Object.assign({}, data, {
-                content: (parseFloat(data.content) + rule.current).toString(),
-            });
+            const content = (parseFloat(data.content) + rule.current).toString();
+            return {
+                cellData: Object.assign({}, data, { content }),
+                tooltip: content ? { props: { content } } : undefined,
+            };
         },
     })
         .add("COPY_MODIFIER", {
-        apply: (rule, data) => data,
+        apply: (rule, data) => {
+            return {
+                cellData: data,
+                tooltip: data.content ? { props: { content: data.content } } : undefined,
+            };
+        },
     })
         .add("FORMULA_MODIFIER", {
         apply: (rule, data, getters, direction) => {
@@ -10100,9 +10307,11 @@
                     y = 0;
                     break;
             }
-            return Object.assign({}, data, {
-                content: getters.applyOffset(data.content, x, y),
-            });
+            const content = getters.applyOffset(data.content, x, y);
+            return {
+                cellData: Object.assign({}, data, { content }),
+                tooltip: content ? { props: { content } } : undefined,
+            };
         },
     });
 
@@ -10805,31 +11014,65 @@
     });
 
     const sheetMenuRegistry = new MenuItemRegistry();
+    function getDuplicateSheetName(env, sheet) {
+        let i = 1;
+        const names = env.getters.getSheets().map((s) => s.name);
+        const baseName = env._t(`Copy of ${sheet}`);
+        let name = baseName;
+        while (names.includes(name)) {
+            name = `${baseName} (${i})`;
+            i++;
+        }
+        return name;
+    }
     sheetMenuRegistry
         .add("delete", {
         name: _lt("Delete"),
         sequence: 10,
-        action: () => console.warn("Not implemented"),
+        isVisible: (env) => {
+            return env.getters.getSheets().length > 1;
+        },
+        action: (env) => env.dispatch("DELETE_SHEET", { sheet: env.getters.getActiveSheet(), interactive: true }),
     })
         .add("duplicate", {
         name: _lt("Duplicate"),
         sequence: 20,
-        action: () => console.warn("Not implemented"),
+        action: (env) => {
+            const sheet = env.getters.getActiveSheet();
+            const name = getDuplicateSheetName(env, env.getters.getSheets().find((s) => s.id === sheet).name);
+            env.dispatch("DUPLICATE_SHEET", {
+                sheet,
+                id: uuidv4(),
+                name,
+            });
+        },
     })
         .add("rename", {
         name: _lt("Rename"),
         sequence: 30,
-        action: () => console.warn("Not implemented"),
+        action: (env) => env.dispatch("RENAME_SHEET", {
+            interactive: true,
+            sheet: env.getters.getActiveSheet(),
+        }),
     })
         .add("move_right", {
         name: _lt("Move right"),
         sequence: 40,
-        action: () => console.warn("Not implemented"),
+        isVisible: (env) => {
+            const sheet = env.getters.getActiveSheet();
+            const sheets = env.getters.getSheets();
+            return sheets.findIndex((s) => s.id === sheet) !== sheets.length - 1;
+        },
+        action: (env) => env.dispatch("MOVE_SHEET", { sheet: env.getters.getActiveSheet(), direction: "right" }),
     })
         .add("move_left", {
         name: _lt("Move left"),
         sequence: 50,
-        action: () => console.warn("Not implemented"),
+        isVisible: (env) => {
+            const sheet = env.getters.getActiveSheet();
+            return env.getters.getSheets().findIndex((s) => s.id === sheet) !== 0;
+        },
+        action: (env) => env.dispatch("MOVE_SHEET", { sheet: env.getters.getActiveSheet(), direction: "left" }),
     });
 
     const topbarMenuRegistry = new MenuItemRegistry();
@@ -11054,9 +11297,10 @@
     const BORDER_RIGHT = `<svg class="o-icon"><g fill="#000000"><path d="M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z" opacity=".54"/><polygon points="12 0 12 14 14 14 14 0"/></g></svg>`;
     const BORDER_BOTTOM = `<svg class="o-icon"><g fill="#000000"><path d="M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M8,0 L6,0 L6,2 L8,2 L8,0 L8,0 Z M2,9 L0,9 L0,11 L2,11 L2,9 L2,9 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M2,6 L0,6 L0,8 L2,8 L2,6 L2,6 Z" opacity=".54"/><polygon points="0 14 14 14 14 12 0 12"/></g></svg>`;
     const BORDER_CLEAR = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z" transform="translate(2 2)" opacity=".54"/></svg>`;
-    const PLUS = `<svg class="o-icon"><path fill="#000000" d="M7,0 L9,0 L9,7 L16,7 L16,9 L9,9 L9,16 L7,16 L7,9 L0,9 L0,7 L7,7"/></svg>`;
+    const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
+    const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
 
-    const { Component } = owl;
+    const { Component } = owl__namespace;
     const { css, xml } = owl.tags;
     const COLORS = [
         [
@@ -11232,7 +11476,7 @@
         NotEqual: _lt("Not equal"),
     };
 
-    const { Component: Component$1, useState, hooks } = owl;
+    const { Component: Component$1, useState, hooks } = owl__namespace;
     const { useExternalListener } = hooks;
     const { xml: xml$1, css: css$1 } = owl.tags;
     const PREVIEW_TEMPLATE = xml$1 /* xml */ `
@@ -11401,7 +11645,7 @@
     CellIsRuleEditor.style = CSS;
     CellIsRuleEditor.components = { ColorPicker };
 
-    const { Component: Component$2, useState: useState$1, hooks: hooks$1 } = owl;
+    const { Component: Component$2, useState: useState$1, hooks: hooks$1 } = owl__namespace;
     const { useExternalListener: useExternalListener$1 } = hooks$1;
     const { xml: xml$2, css: css$2 } = owl.tags;
     const PREVIEW_TEMPLATE$1 = xml$2 /* xml */ `
@@ -11530,7 +11774,7 @@
     ColorScaleRuleEditor.style = CSS$1;
     ColorScaleRuleEditor.components = { ColorPicker };
 
-    const { Component: Component$3 } = owl;
+    const { Component: Component$3 } = owl__namespace;
     const { xml: xml$3, css: css$3 } = owl.tags;
     const TEMPLATE$2 = xml$3 /* xml */ `
   <div class="o-selection">
@@ -11671,7 +11915,7 @@
     SelectionInput.template = TEMPLATE$2;
     SelectionInput.style = CSS$2;
 
-    const { Component: Component$4, useState: useState$2 } = owl;
+    const { Component: Component$4, useState: useState$2 } = owl__namespace;
     const { xml: xml$4, css: css$4 } = owl.tags;
     // TODO vsc: add ordering of rules
     const PREVIEW_TEMPLATE$2 = xml$4 /* xml */ `
@@ -12081,6 +12325,25 @@
     const topbarComponentRegistry = new Registry();
 
     /**
+     * This plugin manage the autofill.
+     *
+     * The way it works is the next one:
+     * For each line (row if the direction is left/right, col otherwise), we create
+     * a "AutofillGenerator" object which is used to compute the cells to
+     * autofill.
+     *
+     * When we need to autofill a cell, we compute the origin cell in the source.
+     *  EX: from A1:A2, autofill A3->A6.
+     *      Target | Origin cell
+     *        A3   |   A1
+     *        A4   |   A2
+     *        A5   |   A1
+     *        A6   |   A2
+     * When we have the origin, we take the associated cell in the AutofillGenerator
+     * and we apply the modifier (AutofillModifier) associated to the content of the
+     * cell.
+     */
+    /**
      * This class is used to generate the next values to autofill.
      * It's done from a selection (the source) and describe how the next values
      * should be computed.
@@ -12098,13 +12361,19 @@
         next() {
             const genCell = this.cells[this.index++ % this.cells.length];
             if (!genCell.rule) {
-                return genCell.data;
+                return {
+                    cellData: genCell.data,
+                    tooltip: genCell.data.content ? { props: genCell.data.content } : undefined,
+                };
             }
             const rule = genCell.rule;
-            const data = autofillModifiersRegistry
+            const { cellData, tooltip } = autofillModifiersRegistry
                 .get(rule.type)
                 .apply(rule, genCell.data, this.getters, this.direction);
-            return Object.assign({}, genCell.data, data);
+            return {
+                cellData: Object.assign({}, genCell.data, cellData),
+                tooltip,
+            };
         }
     }
     /**
@@ -12152,8 +12421,8 @@
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
-        getLastValue() {
-            return this.lastValue;
+        getAutofillTooltip() {
+            return this.tooltip;
         }
         // ---------------------------------------------------------------------------
         // Private methods
@@ -12223,7 +12492,7 @@
                 const zone = union(this.getters.getSelectedZone(), this.autofillZone);
                 this.autofillZone = undefined;
                 this.direction = undefined;
-                this.lastValue = undefined;
+                this.tooltip = undefined;
                 this.dispatch("SET_SELECTION", {
                     zones: [zone],
                     anchor: [zone.left, zone.top],
@@ -12286,8 +12555,9 @@
          * Generate the next cell
          */
         computeNewCell(generator, col, row, apply) {
-            const { col: originCol, row: originRow, content, style, border, format } = generator.next();
-            this.lastValue = content;
+            const { cellData, tooltip } = generator.next();
+            const { col: originCol, row: originRow, content, style, border, format } = cellData;
+            this.tooltip = tooltip;
             if (apply) {
                 this.dispatch("AUTOFILL_CELL", {
                     originCol,
@@ -12391,7 +12661,7 @@
         }
     }
     AutofillPlugin.layers = [4 /* Autofill */];
-    AutofillPlugin.getters = ["getLastValue"];
+    AutofillPlugin.getters = ["getAutofillTooltip"];
     AutofillPlugin.modes = ["normal", "readonly"];
 
     /**
@@ -12557,7 +12827,7 @@
                 case "FOCUS_RANGE":
                     const index = this.getIndex(cmd.id, cmd.rangeId);
                     if (this.focusedInput === cmd.id && this.focusedRange === index) {
-                        return { status: "CANCELLED", reason: 12 /* InputAlreadyFocused */ };
+                        return { status: "CANCELLED", reason: 14 /* InputAlreadyFocused */ };
                     }
                     break;
             }
@@ -12810,6 +13080,18 @@
         // ---------------------------------------------------------------------------
         handle(cmd) {
             switch (cmd.type) {
+                case "DUPLICATE_SHEET":
+                    for (let fig of this.sheetFigures[cmd.sheet] || []) {
+                        const figure = Object.assign({}, fig, { id: uuidv4() });
+                        this.dispatch("CREATE_FIGURE", {
+                            sheet: cmd.id,
+                            figure,
+                        });
+                    }
+                    break;
+                case "DELETE_SHEET":
+                    this.deleteSheet(cmd.sheet);
+                    break;
                 case "CREATE_FIGURE":
                     this.history.updateLocalState(["figures", cmd.figure.id], cmd.figure);
                     const sheetFigures = (this.sheetFigures[cmd.sheet] || []).slice();
@@ -12839,6 +13121,14 @@
                 default:
                     this.selectedFigureId = null;
             }
+        }
+        deleteSheet(sheet) {
+            for (let figure of this.sheetFigures[sheet] || []) {
+                this.history.updateLocalState(["figures", figure.id], undefined);
+            }
+            const sheetFigures = Object.assign({}, this.sheetFigures);
+            delete sheetFigures[sheet];
+            this.history.updateLocalState(["sheetFigures"], sheetFigures);
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -13072,13 +13362,23 @@
         }
         finalize() {
             if (this.current && this.current.length) {
-                this.undoStack.push(this.current);
+                if (!this.isActiveSheet()) {
+                    // We do not want to save the ACTIVATE_SHEET command if triggered
+                    // standalone
+                    this.undoStack.push(this.current);
+                }
                 this.redoStack = [];
                 this.current = null;
                 if (this.undoStack.length > MAX_HISTORY_STEPS) {
                     this.undoStack.shift();
                 }
             }
+        }
+        isActiveSheet() {
+            return (this.current &&
+                this.current.length === 1 &&
+                this.current[0].path.length === 1 &&
+                this.current[0].path[0] === "activeSheet");
         }
         undo() {
             const step = this.undoStack.pop();
@@ -13241,6 +13541,7 @@
                 openSidePanel: config.openSidePanel || (() => { }),
                 notifyUser: config.notifyUser || (() => { }),
                 askConfirmation: config.askConfirmation || (() => { }),
+                editText: config.editText || (() => { }),
                 evalContext: config.evalContext || {},
             };
             // registering plugins
@@ -13369,6 +13670,7 @@
     font-size: 13px;
     overflow-y: auto;
     z-index: 10;
+    padding: 5px 0px;
     .o-menu-item {
       box-sizing: border-box;
       height: ${MENU_ITEM_HEIGHT}px;
@@ -13427,8 +13729,8 @@
         get style() {
             const { x, y, height } = this.props.position;
             const hStyle = `left:${this.renderRight ? x : x - MENU_WIDTH}`;
-            const vStyle = `top:${this.renderBottom ? y : Math.max(MENU_ITEM_HEIGHT, y - this.menuHeight)}`;
-            const heightStyle = `max-height:${height - BOTTOMBAR_HEIGHT - MENU_ITEM_HEIGHT}`;
+            const vStyle = `top:${this.renderBottom ? y : Math.max(MENU_ITEM_HEIGHT, y - Math.min(this.menuHeight, height))}`;
+            const heightStyle = `max-height:${height}`;
             return `${vStyle}px;${hStyle}px;${heightStyle}px`;
         }
         activateMenu(menu) {
@@ -13543,7 +13845,7 @@
         depth: 1,
     };
 
-    const { Component: Component$5 } = owl;
+    const { Component: Component$5 } = owl__namespace;
     const { xml: xml$7, css: css$7 } = owl.tags;
     const { useState: useState$3 } = owl.hooks;
     // -----------------------------------------------------------------------------
@@ -13551,23 +13853,22 @@
     // -----------------------------------------------------------------------------
     const TEMPLATE$6 = xml$7 /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
-    <span class="o-add-sheet" t-on-click="addSheet">${PLUS}</span>
-    <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
-      <span class="o-sheet" t-on-click="activateSheet(sheet.id)"
-            t-att-class="{active: sheet.id === getters.getActiveSheet()}">
-      <!-- The next lines should replace the last ones when at least one action
-      has been implemented on sheets. (sheetMenuRegistry)
-      <span class="o-sheet" t-on-click="activateSheet(sheet.id)"
-            t-on-contextmenu.prevent="onContextMenu(sheet.id)"
-            t-att-class="{active: sheet.id === getters.getActiveSheet()}"> -->
-        <t t-esc="sheet.name"/>
-      </span>
-    </t>
+    <div class="o-sheet-item o-add-sheet" t-on-click="addSheet">${PLUS}</div>
+    <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
+    <div class="o-all-sheets">
+      <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
+        <div class="o-sheet-item o-sheet" t-on-click="activateSheet(sheet.id)"
+             t-on-contextmenu.prevent="onContextMenu(sheet.id)"
+             t-att-title="sheet.name"
+             t-att-data-id="sheet.id"
+             t-att-class="{active: sheet.id === getters.getActiveSheet()}">
+          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="onDblClick(sheet.id)"/>
+          <span class="o-sheet-icon" t-on-click.stop="onIconClick(sheet.id)">${TRIANGLE_DOWN_ICON}</span>
+        </div>
+      </t>
+    </div>
     <t t-set="aggregate" t-value="getters.getAggregate()"/>
-    <t t-if="aggregate !== null">
-      <span class="o-space"/>
-      <span class="o-aggregate">Sum: <t t-esc="aggregate"/></span>
-    </t>
+    <div t-if="aggregate !== null" class="o-aggregate">Sum: <t t-esc="aggregate"/></div>
     <Menu t-if="menuState.isOpen"
           position="menuState.position"
           menuItems="menuState.menuItems"
@@ -13581,40 +13882,57 @@
     align-items: center;
     font-size: 15px;
     border-top: 1px solid lightgrey;
-
-    .o-space {
-      flex-grow: 1;
-    }
+    overflow: hidden;
 
     .o-add-sheet,
-    .o-sheet {
+    .o-list-sheets {
+      margin-right: 5px;
+    }
+
+    .o-sheet-item {
+      display: flex;
+      align-items: center;
       padding: 5px;
-      display: inline-block;
       cursor: pointer;
       &:hover {
         background-color: rgba(0, 0, 0, 0.08);
       }
     }
-    .o-add-sheet {
-      margin-right: 5px;
+
+    .o-all-sheets {
+      display: flex;
+      align-items: center;
+      max-width: 80%;
+      overflow: hidden;
     }
 
     .o-sheet {
       color: #666;
       padding: 0 15px;
+      padding-right: 10px;
       height: ${BOTTOMBAR_HEIGHT}px;
       line-height: ${BOTTOMBAR_HEIGHT}px;
       user-select: none;
+      white-space: nowrap;
 
       &.active {
         color: #484;
         background-color: white;
         box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
       }
+
+      .o-sheet-icon {
+        margin-left: 5px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
     }
 
     .o-aggregate {
       background-color: white;
+      margin-left: auto;
       font-size: 14px;
       margin-right: 20px;
       padding: 4px 8px;
@@ -13637,33 +13955,76 @@
             this.getters = this.env.getters;
             this.menuState = useState$3({ isOpen: false, position: null, menuItems: [] });
         }
+        mounted() {
+            this.focusSheet();
+        }
+        patched() {
+            this.focusSheet();
+        }
+        focusSheet() {
+            const div = this.el.querySelector(`[data-id="${this.getters.getActiveSheet()}"]`);
+            if (div && div.scrollIntoView) {
+                div.scrollIntoView();
+            }
+        }
         addSheet() {
             this.env.dispatch("CREATE_SHEET", { activate: true, id: uuidv4() });
         }
+        listSheets(ev) {
+            const registry = new MenuItemRegistry();
+            const from = this.getters.getActiveSheet();
+            let i = 0;
+            for (let sheet of this.getters.getSheets()) {
+                registry.add(sheet.id, {
+                    name: sheet.name,
+                    sequence: i,
+                    action: (env) => env.dispatch("ACTIVATE_SHEET", { from, to: sheet.id }),
+                });
+                i++;
+            }
+            this.openContextMenu(ev.currentTarget, registry);
+        }
         activateSheet(name) {
             this.env.dispatch("ACTIVATE_SHEET", { from: this.getters.getActiveSheet(), to: name });
+        }
+        onDblClick(sheet) {
+            this.env.dispatch("RENAME_SHEET", { interactive: true, sheet });
+        }
+        openContextMenu(target, registry) {
+            const x = target.offsetLeft;
+            const y = target.offsetTop;
+            this.menuState.isOpen = true;
+            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.position = {
+                x,
+                y,
+                height: 400,
+                width: this.el.clientWidth,
+            };
+        }
+        onIconClick(sheet, ev) {
+            if (this.getters.getActiveSheet() !== sheet) {
+                this.activateSheet(sheet);
+            }
+            if (this.menuState.isOpen) {
+                this.menuState.isOpen = false;
+            }
+            else {
+                this.openContextMenu(ev.currentTarget.parentElement, sheetMenuRegistry);
+            }
         }
         onContextMenu(sheet, ev) {
             if (this.getters.getActiveSheet() !== sheet) {
                 this.activateSheet(sheet);
             }
-            const x = ev.target.offsetLeft;
-            const y = ev.target.offsetTop;
-            this.menuState.isOpen = true;
-            this.menuState.menuItems = sheetMenuRegistry.getAll();
-            this.menuState.position = {
-                x,
-                y,
-                height: 0,
-                width: this.el.clientWidth,
-            };
+            this.openContextMenu(ev.currentTarget, sheetMenuRegistry);
         }
     }
     BottomBar.template = TEMPLATE$6;
     BottomBar.style = CSS$6;
     BottomBar.components = { Menu };
 
-    const { Component: Component$6, useState: useState$4 } = owl;
+    const { Component: Component$6, useState: useState$4 } = owl__namespace;
     const { xml: xml$8, css: css$8 } = owl.tags;
     const functions$4 = functionRegistry.content;
     const providerRegistry = new Registry();
@@ -13897,7 +14258,7 @@
         }
     }
 
-    const { Component: Component$7 } = owl;
+    const { Component: Component$7 } = owl__namespace;
     const { useRef: useRef$1, useState: useState$5 } = owl.hooks;
     const { xml: xml$9, css: css$9 } = owl.tags;
     const FunctionColor = "#4a4e4d";
@@ -14010,8 +14371,8 @@
                 this.contentHelper.selectRange(currentContent.length, currentContent.length);
             }
             this.processContent();
-            el.style.width = (Math.max(el.scrollWidth + 10, this.rect[2] + 1.5) + "px");
-            el.style.height = (this.rect[3] + 1.5 + "px");
+            el.style.width = (Math.max(el.scrollWidth + 10, this.rect[2] + 0.5) + "px");
+            el.style.height = (this.rect[3] + 0.5 + "px");
         }
         willUnmount() {
             this.trigger("composer-unmounted");
@@ -14123,16 +14484,17 @@
             this.dispatch("SET_CURRENT_CONTENT", { content });
         }
         onKeyup(ev) {
-            if ([
-                "Control",
-                "Shift",
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight",
-                "Tab",
-                "Enter",
-            ].includes(ev.key)) {
+            if (this.isDone ||
+                [
+                    "Control",
+                    "Shift",
+                    "ArrowUp",
+                    "ArrowDown",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Tab",
+                    "Enter",
+                ].includes(ev.key)) {
                 // already processed in keydown
                 return;
             }
@@ -14333,7 +14695,7 @@
         window.addEventListener("mousemove", onMouseMove);
     }
 
-    const { Component: Component$8 } = owl;
+    const { Component: Component$8 } = owl__namespace;
     const { xml: xml$a, css: css$a } = owl.tags;
     const { useState: useState$6 } = owl.hooks;
     // -----------------------------------------------------------------------------
@@ -14703,7 +15065,7 @@
   `;
     Overlay.components = { ColResizer, RowResizer };
 
-    const { Component: Component$9 } = owl;
+    const { Component: Component$9 } = owl__namespace;
     const { xml: xml$b, css: css$b } = owl.tags;
     const { useState: useState$7 } = owl.hooks;
     // -----------------------------------------------------------------------------
@@ -14712,8 +15074,10 @@
     const TEMPLATE$9 = xml$b /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
-    <t t-set="lastValue" t-value="env.getters.getLastValue()"/>
-    <div t-if="lastValue" class="o-autofill-nextvalue" t-att-style="styleNextvalue" t-esc="lastValue" tabindex="-1"/>
+    <t t-set="tooltip" t-value="getTooltip()"/>
+    <div t-if="tooltip" class="o-autofill-nextvalue" t-att-style="styleNextvalue">
+      <t t-component="tooltip.component" t-props="tooltip.props"/>
+    </div>
   </div>
 `;
     const CSS$9 = css$b /* scss */ `
@@ -14736,11 +15100,12 @@
 
     .o-autofill-nextvalue {
       position: absolute;
-      background-color: #fffff0;
+      background-color: white;
       border: 1px solid black;
-      padding: 2px;
+      padding: 5px;
       font-size: 12px;
       pointer-events: none;
+      white-space: nowrap;
     }
   }
 `;
@@ -14763,6 +15128,13 @@
         get styleNextvalue() {
             let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
             return `top:${position.top + 5}px;left:${position.left + 15}px;`;
+        }
+        getTooltip() {
+            const tooltip = this.env.getters.getAutofillTooltip();
+            if (tooltip && !tooltip.component) {
+                tooltip.component = TooltipComponent;
+            }
+            return tooltip;
         }
         onMouseDown(ev) {
             this.state.handler = true;
@@ -14798,6 +15170,11 @@
     }
     Autofill.template = TEMPLATE$9;
     Autofill.style = CSS$9;
+    class TooltipComponent extends Component$9 {
+    }
+    TooltipComponent.template = xml$b /* xml */ `
+    <div t-esc="props.content"/>
+  `;
 
     class ScrollBar {
         constructor(el, direction) {
@@ -14818,7 +15195,7 @@
     }
 
     const { xml: xml$c, css: css$c } = owl.tags;
-    const { useState: useState$8 } = owl;
+    const { useState: useState$8 } = owl__namespace;
     const TEMPLATE$a = xml$c /* xml */ `
 <div>
     <t t-foreach="getFigures()" t-as="info" t-key="info.id">
@@ -15056,7 +15433,7 @@
      * - a horizontal resizer (to resize columns)
      * - a vertical resizer (same, for rows)
      */
-    const { Component: Component$a, useState: useState$9 } = owl;
+    const { Component: Component$a, useState: useState$9 } = owl__namespace;
     const { xml: xml$d, css: css$d } = owl.tags;
     const { useRef: useRef$2, onMounted, onWillUnmount } = owl.hooks;
     const registries = {
@@ -15217,8 +15594,8 @@
     background-color: ${BACKGROUND_GRAY_COLOR};
 
     > canvas {
-      border-top: 1px solid #aaa;
-      border-bottom: 1px solid #aaa;
+      border-top: 1px solid #e2e3e3;
+      border-bottom: 1px solid #e2e3e3;
 
       &:focus {
         outline: none;
@@ -15587,14 +15964,14 @@
     Grid.style = CSS$b;
     Grid.components = { Composer, Overlay, Menu, Autofill, FiguresContainer };
 
-    const { Component: Component$b } = owl;
+    const { Component: Component$b } = owl__namespace;
     const { xml: xml$e, css: css$e } = owl.tags;
     const { useState: useState$a } = owl.hooks;
     const TEMPLATE$c = xml$e /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="trigger('close-side-panel')">x</div>
+        <div class="o-sidePanelClose" t-on-click="trigger('close-side-panel')">×</div>
     </div>
     <div class="o-sidePanelBody">
       <t t-component="state.panel.Body" t-props="props.panelProps" t-key="'Body_' + props.component"/>
@@ -15615,6 +15992,7 @@
       height: 30px;
       background-color: #f8f9fa;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid darkgray;
       font-weight: bold;
@@ -15624,6 +16002,7 @@
         font-size: 1.2rem;
       }
       .o-sidePanelClose {
+        font-size: 1.5rem;
         padding: 5px 10px;
         cursor: pointer;
         &:hover {
@@ -15640,7 +16019,6 @@
     .o-sidePanelButtons {
       padding: 5px;
       text-align: right;
-      border-bottom: 1px solid #ccc;
       .o-sidePanelButton {
         border: 1px solid lightgrey;
         padding: 0px 20px 0px 20px;
@@ -15681,7 +16059,7 @@
     SidePanel.template = TEMPLATE$c;
     SidePanel.style = CSS$c;
 
-    const { Component: Component$c, useState: useState$b, hooks: hooks$2 } = owl;
+    const { Component: Component$c, useState: useState$b, hooks: hooks$2 } = owl__namespace;
     const { xml: xml$f, css: css$f } = owl.tags;
     const { useExternalListener: useExternalListener$3, useRef: useRef$3 } = hooks$2;
     const FORMATS = [
@@ -16163,7 +16541,7 @@
   `;
     TopBar.components = { ColorPicker, Menu };
 
-    const { Component: Component$d, useState: useState$c } = owl;
+    const { Component: Component$d, useState: useState$c } = owl__namespace;
     const { useRef: useRef$4, useExternalListener: useExternalListener$4 } = owl.hooks;
     const { xml: xml$g, css: css$g } = owl.tags;
     const { useSubEnv } = owl.hooks;
@@ -16178,7 +16556,7 @@
            t-on-close-side-panel="sidePanel.isOpen = false"
            component="sidePanel.component"
            panelProps="sidePanel.panelProps"/>
-    <BottomBar class="o-two-columns"/>
+    <BottomBar t-on-click="focusGrid" class="o-two-columns"/>
   </div>`;
     const CSS$d = css$g /* scss */ `
   .o-spreadsheet {
@@ -16213,6 +16591,7 @@
             this.model = new Model(this.props.data, {
                 notifyUser: (content) => this.trigger("notify-user", { content }),
                 askConfirmation: (content, confirm, cancel) => this.trigger("ask-confirmation", { content, confirm, cancel }),
+                editText: (title, placeholder, callback) => this.trigger("edit-text", { title, placeholder, callback }),
                 openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
                 evalContext: { env: this.env },
             });
@@ -16358,9 +16737,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.6.2';
-    exports.__info__.date = '2020-09-03T12:32:12.496Z';
-    exports.__info__.hash = '2a34f7f';
+    exports.__info__.version = '0.7.0';
+    exports.__info__.date = '2020-09-10T08:23:20.495Z';
+    exports.__info__.hash = '3e3acb3';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

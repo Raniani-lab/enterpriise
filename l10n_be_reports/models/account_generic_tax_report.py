@@ -118,7 +118,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         lines = self.with_context(ctx)._get_lines(options)
 
         # Create a mapping between report line ids and actual grid names
-        non_compound_rep_lines = self.env['account.tax.report.line'].search([('tag_name', 'not in', ('48s44', '48s46L', '48s46T', '46L', '46T')), ('country_id.code', '=', 'BE')])
+        non_compound_rep_lines = self.env['account.tax.report.line'].search([('tag_name', 'not in', ('48s44', '48s46L', '48s46T', '46L', '46T')), ('report_id.country_id.code', '=', 'BE')])
         lines_grids_map = {line.id: line.tag_name for line in non_compound_rep_lines}
         lines_grids_map['section_' + str(self.env.ref('l10n_be.tax_report_title_operations_sortie_46').id)] = '46'
         lines_grids_map['section_' + str(self.env.ref('l10n_be.tax_report_title_operations_sortie_48').id)] = '48'

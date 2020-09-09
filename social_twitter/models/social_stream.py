@@ -75,6 +75,28 @@ class SocialStreamTwitter(models.Model):
             headers=headers
         )
 
+        if not result.ok:
+            # an error occurred
+            result = result.json()
+            if 'Not authorized' in result.get('error', ''):
+                # no error code is returned by the Twitter API in that case
+                # it's probably because the Twitter account we tried to add
+                # is private
+                error_message = _(
+                    "You cannot create a Stream from this Twitter account.\n"
+                    "It may be because it's protected. To solve this, please make sure you follow it before trying again."
+                )
+            else:
+                error_code = result.get('errors', [{}])[0].get('code')
+                ERROR_MESSAGES = {
+                    195: _("The keyword you've typed in does not look valid. Please try again with other words."),
+                    88: _("Looks like you've made too many requests. Please wait a few minutes before giving it another try."),
+                }
+                error_message = ERROR_MESSAGES.get(error_code)
+
+            if error_message:
+                raise UserError(error_message)
+
         result_tweets = result.json() if endpoint_name != 'search/tweets' else result.json().get('statuses')
         if isinstance(result_tweets, dict) and result_tweets.get('errors') or result_tweets is None:
             self.account_id.sudo().write({'is_media_disconnected': True})

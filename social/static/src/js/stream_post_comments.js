@@ -167,6 +167,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         var commentId = $textarea.data('commentId');
 
         this._addComment($textarea, isCommentReply, commentId, isCommentEdit);
+        this.$('.o_social_no_comment_message').remove();
     },
 
     /**
@@ -198,6 +199,12 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
         var fileNode = ev.target;
         var fileReader = new FileReader();
         var file = fileNode.files[0];
+
+        if (!file) {
+            // the user didn't select a file
+            return;
+        }
+
         fileReader.readAsDataURL(file);
         fileReader.onloadend = function (upload) {
             var data = upload.target.result.split(',')[1];

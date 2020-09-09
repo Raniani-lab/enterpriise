@@ -30,12 +30,8 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             var superDef = this._super.apply(this, arguments);
             var pageInfoDef = this._rpc({
                 model: 'social.account',
-                method: 'search_read',
-                fields: [
-                    'name',
-                    'twitter_user_id'
-                ],
-                domain: [['id', '=', this.accountId]]
+                method: 'read',
+                args: [this.accountId, ['name', 'twitter_user_id']],
             }).then(function (result) {
                 self.accountName = result[0].name;
                 self.twitterUserId = result[0].twitter_user_id;

@@ -28,12 +28,8 @@ var StreamPostFacebookComments = StreamPostComments.extend({
         var superDef = this._super.apply(this, arguments);
         var pageInfoDef = this._rpc({
             model: 'social.account',
-            method: 'search_read',
-            fields: [
-                'name',
-                'facebook_account_id'
-            ],
-            domain: [['id', '=', this.accountId]]
+            method: 'read',
+            args: [this.accountId, ['name', 'facebook_account_id']],
         }).then(function (result) {
             self.accountName = result[0].name;
             self.pageFacebookId = result[0].facebook_account_id;
@@ -50,7 +46,12 @@ var StreamPostFacebookComments = StreamPostComments.extend({
 
     getAuthorPictureSrc: function (comment) {
         if (comment) {
-            return comment.from.picture.data.url;
+            if (comment.from && comment.from.picture) {
+                return comment.from.picture.data.url;
+            } else {
+                // unknown author
+                return "/web/static/src/img/user_placeholder.jpg";
+            }
         } else {
             return _.str.sprintf("https://graph.facebook.com/v3.3/%s/picture?height=48&width=48", this.pageFacebookId);
         }
@@ -61,7 +62,12 @@ var StreamPostFacebookComments = StreamPostComments.extend({
     },
 
     getAuthorLink: function (comment) {
-        return _.str.sprintf("/social_facebook/redirect_to_profile/%s/%s?name=%s", this.accountId, comment.from.id, encodeURI(comment.from.name));
+        if (comment.from.id) {
+            return _.str.sprintf("/social_facebook/redirect_to_profile/%s/%s?name=%s", this.accountId, comment.from.id, encodeURI(comment.from.name));
+        } else {
+            // unknown author
+            return "#";
+        }
     },
 
     isCommentDeletable: function (comment) {

@@ -25,7 +25,7 @@ odoo.define("documents_spreadsheet.SpreadsheetAbstractAction", function (require
             spreadsheet_saved: "_onSpreadsheetSaved",
         },
         hasControlPanel: true,
-        thumbnailSize: 100,
+        thumbnailSize: 750,
 
         /**
          * @override

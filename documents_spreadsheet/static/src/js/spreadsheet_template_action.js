@@ -8,7 +8,7 @@ odoo.define("documents_spreadsheet.SpreadsheetTemplateAction", function (require
 
     const SpreadsheetAction = AbstractAction.extend({
         notificationMessage: _lt("New spreadsheet template created"),
-        thumbnailSize: 150,
+        thumbnailSize: 750,
 
         async _fetchSpreadsheetData(id) {
             const [record] = await this._rpc({

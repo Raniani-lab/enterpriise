@@ -132,14 +132,16 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             return "";
         }
         getThumbnail() {
+            const dimensions = spreadsheet.SPREADSHEET_DIMENSIONS;
             const canvas = this.spreadsheet.comp.grid.comp.canvas.el;
             const canvasResizer = document.createElement("canvas");
             const size = this.props.thumbnailSize
             canvasResizer.width = size;
             canvasResizer.height = size;
             const canvasCtx = canvasResizer.getContext("2d");
-            const sourceSize = Math.min(canvas.width, canvas.height);
-            canvasCtx.drawImage(canvas, 0, 0, sourceSize, sourceSize, 0, 0, size, size);
+            // use only 25 first rows in thumbnail
+            const sourceSize = Math.min(25 * dimensions.DEFAULT_CELL_HEIGHT, canvas.width, canvas.height);
+            canvasCtx.drawImage(canvas, dimensions.HEADER_WIDTH - 1, dimensions.HEADER_HEIGHT - 1, sourceSize, sourceSize, 0, 0, size, size);
             return canvasResizer.toDataURL().replace("data:image/png;base64,", "");
         }
         /**

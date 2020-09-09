@@ -40,17 +40,6 @@ class AccountJournal(models.Model):
         vals = super(AccountJournal, self)._default_outbound_payment_methods()
         return vals + self.env.ref('account_sepa.account_payment_method_sepa_ct')
 
-    @api.model
-    def _enable_sepa_ct_on_bank_journals(self):
-        """ Enables sepa credit transfer payment method on bank journals. Called upon module installation via data file.
-        """
-        sepa_ct = self.env.ref('account_sepa.account_payment_method_sepa_ct')
-        if self.env.company.currency_id.name == "EUR":
-            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id.name', '=', "EUR"), ('currency_id', '=', False)]
-        else:
-            domain = ['&', ('type', '=', 'bank'), ('currency_id.name', '=', "EUR")]
-        self.search(domain).write({'outbound_payment_method_ids': [(4, sepa_ct.id, None)]})
-
     def create_iso20022_credit_transfer(self, payments, batch_booking=False, sct_generic=False):
         """
             This method creates the body of the XML file for the SEPA document.

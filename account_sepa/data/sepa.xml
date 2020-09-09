@@ -8,6 +8,9 @@
             <field name="payment_type">outbound</field>
         </record>
 
-        <function model="account.journal" name="_enable_sepa_ct_on_bank_journals"/>
+        <function model="account.journal" name="_enable_payment_method_on_bank_journals">
+            <value model="account.payment.method" eval="obj().browse(ref('account_payment_method_sepa_ct'))"/>
+            <value eval="'EUR'"/>
+        </function>
     </data>
 </odoo>

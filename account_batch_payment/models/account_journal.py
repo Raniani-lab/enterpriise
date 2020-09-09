@@ -53,6 +53,17 @@ class AccountJournal(models.Model):
                 'inbound_payment_method_ids': [(4, batch_deposit.id, None)],
         })
 
+    @api.model
+    def _enable_payment_method_on_bank_journals(self, payment_method, currency_name):
+        """ Enables the payment method on bank journals. Should be called upon module installation via data file.
+        """
+        if self.env.company.currency_id.name == currency_name:
+            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id.name', '=', currency_name), ('currency_id', '=', False)]
+        else:
+            domain = ['&', ('type', '=', 'bank'), ('currency_id.name', '=', currency_name)]
+        for bank_journal in self.search(domain):
+            bank_journal.write({'outbound_payment_method_ids': [(4, payment_method.id, None)]})
+
     def open_action_batch_payment(self):
         ctx = self._context.copy()
         ctx.update({'journal_id': self.id, 'default_journal_id': self.id})

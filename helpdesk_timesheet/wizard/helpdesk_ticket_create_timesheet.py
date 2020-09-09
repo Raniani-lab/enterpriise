@@ -37,3 +37,6 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
         self.ticket_id.timesheet_ids = [(4, timesheet.id)]
         self.ticket_id.user_timer_id.unlink()
         return timesheet
+
+    def action_delete_timesheet(self):
+         self.ticket_id.user_timer_id.unlink()

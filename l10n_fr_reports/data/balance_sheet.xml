@@ -1139,7 +1139,7 @@
         <field name="sequence" eval="6"/>
         <field name="parent_id" ref='account_financial_report_line_02_2_fr_bilan_passif'/>
         <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]" />
-        <field name="formulas">I - II - sum</field>
+        <field name="formulas">total_products - total_charges - sum</field>
         <field name="special_date_changer">from_beginning</field>
     </record>
 

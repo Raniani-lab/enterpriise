@@ -309,6 +309,74 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(pack.location_id, self.shelf2)
 
+    def test_put_in_pack_scan_suggested_package(self):
+        """ Create two deliveries with a line from two different locations each.
+        Then, group them in a batch and process the batch in barcode.
+        Put first picking line in a package and the second one in another package,
+        then change the lcoation page and scan the suggested packaged for each picking lines.
+        """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 2)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 2)
+
+        # Creates a first delivery with 2 move lines: one from Section 1 and one from Section 2.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 1
+        delivery_1 = delivery_form.save()
+        delivery_1.action_confirm()
+        delivery_1.action_assign()
+
+        # Creates a second delivery (same idea than the first one).
+
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 1
+        delivery_2 = delivery_form.save()
+        delivery_2.action_confirm()
+        delivery_2.action_assign()
+
+        # Changes name of pickings to be able to track them on the tour
+        delivery_1.name = 'test_delivery_1'
+        delivery_2.name = 'test_delivery_2'
+
+        batch_form = Form(self.env['stock.picking.batch'])
+        batch_form.picking_ids.add(delivery_1)
+        batch_form.picking_ids.add(delivery_2)
+        batch_delivery = batch_form.save()
+        batch_delivery.action_confirm()
+        self.assertEqual(len(batch_delivery.move_ids), 4)
+        self.assertEqual(len(batch_delivery.move_line_ids), 4)
+
+        # Resets package sequence to be sure we'll have the attended packages name.
+        seq = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')])
+        seq.number_next_actual = 1
+
+        url = self._get_batch_client_action_url(batch_delivery.id)
+        self.start_tour(url, 'test_put_in_pack_scan_suggested_package', login='admin', timeout=180)
+
+        self.assertEqual(batch_delivery.state, 'done')
+        self.assertEqual(len(batch_delivery.move_line_ids), 4)
+        for move_line in delivery_1.move_line_ids:
+            self.assertEqual(move_line.result_package_id.name, 'PACK0000001')
+        for move_line in delivery_2.move_line_ids:
+            self.assertEqual(move_line.result_package_id.name, 'PACK0000002')
+
     def test_batch_create(self):
         """ Create a batch picking via barcode app from scratch """
 

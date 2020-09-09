@@ -138,6 +138,8 @@ class StockPickingBatch(models.Model):
             batch_picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             batch_picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             batch_picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
+            if batch_picking['group_tracking_lot']:
+                batch_picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
             batch_picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             batch_picking['group_uom'] = self.env.user.has_group('uom.group_uom')
             batch_picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')

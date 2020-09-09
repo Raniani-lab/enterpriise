@@ -66,6 +66,8 @@ class StockPicking(models.Model):
             picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
             picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
             picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
+            if picking['group_tracking_lot']:
+                picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
             picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             picking['group_uom'] = self.env.user.has_group('uom.group_uom')
             picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')

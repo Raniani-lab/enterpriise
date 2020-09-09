@@ -41,8 +41,7 @@ var PickingClientAction = ClientAction.extend({
 
     willStart: function () {
         var self = this;
-        var res = this._super.apply(this, arguments);
-        res.then(function () {
+        return this._super.apply(this, arguments).then(function () {
             // Bind the print slip command here to be able to pass the action as argument.
             self.commands['O-BTN.print-slip'] = self._printReport.bind(self, self.currentState.actionReportBarcodesZplId);
             // Get the usage of the picking type of `this.picking_id` to chose the mode between
@@ -74,7 +73,6 @@ var PickingClientAction = ClientAction.extend({
 
             self.isImmediatePicking = self.currentState.immediate_transfer;
         });
-        return res;
     },
 
     //--------------------------------------------------------------------------
@@ -160,6 +158,17 @@ var PickingClientAction = ClientAction.extend({
      * @override
      */
     _getLines: (state) => state.move_line_ids,
+
+    /**
+     * @override
+     */
+    _getState: function () {
+        const superProm = this._super(...arguments);
+        superProm.then(res => {
+            this.usablePackagesByBarcode = this.groups.group_tracking_lot ? res[0].usable_packages : {};
+        });
+        return superProm;
+    },
 
     /**
      * @override
@@ -472,6 +481,17 @@ var PickingClientAction = ClientAction.extend({
     },
 
     /**
+     * Set the result package on the current line.
+     * Called by `_step_reusable_package` when user scans a reusable package.
+     *
+     * @param {Object} currentLine
+     * @param {Object} usablePackage
+     */
+    _setPackageOnLine: function (currentLine, usablePackage) {
+        currentLine.result_package_id = [usablePackage.id, usablePackage.name];
+    },
+
+    /**
      * @override
      */
     _updateLineCommand: function (line) {
@@ -485,6 +505,62 @@ var PickingClientAction = ClientAction.extend({
             package_id: line.package_id ? line.package_id[0] : false,
             result_package_id: line.result_package_id ? line.result_package_id[0] : false,
         }];
+    },
+
+    // -------------------------------------------------------------------------
+    // Private: flow steps
+    // -------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    _step_lot: function (barcode, linesActions) {
+        // Bypass this step if needed.
+        let prom = Promise.reject();
+        if (this.usablePackagesByBarcode[barcode]) {
+            prom = this._step_reusable_package(barcode, linesActions);
+        }
+        return prom.catch(this._super.bind(this, ...arguments));
+    },
+
+    /**
+     * @override
+     */
+    _step_product: function (barcode, linesActions) {
+        // Bypass this step if needed.
+        if (this.usablePackagesByBarcode[barcode]) {
+            return this._step_reusable_package(barcode, linesActions);
+        }
+        return this._super(...arguments);
+    },
+
+    /**
+     * Handles scanning a package to use it as `result_package_id`.
+     * Checks if the scanned package can be used to pack the product.
+     *
+     * @param {string} barcode
+     * @param {Array} linesActions
+     * @returns {Promise}
+     */
+    _step_reusable_package: function (barcode, linesActions) {
+        const usablePackage = this.usablePackagesByBarcode[barcode];
+        if (usablePackage.location_id && usablePackage.location_id[0] !== this.currentState.location_dest_id.id) {
+            return Promise.reject(_t("The scanned package must not be assigned to a location or must be assigned to the current dest location."));
+        }
+        // Set the result package on the last scanned line.
+        const lineId = this.scannedLines[this.scannedLines.length - 1];
+        const lines = this._getLines(this.currentState);
+        const currentLine = lines.find(line => line.id === lineId);
+        // No line found -> Need to scan a product first.
+        if (!currentLine) {
+            return Promise.reject();
+        }
+        this._setPackageOnLine(currentLine, usablePackage);
+        linesActions.push([
+            this.linesWidget._applyPackage,
+            [currentLine.id || currentLine.virtualId, usablePackage],
+        ]);
+        return Promise.resolve({linesActions: linesActions});
     },
 
     //--------------------------------------------------------------------------

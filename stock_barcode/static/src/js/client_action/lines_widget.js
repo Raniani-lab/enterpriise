@@ -248,6 +248,23 @@ var LinesWidget = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Called when user scans a usable package's barcode to pack current line.
+     *
+     * @param {integer} id_or_virtual_id
+     * @param {Object} usablePackage
+     */
+    _applyPackage: function (id_or_virtual_id) {
+        const lines = this.page.lines;
+        const line = lines.find(l => id_or_virtual_id === (l.id || l.virtual_id));
+        // Re-render all the barcode lines, then highlight the current line.
+        this.$el.filter('.o_barcode_lines_header').empty();
+        this.$el.filter('.o_barcode_lines').empty();
+        this._renderLines();
+        const $line = $(`.o_barcode_line[data-id=${(line.id || line.virtual_id)}]`);
+        this._highlightLine($line);
+    },
+
+    /**
      * Return a list of the name of errors who could be in the barcode view.
      *
      * @private

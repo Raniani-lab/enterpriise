@@ -1295,6 +1295,46 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(pack.location_id, self.shelf2)
 
+    def test_put_in_pack_scan_package(self):
+        """ Put in pack a product line, then scan the newly created package to
+        assign it to another lines.
+        """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf2, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf1, 1)
+
+        # Resets package sequence to be sure we'll have the attended packages name.
+        seq = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')])
+        seq.number_next_actual = 1
+
+        # Creates a delivery with three move lines: two from Section 1 and one from Section 2.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 2
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 1
+
+        delivery = delivery_form.save()
+        delivery.action_confirm()
+        delivery.action_assign()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_put_in_pack_scan_package', login='admin', timeout=180)
+
+        self.assertEqual(delivery.state, 'done')
+        self.assertEqual(len(delivery.move_line_ids), 3)
+        for move_line in delivery.move_line_ids:
+            self.assertEqual(move_line.result_package_id.name, 'PACK0000001')
+
     def test_highlight_packs(self):
         clean_access_rights(self.env)
         grp_pack = self.env.ref('stock.group_tracking_lot')

@@ -26,7 +26,6 @@ const BatchPickingClientAction = PickingClientAction.extend({
             if (this.currentState.state === 'draft') {
                 this.mode = 'draft';
             }
-            return this._getReusablePackageBarcodes();
         });
     },
 
@@ -45,19 +44,30 @@ const BatchPickingClientAction = PickingClientAction.extend({
     },
 
     /**
-     * Make an rpc to get the package barcodes and afterwards set `this.reusablePackagesByBarcode`.
-     *
-     * @private
-     * @return {Promise}
+     * @override
      */
-    _getReusablePackageBarcodes: function () {
-        return this._rpc({
-            'model': 'stock.quant.package',
-            'method': 'get_reusable_packages_by_barcode',
-            'args': [],
-        }).then(res => {
-            this.reusablePackagesByBarcode = res;
+    _getState: function () {
+        const prom = this._super(...arguments);
+        prom.then(() => {
+            if (!this.groups.group_tracking_lot) {
+                return;
+            }
+            const suggestedPackagesByPickings = {};
+            const lines = this._getLines(this.currentState);
+            // Checks if a line has a result package, and if so, links it to the according picking.
+            for (const line of lines) {
+                if (line.result_package_id && !suggestedPackagesByPickings[line.picking_id.id]) {
+                    suggestedPackagesByPickings[line.picking_id.id] = line.result_package_id[1];
+                }
+            }
+            // Suggests a package to scan for each picking's lines if this picking is linked to a package.
+            for (const line of lines) {
+                if (!line.result_package_id && suggestedPackagesByPickings[line.picking_id.id]) {
+                    line.suggested_package = suggestedPackagesByPickings[line.picking_id.id];
+                }
+            }
         });
+        return prom;
     },
 
     /**
@@ -134,66 +144,23 @@ const BatchPickingClientAction = PickingClientAction.extend({
     /**
      * @override
      */
+    _setPackageOnLine: function (currentLine, usablePackage) {
+        this._super(...arguments);
+        const lines = this._getLines(this.currentState);
+        const pickingId = currentLine.picking_id.id;
+        // Suggests the same package for other same picking's lines.
+        for (const line of lines) {
+            if (line.picking_id.id === pickingId && !line.result_package_id) {
+                line.suggested_package = usablePackage.name;
+            }
+        }
+    },
+
+    /**
+     * @override
+     */
     _validate: function () {
         this._super({ barcode_view: true });
-    },
-
-    // -------------------------------------------------------------------------
-    // Private: flow steps
-    // -------------------------------------------------------------------------
-
-    /**
-     * @override
-     */
-    _step_lot: function (barcode, linesActions) {
-        // Bypass this step if needed.
-        let prom = Promise.reject();
-        if (this.reusablePackagesByBarcode[barcode]) {
-            prom = this._step_reusable_package(barcode, linesActions);
-        }
-        return prom.catch(this._super.bind(this, ...arguments));
-    },
-
-    /**
-     * @override
-     */
-    _step_product: function (barcode, linesActions) {
-        // Bypass this step if needed.
-        if (this.reusablePackagesByBarcode[barcode]) {
-            return this._step_reusable_package(barcode, linesActions);
-        }
-        return this._super(...arguments);
-    },
-
-    /**
-     * Checks if user scanned a reusable package barcode.
-     *
-     * @param {string} barcode
-     * @param {Array} linesActions
-     * @returns {Promise}
-     */
-    _step_reusable_package: function (barcode, linesActions) {
-        const reusablePackage = this.reusablePackagesByBarcode[barcode];
-        if (!reusablePackage) {
-            // No reusable package found.
-            return Promise.reject();
-        }
-        if (reusablePackage.location_id && reusablePackage.location_id[0] !== this.currentState.location_dest_id.id) {
-            return Promise.reject(_t("The scanned package must not be assigned to a location or must be assigned to the current dest location."));
-        }
-        // Set the result package on the last scanned line.
-        const lineId = this.scannedLines[this.scannedLines.length - 1];
-        const lines = this.pages[this.currentPageIndex].lines;
-        const currentLine = lines.find(line => line.id === lineId);
-        // No line found -> Need to scan a product first.
-        if (!currentLine) {
-            return Promise.reject();
-        }
-        linesActions.push([
-            this.linesWidget._applyClusterPackages,
-            [currentLine.id || currentLine.virtualId, reusablePackage],
-        ]);
-        return Promise.resolve({linesActions: linesActions});
     },
 
     //--------------------------------------------------------------------------

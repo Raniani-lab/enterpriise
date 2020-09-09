@@ -3400,6 +3400,85 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
 
 ]);
 
+tour.register('test_put_in_pack_scan_package', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertPageSummary('From WH/Stock/Section 1');
+            helper.assertLinesCount(2);
+            helper.assertPager('1/2');
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.pack',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product1"):contains("PACK0000001")',
+        run: function() {
+            const $line1 = $('.o_barcode_line:contains("product1")');
+            const product1_package = $line1.find('div[name="package"]').text().trim();
+            helper.assert(product1_package, 'PACK0000001');
+        }
+    },
+
+    // Scans product2 then scans the package.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+    {
+        trigger: '.o_barcode_line.o_highlight:contains("product2")',
+        run: 'scan PACK0000001',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product2"):contains("PACK0000001")',
+        run: function() {
+            const $line1 = $('.o_barcode_line:contains("product1")');
+            const $line2 = $('.o_barcode_line:contains("product2")');
+            const product1_package = $line1.find('div[name="package"]').text().trim();
+            const product2_package = $line2.find('div[name="package"]').text().trim();
+            helper.assert(product1_package, 'PACK0000001');
+            helper.assert(product2_package, 'PACK0000001');
+        }
+    },
+
+    // Goes to next page and scans again product1 and PACK0000001.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-CMD.NEXT',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK0000001',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product1"):contains("PACK0000001")',
+        run: function() {
+            const $line1 = $('.o_barcode_line:contains("product1")');
+            const product1_package = $line1.find('div[name="package"]').text().trim();
+            helper.assert(product1_package, 'PACK0000001');
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification.bg-success',
+    },
+]);
+
 tour.register('test_picking_owner_scan_package', {test: true}, [
     {
         trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',

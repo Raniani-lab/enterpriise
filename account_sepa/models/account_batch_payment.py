@@ -38,10 +38,9 @@ class AccountBatchPayment(models.Model):
         return rslt
 
     def validate_batch(self):
-        self.ensure_one()
-        if self.payment_method_code == 'sepa_ct':
-            if self.journal_id.bank_account_id.acc_type != 'iban':
-                raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.") % (self.journal_id.bank_account_id.acc_number, self.journal_id.name))
+        for batch in self.filtered(lambda x: x.payment_method_code == 'sepa_ct'):
+            if batch.journal_id.bank_account_id.acc_type != 'iban':
+                raise UserError(_("The account %s, of journal '%s', is not of type IBAN.\nA valid IBAN account is required to use SEPA features.") % (batch.journal_id.bank_account_id.acc_number, batch.journal_id.name))
 
         return super(AccountBatchPayment, self).validate_batch()
 

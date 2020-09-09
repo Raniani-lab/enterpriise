@@ -124,6 +124,10 @@ odoo.define('sign.views_custo', function(require) {
                     e.stopImmediatePropagation();
                     _sign_upload_file.call(self, true, false, 'sign_send_request');
                 });
+                if (config.device.isMobile) {
+                    this.$buttons.find(selector_button).hide();
+                    return;
+                }
             },
         };
     }

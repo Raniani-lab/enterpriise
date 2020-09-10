@@ -50,7 +50,7 @@
             <field name="name">contract.employee.report.view.graph</field>
             <field name="model">hr.contract.employee.report</field>
             <field name="arch" type="xml">
-                <graph string="Employees Analysis" type="line" sample="1">
+                <graph string="Employees Analysis" type="line" sample="1" disable_linking="1">
                     <field name="date" type="row"/>
                     <field name="count_new_employee" type="measure"/>
                 </graph>

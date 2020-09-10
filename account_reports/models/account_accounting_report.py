@@ -253,9 +253,9 @@ class AccountingReport(models.AbstractModel):
             elif field == '__count' or self._fields[field].group_operator == 'sum':
                 destination[field] = destination[field] + value
             elif self._fields[field].group_operator == 'min':
-                destination[field] = min(destination[field] or value, value)
+                destination[field] = min(destination[field] or value, value or destination[field])
             elif self._fields[field].group_operator == 'max':
-                destination[field] = max(destination[field] or value, value)
+                destination[field] = max(destination[field] or value, value or destination[field])
             elif self._fields[field].group_operator == 'bool_and':
                 destination[field] = destination[field] and value
             elif self._fields[field].group_operator is None:

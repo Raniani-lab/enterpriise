@@ -667,7 +667,7 @@ class ConsolidationCompanyPeriod(models.Model):
             amount = move_line.balance * rate
         else:
             amount = move_line.balance
-            currency = move_line.currency_id or move_line.company_currency_id
+            currency = move_line.company_currency_id
             if currency != self.currency_chart_id:
                 amount = currency._convert(amount, self.currency_chart_id, self.company_id, move_line.date)
         return self._apply_consolidation_rate(amount)

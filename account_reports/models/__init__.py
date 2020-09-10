@@ -23,3 +23,4 @@ from . import chart_template
 from . import account_activity
 from . import ir_module_module
 from . import account_journal_dashboard
+from . import ir_actions

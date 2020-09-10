@@ -656,7 +656,7 @@
     <record id="hr_case_salesman0" model="hr.applicant">
         <field name="name">Sales Manager</field>
         <field name="job_id" ref="hr_job_6"/>
-        <field name="department_id" ref="hr.dep_sales"/>
+        <field name="department_id" ref="hr_department_4"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_sales')])]"/>
         <field name="user_id" ref="base.user_demo"/>
@@ -669,7 +669,7 @@
     <record id="hr_case_salesman1" model="hr.applicant">
         <field name="name">Sales</field>
         <field name="job_id" ref="hr_job_6"/>
-        <field name="department_id" ref="hr.dep_sales"/>
+        <field name="department_id" ref="hr_department_4"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_sales')])]"/>
         <field name="user_id" ref="base.user_demo"/>
@@ -682,7 +682,7 @@
     <record id="hr_case_dev0" model="hr.applicant">
         <field name="name">Developer PHP</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -695,7 +695,7 @@
     <record id="hr_case_dev1" model="hr.applicant">
         <field name="name">Developer Fullstack</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -708,7 +708,7 @@
     <record id="hr_case_dev2" model="hr.applicant">
         <field name="name">Developer Python</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -721,7 +721,7 @@
     <record id="hr_case_dev3" model="hr.applicant">
         <field name="name">Developer C/C++</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -734,7 +734,7 @@
     <record id="hr_case_traineemca0" model="hr.applicant">
         <field name="name">Trainee - MCA</field>
         <field name="job_id" ref="hr_job_7"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_manager')])]"/>
         <field name="user_id" ref="base.user_demo"/>
@@ -748,7 +748,7 @@
     <record id="hr_case_fresher0" model="hr.applicant">
         <field name="name">Fresher</field>
         <field name="job_id" ref="hr_job_7"/>
-        <field name="department_id" ref="hr.dep_administration"/>
+        <field name="department_id" ref="hr_department_0"/>
         <field name="type_id" ref="hr_recruitment.degree_bachelor"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="user_id" ref="base.user_demo"/>
@@ -761,7 +761,7 @@
     <record id="hr_case_mkt0" model="hr.applicant">
         <field name="name">Marketing</field>
         <field name="job_id" ref="hr_job_6"/>
-        <field name="department_id" ref="hr.dep_sales"/>
+        <field name="department_id" ref="hr_department_4"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_manager')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -772,7 +772,7 @@
     <record id="hr_case_mkt1" model="hr.applicant">
         <field name="name">Marketing 2 Year Experience</field>
         <field name="job_id" ref="hr_job_6"/>
-        <field name="department_id" ref="hr.dep_sales"/>
+        <field name="department_id" ref="hr_department_4"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_manager')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -784,7 +784,7 @@
     <record id="hr_case_yrsexperienceinphp0" model="hr.applicant">
         <field name="name">Marketing Job</field>
         <field name="job_id" ref="hr_job_6"/>
-        <field name="department_id" ref="hr.dep_sales"/>
+        <field name="department_id" ref="hr_department_4"/>
         <field name="type_id" ref="hr_recruitment.degree_graduate"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_manager')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -795,7 +795,7 @@
     <record id="hr_case_marketingjob0" model="hr.applicant">
         <field name="name">More than 5 yrs Experience in PHP</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_reserve')])]"/>
         <field name="user_id" ref="base.user_demo"/>
@@ -806,7 +806,7 @@
     <record id="hr_case_financejob0" model="hr.applicant">
         <field name="name">Finance Manager</field>
         <field name="job_id" ref="hr_job_5"/>
-        <field name="department_id" ref="hr.dep_administration"/>
+        <field name="department_id" ref="hr_department_0"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_reserve')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -819,7 +819,7 @@
     <record id="hr_case_financejob1" model="hr.applicant">
         <field name="name">Finance</field>
         <field name="job_id" ref="hr_job_5"/>
-        <field name="department_id" ref="hr.dep_administration"/>
+        <field name="department_id" ref="hr_department_0"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_reserve')])]"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -831,7 +831,7 @@
     <record id="hr_case_traineemca1" model="hr.applicant">
         <field name="name">Trainee - MCA</field>
         <field name="job_id" ref="hr_job_7"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_sales')])]"/>
         <field name="partner_name">Earnest Gonzales</field>
@@ -843,7 +843,7 @@
     <record id="hr_case_programmer" model="hr.applicant">
         <field name="name">Programmer</field>
         <field name="job_id" ref="hr_job_4"/>
-        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="department_id" ref="hr_department_2"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="partner_name">Saul Cole</field>
@@ -856,7 +856,7 @@
     <record id="hr_case_advertisement" model="hr.applicant">
         <field name="name">Advertisement</field>
         <field name="job_id" ref="hr_job_3"/>
-        <field name="department_id" ref="hr.dep_ps"/>
+        <field name="department_id" ref="hr_department_3"/>
         <field name="type_id" ref="hr_recruitment.degree_licenced"/>
         <field name="categ_ids" eval="[(6,0,[ref('hr_recruitment.tag_applicant_it')])]"/>
         <field name="partner_name">Hugh Torres</field>

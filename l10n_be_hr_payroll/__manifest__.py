@@ -28,6 +28,7 @@ Belgian Payroll Rules.
         'views/reports.xml',
         'wizard/hr_payroll_employee_departure_notice_views.xml',
         'wizard/hr_payroll_employee_departure_holiday_attest_views.xml',
+        'wizard/hr_payroll_generate_commission_payslips_views.xml',
         'wizard/l10n_be_hr_payroll_credit_time_wizard_views.xml',
         'wizard/hr_payroll_allocating_paid_time_off_views.xml',
         'views/l10n_be_hr_payroll_view.xml',
@@ -39,6 +40,7 @@ Belgian Payroll Rules.
         'views/report_termination_holidays.xml',
         'views/hr_dmfa_template.xml',
         'views/hr_dmfa_views.xml',
+        'views/assets.xml',
         'data/l10n_be_hr_payroll_data.xml',
         'data/cp200/work_entry_data.xml',
         'data/hr_rule_parameters_data.xml',
@@ -51,6 +53,7 @@ Belgian Payroll Rules.
         'data/cp200/employee_pfi_data.xml',
         'data/cp200/employee_attachment_salary_data.xml',
         'data/cp200/employee_warrant_salary_data.xml',
+        'data/cp200/employee_commission_on_target_data.xml',
         'views/res_config_settings_views.xml',
         'wizard/l10n_be_individual_account_wizard_views.xml',
         'wizard/hr_payroll_281_10_wizard_views.xml',
@@ -62,6 +65,10 @@ Belgian Payroll Rules.
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'
+    ],
+    'qweb': [
+        'static/src/xml/payslip_batch_tree_view.xml',
+        'static/src/xml/generate_commission_payslips_form_view.xml',
     ],
     'auto_install': False,
 }

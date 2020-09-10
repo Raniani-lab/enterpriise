@@ -24,13 +24,33 @@ class Payslip(models.Model):
             'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
         }
         struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-        if self.struct_id == struct_warrant:
+        struct_commission = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
+        if self.struct_id == struct_commission:
             months = relativedelta(date_utils.add(self.date_to, days=1), self.date_from).months
+            if self.employee_id.id in self.env.context.get('commission_real_values', {}):
+                commission_value = self.env.context['commission_real_values'][self.employee_id.id]
+            else:
+                commission_value = self.contract_id.commission_on_target * months
+            commission_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_commission')
+            lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id == commission_type)
+            to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
+            to_add_vals = [(0, 0, {
+                'amount': commission_value,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_commission')
+            })]
+            input_line_vals = to_remove_vals + to_add_vals
+            self.update({'input_line_ids': input_line_vals})
+        elif self.struct_id == struct_warrant:
+            months = relativedelta(date_utils.add(self.date_to, days=1), self.date_from).months
+            if self.employee_id.id in self.env.context.get('commission_real_values', {}):
+                warrant_value = self.env.context['commission_real_values'][self.employee_id.id]
+            else:
+                warrant_value = self.contract_id.commission_on_target * months
             warrant_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
             lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id == warrant_type)
             to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
             to_add_vals = [(0, 0, {
-                'amount': self.contract_id.commission_on_target * months,
+                'amount': warrant_value,
                 'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
             })]
             input_line_vals = to_remove_vals + to_add_vals

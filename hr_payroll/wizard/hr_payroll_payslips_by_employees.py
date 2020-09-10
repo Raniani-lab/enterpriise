@@ -6,6 +6,7 @@ import pytz
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.osv import expression
 
 
 class HrPayslipEmployees(models.TransientModel):
@@ -20,8 +21,18 @@ class HrPayslipEmployees(models.TransientModel):
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
-                                    default=lambda self: self._get_employees(), required=True)
+                                    default=lambda self: self._get_employees(), required=True,
+                                    compute='_compute_employee_ids', store=True, readonly=False)
     structure_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
+    department_id = fields.Many2one('hr.department')
+
+    @api.depends('department_id')
+    def _compute_employee_ids(self):
+        for wizard in self.filtered(lambda w: w.department_id):
+            wizard.employee_ids = self.env['hr.employee'].search(expression.AND([
+                wizard._get_available_contracts_domain(),
+                [('department_id', 'ilike', self.department_id.name)]
+            ]))
 
     def _check_undefined_slots(self, work_entries, payslip_run):
         """

@@ -138,16 +138,22 @@ class SocialPost(models.Model):
             post.live_posts_by_media = json.dumps(accounts_by_media)
 
     def _compute_click_count(self):
-        query = """SELECT COUNT(DISTINCT(click.id)) as click_count, link.source_id
-                    FROM link_tracker_click click
-                    INNER JOIN link_tracker link ON link.id = click.link_id
-                    WHERE link.source_id IN %s
-                    GROUP BY link.source_id"""
-        self.env.cr.execute(query, [tuple(self.utm_source_id.ids)])
-        click_data = self.env.cr.dictfetchall()
-        mapped_data = {datum['source_id']: datum['click_count'] for datum in click_data}
-        for post in self:
-            post.click_count = mapped_data.get(post.utm_source_id.id, 0)
+        if not self.utm_source_id.ids:
+            # not "utm_source_id", the records are not yet created
+            for post in self:
+                post.click_count = 0
+        else:
+            query = """SELECT COUNT(DISTINCT(click.id)) as click_count, link.source_id
+                        FROM link_tracker_click click
+                        INNER JOIN link_tracker link ON link.id = click.link_id
+                        WHERE link.source_id IN %s
+                        GROUP BY link.source_id"""
+
+            self.env.cr.execute(query, [tuple(self.utm_source_id.ids)])
+            click_data = self.env.cr.dictfetchall()
+            mapped_data = {datum['source_id']: datum['click_count'] for datum in click_data}
+            for post in self:
+                post.click_count = mapped_data.get(post.utm_source_id.id, 0)
 
     def name_get(self):
         """ We use the first 20 chars of the message (or "Post" if no message yet).

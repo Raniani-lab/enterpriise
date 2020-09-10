@@ -4,6 +4,7 @@
 import base64
 
 from odoo import models, api, fields
+from odoo.osv import expression
 
 
 class SocialPostLinkedin(models.Model):
@@ -11,6 +12,16 @@ class SocialPostLinkedin(models.Model):
 
     display_linkedin_preview = fields.Boolean('Display LinkedIn Preview', compute='_compute_display_linkedin_preview')
     linkedin_preview = fields.Html('LinkedIn Preview', compute='_compute_linkedin_preview')
+
+    @api.depends('live_post_ids.linkedin_post_id')
+    def _compute_stream_posts_count(self):
+        super(SocialPostLinkedin, self)._compute_stream_posts_count()
+        for post in self:
+            linkedin_post_ids = [linkedin_post_id for linkedin_post_id in post.live_post_ids.mapped('linkedin_post_id') if linkedin_post_id]
+            if linkedin_post_ids:
+                post.stream_posts_count += self.env['social.stream.post'].search_count(
+                    [('linkedin_post_urn', 'in', linkedin_post_ids)]
+                )
 
     @api.depends('message', 'account_ids.media_id.media_type')
     def _compute_display_linkedin_preview(self):
@@ -31,3 +42,11 @@ class SocialPostLinkedin(models.Model):
                     for image in post.image_ids
                 ]
             })
+
+    def _get_stream_post_domain(self):
+        domain = super(SocialPostLinkedin, self)._get_stream_post_domain()
+        linkedin_post_ids = [linkedin_post_id for linkedin_post_id in self.live_post_ids.mapped('linkedin_post_id') if linkedin_post_id]
+        if linkedin_post_ids:
+            return expression.OR([domain, [('linkedin_post_urn', 'in', linkedin_post_ids)]])
+        else:
+            return domain

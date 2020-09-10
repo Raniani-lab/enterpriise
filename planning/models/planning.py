@@ -96,9 +96,9 @@ class Planning(models.Model):
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_interval = fields.Integer("Repeat Every", default=1, compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat', inverse='_inverse_repeat')
-    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
+    repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat')
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat')
+    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
     confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
     _sql_constraints = [
@@ -290,13 +290,31 @@ class Planning(models.Model):
         for slot in self:
             if slot.recurrency_id:
                 slot.repeat = True
-                slot.repeat_interval = slot.recurrency_id.repeat_interval
-                slot.repeat_until = slot.recurrency_id.repeat_until
-                slot.repeat_type = slot.recurrency_id.repeat_type
             else:
                 slot.repeat = False
+
+    @api.depends('recurrency_id.repeat_interval')
+    def _compute_repeat_interval(self):
+        for slot in self:
+            if slot.recurrency_id:
+                slot.repeat_interval = slot.recurrency_id.repeat_interval
+            else:
                 slot.repeat_interval = False
+
+    @api.depends('recurrency_id.repeat_until')
+    def _compute_repeat_until(self):
+        for slot in self:
+            if slot.recurrency_id:
+                slot.repeat_until = slot.recurrency_id.repeat_until
+            else:
                 slot.repeat_until = False
+
+    @api.depends('recurrency_id.repeat_type')
+    def _compute_repeat_type(self):
+        for slot in self:
+            if slot.recurrency_id:
+                slot.repeat_type = slot.recurrency_id.repeat_type
+            else:
                 slot.repeat_type = False
 
     def _inverse_repeat(self):
@@ -354,16 +372,6 @@ class Planning(models.Model):
         with_warning = self.filtered(lambda t: t.employee_id and t.is_published)
         with_warning.update({'publication_warning': True})
 
-    @api.onchange('repeat')
-    def _onchange_default_repeat_values(self):
-        """ When checking the `repeat` flag on an existing record, the values of recurring fields are `False`. This onchange
-            restore the default value for usability purpose.
-        """
-        recurrence_fields = ['repeat_interval', 'repeat_until', 'repeat_type']
-        default_values = self.default_get(recurrence_fields)
-        for fname in recurrence_fields:
-            self[fname] = default_values.get(fname)
-
     def _company_working_hours(self, start, end):
         company = self.company_id or self.env.company
         work_interval = company.resource_calendar_id._work_intervals(start, end)
@@ -371,7 +379,6 @@ class Planning(models.Model):
         start_datetime, end_datetime = (intervals[0][0], intervals[-1][-1]) if intervals else (start, end)
 
         return (start_datetime, end_datetime)
-
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------

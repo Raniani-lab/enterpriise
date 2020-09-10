@@ -4,6 +4,7 @@
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
+from odoo.osv import expression
 
 from collections import defaultdict, namedtuple
 
@@ -202,10 +203,15 @@ class AccountingReport(models.AbstractModel):
                 if options.get('unfold_all'):
                     pass
                 elif options.get('unfolded_lines') or line_id:
+                    unfolded_domain = []
                     for unfolded_line in options['unfolded_lines'] + [line_id]:
                         parsed = self._parse_line_id(unfolded_line)
                         if len(current_groupby) == len(parsed) + 1:
-                            domain += [(key, '=', value) for key, value in parsed]
+                            unfolded_domain = expression.OR([
+                                unfolded_domain,
+                                [(key, '=', value) for key, value in parsed]
+                            ])
+                    domain = expression.AND([domain, unfolded_domain])
                 else:
                     break
             if not groupby[i].foldable and i != len(groupby)-1:

@@ -61,12 +61,12 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     steps = rule.current;
             }
             const content = getters.getNextValue(data.content, isColumn, steps);
-            const tooltip = {
+            const tooltip = content ? {
                 props: {
                     content: getters.getTooltipFormula(content),
                 },
                 component: AutofillTooltip,
-            };
+            } : undefined;
             return {
                 cellData: {
                     style: undefined,
@@ -105,9 +105,9 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
             );
             return {
                 cellData: Object.assign({}, data, { content }),
-                tooltip: {
+                tooltip: content ? {
                     props: { content },
-                }
+                } : undefined,
             }
         },
     });

@@ -1578,6 +1578,33 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 }]);
                 actionManager.destroy();
             });
+
+            QUnit.test("Tooltip of empty pivot formula is empty", async function (assert) {
+                assert.expect(1);
+
+                const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="name" type="col"/>
+                        <field name="date" interval="year" type="row"/>
+                        <field name="probability" type="measure"/>
+                        <field name="foo" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const spreadsheetAction = actionManager.getCurrentController().widget;
+                await Promise.all(
+                    Object.values(model.getters.getPivots()).map((pivot) =>
+                        pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
+                    )
+                );
+                model.dispatch("SELECT_CELL", { col: 0, row: 2 });
+                model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
+                assert.equal(model.getters.getAutofillTooltip(), undefined);
+                actionManager.destroy();
+            });
         }
     );
 });

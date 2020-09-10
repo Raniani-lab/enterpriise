@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="PointsCounter" owl="1">
-        <t t-if="get_points_won() != 0 or get_points_spent() != 0">
+        <t t-if="order and (get_points_won() != 0 or get_points_spent() != 0)">
             <div class='loyalty-points'>
                 <div class='loyalty-points-title'>
                     Points

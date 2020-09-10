@@ -17,6 +17,9 @@ odoo.define('pos_loyalty.PointsCounter', function(require) {
         get_points_total() {
             return round_pr(this.env.pos.get_order().get_new_total_points(), this.env.pos.loyalty.rounding);
         }
+        get order() {
+            return this.env.pos.get_order();
+        }
     }
     PointsCounter.template = 'PointsCounter';
 

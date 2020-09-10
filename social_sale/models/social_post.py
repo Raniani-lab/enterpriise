@@ -12,7 +12,7 @@ class SocialPost(models.Model):
 
     def _compute_sale_quotation_count(self):
         has_so_access = self.env['sale.order'].check_access_rights('read', raise_exception=False)
-        if has_so_access:
+        if has_so_access and self.utm_source_id.ids:
             quotation_data = self.env['sale.order'].read_group(
                 [('source_id', 'in', self.utm_source_id.ids)],
                 ['source_id'], ['source_id'])
@@ -26,7 +26,7 @@ class SocialPost(models.Model):
 
     def _compute_sale_invoiced_amount(self):
         has_account_move_access = self.env['account.move'].check_access_rights('read', raise_exception=False)
-        if has_account_move_access:
+        if has_account_move_access and self.utm_source_id.ids:
             query = """SELECT move.source_id as source_id, -SUM(line.balance) as price_subtotal
                         FROM account_move_line line
                         INNER JOIN account_move move ON line.move_id = move.id

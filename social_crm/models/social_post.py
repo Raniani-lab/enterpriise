@@ -15,10 +15,12 @@ class SocialPost(models.Model):
             post.use_leads = self.env.user.has_group('crm.group_use_lead')
 
     def _compute_leads_opportunities_count(self):
-        lead_data = self.env['crm.lead'].read_group(
-            [('source_id', 'in', self.utm_source_id.ids)],
-            ['source_id'], ['source_id'])
-        mapped_data = {datum['source_id'][0]: datum['source_id_count'] for datum in lead_data}
+        mapped_data = {}
+        if self.utm_source_id.ids:
+            lead_data = self.env['crm.lead'].read_group(
+                [('source_id', 'in', self.utm_source_id.ids)],
+                ['source_id'], ['source_id'])
+            mapped_data = {datum['source_id'][0]: datum['source_id_count'] for datum in lead_data}
         for post in self:
             post.leads_opportunities_count = mapped_data.get(post.utm_source_id.id, 0)
 

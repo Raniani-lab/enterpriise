@@ -10,6 +10,12 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
     const autofillModifiersRegistry = spreadsheet.registries.autofillModifiersRegistry;
 
     //--------------------------------------------------------------------------
+    // Autofill Component
+    //--------------------------------------------------------------------------
+    class AutofillTooltip extends owl.Component {}
+    AutofillTooltip.template = "documents_spreadsheet.AutofillTooltip";
+
+    //--------------------------------------------------------------------------
     // Autofill Rules
     //--------------------------------------------------------------------------
 
@@ -55,6 +61,12 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     steps = rule.current;
             }
             const content = getters.getNextValue(data.content, isColumn, steps);
+            const tooltip = {
+                props: {
+                    content: getters.getTooltipFormula(content),
+                },
+                component: AutofillTooltip,
+            };
             return {
                 cellData: {
                     style: undefined,
@@ -62,9 +74,7 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     border: undefined,
                     content,
                 },
-                tooltip: {
-                    props: { content },
-                }
+                tooltip,
             };
         },
     }).add("PIVOT_POSITION_UPDATER", {

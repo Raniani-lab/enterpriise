@@ -118,6 +118,26 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         getSelectedPivot() {
             return this.selectedPivot;
         }
+        /**
+         * Compute the tooltip to display from a Pivot formula
+         * @param {string} formula Pivot formula
+         */
+        getTooltipFormula(formula) {
+            if (!formula) {
+                return [];
+            }
+            const { functionName, args } = this._parseFormula(formula);
+            const pivot = this.getPivot(args[0]);
+            if (!pivot) {
+                return [];
+            }
+            if (functionName === "PIVOT") {
+                return this._tooltipFormatPivot(pivot, args);
+            } else if (functionName === "PIVOT.HEADER") {
+                return this._tooltipFormatPivotHeader(pivot, args);
+            }
+            return [];
+        }
 
         // ---------------------------------------------------------------------
         // Handlers
@@ -921,6 +941,54 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         }
 
         // ---------------------------------------------------------------------
+        // Tooltips
+        // ---------------------------------------------------------------------
+
+        /**
+         * Get the tooltip for a pivot formula
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args
+         * @private
+         */
+        _tooltipFormatPivot(pivot, args) {
+            const tooltips = [];
+            const values = this._parseArgs(args.slice(2));
+            for (let [field, value] of Object.entries(values)) {
+                tooltips.push({
+                    title: pivotUtils.formatGroupBy(pivot, field),
+                    value: pivotUtils.formatHeader(pivot, field, value) || _t("Undefined"),
+                });
+            }
+            if (pivot.measures.length !== 1) {
+                const measure = args[1];
+                tooltips.push({
+                    title: _t("Measure"),
+                    value: pivotUtils.formatHeader(pivot, "measure", measure),
+                });
+            }
+            return tooltips;
+        }
+        /**
+         * Get the tooltip for a pivot header formula
+         *
+         * @param {Pivot} pivot
+         * @param {Array<string>} args
+         * @private
+         */
+        _tooltipFormatPivotHeader(pivot, args) {
+            const tooltips = [];
+            const values = this._parseArgs(args.slice(1));
+            for (let [field, value] of Object.entries(values)) {
+                tooltips.push({
+                    title: field === "measure" ? _t("Measure") : pivotUtils.formatGroupBy(pivot, field),
+                    value: pivotUtils.formatHeader(pivot, field, value) || _t("Undefined"),
+                });
+            }
+            return tooltips;
+        }
+
+        // ---------------------------------------------------------------------
         // Helpers
         // ---------------------------------------------------------------------
 
@@ -1058,6 +1126,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         "getPivots",
         "getSelectedPivot",
         "getNextValue",
+        "getTooltipFormula",
     ];
 
     return PivotPlugin;

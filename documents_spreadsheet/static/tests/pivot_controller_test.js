@@ -4,16 +4,12 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
     const PivotView = require("web.PivotView");
     const testUtils = require("web.test_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const spreadsheetUtils = require("documents_spreadsheet.test_utils");
+    const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const CancelledReason = require('documents_spreadsheet.CancelledReason');
     const { Model } = spreadsheet;
     const toCartesian = spreadsheet.helpers.toCartesian;
-
-    function mockRPCFn (route, args) {
-        if (args.method === "search_read" && args.model === "ir.model") {
-            return Promise.resolve([{ name: "partner" }]);
-        }
-        return this._super.apply(this, arguments);
-    }
+    const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
 
     const createView = testUtils.createView;
 
@@ -50,6 +46,32 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
         {
             beforeEach: function () {
                 this.data = {
+                    "documents.document": {
+                        fields: {
+                            name: { string: "Name", type: "char" },
+                            raw: { string: "Data", type: "text" },
+                            thumbnail: { string: "Thumbnail", type: "text" },
+                            favorited_ids: { string: "Name", type: "many2many" },
+                            is_favorited: { string: "Name", type: "boolean" },
+                        },
+                        records: [
+                            { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
+                            { id: 2, name: "", raw: "{}", is_favorited: true },
+                        ],
+                    },
+                    "ir.model": {
+                        fields: {
+                            name: { string: "Model Name", type: "char" },
+                            model: { string: "Model", type: "char" },
+                        },
+                        records: [
+                            {
+                                id: 37,
+                                name: "Product",
+                                model: "product",
+                            },
+                        ],
+                    },
                     partner: {
                         fields: {
                             foo: {
@@ -1452,6 +1474,110 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     assert.equal(filter.value, "Hello export bug");
                 }
             );
+
+            QUnit.test("Tooltip of pivot formulas", async function (assert) {
+                assert.expect(6);
+
+                const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="year" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const spreadsheetAction = actionManager.getCurrentController().widget;
+                await Promise.all(
+                    Object.values(model.getters.getPivots()).map((pivot) =>
+                        pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
+                    )
+                );
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "A3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }, {
+                    "title": "Foo",
+                    "value": 1
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "E3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }, {
+                    "title": "Foo",
+                    "value": 17
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "F3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B1")), [{
+                    "title": "Foo",
+                    "value": 1
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B2")), [{
+                    "title": "Foo",
+                    "value": 1
+                }, {
+                    "title": "Measure",
+                    "value": "Probability"
+                }]);
+                actionManager.destroy();
+            });
+
+            QUnit.test("Tooltip of pivot formulas with 2 measures", async function (assert) {
+                assert.expect(3);
+
+                const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="name" type="col"/>
+                        <field name="date" interval="year" type="row"/>
+                        <field name="probability" type="measure"/>
+                        <field name="foo" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const spreadsheetAction = actionManager.getCurrentController().widget;
+                await Promise.all(
+                    Object.values(model.getters.getPivots()).map((pivot) =>
+                        pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
+                    )
+                );
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "A3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }, {
+                    "title": "name",
+                    "value": "Undefined"
+                }, {
+                    "title": "Measure",
+                    "value": "Probability"
+                }]);
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "C3")), [{
+                    "title": "Date (Year)",
+                    "value": "2016"
+                }, {
+                    "title": "name",
+                    "value": "Undefined"
+                }, {
+                    "title": "Measure",
+                    "value": "Foo"
+                }]);
+                actionManager.destroy();
+            });
         }
     );
 });

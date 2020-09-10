@@ -231,4 +231,10 @@
         </select>
     </div>
 
+    <div t-name="documents_spreadsheet.AutofillTooltip" owl="1">
+        <t t-foreach="props.content" t-as="line">
+            <div><t t-esc="line.title"/>: <t t-esc="line.value"/></div>
+        </t>
+    </div>
+
 </templates>

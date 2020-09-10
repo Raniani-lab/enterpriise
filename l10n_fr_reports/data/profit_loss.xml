@@ -366,7 +366,7 @@
     <field name="sequence" eval="1"/>
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_1</field>
-    <field name="formulas">sum</field>
+    <field name="formulas">-sum</field>
     <field name="domain" eval="[ '|', ('account_id.code', '=like', '7711%'), '|', ('account_id.code', '=like', '7713%'), '|', ('account_id.code', '=like', '7714%'), '|', ('account_id.code', '=like', '7715%'), '|', ('account_id.code', '=like', '7717%'), ('account_id.code', '=like', '7718%')]"/>
   </record>
   <record id="p_n_l_produits_exceptionnels" model="account.financial.html.report.line">
@@ -375,8 +375,8 @@
     <field name="sequence" eval="2"/>
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_2</field>
-    <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7081%'), '|', ('account_id.code', '=like', '7082%'), '|', ('account_id.code', '=like', '7083%'), '|', ('account_id.code', '=like', '7084%'), '|', ('account_id.code', '=like', '7085%'), '|', ('account_id.code', '=like', '7086%'), '|', ('account_id.code', '=like', '7087%'), '|', ('account_id.code', '=like', '7088%'), ('account_id.code', '=like', '772%')]"/>
+    <field name="formulas">-sum</field>
+    <field name="domain" eval="[('account_id.code', '=like', '772%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp16" model="account.financial.html.report.line">
     <field name="name">Sur opérations au capital</field>
@@ -384,7 +384,7 @@
     <field name="sequence" eval="3"/>
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_3</field>
-    <field name="formulas">sum</field>
+    <field name="formulas">-sum</field>
     <field name="domain" eval="[ '|', ('account_id.code', '=like', '7751%'), '|', ('account_id.code', '=like', '7752%'), '|', ('account_id.code', '=like', '7756%'), '|', ('account_id.code', '=like', '7758%'), '|', ('account_id.code', '=like', '777%'), '|', ('account_id.code', '=like', '7781%'), '|', ('account_id.code', '=like', '7782%'), '|', ('account_id.code', '=like', '7783%'), ('account_id.code', '=like', '7788%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp17" model="account.financial.html.report.line">
@@ -393,7 +393,7 @@
     <field name="sequence" eval="4"/>
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_4</field>
-    <field name="formulas">sum</field>
+    <field name="formulas">-sum</field>
     <field name="domain" eval="[ '|', ('account_id.code', '=like', '78725%'), '|', ('account_id.code', '=like', '78726%'), '|', ('account_id.code', '=like', '78727%'), '|', ('account_id.code', '=like', '7873%'), '|', ('account_id.code', '=like', '7874%'), '|', ('account_id.code', '=like', '7875%'), '|', ('account_id.code', '=like', '7876%'), ('account_id.code', '=like', '797%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_exc" model="account.financial.html.report.line">
@@ -457,20 +457,20 @@
     <field name="domain" eval="[ '|', ('account_id.code', '=like', '6951%'), '|', ('account_id.code', '=like', '6952%'), '|', ('account_id.code', '=like', '6954%'), '|', ('account_id.code', '=like', '697%'), '|', ('account_id.code', '=like', '6981%'), '|', ('account_id.code', '=like', '6989%'), ('account_id.code', '=like', '699%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod" model="account.financial.html.report.line">
-    <field name="name">Total des produits (I+III+V+VIII)</field>
+    <field name="name">Total des produits (I+III+V+VII)</field>
     <field name="level" eval="1"/>
     <field name="sequence" eval="13"/>
     <field name="financial_report_id" ref="account_financial_report_l10n_fr_cdr"/>
     <field name="code">total_products</field>
-    <field name="formulas">I + III + V + VIII</field>
+    <field name="formulas">I + III + V + VII</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char" model="account.financial.html.report.line">
-    <field name="name">Total des charges (II+IV+VIII+IX+X)</field>
+    <field name="name">Total des charges (II+IV+VI+VIII+IX+X)</field>
     <field name="level" eval="1"/>
     <field name="sequence" eval="14"/>
     <field name="financial_report_id" ref="account_financial_report_l10n_fr_cdr"/>
     <field name="code">total_charges</field>
-    <field name="formulas">II + IV + VIII + IX + X</field>
+    <field name="formulas">II + IV + VI + VIII + IX + X</field>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_tot" model="account.financial.html.report.line">
     <field name="name">Bénéfice ou perte</field>

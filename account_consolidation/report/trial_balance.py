@@ -110,10 +110,10 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
     def _get_journals_headers(self, options):
         journal_ids = JournalsHandler.get_selected_values(options)
         journals = self.env['consolidation.journal'].browse(journal_ids)
-        journal_columns = [{'name': self._get_journal_title(j, options), 'class': 'number'} for j in journals]
+        journal_columns = [self._get_journal_col(j, options) for j in journals]
         return journal_columns + [{'name': _('Total'), 'class': 'number'}]
 
-    def _get_journal_title(self, journal, options):
+    def _get_journal_col(self, journal, options):
         journal_name = journal.name
         if journal.company_period_id:
             journal_name = journal.company_period_id.company_name
@@ -123,14 +123,15 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
             cp = journal.company_period_id
             from_currency = cp.currency_chart_id.symbol
             to_currency = journal.originating_currency_id.symbol
-            vals = (journal_name,
-                    journal.rate_consolidation,
-                    from_currency, cp.currency_rate_avg, to_currency,
-                    from_currency, cp.currency_rate_end, to_currency)
-            return _(
-                "%s<br /><span class=\"subtitle\">Conso Rate: %s%%<br />Avg Rate: 1%s = %s%s / End Rate: 1%s = %s%s</span>") % vals
-        return _("%s<br /><span class=\"subtitle\">Conso Rate: %s%%</span><br/><br/>") % (
-            journal_name, journal.rate_consolidation)
+            return {'name': journal.name, 'consolidation_rate': journal.rate_consolidation,
+                    'from_currency': from_currency,
+                    'currency_rate_avg': cp.currency_rate_avg, 'currency_rate_end': cp.currency_rate_end,
+                    'to_currency': to_currency, 'class': 'number',
+                    'template': 'account_consolidation.header_cell_template'}
+        return {'name': journal.name, 'consolidation_rate': journal.rate_consolidation, 'class': 'number',
+                'template': 'account_consolidation.header_cell_template'}
+
+
 
     @api.model
     def _get_report_name(self):

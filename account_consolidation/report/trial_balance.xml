@@ -195,5 +195,20 @@
                 </tr>
             </t>
         </template>
+        <template id="header_cell_template">
+            <t t-esc="cell.get('name')"/>
+            <br />
+            <t t-if="cell.get('consolidation_rate')">
+                <span class="subtitle">
+                    Conso Rate: <t t-esc="cell.get('consolidation_rate')"/>%<br/>
+                    <t t-if="cell.get('from_currency')">
+                        Avg Rate: 1<t t-esc="cell.get('from_currency')"/> = <t t-esc="cell.get('currency_rate_avg')"/><t t-esc="cell.get('to_currency')"/>
+                        / End Rate: 1<t t-esc="cell.get('from_currency')"/> = <t t-esc="cell.get('currency_rate_end')"/><t t-esc="cell.get('to_currency')"/>
+                    </t>
+                </span>
+            </t>
+            <br />
+            <br />
+        </template>
     </data>
 </odoo>

@@ -86,9 +86,9 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         self.assertEqual(len(headers), len(self.journals) + 2,
                           'Report should have a header by journal + a total column and a first blank column')
         real_headers = headers[1:-1]
-        self.assertEqual(real_headers[0]['name'], report._get_journal_title(self.journals['be'][0], options),
+        self.assertEqual(real_headers[0]['name'], report._get_journal_col(self.journals['be'][0], options)['name'],
                           'First column should be the column of "BE company" journal')
-        self.assertEqual(real_headers[1]['name'], report._get_journal_title(self.journals['us'][0], options),
+        self.assertEqual(real_headers[1]['name'], report._get_journal_col(self.journals['us'][0], options)['name'],
                           'First column should be the column of "US company" journal')
 
         lines = report._get_lines(options)
@@ -151,11 +151,11 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         self.assertEqual(len(headers), len(self.journals) + 1,
                           'Report should have a header by selected journal + a total column and a first blank column')
         real_headers = headers[1:-1]
-        self.assertEqual(real_headers[0]['name'], report._get_journal_title(self.journals['be'][0], options),
+        self.assertEqual(real_headers[0]['name'], report._get_journal_col(self.journals['be'][0], options)['name'],
                           '"%s" journal should be in headers' % self.journals['be'][0].name)
 
         for real_header in real_headers:
-            self.assertNotEqual(real_header['name'], report._get_journal_title(self.journals['us'][0], options),
+            self.assertNotEqual(real_header['name'], report._get_journal_col(self.journals['us'][0], options)['name'],
                                  '"US Company" journal should be in headers')
 
         lines = report._get_lines(options)

@@ -146,7 +146,7 @@ class MrpProductionSchedule(models.Model):
                 )
                 extra_values = production_schedule._get_procurement_extra_values(forecast)
                 quantity = forecast['replenish_qty'] - forecast['incoming_qty']
-                if not bom or not product_ratio:
+                if not bom:
                     procurements.append(self.env['procurement.group'].Procurement(
                         production_schedule.product_id,
                         quantity,

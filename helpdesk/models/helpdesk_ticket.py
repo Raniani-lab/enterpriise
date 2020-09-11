@@ -465,7 +465,7 @@ class HelpdeskTicket(models.Model):
         
     @api.model
     def create_action(self, action_ref, title, search_view_ref):
-        action = self.env.ref(action_ref).read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id(action_ref)
         if title:
             action['display_name'] = title
         if search_view_ref:

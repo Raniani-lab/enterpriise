@@ -50,7 +50,7 @@ class MrpRouting(models.Model):
             product_ids = [pid for template in product_templates for pid in template['product_variant_ids']]
             self.env.context = dict(self.env.context, default_product_ids=product_ids)
         ctx = dict(self._context, default_picking_type_id=picking_type_id, default_company_id=self.company_id.id)
-        action.update({'context': ctx, 'domain': [('id', 'in', self.quality_point_ids.ids)]})
+        action.update({'context': ctx, 'domain': [('operation_id', '=', self.id)]})
         return action
 
 

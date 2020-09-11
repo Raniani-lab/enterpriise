@@ -61,7 +61,7 @@ tour.register('sign_tour', {
     content: _t("Confirm and continue."),
     position: "bottom",
 }, {
-    trigger: '.o_sign_validate_banner button:contains("' + _t('Validate & Send Completed Document') + '")',
+    trigger: '.o_sign_validate_banner button.o_validate_button',
     content: _t("Great, the document is signed!<br>Let’s validate it."),
     position: "top",
 }, {

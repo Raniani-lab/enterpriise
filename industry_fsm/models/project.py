@@ -36,29 +36,43 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields_list):
         result = super(Task, self).default_get(fields_list)
-        user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
-        date_begin = result.get('planned_date_begin')
-        if date_begin and (not self.env.context.get('default_planned_date_begin') or self._context.get('fsm_mode')):
-            if self._context.get('fsm_mode'):
-                date_begin = fields.Datetime.now()
-            date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
-            date_begin = date_begin.replace(hour=9, minute=0, second=0)
-            date_begin = date_begin.astimezone(pytz.utc).replace(tzinfo=None)
-            result['planned_date_begin'] = date_begin
-        date_end = result.get('planned_date_end')
-        if date_end and (not self.env.context.get('default_planned_date_end') or self._context.get('fsm_mode')):
-            if self._context.get('fsm_mode'):    
-                date_end = fields.Datetime.now()
-            date_end = pytz.utc.localize(date_end).astimezone(user_tz)
-            date_end = date_end.replace(hour=17, minute=0, second=0)
-            date_end = date_end.astimezone(pytz.utc).replace(tzinfo=None)
-            result['planned_date_end'] = date_end
         if 'project_id' in fields_list and not result.get('project_id') and self._context.get('fsm_mode'):
             if self.env.context.get('default_company_id'):
                 fsm_project = self.env['project.project'].search([('is_fsm', '=', True), ('company_id', '=', self.env.context.get('default_company_id'))], order='sequence', limit=1)
             else :
                 fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
+
+        date_begin = result.get('planned_date_begin') and (not self.env.context.get('default_planned_date_begin') or self.env.context.get('fsm_mode'))
+        date_end = result.get('planned_date_end') and (not self.env.context.get('default_planned_date_end') or self.env.context.get('fsm_mode'))
+        if date_begin or date_end:
+            # If the task is assigned, the default start/end hours correspond to what is configured on the employee calendar
+            user = self.env['res.users'].sudo().browse(result.get('user_id', False))
+            if user and user.employee_id:
+                resource_calendar = user.resource_calendar_id
+            # If the task is unassigned, the default start/end hours correspond to what is configured on the company calendar
+            else:
+                company = self.env['res.company'].sudo().browse(result.get('company_id')) if result.get(
+                    'company_id') else self.env.user.company_id
+                resource_calendar = company.resource_calendar_id
+            user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
+            date_begin = fields.Datetime.now()
+            if (result.get('planned_date_end')-result.get('planned_date_begin')).days == 0:
+                date_begin = result.get('planned_date_begin')
+            date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)
+            start_dt = date_begin.replace(hour=0, minute=0, second=1)
+            end_dt = date_begin.replace(hour=23, minute=59, second=59)
+            if resource_calendar:
+                resources_work_intervals = resource_calendar._work_intervals_batch(start_dt, end_dt)
+                work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
+                if work_intervals:
+                    planned_date_begin = work_intervals[0][0].astimezone(pytz.utc).replace(tzinfo=None)
+                    planned_date_end = work_intervals[-1][1].astimezone(pytz.utc).replace(tzinfo=None)
+                    result['planned_date_begin'] = planned_date_begin
+                    result['planned_date_end'] = planned_date_end
+            else:
+                result['planned_date_begin'] = start_dt.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
+                result['planned_date_end'] = end_dt.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')

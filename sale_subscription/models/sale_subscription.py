@@ -860,7 +860,7 @@ class SaleSubscription(models.Model):
             invoice = tx.invoice_ids and tx.invoice_ids[0]
         self.reconcile_pending_transaction(tx, invoice=invoice)
         self.send_success_mail(tx, invoice)
-        msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, invoice.id)
+        msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, invoice.id)
         self.message_post(body=msg_body)
         return True
 

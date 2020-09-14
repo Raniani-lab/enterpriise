@@ -362,13 +362,15 @@ odoo.define('web_map.MapRenderer', function (require) {
          * @private
          */
         _updateMap() {
-            const initialCoord = this._getLatLng();
-            if (initialCoord) {
-                this.leafletMap.flyToBounds(initialCoord, { animate: false });
-            } else {
-                this.leafletMap.fitWorld();
+            if (this.props.shouldUpdatePosition) {
+                const initialCoord = this._getLatLng();
+                if (initialCoord) {
+                    this.leafletMap.flyToBounds(initialCoord, { animate: false });
+                } else {
+                    this.leafletMap.fitWorld();
+                }
+                this.leafletMap.closePopup();
             }
-            this.leafletMap.closePopup();
             this._addMarkers();
             this._addRoutes();
         }
@@ -415,6 +417,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             type: String,
             optional: true,
         },
+        fetchingCoordinates: Boolean,
         fieldNamesMarkerPopup: {
             type: Array,
             element: {
@@ -452,6 +455,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             type: String,
             optional: true,
         },
+        shouldUpdatePosition: Boolean,
     };
     MapRenderer.template = 'web_map.MapRenderer';
 

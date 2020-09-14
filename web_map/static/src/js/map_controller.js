@@ -11,6 +11,7 @@ const MapController = AbstractController.extend({
         'get_itinerary_clicked': '_onGetItineraryClicked',
         'open_clicked': '_onOpenClicked',
         'pager_changed': '_onPagerChanged',
+        'coordinate_fetched': '_onCoordinateFetched',
     }),
 
     /**
@@ -75,6 +76,14 @@ const MapController = AbstractController.extend({
     // Handlers
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onCoordinateFetched: function (ev) {
+        ev.stopPropagation();
+        this.update({}, { reload: false });
+    },
     /**
      * Redirects to google maps with all the records' coordinates.
      *

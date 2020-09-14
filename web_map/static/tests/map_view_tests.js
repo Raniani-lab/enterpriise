@@ -164,6 +164,8 @@ QUnit.module('mapView', {
             }
         };
         testUtils.mock.patch(MapModel, {
+            // set delay to 0 as _fetchCoordinatesFromAddressOSM is mocked
+            COORDINATE_FETCH_DELAY: 0,
             _fetchCoordinatesFromAddressMB: function (record) {
                 if (this.data.mapBoxToken !== 'token') {
                     return Promise.reject({ status: 401 });
@@ -214,7 +216,14 @@ QUnit.module('mapView', {
                 const routes = [];
                 routes[0] = { legs };
                 return Promise.resolve({ routes });
-            }
+            },
+            _notifyFetchedCoordinate: function () {
+                // do not notify in tests as coords fetching is " synchronous "
+            },
+            _openStreetMapAPI: function () {
+                // return promise to wait for it
+                return this._openStreetMapAPIAsync();
+            },
         });
     },
     afterEach: function () {
@@ -1231,6 +1240,8 @@ QUnit.module('mapView', {
                 switch (route) {
                     case '/web/dataset/search_read':
                         return Promise.resolve(this.data['project.task'].twoRecords);
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return Promise.resolve([]);
                 }
                 return Promise.resolve();
             },

@@ -8,8 +8,18 @@
             <t t-elif="props.routing and !props.mapBoxToken">
                 <t t-call="web_map.MapRenderer.NoMapToken"/>
             </t>
+            <t t-if="props.fetchingCoordinates">
+                <t t-call="web_map.MapRenderer.FetchingCoordinates"/>
+            </t>
             <div class="o_map_container col-md-12 col-lg-10" t-ref="mapContainer"/>
             <t t-call="web_map.MapRenderer.PinListContainer"/>
+        </div>
+    </t>
+
+    <t t-name="web_map.MapRenderer.FetchingCoordinates" owl="1">
+        <div class="alert alert-info col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
+            role="status">
+            <i class="fa fa-spin fa-spinner"/> Locating new addresses...
         </div>
     </t>
 
@@ -83,9 +93,12 @@
                     t-on-click.prevent="_centerAndOpenPin(record)">
                     <t t-esc="record.display_name"/>
                 </a>
-                <span t-else="" class="text-muted">
-                    <t t-esc="record.display_name"/>
-                </span>
+                <div t-else="" class="text-muted d-flex">
+                    <span t-esc="record.display_name"/>
+                    <span class="ml-auto" t-if="record.partner and record.partner.fetchingCoordinate">
+                        <i class="fa fa-spin fa-spinner"/>
+                    </span>
+                </div>
             </li>
         </t>
     </t>

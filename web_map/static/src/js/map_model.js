@@ -7,6 +7,9 @@ const core = require('web.core');
 const _t = core._t;
 
 const MapModel = AbstractModel.extend({
+    // Used in _openStreetMapAPIAsync to add delay between coordinates fetches
+    // We need this delay to not get banned from OSM.
+    COORDINATE_FETCH_DELAY: 1000,
 
     //--------------------------------------------------------------------------
     // Public
@@ -39,6 +42,9 @@ const MapModel = AbstractModel.extend({
         this.orderBy = params.orderBy;
         this.routing = params.routing;
         this.numberOfLocatedRecords = 0;
+        this.coordinateFetchingTimeoutHandle = undefined;
+        this.data.shouldUpdatePosition = true;
+        this.data.fetchingCoordinates = false;
         this.data.groupBy = params.groupedBy.length ? params.groupedBy[0] : false;
         return this._fetchData();
     },
@@ -47,6 +53,12 @@ const MapModel = AbstractModel.extend({
         this.partnerToCache = [];
         this.partnerIds = [];
         this.numberOfLocatedRecords = 0;
+        this.data.shouldUpdatePosition = true;
+        this.data.fetchingCoordinates = false;
+        if (this.coordinateFetchingTimeoutHandle !== undefined) {
+            clearInterval(this.coordinateFetchingTimeoutHandle);
+            this.coordinateFetchingTimeoutHandle = undefined;
+        }
         if (options.domain !== undefined) {
             this.domain = options.domain;
         }
@@ -318,7 +330,6 @@ const MapModel = AbstractModel.extend({
             }
         });
         return Promise.all(promises).then(() => {
-            this._addPartnerToRecord();
             this.data.routeInfo = { routes: [] };
             if (this.numberOfLocatedRecords > 1 && this.routing && !this.data.groupBy) {
                 return this._fetchRoute().then(routeResult => {
@@ -366,31 +377,83 @@ const MapModel = AbstractModel.extend({
         }
     },
     /**
+     * Notifies the fetched coordinates to server and controller.
+     *
+     * @private
+     */
+    _notifyFetchedCoordinate: function () {
+        this._writeCoordinatesUsers();
+        this.data.shouldUpdatePosition = false;
+        this.trigger_up('coordinate_fetched');
+    },
+    /**
+     * Calls (without awaiting) _openStreetMapAPIAsync with a delay of 1000ms
+     * to not get banned from openstreetmap's server.
+     *
+     * Tests should patch this function to wait for coords to be fetched.
+     *
+     * @see _openStreetMapAPIAsync
+     * @private
+     * @return {Promise}
+     */
+    _openStreetMapAPI: function () {
+        this._openStreetMapAPIAsync();
+        return Promise.resolve();
+    },
+    /**
      * Handles the case where the selected api is open street map.
      * Iterates on all the partners and fetches their coordinates when they're not set.
      *
      * @private
-     * @return {Promise[]} returns an array of promise that fetches the coordinates from the address
+     * @returns {Promise}
      */
-    _openStreetMapAPI: function () {
-        const promises = [];
-        this.data.partners.forEach(partner => {
+    _openStreetMapAPIAsync: function () {
+        // Group partners by address to reduce address list
+        const addressPartnerMap = new Map();
+        for (const partner of this.data.partners) {
             if (partner.contact_address_complete && (!partner.partner_latitude || !partner.partner_longitude)) {
-                promises.push(this._fetchCoordinatesFromAddressOSM(partner).then(coordinates => {
-                    if (coordinates.length) {
-                        partner.partner_longitude = coordinates[0].lon;
-                        partner.partner_latitude = coordinates[0].lat;
-                        this.partnerToCache.push(partner);
-                    }
-                }));
+                if (!addressPartnerMap.has(partner.contact_address_complete)) {
+                    addressPartnerMap.set(partner.contact_address_complete, []);
+                }
+                addressPartnerMap.get(partner.contact_address_complete).push(partner);
+                partner.fetchingCoordinate = true;
             } else if (!this._checkCoordinatesValidity(partner)) {
                 partner.partner_latitude = undefined;
                 partner.partner_longitude = undefined;
             }
-        });
-        return Promise.all(promises.map(p => p.catch(error => null))).then(() => {
-            this._addPartnerToRecord();
-        });
+        }
+
+        // `fetchingCoordinates` is used to display the "fetching banner"
+        // We need to check if there are coordinates to fetch before reload the
+        // view to prevent flickering
+        this.data.fetchingCoordinates = addressPartnerMap.size > 0;
+        const fetch = async () => {
+            const partnersList = Array.from(addressPartnerMap.values());
+            for (let i = 0; i < partnersList.length; i++) {
+                const partners = partnersList[i];
+                try {
+                    const coordinates = await this._fetchCoordinatesFromAddressOSM(partners[0]);
+                    if (coordinates.length) {
+                        for (const partner of partners) {
+                            partner.partner_longitude = coordinates[0].lon;
+                            partner.partner_latitude = coordinates[0].lat;
+                            this.partnerToCache.push(partner);
+                        }
+                    }
+                } finally {
+                    for (const partner of partners) {
+                        partner.fetchingCoordinate = false;
+                    }
+                    this.data.fetchingCoordinates = (i < partnersList.length - 1);
+                    this._notifyFetchedCoordinate();
+                    await new Promise((resolve) => {
+                        this.coordinateFetchingTimeoutHandle =
+                            setTimeout(resolve, this.COORDINATE_FETCH_DELAY);
+                    });
+                }
+            }
+        }
+        return fetch();
     },
     /**
      * Fetches the partner which ids are contained in the the array partnerids
@@ -403,6 +466,7 @@ const MapModel = AbstractModel.extend({
      */
     _partnerFetching: async function (partnerIds) {
         this.data.partners = partnerIds.length ? await this._fetchRecordsPartner(partnerIds) : [];
+        this._addPartnerToRecord();
         if (this.data.mapBoxToken) {
             return this._maxBoxAPI()
                 .then(() => {

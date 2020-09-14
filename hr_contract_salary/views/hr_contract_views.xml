@@ -14,11 +14,12 @@
                 </div>
             </xpath>
             <xpath expr="//button[@name='open_sign_requests']" position="before">
-                <button name="action_view_origin_contract" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': [('origin_contract_id', '=', False)]}" help="Previous Contract">
+                <button name="action_view_origin_contract" type="object" class="oe_stat_button" icon="fa-book" attrs="{'invisible': ['|', ('origin_contract_id', '=', False), ('is_origin_contract_template', '=', True)]}" help="Previous Contract">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_text ml4">Previous Contract</span>
                     </div>
                     <field name="origin_contract_id" invisible="1"/>
+                    <field name="is_origin_contract_template" invisible="1"/>
                 </button>
             </xpath>
             <div name="button_box" position="inside">

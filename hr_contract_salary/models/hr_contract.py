@@ -20,6 +20,7 @@ class HrContract(models.Model):
 
     # YTI TODO: Introduce a country_code field to hide country specific advantages fields
     origin_contract_id = fields.Many2one('hr.contract', string="Origin Contract", domain="[('company_id', '=', company_id)]", help="The contract from which this contract has been duplicated.")
+    is_origin_contract_template = fields.Boolean(compute='_compute_is_origin_contract_template', string='Is origin contract a contract template ?', readonly=True)
     hash_token = fields.Char('Created From Token', copy=False)
     applicant_id = fields.Many2one('hr.applicant', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
@@ -52,6 +53,11 @@ class HrContract(models.Model):
         help="Total yearly cost of the employee for the employer.")
     monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Equivalent Cost', readonly=True,
         help="Total monthly cost of the employee for the employer.")
+
+    @api.depends('origin_contract_id')
+    def _compute_is_origin_contract_template(self):
+        for contract in self:
+            contract.is_origin_contract_template = contract.origin_contract_id and not contract.origin_contract_id.employee_id
 
     @api.depends('holidays', 'wage', 'final_yearly_costs')
     def _compute_wage_with_holidays(self):

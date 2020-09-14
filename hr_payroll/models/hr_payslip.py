@@ -552,6 +552,13 @@ class HrPayslipRun(models.Model):
             "name": "Payslips",
         }
 
+    def unlink(self):
+        if any(self.filtered(lambda payslip_run: payslip_run.state not in ('draft'))):
+            raise UserError(_('You cannot delete a payslip batch which is not draft!'))
+        if any(self.mapped('slip_ids').filtered(lambda payslip: payslip.state not in ('draft','cancel'))):
+            raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
+        return super(HrPayslipRun, self).unlink()
+
     def _are_payslips_ready(self):
         return all(slip.state in ['done', 'cancel'] for slip in self.mapped('slip_ids'))
 

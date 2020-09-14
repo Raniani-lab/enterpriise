@@ -36,3 +36,4 @@ class HrContractSalaryResume(models.Model):
         ('days', 'Days'),
         ('percent', 'Percent'),
         ('currency', 'Currency')], string="Advantage Unit of Measure", default='currency')
+    active = fields.Boolean('Active', default=True)

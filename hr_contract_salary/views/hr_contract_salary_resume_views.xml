@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="hr_contract_salary_resume_view_search" model="ir.ui.view">
+        <field name="name">hr.contract.salary.resume.view.search</field>
+        <field name="model">hr.contract.salary.resume</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="value_type" string="Value Type"/>
+                <field name="structure_type_id" string="Structure Type"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="hr_contract_salary_resume_action" model="ir.actions.act_window">
         <field name="name">Resume</field>
         <field name="res_model">hr.contract.salary.resume</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="hr_contract_salary_resume_view_search"/>
     </record>
 
     <record id="hr_contract_salary_resume_view_tree" model="ir.ui.view">

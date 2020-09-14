@@ -199,7 +199,7 @@ class SocialAccountTwitter(models.Model):
         data = {
             'command': 'INIT',
             'total_bytes': image['file_size'],
-            'media_category': 'tweet_image',
+            'media_category': 'tweet_gif' if image['mimetype'] == 'image/gif' else 'tweet_image',
             'media_type': image['mimetype'],
         }
         headers = self._get_twitter_oauth_header(

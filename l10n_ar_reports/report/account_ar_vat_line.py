@@ -11,7 +11,7 @@ class AccountArVatLine(models.Model):
     add some other fields """
 
     _name = "account.ar.vat.line"
-    _description = "VAT line for Analysis in Argentinian Localization"
+    _description = "VAT line for Analysis in Argentinean Localization"
     _auto = False
     _order = 'invoice_date asc, move_name asc, id asc'
 

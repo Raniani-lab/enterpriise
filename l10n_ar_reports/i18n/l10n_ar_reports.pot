@@ -57,7 +57,7 @@ msgstr ""
 
 #. module: l10n_ar_reports
 #: model:ir.model,name:l10n_ar_reports.model_l10n_ar_vat_book
-msgid "Argentinian VAT Book"
+msgid "Argentinean VAT Book"
 msgstr ""
 
 #. module: l10n_ar_reports
@@ -406,7 +406,7 @@ msgstr ""
 
 #. module: l10n_ar_reports
 #: model:ir.model,name:l10n_ar_reports.model_account_ar_vat_line
-msgid "VAT line for Analysis in Argentinian Localization"
+msgid "VAT line for Analysis in Argentinean Localization"
 msgstr ""
 
 #. module: l10n_ar_reports

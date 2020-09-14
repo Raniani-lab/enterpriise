@@ -59,7 +59,7 @@ msgstr ""
 
 #. module: l10n_ar_reports
 #: model:ir.model,name:l10n_ar_reports.model_l10n_ar_vat_book
-msgid "Argentinian VAT Book"
+msgid "Argentinean VAT Book"
 msgstr "Libro de IVA Argentino"
 
 #. module: l10n_ar_reports
@@ -412,7 +412,7 @@ msgstr "Libro de IVA"
 
 #. module: l10n_ar_reports
 #: model:ir.model,name:l10n_ar_reports.model_account_ar_vat_line
-msgid "VAT line for Analysis in Argentinian Localization"
+msgid "VAT line for Analysis in Argentinean Localization"
 msgstr "Línea de IVA para análisis en localización argentina"
 
 #. module: l10n_ar_reports

@@ -11,7 +11,7 @@ class L10nARVatBook(models.AbstractModel):
 
     _name = "l10n_ar.vat.book"
     _inherit = "account.report"
-    _description = "Argentinian VAT Book"
+    _description = "Argentinean VAT Book"
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_all_entries = False

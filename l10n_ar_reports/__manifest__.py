@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': 'Argentinian Accounting Reports',
+    'name': 'Argentinean Accounting Reports',
     'version': '1.0',
     'author': 'ADHOC SA',
     'category': 'Accounting/Localizations/Reporting',
-    'summary': 'Reporting for Argentinian Localization',
+    'summary': 'Reporting for Argentinean Localization',
     'description': """
 * Add VAT Book report which is a legal requirement in Argentina and that holds the VAT detail info of sales or purchases made in a period of time.
 * Add a VAT summary report that is used to analyze invoicing

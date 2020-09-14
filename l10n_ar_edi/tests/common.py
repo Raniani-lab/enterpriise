@@ -49,7 +49,7 @@ class TestEdi(SingleTransactionCase):
         cls.tax_21 = cls._search_tax(cls, 'iva_21')
         cls.tax_27 = cls._search_tax(cls, 'iva_27')
 
-        # Force user to be loggin in "Reponsable Inscripto" Argentinian Company
+        # Force user to be loggin in "Reponsable Inscripto" Argentinean Company
         context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
         cls.env = cls.env(context=context)
         cls._create_afip_connections(cls, cls.company_ri)

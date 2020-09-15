@@ -105,9 +105,9 @@
                     </table>
                     </div>
 
-                    <div class="container" name="so_total_summary">
+                    <div class="container_subtotal" name="so_total_summary">
                         <div id="total" class="row justify-content-end" name="total">
-                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-5'}">
+                            <div t-attf-class="#{'col-auto' if report_type != 'html' else 'col-sm-2'}">
                                 <table t-if="final_subtotal != 0" class="table table-sm">
                                     <tr class="border-black o_subtotal" style="">
                                         <td><strong>Subtotal</strong></td>

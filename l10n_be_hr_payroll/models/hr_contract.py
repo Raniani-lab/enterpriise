@@ -303,7 +303,7 @@ class HrContract(models.Model):
     # override to add work_entry_type from leave
     def _get_leave_work_entry_type_dates(self, leave, date_from, date_to):
         result = super()._get_leave_work_entry_type_dates(leave, date_from, date_to)
-        if self.structure_type_id.country_id != self.env.ref('base.be'):
+        if self.structure_type_id.country_id.code != 'BE':
             return result
         # The salary is not guaranteed after 30 calendar days of sick leave (it means from the 31th
         # day of sick leave)

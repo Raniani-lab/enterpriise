@@ -119,7 +119,7 @@ class Payslip(models.Model):
     def _get_worked_day_lines_values(self, domain=None):
         self.ensure_one()
         res = []
-        if self.struct_id.country_id != self.env.ref('base.be'):
+        if self.struct_id.country_id.code != 'BE':
             return super()._get_worked_day_lines_values(domain=domain)
         # If a belgian payslip has half-day attendances/time off, it the worked days lines should
         # be separated
@@ -252,7 +252,7 @@ class Payslip(models.Model):
 
     def _get_paid_amount(self):
         self.ensure_one()
-        if self.struct_id.country_id == self.env.ref('base.be'):
+        if self.struct_id.country_id.code == "BE":
             struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
             if self.struct_id == struct_13th_month:
                 return self._get_paid_amount_13th_month()
@@ -282,7 +282,7 @@ class Payslip(models.Model):
         if not invalid:
             country = self.struct_id.country_id
             lang_employee = self.employee_id.address_home_id.lang
-            if country == self.env.ref('base.be') and lang_employee not in ["fr_BE", "nl_BE", "de_BE"]:
+            if country.code == 'BE' and lang_employee not in ["fr_BE", "nl_BE", "de_BE"]:
                 return _('This document is a translation. This is not a legal document.')
         return invalid
 

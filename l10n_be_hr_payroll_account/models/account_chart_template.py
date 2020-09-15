@@ -18,7 +18,7 @@ class AccountChartTemplate(models.Model):
 
     def _configure_payroll_account_data(self, companies):
         accounts_codes = ['453000', '454200', '455200', '620200', '620220', '623100', '749200']
-        belgian_structures = self.env['hr.payroll.structure'].search([('country_id', '=', self.env.ref('base.be').id)])
+        belgian_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "BE")])
 
         for company in companies:
             self = self.with_company(company)

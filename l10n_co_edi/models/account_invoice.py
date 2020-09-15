@@ -480,7 +480,7 @@ class AccountMove(models.Model):
 
     def _l10n_co_edi_is_l10n_co_edi_required(self):
         self.ensure_one()
-        return self.move_type in ('out_invoice', 'out_refund') and self.company_id.country_id == self.env.ref('base.co')
+        return self.move_type in ('out_invoice', 'out_refund') and self.company_id.country_id.code == "CO"
 
     def _post(self, soft=True):
         # OVERRIDE to generate the e-invoice for the Colombian Localization.

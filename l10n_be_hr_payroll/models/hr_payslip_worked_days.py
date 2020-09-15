@@ -17,9 +17,8 @@ class HrPayslipWorkedDays(models.Model):
         credit_time_days = monthly_self.filtered(lambda worked_day: worked_day.is_credit_time)
         credit_time_days.update({'amount': 0})
 
-        belgium = self.env.ref('base.be')
         paid_be_wds = (monthly_self - credit_time_days).filtered(
-            lambda wd: wd.payslip_id.struct_id.country_id == belgium and wd.is_paid)
+            lambda wd: wd.payslip_id.struct_id.country_id.code == "BE" and wd.is_paid)
         if paid_be_wds:
             for be_wd in paid_be_wds:
                 payslip = be_wd.payslip_id

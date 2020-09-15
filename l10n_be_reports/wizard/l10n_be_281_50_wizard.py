@@ -7,7 +7,7 @@ class L10nBe28150Wizard(models.Model):
 
     @api.model
     def default_get(self, field_list=None):
-        if self.env.company.country_id != self.env.ref('base.be'):
+        if self.env.company.country_id.code != "BE":
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         return super().default_get(field_list)
 

@@ -126,15 +126,16 @@ class HrContractSalary(http.Controller):
                 raise NotFound()
 
         if not contract.employee_id:
+            be_country = request.env["res.country"].search([("code", "=", "BE")])
             contract.employee_id = request.env['hr.employee'].sudo().create({
                 'name': '',
                 'active': False,
-                'country_id': request.env.ref('base.be').id,
+                'country_id': be_country.id,
             })
             contract.employee_id.address_home_id = request.env['res.partner'].sudo().create({
                 'name': 'Simulation',
                 'type': 'private',
-                'country_id': request.env.ref('base.be').id,
+                'country_id': be_country.id,
                 'active': False,
             })
 

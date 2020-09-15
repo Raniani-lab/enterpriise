@@ -26,9 +26,9 @@ class AccountDebitNote(models.TransientModel):
     l10n_cl_corrected_text = fields.Char('New Corrected Text', help='This is the text that should say')
 
     def _l10n_cl_get_reverse_doc_type(self, move):
-        if move.partner_id.l10n_cl_sii_taxpayer_type == '4' or move.partner_id.country_id != self.env.ref('base.cl'):
-            return self.env['l10n_latam.document.type'].search([('code', '=', '111'), ('country_id', '=', self.env.ref('base.cl').id)], limit=1)
-        return self.env['l10n_latam.document.type'].search([('code', '=', '56'), ('country_id', '=', self.env.ref('base.cl').id)], limit=1)
+        if move.partner_id.l10n_cl_sii_taxpayer_type == '4' or move.partner_id.country_id.code != "CL":
+            return self.env['l10n_latam.document.type'].search([('code', '=', '111'), ('country_id.code', '=', "CL")], limit=1)
+        return self.env['l10n_latam.document.type'].search([('code', '=', '56'), ('country_id.code', '=', "CL")], limit=1)
 
     def _is_tax(self, account):
         return len(self.env['account.tax.repartition.line'].search(
@@ -40,7 +40,7 @@ class AccountDebitNote(models.TransientModel):
         # The only motivation to comment it is to prevent the test to fail.
         # self.copy_lines = True if self.l10n_cl_edi_reference_doc_code == '1' else False
         default_values = super(AccountDebitNote, self)._prepare_default_values(move)
-        if move.company_id.country_id != self.env.ref('base.cl'):
+        if move.company_id.country_id.code != "CL":
             return default_values
         reverse_move_latam_doc_type = self._l10n_cl_get_reverse_doc_type(move)
         default_values['invoice_origin'] = '%s %s' % (move.l10n_latam_document_type_id.doc_code_prefix,
@@ -89,9 +89,11 @@ class AccountDebitNote(models.TransientModel):
         return default_values
 
     def create_debit(self):
-        for move in self.move_ids.filtered(lambda r: r.company_id.country_id == self.env.ref('base.cl') and
-                                                     r.move_type in ['out_invoice', 'out_refund'] and
-                                                     r.l10n_cl_journal_point_of_sale_type == 'online' and
-                                                     r.l10n_cl_dte_status not in ['accepted', 'objected']):
+        for move in self.move_ids.filtered(
+            lambda r: r.company_id.country_id.code == "CL" and
+            r.move_type in ['out_invoice', 'out_refund'] and
+            r.l10n_cl_journal_point_of_sale_type == 'online' and
+            r.l10n_cl_dte_status not in ['accepted', 'objected']
+        ):
             raise UserError(_('You can add a debit note only if the %s is accepted or objected by SII. ') % move.name)
         return super(AccountDebitNote, self).create_debit()

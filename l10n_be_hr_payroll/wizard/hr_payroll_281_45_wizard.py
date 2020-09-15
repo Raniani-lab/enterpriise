@@ -28,8 +28,7 @@ class HrPayroll28145Wizard(models.TransientModel):
         # 2. Not resident in Belgium
         #   > Ordered by country (alhpa. order)
         #       >> Ordered by alphabetical order for same country
-        be = self.env.ref('base.be')
-        be_employees = employees.filtered(lambda e: e.address_home_id.country_id == be)
+        be_employees = employees.filtered(lambda e: e.address_home_id.country_id.code == "BE")
         foreign_employees = employees - be_employees
 
         be_employees = be_employees.sorted(key=lambda e: e.name)

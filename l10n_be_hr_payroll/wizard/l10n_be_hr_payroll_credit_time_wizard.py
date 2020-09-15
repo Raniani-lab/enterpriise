@@ -15,7 +15,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
 
     @api.model
     def default_get(self, field_list):
-        if self.env.company.country_id != self.env.ref('base.be'):
+        if self.env.company.country_id.code != "BE":
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         return super().default_get(field_list)
 
@@ -78,7 +78,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
 
     @api.model
     def default_get(self, field_list):
-        if self.env.company.country_id != self.env.ref('base.be'):
+        if self.env.company.country_id.code != "BE":
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         res = super(L10nBeHrPayrollExitCreditTime, self).default_get(field_list)
         current_credit_time = self.env['hr.contract'].browse(self.env.context.get('active_id'))

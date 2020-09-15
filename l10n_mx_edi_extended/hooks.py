@@ -8,7 +8,7 @@ import csv
 
 def post_init_hook(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    mx_country = env.ref('base.mx')
+    mx_country = env["res.country"].search([("code", "=", "MX")])
 
     # ==== Load l10n_mx_edi.res.locality ====
 

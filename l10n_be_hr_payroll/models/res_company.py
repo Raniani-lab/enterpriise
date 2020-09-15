@@ -17,8 +17,7 @@ class ResCompany(models.Model):
         Override to set the default calendar to
         38 hours/week for Belgian companies
         """
-        country_be = self.env.ref('base.be')
-        be_companies = self.filtered(lambda c: c.country_id == country_be and not c.resource_calendar_id)
+        be_companies = self.filtered(lambda c: c.country_id.code == "BE" and not c.resource_calendar_id)
         for company in be_companies:
             company.resource_calendar_id = self.env['resource.calendar'].create({
                 'name': _('Standard 38 hours/week'),

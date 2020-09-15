@@ -20,7 +20,7 @@ class HrContract(models.Model):
 
     def _get_contract_wage_field(self):
         self.ensure_one()
-        if self.structure_type_id.country_id == self.env.ref('base.be'):
+        if self.structure_type_id.country_id.code == "BE":
             return 'wage_with_holidays'
         return super()._get_contract_wage_field()
 

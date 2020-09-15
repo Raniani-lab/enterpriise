@@ -15,7 +15,7 @@ class IntrastatReport(models.AbstractModel):
 
     def _get_reports_buttons(self):
         res = super(IntrastatReport, self)._get_reports_buttons()
-        if self.env.company.country_id == self.env.ref('base.nl'):
+        if self.env.company.country_id.code == "NL":
             res += [{'name': _('Export (CBS)'), 'sequence': 3, 'action': 'print_csv', 'file_export_type': _('CBS')}]
         return res
 

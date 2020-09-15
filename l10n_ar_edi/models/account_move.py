@@ -90,7 +90,7 @@ class AccountMove(models.Model):
     def _post(self, soft=True):
         """ After validate the invoice we then validate in AFIP. The last thing we do is request the cae because if an
         error occurs after CAE requested, the invoice has been already validated on AFIP """
-        ar_invoices = self.filtered(lambda x: x.is_invoice() and x.company_id.country_id == self.env.ref('base.ar'))
+        ar_invoices = self.filtered(lambda x: x.is_invoice() and x.company_id.country_id.code == "AR")
         sale_ar_invoices = ar_invoices.filtered(lambda x: x.move_type in ['out_invoice', 'out_refund'])
         sale_ar_edi_invoices = sale_ar_invoices.filtered(lambda x: x.journal_id.l10n_ar_afip_ws)
 
@@ -328,7 +328,7 @@ class AccountMove(models.Model):
         """
         verification_missing = self.filtered(
             lambda x: x.move_type in ['in_invoice', 'in_refund'] and x.l10n_ar_afip_verification_type == 'required' and
-            x.l10n_latam_document_type_id.country_id == self.env.ref('base.ar') and
+            x.l10n_latam_document_type_id.country_id.code == "AR" and
             x.l10n_ar_afip_verification_result not in ['A', 'O'])
         try:
             verification_missing.l10n_ar_verify_on_afip()
@@ -658,7 +658,7 @@ class AccountMove(models.Model):
         return res
 
     def _is_argentina_electronic_invoice(self):
-        return bool(self.journal_id.l10n_latam_use_documents and self.env.company.country_id == self.env.ref('base.ar') and self.journal_id.l10n_ar_afip_ws)
+        return bool(self.journal_id.l10n_latam_use_documents and self.env.company.country_id.code == "AR" and self.journal_id.l10n_ar_afip_ws)
 
     def _get_last_sequence_from_afip(self):
         """ Get last number from AFIP, this will be applied only when the account.move state = 'posted' in order to only

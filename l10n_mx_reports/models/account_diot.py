@@ -74,7 +74,6 @@ class MxReportPartnerLedger(models.AbstractModel):
     def _group_by_partner_id(self, options, line_id):
         partners = {}
         results = self._do_query_group_by_account(options, line_id)
-        mx_country = self.env.ref('base.mx')
         journal_ids = []
         for company in self.env.companies.filtered('tax_cash_basis_journal_id'):
             journal_ids.append(company.tax_cash_basis_journal_id.id)
@@ -107,7 +106,7 @@ class MxReportPartnerLedger(models.AbstractModel):
                 partners[partner]['lines'] = self.env[
                     'account.move.line'].search(domain, order='date')
 
-            if partner.country_id == mx_country and not partner.vat and partners[partner]['lines']:
+            if partner.country_id.code == "MX" and not partner.vat and partners[partner]['lines']:
                 without_vat.append(partner.name)
 
             if not partner.l10n_mx_type_of_operation and partners[partner]['lines']:

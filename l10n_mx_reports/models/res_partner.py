@@ -34,9 +34,8 @@ class ResPartner(models.Model):
         """Get the type of third to use in DIOT report.
         04 is to National Supplier
         05 to Foreign Supplier"""
-        mexico = self.env.ref('base.mx')
         for partner in self:
-            partner_type = '04' if partner.country_id == mexico else '05'
+            partner_type = '04' if partner.country_id.code == "MX" else '05'
             partner.l10n_mx_type_of_third = partner_type
 
     @api.depends('country_id')

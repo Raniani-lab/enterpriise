@@ -8,7 +8,7 @@ import csv
 
 def post_init_hook(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    mx_country = env.ref('base.mx')
+    mx_country = env["res.country"].search([("code", "=", "MX")])
 
     csv_path = join(dirname(realpath(__file__)), 'data', 'res.city.csv')
     res_city_vals_list = []

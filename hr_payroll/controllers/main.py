@@ -136,7 +136,7 @@ class HrPayroll(Controller):
         offset += 1
         content_py_file += [
             "\t" * offset + "super().setUpClass(chart_template_ref=chart_template_ref)\n",
-            "\t" * offset + "cls.company_data['company'].country_id = cls.env.ref('base.be')\n",
+            "\t" * offset + "cls.company_data['company'].country_id.code = 'BE'\n",
             "\t" * offset + "cls.env.user.tz = 'Europe/Brussels'\n",
         ]
 

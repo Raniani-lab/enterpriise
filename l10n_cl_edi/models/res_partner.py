@@ -10,4 +10,4 @@ class ResPartner(models.Model):
     l10n_cl_activity_description = fields.Char(string='Activity Description')
 
     def _l10n_cl_is_foreign(self):
-        return self.country_id != self.env.ref('base.cl')
+        return self.country_id.code != "CL"

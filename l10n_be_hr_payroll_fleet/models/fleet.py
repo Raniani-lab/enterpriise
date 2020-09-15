@@ -25,9 +25,9 @@ class FleetVehicle(models.Model):
 
     def _from_be(self):
         if self:
-            return self.company_id.country_id == self.env.ref('base.be')
+            return self.company_id.country_id.code == "BE"
         else:
-            return self.env.company.country_id == self.env.ref('base.be')
+            return self.env.company.country_id.code == "BE"
 
     @api.depends('co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.recurring_cost_amount_depreciated')
     def _compute_total_depreciated_cost(self):
@@ -56,8 +56,7 @@ class FleetVehicle(models.Model):
 
     @api.depends('fuel_type', 'co2')
     def _compute_tax_deduction(self):
-        be = self.env.ref('base.be')
-        be_vehicles = self.filtered(lambda vehicle: vehicle.company_id.country_id == be)
+        be_vehicles = self.filtered(lambda vehicle: vehicle.company_id.country_id.code == "BE")
         (self - be_vehicles).tax_deduction = 0
         coefficients = self.env['hr.rule.parameter']._get_parameter_from_code('tax_deduction_fuel_coefficients', raise_if_not_found=False)
         for vehicle in be_vehicles:

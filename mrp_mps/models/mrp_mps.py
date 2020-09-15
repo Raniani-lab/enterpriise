@@ -8,6 +8,7 @@ from odoo import api, fields, models, _
 from odoo.tools.date_utils import add, subtract
 from odoo.tools.float_utils import float_round
 from odoo.osv.expression import OR, AND
+from collections import OrderedDict
 
 
 class MrpProductionSchedule(models.Model):
@@ -253,6 +254,9 @@ class MrpProductionSchedule(models.Model):
 
         # Dependencies between schedules
         indirect_demand_trees = schedules_to_compute._get_indirect_demand_tree()
+
+        indirect_ratio_mps = schedules_to_compute._get_indirect_demand_ratio_mps(indirect_demand_trees)
+
         # Get the schedules that do not depends from other in first position in
         # order to compute the schedule state only once.
         indirect_demand_order = schedules_to_compute._get_indirect_demand_order(indirect_demand_trees)
@@ -282,7 +286,6 @@ class MrpProductionSchedule(models.Model):
                 precision_digits = max(0, int(-(log10(production_schedule.product_uom_id.rounding))))
                 production_schedule_state['precision_digits'] = precision_digits
                 production_schedule_state['forecast_ids'] = []
-            indirect_demand_ratio = production_schedule._get_indirect_demand_ratio(indirect_demand_trees, schedules_to_compute)
 
             starting_inventory_qty = production_schedule.product_id.with_context(warehouse=production_schedule.warehouse_id.id).qty_available
             if len(date_range):
@@ -323,13 +326,13 @@ class MrpProductionSchedule(models.Model):
                 if production_schedule in self:
                     production_schedule_state['forecast_ids'].append(forecast_values)
                 starting_inventory_qty = forecast_values['safety_stock_qty']
+                if not forecast_values['replenish_qty']:
+                    continue
                 # Set the indirect demand qty for children schedules.
-                for (mps, ratio) in indirect_demand_ratio:
-                    if not forecast_values['replenish_qty']:
-                        continue
+                for (product, ratio) in indirect_ratio_mps[(production_schedule.warehouse_id, production_schedule.product_id)].items():
                     related_date = max(subtract(date_start, days=lead_time), fields.Date.today())
                     index = next(i for i, (dstart, dstop) in enumerate(date_range) if related_date <= dstart or (related_date >= dstart and related_date <= dstop))
-                    related_key = (date_range[index], mps.product_id, mps.warehouse_id)
+                    related_key = (date_range[index], product, production_schedule.warehouse_id)
                     indirect_demand_qty[related_key] += ratio * forecast_values['replenish_qty']
 
             if production_schedule in self:
@@ -618,11 +621,12 @@ class MrpProductionSchedule(models.Model):
         recompute a state because its indirect demand was a depend from another
         schedule.
         """
+        product_ids = self.mapped('product_id')
 
         def _get_pre_order(node):
             order_list = []
-            if node.product in self.mapped('product_id'):
-                order_list += node.product
+            if node.product in product_ids:
+                order_list.append(node.product)
             for child in node.children:
                 order_list += _get_pre_order(child)
             return order_list
@@ -631,42 +635,48 @@ class MrpProductionSchedule(models.Model):
         for node in indirect_demand_trees:
             product_order_by_tree += _get_pre_order(node)
 
-        product_order = []
-        # TODO ensure it works
+        product_order = OrderedDict()
         for product in reversed(product_order_by_tree):
             if product not in product_order:
-                product_order.append(product)
+                product_order[product] = True
+
+        mps_order_by_product = defaultdict(lambda: self.env['mrp.production.schedule'])
+        for mps in self:
+            mps_order_by_product[mps.product_id] |= mps
 
         mps_order = self.env['mrp.production.schedule']
-        for product in reversed(product_order):
-            mps_order |= self.filtered(lambda mps: mps.product_id == product)
+        for product in reversed(product_order.keys()):
+            mps_order |= mps_order_by_product[product]
         return mps_order
 
-    def _get_indirect_demand_ratio(self, indirect_demand_trees, other_mps):
-        """ return the schedules in arg 'other_mps' directly linked to
-        schedule self and the quantity nescessary in order to produce 1 unit of
-        the product defined on the given schedule.
+    def _get_indirect_demand_ratio_mps(self, indirect_demand_trees):
+        """ Return {(warehouse, product): {product: ratio}} dict containing the indirect ratio
+        between two products.
         """
-        self.ensure_one()
-        other_mps = other_mps.filtered(lambda s: s.warehouse_id == self.warehouse_id)
-        related_mps = []
+        by_warehouse_mps = defaultdict(lambda: self.env['mrp.production.schedule'])
+        for mps in self:
+            by_warehouse_mps[mps.warehouse_id] |= mps
 
-        def _first_matching_mps(node, ratio, related_mps):
-            if node.product == self.product_id:
-                ratio = 1.0
-            elif ratio and node.product in other_mps.mapped('product_id'):
-                related_mps.append((other_mps.filtered(lambda s: s.product_id == node.product), ratio))
-                return related_mps
-            for child in node.children:
-                related_mps = _first_matching_mps(child, ratio * child.ratio, related_mps)
-                if not ratio and related_mps:
-                    return related_mps
-            return related_mps
+        result = defaultdict(lambda: defaultdict(float))
+        for warehouse_id, other_mps in by_warehouse_mps.items():
+            other_mps_product_ids = other_mps.mapped('product_id')
+            subtree_visited = set()
 
-        for tree in indirect_demand_trees:
-            if not related_mps:
-                related_mps = _first_matching_mps(tree, False, [])
-        return related_mps
+            def _dfs_ratio_search(current_node, ratio, node_indirect=False):
+                for child in current_node.children:
+                    if child.product in other_mps_product_ids:
+                        result[(warehouse_id, node_indirect and node_indirect.product or current_node.product)][child.product] += ratio * child.ratio
+                        if child.product in subtree_visited:  # Don't visit the same subtree twice
+                            continue
+                        subtree_visited.add(child.product)
+                        _dfs_ratio_search(child, 1.0, node_indirect=False)
+                    else:  # Hidden Bom => continue DFS and set node_indirect
+                        _dfs_ratio_search(child, child.ratio * ratio, node_indirect=current_node)
+
+            for tree in indirect_demand_trees:
+                _dfs_ratio_search(tree, tree.ratio)
+
+        return result
 
     def _get_indirect_demand_tree(self):
         """ Get the tree architecture for all the BoM and BoM line that are
@@ -675,7 +685,7 @@ class MrpProductionSchedule(models.Model):
         - Allow to determine the schedules evaluation order. (compute the
         schedule without indirect demand first)
         It also made the link between schedules even if some intermediate BoM
-        levels are hidde. (e.g. B1 -1-> B2 -1-> B3, schedule for B1 and B3
+        levels are hidden. (e.g. B1 -1-> B2 -1-> B3, schedule for B1 and B3
         are linked even if the schedule for B2 does not exist.)
         Return a list of namedtuple that represent on top the schedules without
         indirect demand and on lowest leaves the schedules that are the most
@@ -688,27 +698,34 @@ class MrpProductionSchedule(models.Model):
             ('product_id', '=', False),
             ('product_tmpl_id', 'in', self.mapped('product_id.product_tmpl_id').ids)
         ])
+        bom_lines_by_product = defaultdict(lambda: self.env['mrp.bom'])
+        bom_lines_by_product_tmpl = defaultdict(lambda: self.env['mrp.bom'])
+        for bom in boms:
+            if bom.product_id:
+                if bom.product_id not in bom_lines_by_product:
+                    bom_lines_by_product[bom.product_id] = bom
+            else:
+                if bom.product_tmpl_id not in bom_lines_by_product_tmpl:
+                    bom_lines_by_product_tmpl[bom.product_tmpl_id] = bom
 
         Node = namedtuple('Node', ['product', 'ratio', 'children'])
         indirect_demand_trees = {}
         product_visited = {}
 
-        def _get_product_tree(product, ratio, product_visited):
+        def _get_product_tree(product, ratio):
             product_tree = product_visited.get(product)
             if product_tree:
                 return Node(product_tree.product, ratio, product_tree.children)
 
             product_tree = Node(product, ratio, [])
-            # TODO take only one BoM
-            product_boms = boms.filtered(lambda b:
-                b.product_id == product or
-                (not b.product_id and b.product_tmpl_id == product.product_tmpl_id)
-            )
-            for line in product_boms.mapped('bom_line_ids'):
+            product_boms = (bom_lines_by_product[product] | bom_lines_by_product_tmpl[product.product_tmpl_id]).sorted('sequence')[:1]
+            if not product_boms:
+                product_boms = self.env['mrp.bom']._bom_find(product=product) or self.env['mrp.bom']
+            for line in product_boms.bom_line_ids:
                 line_qty = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id)
                 bom_qty = line.bom_id.product_uom_id._compute_quantity(line.bom_id.product_qty, line.bom_id.product_tmpl_id.uom_id)
                 ratio = line_qty / bom_qty
-                tree = _get_product_tree(line.product_id, ratio, product_visited)
+                tree = _get_product_tree(line.product_id, ratio)
                 product_tree.children.append(tree)
                 if line.product_id in indirect_demand_trees:
                     del indirect_demand_trees[line.product_id]
@@ -718,7 +735,7 @@ class MrpProductionSchedule(models.Model):
         for product in self.mapped('product_id'):
             if product in product_visited:
                 continue
-            indirect_demand_trees[product] = _get_product_tree(product, 1.0, product_visited)
+            indirect_demand_trees[product] = _get_product_tree(product, 1.0)
 
         return [tree for tree in indirect_demand_trees.values()]
 

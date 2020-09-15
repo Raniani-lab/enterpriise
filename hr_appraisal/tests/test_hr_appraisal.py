@@ -49,11 +49,11 @@ class TestHrAppraisal(TransactionCase):
             department_id=self.dep_rd.id,
             parent_id=self.manager.id,
             job_id=self.job.id,
-            work_location="Grand-Rosière",
             work_phone="+3281813700",
             work_email='michael@odoo.com',
             last_appraisal_date=date.today() + relativedelta(months=-12, days=5)
         ))
+        self.hr_employee.write({'work_location_id': [(0, 0, {'name': "Grand-Rosière"})]})
 
         self.env.company.appraisal_plan = True
         self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)

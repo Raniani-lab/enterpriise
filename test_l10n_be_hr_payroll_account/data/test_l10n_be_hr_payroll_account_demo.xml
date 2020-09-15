@@ -903,7 +903,7 @@
         <field name="name" eval="obj(ref('base.partner_admin')).name" model="res.partner"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="image_1920" eval="obj(ref('base.partner_admin')).image_1920" model="res.partner"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(237)-125-2389</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_email">aiden.hughes71@example.com</field>
@@ -939,7 +939,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Chief Technical Officer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4'), ref('hr.employee_category_3')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(459)-462-9356</field>
         <field name="work_email">marian.weaver56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_al-image.jpg"/>
@@ -972,7 +972,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Experienced Developer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(791)-864-3508</field>
         <field name="mobile_phone">(791)-864-3504</field>
         <field name="work_email">bernice.jensen60@example.com</field>
@@ -1006,7 +1006,7 @@
         <field name="job_title">Experienced Developer</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(321)-878-2565</field>
         <field name="work_email">ramona.franklin32@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_niv-image.jpg"/>
@@ -1039,7 +1039,7 @@
         <field name="job_title">Experienced Developer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(620)-309-3421</field>
         <field name="work_email">jack.mccoy17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_stw-image.jpg"/>
@@ -1072,7 +1072,7 @@
         <field name="job_title">Experienced Developer</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(181)-781-8595</field>
         <field name="work_email">mario.lambert31@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_chs-image.jpg"/>
@@ -1106,7 +1106,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Experienced Developer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">+3281813700</field>
         <field name="work_email">gilles@odoo.com</field>
         <field name="image_1920" type="base64" file="hr/static/img/employee_qdp-image.png"/>
@@ -1139,7 +1139,7 @@
         <field name="job_title">Experienced Developer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(449)-505-5146</field>
         <field name="work_email">michael.crawford52@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fme-image.jpg"/>
@@ -1172,7 +1172,7 @@
         <field name="job_title">Consultant</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4'), ref('hr.employee_category_5')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(203)-276-7903</field>
         <field name="work_email">rene.chapman41@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fpi-image.jpg"/>
@@ -1205,7 +1205,7 @@
         <field name="job_id" ref="hr_job_3"/>
         <field name="job_title">Consultant</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4'), ref('hr.employee_category_5')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(663)-707-8451</field>
         <field name="work_email">manuel.shelton96@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jth-image.jpg"/>
@@ -1238,7 +1238,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Marketing and Community Manager</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4'), ref('hr.employee_category_2')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(916)-264-7362</field>
         <field name="work_email">rebecca.morrison35@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_ngh-image.jpg"/>
@@ -1271,7 +1271,7 @@
         <field name="job_title">Human Resources Manager</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(360)-694-7266</field>
         <field name="work_email">sarah.meyer87@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_vad-image.jpg"/>
@@ -1301,7 +1301,7 @@
         <field name="department_id" ref="hr_department_2"/>
         <field name="job_id" ref="hr_job_4"/>
         <field name="job_title">Experienced Developer</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_phone">(350)-912-1201</field>
         <field name="work_email">eduardo.kelley37@example.com</field>
@@ -1333,7 +1333,7 @@
         <field name="job_id" ref="hr_job_4"/>
         <field name="job_title">Experienced Developer</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(114)-262-1607</field>
         <field name="work_email">Michael.lambert17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jve-image.jpg"/>
@@ -1364,7 +1364,7 @@
         <field name="job_id" ref="hr_job_3"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Consultant</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(883)-331-5378</field>
         <field name="work_email">dwight.snyder59@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jep-image.jpg"/>
@@ -1395,7 +1395,7 @@
         <field name="job_id" ref="hr_job_6"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Marketing and Community Manager</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(206)-267-3735</field>
         <field name="work_email">minnie.burns56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jod-image.jpg"/>
@@ -1426,7 +1426,7 @@
         <field name="job_id" ref="hr_job_4"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Experienced Developer</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(754)-532-3841</field>
         <field name="work_email">andrew.hunt19@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jog-image.jpg"/>
@@ -1457,7 +1457,7 @@
         <field name="job_id" ref="hr_job_3"/>
         <field name="job_title">Consultant</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_phone">(944)-518-8232</field>
         <field name="work_email">arnold.horton28@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jgo-image.jpg"/>
@@ -1487,7 +1487,7 @@
         <field name="department_id" ref="hr_department_4"/>
         <field name="job_id" ref="hr_job_6"/>
         <field name="job_title">Marketing and Community Manager</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_phone">(644)-169-1352</field>
         <field name="work_email">jerry.barnes69@example.com</field>
@@ -1519,7 +1519,7 @@
         <field name="job_id" ref="hr_job_3"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Consultant</field>
-        <field name="work_location">Building 1, Second Floor</field>
+        <field name="work_location_id" ref="hr.work_location_1"/>
         <field name="work_email">travis.moreno99@example.com</field>
         <field name="work_phone">(482)-233-3393</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_hne-image.jpg"/>

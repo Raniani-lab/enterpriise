@@ -33,6 +33,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
                 _sanitizeArgs(pivot, measure, domain);
                 await pivotUtils.fetchCache(pivot, this.env.services.rpc);
                 const operator = pivot.measures.filter((m) => m.field === measure)[0].operator;
+                pivot.cache.markAsValueUsed(domain, measure);
                 return pivot.cache.getMeasureValue(this, measure, operator, domain);
             },
             async: true,
@@ -55,7 +56,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
             compute: async function (pivotId, ...domain) {
                 const pivot = _getPivot(this.getters, pivotId);
                 await pivotUtils.fetchCache(pivot, this.env.services.rpc);
-
+                pivot.cache.markAsHeaderUsed(domain);
                 const len = domain.length;
                 if (len === 0) {
                     return _t("Total");

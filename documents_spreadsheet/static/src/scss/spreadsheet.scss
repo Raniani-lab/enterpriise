@@ -3,10 +3,12 @@
         font-family: FontAwesome;
     }
 }
+
 .o_documents_content {
     .o_document_spreadsheet {
         cursor: zoom-in;
     }
+
     .o_spreadsheet_resize {
         object-fit: cover;
         object-position: left top;
@@ -15,28 +17,34 @@
 
 
 .o_spreadsheet_selector_dialog {
-  option.o_new {
-      font-style: italic;
-  }
+    option.o_new {
+        font-style: italic;
+    }
 }
 
 .o_content {
     .o_spreadsheet_action {
         height: 100%;
+
         .o_spreadsheet_container {
             height: 100%;
+
             .o-spreadsheet {
                 height: 100%;
+
                 .o_spreadsheet_pivot_side_panel, .o_spreadsheet_filter_editor_side_panel, .o_spreadsheet_global_filters_side_panel {
                     .o_side_panel_section {
                         background-color: #fff;
                         min-height: 60px;
                         padding: 10px;
+
                         .o_side_panel_title {
                             font-weight: bold;
                         }
+
                         .o_field_selector, .o_field_many2manytags, .o_field_many2one {
                             width: 100%;
+
                             &,
                             *,
                             *:before,
@@ -50,12 +58,15 @@
                         }
                     }
                 }
+
                 .o-spreadsheet-topbar .o-icon {
                     vertical-align: unset;
                 }
+
                 .o-spreadsheet-topbar .o-menu-dropdown-item .o-icon {
                     vertical-align: middle;
                 }
+
                 // Align spreadsheet menus and toolbar with the breadcrumb in Odoo
                 .o-spreadsheet-topbar {
                     .o-topbar-toolbar .o-toolbar-tools {
@@ -88,14 +99,17 @@
         margin: 0px 5px;
         @include o-hover-opacity(0.6, 1);
         @include o-hover-text-color($gray-400, $warning);
+
         &.favorite_button_enabled {
             @include o-hover-text-color($warning, $danger);
             transition: 0.3s color 0.1s;
         }
     }
+
     .o_spreadsheet_name {
         display: inline-block;
         max-width: 95%;
+
         input {
             max-width: 100%;
             text-overflow: clip;
@@ -103,14 +117,17 @@
             border: none;
             padding: 0px 5px 0px 2px;
             color: $o-brand-secondary;
+
             &:focus {
                 outline: 1px solid #ccc;
                 outline-offset: -1px;
                 color: #000;
             }
+
             &.o-spreadsheet-untitled {
                 font-style: italic;
             }
+
             &.o-spreadsheet-untitled:focus {
                 font-style: normal;
             }
@@ -120,6 +137,7 @@
     .o_cp_top_left {
         width: 100%;
     }
+
     .o_cp_top_right {
         width: 0%;
     }
@@ -146,6 +164,7 @@
     .pivot_filter_section {
         display: flex;
         flex-direction: row;
+
         .pivot_filter {
             flex-grow: 1;
 
@@ -153,9 +172,11 @@
                 display: flex;
                 flex-direction: row;
                 flex-grow: 1;
+
                 > div {
                     width: 100%;
                 }
+
                 .o_side_panel_filter_icon {
                     visibility: hidden;
                     width: 15px;
@@ -164,7 +185,8 @@
                     cursor: pointer;
                 }
             }
-            &:hover{
+
+            &:hover {
                 .o_side_panel_filter_icon {
                     visibility: visible;
                 }
@@ -181,6 +203,7 @@
     .o-sidePanelButtons {
         display: flex;
         flex-direction: row;
+
         .o-sidePanelButton {
             flex-grow: 1;
         }
@@ -208,15 +231,18 @@ $margin-right: 15px;
 .o-spreadsheet-templates-dialog {
     max-height: 90vh;
     overflow: auto;
+
     .o_searchview {
         height: 24px;
         width: 50%;
         margin-left: auto;
         margin-right: $margin-right;
     }
+
     .o-pager {
         height: 30px;
         display: flex;
+
         nav {
             margin: auto $margin-right auto auto;
         }
@@ -225,17 +251,21 @@ $margin-right: 15px;
     .o-templates-container {
         display: flex;
         flex-flow: row wrap;
+
         .o-template {
             flex: 0 1 150px;
             margin: $margin-right;
+
             img {
                 height: 150px;
                 border: 1px solid #ced4da;
                 width: 100%;
+
                 &:focus {
                     outline: none;
                 }
-                &.o-template-selected{
+
+                &.o-template-selected {
                     border-color: $o-brand-primary;
                     box-shadow: 0 0 0 1px $o-brand-primary;
                 }
@@ -246,6 +276,47 @@ $margin-right: 15px;
                     padding: 1.5rem;
                 }
             }
+        }
+    }
+}
+
+.o_missing_values_dialog {
+    > div.custom-control {
+        margin-bottom: 8px;
+    }
+
+    .o_pivot_table_dialog {
+        width: 100%;
+        border-collapse: collapse;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        td, th {
+            border: 1px solid #dee2e6;
+            background-color: #fff;
+            padding: 0.3rem;
+            white-space: nowrap;
+
+            &:hover {
+                filter: brightness(0.9);
+            }
+        }
+
+        td {
+            text-align: right;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: black;
+        }
+
+        .o_missing_value {
+            color: #46646d;
+            background: #e7f2f6;
         }
     }
 }

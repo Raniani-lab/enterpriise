@@ -3,7 +3,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
 
     const core = require("web.core");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
-    const { fetchCache, formatGroupBy, formatHeader } = require("documents_spreadsheet.pivot_utils");
+    const { fetchCache, formatGroupBy, formatHeader, waitForIdle } = require("documents_spreadsheet.pivot_utils");
 
     const _t = core._t;
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
@@ -19,7 +19,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
             sequence: 122,
             children: (env) => Object.values(env.getters.getPivots())
                 .map((pivot, index) => (createFullMenuItem(`reinsert_pivot_${pivot.id}`, {
-                    name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
+                    name: `${pivot.cache && pivot.cache.getModelLabel() || pivot.model} (#${pivot.id})`,
                     sequence: index,
                     action: async (env) => {
                         // We need to fetch the cache without the global filters,
@@ -40,27 +40,29 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
             ),
             isVisible: (env) => env.getters.getPivots().length,
         })
-        .add("insert_pivot_section", {
-            name: _t("Insert pivot section"),
+        .add("insert_pivot_cell", {
+            name: _t("Insert pivot cell"),
             sequence: 123,
             children: (env) => Object.values(env.getters.getPivots())
-                .map((pivot, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}`, {
-                    name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
+                .map((pivot, index) => (createFullMenuItem(`insert_pivot_cell_${pivot.id}`, {
+                    name: `${pivot.cache && pivot.cache.getModelLabel() || pivot.model} (#${pivot.id})`,
                     sequence: index,
-                    children: () => [pivot.colGroupBys[0], pivot.rowGroupBys[0]].filter(x => x !== undefined)
-                        .map((field, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}`, {
-                            name: `${formatGroupBy(pivot, field)}`,
-                            sequence: index,
-                            children: () => pivot.cache.getFieldValues(field)
-                                .map((value, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}_${field}_${value}`, {
-                                    name: `${formatHeader(pivot, field, value)}`,
-                                    sequence: index,
-                                    action: (env) => {
-                                        const [col, row] = env.getters.getPosition();
-                                        env.dispatch("INSERT_HEADER", { id: pivot.id, col, row, field, value });
-                                    },
-                                }))),
-                            }))),
+                    action: async (env) => {
+                        const [col, row] = env.getters.getPosition();
+                        const insertPivotValueCallback = (formula) => {
+                            env.dispatch("UPDATE_CELL", { sheet: env.getters.getActiveSheet(), col, row, content: formula });
+                        }
+
+                        pivot.lastUpdate = undefined;
+                        await fetchCache(pivot, env.services.rpc, {dataOnly: true});
+                        env.dispatch("EVALUATE_CELLS");
+                        // Here we need to wait for every cells of the sheet are
+                        // computed, in order to ensure that the cache of missing
+                        // values is correctly filled
+                        await waitForIdle(env.getters);
+
+                        env.openPivotDialog({ pivotId: pivot.id, insertPivotValueCallback });
+                    },
                 })),
             ),
             isVisible: (env) => env.getters.getPivots().length,

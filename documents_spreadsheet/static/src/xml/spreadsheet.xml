@@ -28,8 +28,8 @@
                      t-ref="spreadsheet"
         />
         <Dialog t-if="state.dialog.isDisplayed"
-            size="'medium'"
             title="state.dialog.title || 'Odoo Spreadsheet'"
+            size="'medium'"
             t-on-dialog-closed.stop="closeDialog"
             >
             <div t-if="dialogContent" t-esc="dialogContent"/>
@@ -39,6 +39,16 @@
                 <button class="btn btn-secondary" t-on-click="closeDialog">Cancel</button>
             </t>
         </Dialog>
+
+        <Dialog t-if="state.pivotDialog.isDisplayed"
+            title="getMissingValueDialogTitle()"
+            size="'large'"
+            t-on-dialog-closed.stop="closePivotDialog"
+            renderFooter="false"
+            >
+            <PivotDialog pivot="pivot" title="getPivotTitle()"  t-on-cell-selected="_onCellClicked" cellClickedCallBack="cellClickedCallback"/>
+        </Dialog>
+
     </div>
 
     <div t-name="documents_spreadsheet.SpreadsheetName" class="o_spreadsheet_name" owl="1">
@@ -56,7 +66,7 @@
     <div t-name="documents_spreadsheet.PivotSidePanel" class="o_spreadsheet_pivot_side_panel" owl="1">
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Model</div>
-            <div><t t-esc="props.pivot.cache and props.pivot.cache.modelLabel or props.pivot.model"/> (<t t-esc="props.pivot.model"/>)</div>
+            <div><t t-esc="props.pivot.cache and props.pivot.cache.getModelLabel() or props.pivot.model"/> (<t t-esc="props.pivot.model"/>)</div>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Domain</div>

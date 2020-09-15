@@ -1,7 +1,9 @@
 odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     "use strict";
 
+    const core = require("web.core");
     const Dialog = require("web.OwlDialog");
+    const PivotDialog =require("documents_spreadsheet.PivotDialog")
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const {
         convertPivotFormulas,
@@ -11,6 +13,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
     const Spreadsheet = spreadsheet.Spreadsheet;
     const { useState, useRef, useSubEnv } = owl.hooks;
+    const _t = core._t;
 
     class SpreadsheetComponent extends owl.Component {
         constructor(parent, props) {
@@ -20,6 +23,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 saveAsTemplate: this._saveAsTemplate.bind(this),
                 makeCopy: this.makeCopy.bind(this),
                 saveData: this.saveData.bind(this),
+                openPivotDialog: this.openPivotDialog.bind(this),
             });
             this.state = useState({
                 dialog: {
@@ -28,9 +32,14 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                     isEditText: false,
                     inputContent: undefined,
                 },
+                pivotDialog: {
+                    isDisplayed: false,
+                },
             });
             this.spreadsheet = useRef("spreadsheet");
             this.dialogContent = undefined;
+            this.pivot = undefined;
+            this.insertPivotValueCallback = undefined;
             this.confirmDialog = () => true;
             this.data = props.data;
             this.res_id = props.res_id;
@@ -84,6 +93,20 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.state.dialog.isEditText = false;
         }
         /**
+         * Close the pivot dialog.
+         */
+        closePivotDialog() {
+            this.state.pivotDialog.isDisplayed = false;
+            this.spreadsheet.comp.focusGrid();
+        }
+        /**
+         * Insert a value of the spreadsheet using the callbackfunction;
+         */
+        _onCellClicked(ev) {
+            this.insertPivotValueCallback(ev.detail.formula);
+            this.closePivotDialog();
+        }
+        /**
          * Retrieve the spreadsheet_data and the thumbnail associated to the
          * current spreadsheet
          */
@@ -91,7 +114,23 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             const spreadsheet_data = JSON.stringify(this.spreadsheet.comp.model.exportData());
             return { spreadsheet_data, thumbnail: this.getThumbnail() };
         }
+        getMissingValueDialogTitle() {
+            const title = _t("Insert pivot cell");
+            const pivotTitle = this.getPivotTitle();
+            if (pivotTitle) {
+                return `${title} - ${pivotTitle}`
+            }
+            return title;
+        }
 
+        getPivotTitle() {
+            if (this.pivot) {
+                const name = this.pivot.cache && this.pivot.cache.getModelLabel() || this.pivot.model;
+                const id = this.pivot.id;
+                return `${name} (#${id})`;
+            }
+            return "";
+        }
         getThumbnail() {
             const canvas = this.spreadsheet.comp.grid.comp.canvas.el;
             const canvasResizer = document.createElement("canvas");
@@ -155,6 +194,12 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.confirmDialog = this.closeDialog;
             this.state.dialog.isDisplayed = true;
         }
+
+        openPivotDialog(ev){
+            this.pivot = this.spreadsheet.comp.model.getters.getPivot(ev.pivotId);
+            this.insertPivotValueCallback = ev.insertPivotValueCallback;
+            this.state.pivotDialog.isDisplayed = true;
+        }
         /**
          * Saves the spreadsheet data in the database
          *
@@ -169,7 +214,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     }
 
     SpreadsheetComponent.template = "documents_spreadsheet.SpreadsheetComponent";
-    SpreadsheetComponent.components = { Spreadsheet, Dialog };
+    SpreadsheetComponent.components = { Spreadsheet, Dialog, PivotDialog };
 
     return SpreadsheetComponent;
 });

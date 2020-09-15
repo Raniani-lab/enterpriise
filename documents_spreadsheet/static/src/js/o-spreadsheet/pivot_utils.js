@@ -99,7 +99,7 @@
      */
     async function _fetchModelName(rpc, pivot, { forceRefetch }) {
         if (!forceRefetch && pivot.cache) {
-            return pivot.cache.modelName;
+            return pivot.cache.getModelLabel();
         }
         else {
             const result = await rpc({
@@ -843,6 +843,22 @@
         })
     }
 
+    /**
+     * Wait util all the async cells in spreadsheet are computed
+     *
+     * @param {Object} getters Getters of Spreadsheet model
+     */
+    async function waitForIdle(getters) {
+        return new Promise(resolve => {
+            const interval = setInterval(() => {
+                if (getters.isIdle()) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 20)
+        })
+    }
+
     return {
         absoluteToRelative,
         createPivotCache,
@@ -858,5 +874,6 @@
         getDataFromTemplate,
         relativeToAbsolute,
         sanitizePivot,
+        waitForIdle
     };
 });

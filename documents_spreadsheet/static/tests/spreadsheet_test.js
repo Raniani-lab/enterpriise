@@ -485,34 +485,6 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
-        QUnit.test("Insert pivot element, with undo and redo", async function (assert) {
-            assert.expect(3);
-
-            const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                model: "partner",
-                data: this.data,
-                arch: `
-                <pivot string="Partners">
-                    <field name="foo" type="col"/>
-                    <field name="bar" type="row"/>
-                    <field name="probability" type="measure"/>
-                </pivot>`,
-                mockRPC: mockRPCFn,
-            });
-            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_section");
-            const insertPivotSection1 = cellMenuRegistry.getChildren(root, env)[0];
-            const insertPivotSection1Foo = cellMenuRegistry.getChildren(insertPivotSection1, env)[0];
-            const insertPivotSection1Foo1 = cellMenuRegistry.getChildren(insertPivotSection1Foo, env)[0];
-            insertPivotSection1Foo1.action(env);
-            assert.equal(model.getters.getCell(3, 7).content, `=PIVOT.HEADER("1","foo","1")`);
-            model.dispatch("UNDO");
-            assert.notOk(model.getters.getCell(3, 7));
-            model.dispatch("REDO");
-            assert.equal(model.getters.getCell(3, 7).content, `=PIVOT.HEADER("1","foo","1")`);
-            actionManager.destroy();
-        });
-
         QUnit.test("Verify pivot measures are correctly computed :)", async function (assert) {
             assert.expect(4);
 
@@ -996,6 +968,124 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.verifySteps([
                 "name_get_product_41",
             ]);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Open pivot dialog and insert a value, with UNDO/REDO", async function (assert) {
+            assert.expect(4);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_pivot_table_dialog");
+            await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
+            assert.equal(model.getters.getCell(3, 7).content, model.getters.getCell(1, 0).content);
+            model.dispatch("UNDO");
+            assert.equal(model.getters.getCell(3, 7), undefined);
+            model.dispatch("REDO");
+            assert.equal(model.getters.getCell(3, 7).content, model.getters.getCell(1, 0).content);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Insert missing value modal can show only the values not used in the current sheet", async function (assert) {
+            assert.expect(4);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const missingValue = model.getters.getCell(1, 2).content;
+            model.dispatch("SELECT_CELL", { col: 1, row: 2 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
+            await dom.click(document.body.querySelector(".o_missing_value"));
+            assert.equal(model.getters.getCell(3, 7).content, missingValue);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Insert missing pivot value with two level of grouping", async function (assert) {
+            assert.expect(4);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="product" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 1, row: 4 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            assert.containsN(document.body, ".o_pivot_table_dialog td", 2);
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
+            actionManager.destroy();
+        });
+
+        QUnit.test("Insert missing pivot value give the focus to the canvas when model is closed", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="product" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_pivot_table_dialog");
+            await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
+            assert.equal(document.activeElement.tagName, "CANVAS");
             actionManager.destroy();
         });
 

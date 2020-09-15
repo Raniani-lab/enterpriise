@@ -144,6 +144,18 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
              * at each function evaluation requires too much GC work.
              */
             this._cacheKeys = [...data.values.keys()];
+
+            /**
+             * Contains the domain of the values used during the evaluation of the formula =Pivot(...)
+             * Is used to know if a pivot cell is missing or not
+             * */
+            
+            this._usedValueDomains = new Set();
+            /**
+             * Contains the domain of the headers used during the evaluation of the formula =Pivot.header(...)
+             * Is used to know if a pivot cell is missing or not
+             * */
+            this._usedHeaderDomains = new Set();
         }
 
         getRows() {
@@ -248,18 +260,6 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
         }
 
         /**
-         * Compute and aggregate measures satisfying a given domain.
-         * @param {Object} evalContext should contains aggregation functions.
-         * @param {string} measureName
-         * @param {string} operator
-         * @param  {Array<string>} domain
-         */
-        getMeasureValue(evalContext, measureName, operator, domain) {
-            const measureIds = this._computeMeasureIds(domain);
-            return this._aggregateMeasure(evalContext, measureIds, measureName, operator);
-        }
-
-        /**
          * Return values of each group and subgroup of a given column.
          * e.g. ["17", "05/2020", "true"]
          * @param {number} columnIndex
@@ -340,6 +340,40 @@ odoo.define("documents_spreadsheet.pivot_cache", function (require) {
          */
         getSubgroupLevel(groupValues) {
             return groupValues.length - 1;
+        }
+
+        isUsedValue(pivotArgs) {
+            return this._usedValueDomains.has(pivotArgs.join());
+        }
+
+        isUsedHeader(pivotArgs) {
+            return this._usedHeaderDomains.has(pivotArgs.join());
+        }
+
+        markAsValueUsed(domain, measure) {
+            const toTag = domain.slice();
+            toTag.unshift(measure);
+            this._usedValueDomains.add(toTag.join());
+        }
+
+        markAsHeaderUsed(domain) {
+            this._usedHeaderDomains.add(domain.join());
+        }
+
+        /**
+         * Compute and aggregate measures satisfying a given domain.
+         * @param {Object} evalContext should contains aggregation functions.
+         * @param {string} measureName
+         * @param {string} operator
+         * @param  {Array<string>} domain
+         */
+        getMeasureValue(evalContext, measureName, operator, domain) {
+            const measureIds = this._computeMeasureIds(domain);
+            return this._aggregateMeasure(evalContext, measureIds, measureName, operator);
+        }
+
+        getModelLabel() {
+            return this._modelLabel;
         }
 
         /**

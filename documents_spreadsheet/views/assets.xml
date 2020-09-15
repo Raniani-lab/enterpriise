@@ -12,6 +12,8 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/spreadsheet_control_panel.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/spreadsheet_name.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/spreadsheet_template_dialog.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog_table.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_inspector.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/documents_kanban_record.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_kanban_view.js"/>

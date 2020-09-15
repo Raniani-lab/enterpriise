@@ -31,9 +31,9 @@ class AccountBatchPayment(models.Model):
     available_payment_method_ids = fields.Many2many('account.payment.method',
         compute='_compute_available_payment_method_ids')
     payment_method_code = fields.Char(related='payment_method_id.code', readonly=False)
-    export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.")
-    export_file = fields.Binary(string='File', readonly=True, help="Export file related to this batch")
-    export_filename = fields.Char(string='File Name', help="Name of the export file generated for this batch", store=True)
+    export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.", copy=False)
+    export_file = fields.Binary(string='File', readonly=True, help="Export file related to this batch", copy=False)
+    export_filename = fields.Char(string='File Name', help="Name of the export file generated for this batch", store=True, copy=False)
 
     file_generation_enabled = fields.Boolean(help="Whether or not this batch payment should display the 'Generate File' button instead of 'Print' in form view.", compute='_compute_file_generation_enabled')
 

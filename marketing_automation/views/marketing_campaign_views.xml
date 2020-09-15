@@ -12,7 +12,7 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click o_marketing_automation_campaign_kanban">
                             <div class="row no-gutters o_ma_campaign_header">
-                                <span t-att-title="record.name.raw_value" class="text-primary">
+                                <span t-att-title="record.name.raw_value" class="text-primary o_text_overflow">
                                     <t t-esc="record.name.raw_value"/>
                                 </span>
                             </div>
@@ -80,7 +80,7 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <span class="oe_edit_only">Name</span>
-                        <h1><field name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
+                        <h1><field class="o_text_overflow" name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
                     </div>
                     <group>
                         <field name="model_id"

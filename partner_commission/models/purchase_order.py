@@ -58,9 +58,15 @@ class PurchaseOrder(models.Model):
                 ('state', '=', 'draft'),
             ])
 
+            template = self.env.ref('purchase.email_template_edi_purchase')
+
             for po in purchases.filtered(lambda p: p.invoice_commission_count > 0):
                 try:
                     po.button_confirm()
+
+                    if po.state in ['purchase', 'done']:
+                        template.send_mail(po.id)
+
                     auto_commit = not getattr(threading.currentThread(), 'testing', False)
                     if auto_commit:
                         self.env.cr.commit()

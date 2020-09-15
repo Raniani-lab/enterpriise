@@ -19,6 +19,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
         self.referrer.grade_id = self.learning
         self.referrer._onchange_grade_id()
 
+        send_mail_count = 0
+
         # Helper.
         def make_po(days_offset=0):
             inv = self.purchase(Spec(self.gold, [Line(self.crm, 1)]))
@@ -30,11 +32,17 @@ class TestPurchaseOrder(TestCommissionsSetup):
         def today(*args, **kwargs):
             return fields.Date.to_date('2020-01-06')
 
+        def _patched_send_mail(*args, **kwargs):
+            nonlocal send_mail_count
+            send_mail_count += 1
+
         # Case: OK.
         with patch('odoo.fields.Date.today', today):
-            po = make_po(days_offset=-1)
-            self.env['purchase.order']._cron_confirm_purchase_orders()
-            self.assertEqual(po.state, 'purchase')
+            with patch('odoo.addons.mail.models.mail_template.MailTemplate.send_mail', _patched_send_mail):
+                po = make_po(days_offset=-1)
+                self.env['purchase.order']._cron_confirm_purchase_orders()
+                self.assertEqual(po.state, 'purchase')
+                self.assertEqual(send_mail_count, 1)
 
         # Case: NOK: standard purchase order.
         # Should not be confirmed because it's not a commission purchase: commission_po_line_id is not set on the account.move.

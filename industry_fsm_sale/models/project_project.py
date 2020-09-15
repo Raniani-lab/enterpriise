@@ -32,7 +32,7 @@ class Project(models.Model):
     def _compute_allow_material(self):
         for project in self:
             if not project._origin:
-                project.allow_material = project.is_fsm
+                project.allow_material = project.is_fsm and project.allow_billable
             else:
                 project.allow_material = project.allow_billable
 

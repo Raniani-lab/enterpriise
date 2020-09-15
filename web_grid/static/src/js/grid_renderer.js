@@ -337,7 +337,12 @@ odoo.define('web_grid.GridRenderer', function (require) {
             const rowParent = ev.target.closest('tr');
             const index = [...rowParent.children].indexOf(cellParent) + 1;
             this.el.querySelectorAll(`td:nth-child(${index}), th:nth-child(${index})`)
-                .forEach(el => el.classList.add('o_cell_hover'));
+                .forEach(el => {
+                    if (cellParent.querySelector('.o_grid_total_title')) {
+                        el.classList.add('o_cell_highlight');
+                    }
+                    el.classList.add('o_cell_hover');
+                });
         }
         /**
          * Remove the hover on the columns.
@@ -346,7 +351,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
          */
         _onMouseLeave() {
             this.el.querySelectorAll('.o_cell_hover')
-                .forEach(el => el.classList.remove('o_cell_hover'));
+                .forEach(el => el.classList.remove('o_cell_hover', 'o_cell_highlight'));
         }
     }
 

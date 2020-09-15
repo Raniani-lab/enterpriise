@@ -46,6 +46,21 @@
             </field>
         </record>
 
+        <record id="timesheet_view_tree_user_inherited" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.timesheet_grid</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="action_validate_timesheet" string="Validate" type="object"
+                                groups="hr_timesheet.group_hr_timesheet_approver"
+                                invisible="not context.get('search_default_nonvalidated',0)"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
         <!-- Override Kanban view -->
         <record id="timesheet_kanban_view" model="ir.ui.view">
             <field name="name">account.analytic.line.kanban.timesheet_grid</field>
@@ -636,20 +651,6 @@ action = model._action_open_to_validate_timesheet_view()
             <field name="state">code</field>
             <field name="code">
 action = model._action_open_to_validate_timesheet_view('month')
-            </field>
-        </record>
-
-        <record id="timesheet_grid_validate_all_timesheets" model="ir.actions.server">
-            <field name="name">Validate</field>
-            <field name="type">ir.actions.server</field>
-            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
-            <field name="binding_model_id" ref="hr_timesheet.model_account_analytic_line"/>
-            <field name="binding_view_types">list</field>
-            <field name="groups_id" eval="[(4,ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
-            <field name="state">code</field>
-            <field name="code">
-if records:
-    action = records.action_validate_timesheet()
             </field>
         </record>
 

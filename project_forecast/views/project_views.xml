@@ -96,7 +96,6 @@
     <record id="action_project_task_view_planning" model="ir.actions.act_window">
         <field name="name">View Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="binding_model_id" ref="project.model_project_task"/>
         <field name="view_mode">gantt</field>
         <field name="view_id" ref="project_forecast.planning_view_gantt_no_sample"/>
         <field name="domain">[('task_id', 'in', active_ids)]</field>
@@ -107,6 +106,20 @@
             </p><p>
                 Let's start your planning by adding a new shift.
             </p>
+        </field>
+    </record>
+
+    <record id="view_task_tree2_planning" model="ir.ui.view">
+        <field name="name">project.task.tree2.planning</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="%(action_project_task_view_planning)d" string="View Planning" type="action"
+                            invisible="not (context.get('search_default_my_task') or context.get('default_project_id',True))"/>
+                </header>
+            </xpath>
         </field>
     </record>
 </odoo>

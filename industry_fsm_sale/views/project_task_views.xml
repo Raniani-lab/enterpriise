@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="project_task_view_list_fsm_sale_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.fsm.sale.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="action_create_invoice" string="Create Invoice" type="object"
+                            groups="industry_fsm.group_fsm_manager"
+                            invisible="not context.get('search_default_to_invoice',0)"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
     <!-- All Tasks: to invoice action -->
     <record id="project_task_action_to_invoice_fsm" model="ir.actions.act_window">
         <field name="name">To Invoice</field>

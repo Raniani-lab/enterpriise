@@ -51,19 +51,6 @@ class Employee(models.Model):
         link = "/web?#action=%s&model=planning.slot&menu_id=%s&db=%s" % (action_id, menu_id, dbname[0])
         return {employee.id: link for employee in self}
 
-    def action_view_planning(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_employee")
-        action.update({
-            'name': _('View Planning'),
-            'domain': [('employee_id', 'in', self.ids)],
-            'context': {
-                'search_default_group_by_employee': True,
-                'filter_employee_ids': self.ids,
-                'hide_open_shift': True,
-            }
-        })
-        return action
-
     @api.depends('default_planning_role_id')
     def _compute_planning_role_ids(self):
         # Set the planning_role_ids to False where there's no value set yet, to avoid CacheMiss
@@ -82,3 +69,20 @@ class Employee(models.Model):
             self.env.add_to_compute(self._fields['planning_role_ids'], self)
 
         return res
+
+
+class HrEmployeeBase(models.AbstractModel):
+    _inherit = "hr.employee.base"
+
+    def action_view_planning(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_employee")
+        action.update({
+            'name': _('View Planning'),
+            'domain': [('employee_id', 'in', self.ids)],
+            'context': {
+                'search_default_group_by_employee': True,
+                'filter_employee_ids': self.ids,
+                'hide_open_shift': True,
+            }
+        })
+        return action

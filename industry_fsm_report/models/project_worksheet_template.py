@@ -269,9 +269,10 @@ class ProjectWorksheetTemplate(models.Model):
             if widget:
                 if widget == 'signature':
                     is_signature = True
-                # no signature widget in qweb
-                field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
-                field_node.attrib.pop('widget')
+                # no signature or image widgets in qweb
+                if is_signature or widget == "image":
+                    field_node.attrib['t-options'] = "{'widget': '%s'}" % (widget if not is_signature else 'image')
+                    field_node.attrib.pop('widget')
             # basic form view -> qweb node transformation
             if field_info['type'] != 'binary' or widget in ['image', 'signature']:
                 # adapt the field node itself
@@ -282,6 +283,10 @@ class ProjectWorksheetTemplate(models.Model):
                     field_node.attrib['style'] = 'width: 250px;'
                     field_node.attrib['t-att-src'] = 'image_data_uri(%s)' % field_name
                     field_node.attrib['t-if'] = field_name
+                elif field_info['type'] == 'boolean':
+                    field_node.tag = 'i'
+                    field_node.attrib[
+                        't-att-class'] = "'text-wrap col-8 fa ' + ('fa-check-square' if %s else 'fa-square-o')" % field_name
                 else:
                     field_node.tag = 'div'
                     field_node.attrib['class'] = 'text-wrap col-8'

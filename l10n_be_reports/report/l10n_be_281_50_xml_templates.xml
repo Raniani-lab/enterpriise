@@ -23,7 +23,7 @@
                 <a1002_inkomstenjaar><t t-esc="data['A1002']"/></a1002_inkomstenjaar>
                 <a1005_registratienummer><t t-esc="data['A1005']"/></a1005_registratienummer>
                 <a1011_naamnl1><t t-esc="data['A1011']"/></a1011_naamnl1>
-                <a1013_adresnl>hn<t t-esc="data['A1013']"/>feafza</a1013_adresnl>
+                <a1013_adresnl><t t-esc="data['A1013']"/></a1013_adresnl>
                 <a1015_gemeente><t t-esc="data['A1015']"/></a1015_gemeente>
                 <a1020_taalcode><t t-esc="data['A1020']"/></a1020_taalcode>
                 <Opgaven>

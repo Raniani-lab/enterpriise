@@ -13,6 +13,9 @@ odoo.define("documents_spreadsheet.SpreadsheetAbstractAction", function (require
         config: Object.assign({}, AbstractAction.prototype.config, {
             ControlPanel: SpreadsheetControlPanel,
         }),
+        jsLibs: [
+            '/web/static/lib/Chart/Chart.js',
+        ],
         contentTemplate: "documents_spreadsheet.SpreadsheetAction",
         events: {},
         custom_events: {

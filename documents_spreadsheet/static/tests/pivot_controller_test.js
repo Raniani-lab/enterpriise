@@ -204,7 +204,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
             });
 
             QUnit.test("simple pivot export with two measures", async function (assert) {
-                assert.expect(11);
+                assert.expect(12);
 
                 const pivot = await createView({
                     View: PivotView,
@@ -223,6 +223,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 assert.strictEqual(Object.keys(cells).length, 8);
                 assert.strictEqual(cells.B1.content, '=PIVOT.HEADER("1")');
                 assert.strictEqual(cells.B2.content, '=PIVOT.HEADER("1","measure","foo")');
+                assert.strictEqual(
+                    spreadsheetData.styles[cells.B2.style].bold,
+                    undefined
+                );
                 assert.strictEqual(
                     cells.C2.content,
                     '=PIVOT.HEADER("1","measure","probability")'

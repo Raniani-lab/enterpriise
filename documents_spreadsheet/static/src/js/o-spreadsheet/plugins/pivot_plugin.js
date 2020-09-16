@@ -703,15 +703,15 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
 
             for (let i = 0; i < length; i++) {
                 let row = rowAnchor;
-                for (let level = 0; level <= levels; level++){
+                for (let level = 0; level <= levels; level++) {
                     const args = [pivot.id];
                     const values = pivot.cache.getColGroupHierarchy(i,level);
-                    for (const index in values){
+                    for (const index in values) {
                         args.push(pivot.cache.getColLevelIdentifier(index));
                         args.push(values[index]);
                     }
                     this._applyFormula(col, row, args, true);
-                    if (levels <= 2) {
+                    if (level <= levels - 1) {
                         bold.push({ top: row, bottom: row, left: col, right: col });
                     }
                     row++;

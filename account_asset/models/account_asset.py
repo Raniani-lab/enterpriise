@@ -126,6 +126,8 @@ class AccountAsset(models.Model):
             total_credit = sum(line.credit for line in record.original_move_line_ids)
             total_debit = sum(line.debit for line in record.original_move_line_ids)
             record.original_value = total_credit + total_debit
+            if record.account_asset_id.multiple_assets_per_line and len(record.original_move_line_ids) == 1:
+                record.original_value /= max(1, int(record.original_move_line_ids.quantity))
             if (total_credit and total_debit) or record.original_value == 0:
                 raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
 

@@ -12,6 +12,7 @@ class AccountAccount(models.Model):
     can_create_asset = fields.Boolean(compute="_compute_can_create_asset", help="""Technical field specifying if the account can generate asset depending on it's type. It is used in the account form view.""")
     form_view_ref = fields.Char(compute='_compute_can_create_asset')
     asset_type = fields.Selection([('sale', 'Deferred Revenue'), ('expense', 'Deferred Expense'), ('purchase', 'Asset')], compute='_compute_can_create_asset')
+    # decimal quantities are not supported, quantities are rounded to the lower int
     multiple_assets_per_line = fields.Boolean(string='Multiple Assets per Line', default=False,
         help="Multiple asset items will be generated depending on the bill line quantity instead of 1 global asset.")
 

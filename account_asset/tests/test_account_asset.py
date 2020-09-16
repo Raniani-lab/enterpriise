@@ -23,18 +23,16 @@ def today():
 
 class TestAccountAsset(TestAccountReportsCommon):
 
-    # YTI TODO: Convert this to a classmethod setUpClass
-    # But the test test_asset_reverse_depreciation depends on
-    # data created in a previous test
+    @classmethod
     @patch('odoo.fields.Date.today', return_value=today())
-    def setUp(self, today_mock):
-        super(TestAccountAsset, self).setUp()
+    def setUpClass(cls, today_mock):
+        super(TestAccountAsset, cls).setUpClass()
         today = fields.Date.today()
-        self.truck = self.env['account.asset'].create({
-            'account_asset_id': self.company_data['default_account_expense'].id,
-            'account_depreciation_id': self.company_data['default_account_expense'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
-            'journal_id': self.company_data['default_journal_misc'].id,
+        cls.truck = cls.env['account.asset'].create({
+            'account_asset_id': cls.company_data['default_account_expense'].id,
+            'account_depreciation_id': cls.company_data['default_account_expense'].id,
+            'account_depreciation_expense_id': cls.company_data['default_account_assets'].id,
+            'journal_id': cls.company_data['default_journal_misc'].id,
             'asset_type': 'purchase',
             'name': 'truck',
             'acquisition_date': today + relativedelta(years=-6, month=1, day=1),
@@ -44,9 +42,9 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method_period': '12',
             'method': 'linear',
         })
-        self.truck.validate()
-        self.env['account.move']._autopost_draft_entries()
-        self.assert_counterpart_account_id = self.company_data['default_account_revenue'].id,
+        cls.truck.validate()
+        cls.env['account.move']._autopost_draft_entries()
+        cls.assert_counterpart_account_id = cls.company_data['default_account_revenue'].id,
 
     def update_form_values(self, asset_form):
         for i in range(len(asset_form.depreciation_move_ids)):
@@ -459,7 +457,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3000)
         self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: m.date).asset_remaining_value, 3000)
 
-        move_to_reverse = self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted')[-1]
+        move_to_reverse = self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').sorted(lambda m: m.date)[-1]
         move_to_reverse._reverse_moves()
 
         # Check that we removed the depreciation in the table for the reversed move
@@ -477,8 +475,8 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3750)
 
         # Check that the table shows fully depreciated at the end
-        self.assertEqual(self.truck.depreciation_move_ids[-1].asset_remaining_value, 0)
-        self.assertEqual(self.truck.depreciation_move_ids[-1].asset_depreciated_value, 7500)
+        self.assertEqual(max(self.truck.depreciation_move_ids, key=lambda m: m.date).asset_remaining_value, 0)
+        self.assertEqual(max(self.truck.depreciation_move_ids, key=lambda m: m.date).asset_depreciated_value, 7500)
 
     def test_asset_reverse_original_move(self):
         """Test the reversal of a move that generated an asset"""
@@ -531,24 +529,23 @@ class TestAccountAsset(TestAccountReportsCommon):
             "line_ids": [
                 (0, 0, {
                     "account_id": account.id,
-                    "debit": 1000.0,
+                    "debit": 800.0,
                     "name": "stuff",
-                    "quantity": 2.5,
+                    "quantity": 2,
                     "product_uom_id": self.env.ref('uom.product_uom_unit').id,
                 }),
                 (0, 0, {
                     'account_id': self.company_data['default_account_assets'].id,
-                    'credit': 1000.0,
+                    'credit': 800.0,
                 }),
             ]
         })
         move.action_post()
         assets = move.asset_ids
         assets = sorted(assets, key=lambda i: i['original_value'], reverse=True)
-        self.assertEqual(len(assets), 3, '3 assets should have been created')
+        self.assertEqual(len(assets), 2, '3 assets should have been created')
         self.assertEqual(assets[0].original_value, 400.0)
         self.assertEqual(assets[1].original_value, 400.0)
-        self.assertEqual(assets[2].original_value, 200.0)
 
     def test_asset_multiple_assets_from_one_move_line_01(self):
         """ Test the creation of a as many assets as the value of
@@ -582,54 +579,3 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         move.action_post()
         self.assertEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)
-
-    def test_asset_multiple_assets_from_one_move_line_02(self):
-        """ Test the creation of a as many assets as the value of
-        the quantity property of a move line. """
-
-        account = self.env['account.account'].create({
-            "name": "test account",
-            "code": "TEST",
-            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
-            "create_asset": "draft",
-            "asset_type": "purchase",
-            "multiple_assets_per_line": True,
-        })
-
-        categ_unit_id = self.ref('uom.product_uom_categ_unit')
-
-        for ammount, uom_type, factor, quantity in [
-            (3000.0, 'bigger', 3, 3.0),
-            (3000.0, 'smaller', 2, 3.0),
-            (3000.0, 'bigger', 2, 0.5),
-            (3000.0, 'smaller', 2, 0.5),
-        ]:
-            uom = self.env['uom.uom'].create({
-                'name': 'custom uom',
-                'uom_type': uom_type,
-                'rounding': 0.001,
-                'category_id': categ_unit_id,
-                'factor_inv': factor if uom_type == 'bigger' else 1.0 / factor,
-                'factor': factor if uom_type != 'bigger' else 1.0 / factor,
-            })
-            move = self.env['account.move'].create({
-                "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
-                "ref": "line1",
-                "move_type": "in_invoice",
-                "line_ids": [
-                    (0, 0, {
-                        "account_id": account.id,
-                        "debit": ammount,
-                        "name": "stuff",
-                        "quantity": quantity,
-                        "product_uom_id": uom.id,
-                    }),
-                    (0, 0, {
-                        'account_id': self.company_data['default_account_assets'].id,
-                        'credit': ammount,
-                    }),
-                ]
-            })
-            move.action_post()
-            self.assertEqual(len(move.asset_ids), (factor * quantity) if uom_type == 'bigger' else math.ceil(quantity / factor))
-            self.assertAlmostEqual(sum(asset.original_value for asset in move.asset_ids), move.line_ids[0].debit)

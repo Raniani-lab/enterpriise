@@ -88,11 +88,12 @@ class SocialStreamTwitter(models.Model):
                 )
             else:
                 error_code = result.get('errors', [{}])[0].get('code')
+                error_message = result.get('errors', [{}])[0].get('message')
                 ERROR_MESSAGES = {
                     195: _("The keyword you've typed in does not look valid. Please try again with other words."),
                     88: _("Looks like you've made too many requests. Please wait a few minutes before giving it another try."),
                 }
-                error_message = ERROR_MESSAGES.get(error_code)
+                error_message = ERROR_MESSAGES.get(error_code, error_message)
 
             if error_message:
                 raise UserError(error_message)

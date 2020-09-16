@@ -83,6 +83,7 @@ class HrPayslip(models.Model):
     negative_net_to_report_display = fields.Boolean(compute='_compute_negative_net_to_report_display')
     negative_net_to_report_message = fields.Char(compute='_compute_negative_net_to_report_display')
     negative_net_to_report_amount = fields.Float(compute='_compute_negative_net_to_report_display')
+    is_superuser = fields.Boolean(compute="_compute_is_superuser")
 
     @api.depends('employee_id', 'state')
     def _compute_negative_net_to_report_display(self):
@@ -152,6 +153,9 @@ class HrPayslip(models.Model):
         (self - with_contract).normal_wage = 0
         for payslip in with_contract:
             payslip.normal_wage = payslip._get_contract_wage()
+
+    def _compute_is_superuser(self):
+        self.update({'is_superuser': self.env.user._is_superuser() and self.user_has_groups("base.group_no_one")})
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
@@ -433,6 +437,14 @@ class HrPayslip(models.Model):
             'name': 'Payslip',
             'type': 'ir.actions.act_url',
             'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
+        }
+
+    def action_export_payslip(self):
+        self.ensure_one()
+        return {
+            "name": "Debug Payslip",
+            "type": "ir.actions.act_url",
+            "url": "/debug/payslip/%s" % self.id,
         }
 
     def _get_contract_wage(self):

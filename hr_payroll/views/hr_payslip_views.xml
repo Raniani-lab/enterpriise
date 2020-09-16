@@ -200,6 +200,7 @@
                 <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight"/>
                 <button string="Cancel Payslip" name="action_payslip_cancel" type="object" states="draft,done,verify"/>
                 <button string="Print" name="action_print_payslip" type="object"/>
+                <button string="Export Payslip" name="action_export_payslip" type="object" attrs="{'invisible': [('is_superuser', '=', False)]}"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
             </header>
             <sheet>
@@ -230,6 +231,7 @@
                     <field name="credit_note" invisible="1"/>
                     <field name="has_negative_net_to_report" invisible="1"/>
                     <field name="negative_net_to_report_display" invisible="1"/>
+                    <field name="is_superuser" invisible="1"/>
                 </group>
                 <notebook>
                     <page string="Worked Days &amp; Inputs" name="worked_days_input">

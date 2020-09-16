@@ -125,13 +125,23 @@
     }
     /**
      * Sanitize the name of a sheet, by eventually removing quotes
-     * @param sheet name of the sheet
+     * @param sheetName name of the sheet, potentially quoted with single quotes
      */
-    function sanitizeSheet(sheet) {
-        if (sheet && sheet.startsWith("'")) {
-            sheet = sheet.slice(1, -1).replace(/''/g, "'");
+    function getUnquotedSheetName(sheetName) {
+        if (sheetName.startsWith("'")) {
+            sheetName = sheetName.slice(1, -1).replace(/''/g, "'");
         }
-        return sheet;
+        return sheetName;
+    }
+    /**
+     * Add quotes around the sheet name if it contains a space
+     * @param sheetName Name of the sheet
+     */
+    function getComposerSheetName(sheetName) {
+        if (sheetName.includes(" ")) {
+            sheetName = `'${sheetName}'`;
+        }
+        return sheetName;
     }
     function clip(val, min, max) {
         return val < min ? min : val > max ? max : val;
@@ -352,6 +362,19 @@
             finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
         }
         return finalZones;
+    }
+    function mapCellsInZone(zone, sheet, callback, emptyCellValue = undefined) {
+        const { top, bottom, left, right } = zone;
+        const result = new Array(right - left + 1);
+        for (let c = left; c <= right; c++) {
+            let col = new Array(bottom - top + 1);
+            result[c - left] = col;
+            for (let r = top; r <= bottom; r++) {
+                let cell = sheet.rows[r].cells[c];
+                col[r - top] = cell ? callback(cell) : emptyCellValue;
+            }
+        }
+        return result;
     }
 
     const colors = [
@@ -5297,12 +5320,26 @@
                 .split("\n")
                 .map((vals) => vals.split("\t"));
             const { left: activeCol, top: activeRow } = target[0];
+            const width = Math.max.apply(Math, values.map((a) => a.length));
+            const height = values.length;
+            this.addMissingDimensions(width, height, activeCol, activeRow);
             for (let i = 0; i < values.length; i++) {
                 for (let j = 0; j < values[i].length; j++) {
                     const xc = toXC(activeCol + j, activeRow + i);
                     this.dispatch("SET_VALUE", { xc, text: values[i][j] });
                 }
             }
+            this.dispatch("SET_SELECTION", {
+                anchor: [activeCol, activeRow],
+                zones: [
+                    {
+                        left: activeCol,
+                        top: activeRow,
+                        right: activeCol + width - 1,
+                        bottom: activeRow + height - 1,
+                    },
+                ],
+            });
         }
         isPasteAllowed(target) {
             const { zones, cells, status } = this;
@@ -5377,26 +5414,8 @@
             }
         }
         pasteZone(width, height, col, row) {
-            const { cols, rows } = this.workbook.activeSheet;
             // first, add missing cols/rows if needed
-            const missingRows = height + row - rows.length;
-            if (missingRows > 0) {
-                this.dispatch("ADD_ROWS", {
-                    row: rows.length - 1,
-                    sheet: this.workbook.activeSheet.id,
-                    quantity: missingRows,
-                    position: "after",
-                });
-            }
-            const missingCols = width + col - cols.length;
-            if (missingCols > 0) {
-                this.dispatch("ADD_COLUMNS", {
-                    column: cols.length - 1,
-                    sheet: this.workbook.activeSheet.id,
-                    quantity: missingCols,
-                    position: "after",
-                });
-            }
+            this.addMissingDimensions(width, height, col, row);
             // then, perform the actual paste operation
             for (let r = 0; r < height; r++) {
                 const rowCells = this.cells[r];
@@ -5414,6 +5433,27 @@
                         onlyFormat: this.pasteOnlyFormat,
                     });
                 }
+            }
+        }
+        addMissingDimensions(width, height, col, row) {
+            const { cols, rows } = this.workbook.activeSheet;
+            const missingRows = height + row - rows.length;
+            if (missingRows > 0) {
+                this.dispatch("ADD_ROWS", {
+                    row: rows.length - 1,
+                    sheet: this.workbook.activeSheet.id,
+                    quantity: missingRows,
+                    position: "after",
+                });
+            }
+            const missingCols = width + col - cols.length;
+            if (missingCols > 0) {
+                this.dispatch("ADD_COLUMNS", {
+                    column: cols.length - 1,
+                    sheet: this.workbook.activeSheet.id,
+                    quantity: missingCols,
+                    position: "after",
+                });
             }
         }
         pasteCell(origin, col, row, onlyValue, onlyFormat) {
@@ -6351,7 +6391,7 @@
                 if (cellReference.test(current.value)) {
                     if (current.value.includes("!")) {
                         let [sheet, val] = current.value.split("!");
-                        sheet = sanitizeSheet(sheet);
+                        sheet = getUnquotedSheetName(sheet);
                         return {
                             type: "REFERENCE",
                             value: val.replace(/\$/g, "").toUpperCase(),
@@ -6817,6 +6857,7 @@
                         : { status: "SUCCESS" };
                 case "RENAME_SHEET":
                     return this.isRenameAllowed(cmd);
+                case "DELETE_SHEET_CONFIRMATION":
                 case "DELETE_SHEET":
                     return this.workbook.visibleSheets.length > 1
                         ? { status: "SUCCESS" }
@@ -6851,13 +6892,11 @@
                 case "DUPLICATE_SHEET":
                     this.duplicateSheet(cmd.sheet, cmd.id, cmd.name);
                     break;
+                case "DELETE_SHEET_CONFIRMATION":
+                    this.interactiveDeleteSheet(cmd.sheet);
+                    break;
                 case "DELETE_SHEET":
-                    if (cmd.interactive) {
-                        this.interactiveDeleteSheet(cmd.sheet);
-                    }
-                    else {
-                        this.deleteSheet(cmd.sheet);
-                    }
+                    this.deleteSheet(cmd.sheet);
                     break;
                 case "DELETE_CONTENT":
                     this.clearZones(cmd.sheet, cmd.target);
@@ -7082,6 +7121,16 @@
         }
         shouldShowFormulas() {
             return this.showFormulas;
+        }
+        getRangeValues(reference, defaultSheetId) {
+            const [range, sheetName] = reference.split("!").reverse();
+            const sheetId = sheetName ? this.sheetIds[sheetName] : defaultSheetId;
+            return mapCellsInZone(toZone(range), this.workbook.sheets[sheetId], (cell) => cell.value);
+        }
+        getRangeFormattedValues(reference, defaultSheetId) {
+            const [range, sheetName] = reference.split("!").reverse();
+            const sheetId = sheetName ? this.sheetIds[sheetName] : defaultSheetId;
+            return mapCellsInZone(toZone(range), this.workbook.sheets[sheetId], this.getters.getCellText, "");
         }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
@@ -7519,10 +7568,11 @@
             if (cmd.interactive) {
                 return { status: "SUCCESS" };
             }
-            if (!cmd.name) {
+            const name = cmd.name && cmd.name.trim().toLowerCase();
+            if (!name) {
                 return { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
             }
-            return this.workbook.visibleSheets.findIndex((id) => this.workbook.sheets[id].name === cmd.name) === -1
+            return this.workbook.visibleSheets.findIndex((id) => this.workbook.sheets[id].name.toLowerCase() === name) === -1
                 ? { status: "SUCCESS" }
                 : { status: "CANCELLED", reason: 8 /* WrongSheetName */ };
         }
@@ -7542,7 +7592,7 @@
         renameSheet(sheetId, name) {
             const sheet = this.workbook.sheets[sheetId];
             const oldName = sheet.name;
-            this.history.updateSheet(sheet, ["name"], name);
+            this.history.updateSheet(sheet, ["name"], name.trim());
             const sheetIds = Object.assign({}, this.sheetIds);
             sheetIds[name] = sheet.id;
             delete sheetIds[oldName];
@@ -7550,7 +7600,7 @@
             this.visitAllFormulasSymbols((value) => {
                 let [val, sheetRef] = value.split("!").reverse();
                 if (sheetRef) {
-                    sheetRef = sanitizeSheet(sheetRef);
+                    sheetRef = getUnquotedSheetName(sheetRef);
                     if (sheetRef === oldName) {
                         if (val.includes(":")) {
                             return this.updateRange(val, 0, 0, sheet.id);
@@ -7596,7 +7646,7 @@
             this.visitAllFormulasSymbols((value) => {
                 let [, sheetRef] = value.split("!").reverse();
                 if (sheetRef) {
-                    sheetRef = sanitizeSheet(sheetRef);
+                    sheetRef = getUnquotedSheetName(sheetRef);
                     if (sheetRef === name) {
                         return "#REF";
                     }
@@ -7662,10 +7712,7 @@
                 y >= this.getters.getNumberRows(sheetId || this.getters.getActiveSheet())) {
                 return "#REF";
             }
-            let sheetName = sheetId && this.getters.getSheetName(sheetId);
-            if (sheetName && sheetName.includes(" ")) {
-                sheetName = `'${sheetName}'`;
-            }
+            const sheetName = sheetId && getComposerSheetName(this.getters.getSheetName(sheetId));
             return ((sheetName ? `${sheetName}!` : "") +
                 (freezeCol ? "$" : "") +
                 numberToLetters(x) +
@@ -7707,7 +7754,7 @@
             this.visitAllFormulasSymbols((content, sheetId) => {
                 let [value, sheetRef] = content.split("!").reverse();
                 if (sheetRef) {
-                    sheetRef = sanitizeSheet(sheetRef);
+                    sheetRef = getUnquotedSheetName(sheetRef);
                     if (sheetRef === sheetNameToFind) {
                         return cb(value, sheetRef);
                     }
@@ -7804,6 +7851,8 @@
         "getNumberRows",
         "getGridSize",
         "shouldShowFormulas",
+        "getRangeValues",
+        "getRangeFormattedValues",
     ];
     function createDefaultCols(colNumber) {
         const cols = [];
@@ -8078,9 +8127,6 @@
              */
             this.COMPUTED = new Set();
             this.evalContext = config.evalContext;
-            DEBUG.evaluation = {
-                isIdle: () => this.loadingCells === 0,
-            };
         }
         // ---------------------------------------------------------------------------
         // Command Handling
@@ -8142,6 +8188,9 @@
             }
             const params = this.getFormulaParameters(() => { });
             return compiledFormula(...params);
+        }
+        isIdle() {
+            return this.loadingCells === 0;
         }
         // ---------------------------------------------------------------------------
         // Scheduler
@@ -8295,26 +8344,15 @@
              * that are actually present in the grid.
              */
             function range(v1, v2, sheetId) {
-                const sheet = sheets[sheetId];
-                const [c1, r1] = toCartesian(v1);
-                const [c2, r2] = toCartesian(v2);
-                const result = new Array(c2 - c1 + 1);
-                for (let c = c1; c <= c2; c++) {
-                    let col = new Array(r2 - r1 + 1);
-                    result[c - c1] = col;
-                    for (let r = r1; r <= r2; r++) {
-                        let cell = sheet.rows[r].cells[c];
-                        if (cell) {
-                            col[r - r1] = getCellValue(cell, sheetId);
-                        }
-                    }
-                }
-                return result;
+                const [left, top] = toCartesian(v1);
+                const [right, bottom] = toCartesian(v2);
+                const zone = { left, top, right, bottom };
+                return mapCellsInZone(zone, sheets[sheetId], (cell) => getCellValue(cell, sheetId));
             }
             return [readCell, range, evalContext];
         }
     }
-    EvaluationPlugin.getters = ["evaluateFormula"];
+    EvaluationPlugin.getters = ["evaluateFormula", "isIdle"];
     EvaluationPlugin.modes = ["normal", "readonly"];
 
     const fontSizes = [
@@ -9463,7 +9501,7 @@
                     this.drawBorders(renderingContext);
                     this.drawTexts(renderingContext);
                     break;
-                case 5 /* Headers */:
+                case 6 /* Headers */:
                     this.drawHeaders(renderingContext);
                     break;
             }
@@ -9778,7 +9816,7 @@
             return result;
         }
     }
-    RendererPlugin.layers = [0 /* Background */, 5 /* Headers */];
+    RendererPlugin.layers = [0 /* Background */, 6 /* Headers */];
     RendererPlugin.getters = [
         "getColIndex",
         "getRowIndex",
@@ -10249,7 +10287,7 @@
             }
         }
     }
-    SelectionPlugin.layers = [3 /* Selection */];
+    SelectionPlugin.layers = [4 /* Selection */];
     SelectionPlugin.modes = ["normal", "readonly"];
     SelectionPlugin.getters = [
         "getActiveCell",
@@ -10263,6 +10301,231 @@
         "getSelectionMode",
         "isSelected",
     ];
+
+    const GraphColors = colors.map((c) => {
+        return `rgba(${parseInt(c.slice(1, 3), 16)},
+  ${parseInt(c.slice(3, 5), 16)},
+  ${parseInt(c.slice(5, 7), 16)}, 0.3)`.replace(/\s/g, "");
+    });
+    class ChartPlugin extends BasePlugin {
+        constructor() {
+            super(...arguments);
+            this.chartFigures = new Set();
+            // contains the configuration of the chart with it's values like they should be displayed,
+            // as well as all the options needed for the chart library to work correctly
+            this.chartRuntime = {};
+            this.outOfDate = new Set();
+        }
+        allowDispatch(cmd) {
+            const success = { status: "SUCCESS" };
+            switch (cmd.type) {
+                case "UPDATE_CHART":
+                case "CREATE_CHART":
+                    const invalidRanges = cmd.definition.dataSets.find((range) => !rangeReference.test(range.split("!").pop())) !==
+                        undefined;
+                    const invalidLabels = !rangeReference.test(cmd.definition.labelRange.split("!").pop());
+                    return invalidRanges || invalidLabels
+                        ? { status: "CANCELLED", reason: 16 /* InvalidChartDefinition */ }
+                        : success;
+                default:
+                    return success;
+            }
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "CREATE_CHART":
+                    const chartDefinition = this.createChartDefinition(cmd.definition, cmd.sheetId);
+                    this.dispatch("CREATE_FIGURE", {
+                        sheet: cmd.sheetId,
+                        figure: {
+                            id: cmd.id,
+                            data: chartDefinition,
+                            x: 0,
+                            y: 0,
+                            height: 500,
+                            width: 800,
+                            tag: "chart",
+                        },
+                    });
+                    this.history.updateLocalState(["chartFigures"], new Set(this.chartFigures).add(cmd.id));
+                    this.history.updateLocalState(["chartRuntime", cmd.id], this.mapDefinitionToRuntime(chartDefinition));
+                    break;
+                case "UPDATE_CHART": {
+                    const chartDefinition = this.createChartDefinition(cmd.definition, this.getChartDefinition(cmd.id).sheetId);
+                    this.dispatch("UPDATE_FIGURE", {
+                        id: cmd.id,
+                        data: chartDefinition,
+                    });
+                    this.history.updateLocalState(["chartRuntime", cmd.id], this.mapDefinitionToRuntime(chartDefinition));
+                    break;
+                }
+                case "DELETE_FIGURE":
+                    if (this.chartFigures.has(cmd.id)) {
+                        const figures = new Set(this.chartFigures);
+                        figures.delete(cmd.id);
+                        this.history.updateLocalState(["chartFigures"], figures);
+                        this.history.updateLocalState(["chartRuntime", cmd.id], undefined);
+                    }
+                    break;
+                case "UPDATE_CELL":
+                    for (let chartId of this.chartFigures) {
+                        const chart = this.getChartDefinition(chartId);
+                        if (this.isCellUsedInChart(chart, cmd.col, cmd.row)) {
+                            this.outOfDate.add(chartId);
+                        }
+                    }
+                    break;
+            }
+        }
+        finalize(cmd) {
+            switch (cmd.type) {
+                case "EVALUATE_CELLS":
+                case "START":
+                    // if there was an async evaluation of cell, there is no way to know which was updated so all charts must be updated
+                    for (let id in this.chartRuntime) {
+                        this.outOfDate.add(id);
+                    }
+                    break;
+            }
+        }
+        import(data) {
+            for (let sheet of data.sheets) {
+                for (let f of sheet.figures) {
+                    if (f.tag === "chart") {
+                        this.outOfDate.add(f.id);
+                    }
+                }
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getChartRuntime(figureId) {
+            if (this.outOfDate.has(figureId)) {
+                this.chartRuntime[figureId] = this.mapDefinitionToRuntime(this.getChartDefinition(figureId));
+                this.outOfDate.delete(figureId);
+            }
+            return this.chartRuntime[figureId];
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        getChartDefinition(figureId) {
+            return this.getters.getFigure(figureId).data;
+        }
+        createChartDefinition(createCommand, sheetId) {
+            let dataSets = [];
+            for (let range of createCommand.dataSets) {
+                let zone = toZone(range);
+                if (zone.left !== zone.right && zone.top !== zone.bottom) {
+                    // It's a rectangle. We treat all columns (arbitrary) as different data series.
+                    for (let column = zone.left; column <= zone.right; column++) {
+                        const columnZone = {
+                            left: column,
+                            right: column,
+                            top: zone.top,
+                            bottom: zone.bottom,
+                        };
+                        dataSets.push(this.createDataset(columnZone, createCommand.seriesHasTitle));
+                    }
+                }
+                else if (zone.left === zone.right && zone.top === zone.bottom) {
+                    // A single cell. If it's only the title, the dataset is not added.
+                    if (!createCommand.seriesHasTitle) {
+                        dataSets.push({ dataRange: zoneToXc(zone) });
+                    }
+                }
+                else {
+                    dataSets.push(this.createDataset(zone, createCommand.seriesHasTitle));
+                }
+            }
+            return {
+                title: createCommand.title,
+                type: createCommand.type,
+                dataSets: dataSets,
+                labelRange: createCommand.labelRange,
+                sheetId: sheetId,
+            };
+        }
+        /**
+         * Create a chart dataset from a Zone.
+         * The zone should be a single column or a single row
+         */
+        createDataset(zone, withTitle) {
+            if (zone.left !== zone.right && zone.top !== zone.bottom) {
+                throw new Error(`Zone should be a single column or row: ${zoneToXc(zone)}`);
+            }
+            const labelCell = withTitle ? toXC(zone.left, zone.top) : undefined;
+            const offset = withTitle ? 1 : 0;
+            const isColumn = zone.top !== zone.bottom && zone.left === zone.right;
+            const dataRange = zoneToXc({
+                top: isColumn ? zone.top + offset : zone.top,
+                bottom: zone.bottom,
+                left: isColumn ? zone.left : zone.left + offset,
+                right: zone.right,
+            });
+            return { labelCell, dataRange };
+        }
+        mapDefinitionToRuntime(definition) {
+            let runtime = {
+                type: definition.type,
+                options: {
+                    // https://www.chartjs.org/docs/latest/general/responsive.html
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 0,
+                    },
+                    hover: {
+                        animationDuration: 0,
+                    },
+                    responsiveAnimationDuration: 0,
+                    title: {
+                        display: true,
+                        text: definition.title,
+                    },
+                },
+                data: {
+                    labels: definition.labelRange !== ""
+                        ? this.getters
+                            .getRangeFormattedValues(definition.labelRange, definition.sheetId)
+                            .flat(1)
+                        : [],
+                    datasets: [],
+                },
+            };
+            let graphColorIndex = 0;
+            for (const ds of definition.dataSets) {
+                const dataset = {
+                    label: ds.labelCell ? this.getters.evaluateFormula(ds.labelCell, definition.sheetId) : "",
+                    data: ds.dataRange
+                        ? this.getters.getRangeValues(ds.dataRange, definition.sheetId).flat(1)
+                        : [],
+                    lineTension: 0,
+                    backgroundColor: GraphColors[graphColorIndex],
+                };
+                graphColorIndex = ++graphColorIndex % GraphColors.length;
+                runtime.data.datasets.push(dataset);
+            }
+            return runtime;
+        }
+        isCellUsedInChart(chart, col, row) {
+            if (isInside(col, row, toZone(chart.labelRange))) {
+                return true;
+            }
+            for (let db of chart.dataSets) {
+                if (db.dataRange && db.dataRange.length > 0 && isInside(col, row, toZone(db.dataRange))) {
+                    return true;
+                }
+                if (db.labelCell && db.labelCell.length > 0 && isInside(col, row, toZone(db.labelCell))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+    ChartPlugin.getters = ["getChartRuntime"];
+    ChartPlugin.layers = [3 /* Chart */];
 
     const autofillModifiersRegistry = new Registry();
     autofillModifiersRegistry
@@ -10804,6 +11067,12 @@
         env.dispatch("CREATE_SHEET", { activate: true, id: uuidv4() });
     };
     //------------------------------------------------------------------------------
+    // Charts
+    //------------------------------------------------------------------------------
+    const CREATE_CHART = (env) => {
+        env.openSidePanel("ChartPanel");
+    };
+    //------------------------------------------------------------------------------
     // Style/Format
     //------------------------------------------------------------------------------
     const FORMAT_AUTO_ACTION = (env) => setFormatter(env, "");
@@ -10842,7 +11111,6 @@
         name: _lt("Paste"),
         sequence: 30,
         action: PASTE_ACTION,
-        separator: true,
     })
         .add("paste_special", {
         name: _lt("Paste special"),
@@ -10850,7 +11118,7 @@
         separator: true,
     })
         .addChild("paste_value_only", ["paste_special"], {
-        name: _lt("Paste value only"),
+        name: _lt("Paste values only"),
         sequence: 10,
         action: PASTE_VALUE_ACTION,
     })
@@ -10868,6 +11136,7 @@
         name: CELL_INSERT_COLUMNS_BEFORE_NAME,
         sequence: 70,
         action: INSERT_COLUMNS_BEFORE_ACTION,
+        separator: true,
     })
         .add("delete_row", {
         name: REMOVE_ROWS_NAME,
@@ -10893,6 +11162,7 @@
         name: _lt("Conditional formatting"),
         sequence: 120,
         action: OPEN_CF_SIDEPANEL_ACTION,
+        separator: true,
     });
 
     const colMenuRegistry = new MenuItemRegistry();
@@ -11032,7 +11302,7 @@
         isVisible: (env) => {
             return env.getters.getSheets().length > 1;
         },
-        action: (env) => env.dispatch("DELETE_SHEET", { sheet: env.getters.getActiveSheet(), interactive: true }),
+        action: (env) => env.dispatch("DELETE_SHEET_CONFIRMATION", { sheet: env.getters.getActiveSheet() }),
     })
         .add("duplicate", {
         name: _lt("Duplicate"),
@@ -11170,11 +11440,16 @@
         isVisible: (env) => env.getters.getActiveRows().size === 0,
         separator: true,
     })
+        .addChild("insert_chart", ["insert"], {
+        name: _lt("Chart"),
+        sequence: 50,
+        action: CREATE_CHART,
+        separator: true,
+    })
         .addChild("insert_sheet", ["insert"], {
         name: _lt("New sheet"),
         sequence: 60,
         action: CREATE_SHEET_ACTION,
-        separator: true,
     })
         .addChild("view_formulas", ["view"], {
         name: (env) => env.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
@@ -11475,6 +11750,19 @@
         NotContains: _lt("Not contains"),
         NotEqual: _lt("Not equal"),
     };
+    const chartTerms = {
+        ChartType: _lt("Chart type"),
+        Line: _lt("Line"),
+        Bar: _lt("Bar"),
+        Pie: _lt("Pie"),
+        Title: _lt("Title"),
+        DataSeries: _lt("Data series"),
+        MyDataHasTitle: _lt("My data has title"),
+        DataCategories: _lt("Data categories (labels)"),
+        UpdateChart: _lt("Update chart"),
+        CreateChart: _lt("Create chart"),
+        TitlePlaceholder: _lt("New Chart"),
+    };
 
     const { Component: Component$1, useState, hooks } = owl__namespace;
     const { useExternalListener } = hooks;
@@ -11490,16 +11778,16 @@
 `;
     const TEMPLATE = xml$1 /* xml */ `
 <div>
-    <div class="o-cf-title-format" t-esc="env._t('${terms.CF_TITLE}')"></div>
+    <div class="o-section-title" t-esc="env._t('${terms.CF_TITLE}')"></div>
     <div class="o-cf-title-text" t-esc="env._t('${terms.IS_RULE}')"></div>
-    <select t-model="state.condition.operator" class="o-cell-is-operator">
+    <select t-model="state.condition.operator" class="o-input o-cell-is-operator">
         <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
             <option t-att-value="op" t-esc="cellIsOperators[op]"/>
         </t>
     </select>
-    <input type="text" placeholder="Value" t-model="state.condition.value1" class="o-cell-is-value"/>
+    <input type="text" placeholder="Value" t-model="state.condition.value1" class="o-input o-cell-is-value"/>
     <t t-if="state.condition.operator === 'Between' || state.condition.operator === 'NotBetween'">
-        <input type="text" t-model="state.condition.value2"/>
+        <input type="text" placeholder="and value" t-model="state.condition.value2" class="o-input"/>
     </t>
     <div class="o-cf-title-text" t-esc="env._t('${terms.FORMATTING_STYLE}')"></div>
 
@@ -11535,31 +11823,11 @@
 </div>
 `;
     const CSS = css$1 /* scss */ `
-  .o-cf-title-format {
-    margin: 10px 0px 18px 0px;
-  }
   .o-cf-title-text {
     font-size: 12px;
     line-height: 14px;
     margin-bottom: 6px;
     margin-top: 18px;
-  }
-  .o-cell-is-operator {
-    background-color: white;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-    border: 1px solid lightgrey;
-    padding: 5px;
-    text-align: left;
-    width: 90%;
-  }
-  .o-cell-is-value {
-    border-radius: 4px;
-    border: 1px solid lightgrey;
-    padding: 5px;
-    width: 90%;
   }
   .o-cf-preview-line {
     border: 1px solid darkgrey;
@@ -11675,7 +11943,7 @@
   </div>`;
     const TEMPLATE$1 = xml$2 /* xml */ `
   <div>
-      <div class="o-cf-title-format">Format rules</div>
+      <div class="o-section-title">Format rules</div>
       <div class="o-cf-title-text">Preview</div>
       <t t-call="${PREVIEW_TEMPLATE$1}"/>
       <div class="o-cf-title-text">Minpoint</div>
@@ -11694,9 +11962,6 @@
       </div>
   </div>`;
     const CSS$1 = css$2 /* scss */ `
-  .o-cf-title-format {
-    margin: 10px 0px 18px 0px;
-  }
   .o-cf-title-text {
     font-size: 12px;
     line-height: 14px;
@@ -11796,6 +12061,7 @@
 
     <div class="o-selection-controls">
       <button
+        t-if="canAddRange"
         t-on-click="addEmptyInput"
         class="o-btn o-add-selection">Add another range</button>
       <button
@@ -11865,8 +12131,15 @@
         get hasFocus() {
             return this.ranges.filter((i) => i.isFocused).length > 0;
         }
+        get canAddRange() {
+            return !this.props.maximumRanges || this.ranges.length < this.props.maximumRanges;
+        }
         mounted() {
-            this.dispatch("ENABLE_NEW_SELECTION_INPUT", { id: this.id, initialRanges: this.props.ranges });
+            this.dispatch("ENABLE_NEW_SELECTION_INPUT", {
+                id: this.id,
+                initialRanges: this.props.ranges,
+                maximumRanges: this.props.maximumRanges,
+            });
         }
         async willUnmount() {
             this.dispatch("DISABLE_SELECTION_INPUT", { id: this.id });
@@ -11960,11 +12233,11 @@
           <div class="o-cf-type-tab" t-att-class="{'o-cf-tab-selected': state.toRuleType === 'ColorScaleRule'}" t-on-click="setRuleType('ColorScaleRule')">Color Scale</div>
         </div>
         <div class="o-cf-ruleEditor">
-            <div class="o-cf-range">
-              <div class="o-cf-range-title">Apply to range</div>
+            <div class="o-section o-cf-range">
+              <div class="o-section-title">Apply to range</div>
               <SelectionInput ranges="state.currentRanges" class="o-range" t-on-selection-changed="onRangesChanged"/>
             </div>
-            <div class="o-cf-editor">
+            <div class="o-cf-editor o-section">
               <t t-component="editors[state.currentCF.rule.type]"
                   t-key="state.currentCF.id"
                   conditionalFormat="state.currentCF"
@@ -12043,17 +12316,6 @@
       }
     }
     .o-cf-ruleEditor {
-      .o-cf-range {
-        padding: 10px;
-        .o-cf-range-title{
-          font-size: 14px;
-          margin-bottom: 20px;
-          margin-top: 20px;
-        }
-      }
-      .o-cf-editor{
-        padding:10px;
-      }
       .o-dropdown {
         position: relative;
         .o-dropdown-content {
@@ -12281,14 +12543,99 @@
     ConditionalFormattingPanel.style = CSS$3;
     ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, SelectionInput };
 
+    const { Component: Component$5, useState: useState$3 } = owl__namespace;
+    const { xml: xml$5 } = owl.tags;
+    const TEMPLATE$4 = xml$5 /* xml */ `
+  <div class="o-chart">
+    <div class="o-section">
+      <div class="o-section-title"><t t-esc="env._t('${chartTerms.ChartType}')"/></div>
+      <select t-model="state.type" class="o-input o-type-selector">
+        <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
+        <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
+        <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
+      </select>
+    </div>
+    <div class="o-section o-chart-title">
+      <div class="o-section-title" t-esc="env._t('${chartTerms.Title}')"/>
+      <input type="text" t-model="state.title" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
+    </div>
+    <div class="o-section o-data-series">
+      <div class="o-section-title" t-esc="env._t('${chartTerms.DataSeries}')"/>
+      <SelectionInput ranges="state.ranges" t-on-selection-changed="onSeriesChanged"/>
+      <input type="checkbox" t-model="state.seriesHasTitle"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
+    </div>
+    <div class="o-section o-data-labels">
+        <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
+        <SelectionInput ranges="[state.labelRange]" t-on-selection-changed="onLabelRangeChanged" maximumRanges="1"/>
+    </div>
+    <div class="o-sidePanelButtons">
+      <button t-if="props.figure" t-on-click="updateChart(props.figure)" class="o-sidePanelButton" t-esc="env._t('${chartTerms.UpdateChart}')"/>
+      <button t-else="" t-on-click="createChart" class="o-sidePanelButton" t-esc="env._t('${chartTerms.CreateChart}')"/>
+    </div>
+  </div>
+`;
+    class ChartPanel extends Component$5 {
+        constructor() {
+            super(...arguments);
+            this.getters = this.env.getters;
+            this.state = useState$3(this.initialState());
+        }
+        onSeriesChanged(ev) {
+            this.state.ranges = ev.detail.ranges;
+        }
+        onLabelRangeChanged(ev) {
+            this.state.labelRange = ev.detail.ranges[0];
+        }
+        createChart() {
+            this.env.dispatch("CREATE_CHART", {
+                sheetId: this.getters.getActiveSheet(),
+                id: uuidv4(),
+                definition: this.getChartDefinition(),
+            });
+            this.trigger("close-side-panel");
+        }
+        updateChart(chart) {
+            this.env.dispatch("UPDATE_CHART", {
+                id: chart.id,
+                definition: this.getChartDefinition(),
+            });
+            this.trigger("close-side-panel");
+        }
+        getChartDefinition() {
+            return {
+                type: this.state.type,
+                title: this.state.title,
+                labelRange: this.state.labelRange.trim() || "",
+                dataSets: this.state.ranges.slice(),
+                seriesHasTitle: this.state.seriesHasTitle,
+            };
+        }
+        initialState() {
+            const data = this.props.figure ? this.props.figure.data : undefined;
+            return {
+                title: data && data.title ? data.title : "",
+                ranges: data ? data.dataSets.map((ds) => ds.dataRange) : [],
+                labelRange: data ? data.labelRange : "",
+                type: data ? data.type : "line",
+                seriesHasTitle: data ? data.title !== undefined : false,
+            };
+        }
+    }
+    ChartPanel.template = TEMPLATE$4;
+    ChartPanel.components = { SelectionInput };
+
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
-        title: "Conditional formatting",
+        title: _lt("Conditional formatting"),
         Body: ConditionalFormattingPanel,
     });
+    sidePanelRegistry.add("ChartPanel", {
+        title: _lt("Chart"),
+        Body: ChartPanel,
+    });
 
-    const { xml: xml$5, css: css$5 } = owl.tags;
-    const TEMPLATE$4 = xml$5 /* xml */ `
+    const { xml: xml$6, css: css$5 } = owl.tags;
+    const TEMPLATE$5 = xml$6 /* xml */ `
   <div class="o-fig-text">
     <p t-esc="props.figure.data"/>
   </div>
@@ -12311,8 +12658,66 @@
 `;
     class TextFigure extends owl.Component {
     }
-    TextFigure.template = TEMPLATE$4;
+    TextFigure.template = TEMPLATE$5;
     TextFigure.style = CSS$4;
+
+    const { xml: xml$7, css: css$6 } = owl.tags;
+    const { useRef } = owl.hooks;
+    const TEMPLATE$6 = xml$7 /* xml */ `
+<div class="o-chart-container">
+    <canvas t-ref="graphContainer" />
+</div>`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    const CSS$5 = css$6 /* scss */ `
+  .o-chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    > canvas {
+      background-color: white;
+    }
+  }
+`;
+    class ChartFigure extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.canvas = useRef("graphContainer");
+        }
+        mounted() {
+            this.createChart();
+        }
+        patched() {
+            const figure = this.props.figure;
+            const chartData = this.env.getters.getChartRuntime(figure.id);
+            if (chartData) {
+                if (chartData.data && chartData.data.datasets) {
+                    Object.assign(this.chart.data.datasets, chartData.data.datasets);
+                }
+                else {
+                    this.chart.data.datasets = undefined;
+                }
+                this.chart.update({ duration: 0 });
+            }
+            else {
+                this.chart && this.chart.destroy();
+            }
+        }
+        createChart() {
+            const figure = this.props.figure;
+            const charData = this.env.getters.getChartRuntime(figure.id);
+            if (charData) {
+                const canvas = this.canvas.el;
+                const ctx = canvas.getContext("2d");
+                this.chart = new window.Chart(ctx, charData);
+            }
+        }
+    }
+    ChartFigure.template = TEMPLATE$6;
+    ChartFigure.style = CSS$5;
+    ChartFigure.components = {};
 
     const figureRegistry = new Registry();
     // figureRegistry.add("ConditionalFormatting", {
@@ -12321,6 +12726,7 @@
     // });
     //
     figureRegistry.add("text", { Component: TextFigure });
+    figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
     const topbarComponentRegistry = new Registry();
 
@@ -12660,7 +13066,7 @@
             }
         }
     }
-    AutofillPlugin.layers = [4 /* Autofill */];
+    AutofillPlugin.layers = [5 /* Autofill */];
     AutofillPlugin.getters = ["getAutofillTooltip"];
     AutofillPlugin.modes = ["normal", "readonly"];
 
@@ -12815,6 +13221,7 @@
         constructor() {
             super(...arguments);
             this.inputs = {};
+            this.inputMaximums = {};
             this.focusedInput = null;
             this.focusedRange = null;
             this.willAddNewRange = false;
@@ -12830,13 +13237,18 @@
                         return { status: "CANCELLED", reason: 14 /* InputAlreadyFocused */ };
                     }
                     break;
+                case "ADD_EMPTY_RANGE":
+                    if (this.inputs[cmd.id].length === this.inputMaximums[cmd.id]) {
+                        return { status: "CANCELLED", reason: 15 /* MaximumRangesReached */ };
+                    }
+                    break;
             }
             return { status: "SUCCESS" };
         }
         handle(cmd) {
             switch (cmd.type) {
                 case "ENABLE_NEW_SELECTION_INPUT":
-                    this.initInput(cmd.id, cmd.initialRanges || []);
+                    this.initInput(cmd.id, cmd.initialRanges || [], cmd.maximumRanges);
                     break;
                 case "DISABLE_SELECTION_INPUT":
                     if (this.focusedInput === cmd.id) {
@@ -12846,6 +13258,7 @@
                         this.focusedInput = null;
                     }
                     delete this.inputs[cmd.id];
+                    delete this.inputMaximums[cmd.id];
                     break;
                 case "FOCUS_RANGE":
                     this.focus(cmd.id, this.getIndex(cmd.id, cmd.rangeId));
@@ -12903,11 +13316,14 @@
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
-        initInput(id, initialRanges) {
+        initInput(id, initialRanges, maximumRanges) {
             this.inputs[id] = initialRanges.map((r) => Object.freeze({
                 xc: r,
                 id: uuidv4(),
             }));
+            if (maximumRanges !== undefined) {
+                this.inputMaximums[id] = maximumRanges;
+            }
             if (this.inputs[id].length === 0) {
                 this.dispatch("ADD_EMPTY_RANGE", { id });
             }
@@ -12976,11 +13392,18 @@
          * Add a new input at the end and focus it.
          */
         addNewRange(id, highlights) {
+            if (this.inputMaximums[id] < this.inputs[id].length + highlights.length) {
+                return;
+            }
             this.inputs[id] = this.inputs[id].concat(this.highlightsToInput(highlights));
             this.focusLast(id);
         }
         setRange(id, index, highlights) {
-            const [existingRange, ...newRanges] = this.highlightsToInput(highlights);
+            let [existingRange, ...newRanges] = this.highlightsToInput(highlights);
+            const additionalRanges = this.inputs[id].length + newRanges.length - this.inputMaximums[id];
+            if (additionalRanges) {
+                newRanges = newRanges.slice(0, newRanges.length - additionalRanges);
+            }
             this.inputs[id].splice(index, 1, existingRange, ...newRanges);
             // focus the last newly added range
             if (newRanges.length) {
@@ -13111,9 +13534,24 @@
                     if (cmd.height !== undefined) {
                         this.history.updateLocalState(["figures", cmd.id, "height"], cmd.height);
                     }
+                    if (cmd.data !== undefined) {
+                        this.history.updateLocalState(["figures", cmd.id, "data"], cmd.data);
+                    }
                     break;
                 case "SELECT_FIGURE":
                     this.selectedFigureId = cmd.id;
+                    break;
+                case "DELETE_FIGURE":
+                    this.history.updateLocalState(["figures", cmd.id], undefined);
+                    for (let s in this.sheetFigures) {
+                        let deletedFigureIndex = this.sheetFigures[s].findIndex((f) => f.id === cmd.id);
+                        if (deletedFigureIndex > -1) {
+                            const copy = this.sheetFigures[s].slice();
+                            copy.splice(deletedFigureIndex, 1);
+                            this.history.updateLocalState(["sheetFigures", s], copy);
+                            this.selectedFigureId = null;
+                        }
+                    }
                     break;
                 // some commands should not remove the current selection
                 case "EVALUATE_CELLS":
@@ -13151,6 +13589,9 @@
         getSelectedFigureId() {
             return this.selectedFigureId;
         }
+        getFigure(figureId) {
+            return this.figures[figureId];
+        }
         // ---------------------------------------------------------------------------
         // Import/Export
         // ---------------------------------------------------------------------------
@@ -13170,7 +13611,7 @@
             }
         }
     }
-    FigurePlugin.getters = ["getFigures", "getSelectedFigureId"];
+    FigurePlugin.getters = ["getFigures", "getSelectedFigureId", "getFigure"];
 
     const pluginRegistry = new Registry()
         .add("core", CorePlugin)
@@ -13183,9 +13624,10 @@
         .add("highlight", HighlightPlugin)
         .add("selectionInput", SelectionInputPlugin)
         .add("conditional formatting", ConditionalFormatPlugin)
+        .add("figures", FigurePlugin)
+        .add("chart", ChartPlugin)
         .add("grid renderer", RendererPlugin)
-        .add("autofill", AutofillPlugin)
-        .add("figures", FigurePlugin);
+        .add("autofill", AutofillPlugin);
 
     /**
      * This is the current state version number. It should be incremented each time
@@ -13622,15 +14064,15 @@
         return !!ev.target && parent.contains(ev.target);
     }
 
-    const { xml: xml$6, css: css$6 } = owl.tags;
-    const { useExternalListener: useExternalListener$2, useRef } = owl.hooks;
+    const { xml: xml$8, css: css$7 } = owl.tags;
+    const { useExternalListener: useExternalListener$2, useRef: useRef$1 } = owl.hooks;
     const MENU_WIDTH = 200;
     const MENU_ITEM_HEIGHT = 32;
     const SEPARATOR_HEIGHT = 1;
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$5 = xml$6 /* xml */ `
+    const TEMPLATE$7 = xml$8 /* xml */ `
     <div>
       <div class="o-menu" t-att-style="style">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
@@ -13661,7 +14103,7 @@
         t-ref="subMenuRef"
         t-on-close="subMenu.isOpen=false"/>
     </div>`;
-    const CSS$5 = css$6 /* scss */ `
+    const CSS$6 = css$7 /* scss */ `
   .o-menu {
     position: absolute;
     width: ${MENU_WIDTH}px;
@@ -13704,7 +14146,7 @@
     class Menu extends owl.Component {
         constructor() {
             super(...arguments);
-            this.subMenuRef = useRef("subMenuRef");
+            this.subMenuRef = useRef$1("subMenuRef");
             useExternalListener$2(window, "click", this.onClick);
             useExternalListener$2(window, "contextmenu", this.onContextMenu);
             this.subMenu = owl.useState({
@@ -13838,20 +14280,20 @@
             }
         }
     }
-    Menu.template = TEMPLATE$5;
+    Menu.template = TEMPLATE$7;
     Menu.components = { Menu };
-    Menu.style = CSS$5;
+    Menu.style = CSS$6;
     Menu.defaultProps = {
         depth: 1,
     };
 
-    const { Component: Component$5 } = owl__namespace;
-    const { xml: xml$7, css: css$7 } = owl.tags;
-    const { useState: useState$3 } = owl.hooks;
+    const { Component: Component$6 } = owl__namespace;
+    const { xml: xml$9, css: css$8 } = owl.tags;
+    const { useState: useState$4 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$6 = xml$7 /* xml */ `
+    const TEMPLATE$8 = xml$9 /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
     <div class="o-sheet-item o-add-sheet" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
@@ -13874,7 +14316,7 @@
           menuItems="menuState.menuItems"
           t-on-close="menuState.isOpen=false"/>
   </div>`;
-    const CSS$6 = css$7 /* scss */ `
+    const CSS$7 = css$8 /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
     padding-left: ${HEADER_WIDTH}px;
@@ -13949,11 +14391,11 @@
     }
   }
 `;
-    class BottomBar extends Component$5 {
+    class BottomBar extends Component$6 {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.menuState = useState$3({ isOpen: false, position: null, menuItems: [] });
+            this.menuState = useState$4({ isOpen: false, position: null, menuItems: [] });
         }
         mounted() {
             this.focusSheet();
@@ -14020,12 +14462,12 @@
             this.openContextMenu(ev.currentTarget, sheetMenuRegistry);
         }
     }
-    BottomBar.template = TEMPLATE$6;
-    BottomBar.style = CSS$6;
+    BottomBar.template = TEMPLATE$8;
+    BottomBar.style = CSS$7;
     BottomBar.components = { Menu };
 
-    const { Component: Component$6, useState: useState$4 } = owl__namespace;
-    const { xml: xml$8, css: css$8 } = owl.tags;
+    const { Component: Component$7, useState: useState$5 } = owl__namespace;
+    const { xml: xml$a, css: css$9 } = owl.tags;
     const functions$4 = functionRegistry.content;
     const providerRegistry = new Registry();
     providerRegistry.add("functions", async function () {
@@ -14039,7 +14481,7 @@
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$7 = xml$8 /* xml */ `
+    const TEMPLATE$9 = xml$a /* xml */ `
   <div t-att-class="{'o-autocomplete-dropdown':state.values.length}" >
     <t t-foreach="state.values" t-as="v" t-key="v.text">
         <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="fillValue(v_index)">
@@ -14048,7 +14490,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$7 = css$8 /* scss */ `
+    const CSS$8 = css$9 /* scss */ `
   .o-autocomplete-dropdown {
     width: 260px;
     margin: 4px;
@@ -14076,10 +14518,10 @@
     }
   }
 `;
-    class TextValueProvider extends Component$6 {
+    class TextValueProvider extends Component$7 {
         constructor() {
             super(...arguments);
-            this.state = useState$4({
+            this.state = useState$5({
                 values: [],
                 selectedIndex: 0,
             });
@@ -14126,8 +14568,8 @@
             }
         }
     }
-    TextValueProvider.template = TEMPLATE$7;
-    TextValueProvider.style = CSS$7;
+    TextValueProvider.template = TEMPLATE$9;
+    TextValueProvider.style = CSS$8;
 
     class ContentEditableHelper {
         constructor(el) {
@@ -14258,9 +14700,9 @@
         }
     }
 
-    const { Component: Component$7 } = owl__namespace;
-    const { useRef: useRef$1, useState: useState$5 } = owl.hooks;
-    const { xml: xml$9, css: css$9 } = owl.tags;
+    const { Component: Component$8 } = owl__namespace;
+    const { useRef: useRef$2, useState: useState$6 } = owl.hooks;
+    const { xml: xml$b, css: css$a } = owl.tags;
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
     const StringColor = "#f6cd61";
@@ -14276,7 +14718,7 @@
         LEFT_PAREN: OperatorColor,
         RIGHT_PAREN: OperatorColor,
     };
-    const TEMPLATE$8 = xml$9 /* xml */ `
+    const TEMPLATE$a = xml$b /* xml */ `
 <div class="o-composer-container" t-att-style="containerStyle">
     <div class="o-composer"
       t-att-style="composerStyle"
@@ -14301,7 +14743,7 @@
     />
 </div>
   `;
-    const CSS$8 = css$9 /* scss */ `
+    const CSS$9 = css$a /* scss */ `
   .o-composer-container {
     box-sizing: border-box;
     position: absolute;
@@ -14323,16 +14765,16 @@
     }
   }
 `;
-    class Composer extends Component$7 {
+    class Composer extends Component$8 {
         constructor() {
             super(...arguments);
-            this.composerRef = useRef$1("o_composer");
-            this.autoCompleteRef = useRef$1("o_autocomplete_provider");
+            this.composerRef = useRef$2("o_composer");
+            this.autoCompleteRef = useRef$2("o_autocomplete_provider");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.selectionEnd = 0;
             this.selectionStart = 0;
-            this.autoCompleteState = useState$5({
+            this.autoCompleteState = useState$6({
                 showProvider: false,
                 provider: "functions",
                 search: "",
@@ -14555,9 +14997,10 @@
                             let value = token.value;
                             const [xc, sheet] = value.split("!").reverse();
                             if (rangeReference.test(xc)) {
-                                const refSanitized = (sheet
-                                    ? `${sheet}!`
-                                    : `${this.getters.getSheetName(this.getters.getEditionSheet())}!`) +
+                                const refSanitized = getComposerSheetName(sheet
+                                    ? `${sheet}`
+                                    : `${this.getters.getSheetName(this.getters.getEditionSheet())}`) +
+                                    "!" +
                                     xc.replace(/\$/g, "");
                                 if (!refUsed[refSanitized]) {
                                     refUsed[refSanitized] = colors[lastUsedColorIndex];
@@ -14633,7 +15076,7 @@
                 this.selectionStart = this.refSelectionStart;
             }
             if (this.getters.getEditionSheet() !== this.getters.getActiveSheet()) {
-                const sheetName = this.getters.getSheetName(this.getters.getActiveSheet());
+                const sheetName = getComposerSheetName(this.getters.getSheetName(this.getters.getActiveSheet()));
                 selection = `${sheetName}!${selection}`;
             }
             this.addText(selection);
@@ -14676,8 +15119,8 @@
             this.selectionEnd = selection.end;
         }
     }
-    Composer.template = TEMPLATE$8;
-    Composer.style = CSS$8;
+    Composer.template = TEMPLATE$a;
+    Composer.style = CSS$9;
     Composer.components = { TextValueProvider };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -14695,13 +15138,13 @@
         window.addEventListener("mousemove", onMouseMove);
     }
 
-    const { Component: Component$8 } = owl__namespace;
-    const { xml: xml$a, css: css$a } = owl.tags;
-    const { useState: useState$6 } = owl.hooks;
+    const { Component: Component$9 } = owl__namespace;
+    const { xml: xml$c, css: css$b } = owl.tags;
+    const { useState: useState$7 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // Resizer component
     // -----------------------------------------------------------------------------
-    class AbstractResizer extends Component$8 {
+    class AbstractResizer extends Component$9 {
         constructor() {
             super(...arguments);
             this.PADDING = 0;
@@ -14711,7 +15154,7 @@
             this.lastElement = null;
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.state = useState$6({
+            this.state = useState$7({
                 isActive: false,
                 isResizing: false,
                 activeElement: 0,
@@ -14904,7 +15347,7 @@
             };
         }
     }
-    ColResizer.template = xml$a /* xml */ `
+    ColResizer.template = xml$c /* xml */ `
     <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
       t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.isActive">
@@ -14914,7 +15357,7 @@
         </div>
       </t>
     </div>`;
-    ColResizer.style = css$a /* scss */ `
+    ColResizer.style = css$b /* scss */ `
     .o-col-resizer {
       position: absolute;
       top: 0;
@@ -15005,7 +15448,7 @@
             };
         }
     }
-    RowResizer.template = xml$a /* xml */ `
+    RowResizer.template = xml$c /* xml */ `
     <div class="o-row-resizer" t-on-mousemove.self="onMouseMove"  t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
     t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.isActive">
@@ -15015,7 +15458,7 @@
         </div>
       </t>
     </div>`;
-    RowResizer.style = css$a /* scss */ `
+    RowResizer.style = css$b /* scss */ `
     .o-row-resizer {
       position: absolute;
       top: ${HEADER_HEIGHT}px;
@@ -15040,18 +15483,18 @@
       }
     }
   `;
-    class Overlay extends Component$8 {
+    class Overlay extends Component$9 {
         selectAll() {
             this.env.dispatch("SELECT_ALL");
         }
     }
-    Overlay.template = xml$a /* xml */ `
+    Overlay.template = xml$c /* xml */ `
     <div class="o-overlay">
       <ColResizer viewport="props.viewport"/>
       <RowResizer viewport="props.viewport"/>
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
-    Overlay.style = css$a /* scss */ `
+    Overlay.style = css$b /* scss */ `
     .o-overlay {
       .all {
         position: absolute;
@@ -15065,13 +15508,13 @@
   `;
     Overlay.components = { ColResizer, RowResizer };
 
-    const { Component: Component$9 } = owl__namespace;
-    const { xml: xml$b, css: css$b } = owl.tags;
-    const { useState: useState$7 } = owl.hooks;
+    const { Component: Component$a } = owl__namespace;
+    const { xml: xml$d, css: css$c } = owl.tags;
+    const { useState: useState$8 } = owl.hooks;
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$9 = xml$b /* xml */ `
+    const TEMPLATE$b = xml$d /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
     <t t-set="tooltip" t-value="getTooltip()"/>
@@ -15080,7 +15523,7 @@
     </div>
   </div>
 `;
-    const CSS$9 = css$b /* scss */ `
+    const CSS$a = css$c /* scss */ `
   .o-autofill {
     height: 6px;
     width: 6px;
@@ -15109,10 +15552,10 @@
     }
   }
 `;
-    class Autofill extends Component$9 {
+    class Autofill extends Component$a {
         constructor() {
             super(...arguments);
-            this.state = useState$7({
+            this.state = useState$8({
                 position: { left: 0, top: 0 },
                 handler: false,
             });
@@ -15168,11 +15611,11 @@
             this.env.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = TEMPLATE$9;
-    Autofill.style = CSS$9;
-    class TooltipComponent extends Component$9 {
+    Autofill.template = TEMPLATE$b;
+    Autofill.style = CSS$a;
+    class TooltipComponent extends Component$a {
     }
-    TooltipComponent.template = xml$b /* xml */ `
+    TooltipComponent.template = xml$d /* xml */ `
     <div t-esc="props.content"/>
   `;
 
@@ -15194,32 +15637,32 @@
         }
     }
 
-    const { xml: xml$c, css: css$c } = owl.tags;
-    const { useState: useState$8 } = owl__namespace;
-    const TEMPLATE$a = xml$c /* xml */ `
-<div>
+    const { xml: xml$e, css: css$d } = owl.tags;
+    const { useState: useState$9 } = owl__namespace;
+    const TEMPLATE$c = xml$e /* xml */ `<div>
     <t t-foreach="getFigures()" t-as="info" t-key="info.id">
-        <div
-          class="o-figure-wrapper"
-          t-att-style="getStyle(info)"
-          t-on-mousedown="onMouseDown(info.figure)" >
-            <div
-              class="o-figure"
-              t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
-              t-att-style="getDims(info)">
-              <t t-component="figureRegistry.get(info.figure.tag).Component"
-                t-key="info.id"
-                figure="info.figure" />
-              <t t-if="info.isSelected">
-                  <div class="o-anchor o-top" t-on-mousedown.stop="resize(info.figure, 0,-1)"/>
-                  <div class="o-anchor o-topRight" t-on-mousedown.stop="resize(info.figure, 1,-1)"/>
-                  <div class="o-anchor o-right" t-on-mousedown.stop="resize(info.figure, 1,0)"/>
-                  <div class="o-anchor o-bottomRight" t-on-mousedown.stop="resize(info.figure, 1,1)"/>
-                  <div class="o-anchor o-bottom" t-on-mousedown.stop="resize(info.figure, 0,1)"/>
-                  <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="resize(info.figure, -1,1)"/>
-                  <div class="o-anchor o-left" t-on-mousedown.stop="resize(info.figure, -1,0)"/>
-                  <div class="o-anchor o-topLeft" t-on-mousedown.stop="resize(info.figure, -1,-1)"/>
-              </t>
+        <div class="o-figure-wrapper"
+             t-att-style="getStyle(info)"
+             t-on-mousedown="onMouseDown(info.figure)"
+             >
+            <div class="o-figure"
+                 t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
+                 t-att-style="getDims(info)"
+                 tabindex="0"
+                 t-on-keydown.stop="onKeyDown(info.figure)">
+                <t t-component="figureRegistry.get(info.figure.tag).Component"
+                   t-key="info.id"
+                   figure="info.figure"/>
+                <t t-if="info.isSelected">
+                    <div class="o-anchor o-top" t-on-mousedown.stop="resize(info.figure, 0,-1)"/>
+                    <div class="o-anchor o-topRight" t-on-mousedown.stop="resize(info.figure, 1,-1)"/>
+                    <div class="o-anchor o-right" t-on-mousedown.stop="resize(info.figure, 1,0)"/>
+                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="resize(info.figure, 1,1)"/>
+                    <div class="o-anchor o-bottom" t-on-mousedown.stop="resize(info.figure, 0,1)"/>
+                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="resize(info.figure, -1,1)"/>
+                    <div class="o-anchor o-left" t-on-mousedown.stop="resize(info.figure, -1,0)"/>
+                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="resize(info.figure, -1,-1)"/>
+                </t>
             </div>
         </div>
     </t>
@@ -15232,7 +15675,7 @@
     const BORDER_WIDTH = 1;
     const ACTIVE_BORDER_WIDTH = 2;
     const MIN_FIG_SIZE = 80;
-    const CSS$a = css$c /*SCSS*/ `
+    const CSS$b = css$d /*SCSS*/ `
   .o-figure-wrapper {
     overflow: hidden;
   }
@@ -15243,7 +15686,9 @@
     position: absolute;
     bottom: 3px;
     right: 3px;
-
+    &:focus {
+      outline: none;
+    }
     &.active {
       border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
       z-index: 1;
@@ -15308,7 +15753,7 @@
         constructor() {
             super(...arguments);
             this.figureRegistry = figureRegistry;
-            this.dnd = useState$8({
+            this.dnd = useState$9({
                 figureId: "",
                 x: 0,
                 y: 0,
@@ -15418,9 +15863,18 @@
             };
             startDnd(onMouseMove, onMouseUp);
         }
+        onKeyDown(figure, ev) {
+            switch (ev.key) {
+                case "Delete":
+                    ev.preventDefault();
+                    this.dispatch("DELETE_FIGURE", { id: figure.id });
+                    this.trigger("figure-deleted");
+                    break;
+            }
+        }
     }
-    FiguresContainer.template = TEMPLATE$a;
-    FiguresContainer.style = CSS$a;
+    FiguresContainer.template = TEMPLATE$c;
+    FiguresContainer.style = CSS$b;
     FiguresContainer.components = {};
 
     /**
@@ -15433,9 +15887,9 @@
      * - a horizontal resizer (to resize columns)
      * - a vertical resizer (same, for rows)
      */
-    const { Component: Component$a, useState: useState$9 } = owl__namespace;
-    const { xml: xml$d, css: css$d } = owl.tags;
-    const { useRef: useRef$2, onMounted, onWillUnmount } = owl.hooks;
+    const { Component: Component$b, useState: useState$a } = owl__namespace;
+    const { xml: xml$f, css: css$e } = owl.tags;
+    const { useRef: useRef$3, onMounted, onWillUnmount } = owl.hooks;
     const registries = {
         ROW: rowMenuRegistry,
         COL: colMenuRegistry,
@@ -15452,8 +15906,8 @@
         let y = 0;
         let lastMoved = 0;
         let tooltipCol, tooltipRow;
-        const canvasRef = useRef$2("canvas");
-        const tooltip = useState$9({ isOpen: false, text: "", style: "" });
+        const canvasRef = useRef$3("canvas");
+        const tooltip = useState$a({ isOpen: false, text: "", style: "" });
         let interval;
         function updateMousePosition(e) {
             x = e.offsetX;
@@ -15510,7 +15964,7 @@
         return tooltip;
     }
     function useTouchMove(handler, canMoveUp) {
-        const canvasRef = useRef$2("canvas");
+        const canvasRef = useRef$3("canvas");
         let x = null;
         let y = null;
         function onTouchStart(ev) {
@@ -15553,7 +16007,7 @@
     // -----------------------------------------------------------------------------
     // TEMPLATE
     // -----------------------------------------------------------------------------
-    const TEMPLATE$b = xml$d /* xml */ `
+    const TEMPLATE$d = xml$f /* xml */ `
   <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel">
     <t t-if="getters.getEditionMode() !== 'inactive'">
       <Composer t-ref="composer" t-on-composer-unmounted="focus" viewport="snappedViewport"/>
@@ -15576,7 +16030,7 @@
       position="menuState.position"
       t-on-close.stop="menuState.isOpen=false"/>
     <t t-set="gridSize" t-value="getters.getGridSize()"/>
-    <FiguresContainer viewport="snappedViewport" model="props.model"  />
+    <FiguresContainer viewport="snappedViewport" model="props.model" t-on-figure-deleted="focus" />
     <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
       <div t-attf-style="width:1px;height:{{gridSize[1]}}px"/>
     </div>
@@ -15587,7 +16041,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$b = css$d /* scss */ `
+    const CSS$c = css$e /* scss */ `
   .o-grid {
     position: relative;
     overflow: hidden;
@@ -15633,18 +16087,18 @@
     // -----------------------------------------------------------------------------
     // JS
     // -----------------------------------------------------------------------------
-    class Grid extends Component$a {
+    class Grid extends Component$b {
         constructor() {
             super(...arguments);
-            this.menuState = useState$9({
+            this.menuState = useState$a({
                 isOpen: false,
                 position: null,
                 menuItems: [],
             });
-            this.composer = useRef$2("composer");
-            this.vScrollbarRef = useRef$2("vscrollbar");
-            this.hScrollbarRef = useRef$2("hscrollbar");
-            this.canvas = useRef$2("canvas");
+            this.composer = useRef$3("composer");
+            this.vScrollbarRef = useRef$3("vscrollbar");
+            this.hScrollbarRef = useRef$3("hscrollbar");
+            this.canvas = useRef$3("canvas");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.currentPosition = this.getters.getPosition();
@@ -15700,7 +16154,7 @@
             this.drawGrid();
         }
         focus() {
-            if (this.getters.getEditionMode() !== "selecting") {
+            if (this.getters.getEditionMode() !== "selecting" && !this.getters.getSelectedFigureId()) {
                 this.canvas.el.focus();
             }
         }
@@ -15960,14 +16414,14 @@
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
     }
-    Grid.template = TEMPLATE$b;
-    Grid.style = CSS$b;
+    Grid.template = TEMPLATE$d;
+    Grid.style = CSS$c;
     Grid.components = { Composer, Overlay, Menu, Autofill, FiguresContainer };
 
-    const { Component: Component$b } = owl__namespace;
-    const { xml: xml$e, css: css$e } = owl.tags;
-    const { useState: useState$a } = owl.hooks;
-    const TEMPLATE$c = xml$e /* xml */ `
+    const { Component: Component$c } = owl__namespace;
+    const { xml: xml$g, css: css$f } = owl.tags;
+    const { useState: useState$b } = owl.hooks;
+    const TEMPLATE$e = xml$g /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
@@ -15980,7 +16434,7 @@
       <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
     </div>
   </div>`;
-    const CSS$c = css$e /* scss */ `
+    const CSS$d = css$f /* scss */ `
   .o-sidePanel {
     display: flex;
     flex-direction: column;
@@ -16038,12 +16492,33 @@
         margin-right: 0px;
       }
     }
+    .o-input {
+      border-radius: 4px;
+      border: 1px solid lightgrey;
+      padding: 5px;
+      margin-bottom: 5px;
+      font-size: 14px;
+      width: 90%;
+    }
+    select.o-input {
+      background-color: white;
+      text-align: left;
+    }
+
+    .o-section {
+      padding: 10px;
+      .o-section-title {
+        font-size: 16px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+    }
   }
 `;
-    class SidePanel extends Component$b {
+    class SidePanel extends Component$c {
         constructor() {
             super(...arguments);
-            this.state = useState$a({
+            this.state = useState$b({
                 panel: sidePanelRegistry.get(this.props.component),
             });
         }
@@ -16056,12 +16531,12 @@
                 : this.state.panel.title;
         }
     }
-    SidePanel.template = TEMPLATE$c;
-    SidePanel.style = CSS$c;
+    SidePanel.template = TEMPLATE$e;
+    SidePanel.style = CSS$d;
 
-    const { Component: Component$c, useState: useState$b, hooks: hooks$2 } = owl__namespace;
-    const { xml: xml$f, css: css$f } = owl.tags;
-    const { useExternalListener: useExternalListener$3, useRef: useRef$3 } = hooks$2;
+    const { Component: Component$d, useState: useState$c, hooks: hooks$2 } = owl__namespace;
+    const { xml: xml$h, css: css$g } = owl.tags;
+    const { useExternalListener: useExternalListener$3, useRef: useRef$4 } = hooks$2;
     const FORMATS = [
         { name: "auto", text: "Automatic" },
         { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
@@ -16074,7 +16549,7 @@
     // -----------------------------------------------------------------------------
     // TopBar
     // -----------------------------------------------------------------------------
-    class TopBar extends Component$c {
+    class TopBar extends Component$d {
         constructor() {
             super(...arguments);
             this.formats = FORMATS;
@@ -16083,7 +16558,7 @@
             this.dispatch = this.env.dispatch;
             this.getters = this.env.getters;
             this.style = {};
-            this.state = useState$b({
+            this.state = useState$c({
                 menuState: { isOpen: false, position: null, menuItems: [] },
                 activeTool: "",
             });
@@ -16097,7 +16572,7 @@
             this.fillColor = "white";
             this.textColor = "black";
             this.menus = [];
-            this.menuRef = useRef$3("menuRef");
+            this.menuRef = useRef$4("menuRef");
             useExternalListener$3(window, "click", this.onClick);
         }
         get topbarComponents() {
@@ -16253,7 +16728,7 @@
             this.dispatch("REDO");
         }
     }
-    TopBar.template = xml$f /* xml */ `
+    TopBar.template = xml$h /* xml */ `
     <div class="o-spreadsheet-topbar">
       <div class="o-topbar-top">
         <!-- Menus -->
@@ -16358,7 +16833,6 @@
           </div>
           <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
           <!-- <div class="o-tool" title="Text Wrapping">${TEXT_WRAPPING_ICON}</div> -->
-          <div class="o-divider"/>
         </div>
 
         <!-- Cell content -->
@@ -16369,7 +16843,7 @@
 
       </div>
     </div>`;
-    TopBar.style = css$f /* scss */ `
+    TopBar.style = css$g /* scss */ `
     .o-spreadsheet-topbar {
       background-color: white;
       display: flex;
@@ -16541,14 +17015,14 @@
   `;
     TopBar.components = { ColorPicker, Menu };
 
-    const { Component: Component$d, useState: useState$c } = owl__namespace;
-    const { useRef: useRef$4, useExternalListener: useExternalListener$4 } = owl.hooks;
-    const { xml: xml$g, css: css$g } = owl.tags;
+    const { Component: Component$e, useState: useState$d } = owl__namespace;
+    const { useRef: useRef$5, useExternalListener: useExternalListener$4 } = owl.hooks;
+    const { xml: xml$i, css: css$h } = owl.tags;
     const { useSubEnv } = owl.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$d = xml$g /* xml */ `
+    const TEMPLATE$f = xml$i /* xml */ `
   <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
     <TopBar t-on-click="focusGrid" class="o-two-columns"/>
     <Grid model="model" t-ref="grid" t-att-class="{'o-two-columns': !sidePanel.isOpen}"/>
@@ -16558,7 +17032,7 @@
            panelProps="sidePanel.panelProps"/>
     <BottomBar t-on-click="focusGrid" class="o-two-columns"/>
   </div>`;
-    const CSS$d = css$g /* scss */ `
+    const CSS$e = css$h /* scss */ `
   .o-spreadsheet {
     display: grid;
     grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
@@ -16585,7 +17059,7 @@
   }
 `;
     const t = (s) => s;
-    class Spreadsheet extends Component$d {
+    class Spreadsheet extends Component$e {
         constructor() {
             super(...arguments);
             this.model = new Model(this.props.data, {
@@ -16595,8 +17069,8 @@
                 openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
                 evalContext: { env: this.env },
             });
-            this.grid = useRef$4("grid");
-            this.sidePanel = useState$c({ isOpen: false, panelProps: {} });
+            this.grid = useRef$5("grid");
+            this.sidePanel = useState$d({ isOpen: false, panelProps: {} });
             // last string that was cut or copied. It is necessary so we can make the
             // difference between a paste coming from the sheet itself, or from the
             // os clipboard
@@ -16688,8 +17162,8 @@
             }
         }
     }
-    Spreadsheet.template = TEMPLATE$d;
-    Spreadsheet.style = CSS$d;
+    Spreadsheet.template = TEMPLATE$f;
+    Spreadsheet.style = CSS$e;
     Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel };
     Spreadsheet._t = t;
 
@@ -16700,6 +17174,17 @@
      * the rollup.config.js file)
      */
     const __info__ = {};
+    const SPREADSHEET_DIMENSIONS = {
+        MIN_ROW_HEIGHT,
+        MIN_COL_WIDTH,
+        HEADER_HEIGHT,
+        HEADER_WIDTH,
+        TOPBAR_HEIGHT,
+        BOTTOMBAR_HEIGHT,
+        DEFAULT_CELL_WIDTH,
+        DEFAULT_CELL_HEIGHT,
+        SCROLLBAR_WIDTH,
+    };
     const registries$1 = {
         autofillModifiersRegistry,
         autofillRulesRegistry,
@@ -16724,10 +17209,12 @@
         numberToLetters,
         createFullMenuItem,
         uuidv4,
+        formatDecimal,
     };
 
     exports.BasePlugin = BasePlugin;
     exports.Model = Model;
+    exports.SPREADSHEET_DIMENSIONS = SPREADSHEET_DIMENSIONS;
     exports.Spreadsheet = Spreadsheet;
     exports.__DEBUG__ = DEBUG;
     exports.__info__ = __info__;
@@ -16737,9 +17224,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.7.0';
-    exports.__info__.date = '2020-09-10T08:23:20.495Z';
-    exports.__info__.hash = '3e3acb3';
+    exports.__info__.version = '0.8.0';
+    exports.__info__.date = '2020-09-16T12:57:38.265Z';
+    exports.__info__.hash = '6d78646';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

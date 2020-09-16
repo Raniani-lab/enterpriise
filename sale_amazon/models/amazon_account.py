@@ -605,8 +605,8 @@ class AmazonAccount(models.Model):
     def _get_partners(self, order_data, amazon_order_ref):
         """ Find or create two partners of respective type contact and delivery from Amazon data. """
         self.ensure_one()
-        anonymized_email = mwsc.get_string_value(order_data, 'BuyerEmail')
-        buyer_name = mwsc.get_string_value(order_data, 'BuyerName')
+        anonymized_email = mwsc.get_string_value(order_data, 'BuyerEmail', False)
+        buyer_name = mwsc.get_string_value(order_data, 'BuyerName', False)
         shipping_address_name = mwsc.get_string_value(order_data, ('ShippingAddress', 'Name'))
         street = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine1'))
         address_line2 = mwsc.get_string_value(order_data, ('ShippingAddress', 'AddressLine2'))
@@ -631,42 +631,44 @@ class AmazonAccount(models.Model):
                 'name': state_code,
                 'code': state_code
             })
-        # If personal information of the customer are not provided because of API restrictions,
-        # all concerned fields are left blank as well as the amazon email to avoid matching an
-        # anonymized partner with the same customer if personal info are later provided again.
-        anonymized_customer = not all([buyer_name, shipping_address_name, street or street2])
+
         new_partner_vals = {
-            'street': street if not anonymized_customer else None,
-            'street2': street2 if not anonymized_customer else None,
+            'street': street,
+            'street2': street2,
             'zip': zip_code,
             'city': city,
             'country_id': country.id,
             'state_id': state.id,
-            'phone': phone if not anonymized_customer else None,
-            'customer_rank': 1 if not anonymized_customer else 0,
+            'phone': phone,
+            'customer_rank': 1,
             'company_id': self.company_id.id,
-            'amazon_email': anonymized_email if not anonymized_customer else None,
+            'amazon_email': anonymized_email,
         }
-        
-        # If personal info are not anonymized, a contact partner is created only for new customers.
-        # If personal info are anonymized, a contact partner is always created to avoid matching
-        # a non-anonymized partner previously created for the current customer.
+
+        # The contact partner is searched based on all the personal information and only if the
+        # amazon email is provided. A match thus only occurs if the customer had already made a
+        # previous order and if the personal information provided by the API did not change in the
+        # meantime. If there is no match, a new contact partner is created. This behavior is
+        # preferred over updating the personal information with new values because it allows using
+        # the correct contact details when invoicing the customer for an earlier order, should there
+        # be a change in the personal information.
         contact = self.env['res.partner'].search(
-            [('amazon_email', '=', anonymized_email), ('type', '=', 'contact'),
-             '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)], limit=1) \
-            if not anonymized_customer else None
+            [
+                ('type', '=', 'contact'),
+                ('name', '=', buyer_name),
+                ('amazon_email', '=', anonymized_email),
+                '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)
+            ], limit=1) if anonymized_email else None  # Don't match random partners
         if not contact:
-            contact_name = buyer_name if not anonymized_customer \
-                               else "Amazon Customer # %s" % amazon_order_ref
+            contact_name = buyer_name or "Amazon Customer # %s" % amazon_order_ref
             contact = self.env['res.partner'].with_context(tracking_disable=True).create({
                 'name': contact_name,
                 'is_company': is_company,
                 **new_partner_vals,
             })
-        # The contact partner acts as delivery partner if the address is either anonymous or
-        # strictly equal to that of the contact partner. If not, a delivery partner is required.
-        delivery = contact if anonymized_customer \
-                              or (contact.name == shipping_address_name and contact.street == street
+        # The contact partner acts as delivery partner if the address is strictly equal to that of
+        # the contact partner. If not, a delivery partner is created.
+        delivery = contact if (contact.name == shipping_address_name and contact.street == street
                                   and (not contact.street2 or contact.street2 == street2)
                                   and contact.zip == zip_code and contact.city == city
                                   and contact.country_id.id == country.id

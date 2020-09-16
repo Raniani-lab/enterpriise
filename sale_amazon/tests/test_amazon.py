@@ -626,24 +626,43 @@ class TestAmazon(TransactionCase):
         self.assertEqual(contact.company_id.id, delivery.company_id.id)
         self.assertEqual(contact.amazon_email, delivery.amazon_email)
 
-    def test_get_partners_anonymized_info(self):
-        """ Test the partners search with creation of an anonymized contact. """
+    def test_get_partners_missing_buyer_name(self):
+        """ Test the partners search with missing buyer name. """
+        self.env['res.partner'].create({
+            'name': 'Gederic Frilson',
+            'company_id': self.account.company_id.id,
+            'amazon_email': 'iliketurtles@marketplace.amazon.com',
+        })
         partners_count = self.env['res.partner'].search_count([])
         contact, delivery = self.account._get_partners(
-            dict(BASE_ORDER_DATA, ShippingAddress=dict(
-                BASE_ORDER_DATA['ShippingAddress'], Name={'value': None})),
-            '123456789')
-        self.assertEqual(self.env['res.partner'].search_count([]), partners_count + 1,
-                         "a contact partner should be created regardless of whether another "
-                         "contact for the same customer exists when at least one personally"
-                         "identifiable information is missing")
-        self.assertEqual(contact.id, delivery.id)
+            dict(BASE_ORDER_DATA, BuyerName={'value': None}), '123456789')
+        self.assertEqual(self.env['res.partner'].search_count([]), partners_count + 2,
+                         "a contact partner should be created when the buyer name is missing, "
+                         "regardless of whether the same customer already had a partner, and a"
+                         " delivery partner should also be created if the address name is "
+                         "different")
+        self.assertNotEqual(contact.id, delivery.id)
         self.assertEqual(contact.type, 'contact')
-        self.assertFalse(contact.street)
-        self.assertFalse(contact.street2)
-        self.assertFalse(contact.phone)
-        self.assertEqual(contact.customer_rank, 0)
-        self.assertEqual(contact.company_id.id, self.account.company_id.id)
+        self.assertEqual(delivery.type, 'delivery')
+        self.assertEqual(delivery.parent_id.id, contact.id)
+        self.assertEqual(contact.amazon_email, 'iliketurtles@marketplace.amazon.com')
+        self.assertEqual(contact.street, '123 RainBowMan Street',
+                         "partners synchronized with partial personal information should still "
+                         "hold all the available personal information")
+
+    def test_get_partners_missing_amazon_email(self):
+        """ Test the partners search with missing amazon email. """
+        self.env['res.partner'].create({
+            'name': 'Gederic Frilson',
+            'company_id': self.account.company_id.id,
+            'amazon_email': 'iliketurtles@marketplace.amazon.com',
+        })
+        partners_count = self.env['res.partner'].search_count([])
+        contact, delivery = self.account._get_partners(
+            dict(BASE_ORDER_DATA, BuyerEmail={'value': None}), '123456789')
+        self.assertEqual(self.env['res.partner'].search_count([]), partners_count + 1,
+                         "a contact partner should always be created when the amazon email is "
+                         "missing")
         self.assertFalse(contact.amazon_email)
     
     def test_get_partners_arbitrary_fields(self):

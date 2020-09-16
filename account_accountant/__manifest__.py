@@ -42,6 +42,7 @@ It assigns manager and user access rights to the Administrator for the accountin
     'installable': True,
     'auto_install': False,
     'application': True,
+    'post_init_hook': '_account_accountant_post_init',
     'uninstall_hook': "uninstall_hook",
     'license': 'OEEL-1',
 }

@@ -10,6 +10,26 @@ from odoo import api, SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
+
+def _account_accountant_post_init(cr, registry):
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    country_code = env.company.country_id.code
+    if country_code:
+        module_list = []
+
+        # SEPA zone countries will be using SEPA
+        sepa_zone = env.ref('base.sepa_zone', raise_if_not_found=False)
+        if sepa_zone:
+            sepa_zone_country_codes = sepa_zone.mapped('country_ids.code')
+            if country_code in sepa_zone_country_codes:
+                module_list.append('account_sepa')
+                module_list.append('account_bank_statement_import_camt')
+
+        module_ids = env['ir.module.module'].search([('name', 'in', module_list), ('state', '=', 'uninstalled')])
+        if module_ids:
+            module_ids.sudo().button_install()
+
+
 def uninstall_hook(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
 

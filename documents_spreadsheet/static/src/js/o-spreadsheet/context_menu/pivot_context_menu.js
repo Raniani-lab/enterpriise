@@ -22,13 +22,19 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                     name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
                     sequence: index,
                     action: async (env) => {
+                        // We need to fetch the cache without the global filters,
+                        // so we keep the current cache to avoid to re-create it
+                        // after rebuilding the pivot to apply the filters.
+                        const cache = pivot.cache;
                         pivot.lastUpdate = undefined;
-                        await fetchCache(pivot, env.services.rpc);
+                        await fetchCache(pivot, env.services.rpc, { dataOnly: true, initialDomain: true });
                         const zone = env.getters.getSelectedZone();
                         env.dispatch("REBUILD_PIVOT", {
                             id: pivot.id,
                             anchor: [zone.left, zone.top],
                         });
+                        pivot.cache = cache;
+                        env.dispatch("EVALUATE_CELLS");
                     }
                 })),
             ),

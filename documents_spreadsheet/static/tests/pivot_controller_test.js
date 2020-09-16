@@ -10,6 +10,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
     const { Model } = spreadsheet;
     const toCartesian = spreadsheet.helpers.toCartesian;
     const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
+    const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
 
     const createView = testUtils.createView;
 
@@ -1603,6 +1604,38 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 model.dispatch("SELECT_CELL", { col: 0, row: 2 });
                 model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
                 assert.equal(model.getters.getAutofillTooltip(), undefined);
+                actionManager.destroy();
+            });
+
+            QUnit.test("Re-insert a pivot with a global filter should re-insert the full pivot", async function (assert) {
+                assert.expect(1);
+
+                const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="product_id" type="col"/>
+                        <field name="name" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                model.dispatch("ADD_PIVOT_FILTER", {
+                    filter: {
+                        id: "41",
+                        type: "relation",
+                        label: "41",
+                        defaultValue: [41],
+                        fields: { 1: { field: "product_id", type: "many2one" } },
+                    }
+                });
+                model.dispatch("SELECT_CELL", { col: 0, row: 5 });
+                const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+                const reinsertPivot = cellMenuRegistry.getChildren(root, env)[0];
+                await reinsertPivot.action(env);
+                await testUtils.nextTick();
+                assert.equal(getCellContent(model, "B6"), getCellContent(model, "B1"));
                 actionManager.destroy();
             });
         }

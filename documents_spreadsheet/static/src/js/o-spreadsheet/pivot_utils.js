@@ -45,9 +45,11 @@
      * @param {Function} rpc Rpc function to use
      * @param {Object} params
      * @param {boolean} params.dataOnly fetch only read_group data if possible
+     * @param {boolean} params.initialDomain=false only refresh the data with the domain of the pivot,
+     *                                      without the global filters
      */
-    async function createPivotCache(pivot, rpc, { dataOnly = false } = {}) {
-        const domain = pivot.computedDomain || pivot.domain;
+    async function createPivotCache(pivot, rpc, { dataOnly = false, initialDomain = false } = {}) {
+        const domain = (!initialDomain && pivot.computedDomain) || pivot.domain;
         const readGroupRPC = rpc({
             model: pivot.model,
             method: "read_group",
@@ -115,15 +117,19 @@
      * @private
      * @param {Pivot} pivot Pivot object
      * @param {Function} rpc Rpc function to use
+     * @param {Object} params
+     * @param {boolean} params.dataOnly=false only refresh the data, not the structure of the pivot
+     * @param {boolean} params.initialDomain=false only refresh the data with the domain of the pivot,
+     *                                      without the global filters
      */
-    async function fetchCache(pivot, rpc, { dataOnly = false } = {}) {
+    async function fetchCache(pivot, rpc, { dataOnly = false, initialDomain = false } = {}) {
         // cache for 1 hour
         if (
             !pivot.lastUpdate ||
             pivot.lastUpdate + 60 * 60 * 1000 < Date.now()
         ) {
             pivot.lastUpdate = Date.now();
-            pivot.promise = createPivotCache(pivot, rpc,  { dataOnly });
+            pivot.promise = createPivotCache(pivot, rpc,  { dataOnly, initialDomain });
         }
         await pivot.promise;
     }

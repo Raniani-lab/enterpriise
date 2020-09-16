@@ -47,7 +47,7 @@ class assets_report(models.AbstractModel):
                 {'name': _('Acquisition Date'), 'class': 'text-center'},  # Characteristics
                 {'name': _('First Depreciation'), 'class': 'text-center'},
                 {'name': _('Method'), 'class': 'text-center'},
-                {'name': _('Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a degressive method, it is the degressive factor'), 'data-toggle': 'tooltip'},
+                {'name': _('Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-toggle': 'tooltip'},
                 {'name': start_date, 'class': 'number'},  # Assets
                 {'name': _('+'), 'class': 'number'},
                 {'name': _('-'), 'class': 'number'},
@@ -161,7 +161,7 @@ class assets_report(models.AbstractModel):
                 'columns': [
                     {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
                     {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},
-                    {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Degressive')) or _('Accelerated'), 'no_format_name': ''},
+                    {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format_name': ''},
                     {'name': asset_depreciation_rate, 'no_format_name': ''},
                     {'name': self.format_value(asset_opening), 'no_format_name': asset_opening},  # Assets
                     {'name': self.format_value(asset_add), 'no_format_name': asset_add},

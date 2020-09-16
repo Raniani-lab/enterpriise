@@ -33,15 +33,15 @@ class AccountAsset(models.Model):
     asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True)
 
     # Depreciation params
-    method = fields.Selection([('linear', 'Straight Line'), ('degressive', 'Degressive'), ('degressive_then_linear', 'Accelerated Degressive')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
+    method = fields.Selection([('linear', 'Straight Line'), ('degressive', 'Declining'), ('degressive_then_linear', 'Declining then Straight Line')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
         help="Choose the method to use to compute the amount of depreciation lines.\n"
             "  * Straight Line: Calculated on basis of: Gross Value / Number of Depreciations\n"
-            "  * Degressive: Calculated on basis of: Residual Value * Degressive Factor\n"
-            "  * Accelerated Degressive: Like Degressive but with a minimum depreciation value equal to the straight line value.")
+            "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
+            "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value.")
     method_number = fields.Integer(string='Number of Depreciations', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default=5, help="The number of depreciations needed to depreciate your asset")
     method_period = fields.Selection([('1', 'Months'), ('12', 'Years')], string='Number of Months in a Period', readonly=True, default='12', states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         help="The amount of time between two depreciations")
-    method_progress_factor = fields.Float(string='Degressive Factor', readonly=True, default=0.3, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
+    method_progress_factor = fields.Float(string='Declining Factor', readonly=True, default=0.3, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
     prorata = fields.Boolean(string='Prorata Temporis', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         help='Indicates that the first depreciation entry for this asset have to be done from the asset date (purchase date) instead of the first January / Start date of fiscal year')
     prorata_date = fields.Date(

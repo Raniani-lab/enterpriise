@@ -76,6 +76,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="is_close"/>
+                <field name="team_ids" widget="many2many_tags" optional="show"/>
             </tree>
         </field>
     </record>

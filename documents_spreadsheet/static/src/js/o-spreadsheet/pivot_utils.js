@@ -123,11 +123,7 @@
      *                                      without the global filters
      */
     async function fetchCache(pivot, rpc, { dataOnly = false, initialDomain = false } = {}) {
-        // cache for 1 hour
-        if (
-            !pivot.lastUpdate ||
-            pivot.lastUpdate + 60 * 60 * 1000 < Date.now()
-        ) {
+        if (!pivot.lastUpdate) {
             pivot.lastUpdate = Date.now();
             pivot.promise = createPivotCache(pivot, rpc,  { dataOnly, initialDomain });
         }

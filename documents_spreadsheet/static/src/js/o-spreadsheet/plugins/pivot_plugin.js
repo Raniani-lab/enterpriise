@@ -55,6 +55,9 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 case "ADD_PIVOT_DOMAIN":
                     this._addDomain(cmd.id, cmd.domain, cmd.refresh);
                     break;
+                case "REFRESH_PIVOT":
+                    this._refreshPivot(cmd.id);
+                    break;
             }
         }
 
@@ -196,6 +199,16 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             const sheet = this.getters.getActiveSheet();
             const content = this._buildHeaderFormula([id, field, value]);
             this.dispatch("UPDATE_CELL", { sheet, col, row, content });
+        }
+        /**
+         * Refresh the cache of the given pivot. This will also trigger a new
+         * re-evaluation
+         *
+         * @param {number} id Id of the pivot
+         */
+        _refreshPivot(id) {
+            this._refreshPivotCache(id, { dataOnly: true });
+            this.dispatch("EVALUATE_CELLS");
         }
         /**
          * Update the cache of a pivot object

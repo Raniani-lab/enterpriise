@@ -9,7 +9,12 @@ odoo.define("web.spreadsheet_tests", function (require) {
     const { createActionManager, fields, nextTick, dom } = testUtils;
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
+    const toCartesian = spreadsheet.helpers.toCartesian;
     const { Model } = spreadsheet;
+
+    function getCellValue(model, xc) {
+        return model.getters.getCell(...toCartesian(xc)).value;
+    }
 
     QUnit.module("Spreadsheet Client Action", {
         beforeEach: function () {
@@ -554,7 +559,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
             const sections = actionManager.el.querySelectorAll(".o_side_panel_section");
             assert.equal(sections.length, 4, "it should have 4 sections");
-            const [pivotModel, domain, measures, dimensions] = sections;
+            const [pivotModel, domain, dimensions, measures] = sections;
 
             assert.equal(pivotModel.children[0].innerText, "Model");
             assert.equal(pivotModel.children[1].innerText, "partner (partner)");
@@ -569,6 +574,38 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.equal(dimensions.children[0].innerText, "Dimensions");
             assert.equal(dimensions.children[1].innerText, "Bar");
             assert.equal(dimensions.children[2].innerText, "Foo");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Can refresh the pivot from the pivot properties panel", async function (assert) {
+            assert.expect(1);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                    <pivot display_quantity="true">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const A3 = model.getters.getCell(0, 2);
+            model.dispatch("SELECT_PIVOT", { cell: A3 });
+            const pivot = model.getters.getSelectedPivot();
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", { pivot })
+            this.data.partner.records.push({
+                id: 1,
+                foo: 12,
+                bar: 110,
+                product: 37,
+                probability: 10,
+            },)
+            await nextTick();
+            await dom.click(actionManager.el.querySelector(".o_refresh_measures"));
+            await nextTick();
+            assert.equal(getCellValue(model, "D3"), 2);
             actionManager.destroy();
         });
 

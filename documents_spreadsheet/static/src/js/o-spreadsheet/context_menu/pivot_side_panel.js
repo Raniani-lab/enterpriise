@@ -6,6 +6,7 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
     const DomainSelector = require("web.DomainSelector");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
+    const { time_to_str } = require('web.time');
 
     const _t = core._t;
     const sidePanelRegistry = spreadsheet.registries.sidePanelRegistry;
@@ -59,6 +60,24 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
          */
         formatMeasure(measure) {
             return measure.field === "__count" ? _t("Count") : this.pivot.cache.getField(measure.field).string;
+        }
+
+        /**
+         * Get the last update date, formatted
+         *
+         * @returns {string} date formatted
+         */
+        getLastUpdate() {
+            return time_to_str(new Date(this.pivot.lastUpdate));
+        }
+
+        /**
+         * Refresh the cache of the given pivot
+         *
+         * @param {number} id Id of the pivot
+         */
+        refreshMeasures(id) {
+            this.env.dispatch("REFRESH_PIVOT", { id });
         }
     }
     PivotSidePanel.template = "documents_spreadsheet.PivotSidePanel";

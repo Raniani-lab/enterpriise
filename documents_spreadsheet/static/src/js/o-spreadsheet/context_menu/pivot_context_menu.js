@@ -16,7 +16,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
     cellMenuRegistry
         .add("reinsert_pivot", {
             name: _t("Re-insert pivot"),
-            sequence: 102,
+            sequence: 122,
             children: (env) => Object.values(env.getters.getPivots())
                 .map((pivot, index) => (createFullMenuItem(`reinsert_pivot_${pivot.id}`, {
                     name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
@@ -36,7 +36,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
         })
         .add("insert_pivot_section", {
             name: _t("Insert pivot section"),
-            sequence: 103,
+            sequence: 123,
             children: (env) => Object.values(env.getters.getPivots())
                 .map((pivot, index) => (createFullMenuItem(`insert_pivot_section_${pivot.id}`, {
                     name: `${pivot.cache && pivot.cache.modelLabel || pivot.model} (#${pivot.id})`,
@@ -62,7 +62,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
         })
         .add("pivot_properties", {
             name: _t("Pivot properties"),
-            sequence: 101,
+            sequence: 121,
             action(env) {
                 env.dispatch("SELECT_PIVOT", { cell: env.getters.getActiveCell() });
                 const pivot = env.getters.getSelectedPivot();

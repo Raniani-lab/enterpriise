@@ -45,13 +45,11 @@ class AccountJournal(models.Model):
         """ Enables sepa credit transfer payment method on bank journals. Called upon module installation via data file.
         """
         sepa_ct = self.env.ref('account_sepa.account_payment_method_sepa_ct')
-        euro = self.env.ref('base.EUR')
-        if self.env.company.currency_id == euro:
-            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id', '=', euro.id), ('currency_id', '=', False)]
+        if self.env.company.currency_id.name == "EUR":
+            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id.name', '=', "EUR"), ('currency_id', '=', False)]
         else:
-            domain = ['&', ('type', '=', 'bank'), ('currency_id', '=', euro.id)]
-        for bank_journal in self.search(domain):
-            bank_journal.write({'outbound_payment_method_ids': [(4, sepa_ct.id, None)]})
+            domain = ['&', ('type', '=', 'bank'), ('currency_id.name', '=', "EUR")]
+        self.search(domain).write({'outbound_payment_method_ids': [(4, sepa_ct.id, None)]})
 
     def create_iso20022_credit_transfer(self, payments, batch_booking=False, sct_generic=False):
         """

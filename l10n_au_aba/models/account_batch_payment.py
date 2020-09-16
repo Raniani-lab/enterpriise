@@ -75,7 +75,7 @@ class AccountBatchPayment(models.Model):
             'debit_total': 0,
             }
 
-        aud_currency = self.env.ref('base.AUD')
+        aud_currency = self.env["res.currency"].search([('name', '=', 'AUD')], limit=1)
         bank_account = self.journal_id.bank_account_id
         for payment in self.payment_ids:
             credit = float_round(payment.amount, 2)

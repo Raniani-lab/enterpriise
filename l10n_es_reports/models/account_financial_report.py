@@ -24,7 +24,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
         value in company currency.
         """
         if self.l10n_es_mod347_threshold:
-            threshold_currency = self.env.ref('base.EUR')
+            threshold_currency = self.env["res.currency"].search([('name', '=', 'EUR')], limit=1)
 
             if not threshold_currency or not threshold_currency.active:
                 raise UserError(_("Currency %s, used for a threshold in this report, is either nonexistent or inactive. Please create or activate it.", threshold_currency.name))

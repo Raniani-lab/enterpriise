@@ -274,7 +274,8 @@ class AEATAccountFinancialReport(models.Model):
             # If number is an amount expressed in company currency, we ensure that it
             # is written in € in BOE file
             conversion_date = self.env.context['l10n_es_reports_boe_conversion_date'] # This context key is set in _set_context
-            number = company.currency_id._convert(number, self.env.ref('base.EUR'), company, conversion_date)
+            curr_eur = self.env["res.currency"].search([('name', '=', 'EUR')], limit=1)
+            number = company.currency_id._convert(number, curr_eur, company, conversion_date)
 
         if isinstance(number, float):
             split_number = float_split_str(abs(number), decimal_places)
@@ -800,7 +801,8 @@ class AEATAccountFinancialReport(models.Model):
                     metalico_amount += partial_rec.amount
 
         # Context key used for conversion date is set in get_txt.
-        threshold = self.env.ref('base.EUR')._convert(6000, currency_id, current_company, self.env.context['l10n_es_reports_boe_conversion_date'])
+        curr_eur = self.env["res.currency"].search([('name', '=', 'EUR')], limit=1)
+        threshold = curr_eur._convert(6000, currency_id, current_company, self.env.context['l10n_es_reports_boe_conversion_date'])
         if currency_id.compare_amounts(metalico_amount, threshold) == 1: # We only must report this amount if it is above 6000 €
             rslt += self._boe_format_number(metalico_amount, length=15, decimal_places=2, in_currency=True)
         else:

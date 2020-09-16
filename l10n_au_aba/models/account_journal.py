@@ -49,10 +49,8 @@ class AccountJournal(models.Model):
         """ Enables aba credit transfer payment method on bank journals. Called upon module installation via data file.
         """
         aba_ct = self.env.ref('l10n_au_aba.account_payment_method_aba_ct')
-        aud = self.env.ref('base.AUD')
-        if self.env.company.currency_id == aud:
-            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id', '=', aud.id), ('currency_id', '=', False)]
+        if self.env.company.currency_id.name == "AUD":
+            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id.name', '=', "AUD"), ('currency_id', '=', False)]
         else:
-            domain = ['&', ('type', '=', 'bank'), ('currency_id', '=', aud.id)]
-        for bank_journal in self.search(domain):
-            bank_journal.write({'outbound_payment_method_ids': [(4, aba_ct.id, None)]})
+            domain = ['&', ('type', '=', 'bank'), ('currency_id.name', '=', "AUD")]
+        self.search(domain).write({'outbound_payment_method_ids': [(4, aba_ct.id, None)]})

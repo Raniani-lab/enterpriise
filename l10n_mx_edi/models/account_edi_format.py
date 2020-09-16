@@ -368,7 +368,7 @@ class AccountEdiFormat(models.Model):
                 **self._l10n_mx_edi_get_serie_and_folio(invoice),
             })
 
-        mxn_currency = self.env.ref('base.MXN')
+        mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
         if move.currency_id == mxn_currency:
             rate_payment_curr_mxn = None
         else:

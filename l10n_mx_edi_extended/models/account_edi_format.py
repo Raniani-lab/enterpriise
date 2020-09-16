@@ -21,8 +21,8 @@ class AccountEdiFormat(models.Model):
 
         # External Trade
         if invoice.l10n_mx_edi_external_trade:
-            mxn = self.env.ref('base.MXN')
-            usd = self.env.ref('base.USD')
+            mxn = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
+            usd = self.env["res.currency"].search([('name', '=', 'USD')], limit=1)
 
             if customer.country_id in self.env.ref('base.europe').country_ids:
                 vals['ext_trade_num_exp'] = invoice.company_id.l10n_mx_edi_num_exporter

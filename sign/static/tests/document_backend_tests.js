@@ -2,10 +2,13 @@ odoo.define('sign.document_backend_tests', function (require) {
 "use strict";
 
 var FormView = require('web.FormView');
+const framework = require('web.framework');
 var testUtils = require('web.test_utils');
 
 var createActionManager = testUtils.createActionManager;
 var createView = testUtils.createView;
+
+const DocumentBackend = require('sign.DocumentBackend');
 
 QUnit.module('document_backend_tests', {
     beforeEach: function () {
@@ -33,7 +36,18 @@ QUnit.module('document_backend_tests', {
     }
 }, function () {
     QUnit.test('simple rendering', async function (assert) {
-        assert.expect(1);
+        assert.expect(4);
+
+        const hasFinishedProm = testUtils.makeTestPromise();
+        testUtils.mock.patch(framework, {
+            blockUI: function () {
+                assert.step('blockUI');
+            },
+            unblockUI: function () {
+                assert.step('unblockUI');
+                hasFinishedProm.resolve();
+            }
+        });
 
         var actionManager = await createActionManager({
             actions: [{
@@ -53,15 +67,28 @@ QUnit.module('document_backend_tests', {
 
 
         await actionManager.doAction(9);
+        await hasFinishedProm;
+
+        assert.verifySteps(['blockUI', 'unblockUI']);
 
         assert.strictEqual(actionManager.$('.o_sign_document').text().trim(), 'def',
             'should display text from server');
 
         actionManager.destroy();
+        testUtils.mock.unpatch(framework);
     });
 
     QUnit.test('do not crash when leaving the action', async function (assert) {
         assert.expect(0);
+
+        const proms = [];
+        testUtils.mock.patch(DocumentBackend, {
+            _init_page() {
+                const prom = this._super.apply(this, arguments);
+                proms.push(prom);
+                return prom;
+            }
+        });
 
         var actionManager = await createActionManager({
             actions: [{
@@ -82,8 +109,10 @@ QUnit.module('document_backend_tests', {
 
         await actionManager.doAction(9);
         await actionManager.doAction(9);
+        await Promise.all(proms);
 
         actionManager.destroy();
+        testUtils.mock.unpatch(DocumentBackend);
     });
 
     QUnit.test('search more in many2one pointing to sign.template model', async function (assert) {

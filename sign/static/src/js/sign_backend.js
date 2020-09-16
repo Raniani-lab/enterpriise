@@ -1241,6 +1241,10 @@ odoo.define('sign.DocumentBackend', function (require) {
     var DocumentBackend = AbstractAction.extend({
         hasControlPanel: true,
 
+        destroy: function () {
+            core.bus.off('DOM_updated', this, this._init_page);
+            return this._super.apply(this, arguments);
+        },
         go_back_to_kanban: function () {
             return this.do_action("sign.sign_request_action", {
                 clear_breadcrumbs: true,
@@ -1264,7 +1268,29 @@ odoo.define('sign.DocumentBackend', function (require) {
             this.name_list = context.name_list;
             this.cp_content = {};
         },
-
+        /**
+         * Callback to react to DOM_updated events. Loads the iframe and its contents
+         * just after it is really in the DOM.
+         *
+         * @private
+         * @returns {Promise|undefined}
+         */
+        _init_page: function () {
+            var self = this;
+            if(this.$el.parents('html').length) {
+                return this.refresh_cp().then(function () {
+                    framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
+                    if (!self.documentPage) {
+                        self.documentPage = new (self.get_document_class())(self);
+                        return self.documentPage.attachTo(self.$el);
+                    } else {
+                        return self.documentPage.initialize_iframe();
+                    }
+                }).then(function () {
+                    framework.unblockUI();
+                });
+            }
+        },
         start: function () {
             var self = this;
             if(this.documentID === undefined) {
@@ -1306,23 +1332,7 @@ odoo.define('sign.DocumentBackend', function (require) {
                 if (self.$buttons.length){
                     self.cp_content = {$buttons: self.$buttons};
                 }
-
-                var init_page = function() {
-                    if(self.$el.parents('html').length) {
-                        self.refresh_cp().then(function () {
-                            framework.blockUI({overlayCSS: {opacity: 0}, blockMsgClass: 'o_hidden'});
-                            if (!self.documentPage) {
-                                self.documentPage = new (self.get_document_class())(self);
-                                return self.documentPage.attachTo(self.$el);
-                            } else {
-                                return self.documentPage.initialize_iframe();
-                            }
-                        }).then(function () {
-                            framework.unblockUI();
-                        });
-                    }
-                };
-                core.bus.on('DOM_updated', null, init_page);
+                core.bus.on('DOM_updated', self, self._init_page);
             });
             return Promise.all([this._super(), def]);
         },

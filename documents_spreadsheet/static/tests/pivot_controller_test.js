@@ -238,6 +238,30 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("pivot with two measures: total cells above measures totals are merged in one", async function (assert) {
+                assert.expect(2);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="week" type="row"/>
+                        <field name="foo" type="measure"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                const merges = spreadsheetData.sheets[0].merges;
+                assert.strictEqual(merges.length, 6);
+                assert.strictEqual(merges[5], "J1:K1");
+                pivot.destroy();
+            });
+
             QUnit.test("pivot with one level of group bys", async function (assert) {
                 assert.expect(9);
 

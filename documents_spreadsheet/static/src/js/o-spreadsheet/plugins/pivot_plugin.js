@@ -755,6 +755,12 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 value = undefined;
             }
 
+            for (let index = 0; index < pivot.cache.getColGroupByLevels(); index++) {
+                const row = rowAnchor + index;
+                const colStart = pivot.cache.getTopHeaderCount() - pivot.measures.length + 1;
+                this._merge({ top: row, bottom: row, left: colStart, right: colStart + pivot.measures.length - 1 });
+            }
+
             // 5) Apply formatting on headers
             this._applyStyle(HEADER_STYLE, [
                 {

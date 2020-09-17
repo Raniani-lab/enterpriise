@@ -151,13 +151,22 @@ class Providerdhl(models.Model):
                     available_product_code.append(global_product_code)
         else:
             condition = response.find('GetQuoteResponse/Note/Condition')
-            if condition and condition.find('ConditionCode').text == '410301':
-                return {
-                    'success': False,
-                    'price': 0.0,
-                    'error_message': "%s.\n%s" % (condition.find('ConditionData').text, _("Hint: The destination may not require the dutiable option.")),
-                    'warning_message': False,
-                }
+            if condition:
+                condition_code = condition.find('ConditionCode').text
+                if condition_code == '410301':
+                    return {
+                        'success': False,
+                        'price': 0.0,
+                        'error_message': "%s.\n%s" % (condition.find('ConditionData').text, _("Hint: The destination may not require the dutiable option.")),
+                        'warning_message': False,
+                    }
+                elif condition_code in ['420504', '420505', '420506']:
+                    return {
+                        'success': False,
+                        'price': 0.0,
+                        'error_message': "%s." % (condition.find('ConditionData').text),
+                        'warning_message': False,
+                    }
         if shipping_charge:
             if order:
                 order_currency = order.currency_id

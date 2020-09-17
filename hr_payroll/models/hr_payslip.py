@@ -459,7 +459,7 @@ class HrPayslipWorkedDays(models.Model):
     _description = 'Payslip Worked Days'
     _order = 'payslip_id, sequence'
 
-    name = fields.Char(related='work_entry_type_id.name', string='Description', readonly=True)
+    name = fields.Char(compute='_compute_name', store=True, string='Description', readonly=False)
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
     code = fields.Char(string='Code', related='work_entry_type_id.code')
@@ -483,16 +483,20 @@ class HrPayslipWorkedDays(models.Model):
         for worked_days in self:
             worked_days.amount = worked_days.payslip_id.normal_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
 
+    @api.depends('work_entry_type_id')
+    def _compute_name(self):
+        for worked_days in self:
+            worked_days.name = worked_days.work_entry_type_id.name
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'
     _description = 'Payslip Input'
     _order = 'payslip_id, sequence'
 
-    name = fields.Char(related='input_type_id.name', string="Name", readonly=True)
+    name = fields.Char(compute='_compute_name', store=True, string="Description", readonly=False)
     payslip_id = fields.Many2one('hr.payslip', string='Pay Slip', required=True, ondelete='cascade', index=True)
     sequence = fields.Integer(required=True, index=True, default=10)
-    input_type_id = fields.Many2one('hr.payslip.input.type', string='Description', required=True, domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
+    input_type_id = fields.Many2one('hr.payslip.input.type', string='Type', required=True, domain="['|', ('id', 'in', _allowed_input_type_ids), ('struct_ids', '=', False)]")
     _allowed_input_type_ids = fields.Many2many('hr.payslip.input.type', related='payslip_id.struct_id.input_line_type_ids')
     code = fields.Char(related='input_type_id.code', required=True, help="The code that can be used in the salary rules")
     amount = fields.Float(help="It is used in computation. E.g. a rule for salesmen having "
@@ -500,6 +504,11 @@ class HrPayslipInput(models.Model):
                                "like: result = inputs.SALEURO.amount * contract.wage * 0.01.")
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this input")
+
+    @api.depends('input_type_id')
+    def _compute_name(self):
+        for payslip_input in self:
+            payslip_input.name = payslip_input.input_type_id.name
 
 class HrPayslipInputType(models.Model):
     _name = 'hr.payslip.input.type'

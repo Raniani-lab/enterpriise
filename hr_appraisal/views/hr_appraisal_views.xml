@@ -104,7 +104,10 @@
                                         ('manager_feedback_published', '=', False),
                                         ('can_see_manager_publish', '=', False)
                                     ],
-                                    'readonly': [('state', '!=', 'pending')]}"/>
+                                    'readonly': [
+                                        '|',
+                                        ('can_see_manager_publish', '=', False),
+                                        ('state', '!=', 'pending')]}"/>
                                 <field name="manager_feedback_template" attrs="{
                                     'invisible': [
                                         '|',

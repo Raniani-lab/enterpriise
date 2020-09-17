@@ -10,7 +10,7 @@ class HrLeave(models.Model):
     to_defer = fields.Boolean()
 
     def action_validate(self):
-        all_payslips = self.env['hr.payslip'].search([
+        all_payslips = self.env['hr.payslip'].sudo().search([
             ('employee_id', 'in', self.mapped('employee_id').ids),
             ('state', '=', 'done')]).filtered(lambda p: p.is_regular)
         for leave in self:

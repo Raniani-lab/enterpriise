@@ -75,7 +75,7 @@ class DHLProvider():
 
     def _set_consignee(self, partner_id):
         consignee = self.factory.Consignee()
-        consignee.CompanyName = partner_id.name
+        consignee.CompanyName = partner_id.commercial_company_name or partner_id.name
         consignee.AddressLine = ('%s %s') % (partner_id.street or '', partner_id.street2 or '')
         consignee.City = partner_id.city
         if partner_id.state_id:

@@ -99,6 +99,27 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                             },
                         ],
                     },
+                    'mail.alias': {
+                        fields: {
+                            alias_name: {string: 'Name', type: 'char'},
+                        },
+                        records: [
+                            {id: 1, alias_name: 'hazard@rmcf.es'},
+                        ]
+                    },
+                    'documents.share': {
+                        fields: {
+                            name: {string: 'Name', type: 'char'},
+                            folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
+                            alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
+                        },
+                        records: [
+                            {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
+                        ],
+                        create_share: function () {
+                            return Promise.resolve();
+                        },
+                    },
                     "documents.tag": {
                         fields: {},
                         records: [],
@@ -1056,12 +1077,10 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 });
                 await dom.click(".o_documents_kanban_spreadsheet");
                 await nextTick();
-
                 assert.ok(
                     $(".o-spreadsheet-templates-dialog").length,
                     "should have opened the template modal"
                 );
-
                 assert.ok(
                     $(".o-spreadsheet-templates-dialog .modal-body .o_searchview").length,
                     "The Modal should have a search view"

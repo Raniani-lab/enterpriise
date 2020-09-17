@@ -37,5 +37,14 @@
 
 <span t-name="documents.lockIcon" t-att-title="tooltip" class="o_documents_locked fa fa-lock"/>
 
+<div t-name="documents.HelperMailLine">
+    <p class="font-weight-normal">Or send emails to 
+        <a t-attf-href="mailto:{{aliasName}}">
+            <t t-esc="aliasName"/>
+        </a>
+    </p>
+    <p class="font-weight-normal"><em>Tip: configure your scanner to send all documents to this address.</em></p>
+</div>
+
 </templates>
 

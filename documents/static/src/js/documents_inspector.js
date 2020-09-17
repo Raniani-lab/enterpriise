@@ -58,6 +58,7 @@ const DocumentsInspector = Widget.extend({
         this.focusTagInput = params.focusTagInput;
         this.currentFolder = _.findWhere(params.folders, {id: params.folderId});
         this.recordsData = {};
+        this.shareAliases = params.shareAliases;
 
         this.records = [];
         for (const resId of params.recordIds) {
@@ -116,6 +117,7 @@ const DocumentsInspector = Widget.extend({
         this._updateButtons();
         await Promise.all([
             this._renderFields(),
+            this._renderHeader(),
             this._super(...arguments)
         ]);
         this.$('.o_inspector_table .o_input').prop('disabled', this._isLocked);
@@ -384,6 +386,12 @@ const DocumentsInspector = Widget.extend({
             if (this.focusTagInput) {
                 this.$tagInput.focus();
             }
+        }
+    },
+
+    _renderHeader() {
+        if (this.shareAliases.length) {
+            this.$('.o_folder_description_alias').html(this.shareAliases[0].aliasName)
         }
     },
     /**

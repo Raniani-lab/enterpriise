@@ -9,6 +9,9 @@ odoo.define('documents.DocumentsKanbanRenderer', function (require) {
 const DocumentsKanbanRecord = require('documents.DocumentsKanbanRecord');
 
 const KanbanRenderer = require('web.KanbanRenderer');
+const core = require('web.core');
+
+var qweb = core.qweb;
 
 const DocumentsKanbanRenderer = KanbanRenderer.extend({
     config: Object.assign({}, KanbanRenderer.prototype.config, {
@@ -38,6 +41,14 @@ const DocumentsKanbanRenderer = KanbanRenderer.extend({
             const isSelected = selectedRecordIds.includes(widget.getResId());
             widget.updateSelection(isSelected);
         }
+    },
+
+    /**
+     * @param {Object[]} shareAliases
+     */
+    updateHelper(shareAliases) {
+        this.$('.o_view_nocontent_smiling_face').append(
+            qweb.render('documents.HelperMailLine', shareAliases[0]));
     },
 });
 

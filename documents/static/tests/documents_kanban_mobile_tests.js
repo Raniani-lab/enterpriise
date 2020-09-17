@@ -46,6 +46,24 @@ QUnit.module('documents_kanban_mobile_tests.js', {
                 records: [],
                 get_tags: () => [],
             },
+            'mail.alias': {
+                fields: {
+                    alias_name: {string: 'Name', type: 'char'},
+                },
+                records: [
+                    {id: 1, alias_name: 'hazard@rmcf.es'},
+                ]
+            },
+            'documents.share': {
+                fields: {
+                    name: {string: 'Name', type: 'char'},
+                    folder_id: {string: "Workspace", type: 'many2one', relation: 'documents.folder'},
+                    alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
+                },
+                records: [
+                    {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
+                ],
+            },
         });
     },
     afterEach() {

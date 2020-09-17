@@ -297,7 +297,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      *
      * @private
      */
-    async _renderDocumentsInspector(state) {
+    async _renderDocumentsInspector(state, shareAliases = []) {
         let localState;
         if (this._documentsInspector) {
             localState = this._documentsInspector.getLocalState();
@@ -311,6 +311,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             state,
             tags: this.searchModel.get('tags'),
             viewType: this.viewType,
+            shareAliases: shareAliases,
         });
         this._isInspectorTagInputFocusOnMount = false;
         await this._documentsInspector.insertAfter(this.renderer.$el);
@@ -379,7 +380,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const recordIds = state.data.map(record => record.res_id);
         this._selectedRecordIds = _.intersection(this._selectedRecordIds, recordIds);
         await this._updateChatter();
-        await this._renderDocumentsInspector(state);
+        const shareAliases = await this._updateHelper(state.getDomain());
+        await this._renderDocumentsInspector(state, shareAliases);
     },
     /**
      * Disables the control panel buttons if there is no selected folder.
@@ -413,6 +415,33 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             this._closeChatter();
         }
     },
+    /**
+     * Update helper text of list/kanban's renderer if the current folder has a related
+     * document.shares record.
+     * @private
+     * @param {Object} searchDomain
+     */
+    async _updateHelper(searchDomain) {
+        var self = this;
+        const rpcDomain = searchDomain.filter(elem => Array.isArray(elem) && elem.includes('folder_id'))
+        if (rpcDomain.length) {  // Avoid updating the Helper when the "All folder" is selected in the search panel.
+            return await this._rpc({
+                model: 'documents.share',
+                method: 'search_read',
+                kwargs: {
+                    domain: rpcDomain,
+                    fields: ['id', 'alias_id'],
+                },
+            }).then((shares) => {
+                if (shares.length) {
+                    const shareAliases = _.map(_.pluck(shares, 'alias_id'), (vals) => _.object(['alias_id', 'aliasName'], vals));
+                    this.renderer.updateHelper(shareAliases);
+                    return shareAliases;
+                }
+            });
+        }
+    },
+
     /**
      * Calls the renderer updateSelection to display which records are selected.
      *

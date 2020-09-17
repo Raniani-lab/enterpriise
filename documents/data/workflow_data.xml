@@ -50,7 +50,7 @@
 
         <record id="documents_rule_internal_legal" model="documents.workflow.rule">
             <field name="name">Send to Legal</field>
-            <field name="sequence">5</field>
+            <field name="sequence">2</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="[('tag_ids', 'in', [
                 ref('documents.documents_internal_status_inbox'),
@@ -77,7 +77,7 @@
         <!-- internal mark as bill -->
 
         <record id="documents_rule_internal_mark" model="documents.workflow.rule">
-            <field name="sequence">2</field>
+            <field name="sequence">5</field>
             <field name="name">Mark As Bill</field>
             <field name="condition_type">domain</field>
             <field name="domain" eval="[('tag_ids', 'in', [

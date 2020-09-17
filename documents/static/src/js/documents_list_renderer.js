@@ -7,6 +7,9 @@ odoo.define('documents.DocumentsListRenderer', function (require) {
  */
 
 const ListRenderer = require('web.ListRenderer');
+const core = require('web.core');
+
+var qweb = core.qweb;
 
 const DocumentsListRenderer = ListRenderer.extend({
     events: Object.assign({}, ListRenderer.prototype.events, {
@@ -34,6 +37,14 @@ const DocumentsListRenderer = ListRenderer.extend({
             this.$(`.o_document_list_record[data-res-id="${id}"] input`).prop('checked', true);
         }
         this._updateSelection();
+    },
+
+    /**
+     * @param {Object[]} shareAliases
+     */
+    updateHelper(shareAliases) {
+        this.$('.o_view_nocontent_smiling_face').append(
+            qweb.render('documents.HelperMailLine', shareAliases[0]));
     },
 
     //--------------------------------------------------------------------------

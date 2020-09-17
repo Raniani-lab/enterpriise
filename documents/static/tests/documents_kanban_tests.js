@@ -170,14 +170,26 @@ QUnit.module('documents_kanban_tests.js', {
                     }];
                 },
             },
+            'mail.alias': {
+                fields: {
+                    alias_name: {string: 'Name', type: 'char'},
+                },
+                records: [
+                    {id: 1, alias_name: 'hazard@rmcf.es'},
+                    {id: 2, alias_name: 'lukaku@im.it'},
+                    {id: 3, alias_name: 'debruyne@mc.uk'},
+                ]
+            },
             'documents.share': {
                 fields: {
                     name: {string: 'Name', type: 'char'},
+                    folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
+                    alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
                 },
                 records: [
-                    {id: 1, name: 'Share1'},
-                    {id: 2, name: 'Share2'},
-                    {id: 3, name: 'Share3'},
+                    {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
+                    {id: 2, name: 'Share2', folder_id: 1, alias_id: 2},
+                    {id: 3, name: 'Share3', folder_id: 2, alias_id: 3},
                 ],
                 create_share: function () {
                     return Promise.resolve();

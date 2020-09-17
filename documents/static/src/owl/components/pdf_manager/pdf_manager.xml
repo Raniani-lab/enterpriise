@@ -90,8 +90,6 @@
                     'dropdown-item': isMobile,
                     'ml-3': !isMobile &amp;&amp; rule_index === 0}"
                 t-on-click="_onClickRule(rule.id)"
-                aria-label="Split and apply the action"
-                title="Split and apply the action"
                 t-esc="rule.display_name"
                 t-att-disabled="state.uploadingLock"/>
         </t>

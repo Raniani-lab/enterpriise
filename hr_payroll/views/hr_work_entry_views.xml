@@ -36,5 +36,4 @@
             action = env['hr.payslip.employees'].create({}).compute_sheet()
         </field>
     </record>
-
 </odoo>

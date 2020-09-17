@@ -1,13 +1,11 @@
 odoo.define('hr_payroll.payslip.run.tree', function (require) {
 "use strict";
     var core = require('web.core');
-    var ListController = require('web.ListController');
-    var ListView = require('web.ListView');
-    var viewRegistry = require('web.view_registry');
+    var PayslipRunPayrollHolidaysControllerMixin = require('hr_payroll_holidays.payslip.run.tree');
 
     var QWeb = core.qweb;
 
-    var PayslipBatchListController = ListController.extend({
+    var PayslipBatchListController = PayslipRunPayrollHolidaysControllerMixin.include({
         /**
          * Extends the renderButtons function of ListView by adding a button
          * on the payslip batch list.
@@ -23,12 +21,4 @@ odoo.define('hr_payroll.payslip.run.tree', function (require) {
             });
         }
     });
-
-    var PayslipBatchListView = ListView.extend({
-        config: _.extend({}, ListView.prototype.config, {
-            Controller: PayslipBatchListController,
-        }),
-    });
-
-    viewRegistry.add('hr_payslip_run_tree', PayslipBatchListView);
 });

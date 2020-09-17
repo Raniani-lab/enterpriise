@@ -4,9 +4,9 @@ odoo.define('hr_payroll.work_entries_gantt', function (require) {
     var WorkEntryPayrollControllerMixin = require('hr_payroll.WorkEntryPayrollControllerMixin');
     var WorkEntryGanttController = require("hr_work_entry_contract.work_entries_gantt");
 
-    var WorkEntryPayrollCalendarController = WorkEntryGanttController.include(WorkEntryPayrollControllerMixin);
+    var WorkEntryPayrollGanttController = WorkEntryGanttController.include(WorkEntryPayrollControllerMixin);
 
-    return WorkEntryPayrollCalendarController;
+    return WorkEntryPayrollGanttController;
 
 });
 

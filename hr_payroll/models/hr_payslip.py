@@ -78,6 +78,11 @@ class HrPayslip(models.Model):
     net_wage = fields.Monetary(compute='_compute_basic_net')
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
+    is_regular = fields.Boolean(compute='_compute_is_regular')
+
+    def _compute_is_regular(self):
+        for payslip in self:
+            payslip.is_regular = payslip.struct_id.type_id.default_struct_id == payslip.struct_id
 
     @api.depends('worked_days_line_ids', 'input_line_ids')
     def _compute_line_ids(self):

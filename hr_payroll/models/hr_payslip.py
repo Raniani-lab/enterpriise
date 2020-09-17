@@ -79,6 +79,44 @@ class HrPayslip(models.Model):
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(readonly=True)
     is_regular = fields.Boolean(compute='_compute_is_regular')
+    has_negative_net_to_report = fields.Boolean()
+    negative_net_to_report_display = fields.Boolean(compute='_compute_negative_net_to_report_display')
+    negative_net_to_report_message = fields.Char(compute='_compute_negative_net_to_report_display')
+    negative_net_to_report_amount = fields.Float(compute='_compute_negative_net_to_report_display')
+
+    @api.depends('employee_id')
+    def _compute_negative_net_to_report_display(self):
+        for payslip in self:
+            if payslip.state in ['draft', 'waiting']:
+                payslips_to_report = self.env['hr.payslip'].search([
+                    ('has_negative_net_to_report', '=', True),
+                    ('employee_id', '=', payslip.employee_id.id),
+                ])
+                payslip.negative_net_to_report_display = payslips_to_report
+                payslip.negative_net_to_report_amount = sum(p._get_salary_line_total('NET') for p in payslips_to_report)
+                payslip.negative_net_to_report_message = _(
+                    'Note: There are previous payslips with a negative amount for a total of %s to report.',
+                    payslip.negative_net_to_report_amount)
+            else:
+                payslip.negative_net_to_report_display = False
+                payslip.negative_net_to_report_amount = False
+                payslip.negative_net_to_report_message = False
+
+    def action_report_negative_amount(self):
+        self.ensure_one()
+        deduction_input_type = self.env.ref('hr_payroll.input_deduction')
+        deduction_input_line = self.input_line_ids.filtered(lambda l: l.input_type_id == deduction_input_type)
+        if deduction_input_line:
+            deduction_input_line.amount += abs(self.negative_net_to_report_amount)
+        else:
+            self.write({'input_line_ids': [(0, 0, {
+                'input_type_id': deduction_input_type.id,
+                'amount': abs(self.negative_net_to_report_amount),
+            })]})
+        self.env['hr.payslip'].search([
+            ('has_negative_net_to_report', '=', True),
+            ('employee_id', '=', self.employee_id.id),
+        ]).write({'has_negative_net_to_report': False})
 
     def _compute_is_regular(self):
         for payslip in self:
@@ -118,6 +156,7 @@ class HrPayslip(models.Model):
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
         self.write({'state' : 'done'})
+        self.filtered(lambda p: p._get_salary_line_total('NET') < 0).write({'has_negative_net_to_report': True})
         self.mapped('payslip_run_id').action_close()
         if self.env.context.get('payslip_generate_pdf'):
             for payslip in self:

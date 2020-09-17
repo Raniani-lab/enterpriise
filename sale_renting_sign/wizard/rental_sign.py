@@ -37,7 +37,7 @@ class RentalSign(models.TransientModel):
         if pending_sign_request:
             return pending_sign_request.go_to_document()
         else:
-            action = self.env.ref("sign.action_sign_send_request").read([])[0]
+            action = self.env['ir.actions.act_window']._for_xml_id('sign.action_sign_send_request')
             action["context"] = {
                 "active_id": self.template_id.id,
                 "sign_directly_without_mail": True,

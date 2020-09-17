@@ -28,14 +28,14 @@ tour.register('documents_account_tour', {
         $('.o_search_panel_filter_value:eq(0) .o_search_panel_label_title').click();
     },
 }, {
-    trigger: '.o_kanban_record:contains(invoice.png)',
+    trigger: '.o_kanban_record:contains(mail.png)',
     extra_trigger: '.o_documents_kanban',
     content: _t("Click on a card to <b>select the document</b>."),
     position: 'bottom',
 }, { // equivalent to '.o_inspector_rule:contains('Send to Legal') .o_inspector_trigger_rule' but language agnostic.
     trigger: '.o_inspector_rule[data-id="3"] .o_inspector_trigger_rule',
     extra_trigger: '.o_documents_image_background',
-    content: _t("Let's tag this bill as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"),
+    content: _t("Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"),
     position: 'bottom',
 }, { // the nth(0) ensures that the filter of the preceding step has been applied.
     trigger: '.o_kanban_record:nth(0):contains(Mails_inbox.pdf)',
@@ -58,12 +58,12 @@ tour.register('documents_account_tour', {
     content: _t("<b>Deselect this page</b> as we plan to process all bills first."),
     position: 'left',
 }, { // equivalent to '.o_pdf_rule_buttons:contains(Scan Bill)' but language agnostic.
-    trigger: '.o_pdf_rule_buttons:first',
+    trigger: '.o_pdf_rule_buttons:nth-last-child(2)',
     extra_trigger: '.o_documents_pdf_manager',
     content: _t("Let's process these bills: turn them into vendor bills."),
     position: 'bottom',
 }, { // equivalent to '.o_pdf_rule_buttons:contains(Send to Legal)' but language agnostic.
-    trigger: '.o_pdf_rule_buttons:nth-last-child(2)',
+    trigger: '.o_pdf_rule_buttons:first',
     extra_trigger: '.o_pdf_rule_buttons:not(:disabled)',
     content: _t("Send this letter to the legal department, by assigning the right tags."),
     position: 'bottom',

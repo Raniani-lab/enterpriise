@@ -35,7 +35,7 @@ class AnalyticLine(models.Model):
         help="Technical field used to display the timer if the encoding unit is 'Hours'.")
 
     def _compute_display_timer(self):
-        other_employee_lines = self.filtered(lambda l: l.employee_id != self.env.user.employee_id)
+        other_employee_lines = self.filtered(lambda l: l.employee_id not in self.env.user.employee_ids)
         validated_lines = self.filtered(lambda line: line.validated)
         (other_employee_lines + validated_lines).update({'display_timer': False})
         uom_hour = self.env.ref('uom.product_uom_hour')

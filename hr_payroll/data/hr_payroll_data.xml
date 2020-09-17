@@ -95,5 +95,17 @@
             <field name="round_days_type">HALF-UP</field>
         </record>
 
+        <record id="input_deduction" model="hr.payslip.input.type">
+            <field name="name">Deduction</field>
+            <field name="code">DEDUCTION</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="input_reimbursement" model="hr.payslip.input.type">
+            <field name="name">Reimbursement</field>
+            <field name="code">REIMBURSEMENT</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
     </data>
 </odoo>

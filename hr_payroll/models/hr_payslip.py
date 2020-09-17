@@ -144,6 +144,10 @@ class HrPayslip(models.Model):
         self.write({'state': 'cancel'})
         self.mapped('payslip_run_id').action_close()
 
+    def action_open_work_entries(self):
+        self.ensure_one()
+        return self.employee_id.action_open_work_entries()
+
     def refund_sheet(self):
         for payslip in self:
             copied_payslip = payslip.copy({

@@ -353,7 +353,7 @@
         <field name="code">LU_PL_669</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="18"/>
-        <field name="formulas">LU_PL_667 + LU_PL_637 + LU_PL_ACCOUNT_142</field>
+        <field name="formulas">LU_PL_667 + LU_PL_637</field>
         <field name="financial_report_id" ref="account_financial_report_l10n_lu_pl"/>
     </record>
 </odoo>

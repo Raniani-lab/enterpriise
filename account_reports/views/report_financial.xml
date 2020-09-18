@@ -376,15 +376,18 @@
         <t t-if="line.get('trust') == 'good'">
             <span class="fa fa-circle color-green trust-partner" role="img" aria-label="Partner ledger is good" title="Partner ledger is good"></span>
         </t>
-        <t t-if="line.get('trust') == 'bad'">
+        <t t-elif="line.get('trust') == 'bad'">
             <span class="fa fa-circle color-red trust-partner" role="img" aria-label="Partner ledger is bad" title="Partner ledger is bad"></span>
         </t>
-        <t t-if="line.get('trust') == 'normal'">
+        <t t-elif="line.get('trust') == 'normal'">
             <span class="fa fa-circle color-transparent trust-partner" role="img" aria-label="Partner ledger is normal" title="Partner ledger is normal"></span>
+        </t>
+        <t t-else="">
+            <span class="fa fa-circle color-transparent trust-partner" role="img"/>
         </t>
     </xpath>
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-       &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+       &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
     </xpath>
 </template>
 <template id="line_template_general_ledger_report" inherit_id="account_reports.line_template" primary="True">

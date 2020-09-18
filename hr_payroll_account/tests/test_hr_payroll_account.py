@@ -163,9 +163,6 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
 
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
-
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
 
@@ -196,9 +193,6 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
 
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
-
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
 
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
@@ -231,9 +225,6 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
 
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
-
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
 
@@ -264,9 +255,6 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
 
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
-
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
 
         # Test only with payslip that were just generated. Remove the payslip from setup
         self.payslip_run.write({'slip_ids': [(3, self.hr_payslip_john.id)]})
@@ -304,9 +292,6 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
 
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
-
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
 
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
@@ -371,6 +356,7 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
             'date_start': '2011-09-01',
             'name': 'Payslip for Employee'
         })
+        self.hr_payslip_john.compute_sheet()
 
         # I validate the payslip run.
         self.hr_payslip_john.payslip_run_id.action_validate()

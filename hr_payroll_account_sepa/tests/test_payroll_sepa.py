@@ -92,9 +92,6 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
         # I generate the payslip by clicking on Generate button wizard.
         payslip_employee.with_context(active_id=self.payslip_run.id).compute_sheet()
 
-        # I add the payslip in the payslip run.
-        self.payslip_run.slip_ids = payslip_employee.employee_ids.mapped('slip_ids')
-
         # I verify if the payslip run has payslip(s).
         self.assertTrue(len(self.payslip_run.slip_ids) > 0, 'Payslip(s) not added!')
 

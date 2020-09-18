@@ -585,6 +585,7 @@ class SaleSubscription(models.Model):
             'invoice_payment_term_id': self.payment_term_id.id,
             'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'invoice_user_id': self.user_id.id,
+            'partner_bank_id': company.partner_id.bank_ids[:1].id,
         }
         if self.team_id:
             res['team_id'] = self.team_id.id

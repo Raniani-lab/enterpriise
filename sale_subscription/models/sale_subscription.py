@@ -1045,6 +1045,7 @@ class SaleSubscription(models.Model):
         })
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         self.template_id.invoice_mail_template_id.with_context(email_context).send_mail(invoice.id)
+        invoice.is_move_sent = True
 
 
 class SaleSubscriptionLine(models.Model):

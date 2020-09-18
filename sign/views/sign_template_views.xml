@@ -55,9 +55,9 @@
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
                             <div class="o_kanban_record_bottom">
-                                <div class="oe_kanban_bottom_left">
+                                <div class="oe_kanban_bottom_left w-50">
                                     <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_send_request" context="{'sign_directly_without_mail': 0}">Send</button>
-                                    <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_directly" context="{'sign_directly_without_mail': 1}">Sign Now</button>
+                                    <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm mt8 o_kanban_sign_directly text-truncate" context="{'sign_directly_without_mail': 1}">Sign Now</button>
                                     <button name="%(sign.action_sign_template_share)d" type="action" class="btn btn-secondary btn-sm mt8" attrs="{'invisible': [('responsible_count', '&gt;', 1)]}">Share</button>
                                 </div>
                                 <div class="oe_kanban_bottom_right">

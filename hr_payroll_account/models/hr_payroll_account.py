@@ -25,6 +25,10 @@ class HrPayslip(models.Model):
             A move is created for each journal and for each month.
         """
         res = super(HrPayslip, self).action_payslip_done()
+        self._action_create_account_move()
+        return res
+
+    def _action_create_account_move(self):
         precision = self.env['decimal.precision'].precision_get('Payroll')
 
         # Add payslip without run
@@ -164,7 +168,7 @@ class HrPayslip(models.Model):
                 move = self.env['account.move'].create(move_dict)
                 for slip in slip_mapped_data[journal_id][slip_date]:
                     slip.write({'move_id': move.id, 'date': date})
-        return res
+        return True
 
     def _prepare_line_values(self, line, account_id, date, debit, credit):
         return {

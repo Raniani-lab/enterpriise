@@ -78,12 +78,12 @@ class StudioApprovalRule(models.Model):
                 "approval entries. You should archive the rule and create a new one instead."))
         return super().write(vals)
 
-    def unlink(self):
-        if any(rule.entry_ids for rule in self) and not self._context.get('_force_unlink'):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_existing_entries(self):
+        if any(rule.entry_ids for rule in self):
             raise UserError(_(
                 "Rules with existing entries cannot be deleted since it would delete existing "
                 "approval entries. You should archive the rule instead."))
-        return super().unlink()
 
     @api.depends("model_id", "group_id", "method", "action_id")
     def _compute_name(self):

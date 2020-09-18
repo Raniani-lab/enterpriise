@@ -61,10 +61,10 @@ class SDDMandate(models.Model):
              "have been generated and posted thanks to this mandate and still needs their XML file to be generated and "
              "sent to the bank to debit the customer's account.")
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_draft(self):
         if self.filtered(lambda x: x.state != 'draft'):
             raise UserError(_("Only mandates in draft state can be deleted from database when cancelled."))
-        return super(SDDMandate, self).unlink()
 
     @api.model
     def _sdd_get_usable_mandate(self, company_id, partner_id, date):

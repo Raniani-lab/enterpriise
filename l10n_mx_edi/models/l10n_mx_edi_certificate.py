@@ -171,7 +171,8 @@ class Certificate(models.Model):
         self.clear_caches()
         return res
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def _unlink_except_invoices(self):
         mx_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')
         if self.env['account.edi.document'].sudo().search([
             ('edi_format_id', '=', mx_edi.id),
@@ -181,6 +182,3 @@ class Certificate(models.Model):
                 'You cannot remove a certificate if at least an invoice has been signed. '
                 'Expired Certificates will not be used as Odoo uses the latest valid certificate. '
                 'To not use it, you can unlink it from the current company certificates.'))
-        res = super(Certificate, self).unlink()
-        self.clear_caches()
-        return res

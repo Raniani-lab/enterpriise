@@ -253,13 +253,17 @@ class AccountAsset(models.Model):
                     depreciation_date = depreciation_date + relativedelta(years=1)
             record.first_depreciation_date = depreciation_date
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def _unlink_if_model_or_draft(self):
         for asset in self:
             if asset.state in ['open', 'paused', 'close']:
                 raise UserError(_(
                     'You cannot delete a document that is in %s state.',
                     dict(self._fields['state']._description_selection(self.env)).get(asset.state)
                 ))
+
+    def unlink(self):
+        for asset in self:
             for line in asset.original_move_line_ids:
                 body = _('A document linked to %s has been deleted: ') % (line.name or _('this move'))
                 body += '<a href=# data-oe-model=account.asset data-oe-id=%d>%s</a>' % (asset.id, asset.name)

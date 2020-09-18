@@ -427,12 +427,11 @@ class pos_order(models.Model):
 
         return order
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def _unlink_except_registered_order(self):
         for order in self:
             if order.config_id.blackbox_pos_production_id:
                 raise UserError(_('Deleting of registered orders is not allowed.'))
-
-        return super(pos_order, self).unlink()
 
     def write(self, values):
         for order in self:
@@ -687,7 +686,8 @@ class pos_blackbox_be_log(models.Model):
     def write(self, values):
         raise UserError(_("Can't modify the log book."))
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def _unlink_never(self):
         raise UserError(_("Can't modify the log book."))
 
 class product_template(models.Model):
@@ -713,7 +713,8 @@ class product_template(models.Model):
 
         return super(product_template, self).write(values)
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def _unlink_except_master_data(self):
         ir_model_data = self.env['ir.model.data']
         work_in = ir_model_data.xmlid_to_object('pos_blackbox_be.product_product_work_in').product_tmpl_id.id
         work_out = ir_model_data.xmlid_to_object('pos_blackbox_be.product_product_work_out').product_tmpl_id.id
@@ -722,10 +723,10 @@ class product_template(models.Model):
             if product == work_in or product == work_out:
                 raise UserError(_('Deleting this product is not allowed.'))
 
+    def unlink(self):
         for product in self:
             self.env['pos_blackbox_be.log'].sudo().create({}, "delete", product._name, product.name)
-
-        return super(product_template, self).unlink()
+        return super().unlink()
 
     @api.model
     def _remove_availibility_all_but_blackbox(self):

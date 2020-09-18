@@ -5,7 +5,7 @@ import logging
 
 from werkzeug.urls import url_join
 
-from odoo import _, _lt, fields, models
+from odoo import _, _lt, api, fields, models
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
 
@@ -41,10 +41,10 @@ class SocialAccountPushNotifications(models.Model):
 
     _sql_constraints = [('website_unique', 'unique(website_id)', 'There is already a configuration for this website.')]
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_push_notification_account(self):
         if not self.env.user.has_group('base.group_system') and any(account.website_id for account in self):
             raise UserError(_("You can't delete a Push Notification account."))
-        return super(SocialAccountPushNotifications, self).unlink()
 
     def _init_firebase_app(self):
         """ Initialize the firebase library before usage.

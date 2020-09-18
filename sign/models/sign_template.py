@@ -102,10 +102,12 @@ class SignTemplate(models.Model):
         self.ensure_one()
         self.write({'favorited_ids': [(3 if self.env.user in self[0].favorited_ids else 4, self.env.user.id)]})
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_existing_signature(self):
         if self.filtered(lambda template: template.sign_request_ids):
-            raise UserError(_("You can't delete a template for which signature requests exist but you can archive it instead."))
-        return super(SignTemplate, self).unlink()
+            raise UserError(_(
+                "You can't delete a template for which signature requests "
+                "exist but you can archive it instead."))
 
     @api.model
     def upload_template(self, name=None, dataURL=None, active=True):

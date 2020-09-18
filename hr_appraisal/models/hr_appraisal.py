@@ -186,10 +186,10 @@ class HrAppraisal(models.Model):
             self.activity_reschedule(['mail.mail_activity_data_todo'], date_deadline=vals['date_close'])
         return result
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancel(self):
         if any(appraisal.state not in ['new', 'cancel'] for appraisal in self):
             raise UserError(_("You cannot delete appraisal which is not in draft or canceled state"))
-        return super(HrAppraisal, self).unlink()
 
     def action_calendar_event(self):
         self.ensure_one()

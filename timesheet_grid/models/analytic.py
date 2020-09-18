@@ -292,9 +292,13 @@ class AnalyticLine(models.Model):
 
         return super(AnalyticLine, self).write(vals)
 
-    def unlink(self):
-        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_manager(self):
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(
+                lambda r: r.is_timesheet and r.validated):
             raise AccessError(_('Only a Timesheets Approver or Manager is allowed to delete a validated entry.'))
+
+    def unlink(self):
         res = super(AnalyticLine, self).unlink()
         self.env['timer.timer'].search([
             ('res_model', '=', self._name),

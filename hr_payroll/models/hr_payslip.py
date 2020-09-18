@@ -252,10 +252,10 @@ class HrPayslip(models.Model):
         res = super(HrPayslip, self).create(vals)
         return res
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_draft_or_cancel(self):
         if any(payslip.state not in ('draft', 'cancel') for payslip in self):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
-        return super(HrPayslip, self).unlink()
 
     def compute_sheet(self):
         payslips = self.filtered(lambda slip: slip.state in ['draft', 'verify'])
@@ -704,12 +704,12 @@ class HrPayslipRun(models.Model):
             "name": "Payslips",
         }
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_draft_or_cancel(self):
         if any(self.filtered(lambda payslip_run: payslip_run.state not in ('draft'))):
             raise UserError(_('You cannot delete a payslip batch which is not draft!'))
         if any(self.mapped('slip_ids').filtered(lambda payslip: payslip.state not in ('draft','cancel'))):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
-        return super(HrPayslipRun, self).unlink()
 
     def _are_payslips_ready(self):
         return all(slip.state in ['done', 'cancel'] for slip in self.mapped('slip_ids'))

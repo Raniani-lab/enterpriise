@@ -84,10 +84,11 @@ class HrPayslip(models.Model):
     negative_net_to_report_message = fields.Char(compute='_compute_negative_net_to_report_display')
     negative_net_to_report_amount = fields.Float(compute='_compute_negative_net_to_report_display')
 
-    @api.depends('employee_id')
+    @api.depends('employee_id', 'state')
     def _compute_negative_net_to_report_display(self):
+        activity_type = self.env.ref('hr_payroll.mail_activity_data_hr_payslip_negative_net')
         for payslip in self:
-            if payslip.state in ['draft', 'waiting']:
+            if payslip.state in ['draft', 'verify']:
                 payslips_to_report = self.env['hr.payslip'].search([
                     ('has_negative_net_to_report', '=', True),
                     ('employee_id', '=', payslip.employee_id.id),
@@ -97,6 +98,13 @@ class HrPayslip(models.Model):
                 payslip.negative_net_to_report_message = _(
                     'Note: There are previous payslips with a negative amount for a total of %s to report.',
                     payslip.negative_net_to_report_amount)
+                if payslips_to_report and payslip.state == 'verify' and payslip.contract_id and not payslip.activity_ids.filtered(lambda a: a.activity_type_id == activity_type):
+                    payslip.activity_schedule(
+                        'hr_payroll.mail_activity_data_hr_payslip_negative_net',
+                        summary=_('Previous Negative Payslip to Report'),
+                        note=_('At least one previous negative net could be reported on this payslip for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
+                            payslip.employee_id._name, payslip.employee_id.id, payslip.employee_id.display_name),
+                        user_id=payslip.contract_id.hr_responsible_id.id or self.env.ref('base.user_admin').id)
             else:
                 payslip.negative_net_to_report_display = False
                 payslip.negative_net_to_report_amount = False
@@ -117,6 +125,7 @@ class HrPayslip(models.Model):
             ('has_negative_net_to_report', '=', True),
             ('employee_id', '=', self.employee_id.id),
         ]).write({'has_negative_net_to_report': False})
+        self.activity_feedback(['hr_payroll.mail_activity_data_hr_payslip_negative_net'])
 
     def _compute_is_regular(self):
         for payslip in self:

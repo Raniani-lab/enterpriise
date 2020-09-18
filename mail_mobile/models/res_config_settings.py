@@ -64,7 +64,7 @@ class ResConfigSettings(models.TransientModel):
     def register_device(self, device_key, device_name):
         values = {
             'ocn_uuid': self._get_ocn_uuid(),
-            'user_name': self.env.user.partner_id.name,
+            'user_name': self.env.user.name or self.env.user.login,
             'user_login': self.env.user.login,
             'device_name': device_name,
             'device_key': device_key,

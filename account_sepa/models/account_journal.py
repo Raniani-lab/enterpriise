@@ -284,13 +284,13 @@ class AccountJournal(models.Model):
         InstdAmt.text = val_InstdAmt
         CdtTrfTxInf.append(self._get_ChrgBr(sct_generic))
 
-        partner = self.env['res.partner'].browse(payment['partner_id'])
+        partner = self.env['res.partner'].sudo().browse(payment['partner_id'])
 
         partner_bank_id = payment.get('partner_bank_id')
         if not partner_bank_id:
             raise UserError(_('Partner %s has not bank account defined.', partner.name))
 
-        partner_bank = self.env['res.partner.bank'].browse(partner_bank_id)
+        partner_bank = self.env['res.partner.bank'].sudo().browse(partner_bank_id)
 
         if local_instrument != 'CH01':
             CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
@@ -383,7 +383,7 @@ class AccountJournal(models.Model):
         """ Local instrument node is used to indicate the use of some regional
         variant, such as in Switzerland.
         """
-        partner_bank_ids = self.env['res.partner'].browse(payment['partner_id']).bank_ids
+        partner_bank_ids = self.env['res.partner'].sudo().browse(payment['partner_id']).bank_ids
         if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['ref']):
             return 'CH01'
         return None

@@ -342,3 +342,24 @@ class TestStudioIrModel(SavepointCase):
         self.assertEqual(
             latest_relation[0]["relation_table"], "%s_%s" % (default, NUM_TEST)
         )
+
+    def test_19_custom_model_security(self):
+        """Test that ACLs are created for a custom model using name create."""
+
+        model_id, name = self.env['ir.model'].with_context(studio=True).name_create('X_Rockets')
+        acl_admin = self.env['ir.model.access'].search([
+            ('model_id', '=', model_id),
+            ('group_id', '=', self.env.ref('base.group_system').id)
+        ])
+        self.assertTrue(acl_admin.perm_read, 'admin should have read access on custom models')
+        self.assertTrue(acl_admin.perm_write, 'admin should have write access on custom models')
+        self.assertTrue(acl_admin.perm_create, 'admin should have create access on custom models')
+        self.assertTrue(acl_admin.perm_unlink, 'admin should have unlink access on custom models')
+        acl_user = self.env['ir.model.access'].search([
+            ('model_id', '=', model_id),
+            ('group_id', '=', self.env.ref('base.group_user').id)
+        ])
+        self.assertTrue(acl_user.perm_read, 'user should have read access on custom models')
+        self.assertTrue(acl_user.perm_write, 'user should have write access on custom models')
+        self.assertTrue(acl_user.perm_create, 'user should have create access on custom models')
+        self.assertFalse(acl_user.perm_unlink, 'user should not have unlink access on custom models')

@@ -158,6 +158,13 @@ class IrModel(models.Model):
         main_model._setup_access_rights()
         return (main_model, extra_models)
 
+    @api.model
+    def name_create(self, name):
+        if self._context.get('studio'):
+            (main_model, _) = self.studio_model_create(name)
+            return main_model.name_get()[0]
+        return super().name_create(name)
+
     def _setup_active(self):
         for model in self:
             active_field = self.env['ir.model.fields'].create({

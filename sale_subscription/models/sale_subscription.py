@@ -892,6 +892,12 @@ class SaleSubscription(models.Model):
                             if payment_token:
                                 invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
                                 new_invoice = Invoice.create(invoice_values)
+                                if subscription.analytic_account_id or subscription.tag_ids:
+                                    for line in new_invoice.invoice_line_ids:
+                                        if subscription.analytic_account_id:
+                                            line.analytic_account_id = subscription.analytic_account_id
+                                        if subscription.tag_ids:
+                                            line.analytic_tag_ids = subscription.tag_ids
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},
@@ -972,6 +978,12 @@ class SaleSubscription(models.Model):
                             else:
                                 invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
                                 new_invoice = Invoice.create(invoice_values)
+                                if subscription.analytic_account_id or subscription.tag_ids:
+                                    for line in new_invoice.invoice_line_ids:
+                                        if subscription.analytic_account_id:
+                                            line.analytic_account_id = subscription.analytic_account_id
+                                        if subscription.tag_ids:
+                                            line.analytic_tag_ids = subscription.tag_ids
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},

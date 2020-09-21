@@ -12,7 +12,9 @@ Generic Payroll system Integrated with Accounting.
     * Company Contribution Management
     """,
     'depends': ['hr_payroll', 'account_accountant'],
-    'data': ['views/hr_payroll_account_views.xml'],
+    'data': [
+        'views/hr_payroll_account_views.xml',
+        'report/hr_contract_history_report_views.xml'],
     'demo': ['data/hr_payroll_account_demo.xml'],
     'auto_install': True,
 }

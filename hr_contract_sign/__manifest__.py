@@ -17,6 +17,7 @@
         'views/hr_employee_view.xml',
         'views/res_users_view.xml',
         'views/sign_request_views.xml',
+        'report/hr_contract_history_report_views.xml',
         'data/hr_contract_data.xml',
     ],
     'installable': True,

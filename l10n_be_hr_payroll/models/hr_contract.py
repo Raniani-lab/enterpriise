@@ -21,13 +21,13 @@ class HrContract(models.Model):
     transport_mode_private_car = fields.Boolean('Uses private car')
     transport_mode_train = fields.Boolean('Uses train transportation')
     transport_mode_public = fields.Boolean('Uses another public transportation')
-    car_atn = fields.Monetary(string='Benefit in Kind (Company Car)')
+    car_atn = fields.Monetary(string='Car BIK', help='Benefit in Kind (Company Car)')
     train_transport_employee_amount = fields.Monetary('Train transport paid by the employee (Monthly)')
     public_transport_employee_amount = fields.Monetary('Public transport paid by the employee (Monthly)')
     warrant_value_employee = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly value for the employee")
 
-    meal_voucher_paid_by_employer = fields.Monetary(compute='_compute_meal_voucher_paid_by_employer', string="Meal Voucher Paid by Employer")
-    meal_voucher_paid_monthly_by_employer = fields.Monetary(compute='_compute_meal_voucher_paid_by_employer')
+    meal_voucher_paid_by_employer = fields.Monetary(compute='_compute_meal_voucher_info', string="Meal Voucher Paid by Employer")
+    meal_voucher_paid_monthly_by_employer = fields.Monetary(compute='_compute_meal_voucher_info')
     company_car_total_depreciated_cost = fields.Monetary()
     private_car_reimbursed_amount = fields.Monetary(compute='_compute_private_car_reimbursed_amount')
     km_home_work = fields.Integer(related="employee_id.km_home_work", related_sudo=True, readonly=False)
@@ -41,7 +41,7 @@ class HrContract(models.Model):
     yearly_commission_cost = fields.Monetary(compute='_compute_commission_cost')
 
     # Advantages
-    commission_on_target = fields.Monetary(string="Commission on Target",
+    commission_on_target = fields.Monetary(string="Commission",
         tracking=True,
         help="Monthly gross amount that the employee receives if the target is reached.")
     fuel_card = fields.Monetary(string="Fuel Card",
@@ -50,7 +50,7 @@ class HrContract(models.Model):
     internet = fields.Monetary(string="Internet",
         tracking=True,
         help="The employee's internet subcription will be paid up to this amount.")
-    representation_fees = fields.Monetary(string="Representation Fees",
+    representation_fees = fields.Monetary(string="Expense Fees",
         tracking=True,
         help="Monthly net amount the employee receives to cover his representation fees.")
     mobile = fields.Monetary(string="Mobile",
@@ -62,9 +62,10 @@ class HrContract(models.Model):
     meal_voucher_amount = fields.Monetary(string="Meal Vouchers",
         tracking=True,
         help="Amount the employee receives in the form of meal vouchers per worked day.")
+    meal_voucher_average_monthly_amount = fields.Monetary(compute="_compute_meal_voucher_info")
     eco_checks = fields.Monetary("Eco Vouchers",
         help="Yearly amount the employee receives in the form of eco vouchers.")
-    ip = fields.Boolean(default=False, tracking=True)
+    ip = fields.Boolean('IP', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
     time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
@@ -75,6 +76,7 @@ class HrContract(models.Model):
         ('0.9', '9/10')
         ], string='Work time rate', readonly=True,
         help='Work time rate versus full time working schedule.')
+    time_credit_full_time_wage = fields.Monetary('Credit Time Full Time Wage', readonly=True)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
@@ -103,10 +105,12 @@ class HrContract(models.Model):
             contract.warrant_value_employee = contract.commission_on_target * 1.326 * (1.00 - 0.535)
 
     @api.depends('meal_voucher_amount')
-    def _compute_meal_voucher_paid_by_employer(self):
+    def _compute_meal_voucher_info(self):
         for contract in self:
             contract.meal_voucher_paid_by_employer = contract.meal_voucher_amount * (1 - 0.1463)
-            contract.meal_voucher_paid_monthly_by_employer = contract.meal_voucher_paid_by_employer * 220.0 / 12.0
+            monthly_nb_meal_voucher = 220.0 / 12
+            contract.meal_voucher_paid_monthly_by_employer = contract.meal_voucher_paid_by_employer * monthly_nb_meal_voucher
+            contract.meal_voucher_average_monthly_amount = contract.meal_voucher_amount * monthly_nb_meal_voucher
 
     @api.depends('train_transport_employee_amount')
     def _compute_train_transport_reimbursed_amount(self):

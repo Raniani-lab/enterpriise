@@ -12,6 +12,7 @@
     'description': """
     """,
     'data': [
+        'data/hr_contract_data.xml',
         'data/hr_contract_salary_advantage_data.xml',
         'data/hr_contract_salary_resume_data.xml',
         'data/hr_contract_salary_personal_info_data.xml',

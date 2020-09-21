@@ -33,11 +33,13 @@
             <xpath expr="//field[@name='state']" position="before">
                 <button name="%(generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}"/>
             </xpath>
-            <field name="job_id" position="before">
-                <field name="sign_request_ids" invisible="1" groups="sign.group_sign_user"/>
-            </field>
-            <field name="structure_type_id" position="before">
-                <field name="contract_type"/>
+            <field name="job_id" position="after">
+                <field name="contract_type_id"/>
+                <label for="wage_on_signature" attrs="{'invisible': [('wage_on_signature', '=', 0)]}"/>
+                <div class="o_row" name="wage" attrs="{'invisible': [('wage_on_signature', '=', 0)]}">
+                    <field name="wage_on_signature" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
             </field>
              <xpath expr="//group[@name='notes_group']" position="before">
                 <group name="contract_template">
@@ -54,8 +56,8 @@
                     </group>
                 </page>
             </page>
-            <xpath expr="//group[@name='salary_and_advantages']" position="after">
-                <group string="Employee Costs" groups="hr.group_hr_manager" name="employee_costs">
+            <xpath expr="//group[@name='salary']" position="after">
+                <group groups="hr.group_hr_manager" name="employee_costs">
                     <label for="final_yearly_costs"/>
                     <div class="o_row">
                         <field name="final_yearly_costs" nolabel="1"/>

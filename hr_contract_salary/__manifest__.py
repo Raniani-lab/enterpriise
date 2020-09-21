@@ -33,6 +33,7 @@
         'data/hr_contract_salary_resume_data.xml',
         'security/ir.model.access.csv',
         'report/hr_contract_employee_report_views.xml',
+        'report/hr_contract_history_report_views.xml',
     ],
     'demo': [
         'data/hr_contract_salary_demo.xml',

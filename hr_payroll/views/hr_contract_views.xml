@@ -14,17 +14,13 @@
             <field name="structure_type_id" position="attributes">
                 <attribute name="required">1</attribute>
             </field>
-            <xpath expr="//group[@name='main_info']" position="before">
-                <group name="main_info_hourly" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}">
-                    <group name="salary_and_advantages_hourly" string="Hourly Advantages in Cash">
-                        <field name="wage_type"/>
-                        <label for="hourly_wage"/>
-                        <div class="o_row" name="hourly_wage">
-                            <field name="hourly_wage" nolabel="1"/>
-                            <span>/ hour</span>
-                        </div>
-                    </group>
-                </group>
+            <xpath expr="//label[@for='wage']" position="before">
+                <field name="wage_type"/>
+                <label for="hourly_wage" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}"/>
+                <div class="o_row" name="hourly_wage" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}">
+                    <field name="hourly_wage" nolabel="1"/>
+                    <span>/ hour</span>
+                </div>
             </xpath>
             <group name="yearly_advantages" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>

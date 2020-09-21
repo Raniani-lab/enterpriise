@@ -54,6 +54,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'date_start': self.date_start,
             'date_end': self.date_end,
             self.contract_id._get_contract_wage_field(): self.wage,
+            'time_credit_full_time_wage': self.wage / float(self.work_time) if float(self.work_time) != 0 else self.contract_id._get_contract_wage(),
             'resource_calendar_id': self.resource_calendar_id.id,
             'standard_calendar_id': self.contract_id.resource_calendar_id.id,
             'time_credit' : True,
@@ -82,13 +83,9 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         res = super(L10nBeHrPayrollExitCreditTime, self).default_get(field_list)
         current_credit_time = self.env['hr.contract'].browse(self.env.context.get('active_id'))
-        last_full_time = self.env['hr.contract'].search([('employee_id', '=', current_credit_time.employee_id.id),
-            ('time_credit', '=', False), ('date_end', '!=', False), ('state', '!=', 'cancel')],
-            order="date_end desc", limit=1)
-        if last_full_time:
-            res['contract_id'] = last_full_time.id
-            res['resource_calendar_id'] = last_full_time.resource_calendar_id.id
-            res['wage'] = last_full_time.wage
+        res['contract_id'] = current_credit_time.id
+        res['resource_calendar_id'] = current_credit_time.standard_calendar_id.id
+        res['wage'] = current_credit_time.time_credit_full_time_wage
         res['date_start'] = current_credit_time.date_end + timedelta(days=1)
         return res
 

@@ -38,9 +38,22 @@
 
     <menuitem
         id="menu_hr_payroll_contracts_configuration"
-        action="hr_payroll.action_hr_contract_repository"
+        action="hr_contract.hr_contract_history_view_list_action"
         parent="menu_hr_payroll_employees_root"
         sequence="20"/>
+
+    <menuitem
+        id="menu_hr_payroll_contracts_to_review"
+        action="hr_contract.hr_contract_history_to_review_view_list_action"
+        parent="menu_hr_payroll_employees_root"
+        sequence="25"/>
+
+    <menuitem
+        id="hr_menu_all_contracts"
+        name="All Contracts"
+        action="hr_contract.action_hr_contract"
+        parent="menu_hr_payroll_employees_root"
+        sequence="30"/>
 
     <!-- **** Payslips **** -->
     <menuitem

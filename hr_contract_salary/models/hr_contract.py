@@ -24,11 +24,6 @@ class HrContract(models.Model):
     hash_token = fields.Char('Created From Token', copy=False)
     applicant_id = fields.Many2one('hr.applicant', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
-    # Should be moved to l10n_be_hr_contract_salary
-    contract_type = fields.Selection([
-        ('PFI', 'PFI'),
-        ('CDI', 'CDI'),
-        ('CDD', 'CDD')], string="Contract Type", default="PFI")
     default_contract_id = fields.Many2one('hr.contract', string="Contract Template",
         domain="[('company_id', '=', company_id)]",
         help="Default contract used when making an offer to an applicant.")
@@ -40,19 +35,22 @@ class HrContract(models.Model):
         help="The number of signatures on the pdf contract with the most signatures.")
     image_1920 = fields.Image(related='employee_id.image_1920', groups="hr_contract.group_hr_contract_manager")
     # YTI FIXME: holidays and wage_with_holidays are defined twice...
-    holidays = fields.Float(string='Paid Time Off',
+    holidays = fields.Float(string='Extra Time Off',
         help="Number of days of paid leaves the employee gets per year.")
     wage_with_holidays = fields.Monetary(compute='_compute_wage_with_holidays', inverse='_inverse_wage_with_holidays',
-        tracking=True, string="Wage update with holidays retenues")
+        tracking=True, string="Wage with Holidays")
+    wage_on_signature = fields.Monetary(string="Wage on Signature", help="Wage on contract signature")
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(compute='_compute_final_yearly_costs',
         readonly=False, store=True,
-        string="Employee Budget",
+        string="Yearly Cost (FTE)",
         tracking=True,
-        help="Total yearly cost of the employee for the employer.")
-    monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Equivalent Cost', readonly=True,
-        help="Total monthly cost of the employee for the employer.")
+        help="Total yearly cost of the employee for the employer for a full time equivalent.")
+    monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Cost (FTE)', readonly=True,
+        help="Total monthly cost of the employee for the employer for a full time equivalent.")
+
+
 
     @api.depends('origin_contract_id')
     def _compute_is_origin_contract_template(self):
@@ -95,13 +93,18 @@ class HrContract(models.Model):
     def _advantage_black_list(self):
         return set(MAGIC_COLUMNS + ["wage_with_holidays"])
 
+    def _get_final_yearly_costs_wage(self):
+        self.ensure_one()
+        return self.wage
+
     @api.depends(lambda self: (
+        'wage',
         'structure_type_id.salary_advantage_ids.res_field_id',
         'structure_type_id.salary_advantage_ids.impacts_net_salary',
         *self._get_advantage_fields()))
     def _compute_final_yearly_costs(self):
         for contract in self:
-            contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage
+            contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract._get_final_yearly_costs_wage()
 
     @api.onchange("wage_with_holidays")
     def _onchange_wage_with_holidays(self):

@@ -7,3 +7,4 @@ from . import l10n_be_attachment_salary
 from . import hr_contract_employee_report
 from . import hr_281_10_templates
 from . import hr_281_45_report
+from . import hr_contract_history

@@ -3,7 +3,7 @@
 
 import ast
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 EMPLOYER_ONSS = 0.2714
 
@@ -17,6 +17,27 @@ class HrContract(models.Model):
     sim_card = fields.Binary(related='employee_id.sim_card', groups="hr_contract.group_hr_contract_manager")
     internet_invoice = fields.Binary(related="employee_id.internet_invoice", groups="hr_contract.group_hr_contract_manager")
     double_holiday_wage = fields.Monetary(compute='_compute_double_holiday_wage')
+    contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
+                                       default=lambda self: self.env.ref('l10n_be_hr_contract_salary.l10n_be_contract_type_cdi',
+                                                                         raise_if_not_found=False))
+
+    def _get_gross_from_employer_costs(self, yearly_cost):
+        self.ensure_one()
+        return super()._get_gross_from_employer_costs(yearly_cost) * (float(self.work_time_rate) if self.time_credit else 1)
+
+    def _get_final_yearly_costs_wage(self):
+        if self.time_credit:
+            return self.time_credit_full_time_wage
+        return super()._get_final_yearly_costs_wage()
+
+    @api.depends(lambda self: (
+        'wage',
+        'structure_type_id.salary_advantage_ids.res_field_id',
+        'structure_type_id.salary_advantage_ids.impacts_net_salary',
+        'time_credit_full_time_wage',
+        *self._get_advantage_fields()))
+    def _compute_final_yearly_costs(self):
+        super(HrContract, self)._compute_final_yearly_costs()
 
     def _get_contract_wage_field(self):
         self.ensure_one()

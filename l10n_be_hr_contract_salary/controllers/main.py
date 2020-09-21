@@ -163,6 +163,8 @@ class HrContractSalary(main.HrContractSalary):
     def _get_new_contract_values(self, contract, employee, advantages):
         res = super()._get_new_contract_values(contract, employee, advantages)
         res['has_laptop'] = contract.has_laptop
+        res['time_credit'] = contract.time_credit
+        res['work_time_rate'] = contract.work_time_rate
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

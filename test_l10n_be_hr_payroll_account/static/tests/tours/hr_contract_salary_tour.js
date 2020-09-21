@@ -879,8 +879,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Create",
-            trigger: '.o_cp_buttons .o-kanban-button-new',
-            extra_trigger: 'li.active:contains("Contracts")',
+            trigger: '.o_statusbar_buttons button[name="hr_contract_view_form_new_action"]',
             run: 'click',
         },
         {

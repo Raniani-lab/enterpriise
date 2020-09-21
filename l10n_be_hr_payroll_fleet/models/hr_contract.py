@@ -33,7 +33,7 @@ class HrContract(models.Model):
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'car')]",
         help="Employee's company car.",
         groups='fleet.fleet_group_manager')
-    car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
+    car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Car BIK', help='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
     wishlist_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
@@ -58,7 +58,7 @@ class HrContract(models.Model):
         groups='fleet.fleet_group_manager')
     company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
     new_bike_model_id = fields.Many2one(
-        'fleet.vehicle.model', string="Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
+        'fleet.vehicle.model', string="Requested New Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
 
     @api.depends('employee_id')
     def _compute_car_id(self):

@@ -63,6 +63,7 @@ Belgian Payroll Rules.
         'report/hr_contract_employee_report_views.xml',
         'report/hr_281_10_templates.xml',
         'report/hr_281_45_templates.xml',
+        'report/hr_contract_history_report_views.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

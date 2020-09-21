@@ -216,7 +216,7 @@
 
     <record id="l10n_be_meal_vouchers" model="hr.contract.salary.advantage">
         <field name="name">Meal Vouchers</field>
-        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'meal_voucher_amount')])"/>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'meal_voucher_average_monthly_amount')])"/>
         <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'meal_voucher_paid_monthly_by_employer')])"/>
         <field name="sequence">55</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_cash"/>

@@ -48,6 +48,7 @@ class SignContract(Sign):
                 contract.applicant_id.access_token = False
                 contract.applicant_id.emp_id = contract.employee_id
             self._create_activity_advantage(contract, 'running')
+            contract.wage_on_signature = contract.wage
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
@@ -143,7 +144,7 @@ class HrContractSalary(http.Controller):
 
         redirect_to_job = False
         applicant_id = False
-        contract_type = False
+        contract_type_id = False
         employee_contract_id = False
         job_title = False
 
@@ -157,8 +158,8 @@ class HrContractSalary(http.Controller):
                 applicant_id = value
             elif field_name == 'employee_contract_id':
                 employee_contract_id = value
-            elif field_name == 'contract_type':
-                contract_type = value
+            elif field_name == 'contract_type_id':
+                contract_type_id = value
             elif field_name == 'job_title':
                 job_title = value
             elif field_name in old_value:
@@ -187,7 +188,7 @@ class HrContractSalary(http.Controller):
             'redirect_to_job': redirect_to_job,
             'applicant_id': applicant_id,
             'employee_contract_id': employee_contract_id,
-            'contract_type': contract_type,
+            'contract_type_id': contract_type_id,
             'job_title': job_title,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
@@ -336,7 +337,7 @@ class HrContractSalary(http.Controller):
             'sign_template_id': contract.sign_template_id.id,
             'contract_update_template_id': contract.contract_update_template_id.id,
             'date_start': fields.Date.today().replace(day=1),
-            'contract_type': contract.contract_type,
+            'contract_type_id': contract.contract_type_id,
         }
         for advantage in contract_advantages:
             if advantage.field not in contract:
@@ -560,7 +561,7 @@ class HrContractSalary(http.Controller):
                     (_('Employee Name'), contract.employee_id.name),
                     (_('Job Position'), contract.job_id.name),
                     (_('Job Title'), contract.employee_id.job_title),
-                    (_('Contract Type'), kw.get('contract_type')),
+                    (_('Contract Type'), contract.contract_type_id.name),
                     (_('Original Link'), kw.get('original_link'))
                 ],
             }

@@ -158,6 +158,31 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
+    <record id="hr_contract_cdi_laurie_poiret_previous" model="hr.contract">
+        <field name="name">CDI - Laurie Poiret - Experienced Developer</field>
+        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="employee_id" ref="hr_employee_laurie_poiret"/>
+        <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="wage">2500</field>
+        <field name="commission_on_target">0.0</field>
+        <field name="transport_mode_car" eval="True"/>
+        <field name="new_car" eval="False"/>
+        <field name="car_id" ref="fleet_vehicle_audi_a3_laurie_poiret"/>
+        <field name="transport_mode_bike" eval="True"/>
+        <field name="bike_id" ref="fleet_vehicle_bike_laurie_poiret"/>
+        <field name="state">close</field>
+        <field name="ip_wage_rate">25</field>
+        <field name="hr_responsible_id" ref="base.user_demo"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
+        <field name="date_end" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-2))"/>
+        <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+    </record>
+
     <record id="hr_contract_cdi_laurie_poiret" model="hr.contract">
         <field name="name">CDI - Laurie Poiret - Experienced Developer</field>
         <field name="department_id" ref="hr.dep_rd"/>

@@ -97,7 +97,7 @@
                         </tr>
                         <tr>
                             <td><span t-field="o.employee_id.first_contract_date"/></td>
-                            <td><span t-field="o.employee_id.contract_id.contract_type"/></td>
+                            <td><span t-field="o.employee_id.contract_id.contract_type_id"/></td>
                             <td><span t-field="o.employee_id.contract_id.hours_per_week"/></td>
                             <td class="w-25" name="company-car-model"></td>
                         </tr>

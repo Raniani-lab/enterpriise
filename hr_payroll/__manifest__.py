@@ -37,6 +37,7 @@
         'views/hr_payroll_report_views.xml',
         'views/hr_work_entry_report_views.xml',
         'views/hr_payroll_menu.xml',
+        'report/hr_contract_history_report_views.xml'
     ],
     'demo': ['data/hr_payroll_demo.xml'],
     'qweb': [

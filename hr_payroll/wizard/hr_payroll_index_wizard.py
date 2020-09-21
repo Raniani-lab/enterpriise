@@ -25,6 +25,7 @@ class HrPayrollIndex(models.TransientModel):
             contracts = index.contract_ids
             index.display_warning = any(contract.state != 'open' for contract in contracts)
 
+    @api.model
     def _index_wage(self, contract):
         wage_field = contract._get_contract_wage_field()
         wage = contract[wage_field]

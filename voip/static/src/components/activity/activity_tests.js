@@ -6,9 +6,9 @@ const components = {
 };
 
 const {
-    afterEach: utilsAfterEach,
-    beforeEach: utilsBeforeEach,
-    start: utilsStart,
+    afterEach,
+    beforeEach,
+    start,
 } = require('mail/static/src/utils/test_utils.js');
 
 QUnit.module('voip', {}, function () {
@@ -16,7 +16,8 @@ QUnit.module('components', {}, function () {
 QUnit.module('activity', {}, function () {
 QUnit.module('activity_tests.js', {
     beforeEach() {
-        utilsBeforeEach(this);
+        beforeEach(this);
+
         this.createActivityComponent = async activity => {
             const ActivityComponent = components.Activity;
             ActivityComponent.env = this.env;
@@ -25,8 +26,9 @@ QUnit.module('activity_tests.js', {
             });
             await this.component.mount(this.widget.el);
         };
+
         this.start = async params => {
-            let { env, widget } = await utilsStart(Object.assign({}, params, {
+            const { env, widget } = await start(Object.assign({}, params, {
                 data: this.data,
             }));
             this.env = env;
@@ -34,14 +36,7 @@ QUnit.module('activity_tests.js', {
         };
     },
     afterEach() {
-        utilsAfterEach(this);
-        if (this.component) {
-            this.component.destroy();
-        }
-        if (this.widget) {
-            this.widget.destroy();
-        }
-        this.env = undefined;
+        afterEach(this);
     },
 });
 

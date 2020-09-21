@@ -61,9 +61,10 @@
                     </div>
                 </button>
             </xpath>
+            <field name="is_fsm" string="is FSM ?" invisible="1"/>
             <field name="partner_id" position="attributes">
                 <attribute name="options">{'always_reload': True}</attribute>
-                <attribute name="context">{'show_address': context.get('show_address')}</attribute>
+                <attribute name="context">{'show_address': is_fsm}</attribute>
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
             <field name="partner_id" position="after">

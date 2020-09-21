@@ -12,8 +12,7 @@ var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const { WidgetAdapterMixin } = require('web.OwlCompatibility');
 
-var Wysiwyg = require('web_editor.wysiwyg');
-var SummernoteManager = require('web_editor.rte.summernote');
+var wysiwygLoader = require('web_editor.loader');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
@@ -452,8 +451,6 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";
-
-        new SummernoteManager(this);
     },
     /**
      * @override
@@ -1121,44 +1118,54 @@ var Text = AbstractEditComponent.extend({
     // Private
     //--------------------------------------------------------------------------
 
-    _onBlurWysiwygEditor: function () {
-        var self = this;
-        return this.wysiwyg.save().then(function (result) {
-            if (result.isDirty) {
-                self._triggerViewChange({text: result.html});
-            }
-        });
+    _onWysiwygEditorBlur: async function () {
+        this._triggerViewChange({text: await this.wysiwyg.getValue()});
     },
-    _startWysiwygEditor: function () {
-        var self = this;
-        this.wysiwyg = new Wysiwyg(this, {
-            focus: false,
-            height: 180,
-            toolbar: [
-                // ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['clear', ['clear']],
+    _startWysiwygEditor: async function () {
+        this.wysiwygOptions = {
+            toolbarLayout: [
+                [
+                    'BoldButton',
+                    'ItalicButton',
+                    'UnderlineButton',
+                ],
+                ['FontSizeInput'],
+                ['OdooTextColorButton'],
+                ['RemoveFormatButton'],
             ],
-            prettifyHtml: false,
-            styleWithSpan: false,
-            lang: "odoo",
-            disableDragAndDrop: true,
             recordInfo: {
                 context: this.context,
             },
-        });
+            value: this.directiveFields.text.value || '',
+            wrapperClass: 'note-editable',
+            interface: `
+            <t-dialog><t t-zone="default"/></t-dialog>
+            <t-range><t t-zone="tools"/></t-range>
+            <div class="d-flex flex-column flex-grow-1">
+                <div class="d-flex flex-row overflow-auto">
+                    <t t-zone="container">
+                        <t t-zone="main_sidebar"/>
+                        <div class="d-flex flex-column overflow-auto o_editor_center">
+                            <div class="d-flex overflow-auto note-editing-area d-flex flex-grow-1">
+                                <t t-zone="snippetManipulators"/>
+                                <t t-zone="main"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="o_debug_zone">
+                    <t t-zone="debug"/>
+                </div>
+            </div>`,
+        };
+
+        this.wysiwyg = await wysiwygLoader.createWysiwyg(this, this.wysiwygOptions);
+        this.$el.data('wysiwyg', this.wysiwyg);
+
         this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
+        await this.wysiwyg.attachTo(this.$textarea);
 
-        this.$textarea.off().on('input', function (e) { // to test simple
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            self.wysiwyg.setValue($(this).val());
-            self.wysiwyg.trigger_up('wysiwyg_blur');
-        });
-
-        return this.wysiwyg.attachTo(this.$textarea);
+        this.wysiwyg.editor.dispatcher.registerCommandHook('@blur', this._onWysiwygEditorBlur.bind(this));
     },
     /**
      * @override

@@ -265,5 +265,14 @@
                 bottom: 50%;
             }
         }
+        // style for the JW editor zone
+        .note-editing-area .note-editable {
+            background-color: #fff;
+            color: #000;
+            padding: 10px;
+            overflow: auto;
+            outline: none;
+            min-height:80px;
+        }
     }
 }

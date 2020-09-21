@@ -17,6 +17,35 @@ function getFloatSizeFromPropertyInPixels($element, propertyName) {
     return parseFloat(size);
 }
 
+const changeWysiwygContent = async function($el, newText) {
+    const Wysiwyg = odoo.__DEBUG__.services['web_editor.wysiwyg'];
+    const parent = $el.closest('.o_web_studio_sidebar_text').parent();
+    // Change wysiwyg content.
+    const wysiwyg = parent.data("wysiwyg");
+    await Wysiwyg.setRange(wysiwyg, $el[0], 0);
+    await wysiwyg.editorHelpers.text(wysiwyg.editor, $el[0], newText);
+    // Force wysiwyg to trigger to blur
+    await new Promise((resolve) => wysiwyg.editor.execCommand(resolve));
+    const bodyEl = document.querySelector('body')
+    bodyEl.dispatchEvent(new MouseEvent('mousedown'));
+    bodyEl.dispatchEvent(new MouseEvent('click'));
+    await new Promise((resolve) => wysiwyg.editor.execCommand(resolve));
+    // todo: remove this dispatch as Jabberwock should intepret previous events to trigger @blur
+    //       but there is a problem with the simulation of test events that prevent the selection
+    //       from being correct.
+    wysiwyg.editor.dispatcher.dispatch('@blur');
+    document.activeElement.blur();
+
+
+    await new Promise((resolve) => wysiwyg.editor.execCommand(resolve));
+    const range = new Range();
+    range.setStart(bodyEl, 0);
+    range.setEnd(bodyEl, 0);
+    const selection = document.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+
 function mmToPx(size) {
     return size * 3.7795275591;
 };
@@ -608,22 +637,25 @@ QUnit.module('ReportEditorManager', {
         // click to edit a span
         await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
-        var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-        assert.strictEqual($textarea.length, 1,
-            "there should be a textarea to edit the node text");
-        assert.strictEqual($textarea.val(), "First span",
-            "the Text component should be correctly set");
+        var $wysiwygContent = rem.$('.o_web_studio_sidebar .o_web_studio_active .note-editable');
+        assert.strictEqual($wysiwygContent.length, 1,
+            "there should be a wysiwyg editor element");
+        assert.strictEqual($wysiwygContent.text(), "First span",
+            "the Text should be correctly set inside the wysiwyg editor");
 
         // change the text (should trigger the report edition)
-        await testUtils.fields.editInput($textarea, "hello");
+        await changeWysiwygContent($wysiwygContent, "hello");
 
+        var $wysiwygContent2 = rem.$('.o_web_studio_sidebar .o_web_studio_active .note-editable');
+        assert.strictEqual($wysiwygContent2.length, 1,
+            "there should still be a wysiwyg editor element");
+        assert.strictEqual($wysiwygContent2.text(), "hello",
+            "the Text inside the wysiwyg editor should have been updated");
+
+        // wait for the content to be saved and render in the document preview
+        await testUtils.nextTick();
         assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
             "the iframe should have been updated");
-        var $newTextarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-        assert.strictEqual($newTextarea.length, 1,
-            "there should still be a textarea to edit the node text");
-        assert.strictEqual($newTextarea.val(), "hello",
-            "the Text component should have been updated");
 
         rem.destroy();
     });
@@ -2136,7 +2168,7 @@ QUnit.module('ReportEditorManager', {
                         return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
-                        content: '<span>toto <small>titi</small></span>',
+                        content: '<span>toto titi</span>',
                         position: "replace",
                         view_id: 55,
                         xpath: "/t/span"
@@ -2153,17 +2185,9 @@ QUnit.module('ReportEditorManager', {
             var $editable = rem.$('.o_web_studio_sidebar .card.o_web_studio_active .note-editable');
 
             assert.strictEqual($editable.html(), 'taratata <strong>bo</strong>', 'Should display the text content');
-
-            $editable.mousedown();
+            await changeWysiwygContent($editable, 'toto titi');
+            // Make sure the wysiwyg content has time to be saved.
             await testUtils.nextTick();
-            $editable.html('toto <small>titi</small>');
-            $editable.find('span').mousedown();
-            await testUtils.nextTick();
-            $editable.keydown();
-            await testUtils.nextTick();
-            $editable.blur();
-            await testUtils.nextTick();
-
             rem.destroy();
         });
     });
@@ -2255,17 +2279,18 @@ QUnit.module('ReportEditorManager', {
 
             // click to edit a span and change the text (should trigger the report edition)
             await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
-            await testUtils.fields.editInput(rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]'), "hello");
 
-            var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-            testUtils.fields.editInput($textarea, "hello");
+            var $wysiwygContent = rem.$('.o_web_studio_sidebar .o_web_studio_active .note-editable');
+            await changeWysiwygContent($wysiwygContent, "hello");
+            await testUtils.nextTick();
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "hello",
                 "the iframe should have been updated");
-            var $newTextarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-            assert.strictEqual($newTextarea.length, 1,
+
+            var $wysiwygContent2 = rem.$('.o_web_studio_sidebar .o_web_studio_active .note-editable');
+            assert.strictEqual($wysiwygContent2.length, 1,
                 "there should still be a textarea to edit the node text");
-            assert.strictEqual($newTextarea.val(), "hello",
+            assert.strictEqual($wysiwygContent2.text(), "hello",
                 "the Text component should have been updated");
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                 "the iframe should be re-rendered");

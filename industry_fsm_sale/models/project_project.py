@@ -8,7 +8,8 @@ class Project(models.Model):
     _inherit = "project.project"
 
     allow_material = fields.Boolean("Products on Tasks", compute="_compute_allow_material", store=True, readonly=False)
-    allow_quotations = fields.Boolean("Extra Quotations")
+    allow_quotations = fields.Boolean(
+        "Extra Quotations", compute="_compute_allow_quotations", store=True, readonly=False)
     allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
 
     _sql_constraints = [
@@ -22,6 +23,11 @@ class Project(models.Model):
         if 'allow_quotations' in fields_list and 'allow_quotations' not in defaults and defaults.get('is_fsm'):
             defaults['allow_quotations'] = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
         return defaults
+
+    @api.depends('is_fsm')
+    def _compute_allow_quotations(self):
+        for project in self:
+            project.allow_quotations = not project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_allow_billable(self):

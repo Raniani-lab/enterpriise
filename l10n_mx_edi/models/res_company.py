@@ -68,6 +68,7 @@ class ResCompany(models.Model):
          ('622', 'Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras'),
          ('623', 'Opcional para Grupos de Sociedades'),
          ('624', 'Coordinados'),
+         ('625', 'Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas'),
          ('628', 'Hidrocarburos'),
          ('629', 'De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales'),
          ('630', 'Enajenación de acciones en bolsa de valores')],

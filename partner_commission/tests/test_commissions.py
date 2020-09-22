@@ -51,6 +51,8 @@ class TestCommissions(TestCommissionsSetup):
             comm = inv.commission_po_line_id.price_subtotal
             self.assertEqual(po.partner_id, self.referrer, '%s - %s: referrer != vendor' % (spec.grade.name, spec.pricelist.name))
             self.assertEqual(comm, spec.commission, '%s - %s: commission != expected' % (spec.grade.name, spec.pricelist.name))
+            self.assertEqual(po.user_id, self.salesman)
+            self.assertEqual(po.purchase_type, 'commission')
 
         # global checks
         purchase_orders = self.env['purchase.order'].search([('partner_id', '=', self.referrer.id)])

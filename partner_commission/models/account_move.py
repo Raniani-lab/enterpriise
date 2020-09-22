@@ -14,29 +14,53 @@ class AccountMove(models.Model):
     referrer_id = fields.Many2one('res.partner', 'Referrer', domain=[('grade_id', '!=', False)], tracking=True)
     commission_po_line_id = fields.Many2one('purchase.order.line', 'Referrer Purchase Order line', copy=False)
 
+    def _get_sales_representative(self):
+        self.ensure_one()
+
+        # The subscription's Salesperson should be the Purchase Representative.
+        sub = self.invoice_line_ids.mapped('subscription_id')[:1]
+        sales_rep = sub and sub.user_id or False
+
+        # No subscription: check the sale order's Salesperson.
+        if not sales_rep:
+            so = self.invoice_line_ids.mapped('sale_line_ids.order_id')[:1]
+            sales_rep = so and so.user_id or False
+
+        return sales_rep
+
     def _get_commission_purchase_order_domain(self):
         self.ensure_one()
-        return [
+
+        domain = [
             ('partner_id', '=', self.referrer_id.id),
             ('company_id', '=', self.company_id.id),
             ('state', '=', 'draft'),
             ('currency_id', '=', self.currency_id.id),
+            ('purchase_type', '=', 'commission'),
         ]
+
+        sales_rep = self._get_sales_representative()
+        if sales_rep:
+            domain += [('user_id', '=', sales_rep.id)]
+
+        return domain
 
     def _get_commission_purchase_order(self):
         self.ensure_one()
         purchase = self.env['purchase.order'].sudo().search(self._get_commission_purchase_order_domain(), limit=1)
 
         if not purchase:
+            sales_rep = self._get_sales_representative()
             purchase = self.env['purchase.order'].with_context(mail_create_nosubscribe=True).sudo().create({
                 'partner_id': self.referrer_id.id,
                 'currency_id': self.currency_id.id,
                 'company_id': self.company_id.id,
                 'fiscal_position_id': self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(self.referrer_id.id).id,
                 'payment_term_id': self.referrer_id.with_company(self.company_id).property_supplier_payment_term_id.id,
-                'user_id': False,
+                'user_id': sales_rep and sales_rep.id or False,
                 'dest_address_id': self.referrer_id.id,
                 'origin': self.name,
+                'purchase_type': 'commission',
             })
 
         return purchase

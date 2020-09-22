@@ -4,6 +4,7 @@
 from unittest.mock import patch
 
 from odoo import fields
+from odoo.exceptions import AccessError
 from odoo.tools import format_date
 from odoo.tests.common import Form, tagged
 from odoo.addons.partner_commission.tests.setup import Line, Spec, TestCommissionsSetup
@@ -93,3 +94,151 @@ class TestPurchaseOrder(TestCommissionsSetup):
         expected = f"""Commission on INV/12345/0001, Customer, 2,000.00 €
 {sub.code}, from {format_date(self.env, date_from)} to {format_date(self.env, date_to)} (12 month(s))"""
         self.assertEqual(inv.commission_po_line_id.name, expected)
+
+    def test_purchase_representative(self):
+        self.referrer.commission_plan_id = self.gold_plan
+        self.referrer.grade_id = self.gold
+
+        def make_orders(product, so_sales_rep=None, sub_sales_rep=None):
+            form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
+            form.partner_id = self.customer
+            form.referrer_id = self.referrer
+            if so_sales_rep:
+                form.user_id = so_sales_rep
+
+            with form.order_line.new() as line:
+                line.name = product.name
+                line.product_id = product
+                line.product_uom_qty = 1
+
+            so = form.save()
+            so.action_confirm()
+
+            inv = so._create_invoices()
+            inv.action_post()
+
+            sub = so.order_line.mapped('subscription_id')
+            if sub and sub_sales_rep:
+                sub.sudo().user_id = sub_sales_rep
+
+            self._pay_invoice(inv)
+
+            po = inv.commission_po_line_id.order_id
+
+            return so, sub, po
+
+        with self.subTest("SO's salesperson is assigned as Purchase Representative."):
+            foo = self.env['product.category'].create({
+                'name': 'foo',
+            })
+            bar = self.env['product.product'].create({
+                'name': 'bar',
+                'categ_id': foo.id,
+                'list_price': 100.0,
+                'purchase_ok': True,
+                'property_account_income_id': self.account_sale.id,
+                'invoice_policy': 'order',
+            })
+            rule = self.env['commission.rule'].create({
+                'plan_id': self.gold_plan.id,
+                'category_id': foo.id,
+                'product_id': bar.id,
+                'rate': 10.0,
+            })
+            self.gold_plan.write({'commission_rule_ids': [(4, rule.id)]})
+
+            so, sub, po = make_orders(bar)
+
+            self.assertFalse(sub, 'This SO should not generate a subscription.')
+            self.assertEqual(so.user_id, self.salesman)
+            self.assertEqual(po.user_id, self.salesman)
+
+        with self.subTest("Each sales representative has its own PO."):
+            sales_rep = self.env['res.users'].create({
+                'name': '...',
+                'login': 'sales_rep_1',
+                'email': 'sales_rep_1@odoo.com',
+                'company_id': self.company.id,
+                'groups_id': [(6, 0, [self.ref('sales_team.group_sale_salesman')])],
+            })
+
+            so, sub, po = make_orders(bar, so_sales_rep=sales_rep)
+
+            self.assertEqual(so.user_id, sales_rep)
+            self.assertEqual(po.user_id, sales_rep)
+
+        with self.subTest("Subscription's salesperson takes precedence over SO's salesperson."):
+            sales_rep = self.env['res.users'].create({
+                'name': '...',
+                'login': 'sales_rep_2',
+                'email': 'sales_rep_2@odoo.com',
+                'company_id': self.company.id,
+                'groups_id': [(6, 0, [self.ref('sales_team.group_sale_salesman')])],
+            })
+
+            so, sub, po = make_orders(self.crm, so_sales_rep=sales_rep, sub_sales_rep=self.salesman)
+
+            self.assertEqual(so.user_id, sales_rep)
+            self.assertEqual(sub.user_id, self.salesman)
+            self.assertEqual(po.user_id, self.salesman)
+
+    def test_access_rigths(self):
+
+        def user(name, group):
+            return self.env['res.users'].create({
+                'name': name,
+                'login': name,
+                'email': f'{name}@example.com',
+                'company_id': self.company.id,
+                'groups_id': [(6, 0, [
+                    group,
+                ])],
+            })
+
+        salesman_own_docs = user('salesman_own_docs', self.ref('sales_team.group_sale_salesman'))
+        salesman_all_docs = user('salesman_all_docs', self.ref('sales_team.group_sale_salesman_all_leads'))
+        commission_user_1 = user('commission_user_1', self.ref('partner_commission.group_commission_user'))
+        commission_user_2 = user('commission_user_2', self.ref('partner_commission.group_commission_user'))
+        commission_manager = user('commission_manager', self.ref('partner_commission.group_commission_manager'))
+        purchase_user = user('purchase_user', self.ref('purchase.group_purchase_user'))
+
+        po = self.env['purchase.order'].create({
+            'partner_id': self.customer.id,
+            'company_id': self.company.id,
+            'currency_id': self.company.currency_id.id,
+            'date_order': fields.Date.today(),
+            'user_id': commission_user_1.id,
+        })
+
+        def assert_access_denied(users):
+            for usr in users:
+                with self.assertRaises(AccessError, msg=f'{usr.name} should be denied access.'):
+                    Form(po.with_user(usr))
+
+        def assert_access_allowed(users):
+            for usr in users:
+                Form(po.with_user(usr))
+
+        # commission_user should grant membership of group_sale_salesman
+        self.assertTrue(commission_user_1.has_group('sales_team.group_sale_salesman'))
+
+        # commission_manager should grant membership of group_commission_user:
+        self.assertTrue(commission_manager.has_group('partner_commission.group_commission_user'))
+
+        # group_purchase_user: can access procurement.
+        assert_access_allowed([purchase_user])
+        # other groups cannot.
+        assert_access_denied([salesman_own_docs, salesman_all_docs, commission_user_1, commission_manager])
+
+        # change PO from procurement to commission.
+        po.purchase_type = 'commission'
+
+        # group_purchase_user: can access commission.
+        assert_access_allowed([purchase_user])
+
+        # group_commission_user: cannot access someone else's commission.
+        assert_access_denied([commission_user_2])
+
+        # group_commission_user: can access commissions for which he/she is the purchase representative.
+        # group_commission_manager: can access all commissions.
+        assert_access_allowed([commission_user_1, commission_manager])

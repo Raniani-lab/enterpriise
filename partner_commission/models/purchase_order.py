@@ -12,6 +12,10 @@ _logger = logging.getLogger(__name__)
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    purchase_type = fields.Selection([
+        ('procurement', 'Procurement'),
+        ('commission', 'Commission'),
+    ], 'Purchase Type', default='procurement', index=True)
     invoice_commission_count = fields.Integer(
         'Source Invoices',
         compute='_compute_source_invoice_count',
@@ -56,6 +60,7 @@ class PurchaseOrder(models.Model):
                 ('company_id', '=', company.id),
                 ('date_order', '<', today),
                 ('state', '=', 'draft'),
+                ('purchase_type', '=', 'commission'),
             ])
 
             template = self.env.ref('purchase.email_template_edi_purchase')

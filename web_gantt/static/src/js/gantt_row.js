@@ -7,6 +7,7 @@ var Widget = require('web.Widget');
 const pyUtils = require('web.py_utils');
 
 var QWeb = core.qweb;
+var _t = core._t;
 
 var GanttRow = Widget.extend({
     template: 'GanttView.Row',
@@ -117,6 +118,7 @@ var GanttRow = Widget.extend({
                 p.totalHeight = factor * p.count;
             }
         }
+        this.isRTL = _t.database.parameters.direction === "rtl";
     },
     /**
      * @override

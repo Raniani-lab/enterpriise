@@ -320,43 +320,43 @@
                             It's too late to cancel online, please contact the attendees another way if you really can't make it.
                         </p>
                     </div>
-                    <div class="row">
-                      <t t-if="event.appointment_type_id">
-                          <div t-raw="event.appointment_type_id.message_confirmation" style="margin-bottom:10px;"/>
-                      </t>
-                      <div class="col-md-9">
-                        <div class="row">
-                            <div class="col-md-2 text-right">
+                    <div class="row mb-5">
+                        <div class="col-md-9 my-3 o_not_editable">
+                        <t t-if="event.appointment_type_id">
+                            <div t-raw="event.appointment_type_id.message_confirmation" class="mb-2"/>
+                        </t>
+                        <div class="col-lg-6 mx-md-auto row">
+                            <div class="col-5 col-md-4 text-right">
                                 <label>When:</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-7 mx-md-0">
                                 <t t-esc="datetime_start"/>
                                 <br/>
                                 <i class="text-muted">(timezone: <t t-esc="request.session.timezone"/>)</i>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-2 text-right">
+                        <div class="col-lg-6 mx-md-auto row">
+                            <div class="col-5 col-md-4 text-right">
                                 <label>Duration:</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-7 mx-md-0">
                                 <t t-esc="int(event.duration)"/><t t-if="event.duration % 1">:<t t-esc="'%02d' % (int(event.duration % 1 * 60),)"/></t>
                                 hour<t t-if="event.duration>=2">s</t>
                             </div>
                         </div>
-                        <div t-if="event.location" class="row">
-                            <div class="col-md-2 text-right">
+                        <div t-if="event.location" class="col-lg-6 mx-md-auto row">
+                            <div class="col-5 col-md-4 text-right">
                                 <label>Location:</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-7 mx-md-0">
                                 <t t-esc="event.location"/>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-2 text-right">
+                        <div class="col-lg-6 mx-md-auto row">
+                            <div class="col-5 col-md-4 text-right">
                                 <label>Attendees:</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-7 mx-md-0">
                                 <div t-foreach="event.attendee_ids" t-as="attendee">
                                     <t t-esc="attendee.common_name"/>
                                     <span t-if="attendee.state=='accepted'" class="fa fa-check text-success" title="Confirmed" role="img" aria-label="Confirmed"/>
@@ -364,30 +364,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div t-if="event.description" class="row">
-                            <div class="col-md-2 text-right">
+                        <div t-if="event.description" class="col-lg-6 mx-md-auto row">
+                            <div class="col-5 col-md-4 text-right">
                                 <label>Description:</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-7 mx-md-0">
                                 <div t-field="event.description"/>
                             </div>
                         </div>
-                      </div>
-                      <div class="col-md-3">
-                          <a role="button" class="btn btn-block btn-primary" t-attf-href="/calendar/ics/#{event.access_token}.ics">
-                              <i class="fa fa-fw fa-arrow-right"></i>Add to iCal/Outlook
-                          </a>
-                          <a role="button" class="btn btn-primary btn-block" t-att-href="google_url">
-                              <i class="fa fa-fw fa-arrow-right"></i>Add to Google Calendar
-                          </a>
-                          <t t-if="event.appointment_type_id">
-                            <br/>
-                            <br/>
-                            <a role="button" class="btn btn-danger btn-block" t-attf-href="/calendar/cancel/#{event.access_token}">
-                                <i class="fa fa-fw fa-times"></i>Cancel / Reschedule
+                        </div>
+                        <div class="col-md-3 my-auto">
+                            <a role="button" class="btn btn-block btn-primary" t-attf-href="/calendar/ics/#{event.access_token}.ics">
+                                <i class="fa fa-fw fa-arrow-right"></i>Add to iCal/Outlook
                             </a>
-                          </t>
-                      </div>
+                            <a role="button" class="btn btn-primary btn-block" t-att-href="google_url">
+                                <i class="fa fa-fw fa-arrow-right"></i>Add to Google Calendar
+                            </a>
+                            <t t-if="event.appointment_type_id">
+                                <br/>
+                                <br/>
+                                <a role="button" class="btn btn-danger btn-block" t-attf-href="/calendar/cancel/#{event.access_token}">
+                                    <i class="fa fa-fw fa-times"></i>Cancel / Reschedule
+                                </a>
+                            </t>
+                        </div>
 
                     </div>
 

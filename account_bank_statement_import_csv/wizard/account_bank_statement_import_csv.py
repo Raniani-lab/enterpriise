@@ -109,7 +109,7 @@ class AccountBankStmtImportCSV(models.TransientModel):
             vals['balance_start'] = self._convert_to_float(data[0][index_balance])
             vals['balance_start'] -= self._convert_to_float(data[0][import_fields.index('amount')]) \
                                             if not convert_to_amount \
-                                            else abs(self._convert_to_float(data[0][index_debit]))-abs(self._convert_to_float(data[0][index_credit]))
+                                            else abs(self._convert_to_float(data[0][index_credit]))-abs(self._convert_to_float(data[0][index_debit]))
             vals['balance_end_real'] = data[len(data)-1][index_balance]
             import_fields.remove('balance')
         # Remove debit/credit field from import_fields

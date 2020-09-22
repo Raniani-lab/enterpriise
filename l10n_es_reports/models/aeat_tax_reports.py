@@ -716,7 +716,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(boe_wizard.get_formatted_contact_phone(), length=9)
         rslt += self._boe_format_string(boe_wizard.contact_person_name, length= 40)
         mod_347_boe_sequence = self.env['ir.sequence'].search([('company_id','=',current_company.id), ('code','=','l10n_es.boe.mod_347')])
-        rslt += self._boe_format_string(mod_347_boe_sequence.next_by_id(), length=13)
+        rslt += self._boe_format_number(347) + self._boe_format_string(mod_347_boe_sequence.next_by_id(), length=10)
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13)
@@ -903,7 +903,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(boe_wizard.get_formatted_contact_phone(), length=9)
         rslt += self._boe_format_string(boe_wizard.contact_person_name, length=40)
         mod_349_boe_sequence = self.env['ir.sequence'].search([('company_id','=',current_company.id), ('code','=','l10n_es.boe.mod_349')])
-        rslt += self._boe_format_string(mod_349_boe_sequence.next_by_id(), length=13)
+        rslt += self._boe_format_number(349) + self._boe_format_string(mod_349_boe_sequence.next_by_id(), length=10)
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13)
@@ -916,7 +916,6 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(' ' * 204)
         rslt += self._boe_format_string(' ' * 9) # TIN of the legal representative, if under 14 years old
         rslt += self._boe_format_string(' ' * 101) # Constant
-
         return rslt
 
     def _mod_349_write_type2_invoice_record(self, report_data, year, key, current_company):

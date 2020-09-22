@@ -77,6 +77,13 @@ $gantt-unavailability-bg: $gray-200;
         }
     }
 
+    @include media-breakpoint-down(sm) {
+        overflow-x: auto;
+        .o_gantt_view_container {
+            width: max-content;
+        }
+    }
+
     #o_gantt_containment {
         @include o-position-absolute(0, 0, 1px, percentage(2 / $grid-columns));
     }
@@ -143,6 +150,7 @@ $gantt-unavailability-bg: $gray-200;
             @include gant-today-cell();
             border-left: 1px solid transparent;
             color: $headings-color;
+
 
             @include media-breakpoint-down(sm) {
                 min-width: 0;

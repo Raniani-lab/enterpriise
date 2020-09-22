@@ -185,6 +185,7 @@ class IntrastatReport(models.AbstractModel):
                 AND prodt.type != 'service'
                 AND inv.journal_id IN %(journal_ids)s
                 AND inv.move_type IN %(invoice_types)s
+                AND NOT inv_line.exclude_from_invoice_tab
                 '''
         order = 'inv.invoice_date DESC'
         params = {

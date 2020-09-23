@@ -320,7 +320,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             optional: true
         },
         defaultProject: {
-            type: Number,
+            type: [Boolean, Number],
             optional: true
         },
         Component: {

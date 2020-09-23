@@ -431,7 +431,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         hideName: Boolean,
         isEmbedded: Boolean,
         limit: Number,
-        mapBoxToken: [String, Boolean],
+        mapBoxToken: { type: [Boolean, String], optional: 1 },
         noContentHelp: {
             type: String,
             optional: true,
@@ -440,7 +440,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         hideTitle: Boolean,
         panelTitle: String,
         offset: Number,
-        partners: Array,
+        partners: { type: [Array, Boolean], optional: 1 },
         recordGroups: Object,
         records: Array,
         routeInfo: {

@@ -115,7 +115,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             'filter': ['name'],
         };
 
-        this.chatter_allowed = params.chatter_allowed;
+        this.chatter_allowed = params.chatter_allowed || false;
         this.studio_view_id = params.studio_view_id;
         this.studio_view_arch = params.studio_view_arch;
         this.x2mEditorPath = params.x2mEditorPath || [];
@@ -143,6 +143,21 @@ var ViewEditorManager = AbstractEditorManager.extend({
             // TODO: useless I think
             return Promise.resolve();
         });
+    },
+
+    //--------------------------------------------------------------------------
+    // Getters
+    //--------------------------------------------------------------------------
+
+    /**
+     * @returns {boolean}
+     */
+    get showInvisible() {
+        return Boolean(
+            this.sidebar &&
+            this.sidebar.state &&
+            this.sidebar.state.show_invisible
+        );
     },
 
     //--------------------------------------------------------------------------
@@ -208,7 +223,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * Enable approval for a <button> node as well as all other nodes of the
      * same type and the same name in the view; this is done server-side.
      * @private
-     * @param {Object} data 
+     * @param {Object} data
      */
     _addApproval: async function (data) {
         const attrs = data.node.attrs;
@@ -902,7 +917,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             newState = _.extend({}, params, {
                 renamingAllowedFields: this.renamingAllowedFields,
                 mode: mode,
-                show_invisible: this.sidebar.state && this.sidebar.state.show_invisible || false,
+                show_invisible: this.showInvisible,
             });
         } else {
             newState = this.sidebar.state;
@@ -1006,7 +1021,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         if (this.view_type === 'search') {
             if (this.mode === 'edition') {
                 const editorParams = _.defaults(params, {
-                    show_invisible: this.sidebar && this.sidebar.state.show_invisible,
+                    show_invisible: this.showInvisible,
                 });
                 this.view = new Editors.search(this, fields_view, editorParams);
             } else {
@@ -1024,12 +1039,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
                         const Renderer = class extends EditorMixinOwl(View.prototype.config.Renderer) { };
                         const propsValidation = View.prototype.config.Renderer.props;
                         if (propsValidation) {
+                            const optString = { type: String, optional: 1 };
                             Renderer.props = Object.assign({}, propsValidation, {
                                 mode: propsValidation.mode || String,
                                 chatter_allowed: propsValidation.chatter_allowed || Boolean,
                                 show_invisible: propsValidation.show_invisible || Boolean,
                                 arch: propsValidation.arch || Object,
-                                x2mField: propsValidation.x2mField || Object,
+                                x2mField: propsValidation.x2mField || optString,
                                 viewType: propsValidation.viewType || String,
                             });
                         }
@@ -1043,7 +1059,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 var editorParams = _.defaults(params, {
                     mode: 'readonly',
                     chatter_allowed: chatterAllowed,
-                    show_invisible: this.sidebar && this.sidebar.state.show_invisible,
+                    show_invisible: this.showInvisible,
                     arch: this.view.arch,
                     x2mField: this.x2mField,
                     viewType: this.view_type,
@@ -1429,7 +1445,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * Handler for generic edition of approval rule.
      * @private
-     * @param {OdooEvent} ev 
+     * @param {OdooEvent} ev
      */
     _onApprovalChange: async function(ev) {
         const node = ev.data.node;
@@ -1696,10 +1712,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @private
-     * @param {OdooEvent} event
+     * @param {OdooEvent} ev
      */
-    _onShowInvisibleToggled: function (event) {
-        this.updateEditor({show_invisible: event.data.show_invisible});
+    _onShowInvisibleToggled: function (ev) {
+        this.updateEditor({ show_invisible: Boolean(ev.data.show_invisible) });
     },
     /**
      * @private

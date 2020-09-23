@@ -22,7 +22,7 @@ var GanttRow = Widget.extend({
     },
     NB_GANTT_RECORD_COLORS: 12,
     LEVEL_LEFT_OFFSET: 16, // 16 px per level
-    // This determines the pills heigth. It needs to be an odd number. If it is not a pill can
+    // This determines the pills height. It needs to be an odd number. If it is not a pill can
     // be dropped between two rows without the droppables drop method being called (see tolerance: 'intersect').
     LEVEL_TOP_OFFSET: 31, // 31 px per level
     POPOVER_DELAY: 260,
@@ -120,16 +120,7 @@ var GanttRow = Widget.extend({
         }
         this.isRTL = _t.database.parameters.direction === "rtl";
     },
-    /**
-     * @override
-     */
-    start: function () {
-        if (!this.isGroup) {
-            this._bindPopover();
-        }
-        return this._super.apply(this, arguments);
-    },
-
+ 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -187,6 +178,30 @@ var GanttRow = Widget.extend({
             },
         });
     },
+
+    /**
+     * binds the popover of a specific pill
+     * @param target
+     * @private
+     */
+    _bindPillPopover: function(target) {
+        var self = this;
+        var $target = $(target);
+        if (!$target.hasClass('o_gantt_pill')) {
+            $target = this.$(target.offsetParent);
+        }
+        $target.popover({
+            container: this.$el,
+            trigger: 'hover',
+            delay: {show: this.POPOVER_DELAY},
+            html: true,
+            placement: 'top',
+            content: function () {
+                return self.viewInfo.popoverQWeb.render('gantt-popover', self._getPopoverContext($(this).data('id')));
+            },
+        }).popover("show");
+    },
+
     /**
      * Compute minimal levels required to display all pills without overlapping
      *
@@ -1070,6 +1085,9 @@ var GanttRow = Widget.extend({
         this._setResizable($pill);
         if (!this.isTotal) {
             this._setDraggable($pill);
+        }
+        if (!this.isGroup) {
+            this._bindPillPopover(ev.target);
         }
     },
     /**

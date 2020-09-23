@@ -219,7 +219,7 @@ QUnit.module('documents_kanban_tests.js', {
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {
-        assert.expect(21);
+        assert.expect(25);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -277,12 +277,20 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsOnce(kanban, '.o_cp_buttons .btn-primary');
         assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary').text().trim(), 'Upload',
             "should have a primary 'Upload' button");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').not(':disabled'),
+            "the upload button should be enabled when a folder is selected");
         assert.containsOnce(kanban, '.o_cp_buttons button.o_documents_kanban_url',
             "should allow to save a URL");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').not(':disabled'),
+            "the upload url button should be enabled when a folder is selected");
         assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_request').text().trim(), 'Request',
             "should have a primary 'request' button");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').not(':disabled'),
+            "the request button should be enabled when a folder is selected");
         assert.strictEqual(kanban.$('.o_cp_buttons button.btn-secondary.o_documents_kanban_share_domain').text().trim(), 'Share',
             "should have a secondary 'Share' button");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').not(':disabled'),
+            "the share button should be enabled when a folder is selected");
 
         kanban.destroy();
     });

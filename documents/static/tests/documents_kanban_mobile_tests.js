@@ -26,13 +26,24 @@ QUnit.module('documents_kanban_mobile_tests.js', {
                     partner_id: { string: "Related partner", type: 'many2one', relation: 'res.partner' },
                 },
                 records: [
-                    {id: 1, available_rule_ids: []},
-                    {id: 2, available_rule_ids: []},
+                    {id: 1, available_rule_ids: [], folder_id: 1},
+                    {id: 2, available_rule_ids: [], folder_id: 1},
                 ],
             },
             'documents.folder': {
+                fields: {
+                    name: {string: 'Name', type: 'char'},
+                    parent_folder_id: {string: 'Parent Workspace', type: 'many2one', relation: 'documents.folder'},
+                    description: {string: 'Description', type:'text'},
+                },
+                records: [
+                    {id: 1, name: 'Workspace1', description: '_F1-test-description_', parent_folder_id: false},
+                ],
+            },
+            'documents.tag': {
                 fields: {},
                 records: [],
+                get_tags: () => [],
             },
         });
     },
@@ -41,7 +52,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     },
 }, function () {
     QUnit.test('basic rendering on mobile', async function (assert) {
-        assert.expect(4);
+        assert.expect(12);
 
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
@@ -70,6 +81,36 @@ QUnit.module('documents_kanban_mobile_tests.js', {
             "should group ControlPanel's buttons into a dropdown");
         assert.containsNone($controlPanelButtons, '> .btn',
             "there should be no button left in the ControlPanel's left part");
+
+        // open search panel
+        await dom.click(dom.find(document.body, '.o_search_panel_current_selection'));
+        // select global view
+        await dom.click(dom.find(document.body, '.o_search_panel_category_value:first-child header'));
+        // close search panel
+        await dom.click(dom.find(document.body, '.o_mobile_search_footer'));
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').is(':disabled'),
+            "the upload button should be disabled on global view");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').is(':disabled'),
+            "the upload url button should be disabled on global view");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').is(':disabled'),
+            "the request button should be disabled on global view");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').is(':disabled'),
+            "the share button should be disabled on global view");
+
+        // open search panel
+        await dom.click(dom.find(document.body, '.o_search_panel_current_selection'));
+        // select first folder
+        await dom.click(dom.find(document.body, '.o_search_panel_category_value:nth-child(2) header'));
+        // close search panel
+        await dom.click(dom.find(document.body, '.o_mobile_search_footer'));
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').not(':disabled'),
+            "the upload button should be enabled when a folder is selected");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').not(':disabled'),
+            "the upload url button should be enabled when a folder is selected");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').not(':disabled'),
+            "the request button should be enabled when a folder is selected");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').not(':disabled'),
+            "the share button should be enabled when a folder is selected");
 
         kanban.destroy();
     });

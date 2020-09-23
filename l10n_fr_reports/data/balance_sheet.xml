@@ -1010,12 +1010,12 @@
     </record>
 
     <record id="account_financial_report_fr_bilan_passif_total" model="account.financial.html.report.line">
-        <field name="name">TOTAL PASSIF (I + II + III + IV)</field>
+        <field name="name">TOTAL PASSIF (I + II + III + IV + V)</field>
         <field name="code">PASSIF_TOT</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="1"/>
         <field name="parent_id" ref="account_financial_report_line_fr_bilan_actif_passif_total"/>
-        <field name="formulas">PASSIF_TOATAL_I + PASSIF_TOATAL_II + PASSIF_TOATAL_III + ECARTS_PASSIF</field>
+        <field name="formulas">PASSIF_TOATAL_I + PASSIF_TOATAL_II + PASSIF_TOATAL_III + ECARTS_PASSIF + PASSIF_TOATAL_V</field>
     </record>
 
     <record id="account_financial_report_line_01_fr_bilan_passif" model="account.financial.html.report.line">
@@ -1379,6 +1379,43 @@
         <field name="parent_id" ref='account_financial_report_line_01_fr_bilan_passif'/>
         <field name="domain" eval="[('account_id.code', '=like', '477%')]"/>
         <field name="formulas">-sum</field>
+    </record>
+
+    <record id="account_financial_report_line_02_9_fr_bilan_passif" model="account.financial.html.report.line">
+        <field name="name">Autres fonds propres</field>
+        <field name="code">AUTRES_FONDS_PROPRES</field>
+        <field name="level" eval="2" />
+        <field name="sequence" eval="9"/>
+        <field name="parent_id" ref='account_financial_report_line_01_fr_bilan_passif'/>
+    </record>
+
+    <record id="account_financial_report_line_03_4_1_fr_bilan_passif" model="account.financial.html.report.line">
+        <field name="name">Montant des émissions de titres participatifs</field>
+        <field name="code">MONTANT_EMISSIONS</field>
+        <field name="level" eval="3" />
+        <field name="sequence" eval="1"/>
+        <field name="parent_id" ref='account_financial_report_line_02_9_fr_bilan_passif'/>
+        <field name="domain" eval="['|', ('account_id.code', '=', '1670'), ('account_id.code', '=', '1671')]"/>
+        <field name="formulas">-sum</field>
+    </record>
+
+    <record id="account_financial_report_line_03_4_2_fr_bilan_passif" model="account.financial.html.report.line">
+        <field name="name">Avances conditionnées</field>
+        <field name="code">AVANCES_CONDITIONNEES</field>
+        <field name="level" eval="3" />
+        <field name="sequence" eval="2"/>
+        <field name="parent_id" ref='account_financial_report_line_02_9_fr_bilan_passif'/>
+        <field name="domain" eval="['|', ('account_id.code', '=', '1672'), '|', ('account_id.code', '=', '1673'), '|', ('account_id.code', '=', '1674'), ('account_id.code', '=', '1675')]"/>
+        <field name="formulas">-sum</field>
+    </record>
+
+    <record id="account_financial_report_line_02_10_fr_bilan_passif" model="account.financial.html.report.line">
+        <field name="name">Total (V)</field>
+        <field name="code">PASSIF_TOATAL_V</field>
+        <field name="level" eval="2" />
+        <field name="sequence" eval="10"/>
+        <field name="parent_id" ref='account_financial_report_line_01_fr_bilan_passif'/>
+        <field name="formulas">MONTANT_EMISSIONS + AVANCES_CONDITIONNEES</field>
     </record>
 
     <record id="account_financial_report_fr_off_sheet" model="account.financial.html.report.line">

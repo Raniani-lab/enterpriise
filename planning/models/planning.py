@@ -78,6 +78,7 @@ class Planning(models.Model):
         compute='_compute_allocated_percentage', store=True, readonly=False,
         help="Percentage of time the employee is supposed to work during the shift.")
     working_days_count = fields.Integer("Number of Working Days", compute='_compute_working_days_count', store=True)
+    duration = fields.Float("Duration", compute="_compute_slot_duration")
 
     # publication and sending
     is_published = fields.Boolean("Is The Shift Sent", default=False, readonly=True, help="If checked, this means the planning entry has been sent to the employee. Modifying the planning entry will mark it as not sent.", copy=False)
@@ -225,6 +226,11 @@ class Planning(models.Model):
         else:
             self.overlap_slot_count = 0
 
+    @api.depends('start_datetime', 'end_datetime')
+    def _compute_slot_duration(self):
+        for slot in self:
+            slot.duration = slot._get_slot_duration()
+
     def _get_slot_duration(self):
         """Return the slot (effective) duration expressed in hours.
         """
@@ -245,7 +251,7 @@ class Planning(models.Model):
         templates = self.env['planning.slot.template'].search(domain, order='start_time', limit=10)
         self.template_autocomplete_ids = templates + self.template_id
 
-    @api.depends('employee_id', 'role_id', 'start_datetime', 'allocated_hours')
+    @api.depends('employee_id', 'role_id', 'start_datetime', 'end_datetime', 'allocated_hours')
     def _compute_template_id(self):
         for slot in self.filtered(lambda s: s.template_id):
             slot.previous_template_id = slot.template_id
@@ -713,7 +719,7 @@ class Planning(models.Model):
     def _get_template_fields(self):
         # key -> field from template
         # value -> field from slot
-        return {'role_id': 'role_id', 'start_time': 'start_datetime'}
+        return {'role_id': 'role_id', 'start_time': 'start_datetime', 'duration': 'duration'}
 
     def _get_tz(self):
         return (self.env.user.tz

@@ -338,8 +338,9 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 def compute_special_social_cotisations(payslip, categories, worked_days, inputs):
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
+    result = 0.0
     if not wage:
-        return 0
+        return result
     if employee.resident_bool:
         result = 0.0
     elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):

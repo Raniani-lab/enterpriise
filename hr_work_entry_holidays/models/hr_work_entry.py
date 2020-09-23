@@ -80,8 +80,9 @@ class HrWorkEntry(models.Model):
 
     def action_refuse_leave(self):
         self.ensure_one()
-        if self.leave_id:
-            self.leave_id.action_refuse()
+        leave_sudo = self.leave_id.sudo()
+        if leave_sudo:
+            leave_sudo.action_refuse()
 
 
 class HrWorkEntryType(models.Model):

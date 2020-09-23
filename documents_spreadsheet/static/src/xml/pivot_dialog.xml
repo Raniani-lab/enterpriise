@@ -41,11 +41,11 @@
                         t-on-click="_onCellClicked(row.formula)">
                         <t t-esc="row.value"/>
                     </th>
-                    <t t-foreach="props.colHeaders[props.colHeaders.length-1]" t-as="col" t-key="col_index">
+                    <t t-foreach="props.values" t-as="col" t-key="col_index">
                         <td
-                            t-att-class="{ o_missing_value: props.values[col_index][row_index].isMissing }"
-                            t-on-click="_onCellClicked(props.values[col_index][row_index].args.formula)">
-                            <t t-esc="props.values[col_index][row_index].args.value" />
+                            t-att-class="{ o_missing_value: col[row_index].isMissing }"
+                            t-on-click="_onCellClicked(col[row_index].args.formula)">
+                            <t t-esc="col[row_index].args.value" />
                         </td>
                     </t>
                 </tr>

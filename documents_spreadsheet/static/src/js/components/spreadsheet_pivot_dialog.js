@@ -133,7 +133,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 columnsMap.push(columnMap);
             }
             // Remove the columns that are not present in indexes
-            for (let i = columnsMap[0].length - 1; i >= 0; i--) {
+            for (let i = columnsMap[0].length; i >= 0; i--) {
                 if (!indexes.includes(i)) {
                     for (let columnMap of columnsMap) {
                         columnMap.splice(i, 1);
@@ -288,10 +288,13 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 }
             }
             for (let i = length; i < pivot.cache.getTopHeaderCount(); i++) {
-                headers[headers.length - 2].push({ args: [pivot.id] });
-                const args = [pivot.id, "measure"];
+                const args = []
+                var isMissing = !pivot.cache.isUsedHeader(args);
+                headers[headers.length - 2].push({ args: [pivot.id], isMissing });
+                args.push("measure");
                 args.push(pivot.cache.getColGroupHierarchy(i, 1)[0]);
-                headers[headers.length - 1].push({ args });
+                isMissing = !pivot.cache.isUsedHeader(args);
+                headers[headers.length - 1].push({ args: [pivot.id, ...args], isMissing });
             }
             return headers.map((row) => {
                 const reducedRow = row.reduce((acc, curr) => {

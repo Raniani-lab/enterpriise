@@ -7,6 +7,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
      * @property {Array<string>} colGroupBys
      * @property {Object} context
      * @property {Array} domain
+     * @property {Array} computeDomain
      * @property {Array<string>} measures
      * @property {string} model
      * @property {Array<string>} rowGroupBys

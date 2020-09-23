@@ -2,12 +2,25 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
     "use strict";
 
     const { getPeriodOptions } = require("web.searchUtils");
-
+    const { _lt } = require('web.core');
     const dateTypeOptions = {
-        month: ["this_month", "last_month", "antepenultimate_month"],
         quarter: ["first_quarter", "second_quarter", "third_quarter", "fourth_quarter"],
         year: ["this_year", "last_year", "antepenultimate_year"],
     };
+    const monthsOptions = [
+        { id: "january", description: _lt("January") },
+        { id: "february", description: _lt("February") },
+        { id: "march", description: _lt("March") },
+        { id: "april", description: _lt("April") },
+        { id: "may", description: _lt("May") },
+        { id: "june", description: _lt("June") },
+        { id: "july", description: _lt("July") },
+        { id: "august", description: _lt("August") },
+        { id: "september", description: _lt("September") },
+        { id: "october", description: _lt("October") },
+        { id: "november", description: _lt("November") },
+        { id: "december", description: _lt("December") },
+    ];
 
     /**
      * Return a list of time options to choose from according to the requested
@@ -17,7 +30,11 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
      * @returns {Array<Object>}
      */
     function dateOptions(type) {
-        return getPeriodOptions(moment()).filter(({ id }) => dateTypeOptions[type].includes(id));
+        if (type === "month") {
+            return monthsOptions;
+        } else {
+            return getPeriodOptions(moment()).filter(({ id }) => dateTypeOptions[type].includes(id));
+        }
     }
 
     class DateFilterValue extends owl.Component {

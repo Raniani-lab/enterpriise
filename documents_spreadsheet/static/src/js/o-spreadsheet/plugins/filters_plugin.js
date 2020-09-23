@@ -16,9 +16,31 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
 
     const Domain = require("web.Domain");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
-    const { constructDateDomain, yearSelected, getPeriodOptions } = require("web.searchUtils");
+    const { constructDateDomain, constructDateRange, yearSelected, getPeriodOptions } = require("web.searchUtils");
     const CancelledReason = require("documents_spreadsheet.CancelledReason");
     const pyUtils = require("web.py_utils");
+
+    const MONTHS = {
+        january: { value: 0, granularity: 'month' },
+        february: { value: 1, granularity: 'month' },
+        march: { value: 2, granularity: 'month' },
+        april: { value: 3, granularity: 'month' },
+        may: { value: 4, granularity: 'month' },
+        june: { value: 5, granularity: 'month' },
+        july: { value: 6, granularity: 'month' },
+        august: { value: 7, granularity: 'month' },
+        september: { value: 8, granularity: 'month' },
+        october: { value: 9, granularity: 'month' },
+        november: { value: 10, granularity: 'month' },
+        december: { value: 11, granularity: 'month' },
+    };
+    const THIS_YEAR = moment().year();
+    const YEARS = {
+        this_year: { value: THIS_YEAR, granularity: 'year' },
+        last_year: { value: THIS_YEAR - 1, granularity: 'year' },
+        antepenultimate_year: { value: THIS_YEAR - 2, granularity: 'year' },
+    };
+    const PERIOD_OPTIONS = Object.assign({}, MONTHS, YEARS);
 
     class FiltersPlugin extends spreadsheet.BasePlugin {
         constructor(workbook, getters, history, dispatch, config) {
@@ -345,7 +367,15 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                         }
                         const field = filter.fields[pivot.id].field;
                         const type = filter.fields[pivot.id].type;
-                        const dateFilterRange = constructDateDomain(moment(), field, type, values);
+                        const dateFilterRange = (filter.rangeType === "month")
+                            ? constructDateRange({
+                                referenceMoment: moment(),
+                                fieldName: field,
+                                fieldType: type,
+                                granularity: "month",
+                                setParam: this._getSelectedOptions(values)
+                            })
+                            : constructDateDomain(moment(), field, type, values);
                         const dateDomain = Domain.prototype.arrayToString(
                             pyUtils.eval("domain", dateFilterRange.domain, {})
                         );
@@ -375,6 +405,17 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 this.dispatch("ADD_PIVOT_DOMAIN", { id: pivot.id, domain, refresh });
             }
         }
+
+        _getSelectedOptions(selectedOptionIds) {
+            const selectedOptions = { year: [] };
+            for (const optionId of selectedOptionIds) {
+                const option = PERIOD_OPTIONS[optionId];
+                const granularity = option.granularity;
+                selectedOptions[granularity] = option.value;
+            }
+            return selectedOptions;
+        }
+
     }
 
     FiltersPlugin.modes = ["normal", "headless", "readonly"];

@@ -28,7 +28,7 @@ class HrWorkEntry(models.Model):
 
     def _reset_conflicting_state(self):
         super()._reset_conflicting_state()
-        attendances = self.filtered(lambda w: not w.work_entry_type_id.is_leave)
+        attendances = self.filtered(lambda w: w.work_entry_type_id and not w.work_entry_type_id.is_leave)
         attendances.write({'leave_id': False})
 
     def _check_if_error(self):

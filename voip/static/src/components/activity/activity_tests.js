@@ -61,7 +61,6 @@ QUnit.test('activity with phone number rendering', async function (assert) {
     const activity = this.env.models['mail.activity'].create({
         assignee: [['insert', {
             id: this.env.session.uid,
-            partnerDisplayName: "Eden Hazard",
         }]],
         canWrite: true,
         id: 100,

@@ -184,8 +184,12 @@ class AccountMove(models.Model):
         current_currency = asset.currency_id
         prec = company_currency.decimal_places
         amount = current_currency._convert(vals['amount'], company_currency, asset.company_id, depreciation_date)
+        # Keep the partner on the original invoice if there is only one
+        partner = asset.original_move_line_ids.mapped('partner_id')
+        partner = partner[:1] if len(partner) <= 1 else self.env['res.partner']
         move_line_1 = {
             'name': asset.name,
+            'partner_id': partner.id,
             'account_id': asset.account_depreciation_id.id,
             'debit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
             'credit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
@@ -196,6 +200,7 @@ class AccountMove(models.Model):
         }
         move_line_2 = {
             'name': asset.name,
+            'partner_id': partner.id,
             'account_id': asset.account_depreciation_expense_id.id,
             'credit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
             'debit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
@@ -206,6 +211,7 @@ class AccountMove(models.Model):
         }
         move_vals = {
             'ref': vals['move_ref'],
+            'partner_id': partner.id,
             'date': depreciation_date,
             'journal_id': asset.journal_id.id,
             'line_ids': [(0, 0, move_line_1), (0, 0, move_line_2)],

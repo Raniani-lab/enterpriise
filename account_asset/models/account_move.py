@@ -138,6 +138,8 @@ class AccountMove(models.Model):
                             'name': move_line.name,
                             'company_id': move_line.company_id.id,
                             'currency_id': move_line.company_currency_id.id,
+                            'account_analytic_id': move_line.analytic_account_id.id,
+                            'analytic_tag_ids': [(6, False, move_line.analytic_tag_ids.ids)],
                             'original_move_line_ids': [(6, False, move_line.ids)],
                             'state': 'draft',
                             'original_value': original_value,

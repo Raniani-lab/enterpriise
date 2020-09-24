@@ -312,15 +312,10 @@ class AccountMove(models.Model):
         for move in self:
             if move.is_invoice(include_receipts=True) and move.invoice_date_due and move.invoice_date:
                 if move.move_type == 'out_invoice':
-                    # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
-                    # if the invoice will be paid before 17th of the following month,
-                    # PPD otherwise
-                    if len(move.invoice_payment_term_id.line_ids) > 1:
-                        move.l10n_mx_edi_payment_policy = 'PPD'
-                    elif move.invoice_date_due > move.invoice_date + relativedelta(day=17, months=1):
-                        move.l10n_mx_edi_payment_policy = 'PPD'
-                    else:
-                        move.l10n_mx_edi_payment_policy = 'PUE'
+                    # In CFDI 3.3 - rule 2.7.1.43 which establish that
+                    # invoice payment term should be PPD as soon as the due date
+                    # is after the last day of  the month (the month of the invoice date).
+                    move.l10n_mx_edi_payment_policy = 'PPD' if self.date_due.month > self.date_invoice.month else 'PUE'
                 else:
                     move.l10n_mx_edi_payment_policy = 'PUE'
             else:

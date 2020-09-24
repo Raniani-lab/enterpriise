@@ -319,3 +319,16 @@ class HrExpense(models.Model):
     <a type="action" name="%(action_id)s" class="btn btn-primary text-white">Try Sample Receipt</a>
 </p>""" % {'action_id': action_id, 'mail_alias': self._get_empty_list_mail_alias()}
         return super().get_empty_list_help(help)
+
+
+class HrExpenseSheet(models.Model):
+    _inherit = ['hr.expense.sheet']
+
+    def action_register_payment(self):
+        samples = self.mapped('expense_line_ids.sample')
+        if samples.count(True):
+            action = self.env['ir.actions.actions']._for_xml_id('hr_expense_extract.action_expense_sample_register')
+            action['context'] = {'active_id': self.id}
+            return action
+
+        return super().action_register_payment()

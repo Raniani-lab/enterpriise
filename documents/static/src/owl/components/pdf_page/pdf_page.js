@@ -58,14 +58,6 @@ class PdfPage extends owl.Component {
      * @private
      * @param {MouseEvent} ev
      */
-    _onClickBin(ev) {
-        ev.stopPropagation();
-        this.trigger('bin-clicked', this.props.pageId);
-    }
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
     _onClickWrapper(ev) {
         ev.stopPropagation();
         this.trigger('page-clicked', this.props.pageId);

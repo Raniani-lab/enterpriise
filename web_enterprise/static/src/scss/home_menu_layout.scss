@@ -21,7 +21,9 @@
         flex-flow: column nowrap;
         position: relative;
         width: 100%;
-        @include o-scrollbar-overlay;
+        overflow: auto;
+        overflow-y: overlay;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
 
         .o_apps {
             display: flex;

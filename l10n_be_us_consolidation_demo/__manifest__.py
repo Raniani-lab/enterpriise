@@ -14,8 +14,6 @@ Account Consolidation Demo Data
 """,
     'data': [],
     'demo': [
-        'data/company.xml',
-        'data/company_config.xml',
         'data/consolidation_config.xml',
         'data/liaison_accounts.xml',
         'data/invoices.xml',

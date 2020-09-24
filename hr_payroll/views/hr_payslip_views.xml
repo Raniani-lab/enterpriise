@@ -197,8 +197,9 @@
                 <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 <button string="Refund" name="refund_sheet" states="done" type='object'/>
                 <button string="Set to Draft" name="action_payslip_draft" type="object" states="cancel"/>
-                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight"/>
+                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight" title="Recompute the payslip lines"/>
                 <button string="Cancel Payslip" name="action_payslip_cancel" type="object" states="draft,done,verify"/>
+                <button string="Recompute Worked Days" name="action_refresh_from_work_entries" type="object" title="Recompute the worked days lines and the payslip lines, in case you modified the work entries" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'verify']), ('employee_id', '=', False)]}"/>
                 <button string="Print" name="action_print_payslip" type="object"/>
                 <button string="Export Payslip" name="action_export_payslip" type="object" attrs="{'invisible': [('is_superuser', '=', False)]}"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
@@ -237,14 +238,14 @@
                     <page string="Worked Days &amp; Inputs" name="worked_days_input">
                         <separator string="Worked Days"/>
                         <field name="worked_days_line_ids">
-                            <tree string="Worked Days" editable="bottom">
-                                <field name="work_entry_type_id"/>
+                            <tree string="Worked Days" editable="bottom" create="0" delete="0">
+                                <field name="work_entry_type_id" readonly="1" force_save="1"/>
                                 <field name="name"/>
-                                <field name="number_of_days" sum="Total Working Days"/>
-                                <field name="number_of_hours"/>
-                                <field name="amount" attrs="{'column_invisible': [('parent.wage_type', '=', 'hourly')]}"/>
-                                <field name="is_paid" invisible="True"/>
-                                <field name="sequence" invisible="True"/>
+                                <field name="number_of_days" sum="Total Working Days" readonly="1" force_save="1"/>
+                                <field name="number_of_hours" readonly="1" force_save="1"/>
+                                <field name="amount" attrs="{'column_invisible': [('parent.wage_type', '=', 'hourly')]}" readonly="1" force_save="1"/>
+                                <field name="is_paid" invisible="True" readonly="1" force_save="1"/>
+                                <field name="sequence" invisible="True" readonly="1" force_save="1"/>
                             </tree>
                             <form string="Worked Day">
                                 <group col="4">
@@ -289,16 +290,16 @@
                     </page>
                     <page string="Salary Computation" name="salary_computation">
                         <field name="line_ids" colspan="4" nolabel="1">
-                            <tree string="Salary Structure" editable="bottom" decoration-info="total == 0">
+                            <tree string="Salary Structure" editable="bottom" decoration-info="total == 0" create="0" delete="0">
                                 <field name="name"/>
-                                <field name="code"/>
-                                <field name="category_id"/>
-                                <field name="sequence" invisible="1"/>
-                                <field name="quantity"/>
-                                <field name="rate"/>
-                                <field name="salary_rule_id"/>
-                                <field name="amount"/>
-                                <field name="total"/>
+                                <field name="code" readonly="1" force_save="1"/>
+                                <field name="category_id" readonly="1" force_save="1"/>
+                                <field name="sequence" invisible="1" readonly="1" force_save="1"/>
+                                <field name="quantity" readonly="1" force_save="1"/>
+                                <field name="rate" readonly="1" force_save="1"/>
+                                <field name="salary_rule_id" groups="base.group_no_one" readonly="1" force_save="1"/>
+                                <field name="amount" readonly="1" force_save="1"/>
+                                <field name="total" readonly="1" force_save="1"/>
                             </tree>
                             <form string="Payslip Line">
                                 <group col="4">

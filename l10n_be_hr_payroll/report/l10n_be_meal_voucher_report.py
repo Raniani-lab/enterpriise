@@ -14,7 +14,8 @@ class l10nBeMealVoucherReport(models.Model):
 
     def init(self):
         tools.drop_view_if_exists(self._cr, self._table)
-
+        # Note: Each started day (even if sick during the afternoon, ...) is worth
+        # a meal voucher from the employer
         self._cr.execute("""
             CREATE or REPLACE view %s as (
 
@@ -32,9 +33,9 @@ class l10nBeMealVoucherReport(models.Model):
                         hr_work_entry b1
                     CROSS JOIN generate_series(date_trunc('day', b1.date_start), date_trunc('day', b1.date_stop), interval '1 day') s
                     INNER JOIN hr_work_entry_type t ON t.id = b1.work_entry_type_id
-                    WHERE t.meal_voucher = TRUE AND b1.state='validated'
+                    WHERE t.meal_voucher = TRUE AND b1.state IN ('draft', 'validated')
                 ) AS b
                 GROUP BY b.employee_id, b.date_start_day::date, b.date_stop_day::date
-                HAVING SUM(date_part('hour', b.date_stop_day - b.date_start_day)) >= 3
+                HAVING SUM(date_part('hour', b.date_stop_day - b.date_start_day)) > 0
             );
         """ % self._table)

@@ -106,6 +106,22 @@
             <field name="code">REIMBURSEMENT</field>
             <field name="country_id" eval="False"/>
         </record>
+
+        <record model="ir.actions.server" id="action_reset_work_entries">
+                <field name="name">Payroll - Technical: Reset Work Entries</field>
+                <field name="model_id" ref="hr_work_entry.model_hr_work_entry"/>
+                <field name="state">code</field>
+                <field name="groups_id" eval="[(4,ref('base.group_system'))]"/>
+                <field name="code">
+# Don't call this server action if you don't want to loose all your work entries
+env['hr.work.entry'].search([]).unlink()
+now = datetime.datetime.now()
+env['hr.contract'].write({
+    'date_generated_from': now,
+    'date_generated_to': now
+})
+                </field>
+        </record>
     </data>
 
     <data noupdate="1">

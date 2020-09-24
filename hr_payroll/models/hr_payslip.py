@@ -171,6 +171,16 @@ class HrPayslip(models.Model):
         self.write({'state' : 'done'})
         self.filtered(lambda p: p._get_salary_line_total('NET') < 0).write({'has_negative_net_to_report': True})
         self.mapped('payslip_run_id').action_close()
+        # Validate work entries for regular payslips (exclude end of year bonus, ...)
+        regular_payslips = self.filtered(lambda p: p.struct_id.type_id.default_struct_id == p.struct_id)
+        for regular_payslip in regular_payslips:
+            work_entries = self.env['hr.work.entry'].search([
+                ('date_start', '<=', regular_payslip.date_to),
+                ('date_stop', '>=', regular_payslip.date_from),
+                ('employee_id', '=', regular_payslip.employee_id.id),
+            ])
+            work_entries.action_validate()
+
         if self.env.context.get('payslip_generate_pdf'):
             for payslip in self:
                 if not payslip.struct_id or not payslip.struct_id.report_id:
@@ -243,6 +253,13 @@ class HrPayslip(models.Model):
             lines = [(0, 0, line) for line in payslip._get_payslip_lines()]
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
         return True
+
+    def action_refresh_from_work_entries(self):
+        # Refresh the whole payslip in case the HR has modified some work entries
+        # after the payslip generation
+        self.ensure_one()
+        self._onchange_employee()
+        self.compute_sheet()
 
     def _round_days(self, work_entry_type, days):
         if work_entry_type.round_days != 'NO':

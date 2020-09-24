@@ -78,9 +78,10 @@ class HrPayslipEmployees(models.TransientModel):
         self._check_undefined_slots(work_entries, payslip_run)
 
         if(self.structure_id.type_id.default_struct_id == self.structure_id):
-            validated = work_entries.action_validate()
-            if not validated:
+            work_entries = work_entries.filtered(lambda work_entry: work_entry.state != 'validated')
+            if work_entries._check_if_error():
                 raise UserError(_("Some work entries could not be validated."))
+
 
         default_values = Payslip.default_get(Payslip.fields_get())
         for contract in contracts:

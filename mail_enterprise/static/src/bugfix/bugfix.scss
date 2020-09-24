@@ -4,3 +4,11 @@
 * stable versions of Odoo. Any style that is defined in this file should be isolated
 * in its own file in master.
 */
+
+/**
+ * mail_enterprise/static/src/models/chatter/chatter.scss
+ */
+.o_ChatterContainer.o-isInFormSheetBg {
+    max-width: $o-form-view-sheet-max-width;
+    margin: 0 auto;
+}

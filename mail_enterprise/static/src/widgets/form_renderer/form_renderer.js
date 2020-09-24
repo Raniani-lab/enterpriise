@@ -51,6 +51,7 @@ FormRenderer.include({
          * for the time being.
          */
         this._attachmentViewerThread = undefined;
+        this._isChatterInFormSheetBg = false;
         this._onResizeWindow = _.debounce(this._onResizeWindow.bind(this), 200);
     },
     /**
@@ -109,13 +110,18 @@ FormRenderer.include({
                 callbacks: [{ widget: this.chatter }],
                 in_DOM: this._isInDom,
             });
+            this._chatterContainerTarget.classList.add('o-isInFormSheetBg');
+            this._isChatterInFormSheetBg = true;
         } else {
             $(this._chatterContainerTarget).insertAfter($sheet);
             dom.append($sheet, this.$attachmentPreview, {
                 callbacks: [],
                 in_DOM: this._isInDom,
             });
+            this._chatterContainerTarget.classList.remove('o-isInFormSheetBg');
+            this._isChatterInFormSheetBg = false;
         }
+        this._updateChatterContainerComponent();
     },
     /**
      * @override
@@ -126,6 +132,7 @@ FormRenderer.include({
         return Object.assign(props, {
             hasExternalBorder: !isChatterAside,
             hasMessageListScrollAdjust: isChatterAside,
+            isInFormSheetBg: this._isChatterInFormSheetBg,
         });
     },
     /**

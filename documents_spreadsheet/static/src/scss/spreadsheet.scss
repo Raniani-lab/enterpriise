@@ -42,6 +42,10 @@
                             margin-bottom: 5px;
                         }
 
+                        .o_field_matching_title {
+                            margin-bottom: 0px;
+                        }
+
                         .o_field_selector, .o_field_many2manytags, .o_field_many2one {
                             width: 100%;
 
@@ -164,9 +168,17 @@
         width: 100%;
     }
 
+    .o_pivot_field_matching {
+        padding: 8px 0px;
+    }
+
     .pivot_filter_section {
         display: flex;
         flex-direction: row;
+
+        .o_pivot_model_technical_name {
+            font-size: 0.9rem;
+        }
 
         .pivot_filter {
             flex-grow: 1;
@@ -181,17 +193,13 @@
                 }
 
                 .o_side_panel_filter_icon {
-                    visibility: hidden;
                     width: 15px;
                     margin-left: 0.5rem;
                     padding: 0;
                     cursor: pointer;
-                }
-            }
-
-            &:hover {
-                .o_side_panel_filter_icon {
-                    visibility: visible;
+                    &:hover {
+                        color:#666666 !important
+                    }
                 }
             }
         }

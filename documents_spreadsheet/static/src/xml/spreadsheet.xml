@@ -95,6 +95,7 @@
     <div t-name="documents_spreadsheet.FilterComponent" class="o_filter_component" owl="1">
         <div
             t-attf-class="o_topbar_filter_icon fa fa-filter {{activeFilter ? 'btn-link': ''}}"
+            title="Filters"
             t-on-click="toggleDropdown"></div>
     </div>
 
@@ -127,7 +128,7 @@
                         year="filter.value &amp;&amp; filter.value.year"
                         period="filter.value &amp;&amp; filter.value.period"
                         type="filter.rangeType"/>
-                    <i class="fa fa-cog btn btn-link o_side_panel_filter_icon" title="Edit" t-on-click="onEdit(filter.id)"/>
+                    <i class="fa fa-cog btn btn-link text-muted o_side_panel_filter_icon" title="Edit" t-on-click="onEdit(filter.id)"/>
                 </div>
             </div>
         </div>
@@ -199,9 +200,12 @@
                 t-key="state.relation.relatedModelName"/>
         </div>
         <div class="o_side_panel_section">
-            <div class="o_side_panel_title">Field Matching</div>
-            <div t-foreach="pivots" t-as="pivot" t-key="pivot.id" t-att-class="missingField ? 'o_field_invalid' : ''">
-                <div><t t-esc="pivot.cache and pivot.cache.modelLabel or pivot.model"/> (<t t-esc="pivot.model"/>, #<t t-esc="pivot.id"/>)</div>
+            <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
+            <div class="text-muted">
+                For each pivot, match this filter to the relevant field
+            </div>
+            <div t-foreach="pivots" t-as="pivot" t-key="pivot.id" t-att-class="missingField ? 'o_field_invalid' : ''" class="o_pivot_field_matching">
+                <div><t t-esc="pivot.cache and pivot.cache.getModelLabel() or pivot.model"/> <span class="o_pivot_model_technical_name text-muted">(<t t-esc="pivot.model"/>, #<t t-esc="pivot.id"/>)</span></div>
                 <FieldSelectorAdapter
                     Component="FieldSelectorWidget"
                     model="pivot.model"

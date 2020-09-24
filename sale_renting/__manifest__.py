@@ -38,4 +38,5 @@
         'data/rental_demo.xml',
     ],
     'application': True,
+    'pre_init_hook': '_pre_init_rental',
 }

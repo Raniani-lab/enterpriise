@@ -88,10 +88,10 @@ QUnit.module('Views', {
                     { id: 1, name: 'Task 1', start: '2018-11-30 18:30:00', stop: '2018-12-31 18:29:59', stage: 'todo', stage_id: 1, project_id: 1, user_id: 1, color: 0, progress: 0},
                     { id: 2, name: 'Task 2', start: '2018-12-17 11:30:00', stop: '2018-12-22 06:29:59', stage: 'done', stage_id: 4, project_id: 1, user_id: 2, color: 2, progress: 30},
                     { id: 3, name: 'Task 3', start: '2018-12-27 06:30:00', stop: '2019-01-03 06:29:59', stage: 'cancel', stage_id: 3, project_id: 1, user_id: 2, color: 10, progress: 60},
-                    { id: 4, name: 'Task 4', start: '2018-12-19 18:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', stage_id: 3, project_id: 1, user_id: 1, color: 1, progress: false, exclude: 0},
-                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 02:34:34', stage: 'done', stage_id: 2, project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
+                    { id: 4, name: 'Task 4', start: '2018-12-19 22:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', stage_id: 3, project_id: 1, user_id: 1, color: 1, progress: false, exclude: 0},
+                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 01:34:34', stage: 'done', stage_id: 2, project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
                     { id: 6, name: 'Task 6', start: '2018-11-19 23:00:00', stop: '2018-11-20 04:21:01', stage: 'in_progress', stage_id: 4, project_id: 2, user_id: 1, color: 1, progress: 0},
-                    { id: 7, name: 'Task 7', start: '2018-12-20 06:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', stage_id: 1, project_id: 2, user_id: 2, color: 10, progress: 80},
+                    { id: 7, name: 'Task 7', start: '2018-12-20 10:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', stage_id: 1, project_id: 2, user_id: 2, color: 10, progress: 80},
                 ],
             },
             projects: {
@@ -2186,7 +2186,7 @@ QUnit.module('Views', {
                     assert.deepEqual(args.args[0], [7],
                         "should write on the correct record");
                     assert.deepEqual(args.args[1], {
-                        start: "2018-12-21 06:30:12",
+                        start: "2018-12-21 10:30:12",
                         stop: "2018-12-21 18:29:59",
                     }, "both start and stop date should be correctly set (+1 day)");
                 }
@@ -2231,7 +2231,7 @@ QUnit.module('Views', {
                     assert.deepEqual(args.args[0], [7],
                         "should write on the correct record");
                     assert.deepEqual(args.args[1], {
-                        start: "2018-12-21 06:30:12",
+                        start: "2018-12-21 10:30:12",
                         stop: "2018-12-21 18:29:59",
                     }, "both start and stop date should be correctly set (+1 day)");
                 }
@@ -2273,7 +2273,7 @@ QUnit.module('Views', {
                         "should write on the correct record");
                     assert.deepEqual(args.args[1], {
                         project_id: 1,
-                        start: "2018-12-21 06:30:12",
+                        start: "2018-12-21 10:30:12",
                         stop: "2018-12-21 18:29:59",
                     }, "all modified fields should be correctly set");
                 }
@@ -2316,7 +2316,7 @@ QUnit.module('Views', {
                         assert.deepEqual(args.args[0], 7,
                             "should copy the correct record");
                         assert.deepEqual(args.args[1],  {
-                            start: "2018-12-21 06:30:12",
+                            start: "2018-12-21 10:30:12",
                             stop: "2018-12-21 18:29:59",
                             project_id: 1
                         },
@@ -3047,7 +3047,7 @@ QUnit.module('Views', {
             "the 2nd group pill should have the correct width (20 dec afternoon)");
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "150%",
             "the 3rd group pill should have the correct width (21 to 22 dec morning dec");
-        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(450% + 3px)",
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "calc(500% + 4px)",
             "the 4th group pill should have the correct width (27 afternoon to 31 dec");
 
         gantt.destroy();

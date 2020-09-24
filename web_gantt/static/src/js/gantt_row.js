@@ -900,7 +900,10 @@ var GanttRow = Widget.extend({
                     // Set min width
                     var hourDiff = snappedStartDate.diff(snappedStopDate, 'hour');
                     if (hourDiff === 0) {
-                        if (snappedStartDate > span.startDate) {
+                        if (snappedStartDate.diff(span.startDate, 'hours') > 2 && span.stopDate.diff(snappedStopDate, 'hours') > 2) {
+                            span.startDate = snappedStartDate.subtract(interval, 'hour');
+                            span.stopDate = snappedStopDate.add(interval, 'hour');
+                        } else if (snappedStartDate > span.startDate) {
                             span.startDate = snappedStartDate.subtract(interval, 'hour');
                             span.stopDate = snappedStopDate;
                         } else {
@@ -908,6 +911,12 @@ var GanttRow = Widget.extend({
                             span.stopDate = snappedStopDate.add(interval, 'hour');
                         }
                     } else {
+                        if (snappedStartDate.diff(span.startDate, 'hours') > 2) {
+                            snappedStartDate = snappedStartDate.subtract(interval, 'hour');
+                        }
+                        if (span.stopDate.diff(snappedStopDate, 'hours') > 2) {
+                            snappedStopDate = snappedStopDate.add(interval, 'hour');
+                        }
                         span.startDate = snappedStartDate;
                         span.stopDate = snappedStopDate;
                     }

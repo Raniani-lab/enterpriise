@@ -124,8 +124,10 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         /**
          * Compute the tooltip to display from a Pivot formula
          * @param {string} formula Pivot formula
+         * @param {boolean} isColumn True if the direction is left/right, false
+         *                           otherwise
          */
-        getTooltipFormula(formula) {
+        getTooltipFormula(formula, isColumn) {
             if (!formula) {
                 return [];
             }
@@ -135,7 +137,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                 return [];
             }
             if (functionName === "PIVOT") {
-                return this._tooltipFormatPivot(pivot, args);
+                return this._tooltipFormatPivot(pivot, args, isColumn);
             } else if (functionName === "PIVOT.HEADER") {
                 return this._tooltipFormatPivotHeader(pivot, args);
             }
@@ -968,16 +970,20 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          *
          * @param {Pivot} pivot
          * @param {Array<string>} args
+         * @param {boolean} isColumn True if the direction is left/right, false
+         *                           otherwise
          * @private
          */
-        _tooltipFormatPivot(pivot, args) {
+        _tooltipFormatPivot(pivot, args, isColumn) {
             const tooltips = [];
             const values = this._parseArgs(args.slice(2));
             for (let [field, value] of Object.entries(values)) {
-                tooltips.push({
-                    title: pivotUtils.formatGroupBy(pivot, field),
-                    value: pivotUtils.formatHeader(pivot, field, value) || _t("Undefined"),
-                });
+                if ((pivot.colGroupBys.includes(field) && isColumn) || (pivot.rowGroupBys.includes(field) && !isColumn)) {
+                    tooltips.push({
+                        title: pivotUtils.formatGroupBy(pivot, field),
+                        value: pivotUtils.formatHeader(pivot, field, value) || _t("Undefined"),
+                    });
+                }
             }
             if (pivot.measures.length !== 1) {
                 const measure = args[1];

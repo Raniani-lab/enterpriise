@@ -1531,16 +1531,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B3")), [{
                     "title": "Date (Year)",
                     "value": "2016"
-                }, {
-                    "title": "Foo",
-                    "value": 1
                 }]);
                 assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "E3")), [{
                     "title": "Date (Year)",
                     "value": "2016"
-                }, {
-                    "title": "Foo",
-                    "value": 17
                 }]);
                 assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "F3")), [{
                     "title": "Date (Year)",
@@ -1589,18 +1583,12 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     "title": "Date (Year)",
                     "value": "2016"
                 }, {
-                    "title": "name",
-                    "value": "Undefined"
-                }, {
                     "title": "Measure",
                     "value": "Probability"
                 }]);
                 assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "C3")), [{
                     "title": "Date (Year)",
                     "value": "2016"
-                }, {
-                    "title": "name",
-                    "value": "Undefined"
                 }, {
                     "title": "Measure",
                     "value": "Foo"

@@ -63,7 +63,7 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
             const content = getters.getNextValue(data.content, isColumn, steps);
             const tooltip = content ? {
                 props: {
-                    content: getters.getTooltipFormula(content),
+                    content: getters.getTooltipFormula(content, isColumn),
                 },
                 component: AutofillTooltip,
             } : undefined;

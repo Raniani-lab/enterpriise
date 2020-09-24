@@ -720,10 +720,6 @@ class AccountAsset(models.Model):
             original_asset.model_id = new_recs
         return new_recs
 
-    def write(self, vals):
-        res = super(AccountAsset, self).write(vals)
-        return res
-
     @api.constrains('active', 'state')
     def _check_active(self):
         for record in self:

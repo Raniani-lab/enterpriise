@@ -133,7 +133,7 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 columnsMap.push(columnMap);
             }
             // Remove the columns that are not present in indexes
-            for (let i = columnsMap[0].length; i >= 0; i--) {
+            for (let i = columnsMap[columnsMap.length - 1].length; i >= 0; i--) {
                 if (!indexes.includes(i)) {
                     for (let columnMap of columnsMap) {
                         columnMap.splice(i, 1);
@@ -199,14 +199,27 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
          * @returns {Array<number>}
          */
         _getColumnsIndexes() {
-            const indexes = [];
+            const indexes = new Set();
+            for (let i = 0; i < this.data.columns.length; i++) {
+                const exploded = [];
+                for (let y = 0; y < this.data.columns[i].length; y++) {
+                    for (let x = 0; x < this.data.columns[i][y].span; x++) {
+                        exploded.push(this.data.columns[i][y]);
+                    }
+                }
+                for (let y = 0; y < exploded.length; y++) {
+                    if (exploded[y].isMissing) {
+                        indexes.add(y);
+                    }
+                }
+            }
             for (let i = 0; i < this.data.columns[this.data.columns.length - 1].length; i++) {
                 const values = this.data.values[i];
                 if (values.find((x) => x.isMissing)) {
-                    indexes.push(i);
+                    indexes.add(i);
                 }
             }
-            return indexes;
+            return Array.from(indexes).sort((a, b) => a - b);
         }
         /**
          * Get the indexes of the rows in which a missing value is present
@@ -216,6 +229,9 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
         _getRowsIndexes() {
             const rowIndexes = new Set();
             for (let i = 0; i < this.data.rows.length; i++) {
+                if (this.data.rows[i].isMissing) {
+                    rowIndexes.add(i);
+                }
                 for (let col of this.data.values) {
                     if (col[i].isMissing) {
                         this._addRecursiveRow(i).forEach((x) =>
@@ -288,11 +304,9 @@ odoo.define("documents_spreadsheet.PivotDialog", function (require) {
                 }
             }
             for (let i = length; i < pivot.cache.getTopHeaderCount(); i++) {
-                const args = []
-                var isMissing = !pivot.cache.isUsedHeader(args);
+                let isMissing = !pivot.cache.isUsedHeader([]);
                 headers[headers.length - 2].push({ args: [pivot.id], isMissing });
-                args.push("measure");
-                args.push(pivot.cache.getColGroupHierarchy(i, 1)[0]);
+                const args = ["measure", pivot.cache.getColGroupHierarchy(i, 1)[0]];
                 isMissing = !pivot.cache.isUsedHeader(args);
                 headers[headers.length - 1].push({ args: [pivot.id, ...args], isMissing });
             }

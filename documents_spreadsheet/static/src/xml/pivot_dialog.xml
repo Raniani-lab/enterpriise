@@ -7,12 +7,12 @@
                 <label for="missing_values" class="custom-control-label">Display missing cells only</label>
             </div>
             <t t-set="tableData" t-value="getTableData()"/>
-            <PivotDialogTable  t-if="tableData.rows.length > 0"
+            <PivotDialogTable  t-if="tableData.values.length > 0 or tableData.rows.length > 0"
                 colHeaders="tableData.columns"
                 rowHeaders="tableData.rows"
                 values="tableData.values" />
 
-            <div class="alert alert-info" role="alert" t-if="tableData.rows.length === 0"><span t-esc="props.title" /> has no cell missing from this sheet</div>
+            <div class="alert alert-info" role="alert" t-else="1"><span t-esc="props.title" /> has no cell missing from this sheet</div>
 
         </div>
     </t>

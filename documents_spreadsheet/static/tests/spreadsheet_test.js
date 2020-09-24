@@ -1066,38 +1066,38 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
-            QUnit.test("Insert missing value modal can show only the values not used in the current sheet with multiple levels", async function (assert) {
-                assert.expect(4);
+        QUnit.test("Insert missing value modal can show only the values not used in the current sheet with multiple levels", async function (assert) {
+            assert.expect(4);
 
-                const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-            <pivot string="Partners">
-                <field name="foo" type="col"/>
-                <field name="product" type="col"/>
-                <field name="bar" type="row"/>
-                <field name="probability" type="measure"/>
-            </pivot>`,
-                    mockRPC: mockRPCFn,
-                });
-                const missingValue = model.getters.getCell(2, 3).content;
-                model.dispatch("SELECT_CELL", { col: 2, row: 3 });
-                model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
-                model.dispatch("SELECT_CELL", { col: 9, row: 9 });
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-                const insertValue = cellMenuRegistry.getChildren(root, env)[0];
-                await insertValue.action(env);
-                await testUtils.nextTick();
-                assert.containsOnce(document.body, ".o_missing_value");
-                await dom.click(document.body.querySelector("input#missing_values"));
-                await testUtils.nextTick();
-                assert.containsOnce(document.body, ".o_missing_value");
-                assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
-                await dom.click(document.body.querySelector(".o_missing_value"));
-                assert.equal(model.getters.getCell(9, 9).content, missingValue);
-                actionManager.destroy();
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+        <pivot string="Partners">
+            <field name="foo" type="col"/>
+            <field name="product" type="col"/>
+            <field name="bar" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+                mockRPC: mockRPCFn,
             });
+            const missingValue = model.getters.getCell(2, 3).content;
+            model.dispatch("SELECT_CELL", { col: 2, row: 3 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("SELECT_CELL", { col: 9, row: 9 });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
+            await dom.click(document.body.querySelector(".o_missing_value"));
+            assert.equal(model.getters.getCell(9, 9).content, missingValue);
+            actionManager.destroy();
+        });
 
         QUnit.test("Insert missing pivot value give the focus to the canvas when model is closed", async function (assert) {
             assert.expect(2);
@@ -1125,6 +1125,88 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
+        QUnit.test("One col header as missing value should be displayed", async function (assert) {
+            assert.expect(1);
 
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="product" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 1, row: 0 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            actionManager.destroy();
+        });
+
+        QUnit.test("One row header as missing value should be displayed", async function (assert) {
+            assert.expect(1);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="product" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("SELECT_CELL", { col: 0, row: 2 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            actionManager.destroy();
+        });
+
+        QUnit.test("A missing col in the total measures with a pivot of two GB of cols", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="bar" type="col"/>
+                    <field name="product" type="col"/>
+                    <field name="probability" type="measure"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            await nextTick();
+            await nextTick();
+            model.dispatch("SELECT_CELL", { col: 5, row: 3 });
+            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
+            const insertValue = cellMenuRegistry.getChildren(root, env)[0];
+            await insertValue.action(env);
+            await testUtils.nextTick();
+            await dom.click(document.body.querySelector("input#missing_values"));
+            await testUtils.nextTick();
+            assert.containsOnce(document.body, ".o_missing_value");
+            assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
+            actionManager.destroy();
+        });
     });
 });

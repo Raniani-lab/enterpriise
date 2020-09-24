@@ -7,6 +7,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
 
     const _t = core._t;
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
+    const { toXC, toCartesian } = spreadsheet.helpers;
     const createFullMenuItem = spreadsheet.helpers.createFullMenuItem;
 
     //--------------------------------------------------------------------------
@@ -48,7 +49,8 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                     name: `${pivot.cache && pivot.cache.getModelLabel() || pivot.model} (#${pivot.id})`,
                     sequence: index,
                     action: async (env) => {
-                        const [col, row] = env.getters.getPosition();
+                        const xc = env.getters.getMainCell(toXC(...env.getters.getPosition()));
+                        const [ col, row ] = toCartesian(xc);
                         const insertPivotValueCallback = (formula) => {
                             env.dispatch("UPDATE_CELL", { sheet: env.getters.getActiveSheet(), col, row, content: formula });
                         }

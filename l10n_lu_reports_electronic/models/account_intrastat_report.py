@@ -48,12 +48,16 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
         context = self.env.context
         l_sum = t_sum = s_sum = 0
 
-        query = """
-        SELECT partner.vat AS vat,
-               SUM(-aml.balance) AS amount,
-               tax.name AS tax_name,
-               partner.name AS partner_name,
-               aml.partner_id
+        select = 'partner.vat AS vat, SUM(-aml.balance) AS amount, tax.name AS tax_name'
+        group_by = 'partner.vat, tax.name, country.code'
+        order_by = "tax.name='0-IC-S-S', tax.name='0-ICT-S-G', tax.name='0-IC-S-G'"
+        if not get_xml_data:
+            select += ', partner.name AS partner_name, aml.partner_id'
+            group_by += ', aml.partner_id, partner.name'
+            order_by += ', partner_name'
+
+        query = f"""
+        SELECT {select}
           FROM account_move_line aml
           JOIN res_partner partner ON aml.partner_id = partner.id
           JOIN account_move_line_account_tax_rel aml_tax ON aml_tax.account_move_line_id = aml.id
@@ -64,8 +68,8 @@ class ReportL10nLuPartnerVatIntra(models.AbstractModel):
            AND aml.company_id = %s
            AND aml.date >= %s
            AND aml.date <= %s
-         GROUP BY aml.partner_id, partner.name, partner.vat, tax.name, country.code
-         ORDER BY tax.name='0-IC-S-S', tax.name='0-ICT-S-G', tax.name='0-IC-S-G', partner_name
+         GROUP BY {group_by}
+         ORDER BY {order_by}
         """
         codes = [x['id'] for x in options['intrastat_code'] if x['selected']]
         codes = codes or [x['id'] for x in options['intrastat_code']]

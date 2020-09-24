@@ -57,6 +57,10 @@ odoo.define('timesheet_grid.TimerGridModel', function (require) {
                 state.serverTime = this._gridData.serverTime;
             }
             this._gridData = state;
+            this._gridData.data.forEach((group, groupIndex) => {
+                this._gridData.data[groupIndex].totals = this._computeTotals(group.grid);
+            });
+            this._gridData.totals = this._computeTotals(_.flatten(_.pluck(this._gridData.data, 'grid'), true));
             return this._gridData;
         },
 

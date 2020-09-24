@@ -24,10 +24,37 @@ class StockBarcodeController(http.Controller):
             if ret_new_internal_picking:
                 return ret_new_internal_picking
 
+        ret_open_product_location = self.try_open_product_location(barcode)
+        if ret_open_product_location:
+            return ret_open_product_location
+
         if request.env.user.has_group('stock.group_stock_multi_locations'):
-            return {'warning': _('No picking or location corresponding to barcode %(barcode)s') % {'barcode': barcode}}
+            return {'warning': _('No picking or location or product corresponding to barcode %(barcode)s') % {'barcode': barcode}}
         else:
-            return {'warning': _('No picking corresponding to barcode %(barcode)s') % {'barcode': barcode}}
+            return {'warning': _('No picking or product corresponding to barcode %(barcode)s') % {'barcode': barcode}}
+
+    def try_open_product_location(self, barcode):
+        """ If barcode represent a product, open a list/kanban view to show all
+        the locations of this product.
+        """
+        result = request.env['product.product'].search_read([
+            ('barcode', '=', barcode),
+        ], ['id', 'display_name'], limit=1)
+        if result:
+            tree_view_id = request.env.ref('stock.view_stock_quant_tree').id
+            kanban_view_id = request.env.ref('stock_barcode.stock_quant_barcode_kanban_2').id
+            return {
+                'action': {
+                    'name': result[0]['display_name'],
+                    'res_model': 'stock.quant',
+                    'views': [(tree_view_id, 'list'), (kanban_view_id, 'kanban')],
+                    'type': 'ir.actions.act_window',
+                    'domain': [('product_id', '=', result[0]['id'])],
+                    'context': {
+                        'search_default_internal_loc': True,
+                    },
+                }
+            }
 
     def try_open_picking_type(self, barcode):
         """ If barcode represent a picking type, open a new

@@ -113,4 +113,35 @@
         </kanban>
     </field>
 </record>
+
+<record id="stock_quant_barcode_kanban_2" model="ir.ui.view">
+    <field name="name">stock.quant.kanban.barcode</field>
+    <field name="model">stock.quant</field>
+    <field name="priority">1000</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile">
+            <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="row mb4 col-12">
+                            <strong><field name="location_id"/></strong>
+                        </div>
+                        <div class="row mb4 col-12">
+                            <span>Qty: <field name="quantity"/></span>
+                        </div>
+                        <div class="row mb4 col-12" attrs="{'invisible': [('lot_id', '=', False)]}" groups="stock.group_production_lot">
+                            <span>Lot/SN: <field name="lot_id"/></span>
+                        </div>
+                        <div class="row mb4 col-12" attrs="{'invisible': [('package_id', '=', False)]}" groups="stock.group_tracking_lot">
+                            <span>Package: <field name="package_id"/></span>
+                        </div>
+                        <div class="row mb4 col-12" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner">
+                            <span>Owner: <field name="owner_id"/></span>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
 </odoo>

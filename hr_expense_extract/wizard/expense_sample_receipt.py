@@ -72,7 +72,7 @@ class ExpenseSampleReceipt(models.Model):
     def action_choose_sample_2(self):
         return self._action_create_expense({
             'name': 'Restaurant',
-            'amount': 2.98,
+            'amount': 17.02,
             'date': datetime.date(2020, 6, 29)
         }, 2)
 

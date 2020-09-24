@@ -16,5 +16,5 @@ class IrAttachment(models.Model):
 
         if self.res_model == 'hr.expense' and self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
             related_record = self.env[self.res_model].browse(self.res_id)
-            if related_record.extract_state == "no_extract_requested":
+            if related_record.extract_state == "no_extract_requested" and not related_record.sample:
                 related_record.retry_ocr()

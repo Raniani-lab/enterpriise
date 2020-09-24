@@ -55,18 +55,23 @@ class SocialStreamPost(models.Model):
             stream_post.stream_post_image_urls = json.dumps([image.image_url for image in stream_post.stream_post_image_ids])
 
     def _compute_author_link(self):
-        """ Every social module should override this method.
-        See field 'help' for more information. """
-        pass
+        """ Every social module should override this method and handle its own
+        records, then call super() on remaining subset. See field 'help' for
+        more information. """
+        for post in self:
+            post.author_link = False
 
     def _compute_post_link(self):
-        """ Every social module should override this method.
-        See field 'help' for more information. """
-        pass
+        """ Every social module should override this method and handle its own
+        records, then call super() on remaining subset. See field 'help' for
+        more information. """
+        for post in self:
+            post.post_link = False
 
+    @api.depends('published_date')
     def _compute_formatted_published_date(self):
         for post in self:
-            post.formatted_published_date = self._format_published_date(post.published_date)
+            post.formatted_published_date = self._format_published_date(post.published_date) if post.published_date else False
 
     @api.model
     def _format_published_date(self, published_date):

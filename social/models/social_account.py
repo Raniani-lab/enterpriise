@@ -57,7 +57,8 @@ class SocialAccount(models.Model):
         """ Every social module should override this method.
         The 'stats_link' is an external link to the actual social.media statistics for this account.
         Ex: https://www.facebook.com/Odoo-Social-557894618055440/insights """
-        pass
+        for account in self:
+            account.stats_link = False
 
     def name_get(self):
         """ ex: [Facebook] Odoo Social, [Twitter] Mitchell Admin, ... """

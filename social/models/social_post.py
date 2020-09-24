@@ -126,14 +126,14 @@ class SocialPost(models.Model):
     def _compute_image_urls(self):
         """ See field 'help' for more information. """
         for post in self:
-            post.image_urls = json.dumps(['web/image/%s' % image_id.id for image_id in post.image_ids])
+            post.image_urls = json.dumps(['web/image/%s' % image_id.id for image_id in post.image_ids if image_id.id])
 
     @api.depends('live_post_ids.account_id', 'live_post_ids.display_name')
     def _compute_live_posts_by_media(self):
         """ See field 'help' for more information. """
         for post in self:
             accounts_by_media = dict((media_id.id, list()) for media_id in post.media_ids)
-            for live_post in post.live_post_ids:
+            for live_post in post.live_post_ids.filtered(lambda lp: lp.account_id.media_id.ids):
                 accounts_by_media[live_post.account_id.media_id.id].append(live_post.display_name)
             post.live_posts_by_media = json.dumps(accounts_by_media)
 

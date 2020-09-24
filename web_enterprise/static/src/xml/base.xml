@@ -131,7 +131,7 @@
 </t>
 
 <t t-name="HomeMenuWrapper" owl="1">
-    <HomeMenu apps="state.apps" menuItems="state.menuItems" t-att-style="state.style" t-on-scroll="_onScroll"/>
+    <HomeMenu apps="state.apps" menuItems="state.menuItems" t-att-style="state.style"/>
 </t>
 
 <!-- Legacy Templates -->

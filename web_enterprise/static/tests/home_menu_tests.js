@@ -6,6 +6,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
     const testUtils = require("web.test_utils");
 
     const { Component, hooks, tags } = owl;
+    const { createComponent } = testUtils;
     const patchDate = testUtils.mock.patchDate;
     const { useRef, useState } = hooks;
     const { xml } = tags;
@@ -163,9 +164,9 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 "search bar input must contain the input text");
 
             const path = [
-                { number: 1, key: 'ArrowRight', index: 1},
-                { number: 2, key: 'Tab', index: 2},
-                { number: 3, key: 'ArrowUp', index: 0},
+                { number: 1, key: 'ArrowRight', index: 1 },
+                { number: 2, key: 'Tab', index: 2 },
+                { number: 3, key: 'ArrowUp', index: 0 },
             ];
 
             await walkOn(assert, homeMenu, path);
@@ -569,7 +570,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
             const homeMenu = parent.homeMenuRef.comp;
 
             async function walkOnButCheckFocus(path) {
-                for (let i = 0; i < path.length; i ++) {
+                for (let i = 0; i < path.length; i++) {
                     const step = path[i];
                     await testUtils.dom.triggerEvent(window, 'keydown', { key: step.key, shiftKey: step.shiftKey });
                     assert.ok(homeMenu.el.querySelectorAll('.o_menuitem')[step.index] === document.activeElement,
@@ -740,7 +741,7 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 { number: 12, key: 'ArrowLeft', index: 2 },
             ];
 
-            await walkOn(assert, homeMenu, path.slice(0,11));
+            await walkOn(assert, homeMenu, path.slice(0, 11));
             // modify position of 'cursor' in query to allow movement to the left
             input.setSelectionRange(0, 0);
 
@@ -809,6 +810,34 @@ odoo.define("web_enterprise.home_menu_tests", function (require) {
                 "search bar input must contain the input text");
 
             parent.destroy();
+        });
+
+        QUnit.test("Scroll bar padding", async function (assert) {
+            assert.expect(3);
+
+            const target = testUtils.prepareTarget();
+            target.style.height = "300px";
+
+            const homeMenu = await createComponent(HomeMenu, { props: this.props });
+            const scrollable = $(".o_home_menu_scrollable")[0];
+            const input = $(".o_menu_search_input")[0];
+
+            function getPaddingLeft() {
+                return Number(scrollable.style.paddingLeft.split("px")[0]);
+            }
+
+            assert.strictEqual(getPaddingLeft(), 0);
+
+            await testUtils.dom.triggerEvent(input, "focus");
+            await testUtils.fields.editInput(input, "a");
+
+            assert.ok(getPaddingLeft() > 0); // Browser dependant
+
+            await testUtils.dom.triggerEvent(window, 'keydown', { key: 'Escape' });
+
+            assert.strictEqual(getPaddingLeft(), 0);
+
+            homeMenu.destroy();
         });
     });
 });

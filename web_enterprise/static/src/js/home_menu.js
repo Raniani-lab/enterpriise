@@ -67,6 +67,10 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
             this.displayedMenuItems = [];
         }
 
+        mounted() {
+            this._updateScrollBarWidth();
+        }
+
         patched() {
             if (this.state.focusedIndex !== null && !this.env.device.isMobile) {
                 const selectedItem = document.querySelector('.o_home_menu .o_menuitem.o_focused');
@@ -76,6 +80,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
                     selectedItem.scrollIntoView({ block: 'center' });
                 }
             }
+            this._updateScrollBarWidth();
         }
 
         //--------------------------------------------------------------------------
@@ -300,6 +305,16 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
             }
             const total = this.displayedApps.length + this.displayedMenuItems.length;
             this.state.focusedIndex = total ? 0 : null;
+        }
+
+        /**
+         * Compensates the width of the scrollbar to avoid flickering when
+         * elongating the content of the home menu.
+         * @private
+         */
+        _updateScrollBarWidth() {
+            const { clientWidth, offsetWidth, style } = this.mainContentRef.el;
+            style.paddingLeft = `${offsetWidth - clientWidth}px`;
         }
 
         //--------------------------------------------------------------------------

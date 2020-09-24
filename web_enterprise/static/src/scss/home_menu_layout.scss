@@ -19,11 +19,9 @@
         display: flex;
         flex: 100%;
         flex-flow: column nowrap;
+        overflow: auto;
         position: relative;
         width: 100%;
-        overflow: auto;
-        overflow-y: overlay;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
 
         .o_apps {
             display: flex;

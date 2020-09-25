@@ -5,6 +5,9 @@ from odoo.exceptions import ValidationError
 import re
 
 
+CUSTOM_NUMBERS_PATTERN = re.compile(r'[0-9]{2}  [0-9]{2}  [0-9]{4}  [0-9]{7}')
+
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
@@ -145,12 +148,10 @@ class AccountMoveLine(models.Model):
 
     @api.constrains('l10n_mx_edi_customs_number')
     def _check_l10n_mx_edi_customs_number(self):
-        pattern = re.compile(r'[0-9]{2}  [0-9]{2}  [0-9]{4}  [0-9]{7}')
-
         invalid_lines = self.env['account.move.line']
         for line in self:
             custom_numbers = line._l10n_mx_edi_get_custom_numbers()
-            if any(not pattern.match(custom_number) for custom_number in custom_numbers):
+            if any(not CUSTOM_NUMBERS_PATTERN.match(custom_number) for custom_number in custom_numbers):
                 invalid_lines |= line
 
         if not invalid_lines:

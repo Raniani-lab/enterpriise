@@ -8344,10 +8344,13 @@
              * that are actually present in the grid.
              */
             function range(v1, v2, sheetId) {
-                const [left, top] = toCartesian(v1);
-                const [right, bottom] = toCartesian(v2);
+                const sheet = sheets[sheetId];
+                let [left, top] = toCartesian(v1);
+                let [right, bottom] = toCartesian(v2);
+                right = Math.min(right, sheet.colNumber - 1);
+                bottom = Math.min(bottom, sheet.rowNumber - 1);
                 const zone = { left, top, right, bottom };
-                return mapCellsInZone(zone, sheets[sheetId], (cell) => getCellValue(cell, sheetId));
+                return mapCellsInZone(zone, sheet, (cell) => getCellValue(cell, sheetId));
             }
             return [readCell, range, evalContext];
         }
@@ -9181,11 +9184,13 @@
         duplicateMerge(xc, col, row, sheetId, cut) {
             const mergeId = this.workbook.sheets[sheetId].mergeCellMap[xc];
             const merge = this.workbook.sheets[sheetId].merges[mergeId];
+            const colNumber = this.getters.getNumberCols(sheetId) - 1;
+            const rowNumber = this.getters.getNumberRows(sheetId) - 1;
             const newMerge = {
                 left: col,
                 top: row,
-                right: col + merge.right - merge.left,
-                bottom: row + merge.bottom - merge.top,
+                right: clip(col + merge.right - merge.left, 0, colNumber),
+                bottom: clip(row + merge.bottom - merge.top, 0, rowNumber),
             };
             if (cut) {
                 this.dispatch("REMOVE_MERGE", {
@@ -10302,11 +10307,76 @@
         "isSelected",
     ];
 
-    const GraphColors = colors.map((c) => {
-        return `rgba(${parseInt(c.slice(1, 3), 16)},
-  ${parseInt(c.slice(3, 5), 16)},
-  ${parseInt(c.slice(5, 7), 16)}, 0.3)`.replace(/\s/g, "");
-    });
+    const terms = {
+        CF_TITLE: _lt("Format rules"),
+        IS_RULE: _lt("Format cells if..."),
+        FORMATTING_STYLE: _lt("Formatting style"),
+        BOLD: _lt("Bold"),
+        ITALIC: _lt("Italic"),
+        STRIKETHROUGH: _lt("Strikethrough"),
+        TEXTCOLOR: _lt("Text Color"),
+        FILLCOLOR: _lt("Fill Color"),
+        CANCEL: _lt("Cancel"),
+        SAVE: _lt("Save"),
+        PREVIEWTEXT: _lt("Preview text"),
+    };
+    const cellIsOperators = {
+        BeginsWith: _lt("Begins with"),
+        Between: _lt("Between"),
+        ContainsText: _lt("Contains text"),
+        EndsWith: _lt("Ends with"),
+        Equal: _lt("Is equal to"),
+        GreaterThan: _lt("Greater than"),
+        GreaterThanOrEqual: _lt("Greater than or equal"),
+        LessThan: _lt("Less than"),
+        LessThanOrEqual: _lt("Less than or equal"),
+        NotBetween: _lt("Not between"),
+        NotContains: _lt("Not contains"),
+        NotEqual: _lt("Not equal"),
+    };
+    const chartTerms = {
+        ChartType: _lt("Chart type"),
+        Line: _lt("Line"),
+        Bar: _lt("Bar"),
+        Pie: _lt("Pie"),
+        Title: _lt("Title"),
+        Series: _lt("Series"),
+        DataSeries: _lt("Data Series"),
+        MyDataHasTitle: _lt("My data has title"),
+        DataCategories: _lt("Data categories (labels)"),
+        UpdateChart: _lt("Update chart"),
+        CreateChart: _lt("Create chart"),
+        TitlePlaceholder: _lt("New Chart"),
+    };
+
+    /**
+     * Chart plugin
+     *
+     * This plugin creates and displays charts
+     * */
+    const GraphColors = [
+        // the same colors as those used in odoo reporting
+        "rgb(31,119,180)",
+        "rgb(255,127,14)",
+        "rgb(174,199,232)",
+        "rgb(255,187,120)",
+        "rgb(44,160,44)",
+        "rgb(152,223,138)",
+        "rgb(214,39,40)",
+        "rgb(255,152,150)",
+        "rgb(148,103,189)",
+        "rgb(197,176,213)",
+        "rgb(140,86,75)",
+        "rgb(196,156,148)",
+        "rgb(227,119,194)",
+        "rgb(247,182,210)",
+        "rgb(127,127,127)",
+        "rgb(199,199,199)",
+        "rgb(188,189,34)",
+        "rgb(219,219,141)",
+        "rgb(23,190,207)",
+        "rgb(158,218,229)",
+    ];
     class ChartPlugin extends BasePlugin {
         constructor() {
             super(...arguments);
@@ -10466,44 +10536,105 @@
             });
             return { labelCell, dataRange };
         }
-        mapDefinitionToRuntime(definition) {
-            let runtime = {
-                type: definition.type,
+        getDefaultConfiguration(type, title, labels) {
+            const config = {
+                type,
                 options: {
                     // https://www.chartjs.org/docs/latest/general/responsive.html
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: { padding: { left: 20, right: 20, top: 10, bottom: 10 } },
+                    elements: {
+                        line: {
+                            fill: false,
+                        },
+                        point: {
+                            hitRadius: 15,
+                        },
+                    },
                     animation: {
                         duration: 0,
                     },
                     hover: {
-                        animationDuration: 0,
+                        animationDuration: 10,
                     },
                     responsiveAnimationDuration: 0,
                     title: {
                         display: true,
-                        text: definition.title,
+                        fontSize: 22,
+                        fontStyle: "normal",
+                        text: title,
                     },
                 },
                 data: {
-                    labels: definition.labelRange !== ""
-                        ? this.getters
-                            .getRangeFormattedValues(definition.labelRange, definition.sheetId)
-                            .flat(1)
-                        : [],
+                    labels,
                     datasets: [],
                 },
             };
+            if (type !== "pie") {
+                config.options.scales = {
+                    xAxes: [
+                        {
+                            ticks: {
+                                // x axis configuration
+                                maxRotation: 60,
+                                minRotation: 15,
+                                padding: 5,
+                                labelOffset: 2,
+                            },
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            ticks: {
+                                // y axis configuration
+                                beginAtZero: true,
+                            },
+                        },
+                    ],
+                };
+            }
+            return config;
+        }
+        mapDefinitionToRuntime(definition) {
+            const labels = definition.labelRange !== ""
+                ? this.getters.getRangeFormattedValues(definition.labelRange, definition.sheetId).flat(1)
+                : [];
+            const runtime = this.getDefaultConfiguration(definition.type, definition.title, labels);
             let graphColorIndex = 0;
             for (const ds of definition.dataSets) {
+                let label;
+                if (ds.labelCell) {
+                    try {
+                        label = this.getters.evaluateFormula(ds.labelCell, definition.sheetId);
+                    }
+                    catch (e) {
+                        // We want here to catch issue linked to async formula
+                        label = chartTerms.Series;
+                    }
+                }
+                else {
+                    label = chartTerms.Series;
+                }
                 const dataset = {
-                    label: ds.labelCell ? this.getters.evaluateFormula(ds.labelCell, definition.sheetId) : "",
+                    label,
                     data: ds.dataRange
                         ? this.getters.getRangeValues(ds.dataRange, definition.sheetId).flat(1)
                         : [],
                     lineTension: 0,
+                    borderColor: definition.type !== "pie" ? GraphColors[graphColorIndex] : "#FFFFFF",
                     backgroundColor: GraphColors[graphColorIndex],
                 };
+                if (definition.type === "pie") {
+                    const colors = [];
+                    for (let i = 0; i <= dataset.data.length - 1; i++) {
+                        colors.push(GraphColors[graphColorIndex]);
+                        graphColorIndex = ++graphColorIndex % GraphColors.length;
+                    }
+                    // In case of pie graph, dataset.backgroundColor is an array of string
+                    // @ts-ignore
+                    dataset.backgroundColor = colors;
+                }
                 graphColorIndex = ++graphColorIndex % GraphColors.length;
                 runtime.data.datasets.push(dataset);
             }
@@ -11723,47 +11854,6 @@
     }
   `;
 
-    const terms = {
-        CF_TITLE: _lt("Format rules"),
-        IS_RULE: _lt("Format cells if..."),
-        FORMATTING_STYLE: _lt("Formatting style"),
-        BOLD: _lt("Bold"),
-        ITALIC: _lt("Italic"),
-        STRIKETHROUGH: _lt("Strikethrough"),
-        TEXTCOLOR: _lt("Text Color"),
-        FILLCOLOR: _lt("Fill Color"),
-        CANCEL: _lt("Cancel"),
-        SAVE: _lt("Save"),
-        PREVIEWTEXT: _lt("Preview text"),
-    };
-    const cellIsOperators = {
-        BeginsWith: _lt("Begins with"),
-        Between: _lt("Between"),
-        ContainsText: _lt("Contains text"),
-        EndsWith: _lt("Ends with"),
-        Equal: _lt("Is equal to"),
-        GreaterThan: _lt("Greater than"),
-        GreaterThanOrEqual: _lt("Greater than or equal"),
-        LessThan: _lt("Less than"),
-        LessThanOrEqual: _lt("Less than or equal"),
-        NotBetween: _lt("Not between"),
-        NotContains: _lt("Not contains"),
-        NotEqual: _lt("Not equal"),
-    };
-    const chartTerms = {
-        ChartType: _lt("Chart type"),
-        Line: _lt("Line"),
-        Bar: _lt("Bar"),
-        Pie: _lt("Pie"),
-        Title: _lt("Title"),
-        DataSeries: _lt("Data series"),
-        MyDataHasTitle: _lt("My data has title"),
-        DataCategories: _lt("Data categories (labels)"),
-        UpdateChart: _lt("Update chart"),
-        CreateChart: _lt("Create chart"),
-        TitlePlaceholder: _lt("New Chart"),
-    };
-
     const { Component: Component$1, useState, hooks } = owl__namespace;
     const { useExternalListener } = hooks;
     const { xml: xml$1, css: css$1 } = owl.tags;
@@ -12073,14 +12163,11 @@
     const CSS$2 = css$3 /* scss */ `
   .o-selection {
     input {
-      margin: 8px 1px;
-      padding: 1px 8px;
+      padding: 4px 6px;
       border-radius: 4px;
       box-sizing: border-box;
       border: 1px solid #dadce0;
-      font-size: 14px;
-      height: 32px;
-      width: 90%;
+      width: 100%;
     }
     input:focus {
       outline: none;
@@ -12088,7 +12175,7 @@
     input.o-focused {
       border-color: #3266ca;
       border-width: 2px;
-      padding: 0px 7px;
+      padding: 3px 5px;
     }
     button.o-remove-selection {
       background: transparent;
@@ -12550,8 +12637,8 @@
     <div class="o-section">
       <div class="o-section-title"><t t-esc="env._t('${chartTerms.ChartType}')"/></div>
       <select t-model="state.type" class="o-input o-type-selector">
-        <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
         <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
+        <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
         <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
       </select>
     </div>
@@ -12616,7 +12703,7 @@
                 title: data && data.title ? data.title : "",
                 ranges: data ? data.dataSets.map((ds) => ds.dataRange) : [],
                 labelRange: data ? data.labelRange : "",
-                type: data ? data.type : "line",
+                type: data ? data.type : "bar",
                 seriesHasTitle: data ? data.title !== undefined : false,
             };
         }
@@ -12695,6 +12782,7 @@
             if (chartData) {
                 if (chartData.data && chartData.data.datasets) {
                     Object.assign(this.chart.data.datasets, chartData.data.datasets);
+                    Object.assign(this.chart.data.labels, chartData.data.labels);
                 }
                 else {
                     this.chart.data.datasets = undefined;
@@ -12787,11 +12875,29 @@
      *
      */
     class AutofillPlugin extends BasePlugin {
+        constructor() {
+            super(...arguments);
+            this.lastCellSelected = {};
+        }
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
             switch (cmd.type) {
+                case "AUTOFILL_SELECT":
+                    const sheetId = this.getters.getActiveSheet();
+                    this.lastCellSelected.col =
+                        cmd.col === -1
+                            ? this.lastCellSelected.col
+                            : clip(cmd.col, 0, this.getters.getNumberCols(sheetId));
+                    this.lastCellSelected.row =
+                        cmd.row === -1
+                            ? this.lastCellSelected.row
+                            : clip(cmd.row, 0, this.getters.getNumberRows(sheetId));
+                    if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
+                        return { status: "SUCCESS" };
+                    }
+                    return { status: "CANCELLED", reason: 17 /* InvalidAutofillSelection */ };
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -12897,6 +13003,7 @@
             if (apply) {
                 const zone = union(this.getters.getSelectedZone(), this.autofillZone);
                 this.autofillZone = undefined;
+                this.lastCellSelected = {};
                 this.direction = undefined;
                 this.tooltip = undefined;
                 this.dispatch("SET_SELECTION", {
@@ -12910,6 +13017,10 @@
          */
         select(col, row) {
             const source = this.getters.getSelectedZone();
+            if (isInside(col, row, source)) {
+                this.autofillZone = undefined;
+                return;
+            }
             this.direction = this.getDirection(col, row);
             switch (this.direction) {
                 case 0 /* UP */:
@@ -13993,6 +14104,9 @@
             // starting plugins
             this.dispatch("START");
         }
+        destroy() {
+            delete DEBUG.model;
+        }
         /**
          * Initialise and properly configure a plugin.
          *
@@ -14074,7 +14188,7 @@
     //------------------------------------------------------------------------------
     const TEMPLATE$7 = xml$8 /* xml */ `
     <div>
-      <div class="o-menu" t-att-style="style">
+      <div class="o-menu" t-att-style="style" t-on-scroll="onScroll">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
           <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
           <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
@@ -14097,7 +14211,7 @@
         </t>
       </div>
       <Menu t-if="subMenu.isOpen"
-        position="subMenu.position"
+        position="subMenuPosition"
         menuItems="subMenu.menuItems"
         depth="props.depth + 1"
         t-ref="subMenuRef"
@@ -14152,8 +14266,14 @@
             this.subMenu = owl.useState({
                 isOpen: false,
                 position: null,
+                scrollOffset: 0,
                 menuItems: [],
             });
+        }
+        get subMenuPosition() {
+            const position = Object.assign({}, this.subMenu.position);
+            position.y -= this.subMenu.scrollOffset || 0;
+            return position;
         }
         get renderRight() {
             const { x, width } = this.props.position;
@@ -14169,9 +14289,9 @@
             return MENU_ITEM_HEIGHT * others.length + separators.length * SEPARATOR_HEIGHT;
         }
         get style() {
-            const { x, y, height } = this.props.position;
+            const { x, height } = this.props.position;
             const hStyle = `left:${this.renderRight ? x : x - MENU_WIDTH}`;
-            const vStyle = `top:${this.renderBottom ? y : Math.max(MENU_ITEM_HEIGHT, y - Math.min(this.menuHeight, height))}`;
+            const vStyle = `top:${this.menuVerticalPosition()}`;
             const heightStyle = `max-height:${height}`;
             return `${vStyle}px;${hStyle}px;${heightStyle}px`;
         }
@@ -14182,6 +14302,13 @@
         close() {
             this.subMenu.isOpen = false;
             this.trigger("close");
+        }
+        menuVerticalPosition() {
+            const { y, height } = this.props.position;
+            if (this.renderBottom) {
+                return y;
+            }
+            return Math.max(MENU_ITEM_HEIGHT, y - Math.min(this.menuHeight, height));
         }
         subMenuHorizontalPosition() {
             const { x, width } = this.props.position;
@@ -14196,16 +14323,13 @@
         }
         subMenuVerticalPosition(menuCount, position) {
             const { height } = this.props.position;
-            const y = this.props.position.y + this.menuItemVerticalOffset(position);
+            const y = this.menuVerticalPosition() + this.menuItemVerticalOffset(position);
             const subMenuHeight = menuCount * MENU_ITEM_HEIGHT;
             const spaceBelow = y < height - subMenuHeight;
-            if (this.renderBottom && spaceBelow) {
+            if (spaceBelow) {
                 return y;
             }
-            else if (this.renderBottom && !spaceBelow) {
-                return Math.max(MENU_ITEM_HEIGHT, y - subMenuHeight + MENU_ITEM_HEIGHT);
-            }
-            return y - this.menuHeight;
+            return Math.max(MENU_ITEM_HEIGHT, y - subMenuHeight + MENU_ITEM_HEIGHT);
         }
         /**
          * Return the number of pixels between the top of the menu
@@ -14242,6 +14366,9 @@
                 this.subMenuRef.comp.closeSubMenus();
             }
             this.subMenu.isOpen = false;
+        }
+        onScroll(ev) {
+            this.subMenu.scrollOffset = ev.target.scrollTop;
         }
         /**
          * If the given menu is not disabled, open it's submenu at the
@@ -14817,6 +14944,7 @@
             el.style.height = (this.rect[3] + 0.5 + "px");
         }
         willUnmount() {
+            delete DEBUG.composer;
             this.trigger("composer-unmounted");
         }
         get containerStyle() {
@@ -15600,9 +15728,11 @@
                 const row = this.env.getters.getRowIndex(ev.clientY - position.top, this.props.viewport.top);
                 if (lastCol !== col || lastRow !== row) {
                     const sheetId = this.env.getters.getActiveSheet();
-                    lastCol = clip(col, 0, this.env.getters.getNumberCols(sheetId));
-                    lastRow = clip(row, 0, this.env.getters.getNumberRows(sheetId));
-                    this.env.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
+                    lastCol = col === -1 ? lastCol : clip(col, 0, this.env.getters.getNumberCols(sheetId));
+                    lastRow = row === -1 ? lastRow : clip(row, 0, this.env.getters.getNumberRows(sheetId));
+                    if (lastCol !== undefined && lastRow !== undefined) {
+                        this.env.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
+                    }
                 }
             };
             startDnd(onMouseMove, onMouseUp);
@@ -16150,6 +16280,19 @@
             this.focus();
             this.drawGrid();
         }
+        async willUpdateProps() {
+            const sheet = this.getters.getActiveSheet();
+            if (this.currentSheet !== sheet) {
+                // We need to reset the viewport as the sheet is changed
+                this.viewport.offsetX = 0;
+                this.viewport.offsetY = 0;
+                this.hScrollbar.scroll = 0;
+                this.vScrollbar.scroll = 0;
+                this.viewport = this.getters.adjustViewportZone(this.viewport);
+                this.viewport = this.getters.adjustViewportPosition(this.viewport);
+                this.snappedViewport = this.getters.snapViewportToCell(this.viewport);
+            }
+        }
         patched() {
             this.drawGrid();
         }
@@ -16471,7 +16614,7 @@
     }
 
     .o-sidePanelButtons {
-      padding: 5px;
+      padding: 5px 16px;
       text-align: right;
       .o-sidePanelButton {
         border: 1px solid lightgrey;
@@ -16495,10 +16638,11 @@
     .o-input {
       border-radius: 4px;
       border: 1px solid lightgrey;
-      padding: 5px;
-      margin-bottom: 5px;
-      font-size: 14px;
-      width: 90%;
+      padding: 4px 6px;
+      width: 96%;
+      .o-type-selector {
+        background-position: right 5px top 11px;
+      }
     }
     select.o-input {
       background-color: white;
@@ -16506,11 +16650,10 @@
     }
 
     .o-section {
-      padding: 10px;
+      padding: 16px;
       .o-section-title {
-        font-size: 16px;
-        margin-bottom: 20px;
-        margin-top: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
       }
     }
   }
@@ -17096,6 +17239,10 @@
         willUnmount() {
             this.model.off("update", this);
         }
+        destroy() {
+            this.model.destroy();
+            super.destroy();
+        }
         openSidePanel(panel, panelProps) {
             this.sidePanel.component = panel;
             this.sidePanel.panelProps = panelProps;
@@ -17224,9 +17371,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '0.8.0';
-    exports.__info__.date = '2020-09-16T12:57:38.265Z';
-    exports.__info__.hash = '6d78646';
+    exports.__info__.version = '1.0.0';
+    exports.__info__.date = '2020-09-25T08:00:20.903Z';
+    exports.__info__.hash = '05dff20';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -58,20 +58,9 @@ tour.register('social_tour', {
             position: 'bottom',
             edition: 'enterprise',
         }, {
-            trigger: '.o_field_widget[name="post_method"]',
+            trigger: 'button[name="action_post"]',
             extra_trigger: 'textarea[name="message"]:first:propValueContains()', // message field not empty
-            content: _t("Happy with the result ? Schedule your post for later and send it at the best time to your audience."),
-            position: 'bottom',
-            edition: 'enterprise',
-        },{
-            trigger: '.o_field_widget[name="scheduled_date"]:not(.o_invisible_modifier)',
-            extra_trigger: 'input[data-value="scheduled"][checked="true"]',
-            content: _t("Pick here when this should be posted."),
-            position: 'bottom',
-            edition: 'enterprise',
-        }, {
-            trigger: '.o_statusbar_buttons button[name="action_schedule"]',
-            content: _t("Almost done! Let's schedule it in the future."),
+            content: _t("Happy with the result? Let's post it!"),
             position: 'bottom',
             edition: 'enterprise',
         },

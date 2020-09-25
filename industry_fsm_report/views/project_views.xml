@@ -25,6 +25,18 @@
         </field>
     </record>
 
+    <record id="worksheet_template_view_form_no_design_button" model="ir.ui.view">
+        <field name="name">worksheet.template.view.form.no_design_button</field>
+        <field name="model">worksheet.template</field>
+        <field name="inherit_id" ref="worksheet.worksheet_template_view_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header/widget[@name='open_studio_button']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_task_view_kanban_fsm_report" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm.report</field>
         <field name="model">project.task</field>
@@ -174,7 +186,7 @@
                 <field name="display_sign_report_secondary" invisible="1"/>
                 <field name="display_send_report_primary" invisible="1"/>
                 <field name="display_send_report_secondary" invisible="1"/>
-                <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+                <field name="worksheet_template_id" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
             <field name="display_fsm_dates" position="after">
                 <field name="fsm_is_sent" invisible="1"/>

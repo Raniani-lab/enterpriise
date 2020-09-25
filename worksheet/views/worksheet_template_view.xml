@@ -2,6 +2,7 @@
     <record id="worksheet_template_view_form" model="ir.ui.view">
         <field name="name">worksheet.template.view.form</field>
         <field name="model">worksheet.template</field>
+        <field name="priority">10</field>
         <field name="arch" type="xml">
             <form create='0'>
                 <header>

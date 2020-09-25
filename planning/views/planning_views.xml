@@ -156,7 +156,7 @@
                             domain="[['id', 'in', template_autocomplete_ids]]"
                             widget="selection_badge" options="{'horizontal': true}"
                         />
-                        <button name="action_create_template" class="btn btn-secondary o_planning_save_template" type="object" string="Save as Template" icon="fa-floppy-o" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
+                        <button name="action_create_template" class="btn btn-secondary o_planning_save_template oe_edit_only" type="object" string="Save as Template" icon="fa-floppy-o" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
                     </div>
                 </group>
             </xpath>

@@ -84,8 +84,8 @@ class HelpdeskTicket(models.Model):
     timesheet_timer = fields.Boolean(related='team_id.timesheet_timer')
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
     total_hours_spent = fields.Float(compute='_compute_total_hours_spent', default=0)
-
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
+    display_timer = fields.Boolean(compute='_compute_display_timer')
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
 
     def _compute_encode_uom_in_days(self):
@@ -115,6 +115,12 @@ class HelpdeskTicket(models.Model):
                         ticket.display_timer_start_secondary = False
                     else:
                         ticket.display_timer_start_primary = False
+
+    def _compute_display_timer(self):
+        if self.env.user.has_group('helpdesk.group_helpdesk_user') and self.env.user.has_group('hr_timesheet.group_hr_timesheet_user'):
+            self.display_timer = True
+        else:
+            self.display_timer = False
 
     @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids', 'encode_uom_in_days')
     def _compute_display_timesheet_timer(self):

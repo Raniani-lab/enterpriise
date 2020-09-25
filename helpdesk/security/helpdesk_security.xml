@@ -40,13 +40,13 @@
         <record id="helpdesk_user_rule" model="ir.rule">
             <field name="name">Helpdesk User</field>
             <field name="model_id" ref="model_helpdesk_team"/>
-            <field name="domain_force">['&amp;', '|', ('visibility_member_ids','in', user.id), ('visibility_member_ids','=', False), '|', ('member_ids','in', user.id), ('member_ids','=', False)]</field>
+            <field name="domain_force">['|', ('visibility_member_ids','in', user.id), ('visibility_member_ids','=', False)]</field>
             <field name="groups" eval="[(4, ref('group_helpdesk_user'))]"/>
         </record>
         <record id="helpdesk_ticket_user_rule" model="ir.rule">
             <field name="name">Helpdesk Ticket User</field>
             <field name="model_id" ref="model_helpdesk_ticket"/>
-            <field name="domain_force">['&amp;', '|', ('team_id.visibility_member_ids','in', user.id), ('team_id.visibility_member_ids','=', False), '|', ('team_id.member_ids','in', user.id), ('team_id.member_ids','=', False)]</field>
+            <field name="domain_force">['|', ('team_id.visibility_member_ids','in', user.id), ('team_id.visibility_member_ids','=', False)]</field>
             <field name="groups" eval="[(4, ref('group_helpdesk_user'))]"/>
         </record>
         <!-- Split by company on tickets, teams and SLAs -->

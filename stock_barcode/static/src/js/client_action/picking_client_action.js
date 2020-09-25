@@ -75,6 +75,18 @@ var PickingClientAction = ClientAction.extend({
         });
     },
 
+    start: function () {
+        this._onKeyDown = this._onKeyDown.bind(this);
+        this._onKeyUp = this._onKeyUp.bind(this);
+        this._toggleKeyEvents(true);
+        return this._super(...arguments);
+    },
+
+    destroy: function () {
+        this._toggleKeyEvents(false);
+        this._super();
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -222,6 +234,7 @@ var PickingClientAction = ClientAction.extend({
      * @override
      */
     _instantiateViewsWidget: function (defaultValues, params) {
+        this._toggleKeyEvents(false);
         return new ViewsWidget(
             this,
             'stock.move.line',
@@ -492,6 +505,22 @@ var PickingClientAction = ClientAction.extend({
     },
 
     /**
+     * Enables or disables the `keydown` and `keyup` event.
+     * They are toggled when passing through the form view (edit or add a line).
+     *
+     * @param {boolean} mustBeActive
+     */
+    _toggleKeyEvents: function (mustBeActive) {
+        if (mustBeActive) {
+            document.addEventListener('keydown', this._onKeyDown);
+            document.addEventListener('keyup', this._onKeyUp);
+        } else {
+            document.removeEventListener('keydown', this._onKeyDown);
+            document.removeEventListener('keyup', this._onKeyUp);
+        }
+    },
+
+    /**
      * @override
      */
     _updateLineCommand: function (line) {
@@ -579,6 +608,38 @@ var PickingClientAction = ClientAction.extend({
     },
 
     /**
+     * Listens for shift key being pushed for display the remaining qty instead of only the "+1".
+     *
+     * Assumptions:
+     * - We don't need to worry about Caps Lock being active because it's a huge pain to detect
+     *   and probably can't be until the first letter is pushed.
+     *
+     * @private
+     * @param {KeyboardEvent} keyDownEvent
+     */
+    _onKeyDown: function (keyDownEvent) {
+        if (this.linesWidget && keyDownEvent.key === 'Shift' &&
+            !keyDownEvent.repeat && !keyDownEvent.ctrlKey && !keyDownEvent.metaKey) {
+            this.linesWidget._applyShiftKeyDown();
+        }
+    },
+
+    /**
+     * Listens for shift being released to only display the "+1". There's no
+     * reliable way to distinguish between 1 or 2 shift buttons being pushed (without
+     * a tedious tracking variable), so let's assume the user won't push both down at
+     * the same time and still expect it to work properly.
+     *
+     * @private
+     * @param {KeyboardEvent} keyUpEvent
+     */
+    _onKeyUp: function (keyUpEvent) {
+        if (this.linesWidget && keyUpEvent.key === 'Shift') {
+            this.linesWidget._applyShiftKeyUp();
+        }
+    },
+
+    /**
      * Handles the `print_picking` OdooEvent. It makes an RPC call
      * to the method 'do_print_picking'.
      *
@@ -625,6 +686,14 @@ var PickingClientAction = ClientAction.extend({
     _onPrintBarcodesPdf: function (ev) {
         ev.stopPropagation();
         this._printReport(this.currentState.actionReportBarcodesPdfId);
+    },
+
+    /**
+     * @override
+     */
+    _onReload: function (ev) {
+        this._super(...arguments);
+        this._toggleKeyEvents(true);
     },
 
     /**

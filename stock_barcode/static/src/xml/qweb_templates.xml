@@ -146,19 +146,15 @@
                     <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
                         <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-2x fa-pencil"/></a>
                     </div>
-                    <t t-if="!istouchSupported || groups.group_barcode_keyboard_shortcuts">
-                        <div t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
-                            class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4">
-                            + 1
-                        </div>
-                        <div t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
-                            - 1
-                        </div>
-                        <div t-if="isPickingRelated &amp;&amp; line.product_uom_qty &amp;&amp; line.product_id.tracking != 'serial'"
-                            class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"
+                    <t t-if="!istouchSupported">
+                        <button t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
+                            class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4"
                             t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
-                            <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>
-                        </div>
+                            + 1
+                        </button>
+                        <button t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
+                            - 1
+                        </button>
                     </t>
                 </div>
             </t>

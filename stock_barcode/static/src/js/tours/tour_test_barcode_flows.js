@@ -1571,13 +1571,9 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
             helper.assert(
-                $('.o_line_button').length, 6,
-                "6 buttons must be present in the view (2 by line)"
+                $('.o_line_button').length, 3,
+                "3 buttons must be present in the view (one by line)"
             );
-            // slice so we don't include the keyboard shortcut (even if it's hidden)
-            helper.assert($('.o_add_reserved').eq(0).text().slice(0,3), '+ 2');
-            helper.assert($('.o_add_reserved').eq(1).text().slice(0,3), '+ 3');
-            helper.assert($('.o_add_reserved').eq(2).text().slice(0,3), '+ 4');
             helper.assertLineQuantityOnReservedQty(0, '0 / 2');
             helper.assertLineQuantityOnReservedQty(1, '0 / 3');
             helper.assertLineQuantityOnReservedQty(2, '0 / 4');
@@ -1587,8 +1583,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         }
     },
 
-    // On the first line...
-    // Press +1 button.
+    // On the first line, press +1 button.
     {
         trigger: '.o_barcode_line:first-child .o_add_unit'
     },
@@ -1596,7 +1591,8 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function() {
             const $line = $('.o_barcode_line:first-child');
-            helper.assertButtonIsNotVisible($line, 'add_reserved');
+            helper.assert($line.find('.o_add_unit').length, 1);
+            helper.assert($line.find('.o_add_reserved').length, 0);
             helper.assertLineQuantityOnReservedQty(0, '1 / 2');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
@@ -1611,7 +1607,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertLineButtonsAreVisible(2, false);
+            helper.assert($('.o_barcode_line:eq(2) .o_add_unit').length, 1);
             helper.assertLineQuantityOnReservedQty(2, '2 / 2');
         }
     },
@@ -1620,22 +1616,28 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text().slice(0,3), '+ 3');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
+            helper.assert($('.o_barcode_line:eq(0) .o_add_unit').length, 1);
             helper.assertLineQuantityOnReservedQty(0, '0 / 3');
         }
     },
     // Press the add remaining quantity button after triggering "shift" button so it is visible, now its buttons must be hidden.
     {
-        trigger: '.o_barcode_line:first-child',
+        trigger: '.o_barcode_client_action',
         run: function() {
-            var event = jQuery.Event("keydown");
-            event.key = "Shift";
-            $(document).trigger(event);
-            $('.o_barcode_line:first-child .o_add_reserved').click();
+            helper.pressShift();
         }
     },
-    // Product2 is now done + last line
+    {
+        trigger: '.o_barcode_line:first-child .o_add_reserved'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.releaseShift();
+
+        },
+    },
+    // Product2 is now done + last line, its button must be hidden.
     {
         trigger: '.o_barcode_client_action',
         run: function() {
@@ -1651,7 +1653,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text().slice(0,3), '+ 4');
             helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
             helper.assertLineQuantityOnReservedQty(0, '0 / 4');
         }
@@ -1664,7 +1665,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text().slice(0,3), '+ 3');
             helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
             helper.assertLineQuantityOnReservedQty(0, '1 / 4');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
@@ -1679,20 +1679,26 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assert($('.o_add_reserved').eq(0).text().slice(0,3), '+ 2');
             helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_unit');
             helper.assertLineQuantityOnReservedQty(0, '2 / 4');
         }
     },
     // Press the add remaining quantity button, now its buttons must be hidden
     {
-        trigger: '.o_barcode_line:first-child',
+        trigger: '.o_barcode_client_action',
         run: function() {
-            var event = jQuery.Event("keydown");
-            event.key = "Shift";
-            $(document).trigger(event);
-            $('.o_barcode_line:first-child .o_add_reserved').click();
+            helper.pressShift();
         }
+    },
+    {
+        trigger: '.o_barcode_line:first-child .o_add_reserved'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.releaseShift();
+
+        },
     },
     // and it is the last line again
     {
@@ -1705,7 +1711,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
 
     // Now, scan one more time the product3...
-    // ... So, a new line must be created and only the +1 button must be visible.
+    // ... So, a new line must be created and the +1 button must be visible.
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product3',
@@ -1722,8 +1728,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineQty($line, '1');
             // +1 button must be present on new line.
             helper.assert($line.find('.o_add_unit').length, 1);
-            // "Add remaining reserved quantity" button must not be present on new line.
-            helper.assert($line.find('.o_add_reserved').length, 0);
         }
     },
     // Press +1 button of the new line.
@@ -1741,7 +1745,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineQty($line, '2');
             // +1 button must still be present.
             helper.assert($line.find('.o_add_unit').length, 1);
-            helper.assert($line.find('.o_add_reserved').length, 0);
         }
     },
 
@@ -3708,211 +3711,4 @@ tour.register('test_inventory_using_buttons', {test: true}, [
     }
 ]);
 
-tour.register('test_picking_keyboard_shortcuts', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(3);
-            helper.assertScanMessage('scan_products');
-            helper.assertLocationHighlight(false);
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(true);
-            helper.assert(
-                $('.o_line_button').length, 6,
-                "6 buttons must be present in the view (2 by line)"
-            );
-            // check that keyboard shortcuts are assigned and visible on button
-            // since default is QWERTY we expect this order for the buttons.
-            // Due to html formatting to make text look pretty, let's assume '+1' and
-            // remaining qty values numbers on buttons are validated by other tests
-            helper.assert($('.o_add_unit').eq(0).text().slice(-1), 'q');
-            helper.assert($('.o_add_unit').eq(1).text().slice(-1), 'w');
-            helper.assert($('.o_add_unit').eq(2).text().slice(-1), 'e');
-            helper.assert($('.o_add_reserved').eq(0).text().slice(-1), 'Q');
-            helper.assert($('.o_add_reserved').eq(1).text().slice(-1), 'W');
-            helper.assert($('.o_add_reserved').eq(2).text().slice(-1), 'E');
-            // add reserved buttons only visible when "Shift" is pushed
-            helper.assertButtonIsNotVisible($('.o_barcode_line:first-child'), 'add_reserved');
-            helper.assertButtonIsNotVisible($('.o_barcode_line:nth-child(2)'), 'add_reserved');
-            helper.assertButtonIsNotVisible($('.o_barcode_line:last-child'), 'add_reserved');
-            helper.assertLineQuantityOnReservedQty(0, '0 / 2');
-            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
-            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
-        }
-    },
-
-    // On the first line...
-    // Press +1 button using keyboard shortcut
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.triggerKeydown("q");
-            helper.assert($('.o_add_reserved').eq(0).text().slice(-1), 'Q');
-            const $line = $('.o_barcode_line:first-child');
-            helper.assertButtonIsNotVisible($line, 'add_reserved');
-            helper.assertLineQuantityOnReservedQty(0, '1 / 2');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
-        }
-    },
-    // Press +1 button again, now its buttons must be hidden and moved to the end of list
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.triggerKeydown("q");
-            helper.assertLineButtonsAreVisible(2, false);
-            helper.assertLineQuantityOnReservedQty(2, '2 / 2');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), true);
-        }
-    },
-
-    // Product 2 now at top of list. Press Product2 add remaining quantity button.
-    // Now its buttons must be hidden and it is at the bottom fo the list.
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertLineQuantityOnReservedQty(0, '0 / 3');
-            helper.triggerKeydown("Shift");
-            // only add reserved buttons visible when "Shift" is pushed for not done lines
-            helper.assertButtonIsNotVisible($('.o_barcode_line:first-child'), 'add_unit');
-            helper.assertButtonIsNotVisible($('.o_barcode_line:nth-child(2)'), 'add_unit');
-            helper.assertButtonIsVisible($('.o_barcode_line:first-child'), 'add_reserved');
-            helper.assertButtonIsVisible($('.o_barcode_line:nth-child(2)'), 'add_reserved');
-            helper.assertLineButtonsAreVisible(2, false);
-            helper.triggerKeydown("W", true);
-            helper.assertLineQuantityOnReservedQty(2, '3 / 3');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), true);
-            document.querySelector('.o_barcode_client_action')
-                .dispatchEvent(new window.KeyboardEvent('keyup', { bubbles: true, key: "Shift"}));
-            // only add unit buttons visible when "Shift" button is released
-            helper.assertButtonIsNotVisible($('.o_barcode_line:first-child'), 'add_reserved');
-            helper.assertButtonIsVisible($('.o_barcode_line:first-child'), 'add_unit');
-            helper.assertLineButtonsAreVisible(1, false);
-            helper.assertLineButtonsAreVisible(2, false);
-        }
-    },
-
-    // change view to see that keyboard shorts get re-assigned (done lines = no keyboard shortcuts)
-    {
-        trigger: '.o_show_information'
-    },
-
-    {
-        trigger: '.o_discard'
-    },
-
-    //(product3) is at the top of list and has new shortcut key
-    {
-        trigger: '.o_barcode_lines',
-        run: function() {
-            helper.assert($('.o_add_unit').eq(0).text().slice(-1), 'q');
-            helper.assert($('.o_add_reserved').eq(0).text().slice(-1), 'Q');
-            helper.assertButtonIsVisible($('.o_barcode_line:first-child'), 'add_unit');
-            helper.assertLineQuantityOnReservedQty(0, '0 / 4');
-            helper.assert($('.o_add_unit').eq(1)[0].hasAttribute('shortcutkey'), false);
-            helper.assert($('.o_add_reserved').eq(1)[0].hasAttribute('shortcutkey'), false);
-            helper.assert($('.o_add_unit').eq(2)[0].hasAttribute('shortcutkey'), false);
-            helper.assert($('.o_add_reserved').eq(2)[0].hasAttribute('shortcutkey'), false);
-        }
-    },
-    // Add rest of product3
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.triggerKeydown("Shift");
-            helper.triggerKeydown("Q", true);
-            helper.assertLineButtonsAreVisible(2, false);
-            helper.assertLineQuantityOnReservedQty(2, '4 / 4');
-            helper.assertValidateIsHighlighted(true);
-        }
-    },
-
-    // Validate the delivery.
-    {
-        trigger: '.o_validate_page'
-    },
-    {
-        trigger: '.o_notification.bg-success',
-    },
-]);
-
-tour.register('test_inventory_keyboard_shortcuts', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action .o_barcode_line',
-        run: function () {
-            helper.assertLinesCount(1);
-            const $line = $('.o_barcode_line');
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            // check that keyboard shortcuts are assigned and visible on button
-            // since default is QWERTY we expect this order for the buttons.
-            // Due to html formatting to make text look pretty, let's assume '+1' and
-            // -1 numbers on buttons are validated by other tests
-            helper.assert($('.o_add_unit').text().slice(-1), 'q');
-            helper.assert($('.o_remove_unit').text().slice(-1), 'Q');
-            // "Q" shouldn't be visible but "q" should
-            helper.assert($('.o_remove_unit').children(":first").css('display'), 'none');
-            helper.assert($('.o_add_unit').children(":first").css('display'), 'inline');
-            helper.triggerKeydown("Shift");
-            // "q" shouldn't be visible but "Q" should
-            helper.assert($('.o_add_unit').children(":first").css('display'), 'none');
-            helper.assert($('.o_remove_unit').children(":first").css('display'), 'inline');
-            helper.triggerKeydown("Q", true);
-        }
-    },
-    // -1 button triggered via key shortcut: must have 0 quantity, -1 must be hidden now.
-    {
-        trigger: '.o_barcode_line:contains("0")',
-        run: function () {
-            helper.assertLinesCount(1);
-            const $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_unit');
-            helper.assertButtonIsNotVisible($line, 'remove_unit');
-            // stop pressing shift = can see "q" again
-            document.querySelector('.o_barcode_client_action')
-                .dispatchEvent(new window.KeyboardEvent('keyup', { bubbles: true, key: "Shift"}));
-            helper.assert($('.o_add_unit').children(":first").css('display'), 'inline');
-            helper.triggerKeydown("q");
-
-        }
-    },
-    // +1 button trigged via key shortcut: must have 1 quantity, -1 must be visible now.
-    {
-        trigger: '.o_barcode_line:contains("1")',
-        run: function () {
-            helper.assertLinesCount(1);
-            const $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_unit');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            // "Q" shouldn't be visible but "q" should
-            helper.assert($('.o_remove_unit').children(":first").css('display'), 'none');
-            helper.assert($('.o_add_unit').children(":first").css('display'), 'inline');
-        }
-    },
-
-    // Validates the inventory.
-    {
-        trigger: '.o_validate_page'
-    },
-    {
-        trigger: '.o_notification.bg-success'
-    }
-]);
 });

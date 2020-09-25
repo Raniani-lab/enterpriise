@@ -99,9 +99,6 @@ var ClientAction = AbstractAction.extend({
         var self = this;
         this.$('.o_content').addClass('o_barcode_client_action');
         core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
-        this._onKeyDown = this._onKeyDown.bind(this);
-        this._onKeyUp = this._onKeyUp.bind(this);
-        this._toggleKeyEvents(true);
 
         this.headerWidget = new HeaderWidget(this);
         this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode, this.allow_scrap);
@@ -120,7 +117,6 @@ var ClientAction = AbstractAction.extend({
 
     destroy: function () {
         core.bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);
-        this._toggleKeyEvents(false);
         this._super();
     },
 
@@ -208,10 +204,8 @@ var ClientAction = AbstractAction.extend({
                 'group_tracking_lot': self.currentState.group_tracking_lot,
                 'group_production_lot': self.currentState.group_production_lot,
                 'group_uom': self.currentState.group_uom,
-                'group_barcode_keyboard_shortcuts': self.currentState.group_barcode_keyboard_shortcuts,
             };
             self.show_entire_packs = self.currentState.show_entire_packs;
-            self.keyboard_layout = self.currentState.keyboard_layout;
             if (self._isPickingRelated()) {
                 self.sourceLocations = self.currentState.source_location_list;
                 self.destinationLocations = self.currentState.destination_location_list;
@@ -967,22 +961,6 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
-     * Enables or disables the `keydown` and `keyup` event.
-     * They are toggled when passing through the form view (edit or add a line).
-     *
-     * @param {boolean} mustBeActive
-     */
-    _toggleKeyEvents: function (mustBeActive) {
-        if (mustBeActive) {
-            document.addEventListener('keydown', this._onKeyDown);
-            document.addEventListener('keyup', this._onKeyUp);
-        } else {
-            document.removeEventListener('keydown', this._onKeyDown);
-            document.removeEventListener('keyup', this._onKeyUp);
-        }
-    },
-
-    /**
      * Define and return a formatted command to update a record line.
      *
      * @abstract
@@ -1728,7 +1706,6 @@ var ClientAction = AbstractAction.extend({
      */
      _onAddLine: function (ev) {
         ev.stopPropagation();
-        this._toggleKeyEvents(false);
         this.mutex.exec(() => {
             this.linesWidgetState = this.linesWidget.getState();
             this.linesWidget.destroy();
@@ -1756,7 +1733,6 @@ var ClientAction = AbstractAction.extend({
      */
     _onEditLine: function (ev) {
         ev.stopPropagation();
-        this._toggleKeyEvents(false);
         this.linesWidgetState = this.linesWidget.getState();
         this.linesWidget.destroy();
         this.headerWidget.toggleDisplayContext('specialized');
@@ -1848,7 +1824,6 @@ var ClientAction = AbstractAction.extend({
      */
     _onReload: function (ev) {
         ev.stopPropagation();
-        this._toggleKeyEvents(true);
         if (this.ViewsWidget) {
             this.ViewsWidget.destroy();
         }
@@ -1947,64 +1922,6 @@ var ClientAction = AbstractAction.extend({
        ev.stopPropagation();
        this._validate();
    },
-
-    /**
-     * Listens for:
-     * 1. Shift being pushed for:
-     *      a. case "model == inventory": display capitalized shortcut letters only (show both buttons)
-     *      b. case "model == picking/batch.picking": display add remaining qty buttons only (show only 1 button)
-     * 2. Letter being clicked to trigger corresponding product increment button.
-     *
-     * Assumptions:
-     * - We don't need to worry about Caps Lock being active because it's a huge pain to detect
-     *   and probably can't be until the first letter is pushed.
-     * - We don't need to hide the letters when "Alt" is pushed (i.e. when accesskeys are displayed)
-     *   because of weird interactions that the accesskey logic sometimes causes (e.g. when 'alt' is
-     *   pushed firefox may display menubar if it's not displayed and interrupt accesskey display logic).
-     *   See 'keyboard_navigation_mixin.js' for accesskey logic
-     *
-     * @private
-     * @param {KeyboardEvent} keyDownEvent
-     */
-    _onKeyDown: function (keyDownEvent) {
-        if (this.currentState.group_barcode_keyboard_shortcuts &&
-            this.linesWidget &&
-            !keyDownEvent.repeat && !keyDownEvent.ctrlKey &&
-            !keyDownEvent.altKey && !keyDownEvent.metaKey) {
-            if (keyDownEvent.key === "Shift") {
-                this.linesWidget._applyShiftKeyDown();
-            }
-            else if ("abcdefghijklmnopqrstuvwxyz".includes(keyDownEvent.key.toLowerCase())) {
-                let $button;
-                // ignore if caps lock is on because displayed letters are only based on shift
-                if (keyDownEvent.shiftKey) {
-                    $button = this.$el.find('[shortcutKey="' + keyDownEvent.key.toUpperCase() + '"]');
-                } else {
-                    $button = this.$el.find('[shortcutKey="' + keyDownEvent.key.toLowerCase() + '"]');
-                }
-                if ($button.length && $button.is(":visible")) {
-                    $button[0].click();
-                }
-            }
-        }
-    },
-
-    /**
-     * Listens for shift being released to only display lowercase letters. There's no
-     * reliable way to distinguish between 1 or 2 shift buttons being pushed (without
-     * a tedious tracking variable), so let's assume the user won't push both down at
-     * the same time and still expect it to work properly.
-     *
-     * @private
-     * @param {KeyboardEvent} keyUpEvent
-     */
-    _onKeyUp: function (keyUpEvent) {
-        if (this.currentState.group_barcode_keyboard_shortcuts && this.linesWidget) {
-            if (keyUpEvent.key === 'Shift') {
-                this.linesWidget._applyShiftKeyUp();
-            }
-        }
-    },
 
 });
 

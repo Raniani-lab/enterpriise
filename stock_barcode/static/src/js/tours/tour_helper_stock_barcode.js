@@ -69,16 +69,11 @@ function assertButtonIsNotVisible ($line, buttonName) {
  * @param {integer} lineIndex
  * @param {boolean} isVisible
  */
-function assertLineButtonsAreVisible (lineIndex, isVisible) {
-    const cssClass = isVisible ? 'block' : 'none';
-    const $addUnit = $('.o_barcode_line').eq(lineIndex).find('.o_add_unit');
-    const $addReserved = $('.o_barcode_line').eq(lineIndex).find('.o_add_reserved');
+function assertLineButtonsAreVisible (lineIndex, isVisible, cssSelector='.o_line_button') {
+    const cssDisplay = isVisible ? 'block' : 'none';
+    const $buttonAddQty = $(`.o_barcode_line:eq(${lineIndex}) ${cssSelector}`);
     assert(
-        $addUnit.css('display'), cssClass,
-        `Buttons must be ${(isVisible ? 'visible' : 'hidden')}`
-    );
-    assert(
-        $addReserved.css('display'), cssClass,
+        $buttonAddQty.css('display'), cssDisplay,
         `Buttons must be ${(isVisible ? 'visible' : 'hidden')}`
     );
 }
@@ -226,6 +221,22 @@ function assertQuantsCount(expected) {
     assert($quantity, expected, 'Wrong number of cards');
 }
 
+function pressShift() {
+    document.querySelector('.o_barcode_client_action').dispatchEvent(
+        new window.KeyboardEvent(
+            'keydown', { bubbles: true, key: 'Shift' },
+        )
+    );
+}
+
+function releaseShift() {
+    document.querySelector('.o_barcode_client_action').dispatchEvent(
+        new window.KeyboardEvent(
+            'keyup', { bubbles: true, key: 'Shift' },
+        )
+    );
+}
+
 return {
     assert: assert,
     assertButtonIsVisible: assertButtonIsVisible,
@@ -256,6 +267,8 @@ return {
     assertValidateVisible: assertValidateVisible,
     fail: fail,
     getLine: getLine,
+    pressShift: pressShift,
+    releaseShift: releaseShift,
     triggerKeydown: triggerKeydown,
 };
 

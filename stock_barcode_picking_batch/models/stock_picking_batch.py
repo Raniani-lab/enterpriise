@@ -142,8 +142,6 @@ class StockPickingBatch(models.Model):
                 batch_picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
             batch_picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             batch_picking['group_uom'] = self.env.user.has_group('uom.group_uom')
-            batch_picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')
-            batch_picking['keyboard_layout'] = company.keyboard_layout
             if batch_picking['picking_type_id']:
                 batch_picking['use_create_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_create_lots
                 batch_picking['use_existing_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_existing_lots

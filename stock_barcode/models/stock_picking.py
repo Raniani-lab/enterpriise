@@ -70,8 +70,6 @@ class StockPicking(models.Model):
                 picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
             picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             picking['group_uom'] = self.env.user.has_group('uom.group_uom')
-            picking['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')
-            picking['keyboard_layout'] = company.keyboard_layout
             picking['use_create_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_create_lots
             picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
             picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs

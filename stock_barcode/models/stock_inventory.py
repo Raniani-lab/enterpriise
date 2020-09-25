@@ -87,8 +87,6 @@ class StockInventory(models.Model):
             inventory['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
             inventory['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             inventory['group_uom'] = self.env.user.has_group('uom.group_uom')
-            inventory['group_barcode_keyboard_shortcuts'] = self.env.user.has_group('stock_barcode.group_barcode_keyboard_shortcuts')
-            inventory['keyboard_layout'] = company.keyboard_layout
             inventory['actionReportInventory'] = self.env.ref('stock.action_report_inventory').id
             if self.env.company.nomenclature_id:
                 inventory['nomenclature_id'] = [self.env.company.nomenclature_id.id]

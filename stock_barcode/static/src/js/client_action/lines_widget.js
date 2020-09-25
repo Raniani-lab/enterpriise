@@ -32,7 +32,6 @@ var LinesWidget = Widget.extend({
         this.groups = parent.groups;
         this.model = parent.actionParams.model;
         this.show_entire_packs = parent.show_entire_packs;
-        this.keyboard_layout = parent.keyboard_layout;
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
@@ -335,9 +334,6 @@ var LinesWidget = Widget.extend({
                     this._updateIncrementButtons($(line));
                 }
             }
-            if (!this.istouchSupported && this.groups.group_barcode_keyboard_shortcuts) {
-                this._assignKeyboardShortcuts($lines);
-            }
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
             $lines.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
         }
@@ -607,7 +603,7 @@ var LinesWidget = Widget.extend({
      * @param {jQueryElement} $line
      */
     _updateIncrementButtons: function ($line) {
-        if (this.istouchSupported && !this.groups.group_barcode_keyboard_shortcuts) {
+        if (this.istouchSupported) {
             return;
         }
         const id = $line.data('id');
@@ -626,18 +622,18 @@ var LinesWidget = Widget.extend({
                 return;
             }
             if (qtyDone < line.product_uom_qty) {
-                // Updates the remaining quantities...
-                const $button = $line.find('.o_add_reserved');
+                const $button = $line.find('button[class*="o_add_"]');
                 const qty = line.product_uom_qty - qtyDone;
-                $button.data('reserved', qty);
-                if ($button.attr('shortcutKey')) {
-                    $button.html(`+ ${qty}` + "<span><br/>" + $button.attr('shortcutKey') + "</span>");
-                } else {
+                if (this.shiftPressed) {
+                    // Updates the remaining quantities...
+                    $button.data('reserved', qty);
                     $button.text(`+ ${qty}`);
-                }
-                if (qty === 1) {
-                    // hide button to avoid having two +1 buttons
-                    $button.hide();
+                    $button.toggleClass('o_add_reserved', true);
+                    $button.toggleClass('o_add_unit', false);
+                } else {
+                    $button.text(`+ 1`);
+                    $button.toggleClass('o_add_unit', true);
+                    $button.toggleClass('o_add_reserved', false);
                 }
             } else {
                 // hides the buttons since they are now useless.
@@ -667,60 +663,6 @@ var LinesWidget = Widget.extend({
         });
     },
 
-    //--------------------------------------------------------------------------
-    // Keyboard Shortcut
-    //--------------------------------------------------------------------------
-
-    /**
-     * Assignment function for keyboard shortcuts for increment buttons. Some hacking is required
-     * due to dynamic display of letters based on whether "Shift" is pushed or not (in
-     * "model == inventory" case). Order of the assigned letters is based on user setting and only
-     * uses the 26 English letters regardless of selected keyboard. For "model != inventory" only 1
-     * button at most will be displayed when keyboard shortcuts are used.
-     *
-     * @private
-     */
-    _assignKeyboardShortcuts: function ($lines) {
-        let candidateLetters;
-        if (this.keyboard_layout === 'qwerty') {
-            candidateLetters = "qwertyuiopasdfghjklzxcvbnm";
-        } else if (this.keyboard_layout === 'azerty') {
-            candidateLetters = "azertyuiopqsdfghjklmwxcvbn,";
-        } else {
-            candidateLetters = "abcdefghijklmnopqrstuvwxyz";
-        }
-        let letterIndex = 0;
-        let shortcutKey = true;
-        for (const line of $lines) {
-            if (line.dataset && !$(line).hasClass('o_line_qty_completed')) {
-                let addUnit = $(line).find('.o_add_unit');
-                let otherButton = $(line).find('.o_add_reserved, .o_remove_unit');
-
-                if ((addUnit.length || otherButton.length) && shortcutKey != false) {
-                    shortcutKey = candidateLetters[letterIndex];
-                    addUnit.attr('shortcutKey', shortcutKey);
-                    addUnit.html(addUnit.text() + "<span><br/>" + shortcutKey + "</span>");
-                    // dynamically set css to handle centering text when letters appear/disappear (i.e. "Shift is pushed")
-                    addUnit.addClass("o_shortcut_displayed");
-                    otherButton.attr('shortcutKey', shortcutKey.toUpperCase());
-                    otherButton.html(otherButton.text() + "<span><br/>" +  shortcutKey.toUpperCase() + "</span>");
-                    if (this.model === 'stock.inventory') {
-                        otherButton.children(":first").hide();
-                    } else {
-                        otherButton.addClass("o_shortcut_displayed");
-                    }
-                    letterIndex++;
-                }
-                if (letterIndex >= candidateLetters.length) {
-                    shortcutKey = false;
-                }
-                if (this.model != 'stock.inventory') {
-                    otherButton.hide();
-                }
-            }
-        }
-    },
-
     /**
      * Handles visualization of increment buttons when shift button pushed
      *
@@ -736,9 +678,11 @@ var LinesWidget = Widget.extend({
                 removeUnits.find(":first-child").show();
                 removeUnits.addClass("o_shortcut_displayed");
             } else {
-                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
-                $lines.find('.o_add_unit').hide();
-                $lines.find('.o_add_reserved').show();
+                this.shiftPressed = true;
+                const lines = document.querySelectorAll('.o_barcode_line');
+                for (const line of lines) {
+                    this._updateIncrementButtons($(line));
+                }
             }
         }
     },
@@ -758,9 +702,11 @@ var LinesWidget = Widget.extend({
                 removeUnits.find(":first-child").hide();
                 removeUnits.removeClass("o_shortcut_displayed");
             } else {
-                const $lines = this.$('.o_barcode_line:not(.o_line_qty_completed)');
-                $lines.find('.o_add_unit').show();
-                $lines.find('.o_add_reserved').hide();
+                this.shiftPressed = false;
+                const lines = document.querySelectorAll('.o_barcode_line');
+                for (const line of lines) {
+                    this._updateIncrementButtons($(line));
+                }
             }
         }
     },

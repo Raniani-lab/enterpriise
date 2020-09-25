@@ -38,12 +38,12 @@ class StockPicking(models.Model):
         pickings = self.read(picking_fields_to_read)
         source_location_list, destination_location_list = self._get_locations()
         for picking in pickings:
-            picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).read(move_line_ids_fields_to_read)
+            picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).with_context(display_default_code=False).read(move_line_ids_fields_to_read)
 
             # Prefetch data
             product_ids = tuple(set([move_line_id['product_id'][0] for move_line_id in picking['move_line_ids']]))
             tracking_and_barcode_per_product_id = {}
-            for res in self.env['product.product'].with_context(active_test=False).search_read([('id', 'in', product_ids)], ['tracking', 'barcode']):
+            for res in self.env['product.product'].with_context(active_test=False).search_read([('id', 'in', product_ids)], ['tracking', 'barcode', 'code']):
                 tracking_and_barcode_per_product_id[res.pop("id")] = res
 
             for move_line_id in picking['move_line_ids']:

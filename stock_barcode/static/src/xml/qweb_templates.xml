@@ -106,10 +106,22 @@
                     t-att-data-id="line.virtual_id || line.id"
                     t-att-data-barcode="line.product_barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
-                        <div class="o_barcode_line_title pb-1">
-                            <i class="fa fa-fw fa-tags"/>
-                            <span class="product-label" t-esc="line.display_name || line.product_id.display_name"/>
-                        </div>
+                        <t t-if="line.product_id.code">
+                            <div class="o_barcode_line_title">
+                                <i class="fa fa-fw fa-tags"/>
+                                <span class="o_barcode_product_ref"><b>[<t t-esc="line.product_id.code"/>]</b></span>
+                            </div>
+                            <div>
+                                <i class="fa fa-fw"/>
+                                <span class="product-label" t-esc="line.display_name || line.product_id.display_name"/>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="o_barcode_line_title pb-1">
+                                <i class="fa fa-fw fa-tags"/>
+                                <span class="product-label" t-esc="line.display_name || line.product_id.display_name"/>
+                            </div>
+                        </t>
                         <div name="quantity"> <!-- Name used for inheritance -->
                             <i class="fa fa-fw fa-cube"/>
                             <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}"> <!-- @SLE: Eventually add contextual classes: "badge-warning", "badge-danger", "badge-success"  -->
@@ -123,6 +135,9 @@
                                 </t>
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
+                            <span t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-inline-flex pl-2">
+                                <a class="o_edit" href="#" title="Edit"><i class="fa fa-pencil"/></a>
+                            </span>
                         </div>
                         <div t-if="line.package_id || line.result_package_id" name="package">
                             <i class="fa fa-fw fa-archive"/>
@@ -143,19 +158,14 @@
                     <div t-if="line.partner_id">
                         <i class="fa fa-fw fa-user-o"/> <t t-esc="line.partner_id[1]"/>
                     </div>
-                    <div t-if="state != 'done' and state != 'cancel'" class="o_barcode_line_actions d-flex align-items-center pl-4">
-                        <a class="o_edit text-muted" href="#" title="Edit"><i class="fa fa-2x fa-pencil"/></a>
-                    </div>
-                    <t t-if="!istouchSupported">
-                        <button t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
-                            class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4"
-                            t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
-                            + 1
-                        </button>
-                        <button t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
-                            - 1
-                        </button>
-                    </t>
+                    <button t-if="!isPickingRelated || (line.product_id.tracking !== 'serial')"
+                        class="o_line_button o_add_unit btn btn-primary ml-2 ml-sm-4"
+                        t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
+                        + 1
+                    </button>
+                    <button t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
+                        - 1
+                    </button>
                 </div>
             </t>
         </t>

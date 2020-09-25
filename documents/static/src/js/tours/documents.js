@@ -11,10 +11,6 @@ tour.register('documents_tour', {
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents."),
     position: 'bottom',
-}, { // equivalent to '.o_search_panel_category_value:contains('Internal')' but language agnostic.
-    trigger: '.o_search_panel_category_value:eq(2)',
-    content: _t("Select the Internal workspace."),
-    position: 'bottom',
 }, {
     trigger: 'img[src="https://img.youtube.com/vi/Ayab6wZ_U1A/0.jpg"]',
     content: _t("Click on a thumbnail to <b>preview the document</b>."),

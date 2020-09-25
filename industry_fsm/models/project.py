@@ -13,6 +13,14 @@ class Project(models.Model):
     _inherit = "project.project"
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
+    allow_subtasks = fields.Boolean(
+        compute="_compute_allow_subtasks", store=True, readonly=False)
+
+    @api.depends("is_fsm")
+    def _compute_allow_subtasks(self):
+        has_group = self.env.user.has_group("project.group_subtask_project")
+        for project in self:
+            project.allow_subtasks = has_group and not project.is_fsm
 
     @api.model
     def default_get(self, fields_list):

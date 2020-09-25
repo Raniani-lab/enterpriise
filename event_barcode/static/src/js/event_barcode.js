@@ -22,7 +22,8 @@ var EventScanView = AbstractAction.extend({
      */
     init: function(parent, action) {
         this._super.apply(this, arguments);
-        this.eventId = action.context.default_event_id || (action.context.active_model === 'event.event' && context.active_id);
+        console.log(action.context);
+        this.eventId = action.context.default_event_id || (action.context.active_model === 'event.event' && action.context.active_id);
         this.isMultiEvent = ! this.eventId;
     },
 
@@ -98,7 +99,13 @@ var EventScanView = AbstractAction.extend({
         if (this.isMultiEvent) {
             this.do_action("event.event_registration_action");
         } else {
-            this.do_action("event.act_event_registration_from_event");
+            this.do_action("event.act_event_registration_from_event", {
+                additional_context: {
+                    active_id: this.eventId,
+                    search_default_unconfirmed: true,
+                    search_default_confirmed: true,
+                }
+            });
         }
     },
 

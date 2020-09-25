@@ -369,6 +369,7 @@
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="team_id" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                <field name="recurring_total"/>
                 <field name="percentage_satisfaction"/>
                 <field name="recurring_total_incl" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'"/>

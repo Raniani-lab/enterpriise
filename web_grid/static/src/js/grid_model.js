@@ -29,6 +29,16 @@ const GridModel = AbstractModel.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * @public
+     */
+    computeAllTotals: function (state) {
+        state.data.forEach((group, groupIndex) => {
+            state.data[groupIndex].totals = this._computeTotals(group.grid);
+        });
+        state.totals = this._computeTotals(_.flatten(_.pluck(state.data, 'grid'), true));
+        return state;
+    },
+    /**
      * @override
      * @returns {Object}
      */
@@ -184,10 +194,7 @@ const GridModel = AbstractModel.extend({
             currentCell.value = result[0][cellField];
             currentCell.size = result[0][colField + '_count'];
             currentCell.domain = domain;
-            self._gridData.data.forEach((group, groupIndex) => {
-                self._gridData.data[groupIndex].totals = self._computeTotals(group.grid);
-            });
-            self._gridData.totals = self._computeTotals(_.flatten(_.pluck(self._gridData.data, 'grid'), true));
+            self._gridData = self.computeAllTotals(self._gridData);
         });
     },
 

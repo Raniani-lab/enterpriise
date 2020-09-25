@@ -2,6 +2,7 @@
 <templates>
     <div t-name="web_grid.GridRenderer" class="o_grid_view"
         t-on-grid-cell-focus="_onFocusComponent"
+        t-on-grid-cell-update-temporary="_onUpdateValueTemporary"
         t-on-grid-cell-update="_onUpdateValue" owl="1">
         <div t-if="showNoContentHelp" class="o_view_nocontent">
             <div class="o_nocontent_help">

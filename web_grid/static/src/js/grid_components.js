@@ -242,6 +242,10 @@ odoo.define('web_grid.components', function (require) {
             const closestIndex = range.indexOf(closest);
             const nextIndex = closestIndex + 1 < range.length ? closestIndex + 1 : 0;
             this.state.value = this._parse(range[nextIndex].toString());
+            this.trigger('grid-cell-update-temporary', {
+                path: this.props.path,
+                value: this.state.value
+            });
         }
 
     }

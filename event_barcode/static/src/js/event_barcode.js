@@ -22,7 +22,6 @@ var EventScanView = AbstractAction.extend({
      */
     init: function(parent, action) {
         this._super.apply(this, arguments);
-        console.log(action.context);
         this.eventId = action.context.default_event_id || (action.context.active_model === 'event.event' && action.context.active_id);
         this.isMultiEvent = ! this.eventId;
     },

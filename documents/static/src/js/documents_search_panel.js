@@ -16,11 +16,6 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
     ].join();
 
     class DocumentsSearchPanel extends SearchPanel {
-        constructor() {
-            super(...arguments);
-
-            this.dragFocus = null;
-        }
 
         //---------------------------------------------------------------------
         // Private
@@ -64,16 +59,15 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
          * Gives the "dragover" class to the given element or remove it if none
          * is provided.
          * @private
-         * @param {HTMLElement} newDragFocus
+         * @param {HTMLElement} [newDragFocus]
          */
         _updateDragOverClass(newDragFocus) {
             const allSelected = this.el.querySelectorAll(":scope .o_drag_over_selector");
             for (const selected of allSelected) {
                 selected.classList.remove("o_drag_over_selector");
             }
-            this.dragFocus = newDragFocus;
-            if (this.dragFocus) {
-                this.dragFocus.classList.add("o_drag_over_selector");
+            if (newDragFocus) {
+                newDragFocus.classList.add("o_drag_over_selector");
             }
         }
 
@@ -88,11 +82,12 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
          * @param {DragEvent} ev
          */
         _onDragEnter(sectionId, valueId, { currentTarget, dataTransfer }) {
-            this._updateDragOverClass(currentTarget);
             if (
+                valueId !== false &&
                 this._isValidElement(currentTarget, dataTransfer) &&
                 this._hasValidFieldName(sectionId)
             ) {
+                this._updateDragOverClass(currentTarget);
                 const [section] = this.model.get("sections", (s) => s.id === sectionId);
                 const { childrenIds } = section.values.get(valueId);
                 if (childrenIds && childrenIds.length) {
@@ -100,6 +95,8 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
                     // to allow drops in its children.
                     this.state.expanded[sectionId][valueId] = true;
                 }
+            } else {
+                this._updateDragOverClass();
             }
         }
 
@@ -123,7 +120,7 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
         async _onDrop(sectionId, valueId, { currentTarget, dataTransfer }) {
             this._updateDragOverClass(null);
             if (
-                isNaN(valueId) || // prevents dropping in "All" folder
+                valueId === false || // prevents dropping in "All" folder
                 currentTarget.classList.contains("active") || // prevents dropping in the current folder
                 !this._isValidElement(currentTarget, dataTransfer) ||
                 !this._hasValidFieldName(sectionId)

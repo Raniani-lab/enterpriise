@@ -2991,6 +2991,60 @@ QUnit.module('documents_kanban_tests.js', {
         kanban.destroy();
     });
 
+    QUnit.test('SearchPanel: can not drag and hover over the search panel All selector', async function (assert) {
+        assert.expect(1);
+
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'write' && args.model === 'documents.document') {
+                    throw new Error('It should not be possible to drop a record on the All selector');
+                }
+                return this._super.apply(this, arguments);
+            },
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                    <i class="fa fa-circle-thin o_record_selector"/>
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+        });
+
+        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector');
+        const $allSelector = kanban.$('.o_search_panel_category_value:eq(0)');
+        // selects one record
+        await testUtils.dom.click($yopRecord);
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
+        // starts the drag on a selected record
+        const startEvent = new Event('dragstart', { bubbles: true, });
+        const dataTransfer = new DataTransfer();
+        startEvent.dataTransfer = dataTransfer;
+        $yopRecord[0].dispatchEvent(startEvent);
+
+        const dragenterEvent = new Event('dragenter', { bubbles: true, });
+        $allSelector[0].dispatchEvent(dragenterEvent);
+         assert.doesNotHaveClass($allSelector, 'o_drag_over_selector',
+            "the All selector should not have the hover effect");
+
+        // drop on the "All" search panel category
+        // it should not add another write step.
+        const dropEvent = new Event('drop', { bubbles: true, });
+        dropEvent.dataTransfer = dataTransfer;
+        $allSelector.find('header')[0].dispatchEvent(dropEvent);
+
+        // makes sure that we are after the setTimeout of the dragStart handler
+        // that removes the drag Icon from the DOM.
+        await testUtils.nextTick();
+
+        kanban.destroy();
+    });
+
     QUnit.test('documents: upload progress bars', async function (assert) {
         assert.expect(5);
 

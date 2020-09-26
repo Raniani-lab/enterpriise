@@ -3,20 +3,29 @@ odoo.define('timesheet_grid.timesheet_pivot_view', function (require) {
     
     const PivotView = require('web.PivotView');
     const PivotRenderer = require('web.PivotRenderer');
-    const QRCodeMixin = require('hr_timesheet.res.config.form');
+    const TimesheetConfigQRCodeMixin = require('timesheet_grid.TimesheetConfigQRCodeMixin');
     const viewRegistry = require('web.view_registry');
-    
-    const TimesheetPivotRenderer = PivotRenderer.extend(QRCodeMixin.TimesheetConfigQRCodeMixin);
-    
+    const { onMounted, onPatched } = owl.hooks;
+
+    class TimesheetGridRenderer extends PivotRenderer {
+        constructor() {
+            super(...arguments);
+            onMounted(() => this._bindPlayStoreIcon());
+            onPatched(() => this._bindPlayStoreIcon());
+        }
+    }
+
+    // QRCode mixin to bind event on play store icon
+    Object.assign(PivotRenderer.prototype, TimesheetConfigQRCodeMixin);
+
     const TimesheetPivotView = PivotView.extend({
         config: _.extend({}, PivotView.prototype.config, {
-            Renderer: TimesheetPivotRenderer
+            Renderer: TimesheetGridRenderer
         })
     });
-    
+
     viewRegistry.add('timesheet_pivot_view', TimesheetPivotView);
-    
-    return { TimesheetPivotView, TimesheetPivotRenderer };
-    
-    });
-    
+
+    return { TimesheetPivotView, TimesheetGridRenderer };
+
+});

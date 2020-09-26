@@ -4,6 +4,7 @@
             <link rel="stylesheet" type="text/scss" href="/timesheet_grid/static/src/scss/timesheet_grid.scss"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom.js"></script>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_uom_timer.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_config_mixin.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_renderer.js"/>
@@ -18,6 +19,7 @@
 
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_kanban/timesheet_kanban_view.js"/>
             <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_list/timesheet_list_view.js"/>
+            <script type="text/javascript" src="/timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js"/>
 
             <script type="text/javascript" src="/timesheet_grid/static/src/js/tours/timesheet_grid.js"/>
         </xpath>

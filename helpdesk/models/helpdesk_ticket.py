@@ -409,7 +409,7 @@ class HelpdeskTicket(models.Model):
     def _compute_assign_hours(self):
         for ticket in self:
             create_date = fields.Datetime.from_string(ticket.create_date)
-            if create_date and ticket.assign_date:
+            if create_date and ticket.assign_date and ticket.team_id.resource_calendar_id:
                 duration_data = ticket.team_id.resource_calendar_id.get_work_duration_data(create_date, fields.Datetime.from_string(ticket.assign_date), compute_leaves=True)
                 ticket.assign_hours = duration_data['hours']
             else:

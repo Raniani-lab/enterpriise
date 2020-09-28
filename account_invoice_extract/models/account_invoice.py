@@ -725,8 +725,8 @@ class AccountMove(models.Model):
                     with move_form.line_ids.edit(i) as line:
                         if line.tax_repartition_line_id and total_ocr:
                             rounding_error = move_form.amount_total - total_ocr
-                            threshold = len(vals_invoice_lines) * 0.01
-                            if rounding_error != 0.0 and abs(rounding_error) < threshold:
+                            threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
+                            if not move_form.currency_id.is_zero(rounding_error) and abs(rounding_error) < threshold:
                                 line.debit -= rounding_error
                             break
 

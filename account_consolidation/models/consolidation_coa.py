@@ -247,7 +247,7 @@ class ConsolidationGroup(models.Model):
     _parent_name = "parent_id"
     _parent_store = True
 
-    chart_id = fields.Many2one('consolidation.chart', string="Consolidation", required=True)
+    chart_id = fields.Many2one('consolidation.chart', string="Consolidation", required=True, ondelete='cascade')
     name = fields.Char(string='Name', required=True)
     sequence = fields.Integer()
     show_on_dashboard = fields.Boolean(default=False)

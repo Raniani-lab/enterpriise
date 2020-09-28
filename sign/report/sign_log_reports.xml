@@ -85,7 +85,7 @@
                                             <span t-field="log.latitude"/>,
                                             <span t-field="log.longitude"/>
                                             <div>
-                                                <a t-attf-href="https://www.google.com/maps/place/{{log.latitude}},{{log.longitude}}">
+                                                <a t-attf-href="https://www.google.com/maps/search/?api=1&amp;query={{log.latitude}},{{log.longitude}}">
                                                     <i class="fa fa-globe"/> View
                                                 </a>
                                             </div>
@@ -133,7 +133,7 @@
                                     <t t-if="log.latitude and log.longitude">
                                         <span t-field="log.latitude"/>,
                                         <span t-field="log.longitude"/>
-                                        <a t-attf-href="https://maps.google.com/map/place/{{log.latitude}},{{log.longitude}}">
+                                        <a t-attf-href="https://www.google.com/maps/search/?api=1&amp;query={{log.latitude}},{{log.longitude}}">
                                             <i class="fa fa-globe"/> View
                                         </a>
                                     </t>

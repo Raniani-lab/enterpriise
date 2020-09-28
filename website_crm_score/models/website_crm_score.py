@@ -5,14 +5,14 @@ import datetime
 import logging
 
 from odoo import fields, models, api
-from odoo.tools.safe_eval import safe_eval
+from odoo.tools import safe_eval
 from odoo.osv.expression import expression
 
 
 _logger = logging.getLogger(__name__)
 
 evaluation_context = {
-    'datetime': datetime,
+    'datetime': safe_eval.datetime,
     'context_today': datetime.datetime.now,
 }
 
@@ -58,7 +58,7 @@ class website_crm_score(models.Model):
     def _assert_valid_domain(self):
         for rec in self:
             try:
-                domain = safe_eval(rec.domain or '[]', evaluation_context)
+                domain = safe_eval.safe_eval(rec.domain or '[]', evaluation_context)
                 self.env['crm.lead'].search(domain, limit=1)
             except Exception as e:
                 _logger.warning('Exception: %s' % (e,))
@@ -82,7 +82,7 @@ class website_crm_score(models.Model):
 
         for score in scores:
             now = datetime.datetime.now()
-            domain = safe_eval(score.domain, evaluation_context)
+            domain = safe_eval.safe_eval(score.domain, evaluation_context)
 
             # Don't replace the domain with a 'not in' like below... that doesn't make the same thing !!!
             # domain.extend(['|', ('stage_id.is_won', '=', False), ('probability', 'not in', [0,100])])

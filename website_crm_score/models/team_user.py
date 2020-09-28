@@ -4,10 +4,10 @@
 import datetime
 
 from odoo import fields, api, models
-from odoo.tools.safe_eval import safe_eval
+from odoo.tools import safe_eval
 
 evaluation_context = {
-    'datetime': datetime,
+    'datetime': safe_eval.datetime,
     'context_today': datetime.datetime.now,
 }
 
@@ -43,7 +43,7 @@ class team_user(models.Model):
     def _assert_valid_domain(self):
         for rec in self:
             try:
-                domain = safe_eval(rec.team_user_domain or '[]', evaluation_context)
+                domain = safe_eval.safe_eval(rec.team_user_domain or '[]', evaluation_context)
                 self.env['crm.lead'].search(domain, limit=1)
             except Exception:
                 raise Warning('The domain is incorrectly formatted')

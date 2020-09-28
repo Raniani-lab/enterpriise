@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, api, models, tools
-from odoo.tools.safe_eval import safe_eval
+from odoo.tools import safe_eval
 
 from random import randint, shuffle
 
@@ -14,7 +14,7 @@ import threading
 _logger = logging.getLogger(__name__)
 
 evaluation_context = {
-    'datetime': datetime,
+    'datetime': safe_eval.datetime,
     'context_today': datetime.datetime.now,
 }
 
@@ -48,7 +48,7 @@ class crm_team(models.Model):
     def _assert_valid_domain(self):
         for rec in self:
             try:
-                domain = safe_eval(rec.score_team_domain or '[]', evaluation_context)
+                domain = safe_eval.safe_eval(rec.score_team_domain or '[]', evaluation_context)
                 self.env['crm.lead'].search(domain, limit=1)
             except Exception:
                 raise Warning('The domain is incorrectly formatted')
@@ -68,7 +68,7 @@ class crm_team(models.Model):
             for salesteam in all_salesteams:
                 if salesteam['id'] in salesteams_done:
                     continue
-                domain = safe_eval(salesteam['score_team_domain'], evaluation_context)
+                domain = safe_eval.safe_eval(salesteam['score_team_domain'], evaluation_context)
                 limit_date = fields.Datetime.to_string(datetime.datetime.now() - datetime.timedelta(hours=1))
                 domain.extend([('create_date', '<', limit_date), ('team_id', '=', False), ('user_id', '=', False)])
                 domain.extend(['|', ('stage_id.is_won', '=', False), '&', ('probability', '!=', 0), ('probability', '!=', 100)])
@@ -120,7 +120,7 @@ class crm_team(models.Model):
         for su in all_team_users:
             if (su.maximum_user_leads - su.lead_month_count) <= 0:
                 continue
-            domain = safe_eval(su.team_user_domain or '[]', evaluation_context)
+            domain = safe_eval.safe_eval(su.team_user_domain or '[]', evaluation_context)
             domain.extend([
                 ('user_id', '=', False),
                 ('date_open', '=', False),

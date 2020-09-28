@@ -3,11 +3,12 @@
 
 import ast
 from lxml import etree
-import json
 from textwrap import dedent
 
 from odoo.addons.base.models.qweb import QWeb
 from odoo import models
+from odoo.tools.json import scriptsafe
+
 
 class IrQWeb(models.AbstractModel, QWeb):
     """
@@ -39,7 +40,7 @@ class IrQWeb(models.AbstractModel, QWeb):
     def _render(self, template, values=None, **options):
         if values is None:
             values = {}
-        values['json'] = json
+        values['json'] = scriptsafe
         return super(IrQWeb, self)._render(template, values=values, **options)
 
     def _is_static_node(self, el, options):

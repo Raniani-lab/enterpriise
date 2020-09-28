@@ -497,6 +497,9 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
 _get_amount = partial(_generic_get,
     xpath='ns:Amt/text() | ns:AmtDtls/ns:TxAmt/ns:Amt/text()')
 
+_get_rate = partial(_generic_get,
+    xpath='ns:XchgRate/text() | ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()')
+
 _get_credit_debit_indicator = partial(_generic_get,
     xpath='ns:CdtDbtInd/text()')
 
@@ -528,8 +531,9 @@ _get_additional_entry_info = partial(_generic_get,
 
 def _get_signed_amount(*nodes, namespaces):
     amount = float(_get_amount(*nodes, namespaces=namespaces))
+    rate = float(_get_rate(*nodes, namespaces=namespaces)) or 1.0
     sign = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
-    return amount if sign == 'CRDT' else -amount
+    return amount * rate if sign == 'CRDT' else -amount * rate
 
 def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)

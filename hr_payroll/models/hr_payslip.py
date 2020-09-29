@@ -529,7 +529,10 @@ class HrPayslipWorkedDays(models.Model):
     @api.depends('is_paid', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
         for worked_days in self:
-            worked_days.amount = worked_days.payslip_id.normal_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
+            if worked_days.payslip_id.wage_type == "hourly":
+                worked_days.amount = worked_days.payslip_id.contract_id.hourly_wage * worked_days.number_of_hours if worked_days.is_paid else 0
+            else:
+                worked_days.amount = worked_days.payslip_id.normal_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
 
     @api.depends('work_entry_type_id')
     def _compute_name(self):

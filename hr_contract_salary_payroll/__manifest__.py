@@ -15,6 +15,7 @@
         'data/hr_contract_salary_resume_data.xml',
         'views/assets.xml',
         'views/menuitems.xml',
+        'views/hr_contract_views.xml',
     ],
     'demo': [
     ],

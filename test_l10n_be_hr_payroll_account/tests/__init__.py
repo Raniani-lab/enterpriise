@@ -9,3 +9,4 @@ from . import test_main_flow
 from . import test_dmfa
 from . import test_examples
 from . import test_credit_time
+from . import test_student

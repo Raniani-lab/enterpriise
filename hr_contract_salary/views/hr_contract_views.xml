@@ -54,7 +54,7 @@
                 </page>
             </page>
             <xpath expr="//group[@name='salary_and_advantages']" position="after">
-                <group string="Employee Costs" groups="hr.group_hr_manager">
+                <group string="Employee Costs" groups="hr.group_hr_manager" name="employee_costs">
                     <label for="final_yearly_costs"/>
                     <div class="o_row">
                         <field name="final_yearly_costs" nolabel="1"/>

@@ -219,7 +219,7 @@ class Payslip(models.Model):
             struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
             if self.struct_id == struct_13th_month:
                 return self._get_paid_amount_13th_month()
-            if self.worked_days_line_ids:
+            if self.worked_days_line_ids and not self.wage_type == "hourly":
                 ratio = self._get_paid_unpaid_ratio()
                 return self.contract_id._get_contract_wage() * ratio
             struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')

@@ -380,7 +380,7 @@
     <record id="project_task_action_fsm_planning_groupby_user" model="ir.actions.act_window">
         <field name="name">Planning by User</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">gantt,kanban,tree,calendar,form,activity</field>
+        <field name="view_mode">gantt,kanban,tree,calendar,map,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context" eval="{'search_default_groupby_user': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
@@ -421,6 +421,27 @@
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
     </record>
 
+    <record id="project_task_action_planning_groupby_user_fsm_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_fsm_view_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="33"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="project.view_project_task_pivot"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_user_fsm_view_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="34"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="project.view_project_task_graph"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
+    </record>
+
     <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="35"/>
         <field name="view_mode">form</field>
@@ -432,7 +453,7 @@
     <record id="project_task_action_fsm_planning_groupby_project" model="ir.actions.act_window">
         <field name="name">Planning by Project</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
+        <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="context" eval="{'search_default_groupby_project': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
@@ -470,6 +491,13 @@
         <field name="sequence" eval="25"/>
         <field name="view_mode">calendar</field>
         <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
+    </record>
+
+    <record id="project_task_action_planning_groupby_project_fsm_view_map" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">map</field>
+        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 

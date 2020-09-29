@@ -326,9 +326,9 @@ class Planning(models.Model):
             start_datetime, end_datetime = work_interval[employee] if employee and employee.tz == slot.env.user.tz else (start, end)
 
             if not slot.previous_template_id and not slot.template_reset:
-                if start_datetime:
+                if start_datetime and not slot.start_datetime:
                     slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-                if end_datetime:
+                if end_datetime and not slot.end_datetime:
                     slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
 
             if slot.template_id and slot.start_datetime:

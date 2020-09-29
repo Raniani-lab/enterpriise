@@ -164,17 +164,16 @@
                             @include o-form-sheet-inner-right-padding;
                             border-top: none;
                             padding-top: $o-horizontal-padding*0.3;
-                            background: white;
-
-                            .btn-secondary {
-                                @include o-hover-text-color($body-color, $link-color);
-                            }
                         }
 
                         .note-editing-area, .o_readonly {
                             padding: $card-spacer-y $card-spacer-x;
                             @include o-form-sheet-inner-left-padding;
                             @include o-form-sheet-inner-right-padding;
+                        }
+
+                        .note-editable.panel-body {
+                            padding: 0;
                         }
 
                         // If immediatly followed by an .oe_clear element, the note-editor it's the 'only'

@@ -128,6 +128,14 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
                 data: this.data,
                 model: 'foo',
                 View: ListView,
+                session: {
+                    async user_has_group(group) {
+                        if (group === 'base.group_allow_export') {
+                            return true;
+                        }
+                        return this._super(...arguments);
+                    },
+                },
             });
 
             assert.containsN(list, '.o_data_row', 4);

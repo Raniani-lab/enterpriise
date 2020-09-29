@@ -275,7 +275,7 @@
                                     <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
                                     <li id="allocated_hours"><strong>Allocated Hours: </strong> <t t-esc="'' + Math.floor(allocated_hours) + ':' + ((allocated_hours % 1) * 60 >= 10 ? Math.round((allocated_hours % 1) * 60) : '0'+Math.round((allocated_hours % 1) * 60))"/></li>
                                 </ul>
-                                <p class="mt-2 mb-0" t-if="name"><t t-esc="name" /></p>
+                                <p class="mt-2 mb-0" t-if="name"><t t-esc="name.slice(0, 200) + (name.length > 200?'…':'')" /></p>
                                 <p t-if="is_published and publication_warning and !overlap_slot_count" class="text-warning mt-2 mb-0">
                                     Some changes were made since this shift was published.
                                 </p>

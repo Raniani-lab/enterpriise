@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-09-29 14:04+0000\n"
+"PO-Revision-Date: 2020-09-29 14:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -185,6 +185,8 @@ msgid "Customer Preview"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field7
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Date"
 msgstr ""
@@ -198,6 +200,17 @@ msgstr ""
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Description"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field2
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid "Description of the Intervention"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model,name:industry_fsm_report.model_x_custom_worksheet_x_project_worksheet_template_2
+msgid "Device Installation & Maintenance"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -267,12 +280,26 @@ msgid "Go back to your Field Service task."
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field5
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid ""
+"I hereby certify that this device meets the requirements of an acceptable "
+"device at the time of testing."
+msgstr ""
+
+#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__id
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__id
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task_recurrence__id
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__id
 #: model:ir.model.fields,field_description:industry_fsm_report.field_report_industry_fsm_report_worksheet_custom__id
 msgid "ID"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field1
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid "Intervention Type"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -321,6 +348,12 @@ msgstr ""
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Let's start your planning by adding a new task."
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field3
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid "Manufacturer"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -408,6 +441,12 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_worksheet_template__sequence
 msgid "Sequence"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field6
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid "Serial Number"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -536,6 +575,12 @@ msgid "View Worksheet"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field8
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
+msgid "Worker Signature"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_task_form2_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Worksheet"
@@ -583,6 +628,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.template_action_Default_Worksheet
+#: model:ir.actions.act_window,name:industry_fsm_report.template_action_Device_Installation_&_Maintenance
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__allow_worksheets
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__allow_worksheets
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_worksheet_template_view_list

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-09-29 14:04+0000\n"
+"PO-Revision-Date: 2020-09-29 14:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -119,13 +119,6 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_post_ids
 msgid "All related social media posts"
-msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
-#, python-format
-msgid "Almost done! Let's schedule it in the future."
 msgstr ""
 
 #. module: social
@@ -484,9 +477,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
-msgid ""
-"Happy with the result ? Schedule your post for later and send it at the best"
-" time to your audience."
+msgid "Happy with the result? Let's post it!"
 msgstr ""
 
 #. module: social
@@ -788,7 +779,7 @@ msgstr ""
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid ""
-"Message posted partially. These are the ones that couldn't be posted: %s"
+"Message posted partially. These are the ones that couldn't be posted: <br>%s"
 msgstr ""
 
 #. module: social
@@ -975,13 +966,6 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories_trend
 msgid "Percentage of increase/decrease of the stories over a defined period."
-msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
-#, python-format
-msgid "Pick here when this should be posted."
 msgstr ""
 
 #. module: social

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.1+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 10:15+0000\n"
-"PO-Revision-Date: 2019-12-16 10:15+0000\n"
+"POT-Creation-Date: 2020-09-29 14:04+0000\n"
+"PO-Revision-Date: 2020-09-29 14:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,6 +73,12 @@ msgstr ""
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "Accounting Settings"
 msgstr ""
 
 #. module: account_online_sync
@@ -210,10 +216,15 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement__display_name
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__display_name
+#: model:ir.model.fields,field_description:account_online_sync.field_account_journal__display_name
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__display_name
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__display_name
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__display_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_company__display_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -258,10 +269,15 @@ msgid "Hide Table"
 msgstr ""
 
 #. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement__id
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__id
+#: model:ir.model.fields,field_description:account_online_sync.field_account_journal__id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__id
+#: model:ir.model.fields,field_description:account_online_sync.field_res_company__id
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__id
 msgid "ID"
 msgstr ""
 
@@ -305,6 +321,12 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "It looks like a bank account is missing."
+msgstr ""
+
+#. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:0
 #: model:ir.model,name:account_online_sync.model_account_journal
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__journal_ids
@@ -319,10 +341,15 @@ msgid "Journal Name"
 msgstr ""
 
 #. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement____last_update
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line____last_update
+#: model:ir.model.fields,field_description:account_online_sync.field_account_journal____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard____last_update
+#: model:ir.model.fields,field_description:account_online_sync.field_res_company____last_update
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -407,14 +434,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__next_synchronization
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__next_refresh
 msgid "Next synchronization"
-msgstr ""
-
-#. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:0
-#, python-format
-msgid ""
-"No bank journal could be found! Please install a chart of accounts first, in"
-" order to create one."
 msgstr ""
 
 #. module: account_online_sync
@@ -743,6 +762,12 @@ msgid "You can not link two accounts to the same journal"
 msgstr ""
 
 #. module: account_online_sync
+#: code:addons/account_online_sync/models/company.py:0
+#, python-format
+msgid "You should install a fiscal localization first."
+msgstr ""
+
+#. module: account_online_sync
 #: model:ir.model.fields.selection,name:account_online_sync.selection__account_online_wizard__method__add
 msgid "add"
 msgstr ""
@@ -803,22 +828,4 @@ msgid ""
 "your account was not\n"
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
-msgstr ""
-
-#. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:0
-#, python-format
-msgid "You should install a fiscal localization first."
-msgstr ""
-
-#. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:0
-#, python-format
-msgid "Accounting Settings"
-msgstr ""
-
-#. module: account_online_sync
-#: code:addons/account_online_sync/models/company.py:0
-#, python-format
-msgid "It looks like a bank account is missing."
 msgstr ""

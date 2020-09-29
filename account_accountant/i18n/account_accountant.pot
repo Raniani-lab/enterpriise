@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:38+0000\n"
-"PO-Revision-Date: 2020-09-01 07:38+0000\n"
+"POT-Creation-Date: 2020-09-29 14:03+0000\n"
+"PO-Revision-Date: 2020-09-29 14:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,15 @@ msgid "<b class=\"tip_title\">Tip: Bulk update journal items</b>"
 msgstr ""
 
 #. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
+#, python-format
+msgid ""
+"<br>See how to manage your customer invoices in the "
+"<b>Customers/Invoices</b> menu"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
@@ -41,6 +50,14 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
+#, python-format
+msgid ""
+"<strong><b>Good job!</b> You went through all steps of this tour.</strong>"
 msgstr ""
 
 #. module: account_accountant
@@ -465,7 +482,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
-msgid "Get back to the dashboard."
+msgid "Get back to the dashboard using your previous path…"
 msgstr ""
 
 #. module: account_accountant
@@ -473,6 +490,15 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Go to bank statement(s)"
+msgstr ""
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
+#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
+#, python-format
+msgid "Go to invoicing"
 msgstr ""
 
 #. module: account_accountant
@@ -629,15 +655,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
-msgid ""
-"Let’s automate your bills, bank transactions and accounting processes.."
+msgid "Let’s automate your bills, bank transactions and accounting processes."
 msgstr ""
 
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
-msgid "Let’s go back to the dashboard using your previous path…"
+msgid "Let’s go back to the dashboard."
 msgstr ""
 
 #. module: account_accountant
@@ -964,14 +989,6 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_fiscal_year__date_from
 msgid "Start Date, included in the fiscal year."
-msgstr ""
-
-#. module: account_accountant
-#. openerp-web
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
-#: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
-#, python-format
-msgid "Start making customer invoices.</i>"
 msgstr ""
 
 #. module: account_accountant

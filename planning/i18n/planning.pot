@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:38+0000\n"
-"PO-Revision-Date: 2020-09-01 07:38+0000\n"
+"POT-Creation-Date: 2020-09-29 14:04+0000\n"
+"PO-Revision-Date: 2020-09-29 14:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,6 @@ msgstr ""
 #. module: planning
 #: model:mail.template,subject:planning.email_template_slot_single
 msgid "${ctx.mail_subject}"
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
-msgid "&amp;times;"
 msgstr ""
 
 #. module: planning
@@ -158,8 +153,29 @@ msgid ""
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
+msgid ""
+"<i class=\"fa fa-check-circle text-success\"/> This shift is no longer "
+"assigned to you."
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
+msgid ""
+"<i class=\"fa fa-check-circle text-success\"/> You were successfully "
+"assigned this open shift."
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Date\" title=\"Date\"/>"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
+msgid ""
+"<i class=\"fa fa-exclamation-circle text-warning\"/> This shift is already "
+"assigned to another employee."
 msgstr ""
 
 #. module: planning
@@ -324,11 +340,6 @@ msgid "Can Employee Un-Assign Themselves?"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
-msgid "Close"
-msgstr ""
-
-#. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
@@ -425,6 +436,11 @@ msgid "Default Planning Role"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_roles
+msgid "Define the different roles filled by your employees."
+msgstr ""
+
+#. module: planning
 #: model:ir.model.fields,help:planning.field_res_company__planning_generation_interval
 msgid ""
 "Delay for the rate at which recurring shift should be generated in month"
@@ -516,6 +532,11 @@ msgstr ""
 #: model:ir.model.fields,help:planning.field_planning_send__employee_ids
 msgid ""
 "Employees who will receive planning by email if you click on publish & send."
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
+msgid "Encode your shifts in one click by using templates."
 msgstr ""
 
 #. module: planning
@@ -736,6 +757,14 @@ msgid "Let's start managing your employees' schedule!"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_my_calendar
+#: model_terms:ir.actions.act_window,help:planning.planning_action_my_gantt
+#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_employee
+#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
+msgid "Let's start your planning by adding a new shift."
+msgstr ""
+
+#. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__manager_id
 msgid "Manager"
 msgstr ""
@@ -782,9 +811,12 @@ msgstr ""
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
-msgid ""
-"No roles found <br>\n"
-"                Define the different roles filled by your employees"
+msgid "No roles found"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
+msgid "No shift templates found"
 msgstr ""
 
 #. module: planning
@@ -792,16 +824,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:planning.planning_action_my_gantt
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_employee
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
-msgid ""
-"No shift found <br>\n"
-"                Let's start your planning by adding a new shift"
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
-msgid ""
-"No shift templates found <br>\n"
-"                Encode your shifts in one click by using templates"
+msgid "No shifts found"
 msgstr ""
 
 #. module: planning
@@ -1092,6 +1115,12 @@ msgid "Select Employees and Send One Slot"
 msgstr ""
 
 #. module: planning
+#: code:addons/planning/wizard/planning_send.py:0
+#, python-format
+msgid "Select the employees you would like to send the planning to."
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 #: model_terms:ir.ui.view,arch_db:planning.slot_planning_select_send_view_form
 msgid "Send"
@@ -1268,12 +1297,6 @@ msgid "There are no planning slot to display. Please, refer to your manager."
 msgstr ""
 
 #. module: planning
-#: code:addons/planning/wizard/planning_send.py:0
-#, python-format
-msgid "There are no shifts to send during the selected period."
-msgstr ""
-
-#. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied
 msgid "This Shift Was Copied From Previous Week"
 msgstr ""
@@ -1284,16 +1307,6 @@ msgstr ""
 msgid ""
 "This action is not allowed as there are no shifts planned for the selected "
 "time period."
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
-msgid "This shift is already assigned to another employee."
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
-msgid "This shift is no longer assigned to you."
 msgstr ""
 
 #. module: planning
@@ -1394,13 +1407,6 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.slot_unassign
 msgid "You have been successfully unassigned from this shift"
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
-msgid ""
-"You were successfully assigned this open shift.<i class=\"fa fa-check-circle"
-" text-success\"/>"
 msgstr ""
 
 #. module: planning

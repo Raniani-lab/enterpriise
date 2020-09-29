@@ -692,6 +692,11 @@ file_filter = sale_enterprise/i18n/<lang>.po
 source_file = sale_enterprise/i18n/sale_enterprise.pot
 source_lang = en
 
+[odoo-14.sale_intrastat]
+file_filter = sale_intrastat/i18n/<lang>.po
+source_file = sale_intrastat/i18n/sale_intrastat.pot
+source_lang = en
+
 [odoo-14.sale_purchase_inter_company_rules]
 file_filter = sale_purchase_inter_company_rules/i18n/<lang>.po
 source_file = sale_purchase_inter_company_rules/i18n/sale_purchase_inter_company_rules.pot
@@ -820,6 +825,11 @@ source_lang = en
 [odoo-14.stock_barcode_quality_control]
 file_filter = stock_barcode_quality_control/i18n/<lang>.po
 source_file = stock_barcode_quality_control/i18n/stock_barcode_quality_control.pot
+source_lang = en
+
+[odoo-14.stock_barcode_quality_control_picking_batch]
+file_filter = stock_barcode_quality_control_picking_batch/i18n/<lang>.po
+source_file = stock_barcode_quality_control_picking_batch/i18n/stock_barcode_quality_control_picking_batch.pot
 source_lang = en
 
 [odoo-14.stock_enterprise]

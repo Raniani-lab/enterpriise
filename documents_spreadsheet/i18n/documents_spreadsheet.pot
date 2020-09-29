@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-09-29 14:04+0000\n"
+"PO-Revision-Date: 2020-09-29 14:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -60,6 +60,13 @@ msgid "${number} Rows below"
 msgstr ""
 
 #. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
+#, python-format
+msgid "%s (#%s)"
+msgstr ""
+
+#. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #, python-format
 msgid "%s (copy)"
@@ -67,6 +74,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #, python-format
@@ -187,6 +195,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Are you sure you want to delete this sheet ?"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Automatic"
 msgstr ""
 
@@ -216,6 +231,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Average of values depending on multiple criteria."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Bar"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -264,6 +286,21 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Cannot find ${key} in this registry!"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Chart"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Chart type"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -345,6 +382,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
@@ -445,6 +483,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Copy of ${sheet}"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Cosecant of an angle provided in radians."
 msgstr ""
 
@@ -464,6 +509,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
@@ -522,6 +568,13 @@ msgid "Create Spreadsheet"
 msgstr ""
 
 #. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Create chart"
+msgstr ""
+
+#. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__create_uid
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__create_uid
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__create_uid
@@ -573,6 +626,20 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__data
 #, python-format
 msgid "Data"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Data Series"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Data categories (labels)"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -720,6 +787,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__display_name
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/pivot_dialog.xml:0
+#, python-format
+msgid "Display missing cells only"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -883,6 +957,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/components/global_filters_side_panel.js:0
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
 msgid "Filters"
 msgstr ""
@@ -906,6 +981,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Font size"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
+#, python-format
+msgid "For each pivot, match this filter to the relevant field"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1510,9 +1592,10 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_component.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_context_menu.js:0
 #, python-format
-msgid "Insert pivot section"
+msgid "Insert pivot cell"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1729,6 +1812,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
+#, python-format
+msgid "Last updated at"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Length of a string."
@@ -1760,6 +1850,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Less than."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Line"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1824,6 +1921,14 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Maximum value in a numeric dataset."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#, python-format
+msgid "Measure"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1927,6 +2032,13 @@ msgid "My Templates"
 msgstr ""
 
 #. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "My data has title"
+msgstr ""
+
+#. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__name
 msgid "Name"
 msgstr ""
@@ -1958,6 +2070,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/components/filter_editor_side_panel.js:0
 #, python-format
 msgid "New ${this.state.type} filter"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "New Chart"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2178,9 +2297,15 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Paste value only"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Paste values only"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2199,16 +2324,31 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Pie"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
+#, python-format
+msgid "Pivot name"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_context_menu.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #, python-format
 msgid "Pivot properties"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Pivot properties (#%s)"
+msgid "Please enter a valid sheet name"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2280,6 +2420,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
+msgid "Refresh measures"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
+#, python-format
 msgid "Related Model"
 msgstr ""
 
@@ -2310,6 +2457,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
 msgid "Rename"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Rename Sheet"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2475,6 +2629,20 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__sequence
 msgid "Sequence"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Series"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Sheet"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2747,6 +2915,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "This formula depends on invalid values"
 msgstr ""
@@ -2789,6 +2958,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Title"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
 msgid "Toggle favorite"
@@ -2796,6 +2972,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
 #, python-format
@@ -2807,6 +2984,14 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Truncates a number."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#, python-format
+msgid "Undefined"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2838,6 +3023,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/spreadsheet_template_action.js:0
 #, python-format
 msgid "Untitled spreadsheet template"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Update chart"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3069,6 +3261,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "function Time result sould not be negative"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/pivot_dialog.xml:0
+#, python-format
+msgid "has no cell missing from this sheet"
 msgstr ""
 
 #. module: documents_spreadsheet

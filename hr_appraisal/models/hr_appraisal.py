@@ -71,9 +71,12 @@ class HrAppraisal(models.Model):
             'can_see_manager_publish': False,
         })
         user_employee = self.env.user.employee_id
+        is_admin = self.env.user.user_has_groups('hr_appraisal.group_hr_appraisal_manager')
         for appraisal in self - new_appraisals:
             appraisal.can_see_employee_publish = user_employee == appraisal.employee_id
             appraisal.can_see_manager_publish = user_employee in appraisal.manager_ids
+            if is_admin and not appraisal.can_see_employee_publish and not appraisal.can_see_manager_publish:
+                appraisal.can_see_employee_publish, appraisal.can_see_manager_publish = True, True
 
     @api.depends('job_id')
     def _compute_feedbacks(self):

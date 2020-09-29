@@ -80,7 +80,10 @@
                                         ('employee_feedback_published', '=', False),
                                         ('can_see_employee_publish', '=', False)
                                     ],
-                                    'readonly': [('state', '!=', 'pending')]}"/>
+                                    'readonly': [
+                                        '|',
+                                        ('state', '!=', 'pending'),
+                                        ('can_see_employee_publish', '=', False)]}"/>
                                 <field name="employee_feedback_template" attrs="{
                                     'invisible': [
                                         '|',

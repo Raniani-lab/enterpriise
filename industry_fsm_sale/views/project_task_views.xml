@@ -176,6 +176,7 @@
                 <attribute name="attrs">
                     {'invisible': [('is_fsm', '=', False)], 'readonly': ['|', '|', ('sale_order_id', '!=', False), ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
                 </attribute>
+                <attribute name="force_save">1</attribute>
             </xpath>
         </field>
     </record>

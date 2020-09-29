@@ -155,9 +155,9 @@ var accountReportsWidget = AbstractAction.extend({
             this.financial_id = action.context.id;
         }
         this.odoo_context = action.context;
-        this.report_options = action.options || false;
-        this.ignore_session = action.ignore_session;
-        if ((action.ignore_session === 'read' || action.ignore_session === 'both') !== true) {
+        this.report_options = action.params && action.params.options;
+        this.ignore_session = action.params && action.params.ignore_session;
+        if ((this.ignore_session === 'read' || this.ignore_session === 'both') !== true) {
             var persist_key = 'report:'+this.report_model+':'+this.financial_id+':'+session.company_id;
             this.report_options = JSON.parse(sessionStorage.getItem(persist_key)) || this.report_options;
         }

@@ -718,7 +718,7 @@ class AccountReport(models.AbstractModel):
             if action.tag == 'account_report':
                 options['unfolded_lines'] = []
                 options['unfold_all'] = False
-                action_read.update({'options': options, 'ignore_session': 'read'})
+                action_read.update({'params': {'options': options, 'ignore_session': 'read'}})
         if params.get('id'):
             # Add the id of the account.financial.html.report.line in the action's context
             context = action_read.get('context') and ast.literal_eval(action_read['context']) or {}
@@ -859,7 +859,7 @@ class AccountReport(models.AbstractModel):
             options['date']['mode'] = 'range'
             options['date']['period_type'] = 'fiscalyear'
         ctx.update({'model': 'account.general.ledger'})
-        action.update({'options': options, 'context': ctx, 'ignore_session': 'read'})
+        action.update({'params': {'options': options, 'context': ctx, 'ignore_session': 'read'}})
         return action
 
     def open_unposted_moves(self, options, params=None):

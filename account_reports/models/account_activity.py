@@ -17,7 +17,7 @@ class AccountMove(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_gt")
         options = self._compute_vat_period_date()
         # Pass options in context and set ignore_session: read to prevent reading previous options
-        action.update({'options': options, 'ignore_session': 'read'})
+        action.update({'params': {'options': options, 'ignore_session': 'read'}})
         return action
 
     def refresh_tax_entry(self):

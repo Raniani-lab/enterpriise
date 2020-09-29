@@ -80,7 +80,7 @@ class AccountMoveLine(models.Model):
             wizard = self.env['account.automatic.entry.wizard'].create({
                 'move_line_ids': [(6, 0, self.ids)],
                 'destination_account_id': max_account.id,
-                'action': 'transfer'
+                'action': 'change_account',
             })
 
             return {

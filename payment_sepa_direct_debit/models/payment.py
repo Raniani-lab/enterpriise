@@ -293,8 +293,8 @@ class SDDMandate(models.Model):
         if pt.acquirer_id.sepa_direct_debit_sms_enabled and self.verification_code != code:
             raise ValidationError(_('Verification code does not match'))
         template = self.env.ref('payment_sepa_direct_debit.mail_template_sepa_notify_validation')
-        template.send_mail(self.id)
         self.write({'state': 'active', 'verified': True})
+        template.send_mail(self.id)
 
     def write(self, vals):
         res = super(SDDMandate, self).write(vals)

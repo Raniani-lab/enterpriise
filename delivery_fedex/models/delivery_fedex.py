@@ -216,17 +216,7 @@ class ProviderFedex(models.Model):
             _logger.info(warnings)
 
         if not request.get('errors_message'):
-            if _convert_curr_iso_fdx(order_currency.name) in request['price']:
-                price = request['price'][_convert_curr_iso_fdx(order_currency.name)]
-            else:
-                _logger.info("Preferred currency has not been found in FedEx response")
-                company_currency = order.company_id.currency_id
-                if _convert_curr_iso_fdx(company_currency.name) in request['price']:
-                    amount = request['price'][_convert_curr_iso_fdx(company_currency.name)]
-                    price = company_currency._convert(amount, order_currency, order.company_id, order.date_order or fields.Date.today())
-                else:
-                    amount = request['price']['USD']
-                    price = company_currency._convert(amount, order_currency, order.company_id, order.date_order or fields.Date.today())
+            price = self._get_request_price(request['price'], order, order_currency)
         else:
             return {'success': False,
                     'price': 0.0,
@@ -364,19 +354,7 @@ class ProviderFedex(models.Model):
                         if not request.get('errors_message'):
                             package_labels.append((package_name, srm.get_label()))
 
-                            if _convert_curr_iso_fdx(order_currency.name) in request['price']:
-                                carrier_price = request['price'][_convert_curr_iso_fdx(order_currency.name)]
-                            else:
-                                _logger.info("Preferred currency has not been found in FedEx response")
-                                company_currency = picking.company_id.currency_id
-                                if _convert_curr_iso_fdx(company_currency.name) in request['price']:
-                                    amount = request['price'][_convert_curr_iso_fdx(company_currency.name)]
-                                    carrier_price = company_currency._convert(
-                                        amount, order_currency, company, order.date_order or fields.Date.today())
-                                else:
-                                    amount = request['price']['USD']
-                                    carrier_price = company_currency._convert(
-                                        amount, order_currency, company, order.date_order or fields.Date.today())
+                            carrier_price = self._get_request_price(request['price'], order, order_currency)
 
                             carrier_tracking_ref = carrier_tracking_ref + "," + request['tracking_number']
 
@@ -557,6 +535,36 @@ class ProviderFedex(models.Model):
         else:
             raise UserError(result['errors_message'])
 
+    def _get_request_price(self, req_price, order, order_currency=None):
+        """Extract price info in target currency, converting if necessary"""
+        if not order_currency:
+            order_currency = order.currency_id
+        company_currency = order.company_id.currency_id if order.company_id else self.env.user.company_id.currency_id
+        fdx_currency = _convert_curr_iso_fdx(order_currency.name)
+        if fdx_currency in req_price:
+            # normally we'll have the order currency on the response, then we can take it as is
+            return req_price[fdx_currency]
+        _logger.info("Preferred currency has not been found in FedEx response")
+        # otherwise, see if we have the company currency, and convert to the order's currency
+        fdx_currency = _convert_curr_iso_fdx(company_currency.name)
+        if fdx_currency in req_price:
+            return company_currency._convert(
+                req_price[fdx_currency], order_currency, order.company_id, order.date_order or fields.Date.today())
+        # finally, attempt to find active currency in the database
+        currency_codes = list(req_price.keys())
+        # note, fedex sometimes return the currency as ISO instead of using their own code 
+        # (eg it can return GBP instead of UKL for a UK address)
+        # so we'll do the search for both
+        currency_codes += [_convert_curr_fdx_iso(c) for c in currency_codes]
+        currency_instances = self.env['res.currency'].search([('name', 'in', currency_codes)])
+        currency_by_name = {c.name: c for c in currency_instances}
+        for fdx_currency in req_price:
+            if fdx_currency in currency_by_name:
+                return currency_by_name[fdx_currency]._convert(
+                    req_price[fdx_currency], order_currency, order.company_id, order.date_order or fields.Date.today())
+        _logger.info("No known currency has not been found in FedEx response")
+        return 0.0
+        
     def _fedex_get_default_custom_package_code(self):
         return 'YOUR_PACKAGING'
 

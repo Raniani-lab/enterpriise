@@ -150,7 +150,8 @@ class FedexRequest():
 
     def set_currency(self, currency):
         self.RequestedShipment.PreferredCurrency = currency
-        # self.RequestedShipment.RateRequestTypes = 'PREFERRED'
+        # ask Fedex to include our preferred currency in the response
+        self.RequestedShipment.RateRequestTypes = 'PREFERRED'
 
     def set_master_package(self, total_weight, package_count, master_tracking_id=False):
         self.RequestedShipment.TotalWeight.Value = total_weight

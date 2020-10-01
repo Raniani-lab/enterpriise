@@ -454,8 +454,7 @@ class AccountMove(models.Model):
             if tax_group_covered_goods and tax_group_covered_goods in line.mapped('tax_ids.tax_group_id'):
                 exempt_tax_dict[line.id] = True
         # The rate should indicate how many pesos is one foreign currency
-        currency_rate = "%.2f" % (self.currency_id._convert(1.0, self.company_id.currency_id, self.company_id,
-                                  self.invoice_date or fields.Date.today()))
+        currency_rate = "%.2f" % (1.0 / self.currency_id.with_context(date=self.invoice_date or fields.Date.today()).rate)
 
         withholding_amount = '%.2f' % (self.amount_untaxed + sum(self.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total')))
 

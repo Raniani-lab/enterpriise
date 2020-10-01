@@ -57,7 +57,10 @@ class ProductProduct(models.Model):
                         vals['task_id'] = task.id
                     else:
                         vals['task_id'] = False
-
+                    if task.sale_order_id.pricelist_id.discount_policy == 'without_discount':
+                        sol = self.env['sale.order.line'].new(vals)
+                        sol._onchange_discount()
+                        vals.update({'discount': sol.discount or 0.0})
                     sale_line = self.env['sale.order.line'].create(vals)
 
     @api.model

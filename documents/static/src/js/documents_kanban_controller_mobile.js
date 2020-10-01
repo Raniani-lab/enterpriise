@@ -7,10 +7,11 @@ if (!config.device.isMobile) {
 }
 
 const DocumentsKanbanController = require('documents.DocumentsKanbanController');
+const DocumentsListController = require('documents.DocumentsListController');
 
 const { qweb } = require('web.core');
 
-DocumentsKanbanController.include({
+const DocumentControllerMobileMixin = {
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -66,6 +67,9 @@ DocumentsKanbanController.include({
             await this._super(...arguments);
         }
     },
-});
+};
+
+DocumentsKanbanController.include(DocumentControllerMobileMixin);
+DocumentsListController.include(DocumentControllerMobileMixin);
 
 });

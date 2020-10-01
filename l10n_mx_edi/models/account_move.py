@@ -315,7 +315,11 @@ class AccountMove(models.Model):
                     # In CFDI 3.3 - rule 2.7.1.43 which establish that
                     # invoice payment term should be PPD as soon as the due date
                     # is after the last day of  the month (the month of the invoice date).
-                    move.l10n_mx_edi_payment_policy = 'PPD' if self.date_due.month > self.date_invoice.month else 'PUE'
+                    if move.invoice_date_due.month > move.invoice_date.month or \
+                       move.invoice_date_due.year > move.invoice_date.year:
+                        move.l10n_mx_edi_payment_policy = 'PPD'
+                    else:
+                        move.l10n_mx_edi_payment_policy = 'PUE'
                 else:
                     move.l10n_mx_edi_payment_policy = 'PUE'
             else:

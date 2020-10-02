@@ -41,11 +41,14 @@ class AccountReport(models.AbstractModel):
 
     def _get_lu_electronic_report_values(self, options):
         company = self.env.company
+        vat = company.vat
+        if vat and vat.startswith("LU"): # Remove LU prefix in the XML
+            vat = vat[2:]
         return {
             'filename': options.get('filename'),
             'lang': 'EN',
             'interface' : 'MODL5',
-            'vat_number' : company.vat or "NE",
+            'vat_number' : vat or "NE",
             'matr_number' : company.matr_number or "NE",
             'rcs_number' : company.company_registry or "NE",
         }

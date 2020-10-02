@@ -58,16 +58,17 @@ class AccountMove(models.Model):
 
     # Compute methods
 
-    @api.depends('l10n_ar_afip_auth_code')
+    @api.depends('l10n_ar_afip_auth_code', 'l10n_ar_afip_auth_code_due')
     def _compute_l10n_ar_afip_barcode(self):
         """ Method that generates the barcode with the electronic invoice info """
-        for rec in self:
+        sale_moves = self.filtered(lambda x: x.is_sale_document() and x.l10n_ar_afip_auth_code and x.l10n_ar_afip_auth_code_due)
+        for rec in sale_moves:
             barcode = False
-            if rec.l10n_ar_afip_auth_code:
-                cae_due = rec.l10n_ar_afip_auth_code_due.strftime('%Y%m%d')
-                barcode = ''.join([str(rec.company_id.partner_id.l10n_ar_vat), "%03d" % int(rec.l10n_latam_document_type_id.code),
-                                   "%05d" % rec.journal_id.l10n_ar_afip_pos_number, rec.l10n_ar_afip_auth_code, cae_due])
+            cae_due = rec.l10n_ar_afip_auth_code_due.strftime('%Y%m%d')
+            barcode = ''.join([str(rec.company_id.partner_id.l10n_ar_vat), "%03d" % int(rec.l10n_latam_document_type_id.code),
+                                "%05d" % rec.journal_id.l10n_ar_afip_pos_number, rec.l10n_ar_afip_auth_code, cae_due])
             rec.l10n_ar_afip_barcode = barcode
+        (self - sale_moves).l10n_ar_afip_barcode = False
 
     @api.depends('l10n_latam_document_type_id', 'company_id')
     def _compute_l10n_ar_afip_verification_type(self):

@@ -316,7 +316,8 @@ class AccountMove(models.Model):
                     # invoice payment term should be PPD as soon as the due date
                     # is after the last day of  the month (the month of the invoice date).
                     if move.invoice_date_due.month > move.invoice_date.month or \
-                       move.invoice_date_due.year > move.invoice_date.year:
+                       move.invoice_date_due.year > move.invoice_date.year or \
+                       len(move.invoice_payment_term_id.line_ids) > 1:  # to be able to force PPD
                         move.l10n_mx_edi_payment_policy = 'PPD'
                     else:
                         move.l10n_mx_edi_payment_policy = 'PUE'

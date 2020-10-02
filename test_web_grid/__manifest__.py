@@ -7,7 +7,7 @@
     'category': 'Hidden',
     'summary': 'Web Grid Tests: performances and tests specific to the grid view',
     'description': """This module contains tests related to the web grid view. Those are
-contained in a separate module as it contains models used only to perform
+present in a separate module as it contains models used only to perform
 tests independently to functional aspects of other models. """,
     'depends': ['web_grid'],
     'data': [

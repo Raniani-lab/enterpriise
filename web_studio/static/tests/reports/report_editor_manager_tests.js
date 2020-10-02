@@ -418,16 +418,16 @@ QUnit.module('ReportEditorManager', {
         ]);
 
         var diffTopMargin = Math.abs(topMargin - parseFloat(containerStyles.paddingTop));
-        assert.ok(diffTopMargin < 1, "preview top margin same than paperformat");
+        assert.ok(diffTopMargin < 1, "preview top margin same as paperformat");
 
         var diffLeftMargin = Math.abs(leftMargin - parseFloat(containerStyles.paddingLeft));
-        assert.ok(diffLeftMargin < 1, "preview left margin same than paperformat");
+        assert.ok(diffLeftMargin < 1, "preview left margin same as paperformat");
 
         var diffRightMargin = Math.abs(rightMargin - parseFloat(containerStyles.paddingRight));
-        assert.ok(diffRightMargin < 1, "preview right margin same than paperformat");
+        assert.ok(diffRightMargin < 1, "preview right margin same as paperformat");
 
         var diffWidth = Math.abs(width - parseFloat(containerStyles.width));
-        assert.ok(diffWidth < 1, "preview width same than paperformat");
+        assert.ok(diffWidth < 1, "preview width same as paperformat");
 
         // end test if zoom not supported by browser (currently firefox)
         if ($('<div />').css({zoom: 0.5}).css('zoom') === undefined) {

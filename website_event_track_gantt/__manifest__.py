@@ -6,7 +6,7 @@
     'category': 'Marketing',
     'summary': 'Advanced Event Track Management',
     'version': '1.0',
-    'description': """THis module helps analyzing and organizing event tracks.
+    'description': """This module helps analyzing and organizing event tracks.
 For that purpose it adds a gantt view on event tracks.""",
     'depends': ['website_event_track', 'web_gantt'],
     'auto_install': True,

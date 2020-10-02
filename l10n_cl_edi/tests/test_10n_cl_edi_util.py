@@ -3,7 +3,7 @@ import logging
 import os
 
 from lxml import objectify, etree
-from mock import patch
+from unittest.mock import patch
 
 from odoo.tools import misc
 from .common import TestL10nClEdiCommon

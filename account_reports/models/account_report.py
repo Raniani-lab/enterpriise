@@ -531,7 +531,7 @@ class AccountReport(models.AbstractModel):
             # put every line in each of its parents (from less global to more global) and compute the totals
             hierarchy = defaultdict(lambda: {'totals': [None] * len(lines[0]['columns']), 'lines': [], 'children_codes': set(), 'name': '', 'parent_id': None, 'id': ''})
             for line in lines:
-                account = self.env['account.account'].browse(line.get('account_id', line.get('id')))
+                account = self.env['account.account'].browse(line.get('account_id', self._get_caret_option_target_id(line.get('id'))))
                 codes = self.get_account_codes(account)  # id, name
                 for code in codes:
                     hierarchy[code[0]]['id'] = 'hierarchy_' + str(code[0])
@@ -850,9 +850,10 @@ class AccountReport(models.AbstractModel):
             params = {}
         ctx = self.env.context.copy()
         ctx.pop('id', '')
-        ctx['default_filter_accounts'] = self.env['account.account'].browse(params.get('id', 0)).code or ''
+        account_id = self._get_caret_option_target_id(params.get('id', 0))
+        ctx['default_filter_accounts'] = self.env['account.account'].browse(account_id).code or ''
         action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_general_ledger")
-        options['unfolded_lines'] = ['account_%s' % (params.get('id', ''),)]
+        options['unfolded_lines'] = ['account_%s' % account_id]
         options['unfold_all'] = False
         if 'date' in options and options['date']['mode'] == 'single':
             # If we are coming from a report with a single date, we need to change the options to ranged
@@ -861,6 +862,19 @@ class AccountReport(models.AbstractModel):
         ctx.update({'model': 'account.general.ledger'})
         action.update({'params': {'options': options, 'context': ctx, 'ignore_session': 'read'}})
         return action
+
+    def _get_caret_option_target_id(self, line_id):
+        """ Retrieve the target model's id for lines obtained from a financial
+        report groupby. These lines have a string as id to ensure it is unique,
+        in case some accounts appear multiple times in the same report
+
+        TODO CLEANME: a better id handling in a common caret options function
+        would be nice in master, instead of local hardcoded patches like here.
+        """
+        if type(line_id) == str:
+            return int(line_id.split('_')[-1])
+        else:
+            return line_id
 
     def open_unposted_moves(self, options, params=None):
         ''' Open the list of draft journal entries that might impact the reporting'''
@@ -910,7 +924,7 @@ class AccountReport(models.AbstractModel):
         action = clean_action(action, env=self.env)
         ctx = self.env.context.copy()
         if params and 'id' in params:
-            active_id = params['id']
+            active_id = self._get_caret_option_target_id(params['id'])
             ctx.update({
                     'search_default_account_id': [active_id],
             })

@@ -96,7 +96,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.assertEqual(invoice.amount_tax, 30)
         self.assertEqual(invoice.ref, 'INV0001')
         self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
-        self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-12'))
+        self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
         self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
 
         self.assertEqual(len(invoice.invoice_line_ids), 3)

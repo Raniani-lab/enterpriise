@@ -82,9 +82,9 @@ class ShiftController(http.Controller):
                         not employee_sudo.planning_role_ids or not slot.role_id or slot.role_id in employee_sudo.planning_role_ids):
                     open_slots.append(slot)
         # Calculation of the events to define the default calendar view:
-        # If all the events are the same day/week the default view is week. Else, the month is displayed
-        min_start_datetime = slots_start_datetime and min(slots_start_datetime) or planning_sudo.start_datetime
-        max_end_datetime = slots_end_datetime and max(slots_end_datetime) or planning_sudo.end_datetime
+        # If the planning_sudo only spans a week, default view is week, else it is month.
+        min_start_datetime = planning_sudo.start_datetime
+        max_end_datetime = planning_sudo.end_datetime
         if min_start_datetime.isocalendar()[1] == max_end_datetime.isocalendar()[1]:
             # isocalendar returns (year, week number, and weekday)
             default_view = 'timeGridWeek'

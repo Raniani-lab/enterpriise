@@ -15,7 +15,7 @@ class res_company(models.Model):
     @api.depends('rule_type', 'name')
     def _compute_intercompany_transaction_message(self):
         for record in self:
-            if record.rule_type == 'not_synchronize':
+            if not record.rule_type or record.rule_type == 'not_synchronize':
                 record.intercompany_transaction_message = ''
             if record.rule_type == 'invoice_and_refund':
                 record.intercompany_transaction_message = _('Generate a bill/invoice when a company confirms an invoice/bill for %s.', record.name)

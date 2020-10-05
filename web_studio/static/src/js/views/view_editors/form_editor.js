@@ -280,7 +280,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             drop: this._handleDrop.bind(this),
         });
 
-        return this._super.apply(this, arguments).then(function () {
+        return this._super.apply(this, arguments).then(async function () {
             // Add chatter hook + chatter preview
             if (!self._hasChatter() && self.chatter_allowed) {
                 var $chatter_hook = $('<div>').addClass('o_web_studio_add_chatter o_chatter');
@@ -300,10 +300,12 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                     self._chatterContainerOverview = new ChatterContainerWrapperComponent(
                         self,
                         components.ChatterContainer,
-                        {},
+                        {
+                            threadModel: self.state.model,
+                        },
                     );
                 }
-                self._chatterContainerOverview.mount($studioChatterContainer[0]);
+                await self._chatterContainerOverview.mount($studioChatterContainer[0]);
                 $chatter_hook.insertAfter(self.$('.o_form_sheet'));
             }
             // Add buttonbox hook

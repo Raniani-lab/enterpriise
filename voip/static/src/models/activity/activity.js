@@ -55,10 +55,7 @@ registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/act
      * @private
      */
     _onReloadChatter() {
-        if (!this.chatter) {
-            return;
-        }
-        this.chatter.refreshActivities();
+        this.thread.refreshActivities();
     },
 });
 

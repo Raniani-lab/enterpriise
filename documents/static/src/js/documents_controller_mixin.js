@@ -195,22 +195,13 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @returns {Object}
      */
     _makeChatterContainerProps() {
-        const recordData = this.model.get(this.handle).data.find(record => record.res_id === this._selectedRecordIds[0]);
-        const record = this.model.get(recordData.id);
-        const context = record ? record.getContext() : {};
-        const activityIds = record.data.activity_ids
-            ? record.data.activity_ids.res_ids
-            : [];
-        const followerIds = record.data.message_follower_ids
-            ? record.data.message_follower_ids.res_ids
-            : [];
         return {
-            activityIds,
-            followerIds,
-            context,
+            // `documents.document` has `mail.activity.mixin`
+            hasActivities: this.modelName === 'documents.document',
+            hasFollowers: true,
             hasTopbarCloseButton: true,
-            threadId: recordData.res_id,
-            threadModel: recordData.model,
+            threadId: this._selectedRecordIds[0],
+            threadModel: this.modelName,
         };
     },
     /**

@@ -17,6 +17,5 @@
     'installable': True,
     'auto_install': False,
     'application': False,
-    'uninstall_hook': "uninstall_hook",
     'license': 'OEEL-1',
 }

@@ -44,6 +44,8 @@ class ResPartner(models.Model):
                 record.contact_address_complete += record.zip + ' '
             if record.city:
                 record.contact_address_complete += record.city + ', '
+            if record.state_id:
+                record.contact_address_complete += record.state_id.name + ', '
             if record.country_id:
                 record.contact_address_complete += record.country_id.name
             record.contact_address_complete = record.contact_address_complete.strip().strip(',')

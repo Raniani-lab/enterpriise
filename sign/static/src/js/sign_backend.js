@@ -1108,8 +1108,8 @@ odoo.define('sign.template', function(require) {
 
                 $('body').on('click', function (e) {
                     $('div.popover').each(function () {
-                        if (!$(self).is(e.target) && $(self).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                            $(self).find('.o_sign_validate_field_button').click();
+                        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                            $(this).find('.o_sign_validate_field_button').click();
                         }
                     });
                 });

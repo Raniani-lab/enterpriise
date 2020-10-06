@@ -85,53 +85,24 @@ class HrPayslip(models.Model):
                             debit = amount if amount > 0.0 else 0.0
                             credit = -amount if amount < 0.0 else 0.0
 
-                            existing_debit_lines = (
-                                line_id for line_id in line_ids if
-                                line_id['name'] == line.name
-                                and line_id['account_id'] == debit_account_id
-                                and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
-                                and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)))
-                            debit_line = next(existing_debit_lines, False)
+                            debit_line = self._get_existing_lines(
+                                line_ids, line, debit_account_id, debit, credit)
 
                             if not debit_line:
-                                debit_line = {
-                                    'name': line.name,
-                                    'partner_id': line.partner_id.id,
-                                    'account_id': debit_account_id,
-                                    'journal_id': slip.struct_id.journal_id.id,
-                                    'date': date,
-                                    'debit': debit,
-                                    'credit': credit,
-                                    'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
-                                }
+                                debit_line = self._prepare_line_values(line, debit_account_id, date, debit, credit)
                                 line_ids.append(debit_line)
                             else:
                                 debit_line['debit'] += debit
                                 debit_line['credit'] += credit
-                        
+
                         if credit_account_id: # If the rule has a credit account.
                             debit = -amount if amount < 0.0 else 0.0
                             credit = amount if amount > 0.0 else 0.0
-                            existing_credit_line = (
-                                line_id for line_id in line_ids if
-                                line_id['name'] == line.name
-                                and line_id['account_id'] == credit_account_id
-                                and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id)
-                                and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0))
-                            )
-                            credit_line = next(existing_credit_line, False)
+                            credit_line = self._get_existing_lines(
+                                line_ids, line, credit_account_id, debit, credit)
 
                             if not credit_line:
-                                credit_line = {
-                                    'name': line.name,
-                                    'partner_id': line.partner_id.id,
-                                    'account_id': credit_account_id,
-                                    'journal_id': slip.struct_id.journal_id.id,
-                                    'date': date,
-                                    'debit': debit,
-                                    'credit': credit,
-                                    'analytic_account_id': line.salary_rule_id.analytic_account_id.id or slip.contract_id.analytic_account_id.id,
-                                }
+                                credit_line = self._prepare_line_values(line, credit_account_id, date, debit, credit)
                                 line_ids.append(credit_line)
                             else:
                                 credit_line['debit'] += debit
@@ -194,6 +165,27 @@ class HrPayslip(models.Model):
                 for slip in slip_mapped_data[journal_id][slip_date]:
                     slip.write({'move_id': move.id, 'date': date})
         return res
+
+    def _prepare_line_values(self, line, account_id, date, debit, credit):
+        return {
+            'name': line.name,
+            'partner_id': line.partner_id.id,
+            'account_id': account_id,
+            'journal_id': line.slip_id.struct_id.journal_id.id,
+            'date': date,
+            'debit': debit,
+            'credit': credit,
+            'analytic_account_id': line.salary_rule_id.analytic_account_id.id or line.slip_id.contract_id.analytic_account_id.id,
+        }
+
+    def _get_existing_lines(self, line_ids, line, account_id, debit, credit):
+        existing_lines = (
+            line_id for line_id in line_ids if
+            line_id['name'] == line.name
+            and line_id['account_id'] == account_id
+            and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or line.slip_id.contract_id.analytic_account_id.id)
+            and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)))
+        return next(existing_lines, False)
 
 
 class HrSalaryRule(models.Model):

@@ -258,22 +258,44 @@ class AnalyticLine(models.Model):
         return [('project_id', '=', False)]
 
     def action_validate_timesheet(self):
+        notification = {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': None,
+                'type': None,  #types: success,warning,danger,info
+                'sticky': False,  #True/False will display for few seconds if false
+            },
+        }
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
-            return {'status': 'danger', 'message': _("Sorry, you don't have the access to validate the timesheets.")}
-
-        if not self:
-            return {'status': 'warning', 'message': (_("There are no timesheets to validate"))}
+            notification['params'].update({
+                'title': _("Sorry, you don't have the access to validate the timesheets."),
+                'type': 'danger'
+            })
+            return notification
 
         analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
         if not analytic_lines:
-            return {'status': 'warning', 'message': (_('All selected timesheets for which you are indicated as responsible are already validated.'))}
+            notification['params'].update({
+                'title': _("There are no timesheets to validate."),
+                'type': 'warning',
+            })
+            return notification
 
         if analytic_lines.filtered(lambda l: l.timer_start):
-            return {'status': 'danger', 'message': _('At least one timer is running on the selected timesheets.')}
+            notification['params'].update({
+                'title': _("At least one timer is running on the selected timesheets."),
+                'type': 'danger',
+            })
+            return notification
 
         analytic_lines.sudo().write({'validated': True})
-        return {'status': 'success', 'message': _('The timesheets were successfully validated')}
-
+        notification['params'].update({
+            'title': _("The timesheets were successfully validated"),
+            'type': 'success',
+            'next': {'type': 'ir.actions.act_window_close'},
+        })
+        return notification
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -43,7 +43,7 @@ odoo.define('timesheet_grid.GridController', function (require) {
                     method: 'action_validate_timesheet',
                     args: [ids],
                 });
-                this.displayNotification({type: res.status, title: res.message});
+                this.displayNotification({type: res.params.type, title: res.params.title});
                 await this.model.reload();
                 var state = this.model.get();
                 await this.renderer.update(state);

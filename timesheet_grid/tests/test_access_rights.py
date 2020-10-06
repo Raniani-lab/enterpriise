@@ -180,7 +180,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         # Normally the approver can't validate the timesheet because he doesn't know the project (and he isn't the manager of the employee) and he's not the Timesheet Responsible
         res = timesheet_to_validate.with_user(self.user_approver2).action_validate_timesheet()
-        self.assertEqual(res['status'], 'warning')
+        self.assertEqual(res['params']['type'], 'warning')
         self.assertEqual(timesheet_to_validate.validated, False)
 
     def test_timesheet_validation_by_approver_when_he_is_manager_of_employee(self):
@@ -235,7 +235,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
         """
         timesheet_to_validate = self.timesheet
         res = timesheet_to_validate.with_user(self.user_employee).action_validate_timesheet()
-        self.assertEqual(res['status'], 'danger')
+        self.assertEqual(res['params']['type'], 'danger')
         self.assertEqual(self.timesheet.validated, False)
 
     def test_employee_read_timesheet_of_other_employee(self):

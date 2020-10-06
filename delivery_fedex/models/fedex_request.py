@@ -83,7 +83,7 @@ class FedexRequest():
     def set_shipper(self, company_partner, warehouse_partner):
         Contact = self.factory.Contact()
         Contact.PersonName = remove_accents(company_partner.name) if not company_partner.is_company else ''
-        Contact.CompanyName = remove_accents(company_partner.name) if company_partner.is_company else ''
+        Contact.CompanyName = remove_accents(company_partner.commercial_company_name) or ''
         Contact.PhoneNumber = warehouse_partner.phone or ''
         # TODO fedex documentation asks for TIN number, but it seems to work without
 
@@ -108,7 +108,7 @@ class FedexRequest():
             Contact.CompanyName = remove_accents(recipient_partner.name)
         else:
             Contact.PersonName = remove_accents(recipient_partner.name)
-            Contact.CompanyName = remove_accents(recipient_partner.parent_id.name) or ''
+            Contact.CompanyName = remove_accents(recipient_partner.commercial_company_name) or ''
         Contact.PhoneNumber = recipient_partner.phone or ''
 
         Address = self.factory.Address()

@@ -38,7 +38,7 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
         await this._super.apply(this, arguments);
         const my_timesheets = this.record.getContext().my_timesheet_display_timer;
         const display_timer = this.record.data.display_timer;
-        if (my_timesheets && display_timer) {
+        if (my_timesheets && display_timer && this.record.viewType === 'list') {
             const title = this.isTimerRunning ? _lt('Stop') : _lt('Play');
             const name = this.isTimerRunning ? 'action_timer_stop' : 'action_timer_start';
             const label = this.isTimerRunning ? _lt('Stop') : _lt('Start');

@@ -191,10 +191,14 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             return this._super.call(this, ...arguments);
         },
         waitUntilEvent: {
-            eventName: 'o-component-message-list-thread-cache-changed',
+            eventName: 'o-thread-view-hint-processed',
             message: "should wait until partner 11 thread displayed its messages",
-            predicate: ({ threadViewer }) => {
-                return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'res.partner' &&
+                    threadViewer.thread.id === 11
+                );
             },
         },
     });

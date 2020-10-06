@@ -169,7 +169,7 @@ class EasypostRequest():
             # that he put everything inside a single package.
             # The user still able to reorganise its packages if a
             # mistake happens.
-            if picking.is_return_picking:
+            if picking.picking_type_code == 'incoming':
                 weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.product_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
             else:
                 weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
@@ -184,7 +184,7 @@ class EasypostRequest():
             for package in picking.package_ids:
                 # compute move line weight in package
                 move_lines = picking.move_line_ids.filtered(lambda ml: ml.result_package_id == package)
-                if picking.is_return_picking:
+                if picking.picking_type_code == 'incoming':
                     weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.product_qty, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines])
                 else:
                     weight = package.shipping_weight
@@ -248,7 +248,7 @@ class EasypostRequest():
             # skip service
             if line.product_id.type not in ['product', 'consu']:
                 continue
-            if line.picking_id.is_return_picking:
+            if line.picking_id.picking_type_code == 'incoming':
                 unit_quantity = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id, rounding_method='HALF-UP')
             else:
                 unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')

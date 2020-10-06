@@ -220,7 +220,7 @@ class EasypostRequest():
                 shipment.update({
                     'order[shipments][%d][parcel][predefined_package]' % shipment_id: package.shipper_package_code
                 })
-            if not package.shipper_package_code or (package.length > 0 and package.width > 0 and package.height > 0):
+            if not package.shipper_package_code or (package.packaging_length > 0 and package.width > 0 and package.height > 0):
                 shipment.update({
                     'order[shipments][%d][parcel][length]' % shipment_id: package.packaging_length,
                     'order[shipments][%d][parcel][width]' % shipment_id: package.width,

@@ -6,13 +6,15 @@ import requests
 from unittest.mock import patch
 from odoo.addons.social.tests.common import SocialCase
 from odoo.addons.social_linkedin.models.social_live_post import SocialLivePostLinkedin
+from odoo.addons.social_linkedin.models.social_account import SocialAccountLinkedin
 
 
 class SocialLinkedinCase(SocialCase):
     @classmethod
     def setUpClass(cls):
-        super(SocialLinkedinCase, cls).setUpClass()
-        cls.social_accounts.write({'linkedin_access_token': 'ABCD'})
+        with patch.object(SocialAccountLinkedin, '_compute_statistics', lambda x: None):
+            super(SocialLinkedinCase, cls).setUpClass()
+            cls.social_accounts.write({'linkedin_access_token': 'ABCD'})
 
     def test_post_success(self):
         self._test_post()

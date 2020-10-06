@@ -464,7 +464,7 @@ class OutgoingIngenicoMessage(IngenicoMessage):
         Args:
             innerBody (b): formatted body excluding body-tag and length.
         """
-        return self._generateTag("Mdc", unhexlify('{:x}'.format(crc32(innerBody))))
+        return self._generateTag("Mdc", unhexlify('{:02x}'.format(crc32(innerBody))))
 
     def _generateBody(self, messageTypeId):
         """Return formatted body and Modification Detection Code.

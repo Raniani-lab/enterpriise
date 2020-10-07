@@ -59,7 +59,9 @@ function factory(dependencies) {
         activity: one2one('mail.activity', {
             inverse: 'approval',
         }),
-        id: attr(),
+        id: attr({
+            required: true,
+        }),
         isCurrentPartnerApprover: attr({
             default: false,
             related: 'activity.isCurrentPartnerAssignee',

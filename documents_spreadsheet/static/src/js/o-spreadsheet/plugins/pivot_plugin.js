@@ -219,12 +219,11 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
          */
         _refreshPivotCache(id, { dataOnly = false } = {}) {
             const pivot = this.pivots[id];
-            pivot.lastUpdate = undefined;
             pivot.isLoaded = false;
             if (!this.rpc) {
                 console.warn("Pivot plugin: RPC not defined");
             }
-            pivotUtils.fetchCache(pivot, this.rpc, { dataOnly }).then(() => {
+            pivotUtils.fetchCache(pivot, this.rpc, { dataOnly, force: true }).then(() => {
                 pivot.isLoaded = true;
             });
         }

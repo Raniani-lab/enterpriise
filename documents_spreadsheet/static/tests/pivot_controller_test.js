@@ -900,6 +900,37 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("pivot with a domain", async function (assert) {
+                assert.expect(3);
+
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    domain: [["bar", "=", true]],
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="bar" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                const [p1] = Object.values(model.getters.getPivots());
+                assert.deepEqual(
+                    p1.domain,
+                    [["bar", "=", true]],
+                    "It should have the correct domain"
+                );
+                assert.equal(
+                    model.getters.getCell(0, 2).content,
+                    `=PIVOT.HEADER("1","bar","true")`
+                );
+                assert.equal(model.getters.getCell(0, 3).content, `=PIVOT.HEADER("1")`);
+                pivot.destroy();
+            });
+
             QUnit.test("Insert in spreadsheet is disabled when no measure is specified", async function (assert) {
                 assert.expect(1);
                 const pivot = await createView({

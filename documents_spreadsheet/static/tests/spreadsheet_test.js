@@ -434,6 +434,82 @@ odoo.define("web.spreadsheet_tests", function (require) {
             actionManager.destroy();
         });
 
+        QUnit.test("Reinsert a pivot with an updated record", async function (assert) {
+            assert.expect(6);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            assert.equal(/*A3*/model.getters.getCell(0, 2).value, 110,);
+            assert.equal(/*B3*/model.getters.getCell(1, 2).value, 11);
+            assert.equal(/*C3*/model.getters.getCell(2, 2).value, 10);
+             // previously in group bar=110, now it's in a new group bar=99
+            this.data.partner.records[0].bar = 99;
+            this.data.partner.records[1].bar = 99;
+            // updated measures
+            this.data.partner.records[0].probability = 88;
+            this.data.partner.records[1].probability = 77;
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            await reinsertPivot1.action(env);
+            await nextTick();
+            assert.equal(/*A3*/model.getters.getCell(0, 2).value, 99, "The header should have been updated");
+            assert.equal(/*B3*/model.getters.getCell(1, 2).value, 77, "The value should have been updated");
+            assert.equal(/*C3*/model.getters.getCell(2, 2).value, 88, "The value should have been updated");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Keep applying filter when pivot is re-inserted", async function (assert) {
+            assert.expect(4);
+            const [ actionManager, model, env ] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                    <pivot>
+                        <field name="bar" type="col"/>
+                        <field name="product" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>
+                `,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("ADD_PIVOT_FILTER", {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "Filter",
+                    fields: {
+                        1: {
+                            field: "product",
+                            type: "many2one",
+                        }
+                    },
+                }
+            });
+            model.dispatch("SET_PIVOT_FILTER_VALUE", {
+                id: "42",
+                value: [41],
+            });
+            await nextTick();
+            assert.equal(/*B3*/model.getters.getCell(1, 2).value, "", "The value should have been filtered");
+            assert.equal(/*C3*/model.getters.getCell(2, 2).value, "", "The value should have been filtered");
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            await reinsertPivot1.action(env);
+            await nextTick();
+            assert.equal(/*B3*/model.getters.getCell(1, 2).value, "", "The value should still be filtered");
+            assert.equal(/*C3*/model.getters.getCell(2, 2).value, "", "The value should still be filtered");
+            actionManager.destroy();
+        });
+
         QUnit.test("undo pivot reinsert", async function (assert) {
             assert.expect(2);
 

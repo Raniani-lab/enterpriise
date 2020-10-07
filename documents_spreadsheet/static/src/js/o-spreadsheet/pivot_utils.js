@@ -119,10 +119,14 @@
      * @param {Function} rpc Rpc function to use
      * @param {Object} params
      * @param {boolean} params.dataOnly=false only refresh the data, not the structure of the pivot
+     * @param {boolean} params.force=false Force to refresh the cache
      * @param {boolean} params.initialDomain=false only refresh the data with the domain of the pivot,
      *                                      without the global filters
      */
-    async function fetchCache(pivot, rpc, { dataOnly = false, initialDomain = false } = {}) {
+    async function fetchCache(pivot, rpc, { dataOnly = false, force = false, initialDomain = false } = {}) {
+        if (force) {
+            pivot.lastUpdate = undefined;
+        }
         if (!pivot.lastUpdate) {
             pivot.lastUpdate = Date.now();
             pivot.promise = createPivotCache(pivot, rpc,  { dataOnly, initialDomain });

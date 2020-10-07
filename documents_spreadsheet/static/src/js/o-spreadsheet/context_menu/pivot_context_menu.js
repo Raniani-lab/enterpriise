@@ -24,17 +24,24 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                     sequence: index,
                     action: async (env) => {
                         // We need to fetch the cache without the global filters,
-                        // so we keep the current cache to avoid to re-create it
-                        // after rebuilding the pivot to apply the filters.
-                        const cache = pivot.cache;
-                        pivot.lastUpdate = undefined;
-                        await fetchCache(pivot, env.services.rpc, { dataOnly: true, initialDomain: true });
+                        // to get the full pivot structure.
+                        await fetchCache(pivot, env.services.rpc, {
+                            dataOnly: true,
+                            initialDomain: true,
+                            force: true,
+                        });
                         const zone = env.getters.getSelectedZone();
                         env.dispatch("REBUILD_PIVOT", {
                             id: pivot.id,
                             anchor: [zone.left, zone.top],
                         });
-                        pivot.cache = cache;
+                        if (env.getters.getActiveFilterCount()) {
+                            await fetchCache(pivot, env.services.rpc, {
+                                dataOnly: true,
+                                initialDomain: false,
+                                force: true,
+                            });
+                        }
                         env.dispatch("EVALUATE_CELLS");
                     }
                 })),
@@ -55,8 +62,7 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
                             env.dispatch("UPDATE_CELL", { sheet: env.getters.getActiveSheet(), col, row, content: formula });
                         }
 
-                        pivot.lastUpdate = undefined;
-                        await fetchCache(pivot, env.services.rpc, {dataOnly: true});
+                        await fetchCache(pivot, env.services.rpc, { dataOnly: true, force: true });
                         env.dispatch("EVALUATE_CELLS");
                         // Here we need to wait for every cells of the sheet are
                         // computed, in order to ensure that the cache of missing

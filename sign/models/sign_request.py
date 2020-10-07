@@ -149,6 +149,7 @@ class SignRequest(models.Model):
                 'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
+                'request_item_states': dict((item.id, item.is_mail_sent) for item in self.request_item_ids),
             },
         }
 
@@ -613,6 +614,7 @@ class SignRequestItem(models.Model):
     ], readonly=True, default="draft")
 
     signer_email = fields.Char(related='partner_id.email', readonly=False, depends=(['partner_id']), store=True)
+    is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
@@ -630,7 +632,7 @@ class SignRequestItem(models.Model):
         self.mapped('sign_request_id')._check_after_compute()
 
     def action_sent(self):
-        self.write({'state': 'sent'})
+        self.write({'state': 'sent', 'is_mail_sent': True})
         self.mapped('sign_request_id')._check_after_compute()
 
     def action_completed(self):
@@ -702,9 +704,15 @@ class SignRequestItem(models.Model):
 
         return True
 
+    def resend_sign_access(self):
+        self.ensure_one()
+        self.resend_access(self.id)
+
     @api.model
     def resend_access(self, id):
         sign_request_item = self.browse(id)
+        sign_request_item.write({'is_mail_sent': True})
+        sign_request_item.sign_request_id.message_post(body=_('The signature mail has been send to %s.') % sign_request_item.partner_id.name)
         subject = _("Signature Request - %s") % (sign_request_item.sign_request_id.template_id.attachment_id.name)
         self.browse(id).send_signature_accesses(subject=subject)
 

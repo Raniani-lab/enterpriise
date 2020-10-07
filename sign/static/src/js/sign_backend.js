@@ -1266,6 +1266,7 @@ odoo.define('sign.DocumentBackend', function (require) {
             this.token = context.token;
             this.create_uid = context.create_uid;
             this.state = context.state;
+            this.requestStates = context.request_item_states;
 
             this.current_name = context.current_signor_name;
             this.token_list = context.token_list;
@@ -1411,8 +1412,8 @@ odoo.define('sign.document_edition', function(require) {
                     self.$('.o_sign_signer_status').not('.o_sign_signer_signed').each(function(i, el) {
                         $(el).append($('<button/>', {
                             type: 'button',
-                            title: _t("Resend the invitation"),
-                            text: _t('Resend'),
+                            title: (self.requestStates && self.requestStates[this.dataset.id]) ? _t("Resend the invitation"): _t("Send the invitation"),
+                            text: (self.requestStates && self.requestStates[this.dataset.id]) ? _t("Resend"): _t("Send"),
                             class: 'o_sign_resend_access_button btn btn-link ml-2 mr-2',
                             style: 'vertical-align: baseline;',
                         }));

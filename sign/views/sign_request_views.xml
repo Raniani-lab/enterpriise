@@ -207,6 +207,9 @@
                 <field name="signer_email" class="oe_read_only"/>
                 <field name="role_id" class="oe_read_only"/>
                 <field name="state" class="oe_read_only"/>
+                <field name="is_mail_sent" invisible="1"/>
+                <button name="resend_sign_access" string="Send" type="object" icon="fa-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '!=', False)]}"/>
+                <button name="resend_sign_access" string="Resend" type="object" icon="fa-check-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
             </tree>
         </field>
     </record>

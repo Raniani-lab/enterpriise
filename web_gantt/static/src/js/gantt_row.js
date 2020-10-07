@@ -177,7 +177,7 @@ var GanttRow = Widget.extend({
             trigger: 'hover',
             delay: {show: this.POPOVER_DELAY},
             html: true,
-            placement: 'top',
+            placement: 'auto',
             content: function () {
                 return self.viewInfo.popoverQWeb.render('gantt-popover', self._getPopoverContext($(this).data('id')));
             },

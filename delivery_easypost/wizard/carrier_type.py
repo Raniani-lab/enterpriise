@@ -52,7 +52,7 @@ class CarrierType(models.TransientModel):
         if services:
             # Same than product packaging but for service
             # level https://www.easypost.com/docs/api.html#service-levels
-            already_existing_services = self.env['product.packaging'].search_read([
+            already_existing_services = self.env['easypost.service'].search_read([
                 ('easypost_carrier', '=', self.carrier_type),
                 ('name', 'in', services)
             ], ['name'])

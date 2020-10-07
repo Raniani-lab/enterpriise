@@ -417,7 +417,7 @@ const PhoneCallDetails = Widget.extend({
             this.do_action({
                 res_id: resId,
                 res_model: "res.partner",
-                target: config.device.isMobile ? 'new' : 'current',
+                target: 'new',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
             }, {
@@ -431,7 +431,7 @@ const PhoneCallDetails = Widget.extend({
                     default_mobile: this.mobileNumber,
                 },
                 res_model: 'res.partner',
-                target: config.device.isMobile ? 'new' : 'current',
+                target: 'new',
                 type: 'ir.actions.act_window',
                 views: [[false, 'form']],
             }, {
@@ -460,7 +460,7 @@ const PhoneCallDetails = Widget.extend({
             views: [[viewId || false, 'form']],
             view_mode: 'form',
             view_type: 'form',
-            target: config.device.isMobile ? 'new' : 'current',
+            target: 'new',
         }, {
             fullscreen: config.device.isMobile
         });

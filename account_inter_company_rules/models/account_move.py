@@ -49,6 +49,7 @@ class AccountMove(models.Model):
                 line.price_unit = price_unit
             invoice_vals = inv_new._convert_to_write(inv_new._cache)
             invoice_vals.pop('line_ids', None)
+            invoice_vals['origin_invoice'] = inv
 
             invoices_vals_per_type.setdefault(invoice_vals['move_type'], [])
             invoices_vals_per_type[invoice_vals['move_type']].append(invoice_vals)
@@ -56,7 +57,13 @@ class AccountMove(models.Model):
         # Create invoices.
         moves = self.env['account.move']
         for invoice_type, invoices_vals in invoices_vals_per_type.items():
-            moves += self.with_context(default_type=invoice_type).create(invoices_vals)
+            for invoice in invoices_vals:
+                origin_invoice = invoice['origin_invoice']
+                invoice.pop('origin_invoice')
+                msg = _("Automatically generated from %(origin)s of company %(company)s.", origin=origin_invoice.name, company=origin_invoice.company_id.name)
+                am = self.with_context(default_type=invoice_type).create(invoice)
+                am.message_post(body=msg)
+                moves += am
         return moves
 
     def _inter_company_prepare_invoice_data(self, invoice_type):

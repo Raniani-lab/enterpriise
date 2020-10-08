@@ -34,8 +34,8 @@
                 <pivot string="Stock Overview" sample="1">
                     <field name="operation_type" type="col"/>
                     <field name="categ_id" type="row"/>
-                    <field name="cycle_time" type="measure"/>
-                    <field name="delay" type="measure"/>
+                    <field name="cycle_time" type="measure" string="Average Cycle Time (Days)"/>
+                    <field name="delay" type="measure" string="Average Delay (Days)"/>
                 </pivot>
             </field>
         </record>
@@ -49,9 +49,12 @@
                     <field name="operation_type"/>
                     <field name="product_id"/>
                     <field name="creation_date"/>
+                    <field name="scheduled_date"/>
                     <field name="date_done"/>
-                    <field name="state"/>
+                    <field name="cycle_time" optional="hide"/>
+                    <field name="delay" optional="hide"/>
                     <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -140,7 +143,7 @@
             <field name="search_view_id" ref="stock_enterprise.stock_report_search_view"/>
             <field name="domain" eval="[('picking_type_code', '!=', False)]"/>
             <field name="context">{
-                'search_default_done': 1,
+                'search_default_done_deliveries': 1,
                 'search_default_filter_date_done': 1}</field> <!-- Use context keys for cohort view -->
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

@@ -15,8 +15,8 @@ class StockReport(models.Model):
     date_done = fields.Datetime("Transfer Date", readonly=True)
     creation_date = fields.Datetime("Creation Date", readonly=True)
     scheduled_date = fields.Datetime("Expected Date", readonly=True)
-    delay = fields.Float("Delay (Days)", readonly=True)
-    cycle_time = fields.Float("Cycle Time (Days)", readonly=True)
+    delay = fields.Float("Delay (Days)", readonly=True, group_operator="avg")
+    cycle_time = fields.Float("Cycle Time (Days)", readonly=True, group_operator="avg")
     picking_type_code = fields.Selection([
         ('incoming', 'Vendors'),
         ('outgoing', 'Customers'),

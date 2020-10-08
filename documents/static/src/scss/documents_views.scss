@@ -39,6 +39,11 @@ $o-dms-progress-bar-height: 15px;
             background-color: $o-searchpanel-active-bg;
             font-weight: bold;
             padding-left: 20px;
+            /* Firefox firing dragleave when dragging over text
+            https://bugzilla.mozilla.org/show_bug.cgi?id=1478562 */
+            .o_search_panel_label {
+                pointer-events: none;
+            }
         }
 
     }

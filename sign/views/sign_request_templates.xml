@@ -131,6 +131,9 @@
 
     <template id="sign.doc_sign" name="Document Sign">
         <t t-call="web.layout">
+            <t t-if="current_request_item and current_request_item.partner_id.lang">
+                <t t-set="html_data" t-value="{'lang': current_request_item.partner_id.lang.replace('_', '-')}"/>
+            </t>
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>

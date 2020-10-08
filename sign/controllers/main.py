@@ -112,6 +112,9 @@ class Sign(http.Controller):
         if not isinstance(document_context, dict):
             return document_context
 
+        current_request_item = document_context.get('current_request_item')
+        if current_request_item and current_request_item.partner_id.lang:
+            http.request.env.context = dict(http.request.env.context, lang=current_request_item.partner_id.lang)
         return http.request.render('sign.doc_sign', document_context)
 
     @http.route(['/sign/download/<int:id>/<token>/<download_type>'], type='http', auth='public')

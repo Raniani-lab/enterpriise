@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_crm_score
+# * mrp_mps
 #
 # Translators:
 # Martin Trigaux <mat@odoo.com>, 2017
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 09:24+0000\n"
-"PO-Revision-Date: 2017-10-24 09:24+0000\n"
+"POT-Creation-Date: 2017-11-21 17:04+0000\n"
+"PO-Revision-Date: 2017-11-21 17:04+0000\n"
 "Last-Translator: Martin Trigaux <mat@odoo.com>, 2017\n"
 "Language-Team: French (Canada) (https://www.transifex.com/odoo/teams/41243/"
 "fr_CA/)\n"
@@ -19,8 +19,14 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
+#. module: mrp_mps
+#: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__id
+#: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__id
+#: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__id
 msgid "ID"
 msgstr "Identifiant"
+
+#. module: mrp_mps
+#: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
+msgid "Product"
+msgstr "Produit"

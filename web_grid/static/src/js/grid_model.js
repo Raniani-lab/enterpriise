@@ -21,7 +21,7 @@ const GridModel = AbstractModel.extend({
     init: function () {
         this._super.apply(this, arguments);
         this._gridData = null;
-        this._fetchMutex = new concurrency.MutexedDropPrevious();
+        this.dp = new concurrency.DropPrevious();
     },
 
     //--------------------------------------------------------------------------
@@ -257,82 +257,81 @@ const GridModel = AbstractModel.extend({
      * @returns {Promise}
      */
     _fetch: function (groupBy) {
-        var self = this;
-
         if (!this.currentRange) {
             return Promise.resolve();
         }
 
-        return this._fetchMutex.exec(function () {
-            if (self.sectionField && self.sectionField === groupBy[0]) {
-                return self._fetchGroupedData(groupBy);
-            } else {
-                return self._fetchUngroupedData(groupBy);
-            }
-        });
+        if (this.sectionField && this.sectionField === groupBy[0]) {
+            return this._fetchGroupedData(groupBy);
+        } else {
+            return this._fetchUngroupedData(groupBy);
+        }
     },
     /**
      * @private
      * @param {string[]} groupBy
      * @returns {Promise}
      */
-    _fetchGroupedData: function (groupBy) {
-        var self = this;
-        return this._rpc({
-            model: self.modelName,
+    _fetchGroupedData: async function (groupBy) {
+        const d = await this.dp.add(this._rpc({
+            model: this.modelName,
             method: 'read_grid_domain',
             kwargs: {
-                field: self.colField,
-                range: self.currentRange,
+                field: this.colField,
+                range: this.currentRange,
             },
-            context: self.getContext(),
-        }).then(function (d) {
-            return self._rpc({
-                model: self.modelName,
-                method: 'read_group',
-                kwargs: {
-                    domain: d.concat(self.domain || []),
-                    fields: [self.sectionField],
-                    groupby: [self.sectionField],
-                },
-                context: self.getContext()
-            });
-        }).then(function (groups) {
-            if (!groups.length) {
-                // if there are no groups in the output we still need
-                // to fetch an empty grid so we can render the table's
-                // decoration (pagination and columns &etc) otherwise
-                // we get a completely empty grid
-                return Promise.all([self._fetchSectionGrid(groupBy, {
-                    __domain: self.domain || [],
-                })]);
-            }
-            return Promise.all((groups || []).map(function (group) {
-                return self._fetchSectionGrid(groupBy, group);
+            context: this.getContext(),
+        }));
+
+        const groups = await this.dp.add(this._rpc({
+            model: this.modelName,
+            method: 'read_group',
+            kwargs: {
+                domain: d.concat(this.domain || []),
+                fields: [this.sectionField],
+                groupby: [this.sectionField],
+            },
+            context: this.getContext()
+        }));
+
+        let prom;
+        if (!groups.length) {
+            // if there are no groups in the output we still need
+            // to fetch an empty grid so we can render the table's
+            // decoration (pagination and columns &etc) otherwise
+            // we get a completely empty grid
+            prom = Promise.all([this._fetchSectionGrid(groupBy, {
+                __domain: this.domain || [],
+            })]);
+        } else {
+            prom = Promise.all((groups || []).map(group => {
+                return this._fetchSectionGrid(groupBy, group);
             }));
-        }).then(function (results) {
-            if (!(_.isEmpty(results) || _.reduce(results, function (m, it) {
-                    return _.isEqual(m.cols, it.cols) && m;
-                }))) {
-                throw new Error(_t("The sectioned grid view can't handle groups with different columns sets"));
-            }
-            results.forEach((group, groupIndex) => {
-                results[groupIndex].totals = self._computeTotals(group.grid);
-                group.rows.forEach((row, rowIndex) => {
-                    results[groupIndex].rows[rowIndex].label = self._getRowLabel(row, true);
-                });
+        }
+        const results = await this.dp.add(prom);
+
+        if (!(_.isEmpty(results) || _.reduce(results, function (m, it) {
+                return _.isEqual(m.cols, it.cols) && m;
+            }))) {
+            throw new Error(_t("The sectioned grid view can't handle groups with different columns sets"));
+        }
+        results.forEach((group, groupIndex) => {
+            results[groupIndex].totals = this._computeTotals(group.grid);
+            group.rows.forEach((row, rowIndex) => {
+                results[groupIndex].rows[rowIndex].label = this._getRowLabel(row, true);
             });
-            self._gridData = {
-                isGrouped: true,
-                data: results,
-                totals: self._computeTotals(_.flatten(_.pluck(results, 'grid'), true)),
-                groupBy,
-                colField: self.colField,
-                cellField: self.cellField,
-                range: self.currentRange.name,
-                context: self.context,
-            };
         });
+
+        this._gridData = {
+            isGrouped: true,
+            data: results,
+            totals: this._computeTotals(_.flatten(_.pluck(results, 'grid'), true)),
+            groupBy,
+            colField: this.colField,
+            cellField: this.cellField,
+            range: this.currentRange.name,
+            context: this.context,
+        };
     },
     /**
      * @private
@@ -366,37 +365,35 @@ const GridModel = AbstractModel.extend({
      * @param {string[]} groupBy
      * @returns {Promise}
      */
-    _fetchUngroupedData: function (groupBy) {
-        var self = this;
-        return this._rpc({
-                model: self.modelName,
+    _fetchUngroupedData: async function (groupBy) {
+        const result = await this.dp.add(this._rpc({
+                model: this.modelName,
                 method: 'read_grid',
                 kwargs: {
                     row_fields: groupBy,
-                    col_field: self.colField,
-                    cell_field: self.cellField,
-                    domain: self.domain,
-                    range: self.currentRange,
+                    col_field: this.colField,
+                    cell_field: this.cellField,
+                    domain: this.domain,
+                    range: this.currentRange,
                     readonly_field: this.readonlyField,
                 },
-                context: self.getContext(),
-            })
-            .then(function (result) {
-                const rows = result.rows;
-                rows.forEach((row, rowIndex) => {
-                    result.rows[rowIndex].label = self._getRowLabel(row, false);
-                });
-                self._gridData = {
-                    isGrouped: false,
-                    data: [result],
-                    totals: self._computeTotals(result.grid),
-                    groupBy,
-                    colField: self.colField,
-                    cellField: self.cellField,
-                    range: self.currentRange.name,
-                    context: self.context,
-                };
-            });
+                context: this.getContext(),
+        }));
+
+        const rows = result.rows;
+        rows.forEach((row, rowIndex) => {
+            result.rows[rowIndex].label = this._getRowLabel(row, false);
+        });
+        this._gridData = {
+            isGrouped: false,
+            data: [result],
+            totals: this._computeTotals(result.grid),
+            groupBy,
+            colField: this.colField,
+            cellField: this.cellField,
+            range: this.currentRange.name,
+            context: this.context,
+        };
     },
 });
 

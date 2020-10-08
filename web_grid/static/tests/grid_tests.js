@@ -5,6 +5,7 @@ var concurrency = require('web.concurrency');
 var GridView = require('web_grid.GridView');
 var testUtils = require('web.test_utils');
 
+const cpHelpers = testUtils.controlPanel;
 var createView = testUtils.createView;
 var createActionManager = testUtils.createActionManager;
 
@@ -1556,6 +1557,85 @@ QUnit.module('Views', {
             assert.strictEqual(action.context.edit, false, "It should not be editable");
         });
         await testUtils.dom.click(grid.$('div.o_grid_cell_container:eq(2) .o_grid_cell_information'));
+
+        grid.destroy();
+    });
+
+    QUnit.test("concurrent reloads of a grid view (from 2 to 1 to 2 groupbys quickly)", async function (assert) {
+        assert.expect(12);
+
+        const prom = testUtils.makeTestPromise();
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="day" string="Day" span="day" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>
+            `,
+            archs: {
+                'analytic.line,false,search': `
+                    <search>
+                        <filter name="Project" context="{'group_by': 'project_id'}"/>
+                    </search>
+                `,
+            },
+            currentDate: "2017-01-30",
+            mockRPC: async function (_, args) {
+                const _super = this._super.bind(this);
+                if (args.method === 'read_grid' && !args.kwargs.row_fields.length) {
+                    await prom;
+                    // _mockReadGrid does not work when row_fields has zero length.
+                    // Here we will use the results from a call to read_grid
+                    // with row_fields = ['task_id'] (initial case) but we
+                    // set the row values as {} like they should be
+                    // Most domains won't be good in result but we don't care.
+                    // The form of result will be good apart from that
+                    args.kwargs.row_fields = ['task_id'];
+                    const result = await _super(...arguments);
+                    for (const r of result.rows) {
+                        r.values = {};
+                    }
+                    return result;
+                }
+                return _super(...arguments);
+            },
+        });
+
+        assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys"); 
+        assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "two groupbys");
+
+        // open Group By menu
+        await cpHelpers.toggleGroupByMenu(grid);
+        // click on Project
+        await cpHelpers.toggleMenuItem(grid, 'Project');
+
+        // the data has not been fetched yet (the calls to read_grid take time)
+        assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
+        assert.deepEqual(grid.model.groupedBy, ['project_id'], "one groupby"); 
+        assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "_gridData has not been modified yet");
+
+        // click again on Project while the data are being fetched (the read_grid results have not returned yet)
+        await cpHelpers.toggleMenuItem(grid, 'Project');
+
+        assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys"); 
+        assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "two groupbys");
+
+        prom.resolve();
+        await testUtils.nextTick();
+
+        assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "the model state has not been corrupted"); 
+        assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], " the model state has not been corrupted");
 
         grid.destroy();
     });

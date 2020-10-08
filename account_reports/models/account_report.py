@@ -510,7 +510,7 @@ class AccountReport(models.AbstractModel):
             # add the group totals
             lines.append({
                 'id': val_dict['id'],
-                'name': val_dict['name'] if len(val_dict['name']) < 60 else val_dict['name'][:60] + '...',
+                'name': val_dict['name'],
                 'title_hover': val_dict['name'],
                 'unfoldable': True,
                 'unfolded': hierarchy_parent in options.get('unfolded_lines') or unfold_all,

@@ -92,6 +92,21 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .o_account_report_name_ellipsis {
+        position: relative;
+        width: 100%;
+        span {
+            margin-right: 8px;
+        }
+    }
+    .o_account_report_name_ellipsis span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     // ----------------------------------------------------------------
     .o_account_report_summary {
         padding-left: 5px;

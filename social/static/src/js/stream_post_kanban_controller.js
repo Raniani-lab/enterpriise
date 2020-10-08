@@ -202,7 +202,7 @@ var StreamPostKanbanController = KanbanController.extend({
         var self = this;
 
         this.$buttons.find('.o_stream_post_kanban_refresh_now').addClass('disabled');
-        this.$buttons.find('.o_stream_post_kanban_refresh_now .fa-spinner').removeClass('d-none');
+        this.$buttons.find('.o_stream_post_kanban_refresh_now .fa-circle-o-notch').removeClass('d-none');
         Promise.all([
             this.model._refreshStreams(),
             this.model._refreshAccountsStats()
@@ -218,7 +218,7 @@ var StreamPostKanbanController = KanbanController.extend({
             }
 
             self.$buttons.find('.o_stream_post_kanban_refresh_now').removeClass('disabled');
-            self.$buttons.find('.o_stream_post_kanban_refresh_now .fa-spinner').addClass('d-none');
+            self.$buttons.find('.o_stream_post_kanban_refresh_now .fa-circle-o-notch').addClass('d-none');
         });
     },
 

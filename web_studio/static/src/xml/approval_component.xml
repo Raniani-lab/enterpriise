@@ -41,7 +41,7 @@
 <t t-name="Studio.ApprovalIcons" owl="1">
     <!-- no rules list: first fetch not done, display spinner -->
     <t t-if="state.rules === null">
-        <i class="fa fa-spinner fa-spin"/>
+        <i class="fa fa-circle-o-notch fa-spin"/>
     </t>
     <!-- data fetched; display avatar for rules and entries -->
     <t t-if="state.rules.length">

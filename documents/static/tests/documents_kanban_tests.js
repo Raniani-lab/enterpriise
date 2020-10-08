@@ -3181,7 +3181,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.strictEqual(kanban.$('.o_file_upload_progress_text_left').text(), "Uploading... (50%)",
             "the current upload progress should be at 50%");
 
-        assert.containsOnce(kanban, '.fa.fa-spinner');
+        assert.containsOnce(kanban, '.fa.fa-circle-o-notch');
 
         progressEvent.loaded = 350000000;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);

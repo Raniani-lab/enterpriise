@@ -1447,7 +1447,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 // Utility functions
 
 function addLoader(selector) {
-    var loader = '<span class="fa fa-3x fa-spin fa-spinner fa-pulse"/>';
+    var loader = '<span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin"/>';
     selector.html("<div class='o_loader'>" + loader + "</div>");
 }
 

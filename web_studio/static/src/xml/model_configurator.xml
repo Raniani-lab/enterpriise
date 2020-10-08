@@ -30,7 +30,7 @@
                 <span t-esc="props.label"/>
                 <i
                     class="fa"
-                    t-att-class="{'fa-chevron-right': !state.saving, 'fa-spinner': state.saving, 'fa-spin': state.saving}"
+                    t-att-class="{'fa-chevron-right': !state.saving, 'fa-circle-o-notch': state.saving, 'fa-spin': state.saving}"
                 />
             </button>
         </div>

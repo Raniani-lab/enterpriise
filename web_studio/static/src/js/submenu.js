@@ -327,7 +327,7 @@ var SubMenu = Widget.extend({
         switch (type) {
             case 'saved':
                 this.$('.o_web_studio_snackbar_icon')
-                    .removeClass('fa-spinner fa-pulse');
+                    .removeClass('fa-circle-o-notch fa-spin');
                 this.$('.o_web_studio_snackbar_icon')
                     .addClass('show fa fa-check');
                 this.$('.o_web_studio_snackbar_text')
@@ -335,7 +335,7 @@ var SubMenu = Widget.extend({
                 break;
             case 'saving':
                 this.$('.o_web_studio_snackbar_icon')
-                    .addClass('show fa fa-spinner fa-pulse');
+                    .addClass('show fa fa-circle-o-notch fa-spin');
                 this.$('.o_web_studio_snackbar_text')
                     .text(_t("Saving"));
                 break;

@@ -404,7 +404,7 @@ odoo.define('sign.template', function(require) {
                         var rotateButton = $("<button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' title='" + rotateText + "'/>");
                         rotateButton.insertBefore(self.$('#print'));
                         rotateButton.on('click', function(e) {
-                            rotateButton.prepend('<i class="fa fa-spin fa-spinner"/>');
+                            rotateButton.prepend('<i class="fa fa-spin fa-circle-o-notch"/>');
                             rotateButton.attr('disabled', true);
                             self._rotateDocument();
                         });

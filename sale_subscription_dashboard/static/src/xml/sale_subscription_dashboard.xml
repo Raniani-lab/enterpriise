@@ -9,7 +9,7 @@
             <div t-foreach="stat_types" t-as="stat">
                 <a href="#" class="on_stat_box" t-att-data-stat="stat['code']">
                     <div class="box o_stat_box" t-att-name="stat['name']" t-att-code="stat['code']">
-                        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
+                        <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
                     </div>
                 </a>
             </div>
@@ -17,7 +17,7 @@
             <div t-foreach="_.values(forecast_stat_types)" t-as="forecast">
                 <a href="#" class="on_forecast_box" t-att-data-forecast="forecast['code']">
                     <div class="box o_forecast_box" t-att-name="forecast['name']" t-att-code="forecast['code']">
-                        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
+                        <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
                     </div>
                 </a>
             </div>
@@ -371,7 +371,7 @@
         </span>
     </t>
     <div t-name="sale_subscription_dashboard.stat_box_content" class="box o_stat_box" t-att-name="widget.box_name" t-att-code="widget.stat_type">
-        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
+        <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
         <div class="o_stat_box_header">
             <h2 class="o_stat_box_card_amount"></h2>
             <div class="o_trend"></div>
@@ -387,7 +387,7 @@
     </div>
 
     <div t-name="sale_subscription_dashboard.forecast_stat_box_content" class="box o_forecast_box" t-att-name="widget.box_name" t-att-code="widget.stat_type">
-        <div class="o_loader"><span class="fa fa-3x fa-spin fa-spinner fa-pulse" role="img" aria-label="Loading..." title="Loading..."/></div>
+        <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
         <div class="o_stat_box_header">
             <h2 class="o_stat_box_card_amount"></h2>
         </div>

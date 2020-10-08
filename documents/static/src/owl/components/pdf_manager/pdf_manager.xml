@@ -79,7 +79,7 @@
             t-att-disabled="state.uploadingLock"
             t-on-click="_onClickSplit">
             Split
-            <span t-if="state.uploadingLock" class="fa fa-spinner fa-spin"/>
+            <span t-if="state.uploadingLock" class="fa fa-circle-o-notch fa-spin"/>
         </button>
         <t t-foreach="props.rules" t-as="rule" t-key="rule.id">
             <button class="btn"

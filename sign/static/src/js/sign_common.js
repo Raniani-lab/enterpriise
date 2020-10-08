@@ -1709,7 +1709,7 @@ odoo.define('sign.document_signing', function (require) {
         signItemDocument: function(e) {
             var $btn = this.$('.o_sign_validate_banner button');
             var init_btn_text = $btn.text();
-            $btn.prepend('<i class="fa fa-spin fa-spinner" />');
+            $btn.prepend('<i class="fa fa-spin fa-circle-o-notch" />');
             $btn.attr('disabled', true);
             var mail = "";
             this.iframeWidget.$('.o_sign_sign_item').each(function(i, el) {

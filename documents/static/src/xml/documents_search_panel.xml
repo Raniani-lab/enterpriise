@@ -22,7 +22,7 @@
         <attribute name="t-on-drop.stop.prevent">_onDrop(section.id, valueId)</attribute>
     </xpath>
     <xpath expr="//*[contains(@class, 'o_search_panel_label')]" position="inside">
-        <span t-if="_isUploading(valueId)" class="fa fa-spinner fa-spin"/>
+        <span t-if="_isUploading(valueId)" class="fa fa-circle-o-notch fa-spin"/>
     </xpath>
 </t>
 

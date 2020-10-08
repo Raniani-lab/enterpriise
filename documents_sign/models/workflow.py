@@ -22,7 +22,6 @@ class WorkflowActionRuleSign(models.Model):
             template_ids = []
             for document in documents:
                 create_values = {
-                    'name': document.name.rsplit('.', 1)[0],
                     'attachment_id': document.attachment_id.id,
                     'favorited_ids': [(4, self.env.user.id)],
                 }

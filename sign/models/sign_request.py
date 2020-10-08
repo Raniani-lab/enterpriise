@@ -326,7 +326,7 @@ class SignRequest(models.Model):
 
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         attachment = self.env['ir.attachment'].create({
-            'name': "%s.pdf" % self.reference,
+            'name': "%s.pdf" % self.reference if self.reference.split('.')[-1] != 'pdf' else self.reference,
             'datas': self.completed_document,
             'type': 'binary',
             'res_model': self._name,

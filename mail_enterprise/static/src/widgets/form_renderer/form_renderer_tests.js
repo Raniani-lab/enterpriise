@@ -60,6 +60,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     });
     for (let i = 0; i < 60; i++) {
         this.data['mail.message'].records.push({
+            body: "not empty",
             id: i + 1,
             model: 'res.partner',
             res_id: 11,
@@ -109,7 +110,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     const messageList = document.querySelector('.o_ThreadView_messageList');
     await afterNextRender(async () => {
         // This will trigger the DOM Event "scroll"
-        messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+        messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
     });
     const lastMessageRect = lastMessage.getBoundingClientRect();
     const listRect = messageList.getBoundingClientRect();
@@ -124,7 +125,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
 
     await afterNextRender(async () => {
         // This will trigger the DOM Event "scroll"
-        messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+        messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
     });
     assert.verifySteps(
         ['message_fetch'],
@@ -132,7 +133,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     );
     assert.strictEqual(
         messageList.scrollTop,
-        messageList.scrollHeight - messageList.offsetHeight,
+        messageList.scrollHeight - messageList.clientHeight,
         "The message list should be scrolled to its bottom"
     );
 });
@@ -150,6 +151,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     });
     for (let i = 0; i < 60; i++) {
         this.data['mail.message'].records.push({
+            body: "not empty",
             id: i + 1,
             model: 'res.partner',
             res_id: 11,
@@ -221,22 +223,27 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         "The controller container should not be scrolled"
     );
 
-    await this.afterEvent({
-        eventName: 'o-component-message-list-more-messages-loaded',
+    // afterNextRender here needed due to scroll management issue (task-2358066)
+    await afterNextRender(() => this.afterEvent({
+        eventName: 'o-thread-view-hint-processed',
         func: () => {
             const messageList = document.querySelector('.o_ThreadView_messageList');
-            messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+            messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
         },
         message: "should wait until partner 11 thread loaded more messages",
-        predicate: ({ threadViewer }) => {
-            return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+        predicate: ({ hint, threadViewer }) => {
+            return (
+                hint.type === 'more-messages-loaded' &&
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === 11
+            );
         },
-    });
+    }));
     await this.afterEvent({
         eventName: 'o-component-message-list-scrolled',
         func: () => {
             const messageList = document.querySelector('.o_ThreadView_messageList');
-            messageList.scrollTop = messageList.scrollHeight - messageList.offsetHeight;
+            messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
         },
         message: "should wait until partner 11 thread scrolled to bottom",
         predicate: ({ threadViewer }) => {
@@ -246,7 +253,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     const messageList = document.querySelector('.o_ThreadView_messageList');
     assert.strictEqual(
         messageList.scrollTop,
-        messageList.scrollHeight - messageList.offsetHeight,
+        messageList.scrollHeight - messageList.clientHeight,
         "The message list should be scrolled to its bottom"
     );
 

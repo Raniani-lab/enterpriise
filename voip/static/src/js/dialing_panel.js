@@ -488,8 +488,6 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             }
             this._isFolded = _.isBoolean(isFolded) ? isFolded : !this._isFolded;
             this._fold();
-        } else {
-            this._onToggleDisplay();
         }
     },
     /**

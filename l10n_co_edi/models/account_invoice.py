@@ -367,7 +367,8 @@ class AccountMove(models.Model):
         instead of some extra simple XML tags but such questions are best
         left to philosophers, not dumb developers like myself.
         '''
-        amount_in_words = self.currency_id.with_context(lang=self.partner_id.lang or 'es_ES').amount_to_text(self.amount_total)
+        withholding_amount = self.amount_untaxed + sum(self.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
+        amount_in_words = self.currency_id.with_context(lang=self.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
         shipping_partner = self.env['res.partner'].browse(self._get_invoice_delivery_partner_id())
         notas = [
             '1.-%s|%s|%s|%s|%s|%s' % (self.company_id.l10n_co_edi_header_gran_contribuyente or '',

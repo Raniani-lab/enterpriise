@@ -73,4 +73,8 @@
             <script type="text/javascript" src="/documents/static/tests/mock_server.js"></script>
         </xpath>
     </template>
+
+    <template id="pdf_js_assets" name="Documents pdf js assets" groups="base.group_user">
+        <t t-call-assets="web.pdf_js_lib"/>
+    </template>
 </odoo>

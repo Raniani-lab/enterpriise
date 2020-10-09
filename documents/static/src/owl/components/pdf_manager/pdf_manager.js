@@ -298,8 +298,14 @@ class PdfManager extends owl.Component {
      * @private
      */
     async _loadAssets() {
-        const asset = await ajax.loadAsset('web.pdf_js_lib');
-        await ajax.loadLibs(asset);
+        let asset;
+        try {
+            asset = await ajax.loadAsset('documents.pdf_js_assets');
+        } catch (error) {
+            asset = await ajax.loadAsset('web.pdf_js_lib');
+        } finally {
+            await ajax.loadLibs(asset);
+        }
     }
     /**
      * @private

@@ -215,6 +215,7 @@ class Planning(models.Model):
                     planning_slot S1, planning_slot S2
                 WHERE
                     S1.start_datetime < S2.end_datetime and S1.end_datetime > S2.start_datetime and S1.id <> S2.id and S1.employee_id = S2.employee_id
+                    and S1.id in %s
                 GROUP BY S1.id;
             """
             self.env.cr.execute(query, (tuple(self.ids),))

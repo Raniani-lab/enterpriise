@@ -5,12 +5,12 @@ from dateutil.relativedelta import relativedelta
 
 from .common import TestCommonPlanning
 
-
 class TestPlanning(TestCommonPlanning):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.setUpEmployees()
         cls.slot = cls.env['planning.slot'].create({
             'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 27, 18, 0, 0),
@@ -49,3 +49,32 @@ class TestPlanning(TestCommonPlanning):
         self.slot.end_datetime -= relativedelta(hours=2)
         self.assertEqual(self.slot.allocated_percentage, 100, "It should still be 100%")
         self.assertEqual(self.slot.allocated_hours, 8, "It should decreased by 2 hours")
+
+    def test_compute_overlap_count(self):
+        self.slot_6_2 = self.env['planning.slot'].create({
+            'employee_id': self.employee_bert.id,
+            'start_datetime': datetime(2019, 6, 2, 8, 0),
+            'end_datetime': datetime(2019, 6, 2, 17, 0),
+        })
+        self.slot_6_3 = self.env['planning.slot'].create({
+            'employee_id': self.employee_bert.id,
+            'start_datetime': datetime(2019, 6, 3, 8, 0),
+            'end_datetime': datetime(2019, 6, 3, 17, 0),
+        })
+        self.env['planning.slot'].create({
+            'employee_id': self.employee_bert.id,
+            'start_datetime': datetime(2019, 6, 2, 10, 0),
+            'end_datetime': datetime(2019, 6, 2, 12, 0),
+        })
+        self.env['planning.slot'].create({
+            'employee_id': self.employee_bert.id,
+            'start_datetime': datetime(2019, 6, 2, 16, 0),
+            'end_datetime': datetime(2019, 6, 2, 18, 0),
+        })
+        self.env['planning.slot'].create({
+            'employee_id': self.employee_bert.id,
+            'start_datetime': datetime(2019, 6, 2, 18, 0),
+            'end_datetime': datetime(2019, 6, 2, 20, 0),
+        })
+        self.assertEqual(2, self.slot_6_2.overlap_slot_count, '2 slots overlap')
+        self.assertEqual(0, self.slot_6_3.overlap_slot_count, 'no slot overlap')

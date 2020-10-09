@@ -635,9 +635,9 @@ class Planning(models.Model):
             if not slot.was_copied:
                 values = slot.copy_data()[0]
                 if values.get('start_datetime'):
-                    values['start_datetime'] += relativedelta(days=7)
+                    values['start_datetime'] = self._add_delta_with_dst(values['start_datetime'], relativedelta(days=7))
                 if values.get('end_datetime'):
-                    values['end_datetime'] += relativedelta(days=7)
+                    values['end_datetime'] = self._add_delta_with_dst(values['end_datetime'], relativedelta(days=7))
                 values['is_published'] = False
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
@@ -671,6 +671,22 @@ class Planning(models.Model):
     # ----------------------------------------------------
     # Business Methods
     # ----------------------------------------------------
+    def _add_delta_with_dst(self, start, delta):
+        """
+        Add to start, adjusting the hours if needed to account for a shift in the local timezone between the
+        start date and the resulting date (typically, because of DST)
+
+        :param start: origin date in UTC timezone, but without timezone info (a naive date)
+        :return resulting date in the UTC timezone (a naive date)
+        """
+        try:
+            tz = pytz.timezone(self._context.get('tz') or self.env.user.tz)
+        except pytz.UnknownTimeZoneError:
+            tz = pytz.UTC
+        start = start.replace(tzinfo=pytz.utc).astimezone(tz).replace(tzinfo=None)
+        result = start + delta
+        return tz.localize(result).astimezone(pytz.utc).replace(tzinfo=None)
+
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
         return ['employee_id', 'role_id']

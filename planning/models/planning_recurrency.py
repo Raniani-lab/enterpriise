@@ -59,8 +59,9 @@ class PlanningRecurrency(models.Model):
             recurrencies._repeat_slot(now + delta)
 
     def _repeat_slot(self, stop_datetime=False):
+        PlanningSlot = self.env['planning.slot']
         for recurrency in self:
-            slot = self.env['planning.slot'].search([('recurrency_id', '=', recurrency.id)], limit=1, order='start_datetime DESC')
+            slot = PlanningSlot.search([('recurrency_id', '=', recurrency.id)], limit=1, order='start_datetime DESC')
 
             if slot:
                 # find the end of the recurrence
@@ -75,7 +76,7 @@ class PlanningRecurrency(models.Model):
 
                 # generate recurring slots
                 recurrency_delta = get_timedelta(recurrency.repeat_interval, 'week')
-                next_start = slot.start_datetime + recurrency_delta
+                next_start = PlanningSlot._add_delta_with_dst(slot.start_datetime, recurrency_delta)
 
                 slot_values_list = []
                 while next_start < range_limit:
@@ -88,10 +89,11 @@ class PlanningRecurrency(models.Model):
                         'is_published': False
                     })[0]
                     slot_values_list.append(slot_values)
-                    next_start = next_start + recurrency_delta
+                    next_start = PlanningSlot._add_delta_with_dst(next_start, recurrency_delta)
 
-                self.env['planning.slot'].create(slot_values_list)
-                recurrency.write({'last_generated_end_datetime': next_start - recurrency_delta})
+                if slot_values_list:
+                    PlanningSlot.create(slot_values_list)
+                    recurrency.write({'last_generated_end_datetime': slot_values_list[-1]['start_datetime']})
 
             else:
                 recurrency.unlink()

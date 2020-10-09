@@ -396,6 +396,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
     def test_empty_recurrency(self):
         """ Check empty recurrency is removed by cron """
         with self._patch_now('2020-06-27 08:00:00'):
+            self.env['planning.recurrency'].search([]).unlink()  # start clean
             self.env['planning.recurrency'].create({
                 'repeat_interval': 1,
                 'repeat_type': 'forever',
@@ -438,3 +439,71 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                     'repeat_until': datetime(2019, 12, 25, 17, 0, 0),
                     'repeat_interval': 1,
                 })
+
+    def test_recurrency_timezone(self):
+        """
+        We need to calculate the recurrency in the employee's timezone 
+        (this is important if repeating a slot beyond a dst boundary - we need to keep the same (local) time)
+
+            company_span:           1 week
+                now :                   10/20/2020
+                initial_start :         10/20/2020 08:00 CEST (06:00 GMT)
+                repeat_end :            far away
+                generated slots:
+                                        10/20/2020 08:00 CEST
+                                        10/27/2020 08:00 CET (07:00 GMT)
+        """
+        # with self._patch_now('2019-01-01 08:00:00'):
+        #     self.configure_recurrency_span(1)
+        with self._patch_now('2020-10-19 08:00:00'):
+            self.configure_recurrency_span(1)
+
+            self.assertFalse(self.get_by_employee(self.employee_bert))
+
+            slot = self.env['planning.slot'].with_context(tz='Europe/Brussels').create({
+                'start_datetime': datetime(2020, 10, 20, 6, 0, 0),
+                'end_datetime': datetime(2020, 10, 20, 15, 0, 0),
+                'employee_id': self.employee_bert.id,
+                'repeat': True,
+                'repeat_type': 'until',
+                'repeat_until': datetime(2022, 6, 27, 15, 0, 0),
+                'repeat_interval': 1,
+            })
+            slots = self.get_by_employee(self.employee_bert).sorted('start_datetime')
+            self.assertEqual('2020-10-20 06:00:00', str(slots[0].start_datetime))
+            self.assertEqual('2020-10-27 07:00:00', str(slots[1].start_datetime))
+
+    def test_recurrency_timezone_at_dst(self):
+        """
+        Check we don't crash if we try to recur ON the DST boundary
+        (because 02:30 happens twice on 10/25/20: 
+         - 10/25/2020 00:30 GMT is 02:30 CEST, 
+         - 10/25/2020 01:30 GMT is 02:30 CET)
+
+            company_span:           1 week
+                now :                   10/17/2020
+                initial_start :         10/25/2020 02:30 CEST (00:30 GMT)
+                repeat_end :            far away
+                generated slots:
+                                        10/25/2020 02:30 CEST (00:30 GMT)
+                                        11/01/2020 02:30 CET (01:30 GMT)
+        """
+        # with self._patch_now('2019-01-01 08:00:00'):
+        #     self.configure_recurrency_span(1)
+        with self._patch_now('2020-10-17 08:00:00'):
+            self.configure_recurrency_span(1)
+
+            self.assertFalse(self.get_by_employee(self.employee_bert))
+
+            slot = self.env['planning.slot'].with_context(tz='Europe/Brussels').create({
+                'start_datetime': datetime(2020, 10, 25, 0, 30, 0),
+                'end_datetime': datetime(2020, 10, 25, 9, 0, 0),
+                'employee_id': self.employee_bert.id,
+                'repeat': True,
+                'repeat_type': 'until',
+                'repeat_until': datetime(2022, 6, 27, 15, 0, 0),
+                'repeat_interval': 1,
+            })
+            slots = self.get_by_employee(self.employee_bert).sorted('start_datetime')
+            self.assertEqual('2020-10-25 00:30:00', str(slots[0].start_datetime))
+            self.assertEqual('2020-11-01 01:30:00', str(slots[1].start_datetime))

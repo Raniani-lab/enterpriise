@@ -125,7 +125,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 #   Name                                                            Date            Amount
                 [   0,                                                              1,              3],
                 [
-                    ('Balance of 101404 Bank',                                      '01/02/2016',   -300.0),
+                    ('Balance of 101405 Bank',                                      '01/02/2016',   -300.0),
 
                     ('Including Unreconciled Bank Statement Receipts',              '',             800.0),
                     ('BNKKK/2015/01/0002',                                          '01/02/2015',   200.0),
@@ -137,7 +137,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     ('BNKKK/2014/12/0002',                                          '12/31/2014',   -500.0),
                     ('Total Including Unreconciled Bank Statement Payments',        '',             -900.0),
 
-                    ('Total Balance of 101404 Bank',                                '01/02/2016',   -300.0),
+                    ('Total Balance of 101405 Bank',                                '01/02/2016',   -300.0),
 
                     ('Outstanding Payments/Receipts',                               '',             100.0),
 
@@ -256,14 +256,14 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 #   Name                                                            Date            Amount  Currency                Amount
                 [   0,                                                              1,              3,      4,                      5],
                 [
-                    ('Balance of 101404 Bank',                                      '01/02/2016',   '',     '',                     200.0),
+                    ('Balance of 101405 Bank',                                      '01/02/2016',   '',     '',                     200.0),
 
                     ('Including Unreconciled Bank Statement Receipts',              '',             '',     '',                     200.0),
                     ('BNKKK/2016/01/0002',                                          '01/01/2016',   999.99, choco_currency.name,    100.0),
                     ('BNKKK/2016/01/0001',                                          '01/01/2016',   50.01,  company_currency.name,  100.0),
                     ('Total Including Unreconciled Bank Statement Receipts',        '',             '',     '',                     200.0),
 
-                    ('Total Balance of 101404 Bank',                                '01/02/2016',   '',     '',                     200.0),
+                    ('Total Balance of 101405 Bank',                                '01/02/2016',   '',     '',                     200.0),
 
                     ('Outstanding Payments/Receipts',                               '',             '',     '',                     5900.0),
 

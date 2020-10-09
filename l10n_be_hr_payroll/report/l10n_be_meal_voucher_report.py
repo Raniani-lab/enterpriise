@@ -16,6 +16,8 @@ class l10nBeMealVoucherReport(models.Model):
         tools.drop_view_if_exists(self._cr, self._table)
         # Note: Each started day (even if sick during the afternoon, ...) is worth
         # a meal voucher from the employer
+        self.env['hr.work.entry'].flush()
+        self.env['hr.work.entry.type'].flush()
         self._cr.execute("""
             CREATE or REPLACE view %s as (
 

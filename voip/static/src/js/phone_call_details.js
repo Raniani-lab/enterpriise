@@ -424,12 +424,18 @@ const PhoneCallDetails = Widget.extend({
                 fullscreen: config.device.isMobile
             });
         } else {
+            const context = {};
+            if (this.phoneNumber) {
+                context.phoneNumber = this.phoneNumber;
+            }
+            if (this.email) {
+                context.email = this.email;
+            }
+            if (this.mobileNumber) {
+                context.mobileNumber = this.mobileNumber;
+            }
             this.do_action({
-                context: {
-                    default_email: this.email || false,
-                    default_phone: this.phoneNumber,
-                    default_mobile: this.mobileNumber,
-                },
+                context,
                 res_model: 'res.partner',
                 target: 'new',
                 type: 'ir.actions.act_window',

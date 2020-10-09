@@ -92,6 +92,7 @@ QUnit.module('Views', {
                     { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 01:34:34', stage: 'done', stage_id: 2, project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
                     { id: 6, name: 'Task 6', start: '2018-11-19 23:00:00', stop: '2018-11-20 04:21:01', stage: 'in_progress', stage_id: 4, project_id: 2, user_id: 1, color: 1, progress: 0},
                     { id: 7, name: 'Task 7', start: '2018-12-20 10:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', stage_id: 1, project_id: 2, user_id: 2, color: 10, progress: 80},
+                    { id: 8, name: 'Task 8', start: '2020-03-28 06:30:12', stop: '2020-03-28 18:29:59', stage: 'in_progress', stage_id: 1, project_id: 2, user_id: 2, color: 10, progress: 80},
                 ],
             },
             projects: {
@@ -2246,10 +2247,76 @@ QUnit.module('Views', {
 
         // move a pill in the next cell (+1 day)
         var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
             { position: { left: cellWidth, top: 0 } },
+        );
+
+        gantt.destroy();
+    });
+
+    QUnit.test('move a pill in the same row (with different timezone)', async function (assert) {
+        // find on which day daylight savings starts (or ends, it doesn't matter which) in the local timezone
+        // we need to make sure it's not a day at the end or beginning of a month
+        assert.expect(3);
+        var dstDate = null;
+        for(var d = moment('2019-01-01 12:00:00'); d.isBefore('2019-12-31'); ) {
+            var nextDay = d.clone().add(1, 'day');
+            if(nextDay.month() === d.month() && nextDay.utcOffset() !== d.utcOffset()) {
+                dstDate = d;
+                break;
+            }
+            d = nextDay;
+        }
+        if(!dstDate) {
+            // we can't really do the test if there is no DST :(
+            // unfortunately, the runbot tests are executed on UTC, so we need to dummy the test in that case...
+            // it would be ideal if we could pass a timezone to use for unit tests instead 
+            // (it's possible with the moment-timezone library, but we don't want to add an external dependency
+            // as part of a bugfix...)
+            dstDate = moment('2020-03-28 12:00:00');
+        }
+
+        var initialDate = dstDate;
+        var taskStart = dstDate.clone().hour(10).minute(30).utc();
+        this.data.tasks.records[7].start = taskStart.format('YYYY-MM-DD HH:mm:ss');
+        this.data.tasks.records[7].stop = taskStart.clone().local().hour(16).utc().format('YYYY-MM-DD HH:mm:ss');
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', '=', 8]],
+            mockRPC: function (route, args) {
+                if (args.method === 'write') {
+                    assert.deepEqual(args.args[0], [8],
+                        "should write on the correct record");
+                    assert.equal(moment.utc(args.args[1].start).local().hour(), 10,
+                        "start date should have the same local time as original")
+                    assert.equal(moment.utc(args.args[1].stop).local().hour(), 16,
+                        "stop date should have the same local time as original")
+                }
+                return this._super.apply(this, arguments);
+            },
+            session: {
+                getTZOffset: function (d) {
+                    return 60;
+                },
+            },
+        });
+
+        // we are going to move the pill for task 8 (10/24/2020 06:30:12) by 1 cell to the right (+1 day)
+        var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width;
+        var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
+        await testUtils.dom.dragAndDrop(
+            gantt.$('.o_gantt_pill[data-id=8]'),
+            gantt.$('.o_gantt_pill[data-id=8]'),
+            { position: { left: cellWidth + 1, top: 0 } },
         );
 
         gantt.destroy();

@@ -409,8 +409,8 @@ var GanttController = AbstractController.extend({
         var diff = ev.data.diff;
         if (diff) {
             var pill = _.findWhere(state.records, { id: ev.data.pillId });
-            schedule[state.dateStartField] = pill[state.dateStartField].clone().add(diff, this.SCALES[state.scale].time);
-            schedule[state.dateStopField] = pill[state.dateStopField].clone().add(diff, this.SCALES[state.scale].time);
+            schedule[state.dateStartField] = this.model.dateAdd(pill[state.dateStartField], diff, this.SCALES[state.scale].time);
+            schedule[state.dateStopField] = this.model.dateAdd(pill[state.dateStopField], diff, this.SCALES[state.scale].time);
         } else if (ev.data.action === 'copy') {
             // When we copy the info on dates is sometimes mandatory (e.g. working on hr.leave, see copy_data)
             const pill = _.findWhere(state.records, { id: ev.data.pillId });

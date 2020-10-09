@@ -55,6 +55,26 @@ var GanttModel = AbstractModel.extend({
         return result.locale('en').format('YYYY-MM-DD HH:mm:ss');
     },
     /**
+     * Add or subtract value to a moment.
+     * If we are changing by a whole day or more, adjust the time if needed to keep
+     * the same local time, if the UTC offset has changed between the 2 dates
+     * (usually, because of daylight savings)
+     *
+     * @param {Moment} date
+     * @param {integer} offset
+     * @param {string} unit
+     */
+    dateAdd: function(date, offset, unit) {
+        var result = date.clone().add(offset, unit);
+        if(Math.abs(result.diff(date, 'hours')) >= 24) {
+            var tzOffsetDiff = result.clone().local().utcOffset() - date.clone().local().utcOffset();
+            if(tzOffsetDiff !== 0) {
+                result.subtract(tzOffsetDiff, 'minutes');
+            }
+        }
+        return result;
+    },
+    /**
      * @override
      * @param {string} [rowId]
      * @returns {Object} the whole gantt data if no rowId given, the given row's

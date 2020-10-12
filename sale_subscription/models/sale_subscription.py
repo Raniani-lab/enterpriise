@@ -913,6 +913,9 @@ class SaleSubscription(models.Model):
                                     subscription.message_post(body=msg_body)
                                     if subscription.template_id.payment_mode == 'validate_send_payment':
                                         subscription.validate_and_send_invoice(new_invoice)
+                                    else:
+                                        # success_payment
+                                        new_invoice._post(False)
                                     if auto_commit:
                                         cr.commit()
                                 else:

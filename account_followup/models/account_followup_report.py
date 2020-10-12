@@ -89,10 +89,13 @@ class AccountFollowupReport(models.AbstractModel):
                 amount = formatLang(self.env, amount, currency_obj=currency)
                 line_num += 1
                 expected_pay_date = format_date(self.env, aml.expected_pay_date, lang_code=lang_code) if aml.expected_pay_date else ''
+                invoice_origin = aml.move_id.invoice_origin or ''
+                if len(invoice_origin) > 43:
+                    invoice_origin = invoice_origin[:40] + '...'
                 columns = [
                     format_date(self.env, aml.date, lang_code=lang_code),
                     date_due,
-                    aml.move_id.invoice_origin or '',
+                    invoice_origin,
                     move_line_name,
                     (expected_pay_date and expected_pay_date + ' ') + (aml.internal_note or ''),
                     {'name': '', 'blocked': aml.blocked},

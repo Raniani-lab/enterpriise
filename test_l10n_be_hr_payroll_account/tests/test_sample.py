@@ -3,31 +3,26 @@
 
 import datetime
 from odoo.tests.common import SavepointCase, tagged
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-
-@tagged('sample_payslip')
-class TestSamplePayslip(SavepointCase):
+tagged('post_install', '-at_install', 'sample_payslip')
+class TestSamplePayslip(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestSamplePayslip, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.company = cls.env['res.company'].create({
-            'name': 'My Company - TEST',
-            'country_id': cls.env.ref('base.be').id,
-        })
-
-        cls.env.user.company_ids |= cls.company
+        cls.company_data['company'].country_id = cls.env.ref('base.be')
 
         cls.address_home = cls.env['res.partner'].create([{
             'name': "Test Employee",
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'type': "private"
         }])
 
         cls.resource_calendar = cls.env['resource.calendar'].create([{
             'name': "Test Calendar",
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
@@ -181,7 +176,7 @@ class TestSamplePayslip(SavepointCase):
             'name': "Test Employee",
             'address_home_id': cls.address_home.id,
             'resource_calendar_id': cls.resource_calendar.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'marital': "single",
             'children': 0,
             'km_home_work': 75,
@@ -202,7 +197,7 @@ class TestSamplePayslip(SavepointCase):
         cls.leaves = cls.env['resource.calendar.leaves'].create([{
             'name': "Absence",
             'calendar_id': cls.resource_calendar.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'resource_id': cls.employee.resource_id.id,
             'date_from': datetime.datetime(2020, 9, 2, 6, 0, 0),
             'date_to': datetime.datetime(2020, 9, 3, 14, 36, 0),
@@ -224,7 +219,7 @@ class TestSamplePayslip(SavepointCase):
             'name': "Test Car",
             'license_plate': "TEST",
             'driver_id': cls.employee.address_home_id.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'model_id': cls.model.id,
             'first_contract_date': datetime.date(2020, 10, 5),
             'co2': 88.0,
@@ -236,7 +231,7 @@ class TestSamplePayslip(SavepointCase):
         cls.contracts = cls.env['fleet.vehicle.log.contract'].create([{
             'name': "Test Contract",
             'vehicle_id': cls.car.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'start_date': datetime.date(2020, 10, 5),
             'expiration_date': datetime.date(2021, 10, 5),
             'state': "open",
@@ -246,7 +241,7 @@ class TestSamplePayslip(SavepointCase):
         }, {
             'name': "Test Contract",
             'vehicle_id': cls.car.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'start_date': datetime.date(2020, 10, 5),
             'expiration_date': datetime.date(2021, 10, 5),
             'state': "open",
@@ -259,7 +254,7 @@ class TestSamplePayslip(SavepointCase):
             'name': "Contract For Payslip Test",
             'employee_id': cls.employee.id,
             'resource_calendar_id': cls.resource_calendar.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'date_generated_from': datetime.datetime(2020, 9, 1, 0, 0, 0),
             'date_generated_to': datetime.datetime(2020, 9, 1, 0, 0, 0),
             'car_id': cls.car.id,
@@ -297,7 +292,7 @@ class TestSamplePayslip(SavepointCase):
             'name': "Test Payslip",
             'employee_id': cls.employee.id,
             'contract_id': cls.contract.id,
-            'company_id': cls.company.id,
+            'company_id': cls.env.company.id,
             'vehicle_id': cls.car.id,
             'struct_id': cls.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
             'date_from': datetime.date(2020, 9, 1),

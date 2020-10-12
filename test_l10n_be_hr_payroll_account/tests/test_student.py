@@ -1,33 +1,23 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from odoo import tests
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-import time
 from datetime import datetime, date
-from collections import OrderedDict
-
-from odoo.tools.float_utils import float_compare
-from odoo.tests import common, tagged
 
 
-@tagged('student')
-class TestStudent(common.SavepointCase):
+@tests.tagged('post_install', '-at_install', 'student')
+class TestStudent(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super(TestStudent, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.journal_id = cls.env['account.journal'].search([], limit=1).id
-
-        cls.belgian_company = cls.env['res.company'].create({
-            'name': 'My Belgian Company - TEST',
-            'country_id': cls.env.ref('base.be').id,
-        })
-
-        cls.env.user.company_ids |= cls.belgian_company
+        cls.company_data['company'].country_id = cls.env.ref('base.be')
 
         cls.new_calendar = cls.env['resource.calendar'].create({
             'name': 'O h/w calendar',
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'hours_per_day': 9,
             'full_time_required_hours': 0,
             'attendance_ids': [(5, 0, 0)],
@@ -35,13 +25,13 @@ class TestStudent(common.SavepointCase):
 
         cls.employee = cls.env['hr.employee'].create({
             'name': 'Jean-Pol Student',
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'resource_calendar_id': cls.new_calendar.id,
         })
 
         cls.contract = cls.env['hr.contract'].create({
             'employee_id': cls.employee.id,
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'name': 'Jean-Pol Student Contract',
             'state': 'open',
             'date_start': date(2015, 1, 1),
@@ -79,11 +69,11 @@ class TestStudent(common.SavepointCase):
             'work_entry_type_id': attendance_work_entry_type.id,
             'date_start': vals[0],
             'date_stop': vals[1],
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
             'state': 'draft',
         } for vals in vals_list])
 
-        payslip = self.env['hr.payslip'].with_context(allowed_company_ids=self.belgian_company.ids).new({
+        payslip = self.env['hr.payslip'].with_context(allowed_company_ids=self.env.company.ids).new({
             'employee_id': self.employee.id,
             'date_from': date(2020, 9, 1),
             'date_to': date(2020, 9, 30),

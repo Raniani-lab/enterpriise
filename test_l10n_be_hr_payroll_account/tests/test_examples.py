@@ -5,30 +5,50 @@ import time
 import datetime
 from collections import OrderedDict
 
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tools.float_utils import float_compare
 from odoo.tests import common, tagged
 
 
-@tagged('examples')
-class TestExamples(common.SavepointCase):
+tagged('post_install', '-at_install', 'examples')
+class TestExamples(AccountTestInvoicingCommon):
+
     @classmethod
-    def setUpClass(cls):
-        super(TestExamples, cls).setUpClass()
+    def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.company_data['company'].country_id = cls.env.ref('base.be')
+        cls.env.company.resource_calendar_id = cls.env['resource.calendar'].create({
+            'name': 'Standard 38 hours/week',
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'full_time_required_hours': 38,
+            'attendance_ids': [
+                (5, 0, 0),
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Afternoon', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Wednesday Afternoon', 'dayofweek': '2', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
+            ],
+        })
+        cls.classic_38h_calendar = cls.env.company.resource_calendar_id
 
         cls.Payslip = cls.env['hr.payslip']
-        cls.journal_id = cls.env['account.journal'].search([], limit=1).id
 
-        cls.belgian_company = cls.env['res.company'].create({
-            'name': 'My Belgian Company - TEST',
-            'country_id': cls.env.ref('base.be').id,
-        })
+        cls.env.user.tz = 'Europe/Brussels'
 
         cls.leave_type_bank_holidays = cls.env['hr.leave.type'].create({
             'name': 'Bank Holiday',
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_leave').id,
         })
         cls.leave_type_unpaid = cls.env['hr.leave.type'].create({
@@ -36,7 +56,7 @@ class TestExamples(common.SavepointCase):
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave').id,
         })
         cls.leave_type_small_unemployment = cls.env['hr.leave.type'].create({
@@ -44,7 +64,7 @@ class TestExamples(common.SavepointCase):
             'request_unit': 'hour',
             'allocation_type': 'no',
             'validity_start': datetime.date(2015, 1, 1),
-            'company_id': cls.belgian_company.id,
+            'company_id': cls.env.company.id,
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment').id,
         })
 
@@ -68,6 +88,7 @@ class TestExamples(common.SavepointCase):
             self.env['hr.work.entry'].search([('employee_id', '=', employee.id)]).unlink()
             employee.contract_id.date_generated_from = datetime.datetime.now()
             employee.contract_id.date_generated_to = datetime.datetime.now()
+        employee.resource_calendar_id.tz = "Europe/Brussels"
 
         # Setup the car, if specified
         if car_values is not None:
@@ -86,6 +107,7 @@ class TestExamples(common.SavepointCase):
                                    structure_type_id=payslip_values.get('struct_id').type_id.id,
                                    employee_id=employee.id)
             contract_id = self.env['hr.contract'].create(contract_values)
+            contract_id.resource_calendar_id.tz = "Europe/Brussels"
             contract_id.write({'state': 'open'})
 
         # Setup the holidays, use the above employee and contract
@@ -106,9 +128,6 @@ class TestExamples(common.SavepointCase):
         if 'date_from' in payslip_values and 'date_to' in payslip_values:
             work_entries = employee.contract_id._generate_work_entries(payslip_values['date_from'], payslip_values['date_to'])
             work_entries.action_validate()
-            we_error = work_entries.filtered(lambda r: r.state == 'conflict')
-            we_error.write({'state': 'cancelled'})
-            (work_entries - we_error).action_validate()
 
         # Setup the payslip
         payslip_values = dict(payslip_values or {},
@@ -121,7 +140,6 @@ class TestExamples(common.SavepointCase):
         payslip_id._onchange_employee()
         values = payslip_id._convert_to_write(payslip_id._cache)
         payslip_id = self.Payslip.create(values)
-        payslip_id.struct_id.journal_id = self.journal_id
 
         # Compute the payslip
         payslip_id.compute_sheet()
@@ -170,13 +188,13 @@ class TestExamples(common.SavepointCase):
             'country_id': self.env.ref("base.be").id,
             'phone': '+0032476543210',
             'email': 'laurie.poiret@example.com',
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         })
         employee_vals = {
             'name': 'Laurie Poiret',
             'marital': 'single',
-            'resource_calendar_id': self.env.ref("resource.resource_calendar_std_38h").id,
-            'company_id': self.belgian_company.id,
+            'resource_calendar_id': self.classic_38h_calendar.id,
+            'company_id': self.env.company.id,
         }
         car_vals = {
             'model_id': self.env.ref("fleet.model_a3").id,
@@ -185,7 +203,7 @@ class TestExamples(common.SavepointCase):
             'co2': 88,
             'driver_id': lap_address.id,
             'car_value': 38000,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
         contract_vals = {
             'name': 'CDI - Laurie Poiret - Experienced Developer',
@@ -198,8 +216,8 @@ class TestExamples(common.SavepointCase):
             'ip_wage_rate': 0,
             'ip': False,
             'date_start': datetime.date(2019, 1, 1),
-            'company_id': self.belgian_company.id,
-            'resource_calendar_id': self.belgian_company.resource_calendar_id.id,
+            'company_id': self.env.company.id,
+            'resource_calendar_id': self.env.company.resource_calendar_id.id,
         }
 
         # Set the start date to January 2019 to take into account on payslip
@@ -331,7 +349,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 29235.15,
             'fuel_type': 'diesel',
             'co2': 89,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 562.52,
@@ -431,7 +449,7 @@ class TestExamples(common.SavepointCase):
             'car_value': 28138.86,
             'fuel_type': 'diesel',
             'co2': 88.00,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
         car_contract = {
             'recurring_cost_amount_depreciated': 503.12,
@@ -527,7 +545,7 @@ class TestExamples(common.SavepointCase):
             'co2': 88,
             'driver_id': self.env['res.partner'].create({'name': 'Roger'}).id,
             'car_value': 38000,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
         contract = {
             'name': 'Contract For Roger',
@@ -621,7 +639,7 @@ class TestExamples(common.SavepointCase):
             'acquisition_date': time.strftime('%Y-01-01'),
             'co2': 88,
             'car_value': 38000,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
 
         contract = {
@@ -676,7 +694,7 @@ class TestExamples(common.SavepointCase):
             'acquisition_date': time.strftime('%Y-01-01'),
             'co2': 88,
             'car_value': 38000,
-            'company_id': self.belgian_company.id,
+            'company_id': self.env.company.id,
         }
         contract = {
             'name': 'PFI Contract for Roger',

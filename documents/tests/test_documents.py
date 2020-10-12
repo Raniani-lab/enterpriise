@@ -360,9 +360,10 @@ class TestCaseDocuments(TransactionCase):
         Tests the consistency of documents' mimetypes
         """
         document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
-        document.write({'datas': TEXT, 'mimetype': 'text/plain'})
-
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'text/plain'})
         self.assertEqual(document.mimetype, 'text/plain', "the new mimetype should be the one given on write")
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+        self.assertEqual(document.mimetype, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', "should preserve office mime type")
 
     def test_cascade_delete(self):
         """
@@ -379,3 +380,21 @@ class TestCaseDocuments(TransactionCase):
         document.favorited_ids = user
         self.assertFalse(document.is_favorited)
         self.assertTrue(document.with_user(user).is_favorited)
+
+    def test_neuter_mimetype(self):
+        """
+        Tests that potentially harmful mimetypes (XML mimetypes that can lead to XSS attacks) are converted to text
+
+        In fact this logic is implemented in the base `IrAttachment` model but was originally duplicated.  
+        The test stays duplicated here to ensure the de-duplicated logic still catches our use cases.
+        """
+        document = self.env['documents.document'].create({'datas': GIF, 'folder_id': self.folder_b.id})
+
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'text/xml'})
+        self.assertEqual(document.mimetype, 'text/plain', "XML mimetype should be forced to text")
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'image/svg+xml'})
+        self.assertEqual(document.mimetype, 'text/plain', "SVG mimetype should be forced to text")
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'text/html'})
+        self.assertEqual(document.mimetype, 'text/plain', "HTML mimetype should be forced to text")
+        document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'application/xhtml+xml'})
+        self.assertEqual(document.mimetype, 'text/plain', "XHTML mimetype should be forced to text")

@@ -13,7 +13,6 @@ from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
 from odoo.tools import image_process
-from odoo.tools.mimetypes import neuter_mimetype
 from odoo.addons.web.controllers.main import Binary
 
 logger = logging.getLogger(__name__)
@@ -115,7 +114,7 @@ class ShareRoute(http.Controller):
             ufile = files[0]
             try:
                 data = base64.encodebytes(ufile.read())
-                mimetype = neuter_mimetype(ufile.content_type, http.request.env.user)
+                mimetype = ufile.content_type
                 document.write({
                     'name': ufile.filename,
                     'datas': data,
@@ -128,7 +127,7 @@ class ShareRoute(http.Controller):
             vals_list = []
             for ufile in files:
                 try:
-                    mimetype = neuter_mimetype(ufile.content_type, http.request.env.user)
+                    mimetype = ufile.content_type
                     datas = base64.encodebytes(ufile.read())
                     vals = {
                         'name': ufile.filename,
@@ -362,7 +361,7 @@ class ShareRoute(http.Controller):
             try:
                 file = request.httprequest.files.getlist('requestFile')[0]
                 data = file.read()
-                mimetype = neuter_mimetype(file.content_type, http.request.env.user)
+                mimetype = file.content_type
                 write_vals = {
                     'mimetype': mimetype,
                     'name': file.filename,
@@ -378,7 +377,7 @@ class ShareRoute(http.Controller):
             try:
                 for file in request.httprequest.files.getlist('files'):
                     data = file.read()
-                    mimetype = neuter_mimetype(file.content_type, http.request.env.user)
+                    mimetype = file.content_type
                     document_dict = {
                         'mimetype': mimetype,
                         'name': file.filename,

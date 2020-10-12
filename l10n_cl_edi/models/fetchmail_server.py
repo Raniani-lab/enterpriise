@@ -86,7 +86,7 @@ class FetchmailServer(models.Model):
                         new_max_uid = max(new_max_uid, int(uid))
                         self._cr.commit()
                     except Exception:
-                        _logger.info('Failed to process mail %s from %s server %s.', server.server_type, server.name,
+                        _logger.info('Failed to process mail from %s server %s.', server.server_type, server.name,
                                      exc_info=True)
                         failed += 1
                     count += 1

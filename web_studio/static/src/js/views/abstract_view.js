@@ -54,6 +54,9 @@ AbstractView.include({
                 // reset the group by so lists are not grouped in studio.
                 searchQuery.groupBy = [];
             }
+            if (options.viewType === 'graph') {
+                delete options.mode;
+            }
             self._updateMVCParams(searchQuery);
             // This override is a hack because when we load the data for a subview in
             // studio we don't want to display all the record of the list view but only

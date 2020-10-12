@@ -17,7 +17,6 @@ var EditorMixinOwl = require('web_studio.EditorMixinOwl');
 
 var CalendarEditor = require('web_studio.CalendarEditor');
 var FormEditor = require('web_studio.FormEditor');
-var GraphEditor = require('web_studio.GraphEditor');
 var KanbanEditor = require('web_studio.KanbanEditor');
 var ListEditor = require('web_studio.ListEditor');
 var SearchEditor = require('web_studio.SearchEditor');
@@ -37,7 +36,6 @@ var Editors = {
     form: FormEditor,
     kanban: KanbanEditor,
     list: ListEditor,
-    graph: GraphEditor,
     calendar: CalendarEditor,
     search: SearchEditor,
 };

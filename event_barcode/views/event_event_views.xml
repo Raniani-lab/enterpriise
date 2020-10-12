@@ -41,6 +41,6 @@
         sequence="30"
         action="event_barcode.event_barcode_action_main_view"
         parent="event.event_main_menu"
-        groups="event.group_event_user"/>
+        groups="event.group_event_registration_desk"/>
 
 </odoo>

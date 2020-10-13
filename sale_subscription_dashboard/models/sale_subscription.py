@@ -6,6 +6,7 @@ from odoo.tools import config, date_utils
 
 from itertools import groupby
 from operator import itemgetter
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -15,8 +16,13 @@ class SaleSubscription(models.Model):
     @api.model
     def get_dates_ranges(self):
         today = fields.Date.context_today(self)
-        this_year_dates = self.env.company.compute_fiscalyear_dates(today)
-        last_year_dates = self.env.company.compute_fiscalyear_dates(today - relativedelta(years=1))
+
+        is_account_present = hasattr(self.env.company, 'compute_fiscalyear_dates')
+        this_year = {'date_from': date(today.year, 1, 1), 'date_to': date(today.year, 12, 31)}
+        last_year = {'date_from': date(today.year - 1, 1, 1), 'date_to': date(today.year - 1, 12, 31)}
+
+        this_year_dates = self.env.company.compute_fiscalyear_dates(today) if is_account_present else this_year
+        last_year_dates = self.env.company.compute_fiscalyear_dates(today - relativedelta(years=1)) if is_account_present else last_year
 
         this_quarter_from, this_quarter_to = date_utils.get_quarter(today)
         last_quarter_from, last_quarter_to = date_utils.get_quarter(today - relativedelta(months=3))

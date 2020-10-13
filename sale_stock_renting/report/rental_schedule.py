@@ -6,7 +6,7 @@ from odoo import fields, models
 class RentalSchedule(models.Model):
     _inherit = "sale.rental.schedule"
 
-    is_available = fields.Boolean(compute='_compute_is_available', readonly=True)
+    is_available = fields.Boolean(compute='_compute_is_available', readonly=True, compute_sudo=True)
 
     lot_id = fields.Many2one('stock.production.lot', 'Serial Number', readonly=True)
     warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', readonly=True)

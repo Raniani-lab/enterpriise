@@ -787,15 +787,13 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(credit), 'class': 'number'},
             {'name': self.format_value(balance), 'class': 'number'},
         ]
-        if self.user_has_groups('base.group_multi_currency'):
-            columns.insert(0, {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
         return {
             'id': 'total_%s' % account.id,
             'class': 'o_account_reports_domain_total',
             'parent_id': 'account_%s' % account.id,
             'name': _('Total %s', account["display_name"]),
             'columns': columns,
-            'colspan': 4,
+            'colspan': self.user_has_groups('base.group_multi_currency') and 5 or 4,
         }
 
     @api.model

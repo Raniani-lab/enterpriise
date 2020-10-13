@@ -19,11 +19,13 @@ def _account_accountant_post_init(cr, registry):
 
         # SEPA zone countries will be using SEPA
         sepa_zone = env.ref('base.sepa_zone', raise_if_not_found=False)
-        if sepa_zone:
-            sepa_zone_country_codes = sepa_zone.mapped('country_ids.code')
-            if country_code in sepa_zone_country_codes:
-                module_list.append('account_sepa')
-                module_list.append('account_bank_statement_import_camt')
+        sepa_zone_country_codes = sepa_zone and sepa_zone.mapped('country_ids.code') or []
+
+        if country_code in sepa_zone_country_codes:
+            module_list.append('account_sepa')
+            module_list.append('account_bank_statement_import_camt')
+        if country_code in ('AU', 'CA', 'US'):
+            module_list.append('account_reports_cash_basis')
 
         module_ids = env['ir.module.module'].search([('name', 'in', module_list), ('state', '=', 'uninstalled')])
         if module_ids:

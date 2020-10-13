@@ -2,9 +2,9 @@ import odoo
 from odoo import http
 
 from odoo.http import request
-from odoo.addons.web_studio.controllers.main import WebStudioController
+from odoo.addons.web_studio.controllers import main
 
-class WebStudioController(WebStudioController):
+class WebStudioController(main.WebStudioController):
 
     @http.route('/web_studio/edit_view', type='json', auth='user')
     def edit_view(self, view_id, studio_view_arch, operations=None):

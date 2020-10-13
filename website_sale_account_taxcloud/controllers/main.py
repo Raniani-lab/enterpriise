@@ -3,9 +3,9 @@
 from odoo import http
 from odoo.http import request
 
-from odoo.addons.website_sale.controllers.main import WebsiteSale
+from odoo.addons.website_sale.controllers import main
 
-class WebsiteSale(WebsiteSale):
+class WebsiteSale(main.WebsiteSale):
 
     def _get_shop_payment_values(self, order, **kwargs):
         res = super(WebsiteSale, self)._get_shop_payment_values(order, **kwargs)

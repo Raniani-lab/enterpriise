@@ -4,12 +4,12 @@
 from odoo import http, _
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
-from odoo.addons.portal.controllers.portal import CustomerPortal
+from odoo.addons.portal.controllers import portal
 
 import binascii
 
 
-class CustomerPortal(CustomerPortal):
+class CustomerPortal(portal.CustomerPortal):
     @http.route(['/my/task/<int:task_id>/worksheet/',
                  '/my/task/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
     def portal_my_worksheet(self, task_id, access_token=None, source=False, report_type=None, download=False, message=False, **kw):

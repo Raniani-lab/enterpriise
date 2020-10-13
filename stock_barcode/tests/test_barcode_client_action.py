@@ -683,35 +683,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[0].qty_done, 2)
         self.assertEqual(lines[1].qty_done, 2)
 
-    def test_delivery_from_scratch_sn_1(self):
-        """ Scan unreserved serial number on a delivery order.
-        """
-
-        clean_access_rights(self.env)
-        grp_lot = self.env.ref('stock.group_production_lot')
-        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
-
-        # Add 4 serial numbers productserial1
-        snObj = self.env['stock.production.lot']
-        sn1 = snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-        sn2 = snObj.create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-        sn3 = snObj.create({'name': 'sn3', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-        sn4 = snObj.create({'name': 'sn4', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-
-        # empty picking
-        delivery_picking = self.env['stock.picking'].create({
-            'location_id': self.stock_location.id,
-            'location_dest_id': self.customer_location.id,
-            'picking_type_id': self.picking_type_out.id,
-        })
-        url = self._get_client_action_url(delivery_picking.id)
-
-        self.start_tour(url, 'test_delivery_from_scratch_with_sn_1', login='admin', timeout=180)
-
-        lines = delivery_picking.move_line_ids
-        self.assertEqual(lines.mapped('lot_id.name'), ['sn1', 'sn2', 'sn3', 'sn4'])
-        self.assertEqual(lines.mapped('qty_done'), [1, 1, 1, 1])
-
     def test_delivery_reserved_lots_1(self):
         clean_access_rights(self.env)
         grp_lot = self.env.ref('stock.group_production_lot')

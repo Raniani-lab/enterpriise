@@ -286,7 +286,7 @@ Content-Transfer-Encoding: quoted-printable
         self.assertTrue(partner0 in helpdesk_ticket0.message_follower_ids.mapped('partner_id'))
         self.assertTrue(partner1 in helpdesk_ticket1.message_follower_ids.mapped('partner_id'))
 
-    def test_team_assignation_balanced(self):
+    def test_team_assignation_balanced_sla(self):
         #We create an sla policy with minimum priority set as '2'
         self.test_team.use_sla = True
         sla = self.env['helpdesk.sla'].create({

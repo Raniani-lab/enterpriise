@@ -8,10 +8,11 @@ from odoo.http import request
 from odoo.tools.translate import _
 
 from odoo.addons.payment.controllers.portal import PaymentProcessing
-from odoo.addons.portal.controllers.portal import get_records_pager, pager as portal_pager, CustomerPortal
+from odoo.addons.portal.controllers import portal
+from odoo.addons.portal.controllers.portal import get_records_pager, pager as portal_pager
 
 
-class CustomerPortal(CustomerPortal):
+class CustomerPortal(portal.CustomerPortal):
 
     def _get_subscription_domain(self, partner):
         return [

@@ -1,11 +1,12 @@
 import random
 import textwrap
 from odoo.http import _request_stack
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 from odoo.tools import DotDict
 from odoo.addons.web_studio.controllers.main import WebStudioController
 
 
+@tagged('web_studio_normalization')
 class TestViewNormalization(TransactionCase):
 
     maxDiff = None
@@ -1168,7 +1169,7 @@ class TestViewNormalization(TransactionCase):
               </data>
             ''')
 
-    def test_view_normalization_31(self):
+    def test_view_normalization_31_2(self):
         self.view = self.base_view.create({
             'arch_base':
             '''
@@ -1318,14 +1319,14 @@ class TestViewNormalization(TransactionCase):
               <data>
                 <xpath expr="//group" position="inside">
                     <tree>
-                        <div name="first_in_tree"/>
-                        <div name="middle"/>
-                        <div name="last_in_tree"/>
+                        <button name="first_in_tree"/>
+                        <button name="middle"/>
+                        <button name="last_in_tree"/>
                     </tree>
                     <form>
-                        <div name="first_in_form"/>
-                        <div name="middle"/>
-                        <div name="last_in_form"/>
+                        <button name="first_in_form"/>
+                        <button name="middle"/>
+                        <button name="last_in_form"/>
                     </form>
                 </xpath>
               </data>
@@ -1334,20 +1335,20 @@ class TestViewNormalization(TransactionCase):
               <data>
                 <xpath expr="//group[@name='o2m_field']" position="inside">
                   <tree>
-                    <div name="first_in_tree"/>
-                    <div name="middle"/>
-                    <div name="last_in_tree"/>
+                    <button name="first_in_tree"/>
+                    <button name="middle"/>
+                    <button name="last_in_tree"/>
                   </tree>
                   <form>
-                    <div name="first_in_form"/>
-                    <div name="middle"/>
-                    <div name="last_in_form"/>
+                    <button name="first_in_form"/>
+                    <button name="middle"/>
+                    <button name="last_in_form"/>
                   </form>
                 </xpath>
               </data>
             ''')
 
-    def test_view_normalization_37(self):
+    def test_view_normalization_37_2(self):
         """Button have a name which is not unique"""
 
         self.view = self.base_view.create({

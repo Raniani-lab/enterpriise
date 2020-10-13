@@ -3,10 +3,10 @@
 
 from odoo import http
 from odoo.http import request
-from odoo.addons.website_form.controllers.main import WebsiteForm
+from odoo.addons.website_form.controllers import main
 
 
-class WebsiteForm(WebsiteForm):
+class WebsiteForm(main.WebsiteForm):
 
     def _handle_website_form(self, model_name, **kwargs):
         email = request.params.get('partner_email')

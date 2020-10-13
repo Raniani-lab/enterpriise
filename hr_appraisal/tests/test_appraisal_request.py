@@ -53,7 +53,7 @@ class TestHrAppraisalRequest(TransactionCase):
         self.assertEqual(request.recipient_ids.name, self.employee.name)
         request.action_invite()
 
-    def test_manager_request_work_email(self):
+    def test_manager_request_work_email_2(self):
         """ Send appraisal to work email """
         self.employee.user_id = False
         self.employee.address_home_id = False

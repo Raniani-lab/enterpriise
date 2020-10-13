@@ -1,10 +1,10 @@
 from odoo import http
-from odoo.addons.website_sale.controllers.main import WebsiteSale
-from odoo.addons.portal.controllers.portal import CustomerPortal
+from odoo.addons.website_sale.controllers import main
+from odoo.addons.portal.controllers import portal
 from odoo.http import request
 
 
-class WebsiteSale(WebsiteSale):
+class WebsiteSale(main.WebsiteSale):
 
     @http.route("/shop/ups_check_service_type", type='json', auth="public", website=True, sitemap=False)
     def ups_check_service_type_is_available(self, **post):
@@ -50,7 +50,7 @@ class WebsiteSale(WebsiteSale):
         return res
 
 
-class CustomerPortal(CustomerPortal):
+class CustomerPortal(portal.CustomerPortal):
 
     def __init__(self):
         self.OPTIONAL_BILLING_FIELDS += ['partner_ups_carrier_account']

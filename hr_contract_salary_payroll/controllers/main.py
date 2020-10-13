@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.hr_contract_salary.controllers.main import HrContractSalary
+from odoo.addons.hr_contract_salary.controllers import main
 from odoo.http import route, request
 from odoo.tools.float_utils import float_compare
 
 
-class HrContractSalary(HrContractSalary):
+class HrContractSalary(main.HrContractSalary):
 
     def _get_compute_results(self, new_contract):
         result = super()._get_compute_results(new_contract)

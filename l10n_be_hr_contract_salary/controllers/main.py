@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields
-from odoo.addons.hr_contract_salary.controllers.main import HrContractSalary
+from odoo.addons.hr_contract_salary.controllers import main
 from odoo.addons.sign.controllers.main import Sign
 from odoo.http import route, request
 
@@ -37,7 +37,7 @@ class SignContract(Sign):
                 contract.new_car = False
                 contract.new_car_model_id = False
 
-class HrContractSalary(HrContractSalary):
+class HrContractSalary(main.HrContractSalary):
 
     @route(['/salary_package/onchange_advantage/'], type='json', auth='public')
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):

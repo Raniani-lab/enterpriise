@@ -8,11 +8,12 @@ from odoo.exceptions import AccessError, MissingError, UserError
 from odoo.http import request
 from odoo.tools.translate import _
 from odoo.tools import groupby as groupbyelem
-from odoo.addons.portal.controllers.portal import pager as portal_pager, CustomerPortal
+from odoo.addons.portal.controllers import portal
+from odoo.addons.portal.controllers.portal import pager as portal_pager
 from odoo.osv.expression import OR
 
 
-class CustomerPortal(CustomerPortal):
+class CustomerPortal(portal.CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()

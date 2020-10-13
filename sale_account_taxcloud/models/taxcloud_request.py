@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo.addons.account_taxcloud.models.taxcloud_request import TaxCloudRequest
+from odoo.addons.account_taxcloud.models import taxcloud_request
 
-class TaxCloudRequest(TaxCloudRequest):
+class TaxCloudRequest(taxcloud_request.TaxCloudRequest):
 
     def set_order_items_detail(self, order):
         self.cart_items = self.factory.ArrayOfCartItem()

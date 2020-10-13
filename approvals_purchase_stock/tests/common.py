@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.approvals_purchase.tests.common import TestApprovalsCommon
+from odoo.addons.approvals_purchase.tests import common
 
 
-class TestApprovalsCommon(TestApprovalsCommon):
+class TestApprovalsCommon(common.TestApprovalsCommon):
 
     @classmethod
     def setUpClass(cls):

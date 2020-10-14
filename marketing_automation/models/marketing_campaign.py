@@ -32,6 +32,7 @@ class MarketingCampaign(models.Model):
     model_name = fields.Char(string='Model Name', related='model_id.model', readonly=True, store=True)
     unique_field_id = fields.Many2one(
         'ir.model.fields', string='Unique Field',
+        compute='_compute_unique_field_id', readonly=False, store=True,
         domain="[('model_id', '=', model_id), ('ttype', 'in', ['char', 'int', 'many2one', 'text', 'selection'])]",
         help="""Used to avoid duplicates based on model field.\ne.g.
                 For model 'Customers', select email field here if you don't
@@ -50,9 +51,10 @@ class MarketingCampaign(models.Model):
     total_participant_count = fields.Integer(string="# of active and completed participants", compute='_compute_participants')
     test_participant_count = fields.Integer(string="# of test participants", compute='_compute_participants')
 
-    @api.onchange('model_id')
-    def _onchange_model_id(self):
-        self.unique_field_id = False
+    @api.depends('model_id')
+    def _compute_unique_field_id(self):
+        for campaign in self:
+            campaign.unique_field_id = False
 
     @api.depends('marketing_activity_ids.require_sync', 'last_sync_date')
     def _compute_require_sync(self):

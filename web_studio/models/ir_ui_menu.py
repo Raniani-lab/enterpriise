@@ -21,7 +21,10 @@ class IrUiMenu(models.Model):
         cids = request and request.httprequest.cookies.get('cids')
         if cids:
             cids = cids.split(',')
+        if cids and int(cids[0]) in self.env.user.company_ids.ids:
             self = self.with_company(int(cids[0]))
+        else:
+            self = self.with_company(self.env.user.company_id.id)
         menu_root['background_image'] = bool(self.env.company.background_image)
         return menu_root
 

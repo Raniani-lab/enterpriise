@@ -15,6 +15,14 @@ class AnalyticLine(models.Model):
         domain = super(AnalyticLine, self)._get_adjust_grid_domain(column_value)
         return expression.AND([domain, [('timesheet_invoice_id', '=', False)]])
 
+    def _get_last_timesheet_domain(self):
+        """ Do not update the timesheet which are already linked with invoice """
+        domain = super()._get_last_timesheet_domain()
+        return expression.AND([domain, [
+            '|', ('timesheet_invoice_id', '=', False),
+            ('timesheet_invoice_id.state', '=', 'cancel')
+        ]])
+
     def _timesheet_get_portal_domain(self):
         domain = super(AnalyticLine, self)._timesheet_get_portal_domain()
         param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)

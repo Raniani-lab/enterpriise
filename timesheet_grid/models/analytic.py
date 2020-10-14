@@ -476,6 +476,16 @@ class AnalyticLine(models.Model):
         if not self.user_timer_id.timer_start and self.display_timer:
             super(AnalyticLine, self).action_timer_start()
 
+    def _get_last_timesheet_domain(self):
+        self.ensure_one()
+        return [
+            ('id', '!=', self.id),
+            ('user_id', '=', self.env.user.id),
+            ('project_id', '=', self.project_id.id),
+            ('task_id', '=', self.task_id.id),
+            ('date', '=', fields.Date.today()),
+        ]
+
     def _add_timesheet_time(self, minutes_spent, try_to_match=False):
         if self.unit_amount == 0 and not minutes_spent:
             # Check if unit_amount equals 0,
@@ -490,13 +500,8 @@ class AnalyticLine(models.Model):
             self.write({'unit_amount': amount})
             return
 
-        last_timesheet_id = self.search([
-            ('id', '!=', self.id),
-            ('user_id', '=', self.env.user.id),
-            ('project_id', '=', self.project_id.id),
-            ('task_id', '=', self.task_id.id),
-            ('date', '=', fields.Date.today()),
-        ], limit=1)
+        domain = self._get_last_timesheet_domain()
+        last_timesheet_id = self.search(domain, limit=1)
         # If the last timesheet of the day for this project and task has no description,
         # we match both together.
         if last_timesheet_id.name == '/' and not last_timesheet_id.validated:

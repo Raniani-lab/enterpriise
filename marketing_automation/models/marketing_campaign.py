@@ -50,6 +50,10 @@ class MarketingCampaign(models.Model):
     total_participant_count = fields.Integer(string="# of active and completed participants", compute='_compute_participants')
     test_participant_count = fields.Integer(string="# of test participants", compute='_compute_participants')
 
+    @api.onchange('model_id')
+    def _onchange_model_id(self):
+        self.unique_field_id = False
+
     @api.depends('marketing_activity_ids.require_sync', 'last_sync_date')
     def _compute_require_sync(self):
         for campaign in self:

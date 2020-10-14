@@ -1723,13 +1723,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "B3")), [{
                     "title": "Date (Year)",
                     "value": "2016"
-                }, {
-                    "title": "Measure",
-                    "value": "Probability"
                 }]);
-                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "C3")), [{
-                    "title": "Date (Year)",
-                    "value": "2016"
+                assert.deepEqual(model.getters.getTooltipFormula(getCellContent(model, "C3"), true), [{
+                    "title": "name",
+                    "value": "Undefined"
                 }, {
                     "title": "Measure",
                     "value": "Foo"

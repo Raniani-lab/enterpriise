@@ -959,7 +959,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
                     });
                 }
             }
-            if (pivot.measures.length !== 1) {
+            if (pivot.measures.length !== 1 && isColumn) {
                 const measure = args[1];
                 tooltips.push({
                     title: _t("Measure"),

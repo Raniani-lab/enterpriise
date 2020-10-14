@@ -44,7 +44,7 @@ $o-mm-expo-color-6: #f4f0e7;
 
     // ===== Snippets (general) =====
     .o_mail_snippet_general {
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: $o-mm-expo-color-4;
         }
     }

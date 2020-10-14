@@ -49,7 +49,7 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
             padding-right: 20px;
         }
 
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: darken($o-mm-bold-color-3, 10%);
         }
 
@@ -99,7 +99,8 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
 
         .o_mail_header_social {
             margin-right: 0px;
-            a {
+
+            a:not(.btn), .btn.btn-link {
                 color: $o-mm-bold-color-2;
             }
         }
@@ -153,13 +154,15 @@ $o-mm-bold-font: Georgia, "Times New Roman", Times, serif;
         }
 
         .o_mail_footer_social {
-            a {
+            a:not(.btn), .btn.btn-link {
                 color: $o-mm-bold-color-2;
             }
         }
 
-        .o_mail_footer_links a {
-            color: $o-mm-bold-color-2;
+        .o_mail_footer_links {
+            a:not(.btn), .btn.btn-link {
+                color: $o-mm-bold-color-2;
+            }
         }
 
         .o_mail_footer_copy {

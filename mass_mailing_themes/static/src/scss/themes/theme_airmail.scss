@@ -39,7 +39,7 @@ $o-mm-airmail-color-6: #a17e92;
             background-color: $o-mm-airmail-color-3;
         }
 
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: $o-mm-airmail-color-4;
         }
 
@@ -74,7 +74,8 @@ $o-mm-airmail-color-6: #a17e92;
 
         .o_mail_header_social {
             margin-right: 0px;
-            a {
+
+            a:not(.btn), .btn.btn-link {
                 color: darken($o-mm-airmail-color-1, 40%);
             }
         }
@@ -190,13 +191,16 @@ $o-mm-airmail-color-6: #a17e92;
 
         .o_mail_footer_social {
             border: none;
-            a {
+
+            a:not(.btn), .btn.btn-link {
                 color: darken($o-mm-airmail-color-1, 40%);
             }
         }
 
-        .o_mail_footer_links a {
-            color: darken($o-mm-airmail-color-1, 40%);
+        .o_mail_footer_links {
+            a:not(.btn), .btn.btn-link {
+                color: darken($o-mm-airmail-color-1, 40%);
+            }
         }
 
         .o_mail_footer_copy {

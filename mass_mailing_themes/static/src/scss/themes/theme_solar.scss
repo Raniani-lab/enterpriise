@@ -15,7 +15,7 @@ $o-mm-solar-color-6: #262b36;
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
             color: $text;
         }
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: $text;
         }
     }
@@ -62,7 +62,7 @@ $o-mm-solar-color-6: #262b36;
             color: $o-mm-solar-color-2;
         }
 
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: $o-mm-solar-color-4;
         }
     }

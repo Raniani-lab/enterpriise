@@ -41,7 +41,7 @@ $o-mm-resto-color-6: #795745;
             background-color: $o-mm-resto-color-3;
         }
 
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             font-weight: normal;
             color: $o-mm-resto-color-5;
         }
@@ -57,7 +57,7 @@ $o-mm-resto-color-6: #795745;
         }
 
         .bg-o-color-4 {
-            a, .btn.btn-link {
+            a:not(.btn), .btn.btn-link {
                 color: $o-mm-resto-color-6;
             }
 
@@ -80,7 +80,7 @@ $o-mm-resto-color-6: #795745;
         }
 
         .o_mail_header_social {
-            a {
+            a:not(.btn), .btn.btn-link {
                 color: $o-mm-resto-color-3;
             }
         }

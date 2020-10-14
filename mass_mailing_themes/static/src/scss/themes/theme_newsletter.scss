@@ -21,7 +21,7 @@ $o-mm-news-color-7: #87a6b5;
             color: $o-mm-news-color-2;
             background-color: $o-mm-news-color-3;
         }
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             color: $o-mm-news-color-5;
         }
 
@@ -30,7 +30,7 @@ $o-mm-news-color-7: #87a6b5;
                 color: $o-mm-news-color-2;
                 background-color:  $o-mm-news-color-6;
             }
-            a, .btn.btn-link {
+            a:not(.btn), .btn.btn-link {
                 color: $o-mm-news-color-6;
             }
         }

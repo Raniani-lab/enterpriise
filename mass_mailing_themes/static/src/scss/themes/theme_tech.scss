@@ -44,7 +44,7 @@ $o-mm-tech-color-6: #a17e92;
             padding-right: 20px;
         }
 
-        a, .btn.btn-link {
+        a:not(.btn), .btn.btn-link {
             font-weight: normal;
             color: $o-mm-tech-color-3;
         }
@@ -90,7 +90,7 @@ $o-mm-tech-color-6: #a17e92;
 
         .o_mail_header_social {
             margin-right: 0px;
-            a {
+            a:not(.btn), .btn.btn-link {
                 color: darken($o-mm-tech-color-2, 40%);
             }
         }
@@ -147,13 +147,15 @@ $o-mm-tech-color-6: #a17e92;
         }
 
         .o_mail_footer_social {
-            a {
+            a:not(.btn), .btn.btn-link {
                 color: darken($o-mm-tech-color-2, 40%);
             }
         }
 
-        .o_mail_footer_links a {
-            color: darken($o-mm-tech-color-2, 40%);
+        .o_mail_footer_links {
+            a:not(.btn), .btn.btn-link {
+                color: darken($o-mm-tech-color-2, 40%);
+            }
         }
 
         .o_mail_footer_copy {

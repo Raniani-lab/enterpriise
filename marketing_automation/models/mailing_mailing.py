@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class MassMailing(models.Model):
     _inherit = 'mailing.mailing'
+
+    @api.model
+    def default_get(self, fields):
+        vals = super(MassMailing, self).default_get(fields)
+        if 'subject' in fields and self.env.context.get('default_use_in_marketing_automation', False):
+            vals['subject'] = self.env.context.get('default_name')
+        return vals
 
     use_in_marketing_automation = fields.Boolean(
         string='Specific mailing used in marketing campaign', default=False,

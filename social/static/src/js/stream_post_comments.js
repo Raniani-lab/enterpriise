@@ -264,7 +264,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
             existingAttachmentSrc: $targetComment.data('existingAttachmentSrc'),
         }));
 
-        $targetComment.find('.o_social_comment_wrapper').first().hide();
+        $targetComment.find('.o_social_comment_wrapper').first().removeClass('d-flex').addClass('d-none');
         $targetComment.find('.o_social_comment_commands').first().hide();
         $targetComment.find('.o_social_comment_attachment').first().hide();
         $targetComment.prepend($editComment);
@@ -285,7 +285,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
 
         var $targetComment = $(ev.currentTarget).closest('.o_social_comment');
         $targetComment.find('.o_social_write_reply').first().remove();
-        $targetComment.find('.o_social_comment_wrapper').first().show();
+        $targetComment.find('.o_social_comment_wrapper').first().addClass('d-flex').removeClass('d-none');
         $targetComment.find('.o_social_comment_commands').first().show();
         $targetComment.find('.o_social_comment_attachment').first().show();
     },

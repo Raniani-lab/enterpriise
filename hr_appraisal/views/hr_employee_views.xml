@@ -33,10 +33,13 @@
                     </div>
                 </button>
             </div>
-            <field name="job_id" position="after">
+            <group name="application_group" position="attributes">
+                <attribute name="string">Application Settings</attribute>
+            </group>
+            <group name="application_group" position="inside">
                 <field name="parent_user_id" invisible="1"/>
                 <field name="next_appraisal_date" groups="base.group_no_one"/>
-            </field>
+            </group>
         </field>
     </record>
 </odoo>

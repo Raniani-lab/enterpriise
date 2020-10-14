@@ -11,6 +11,9 @@
             <xpath expr="//field[@name='subject']" position="after">
                 <field name="marketing_activity_ids" string="Activities" widget="many2many_tags"/>
             </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 

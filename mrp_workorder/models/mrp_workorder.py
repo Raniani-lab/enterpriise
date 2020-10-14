@@ -318,7 +318,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 check = check.next_check_id
             else:
                 check = check.previous_check_id
-        change_worksheet_page = not check.next_check_id and check.point_id.worksheet == 'scroll'
+        change_worksheet_page = check.point_id.worksheet == 'scroll'
         self.write({
             'allow_producing_quantity_change': not check.previous_check_id and all(c.quality_state == 'none' for c in checks_to_consider) and self.is_first_started_wo,
             'current_quality_check_id': check.id,

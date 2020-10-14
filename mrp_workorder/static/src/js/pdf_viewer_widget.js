@@ -32,7 +32,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend(mrpViewerCommon, {
 
         if ($existing.length) {
             if (!this.invisible){
-                this.pdfViewer = $existing.data('pdfViewer');
+                this.pdfViewer = $existing.data('PDFViewerApplication').pdfViewer;
                 this._goToPage(this.page);
             }
             $existing.toggleClass('o_invisible_modifier', this.invisible);

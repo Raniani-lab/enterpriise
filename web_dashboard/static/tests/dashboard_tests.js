@@ -2283,6 +2283,9 @@ QUnit.module('Views', {
 
         // click on aggregate to activate count measure
         await testUtils.dom.click(dashboard.$('.o_aggregate:first .o_value'));
+
+        await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
+
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button:first'));
         assert.hasClass(dashboard.$('.o_graph_measures_list .dropdown-item:contains(Count)'), 'selected',
             'count measure should be selected in graph view');

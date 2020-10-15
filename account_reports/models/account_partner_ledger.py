@@ -228,7 +228,7 @@ class ReportPartnerLedger(models.AbstractModel):
                AND account.id = account_move_line.account_id
                AND partial.max_date BETWEEN %s AND %s
                AND {where_clause}
-            ORDER BY account_move_line.id
+            ORDER BY account_move_line.date, account_move_line.id
             OFFSET %s
             {limit_clause}
         '''.format(tables=tables, partner_clause=partner_clause, where_clause=where_clause, limit_clause=limit_clause)
@@ -329,7 +329,7 @@ class ReportPartnerLedger(models.AbstractModel):
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             WHERE %s
-            ORDER BY account_move_line.id
+            ORDER BY account_move_line.date, account_move_line.id
         ''' % (ct_query, where_clause)
 
         if offset:

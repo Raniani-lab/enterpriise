@@ -258,6 +258,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                     this.trigger('open_clicked', { ids: markerInfo.ids });
                 };
             }
+            return popup;
         }
         /**
          * @private
@@ -386,16 +387,15 @@ odoo.define('web_map.MapRenderer', function (require) {
          * @param {Object} record
          */
         _centerAndOpenPin(record) {
-            this._createMarkerPopup({
+            const popup = this._createMarkerPopup({
                 record: record,
                 ids: [record.id],
             });
-            this.leafletMap.panTo([
-                record.partner.partner_latitude,
-                record.partner.partner_longitude,
-            ], {
-                animate: true,
-            });
+            const px = this.leafletMap.project([record.partner.partner_latitude, record.partner.partner_longitude]);
+            const popupHeight = popup.getElement().offsetHeight;
+            px.y -= popupHeight / 2;
+            const latlng = this.leafletMap.unproject(px);
+            this.leafletMap.panTo(latlng, { animate: true });
         }
         /**
          * @private

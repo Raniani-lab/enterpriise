@@ -93,7 +93,7 @@ class HrContract(models.Model):
 
     @api.model
     def _advantage_black_list(self):
-        return set(MAGIC_COLUMNS)
+        return set(MAGIC_COLUMNS + ["wage_with_holidays"])
 
     @api.depends(lambda self: (
         'structure_type_id.salary_advantage_ids.res_field_id',
@@ -102,6 +102,10 @@ class HrContract(models.Model):
     def _compute_final_yearly_costs(self):
         for contract in self:
             contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage
+
+    @api.onchange("wage_with_holidays")
+    def _onchange_wage_with_holidays(self):
+        self._inverse_wage_with_holidays()
 
     @api.onchange('final_yearly_costs')
     def _onchange_final_yearly_costs(self):

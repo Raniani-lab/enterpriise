@@ -210,6 +210,7 @@ class CrossoveredBudgetLines(models.Model):
             self.env.cr.execute(select, where_clause_params)
             line.practical_amount = self.env.cr.fetchone()[0] or 0.0
 
+    @api.depends('date_from', 'date_to')
     def _compute_theoritical_amount(self):
         # beware: 'today' variable is mocked in the python tests and thus, its implementation matter
         today = fields.Date.today()
@@ -220,6 +221,9 @@ class CrossoveredBudgetLines(models.Model):
                 else:
                     theo_amt = line.planned_amount
             else:
+                if not line.date_from or not line.date_to:
+                    line.theoritical_amount = 0
+                    continue
                 # One day is added since we need to include the start and end date in the computation.
                 # For example, between April 1st and April 30th, the timedelta must be 30 days.
                 line_timedelta = line.date_to - line.date_from + timedelta(days=1)

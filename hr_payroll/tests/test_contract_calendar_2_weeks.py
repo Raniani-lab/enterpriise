@@ -3,8 +3,9 @@
 
 from datetime import datetime
 from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
+from odoo.tests import tagged
 
-
+@tagged('2_weeks_calendar')
 class TestPayslipContractCalendar2Weeks(TestPayslipContractBase):
 
     def test_contract_2_weeks(self):

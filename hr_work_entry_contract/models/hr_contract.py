@@ -3,6 +3,7 @@
 
 from datetime import date, datetime
 from odoo import api, fields, models
+from odoo.addons.resource.models.resource_mixin import timezone_datetime
 
 import pytz
 
@@ -19,27 +20,63 @@ class HrContract(models.Model):
     def _get_default_work_entry_type(self):
         return self.env.ref('hr_work_entry.work_entry_type_attendance', raise_if_not_found=False)
 
+    def _get_leave_work_entry_type_dates(self, leave, date_from, date_to):
+        return self._get_leave_work_entry_type(leave)
+
     def _get_leave_work_entry_type(self, leave):
         return leave.work_entry_type_id
 
     # Is used to add more values, for example leave_id (in hr_work_entry_holidays)
     def _get_more_vals_leave(self, leave):
+        # YTI TODO master: Remove this method
+        return []
+
+    # Is used to add more values, for example leave_id (in hr_work_entry_holidays)
+    def _get_more_vals_leave_interval(self, interval, leaves):
         return []
 
     def _get_contract_presence_entries_values(self, date_start, date_stop, default_work_entry_type):
+        # Deprecated. Use _get_contract_work_entries_values directly.
+        # YTI TODO master: Remove this method
+        return []
+
+    def _get_contract_leave_entries_values(self, date_start, date_stop):
+        # Deprecated. Use _get_contract_work_entries_values directly.
+        # YTI TODO master: Remove this method
+        return []
+
+    def _get_contract_work_entries_values(self, date_start, date_stop):
+        self.ensure_one()
         contract_vals = []
         employee = self.employee_id
         calendar = self.resource_calendar_id
         resource = employee.resource_id
         tz = pytz.timezone(calendar.tz)
+        start_dt = pytz.utc.localize(date_start) if not date_start.tzinfo else date_start
+        end_dt = pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop
 
-        attendances = calendar._work_intervals_batch(
-            pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-            pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resources=resource, tz=tz
+        attendances = calendar._attendance_intervals_batch(
+            start_dt, end_dt, resources=resource, tz=tz
         )[resource.id]
+        leaves = calendar._leave_intervals_batch(
+            start_dt, end_dt, resources=resource, tz=tz
+        )[resource.id]
+
+        real_attendances = attendances - leaves
+        real_leaves = attendances - real_attendances
+
+        # A leave period can be linked to several resource.calendar.leave
+        split_leaves = []
+        for leave_interval in leaves:
+            if leave_interval[2] and len(leave_interval[2]) > 1:
+                split_leaves += [(leave_interval[0], leave_interval[1], l) for l in leave_interval[2]]
+            else:
+                split_leaves += [(leave_interval[0], leave_interval[1], leave_interval[2])]
+        leaves = split_leaves
+
         # Attendances
-        for interval in attendances:
+        default_work_entry_type = self._get_default_work_entry_type()
+        for interval in real_attendances:
             work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or default_work_entry_type
             # All benefits generated here are using datetimes converted from the employee's timezone
             contract_vals += [{
@@ -52,46 +89,32 @@ class HrContract(models.Model):
                 'company_id': self.company_id.id,
                 'state': 'draft',
             }]
-        return contract_vals
 
-    def _get_contract_leave_entries_values(self, date_start, date_stop):
-        contract_vals = []
-        employee = self.employee_id
-        calendar = self.resource_calendar_id
-        resource = employee.resource_id
-        leaves = self.env['resource.calendar.leaves'].sudo().search([
-            ('resource_id', 'in', [False, resource.id]),
-            ('calendar_id', '=', calendar.id),
-            ('date_from', '<', date_stop),
-            ('date_to', '>', date_start)
-        ])
-
-        for leave in leaves:
-            start = max(leave.date_from, datetime.combine(self.date_start, datetime.min.time()))
-            end = min(leave.date_to, datetime.combine(self.date_end or date.max, datetime.max.time()))
+        default_leave_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_leave')
+        for interval in real_leaves:
             # Could happen when a leave is configured on the interface on a day for which the
             # employee is not supposed to work, i.e. no attendance_ids on the calendar.
             # In that case, do try to generate an empty work entry, as this would raise a
             # sql constraint error
-            if start == end:
+            if interval[0] == interval[1]:  # if start == stop
                 continue
-            leave_entry_type = self._get_leave_work_entry_type(leave)
+            leave_entry_type = default_leave_entry_type
+            interval_start = interval[0].astimezone(pytz.utc).replace(tzinfo=None)
+            interval_stop = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
+            for leave in leaves:
+                if interval[0] >= leave[0] and interval[1] <= leave[1] and leave[2]:
+                    leave_entry_type = self._get_leave_work_entry_type_dates(leave[2], interval_start, interval_stop)
+                    break
             contract_vals += [dict([
                 ('name', "%s%s" % (leave_entry_type.name + ": " if leave_entry_type else "", employee.name)),
-                ('date_start', start),
-                ('date_stop', end),
+                ('date_start', interval_start),
+                ('date_stop', interval_stop),
                 ('work_entry_type_id', leave_entry_type.id),
                 ('employee_id', employee.id),
                 ('company_id', self.company_id.id),
                 ('state', 'draft'),
                 ('contract_id', self.id),
-            ] + self._get_more_vals_leave(leave))]
-        return contract_vals
-
-    def _get_contract_work_entries_values(self, date_start, date_stop):
-        self.ensure_one()
-        contract_vals = self._get_contract_presence_entries_values(date_start, date_stop, self._get_default_work_entry_type())
-        contract_vals += self._get_contract_leave_entries_values(date_start, date_stop)
+            ] + self._get_more_vals_leave_interval(interval, leaves))]
         return contract_vals
 
     def _get_work_entries_values(self, date_start, date_stop):

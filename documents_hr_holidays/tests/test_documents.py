@@ -26,6 +26,7 @@ class TestCaseDocumentsBridgeHR(TransactionCase):
         leave = self.env['hr.leave'].create({
             'employee_id': employee.id,
             'holiday_status_id': leave_type.id,
+            'number_of_days': 1,
         })
         attachment = self.env['ir.attachment'].create({
             'datas': TEXT,

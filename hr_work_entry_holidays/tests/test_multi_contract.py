@@ -19,12 +19,14 @@ class TestWorkEntryHolidaysMultiContract(TestWorkEntryHolidaysBase):
         })
 
     def create_leave(self, start, end):
+        work_days_data = self.jules_emp._get_work_days_data_batch(start, end)
         return self.env['hr.leave'].create({
             'name': 'Doctor Appointment',
             'employee_id': self.jules_emp.id,
             'holiday_status_id': self.leave_type.id,
             'date_from': start,
             'date_to': end,
+            'number_of_days': work_days_data[self.jules_emp.id]['days'],
         })
 
     def test_multi_contract_holiday(self):

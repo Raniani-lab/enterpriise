@@ -54,8 +54,10 @@
             <field name="amount_python_compute">
 if not categories.BASIC:
     result = 0
+    result_qty = 0
 else:
-    result = (worked_days.WORK100.number_of_days if worked_days.WORK100 else 0) / 21.0 * contract.private_car_reimbursed_amount
+    result = contract.private_car_reimbursed_amount / 21.0
+    result_qty = (worked_days.WORK100.number_of_days if worked_days.WORK100 else 0)
             </field>
             <field name="struct_id" ref="hr_payroll_structure_student_regular_pay"/>
         </record>

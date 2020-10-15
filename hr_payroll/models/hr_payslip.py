@@ -72,6 +72,7 @@ class HrPayslip(models.Model):
         copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
         domain="[('company_id', '=', company_id)]")
     sum_worked_hours = fields.Float(compute='_compute_worked_hours', store=True, help='Total hours of attendance and time off (paid or not)')
+    # YTI TODO: normal_wage to be removed
     normal_wage = fields.Integer(compute='_compute_normal_wage', store=True)
     compute_date = fields.Date('Computed On')
     basic_wage = fields.Monetary(compute='_compute_basic_net')
@@ -131,6 +132,12 @@ class HrPayslip(models.Model):
     def _compute_is_regular(self):
         for payslip in self:
             payslip.is_regular = payslip.struct_id.type_id.default_struct_id == payslip.struct_id
+
+    def _is_invalid(self):
+        self.ensure_one()
+        if self.state != 'done':
+            return _("This payslip is not validated. This is not a legal document.")
+        return False
 
     @api.depends('worked_days_line_ids', 'input_line_ids')
     def _compute_line_ids(self):
@@ -276,6 +283,30 @@ class HrPayslip(models.Model):
         self.ensure_one()
         return self.contract_id.resource_calendar_id
 
+    def _get_worked_day_lines_values(self, domain=None):
+        self.ensure_one()
+        res = []
+        hours_per_day = self._get_worked_day_lines_hours_per_day()
+        work_hours = self.contract_id._get_work_hours(self.date_from, self.date_to, domain=domain)
+        work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
+        biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
+        add_days_rounding = 0
+        for work_entry_type_id, hours in work_hours_ordered:
+            work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
+            days = round(hours / hours_per_day, 5) if hours_per_day else 0
+            if work_entry_type_id == biggest_work:
+                days += add_days_rounding
+            day_rounded = self._round_days(work_entry_type, days)
+            add_days_rounding += (days - day_rounded)
+            attendance_line = {
+                'sequence': work_entry_type.sequence,
+                'work_entry_type_id': work_entry_type_id,
+                'number_of_days': day_rounded,
+                'number_of_hours': hours,
+            }
+            res.append(attendance_line)
+        return res
+
     def _get_worked_day_lines(self, domain=None, check_out_of_contract=True):
         """
         :returns: a list of dict containing the worked days values that should be applied for the given payslip
@@ -285,26 +316,7 @@ class HrPayslip(models.Model):
         self.ensure_one()
         contract = self.contract_id
         if contract.resource_calendar_id:
-            hours_per_day = self._get_worked_day_lines_hours_per_day()
-            work_hours = contract._get_work_hours(self.date_from, self.date_to, domain=domain)
-            work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
-            biggest_work = work_hours_ordered[-1][0] if work_hours_ordered else 0
-            add_days_rounding = 0
-            for work_entry_type_id, hours in work_hours_ordered:
-                work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
-                days = round(hours / hours_per_day, 5) if hours_per_day else 0
-                if work_entry_type_id == biggest_work:
-                    days += add_days_rounding
-                day_rounded = self._round_days(work_entry_type, days)
-                add_days_rounding += (days - day_rounded)
-                attendance_line = {
-                    'sequence': work_entry_type.sequence,
-                    'work_entry_type_id': work_entry_type_id,
-                    'number_of_days': day_rounded,
-                    'number_of_hours': hours,
-                }
-                res.append(attendance_line)
-
+            res = self._get_worked_day_lines_values(domain=domain)
             if not check_out_of_contract:
                 return res
 
@@ -312,7 +324,7 @@ class HrPayslip(models.Model):
             # worked_days lines to adapt the wage accordingly
             out_days, out_hours = 0, 0
             reference_calendar = self._get_out_of_contract_calendar()
-            if self.date_from < contract.date_start :
+            if self.date_from < contract.date_start:
                 start = fields.Datetime.to_datetime(self.date_from)
                 stop = fields.Datetime.to_datetime(contract.date_start) + relativedelta(days=-1, hour=23, minute=59)
                 out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False)
@@ -449,6 +461,18 @@ class HrPayslip(models.Model):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
+    def _get_worked_days_line_amount(self, code):
+        wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)
+        return sum([wd.amount for wd in wds])
+
+    def _get_worked_days_line_number_of_hours(self, code):
+        wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)
+        return sum([wd.number_of_hours for wd in wds])
+
+    def _get_worked_days_line_number_of_days(self, code):
+        wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)
+        return sum([wd.number_of_days for wd in wds])
+
     def action_print_payslip(self):
         return {
             'name': 'Payslip',
@@ -570,6 +594,7 @@ class HrPayslipWorkedDays(models.Model):
     def _compute_name(self):
         for worked_days in self:
             worked_days.name = worked_days.work_entry_type_id.name
+
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'

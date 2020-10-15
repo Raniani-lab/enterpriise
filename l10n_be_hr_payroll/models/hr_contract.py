@@ -3,9 +3,13 @@
 
 import pytz
 
+from collections import defaultdict
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.tools import float_round, date_utils
+from odoo.tools.float_utils import float_compare
 
 EMPLOYER_ONSS = 0.2714
 
@@ -201,10 +205,14 @@ class HrContract(models.Model):
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
             resources=resource)[resource.id]
 
+        # YTI TODO master: The domain is hacky, but we can't modify the method signature
+        # Add an argument compute_leaves=True on the method
         attendances = calendar._work_intervals_batch(
             pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resources=resource)[resource.id]
+            resources=resource,
+            domain=[('resource_id', '=', -1)]
+        )[resource.id]
 
         credit_time_intervals = standard_attendances - attendances
 
@@ -228,3 +236,105 @@ class HrContract(models.Model):
         contract_vals = super()._get_contract_work_entries_values(date_start, date_stop)
         contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
         return contract_vals
+
+    def _get_work_hours_split_half(self, date_from, date_to, domain=None):
+        """
+        Returns the amount (expressed in hours) of work
+        for a contract between two dates.
+        If called on multiple contracts, sum work amounts of each contract.
+        :param date_from: The start date
+        :param date_to: The end date
+        :returns: a dictionary {(half/full, work_entry_id_1): hours_1, (half/full, work_entry_id_2): hours_2}
+        """
+
+        generated_date_max = min(fields.Date.to_date(date_to), date_utils.end_of(fields.Date.today(), 'month'))
+        self._generate_work_entries(date_from, generated_date_max)
+        date_from = datetime.combine(date_from, datetime.min.time())
+        date_to = datetime.combine(date_to, datetime.max.time())
+        work_data = defaultdict(lambda: list([0, 0]))  # [days, hours]
+        number_of_hours_full_day = self.resource_calendar_id._get_max_number_of_hours(date_from, date_to)
+
+        # First, found work entry that didn't exceed interval.
+        work_entries = self.env['hr.work.entry'].read_group(
+            self._get_work_hours_domain(date_from, date_to, domain=domain, inside=True),
+            ['hours:sum(duration)', 'work_entry_type_id'],
+            ['date_start:day', 'work_entry_type_id'],
+            lazy=False
+        )
+
+        for day_data in work_entries:
+            work_entry_type_id = day_data['work_entry_type_id'][0] if day_data['work_entry_type_id'] else False
+            duration = day_data['hours']
+            if float_compare(day_data['hours'], number_of_hours_full_day, 2) != -1:
+                if number_of_hours_full_day:
+                    number_of_days = float_round(duration / number_of_hours_full_day, precision_rounding=1, rounding_method='HALF-UP')
+                else:
+                    number_of_days = 1 # If not supposed to work in calendar attendances, then there
+                                       # are not time offs
+                work_data[('full', work_entry_type_id)][0] += number_of_days
+                work_data[('full', work_entry_type_id)][1] += duration
+            else:
+                work_data[('half', work_entry_type_id)][0] += 1
+                work_data[('half', work_entry_type_id)][1] += duration
+
+        # Second, find work entry that exceeds interval and compute right duration.
+        work_entries = self.env['hr.work.entry'].search(self._get_work_hours_domain(date_from, date_to, domain=domain, inside=False))
+
+        for work_entry in work_entries:
+            date_start = max(date_from, work_entry.date_start)
+            date_stop = min(date_to, work_entry.date_stop)
+            if work_entry.work_entry_type_id.is_leave:
+                contract = work_entry.contract_id
+                calendar = contract.resource_calendar_id
+                employee = contract.employee_id
+                contract_data = employee._get_work_days_data_batch(
+                    date_start, date_stop, compute_leaves=False, calendar=calendar
+                )[employee.id]
+                if float_compare(contract_data.get('hours', 0), number_of_hours_full_day, 2) != -1:
+                    work_data[('full', work_entry.work_entry_type_id.id)][0] += 1
+                    work_data[('full', work_entry.work_entry_type_id.id)][1] += duration
+                else:
+                    work_data[('half', work_entry.work_entry_type_id.id)][1] += duration
+            else:
+                dt = date_stop - date_start
+                work_data[('half', work_entry.work_entry_type_id.id)] += dt.days * 24 + dt.seconds / 3600  # Number of hours
+        return work_data
+
+    # override to add work_entry_type from leave
+    def _get_leave_work_entry_type_dates(self, leave, date_from, date_to):
+        result = super()._get_leave_work_entry_type_dates(leave, date_from, date_to)
+        if self.structure_type_id.country_id != self.env.ref('base.be'):
+            return result
+        # The salary is not guaranteed after 30 calendar days of sick leave (it means from the 31th
+        # day of sick leave)
+        sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
+        if result == sick_work_entry_type:
+            partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
+            long_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick')
+            sick_work_entry_types = sick_work_entry_type + partial_sick_work_entry_type + long_sick_work_entry_type
+            sick_less_than_30days_before = self.env['hr.leave'].search([
+                ('employee_id', '=', self.employee_id.id),
+                ('date_to', '>=', leave.date_from + relativedelta(days=-30)),
+                ('holiday_status_id.work_entry_type_id', 'in', sick_work_entry_types.ids),
+                ('state', '=', 'validate'),
+                ('id', '!=', leave.holiday_id.id),
+            ], order="date_from asc")
+            if not leave.holiday_id:
+                return result
+            # The current time off is longer than 30 days -> Partial Time Off
+            if (date_from - leave.holiday_id.date_from).days > 30:
+                return partial_sick_work_entry_type
+            # No previous sick time off -> Sick Time Off
+            if not sick_less_than_30days_before:
+                return result
+            # If there a gap of more than 15 days between 2 sick time offs,
+            # the salary is guaranteed -> Sick Time Off
+            all_leaves = sick_less_than_30days_before | leave.holiday_id
+            for i in range(len(all_leaves) - 1):
+                if (all_leaves[i+1].date_from - all_leaves[i].date_to).days > 15:
+                    return result
+            # No gap and more than 30 calendar days -> Partial Time Off
+            first_sick_leave = sick_less_than_30days_before[:1]
+            if date_from >= first_sick_leave.date_from + relativedelta(days=30):
+                return partial_sick_work_entry_type
+        return result

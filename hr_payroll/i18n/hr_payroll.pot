@@ -43,6 +43,11 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid ", bank account of"
+msgstr ""
+
+#. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
 msgid "13th pay salary"
 msgstr ""
@@ -99,42 +104,22 @@ msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Address</strong>"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Authorized signature</strong>"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Bank Account</strong>"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Basic Salary</strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Company Information</strong>"
+msgid "<strong>Computed on </strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Computed On</strong>"
+msgid "<strong>Contract Start Date</strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Date From</strong>"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Date To</strong>"
+msgid "<strong>Contract Type </strong>"
 msgstr ""
 
 #. module: hr_payroll
@@ -144,22 +129,27 @@ msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Email</strong>"
+msgid "<strong>Employee</strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Identification No</strong>"
+msgid "<strong>Identification</strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Name</strong>"
+msgid "<strong>Marital Status</strong>"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Reference</strong>"
+msgid "<strong>Pay Period</strong>"
+msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Person in charge</strong>"
 msgstr ""
 
 #. module: hr_payroll
@@ -168,13 +158,13 @@ msgid "<strong>Register Name:</strong>"
 msgstr ""
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Registration Number</strong>"
+#: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
+msgid "<strong>Total</strong>"
 msgstr ""
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
-msgid "<strong>Total</strong>"
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Working Schedule</strong>"
 msgstr ""
 
 #. module: hr_payroll
@@ -441,7 +431,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__code
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule_category__code
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "Code"
 msgstr ""
 
@@ -461,9 +450,13 @@ msgid "Company"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule.category,name:hr_payroll.COMP
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_form
 msgid "Company Contribution"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule.category,name:hr_payroll.COMP
+msgid "Company Part"
 msgstr ""
 
 #. module: hr_payroll
@@ -863,6 +856,11 @@ msgid "Eventual third party involved in the salary payment of the employees."
 msgstr ""
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
+msgid "Export Payslip"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__amount_fix
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_fix
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__amount_select__fix
@@ -1124,6 +1122,11 @@ msgid "Is Register"
 msgstr ""
 
 #. module: hr_payroll
+#: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__is_superuser
+msgid "Is Superuser"
+msgstr ""
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_view_kanban
 msgid "Is a Blocking Reason?"
 msgstr ""
@@ -1244,6 +1247,11 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__paid
 msgid "Made Payment Order ? "
+msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "Made by Odoo"
 msgstr ""
 
 #. module: hr_payroll
@@ -1737,11 +1745,6 @@ msgid "Quantity/Rate"
 msgstr ""
 
 #. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "Quantity/rate"
-msgstr ""
-
-#. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__quarterly
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure_type__default_schedule_pay__quarterly
 msgid "Quarterly"
@@ -1888,11 +1891,6 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Salary Computation"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.hr_contract_form_inherit
-msgid "Salary Information"
 msgstr ""
 
 #. module: hr_payroll
@@ -2178,6 +2176,12 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid "This payslip is not validated. This is not a legal document."
+msgstr ""
+
+#. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.payroll_report_action
 msgid "This report performs analysis on your payslip."
 msgstr ""
@@ -2241,6 +2245,11 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__sum_worked_hours
 msgid "Total hours of attendance and time off (paid or not)"
+msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "Total to pay on"
 msgstr ""
 
 #. module: hr_payroll

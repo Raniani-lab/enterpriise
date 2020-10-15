@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import tests
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 from datetime import datetime, date
 
+from odoo.tests import tagged
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-@tests.tagged('post_install', '-at_install', 'student')
+
+@tagged('post_install', '-at_install', 'student')
 class TestStudent(AccountTestInvoicingCommon):
 
     @classmethod

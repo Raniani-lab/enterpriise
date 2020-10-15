@@ -8,9 +8,9 @@ from collections import OrderedDict
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tools.float_utils import float_compare
 from odoo.tests import common, tagged
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-
-tagged('post_install', '-at_install', 'examples')
+@tagged('post_install', '-at_install', 'examples')
 class TestExamples(AccountTestInvoicingCommon):
 
     @classmethod
@@ -81,7 +81,9 @@ class TestExamples(AccountTestInvoicingCommon):
         # Setup the employee
 
         if isinstance(employee_values, dict):
-            employee = self.env['hr.employee'].create(employee_values)
+            employee = self.env['hr.employee'].create(dict(
+                employee_values,
+                company_id=self.env.company.id))
         else:
             employee = self.env.ref(employee_values)
             # Reset work entry generation
@@ -131,7 +133,8 @@ class TestExamples(AccountTestInvoicingCommon):
 
         # Setup the payslip
         payslip_values = dict(payslip_values or {},
-                              contract_id=employee.contract_id)
+                              contract_id=employee.contract_id,
+                              company_id=self.env.company.id)
 
         payslip_id = self.Payslip.new(self.Payslip.default_get(self.Payslip.fields_get()))
         payslip_id.update(payslip_values)
@@ -246,26 +249,27 @@ class TestExamples(AccountTestInvoicingCommon):
 
     def test_without_car_without_atn(self):
         values = OrderedDict([
-            ('BASIC', 3656.7),
+            ('BASIC', 3655.33),
             ('ATN.INT', 0.00),
             ('ATN.MOB', 0.0),
-            ('SALARY', 3656.7),
-            ('ONSS', -477.93),
+            ('SALARY', 3655.33),
+            ('ONSS', -477.75),
             ('ATN.CAR', 0),
-            ('GROSSIP', 3178.77),
-            ('IP.PART', -914.18),
-            ('GROSS', 2264.6),
+            ('GROSSIP', 3177.57),
+            ('IP.PART', -913.83),
+            ('GROSS', 2263.74),
             ('P.P', -476.6),
             ('ATN.CAR.2', 0),
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
-            ('M.ONSS', -34.73),
+            ('M.ONSS', -34.72),
             ('MEAL_V_EMP', -22.89),
             ('REP.FEES', 150.00),
-            ('IP', 914.18),
-            ('IP.DED', -59.6),
-            ('NET', 2734.95),
+            ('IP', 913.83),
+            ('IP.DED', -59.58),
+            ('NET', 2733.79),
         ])
+
         employee = {
             'name': 'Roger2',
         }
@@ -279,7 +283,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'mobile': 0,
             'ip_wage_rate': 25,
             'ip': True,
-            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'resource_calendar_id': self.classic_38h_calendar.id,
         }
         payslip = {
             'date_from': datetime.date.today().replace(year=2018, month=11, day=1),
@@ -307,25 +311,25 @@ class TestExamples(AccountTestInvoicingCommon):
     # IP should be correct as we are in 2019,
     def test_with_car_with_atn_with_child(self):
         values = OrderedDict([
-            ('BASIC', 3217.75),
+            ('BASIC', 3198.89),
             ('ATN.INT', 5.00),
             ('ATN.MOB', 0.0),
-            ('SALARY', 3222.75),
-            ('ONSS', -421.21),
+            ('SALARY', 3203.89),
+            ('ONSS', -418.75),
             ('ATN.CAR', 109.92),
-            ('GROSSIP', 2911.46),
-            ('IP.PART', -804.44),
-            ('GROSS', 2107.02),
-            ('P.P', -350.53),
+            ('GROSSIP', 2895.07),
+            ('IP.PART', -799.72),
+            ('GROSS', 2095.34),
+            ('P.P', -343.31),
             ('ATN.CAR.2', -109.92),
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', 0),
-            ('M.ONSS', -29.90),
+            ('M.ONSS', -29.7),
             ('MEAL_V_EMP', -20.71),
             ('REP.FEES', 150.00),
-            ('IP', 804.44),
-            ('IP.DED', -52.44),
-            ('NET', 2492.96),
+            ('IP', 799.72),
+            ('IP.DED', -52.13),
+            ('NET', 2484.3),
         ])
         address = self.env['res.partner'].create({
             'name': 'Roger',
@@ -366,7 +370,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'mobile': 0,
             'ip_wage_rate': 25,
             'ip': True,
-            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'resource_calendar_id': self.classic_38h_calendar.id,
         }
         payslip = {
             'date_from': datetime.date.today().replace(year=2019, month=5, day=1),
@@ -466,7 +470,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'mobile': 0,
             'ip_wage_rate': 25,
             'ip': True,
-            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'resource_calendar_id': self.classic_38h_calendar.id,
         }
         payslip = {
             'date_from': datetime.date.today().replace(year=2019, month=3, day=1),
@@ -533,7 +537,7 @@ class TestExamples(AccountTestInvoicingCommon):
 
         employee = {
             'name': 'Roger',
-            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'resource_calendar_id': self.classic_38h_calendar.id,
             'marital': 'married',
             'children': 1,
             'spouse_fiscal_status': 'without_income',
@@ -557,7 +561,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'mobile': True,
             'ip': True,
             'ip_wage_rate': 25,
-            'resource_calendar_id': self.ref('resource.resource_calendar_std_38h'),
+            'resource_calendar_id': self.classic_38h_calendar.id,
         }
 
         holidays_values = [{

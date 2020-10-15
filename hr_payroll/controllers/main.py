@@ -29,7 +29,8 @@ class HrPayroll(Controller):
                 report = request.env.ref('hr_payroll.action_report_payslip', False)
             else:
                 report = payslip.struct_id.report_id
-            pdf_content, _ = report._render_qweb_pdf(payslip.id)
+            report = report.with_context(lang=payslip.employee_id.address_home_id.lang)
+            pdf_content, _ = report._render_qweb_pdf(payslip.id, data={'company_id': payslip.company_id})
             reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
 
             for page in range(reader.getNumPages()):
@@ -121,23 +122,22 @@ class HrPayroll(Controller):
             "# Part of Odoo. See LICENSE file for full copyright and licensing details.\n",
             # imports
             "import datetime",
-            "from odoo.tests.common import SavepointCase, tagged\n\n",
+            "from odoo.addons.account.tests.common import AccountTestInvoicingCommon",
+            "from odoo.tests.common import tagged\n\n",
+
             # class for the unit test
-            "@tagged('sample_payslip')\n"
-            "class TestSamplePayslip(SavepointCase):\n",
+            "@tagged('post_install', '-at_install', 'sample_payslip')",
+            "class TestSamplePayslip(AccountTestInvoicingCommon):\n",
             # setUp method for the unit test
             "\t" * offset + "@classmethod",
-            "\t" * offset + "def setUpClass(cls):",
+            "\t" * offset + "def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):",
         ]
 
         offset += 1
         content_py_file += [
-            "\t" * offset + "super(TestSamplePayslip, cls).setUpClass()\n",
-            "\t" * offset + "cls.company = cls.env['res.company'].create({",
-            "\t" * (offset + 1) + "'name': 'My Company - TEST',",
-            "\t" * (offset + 1) + "'country_id': %s," % (_record_to_xmlid_ref(payslip.company_id.country_id)),
-            "\t" * offset + "})\n",
-            "\t" * offset + "cls.env.user.company_ids |= cls.company\n",
+            "\t" * offset + "super().setUpClass(chart_template_ref=chart_template_ref)\n",
+            "\t" * offset + "cls.company_data['company'].country_id = cls.env.ref('base.be')\n",
+            "\t" * offset + "cls.env.user.tz = 'Europe/Brussels'\n",
         ]
 
         # ===============
@@ -148,7 +148,7 @@ class HrPayroll(Controller):
         address_fields = []
         address_forced_values = {
             'name': 'Test Employee',
-            'company_id': "cls.company.id",
+            'company_id': "cls.env.company.id",
             'type': 'private'
         }
 
@@ -162,7 +162,8 @@ class HrPayroll(Controller):
             'full_time_required_hours']
         calendar_forced_values = {
             'name': 'Test Calendar',
-            'company_id': "cls.company.id",
+            'company_id': "cls.env.company.id",
+            'attendance_ids': [(5, 0, 0)],
         }
 
         # ===========
@@ -178,7 +179,7 @@ class HrPayroll(Controller):
         ]
         global_attendances_forced_values = {
             'name': 'Attendance',
-            'calendar_id': "cls.resource_calendar.id"
+            'calendar_id': "cls.resource_calendar.id",
         }
 
         # ======
@@ -193,7 +194,7 @@ class HrPayroll(Controller):
         global_leaves_forced_values = {
             'name': 'Absence',
             'calendar_id': "cls.resource_calendar.id",
-            'company_id': "cls.company.id",
+            'company_id': "cls.env.company.id",
         }
 
         # ========
@@ -210,7 +211,7 @@ class HrPayroll(Controller):
             'name': 'Test Employee',
             'address_home_id': "cls.address_home.id",
             'resource_calendar_id': "cls.resource_calendar.id",
-            'company_id': "cls.company.id",
+            'company_id': "cls.env.company.id",
         }
 
         # ====================
@@ -260,7 +261,7 @@ class HrPayroll(Controller):
                 'name': 'Test Car',
                 'license_plate': 'TEST',
                 'driver_id': "cls.employee.address_home_id.id",
-                'company_id': "cls.company.id",
+                'company_id': "cls.env.company.id",
                 'model_id': "cls.model.id",
             }
 
@@ -274,7 +275,7 @@ class HrPayroll(Controller):
             car_contracts_forced_values = {
                 'name': 'Test Contract',
                 'vehicle_id': "cls.car.id",
-                'company_id': "cls.company.id",
+                'company_id': "cls.env.company.id",
             }
         else:
             brand, brand_name, brand_fields, brand_forced_values = None, None, None, None
@@ -285,6 +286,26 @@ class HrPayroll(Controller):
         # ========
         # Contract
         # ========
+        if 'time_credit' in payslip.contract_id and payslip.contract_id.time_credit:
+            standard_calendar = payslip.contract_id.standard_calendar_id
+            standard_calendar_name = 'standard_calendar'
+            standard_calendar_fields = calendar_fields
+            standard_calendar_forced_values = {
+                'name': 'Test Standard Calendar',
+                'company_id': "cls.env.company.id",
+                'attendance_ids': [(5, 0, 0)],
+            }
+
+            standard_calendar_attendances = standard_calendar.attendance_ids.filtered(lambda a: not a.resource_id)
+            standard_calendar_attendances_name = 'standard_calendar_attendances'
+            standard_calendar_attendances_fields = global_attendances_fields
+            standard_calendar_attendances_forced_values = {
+                'name': 'Attendance',
+                'calendar_id': "cls.standard_calendar.id",
+            }
+        else:
+            standard_calendar, standard_calendar_name, standard_calendar_fields, standard_calendar_forced_values = None, None, None, None
+            standard_calendar_attendances, standard_calendar_attendances_name, standard_calendar_attendances_fields, standard_calendar_attendances_forced_values = None, None, None, None
 
         contract = payslip.contract_id
         contract_name = 'contract'
@@ -295,18 +316,21 @@ class HrPayroll(Controller):
             'public_transport_employee_amount', 'km_home_work', 'others_reimbursed_amount',
             'commission_on_target', 'fuel_card', 'internet', 'representation_fees', 'mobile',
             'has_laptop', 'meal_voucher_amount', 'eco_checks', 'ip', 'ip_wage_rate', 'time_credit',
-            'work_time_rate', 'fiscal_voluntarism', 'fiscal_voluntary_rate', 'structure_type_id',
+            'work_time_rate', 'fiscal_voluntarism', 'fiscal_voluntary_rate',
+            'structure_type_id',
         ]
         contract_forced_values = {
             'name': "Contract For Payslip Test",
             'employee_id': "cls.employee.id",
             'resource_calendar_id': "cls.resource_calendar.id",
-            'company_id': "cls.company.id",
-            'date_generated_from': start, # to avoid generating to many work entries
+            'company_id': "cls.env.company.id",
+            'date_generated_from': start, # to avoid generating too many work entries
             'date_generated_to': start,
         }
         if car:
             contract_forced_values['car_id'] = "cls.car.id"
+        if standard_calendar:
+            contract_forced_values['standard_calendar_id'] = "cls.standard_calendar.id"
 
         # =======
         # PAYSLIP
@@ -317,7 +341,7 @@ class HrPayroll(Controller):
             'name': "Test Payslip",
             'employee_id': "cls.employee.id",
             'contract_id': "cls.contract.id",
-            'company_id': "cls.company.id",
+            'company_id': "cls.env.company.id",
         }
 
         if car:
@@ -350,6 +374,8 @@ class HrPayroll(Controller):
             (model, model_name, model_fields, model_forced_values),
             (car, car_name, car_fields, car_forced_values),
             (car_contracts, car_contracts_name, car_contracts_fields, car_contracts_forced_values),
+            (standard_calendar, standard_calendar_name, standard_calendar_fields, standard_calendar_forced_values),
+            (standard_calendar_attendances, standard_calendar_attendances_name, standard_calendar_attendances_fields, standard_calendar_attendances_forced_values),
             (contract, contract_name, contract_fields, contract_forced_values),
             (payslip, payslip_name, payslip_fields, payslip_forced_values),
             (inputs, inputs_name, inputs_fields, inputs_forced_values),
@@ -386,6 +412,15 @@ class HrPayroll(Controller):
             "\t" * offset + "self.assertEqual(len(self.payslip.input_line_ids), %s)" % (len(payslip.input_line_ids)),
             "\t" * offset + "self.assertEqual(len(self.payslip.line_ids), %s)\n" % (len(payslip.line_ids)),
         ] + [
+            "\t" * offset + "self.assertAlmostEqual(self.payslip._get_worked_days_line_amount('%s'), %s, places=2)" % (
+                wd.code, wd.amount) for wd in payslip.worked_days_line_ids
+        ] + [''] + [
+            "\t" * offset + "self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_days('%s'), %s, places=2)" % (
+                wd.code, wd.number_of_days) for wd in payslip.worked_days_line_ids
+        ] + [''] + [
+            "\t" * offset + "self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_hours('%s'), %s, places=2)" % (
+                wd.code, wd.number_of_hours) for wd in payslip.worked_days_line_ids
+        ] + [''] + [
             "\t" * offset + "self.assertAlmostEqual(self.payslip._get_salary_line_total('%s'), %s, places=2)" % (
                 line.code, line.total) for line in payslip.line_ids
         ]

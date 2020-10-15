@@ -46,5 +46,9 @@
         action="hr_work_entry.hr_work_entry_type_action"
         parent="menu_hr_work_entry_confirguration"
     />
-
+    <menuitem
+        id="menu_resource_calendar_view"
+        action="resource.action_resource_calendar_form"
+        parent="menu_hr_work_entry_confirguration"
+    />
 </odoo>

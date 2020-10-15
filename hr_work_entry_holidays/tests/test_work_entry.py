@@ -79,12 +79,14 @@ class TestWorkeEntryHolidaysWorkEntry(TestWorkEntryHolidaysBase):
         # /!\ this is a week day => it exists an calendar attendance at this time
         start = datetime(2015, 11, 2, 10, 0, 0)
         end = datetime(2015, 11, 2, 17, 0, 0)
+        work_days_data = self.jules_emp._get_work_days_data_batch(start, end)
         leave = self.env['hr.leave'].create({
             'name': '1leave',
             'employee_id': self.richard_emp.id,
             'holiday_status_id': self.leave_type.id,
             'date_from': start,
             'date_to': end,
+            'number_of_days': work_days_data[self.jules_emp.id]['days'],
         })
         leave.action_validate()
 
@@ -182,7 +184,6 @@ class TestWorkeEntryHolidaysWorkEntry(TestWorkEntryHolidaysBase):
             'request_date_to': date(2020, 9, 4),
             'number_of_days': 1,
         })
-        leave._compute_date_from_to()
         leave.action_approve()
         leave.action_validate()
 

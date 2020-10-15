@@ -1,7 +1,8 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields
+
+from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
 from collections import defaultdict
@@ -114,6 +115,42 @@ class Payslip(models.Model):
         if self.contract_id.time_credit:
             return self.contract_id.standard_calendar_id.hours_per_day
         return super()._get_worked_day_lines_hours_per_day()
+
+    def _get_worked_day_lines_values(self, domain=None):
+        self.ensure_one()
+        res = []
+        if self.struct_id.country_id != self.env.ref('base.be'):
+            return super()._get_worked_day_lines_values(domain=domain)
+        # If a belgian payslip has half-day attendances/time off, it the worked days lines should
+        # be separated
+        work_hours = self.contract_id._get_work_hours_split_half(self.date_from, self.date_to, domain=domain)
+        work_hours_ordered = sorted(work_hours.items(), key=lambda x: x[1])
+        for worked_days_data, duration_data in work_hours_ordered:
+            duration_type, work_entry_type_id = worked_days_data
+            number_of_days, number_of_hours = duration_data
+            work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_type_id)
+            attendance_line = {
+                'sequence': work_entry_type.sequence,
+                'work_entry_type_id': work_entry_type_id,
+                'number_of_days': number_of_days,
+                'number_of_hours': number_of_hours,
+            }
+            res.append(attendance_line)
+        # If there is a public holiday less than 30 days after the end of the contract
+        # this public holiday should be taken into account in the worked days lines
+        if self.contract_id.date_end and self.date_from <= self.contract_id.date_end <= self.date_to:
+            public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday')
+            public_leaves = self.contract_id.resource_calendar_id.global_leave_ids.filtered(
+                lambda l: l.work_entry_type_id == public_holiday_type \
+                    and (self.contract_id.date_end - l.date_from.date()).days <= 30)
+            if public_leaves:
+                res.append({
+                    'sequence': public_holiday_type.sequence,
+                    'work_entry_type_id': public_holiday_type.id,
+                    'number_of_days': len(public_leaves),
+                    'number_of_hours': self.contract_id.resource_calendar_id.hours_per_day * len(public_leaves),
+                })
+        return res
 
     def _get_credit_time_lines(self):
         lines_vals = self._get_worked_day_lines(domain=[('is_credit_time', '=', True)], check_out_of_contract=False)
@@ -228,22 +265,26 @@ class Payslip(models.Model):
         return super()._get_paid_amount()
 
     def _get_paid_unpaid_ratio(self):
+        self.ensure_one()
         if self.env.context.get('salary_simulation'):
             return 1
-
-        self.ensure_one()
-        if self.env.context.get('salary_simulation', False):
-            return 1
-        contract = self.contract_id
-        hours_per_day = (self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id).hours_per_day
+        calendar = self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id
+        hours_per_week = calendar.hours_per_week
         mapped_data = {wd.work_entry_type_id.id: wd.number_of_hours for wd in self.worked_days_line_ids}
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids + self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
         unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
-        unpaid_days = unpaid_hours / hours_per_day if hours_per_day else 0
-        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-        paid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in paid_work_entry_types)
-        paid_days = paid_hours / hours_per_day if hours_per_day else 0
-        return paid_days / (paid_days + unpaid_days) if paid_days + unpaid_days else 0
+        # Paid Wage = Wage - Wage * (3 / 13 / 38) * unpaid_hours
+        #           = Wage * (1 - 3 / (13 * 38) * unpaid_hours)
+        return 1 - 3 / (13 * hours_per_week) * unpaid_hours if hours_per_week else 0
+
+    def _is_invalid(self):
+        invalid = super()._is_invalid()
+        if not invalid:
+            country = self.struct_id.country_id
+            lang_employee = self.employee_id.address_home_id.lang
+            if country == self.env.ref('base.be') and lang_employee not in ["fr_BE", "nl_BE", "de_BE"]:
+                return _('This document is a translation. This is not a legal document.')
+        return invalid
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 

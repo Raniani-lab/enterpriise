@@ -77,7 +77,7 @@ class HrContract(models.Model):
         )
         work_data.update({data['work_entry_type_id'][0] if data['work_entry_type_id'] else False: data['hours'] for data in work_entries})
 
-        # Second, found work entry that exceed interval and compute right duration.
+        # Second, find work entry that exceeds interval and compute right duration.
         work_entries = self.env['hr.work.entry'].search(self._get_work_hours_domain(date_from, date_to, domain=domain, inside=False))
 
         for work_entry in work_entries:

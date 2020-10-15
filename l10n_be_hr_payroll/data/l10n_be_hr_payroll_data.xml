@@ -114,7 +114,7 @@
     </record>
 
     <record id="work_entry_type_bank_holiday" model="hr.work.entry.type">
-        <field name="name">Bank Holiday</field>
+        <field name="name">Public Holiday</field>
         <field name="code">LEAVE500</field>
         <field name="is_leave">True</field>
     </record>

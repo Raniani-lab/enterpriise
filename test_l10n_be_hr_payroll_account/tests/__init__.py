@@ -11,3 +11,11 @@ from . import test_examples
 from . import test_credit_time
 from . import test_student
 from . import test_sample
+from . import test_unpaid_time_off
+from . import test_paid_time_off
+from . import test_half_time
+from . import test_low_salary
+from . import test_bank_holidays
+from . import test_end_of_contract
+from . import test_small_unemployment
+from . import test_sick_time_off

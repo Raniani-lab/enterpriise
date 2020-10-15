@@ -5,10 +5,11 @@ from dateutil.rrule import rrule, DAILY
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo.fields import Date
-
+from odoo.tests import tagged
 from odoo.addons.hr_payroll.tests.common import TestPayslipContractBase
 
 
+@tagged('payslip_computation')
 class TestPayslipComputation(TestPayslipContractBase):
 
     @classmethod

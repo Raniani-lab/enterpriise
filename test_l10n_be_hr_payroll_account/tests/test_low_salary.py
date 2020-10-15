@@ -5,9 +5,8 @@ import datetime
 from odoo.tests.common import SavepointCase, tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
-
-@tagged('post_install', '-at_install', 'sample_payslip')
-class TestSamplePayslip(AccountTestInvoicingCommon):
+@tagged('post_install', '-at_install', 'low_salary')
+class TestLowSalary(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
@@ -30,7 +29,7 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
-            'hours_per_week': 38.00000000000001,
+            'hours_per_week': 38.0,
             'full_time_required_hours': 38.0
         }])
 
@@ -198,25 +197,13 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'has_bicycle': False
         }])
 
-        cls.leaves = cls.env['resource.calendar.leaves'].create([{
-            'name': "Absence",
-            'calendar_id': cls.resource_calendar.id,
-            'company_id': cls.env.company.id,
-            'resource_id': cls.employee.resource_id.id,
-            'date_from': datetime.datetime(2020, 9, 2, 6, 0, 0),
-            'date_to': datetime.datetime(2020, 9, 3, 14, 36, 0),
-            'time_type': "leave",
-            'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_sick_leave').id
-        }])
-
         cls.brand = cls.env['fleet.vehicle.model.brand'].create([{
             'name': "Test Brand"
         }])
 
         cls.model = cls.env['fleet.vehicle.model'].create([{
             'name': "Test Model",
-            'brand_id': cls.brand.id,
-            'vehicle_type': "car"
+            'brand_id': cls.brand.id
         }])
 
         cls.car = cls.env['fleet.vehicle'].create([{
@@ -225,7 +212,7 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'driver_id': cls.employee.address_home_id.id,
             'company_id': cls.env.company.id,
             'model_id': cls.model.id,
-            'first_contract_date': datetime.date(2020, 10, 5),
+            'first_contract_date': datetime.date(2020, 10, 8),
             'co2': 88.0,
             'car_value': 38000.0,
             'fuel_type': "diesel",
@@ -236,8 +223,8 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'name': "Test Contract",
             'vehicle_id': cls.car.id,
             'company_id': cls.env.company.id,
-            'start_date': datetime.date(2020, 10, 5),
-            'expiration_date': datetime.date(2021, 10, 5),
+            'start_date': datetime.date(2020, 10, 8),
+            'expiration_date': datetime.date(2021, 10, 8),
             'state': "open",
             'cost_generated': 0.0,
             'cost_frequency': "monthly",
@@ -246,8 +233,8 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'name': "Test Contract",
             'vehicle_id': cls.car.id,
             'company_id': cls.env.company.id,
-            'start_date': datetime.date(2020, 10, 5),
-            'expiration_date': datetime.date(2021, 10, 5),
+            'start_date': datetime.date(2020, 10, 8),
+            'expiration_date': datetime.date(2021, 10, 8),
             'state': "open",
             'cost_generated': 0.0,
             'cost_frequency': "monthly",
@@ -265,10 +252,10 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'structure_type_id': cls.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': datetime.date(2018, 12, 31),
             'date_end': False,
-            'wage': 2650.0,
+            'wage': 1800.0,
             'state': "open",
-            'hourly_wage': 0.0,
             'holidays': 0.0,
+            'hourly_wage': 0.0,
             'transport_mode_car': True,
             'transport_mode_private_car': False,
             'transport_mode_train': False,
@@ -303,28 +290,36 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
             'date_to': datetime.date(2020, 9, 30)
         }])
 
-    def test_sample_payslip(self):
+    def test_low_salary(self):
         work_entries = self.contract._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
         work_entries.action_validate()
         self.payslip._onchange_employee()
         self.payslip.compute_sheet()
 
-        self.assertEqual(len(self.payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(self.payslip.worked_days_line_ids), 1)
         self.assertEqual(len(self.payslip.input_line_ids), 0)
-        self.assertEqual(len(self.payslip.line_ids), 15)
+        self.assertEqual(len(self.payslip.line_ids), 17)
 
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('BASIC'), 2650.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_worked_days_line_amount('WORK100'), 1800.0, places=2)
+
+        self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_days('WORK100'), 22.0, places=2)
+
+        self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_hours('WORK100'), 167.2, places=2)
+
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('BASIC'), 1800.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('SALARY'), 2659.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ONSS'), -347.53, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('SALARY'), 1809.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ONSS'), -236.44, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('EmpBonus.1'), 164.9, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 2452.61, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -516.93, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1878.6, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -252.78, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 54.65, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -23.66, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -21.8, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -23.98, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1890.08, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1656.35, places=2)

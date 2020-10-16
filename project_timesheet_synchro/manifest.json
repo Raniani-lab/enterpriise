@@ -3,7 +3,7 @@
 
   "name": "Awesome Timesheet",
   "description": "Beautiful time tracking extension to get things done.",
-  "version": "1.16",
+  "version": "1.21",
   "icons" :{
       "48" : "project_timesheet_synchro/static/src/img/icon.png"
   },
@@ -19,7 +19,6 @@
       "persistent": false
   },
   "permissions": [
-        "cookies",
         "http://*/",
         "https://*/",
         "storage"

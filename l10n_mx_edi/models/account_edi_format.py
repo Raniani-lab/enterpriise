@@ -865,6 +865,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
                 }
                 continue
+            cfdi_str = res['cfdi_str']
 
             # == Call the web-service ==
             if test_mode:
@@ -877,6 +878,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if credentials.get('errors'):
                     edi_result[invoice] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
+                        'attachment': self._create_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
@@ -884,6 +886,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if res.get('errors'):
                     edi_result[invoice] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
+                        'attachment': self._create_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
@@ -903,16 +906,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 })
 
             # == Create the attachment ==
-            cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
-            cfdi_attachment = self.env['ir.attachment'].create({
-                'name': cfdi_filename,
-                'res_id': invoice.id,
-                'res_model': invoice._name,
-                'type': 'binary',
-                'datas': res['cfdi_signed'],
-                'mimetype': 'application/xml',
-                'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
-            })
+            cfdi_attachment = self._create_cfdi_attachment(invoice, res['cfdi_signed'])
             edi_result[invoice] = {'attachment': cfdi_attachment}
 
             # == Chatter ==
@@ -921,6 +915,18 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 attachment_ids=cfdi_attachment.ids,
             )
         return edi_result
+
+    def _create_cfdi_attachment(self, invoice, data):
+        cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
+        return self.env['ir.attachment'].create({
+            'name': cfdi_filename,
+            'res_id': invoice.id,
+            'res_model': invoice._name,
+            'type': 'binary',
+            'datas': data,
+            'mimetype': 'application/xml',
+            'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
+        })
 
     def _cancel_invoice_edi(self, invoices, test_mode=False):
         # OVERRIDE

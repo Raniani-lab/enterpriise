@@ -492,10 +492,11 @@ class AccountMove(models.Model):
                 else:
                     taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
                     if taxes_records:
-                        # prioritize taxes that are not included in the price
-                        taxes_records_not_included = taxes_records.filtered(lambda r: not r.price_include)
-                        if taxes_records_not_included:
-                            taxes_record = taxes_records_not_included[0]
+                        # prioritize taxes based on db setting
+                        line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')
+                        taxes_records_setting_based = taxes_records.filtered(lambda r: not r.price_include if line_tax_type == 'tax_excluded' else r.price_include)
+                        if taxes_records_setting_based:
+                            taxes_record = taxes_records_setting_based[0]
                         else:
                             taxes_record = taxes_records[0]
                         taxes_found |= taxes_record
@@ -717,6 +718,8 @@ class AccountMove(models.Model):
                         line.quantity = line_val['quantity']
                         line.tax_ids.clear()
                         for taxes_record in line_val['tax_ids']:
+                            if taxes_record.price_include:
+                                line.price_unit *= 1 + taxes_record.amount/100
                             line.tax_ids.add(taxes_record)
                         if not line.account_id:
                             raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))

@@ -26,7 +26,7 @@
                         </group>
                         <group>
                             <field name="manager_id"/>
-                            <field name="deadline" widget="remaining_days"/>
+                            <field name="deadline"/>
                         </group>
                     </group>
                 </sheet>

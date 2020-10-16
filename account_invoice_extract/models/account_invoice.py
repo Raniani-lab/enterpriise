@@ -691,9 +691,10 @@ class AccountMove(models.Model):
                                 move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
-            if date_ocr and (not move_form.invoice_date or move_form.invoice_date == str(self.create_date.date())):
+            context_create_date = str(fields.Date.context_today(self, self.create_date))
+            if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
                 move_form.invoice_date = date_ocr
-            if due_date_ocr and (not due_date_move_form or due_date_move_form == str(self.create_date.date())):
+            if due_date_ocr and (not due_date_move_form or due_date_move_form == context_create_date):
                 move_form.invoice_date_due = due_date_ocr
             if not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr

@@ -10,7 +10,9 @@ from datetime import datetime
 
 def currency_normalisation(sql_result, sum_name):
     result = 0
-    currencies = request.env['res.currency'].browse([row['currency_id'] for row in sql_result if row.get('currency_id')])
+    currencies = request.env['res.currency'].browse(
+        [row['currency_id'] for row in sql_result if row.get('currency_id')]
+        + [row['company_currency_id'] for row in sql_result if row.get('company_currency_id')])
     currencies_mapped = {c.id: c for c in currencies}
     for row in sql_result:
         if not row.get('currency_id'):

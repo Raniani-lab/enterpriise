@@ -48,7 +48,7 @@ class AccountDebitNote(models.TransientModel):
         default_values['l10n_latam_document_type_id'] = reverse_move_latam_doc_type.id
         default_values['l10n_cl_reference_ids'] = [[0, 0, {
             'move_id': move.id,
-            'origin_doc_number': int(move.l10n_latam_document_number),
+            'origin_doc_number': move.l10n_latam_document_number,
             'l10n_cl_reference_doc_type_selection': move.l10n_latam_document_type_id.code,
             'reference_doc_code': self.l10n_cl_edi_reference_doc_code,
             'reason': self.reason,

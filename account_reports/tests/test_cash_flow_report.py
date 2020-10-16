@@ -2,13 +2,15 @@
 from .common import TestAccountReportsCommon
 
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestCashFlowReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         current_assets_type = cls.env.ref('account.data_account_type_current_assets')
 

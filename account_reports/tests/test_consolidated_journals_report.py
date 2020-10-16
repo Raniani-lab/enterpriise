@@ -2,13 +2,15 @@
 from .common import TestAccountReportsCommon
 
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestConsolidatedJournalsReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         counterpart_account = cls.company_data['default_account_revenue']
 

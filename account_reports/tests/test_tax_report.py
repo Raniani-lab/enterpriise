@@ -3,14 +3,15 @@ from unittest.mock import patch
 
 from .common import TestAccountReportsCommon
 from odoo import fields
-from odoo.tests.common import Form
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestTaxReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.fiscal_country = cls.env['res.country'].create({
             'name': "L'Île de la Mouche",

@@ -4,13 +4,15 @@ from unittest.mock import patch
 from .common import TestAccountReportsCommon
 
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestPartnerLedgerReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.partner_category_a = cls.env['res.partner.category'].create({'name': 'partner_categ_a'})
         cls.partner_category_b = cls.env['res.partner.category'].create({'name': 'partner_categ_b'})

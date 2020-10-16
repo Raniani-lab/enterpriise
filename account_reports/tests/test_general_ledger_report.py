@@ -4,13 +4,15 @@ from unittest.mock import patch
 from .common import TestAccountReportsCommon
 
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestGeneralLedgerReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         # Archive 'default_journal_bank' to ensure archived entries are not filtered out.
         cls.company_data_2['default_journal_bank'].active = False

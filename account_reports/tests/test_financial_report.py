@@ -2,13 +2,15 @@
 from .common import TestAccountReportsCommon
 
 from odoo import fields
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestFinancialReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         # ==== Partners ====
 

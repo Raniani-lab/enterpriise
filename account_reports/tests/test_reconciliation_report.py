@@ -2,12 +2,15 @@
 from freezegun import freeze_time
 
 from .common import TestAccountReportsCommon
+from odoo.tests import tagged
 
+
+@tagged('post_install', '-at_install')
 class TestReconciliationReport(TestAccountReportsCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.currency_data_2 = cls.setup_multi_currency_data({
             'name': 'Dark Chocolate Coin',

@@ -83,10 +83,10 @@
                         </cfdi:Concepto>
                     </t>
                 </cfdi:Conceptos>
-                <t t-if="total_tax_details_transferred or total_tax_details_withholding">
+                <t t-if="tax_details_transferred or tax_details_withholding">
                     <cfdi:Impuestos
-                        t-att-TotalImpuestosTrasladados="format_float(total_tax_details_transferred, currency_precision) if total_tax_details_transferred else None"
-                        t-att-TotalImpuestosRetenidos="format_float(-total_tax_details_withholding, currency_precision) if total_tax_details_withholding else None">
+                        t-att-TotalImpuestosTrasladados="format_float(total_tax_details_transferred, currency_precision) if tax_details_transferred else None"
+                        t-att-TotalImpuestosRetenidos="format_float(-total_tax_details_withholding, currency_precision) if tax_details_withholding else None">
                         <t t-if="tax_details_withholding">
                             <cfdi:Retenciones>
                                 <t t-foreach="tax_details_withholding" t-as="tax_res">

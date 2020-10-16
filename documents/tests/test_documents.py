@@ -398,3 +398,40 @@ class TestCaseDocuments(TransactionCase):
         self.assertEqual(document.mimetype, 'text/plain', "HTML mimetype should be forced to text")
         document.with_user(self.doc_user.id).write({'datas': TEXT, 'mimetype': 'application/xhtml+xml'})
         self.assertEqual(document.mimetype, 'text/plain', "XHTML mimetype should be forced to text")
+
+    def test_create_from_message(self):
+        """
+        When we create the document from a message, we need to apply the defaults set on the share.
+        """
+        attachment = self.env['ir.attachment'].create({
+            'datas': GIF,
+            'name': 'attachmentGif.gif',
+            'res_model': 'documents.document',
+            'res_id': 0,
+        })
+        partner = self.env['res.partner'].create({
+            'name': 'Luke Skywalker'
+        })
+        share = self.env['documents.share'].create({
+            'owner_id': self.doc_user.id,
+            'partner_id': partner.id,
+            'tag_ids': [(6, 0, [self.tag_b.id])],
+            'folder_id': self.folder_a.id,
+        })
+        message = self.env['documents.document'].message_new({
+            'subject': 'test message'
+        }, {
+            # this create_share_id value, is normally passed from the alias default created by the share
+            'create_share_id': share.id,
+            'folder_id': self.folder_a.id,
+        })
+        message._message_post_after_hook({ }, {
+            'attachment_ids': [(4, attachment.id)]
+        })
+        self.assertEqual(message.active, False, 'Document created for the message should be inactive')
+        self.assertNotEqual(attachment.res_id, 0, 'Should link document to attachment')
+        attachment_document = self.env['documents.document'].browse(attachment.res_id)
+        self.assertNotEqual(attachment_document, None, 'Should have created document')
+        self.assertEqual(attachment_document.owner_id.id, self.doc_user.id, 'Should assign owner from share')
+        self.assertEqual(attachment_document.partner_id.id, partner.id, 'Should assign partner from share')
+        self.assertEqual(attachment_document.tag_ids.ids, [self.tag_b.id], 'Should assign tags from share')

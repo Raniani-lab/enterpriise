@@ -218,9 +218,9 @@ class Document(models.Model):
     @api.model
     def message_new(self, msg_dict, custom_values=None):
         """
-        creates a new attachment from any email sent to the alias
-        and adds the values defined in the share link upload settings
-        to the custom values.
+        creates a new attachment from any email sent to the alias.
+        The values defined in the share link upload settings are included
+        in the custom values (via the alias defaults, synchronized on update)
         """
         subject = msg_dict.get('subject', '')
         if custom_values is None:

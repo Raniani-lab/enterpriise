@@ -3,6 +3,8 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 from lxml import builder
 from lxml import etree
+from requests.adapters import HTTPAdapter
+from urllib3.util.ssl_ import create_urllib3_context, DEFAULT_CIPHERS
 from zeep import transports
 import time
 import datetime
@@ -17,8 +19,24 @@ try:
 except ImportError:
     _logger.warning('OpenSSL library not found. If you plan to use l10n_ar_edi, please install the library from https://pypi.python.org/pypi/pyOpenSSL')
 
+AFIP_CIPHERS = DEFAULT_CIPHERS + ":!DH"
+
+
+class L10nArHTTPAdapter(HTTPAdapter):
+    """ An adapter to block DH ciphers which may not work for *.afip.gov.ar """
+
+    def init_poolmanager(self, *args, **kwargs):
+        context = create_urllib3_context(ciphers=AFIP_CIPHERS)
+        kwargs["ssl_context"] = context
+        return super().init_poolmanager(*args, **kwargs)
+
 
 class ARTransport(transports.Transport):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.session.mount('https://', L10nArHTTPAdapter()) # block DH ciphers for AFIP servers
+
     def post(self, address, message, headers):
         """ We overwrite this method only to be able to save the xml request and response.
         This will only affect to the connections that are made n this field and it do not extend the original

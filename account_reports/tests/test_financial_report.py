@@ -30,6 +30,12 @@ class TestFinancialReport(TestAccountReportsCommon):
             (cls.env.ref('account.data_unaffected_earnings'),               {}),
         ]
 
+        unaffected_earnings_account = cls.env['account.account'].search([
+                                        ('company_id', '=', cls.company_data['company'].id),
+                                        ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id)])
+        if unaffected_earnings_account:
+            unaffected_earnings_account.unlink()
+
         accounts = cls.env['account.account'].create([{
             **data[1],
             'name': 'account%s' % i,
@@ -37,6 +43,12 @@ class TestFinancialReport(TestAccountReportsCommon):
             'user_type_id': data[0].id,
             'company_id': cls.company_data['company'].id,
         } for i, data in enumerate(account_type_data)])
+
+        unaffected_earnings_account = cls.env['account.account'].search([
+                                        ('company_id', '=', cls.company_data_2['company'].id),
+                                        ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id)])
+        if unaffected_earnings_account:
+            unaffected_earnings_account.unlink()
 
         accounts_2 = cls.env['account.account'].create([{
             **data[1],

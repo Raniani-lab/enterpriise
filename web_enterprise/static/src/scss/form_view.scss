@@ -158,12 +158,12 @@
                         .note-editor.panel {
                             border: none;
                         }
-
                         .note-toolbar.panel-heading {
                             @include o-form-sheet-inner-left-padding;
                             @include o-form-sheet-inner-right-padding;
                             border-top: none;
-                            padding-top: $o-horizontal-padding*0.3;
+                            padding-top: 0;
+                            background: white;
                         }
 
                         .note-editing-area, .o_readonly {

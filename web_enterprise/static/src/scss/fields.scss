@@ -42,6 +42,52 @@
             }
         }
     }
+
+    // HTML fields
+    &.oe_form_field_html.oe_form_field_html { // Make rules more important
+        .note-editor {
+            border-color: gray('400');
+        }
+        .note-toolbar.panel-heading, .popover-body {
+            border-color: gray('400');
+            background: gray('100');
+
+            .btn-secondary {
+                background: transparent;
+                border-color: transparent;
+                @include o-hover-text-color($body-color, $link-color);
+            }
+            .show .btn-secondary, .btn-secondary.active, .btn-secondary:focus {
+                background: white !important;
+                color: $body-color !important;
+                border-color: gray('400');
+            }
+            .dropdown-menu {
+                margin-top: 0;
+                border-top: none;
+                border-color: gray('400');
+                background-color: white;
+                box-shadow: none;
+
+                a {
+                    background-color: transparent;
+                    color: $body-color;
+
+                    &:hover {
+                        background-color: gray('200');
+                    }
+                }
+                &.show .btn-secondary, .btn-secondary.active, .btn-secondary:focus {
+                    border: none;
+                }
+            }
+            .btn-group.show::after {
+                @include o-position-absolute(auto, 1px, -1px, 1px);
+                height: 1px;
+                background-color: white;
+            }
+        }
+    }
 }
 
 .o_field_many2one {

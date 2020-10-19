@@ -50,7 +50,7 @@ class IntrastatReport(models.AbstractModel):
         out_vals = []
         if incl_dispatches:
             query, params = self._prepare_query(
-                date_from, date_to, journal_ids=journal_ids, invoice_types=('out_invoice', 'in_refund'))
+                date_from, date_to, journal_ids=journal_ids, invoice_types=('out_invoice', 'in_refund'), with_vat=with_vat)
             self._cr.execute(query, params)
             query_res = self._cr.dictfetchall()
             out_vals = self._fill_missing_values(query_res, cache)

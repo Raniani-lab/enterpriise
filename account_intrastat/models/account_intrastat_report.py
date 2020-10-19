@@ -177,6 +177,7 @@ class IntrastatReport(models.AbstractModel):
         where = '''
                 inv.state = 'posted'
                 AND inv_line.display_type IS NULL
+                AND NOT inv_line.quantity = 0
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE

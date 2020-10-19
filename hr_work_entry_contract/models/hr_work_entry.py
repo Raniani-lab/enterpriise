@@ -40,7 +40,8 @@ class HrWorkEntry(models.Model):
     def _compute_duration(self):
         super(HrWorkEntry, self)._compute_duration()
 
-    def _inverse_duration(self):
+    @api.depends('date_start', 'duration')
+    def _compute_date_stop(self):
         for work_entry in self:
             if work_entry._get_duration_is_valid():
                 calendar = work_entry.contract_id.resource_calendar_id
@@ -48,7 +49,7 @@ class HrWorkEntry(models.Model):
                     continue
                 work_entry.date_stop = calendar.plan_hours(self.duration, self.date_start, compute_leaves=True)
                 continue
-            super(HrWorkEntry, work_entry)._inverse_duration()
+            super(HrWorkEntry, work_entry)._compute_date_stop()
 
     def _get_duration(self, date_start, date_stop):
         if not date_start or not date_stop:

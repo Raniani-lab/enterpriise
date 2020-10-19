@@ -19,7 +19,7 @@
                             <label for="activity_date_deadline_range"/>
                             <div class="o_row">
                                 <field name="activity_date_deadline_range"/>
-                                <field name="activity_date_deadline_range_type"/>
+                                <field name="activity_date_deadline_range_type" required="1"/>
                             </div>
                             <field name="activity_type_id" groups="base.group_no_one"/>
                             <field name="res_model" readonly="1" groups="base.group_no_one"/>

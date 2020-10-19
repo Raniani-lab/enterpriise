@@ -571,8 +571,9 @@ class SaleSubscription(models.Model):
         end_date = fields.Date.from_string(recurring_next_date) - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
         addr = self.partner_id.address_get(['delivery', 'invoice'])
         sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
-        partner_id = sale_order.partner_invoice_id.id if sale_order else self.partner_invoice_id.id or addr['invoice']
-        partner_shipping_id = sale_order.partner_shipping_id.id if sale_order else self.partner_shipping_id.id or addr['delivery']
+        use_sale_order = sale_order and sale_order.partner_id == self.partner_id
+        partner_id = sale_order.partner_invoice_id.id if use_sale_order else self.partner_invoice_id.id or addr['invoice']
+        partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
 
         res = {
             'move_type': 'out_invoice',

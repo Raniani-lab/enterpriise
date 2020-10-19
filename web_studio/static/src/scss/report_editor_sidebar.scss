@@ -234,8 +234,11 @@
                             margin: 0;
                         }
                     }
-                    .o_web_studio_text .btn-sm {
-                        padding: 3px 8px;
+                    .o_web_studio_text {
+                        position: relative;
+                        .btn-sm {
+                            padding: 3px 8px;
+                        }
                     }
                     .o_field_selector_value {
                         background-color: $o-web-studio-bg-dark;

@@ -1123,6 +1123,7 @@ var Text = AbstractEditComponent.extend({
     },
     _startWysiwygEditor: async function () {
         this.wysiwygOptions = {
+            enableResizer: true,
             toolbarLayout: [
                 [
                     'BoldButton',
@@ -1156,7 +1157,8 @@ var Text = AbstractEditComponent.extend({
                 <div class="o_debug_zone">
                     <t t-zone="debug"/>
                 </div>
-            </div>`,
+            </div>
+            <t t-zone="resizer"/>`,
         };
 
         this.wysiwyg = await wysiwygLoader.createWysiwyg(this, this.wysiwygOptions);

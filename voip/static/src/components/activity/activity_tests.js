@@ -60,7 +60,7 @@ QUnit.test('activity with phone number rendering', async function (assert) {
     document.addEventListener('voip_activity_call', onVoipActivityCall);
     const activity = this.env.models['mail.activity'].create({
         assignee: [['insert', {
-            id: this.env.session.uid,
+            id: this.env.messaging.currentPartner.id,
         }]],
         canWrite: true,
         id: 100,

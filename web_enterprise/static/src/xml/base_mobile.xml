@@ -97,4 +97,10 @@
     </t>
 </t>
 
+<t t-inherit="web.ActionMenus" t-inherit-mode="extension" owl="1">
+    <xpath expr="//DropdownMenu[@items='printItems']" position="attributes">
+        <attribute name="closeOnSelected">env.device.isMobile</attribute>
+    </xpath>
+</t>
+
 </templates>

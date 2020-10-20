@@ -782,18 +782,25 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_account_total_line(self, options, account, amount_currency, debit, credit, balance):
-        columns = [
+        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
+
+        columns = []
+        if self.user_has_groups('base.group_multi_currency') and has_foreign_currency:
+            columns.append({'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
+
+        columns += [
             {'name': self.format_value(debit), 'class': 'number'},
             {'name': self.format_value(credit), 'class': 'number'},
             {'name': self.format_value(balance), 'class': 'number'},
         ]
+
         return {
             'id': 'total_%s' % account.id,
             'class': 'o_account_reports_domain_total',
             'parent_id': 'account_%s' % account.id,
             'name': _('Total %s', account["display_name"]),
             'columns': columns,
-            'colspan': self.user_has_groups('base.group_multi_currency') and 5 or 4,
+            'colspan': 4,
         }
 
     @api.model

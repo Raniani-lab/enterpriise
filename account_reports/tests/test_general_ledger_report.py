@@ -193,6 +193,99 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ],
             )
 
+    def test_general_ledger_foreign_currency_account(self):
+        ''' Ensure the total in foreign currency of an account is displayed only if all journal items are sharing the
+        same currency.
+        '''
+        self.env.user.groups_id |= self.env.ref('base.group_multi_currency')
+
+        foreign_curr_account = self.env['account.account'].create({
+            'name': "foreign_curr_account",
+            'code': "test",
+            'user_type_id': self.env.ref('account.data_account_type_current_liabilities').id,
+            'currency_id': self.currency_data['currency'].id,
+            'company_id': self.company_data['company'].id,
+        })
+
+        move_2016 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'line_ids': [
+                (0, 0, {
+                    'name': 'curr_1',
+                    'debit': 100.0,
+                    'credit': 0.0,
+                    'amount_currency': 100.0,
+                    'currency_id': self.company_data['currency'].id,
+                    'account_id': self.company_data['default_account_receivable'].id,
+                }),
+                (0, 0, {
+                    'name': 'curr_2',
+                    'debit': 0.0,
+                    'credit': 100.0,
+                    'amount_currency': -300.0,
+                    'currency_id': self.currency_data['currency'].id,
+                    'account_id': foreign_curr_account.id,
+                }),
+            ],
+        })
+        move_2016.action_post()
+
+        move_2017 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2017-01-01',
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'line_ids': [
+                (0, 0, {
+                    'name': 'curr_1',
+                    'debit': 1000.0,
+                    'credit': 0.0,
+                    'amount_currency': 1000.0,
+                    'currency_id': self.company_data['currency'].id,
+                    'account_id': self.company_data['default_account_receivable'].id,
+                }),
+                (0, 0, {
+                    'name': 'curr_2',
+                    'debit': 0.0,
+                    'credit': 1000.0,
+                    'amount_currency': -2000.0,
+                    'currency_id': self.currency_data['currency'].id,
+                    'account_id': foreign_curr_account.id,
+                }),
+            ],
+        })
+        move_2017.action_post()
+
+        # Init options.
+        report = self.env['account.general.ledger']
+        line_id = 'account_%s' % foreign_curr_account.id
+        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    Amount_currency Debit           Credit          Balance
+            [   0,                                      4,              5,              6,              7],
+            [
+                ('121000 Account Receivable',           '',             2100.0,         0.0,            2100.0),
+                ('211000 Account Payable',              '',             100.0,          0.0,            100.0),
+                ('211000 Account Payable',              '',             50.0,           0.0,            50.0),
+                ('400000 Product Sales',                '',             20000.0,        0.0,            20000.0),
+                ('400000 Product Sales',                '',             0.0,            200.0,          -200.0),
+                ('600000 Expenses',                     '',             0.0,            21000.0,        -21000.0),
+                ('600000 Expenses',                     '',             200.0,          0.0,            200.0),
+                ('999999 Undistributed Profits/Losses', '',             200.0,          300.0,          -100.0),
+                ('999999 Undistributed Profits/Losses', '',             0.0,            50.0,           -50.0),
+                ('test foreign_curr_account',           -2300.0,        0.0,            1100.0,         -1100.0),
+                ('Initial Balance',                     -300.0,         0.0,            100.0,          -100.0),
+                ('INV/2017/01/0002',                    -2000.0,        '',             1000.0,         -1100.0),
+                ('Total test foreign_curr_account',     -2300.0,        0.0,            1100.0,         -1100.0),
+                ('Total',                               '',             22650.0,        22650.0,        0.0),
+            ],
+            currency_map={4: {'currency': self.currency_data['currency']}},
+        )
+
     # -------------------------------------------------------------------------
     # TESTS: Trial Balance
     # -------------------------------------------------------------------------

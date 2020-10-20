@@ -186,10 +186,12 @@ class ReportAccountAgedPartner(models.AbstractModel):
         ]
 
     def _show_line(self, report_dict, value_dict, current, options):
-        current = dict(current)
         # Don't display an aml report line with all zero amounts.
-        all_zero = all(value_dict[f] == 0 for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5'])
-        return super()._show_line(report_dict, value_dict, current, options) and not all_zero or 'id' not in current
+        all_zero = all(
+            self.env.company.currency_id.is_zero(value_dict[f])
+            for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5']
+        )
+        return super()._show_line(report_dict, value_dict, current, options) and not all_zero
 
     def _format_partner_id_line(self, res, value_dict, options):
         res['name'] = value_dict['partner_name'][:128] if value_dict['partner_name'] else _('Unknown Partner')

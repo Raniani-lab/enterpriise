@@ -42,6 +42,10 @@ odoo.define('sign_widgets_tour', function (require) {
                 run: 'click',
             },
             {
+                content: "Editor loaded",
+                trigger: '.note-editable',
+            },
+            {
                 content: "Click on widget sign",
                 trigger: '.o_signature:first',
                 run: 'click',

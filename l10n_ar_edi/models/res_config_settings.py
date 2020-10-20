@@ -25,6 +25,8 @@ class ResConfigSettings(models.TransientModel):
             raise UserError(_('The company country must be defined before this action'))
         if not self.company_id.partner_id.l10n_ar_vat:
             raise UserError(_('The company CUIT must be defined before this action'))
+        if not self.company_id.l10n_ar_afip_ws_key:
+            self.company_id._generate_afip_private_key()
         return {'type': 'ir.actions.act_url', 'url': '/l10n_ar_edi/download_csr/' + str(self.company_id.id), 'target': 'new'}
 
     def l10n_ar_connection_test(self):

@@ -92,9 +92,7 @@ QUnit.module('Studio', {
     });
 
     QUnit.test('edit menu dialog', async function(assert) {
-        assert.expect(22);
-
-        var $target = $('#qunit-fixture');
+        assert.expect(23);
 
         const dialog = new EditMenu.Dialog(null, this.menu_data, 2);
         dialog.open();
@@ -107,6 +105,15 @@ QUnit.module('Studio', {
             archs: this.archs,
             mockRPC: function (route, args) {
                 if (route === "/web/dataset/call_kw/ir.ui.menu/customize") {
+                    if (customizeCalls === 0) {
+                        assert.deepEqual(args.kwargs, {
+                            to_delete: [],
+                            to_move: {
+                                2: { sequence: 1 },
+                                21: { parent_id: 2, sequence: 0 },
+                            },
+                        });
+                    }
                     customizeCalls++;
                     return Promise.reject();
                 }

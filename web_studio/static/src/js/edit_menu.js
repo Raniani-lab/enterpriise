@@ -148,7 +148,7 @@ var EditMenuDialog = Dialog.extend({
         var menu_id = $menu.data('menu-id');
 
         this.to_move[menu_id] = {
-            parent_menu_id: $menu.parents('[data-menu-id]').data('menu-id') || this.current_primary_menu,
+            parent_id: $menu.parents('[data-menu-id]:first').data('menu-id') || this.current_primary_menu,
             sequence: $menu.index(),
         };
 

@@ -14,4 +14,4 @@ class ResConfigSettings(models.TransientModel):
     appraisal_confirm_employee_mail_template = fields.Many2one('mail.template', related='company_id.appraisal_confirm_employee_mail_template', readonly=False)
     appraisal_confirm_manager_mail_template = fields.Many2one('mail.template', related='company_id.appraisal_confirm_manager_mail_template', readonly=False)
 
-    module_hr_appraisal_survey = fields.Boolean(String="360 Feedback")
+    module_hr_appraisal_survey = fields.Boolean(string="360 Feedback")

@@ -35,6 +35,7 @@
         'views/hr_payslip_template.xml',
         'views/hr_rule_parameter_views.xml',
         'views/hr_payroll_report_views.xml',
+        'views/hr_work_entry_report_views.xml',
         'views/hr_payroll_menu.xml',
     ],
     'demo': ['data/hr_payroll_demo.xml'],

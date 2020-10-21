@@ -72,6 +72,12 @@
         action="payroll_report_action"
         parent="menu_hr_payroll_report"/>
 
+    <menuitem
+        id="menu_hr_work_entry_report"
+        name="Work Entry Analysis"
+        action="hr_work_entry_report_action"
+        parent="menu_hr_payroll_report"/>
+
     <!-- **** Configuration **** -->
 
     <menuitem

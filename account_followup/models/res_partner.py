@@ -200,7 +200,7 @@ class ResPartner(models.Model):
                 LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
                 LEFT OUTER JOIN account_followup_followup_line next_ful ON next_ful.id = (
                     SELECT next_ful.id FROM account_followup_followup_line next_ful
-                    WHERE next_ful.delay > COALESCE(ful.delay, 0)
+                    WHERE next_ful.delay > COALESCE(ful.delay, -999)
                       AND COALESCE(aml.date_maturity, aml.date) + next_ful.delay <= %(current_date)s
                       AND next_ful.company_id = %(company_id)s
                     ORDER BY next_ful.delay ASC
@@ -217,8 +217,8 @@ class ResPartner(models.Model):
                 LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
                 WHERE aml.partner_id = partner.id
                   AND aml.balance > 0
-                  AND COALESCE(ful.delay, 0) < current_followup_level.delay
-                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, 0) <= %(current_date)s
+                  AND COALESCE(ful.delay, -999) < current_followup_level.delay
+                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, -999) <= %(current_date)s
                 LIMIT 1
             )
             LEFT OUTER JOIN account_move_line exceeded_unreconciled_aml ON exceeded_unreconciled_aml.id = (

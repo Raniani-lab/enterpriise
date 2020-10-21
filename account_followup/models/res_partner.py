@@ -228,7 +228,9 @@ class ResPartner(models.Model):
                   AND COALESCE(aml.date_maturity, aml.date) <= %(current_date)s
                 LIMIT 1
             )
-            LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id) AND prop_date.name = 'payment_next_action_date'
+            LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id)
+                                                 AND prop_date.name = 'payment_next_action_date'
+                                                 AND prop_date.company_id = %(company_id)s
             WHERE partner.id in (SELECT DISTINCT partner_id FROM unreconciled_aml)
         """.format(
             where="" if all_partners else "AND aml.partner_id in %(partner_ids)s",

@@ -574,7 +574,9 @@ class SaleSubscription(models.Model):
         use_sale_order = sale_order and sale_order.partner_id == self.partner_id
         partner_id = sale_order.partner_invoice_id.id if use_sale_order else self.partner_invoice_id.id or addr['invoice']
         partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
-
+        narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
+        if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.company_id.invoice_terms:
+            narration += '\n' + self.company_id.invoice_terms
         res = {
             'move_type': 'out_invoice',
             'partner_id': partner_id,
@@ -584,7 +586,7 @@ class SaleSubscription(models.Model):
             'invoice_origin': self.code,
             'fiscal_position_id': fpos.id,
             'invoice_payment_term_id': self.payment_term_id.id,
-            'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
+            'narration': narration,
             'invoice_user_id': self.user_id.id,
             'partner_bank_id': company.partner_id.bank_ids.filtered(lambda b: not b.company_id or b.company_id == company)[:1].id,
         }

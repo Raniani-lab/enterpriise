@@ -1,6 +1,7 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 import calendar
+import re
 
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
@@ -67,7 +68,8 @@ class AccountGenericTaxReport(models.AbstractModel):
                         'issued_by': issued_by,
                         'vat_no': complete_vat,
                         'only_vat': vat_no,
-                        'cmpny_name': company.name,
+                        # Company name can contain only latin characters
+                        'cmpny_name': re.sub('[^-A-Za-z0-9/?:().,\'+ ]', ' ', company.name),
                         'address': "%s %s" % (address.street or "", address.street2 or ""),
                         'post_code': address.zip or "",
                         'city': address.city or "",

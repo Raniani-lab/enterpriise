@@ -35,7 +35,7 @@ tour.register('timesheet_tour', {
     content: _t('Launch the <b>timer</b> for this project by hitting the <b>[a] key</b>. You can easily switch from one project to another using those keys. <i>Tip: you can also directly add 15 minutes to this project by hitting the <b>shift + [A] keys</b>.</i>'),
     position: 'right',
 }, {
-    trigger: '.o_grid_input',
+    trigger: 'td:not(.o_grid_unavailable)',
     content: _t('Set the number of hours you spent on this project (e.g. 1:30 or 1.5). <i>Tip: use the tab keys to easily navigate from one cell to another.</i>'),
     position: 'bottom',
     consumeEvent: 'change',

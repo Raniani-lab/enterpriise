@@ -127,6 +127,7 @@ class FedexRequest():
 
     def shipment_request(self, dropoff_type, service_type, packaging_type, overall_weight_unit, saturday_delivery):
         self.RequestedShipment = self.factory.RequestedShipment()
+        self.RequestedShipment.SpecialServicesRequested = self.factory.ShipmentSpecialServicesRequested()
         self.RequestedShipment.ShipTimestamp = datetime.now()
         self.RequestedShipment.DropoffType = dropoff_type
         self.RequestedShipment.ServiceType = service_type
@@ -144,9 +145,7 @@ class FedexRequest():
         if saturday_delivery:
             timestamp_day = self.RequestedShipment.ShipTimestamp.strftime("%A")
             if (service_type == 'FEDEX_2_DAY' and timestamp_day == 'Thursday') or (service_type in ['PRIORITY_OVERNIGHT', 'FIRST_OVERNIGHT', 'INTERNATIONAL_PRIORITY'] and timestamp_day == 'Friday'):
-                SpecialServiceTypes = self.factory.ShipmentSpecialServiceType('SATURDAY_DELIVERY')
-                self.RequestedShipment.SpecialServicesRequested = self.factory.PackageSpecialServicesRequested()
-                self.RequestedShipment.SpecialServicesRequested.SpecialServiceTypes = SpecialServiceTypes
+                self.RequestedShipment.SpecialServicesRequested.SpecialServiceTypes.append('SATURDAY_DELIVERY')
 
     def set_currency(self, currency):
         self.RequestedShipment.PreferredCurrency = currency
@@ -358,8 +357,6 @@ class FedexRequest():
         self.listCommodities.append(commodity)
 
     def return_label(self, tracking_number, origin_date):
-        shipment_special_services = self.factory.ShipmentSpecialServicesRequested()
-        shipment_special_services.SpecialServiceTypes = ["RETURN_SHIPMENT"]
         return_details = self.factory.ReturnShipmentDetail()
         return_details.ReturnType = "PRINT_RETURN_LABEL"
         if tracking_number and origin_date:
@@ -367,8 +364,8 @@ class FedexRequest():
             return_association.TrackingNumber = tracking_number
             return_association.ShipDate = origin_date
             return_details.ReturnAssociation = return_association
-        shipment_special_services.ReturnShipmentDetail = return_details
-        self.RequestedShipment.SpecialServicesRequested = shipment_special_services
+        self.RequestedShipment.SpecialServicesRequested.SpecialServiceTypes.append("RETURN_SHIPMENT")
+        self.RequestedShipment.SpecialServicesRequested.ReturnShipmentDetail = return_details
         if self.hasCommodities:
             bla = self.factory.CustomsOptionDetail()
             bla.Type = "FAULTY_ITEM"

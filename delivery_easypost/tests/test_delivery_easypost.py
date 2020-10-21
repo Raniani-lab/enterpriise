@@ -34,6 +34,13 @@ class TestDeliveryEasypost(TransactionCase):
                              'city': 'Auderghem-Ouderghem',
                              'street': 'Avenue Edmond Van Nieuwenhuyse',
                              'zip': '1160'})
+        # configure rounding, so that we can enter an extra-light product
+        conf = self.env['ir.config_parameter']
+        conf.set_param('product.weight_in_lbs', '1')
+        precision = self.env.ref('product.decimal_stock_weight')
+        precision.digits = 4
+        self.uom_lbs = self.env.ref('uom.product_uom_lb')
+        self.uom_lbs.rounding = 0.0001
         self.server = self.env['product.product'].create({
             'name': 'server',
             'type': 'consu',
@@ -44,6 +51,12 @@ class TestDeliveryEasypost(TransactionCase):
             'name': 'mini server',
             'type': 'consu',
             'weight': 2.0,
+            'volume': 0.35,
+        })
+        self.microServer = self.env['product.product'].create({
+            'name': 'micro server',
+            'type': 'consu',
+            'weight': 0.0025,
             'volume': 0.35,
         })
 
@@ -217,3 +230,25 @@ class TestDeliveryEasypost(TransactionCase):
         self.assertGreater(picking_fedex.carrier_price, 0.0, "Easypost carrying price is probably incorrect(fedex)")
         self.assertIsNot(picking_fedex.carrier_tracking_ref, False,
                          "Easypost did not return any tracking number (fedex)")
+
+    def test_easypost_extralight_package_shipping(self):
+        """ Try to rate and ship an order from
+        New York to Miami. Use a very light product.
+        """
+        SaleOrder = self.env['sale.order']
+        sol_1_vals = {'product_id': self.microServer.id}
+        so_vals_fedex = {'partner_id': self.jackson.id,
+                         'order_line': [(0, None, sol_1_vals)]}
+
+        sale_order_fedex = SaleOrder.create(so_vals_fedex)
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order_fedex.id,
+            'default_carrier_id': self.easypost_fedex_carrier.id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
+
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        choose_delivery_carrier.button_confirm()
+        sale_order_fedex.action_confirm()

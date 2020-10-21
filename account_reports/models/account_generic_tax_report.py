@@ -214,7 +214,7 @@ class generic_tax_report(models.AbstractModel):
         if len(move):
             return move
         else:
-            return company_id._create_edit_tax_reminder(date_to)
+            return company_id._create_edit_tax_reminder(date_to, create_when_empty=True)
 
     def _generate_tax_closing_entry(self, options, move=False, raise_on_empty=False):
         """Generate the VAT closing entry.
@@ -234,10 +234,8 @@ class generic_tax_report(models.AbstractModel):
             raise UserError(_("You can only post tax entries for one company at a time"))
 
         company = self.env.company
-        if not self.env['account.tax.group']._any_is_configured(company):
-            if raise_on_empty:
-                raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
-            return False
+        if raise_on_empty and not self.env['account.tax.group']._any_is_configured(company):
+            raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
         end_date = fields.Date.from_string(options.get('date').get('date_to'))
@@ -250,7 +248,24 @@ class generic_tax_report(models.AbstractModel):
 
         # get tax entries by tax_group for the period defined in options
         line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(options, raise_on_empty=raise_on_empty)
-        if len(line_ids_vals):
+
+        # If the tax report is completely empty, we are adding two lines with 0 as values, using the first in in and out
+        # account id we find in the tax templates.
+        if len(line_ids_vals) == 0:
+            tax_out_account_id = self.env['account.tax.template'].search([('type_tax_use', '=', 'sale')], limit=1)\
+                .invoice_repartition_line_ids.account_id
+            tax_in_account_id = self.env['account.tax.template'].search([('type_tax_use', '=', 'purchase')], limit=1)\
+                .invoice_repartition_line_ids.account_id
+
+            if tax_out_account_id and tax_in_account_id:
+                line_ids_vals = [(0, 0, {'name': _('Tax Received Adjustment'),
+                                         'debit': 0, 'credit': 0.0,
+                                         'account_id': tax_out_account_id.id}),
+                                 (0, 0, {'name': _('Tax Paid Adjustment'),
+                                         'debit': 0.0, 'credit': 0,
+                                         'account_id': tax_in_account_id.id})]
+
+        else:
             line_ids_vals += self._add_tax_group_closing_items(tax_group_subtotal, end_date)
         if move.line_ids:
             line_ids_vals += [(2, aml.id) for aml in move.line_ids]

@@ -136,6 +136,12 @@ class AccountGenericTaxReport(models.AbstractModel):
         if options.get('grid91') and not currency_id.is_zero(options['grid91']):
             grids_list.append(('91', options['grid91']))
 
+        # We are ignoring all grids that have 0 as values, but the belgian government always require a value at
+        # least in either the grid 71 or 72. So in the case where both are set to 0, we are adding the grid 71 in the
+        # xml with 0 as a value.
+        if len([item for item in grids_list if item[0] == '71' or item[0] == '72']) == 0:
+            grids_list.append(('71', 0))
+
         grids_list = sorted(grids_list, key=lambda a: a[0])
         for item in grids_list:
             grid_amount_data = {

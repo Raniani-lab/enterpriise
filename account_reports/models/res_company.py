@@ -84,12 +84,12 @@ class ResCompany(models.Model):
             # Finally, add the journal visible in the dashboard
             self.account_tax_periodicity_journal_id.show_on_dashboard = True
 
-    def _create_edit_tax_reminder(self, in_period_date):
+    def _create_edit_tax_reminder(self, in_period_date, create_when_empty=False):
         self.ensure_one()
 
         if self._context.get('no_create_move', False):
             return self.env['account.move']
-        if not self.env['account.tax.group']._any_is_configured(self):
+        if not create_when_empty and not self.env['account.tax.group']._any_is_configured(self):
             return False
 
         # Create/Edit activity type if needed

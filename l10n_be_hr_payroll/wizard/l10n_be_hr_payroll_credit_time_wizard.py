@@ -19,6 +19,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         return super().default_get(field_list)
 
     contract_id = fields.Many2one('hr.contract', string='Contract', default=lambda self: self.env.context.get('active_id'))
+    company_id = fields.Many2one(related="contract_id.company_id", readonly=True)
     employee_id = fields.Many2one(related='contract_id.employee_id')
     date_start = fields.Date('Start Date', help="Start date of the credit time contract.", required=True)
     date_end = fields.Date('End Date', required=True,
@@ -26,12 +27,13 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'New Working Schedule', required=True,
-        default=lambda self: self.env.company.resource_calendar_id.id)
+        default=lambda self: self.env.company.resource_calendar_id.id,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     wage = fields.Monetary(
         compute='_compute_wage', store=True, readonly=False,
         string='New Wage', required=True,
         help="Employee's monthly gross wage in credit time.")
-    currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
+    currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
 
     work_time = fields.Float(related="resource_calendar_id.work_time_rate", readonly=True)
     time_off_allocation = fields.Float(string='New Time Off Allocation', compute='_compute_paid_time_off', store=True, readonly=False)
@@ -133,13 +135,15 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
     credit_time_contract_id = fields.Many2one('hr.contract', string='Credit Time Contract', default=lambda self: self.env.context.get('active_id'))
     contract_id = fields.Many2one('hr.contract', string='Contract')
     employee_id = fields.Many2one(related='credit_time_contract_id.employee_id')
+    company_id = fields.Many2one(related="credit_time_contract_id.company_id", readonly=True)
     date_start = fields.Date('Start Date', help="Start date of the normal time contract.", required=True)
     date_end = fields.Date('End Date', help="End date of the normal time contract (if it's a fixed-term contract).")
 
     resource_calendar_id = fields.Many2one(
-        'resource.calendar', 'New Working Schedule', required=True)
+        'resource.calendar', 'New Working Schedule', required=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     wage = fields.Monetary('New Wage', required=True, help="Employee's monthly gross wage.")
-    currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
+    currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
 
     holiday_status_id = fields.Many2one(
         "hr.leave.type", string="Time Off Type", required=True,
@@ -191,7 +195,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             'date_end': self.date_end,
             self.contract_id._get_contract_wage_field(): self.wage,
             'resource_calendar_id': self.resource_calendar_id.id,
-            'time_credit' : False,
+            'time_credit': False,
             'state': 'draft',
         })
 

@@ -13,6 +13,7 @@
                         <field name="resource_calendar_id"/>
                         <field name="leave_allocation_id" invisible="1"/>
                         <field name="contract_id" invisible="1"/>
+                        <field name="company_id" invisible="1" />
                     </group>
                 </group>
                 <group>
@@ -65,6 +66,7 @@
                         <field name="resource_calendar_id"/>
                         <field name="leave_allocation_id" invisible="1"/>
                         <field name="contract_id" invisible="1"/>
+                        <field name="company_id" invisible="1" />
                     </group>
                 </group>
                 <group>

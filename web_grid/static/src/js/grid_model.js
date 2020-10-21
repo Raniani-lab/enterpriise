@@ -172,9 +172,19 @@ const GridModel = AbstractModel.extend({
         for (var value in domainRow) {
             domain = domain.concat([[value.toString(), '=', domainRow[value][0]]]);
         }
+        /**
+         * We're doing this because the record can be attribute to someone else
+         * when it's attribute to no one at the beginning.
+         * Once we've done this we have to reload all the grid and not only the cell
+         * (to also change de name of the person it's attribute to)
+         */
         if (this._gridData.isGrouped) {
             var groupLabel = this._gridData.data[cell.cell_path[0]].__label;
-            domain = domain.concat([[this._gridData.groupBy[0], '=', groupLabel[0]]]);
+            if (groupLabel !== undefined)
+                domain = domain.concat([[this._gridData.groupBy[0], '=', groupLabel[0]]]);
+            else {
+                return self._fetch(self._gridData.groupBy);
+            }
         }
 
         return this._rpc({

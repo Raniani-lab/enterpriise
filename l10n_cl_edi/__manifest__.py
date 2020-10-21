@@ -1,7 +1,7 @@
 {
     "name": """Chile - E-invoicing""",
     'version': '1.0.',
-    'category': 'Account/Localizations',
+    'category': 'Accounting/Localizations',
     'sequence': 12,
     'author':  'Blanco Martín & Asociados',
     'description': """

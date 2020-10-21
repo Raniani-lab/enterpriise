@@ -694,11 +694,24 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {Object} inviteSession
      */
     async _onInvite(inviteSession) {
-        if (
-            this._ignoreIncoming ||
-            this._callState === CALL_STATE.ONGOING_CALL
-        ) {
+        if (this._callState === CALL_STATE.ONGOING_CALL){
+            // another session is active, therefore decline
             inviteSession.reject({ statusCode: 603 });
+            return;
+        } else if (this._ignoreIncoming) {
+            /**
+             * 488: "Not Acceptable Here"
+             * Request doesn't succeed but may succeed elsewhere.
+             *
+             * If the VOIP account is also associated to other tools, like a desk phone,
+             * the invitation is refused on web browser but might be accepted on the desk phone.
+             *
+             * If the call is ignored on the desk phone, will receive status code 486: "Busy Here",
+             * meaning the endpoint is unavailable.
+             *
+             * If the call is not accepted at all, no invite session will launch.
+            */
+            inviteSession.reject({ statusCode: 488 });
             return;
         }
 
@@ -896,6 +909,23 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     "The number is incorrect, the user credentials could be wrong or the connection cannot be made. Please check your configuration.</br> (Reason received: %s)",
                     response.reasonPhrase),
                 { isTemporary: true });
+            this.trigger_up('sip_cancel_outgoing');
+        } else if (response.statusCode === 486){
+            // 486: "Busy Here"
+            this._triggerError(
+                _t("The person you try to contact is currently unavailable."),
+                { isTemporary: true }
+            );
+            this.trigger_up('sip_cancel_outgoing');
+        } else {
+            // call rejected for unknown reason
+            this._triggerError(
+                _.str.sprintf(
+                    _t(`Call rejected (reason: "%s")`),
+                    response.reasonPhrase
+                ),
+                { isTemporary: true }
+            );
             this.trigger_up('sip_cancel_outgoing');
         }
     },

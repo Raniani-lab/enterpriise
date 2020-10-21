@@ -1078,3 +1078,17 @@ msgstr ""
 #, python-format
 msgid "sec"
 msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "The person you try to contact is currently unavailable."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Call rejected (reason: '%s')"
+msgstr ""

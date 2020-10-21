@@ -25,7 +25,7 @@ publicWidget.registry.websiteCalendarSelect = publicWidget.Widget.extend({
     start: function (parent) {
         // set default timezone
         var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        $(".o_website_appoinment_form select[name='timezone']").val(timezone.name());
+        $(".o_website_appoinment_form select[name='timezone']").val(timezone);
         return this._super.apply(this, arguments);
     },
 

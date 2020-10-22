@@ -170,7 +170,7 @@ class ResCompany(models.Model):
             ['http://www.sat.gob.mx/servicioparcialconstruccion',
              'http://www.sat.gob.mx/sitio_internet/cfd/servicioparcialconstruccion/servicioparcialconstruccion.xsd'],
             ['http://www.sat.gob.mx/EstadoDeCuentaCombustible',
-             'http://www.sat.gob.mx/sitio_internet/cfd/EstadoDeCuentaCombustible/ecc11.xsd'],
+             'http://www.sat.gob.mx/sitio_internet/cfd/EstadoDeCuentaCombustible/ecc12.xsd'],
             ['http://www.sat.gob.mx/donat',
              'http://www.sat.gob.mx/sitio_internet/cfd/donat/donat11.xsd'],
             ['http://www.sat.gob.mx/divisas',

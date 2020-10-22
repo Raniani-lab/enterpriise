@@ -24,7 +24,8 @@
                                 <div><strong>Next Invoice: <span t-field="account.recurring_next_date"/></strong></div>
                                 <div><strong>Amount: <span t-field="account.recurring_total_incl" t-options='{"widget": "monetary","display_currency": account.pricelist_id.currency_id}'/></strong></div>
                                 <a t-if="account.stage_category == 'progress' and not account.to_renew and account.template_id and display_change_plan" role="button" class="mt8 btn btn-primary" t-att-href="'/my/subscription/'+str(account.id)+'/change'+'?uuid='+str(account.uuid)">Change plan</a>
-                                <div t-if="account.payment_token_id">Payment method: <t t-esc="account.payment_token_id.short_name"/></div>
+                                <div t-if="account.payment_token_id and account.payment_token_id.name">Payment method: <t t-esc="account.payment_token_id.short_name"/></div>
+                                <div t-else="">Payment method: Unknown token</div>
                                 <a t-if="not account.to_renew and account.stage_category == 'progress' and (acquirers or part_pms)" role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#payment_managing" href="#">
                                     <t t-if="account.payment_token_id">Change Payment Method</t>
                                     <t t-else="0">Set Payment Method</t>

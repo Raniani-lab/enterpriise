@@ -9,6 +9,11 @@ odoo.define('web_enterprise.ListControllerMobile', function (require) {
     const ListController = require('web.ListController');
 
     ListController.include({
+
+        events: Object.assign({}, ListController.prototype.events, {
+            'click .o_discard_selection': '_onDiscardSelection'
+        }),
+
         //--------------------------------------------------------------------------
         // Public
         //--------------------------------------------------------------------------
@@ -32,25 +37,32 @@ odoo.define('web_enterprise.ListControllerMobile', function (require) {
             this.$buttons.find('.o_list_export_xlsx').hide();
         },
 
-        //--------------------------------------------------------------------------
-        // Private
-        //--------------------------------------------------------------------------
-
         /**
-         * In mobile, we let the renderer replace its header with the selection
-         * banner. @see web_enterprise.ListRendererMobile
+         * In mobile, we let the selection banner be added to the ControlPanel to enable the ActionMenus.
          *
          * @override
          */
-        _updateSelectionBox() {
-            this._super(...arguments);
+        async updateControlPanel() {
+            const value = await this._super(...arguments);
             const displayBanner = Boolean(this.$selectionBox);
             if (displayBanner) {
-                const banner = this.$selectionBox[0];
-                this.renderer.el.prepend(banner);
-                banner.style.width = `${document.documentElement.offsetWidth}px`;
+                this._controlPanelWrapper.el.querySelector('.o_cp_bottom').prepend(this.$selectionBox[0]);
             }
-            this.renderer.el.classList.toggle('o_renderer_selection_banner', displayBanner);
+            return value;
         },
+
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
+
+        /**
+         * Discard the current selection by unselecting any selected records.
+         *
+         * @private
+         */
+        _onDiscardSelection() {
+            this.renderer.$('tbody .o_list_record_selector input:not(":disabled")').prop('checked', false);
+            this.renderer._updateSelection();
+        }
     });
 });

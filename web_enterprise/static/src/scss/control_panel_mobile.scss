@@ -91,5 +91,25 @@
                 margin-top: 3px;
             }
         }
+
+        .o_renderer_selection_banner {
+            align-items: center;
+            margin-left: -$o-horizontal-padding;
+            background-color: $selected-box-color;
+
+            .o_list_selection_box {
+                border: 0;
+                padding: 0;
+            }
+
+            .o_cp_action_menus {
+                margin-left: auto;
+
+                .o_dropdown_toggler_btn:first-child {
+                    background: none;
+                    border: none;
+                }
+            }
+        }
     }
 }

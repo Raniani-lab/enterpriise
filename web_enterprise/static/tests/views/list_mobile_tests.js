@@ -1,10 +1,11 @@
 odoo.define('web_enterprise.list_mobile_tests', function (require) {
     "use strict";
 
+    const ListRenderer = require('web.ListRenderer');
     const ListView = require('web.ListView');
     const testUtils = require('web.test_utils');
 
-    const { createView } = testUtils;
+    const { createView, dom, mock } = testUtils;
 
     QUnit.module("Views", {
         beforeEach() {
@@ -22,15 +23,25 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
                     ],
                 },
             };
-        }
+            mock.patch(ListRenderer, {
+                init() {
+                    this._super(...arguments);
+                    this.LONG_TOUCH_THRESHOLD = 0;
+                }
+            });
+        },
+        afterEach() {
+            mock.unpatch(ListRenderer);
+        },
     }, function () {
 
         QUnit.module("ListView Mobile");
 
-        QUnit.test("selection box is properly displayed (single page)", async function (assert) {
-            assert.expect(13);
+        QUnit.test("selection is properly displayed (single page)", async function (assert) {
+            assert.expect(10);
 
             const list = await createView({
+                touchScreen: true,
                 arch: `
                     <tree>
                         <field name="foo"/>
@@ -38,45 +49,48 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
                     </tree>`,
                 data: this.data,
                 model: 'foo',
+                viewOptions: { hasActionMenus: true },
                 View: ListView,
             });
 
             assert.containsN(list, '.o_data_row', 4);
             assert.containsNone(list, '.o_list_selection_box');
-            assert.containsNone(list, '.o_list_view.o_renderer_selection_banner');
 
             // select a record
-            await testUtils.dom.click(list.$('.o_data_row:first .o_list_record_selector input'));
-
-            assert.containsOnce(list, '.o_list_view.o_renderer_selection_banner');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
             assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
                 "1 selected");
-
-            // select all records of first page
-            await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
-
-            assert.containsOnce(list, '.o_list_selection_box');
-            assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
-            assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "4 selected");
-
             // unselect a record
-            await testUtils.dom.click(list.$('.o_data_row:nth(1) .o_list_record_selector input'));
-
-            assert.containsOnce(list, '.o_list_selection_box');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
             assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
+
+            // select 2 records
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
+            await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchend');
             assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "3 selected");
+                "2 selected");
+            assert.containsOnce(list.el, 'div.o_control_panel .o_cp_action_menus');
+            await testUtils.controlPanel.toggleActionMenu(list);
+            assert.deepEqual(testUtils.controlPanel.getMenuItemTexts(list), ['Delete'],
+                'action menu should contain the Delete action');
+            // unselect all
+            await dom.click(list.$('.o_discard_selection'));
+            await testUtils.nextTick();
+            assert.containsNone(list, '.o_list_selection_box');
 
             list.destroy();
         });
 
         QUnit.test("selection box is properly displayed (multi pages)", async function (assert) {
-            assert.expect(10);
-
+            assert.expect(13);
             const list = await createView({
+                touchScreen: true,
                 arch: `
                     <tree limit="3">
                         <field name="foo"/>
@@ -85,29 +99,37 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
                 data: this.data,
                 model: 'foo',
                 View: ListView,
+                viewOptions: { hasActionMenus: true },
             });
 
             assert.containsN(list, '.o_data_row', 3);
             assert.containsNone(list, '.o_list_selection_box');
 
             // select a record
-            await testUtils.dom.click(list.$('.o_data_row:first .o_list_record_selector input'));
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
 
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
             assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
                 "1 selected");
-
+            assert.containsOnce(list, '.o_list_selection_box');
+            assert.containsOnce(list.el, 'div.o_control_panel .o_cp_action_menus');
+            await testUtils.controlPanel.toggleActionMenu(list);
+            assert.deepEqual(testUtils.controlPanel.getMenuItemTexts(list), ['Delete'],
+                'action menu should contain the Delete action');
             // select all records of first page
-            await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
-
+            await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchend');
+            await dom.triggerEvent(list.$('.o_data_row:eq(2)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(2)'), 'touchend');
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsOnce(list.$('.o_list_selection_box'), '.o_list_select_domain');
             assert.strictEqual(list.$('.o_list_selection_box').text().replace(/\s+/g, ' ').trim(),
                 "3 selected Select all 4");
 
             // select all domain
-            await testUtils.dom.click(list.$('.o_list_selection_box .o_list_select_domain'));
+            await dom.click(list.$('.o_list_selection_box .o_list_select_domain'));
 
             assert.containsOnce(list, '.o_list_selection_box');
             assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
@@ -120,6 +142,7 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
             assert.expect(2);
 
             const list = await createView({
+                touchScreen: true,
                 arch: `
                     <tree>
                         <field name="foo"/>
@@ -141,6 +164,27 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
             assert.containsN(list, '.o_data_row', 4);
             assert.isNotVisible(list.$buttons.find('.o_list_export_xlsx'));
 
+            list.destroy();
+        });
+
+        QUnit.test('editable readonly list view is disabled', async function (assert) {
+            assert.expect(1);
+
+            const list = await createView({
+                touchScreen: true,
+                arch: `
+                    <tree>
+                        <field name="foo"/>
+                    </tree>`,
+                data: this.data,
+                model: 'foo',
+                View: ListView,
+            });
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
+            await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
+            await testUtils.dom.click(list.$('.o_data_row:eq(0) .o_data_cell:eq(0)'));
+            assert.containsNone(list, '.o_selected_row .o_field_widget[name=foo]',
+                "The listview should not contains an edit field");
             list.destroy();
         });
     });

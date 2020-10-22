@@ -28,6 +28,8 @@ class SaleOrder(models.Model):
         return request.get_all_taxes_values()
 
     def validate_taxes_on_sales_order(self):
+        if not self.fiscal_position_id.is_taxcloud:
+            return True
         company = self.company_id
         shipper = company or self.env.company
         api_id = shipper.taxcloud_api_id

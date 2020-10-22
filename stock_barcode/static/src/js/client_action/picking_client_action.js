@@ -251,6 +251,32 @@ var PickingClientAction = ClientAction.extend({
         return true;
     },
 
+    _lineIsEmpty: function (line) {
+        return line.virtual_id &&
+            !line.qty_done &&
+            !line.product_uom_qty &&
+            !line.lot_id &&
+            !line.lot_name &&
+            !line.package_id;
+    },
+
+    _lineIsFulfilled: function (line) {
+        return line.qty_done &&
+        line.qty_done >= line.product_uom_qty &&
+        this.scannedLines.indexOf(line.virtual_id || line.id) === -1;
+    },
+
+    _lineIsFromAnotherLot: function (line, lotId) {
+        return lotId && line.lot_id && line.lot_id[0] !== lotId;
+    },
+
+    _lineIsTrackedAndComplete (line, product) {
+        return product.tracking === 'serial' && line.qty_done > 0;
+    },
+
+    _lineReservationIsFulfilled: function (line) {
+        return line.product_uom_qty && line.qty_done >= line.product_uom_qty;
+    },
 
     /**
      * @override

@@ -767,83 +767,32 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} params information needed to find the candidate line
      * @param {Object} params.product
      * @param {Object} params.lot_id
-     * @param {Object} params.lot_name
-     * @returns object|boolean line or false if nothing match
+     * @param {string} params.lot_name
+     * @returns {Object|boolean} line or false if nothing match
      */
     _findCandidateLineToIncrement: function (params) {
-        var product = params.product;
-        var lotId = params.lot_id;
-        var lotName = params.lot_name;
-        var packageId = params.package_id;
-        var currentPage = this.pages[this.currentPageIndex];
-        var res = false;
-        for (var z = 0; z < currentPage.lines.length; z++) {
-            var lineInCurrentPage = currentPage.lines[z];
-            if (lineInCurrentPage.product_id.id === product.id) {
-                // If the line is empty, we could re-use it.
-                if (lineInCurrentPage.virtual_id &&
-                    (this.actionParams.model === 'stock.picking' &&
-                     ! lineInCurrentPage.qty_done &&
-                     ! lineInCurrentPage.product_uom_qty &&
-                     ! lineInCurrentPage.lot_id &&
-                     ! lineInCurrentPage.lot_name &&
-                     ! lineInCurrentPage.package_id
-                    ) ||
-                    (this.actionParams.model === 'stock.inventory' &&
-                     ! lineInCurrentPage.product_qty &&
-                     ! lineInCurrentPage.prod_lot_id
-                    )
-                ) {
-                    res = lineInCurrentPage;
-                    break;
-                }
-
-                if (product.tracking === 'serial' &&
-                    ((this.actionParams.model === 'stock.picking' &&
-                      lineInCurrentPage.qty_done > 0
-                     ) ||
-                    (this.actionParams.model === 'stock.inventory' &&
-                     lineInCurrentPage.product_qty > 0
-                    ))) {
-                    continue;
-                }
-                if (lineInCurrentPage.qty_done &&
-                (this.actionParams.model === 'stock.inventory' ||
-                lineInCurrentPage.location_dest_id.id === currentPage.location_dest_id) &&
-                this.scannedLines.indexOf(lineInCurrentPage.virtual_id || lineInCurrentPage.id) === -1 &&
-                lineInCurrentPage.qty_done >= lineInCurrentPage.product_uom_qty) {
-                    continue;
-                }
-                if (lotId &&
-                    ((this.actionParams.model === 'stock.picking' &&
-                     lineInCurrentPage.lot_id &&
-                     lineInCurrentPage.lot_id[0] !== lotId
-                     ) ||
-                    (this.actionParams.model === 'stock.inventory' &&
-                     lineInCurrentPage.prod_lot_id &&
-                     lineInCurrentPage.prod_lot_id[0] !== lotId
-                    )
-                )) {
-                    continue;
-                }
-                if (lotName &&
-                    lineInCurrentPage.lot_name &&
-                    lineInCurrentPage.lot_name !== lotName
-                    ) {
-                    continue;
-                }
-                if (packageId &&
-                    (! lineInCurrentPage.package_id ||
-                    lineInCurrentPage.package_id[0] !== packageId[0])
-                    ) {
-                    continue;
-                }
-                if(lineInCurrentPage.product_uom_qty && lineInCurrentPage.qty_done >= lineInCurrentPage.product_uom_qty) {
-                    continue;
-                }
-                res = lineInCurrentPage;
+        const {product, lot_id, lot_name, package_id} = params;
+        const currentPage = this.pages[this.currentPageIndex];
+        let res = false;
+        for (const line of currentPage.lines) {
+            if (line.product_id.id != product.id) {
+                continue;
+            }
+            // If the line is empty, we could re-use it.
+            if (this._lineIsEmpty(line)) {
+                res = line;
                 break;
             }
+            if (this._lineIsTrackedAndComplete(line, product) ||
+                this._lineIsFulfilled(line) ||
+                this._lineIsFromAnotherLot(line, lot_id) ||
+                this._lineHasDifferentLotName(line, lot_name) ||
+                this._lineHasDifferentPackage(line, package_id) ||
+                this._lineReservationIsFulfilled(line)) {
+                continue;
+            }
+            res = line;
+            break;
         }
         return res;
     },
@@ -949,6 +898,24 @@ var ClientAction = AbstractAction.extend({
     _isPickingRelated: function () {
         return false;
     },
+
+    _lineIsFulfilled: (line) => false,
+
+    _lineIsEmpty: (line) => false,
+
+    _lineIsFromAnotherLot: (line, lotId) => false,
+
+    _lineIsTrackedAndComplete: (line, product) => false,
+
+    _lineHasDifferentLotName: function (line, lotName) {
+        return lotName && line.lot_name && line.lot_name !== lotName;
+    },
+
+    _lineHasDifferentPackage: function (line, packageId) {
+        return packageId && (!line.package_id || line.package_id[0] !== packageId[0]);
+    },
+
+    _lineReservationIsFulfilled: (line) => false,
 
     /**
      * Define and return a formatted command to update a record line.

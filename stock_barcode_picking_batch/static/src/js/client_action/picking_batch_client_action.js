@@ -49,49 +49,30 @@ const BatchPickingClientAction = PickingClientAction.extend({
     _findCandidateLineToIncrement: function ({product, lot_id, lot_name, package_id}) {
         const currentPage = this.pages[this.currentPageIndex];
         let res = false;
-        for (const lineInCurrentPage of currentPage.lines) {
-            if (lineInCurrentPage.product_id.id != product.id) {
+        for (const line of currentPage.lines) {
+            if (line.product_id.id != product.id) {
                 continue;
             }
             // If the line is empty, we could re-use it.
-            if (lineInCurrentPage.virtual_id &&
-                    !lineInCurrentPage.qty_done &&
-                    !lineInCurrentPage.product_uom_qty &&
-                    !lineInCurrentPage.lot_id &&
-                    !lineInCurrentPage.lot_name &&
-                    !lineInCurrentPage.package_id
-            ) {
-                res = lineInCurrentPage;
+            if (this._lineIsEmpty(line)) {
+                res = line;
                 break;
             }
-
-            if (product.tracking === 'serial' && lineInCurrentPage.qty_done > 0) {
+            if (this._lineIsTrackedAndComplete(line, product) || this._lineIsFulfilled(line)) {
                 continue;
             }
-            if (lineInCurrentPage.qty_done && lineInCurrentPage.location_dest_id.id === currentPage.location_dest_id &&
-            this.scannedLines.indexOf(lineInCurrentPage.virtual_id || lineInCurrentPage.id) === -1 &&
-            lineInCurrentPage.qty_done >= lineInCurrentPage.product_uom_qty) {
-                continue;
-            }
-            if (lot_id && lineInCurrentPage.lot_id && lineInCurrentPage.lot_id[0] !== lot_id) {
+            if (this._lineIsFromAnotherLot(line, lot_id)) {
                 // In case the lot number isn't the same but `qty_done` isn't fulfilled, takes the
                 // line but keep searching for a better a better candidate line.
-                res = lineInCurrentPage;
+                res = line;
                 continue;
             }
-            if (lot_name &&lineInCurrentPage.lot_name && lineInCurrentPage.lot_name !== lot_name) {
+            if (this._lineHasDifferentLotName(line, lot_name) ||
+                this._lineHasDifferentPackage(line, package_id) ||
+                this._lineReservationIsFulfilled(line)) {
                 continue;
             }
-            if (package_id &&
-                (! lineInCurrentPage.package_id ||
-                lineInCurrentPage.package_id[0] !== package_id[0])
-                ) {
-                continue;
-            }
-            if(lineInCurrentPage.product_uom_qty && lineInCurrentPage.qty_done >= lineInCurrentPage.product_uom_qty) {
-                continue;
-            }
-            res = lineInCurrentPage;
+            res = line;
             break;
         }
         return res;

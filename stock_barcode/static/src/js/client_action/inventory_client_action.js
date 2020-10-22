@@ -135,6 +135,18 @@ var InventoryClientAction = ClientAction.extend({
         );
     },
 
+    _lineIsEmpty: function (line) {
+        return line.virtual_id && !line.product_qty && !line.prod_lot_id;
+    },
+
+    _lineIsFromAnotherLot: function (line, lotId) {
+        return lotId && line.prod_lot_id && line.prod_lot_id[0] !== lotId;
+    },
+
+    _lineIsTrackedAndComplete (line, product) {
+        return product.tracking === 'serial' && line.product_qty > 0;
+    },
+
     /**
      * @override
      */

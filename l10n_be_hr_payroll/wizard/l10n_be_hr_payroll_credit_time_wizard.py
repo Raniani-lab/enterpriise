@@ -7,7 +7,6 @@ from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-WORK_RATE = [('0', 'Full Time Credit Time'), ('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')]
 
 class L10nBeHrPayrollCreditTime(models.TransientModel):
     _name = 'l10n_be.hr.payroll.credit.time.wizard'
@@ -34,8 +33,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         help="Employee's monthly gross wage in credit time.")
     currency_id = fields.Many2one(string="Currency", related='contract_id.company_id.currency_id', readonly=True)
 
-    work_time = fields.Selection(WORK_RATE, string='Work Time Rate',
-        required=True, help='Work time rate versus full time working schedule.')
+    work_time = fields.Float(related="resource_calendar_id.work_time_rate", readonly=True)
     time_off_allocation = fields.Float(string='New Time Off Allocation', compute='_compute_paid_time_off', store=True, readonly=False)
     remaining_allocated_time_off = fields.Float(string='Current Remaining Leaves', compute='_compute_paid_time_off', store=True, readonly=True)
     holiday_status_id = fields.Many2one(
@@ -46,7 +44,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
     @api.depends('work_time')
     def _compute_wage(self):
         for wizard in self:
-            wizard.wage = wizard.contract_id._get_contract_wage() * float(wizard.work_time)
+            wizard.wage = wizard.contract_id._get_contract_wage() * float(wizard.work_time) / 100  # TODO: [XBO] remove "/ 100" when work_time is a fraction instead of a percentage.
 
     @api.depends('holiday_status_id', 'work_time', 'resource_calendar_id')
     def _compute_paid_time_off(self):
@@ -63,10 +61,10 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
                 continue
 
             remaining_allocated_time_off = leave_allocation.number_of_days - leave_allocation.leaves_taken
-            work_time_rate = wizard.resource_calendar_id.work_time_rate / 100 * (float(wizard.work_time) if wizard.work_time else 1.0)
+            work_time_rate = wizard.work_time / 100
 
             # Compute old work time rate
-            old_work_time_rate = wizard.contract_id.resource_calendar_id.work_time_rate / 100 * (float(wizard.contract_id.work_time_rate) if wizard.contract_id.work_time_rate else 1.0)
+            old_work_time_rate = wizard.contract_id.resource_calendar_id.work_time_rate / 100
 
             if 0 < old_work_time_rate < 1:  # Then we need to remove the older to compute correctly the paid time off to allocate
                 work_time_rate /= old_work_time_rate
@@ -89,15 +87,14 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             raise ValidationError(_('Current contract is finished before the end of credit time period.'))
 
         credit_time_contract = self.contract_id.copy({
-            'name': _('%s - Credit Time %s') % (self.contract_id.name, dict(WORK_RATE)[self.work_time]),
+            'name': _('%s - Credit Time %.0f%%') % (self.contract_id.name, self.work_time),  # TODO: [XBO] replace %.0f%% by %s when work_time is like this 4/5, 1/2 or 9/10 instead of a percentage.
             'date_start': self.date_start,
             'date_end': self.date_end,
             self.contract_id._get_contract_wage_field(): self.wage,
             'time_credit_full_time_wage': self.wage / float(self.work_time) if float(self.work_time) != 0 else self.contract_id._get_contract_wage(),
             'resource_calendar_id': self.resource_calendar_id.id,
             'standard_calendar_id': self.contract_id.resource_calendar_id.id,
-            'time_credit' : True,
-            'work_time_rate' : self.work_time,
+            'time_credit': True,
             'state': 'draft',
         })
 
@@ -169,7 +166,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             work_time_rate = wizard.resource_calendar_id.work_time_rate / 100
 
             # Compute old work time rate
-            old_work_time_rate = wizard.credit_time_contract_id.resource_calendar_id.work_time_rate / 100 * (float(wizard.credit_time_contract_id.work_time_rate) if wizard.credit_time_contract_id.work_time_rate else 1.0)
+            old_work_time_rate = wizard.credit_time_contract_id.resource_calendar_id.work_time_rate / 100
 
             if 0 < old_work_time_rate < 1:  # Then we need to remove the older to compute correctly the paid time off to allocate
                 work_time_rate /= old_work_time_rate

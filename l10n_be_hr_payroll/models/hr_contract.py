@@ -69,6 +69,7 @@ class HrContract(models.Model):
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
     time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
+    # TODO: (xbo) remove the work_time_rate, normally this field should not be used.
     work_time_rate = fields.Selection([
         ('0', 'Set To Full Time'),
         ('0.5', '1/2'),

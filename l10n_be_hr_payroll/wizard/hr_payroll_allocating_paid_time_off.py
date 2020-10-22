@@ -59,11 +59,11 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
             employee_in_department = "AND employee_id IN (SELECT id FROM hr_employee WHERE department_id = %(department)s)"
 
         query = """
-            SELECT contract_id, employee_id, work_time_rate, date_start, date_end, resource_calendar_id
+            SELECT contract_id, employee_id, date_start, date_end, resource_calendar_id
             FROM (
-                SELECT contract.id as contract_id, contract.employee_id as employee_id, resource_calendar_id, work_time_rate, contract.date_start, contract.date_end
+                SELECT contract.id as contract_id, contract.employee_id as employee_id, resource_calendar_id, contract.date_start, contract.date_end
                 FROM
-                    (SELECT id, employee_id, resource_calendar_id, work_time_rate, date_start, date_end FROM hr_contract
+                    (SELECT id, employee_id, resource_calendar_id, date_start, date_end FROM hr_contract
                         WHERE
                             {where_structure}
                             employee_id IS NOT NULL
@@ -97,7 +97,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
             date_start = vals['date_start']
             date_end = vals['date_end']
             calendar = self.env['resource.calendar'].browse(vals['resource_calendar_id'])
-            work_time_rate = (calendar.work_time_rate / 100) * (float(vals['work_time_rate']) if vals['work_time_rate'] else 1.0)
+            work_time_rate = calendar.work_time_rate / 100
 
             if date_start < period_start:
                 date_start = period_start
@@ -139,7 +139,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 contract_next_period = self.env['hr.contract'].browse(contract_next_period)
 
             if contract_next_period.id:
-                work_time_rate = (contract_next_period.resource_calendar_id.work_time_rate / 100) * (float(contract_next_period.work_time_rate) if contract_next_period.work_time_rate else 1.0)
+                work_time_rate = contract_next_period.resource_calendar_id.work_time_rate / 100
                 paid_time_off_to_allocate = legal_leaves * work_time_rate
                 paid_time_off_to_allocate = round(paid_time_off_to_allocate * 2) / 2  # round the paid time off until x.5
 
@@ -149,7 +149,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 'employee_id': employee_id,
                 'paid_time_off': paid_time_off,
                 'paid_time_off_to_allocate': paid_time_off_to_allocate if paid_time_off_to_allocate <= paid_time_off else paid_time_off,
-                'contract_next_year': contract_next_period.id,
+                'contract_next_year_id': contract_next_period.id,
                 'alloc_paid_leave_id': self.id}))
 
         self.alloc_employee_ids = alloc_employee_ids
@@ -183,13 +183,5 @@ class HrPayrollAllocEmployee(models.TransientModel):
     paid_time_off = fields.Float("Paid Time Off For The Period", required=True)
     paid_time_off_to_allocate = fields.Float("Paid Time Off To Allocate", required=True)
     contract_next_year_id = fields.Many2one('hr.contract', string="Contract Active Next Year")
-    current_working_schedule = fields.Char(compute='_compute_current_working_schedule', string="Current Working Schedule", readonly=True)
-
+    resource_calendar_id = fields.Many2one(related='contract_next_year_id.resource_calendar_id', string="Current Working Schedule", readonly=True)
     alloc_paid_leave_id = fields.Many2one('hr.payroll.alloc.paid.leave')
-
-    def _compute_current_working_schedule(self):
-        for payroll_alloc_employee in self:
-            if payroll_alloc_employee.contract_next_year.id:
-                payroll_alloc_employee.current_working_schedule = '%s - %s' % (payroll_alloc_employee.contract_next_year.resource_calendar_id.name, _('Full Time') if not payroll_alloc_employee.contract_next_year.work_time_rate or payroll_alloc_employee.contract_next_year.work_time_rate == '0' else payroll_alloc_employee.contract_next_year.work_time_rate)
-            else:
-                payroll_alloc_employee.current_working_schedule = ''

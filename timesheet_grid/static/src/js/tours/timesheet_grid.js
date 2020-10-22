@@ -23,7 +23,7 @@ tour.register('timesheet_tour', {
     content: _t('Describe your activity <i>(e.g. sent an e-mail, meeting with the customer...)</i>.'),
     position: 'bottom',
 }, {
-    trigger: '.timer_project_id',
+    trigger: '.timer_project_id .o_field_many2one',
     content: _t('Select the <b>project</b> on which you are working.'),
     position: 'bottom',
 }, {

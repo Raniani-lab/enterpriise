@@ -81,19 +81,20 @@ class MarketingParticipant(models.Model):
         ])
         (self - existing_traces.mapped('participant_id')).write({'state': 'completed'})
 
-    @api.model
-    def create(self, values):
-        res = super(MarketingParticipant, self).create(values)
-        # prepare first traces related to begin activities
-        primary_activities = res.campaign_id.marketing_activity_ids.filtered(lambda act: act.trigger_type == 'begin')
+    @api.model_create_multi
+    def create(self, vals_list):
+        participants = super().create(vals_list)
         now = Datetime.now()
-        trace_ids = [
-            (0, 0, {
-                'activity_id': activity.id,
-                'schedule_date': now + relativedelta(**{activity.interval_type: activity.interval_number}),
-            }) for activity in primary_activities]
-        res.write({'trace_ids': trace_ids})
-        return res
+        for res in participants:
+            # prepare first traces related to begin activities
+            primary_activities = res.campaign_id.marketing_activity_ids.filtered(lambda act: act.trigger_type == 'begin')
+            trace_ids = [
+                (0, 0, {
+                    'activity_id': activity.id,
+                    'schedule_date': now + relativedelta(**{activity.interval_type: activity.interval_number}),
+                }) for activity in primary_activities]
+            res.write({'trace_ids': trace_ids})
+        return participants
 
     def action_set_completed(self):
         ''' Manually mark as a completed and cancel every scheduled trace '''

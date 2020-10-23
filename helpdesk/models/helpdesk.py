@@ -142,13 +142,13 @@ class HelpdeskTeam(models.Model):
     # ORM overrides
     # ------------------------------------------------------------
 
-    @api.model
-    def create(self, vals):
-        team = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals)
-        team.sudo()._check_sla_group()
-        team.sudo()._check_modules_to_install()
+    @api.model_create_multi
+    def create(self, vals_list):
+        teams = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
+        teams.sudo()._check_sla_group()
+        teams.sudo()._check_modules_to_install()
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.
-        return team
+        return teams
 
     def write(self, vals):
         result = super(HelpdeskTeam, self).write(vals)

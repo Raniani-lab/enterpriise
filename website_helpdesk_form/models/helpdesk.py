@@ -13,12 +13,11 @@ class HelpdeskTeam(models.Model):
     feature_form_url = fields.Char('URL to Submit Issue', readonly=True, compute='_compute_form_url')
     website_form_view_id = fields.Many2one('ir.ui.view', string="Form")
 
-    @api.model
-    def create(self, vals):
-        team = super(HelpdeskTeam, self).create(vals)
-        if 'use_website_helpdesk_form' in vals and vals['use_website_helpdesk_form']:
-            team._ensure_submit_form_view()
-        return team
+    @api.model_create_multi
+    def create(self, vals_list):
+        teams = super(HelpdeskTeam, self).create(vals_list)
+        teams.filtered('use_website_helpdesk_form')._ensure_submit_form_view()
+        return teams
 
     def write(self, vals):
         if 'use_website_helpdesk_form' in vals and vals['use_website_helpdesk_form']:

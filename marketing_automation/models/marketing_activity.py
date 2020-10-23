@@ -134,7 +134,7 @@ class MarketingActivity(models.Model):
             if activity.activity_type != 'action':
                 activity.server_action_id = False
 
-    @api.depends('activity_domain', 'campaign_id.domain')
+    @api.depends('activity_domain', 'campaign_id.domain', 'parent_id.domain')
     def _compute_inherited_domain(self):
         for activity in self:
             domain = expression.AND([literal_eval(activity.activity_domain),

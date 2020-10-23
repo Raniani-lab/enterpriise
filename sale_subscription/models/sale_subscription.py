@@ -843,7 +843,7 @@ class SaleSubscription(models.Model):
             invoice = tx.invoice_ids and tx.invoice_ids[0]
         if tx.state in ['done', 'authorized']:
             invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
-            self.increment_period()
+            self.increment_period(renew=self.to_renew)
             self.set_open()
         else:
             invoice.button_cancel()

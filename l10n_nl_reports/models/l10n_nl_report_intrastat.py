@@ -24,9 +24,10 @@ class ReportL10nNLIntrastat(models.AbstractModel):
     def _get_report_name(self):
         return _('Intrastat (ICP)')
 
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        lines = []
+    def _get_lines_query_params(self, options):
+        # This method was created to be overridden when the intrastat module is installed.
+        # Note that if you made a change in this method, you probably will need to make a change
+        # also in l10n_nl_intrastat/l10n_nl_report_intrastat.py
         company_id = self.env.company
 
         country_ids = (self.env.ref('base.europe').country_ids - company_id.country_id).ids
@@ -61,7 +62,16 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             'date_to': options['date']['date_to'],
             'company_ids': tuple(self.env.companies.ids),
         }
-        self.env.cr.execute(query, params)
+
+        return {'query': query,
+                'params': params,
+                }
+
+    @api.model
+    def _get_lines(self, options, line_id=None):
+        lines = []
+        query_params = self._get_lines_query_params(options)
+        self.env.cr.execute(query_params['query'], query_params['params'])
 
         # Add lines
         total = 0

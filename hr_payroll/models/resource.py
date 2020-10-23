@@ -26,7 +26,7 @@ class ResourceCalendar(models.Model):
     @api.depends('hours_per_week', 'full_time_required_hours', 'attendance_ids.work_entry_type_id')
     def _compute_work_time_rate(self):
         for calendar in self:
-            if calendar.hours_per_week == 0:
+            if not calendar.hours_per_week:
                 calendar.work_time_rate = calendar.hours_per_week
             else:
                 total_absence_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if attendance.work_entry_type_id.is_leave)

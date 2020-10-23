@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY
@@ -47,7 +48,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         period_start = date(int(self.year), 1, 1)
         period_end = date(int(self.year), 12, 31)
 
-        business_day = len(list(rrule(DAILY, dtstart=period_start, until=period_end, byweekday=[0, 1, 2, 3, 4, 5])))
+        period_work_days_count = len(list(rrule(DAILY, dtstart=period_start, until=period_end, byweekday=[0, 1, 2, 3, 4, 5])))
 
         if self.structure_type_id:
             structure = "structure_type_id = %(structure)s AND"
@@ -85,14 +86,10 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
             'department': self.department_id.id
         })
 
-        alloc_employees = {}  # key = employee_id and value contains paid_time_off and contract_id in Tuple
-        legal_leaves = 20
+        alloc_employees = defaultdict(lambda: (0, None))  # key = employee_id and value contains paid_time_off and contract_id in Tuple
+        max_leaves_count = 20
         for vals in self.env.cr.dictfetchall():
-            paid_time_off = 0
-            contract_id = None
-
-            if vals['employee_id'] in alloc_employees:
-                paid_time_off, contract_id = alloc_employees[vals['employee_id']]
+            paid_time_off, contract_id = alloc_employees[vals['employee_id']]
 
             date_start = vals['date_start']
             date_end = vals['date_end']
@@ -106,8 +103,9 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                     contract_id = vals['contract_id']
                 date_end = period_end
 
-            business_day_for_period = len(list(rrule(DAILY, dtstart=date_start, until=date_end, byweekday=[0, 1, 2, 3, 4, 5])))
-            paid_time_off += business_day_for_period / business_day * work_time_rate * legal_leaves
+            work_days_count = len(list(rrule(DAILY, dtstart=date_start, until=date_end, byweekday=[0, 1, 2, 3, 4, 5])))
+            work_days_ratio = work_days_count / period_work_days_count  # In case the employee didn't work over the whole period
+            paid_time_off += work_days_ratio * work_time_rate * max_leaves_count
 
             alloc_employees[vals['employee_id']] = (paid_time_off, contract_id)
 
@@ -121,7 +119,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 next_period_end = period_end + relativedelta(years=1)
                 domains = [
                     ('employee_id', '=', employee_id),
-                    ('company_id', 'in', tuple(self.env.companies.ids)),
+                    ('company_id', 'in', self.env.companies.ids),
                     ('date_start', '<=', next_period_end),
                     '|',
                         ('date_end', '=', False),
@@ -134,13 +132,14 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 ]
                 if self.structure_type_id:
                     domains.append(('structure_type_id', '=', self.structure_type_id.id))
-                contract_next_period = self.env['hr.contract'].search(domains, limit=1, order='date_start desc')  # We need the contract currently active for the next period for each employee to allocate the correct time off based on this contract.
+                # We need the contract currently active for the next period for each employee to allocate the correct time off based on this contract.
+                contract_next_period = self.env['hr.contract'].search(domains, limit=1, order='date_start desc') 
             else:
                 contract_next_period = self.env['hr.contract'].browse(contract_next_period)
 
             if contract_next_period.id:
                 work_time_rate = contract_next_period.resource_calendar_id.work_time_rate / 100
-                paid_time_off_to_allocate = legal_leaves * work_time_rate
+                paid_time_off_to_allocate = max_leaves_count * work_time_rate
                 paid_time_off_to_allocate = round(paid_time_off_to_allocate * 2) / 2  # round the paid time off until x.5
 
             paid_time_off = round(paid_time_off * 2) / 2  # round the paid time off until x.5

@@ -69,6 +69,7 @@ var ReportEditorAction = AbstractAction.extend({
             // been instantiated
             return Promise.resolve();
         }
+        this.reportEditorManager.on_attach_callback();
         if (this.reportEditorManager.editorIframeResolved === false) {
             // this is the first rendering of the editor but we only want to
             // update the editor when going back with the breadcrumb

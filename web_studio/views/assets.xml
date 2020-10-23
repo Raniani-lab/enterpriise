@@ -172,6 +172,7 @@
             <script type="text/javascript" src="/web_studio/static/tests/reports/report_editor_sidebar_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/reports/report_editor_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/reports/report_editor_components_tests.js"></script>
+            <script type="text/javascript" src="/web_studio/static/tests/reports/report_editor_action_tests.js"></script>
 
             <script type="text/javascript" src="/web_studio/static/tests/views/view_editor_manager_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/views/form_tests.js"></script>

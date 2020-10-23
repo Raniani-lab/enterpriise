@@ -25,7 +25,7 @@ class L10nClDteCaf(models.Model):
     """
 
     filename = fields.Char('File Name')
-    caf_file = fields.Binary(string='CAF XML File', filters='*.xml',
+    caf_file = fields.Binary(string='CAF XML File',
                              help='Upload the CAF XML File in this holder')
     issued_date = fields.Date('Issued Date')
     l10n_latam_document_type_id = fields.Many2one('l10n_latam.document.type', string='Document Type')

@@ -14,7 +14,7 @@ class WebsiteCalendarController(CalendarController):
         """Redirect the user to the website page of the calendar.event,
            only if it is an appointment """
         super(WebsiteCalendarController, self).view_meeting(token, id)
-        attendee = request.env['calendar.attendee'].search([
+        attendee = request.env['calendar.attendee'].sudo().search([
             ('access_token', '=', token),
             ('event_id', '=', int(id))])
         if not attendee:

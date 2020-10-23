@@ -4,6 +4,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.tests import common, tagged
+from odoo.tests.common import new_test_user
 
 
 @tagged('-at_install', 'post_install')
@@ -96,3 +97,46 @@ class WebsiteCalendarTest(common.HttpCase):
         # Ensuring that we've gone through the *crucial* asserts at least once
         # It might be more accurate to assert mondays_count >= 2, but we don't want this test to break when it pleases
         self.assertGreaterEqual(mondays_count, 1, 'There should be at least one monday in the time range')
+
+    def test_accept_meeting_unauthenticated(self):
+        user = new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!", tz="UTC")
+        event = (
+            self.env["calendar.event"]
+            .create(
+                {
+                    "name": "Doom's day",
+                    "start": datetime(2019, 10, 25, 8, 0),
+                    "stop": datetime(2019, 10, 27, 18, 0),
+                    "partner_ids": [(4, user.partner_id.id)],
+                }
+            )
+        )
+        token = event.attendee_ids[0].access_token
+        url = "/calendar/meeting/accept?token=%s&id=%d" % (token, event.id)
+        res = self.url_open(url)
+
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        event.attendee_ids[0].invalidate_cache()
+        self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
+
+    def test_accept_meeting_authenticated(self):
+        user = new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!", tz="UTC")
+        event = (
+            self.env["calendar.event"]
+            .create(
+                {
+                    "name": "Doom's day",
+                    "start": datetime(2019, 10, 25, 8, 0),
+                    "stop": datetime(2019, 10, 27, 18, 0),
+                    "partner_ids": [(4, user.partner_id.id)],
+                }
+            )
+        )
+        token = event.attendee_ids[0].access_token
+        url = "/calendar/meeting/accept?token=%s&id=%d" % (token, event.id)
+        self.authenticate("test_user_1", "P@ssw0rd!")
+        res = self.url_open(url)
+
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        event.attendee_ids[0].invalidate_cache()
+        self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")

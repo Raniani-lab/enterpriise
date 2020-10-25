@@ -30,5 +30,4 @@ class L10nMXEdiTariffFraction(models.Model):
             domain = []
         else:
             domain = ['|', ('name', 'ilike', name), ('code', 'ilike', name)]
-        ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-        return self.browse(ids).name_get()
+        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)

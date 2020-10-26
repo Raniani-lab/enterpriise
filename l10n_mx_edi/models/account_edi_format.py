@@ -954,7 +954,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     continue
 
                 signed_edi = invoice._get_l10n_mx_edi_signed_edi_document()
-                res = getattr(self, '_l10n_mx_edi_%s_cancel_invoice' % pac_name)(invoice, credentials, signed_edi)
+                if signed_edi:
+                    cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
+                res = getattr(self, '_l10n_mx_edi_%s_cancel_invoice' % pac_name)(invoice, credentials, cfdi_data)
                 if res.get('errors'):
                     edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
                     continue
@@ -1060,7 +1062,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     continue
 
                 signed_edi = move._get_l10n_mx_edi_signed_edi_document()
-                res = getattr(self, '_l10n_mx_edi_%s_cancel_payment' % pac_name)(move, credentials, signed_edi)
+                if signed_edi:
+                    cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
+                res = getattr(self, '_l10n_mx_edi_%s_cancel_payment' % pac_name)(move, credentials, cfdi_data)
                 if res.get('errors'):
                     edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
                     continue

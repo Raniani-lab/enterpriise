@@ -463,6 +463,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
                     parents: String,
                     webIcon: [Boolean, String, {
                         type: Object,
+                        optional: 1,
                         shape: {
                             iconClass: String,
                             color: String,

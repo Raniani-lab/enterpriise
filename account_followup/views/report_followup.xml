@@ -79,7 +79,7 @@
         <template id="template_followup_report" inherit_id="account_reports.main_template" primary="True">
             <xpath expr="//div[hasclass('o_account_reports_body')]" position="before">
                 <div class="alert alert-warning o_account_followup-no-action" id='no-action' role="alert" t-if="partner != False and partner.followup_status == 'no_action_needed' and context.get('print_mode') != True">
-                    <p><strong>Warning!</strong> No action needs to be taken for this partner.</p>
+                    <strong>Warning!</strong> No action needs to be taken for this partner.
                 </div>
             </xpath>
             <xpath expr="//div[hasclass('o_account_reports_no_print')]" position="attributes">

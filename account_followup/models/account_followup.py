@@ -39,7 +39,10 @@ Best Regards,
 
     auto_execute = fields.Boolean()
 
-    _sql_constraints = [('days_uniq', 'unique(company_id, delay)', 'Days of the follow-up levels must be different per company')]
+    _sql_constraints = [
+        ('days_uniq', 'unique(company_id, delay)', 'Days of the follow-up levels must be different per company'),
+        ('uniq_name', 'unique(company_id, name)', 'A follow-up action name must be unique. This name is already set to another action.'),
+    ]
 
     def copy_data(self, default=None):
         default = dict(default or {})
@@ -50,6 +53,13 @@ Best Regards,
             higher_delay = self.search([('company_id', '=', company_id)], order='delay desc', limit=1)[:1].delay or 0
             default['delay'] = higher_delay + 15
         return super(FollowupLine, self).copy_data(default=default)
+
+    def copy(self, default=None):
+        # OVERRIDE
+        default = default or {}
+        if not default.get('name'):
+            default['name'] = _("%s (copy)", self.name)
+        return super().copy(default=default)
 
     @api.constrains('description')
     def _check_description(self):

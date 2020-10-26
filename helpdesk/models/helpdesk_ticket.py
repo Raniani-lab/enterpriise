@@ -539,6 +539,8 @@ class HelpdeskTicket(models.Model):
             if ticket.partner_id:
                 ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
 
+            ticket._portal_ensure_token()
+
         # apply SLA
         tickets.sudo()._sla_apply()
 

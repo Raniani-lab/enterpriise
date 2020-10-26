@@ -1239,7 +1239,7 @@ odoo.define('sign.document_signing', function (require) {
                 if (!/^(f|ht)tps?:\/\//i.test(RedirectURL)) {
                     RedirectURL = "http://" + RedirectURL;
                  }
-                options.buttons.push({text: _t(RedirectURLText), classes: 'btn-primary', click: function (e) {
+                options.buttons.push({text: RedirectURLText, classes: 'btn-primary', click: function (e) {
                     window.location.replace(RedirectURL);
                 }});
             }

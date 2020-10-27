@@ -828,6 +828,7 @@ var GanttRow = Widget.extend({
         if (handles.length && !self.options.disableResize && !self.isGroup && self.options.canEdit) {
             $pill.resizable({
                 handles: handles.join(', '),
+                odoo_isRTL: this.isRTL,
                 // DAM: I wanted to use a containment but there is a bug with them
                 // when elements are both draggable and resizable. In that case, is is no more possible
                 // to resize on the left side of the pill (I mean starting from left, go to left)

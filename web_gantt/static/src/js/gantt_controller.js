@@ -50,6 +50,8 @@ var GanttController = AbstractController.extend({
         this.allowedScales = params.allowedScales;
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.createAction = params.createAction;
+
+        this.isRTL = _t.database.parameters.direction === "rtl";
     },
 
     //--------------------------------------------------------------------------
@@ -407,6 +409,7 @@ var GanttController = AbstractController.extend({
         var schedule = {};
 
         var diff = ev.data.diff;
+        diff = this.isRTL ? -diff : diff;
         if (diff) {
             var pill = _.findWhere(state.records, { id: ev.data.pillId });
             schedule[state.dateStartField] = this.model.dateAdd(pill[state.dateStartField], diff, this.SCALES[state.scale].time);

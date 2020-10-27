@@ -10,6 +10,7 @@ var session = require('web.session');
 var utils = require('web.utils');
 
 var QWeb = core.qweb;
+var _t = core._t;
 
 
 var GanttRenderer = AbstractRenderer.extend({
@@ -85,6 +86,8 @@ var GanttRenderer = AbstractRenderer.extend({
         } else {
             this.popoverQWeb = QWeb;
         }
+
+        this.isRTL = _t.database.parameters.direction === "rtl";
     },
     /**
      * Called each time the renderer is attached into the DOM.
@@ -246,7 +249,7 @@ var GanttRenderer = AbstractRenderer.extend({
             const $containment = $('<div id="o_gantt_containment"/>');
             self.$('.o_gantt_row_container').append($containment);
             if (!self.state.groupedBy.length) {
-                $containment.css({ left: 0});
+                $containment.css(self.isRTL ? {right: 0} : {left: 0})
             }
 
             rows.forEach(function (row) {

@@ -213,7 +213,7 @@ class MxReportAccountTrial(models.AbstractModel):
                         break
                 if not non_zero:
                     continue
-            name = account.code + " " + account.name
+            name = account.name_get()[0][1]
             name = name[:63] + "..." if len(name) > 65 else name
             tag = account.tag_ids.filtered(lambda r: r.color == 4)
             if len(tag) > 1:

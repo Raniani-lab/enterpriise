@@ -210,6 +210,8 @@ class DeliverCarrier(models.Model):
         """ Each API request for easypost required
         a weight in pounds.
         """
+        if weight == 0:
+            return weight
         weight_uom_id = self.env['product.template']._get_weight_uom_id_from_ir_config_parameter()
         weight_in_pounds = weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'))
         weigth_in_ounces = max(0.1, float_round((weight_in_pounds * 16), precision_digits=1))

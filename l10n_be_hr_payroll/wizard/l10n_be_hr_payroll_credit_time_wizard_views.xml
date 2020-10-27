@@ -4,20 +4,21 @@
         <field name="name">l10n_be.hr.payroll.credit.time.wizard.view.form</field>
         <field name="model">l10n_be.hr.payroll.credit.time.wizard</field>
         <field name="arch" type="xml">
-            <form string="Credit Time Work">
+            <form string="Part Time Contract">
                 <h1><field name="employee_id" readonly="1"/></h1>
-                <group class="o_label_nowrap">
+                <group>
                     <group>
                         <field name="date_start"/>
                         <field name="date_end"/>
                         <field name="resource_calendar_id"/>
+                        <field name="time_credit_type_id"/>
                         <field name="leave_allocation_id" invisible="1"/>
                         <field name="contract_id" invisible="1"/>
                         <field name="company_id" invisible="1" />
                     </group>
                 </group>
                 <group>
-                    <group class="o_label_nowrap">
+                    <group>
                         <field name="work_time"/>
                         <field name="wage"/>
                     </group>
@@ -57,9 +58,9 @@
         <field name="name">l10n_be.hr.payroll.exit.credit.time.wizard.view.form</field>
         <field name="model">l10n_be.hr.payroll.exit.credit.time.wizard</field>
         <field name="arch" type="xml">
-            <form string="Contract Full Time">
+            <form string="Full Time Contract">
             <h1><field name="employee_id" readonly="1"/></h1>
-                <group class="o_label_nowrap">
+                <group>
                     <group>
                         <field name="date_start"/>
                         <field name="date_end"/>
@@ -70,7 +71,7 @@
                     </group>
                 </group>
                 <group>
-                    <group class="o_label_nowrap">
+                    <group>
                         <field name="wage"/>
                         <field name="holiday_status_id" />
                     </group>
@@ -103,14 +104,14 @@
     </record>
 
     <record id="credit_time_wizard_action" model="ir.actions.act_window">
-        <field name="name">Credit Time Work</field>
+        <field name="name">Part Time Contract</field>
         <field name="res_model">l10n_be.hr.payroll.credit.time.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
     <record id="exit_credit_time_wizard_action" model="ir.actions.act_window">
-        <field name="name">Contract Full Time</field>
+        <field name="name">Full Time Contract</field>
         <field name="res_model">l10n_be.hr.payroll.exit.credit.time.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

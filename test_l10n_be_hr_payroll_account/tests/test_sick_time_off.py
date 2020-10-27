@@ -1095,6 +1095,7 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
             'ip': True,
             'ip_wage_rate': 25.0,
             'time_credit': True,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'work_time_rate': "0.8",
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0

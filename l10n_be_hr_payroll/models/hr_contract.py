@@ -68,11 +68,13 @@ class HrContract(models.Model):
     ip = fields.Boolean('IP', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
-    time_credit = fields.Boolean('Credit time', readonly=False, help='This is a credit time contract.')
+    time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
     work_time_rate = fields.Float(string='Work time rate', readonly=False, help='Work time rate versus full time working schedule.')
-    time_credit_full_time_wage = fields.Monetary('Full Time Wage', compute='_compute_time_credit_full_time_wage',
+    time_credit_full_time_wage = fields.Monetary('Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
                                                  store=True, readonly=False, default=0)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
+    time_credit_type_id = fields.Many2one('hr.work.entry.type', string='Part Time Work Entry Type', readonly=True,
+                                              help="The work entry type used when generating work entries to fit full time working schedule.")
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
@@ -204,7 +206,7 @@ class HrContract(models.Model):
     def _get_contract_credit_time_values(self, date_start, date_stop):
         self.ensure_one()
         contract_vals = []
-        if not self.time_credit:
+        if not self.time_credit or not self.time_credit_type_id:
             return contract_vals
 
         employee = self.employee_id
@@ -229,7 +231,7 @@ class HrContract(models.Model):
         credit_time_intervals = standard_attendances - attendances
 
         for interval in credit_time_intervals:
-            work_entry_type_id = self.structure_type_id.time_credit_type_id
+            work_entry_type_id = self.time_credit_type_id
             contract_vals += [{
                 'name': "%s: %s" % (work_entry_type_id.name, employee.name),
                 'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),

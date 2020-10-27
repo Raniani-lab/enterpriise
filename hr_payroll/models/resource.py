@@ -11,7 +11,7 @@ class ResourceCalendar(models.Model):
     hours_per_week = fields.Float(compute="_compute_hours_per_week", string="Hours per Week", store=True)
     full_time_required_hours = fields.Float(string="Fulltime Hours", help="Number of hours to work to be considered as fulltime.")
     is_fulltime = fields.Boolean(compute='_compute_is_fulltime', string="Is Full Time")
-    work_time_rate = fields.Float(string='Work time rate', compute='_compute_work_time_rate', help='Work time rate versus full time working schedule, should be between 0 and 100 %.')
+    work_time_rate = fields.Float(string='Work Time Rate', compute='_compute_work_time_rate', help='Work time rate versus full time working schedule, should be between 0 and 100 %.')
 
     @api.depends('attendance_ids.hour_from', 'attendance_ids.hour_to')
     def _compute_hours_per_week(self):

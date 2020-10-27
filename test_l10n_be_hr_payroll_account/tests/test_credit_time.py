@@ -97,6 +97,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
 
         wizard = self.env['l10n_be.hr.payroll.credit.time.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
             'contract_id': self.original_contract.id,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
             'resource_calendar_id': new_calendar.id
@@ -191,6 +192,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
 
         wizard = self.env['l10n_be.hr.payroll.credit.time.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
             'contract_id': self.original_contract.id,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
             'resource_calendar_id': new_calendar.id
@@ -732,6 +734,7 @@ class TestClassicCreditTime(AccountTestInvoicingCommon):
             'ip_wage_rate': 25.0,
             'time_credit': True,
             'work_time_rate': 0.8,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])
@@ -1205,6 +1208,7 @@ class TestCreditTimePaidTimeOff(AccountTestInvoicingCommon):
             'ip_wage_rate': 25.0,
             'time_credit': True,
             'work_time_rate': 0.8,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])
@@ -1679,6 +1683,7 @@ class TestCreditTimeUnpaid(AccountTestInvoicingCommon):
             'ip_wage_rate': 25.0,
             'time_credit': True,
             'work_time_rate': 0.8,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])
@@ -2153,6 +2158,7 @@ class TestCreditTimeSick(AccountTestInvoicingCommon):
             'ip_wage_rate': 25.0,
             'time_credit': True,
             'work_time_rate': 0.8,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])
@@ -2495,6 +2501,7 @@ class TestCreditTimeFullTime(AccountTestInvoicingCommon):
             'ip_wage_rate': 25.0,
             'time_credit': True,
             'work_time_rate': 0.0,
+            'time_credit_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])

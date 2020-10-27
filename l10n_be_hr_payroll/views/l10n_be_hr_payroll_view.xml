@@ -20,13 +20,17 @@
             <xpath expr="//div[@name='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
             </xpath>
-            <xpath expr="//field[@name='resource_calendar_id']" position="after">
-                <field name="time_credit" attrs="{'invisible': [('time_credit', '=', False)]}"/>
-                <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
+            <xpath expr="//field[@name='resource_calendar_id']/parent::div" position="after">
+                <label for="time_credit"/>
+                <div class="o_row">
+                    <field name="time_credit"/>
+                    <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
+                </div>
+                <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)]}"/>
             </xpath>
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
-                <button name="%(credit_time_wizard_action)d" string="Credit Time"
+                <button name="%(credit_time_wizard_action)d" string="Part Time"
                         attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', True)]}"
                         type="action" groups="hr_contract.group_hr_contract_manager"/>
                 <button name="%(exit_credit_time_wizard_action)d" string="Full Time"

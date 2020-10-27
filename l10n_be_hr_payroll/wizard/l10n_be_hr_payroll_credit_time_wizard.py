@@ -22,9 +22,9 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
     contract_id = fields.Many2one('hr.contract', string='Contract', default=lambda self: self.env.context.get('active_id'))
     company_id = fields.Many2one(related="contract_id.company_id", readonly=True)
     employee_id = fields.Many2one(related='contract_id.employee_id')
-    date_start = fields.Date('Start Date', help="Start date of the credit time contract.", required=True)
+    date_start = fields.Date('Start Date', help="Start date of the part time contract.", required=True)
     date_end = fields.Date('End Date', required=True,
-        help="Last day included of the credit time contract.")
+        help="Last day included of the part time contract.")
 
     resource_calendar_id = fields.Many2one(
         'resource.calendar', 'New Working Schedule', required=True,
@@ -33,7 +33,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
     wage = fields.Monetary(
         compute='_compute_wage', store=True, readonly=False,
         string='New Wage', required=True,
-        help="Employee's monthly gross wage in credit time.")
+        help="Employee's monthly gross wage in part time.")
     currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
 
     work_time = fields.Float(related="resource_calendar_id.work_time_rate", readonly=True)
@@ -43,6 +43,11 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         "hr.leave.type", string="Time Off Type", required=True,
         domain=[('valid', '=', True), ('allocation_type', '!=', 'no')])
     leave_allocation_id = fields.Many2one('hr.leave.allocation')
+    time_credit_type_id = fields.Many2one('hr.work.entry.type', string='Part Time Work Entry Type',
+                                          domain=['&', ('is_leave', '=', True), ('leave_right', '=', False)],
+                                          help="The work entry type used when generating work entries to fit full time working schedule.",
+                                          required=True,
+                                          default=lambda self: self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time'))
 
     @api.depends('work_time')
     def _compute_wage(self):
@@ -91,9 +96,9 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         if self.date_start > self.date_end:
             raise ValidationError(_('Start date must be earlier than end date.'))
         if self.contract_id.date_end and self.contract_id.date_end < self.date_start:
-            raise ValidationError(_('Current contract is finished before the start of credit time period.'))
+            raise ValidationError(_('Current contract is finished before the start of part time period.'))
         if self.contract_id.date_end and self.contract_id.date_end < self.date_end:
-            raise ValidationError(_('Current contract is finished before the end of credit time period.'))
+            raise ValidationError(_('Current contract is finished before the end of part time period.'))
 
         credit_time_contract = self.contract_id.copy({
             'name': _('%s - Credit Time %.0f%%') % (self.contract_id.name, self.work_time),  # TODO: [XBO] replace %.0f%% by %s when work_time is like this 4/5, 1/2 or 9/10 instead of a percentage.
@@ -106,6 +111,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'time_credit': True,
             'work_time_rate': self.work_time / 100,
             'state': 'draft',
+            'time_credit_type_id': self.time_credit_type_id.id if self.time_credit_type_id else None
         })
 
         if self.leave_allocation_id:
@@ -204,7 +210,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
         if self.date_end and self.date_start > self.date_end:
             raise ValidationError(_('Start date must be earlier than end date.'))
         if self.date_start < self.credit_time_contract_id.date_end:
-            raise ValidationError(_('Start date must be later than end date of credit time contract.'))
+            raise ValidationError(_('Start date must be later than end date of part time contract.'))
 
         full_time_contract = self.contract_id.copy({
             'date_start': self.date_start,
@@ -214,6 +220,7 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             'time_credit': False,
             'work_time_rate': False,
             'state': 'draft',
+            'time_credit_type_id': None
         })
 
         if self.leave_allocation_id.id:

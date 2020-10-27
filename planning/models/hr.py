@@ -39,16 +39,18 @@ class Employee(models.Model):
         result = {}
         for employee in self:
             if employee.user_id and employee.user_id.has_group('planning.group_planning_user'):
-                result[employee.id] = '/web?#action=planning.planning_action_open_shift'
+                result[employee.id] = '/web?date_start=%s&date_end=%s#action=planning.planning_action_open_shift&menu_id=' % (planning.date_start, planning.date_end)
             else:
                 result[employee.id] = '/planning/%s/%s' % (planning.access_token, employee.employee_token)
         return result
 
-    def _slot_get_url(self):
+    def _slot_get_url(self, slot):
         action_id = self.env.ref('planning.planning_action_open_shift').id
         menu_id = self.env.ref('planning.planning_menu_root').id
         dbname = self.env.cr.dbname or [''],
-        link = "/web?#action=%s&model=planning.slot&menu_id=%s&db=%s" % (action_id, menu_id, dbname[0])
+        start_date = slot.start_datetime.date() if slot else ''
+        end_date = slot.end_datetime.date() if slot else ''
+        link = "/web?date_start=%s&date_end=%s#action=%s&model=planning.slot&menu_id=%s&db=%s" % (start_date, end_date, action_id, menu_id, dbname[0])
         return {employee.id: link for employee in self}
 
     @api.depends('default_planning_role_id')

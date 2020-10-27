@@ -838,7 +838,7 @@ class Planning(models.Model):
         self.ensure_one()
 
         template = self.env.ref('planning.email_template_slot_single')
-        employee_url_map = {**employee_without_backend.sudo()._planning_get_url(planning), **employee_with_backend._slot_get_url()}
+        employee_url_map = {**employee_without_backend.sudo()._planning_get_url(planning), **employee_with_backend._slot_get_url(self)}
 
         view_context = dict(self._context)
         view_context.update({
@@ -914,15 +914,22 @@ class PlanningPlanning(models.Model):
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
     slot_ids = fields.Many2many('planning.slot')
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
+    date_start = fields.Date('Date Start', compute='_compute_dates')
+    date_end = fields.Date('Date End', compute='_compute_dates')
+
+    @api.depends('start_datetime', 'end_datetime')
+    @api.depends_context('uid')
+    def _compute_dates(self):
+        tz = pytz.timezone(self.env.user.tz or 'UTC')
+        for planning in self:
+            planning.date_start = pytz.utc.localize(planning.start_datetime).astimezone(tz).replace(tzinfo=None)
+            planning.date_end = pytz.utc.localize(planning.end_datetime).astimezone(tz).replace(tzinfo=None)
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_display_name(self):
         """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
         for planning in self:
-            tz = pytz.timezone(self.env.user.tz or 'UTC')
-            start_datetime = pytz.utc.localize(planning.start_datetime).astimezone(tz).replace(tzinfo=None)
-            end_datetime = pytz.utc.localize(planning.end_datetime).astimezone(tz).replace(tzinfo=None)
-            planning.display_name = _('Planning from %s to %s') % (format_date(self.env, start_datetime), format_date(self.env, end_datetime))
+            planning.display_name = _('Planning from %s to %s') % (format_date(self.env, planning.date_start), format_date(self.env, planning.date_end))
 
     # ----------------------------------------------------
     # Business Methods
@@ -952,9 +959,8 @@ class PlanningPlanning(models.Model):
                 for employee in self.env['hr.employee.public'].browse(employees.ids):
                     if employee.work_email:
                         template_context['employee'] = employee
-                        destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
-                        template_context['start_datetime'] = pytz.utc.localize(planning.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
-                        template_context['end_datetime'] = pytz.utc.localize(planning.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
+                        template_context['start_datetime'] = planning.date_start
+                        template_context['end_datetime'] = planning.date_end
                         template_context['planning_url'] = employee_url_map[employee.id]
                         template_context['assigned_new_shift'] = bool(slots.filtered(lambda slot: slot.employee_id.id == employee.id))
                         template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, notif_layout='mail.mail_notification_light')

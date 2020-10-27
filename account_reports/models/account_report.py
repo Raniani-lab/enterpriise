@@ -537,10 +537,17 @@ class AccountReport(models.AbstractModel):
                     hierarchy[code[0]]['id'] = 'hierarchy_' + str(code[0])
                     hierarchy[code[0]]['name'] = code[1]
                     for i, column in enumerate(line['columns']):
-                        if isinstance(column.get('no_format_name', 0), (int, float)):
+                        if 'no_format_name' in column:
+                            no_format = column['no_format_name']
+                        elif 'no_format' in column:
+                            no_format = column['no_format']
+                        else:
+                            no_format = None
+                        if isinstance(no_format, (int, float)):
                             if hierarchy[code[0]]['totals'][i] is None:
-                                hierarchy[code[0]]['totals'][i] = 0
-                            hierarchy[code[0]]['totals'][i] += column.get('no_format_name', 0)
+                                hierarchy[code[0]]['totals'][i] = no_format
+                            else:
+                                hierarchy[code[0]]['totals'][i] += no_format
                 for code, child in zip(codes[:-1], codes[1:]):
                     hierarchy[code[0]]['children_codes'].add(child[0])
                     hierarchy[child[0]]['parent_id'] = hierarchy[code[0]]['id']

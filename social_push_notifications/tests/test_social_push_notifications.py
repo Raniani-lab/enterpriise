@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
 import datetime
 from firebase_admin import messaging
 
@@ -15,7 +16,10 @@ class SocialPushNotificationsCase(SocialCase):
     @classmethod
     def setUpClass(cls):
         super(SocialPushNotificationsCase, cls).setUpClass()
-        cls.social_accounts.write({'firebase_use_own_account': True})
+        cls.social_accounts.write({
+            'firebase_use_own_account': True,
+            'firebase_admin_key_file': base64.b64encode(b'My attachment')
+        })
 
     def test_post(self):
         # Create some visitors with or without push_token in different timezone (or no timezone)

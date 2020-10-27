@@ -504,6 +504,14 @@ msgid "You can't delete a Push Notification account."
 msgstr ""
 
 #. module: social_push_notifications
+#: code:addons/social_push_notifications/models/social_account.py:0
+#, python-format
+msgid ""
+"You have to either install \"firebase_admin>=2.17.0\" or "
+"\"google_auth>=1.18.0\" to be able to send push notifications."
+msgstr ""
+
+#. module: social_push_notifications
 #. openerp-web
 #: code:addons/social_push_notifications/static/src/js/push_preview.js:0
 #, python-format

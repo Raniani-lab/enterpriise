@@ -9,7 +9,7 @@
     'description': """Send live notifications to your web visitors""",
     'depends': ['social', 'website'],
     'external_dependencies': {
-        'python': ['firebase_admin'],
+        'python': ['google_auth'],
     },
     'data': [
         'security/ir.model.access.csv',

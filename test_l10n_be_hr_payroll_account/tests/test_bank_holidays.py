@@ -991,10 +991,10 @@ class TestBankHolidayHalfDays(AccountTestInvoicingCommon):
         self.assertEqual(len(self.payslip.input_line_ids), 0)
         self.assertEqual(len(self.payslip.line_ids), 19)
 
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[0].amount, 288.12, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[0].amount, 57.94, places=2)
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[1].amount, 64.37, places=2)
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[2].amount, 244.62, places=2)
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[3].amount, 2052.89, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[3].amount, 2283.08, places=2)
 
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[0].number_of_days, 1.0, places=2)
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[1].number_of_days, 1.0, places=2)

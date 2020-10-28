@@ -143,11 +143,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_original_contract.contract_id, self.original_contract)
         self.assertEqual(len(payslip_original_contract.worked_days_line_ids), 2) # One attendance line, One out of contract
         attendance_line = payslip_original_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 369.23, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 409.09, places=2)
         self.assertEqual(attendance_line.number_of_days, 3.0)
         self.assertAlmostEqual(attendance_line.number_of_hours, 22.8, places=2)
         out_of_contract_line = payslip_original_contract.worked_days_line_ids[1]
-        self.assertEqual(out_of_contract_line.amount, 2630.77)
+        self.assertEqual(out_of_contract_line.amount, 0)
         self.assertEqual(out_of_contract_line.number_of_days, 19.0)
         self.assertEqual(float_compare(out_of_contract_line.number_of_hours, 144.4, 2), 0)
 
@@ -243,26 +243,26 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_original_contract.contract_id, self.original_contract)
         self.assertEqual(len(payslip_original_contract.worked_days_line_ids), 2) # One attendance line, One out of contract
         attendance_line = payslip_original_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 369.23, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 409.09, places=2)
         self.assertEqual(attendance_line.number_of_days, 3.0)
         self.assertAlmostEqual(attendance_line.number_of_hours, 22.8, places=2)
         out_of_contract_line = payslip_original_contract.worked_days_line_ids[1]
-        self.assertEqual(out_of_contract_line.amount, 2630.77)
+        self.assertEqual(out_of_contract_line.amount, 0.0)
         self.assertEqual(out_of_contract_line.number_of_days, 19.0)
         self.assertEqual(float_compare(out_of_contract_line.number_of_hours, 144.4, 2), 0)
 
         payslip_results = {
-            'BASIC': 369.23,
+            'BASIC': 409.09,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
             'ATN.LAP': 7.0,
-            'SALARY': 378.23,
-            'ONSS': -49.43,
-            'EmpBonus.1': 49.43,
+            'SALARY': 418.09,
+            'ONSS': -54.64,
+            'EmpBonus.1': 54.64,
             'ATN.CAR': 141.14,
-            'GROSSIP': 526.37,
-            'IP.PART': -92.31,
-            'GROSS': 434.07,
+            'GROSSIP': 566.23,
+            'IP.PART': -102.27,
+            'GROSS': 463.96,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -274,9 +274,9 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'PUB.TRANS': 24.0,
             'CAR.PRIV': 55.0,
             'REP.FEES': 150.0,
-            'IP': 92.31,
-            'IP.DED': -6.0,
-            'NET': 588.96
+            'IP': 102.27,
+            'IP.DED': -6.65,
+            'NET': 628.18
         }
         error = []
         for code, value in payslip_results.items():
@@ -290,11 +290,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_new_contract.contract_id, new_contract)
         self.assertEqual(len(payslip_new_contract.worked_days_line_ids), 3) # Attendance, credit time, out of contract
         attendance_line = payslip_new_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 1984.62, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 2072.73, places=2)
         self.assertEqual(attendance_line.number_of_days, 16.0)
         self.assertEqual(float_compare(attendance_line.number_of_hours, 121.6, 2), 0)
         out_of_contract_line = payslip_new_contract.worked_days_line_ids[1]
-        self.assertEqual(out_of_contract_line.amount, 415.38)
+        self.assertEqual(out_of_contract_line.amount, 0.0)
         self.assertEqual(out_of_contract_line.number_of_days, 3)
         self.assertEqual(float_compare(out_of_contract_line.number_of_hours, 22.8, 2), 0)
         credit_time_line = payslip_new_contract.worked_days_line_ids[2]
@@ -303,31 +303,31 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(float_compare(credit_time_line.number_of_hours, 22.8, 2), 0)
 
         payslip_results = {
-            'BASIC': 1984.62,
+            'BASIC': 2072.73,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
             'ATN.LAP': 7.0,
-            'SALARY': 1993.62,
-            'ONSS': -260.57,
-            'EmpBonus.1': 124.39,
-            'ATN.CAR': 141.14000000000001,
-            'GROSSIP': 2005.58,
-            'IP.PART': -496.15,
-            'GROSS': 1509.43,
-            'P.P': -92.28,
-            'P.P.DED': 41.22,
+            'SALARY': 2081.73,
+            'ONSS': -272.08,
+            'EmpBonus.1': 105.06,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2062.85,
+            'IP.PART': -518.18,
+            'GROSS': 1544.67,
+            'P.P': -105.12,
+            'P.P.DED': 34.82,
             'ATN.CAR.2': -141.14000000000001,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'ATN.LAP.2': -7.0,
-            'M.ONSS': -2.98,
+            'M.ONSS': -9.68,
             'MEAL_V_EMP': -17.44,
             'PUB.TRANS': 24.0,
             'CAR.PRIV': 55.0,
             'REP.FEES': 150.0,
-            'IP': 496.15,
-            'IP.DED': -32.33,
-            'NET': 1973.64,
+            'IP': 518.18,
+            'IP.DED': -33.76,
+            'NET': 2003.52,
         }
 
         error = []

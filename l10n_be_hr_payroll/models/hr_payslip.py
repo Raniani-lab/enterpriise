@@ -37,7 +37,7 @@ class Payslip(models.Model):
             to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
             to_add_vals = [(0, 0, {
                 'amount': commission_value,
-                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_commission')
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_commission').id
             })]
             input_line_vals = to_remove_vals + to_add_vals
             self.update({'input_line_ids': input_line_vals})
@@ -52,7 +52,7 @@ class Payslip(models.Model):
             to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
             to_add_vals = [(0, 0, {
                 'amount': warrant_value,
-                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant').id
             })]
             input_line_vals = to_remove_vals + to_add_vals
             self.update({'input_line_ids': input_line_vals})
@@ -139,18 +139,65 @@ class Payslip(models.Model):
         # If there is a public holiday less than 30 days after the end of the contract
         # this public holiday should be taken into account in the worked days lines
         if self.contract_id.date_end and self.date_from <= self.contract_id.date_end <= self.date_to:
+            after_contract_public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_after_contract_public_holiday', raise_if_not_found=False)
+            # YTI TODO master: This condition could be dropped (fix in stable release)
+            if not after_contract_public_holiday_type:
+                return res
             public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday')
             public_leaves = self.contract_id.resource_calendar_id.global_leave_ids.filtered(
-                lambda l: l.work_entry_type_id == public_holiday_type \
-                    and (self.contract_id.date_end - l.date_from.date()).days <= 30)
+                lambda l: l.work_entry_type_id == public_holiday_type)
+            # If less than 15 days under contract, the public holidays is not reimbursed
+            public_leaves = public_leaves.filtered(
+                lambda l: (l.date_from.date() - self.employee_id.first_contract_date).days >= 15)
+            # If less than 15 days of occupation -> no payment of the time off after contract
+            # If less than 1 month of occupation -> payment of the time off occurring within 15 days after contract.
+            # Occupation = duration since the start of the contract, from date to date
+            public_leaves = public_leaves.filtered(
+                lambda l: (self.contract_id.date_end - l.date_from.date()).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= l.date_from.date() else 15))  
             if public_leaves:
                 res.append({
-                    'sequence': public_holiday_type.sequence,
-                    'work_entry_type_id': public_holiday_type.id,
+                    'sequence': after_contract_public_holiday_type.sequence,
+                    'work_entry_type_id': after_contract_public_holiday_type.id,
                     'number_of_days': len(public_leaves),
                     'number_of_hours': self.contract_id.resource_calendar_id.hours_per_day * len(public_leaves),
                 })
+        # Handle loss on commissions
+        if self.contract_id.commission_on_target:
+            we_types_ids = (
+                self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday') + self.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment')
+            ).ids
+            # if self.worked_days_line_ids.filtered(lambda wd: wd.code in ['LEAVE205', 'LEAVE500']):
+            if any(line_vals['work_entry_type_id'] in we_types_ids for line_vals in res):
+                we_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_simple_holiday_pay_variable_salary')
+                res.append({
+                    'sequence': we_type.sequence,
+                    'work_entry_type_id': we_type.id,
+                    'number_of_days': 0,
+                    'number_of_hours': 0,
+                })
         return res
+
+    def _get_last_year_average_variable_revenues(self):
+        if not self.contract_id.commission_on_target:
+            return 0
+        commission_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
+        payslips = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('struct_id', '=', commission_structure.id),
+            ('state', '=', 'done'),
+            ('date_from', '>=', self.date_from + relativedelta(months=-12)),
+        ], order="date_from asc")
+        complete_payslips = payslips.filtered(
+            lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
+        total_amount = sum(p._get_salary_line_total('COM') for p in complete_payslips)
+        first_contract_date = self.employee_id.first_contract_date
+        # Only complete months count
+        if first_contract_date.day != 1:
+            start = first_contract_date + relativedelta(day=1, months=1)
+        end = self.date_from + relativedelta(day=31, months=-1)
+        number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
+        number_of_month = min(12, number_of_month)
+        return total_amount / number_of_month if number_of_month else 0
 
     def _get_credit_time_lines(self):
         lines_vals = self._get_worked_day_lines(domain=[('is_credit_time', '=', True)], check_out_of_contract=False)
@@ -180,7 +227,6 @@ class Payslip(models.Model):
         else:
             return [(5, False, False)]
 
-
     def _get_base_local_dict(self):
         res = super()._get_base_local_dict()
         res.update({
@@ -192,6 +238,8 @@ class Payslip(models.Model):
             'compute_double_holiday_withholding_taxes': compute_double_holiday_withholding_taxes,
             'compute_thirteen_month_withholding_taxes': compute_thirteen_month_withholding_taxes,
             'compute_withholding_reduction': compute_withholding_reduction,
+            'compute_withholding_taxes_adjustment': compute_withholding_taxes_adjustment,
+            'compute_special_social_cotisations_commissions': compute_special_social_cotisations_commissions,
         })
         return res
 
@@ -252,13 +300,14 @@ class Payslip(models.Model):
 
     def _get_paid_amount(self):
         self.ensure_one()
-        if self.struct_id.country_id.code == "BE":
+        belgian_payslip = self.struct_id.country_id.code == "BE"
+        if belgian_payslip:
             struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
             if self.struct_id == struct_13th_month:
                 return self._get_paid_amount_13th_month()
             if self.worked_days_line_ids and not self.wage_type == "hourly":
                 ratio = self._get_paid_unpaid_ratio()
-                return self.contract_id._get_contract_wage() * ratio
+                return self.contract_id._get_contract_wage() * ratio + self._get_worked_days_line_amount('LEAVE1731')
             struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
@@ -268,14 +317,28 @@ class Payslip(models.Model):
         self.ensure_one()
         if self.env.context.get('salary_simulation'):
             return 1
+        # Out of contract ratio
+        out_wd = self.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
+        if out_wd:
+            after_contract_public_holiday_wd = out_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE510')
+            after_contract_public_holiday_hours = sum(after_contract_public_holiday_wd.mapped('number_of_hours'))
+            out_hours = sum([wd.number_of_hours for wd in out_wd])
+            remaining_hours = sum([wd.number_of_hours for wd in self.worked_days_line_ids - out_wd]) - after_contract_public_holiday_hours
+            out_ratio = remaining_hours / (out_hours + remaining_hours)
+        else:
+            out_ratio = 1
+        # Hourly formula ratio
         calendar = self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id
         hours_per_week = calendar.hours_per_week
-        mapped_data = {wd.work_entry_type_id.id: wd.number_of_hours for wd in self.worked_days_line_ids}
+        mapped_data = defaultdict(lambda: 0)
+        for wd in self.worked_days_line_ids - out_wd:
+            mapped_data[wd.work_entry_type_id.id] += wd.number_of_hours
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids + self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
         unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
         # Paid Wage = Wage - Wage * (3 / 13 / 38) * unpaid_hours
         #           = Wage * (1 - 3 / (13 * 38) * unpaid_hours)
-        return 1 - 3 / (13 * hours_per_week) * unpaid_hours if hours_per_week else 0
+        hourly_ratio = 1 - 3 / (13 * hours_per_week) * unpaid_hours if hours_per_week else 0
+        return out_ratio * hourly_ratio
 
     def _is_invalid(self):
         invalid = super()._is_invalid()
@@ -519,3 +582,127 @@ def compute_withholding_reduction(payslip, categories, worked_days, inputs):
     if categories.EmpBonus:
         return min(abs(categories.PP), categories.EmpBonus * 0.3314)
     return 0.0
+
+# YTI TODO master: Duplicated code due to stable development. the method signature could be changed
+# and cleaned afterward
+def compute_withholding_taxes_adjustment(payslip, categories, worked_days, inputs):
+
+    def compute_basic_bareme(value):
+        rates = payslip.rule_parameter('basic_bareme_rates')
+        rates = [(limit or float('inf'), rate) for limit, rate in rates]  # float('inf') because limit equals None for last level
+        rates = sorted(rates)
+
+        basic_bareme = 0
+        previous_limit = 0
+        for limit, rate in rates:
+            basic_bareme += max(min(value, limit) - previous_limit, 0) * rate
+            previous_limit = limit
+        return float_round(basic_bareme, precision_rounding=0.01)
+
+    def convert_to_month(value):
+        return float_round(value / 12.0, precision_rounding=0.01, rounding_method='DOWN')
+
+    employee = payslip.contract_id.employee_id
+    # PART 1: Withholding tax amount computation
+    withholding_tax_amount = 0.0
+    lower_bound = categories.BASIC - categories.BASIC % 15
+
+    # yearly_gross_revenue = Revenu Annuel Brut
+    yearly_gross_revenue = lower_bound * 12.0
+
+    # yearly_net_taxable_amount = Revenu Annuel Net Imposable
+    if yearly_gross_revenue <= payslip.rule_parameter('yearly_gross_revenue_bound_expense'):
+        yearly_net_taxable_revenue = yearly_gross_revenue * (1.0 - 0.3)
+    else:
+        yearly_net_taxable_revenue = yearly_gross_revenue - payslip.rule_parameter('expense_deduction')
+
+    # BAREME III: Non resident
+    if employee.resident_bool:
+        basic_bareme = compute_basic_bareme(yearly_net_taxable_revenue)
+        withholding_tax_amount = convert_to_month(basic_bareme)
+    else:
+        # BAREME I: Isolated or spouse with income
+        if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income'):
+            basic_bareme = max(compute_basic_bareme(yearly_net_taxable_revenue) - payslip.rule_parameter('deduct_single_with_income'), 0.0)
+            withholding_tax_amount = convert_to_month(basic_bareme)
+
+        # BAREME II: spouse without income
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
+            yearly_net_taxable_revenue_for_spouse = min(yearly_net_taxable_revenue * 0.3, payslip.rule_parameter('max_spouse_income'))
+            basic_bareme_1 = compute_basic_bareme(yearly_net_taxable_revenue_for_spouse)
+            basic_bareme_2 = compute_basic_bareme(yearly_net_taxable_revenue - yearly_net_taxable_revenue_for_spouse)
+            withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
+
+    # Reduction for isolated people and for other family charges
+    if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
+        if employee.marital in ['divorced', 'single', 'widower']:
+            withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+        if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+        if employee.disabled:
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+        if employee.other_dependent_people and employee.dependent_seniors:
+            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+        if employee.other_dependent_people and employee.dependent_juniors:
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
+            withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
+            withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
+    if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
+        if employee.disabled:
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+        if employee.disabled_spouse_bool:
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+        if employee.other_dependent_people and employee.dependent_seniors:
+            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+        if employee.other_dependent_people and employee.dependent_juniors:
+            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+
+    # Child Allowances
+    n_children = employee.dependent_children
+    if n_children > 0:
+        children_deduction = payslip.rule_parameter('dependent_basic_children_deduction')
+        if n_children <= 8:
+            withholding_tax_amount -= children_deduction.get(n_children, 0.0)
+        if n_children > 8:
+            withholding_tax_amount -= children_deduction.get(8, 0.0) + (n_children - 8) * payslip.rule_parameter('dependent_children_deduction')
+
+    if payslip.contract_id.fiscal_voluntarism:
+        voluntary_amount = categories.GROSS * payslip.contract_id.fiscal_voluntary_rate / 100
+        if voluntary_amount > withholding_tax_amount:
+            withholding_tax_amount = voluntary_amount
+
+    return - max(withholding_tax_amount, 0.0)
+
+def compute_special_social_cotisations_commissions(payslip, categories, worked_days, inputs):
+    employee = payslip.contract_id.employee_id
+    wage = categories.GROSS
+    result = 0.0
+    if not wage:
+        return result
+    if employee.resident_bool:
+        result = 0.0
+    elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
+        if 0.01 <= wage <= 1095.09:
+            result = 0.0
+        elif 1095.10 <= wage <= 1945.38:
+            result = 0.0
+        elif 1945.39 <= wage <= 2190.18:
+            result = -min((wage - 1945.38) * 0.076, 18.60)
+        elif 2190.19 <= wage <= 6038.82:
+            result = -min(18.60 + (wage - 2190.18) * 0.011, 60.94)
+        else:
+            result = -60.94
+    elif employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
+        if 0.01 <= wage <= 1095.09:
+            result = 0.0
+        elif 1095.10 <= wage <= 1945.38:
+            result = -9.30
+        elif 1945.39 <= wage <= 2190.18:
+            result = -min(max((wage - 1945.38) * 0.076, 9.30), 18.60)
+        elif 2190.19 <= wage <= 6038.82:
+            result = -min(18.60 + (wage - 2190.18) * 0.011, 51.64)
+        else:
+            result = -51.64
+    return result

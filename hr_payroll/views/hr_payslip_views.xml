@@ -243,7 +243,7 @@
                                 <field name="name"/>
                                 <field name="number_of_days" sum="Total Working Days" readonly="1" force_save="1"/>
                                 <field name="number_of_hours" readonly="1" force_save="1"/>
-                                <field name="amount" readonly="1" force_save="1"/>
+                                <field name="amount" readonly="1" sum="Total Amount" force_save="1"/>
                                 <field name="is_paid" invisible="True" readonly="1" force_save="1"/>
                                 <field name="sequence" invisible="True" readonly="1" force_save="1"/>
                             </tree>

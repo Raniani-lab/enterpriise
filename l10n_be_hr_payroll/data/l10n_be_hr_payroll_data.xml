@@ -119,6 +119,12 @@
         <field name="is_leave">True</field>
     </record>
 
+    <record id="work_entry_type_after_contract_public_holiday" model="hr.work.entry.type">
+        <field name="name">After Contract Public Holiday</field>
+        <field name="code">LEAVE510</field>
+        <field name="is_leave">True</field>
+    </record>
+
     <record id="work_entry_type_solicitation_time_off" model="hr.work.entry.type">
         <field name="name">Solicitation Time Off</field>
         <field name="code">LEAVE600</field>

@@ -315,6 +315,7 @@ class HrContract(models.Model):
             sick_less_than_30days_before = self.env['hr.leave'].search([
                 ('employee_id', '=', self.employee_id.id),
                 ('date_to', '>=', leave.date_from + relativedelta(days=-30)),
+                ('date_from', '<=', leave.holiday_id.date_from),
                 ('holiday_status_id.work_entry_type_id', 'in', sick_work_entry_types.ids),
                 ('state', '=', 'validate'),
                 ('id', '!=', leave.holiday_id.id),
@@ -322,7 +323,7 @@ class HrContract(models.Model):
             if not leave.holiday_id:
                 return result
             # The current time off is longer than 30 days -> Partial Time Off
-            if (date_from - leave.holiday_id.date_from).days > 30:
+            if (date_from - leave.holiday_id.date_from).days + 1 > 30:
                 return partial_sick_work_entry_type
             # No previous sick time off -> Sick Time Off
             if not sick_less_than_30days_before:
@@ -334,7 +335,22 @@ class HrContract(models.Model):
                 if (all_leaves[i+1].date_from - all_leaves[i].date_to).days > 15:
                     return result
             # No gap and more than 30 calendar days -> Partial Time Off
-            first_sick_leave = sick_less_than_30days_before[:1]
-            if date_from >= first_sick_leave.date_from + relativedelta(days=30):
+            # only the first 30 calendar days of sickness are covered by guaranteed wages, which
+            # does not mean 30 days of sickness.
+            # Example :
+            # - Sick from September 1 to 7 included
+            # - Rework from 8 to 14
+            # - Re-ill from September 15 to October 13
+            # Here, are therefore covered by guaranteed wages:
+            # from 01 to 07/09 (i.e. 7 days)
+            # from 15/09 to 07/10 (i.e. the balance of 23 days).
+            # In fact, we and public holidays which fall within a period covered by a medical
+            # certificate are taken into account in the period of 30 calendar days of guaranteed
+            # salary.
+            # Sick days from 08/10 are therefore not covered by the employer (mutual from 08/10
+            # to 13/10).
+            total_sick_days = sum([(l.date_to - l.date_from).days + 1 for l in sick_less_than_30days_before])
+            this_leave_current_duration = (date_from - leave.holiday_id.date_from).days + 1
+            if total_sick_days + this_leave_current_duration > 30:
                 return partial_sick_work_entry_type
         return result

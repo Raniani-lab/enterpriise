@@ -497,8 +497,8 @@ class TestHalfTime1DayPaidTimeOff(AccountTestInvoicingCommon):
 
         # 0 LEAVE120, 1-2 WORK100
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[0].amount, 122.31, places=2)
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[1].amount, 314.55, places=2)
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[2].amount, 888.14, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[1].amount, 305.77, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[2].amount, 896.92, places=2)
 
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[0].number_of_days, 1.0, places=2)
         self.assertAlmostEqual(self.payslip.worked_days_line_ids[1].number_of_days, 5.0, places=2)
@@ -774,8 +774,8 @@ class TestHalfTime1DayUnpaidTimeOff(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(self.payslip._get_worked_days_line_amount('LEAVE120'), 61.15, places=2)
         self.assertAlmostEqual(self.payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[2].amount, 298.56, places=2)
-        self.assertAlmostEqual(self.payslip.worked_days_line_ids[3].amount, 842.98, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[2].amount, 244.62, places=2)
+        self.assertAlmostEqual(self.payslip.worked_days_line_ids[3].amount, 896.92, places=2)
 
         self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_days('LEAVE120'), 1.0, places=2)
         self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_days('LEAVE90'), 1.0, places=2)

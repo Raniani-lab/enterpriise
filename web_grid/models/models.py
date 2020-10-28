@@ -450,13 +450,13 @@ class Base(models.AbstractModel):
         if span == 'week':
             user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
             week_start_map = {'1': MO(-1), '2': TU(-1), '3': WE(-1), '4': TH(-1), '5': FR(-1), '6': SA(-1), '7': SU(-1)}
-            return relativedelta(weekday=week_start_map.get(user_lang.week_start))
+            return relativedelta(weekday=week_start_map.get(user_lang.week_start, MO(-1)))
         return START_OF[span]
 
     def _get_start_of_week(self, span):
         user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
         week_start_map = {'1': MO(-1), '2': TU(-1), '3': WE(-1), '4': TH(-1), '5': FR(-1), '6': SA(-1), '7': SU(-1)}
-        week_start_delta = relativedelta(weekday=week_start_map.get(user_lang.week_start))
+        week_start_delta = relativedelta(weekday=week_start_map.get(user_lang.week_start, MO(-1)))
         if span == 'week':
             return week_start_delta
         return START_OF[span] + week_start_delta
@@ -465,13 +465,13 @@ class Base(models.AbstractModel):
         if span == 'week':
             user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
             week_end_map = {'1': SU, '2': MO, '3': TU, '4': WE, '5': TH, '6': FR, '7': SA}
-            return relativedelta(weekday=week_end_map.get(user_lang.week_start))
+            return relativedelta(weekday=week_end_map.get(user_lang.week_start, SU))
         return END_OF[span]
 
     def _get_end_of_week(self, span):
         user_lang = self.env['res.lang'].search([('code', '=', self.env.user.lang)])
         week_end_map = {'1': SU, '2': MO, '3': TU, '4': WE, '5': TH, '6': FR, '7': SA}
-        week_end_delta = relativedelta(weekday=week_end_map.get(user_lang.week_start))
+        week_end_delta = relativedelta(weekday=week_end_map.get(user_lang.week_start, SU))
         if span == 'week':
             return week_end_delta
         return END_OF[span] + week_end_delta

@@ -111,3 +111,17 @@ class TestReadGridDomainDate(TestWebGrid):
         self.assertEqual(week1_start_date4[0], "2019-06-24/2019-07-01")
         # Since the start_date for obj_2 is 2019-06-04, so it is the second week according to its domain
         self.assertEqual(result_read_grid.get('grid')[0][1].get('value'), self.grid_obj_2.resource_hours)  # resource_hours for grid_obj_2 is 4.0
+
+class TestReadGridDomainDateNoLang(TestWebGrid):
+    def test_read_grid_domain_date_no_lang(self):
+        """ Check that week start and week end are defined even when user has no lang """
+        field = "start_date"
+        grid_anchor = '2019-06-14'
+        self.env.user.lang = False
+
+        # For checking different span and step in week
+        domain_week = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week)
+        domain_week_2 = self.grid_obj_2.with_context(grid_anchor=grid_anchor).read_grid_domain(field, self.range_week_2)
+
+        self.assertEqual(domain_week, ['&', ('start_date', '>=', '2019-06-10'), ('start_date', '<=', '2019-06-16')])
+        self.assertEqual(domain_week_2, ['&', ('start_date', '>=', '2019-05-27'), ('start_date', '<=', '2019-06-30')])

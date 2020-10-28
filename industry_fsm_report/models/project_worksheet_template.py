@@ -104,7 +104,7 @@ class ProjectWorksheetTemplate(models.Model):
             'name': name + '_all',
             'model_id': model.id,
             'domain_force': [(1, '=', 1)],
-            'groups': [(6, 0, [self.env.ref('project.group_project_manager').id])]
+            'groups': [(6, 0, [self.env.ref('project.group_project_manager').id, self.env.ref('industry_fsm.group_fsm_user').id])]
         })
 
         # create the view to extend by 'studio' and add the user custom fields

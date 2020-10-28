@@ -2052,6 +2052,48 @@ tour.register('test_delivery_reserved_lots_1', {test: true}, [
 
 ]);
 
+tour.register('test_delivery_different_products_with_same_lot_name', {test: true}, [
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productlot2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+    // Open the form view to trigger a save
+    {
+        trigger: '.o_add_line',
+    },
+
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+    },
+
+]);
+
 tour.register('test_delivery_reserved_with_sn_1', {test: true}, [
     /* scan a product tracked by serial number. Then scan 4 a its serial numbers.
     */

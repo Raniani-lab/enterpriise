@@ -1412,9 +1412,24 @@ var ClientAction = AbstractAction.extend({
 
         var searchRead = function (barcode) {
             // Check before if it exists reservation with the lot.
-            var line_with_lot = _.find(self.currentState.move_line_ids, function (line) {
+            var lines_with_lot = _.filter(self.currentState.move_line_ids, function (line) {
                 return (line.lot_id && line.lot_id[1] === barcode) || line.lot_name === barcode;
             });
+            var line_with_lot;
+            if (lines_with_lot.length > 0) {
+                var line_index = 0;
+                // Get last scanned product if several products have the same lot name
+                var last_product = lines_with_lot.length > 1 && getProductFromLastScannedLine();
+                if (last_product) {
+                    var last_product_index = _.findIndex(lines_with_lot, function (line) {
+                        return line.product_id && line.product_id.id === last_product.id;
+                    });
+                    if (last_product_index > -1) {
+                        line_index = last_product_index;
+                    }
+                }
+                line_with_lot = lines_with_lot[line_index];
+            }
             var def;
             if (line_with_lot) {
                 def = Promise.resolve([{

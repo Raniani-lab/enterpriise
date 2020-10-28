@@ -727,6 +727,68 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[0].qty_done, 1)
         self.assertEqual(lines[1].qty_done, 2)
 
+    def test_delivery_different_products_with_same_lot_name(self):
+        clean_access_rights(self.env)
+        grp_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+
+        self.productlot2 = self.env['product.product'].create({
+            'name': 'productlot2',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'productlot2',
+            'tracking': 'lot',
+        })
+
+        delivery_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        url = self._get_client_action_url(delivery_picking.id)
+
+        move1 = self.env['stock.move'].create({
+            'name': 'test_delivery_different_products_with_same_lot_name_1',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.productlot1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': delivery_picking.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_delivery_different_products_with_same_lot_name_2',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.productlot2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': delivery_picking.id,
+        })
+
+        # Create 2 lots with the same name for productlot1 and productlot2
+        lot1 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lot2 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot2.id, 'company_id': self.env.company.id})
+
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 2, lot_id=lot1)
+        self.env['stock.quant']._update_available_quantity(self.productlot2, self.stock_location, 2, lot_id=lot2)
+
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        self.assertEqual(len(delivery_picking.move_lines), 2)
+
+        self.start_tour(url, 'test_delivery_different_products_with_same_lot_name', login='admin', timeout=180)
+
+        delivery_picking.invalidate_cache()
+        lines = delivery_picking.move_line_ids
+        self.assertEqual(lines[0].lot_id.name, 'lot1')
+        self.assertEqual(lines[0].product_id.name, 'productlot1')
+        self.assertEqual(lines[0].qty_done, 2)
+        self.assertEqual(lines[1].lot_id.name, 'lot1')
+        self.assertEqual(lines[1].product_id.name, 'productlot2')
+        self.assertEqual(lines[1].qty_done, 2)
+
     def test_delivery_from_scratch_sn_1(self):
         """ Scan unreserved serial number on a delivery order.
         """

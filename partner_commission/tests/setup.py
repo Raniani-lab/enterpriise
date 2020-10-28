@@ -36,7 +36,7 @@ class TestCommissionsSetup(TransactionCase):
 
         self.sale_journal = self.env['account.journal'].create({
             'name': 'sales',
-            'code': 'SAL',
+            'code': 'comSA',
             'type': 'sale',
         })
 

@@ -77,7 +77,7 @@ class ResPartner(models.Model):
                 ('company_id', '=', self.env.company.id),
                 ('commercial_partner_id', '=', record.id),
                 ('state', '=', 'posted'),
-                ('payment_state', '!=', 'paid'),
+                ('payment_state', 'not in', ('paid', 'in_payment')),
                 ('move_type', 'in', self.env['account.move'].get_sale_types())
             ])
 

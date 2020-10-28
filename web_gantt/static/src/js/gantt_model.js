@@ -465,7 +465,7 @@ var GanttModel = AbstractModel.extend({
                         groupedBy: groupedBy.slice(1),
                         groups: subGroups,
                         oldRows: params.oldRows,
-                        parentPath: row.path + '/',
+                        parentPath: row.path + '\n',
                         records: groupRecords,
                     });
                     row.childrenRowIds = [];

@@ -59,7 +59,7 @@ var TaskGanttModel = GanttModel.extend({
     _parsePath: function(path) {
         var values = {};
         if (path) {
-            var pathParts = path.split('/');
+            var pathParts = path.split('\n');
             var state = this.get();
             var groupby = state.groupedBy;
             _.each(groupby, function(fname, index) {

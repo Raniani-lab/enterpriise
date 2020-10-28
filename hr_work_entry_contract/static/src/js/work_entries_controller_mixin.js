@@ -1,7 +1,11 @@
 odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require) {
     'use strict';
 
+    var core = require('web.core');
     var time = require('web.time');
+
+    var _t = core._t;
+    var QWeb = core.qweb;
 
     /*
         This mixin implements the behaviours necessary to generate and validate work entries and Payslips
@@ -33,6 +37,7 @@ odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require)
          */
         _update: function () {
             var self = this;
+            self._renderRegenerateWorkEntryButton();
             return this._super.apply(this, arguments).then(function () {
                 self.firstDay = self._fetchFirstDay().toDate();
                 self.lastDay = self._fetchLastDay().toDate();
@@ -45,6 +50,16 @@ odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require)
         /*
             Private
         */
+        _renderRegenerateWorkEntryButton: function () {
+            if (this.modelName !== "hr.work.entry") {
+                return;
+            }
+            this.$buttons.append(QWeb.render('hr_work_entry.work_entry_button', {
+                button_text: _t("Regenerate Work Entries"),
+                event_class: 'btn-regenerate-work-entries',
+            }));
+            this.$buttons.find('.btn-regenerate-work-entries').on('click', this._onRegenerateWorkEntries.bind(this));
+        },
 
         _generateWorkEntries: function () {
             var self = this;
@@ -57,6 +72,21 @@ odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require)
                     self.reload();
                 }
             });
+        },
+
+        _regenerateWorkEntries: function () {
+            this.do_action('hr_work_entry_contract.hr_work_entry_regeneration_wizard_action', {
+                additional_context: {
+                    date_start: time.date_to_str(this.firstDay),
+                    date_end: time.date_to_str(this.lastDay),
+                },
+            });
+        },
+
+        _onRegenerateWorkEntries: function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this._regenerateWorkEntries();
         },
 
     };

@@ -140,13 +140,17 @@ class HrContract(models.Model):
 
         return vals_list
 
-    def _generate_work_entries(self, date_start, date_stop):
+    def _generate_work_entries(self, date_start, date_stop, force=False):
         vals_list = []
 
         date_start = fields.Datetime.to_datetime(date_start)
         date_stop = datetime.combine(fields.Datetime.to_datetime(date_stop), datetime.max.time())
 
         for contract in self:
+            if force:
+                vals_list.extend(contract._get_work_entries_values(date_start, date_stop))
+                continue
+
             # In case the date_generated_from == date_generated_to, move it to the date_start to
             # avoid trying to generate several months/years of history for old contracts for which
             # we've never generated the work entries.

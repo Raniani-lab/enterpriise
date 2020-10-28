@@ -14,10 +14,12 @@
     ],
     'data': [
         'security/hr_work_entry_security.xml',
+        'security/ir.model.access.csv',
         'data/hr_work_entry_data.xml',
         'views/hr_work_entry_template.xml',
         'views/hr_work_entry_views.xml',
         'views/hr_payroll_menu.xml',
+        'wizard/hr_work_entry_regeneration_wizard_views.xml',
     ],
     'demo': [
         'data/hr_work_entry_demo.xml',

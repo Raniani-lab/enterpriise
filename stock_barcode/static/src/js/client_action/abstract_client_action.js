@@ -1485,8 +1485,29 @@ var ClientAction = AbstractAction.extend({
                 'package_id': lot_info.package_id,
             });
             if (res.isNewLine) {
-                self.scannedLines.push(res.lineDescription.virtual_id);
-                linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
+                function handle_line(){
+                    self.scannedLines.push(res.lineDescription.virtual_id);
+                    linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
+                }
+
+                if (self.actionParams.model === 'stock.inventory') {
+                    // TODO deduplicate: this code is almost the same as in _step_product
+                    return self._rpc({
+                        model: 'product.product',
+                        method: 'get_theoretical_quantity',
+                        args: [
+                            res.lineDescription.product_id.id,
+                            res.lineDescription.location_id.id,
+                            res.lineDescription.prod_lot_id[1],
+                        ],
+                    }).then(function (theoretical_qty) {
+                        res.lineDescription.theoretical_qty = theoretical_qty;
+                        handle_line();
+                        return Promise.resolve({linesActions: linesActions});
+                    });
+                }
+                handle_line();
+
             } else {
                 if (self.scannedLines.indexOf(res.lineDescription.id) === -1) {
                     self.scannedLines.push(res.lineDescription.id || res.lineDescription.virtual_id);

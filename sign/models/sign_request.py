@@ -344,7 +344,7 @@ class SignRequest(models.Model):
             public_user = self.env.user
         pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.id)
         attachment_log = self.env['ir.attachment'].create({
-            'name': "Activity Logs - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
+            'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
             'datas': base64.b64encode(pdf_content),
             'type': 'binary',
             'res_model': self._name,

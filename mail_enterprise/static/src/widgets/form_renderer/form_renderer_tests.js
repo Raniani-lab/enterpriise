@@ -107,7 +107,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     const allMessages = document.querySelectorAll('.o_MessageList_message');
     const lastMessage = allMessages[allMessages.length - 1];
 
-    const messageList = document.querySelector('.o_ThreadView_messageList');
+    const messageList = document.querySelector('.o_Chatter_scrollPanel');
     await afterNextRender(async () => {
         // This will trigger the DOM Event "scroll"
         messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
@@ -227,7 +227,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     await afterNextRender(() => this.afterEvent({
         eventName: 'o-thread-view-hint-processed',
         func: () => {
-            const messageList = document.querySelector('.o_ThreadView_messageList');
+            const messageList = document.querySelector('.o_Chatter_scrollPanel');
             messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
         },
         message: "should wait until partner 11 thread loaded more messages",
@@ -242,7 +242,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     await this.afterEvent({
         eventName: 'o-component-message-list-scrolled',
         func: () => {
-            const messageList = document.querySelector('.o_ThreadView_messageList');
+            const messageList = document.querySelector('.o_Chatter_scrollPanel');
             messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
         },
         message: "should wait until partner 11 thread scrolled to bottom",
@@ -250,7 +250,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
         },
     });
-    const messageList = document.querySelector('.o_ThreadView_messageList');
+    const messageList = document.querySelector('.o_Chatter_scrollPanel');
     assert.strictEqual(
         messageList.scrollTop,
         messageList.scrollHeight - messageList.clientHeight,

@@ -7,7 +7,7 @@ class account_journal(models.Model):
     def action_open_reconcile(self):
         if self.type in ['bank', 'cash']:
             # Open reconciliation view for bank statements belonging to this journal
-            bank_stmt = self.env['account.bank.statement'].search([('journal_id', 'in', self.ids)]).mapped('line_ids')
+            bank_stmt = self.env['account.bank.statement.line'].search([('statement_id.journal_id', 'in', self.ids), ('is_reconciled', '=', False)])
             return {
                 'type': 'ir.actions.client',
                 'tag': 'bank_statement_reconciliation_view',

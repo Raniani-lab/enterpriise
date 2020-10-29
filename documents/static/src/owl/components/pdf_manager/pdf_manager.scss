@@ -2,10 +2,6 @@ $o-pdf-manager-background-color: #f1f1f1;
 $o-pdf-manager-separator-color: #F0AD4E;
 $o-pdf-manager-border-color: #b7b7b7;
 
-.o_modal_fullscreen > .o_viewer_content, .o_pdf_minimize_height {
-    height: auto;
-}
-
 .o_documents_pdf_manager {
     background-color: $o-pdf-manager-background-color;
     width: 100%;

@@ -66,7 +66,6 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
     async _renderPdfManager(documents) {
         const $documentViewerElements = this.$('.o_viewer_content, .move_previous, .move_next');
         $documentViewerElements.addClass('o_hidden');
-        this.$('.o_viewer_content').addClass('o_pdf_minimize_height');
         this._pdfManager = new ComponentWrapper(this, PdfManager, {
             documents,
             rules: this._workflowRules,

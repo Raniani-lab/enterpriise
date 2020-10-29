@@ -299,9 +299,14 @@ class HrExpense(models.Model):
 
     @api.model
     def get_empty_list_help(self, help):
+        expenses = self.search_count(
+            [
+                ('employee_id', 'in', self.env.user.employee_ids.ids),
+                ('state', 'in', ['draft', 'reported', 'approved', 'done', 'refused'])
+            ])
         if self.env.user.has_group('hr_expense.group_hr_expense_manager') and (not isinstance(help, str) or "o_view_nocontent_empty_folder" not in help):
             action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
-            return """
+            html_to_return = """
 <p class="o_view_nocontent_expense_receipt">
     Did you try the mobile app?
 </p>
@@ -313,11 +318,14 @@ class HrExpense(models.Model):
     <a href="https://play.google.com/store/apps/details?id=com.odoo.mobile" target="_blank">
         <img alt="Google Play Store" class="img img-fluid h-100 o_expense_google_store" src="/hr_expense/static/img/play_store.png"/>
     </a>
-</p>
+</p>"""
+            if not expenses:
+                html_to_return += """
 %(mail_alias)s
 <p>
     <a type="action" name="%(action_id)s" class="btn btn-primary text-white">Try Sample Receipt</a>
 </p>""" % {'action_id': action_id, 'mail_alias': self._get_empty_list_mail_alias()}
+            return html_to_return
         return super().get_empty_list_help(help)
 
 

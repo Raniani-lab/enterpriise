@@ -386,7 +386,8 @@ class AccountMove(models.Model):
             try:
                 soap_xml = requests.post(url, data=soap_env, headers=headers, timeout=20)
                 response = fromstring(soap_xml.text)
-                status = response.xpath('//a:Estado', namespaces=namespace)
+                fetched_status = response.xpath('//a:Estado', namespaces=namespace)
+                status = fetched_status[0] if fetched_status else ''
             except Exception as e:
                 move.message_post(body=_("Failure during update of the SAT status: %(msg)s", msg=str(e)))
                 continue

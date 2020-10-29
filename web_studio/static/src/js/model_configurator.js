@@ -28,7 +28,7 @@ odoo.define('web_studio.ModelConfigurator', function (require) {
                     use_notes: { label: this.env._t('Notes'), help: this.env._t('Write additional notes or comments'), value: false },
                     use_value: { label: this.env._t('Monetary value'), help: this.env._t('Set a price or cost on records'), value: false },
                     use_company: { label: this.env._t('Company'), help: this.env._t('Restrict a record to a specific company'), value: false },
-                    use_sequence: { label: this.env._t('Custom Sorting'), help: this.env._t('Manually sort records from the listview'), value: true },
+                    use_sequence: { label: this.env._t('Custom Sorting'), help: this.env._t('Manually sort records in the list view'), value: true },
                     use_mail: { label: this.env._t('Chatter'), help: this.env._t('Send messages, log notes and schedule activities'), value: true },
                     use_active: { label: this.env._t('Archiving'), help: this.env._t('Archive deprecated records'), value: true },
                 },

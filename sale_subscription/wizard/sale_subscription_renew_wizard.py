@@ -31,7 +31,7 @@ class SaleSubscriptionWizard(models.TransientModel):
     kept_archived_product_ids = fields.One2many('sale.subscription.renew.wizard.keep_option',
                                                 'wizard_id',
                                                 default=_default_products, string="Archived products",
-                                                help="If checked, the product will ne reused in the renewal order")
+                                                help="If checked, the product will be reused in the renewal order")
     replacement_line_ids = fields.One2many('sale.subscription.renew.wizard.replace_option',
                                            'wizard_id', string="Replaced by")
 

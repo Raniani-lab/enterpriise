@@ -169,7 +169,7 @@ QUnit.module('ReportComponents', {
                     type: "select",
                     string: "Rounding unit",
                     description: "Date unit used for the rounding. If the value is given, this must be smaller than the unit",
-                    default_value: "Same unit than \"unit\" option",
+                    default_value: "Same unit as \"unit\" option",
                     params: [
                         [ "year", "year" ],
                         [ "month", "month" ],

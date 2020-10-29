@@ -24,8 +24,8 @@ class HrPayslip(models.Model):
         readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         help='Defines the rules that have to be applied to this payslip, according '
              'to the contract chosen. If the contract is empty, this field isn\'t '
-             'mandatory anymore and all the valid rules on the structures '
-             'of the employe contracts will be applied.')
+             'mandatory anymore and all the valid rules of the structures '
+             'of the employee\'s contracts will be applied.')
     struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
     wage_type = fields.Selection(related='struct_type_id.wage_type')
     name = fields.Char(string='Payslip Name', readonly=True, required=True,

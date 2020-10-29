@@ -18,7 +18,7 @@ class AccountMove(models.Model):
 
     l10n_ar_afip_auth_mode = fields.Selection([('CAE', 'CAE'), ('CAI', 'CAI'), ('CAEA', 'CAEA')],
         string='AFIP Authorization Mode', copy=False, readonly=True, states={'draft': [('readonly', False)]},
-        help="This is the type of AFIP Authorization, depending of the way that the invoice is created"
+        help="This is the type of AFIP Authorization, depending on the way that the invoice is created"
         " the mode will change:\n\n"
         " * CAE (Electronic Authorization Code): Means that is an electronic invoice. If you validate a customer invoice"
         " this field will be autofill with CAE option. Also, if you trying to verify in AFIP an electronic vendor bill"

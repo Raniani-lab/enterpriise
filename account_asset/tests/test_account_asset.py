@@ -147,7 +147,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         invoice.action_post()
 
         recognition = invoice.asset_ids
-        self.assertEqual(len(recognition), 1, 'One and only one recognition sould have been created from invoice.')
+        self.assertEqual(len(recognition), 1, 'One and only one recognition should have been created from invoice.')
 
         # I confirm revenue recognition.
         recognition.validate()

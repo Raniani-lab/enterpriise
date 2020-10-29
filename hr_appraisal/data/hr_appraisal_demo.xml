@@ -34,7 +34,7 @@
             <field name="manager_feedback_published" eval="True"/>
             <field name="manager_feedback" type="xml"><p>The employee is autonomous</p></field>
             <field name="employee_feedback_published" eval="True"/>
-            <field name="employee_feedback" type="xml"><p>I feel much more confortable than last year</p></field>
+            <field name="employee_feedback" type="xml"><p>I feel much more comfortable than last year</p></field>
             <field name="assessment_note" model="hr.appraisal.note" eval="obj().search([], order='id desc', limit=1)"/>
         </record>
         <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_3')]"/>
@@ -68,7 +68,7 @@
             <field name="manager_feedback_published" eval="True"/>
             <field name="manager_feedback" type="xml"><p>The employee is autonomous</p></field>
             <field name="employee_feedback_published" eval="True"/>
-            <field name="employee_feedback" type="xml"><p>I feel much more confortable than last year</p></field>
+            <field name="employee_feedback" type="xml"><p>I feel much more comfortable than last year</p></field>
         </record>
         <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_4bis')]"/>
 

@@ -82,7 +82,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
         unconsistent_statement_ids = options.get('unconsistent_statement_ids', [])
 
         action = {
-            'name': _("Unconsistent Statements"),
+            'name': _("Inconsistent Statements"),
             'type': 'ir.actions.act_window',
             'res_model': 'account.bank.statement',
         }

@@ -1488,9 +1488,9 @@ QUnit.module('account', {
             "should display the account and the account code as title");
 
         assert.strictEqual(clientAction.$('.o_reconciliation_line:first .match:first tr:first .cell_right').text().trim().replace(/[\n\r\s\u00a0]+/g, ' '),
-            "$ 11,000.00", "sould display the line in $");
+            "$ 11,000.00", "should display the line in $");
         assert.strictEqual(clientAction.$('.o_reconciliation_line:first .match:first tr:first .cell_right .o_multi_currency').data('content'),
-            "10,222.00 €", "sould display the monetary information in €");
+            "10,222.00 €", "should display the monetary information in €");
 
         assert.containsOnce(clientAction, '.accounting_view:first .o_no_valid:visible', "should display the skip button");
 

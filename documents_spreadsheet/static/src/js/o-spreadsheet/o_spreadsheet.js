@@ -3748,7 +3748,7 @@
             const _day = Math.trunc(toNumber(day));
             // For years less than 0 or greater than 10000, return #ERROR.
             if (_year < 0 || 10000 <= _year) {
-                throw new Error(_lt(`function DATE parameter year sould be greater or equal to 0 and lesser than 10000.`));
+                throw new Error(_lt(`function DATE parameter year should be greater or equal to 0 and lesser than 10000.`));
             }
             // Between 0 and 1899, we add that value to 1900 to calculate the year
             if (_year < 1900) {
@@ -3757,7 +3757,7 @@
             const jsDate = new Date(_year, _month - 1, _day);
             const delta = jsDate.getTime() - INITIAL_1900_DAY$1.getTime();
             if (delta < 0) {
-                throw new Error(_lt(`function DATE result sould not be lesser than 01/01/1900`));
+                throw new Error(_lt(`function DATE result should not be lesser than 01/01/1900`));
             }
             return {
                 value: Math.round(delta / 86400000),
@@ -4144,7 +4144,7 @@
             _minute = (_minute % 60) + (_minute < 0 ? 60 : 0);
             _hour %= 24;
             if (_hour < 0) {
-                throw new Error(_lt(`function Time result sould not be negative`));
+                throw new Error(_lt(`function Time result should not be negative`));
             }
             const jsDate = new Date(1899, 11, 30, _hour, _minute, _second);
             return {
@@ -6419,7 +6419,7 @@
             case "LEFT_PAREN":
                 const result = parseExpression(tokens, 5);
                 if (!tokens.length || tokens[0].type !== "RIGHT_PAREN") {
-                    throw new Error(_lt("unmatched left paren"));
+                    throw new Error(_lt("unmatched left parenthesis"));
                 }
                 tokens.shift();
                 return result;

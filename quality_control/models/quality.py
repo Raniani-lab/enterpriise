@@ -152,6 +152,11 @@ class QualityCheck(models.Model):
     def _compute_result(self):
         super(QualityCheck, self)._compute_result()
 
+    def _is_pass_fail_applicable(self):
+        if self.test_type in ['passfail', 'measure']:
+            return True
+        return super()._is_pass_fail_applicable()
+
     def _get_check_result(self):
         if self.test_type == 'picture' and self.picture:
             return _('Picture Uploaded')
@@ -215,16 +220,20 @@ class QualityCheck(models.Model):
             action['context'] = dict(self._context, default_check_id=self.id)
             return action
 
+    def _get_next_check_action(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
+        action['context'] = self.env.context
+        action['res_id'] = self.ids[0]
+        return action
+
     def redirect_after_pass_fail(self):
         check = self[0]
-        if check.quality_state == 'fail' and check.test_type in ['passfail', 'measure'] and (check.failure_message or check.warning_message):
+        if check.quality_state == 'fail' and check._is_pass_fail_applicable() and (check.failure_message or check.warning_message):
             return self.show_failure_message()
         if check.picking_id:
             checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
             if checks:
-                action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
-                action['res_id'] = checks.ids[0]
-                return action
+                return checks[0]._get_next_check_action()
             if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
                 pickings_to_check_quality = check.picking_id.browse(self.env.context['pickings_to_check_quality'])
                 remaining_pickings_to_check_quality = pickings_to_check_quality._check_for_quality_checks()
@@ -256,8 +265,7 @@ class QualityCheck(models.Model):
             'name': _('Quality Check Failed'),
             'type': 'ir.actions.act_window',
             'res_model': 'quality.check',
-            'view_mode': 'form',
-            'view_id': self.env.ref('quality_control.quality_check_view_form_failure').id,
+            'views': [(self.env.ref('quality_control.quality_check_view_form_failure').id, 'form')],
             'target': 'new',
             'res_id': self.id,
             'context': self.env.context,

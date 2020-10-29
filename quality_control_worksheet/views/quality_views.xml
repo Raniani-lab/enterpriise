@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="quality_check_view_form_inherit_worksheet" model="ir.ui.view">
+        <field name="name">quality.check.view.form.inherit.worksheet</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='do_measure']" position="after">
+                <button
+                    string="Check Worksheet"
+                    name="action_worksheet_check" type="object"
+                    attrs="{'invisible': ['|', ('test_type', '!=', 'worksheet'), ('quality_state', '!=', 'none')]}"
+                    context="{'no_redirect': True}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="worksheet_count" invisible="1"/>
+                <button
+                    string="Worksheet"
+                    class="oe_stat_button"
+                    name="action_quality_worksheet"
+                    icon="fa-pencil" type="object"
+                    groups="quality.group_quality_user"
+                    attrs="{'invisible': ['|', ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0)]}">
+                </button>
+                <button
+                    string="Worksheet Completed"
+                    class="oe_stat_button text-success"
+                    name="action_quality_worksheet"
+                    icon="fa-check" type="object"
+                    groups="quality.group_quality_user"
+                    attrs="{'invisible': ['|', ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='test_type_id']" position="after">
+                <field name="worksheet_template_id" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'readonly': [('point_id', '!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quality_check_view_form_small_inherit_worksheet" model="ir.ui.view">
+        <field name="name">quality.check.view.form.small.inherit.worksheet</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form_small"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="worksheet_count" invisible="1"/>
+            </xpath>
+            <xpath expr="(//button[@name='do_pass'])[1]" position="replace">
+                <button name="action_quality_worksheet" type="object" class="btn-primary" string="Fill in Worksheet" icon="fa-pencil"
+                    attrs="{'invisible': [('test_type', '!=', 'worksheet')]}" context="{'hide_check_button': False}"/>
+                <button name="do_pass" type="object" class="btn-primary" string="Validate"
+                    attrs="{'invisible': [('test_type', 'in', ['passfail', 'measure', 'worksheet'])]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quality_check_view_form_failure_inherit_worksheet" model="ir.ui.view">
+        <field name="name">quality.check.view.form.failure.inherit.worksheet</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form_failure"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='correct_measure']" position="before">
+                <button name="correct_measure" type="object" class="btn-primary" string="Correct Worksheet"
+                    attrs="{'invisible': [('test_type', '!=', 'worksheet')]}"/>
+                <button name="redirect_after_failure" type="object" string="Confirm Worksheet"
+                    attrs="{'invisible': [('test_type', '!=', 'worksheet')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quality_point_view_form_inherit_quality_control_worksheet" model="ir.ui.view">
+        <field name="name">quality.point.view.form.inherit.quality.worksheet</field>
+        <field name="model">quality.point</field>
+        <field name="inherit_id" ref="quality.quality_point_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='test_type_id']" position="after">
+                <field name="worksheet_template_id" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'required': [('test_type', '=', 'worksheet')]}" options="{'no_create': True, 'no_create_edit':True}"/>
+                <field name="worksheet_model_name" invisible="1"/>
+                <field name="worksheet_success_conditions" widget="quality_field_domain" options="{'model': 'worksheet_model_name'}" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'required': [('test_type', '=', 'worksheet')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

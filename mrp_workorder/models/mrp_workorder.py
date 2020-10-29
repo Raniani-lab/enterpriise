@@ -262,7 +262,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.test_type == 'picture' and not self.picture:
             raise UserError(_('Please upload a picture.'))
 
-        if self.test_type not in ('measure', 'passfail'):
+        if not self.current_quality_check_id._is_pass_fail_applicable():
             self.current_quality_check_id.do_pass()
 
         self._change_quality_check(position='next', skipped=self.skip_completed_checks)

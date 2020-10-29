@@ -165,10 +165,9 @@ class SaleOrder(models.Model):
         self.create_subscriptions()
         return res
 
-    def _get_payment_type(self):
-        if any(line.product_id.recurring_invoice for line in self.sudo().order_line):
-            return 'form_save'
-        return super(SaleOrder, self)._get_payment_type()
+    def _get_payment_type(self, tokenize=False):
+        contains_subscription = any(line.product_id.recurring_invoice for line in self.sudo().order_line)
+        return super()._get_payment_type(tokenize=contains_subscription or tokenize)
 
 
 class SaleOrderLine(models.Model):

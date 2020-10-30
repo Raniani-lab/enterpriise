@@ -515,7 +515,7 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module' : 'industry_fsm'}</field>
+        <field name="context">{'module' : 'industry_fsm', 'bin_size': False}</field>
     </record>
 
     <record id="project_view_tree_primary" model="ir.ui.view">

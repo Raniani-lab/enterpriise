@@ -442,7 +442,7 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module' : 'planning'}</field>
+        <field name="context">{'module' : 'planning', 'bin_size': False}</field>
     </record>
 
     <record id="planning_action_roles" model="ir.actions.act_window">

@@ -101,7 +101,7 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module' : 'hr_appraisal'}</field>
+        <field name="context">{'module' : 'hr_appraisal', 'bin_size': False}</field>
     </record>
 
     <menuitem id="hr_appraisal_menu_configuration"

@@ -8,7 +8,7 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context" eval="{'module': 'general_settings'}"/>
+        <field name="context" eval="{'module': 'general_settings', 'bin_size': False}"/>
     </record>
 
     <!-- Documents -->
@@ -909,7 +909,7 @@
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>
-        <field name="context">{'module': 'documents'}</field>
+        <field name="context">{'module': 'documents', 'bin_size': False}</field>
     </record>
 
     <!-- Top menu / dashboard icon -->

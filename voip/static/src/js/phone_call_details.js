@@ -386,6 +386,7 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
+        this.trigger_up('fold_panel');
         let resId = this.partnerId;
         if (!this.partnerId) {
             let domain = [];

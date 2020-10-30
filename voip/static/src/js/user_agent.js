@@ -179,6 +179,12 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this.trigger_up('sip_rejected', this._currentCallParams);
         }
         if (!this._isOutgoing) {
+            if (this._currentInviteSession.status === 9) {
+                // 9: STATUS_TERMINATED
+                this._audioIncomingRingtone.pause();
+                this._canceledIncomingCall();
+                return;
+            }
             this._currentInviteSession.reject({ statusCode: 603 });
         }
     },
@@ -241,7 +247,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (!inviteSession) {
             return;
         }
+
         this._audioIncomingRingtone.pause();
+        if (this._currentInviteSession.status === 9) {
+            // 9: STATUS_TERMINATED
+            this._canceledIncomingCall();
+            return;
+        }
         const callOptions = {
             sessionDescriptionHandlerOptions: {
                 constraints: {

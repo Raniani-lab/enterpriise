@@ -183,6 +183,9 @@ FormRenderer.include({
      */
     async _renderView() {
         await this._super(...arguments);
+        if (!this._hasChatter()) {
+            return;
+        }
         this._updateChatterContainerTarget();
 
         // for cached messages, `preview_attachment` will be triggered

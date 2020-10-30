@@ -37,7 +37,7 @@
         </record>
 
         <!-- Workflow Rules -->
-        <record id="documents_applicant_rule" model="documents.workflow.rule">
+        <record id="documents_applicant_rule" model="documents.workflow.rule" forcecreate="0">
             <field name="sequence">20</field>
             <field name="name">Create an Applicant</field>
             <field name="create_model">hr.applicant</field>

@@ -134,6 +134,7 @@
         display: flex;
         flex-flow: column nowrap;
         height: auto;
+        min-height: 0;
         @include media-breakpoint-up(md) {
             padding-bottom: 19%;
         }

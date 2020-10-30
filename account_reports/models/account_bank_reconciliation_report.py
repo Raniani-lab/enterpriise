@@ -373,6 +373,11 @@ class AccountBankReconciliationReport(models.AbstractModel):
         if not accounts:
             return [], []
 
+        # Allow user managing payments without any statement lines.
+        # In that case, the user manages transactions only using the register payment wizard.
+        if journal.default_account_id in accounts:
+            return [], []
+
         # Include payments made in the future.
         options_wo_date = {**options, 'date': None}
         

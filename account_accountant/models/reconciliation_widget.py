@@ -588,9 +588,15 @@ class AccountReconciliation(models.AbstractModel):
                     journal.id = %s
                     AND
                     (
-                        journal.payment_debit_account_id = account_move_line.account_id
+                        (
+                            journal.payment_debit_account_id != journal.default_account_id
+                            AND journal.payment_debit_account_id = account_move_line.account_id
+                        )
                         OR
-                        journal.payment_credit_account_id = account_move_line.account_id
+                        (
+                            journal.payment_credit_account_id != journal.default_account_id
+                            AND journal.payment_credit_account_id = account_move_line.account_id
+                        )
                     )
                 )
                 OR

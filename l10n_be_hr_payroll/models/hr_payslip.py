@@ -335,6 +335,53 @@ class Payslip(models.Model):
         warrant_input_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
         return sum(self.input_line_ids.filtered(lambda a: a.input_type_id == warrant_input_type).mapped('amount'))
 
+    def _get_paid_double_holiday(self):
+        # TODO: compute the paid amount when the employee has not worked the whole previous calendar.
+        # FIXME: refactor with _get_paid_amount_13th_month method and see if date_start == 'year-01-01' and date_to == 'year-12-31'
+        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
+        if not contracts:
+            return 0.0
+
+        year = self.date_from.year - 1
+
+        # 1. Number of months
+        invalid_days_by_months = defaultdict(dict)
+        for day in rrule.rrule(rrule.DAILY, dtstart=date(year, 1, 1), until=date(year, 12, 31)):
+            invalid_days_by_months[day.month][day.date()] = True
+
+        for contract in contracts:
+            work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
+
+            previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date(year, 1, 1))
+            next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date(year, 12, 31))
+            days_to_check = rrule.rrule(rrule.DAILY, dtstart=previous_week_start, until=next_week_end)
+            for day in days_to_check:
+                day = day.date()
+                out_of_schedule = True
+                if contract.date_start <= day <= (contract.date_end or date.max):
+                    out_of_schedule = False
+                elif day.weekday() not in work_days:
+                    out_of_schedule = False
+                invalid_days_by_months[day.month][day] &= out_of_schedule
+
+        complete_months = [
+            month
+            for month, days in invalid_days_by_months.items()
+            if not any(days.values())
+        ]
+        n_months = len(complete_months)
+
+        # 2. Deduct absences
+        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
+        hours = contracts._get_work_hours(date(year, 1, 1), date(year, 12, 31))
+        paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
+        unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
+
+        presence_prorata = paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
+        basic = self.contract_id._get_contract_wage()
+        return basic * n_months / 12 * presence_prorata
+
     def _get_paid_amount(self):
         self.ensure_one()
         belgian_payslip = self.struct_id.country_id.code == "BE"
@@ -345,6 +392,9 @@ class Payslip(models.Model):
             struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
+            struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
+            if self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+                return self._get_paid_double_holiday()
         return super()._get_paid_amount()
 
     def _is_active_belgian_languages(self):

@@ -20,4 +20,4 @@ from . import test_end_of_contract
 from . import test_small_unemployment
 from . import test_sick_time_off
 from . import test_variable_revenues
-
+from . import test_private_car

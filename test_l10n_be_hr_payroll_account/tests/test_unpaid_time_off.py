@@ -331,7 +331,7 @@ class TestUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSSIP'), 2272.04, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.PART'), -601.35, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1670.7, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -162.9, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -188.9, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 10.63, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -341,7 +341,7 @@ class TestUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 601.35, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -39.18, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2037.68, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2011.68, places=2)
 
 
 @tagged('post_install', '-at_install', 'unpaid_half_days')
@@ -684,7 +684,7 @@ class TestUnpaidHalfDays(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSSIP'), 2249.64, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.PART'), -585.25, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1664.39, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -156.48, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -182.48, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 21.75, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -694,7 +694,7 @@ class TestUnpaidHalfDays(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 585.25, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -38.13, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2034.57, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2008.57, places=2)
 
 
 @tagged('post_install', '-at_install', 'unjustified_reason')
@@ -1023,7 +1023,7 @@ class TestUnjustifiedReason(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSSIP'), 2351.53, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.PART'), -631.92, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1719.61, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -182.16, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -208.16, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 1.74, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -1033,4 +1033,4 @@ class TestUnjustifiedReason(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 631.92, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -41.18, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2084.58, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2058.58, places=2)

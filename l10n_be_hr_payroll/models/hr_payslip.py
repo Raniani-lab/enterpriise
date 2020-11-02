@@ -369,8 +369,20 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
     employee = payslip.contract_id.employee_id
     # PART 1: Withholding tax amount computation
     withholding_tax_amount = 0.0
-    lower_bound = categories.GROSS - categories.GROSS % 15
-    
+
+    taxable_amount = categories.GROSS  # Base imposable
+    # YTI TODO: master: Move this into another rule (like benefit in kind)
+    if payslip.contract_id.transport_mode_private_car:
+        threshold = payslip.env['hr.rule.parameter']._get_parameter_from_code(
+            'pricate_car_taxable_threshold',
+            date=payslip.date_to,
+            raise_if_not_found=False)
+        if threshold is None:
+            threshold = 410  # 2020 value
+        if payslip.contract_id.private_car_reimbursed_amount > (threshold / 12):
+            taxable_amount += payslip.contract_id.private_car_reimbursed_amount - (threshold / 12)
+    lower_bound = taxable_amount - taxable_amount % 15
+
     # yearly_gross_revenue = Revenu Annuel Brut
     yearly_gross_revenue = lower_bound * 12.0
 
@@ -397,31 +409,32 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
             basic_bareme_2 = compute_basic_bareme(yearly_net_taxable_revenue - yearly_net_taxable_revenue_for_spouse)
             withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
 
-    # Reduction for isolated people and for other family charges
-    if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
-        if employee.marital in ['divorced', 'single', 'widower']:
-            withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
-        if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.disabled:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.other_dependent_people and employee.dependent_seniors:
-            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
-        if employee.other_dependent_people and employee.dependent_juniors:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
-            withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
-            withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
-    if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
-        if employee.disabled:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.disabled_spouse_bool:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.other_dependent_people and employee.dependent_seniors:
-            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
-        if employee.other_dependent_people and employee.dependent_juniors:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+    # Reduction for other family charges
+    if employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors):
+        if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
+            if employee.marital in ['divorced', 'single', 'widower']:
+                withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+            if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.disabled:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.other_dependent_people and employee.dependent_seniors:
+                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+            if employee.other_dependent_people and employee.dependent_juniors:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
+                withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
+                withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
+            if employee.disabled:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.disabled_spouse_bool:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.other_dependent_people and employee.dependent_seniors:
+                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+            if employee.other_dependent_people and employee.dependent_juniors:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
 
     # Child Allowances
     n_children = employee.dependent_children
@@ -633,31 +646,32 @@ def compute_withholding_taxes_adjustment(payslip, categories, worked_days, input
             basic_bareme_2 = compute_basic_bareme(yearly_net_taxable_revenue - yearly_net_taxable_revenue_for_spouse)
             withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
 
-    # Reduction for isolated people and for other family charges
-    if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
-        if employee.marital in ['divorced', 'single', 'widower']:
-            withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
-        if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.disabled:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.other_dependent_people and employee.dependent_seniors:
-            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
-        if employee.other_dependent_people and employee.dependent_juniors:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
-            withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
-        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
-            withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
-    if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
-        if employee.disabled:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.disabled_spouse_bool:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
-        if employee.other_dependent_people and employee.dependent_seniors:
-            withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
-        if employee.other_dependent_people and employee.dependent_juniors:
-            withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+    # Reduction for other family charges
+    if employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors):
+        if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
+            if employee.marital in ['divorced', 'single', 'widower']:
+                withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+            if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.disabled:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.other_dependent_people and employee.dependent_seniors:
+                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+            if employee.other_dependent_people and employee.dependent_juniors:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
+                withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
+                withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
+        if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
+            if employee.disabled:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.disabled_spouse_bool:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
+            if employee.other_dependent_people and employee.dependent_seniors:
+                withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
+            if employee.other_dependent_people and employee.dependent_juniors:
+                withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
 
     # Child Allowances
     n_children = employee.dependent_children

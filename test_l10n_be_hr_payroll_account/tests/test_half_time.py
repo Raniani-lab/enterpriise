@@ -248,7 +248,7 @@ class TestHalfTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('EmpBonus.1'), 171.95, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1472.74, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -83.45, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -109.45, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 56.99, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -256,7 +256,7 @@ class TestHalfTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -15.26, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1430.88, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1404.88, places=2)
 
 
 @tagged('post_install', '-at_install', 'half_time_1_day_paid_time_off')
@@ -516,7 +516,7 @@ class TestHalfTime1DayPaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('EmpBonus.1'), 171.95, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1472.74, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -83.45, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -109.45, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 56.99, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -524,7 +524,7 @@ class TestHalfTime1DayPaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -14.17, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1431.97, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1405.97, places=2)
 
 
 @tagged('post_install', '-at_install', 'half_time_1_day_unpaid_time_off')
@@ -795,7 +795,7 @@ class TestHalfTime1DayUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('EmpBonus.1'), 156.19, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1350.65, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -52.02, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -78.02, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 51.76, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
@@ -803,4 +803,4 @@ class TestHalfTime1DayUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -13.08, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1337.17, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1311.17, places=2)

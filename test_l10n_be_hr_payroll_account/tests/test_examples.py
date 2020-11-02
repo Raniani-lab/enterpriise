@@ -169,14 +169,14 @@ class TestExamples(AccountTestInvoicingCommon):
             ('ONSS', -347.53),
             ('ATN.CAR', 149.29),
             ('GROSS', 2460.75),
-            ('P.P', -533.87),
+            ('P.P', -559.87),
             ('ATN.CAR.2', -149.29),
             ('ATN.INT.2', -5.00),
             ('ATN.MOB.2', -4.00),
             ('M.ONSS', -23.66),
             ('MEAL_V_EMP', -21.80),
             ('REP.FEES', 150.00),
-            ('NET', 1873.14),
+            ('NET', 1847.14),
         ])
         payslip = {
             'date_from': datetime.date(2019, 2, 1),
@@ -258,7 +258,7 @@ class TestExamples(AccountTestInvoicingCommon):
             ('GROSSIP', 3177.57),
             ('IP.PART', -913.83),
             ('GROSS', 2263.74),
-            ('P.P', -476.6),
+            ('P.P', -501.6),
             ('ATN.CAR.2', 0),
             ('ATN.INT.2', 0),
             ('ATN.MOB.2', 0),
@@ -267,7 +267,7 @@ class TestExamples(AccountTestInvoicingCommon):
             ('REP.FEES', 150.00),
             ('IP', 913.83),
             ('IP.DED', -59.58),
-            ('NET', 2733.79),
+            ('NET', 2708.79),
         ])
 
         employee = {
@@ -486,12 +486,12 @@ class TestExamples(AccountTestInvoicingCommon):
             ('SALARY', 2075.44),
             ('ONSS', -271.26),
             ('EmpBonus.1', 106.44),
-            ('P.P', -273.68),
+            ('P.P', -299.68),
             ('Tr.E', 105.04),
             ('M.ONSS', -9.88),
             ('MEAL_V_EMP', -21.8),
             ('P.P.DED', 35.27),
-            ('NET', 1745.57),
+            ('NET', 1719.57),
         ])
 
         employee = {

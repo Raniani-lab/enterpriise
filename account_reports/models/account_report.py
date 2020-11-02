@@ -1432,6 +1432,11 @@ class AccountReport(models.AbstractModel):
                 x_offset += colspan
             y_offset += 1
 
+        if options.get('hierarchy'):
+            lines = self._create_hierarchy(lines, options)
+        if options.get('selected_column'):
+            lines = self._sort_lines(lines, options)
+
         # Add lines.
         for y in range(0, len(lines)):
             level = lines[y].get('level')

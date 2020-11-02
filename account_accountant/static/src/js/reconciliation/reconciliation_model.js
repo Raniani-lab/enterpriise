@@ -588,6 +588,8 @@ var StatementModel = BasicModel.extend({
         var defs = [];
         // new limit = previous limit + 1, the one put back
         line.limit_override = (line.offset + 1) + this.limitMoveLines;
+
+        // If the line was an aml proposition
         var prop = _.find(line.reconciliation_proposition, {'id' : id});
         if (prop) {
             line.reconciliation_proposition = _.filter(line.reconciliation_proposition, function (p) {
@@ -605,6 +607,15 @@ var StatementModel = BasicModel.extend({
             if(line.reconciliation_proposition.length == 0 && line.st_line.has_no_partner)
                 defs.push(self.changePartner(line.handle));
         }
+
+        // If the line was a write-off proposition
+        var write_off =  _.find(line.write_off_vals, {'id' : id});
+        if (write_off) {
+            line.write_off_vals = _.filter(line.write_off_vals, function (w) {
+                return w.id !== write_off.id;
+            });
+        }
+
         line.mode = (id || line.mode !== "create") && isNaN(id) ? 'create' : 'match_rp';
         defs.push(this._computeLine(line));
         self._refresh_partial_rec_preview(line);
@@ -1142,7 +1153,12 @@ var StatementModel = BasicModel.extend({
         var st_line_balance_left = line.st_line.amount;
         _.each(line.reconciliation_proposition, function (proposition) {
             var prop_amount = st_line_balance_left < 0 ? proposition.credit : proposition.debit;
-            var prop_impact = Math.min(Math.abs(st_line_balance_left), prop_amount);
+
+            // Invoice matching reconciliation models may have defined some write off rules as well
+            var write_off_balances = (line.write_off_vals || []).map(function(elem) { return elem['balance']; })
+            var write_off_amount = write_off_balances.reduce(function(prev, cur){ return prev + cur; }, 0);
+
+            var prop_impact = Math.min(Math.abs(st_line_balance_left + write_off_amount), prop_amount);
             var signed_impact = prop_impact * (proposition.credit > 0 ? -1 : 1);
 
             st_line_balance_left -= signed_impact;

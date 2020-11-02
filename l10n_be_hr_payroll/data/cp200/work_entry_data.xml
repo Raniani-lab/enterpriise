@@ -233,6 +233,7 @@
             <field name="code">LEAVE216</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
+            <field name="dmfa_code">14</field>
         </record>
         <record id="holiday_type_european" model="hr.leave.type">
             <field name="name">European Time Off</field>
@@ -252,7 +253,7 @@
         </record>
         <record id="holiday_type_credit_time" model="hr.leave.type">
             <field name="name">Credit Time</field>
-            <field name="allocation_type">no</field> 
+            <field name="allocation_type">no</field>
             <field name="request_unit">half_day</field>
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>

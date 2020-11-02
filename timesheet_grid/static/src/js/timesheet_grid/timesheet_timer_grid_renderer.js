@@ -286,7 +286,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
         async _onKeydown(ev) {
             if (ev.key === 'Shift' && !this.stateTimer.timerRunning) {
                 this.stateTimer.addTimeMode = true;
-            } else if (this.showTimerButton && ! ['input', 'textarea'].includes(ev.target.tagName.toLowerCase())) {
+            } else if (!ev.altKey && this.showTimerButton && ! ['input', 'textarea'].includes(ev.target.tagName.toLowerCase())) {
                 if (ev.key === 'Escape' && this.stateTimer.timerRunning) {
                     this._onTimerUnlink();
                 }

@@ -94,6 +94,9 @@ class TestTourReconciliationWidget(AccountTestInvoicingHttpCommon):
         prep = requests.models.PreparedRequest()
         prep.prepare_url(url="http://localhost/web#", params=payload)
 
+        account_reconcile_model = self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)])
+        account_reconcile_model.past_months_limit = None
+
         self.start_tour(
             prep.url.replace('http://localhost', '').replace('?', '#'),
             'bank_statement_reconciliation', login=self.env.user.login,

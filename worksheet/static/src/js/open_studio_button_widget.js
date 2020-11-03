@@ -1,4 +1,4 @@
-odoo.define('industry_fsm_report.report_button', function (require) {
+odoo.define('worksheet.open_studio_button', function (require) {
 "use strict";
 
 
@@ -36,7 +36,7 @@ var OpenStudioButton = Widget.extend({
     _onButtonClick: function (event) {
         var self = this;
         this._rpc({
-            'model': 'project.worksheet.template',
+            'model': 'worksheet.template',
             'method': 'get_x_model_form_action',
             'args': [this.record.res_id]
         })

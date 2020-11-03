@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from ast import literal_eval
+from collections import defaultdict
 from lxml import etree
-import time
 from random import randint
 
 from odoo import api, fields, models, tools, _
@@ -10,9 +10,19 @@ from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
 
 
-class ProjectWorksheetTemplate(models.Model):
-    _name = 'project.worksheet.template'
-    _description = 'Project Worksheet Template'
+class WorksheetTemplate(models.Model):
+    _name = 'worksheet.template'
+    _description = 'Worksheet Template'
+
+    @api.model
+    def _default_res_model_id(self):
+        if self.env.context.get('default_res_model_name'):
+            model = self.env['ir.model'].search([
+                ('model', '=', self.env.context.get('default_res_model_name'))
+            ], limit=1).id
+            if model:
+                return model
+        return False
 
     def _get_default_color(self):
         return randint(1, 11)
@@ -26,6 +36,9 @@ class ProjectWorksheetTemplate(models.Model):
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
     color = fields.Integer('Color', default=_get_default_color)
     active = fields.Boolean(default=True)
+    res_model_id = fields.Many2one(
+        'ir.model', 'Host Model', help="The model that is using this template",
+        default=_default_res_model_id)
 
     def _compute_worksheet_count(self):
         for record in self:
@@ -41,160 +54,33 @@ class ProjectWorksheetTemplate(models.Model):
     @api.model
     def create(self, vals):
         template = super().create(vals)
-        if not self.env.context.get('fsm_worksheet_no_generation'):
-            self._generate_worksheet_model(template)
+        if not self.env.context.get('worksheet_no_generation'):
+            template._generate_worksheet_model()
         return template
 
-    def _generate_worksheet_model(self, template):
-        name = 'x_project_worksheet_template_' + str(template.id)
-        # while creating model it will initialize the init_models method from create of ir.model
-        # and there is related field of model_id in mail template so it's going to recusrive loop while recompute so used flush
-        self.flush()
-
-        # generate the ir.model (and so the SQL table)
-        model = self.env['ir.model'].sudo().create({
-            'name': template.name,
-            'model': name,
-            'field_id': [
-                (0, 0, {
-                    'name': 'x_task_id',
-                    'field_description': 'Task',
-                    'ttype': 'many2one',
-                    'relation': 'project.task',
-                    'required': True,
-                    'on_delete': 'cascade',
-                }),
-                (0, 0, {
-                    'name': 'x_comments',
-                    'ttype': 'text',
-                    'field_description': 'Comments',
-                }),
-            ]
-        })
-        model.write({'field_id': [
-            (0, 0, {
-                'name': 'x_name',
-                'field_description': 'Name',
-                'ttype': 'char',
-                'related': 'x_task_id.name',
-            }),
-        ]})
-        # create access rights and rules
-        self.env['ir.model.access'].sudo().create({
-            'name': name + '_access',
-            'model_id': model.id,
-            'group_id': self.env.ref('project.group_project_manager').id,
-            'perm_create': True,
-            'perm_write': True,
-            'perm_read': True,
-            'perm_unlink': True,
-        })
-        self.env['ir.model.access'].sudo().create({
-            'name': name + '_access',
-            'model_id': model.id,
-            'group_id': self.env.ref('project.group_project_user').id,
-            'perm_create': True,
-            'perm_write': True,
-            'perm_read': True,
-            'perm_unlink': True,
-        })
-        self.env['ir.rule'].sudo().create({
-            'name': name + '_own',
-            'model_id': model.id,
-            'domain_force': "[('create_uid', '=', user.id)]",
-            'groups': [(6, 0, [self.env.ref('project.group_project_user').id])]
-        })
-        self.env['ir.rule'].sudo().create({
-            'name': name + '_all',
-            'model_id': model.id,
-            'domain_force': [(1, '=', 1)],
-            'groups': [(6, 0, [self.env.ref('project.group_project_manager').id, self.env.ref('industry_fsm.group_fsm_user').id])]
-        })
-
-        # create the view to extend by 'studio' and add the user custom fields
-        form_view = self.env['ir.ui.view'].sudo().create({
-            'type': 'form',
-            'name': 'template_view_' + "_".join(template.name.split(' ')),
-            'model': model.model,
-            'arch': """
-            <form>
-                <sheet>
-                    <h1 invisible="context.get('studio') or context.get('default_x_task_id')">
-                            <field name="x_task_id" domain="[('is_fsm', '=', True)]"/>
-                    </h1>
-                    <group class="o_fsm_worksheet_form">
-                        <group>
-                            <field name="x_comments"/>
-                        </group>
-                        <group>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-            """
-        })
-        action = self.env['ir.actions.act_window'].sudo().create({
-            'name': 'Worksheets',
-            'res_model': model.model,
-            'view_mode': 'tree,form',
-            'target': 'current',
-            'context': {
-                'edit': False,
-                'create': False,
-                'delete': False,
-                'duplicate': False,
-            }
-        })
-
-        # generate xml ids for some records: views, actions and models. This will let the ORM handle the module uninstallation (removing all data belonging
-        # to the module using their xml ids).
-        # NOTE: this is not needed for ir.model.fields, ir.model.access and ir.rule, as they are in delete 'cascade' mode, so their databse entries will removed
-        # (no need their xml id).
-        action_xmlid_values = {
-            'name': 'template_action_' + "_".join(template.name.split(' ')),
-            'model': 'ir.actions.act_window',
-            'module': 'industry_fsm_report',
-            'res_id': action.id,
-            'noupdate': True,
-        }
-        model_xmlid_values = {
-            'name': 'model_x_custom_worksheet_' + "_".join(model.model.split('.')),
-            'model': 'ir.model',
-            'module': 'industry_fsm_report',
-            'res_id': model.id,
-            'noupdate': True,
-        }
-        view_xmlid_values = {
-            'name': 'form_view_custom_' + "_".join(model.model.split('.')),
-            'model': 'ir.ui.view',
-            'module': 'industry_fsm_report',
-            'res_id': form_view.id,
-            'noupdate': True,
-        }
-        self.env['ir.model.data'].sudo().create([action_xmlid_values, model_xmlid_values, view_xmlid_values])
-
-        # link the worksheet template to its generated model and action
-        template.write({
-            'action_id': action.id,
-            'model_id': model.id,
-        })
-        # this must be done after form view creation and filling the 'model_id' field
-        template.sudo()._generate_qweb_report_template()
-
-        # Add unique constraint on the x_task_id field since we want one worksheet per task
-        conname = '%s_%s' % (name, 'x_task_id_uniq')
-        tools.add_constraint(self.env.cr, name, conname, 'unique(x_task_id)')
-        return template
+    def write(self, vals):
+        res = super().write(vals)
+        if 'company_ids' in vals:
+            template_dict = defaultdict(lambda: self.env['worksheet.template'])
+            for template in self:
+                template_dict[template.res_model_id.model] |= template
+            for res_model, templates in template_dict.items():
+                for model, name in self._get_models_to_check_dict()[res_model]:
+                    records = self.env[model].search([('worksheet_template_id', 'in', templates.ids)])
+                    for record in records:
+                        if record.company_id not in record.worksheet_template_id.company_ids:
+                            raise UserError(_("There is still %s linked to this template. Please unlink them first.") % name)
+        return res
 
     def unlink(self):
-        # When uninstalling module, let the ORM take care of everything. As the xml ids are correctly generated, all data will
-        # be properly removed.
+        # When uninstalling module, let the ORM take care of everything. As the
+        # xml ids are correctly generated, all data will be properly removed.
         if self.env.context.get(MODULE_UNINSTALL_FLAG):
-            return super(ProjectWorksheetTemplate, self).unlink()
+            return super().unlink()
 
         # When manual deletion of worksheet, we need to handle explicitly the removal of depending data
         models_ids = self.mapped('model_id.id')
-        self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()  # backednd views (form, pivot, ...)
+        self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()  # backend views (form, pivot, ...)
         self.mapped('report_view_id').unlink()  # qweb templates
         self.env['ir.model.access'].search([('model_id', 'in', models_ids)]).unlink()
         x_name_fields = self.env['ir.model.fields'].search([('model_id', 'in', models_ids), ('name', '=', 'x_name')])
@@ -216,9 +102,188 @@ class ProjectWorksheetTemplate(models.Model):
         # force no model
         default['model_id'] = False
 
-        template = super(ProjectWorksheetTemplate, self.with_context(fsm_worksheet_no_generation=True)).copy(default)
-        self._generate_worksheet_model(template)
+        template = super(WorksheetTemplate, self.with_context(worksheet_no_generation=True)).copy(default)
+        template._generate_worksheet_model()
         return template
+
+    def _generate_worksheet_model(self):
+        self.ensure_one()
+        res_model = self.res_model_id.model.replace('.', '_')
+        name = 'x_%s_worksheet_template_%d' % (res_model, self.id)
+        # while creating model it will initialize the init_models method from create of ir.model
+        # and there is related field of model_id in mail template so it's going to recursive loop while recompute so used flush
+        self.flush()
+
+        # generate the ir.model (and so the SQL table)
+        model = self.env['ir.model'].sudo().create({
+            'name': self.name,
+            'model': name,
+            'field_id': self._prepare_default_fields_values()
+        })
+        model.write({'field_id': [
+            (0, 0, {
+                'name': 'x_name',
+                'field_description': 'Name',
+                'ttype': 'char',
+                'related': 'x_%s_id.name' % res_model,
+            }),
+        ]})
+
+        # create access rights and rules
+        if not hasattr(self, '_get_%s_manager_group' % res_model):
+            raise NotImplementedError('Method _get_%s_manager_group not implemented on %s' % (res_model, res_model))
+        if not hasattr(self, '_get_%s_user_group' % res_model):
+            raise NotImplementedError('Method _get_%s_user_group not implemented on %s' % (res_model, res_model))
+        if not hasattr(self, '_get_%s_access_all_groups' % res_model):
+            raise NotImplementedError('Method _get_%s_access_all_groups not implemented on %s' % (res_model, res_model))
+
+        self.env['ir.model.access'].sudo().create({
+            'name': name + '_access',
+            'model_id': model.id,
+            'group_id': getattr(self, '_get_%s_manager_group' % res_model)().id,
+            'perm_create': True,
+            'perm_write': True,
+            'perm_read': True,
+            'perm_unlink': True,
+        })
+        self.env['ir.model.access'].sudo().create({
+            'name': name + '_access',
+            'model_id': model.id,
+            'group_id': getattr(self, '_get_%s_user_group' % res_model)().id,
+            'perm_create': True,
+            'perm_write': True,
+            'perm_read': True,
+            'perm_unlink': True,
+        })
+        self.env['ir.rule'].sudo().create({
+            'name': name + '_own',
+            'model_id': model.id,
+            'domain_force': "[('create_uid', '=', user.id)]",
+            'groups': [(6, 0, [getattr(self, '_get_%s_user_group' % res_model)().id])]
+        })
+        self.env['ir.rule'].sudo().create({
+            'name': name + '_all',
+            'model_id': model.id,
+            'domain_force': [(1, '=', 1)],
+            'groups': [(6, 0, getattr(self, '_get_%s_access_all_groups' % res_model)().ids)],
+        })
+
+        # create the view to extend by 'studio' and add the user custom fields
+        form_view_values = self._prepare_default_form_view_values(model)
+        form_view = self.env['ir.ui.view'].sudo().create(form_view_values)
+        action = self.env['ir.actions.act_window'].sudo().create({
+            'name': 'Worksheets',
+            'res_model': model.model,
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'context': {
+                'edit': False,
+                'create': False,
+                'delete': False,
+                'duplicate': False,
+            }
+        })
+
+        # Generate xml ids for some records: views, actions and models. This will let the ORM handle
+        # the module uninstallation (removing all data belonging to the module using their xml ids).
+        # NOTE: this is not needed for ir.model.fields, ir.model.access and ir.rule, as they are in
+        # delete 'cascade' mode, so their database entries will removed (no need their xml id).
+        module_name = getattr(self, '_get_%s_module_name' % res_model)()
+        action_xmlid_values = {
+            'name': 'template_action_' + "_".join(self.name.split(' ')),
+            'model': 'ir.actions.act_window',
+            'module': module_name,
+            'res_id': action.id,
+            'noupdate': True,
+        }
+        model_xmlid_values = {
+            'name': 'model_x_custom_worksheet_' + "_".join(model.model.split('.')),
+            'model': 'ir.model',
+            'module': module_name,
+            'res_id': model.id,
+            'noupdate': True,
+        }
+        view_xmlid_values = {
+            'name': 'form_view_custom_' + "_".join(model.model.split('.')),
+            'model': 'ir.ui.view',
+            'module': module_name,
+            'res_id': form_view.id,
+            'noupdate': True,
+        }
+        self.env['ir.model.data'].sudo().create([action_xmlid_values, model_xmlid_values, view_xmlid_values])
+
+        # link the worksheet template to its generated model and action
+        self.write({
+            'action_id': action.id,
+            'model_id': model.id,
+        })
+        # this must be done after form view creation and filling the 'model_id' field
+        self.sudo()._generate_qweb_report_template()
+
+        # Add unique constraint on the x_model_id field since we want one worksheet per host record
+        conname = '%s_x_%s_id_uniq' % (name, self.res_model_id.model.replace('.', '_'))
+        concode = 'unique(x_%s_id)' % (self.res_model_id.model.replace('.', '_'))
+        tools.add_constraint(self.env.cr, name, conname, concode)
+
+    def _prepare_default_fields_values(self):
+        """Prepare a list that contains the data to create the default fields for
+        the model created from the template. Fields related to these fields
+        shouldn't be put here, they should be created after the creation of these
+        fields.
+        """
+        res_model_name = self.res_model_id.model.replace('.', '_')
+        fields_func = getattr(self, '_default_%s_template_fields' % res_model_name, False)
+        return [
+            (0, 0, {
+                'name': 'x_%s_id' % (res_model_name),
+                'field_description': self.env[self.res_model_id.model]._description,
+                'ttype': 'many2one',
+                'relation': self.res_model_id.model,
+                'required': True,
+                'on_delete': 'cascade',
+            }),
+            (0, 0, {
+                'name': 'x_comments',
+                'ttype': 'text',
+                'field_description': 'Comments',
+            }),
+        ] + (fields_func and fields_func() or [])
+
+    def _prepare_default_form_view_values(self, model):
+        """Create a default form view for the model created from the template.
+        """
+        res_model_name = self.res_model_id.model.replace('.', '_')
+        form_arch_func = getattr(self, '_default_%s_worksheet_form_arch' % res_model_name, False)
+        return {
+            'type': 'form',
+            'name': 'template_view_' + "_".join(self.name.split(' ')),
+            'model': model.model,
+            'arch': form_arch_func and form_arch_func() or """
+                <form create="false">
+                    <sheet>
+                        <h1 invisible="context.get('studio') or context.get('default_x_%s_id')">
+                            <field name="x_%s_id"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="x_comments"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            """ % (res_model_name, res_model_name)
+        }
+
+    @api.model
+    def _get_models_to_check_dict(self):
+        """To be override in the module using it. It returns a dictionary contains
+        the model you want to check for multi-company in the write method.
+        Key: res_model name, eg: "quality.check"
+        Value: a list of (model name, model name to show), eg: [("quality.point", "Quality Point"), ("quality.check", "Quality Check")]
+        """
+        return {}
 
     def action_view_worksheets(self):
         action = self.action_id.read()[0]
@@ -229,22 +294,6 @@ class ProjectWorksheetTemplate(models.Model):
         return action
 
     # ---------------------------------------------------------
-    # Actions
-    # ---------------------------------------------------------
-
-    def action_fsm_report(self):
-        self.ensure_one()
-        return {
-            'name': _('Analysis'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'graph,pivot,list,form',
-            'res_model': self.model_id.model,
-            'context': {
-                'fsm_mode': True,
-            }
-        }
-
-    # ---------------------------------------------------------
     # Business Methods
     # ---------------------------------------------------------
 
@@ -252,14 +301,14 @@ class ProjectWorksheetTemplate(models.Model):
         action = self.action_id.read()[0]
         action.update({
             'views': [[False, "form"]],
-            'context': {'default_x_task_id': True,  # to hide task_id from view
+            'context': {'default_x_%s_id' % self.res_model_id.model.replace('.', '_'): True,  # to hide model_id from view
                         'form_view_initial_mode': 'readonly'}  # to avoid edit mode at studio exit
         })
         return action
 
     def _get_qweb_arch_omitted_fields(self):
         return [
-            'x_task_id', 'x_name',  # redundants
+            'x_%s_id' % self.res_model_id.model.replace('.', '_'), 'x_name',  # redundant
         ]
 
     def _add_field_node_to_container(self, field_node, form_view_fields, container_col):
@@ -305,7 +354,6 @@ class ProjectWorksheetTemplate(models.Model):
                 new_container_col.append(container)
         return new_container_col
 
-    @api.model
     def _get_qweb_arch(self, ir_model, qweb_template_name, form_view_id=False):
         """ This function generates a qweb arch, from the form view of the given ir.model record.
             This is needed because the number and names of the fields aren't known in advance.
@@ -365,27 +413,10 @@ class ProjectWorksheetTemplate(models.Model):
                 })
                 self.env['ir.model.data'].create({
                     'name': 'report_custom_%s' % (report_name,),
-                    'module': 'industry_fsm_report',
+                    'module': getattr(self, '_get_%s_module_name' % self.res_model_id.model.replace('.', '_'))(),
                     'res_id': report_view.id,
                     'model': 'ir.ui.view',
                     'noupdate': True,
                 })
                 # linking the new one
                 worksheet_template.write({'report_view_id': report_view.id})
-
-    def write(self, vals):
-        res = super().write(vals)
-        if 'company_ids' in vals:
-            message = _('There is still projects or tasks linked to this template. Please unlink them first.')
-            for template in self:
-                projects = self.env['project.project'].search([
-                    ('worksheet_template_id', '=', template.id),
-                    ('company_id', 'not in', template.company_ids.ids)])
-                if projects:
-                    raise UserError(message)
-                tasks = self.env['project.task'].search([
-                    ('worksheet_template_id', '=', template.id),
-                    ('company_id', 'not in', template.company_ids.ids)])
-                if tasks:
-                    raise UserError(message)
-        return res

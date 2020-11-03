@@ -75,7 +75,7 @@
 
         <xpath expr="//table" position="replace">
             <t t-if="o.move_id.l10n_mx_edi_cfdi_uuid">
-                <t t-set="docs_related" t-value="cfdi_vals.get('cfdi_node') and cfdi_vals['cfdi_node'].Complemento.xpath('//pago10:DoctoRelacionado', {'pago10': 'http://www.sat.gob.mx/Pagos'})"/>
+                <t t-set="docs_related" t-value="cfdi_vals.get('cfdi_node') and cfdi_vals['cfdi_node'].Complemento.xpath('//pago10:DoctoRelacionado', namespaces={'pago10': 'http://www.sat.gob.mx/Pagos'})"/>
                 <!-- Section to bank accounts-->
                 <t t-set="vat_em" t-value="docs_related[0].getparent().get('RfcEmisorCtaOrd', '') if docs_related else ''"/>
                 <t t-set="bank_em" t-value="docs_related[0].getparent().get('NomBancoOrdExt', '') if docs_related else ''"/>
@@ -117,7 +117,7 @@
                     </thead>
                     <tbody>
                         <tr t-foreach="docs_related" t-as="inv">
-                            <td><span t-esc="o.invoice_ids.filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
+                            <td><span t-esc="o.reconciled_invoice_ids.filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
                             <td><span t-esc="inv.get('IdDocumento')"/></td>
                             <td class="text-right"><span t-esc="inv.get('NumParcialidad', '')"/></td>
                             <td class="text-right"><span t-esc="inv.get('ImpSaldoAnt', '')"/></td>
@@ -140,7 +140,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach="o.invoice_ids" t-as="inv">
+                        <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
                             <td><span t-field="inv.invoice_date"/></td>
                             <td><span t-field="inv.name"/></td>
                             <td class="text-right"><span t-field="inv.amount_total"/></td>

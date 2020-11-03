@@ -118,7 +118,7 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
         if journal.company_period_id:
             journal_name = journal.company_period_id.company_name
         if self.env.context.get('print_mode') or options.get('xlsx_mode'):
-            return journal_name
+            return {'name': journal_name}
         if journal.currencies_are_different and journal.company_period_id:
             cp = journal.company_period_id
             from_currency = cp.currency_chart_id.symbol

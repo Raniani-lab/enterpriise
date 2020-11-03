@@ -21,7 +21,7 @@
                         <group>
                             <field name="is_manager" invisible="1"/>
                             <field name="employee_id" attrs="{'readonly': [('is_manager', '=', False)]}"/>
-                            <field name="progression" widget="selection_badge"/>
+                            <field name="progression" class="pr-3" widget="selection_badge"/>
                             <field name="description"/>
                         </group>
                         <group>

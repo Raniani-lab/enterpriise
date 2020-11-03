@@ -491,11 +491,15 @@ class HelpdeskTicket(models.Model):
 
         # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
         # to avoid intrusive changes in the 'mail' module
+        # TDE TODO: to extract and clean in mail thread
         for vals in list_value:
             if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
+                parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(vals['partner_email'])
+                if not parsed_name:
+                    parsed_name = vals['partner_name']
                 try:
                     vals['partner_id'] = self.env['res.partner'].find_or_create(
-                        tools.formataddr((vals['partner_name'], vals['partner_email']))
+                        tools.formataddr((parsed_name, parsed_email))
                     ).id
                 except UnicodeEncodeError:
                     # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall

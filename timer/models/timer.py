@@ -24,11 +24,12 @@ class TimerTimer(models.Model):
         for record in self:
             record.is_timer_running = record.timer_start and not record.timer_pause
 
-    @api.model
-    def create(self, vals):
-        # Reset the user_timer_id to force the recomputation
-        self.env[vals['res_model']].invalidate_cache(fnames=['user_timer_id'], ids=[vals['res_id']])
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Reset the user_timer_id to force the recomputation
+            self.env[vals['res_model']].invalidate_cache(fnames=['user_timer_id'], ids=[vals['res_id']])
+        return super().create(vals_list)
 
     def action_timer_start(self):
         if not self.timer_start:

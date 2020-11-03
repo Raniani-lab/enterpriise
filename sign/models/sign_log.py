@@ -61,15 +61,17 @@ class SignLog(models.Model):
     def unlink(self):
         raise ValidationError(_("Log history of sign requests cannot be deleted !"))
 
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         1/ if action=='create': get initial shasign from template (checksum pdf)
         2/ if action == 'sign': search for logs with hash for the same request and use that to compute new hash
         """
-        vals['log_date'] = datetime.utcnow()
-        vals['log_hash'] = self._get_or_check_hash(vals)
-        res = super(SignLog, self).create(vals)
-        return res
+        now = datetime.utcnow()
+        for vals in vals_list:
+            vals['log_date'] = now
+            vals['log_hash'] = self._get_or_check_hash(vals)
+        return super(SignLog, self).create(vals_list)
 
     def _get_or_check_hash(self, vals):
         """ Returns the hash to write on sign log entries """

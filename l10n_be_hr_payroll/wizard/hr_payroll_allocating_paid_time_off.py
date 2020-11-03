@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY
 
 from odoo import api, fields, models, _
+from odoo.tools import float_round
 from odoo.exceptions import UserError
 
 
@@ -47,6 +48,8 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
 
         period_start = date(int(self.year), 1, 1)
         period_end = date(int(self.year), 12, 31)
+        calendar_of_company = self.company_id.resource_calendar_id
+        max_leaves_count = 20 * calendar_of_company.hours_per_day  # 20 days * (number of hours per day) for belgian company
 
         period_work_days_count = len(list(rrule(DAILY, dtstart=period_start, until=period_end, byweekday=[0, 1, 2, 3, 4, 5])))
 
@@ -87,7 +90,6 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         })
 
         alloc_employees = defaultdict(lambda: (0, None))  # key = employee_id and value contains paid_time_off and contract_id in Tuple
-        max_leaves_count = 20
         for vals in self.env.cr.dictfetchall():
             paid_time_off, contract_id = alloc_employees[vals['employee_id']]
 
@@ -112,7 +114,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         alloc_employee_ids = []
 
         for employee_id, value in alloc_employees.items():
-            paid_time_off, contract_next_period = value
+            max_hours_to_allocate, contract_next_period = value
             paid_time_off_to_allocate = 0
             if contract_next_period is None:
                 next_period_start = period_start + relativedelta(years=1)
@@ -133,21 +135,24 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 if self.structure_type_id:
                     domains.append(('structure_type_id', '=', self.structure_type_id.id))
                 # We need the contract currently active for the next period for each employee to allocate the correct time off based on this contract.
-                contract_next_period = self.env['hr.contract'].search(domains, limit=1, order='date_start desc') 
+                contract_next_period = self.env['hr.contract'].search(domains, limit=1, order='date_start desc')
             else:
                 contract_next_period = self.env['hr.contract'].browse(contract_next_period)
 
             if contract_next_period.id:
-                work_time_rate = contract_next_period.resource_calendar_id.work_time_rate / 100
-                paid_time_off_to_allocate = max_leaves_count * work_time_rate
-                paid_time_off_to_allocate = round(paid_time_off_to_allocate * 2) / 2  # round the paid time off until x.5
+                calendar = contract_next_period.resource_calendar_id
+                paid_time_off_to_allocate = max_hours_to_allocate / calendar.hours_per_day
+                if paid_time_off_to_allocate > 20:
+                    paid_time_off_to_allocate = 20
+                else:
+                    paid_time_off_to_allocate = float_round(paid_time_off_to_allocate, 0)
 
-            paid_time_off = round(paid_time_off * 2) / 2  # round the paid time off until x.5
+            paid_time_off = float_round(max_hours_to_allocate / calendar_of_company.hours_per_day, 0)
 
             alloc_employee_ids.append((0, 0, {
                 'employee_id': employee_id,
                 'paid_time_off': paid_time_off,
-                'paid_time_off_to_allocate': paid_time_off_to_allocate if paid_time_off_to_allocate <= paid_time_off else paid_time_off,
+                'paid_time_off_to_allocate': paid_time_off_to_allocate,
                 'contract_next_year_id': contract_next_period.id,
                 'alloc_paid_leave_id': self.id}))
 
@@ -155,13 +160,20 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
 
     def generate_allocation(self):
         allocation_values = []
+        calendar_of_company = self.company_id.resource_calendar_id
         for alloc in self.alloc_employee_ids.filtered(lambda alloc: alloc.paid_time_off_to_allocate):
+            max_leaves_allocated = alloc.paid_time_off * calendar_of_company.hours_per_day
+            number_of_days = alloc.paid_time_off_to_allocate
+
+            if alloc.paid_time_off_to_allocate * alloc.resource_calendar_id.hours_per_day > max_leaves_allocated:
+                number_of_days = alloc.paid_time_off
+
             allocation_values.append({
                 'name': _('Paid Time Off Allocation'),
                 'holiday_status_id': self.holiday_status_id.id,
                 'employee_id': alloc.employee_id.id,
-                'number_of_days': alloc.paid_time_off_to_allocate,
-                'max_leaves_allocated': alloc.paid_time_off})
+                'number_of_days': number_of_days,
+                'max_leaves_allocated': max_leaves_allocated})
         allocations = self.env['hr.leave.allocation'].create(allocation_values)
 
         return {
@@ -179,8 +191,8 @@ class HrPayrollAllocEmployee(models.TransientModel):
     _description = 'Manage the Allocation of Paid Time Off Employee'
 
     employee_id = fields.Many2one('hr.employee', string="Employee", required=True)
-    paid_time_off = fields.Float("Paid Time Off For The Period", required=True)
-    paid_time_off_to_allocate = fields.Float("Paid Time Off To Allocate", required=True)
+    paid_time_off = fields.Float("Paid Time Off For The Period", required=True, help="1 day is 7 hours and 36 minutes")
+    paid_time_off_to_allocate = fields.Float("Paid Time Off To Allocate", required=True, help="1 day is the number of the amount of hours per day in the working schedule")
     contract_next_year_id = fields.Many2one('hr.contract', string="Contract Active Next Year")
     resource_calendar_id = fields.Many2one(related='contract_next_year_id.resource_calendar_id', string="Current Working Schedule", readonly=True)
     alloc_paid_leave_id = fields.Many2one('hr.payroll.alloc.paid.leave')

@@ -36,7 +36,7 @@ class GithubRepository(models.Model):
         for repository in self:
             repository.url_token = baseurl + "/mail_github/payload/" + github_tokenize(db_secret, db_uuid)
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """ We don't want the creator of the repo to be have needaction when a message_post is done. """
-        return super(GithubRepository, self.with_context(mail_create_nosubscribe=True)).create(values)
+        return super(GithubRepository, self.with_context(mail_create_nosubscribe=True)).create(vals_list)

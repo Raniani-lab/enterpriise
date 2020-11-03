@@ -28,19 +28,22 @@ class MailActivity(models.Model):
 
         return super(MailActivity, self)._action_done(feedback=feedback, attachment_ids=attachment_ids)
 
-    @api.model
-    def create(self, values):
-        activity = super(MailActivity, self).create(values)
-        activity_type = activity.activity_type_id
-        if activity_type.category == 'upload_file' and activity.res_model != 'documents.document':
-            if activity_type.folder_id:
-                self.env['documents.document'].create({
+    @api.model_create_multi
+    def create(self, vals_list):
+        activities = super().create(vals_list)
+        doc_vals = []
+        for activity in activities:
+            activity_type = activity.activity_type_id
+            if activity_type.category == 'upload_file' and activity.res_model != 'documents.document' and activity_type.folder_id:
+                doc_vals.append({
                     'res_model': activity.res_model,
                     'res_id': activity.res_id,
                     'owner_id': activity_type.default_user_id.id,
                     'folder_id': activity_type.folder_id.id,
-                    'tag_ids': [(6, 0, activity_type.tag_ids.ids if activity_type.tag_ids else [])],
+                    'tag_ids': [(6, 0, activity_type.tag_ids.ids)],
                     'name': activity.summary or activity.res_name or 'upload file request',
                     'request_activity_id': activity.id,
                 })
-        return activity
+        if doc_vals:
+            self.env['documents.document'].create(doc_vals)
+        return activities

@@ -71,6 +71,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_leave',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
+    extra_trigger: `.o_web_client:not(.o_in_studio)`,  /* wait to be out of studio */
     trigger: '.o_menu_toggle.fa-th',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {

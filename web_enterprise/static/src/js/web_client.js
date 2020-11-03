@@ -126,25 +126,6 @@ return AbstractWebClient.extend({
     },
 
     // --------------------------------------------------------------
-    // do_*
-    // --------------------------------------------------------------
-
-    /**
-     * Extends do_action() to toggle the home menu off if the action isn't displayed in a dialog
-     */
-    do_action: async function () {
-        const action = await this._super(...arguments);
-        if (
-            this.homeMenuManagerDisplayed &&
-            action.target !== 'new' &&
-            action.type !== 'ir.actions.act_window_close'
-        ) {
-            await this.toggleHomeMenu(false);
-        }
-        return action;
-    },
-
-    // --------------------------------------------------------------
     // URL state handling
     // --------------------------------------------------------------
 
@@ -313,6 +294,19 @@ return AbstractWebClient.extend({
         }
         this.menu.toggle_mode(display, this.action_manager.getCurrentAction() !== null);
         this.el.classList.toggle("o_home_menu_background", display);
+    },
+    /**
+     * Ensure to toggle off the home menu when an action is executed (for
+     * instance from a systray item or from a dialog).
+     *
+     * @private
+     */
+    current_action_updated: function() {
+        this._super.apply(this, arguments);
+
+        if (this.homeMenuManagerDisplayed) {
+            this.toggleHomeMenu(false);
+        }
     },
     _onShowHomeMenu: function () {
         this.toggleHomeMenu(true);

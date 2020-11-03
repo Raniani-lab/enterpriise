@@ -17,7 +17,7 @@ if (config.isDebug()) {
                         action = self.action_manager.getCurrentAction();
                         controller = self.action_manager.getCurrentController();
                     }
-                    self.current_action_updated(action, controller);
+                    self.update_debug_manager(action, controller);
                     toggleHomeMenu.apply(self, arguments);
                 };
             });

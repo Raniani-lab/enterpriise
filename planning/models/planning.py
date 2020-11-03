@@ -263,7 +263,7 @@ class Planning(models.Model):
                 if template_field == 'start_time':
                     h = int(self.template_id.start_time)
                     m = round(modf(self.template_id.start_time)[0] * 60.0)
-                    slot_time = self[slot_field].astimezone(pytz.timezone(self.env.user.tz or 'UTC'))
+                    slot_time = self[slot_field].astimezone(pytz.timezone(self._get_tz()))
                     if slot_time.hour != h or slot_time.minute != m:
                         return True
                 else:
@@ -318,7 +318,7 @@ class Planning(models.Model):
     @api.depends('employee_id', 'template_id')
     def _compute_datetime(self):
         for slot in self:
-            user_tz = pytz.timezone(slot.env.user.tz or 'UTC')
+            user_tz = pytz.timezone(slot._get_tz())
             employee = slot.employee_id if slot.employee_id else slot.env.user.employee_id
 
             start = slot.start_datetime or self._default_start_datetime()
@@ -680,7 +680,7 @@ class Planning(models.Model):
         :return resulting date in the UTC timezone (a naive date)
         """
         try:
-            tz = pytz.timezone(self._context.get('tz') or self.env.user.tz)
+            tz = pytz.timezone(self._get_tz())
         except pytz.UnknownTimeZoneError:
             tz = pytz.UTC
         start = start.replace(tzinfo=pytz.utc).astimezone(tz).replace(tzinfo=None)
@@ -715,6 +715,13 @@ class Planning(models.Model):
         # value -> field from slot
         return {'role_id': 'role_id', 'start_time': 'start_datetime'}
 
+    def _get_tz(self):
+        return (self.env.user.tz
+                or self.employee_id.tz
+                or self._context.get('tz')
+                or self.company_id.resource_calendar_id.tz
+                or 'UTC')
+
     def _get_overlap_domain(self):
         """ get overlapping domain for current shifts
             :returns dict : map with slot id as key and domain as value
@@ -735,7 +742,7 @@ class Planning(models.Model):
     def _prepare_template_values(self):
         """ extract values from shift to create a template """
         # compute duration w/ tzinfo otherwise DST will not be taken into account
-        destination_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        destination_tz = pytz.timezone(self._get_tz())
         start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz)
         end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz)
 

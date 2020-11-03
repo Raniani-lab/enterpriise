@@ -442,7 +442,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
     def test_recurrency_timezone(self):
         """
-        We need to calculate the recurrency in the employee's timezone 
+        We need to calculate the recurrency in the user's timezone
         (this is important if repeating a slot beyond a dst boundary - we need to keep the same (local) time)
 
             company_span:           1 week
@@ -460,7 +460,8 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             self.assertFalse(self.get_by_employee(self.employee_bert))
 
-            slot = self.env['planning.slot'].with_context(tz='Europe/Brussels').create({
+            self.env.user.tz = 'Europe/Brussels'
+            slot = self.env['planning.slot'].create({
                 'start_datetime': datetime(2020, 10, 20, 6, 0, 0),
                 'end_datetime': datetime(2020, 10, 20, 15, 0, 0),
                 'employee_id': self.employee_bert.id,
@@ -476,8 +477,8 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
     def test_recurrency_timezone_at_dst(self):
         """
         Check we don't crash if we try to recur ON the DST boundary
-        (because 02:30 happens twice on 10/25/20: 
-         - 10/25/2020 00:30 GMT is 02:30 CEST, 
+        (because 02:30 happens twice on 10/25/20:
+         - 10/25/2020 00:30 GMT is 02:30 CEST,
          - 10/25/2020 01:30 GMT is 02:30 CET)
 
             company_span:           1 week
@@ -495,7 +496,8 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             self.assertFalse(self.get_by_employee(self.employee_bert))
 
-            slot = self.env['planning.slot'].with_context(tz='Europe/Brussels').create({
+            self.env.user.tz = 'Europe/Brussels'
+            slot = self.env['planning.slot'].create({
                 'start_datetime': datetime(2020, 10, 25, 0, 30, 0),
                 'end_datetime': datetime(2020, 10, 25, 9, 0, 0),
                 'employee_id': self.employee_bert.id,

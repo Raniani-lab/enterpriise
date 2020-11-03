@@ -52,3 +52,8 @@ class TestCommonPlanning(SavepointCase):
             'work_email': 'bert@a.be',
             'tz': 'UTC'
         })
+        cls.employee_janice = cls.env['hr.employee'].create({
+            'name': 'janice',
+            'work_email': 'janice@a.be',
+            'tz': 'America/New_York'
+        })

@@ -15,6 +15,10 @@ class TestPlanning(TestCommonPlanning):
             'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 27, 18, 0, 0),
         })
+        cls.template = cls.env['planning.slot.template'].create({
+            'start_time': 11,
+            'duration': 4,
+        })
 
     def test_allocated_hours_defaults(self):
         self.assertEqual(self.slot.allocated_hours, 10, "It should have the default value")
@@ -49,6 +53,39 @@ class TestPlanning(TestCommonPlanning):
         self.slot.end_datetime -= relativedelta(hours=2)
         self.assertEqual(self.slot.allocated_percentage, 100, "It should still be 100%")
         self.assertEqual(self.slot.allocated_hours, 8, "It should decreased by 2 hours")
+
+    def test_set_template(self):
+        self.env.user.tz = 'Europe/Brussels'
+        self.slot.template_id = self.template
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 9, 0), 'It should set time from template, in user timezone (11am CET -> 9am UTC)')
+
+    def test_change_employee_with_template(self):
+        self.slot.template_id = self.template
+        self.slot.flush()
+
+        # simulate public user (no tz)
+        self.env.user.tz = False
+        self.slot.employee_id = self.employee_janice.id
+        self.assertEqual(self.slot.template_id, self.template, 'It should keep the template')
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust for employee timezone: 11am EDT -> 3pm UTC')
+
+    def test_unassign_employee_with_template(self):
+        # we are going to put everybody in EDT, because if the employee has a different timezone from the company this workflow does not work.
+        self.env.user.tz = 'America/New_York'
+        self.env.user.company_id.resource_calendar_id.tz = 'America/New_York'
+        self.slot.template_id = self.template
+        self.slot.flush()
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should set time from template, in user timezone (11am EDT -> 3pm UTC)')
+
+        # simulate public user (no tz)
+        self.env.user.tz = False
+        self.slot.employee_id = self.employee_janice.id
+        self.slot.flush()
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust to employee timezone')
+
+        self.slot.employee_id = None
+        self.assertEqual(self.slot.template_id, self.template, 'It should keep the template')
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should reset to company calendar timezone: 11am EDT -> 3pm UTC')
 
     def test_compute_overlap_count(self):
         self.slot_6_2 = self.env['planning.slot'].create({

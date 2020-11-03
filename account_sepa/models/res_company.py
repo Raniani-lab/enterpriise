@@ -22,15 +22,16 @@ class ResCompany(models.Model):
                                          compute='_compute_sepa_pain_version',
                                          help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.')
 
-    @api.model
-    def create(self, vals):
-        # Overridden in order to set the name of the company as default value
-        # for sepa_initiating_party_name field
-        name = vals.get('name')
-        if name and 'sepa_initiating_party_name' not in vals:
-            vals['sepa_initiating_party_name'] = sanitize_communication(name)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Overridden in order to set the name of the company as default value
+            # for sepa_initiating_party_name field
+            name = vals.get('name')
+            if name and 'sepa_initiating_party_name' not in vals:
+                vals['sepa_initiating_party_name'] = sanitize_communication(name)
 
-        return super(ResCompany, self).create(vals)
+        return super().create(vals_list)
 
     @api.depends('partner_id.country_id')
     def _compute_sepa_origid(self):

@@ -243,3 +243,18 @@ class TestAgedReport(TestAccountReportsCommon):
                 ('Total',               '',             150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
+
+    def test_aged_receivable_reconciliation_date(self):
+        """Check the values at a date before some reconciliations are done."""
+        options = self._init_options(self.report, fields.Date.from_string('2016-10-31'), fields.Date.from_string('2016-10-31'))
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                    Due Date        Not Due On  1 - 30      31 - 60     61 - 90     91 - 120    Older       Total
+            [   0,                      1,              5,          6,          7,          8,          9,          10,         11],
+            [
+                ('partner_a',          '',         -100.0,     1100.0,        0.0,        0.0,        0.0,       100.0,     1100.0),
+                ('partner_b',          '',         -33.35,     366.66,        0.0,        0.0,        0.0,       33.33,     366.64),
+                ('Total',              '',        -133.35,    1466.66,        0.0,        0.0,        0.0,      133.33,    1466.64),
+            ],
+        )

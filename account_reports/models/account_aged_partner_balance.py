@@ -126,10 +126,12 @@ class ReportAccountAgedPartner(models.AbstractModel):
             LEFT JOIN LATERAL (
                 SELECT part.amount, part.debit_move_id
                 FROM account_partial_reconcile part
+                WHERE part.max_date <= %(date)s
             ) part_debit ON part_debit.debit_move_id = account_move_line.id
             LEFT JOIN LATERAL (
                 SELECT part.amount, part.credit_move_id
                 FROM account_partial_reconcile part
+                WHERE part.max_date <= %(date)s
             ) part_credit ON part_credit.credit_move_id = account_move_line.id
             JOIN {period_table} ON (
                 period_table.date_start IS NULL
@@ -150,6 +152,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         params = {
             'account_type': options['filter_account_type'],
             'sign': 1 if options['filter_account_type'] == 'receivable' else -1,
+            'date': options['date']['date_to'],
         }
         return self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
 

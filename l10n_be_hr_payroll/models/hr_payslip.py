@@ -401,6 +401,86 @@ class Payslip(models.Model):
         active_langs = self.env['res.lang'].with_context(active_test=True).search([]).mapped('code')
         return any(l in active_langs for l in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
 
+    def _get_sum_european_time_off_days(self, check=False):
+        """
+            Sum European Time Off Worked Days (LEAVE216) contained in any payslips over
+            the last year.
+            We search if there is a payslip over this year, with a the code 'EU.LEAVE.DEDUC'.
+            If yes, then we don't take the worked days in the previous year.
+
+            We also search the 'LEAVE216' worked days contained in any payslip two year ago, as
+            they are deducted from the double holiday pay during this period. It's usually on the
+            following holiday pay (next year), but we cannot have a negative Net Salary.
+            That's why we can deduct these leaves two years after.
+        """
+        work_days_code = 'LEAVE216'
+        payslip_line_code = 'EU.LEAVE.DEDUC'
+        year = self.date_from.year - 1
+        date_from = fields.Date.to_string(date(year, 1, 1))
+        date_to = fields.Date.to_string(date(year, 12, 31))
+
+        if check:
+            select = "1"
+            limit_records = "LIMIT 1"
+        else:
+            select = "sum(hwd.amount)"
+            limit_records = ""
+
+        # If the european leaves have not been deducted in the last double holiday pay
+        # we should deduct them this year
+        date_from_earlier = fields.Date.to_string(date(year - 1, 1, 1))
+        period_start = fields.Date.to_string(date(year + 1, 1, 1))
+        period_stop = fields.Date.to_string(date(year + 1, 12, 31))
+
+        query = """
+            SELECT {select}
+            FROM hr_payslip hp, hr_payslip_worked_days hwd, hr_work_entry_type hwet
+            WHERE hp.state in ('done', 'paid')
+            AND hp.id = hwd.payslip_id
+            AND hwet.id = hwd.work_entry_type_id
+            AND hp.employee_id = %(employee)s
+            AND hp.date_to <= %(stop)s
+            AND hwet.code = %(work_days_code)s
+            AND (
+                hp.date_from >= %(start)s
+                AND NOT EXISTS(
+                    SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
+                    WHERE hp.id <> hp2.id
+                    AND hp2.state in ('done', 'paid')
+                    AND hp2.id = hpl.slip_id
+                    AND hp2.employee_id = hp.employee_id
+                    AND hp2.date_from >= %(period_start)s
+                    AND hp2.date_to <= %(period_stop)s
+                ) OR (
+                    hp.date_from >= %(start_earlier)s
+                    AND NOT EXISTS(
+                        SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
+                        WHERE hp.id <> hp2.id
+                        AND hp2.state in ('done', 'paid')
+                        AND hp2.id = hpl.slip_id
+                        AND hp2.employee_id = hp.employee_id
+                        AND hp2.date_from >= %(start)s
+                        AND hp2.date_to <= %(stop)s
+                        AND hpl.code = %(payslip_line_code)s LIMIT 1
+                    )
+                )
+            )
+            {limit}""".format(
+                select=select,
+                limit=limit_records)
+
+        self.env.cr.execute(query, {
+            'employee': self.employee_id.id,
+            'work_days_code': work_days_code,
+            'start': date_from,
+            'stop': date_to,
+            'start_earlier': date_from_earlier,
+            'period_start': period_start,
+            'period_stop': period_stop,
+            'payslip_line_code': payslip_line_code})
+        res = self.env.cr.fetchone()
+        return res[0] if res else 0.0
+
     def _is_invalid(self):
         invalid = super()._is_invalid()
         if not invalid and self._is_active_belgian_languages():

@@ -82,6 +82,21 @@ class TestPayrollCommon(SavepointCase):
             ]
         })
 
+        cls.resource_calendar_30_hours_per_week = cls.resource_calendar.copy({
+            'name': 'Calendar 30 Hours/Week',
+            'full_time_required_hours': 38,
+            'attendance_ids': [
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Afternoon', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 16.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Wednesday Afternoon', 'dayofweek': '2', 'hour_from': 13, 'hour_to': 16.5, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.5, 'day_period': 'afternoon'})
+            ]
+        })
+
     def setUp(self):
         super(TestPayrollCommon, self).setUp()
 
@@ -249,3 +264,29 @@ class TestPayrollCommon(SavepointCase):
         first_contract_a.write({'state': 'open'})
 
         self.a_contracts = first_contract_a
+
+        address_home_test = self.env['res.partner'].create({
+            'name': 'Employee Test',
+            'company_id': self.belgian_company.id,
+            'type': 'private',
+            'country_id': self.env.ref('base.be').id
+        })
+
+        self.employee_test = self.employee_georges.copy({
+            'name': 'Employee Test',
+            'address_home_id': address_home_test.id,
+            'resource_calendar_id': self.resource_calendar.id,
+            'contract_ids': []
+        })
+
+        first_contract_test = first_contract_georges.copy({
+            'name': "Employee Test's Contract",
+            'employee_id': self.employee_test.id,
+            'resource_calendar_id': self.resource_calendar.id,
+            'date_start': date(2017, 1, 1),
+            'date_end': False
+        })
+
+        first_contract_test.write({'state': 'open'})
+
+        self.test_contracts = first_contract_test

@@ -19,7 +19,7 @@ class AccountAsset(models.Model):
     gross_increase_count = fields.Integer(compute='_entry_count', string='# Gross Increases', help="Number of assets made to increase the value of the asset")
     total_depreciation_entries_count = fields.Integer(compute='_entry_count', string='# Depreciation Entries', help="Number of depreciation entries (posted or not)")
 
-    name = fields.Char(string='Asset Name', compute='_compute_name', store=True, required=True)
+    name = fields.Char(string='Asset Name', compute='_compute_name', store=True, required=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True, states={'draft': [('readonly', False)]},
                                   default=lambda self: self.env.company.currency_id.id)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)]},

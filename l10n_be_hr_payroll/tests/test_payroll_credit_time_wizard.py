@@ -30,9 +30,9 @@ class TestPayrollCreditTime(TestPayrollCommon):
     def test_credit_time_for_georges(self):
         """
         Test Case:
-        The employee Georges asks a credit time to work at mid-time from 01/02 to 30/04 in the current year,
-        normally, he has 14.5 days before his credit and with the credit, the number of paid time off days decrease
-        to 9. If Georges didn't take some leaves during his credit, when he exists it, his number of paid time off
+        The employee Georges asks a credit time to work at mid-time (3 days/week) from 01/02 to 30/04 in the current year,
+        normally, he has 15 days before his credit and with the credit, the number of paid time off days dereases
+        12 half days. If Georges didn't take some leaves during his credit, when he exists it, his number of paid time off
         days increase to the number maximum of allocated days that he can have.
         """
         current_year = date.today().year
@@ -48,8 +48,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_mid_time.id,
             'holiday_status_id': self.paid_time_off_type.id,
         })
-        self.assertEqual(wizard.time_off_allocation, 9)
-        self.assertEqual(wizard.remaining_allocated_time_off, 14.5)
+        self.assertEqual(wizard.time_off_allocation, 12)
+        self.assertEqual(wizard.remaining_allocated_time_off, 15)
         self.assertAlmostEqual(wizard.work_time, 50, 2)
         view = wizard.validate_credit_time()
         credit_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: contract.id != georges_current_contract.id)
@@ -59,8 +59,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'date_start': date(current_year, 5, 1),
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, georges_allocation.max_leaves_allocated)
-        self.assertEqual(wizard.remaining_allocated_time_off, 9)
+        self.assertEqual(wizard.time_off_allocation, 15)
+        self.assertEqual(wizard.remaining_allocated_time_off, 12)
         view = wizard.validate_full_time()
         full_time_contract = self.env['hr.contract'].browse(view['res_id'])
         self.assertEqual(full_time_contract.time_credit, False)
@@ -83,8 +83,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_9_10.id,
             'holiday_status_id': self.paid_time_off_type.id,
         })
-        self.assertEqual(wizard.time_off_allocation, 16, "normally, it's equal to 18 but this employee doesn't have full time every month last year, thus, we must allocate only the maximum, that is 16 days")
-        self.assertEqual(wizard.remaining_allocated_time_off, 10)
+        self.assertEqual(wizard.time_off_allocation, 18, "it should be equal to 18 of 6.84 hours")
+        self.assertEqual(wizard.remaining_allocated_time_off, 19)
         self.assertAlmostEqual(wizard.work_time, 90, 2)
         view = wizard.validate_credit_time()
         credit_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: contract.id != john_current_contract.id)
@@ -92,10 +92,11 @@ class TestPayrollCreditTime(TestPayrollCommon):
         # Exit credit time for John Doe
         wizard = self.env['l10n_be.hr.payroll.exit.credit.time.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=credit_time_contract.id).new({
             'date_start': date(current_year, 5, 1),
-            'holiday_status_id': self.paid_time_off_type.id
+            'holiday_status_id': self.paid_time_off_type.id,
+            'resource_calendar_id': self.resource_calendar.id
         })
-        self.assertEqual(wizard.time_off_allocation, john_allocation.max_leaves_allocated)
-        self.assertEqual(wizard.remaining_allocated_time_off, 16)
+        self.assertEqual(wizard.time_off_allocation, 16)
+        self.assertEqual(wizard.remaining_allocated_time_off, 18)
         view = wizard.validate_full_time()
         full_time_contract = self.env['hr.contract'].browse(view['res_id'])
         self.assertEqual(full_time_contract.time_credit, False)
@@ -104,12 +105,15 @@ class TestPayrollCreditTime(TestPayrollCommon):
     def test_credit_time_for_a(self):
         """
         Test Case:
-        The employee A asks a credit time to work at 4/5 from 01/02 to 30/04 in the current year.
+        The employee A has a contract full-time from 01/01 of the previous year.
+        Then, he has right to 20 complete days as paid time off.
+        The employee A asks a credit time to work at 4/5 (4 days/week) from 01/02 to 30/04 in the current year.
         With this credit time, his number of paid time off days decrease to
         """
         current_year = date.today().year
         a_current_contract = self.a_contracts[-1]
         a_allocation = self.allocations.filtered(lambda alloc: alloc.employee_id.id == self.employee_a.id)
+        self.assertEqual(a_allocation.number_of_days, 20)
 
         # Test for employee A
         # Credit time for A
@@ -130,7 +134,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'date_start': date(current_year, 5, 1),
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, a_allocation.max_leaves_allocated)
+        self.assertEqual(wizard.time_off_allocation, 20)
         self.assertEqual(wizard.remaining_allocated_time_off, 16)
         view = wizard.validate_full_time()
         full_time_contract = self.env['hr.contract'].browse(view['res_id'])
@@ -141,8 +145,8 @@ class TestPayrollCreditTime(TestPayrollCommon):
         """
         Test Case (only with the employee A)
         - Full Time from 01/01 to 31/05 and A took 6 days off (it remained 14 days)
-        - 4/5 from 01/06 to 31/08 and A took 6 days (it remained 5)
-        - 1/2 from 01/09 -> 31/12 (in this case, we need to do an exit credit to full time and then add a credit)
+        - 4/5 (4 days/week) from 01/06 to 31/08 and A took 6 days (it remained 5)
+        - 1/2 (3 days/week) from 01/09 -> 31/12 (in this case, we need to do an exit credit to full time and then add a credit)
         """
         today = date.today()
         a_current_contract = self.a_contracts[-1]
@@ -164,7 +168,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_4_5.id,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 11)
+        self.assertEqual(wizard.time_off_allocation, 10)
         self.assertEqual(wizard.remaining_allocated_time_off, 14)
         self.assertAlmostEqual(wizard.work_time, 80, 2)
         view = wizard.validate_credit_time()
@@ -184,12 +188,12 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'date_start': date(today.year, 9, 1),
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 6)
-        self.assertEqual(wizard.remaining_allocated_time_off, 5)
+        self.assertEqual(wizard.time_off_allocation, 8)
+        self.assertEqual(wizard.remaining_allocated_time_off, 4)
         view = wizard.validate_full_time()
         full_time_contract = self.env['hr.contract'].browse(view['res_id'])
         self.assertEqual(full_time_contract.time_credit, False)
-        self.assertEqual(a_allocation.number_of_days, 18, "6 remained paid time offs and 12 days has been taken by the employee this current year")
+        self.assertEqual(a_allocation.number_of_days, 20, "6 remained paid time offs and 12 days has been taken by the employee this current year")
 
         # Credit time
         wizard = self.env['l10n_be.hr.payroll.credit.time.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=full_time_contract.id).new({
@@ -198,20 +202,11 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_mid_time.id,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 3)
-        self.assertEqual(wizard.remaining_allocated_time_off, 6)
+        self.assertEqual(wizard.time_off_allocation, 0)
+        self.assertEqual(wizard.remaining_allocated_time_off, 8)
         self.assertAlmostEqual(wizard.work_time, 50, 2)
         view = wizard.validate_credit_time()
         credit_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: contract.id != full_time_contract.id)
-
-        leave = self.env['hr.leave'].create({
-            'holiday_status_id': self.paid_time_off_type.id,
-            'employee_id': self.employee_a.id,
-            'request_date_from': date(today.year, 10, 1),
-            'request_date_to': date(today.year, 10, 3),
-            'number_of_days': 3
-        })
-        leave.action_validate()
 
         # Normally he has already taken all his paid time offs, if he takes another, we should have an error
         with self.assertRaises(ValidationError):

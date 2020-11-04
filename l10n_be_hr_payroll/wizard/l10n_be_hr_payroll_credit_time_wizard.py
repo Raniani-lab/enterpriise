@@ -5,6 +5,7 @@ from datetime import timedelta
 
 
 from odoo import api, fields, models, _
+from odoo.tools import float_round
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -62,21 +63,27 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             if not leave_allocation.id:
                 continue
 
-            remaining_allocated_time_off = leave_allocation.number_of_days - leave_allocation.leaves_taken
-            work_time_rate = wizard.work_time / 100
+            default_calendar = self.company_id.resource_calendar_id
 
-            # Compute old work time rate
-            old_work_time_rate = wizard.contract_id.resource_calendar_id.work_time_rate / 100
+            # Compute the number of hours if the employee had the new working schedule last year
+            leaves_to_allocate = 20 * default_calendar.hours_per_day * wizard.work_time / 100
 
-            if 0 < old_work_time_rate < 1:  # Then we need to remove the older to compute correctly the paid time off to allocate
-                work_time_rate /= old_work_time_rate
+            if leave_allocation.max_leaves_allocated < leaves_to_allocate:
+                # Then we need to reduce the number of hours to the max_leaves_allocated
+                leaves_to_allocate = leave_allocation.max_leaves_allocated
 
-            time_off_allocation = remaining_allocated_time_off * work_time_rate
-            time_off_allocation = round(time_off_allocation * 2) / 2
+            # Convert hours in days
+            leaves_to_allocate /= wizard.resource_calendar_id.hours_per_day
+
+            if leaves_to_allocate > 20:
+                leaves_to_allocate = 20
+
+            # Reduce the number of days by the number of leaves taken and round the result
+            time_off_allocation = float_round(leaves_to_allocate - leave_allocation.leaves_taken, 0)
 
             wizard.write({
-                'time_off_allocation': leave_allocation.max_leaves_allocated - leave_allocation.leaves_taken if time_off_allocation + leave_allocation.leaves_taken > leave_allocation.max_leaves_allocated else time_off_allocation,
-                'remaining_allocated_time_off': remaining_allocated_time_off,
+                'time_off_allocation': time_off_allocation,
+                'remaining_allocated_time_off': leave_allocation.number_of_days - leave_allocation.leaves_taken,
                 'leave_allocation_id': leave_allocation.id
             })
 
@@ -158,6 +165,9 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
     @api.depends('holiday_status_id', 'resource_calendar_id')
     def _compute_paid_time_off(self):
         for wizard in self:
+            if not wizard.holiday_status_id.id or not wizard.resource_calendar_id.id:
+                continue
+
             leave_allocation = wizard.env['hr.leave.allocation'].search([
                 ('holiday_status_id', '=', wizard.holiday_status_id.id),
                 ('employee_id', '=', wizard.contract_id.employee_id.id),
@@ -165,22 +175,27 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
             if not leave_allocation.id:
                 continue
 
-            remaining_allocated_time_off = leave_allocation.number_of_days - leave_allocation.leaves_taken
+            default_calendar = self.company_id.resource_calendar_id
 
-            work_time_rate = wizard.resource_calendar_id.work_time_rate / 100
+            # Compute the number of hours if the employee had the new working schedule last year
+            leaves_to_allocate = 20 * default_calendar.hours_per_day * wizard.resource_calendar_id.work_time_rate / 100
 
-            # Compute old work time rate
-            old_work_time_rate = wizard.credit_time_contract_id.resource_calendar_id.work_time_rate / 100
+            if leave_allocation.max_leaves_allocated < leaves_to_allocate:
+                # Then we need to reduce the number of hours to the max_leaves_allocated
+                leaves_to_allocate = leave_allocation.max_leaves_allocated
 
-            if 0 < old_work_time_rate < 1:  # Then we need to remove the older to compute correctly the paid time off to allocate
-                work_time_rate /= old_work_time_rate
+            # Convert hours in days
+            leaves_to_allocate /= wizard.resource_calendar_id.hours_per_day
 
-            time_off_allocation = remaining_allocated_time_off * work_time_rate
-            time_off_allocation = round(time_off_allocation * 2) / 2
+            if leaves_to_allocate > 20:
+                leaves_to_allocate = 20
+
+            # Reduce the number of days by the number of leaves taken and round the result
+            time_off_allocation = float_round(leaves_to_allocate - leave_allocation.leaves_taken, 0)
 
             wizard.write({
-                'time_off_allocation': leave_allocation.max_leaves_allocated - leave_allocation.leaves_taken if time_off_allocation + leave_allocation.leaves_taken > leave_allocation.max_leaves_allocated else time_off_allocation,
-                'remaining_allocated_time_off': remaining_allocated_time_off,
+                'time_off_allocation': time_off_allocation,
+                'remaining_allocated_time_off': leave_allocation.number_of_days - leave_allocation.leaves_taken,
                 'leave_allocation_id': leave_allocation.id
             })
 

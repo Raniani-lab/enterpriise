@@ -950,12 +950,7 @@ class AccountReport(models.AbstractModel):
                 domain = expression.AND([domain, [('analytic_account_id', 'in', analytic_ids)]])
             if options.get('date'):
                 opt_date = options['date']
-                if opt_date.get('date_from'):
-                    domain = expression.AND([domain, [('date', '>=', opt_date['date_from'])]])
-                if opt_date.get('date_to'):
-                    domain = expression.AND([domain, [('date', '<=', opt_date['date_to'])]])
-                if not opt_date.keys() & {'date_from', 'date_to'} and opt_date.get('date'):
-                    domain = expression.AND([domain, [('date', '<=', opt_date['date'])]])
+                domain = expression.AND([domain, self._get_options_date_domain(options)])
             # In case the line has been generated for a "group by" financial line, append the parent line's domain to the one we created
             if params.get('financial_group_line_id'):
                 # In case the hierarchy is enabled, 'financial_group_line_id' might be a string such

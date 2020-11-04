@@ -38,7 +38,6 @@ class TestPayrollCommon(SavepointCase):
 
         cls.resource_calendar_mid_time = cls.resource_calendar.copy({
             'name': 'Calendar (Mid-Time)',
-            'hours_per_week': 38,
             'full_time_required_hours': 38,
             'attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
@@ -48,10 +47,10 @@ class TestPayrollCommon(SavepointCase):
                 (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'})
             ]
         })
+        cls.resource_calendar_mid_time._onchange_hours_per_day()
 
         cls.resource_calendar_4_5 = cls.resource_calendar.copy({
             'name': 'Calendar (4 / 5)',
-            'hours_per_week': 38,
             'full_time_required_hours': 38,
             'attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
@@ -64,10 +63,10 @@ class TestPayrollCommon(SavepointCase):
                 (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
             ]
         })
+        cls.resource_calendar_4_5._onchange_hours_per_day()
 
         cls.resource_calendar_9_10 = cls.resource_calendar.copy({
             'name': 'Calendar (9 / 10)',
-            'hours_per_week': 38,
             'full_time_required_hours': 38,
             'attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
@@ -81,6 +80,7 @@ class TestPayrollCommon(SavepointCase):
                 (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
             ]
         })
+        cls.resource_calendar_9_10._onchange_hours_per_day()
 
         cls.resource_calendar_30_hours_per_week = cls.resource_calendar.copy({
             'name': 'Calendar 30 Hours/Week',
@@ -96,6 +96,7 @@ class TestPayrollCommon(SavepointCase):
                 (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.5, 'day_period': 'afternoon'})
             ]
         })
+        cls.resource_calendar_30_hours_per_week._onchange_hours_per_day()
 
     def setUp(self):
         super(TestPayrollCommon, self).setUp()

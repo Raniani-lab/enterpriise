@@ -20,12 +20,11 @@ class IrUiMenu(models.Model):
         menu_root = super(IrUiMenu, self).load_menus(debug)
         cids = request and request.httprequest.cookies.get('cids')
         if cids:
-            cids = cids.split(',')
-        if cids and int(cids[0]) in self.env.user.company_ids.ids:
-            self = self.with_company(int(cids[0]))
-        else:
-            self = self.with_company(self.env.user.company_id.id)
-        menu_root['background_image'] = bool(self.env.company.background_image)
+            cids = [int(cid) for cid in cids.split(',')]
+        company = self.env['res.company'].browse(cids[0]) \
+            if cids and all([cid in self.env.user.company_ids.ids for cid in cids]) \
+            else self.env.user.company_id
+        menu_root['background_image'] = bool(company.background_image)
         return menu_root
 
     @api.model

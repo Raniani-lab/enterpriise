@@ -339,7 +339,8 @@ class WebStudioController(http.Controller):
 
     @http.route('/web_studio/reset_background_image', type='json', auth='user')
     def reset_background_image(self):
-        request.env.user.with_user(request.uid).company_id.background_image = None
+        if request.env.company in request.env.user.with_user(request.uid).company_ids:
+            request.env.company.background_image = None
 
     def create_new_field(self, values):
         """ Create a new field with given values.

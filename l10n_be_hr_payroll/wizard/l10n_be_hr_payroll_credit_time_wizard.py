@@ -100,7 +100,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'date_start': self.date_start,
             'date_end': self.date_end,
             self.contract_id._get_contract_wage_field(): self.wage,
-            'time_credit_full_time_wage': self.wage / float(self.work_time) if float(self.work_time) != 0 else self.contract_id._get_contract_wage(),
+            'time_credit_full_time_wage': self.wage / (self.work_time / 100) if self.work_time != 0 else self.contract_id._get_contract_wage(),
             'resource_calendar_id': self.resource_calendar_id.id,
             'standard_calendar_id': self.contract_id.resource_calendar_id.id,
             'time_credit': True,

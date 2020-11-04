@@ -346,7 +346,7 @@ odoo.define('sign.PDFIframe', function (require) {
             if (value === 0) {
                 value = "0";
             }
-            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);
+            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
             var selected_options = option_ids || [];
 
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
@@ -401,7 +401,7 @@ odoo.define('sign.PDFIframe', function (require) {
 
             var resp = $signatureItem.data('responsible');
             $signatureItem.toggleClass('o_sign_sign_item_required', ($signatureItem.data('required') && (this.editMode || resp <= 0 || resp === this.role)))
-                          .toggleClass('o_sign_sign_item_pdfview', (this.pdfView || (resp !== this.role && resp > 0 && !this.editMode)));
+                          .toggleClass('o_sign_sign_item_pdfview', (this.pdfView || !!$signatureItem.data('hasValue') || (resp !== this.role && resp > 0 && !this.editMode)));
         },
 
         disableItems: function() {
@@ -1449,7 +1449,7 @@ odoo.define('sign.document_signing', function (require) {
             }
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
-            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role);
+            var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
             if(!readonly) {
                 $signatureItem.attr('autocomplete', 'none');
                 // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.

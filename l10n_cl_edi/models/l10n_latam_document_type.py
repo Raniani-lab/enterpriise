@@ -40,4 +40,4 @@ class L10nLatamDocumentType(models.Model):
                                                                  x.l10n_latam_document_type_id == self.id)
         if not caf:
             raise UserError(_('There are no CAFs available. Please upload a CAF file or ask for a new one at www.sii.cl website'))
-        return caf.start_nm
+        return caf.start_nb

@@ -45,9 +45,10 @@ QUnit.test('activity with approval to be made by logged user', async function (a
     await this.start();
     const activityData = this.env.models['mail.activity'].convertData({
         activity_type_id: [1, 'Approval'],
-        approver_status: 'pending',
         approver_id: 12,
+        approver_status: 'pending',
         can_write: true,
+        id: 10,
         user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
@@ -131,9 +132,10 @@ QUnit.test('activity with approval to be made by another user', async function (
     await this.start();
     const activityData = this.env.models['mail.activity'].convertData({
         activity_type_id: [1, 'Approval'],
-        approver_status: 'pending',
         approver_id: 12,
+        approver_status: 'pending',
         can_write: true,
+        id: 10,
         user_id: [42, "Simon Mignolet"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
@@ -237,9 +239,10 @@ QUnit.test('approve approval', async function (assert) {
     });
     const activityData = this.env.models['mail.activity'].convertData({
         activity_type_id: [1, 'Approval'],
-        approver_status: 'pending',
         approver_id: 12,
+        approver_status: 'pending',
         can_write: true,
+        id: 10,
         user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);
@@ -276,9 +279,10 @@ QUnit.test('refuse approval', async function (assert) {
     });
     const activityData = this.env.models['mail.activity'].convertData({
         activity_type_id: [1, 'Approval'],
-        approver_status: 'pending',
         approver_id: 12,
+        approver_status: 'pending',
         can_write: true,
+        id: 10,
         user_id: [this.env.messaging.currentUser.id, "Eden Hazard"],
     });
     const activity = this.env.models['mail.activity'].create(activityData);

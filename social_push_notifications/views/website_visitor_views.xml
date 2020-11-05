@@ -56,9 +56,10 @@
         <field name="model">website.visitor</field>
         <field name="inherit_id" ref="website.website_visitor_view_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <filter string="Push Notification Enabled" name="push_notification_enabled" domain="[('push_token', '!=', False)]"/>
-                <filter string="Push Notification Disabled" name="push_notification_enabled" domain="[('push_token', '=', False)]"/>
+            <xpath expr="//filter[@name='filter_is_archived']" position="before">
+                <filter string="Push Notification On" name="filter_push_notification_enabled" domain="[('push_token', '!=', False)]"/>
+                <filter string="Push Notification Off" name="filter_push_notification_disabled" domain="[('push_token', '=', False)]"/>
+                <separator/>
             </xpath>
         </field>
     </record>

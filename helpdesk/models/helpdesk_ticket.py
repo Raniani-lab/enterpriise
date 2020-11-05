@@ -256,6 +256,8 @@ class HelpdeskTicket(models.Model):
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_info', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_info', store=True, readonly=False)
+    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_info', store=True, readonly=False)
+
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
@@ -394,6 +396,7 @@ class HelpdeskTicket(models.Model):
             if ticket.partner_id:
                 ticket.partner_name = ticket.partner_id.name
                 ticket.partner_email = ticket.partner_id.email
+                ticket.partner_phone = ticket.partner_id.phone
 
     @api.depends('partner_id')
     def _compute_partner_ticket_count(self):
@@ -488,11 +491,15 @@ class HelpdeskTicket(models.Model):
 
         # Manually create a partner now since 'generate_recipients' doesn't keep the name. This is
         # to avoid intrusive changes in the 'mail' module
+        # TDE TODO: to extract and clean in mail thread
         for vals in list_value:
             if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
+                parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(vals['partner_email'])
+                if not parsed_name:
+                    parsed_name = vals['partner_name']
                 try:
                     vals['partner_id'] = self.env['res.partner'].find_or_create(
-                        tools.formataddr((vals['partner_name'], vals['partner_email']))
+                        tools.formataddr((parsed_name, parsed_email))
                     ).id
                 except UnicodeEncodeError:
                     # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall

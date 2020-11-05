@@ -3,7 +3,7 @@
 
 {
     'name': 'Helpdesk',
-    'version': '1.3',
+    'version': '1.4',
     'category': 'Services/Helpdesk',
     'sequence': 110,
     'summary': 'Track, prioritize, and solve customer tickets',

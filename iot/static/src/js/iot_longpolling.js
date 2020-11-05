@@ -40,9 +40,10 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
     addListener: function (iot_ip, devices, listener_id, callback) {
         if (!this._listeners[iot_ip]) {
             this._listeners[iot_ip] = {
-            devices: {},
-            session_id: this._session_id,
-            rpc: false,
+                last_event: 0,
+                devices: {},
+                session_id: this._session_id,
+                rpc: false,
             };
         }
         for (var device in devices) {
@@ -212,6 +213,8 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
     },
 
     _onSuccess: function (iot_ip, result){
+        this._listeners[iot_ip].last_event = result.time;
+
         var devices = this._listeners[iot_ip].devices;
         if (devices[result.device_identifier]) {
             devices[result.device_identifier].callback(result);

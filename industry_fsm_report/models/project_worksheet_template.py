@@ -22,7 +22,7 @@ class ProjectWorksheetTemplate(models.Model):
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
-    company_ids = fields.Many2many('res.company', string='Companies')
+    company_ids = fields.Many2many('res.company', string='Companies', domain=lambda self: [('id', 'in', self.env.companies.ids)])
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
     color = fields.Integer('Color', default=_get_default_color)
     active = fields.Boolean(default=True)

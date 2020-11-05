@@ -70,8 +70,8 @@
                 <span>Unit code</span>
             </th>
         </xpath>
-        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[3]" position="after">
-            <td class="text-right"><span t-field="line.product_uom_id.unspsc_code_id.code"/></td>
+        <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[4]" position="after">
+            <td t-if="is_cfdi_signed" class="text-right"><span t-field="line.product_uom_id.unspsc_code_id.code"/></td>
         </xpath>
 
         <xpath expr="//p[@t-if='o.narration']" position="before">

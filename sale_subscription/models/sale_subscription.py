@@ -911,7 +911,6 @@ class SaleSubscription(models.Model):
                                 if auto_commit:
                                     cr.commit()
                                 if tx.renewal_allowed:
-                                    subscription.send_success_mail(tx, new_invoice)
                                     msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
                                     if subscription.template_id.payment_mode == 'validate_send_payment':
@@ -919,6 +918,7 @@ class SaleSubscription(models.Model):
                                     else:
                                         # success_payment
                                         new_invoice._post(False)
+                                    subscription.send_success_mail(tx, new_invoice)
                                     if auto_commit:
                                         cr.commit()
                                 else:

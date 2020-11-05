@@ -75,7 +75,7 @@ class AccountAsset(models.Model):
         compute='_compute_first_depreciation_date', store=True, readonly=False,
         help='Note that this date does not alter the computation of the first journal entry in case of prorata temporis assets. It simply changes its accounting date',
     )
-    acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True)
+    acquisition_date = fields.Date(compute='_compute_acquisition_date', store=True, states={'draft': [('readonly', False)]})
     disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]}, compute="_compute_disposal_date", store=True)
 
     # model-related fields

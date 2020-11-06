@@ -25,8 +25,11 @@
         'web.tests_assets': [
             'web_mobile/static/tests/helpers/**/*',
         ],
+        'web.qunit_suite_tests': [
+            'web_mobile/static/tests/barcodes_tests.js',
+        ],
         'web.qunit_mobile_suite_tests': [
-            'web_mobile/static/tests/*.js',
+            'web_mobile/static/tests/*_mobile_tests.js',
         ],
     },
     'installable': True,

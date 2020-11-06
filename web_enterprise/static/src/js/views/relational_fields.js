@@ -19,8 +19,6 @@ var FieldX2Many = relational_fields.FieldX2Many;
 
 var qweb = core.qweb;
 
-var _t = core._t;
-
 FieldStatus.include({
     /**
      * Override the custom behavior of FieldStatus to hide it if it is not set,
@@ -91,62 +89,6 @@ FieldMany2One.include({
         return searchCreatePopupOptions;
     },
 
-    /**
-     * Override to call name_search and directly open Search Create Popup
-     *
-     * @override
-     * @private
-     * @param {string} search_val
-     * @returns {Deferred}
-     */
-    _search: function (search_val) {
-        var self = this;
-        var def = new Promise(function (resolve, reject) {
-            var context = self.record.getContext(self.recordParams);
-            var domain = self.record.getDomain(self.recordParams);
-
-            // Add the additionalContext
-            _.extend(context, self.additionalContext);
-
-            var blacklisted_ids = self._getSearchBlacklist();
-            if (blacklisted_ids.length > 0) {
-                domain.push(['id', 'not in', blacklisted_ids]);
-            }
-
-            var prom;
-
-            if (search_val) {
-                prom = self._rpc({
-                    model: self.field.relation,
-                    method: 'name_search',
-                    kwargs: {
-                        name: search_val,
-                        args: domain,
-                        operator: "ilike",
-                        limit: self.SEARCH_MORE_LIMIT,
-                        context: context,
-                    },
-                });
-            }
-
-            Promise.resolve(prom).then(function (results) {
-                var dynamicFilters;
-                if (results) {
-                    var ids = _.map(results, function (x) {
-                        return x[0];
-                    });
-                    dynamicFilters = [{
-                        description: _.str.sprintf(_t('Quick search: %s'), search_val),
-                        domain: [['id', 'in', ids]],
-                    }];
-                }
-                self._searchCreatePopup("search", false, {}, dynamicFilters);
-            });
-        });
-        this.orderer.add(def);
-        return def;
-    },
-
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -157,8 +99,8 @@ FieldMany2One.include({
      * @override
      * @private
      */
-    _onInputClick: function () {
-        return this._search();
+    _onInputClick() {
+        this._searchCreatePopup("search");
     },
 });
 

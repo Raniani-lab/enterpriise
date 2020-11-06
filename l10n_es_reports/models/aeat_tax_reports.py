@@ -752,7 +752,7 @@ class AEATAccountFinancialReport(models.Model):
 
     def _mod347_write_type2_partner_record(self, report_data, year, current_company, operation_key, manual_parameters_map, insurance=False, local_negocio=False):
         currency_id = current_company.currency_id
-        line_partner = self.env['res.partner'].browse(report_data['line_data']['id'])
+        line_partner = self.env['res.partner'].browse(self._get_caret_option_target_id(report_data['line_data']['id']))
 
         rslt = self._boe_format_number(2)
         rslt += self._boe_format_number(347)
@@ -919,7 +919,7 @@ class AEATAccountFinancialReport(models.Model):
         return rslt
 
     def _mod_349_write_type2_invoice_record(self, report_data, year, key, current_company):
-        line_partner = self.env['res.partner'].browse(report_data['line_data']['id'])
+        line_partner = self.env['res.partner'].browse(self._get_caret_option_target_id(report_data['line_data']['id']))
         rslt = self._boe_format_string('2349')
         rslt += self._boe_format_string(year, length=4)
         rslt += self._boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
@@ -933,7 +933,7 @@ class AEATAccountFinancialReport(models.Model):
         return rslt
 
     def _mod_349_write_type2_refund_records(self, options, report_data, current_company, mod_349_type, invoice_report_line_xml_id):
-        line_partner = self.env['res.partner'].browse(report_data['line_data']['id'])
+        line_partner = self.env['res.partner'].browse(self._get_caret_option_target_id(report_data['line_data']['id']))
         report_date_from = options['date']['date_from']
         report_date_to = options['date']['date_to']
         report_period, report_year = self._get_mod_period_and_year(options)

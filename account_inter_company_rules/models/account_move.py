@@ -44,9 +44,13 @@ class AccountMove(models.Model):
 
             inv_new = inv.with_context(default_move_type=invoice_vals['move_type']).new(invoice_vals)
             for line in inv_new.invoice_line_ids:
+                # We need to adapt the taxes following the fiscal position, but we must keep the
+                # price unit.
                 price_unit = line.price_unit
-                line._onchange_product_id()
+                line.tax_ids = line._get_computed_taxes()
+                line._set_price_and_tax_after_fpos()
                 line.price_unit = price_unit
+
             invoice_vals = inv_new._convert_to_write(inv_new._cache)
             invoice_vals.pop('line_ids', None)
             invoice_vals['origin_invoice'] = inv

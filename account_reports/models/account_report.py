@@ -1111,6 +1111,17 @@ class AccountReport(models.AbstractModel):
                 }
         return info
 
+    def _get_html_render_values(self, options, report_manager):
+        return {
+            'report': {
+                'name': self._get_report_name(),
+                'summary': report_manager.summary,
+                'company_name': self.env.company.name,
+            },
+            'options': options,
+            'context': self.env.context,
+            'model': self,
+        }
 
     def get_html(self, options, line_id=None, additional_context=None):
         '''
@@ -1125,16 +1136,7 @@ class AccountReport(models.AbstractModel):
         templates = self._get_templates()
         report_manager = self._get_report_manager(options)
 
-        render_values = {
-            'report': {
-                'name': self._get_report_name(),
-                'summary': report_manager.summary,
-                'company_name': self.env.company.name,
-            },
-            'options': options,
-            'context': self.env.context,
-            'model': self,
-        }
+        render_values = self._get_html_render_values(options, report_manager)
         if additional_context:
             render_values.update(additional_context)
 

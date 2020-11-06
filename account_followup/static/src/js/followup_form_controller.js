@@ -22,6 +22,7 @@ var FollowupFormController = FormController.extend({
         on_change_block: '_onChangeBlocked',
         on_change_trust: '_onChangeTrust',
         on_save_summary: '_onSaveSummary',
+        on_save_email_subject: '_onSaveEmailSubject',
         on_trigger_action: '_onTriggerAction'
     }),
     /**
@@ -359,6 +360,19 @@ var FollowupFormController = FormController.extend({
         var text = event.data.text;
         this.model.saveSummary(this.handle, text).then(function (){
             self.renderer.renderSavedSummary(text);
+        });
+    },
+    /**
+     * When the user save the title, we have to write it in DB.
+     *
+     * @private
+     * @param {OdooEvent} event
+     */
+    _onSaveEmailSubject: function (event) {
+        var self = this;
+        var text = event.data.text;
+        this.model.saveEmailSubject(this.handle, text).then(function (){
+            self.renderer.renderSavedEmailSubject(text);
         });
     },
     /**

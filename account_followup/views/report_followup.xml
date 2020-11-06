@@ -86,12 +86,36 @@
                 <attribute name="class">o_account_reports_page o_account_reports_no_print o_account_followup</attribute>
             </xpath>
             <xpath expr="//div[hasclass('o_account_reports_summary')]" position="replace">
-                <div style="padding-top: 10px" t-if="context.get('print_mode') != True and followup_line" ><b><t t-esc="followup_line.name"/></b></div>
+                <div style="padding-top: 10px" t-if="context.get('print_mode') != True and followup_line" >
+                    <b><t t-esc="followup_line.name"/></b>
+                </div>
+                <div class="o_account_reports_email_subject_container" t-if="context.get('print_mode') != True">
+                    <b>Email Subject:</b><br/>
+                    <div class="o_account_reports_email_subject">
+                        <i class="fa fa-fw fa-pencil o_account_reports_edit_email_subject_pencil" role="img" aria-label="Edit Email Subject" title="Edit Email Subject"></i>
+                        <div class="o_account_report_email_subject" role="alert">
+                            <span class="o_account_report_email_subject_content" t-att-style="'' if report.get('email_subject') else 'display: none;'">
+                                <t t-esc="report.get('email_subject','')" t-options="{'widget': 'text'}"/>
+                            </span>
+                            <span class="o_account_report_email_subject_placeholder" t-att-style="'display: none;' if report.get('email_subject') else ''">
+                                Add an email subject
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div t-if="context.get('print_mode') != True" class="o_account_reports_email_subject_edit">
+                        <input name="email_subject" t-att-value="report.get('email_subject','')"></input>
+                        <button t-att-data-id="partner.id" class="btn btn-primary js_account_report_save_email_subject">Save</button>
+                </div>
                 <div class="o_account_reports_summary">
                     <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
                     <div class="o_account_report_summary" role="alert">
-                        <span t-if="report.get('summary')"><t t-esc="report['summary']" t-options="{'widget': 'text'}"/></span>
-                        <input t-if="not report.get('summary')" type='text' class="o_input" name='summary' placeholder='Add a note'/>
+                        <span class="o_account_report_summary_content" t-att-style="'' if report.get('summary') else 'display: none;'">
+                            <t t-esc="report.get('summary','')" t-options="{'widget': 'text'}"/>
+                        </span>
+                        <span class="o_account_report_summary_placeholder" t-att-style="'display: none;' if report.get('summary') or context.get('print_mode') else ''">
+                            Add a note
+                        </span>
                     </div>
                 </div>
                 <div t-if="context.get('print_mode') != True" class="o_account_reports_summary_edit">

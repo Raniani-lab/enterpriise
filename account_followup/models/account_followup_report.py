@@ -13,6 +13,7 @@ class AccountReportFollowupManager(models.Model):
     _inherit = 'account.report.manager'
 
     partner_id = fields.Many2one('res.partner')
+    email_subject = fields.Char()
 
 
 class AccountFollowupReport(models.AbstractModel):
@@ -151,6 +152,12 @@ class AccountFollowupReport(models.AbstractModel):
             lines.pop()
         return lines
 
+    def _get_html_render_values(self, options, report_manager):
+        # OVERRIDE
+        res = super(AccountFollowupReport, self)._get_html_render_values(options, report_manager)
+        res['report']['email_subject'] = report_manager.email_subject
+        return res
+
     @api.model
     def _get_sms_summary(self, options):
         partner = self.env['res.partner'].browse(options.get('partner_id'))
@@ -161,6 +168,10 @@ class AccountFollowupReport(models.AbstractModel):
     @api.model
     def _get_default_summary(self, options):
         return self._build_followup_summary_with_field('description', options)
+    
+    @api.model
+    def _get_default_email_subject(self, options):
+        return self._build_followup_summary_with_field('email_subject', options)
 
     @api.model
     def _build_followup_summary_with_field(self, field, options):
@@ -175,18 +186,21 @@ class AccountFollowupReport(models.AbstractModel):
             partner = self.env['res.partner'].browse(options['partner_id'])
             lang = partner.lang or get_lang(self.env).code
             summary = followup_line.with_context(lang=lang)[field]
-            try:
-                summary = summary % {'partner_name': partner.name,
-                                     'date': format_date(self.env, fields.Date.today(), lang_code=partner.lang),
-                                     'user_signature': html2plaintext(self.env.user.signature or ''),
-                                     'company_name': self.env.company.name,
-                                     'amount_due': formatLang(self.env, partner.total_due, currency_obj=partner.currency_id), 
-                                     }
-            except ValueError as exception:
-                message = _("An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s") \
-                          % (lang, followup_line.id, exception)
-                raise ValueError(message)
-            return summary
+            if summary:
+                try:
+                    summary = summary % {'partner_name': partner.name,
+                                         'date': format_date(self.env, fields.Date.today(), lang_code=partner.lang),
+                                         'user_signature': html2plaintext(self.env.user.signature or ''),
+                                         'company_name': self.env.company.name,
+                                         'amount_due': formatLang(self.env, partner.total_due, currency_obj=self.env.company.currency_id), 
+                                        }
+                except ValueError as exception:
+                    message = _("An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s") \
+                            % (lang, followup_line.id, exception)
+                    raise ValueError(message)
+                return summary
+            else:
+                return ''
         raise UserError(_('You need a least one follow-up level in order to process your follow-up'))
 
     def _get_report_manager(self, options):
@@ -197,13 +211,18 @@ class AccountFollowupReport(models.AbstractModel):
         domain = [('report_name', '=', 'account.followup.report'), ('partner_id', '=', options.get('partner_id')), ('company_id', '=', self.env.company.id)]
         existing_manager = self.env['account.report.manager'].search(domain, limit=1)
         if existing_manager and not options.get('keep_summary'):
-            existing_manager.write({'summary': self._get_default_summary(options)})
+            existing_manager.write({
+                'summary': self._get_default_summary(options),
+                'email_subject': self._get_default_email_subject(options),
+            })
         if not existing_manager:
             existing_manager = self.env['account.report.manager'].create({
                 'report_name': 'account.followup.report',
                 'company_id': self.env.company.id,
                 'partner_id': options.get('partner_id'),
-                'summary': self._get_default_summary(options)})
+                'summary': self._get_default_summary(options),
+                'email_subject': self._get_default_email_subject(options),
+            })
         return existing_manager
 
     def get_html(self, options, line_id=None, additional_context=None):
@@ -323,7 +342,7 @@ class AccountFollowupReport(models.AbstractModel):
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[invoice_partner.id],
                 body=body_html,
-                subject=_('%(company)s Payment Reminder - %(customer)s', company=self.env.company.name, customer=partner.name),
+                subject=self._get_report_manager(options).email_subject,
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
                 email_layout_xmlid='mail.mail_notification_light',

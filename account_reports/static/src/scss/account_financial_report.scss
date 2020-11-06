@@ -553,6 +553,11 @@
     display: inline-block;
     position: relative;
 
+
+    .o_account_report_summary_placeholder{
+        opacity: .5;
+    }
+
     .o_account_report_summary {
         padding: 10px 0;
 

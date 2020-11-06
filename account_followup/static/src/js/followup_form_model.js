@@ -163,6 +163,20 @@ var FollowupFormModel = BasicModel.extend({
         });
     },
     /**
+     * Save the email_subject, and save it in DB.
+     *
+     * @param {string} handle Local resource id of a record
+     * @param {string} text new email_subject
+     * @return {Promise}
+     */
+    saveEmailSubject: function (handle, text) {
+        return this._rpc({
+            model: 'account.report.manager',
+            method: 'write',
+            args: [this.localData[handle].data.report_manager_id, {email_subject: text}],
+        });
+    },
+    /**
      *
      * @param {string} handle Local resource id of a record
      * @param {string} date Date of next action

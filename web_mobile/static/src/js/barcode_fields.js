@@ -103,11 +103,15 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
     async _onBarcodeScanned(barcode) {
         const results = await this._search(barcode);
         const records = results.filter(r => !!r.id);
-        const dynamicFilters = [{
-            description: _.str.sprintf(_t('Quick search: %s'), barcode),
-            domain: [['id', 'in', records.map(r => r.id)]],
-        }];
-        this._searchCreatePopup("search", false, {}, dynamicFilters);
+        if (records.length === 1) {
+            this._setValue({ id: records[0].id });
+        } else {
+            const dynamicFilters = [{
+                description: _.str.sprintf(_t('Quick search: %s'), barcode),
+                domain: [['id', 'in', records.map(r => r.id)]],
+            }];
+            this._searchCreatePopup("search", false, {}, dynamicFilters);
+        }
     },
 });
 

@@ -1043,13 +1043,17 @@ class AccountReconciliation(models.AbstractModel):
         automatically creating a reconciliation model from the reconciliation
         propositions manually matched with a statement line in the widget.
         """
-        line_vals = [(0, 0, {
-            'account_id': proposition['account_id'],
-            'tax_ids': [(6, 0, proposition['tax_ids'])],
-            'amount_type': 'percentage',
-            'amount_string': str(round(100 * proposition['amount'] / st_line_amount, 5)),
-            'label': proposition['label'],
-        }) for proposition in rec_propositions]
+        if st_line_amount:
+            # No proposition to create. We open an empty wizard.
+            line_vals = [(0, 0, {
+                'account_id': proposition['account_id'],
+                'tax_ids': [(6, 0, proposition['tax_ids'])],
+                'amount_type': 'percentage',
+                'amount_string': str(round(100 * proposition['amount'] / st_line_amount, 5)),
+                'label': proposition.get('label', ''),
+            }) for proposition in rec_propositions]
+        else:
+            line_vals = []
 
         view_id = self.env['ir.model.data'].xmlid_to_res_id('account_accountant.view_account_reconcile_model_widget_wizard')
         return {

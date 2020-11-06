@@ -625,10 +625,14 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         var self = this;
 
         var propositions_for_model = [];
+        var base_lines_balance = 0; // For manual reconciliation widget, to count the total balance on which to apply the write off
         for (var i = 0 ; i < this._initialState.reconciliation_proposition.length; i++) {
             var rec_proposition = this._initialState.reconciliation_proposition[i];
 
-            if (!rec_proposition.tax_repartition_line_id && rec_proposition.account_id) {
+            if (Number.isInteger(rec_proposition.id)) {
+                base_lines_balance += rec_proposition.amount;
+            }
+            else if (!rec_proposition.tax_repartition_line_id && rec_proposition.account_id) {
                 propositions_for_model.push({
                     label: rec_proposition.name,
                     amount: rec_proposition.amount,
@@ -639,10 +643,18 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             }
         }
 
+        /*
+        Depending we are on the manual reconciliation widget or the bank
+        reconciliation widget, the computation of the base amount for the
+        write off isn't the same.
+        */
+        var st_line_vals = this._initialState.st_line;
+        var proposition_base_amount = st_line_vals.amount != undefined ? st_line_vals.amount : base_lines_balance;
+
         return this._rpc({
             model: 'account.reconciliation.widget',
             method: 'open_rec_model_creation_widget',
-            args: [propositions_for_model, this._initialState.st_line.amount, this._initialState.to_check],
+            args: [propositions_for_model, Math.abs(proposition_base_amount), this._initialState.to_check],
         }).then(function(rslt) {
             self.do_action(rslt, {
                 'on_close': function() {self.trigger_up('reload');}

@@ -68,7 +68,7 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_filter_journals(self):
-        return self.env['account.journal'].search([
+        return self.env['account.journal'].with_context(active_test=False).search([
             ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id])
         ], order="company_id, name")
 

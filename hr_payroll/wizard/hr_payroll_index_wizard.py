@@ -29,7 +29,7 @@ class HrPayrollIndex(models.TransientModel):
     def _index_wage(self, contract):
         wage_field = contract._get_contract_wage_field()
         wage = contract[wage_field]
-        contract.write({wage_field: wage * (1 + 1 * self.percentage / 100)})
+        contract.write({wage_field: wage * (1 + self.percentage)})
 
     def action_confirm(self):
         self.ensure_one()

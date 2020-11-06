@@ -12,5 +12,6 @@ class HrPayrollIndex(models.TransientModel):
     @api.model
     def _index_wage(self, contract):
         super(HrPayrollIndex, self)._index_wage(contract)
-        time_credit_full_time_wage = contract['time_credit_full_time_wage']
-        contract.write({'time_credit_full_time_wage': time_credit_full_time_wage * (1 + 1 * self.percentage / 100)})
+        if contract.time_credit and contract.work_time_rate == '0':
+            time_credit_full_time_wage = contract['time_credit_full_time_wage']
+            contract.write({'time_credit_full_time_wage': time_credit_full_time_wage * (1 + self.percentage)})

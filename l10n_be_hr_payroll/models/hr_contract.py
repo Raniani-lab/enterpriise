@@ -77,7 +77,8 @@ class HrContract(models.Model):
         ('0.9', '9/10')
         ], string='Work time rate', readonly=True,
         help='Work time rate versus full time working schedule.')
-    time_credit_full_time_wage = fields.Monetary('Credit Time Full Time Wage', readonly=True)
+    time_credit_full_time_wage = fields.Monetary('Full Time Wage', compute='_compute_time_credit_full_time_wage',
+                                                 store=True, readonly=False, default=0)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
@@ -89,6 +90,15 @@ class HrContract(models.Model):
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
     ]
+
+    @api.depends('wage')
+    def _compute_time_credit_full_time_wage(self):
+        for contract in self:
+            work_time_rate = contract._get_work_time_rate_as_float()
+            if contract.time_credit and work_time_rate != 0:
+                contract.time_credit_full_time_wage = contract.wage / work_time_rate
+            else:
+                contract.time_credit_full_time_wage = contract.wage
 
     @api.depends('ip', 'ip_wage_rate')
     def _compute_ip_value(self):
@@ -151,6 +161,10 @@ class HrContract(models.Model):
             self.train_transport_reimbursed_amount = 0
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
+
+    def _get_work_time_rate_as_float(self):
+        self.ensure_one()
+        return float(self.work_time_rate) if self.time_credit else 1.0
 
     @api.model
     def _get_private_car_reimbursed_amount(self, distance):

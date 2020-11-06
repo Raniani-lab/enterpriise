@@ -66,10 +66,14 @@ class HrContract(models.Model):
             else:
                 contract.wage_with_holidays = contract.wage
 
+    def _get_wage_with_holidays_yearly_cost(self):
+        self.ensure_one()
+        return self._get_salary_costs_factor() * self.wage_with_holidays
+
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage_with_holidays
+                yearly_cost = contract._get_advantages_costs() + contract._get_wage_with_holidays_yearly_cost()
                 # YTI TODO: The number of working days per year could be a setting on the company
                 contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
                 contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)

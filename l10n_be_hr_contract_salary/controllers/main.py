@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields
+from odoo import fields, _
 from odoo.addons.hr_contract_salary.controllers import main
 from odoo.addons.sign.controllers.main import Sign
 from odoo.http import route, request
@@ -38,6 +38,14 @@ class SignContract(Sign):
                 contract.new_car_model_id = False
 
 class HrContractSalary(main.HrContractSalary):
+
+    @route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
+    def salary_package(self, contract_id=None, **kw):
+        contract = request.env['hr.contract'].sudo().browse(contract_id)
+        if contract.exists() and contract.time_credit and contract.work_time_rate == '0':
+            return request.render('http_routing.http_error', {'status_code': _('Oops'),
+                                                         'status_message': _('This contract is a full time credit time... No simulation can be done for this type of contract as its wage is equal to 0.')})
+        return super(HrContractSalary, self).salary_package(contract_id, **kw)
 
     @route(['/salary_package/onchange_advantage/'], type='json', auth='public')
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
@@ -165,10 +173,13 @@ class HrContractSalary(main.HrContractSalary):
         res['has_laptop'] = contract.has_laptop
         res['time_credit'] = contract.time_credit
         res['work_time_rate'] = contract.work_time_rate
+        res['time_credit_full_time_wage'] = contract.time_credit_full_time_wage
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):
-        contract = super().create_new_contract(contract, advantages, no_write=no_write, **kw)
+        new_contract = super().create_new_contract(contract, advantages, no_write=no_write, **kw)
+        if new_contract.time_credit:
+            new_contract.date_end = contract.date_end
         if kw.get('package_submit', False):
             # Don't create simulation cars but create the wishlist car is set
             wishlist_car = advantages['contract'].get('fold_wishlist_car_total_depreciated_cost', False)
@@ -182,36 +193,36 @@ class HrContractSalary(main.HrContractSalary):
                     'car_value': model.default_car_value,
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
-                    'acquisition_date': contract.car_id.acquisition_date or fields.Date.today(),
-                    'company_id': contract.company_id.id,
-                    'future_driver_id': contract.employee_id.address_home_id.id
+                    'acquisition_date': new_contract.car_id.acquisition_date or fields.Date.today(),
+                    'company_id': new_contract.company_id.id,
+                    'future_driver_id': new_contract.employee_id.address_home_id.id
                 })
                 vehicle_contract = car.log_contracts[0]
                 vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
                 vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
                 vehicle_contract.cost_frequency = 'no'
-                vehicle_contract.purchaser_id = contract.employee_id.address_home_id.id
-            return contract
+                vehicle_contract.purchaser_id = new_contract.employee_id.address_home_id.id
+            return new_contract
 
-        if contract.transport_mode_car and contract.new_car:
-            employee = contract.employee_id
-            model = contract.new_car_model_id
+        if new_contract.transport_mode_car and new_contract.new_car:
+            employee = new_contract.employee_id
+            model = new_contract.new_car_model_id
             state_new_request = request.env.ref('fleet.fleet_vehicle_state_new_request', raise_if_not_found=False)
-            contract.car_id = request.env['fleet.vehicle'].sudo().create({
+            new_contract.car_id = request.env['fleet.vehicle'].sudo().create({
                 'model_id': model.id,
                 'state_id': state_new_request and state_new_request.id,
                 'driver_id': employee.address_home_id.id,
                 'car_value': model.default_car_value,
                 'co2': model.default_co2,
                 'fuel_type': model.default_fuel_type,
-                'company_id': contract.company_id.id,
+                'company_id': new_contract.company_id.id,
             })
-            vehicle_contract = contract.car_id.log_contracts[0]
+            vehicle_contract = new_contract.car_id.log_contracts[0]
             vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_frequency = 'no'
             vehicle_contract.purchaser_id = employee.address_home_id.id
-        return contract
+        return new_contract
 
     def _get_compute_results(self, new_contract):
         result = super()._get_compute_results(new_contract)

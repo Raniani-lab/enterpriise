@@ -5,13 +5,16 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract_salary.hr_contract_view_form"/>
         <field name="arch" type="xml">
-        	<field name="image_1920" position="after">
+            <xpath expr="//button[@name='%(hr_contract_salary.generate_simulation_link_action)d']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('employee_id', '=', False), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', '0')]}</attribute>
+            </xpath>
+            <field name="image_1920" position="after">
                 <field name="id_card"/>
                 <field name="driving_license" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
                 <field name="mobile_invoice" attrs="{'invisible': [('mobile', '=', 0)]}"/>
                 <field name="sim_card" attrs="{'invisible': [('mobile', '=', 0)]}"/>
                 <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
-        	</field>
+            </field>
         </field>
     </record>
 </odoo>

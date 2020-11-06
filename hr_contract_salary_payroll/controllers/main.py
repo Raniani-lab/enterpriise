@@ -46,6 +46,6 @@ class HrContractSalary(main.HrContractSalary):
 
         for resume_line in monthly_total_lines:
             super_line = result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code]
-            new_value = (super_line[0], super_line[1] + round(float(monthly_total), 2), super_line[2])
+            new_value = (super_line[0], round(super_line[1] + float(monthly_total), 2), super_line[2])
             result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = new_value
         return result

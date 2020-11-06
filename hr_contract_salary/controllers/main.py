@@ -98,8 +98,8 @@ class HrContractSalary(http.Controller):
 
         contract = request.env['hr.contract'].sudo().browse(contract_id)
         if not contract.exists():
-            return request.render('http_routing.http_error', {'status_code': 'Oops',
-                                                         'status_message': 'This contract has been updated, please request an updated link..'})
+            return request.render('http_routing.http_error', {'status_code': _('Oops'),
+                                                         'status_message': _('This contract has been updated, please request an updated link..')})
 
         if not request.env.user.has_group('hr_contract.group_hr_contract_manager'):
             if kw.get('applicant_id'):
@@ -110,13 +110,13 @@ class HrContractSalary(http.Controller):
                         applicant.access_token_end_date < fields.Date.today():
                     return request.render(
                         'http_routing.http_error',
-                        {'status_code': 'Oops',
-                         'status_message': 'This link is invalid. Please contact the HR Responsible to get a new one...'})
+                        {'status_code': _('Oops'),
+                         'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
             if contract.employee_id and not contract.employee_id.user_id and not kw.get('applicant_id'):
                 return request.render(
                     'http_routing.http_error',
-                    {'status_code': 'Oops',
-                     'status_message': 'The employee is not linked to an existing user, please contact the administrator..'})
+                    {'status_code': _('Oops'),
+                     'status_message': _('The employee is not linked to an existing user, please contact the administrator..')})
             if contract.employee_id and contract.employee_id.user_id != request.env.user:
                 raise NotFound()
 

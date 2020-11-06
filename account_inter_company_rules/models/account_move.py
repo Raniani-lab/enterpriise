@@ -72,9 +72,12 @@ class AccountMove(models.Model):
         :return: Python dictionary of values.
         '''
         self.ensure_one()
+        # We need the fiscal position in the company (already in context) we are creating the
+        # invoice, not the fiscal position of the current invoice (self.company)
         delivery_partner_id = self.company_id.partner_id.address_get(['delivery'])['delivery']
-        new_fiscal_position_id = self.env['account.fiscal.position'].with_company(self.company_id).get_fiscal_position(
-        self.company_id.partner_id.id, delivery_id=delivery_partner_id)
+        fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(
+            self.company_id.partner_id.id, delivery_id=delivery_partner_id
+        )
         return {
             'move_type': invoice_type,
             'ref': self.ref,
@@ -85,7 +88,7 @@ class AccountMove(models.Model):
             'invoice_date': self.invoice_date,
             'payment_reference': self.payment_reference,
             'invoice_origin': _('%s Invoice: %s') % (self.company_id.name, self.name),
-            'fiscal_position_id': new_fiscal_position_id,
+            'fiscal_position_id': fiscal_position_id,
         }
 
 

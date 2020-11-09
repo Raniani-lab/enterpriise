@@ -994,6 +994,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
                 }
                 continue
+            cfdi_str = res['cfdi_str']
 
             # == Call the web-service ==
             if test_mode:
@@ -1005,6 +1006,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if credentials.get('errors'):
                     edi_result[move] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
+                        'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
@@ -1012,20 +1014,12 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if res.get('errors'):
                     edi_result[move] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
+                        'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
             # == Create the attachment ==
-            cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
-            cfdi_attachment = self.env['ir.attachment'].create({
-                'name': cfdi_filename,
-                'res_id': move.id,
-                'res_model': move._name,
-                'type': 'binary',
-                'datas': base64.encodebytes(res['cfdi_signed']),
-                'mimetype': 'application/xml',
-                'description': _('Mexican payment CFDI generated for the %s document.') % move.name,
-            })
+            cfdi_attachment = self._create_payment_cfdi_attachment(move, base64.encodebytes(res['cfdi_signed']))
             edi_result[move] = {'attachment': cfdi_attachment}
 
             # == Chatter ==
@@ -1035,6 +1029,18 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 move.payment_id.message_post(body=message, attachment_ids=cfdi_attachment.ids)
 
         return edi_result
+
+    def _create_payment_cfdi_attachment(self, move, datas):
+        cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
+        return self.env['ir.attachment'].create({
+                'name': cfdi_filename,
+                'res_id': move.id,
+                'res_model': move._name,
+                'type': 'binary',
+                'datas': datas,
+                'mimetype': 'application/xml',
+                'description': _('Mexican payment CFDI generated for the %s document.') % move.name,
+            })
 
     def _cancel_payment_edi(self, moves, test_mode=False):
         # OVERRIDE

@@ -334,6 +334,7 @@ class ReportAccountFinancialReport(models.Model):
                 for groupby_id, display_name, results in financial_line._compute_amls_results(options_list, sign=solver_results['amls']['sign']):
                     aml_lines.append(self._get_financial_aml_report_line(
                         options_list[0],
+                        financial_report_line['id'],
                         financial_line,
                         groupby_id,
                         display_name,
@@ -574,7 +575,12 @@ class ReportAccountFinancialReport(models.Model):
         # Then, line_id will never be None.
         self.ensure_one()
         options_list = self._get_options_periods_list(options)
-        financial_line = self.env['account.financial.html.report.line'].browse(line_id)
+
+        model_name, model_id = self._get_model_info_from_id(line_id)
+        if model_name != 'account.financial.html.report.line':
+            raise Exception("Error: trying to unfold a line which isn't a financial report line.")
+
+        financial_line = self.env['account.financial.html.report.line'].browse(model_id)
         formula_solver = FormulaSolver(options_list, self)
         formula_solver.fetch_lines(financial_line)
         sorted_groupby_keys = [tuple(key) for key in options['sorted_groupby_keys']]
@@ -617,13 +623,16 @@ class ReportAccountFinancialReport(models.Model):
         # Compute if the line is unfoldable or not.
         is_unfoldable = has_something_to_unfold and financial_line.show_domain == 'foldable'
 
+        # Compute the id of the report line we'll generate
+        report_line_id = self._get_generic_line_id('account.financial.html.report.line', financial_line.id)
+
         # Compute if the line is unfolded or not.
         # /!\ Take care about the case when the line is unfolded but not unfoldable with show_domain == 'always'.
         if not has_something_to_unfold or financial_line.show_domain == 'never':
             is_unfolded = False
         elif financial_line.show_domain == 'always':
             is_unfolded = True
-        elif financial_line.show_domain == 'foldable' and financial_line.id in options['unfolded_lines']:
+        elif financial_line.show_domain == 'foldable' and report_line_id in options['unfolded_lines']:
             is_unfolded = True
         else:
             is_unfolded = False
@@ -647,8 +656,9 @@ class ReportAccountFinancialReport(models.Model):
             columns.append(self._compute_debug_info_column(options, solver, financial_line))
 
         financial_report_line = {
-            'id': financial_line.id,
+            'id': report_line_id,
             'name': financial_line.name,
+            'model_ref': ('account.financial.html.report.line', financial_line.id),
             'level': financial_line.level,
             'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
             'columns': columns,
@@ -665,15 +675,16 @@ class ReportAccountFinancialReport(models.Model):
         return financial_report_line
 
     @api.model
-    def _get_financial_aml_report_line(self, options, financial_line, groupby_id, display_name, results, groupby_keys):
+    def _get_financial_aml_report_line(self, options, financial_report_line_id, financial_line, groupby_id, display_name, results, groupby_keys):
         ''' Create the report line for the account.move.line grouped by any key.
-        :param options:             The report options.
-        :param financial_line:      An account.financial.html.report.line record.
-        :param groupby_id:          The key used as the vertical group_by. It could be a record's id or a value for regular field.
-        :param display_name:        The full name of the line to display.
-        :param results:             The results given by the FormulaSolver class for the given line.
-        :param groupby_keys:        The sorted encountered keys in the solver.
-        :return:                    The dictionary corresponding to a line to be rendered.
+        :param options:                     The report options.
+        :param financial_report_line_id:    Generic report line id string for financial_line
+        :param financial_line:              An account.financial.html.report.line record.
+        :param groupby_id:                  The key used as the vertical group_by. It could be a record's id or a value for regular field.
+        :param display_name:                The full name of the line to display.
+        :param results:                     The results given by the FormulaSolver class for the given line.
+        :param groupby_keys:                The sorted encountered keys in the solver.
+        :return:                            The dictionary corresponding to a line to be rendered.
         '''
         # Standard columns.
         columns = []
@@ -692,8 +703,10 @@ class ReportAccountFinancialReport(models.Model):
         if self._display_debug_info(options):
             columns.append({'name': '', 'style': 'width: 1%;'})
 
+        groupby_model = self.env['account.move.line']._fields[financial_line.groupby].comodel_name
+
         return {
-            'id': 'financial_report_group_%s_%s' % (financial_line.id, groupby_id),
+            'id': self._get_generic_line_id(groupby_model, groupby_id, parent_line_id=financial_report_line_id),
             'name': display_name,
             'level': financial_line.level + 1,
             'parent_id': financial_line.id,
@@ -709,7 +722,7 @@ class ReportAccountFinancialReport(models.Model):
         :return:                        The dictionary corresponding to a line to be rendered.
         '''
         return {
-            'id': 'total_%s' % financial_report_line['id'],
+            'id': self._get_generic_line_id('account.financial.html.report.line', None, parent_line_id=financial_report_line['id'], markup='total'),
             'name': _('Total') + ' ' + financial_report_line['name'],
             'level': financial_report_line['level'] + 1,
             'parent_id': financial_report_line['id'],

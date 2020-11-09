@@ -3,7 +3,6 @@
 
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date
-from odoo.tools.safe_eval import safe_eval
 from odoo.osv import expression
 
 from collections import defaultdict, namedtuple
@@ -209,7 +208,7 @@ class AccountingReport(models.AbstractModel):
                         if len(current_groupby) == len(parsed) + 1:
                             unfolded_domain = expression.OR([
                                 unfolded_domain,
-                                [(key, '=', value) for key, value in parsed]
+                                [(field_name, '=', value) for field_name, model_name, value in parsed]
                             ])
                     domain = expression.AND([domain, unfolded_domain])
                 else:
@@ -237,7 +236,8 @@ class AccountingReport(models.AbstractModel):
                 if not unprocessed:
                     self._aggregate_values(root['values'], r)
                 for j, gb in enumerate(current_groupby):
-                    key = (gb, isinstance(r[gb], tuple) and r[gb][0] or r[gb])
+                    gb_model = self._fields[gb].comodel_name if gb != 'id' else self._get_id_field_comodel()
+                    key = (gb, gb_model, isinstance(r[gb], tuple) and r[gb][0] or r[gb])
                     hierarchy = hierarchy['children'][key]
                     if j >= unprocessed:
                         self._aggregate_values(hierarchy['values'], r)
@@ -348,8 +348,8 @@ class AccountingReport(models.AbstractModel):
 
         line_dict = self._get_values(options=options, line_id=line_id)
         if line_id:  # prune the empty tree and keep only the wanted branch
-            for key, value in self._parse_line_id(line_id):
-                line_dict = line_dict['children'][(key, value)]
+            for field, model, value in self._parse_line_id(line_id):
+                line_dict = line_dict['children'][(field, model, value)]
         if not line_dict['values']:
             return []
 
@@ -373,37 +373,17 @@ class AccountingReport(models.AbstractModel):
             return lines[1:] + (self.total_line and [{**lines[0], 'name': _('Total')}] or [])
         return []
 
-    def _build_line_id(self, current):
-        """Build the line id based on the current position in the report.
-
-        For instance, if current is [(account_id, 5), (partner_id, 8)], it will return
-        account_id-5|partner_id-8
-        :param current (list<tuple>): list of tuple(grouping_key, id)
+    # Can be overridden
+    def _get_id_field_comodel(self):
+        """ The id field of the report typically is set to refer to some other
+        model determining its content. In some cases, we want to access this model, but
+        we than can't infer it from just the field. This function is used to get it.
+        In typical cases, 'id' will refer to account.move.line, so that's the
+        default value we return here, but it can be overridden if needed.
         """
-        return '|'.join('%s-%s' % c for c in current)
+        return 'account.move.line'
 
-    def _build_parent_line_id(self, current):
-        """Build the parent_line id based on the current position in the report.
-
-        For instance, if current is [(account_id, 5), (partner_id, 8)], it will return
-        account_id-5
-        :param current (list<tuple>): list of tuple(grouping_key, id)
-        """
-        return self._build_line_id(current[:-1])
-
-    def _parse_line_id(self, line_id):
-        """Parse the line_id to determine the current position in the report.
-
-        For instance if line_id is account_id-5|partner_id-8, it will return
-        [(account_id, 5), (partner_id, 8)]
-        :param line_id (str): the id of the line to parse
-        """
-        return line_id and [
-            (key, safe_eval(value))
-            for key, value in (tuple(key.split('-')) for key in line_id.split('|'))
-        ] or []
-
-    # Can be overriden
+    # Can be overridden
     def _show_line(self, report_dict, value_dict, current, options):
         """Determine if a line should be shown.
 
@@ -461,7 +441,9 @@ class AccountingReport(models.AbstractModel):
             self._format_all_line(res, value_dict, options)
         format_func = None
         if current:
-            res[current[-1][0]] = current[-1][1]
+            # For example, it the line id ends with ('account_id', 'account_account', 42),
+            # we want to add an 'account_id' key to the result, with value 42.
+            res[current[-1][0]] = current[-1][2]
             format_func = getattr(self, '_format_%s_line' % current[-1][0])
         else:
             format_func = getattr(self, '_format_total_line', None)

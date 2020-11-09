@@ -124,7 +124,7 @@ class TestAgedReport(TestAccountReportsCommon):
 
     def test_aged_receivable_unfold_1_whole_report(self):
         ''' Test unfolding a line when rendering the whole report. '''
-        line_id = 'partner_id-%s' % self.partner_a.id
+        line_id = 'partner_id-res.partner-%s' % self.partner_a.id
         options = self._init_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         options['unfolded_lines'] = [line_id]
 
@@ -192,7 +192,7 @@ class TestAgedReport(TestAccountReportsCommon):
 
     def test_aged_receivable_unfold_2_folded_line(self):
         ''' Test unfolding a line when "clicking" on a folded line. '''
-        line_id = 'partner_id-%s' % self.partner_b.id
+        line_id = 'partner_id-res.partner-%s' % self.partner_b.id
         options = self._init_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         options['unfolded_lines'] = [line_id]
 

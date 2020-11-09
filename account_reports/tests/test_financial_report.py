@@ -115,8 +115,12 @@ class TestFinancialReport(TestAccountReportsCommon):
         cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
         cls.report.applicable_filters_ids |= cls.filter
 
+    def _build_generic_id_from_financial_line(self, financial_rep_ln_xmlid):
+        report_line = self.env.ref(financial_rep_ln_xmlid)
+        return '-account.financial.html.report.line-%s' % report_line.id
+
     def test_financial_report_single_company(self):
-        line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id
+        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options['unfolded_lines'] = [line_id]
         options.pop('multi_company', None)
@@ -175,7 +179,7 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
 
     def test_financial_report_multi_company_currency(self):
-        line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id
+        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options['unfolded_lines'] = [line_id]
 
@@ -235,7 +239,7 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
 
     def test_financial_report_comparison(self):
-        line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id
+        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options = self._update_comparison_filter(options, self.report, 'previous_period', 1)
         options['unfolded_lines'] = [line_id]
@@ -296,7 +300,7 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
 
     def test_financial_report_custom_filters(self):
-        line_id = self.env.ref('account_reports.account_financial_report_receivable0').id
+        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_receivable0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options = self._update_comparison_filter(options, self.report, 'previous_period', 1)
         options = self._update_multi_selector_filter(options, 'ir_filters', self.filter.ids)

@@ -12,18 +12,24 @@ _logger = logging.getLogger(__name__)
 
 class TestReports(TestAccountReportsCommon):
 
-    def setUp(self):
-        super(TestReports, self).setUp()
+    @classmethod
+    def setUpClass(cls, chart_template_ref='l10n_ar.l10nar_ri_chart_template'):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.maxDiff = None
 
+        # TODO these test cases depend on demo data that could be modified by the user before
+        # running the tests
         # Login to (AR) Responsable Inscripto company
-        company_ri = self.env.ref('l10n_ar.company_ri')
-        context = dict(self.env.context, allowed_company_ids=[company_ri.id])
-        self.env = self.env(context=context)
+        company_ri = cls.env.ref('l10n_ar.company_ri')
+        cls.env.user.write({'company_ids': [(4, company_ri.id)]})
+        context = dict(cls.env.context, allowed_company_ids=[company_ri.id])
+        cls.env = cls.env(context=context)
 
-        self.vat_book = self.env['l10n_ar.vat.book']
+        cls.vat_book = cls.env['l10n_ar.vat.book']
         today = fields.Date.today()
-        self.options = self._init_options(
-            self.vat_book,
+        cls.options = cls._init_options(
+            cls,
+            cls.vat_book,
             today + relativedelta(years=0, month=1, day=1),
             today + relativedelta(years=0, month=12, day=31),
         )
@@ -42,8 +48,7 @@ class TestReports(TestAccountReportsCommon):
         # change all 202005xx dates to the current month
         res_file = res_file.replace('202005', today.strftime('%Y%m'))
 
-        self.assertEquals(out_txt, res_file, 'The expected and the generated are different' + '\n\n ---- Current\n'
-                          + out_txt + '\n\n ---- Expected\n' + res_file)
+        self.assertEqual(out_txt, res_file)
 
     def test_01_sale_vat_book_aliquots(self):
         self.vat_book.with_context({'journal_type': 'sale'}).print_aliquots(self.options)

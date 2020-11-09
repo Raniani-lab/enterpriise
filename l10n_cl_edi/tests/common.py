@@ -81,7 +81,7 @@ class TestL10nClEdiCommon(AccountEdiTestCommon):
         cls.sale_journal = cls.env['account.journal'].create({
             'name': 'Sale Journal Test',
             'type': 'sale',
-            'code': 'INV',
+            'code': 'INV2',
             'l10n_cl_point_of_sale_type': 'online',
             'l10n_latam_use_documents': True,
             'currency_id': cls.env.ref('base.CLP').id,

@@ -44,7 +44,9 @@ class AccountMove(models.Model):
             cfdi_node,
             'cce11:ComercioExterior[1]',
             {'cce11': 'http://www.sat.gob.mx/ComercioExterior11'},
-        ) or {}
+        )
+        if external_trade_node is None:
+            external_trade_node = {}
 
         vals.update({
             'ext_trade_node': external_trade_node,

@@ -52,18 +52,16 @@ class TestMxEdiCommon(AccountEdiTestCommon):
 
         cls.currency_data['currency'].l10n_mx_edi_decimal_places = 3
 
-        # Replace the USD by Gol to test external trade.
+        # Rename USD to something else and create a new USD with defined rates.
+        # Done like this because currencies should be fetched by name, not by xml_id
+        cls.env.ref('base.USD').name = 'FUSD'
+        cls.env['res.currency'].flush(['name'])
         cls.fake_usd_data = cls.setup_multi_currency_data(default_values={
-            'name': 'FUSD',
+            'name': 'USD',
             'symbol': '$',
-            'rounding': '0.01',
+            'rounding': 0.01,
             'l10n_mx_edi_decimal_places': 2,
         }, rate2016=6.0, rate2017=4.0)
-        cls.cr.execute('''
-            UPDATE ir_model_data
-            SET res_id = %s
-            WHERE module = %s AND name = %s
-        ''', [cls.fake_usd_data['currency'].id, 'base', 'USD'])
 
         # Prevent the xsd validation because it could lead to a not-deterministic behavior since the xsd is downloaded
         # by a CRON.
@@ -191,7 +189,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                                     Base="8000.000"
                                     Importe="800.00"
                                     TasaOCuota="0.100000"
-                                    TipoFactor="Tasa"/>                            
+                                    TipoFactor="Tasa"/>
                             </Retenciones>
                         </Impuestos>
                     </Concepto>

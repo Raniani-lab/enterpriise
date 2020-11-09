@@ -33,8 +33,6 @@ This module allows the creation of the EDI documents and the communication with 
         'data/account_edi_data.xml',
         'data/l10n_mx_edi_payment_method_data.xml',
         'data/ir_cron.xml',
-        'data/res_partner_data.xml',
-        'data/res_country_data.xml',
         'data/res_currency_data.xml',
 
         'views/account_bank_statement_view.xml',
@@ -53,6 +51,8 @@ This module allows the creation of the EDI documents and the communication with 
         'views/res_company_view.xml',
         'views/res_config_settings_view.xml',
         'views/res_country_view.xml',
+        'views/res_partner_views.xml',
+        'data/res_country_data.xml',
     ],
     'demo': [
         'demo/demo_cfdi.xml',

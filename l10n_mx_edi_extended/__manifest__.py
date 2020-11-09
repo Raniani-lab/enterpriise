@@ -12,7 +12,6 @@
         'data/3.3/cfdi.xml',
         'data/product_data.xml',
         'data/uom_uom_data.xml',
-        'data/res_partner_data.xml',
 
         'views/l10n_mx_edi_tariff_fraction_view.xml',
         'views/account_journal_view.xml',
@@ -21,7 +20,7 @@
         'views/uom_uom_view.xml',
         'views/res_company_view.xml',
         'views/res_config_settings_view.xml',
-        'views/res_partner_view.xml',
+        'views/res_partner_views.xml',
         'views/report_invoice.xml',
     ],
     'installable': True,

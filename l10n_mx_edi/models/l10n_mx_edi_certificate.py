@@ -121,9 +121,9 @@ class Certificate(models.Model):
         '''
         self.ensure_one()
         key_pem = self.get_pem_key(self.key, self.password)
-        private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, key_pem)
+        private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, bytes(key_pem))
         encrypt = 'sha256WithRSAEncryption'
-        cadena_crypted = crypto.sign(private_key, cadena, encrypt)
+        cadena_crypted = crypto.sign(private_key, bytes(cadena.encode()), encrypt)
         return base64.b64encode(cadena_crypted)
 
     @api.constrains('content', 'key', 'password')

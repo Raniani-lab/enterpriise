@@ -9,7 +9,7 @@ from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCom
 class TestUi(TestPointOfSaleHttpCommon):
 
     def test_01_pos_iot_payment_terminal(self):
-        env = self.env(user=self.env.ref('base.user_admin'))
+        env = self.env
 
         self.env['ir.config_parameter'].sudo().set_param('pos_iot.ingenico_payment_terminal', True)
 
@@ -39,14 +39,14 @@ class TestUi(TestPointOfSaleHttpCommon):
             })],
         })
 
-        self.start_tour("/web", 'payment_terminals_tour', login="admin")
+        self.start_tour("/web", 'payment_terminals_tour', login="accountman")
 
         order = env['pos.order'].search([])
         self.assertEqual(len(order.ids), 1, "There should be only 1 order")
         self.assertEqual(order.state, 'paid', "Validated order has payment of " + str(order.amount_paid) + " and total of " + str(order.amount_total))
 
     def test_02_pos_iot_scale(self):
-        env = self.env(user=self.env.ref('base.user_admin'))
+        env = self.env
 
         # Create IoT Box
         iotbox_id = env['iot.box'].sudo().create({
@@ -65,9 +65,8 @@ class TestUi(TestPointOfSaleHttpCommon):
         })
 
         # Select IoT Box, tick electronic scale
-        main_pos_config = env.ref('point_of_sale.pos_config_main')
-        main_pos_config.write({
+        self.main_pos_config.write({
             'iface_scale_id': iot_device_id.id,
         })
 
-        self.start_tour("/web", 'pos_iot_scale_tour', login="admin")
+        self.start_tour("/web", 'pos_iot_scale_tour', login="accountman")

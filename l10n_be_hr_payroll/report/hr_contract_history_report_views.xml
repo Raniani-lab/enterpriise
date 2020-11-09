@@ -26,10 +26,6 @@
                     </group>
                 </page>
             </page>
-            <xpath expr="//header/button[@name='action_sign_contract_wizard']" position="after">
-                <button name="action_credit_time_wizard" string="Credit Time" attrs="{'invisible': ['|', ('contract_id', '=', False), ('time_credit', '=', True)]}" type="object" groups="hr_contract.group_hr_contract_manager"/>
-                <button name="action_exit_credit_time_wizard" string="Full Time" attrs="{'invisible': ['|', ('contract_id', '=', False), ('time_credit', '=', False)]}" type="object" groups="hr_contract.group_hr_contract_manager"/>
-            </xpath>
         </field>
     </record>
 </odoo>

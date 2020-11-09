@@ -59,9 +59,12 @@
         }
 
         &.o_chatter_open .o_document_chatter_container {
-            @include o-details-modal();
             box-shadow: none;
             animation: o_documents_sweepright 0.3s ease-in-out;
+            
+            .o_ChatterTopbar_buttonClose {
+                display: none;
+            }
         }
     }
 }

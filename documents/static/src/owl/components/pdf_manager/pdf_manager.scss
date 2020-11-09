@@ -149,4 +149,9 @@ $o-pdf-manager-border-color: #b7b7b7;
             transform: none;
         }
     }
+
+    .o_documents_pdf_canvas {
+        width: 100%;
+        height: auto;
+    }
 }

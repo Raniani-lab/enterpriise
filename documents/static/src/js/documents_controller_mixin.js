@@ -10,6 +10,7 @@ const components = {
 };
 
 const { _t, qweb } = require('web.core');
+const config = require('web.config');
 const fileUploadMixin = require('web.fileUploadMixin');
 const session = require('web.session');
 const { ComponentWrapper } = require('web.OwlCompatibility');
@@ -288,7 +289,12 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             props
         );
         const $chatterContainer = $(qweb.render('documents.ChatterContainer'));
-        this.$('.o_content').addClass('o_chatter_open').append($chatterContainer);
+        this.$('.o_content').addClass('o_chatter_open');
+        if (this.$('.o_documents_mobile_inspector').length) {
+            this.$('.o_documents_mobile_inspector').append($chatterContainer);
+        } else {
+            this.$('.o_content').append($chatterContainer);
+        }
         const target = $chatterContainer[0].querySelector(':scope .o_documents_chatter_placeholder');
         await this._chatterContainerComponent.mount(target);
     },
@@ -336,7 +342,9 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             method: 'create_share',
             args: [vals],
         });
-        this.do_action(result);
+        this.do_action(result, {
+            fullscreen: config.device.isMobile,
+        });
     },
     /**
      * Apply rule's actions for the specified attachments.
@@ -518,6 +526,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 default_folder_id: this.searchModel.get('selectedFolderId'),
                 default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             },
+            fullscreen: config.device.isMobile,
             on_close: () => this.reload(),
         });
     },
@@ -554,6 +563,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 default_folder_id: this.searchModel.get('selectedFolderId'),
                 default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             },
+            fullscreen: config.device.isMobile, 
             on_close: async () => await this.reload()
         });
     },

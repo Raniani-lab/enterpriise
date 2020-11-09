@@ -47,7 +47,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
                     this._rebuildPivot(cmd.id, cmd.anchor);
                     break;
                 case "SELECT_PIVOT":
-                    this._selectPivot(cmd.cell);
+                    this._selectPivotFromId(cmd.pivotId);
                     break;
                 case "INSERT_HEADER":
                     this._insertHeader(cmd.id, cmd.col, cmd.row, cmd.field, cmd.value);
@@ -143,7 +143,22 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             }
             return [];
         }
-
+        /**
+         *
+         * @param {number} col Index of the col
+         * @param {number} row Index of the row
+         */
+        getPivotFromPosition(col, row) {
+            const cell = this.getters.getCell(col, row);
+            if (cell && cell.type === "formula" && cell.content.startsWith("=PIVOT")) {
+                const { args } = this._parseFormula(cell.content);
+                const id = args[0];
+                return id;
+            }
+            else {
+                return undefined;
+            }
+        }
         // ---------------------------------------------------------------------
         // Handlers
         // ---------------------------------------------------------------------
@@ -176,18 +191,14 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this._buildPivot(pivot, anchor);
         }
         /**
-         * Select the pivot that is used in the given cell
+         * Select the pivot provided
          *
-         * @param {Object} cell
+         * @param {number | undefined} id
          *
          * @private
          */
-        _selectPivot(cell) {
-            if (cell && cell.type === "formula" && cell.content.startsWith("=PIVOT")) {
-                const { args } = this._parseFormula(cell.content);
-                const id = args[0];
-                this.selectedPivot = this.pivots[id];
-            }
+        _selectPivotFromId(id) {
+            this.selectedPivot = id ? this.pivots[id] : undefined;
         }
         /**
          * Insert a header element in the given anchor
@@ -203,13 +214,15 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
             this.dispatch("UPDATE_CELL", { sheet, col, row, content });
         }
         /**
-         * Refresh the cache of the given pivot. This will also trigger a new
-         * re-evaluation
-         *
-         * @param {number} id Id of the pivot
+         * Refresh the cache of a given pivot or all pivots if none is provided.
+         * This will also trigger a new re-evaluation
+         * @param {number | undefined} id
          */
         _refreshPivot(id) {
-            this._refreshPivotCache(id, { dataOnly: true });
+            const pivotIds = id ? [id] : this.getPivots().map(item => item.id);
+            for (let pivotId of pivotIds) {
+                this._refreshPivotCache(pivotId, { dataOnly: true });
+            }
             this.dispatch("EVALUATE_CELLS");
         }
         /**
@@ -1151,6 +1164,7 @@ odoo.define("documents_spreadsheet.PivotPlugin", function (require) {
         "getSelectedPivot",
         "getNextValue",
         "getTooltipFormula",
+        "getPivotFromPosition"
     ];
 
     return PivotPlugin;

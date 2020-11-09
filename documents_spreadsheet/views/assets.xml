@@ -35,6 +35,7 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/filter_component.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/autofill.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_actions.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_cache.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/filters_plugin.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js"/>

@@ -104,6 +104,19 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
             return model;
         },
         /**
+         * Retrieves the pivot data from an existing view instance.
+         *
+         * @private
+         * @returns o-spreadsheet Pivot
+         */
+        async _getPivotForSpreadsheet() {
+            const payload = this.model.get();
+            const pivot = pivotUtils.sanitizePivot(payload);
+            await pivotUtils.createPivotCache(pivot, this._rpc.bind(this));
+            pivot.lastUpdate = Date.now();
+            return pivot;
+        },
+        /**
          * Retrieves the sheet data after inserting a pivot.
          * The pivot can be inserted in a new workbook (if workbookData is null)
          * or inserted in a new sheet of an existing workbook.
@@ -114,11 +127,8 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
          * @returns o_spreadsheet Model
          */
         async _getSpreadsheetModel(workbookData) {
-            const payload = this.model.get();
-            const pivot = pivotUtils.sanitizePivot(payload);
+            var pivot = await this._getPivotForSpreadsheet();
             const model = this._initializeModel(workbookData);
-            await pivotUtils.createPivotCache(pivot, this._rpc.bind(this));
-            pivot.lastUpdate = Date.now();
             const anchor = [0, 0];
             model.dispatch("ADD_PIVOT", { pivot, anchor });
             return model;

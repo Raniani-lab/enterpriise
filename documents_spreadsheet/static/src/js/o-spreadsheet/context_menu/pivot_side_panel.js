@@ -25,53 +25,42 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
     class PivotSidePanel extends owl.Component {
         constructor(parent, props) {
             super(...arguments);
-            this.state = useState({
-                pivotId: undefined,
-            });
-            this.pivot = props.pivot;
+            this.getters = this.env.getters;
             this.DomainSelector = DomainSelector;
-            this.periods = {
-                day: _t("Day"),
-                week: _t("Week"),
-                month: _t("Month"),
-                quarter: _t("Quarter"),
-                year: _t("Year"),
-            };
-        }
-
-        async willUpdateProps(nextProps) {
-            this.pivot = nextProps.pivot;
         }
 
         /**
          * Format the given groupby
+         * @param {Object} pivot record
          * @param {string} gp Groupby to format
          *
          * @returns groupby formatted
          */
-        formatGroupBy(gp) {
-            return pivotUtils.formatGroupBy(this.pivot, gp);
+        formatGroupBy(pivot, gp) {
+            return pivotUtils.formatGroupBy(pivot, gp);
         }
 
         /**
          * Format the given measure
+         * @param {Object} pivot record
          * @param {string} measure Measure to format
          *
          * @returns measure formatted
          */
-        formatMeasure(measure) {
-            if (this.pivot && this.pivot.cache) {
-                return measure.field === "__count" ? _t("Count") : this.pivot.cache.getField(measure.field).string;
+        formatMeasure(pivot, measure) {
+            if (pivot && pivot.cache) {
+                return measure.field === "__count" ? _t("Count") : pivot.cache.getField(measure.field).string;
             }
         }
 
         /**
          * Get the last update date, formatted
+         * @param {Object} pivot record
          *
          * @returns {string} date formatted
          */
-        getLastUpdate() {
-            return time_to_str(new Date(this.pivot.lastUpdate));
+        getLastUpdate(pivot) {
+            return time_to_str(new Date(pivot.lastUpdate));
         }
 
         /**
@@ -83,12 +72,20 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
             this.env.dispatch("REFRESH_PIVOT", { id });
         }
 
-        getPivotName() {
-            if (this.pivot && this.pivot.cache) {
-                const modelName = this.pivot.cache.getModelLabel();
-                return sprintf(_t("%s (#%s)"), modelName, this.pivot && this.pivot.id);
+        getPivotName(pivot) {
+            if (pivot && pivot.cache) {
+                const modelName = pivot.cache.getModelLabel();
+                return sprintf(_t("%s (#%s)"), modelName, pivot && pivot.id);
             }
         }
+
+        selectPivot(pivotId) {
+            this.env.dispatch("SELECT_PIVOT", { pivotId })
+        }
+
+        resetSelectedPivot() {
+            this.env.dispatch("SELECT_PIVOT");
+          }
     }
     PivotSidePanel.template = "documents_spreadsheet.PivotSidePanel";
     PivotSidePanel.components = { DomainComponentAdapter };

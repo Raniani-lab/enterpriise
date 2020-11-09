@@ -1,6 +1,7 @@
 odoo.define("web.spreadsheet_tests", function (require) {
     "use strict";
 
+    const PivotView = require("web.PivotView");
     const testUtils = require("web.test_utils");
     const spreadsheetUtils = require("documents_spreadsheet.test_utils")
 
@@ -9,8 +10,11 @@ odoo.define("web.spreadsheet_tests", function (require) {
     const { createActionManager, fields, nextTick, dom } = testUtils;
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
+    const topbarMenuRegistry = spreadsheet.registries.topbarMenuRegistry;
     const toCartesian = spreadsheet.helpers.toCartesian;
     const { Model } = spreadsheet;
+
+    const createView = testUtils.createView;
 
     function getCellValue(model, xc) {
         return model.getters.getCell(...toCartesian(xc)).value;
@@ -583,7 +587,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
         });
 
         QUnit.test("Open pivot properties properties", async function (assert) {
-            assert.expect(14);
+            assert.expect(16);
 
             const [actionManager, model, env] = await createSpreadsheetFromPivot({
                 model: "partner",
@@ -596,13 +600,14 @@ odoo.define("web.spreadsheet_tests", function (require) {
                     </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            const A3 = model.getters.getCell(0, 2);
-            model.dispatch("SELECT_PIVOT", { cell: A3 });
+            // opening from a pivot cell
+            const pivotA3 = model.getters.getPivotFromPosition(0, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: model.getters.getSelectedPivot(),
             })
             await nextTick();
-            const title = actionManager.el.querySelector(".o-sidePanelTitle").innerText;
+            let title = actionManager.el.querySelector(".o-sidePanelTitle").innerText;
             assert.equal(title, "Pivot properties");
 
             const sections = actionManager.el.querySelectorAll(".o_side_panel_section");
@@ -625,6 +630,179 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.equal(dimensions.children[0].innerText, "Dimensions");
             assert.equal(dimensions.children[1].innerText, "Bar");
             assert.equal(dimensions.children[2].innerText, "Foo");
+
+            // opening from a non pivot cell
+            const pivotA1 = model.getters.getPivotFromPosition(0, 0);
+            model.dispatch("SELECT_PIVOT", { pivotId: pivotA1 });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+                pivot: model.getters.getSelectedPivot(),
+            })
+            await nextTick();
+            title = actionManager.el.querySelector(".o-sidePanelTitle").innerText;
+            assert.equal(title, "Pivot properties");
+
+            assert.containsOnce(actionManager.el, '.o_side_panel_select');
+            actionManager.destroy();
+        });
+
+        QUnit.test("verify absence of pivots in top menu bar in a spreadsheet without a pivot", async function (assert){
+            assert.expect(1);
+            const actionManager = await createActionManager({
+                data: this.data,
+            });
+            await actionManager.doAction({
+              type: "ir.actions.client",
+              tag: "action_open_spreadsheet",
+              params: {
+                active_id: 1,
+              },
+            });
+            assert.containsNone(actionManager.el, "div[data-id='pivots']");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Verify presence of pivots in top menu bar in a spreadsheet with a pivot", async function (assert) {
+            assert.expect(5);
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+
+            const pivotView = await createView({
+                View: PivotView,
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const pivot = await pivotView._getPivotForSpreadsheet();
+            pivotView.destroy();
+
+            model.dispatch("ADD_PIVOT", {
+                anchor: [12, 0], // this position is still free
+                pivot: pivot,
+            });
+
+            assert.ok(actionManager.el.querySelector("div[data-id='pivots']"), "The 'Pivots' menu should be in the dom");
+
+            const root = topbarMenuRegistry.getAll().find((item) => item.id === "pivots");
+            const children = topbarMenuRegistry.getChildren(root, env);
+            assert.equal(children.length, 3, "There should be 3 children (2 pivots and 'Refresh pivot values') in the menu");
+            assert.equal(children[0].name, "View partner (#1)");
+            assert.equal(children[1].name, "View partner (#2)");
+            // bottom child
+            assert.equal(children[2].name, "Refresh pivot values");
+            actionManager.destroy();
+        });
+
+        QUnit.test("Pivot focus changes on top bar menu click", async function (assert) {
+            assert.expect(3)
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+
+            const pivotView = await createView({
+                View: PivotView,
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const pivot = await pivotView._getPivotForSpreadsheet();
+            pivotView.destroy();
+
+            model.dispatch("ADD_PIVOT", {
+                anchor: [12, 0], // this position is still free
+                pivot: pivot,
+            });
+
+            const root = topbarMenuRegistry.getAll().find((item) => item.id === "pivots");
+            const children = topbarMenuRegistry.getChildren(root, env);
+
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {})
+            assert.notOk(model.getters.getSelectedPivot(), "No pivot should be selected");
+            children[0].action(env);
+            assert.equal(model.getters.getSelectedPivot(), model.getters.getPivot(1), "The selected pivot should have id 1");
+            children[1].action(env);
+            assert.equal(model.getters.getSelectedPivot(), model.getters.getPivot(2), "The selected pivot should have id 2");
+
+            actionManager.destroy();
+        });
+
+        QUnit.test("Pivot focus changes on sidepanel click", async function (assert) {
+            assert.expect(6)
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+
+            const pivotView = await createView({
+                View: PivotView,
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const pivot = await pivotView._getPivotForSpreadsheet();
+            pivotView.destroy();
+
+            model.dispatch("ADD_PIVOT", {
+                anchor: [12, 0], // this position is still free
+                pivot: pivot,
+            });
+
+            env.dispatch("SELECT_CELL", { col: 11, row: 0 }) //target empty cell
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
+            root.action(env);
+            assert.notOk(model.getters.getSelectedPivot(), "No pivot should be selected");
+            await nextTick();
+            assert.containsN(actionManager.el, ".o_side_panel_select", 2);
+            await dom.click(actionManager.el.querySelectorAll(".o_side_panel_select")[0]);
+            assert.equal(model.getters.getSelectedPivot(), model.getters.getPivot(1), "The selected pivot should be have the id 1");
+            await nextTick();
+            await dom.click(actionManager.el.querySelector(".o_pivot_cancel"));
+            assert.notOk(model.getters.getSelectedPivot(), "No pivot should be selected anymore");
+            assert.containsN(actionManager.el, ".o_side_panel_select", 2);
+            await dom.click(actionManager.el.querySelectorAll(".o_side_panel_select")[1]);
+            assert.equal(model.getters.getSelectedPivot(), model.getters.getPivot(2), "The selected pivot should be have the id 2");
+
             actionManager.destroy();
         });
 
@@ -642,10 +820,9 @@ odoo.define("web.spreadsheet_tests", function (require) {
                     </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            const A3 = model.getters.getCell(0, 2);
-            model.dispatch("SELECT_PIVOT", { cell: A3 });
-            const pivot = model.getters.getSelectedPivot();
-            env.openSidePanel("PIVOT_PROPERTIES_PANEL", { pivot })
+            const pivotA3 = model.getters.getPivotFromPosition(0, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {})
             this.data.partner.records.push({
                 id: 1,
                 foo: 12,

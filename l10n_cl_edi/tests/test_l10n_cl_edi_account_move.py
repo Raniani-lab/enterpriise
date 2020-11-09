@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-import logging
 import os
 
 from unittest.mock import patch
 
 from odoo.tools import misc
-from .common import TestL10nClEdiCommon
-
-_logger = logging.getLogger(__name__)
+from .common import TestL10nClEdiCommon, _check_with_xsd_patch
 
 
+@patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
 class TestL10nClDte(TestL10nClEdiCommon):
     """
     Summary of the document types to test:
@@ -27,14 +25,6 @@ class TestL10nClDte(TestL10nClEdiCommon):
         - 110:
             - A invoice
     """
-
-    @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):
-        super().setUpClass(chart_template_ref=chart_template_ref)
-        try:
-            cls.env['ir.attachment']._load_xsd_sii_multi()
-        except Exception:
-            _logger.warning('XSD files has not been downloaded from SII')
 
     @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
     def test_l10n_cl_dte_33(self, get_cl_current_strftime):

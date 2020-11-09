@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 import datetime
-import logging
 
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase
 from odoo.tools import misc, os
-
-_logger = logging.getLogger(__name__)
 
 
 class TestResCompany(TransactionCase):

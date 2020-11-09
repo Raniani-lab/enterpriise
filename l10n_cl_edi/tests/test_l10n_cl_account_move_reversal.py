@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-from .common import TestL10nClEdiCommon
+from unittest.mock import patch
+
+from .common import TestL10nClEdiCommon, _check_with_xsd_patch
 
 
 class TestL10AccountMoveReversal(TestL10nClEdiCommon):
     @classmethod
+    @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
     def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):
         super().setUpClass(chart_template_ref=chart_template_ref)
+
         cls.invoice = cls.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': cls.partner_sii.id,
             'move_type': 'out_invoice',
@@ -61,4 +65,3 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
         self.assertEqual(refund.invoice_line_ids.quantity, 1.0)
         self.assertEqual(refund.invoice_line_ids.price_unit, 0)
         self.assertEqual(refund.invoice_line_ids.price_subtotal, 0)
-

@@ -1,28 +1,15 @@
 # -*- coding: utf-8 -*-
-import logging
 import os
 
-from lxml import objectify, etree
+from lxml import etree
 from unittest.mock import patch
 
 from odoo.tools import misc
-from .common import TestL10nClEdiCommon
-
-_logger = logging.getLogger(__name__)
+from .common import TestL10nClEdiCommon, _check_with_xsd_patch
 
 
+@patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
 class TestL10nClDte(TestL10nClEdiCommon):
-    @classmethod
-    def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):
-        super().setUpClass(chart_template_ref=chart_template_ref)
-        try:
-            cls.env['ir.attachment']._load_xsd_sii_multi()
-        except Exception:
-            _logger.warning('XSD has not been downloaded from SII')
-
-    def setUp(self):
-        super(TestL10nClDte, self).setUp()
-
     @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_seed_ws')
     def test_get_seed_none(self, get_seed_ws):
         get_seed_ws.return_value = None
@@ -92,7 +79,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             """<SII:RESPUESTA xmlns:SII="http://www.sii.cl/xxx">
                 <SII:RESP_HDR>
                     <ESTADO>11</ESTADO>
-                    <GLOSA>XML Invalido, elemento “Certificate” no existe, función getCertificado</GLOSA> 
+                    <GLOSA>XML Invalido, elemento “Certificate” no existe, función getCertificado</GLOSA>
                 </SII:RESP_HDR>
             </SII:RESPUESTA>""")
         with self.assertRaises(Exception):
@@ -108,7 +95,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             """<SII:RESPUESTA xmlns:SII="http://www.sii.cl/xxx">
                 <SII:RESP_HDR>
                     <ESTADO>12</ESTADO>
-                    <GLOSA>ERROR (12) (MessageException)</GLOSA> 
+                    <GLOSA>ERROR (12) (MessageException)</GLOSA>
                 </SII:RESP_HDR>
             </SII:RESPUESTA>""")
         with self.assertRaises(Exception):

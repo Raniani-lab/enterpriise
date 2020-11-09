@@ -132,3 +132,7 @@ class StockInventory(models.Model):
             'type': 'ir.actions.act_window',
             'res_id': self.id,
         }
+
+    def action_open_barcode_inventory_view(self):
+        self._run_conflict_inventory_tasks()
+        return self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_inventory_type_action_kanban")

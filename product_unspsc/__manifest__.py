@@ -6,8 +6,8 @@
     'category': 'Hidden',
     'summary': 'UNSPSC product codes',
     'description': """
-        Countries like Colombia, Peru and Mexico need to be able to use the 
-        UNSPSC code for their products and uoms.  
+        Countries like Colombia, Peru and Mexico need to be able to use the
+        UNSPSC code for their products and uoms.
     """,
     'depends': ['product'],
     'data': ['views/product_views.xml',

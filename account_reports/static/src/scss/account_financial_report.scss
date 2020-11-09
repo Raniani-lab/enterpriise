@@ -539,6 +539,14 @@
     display: none;
 }
 
+.o_account_reports_filter_journals {
+    .dropdown-menu {
+        overflow: auto;
+        // 86.5px is the height of .o_control_panel
+        max-height: calc(100vh - (86.5px + #{$o-navbar-height}));
+    }
+}
+
 // Summary to be edited
 // -----------------------------------------
 .o_account_reports_body .o_account_reports_summary {

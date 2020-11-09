@@ -4,23 +4,49 @@
         <field name="name">l10n_be.hr.payroll.credit.time.wizard.view.form</field>
         <field name="model">l10n_be.hr.payroll.credit.time.wizard</field>
         <field name="arch" type="xml">
-            <form string="Contract Credit Time">
-            <h1><field name="contract_id" readonly="1"/></h1>
+            <form string="Credit Time Work">
+                <h1><field name="employee_id" readonly="1"/></h1>
                 <group class="o_label_nowrap">
                     <group>
                         <field name="date_start"/>
                         <field name="date_end"/>
+                        <field name="resource_calendar_id"/>
+                        <field name="leave_allocation_id" invisible="1"/>
+                        <field name="contract_id" invisible="1"/>
+                        <field name="company_id" invisible="1" />
                     </group>
                 </group>
                 <group>
                     <group class="o_label_nowrap">
                         <field name="work_time"/>
                         <field name="wage"/>
-                        <field name="resource_calendar_id"/>
+                    </group>
+                </group>
+                <separator string="Time Off Rights"/>
+                <group>
+                    <group>
+                        <field name="holiday_status_id"/>
+                    </group>
+                    <newline/>
+                    <group>
+                        <label for="time_off_allocation"/>
+                        <div>
+                            <field name="time_off_allocation" class="oe_inline" nolabel="1" />
+                            <span>days</span>
+                        </div>
+                    </group>
+                    <group>
+                        <div>
+                            <span>(</span>
+                            <label for="remaining_allocated_time_off"/>
+                            <span>: </span>
+                            <field name="remaining_allocated_time_off" nolabel="1"/>
+                            <span> days)</span>
+                        </div>
                     </group>
                 </group>
                 <footer>
-                    <button name="validate_credit_time" string="Create new contract" type="object" class="oe_highlight"/>
+                    <button name="validate_credit_time" string="Create new contract and new time off allocation" type="object" class="oe_highlight"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -32,21 +58,44 @@
         <field name="model">l10n_be.hr.payroll.exit.credit.time.wizard</field>
         <field name="arch" type="xml">
             <form string="Contract Full Time">
-            <h1><field name="contract_id" readonly="1"/></h1>
+            <h1><field name="employee_id" readonly="1"/></h1>
                 <group class="o_label_nowrap">
                     <group>
                         <field name="date_start"/>
                         <field name="date_end"/>
+                        <field name="resource_calendar_id"/>
+                        <field name="leave_allocation_id" invisible="1"/>
+                        <field name="contract_id" invisible="1"/>
+                        <field name="company_id" invisible="1" />
                     </group>
                 </group>
                 <group>
                     <group class="o_label_nowrap">
                         <field name="wage"/>
-                        <field name="resource_calendar_id"/>
+                        <field name="holiday_status_id" />
+                    </group>
+                </group>
+                <separator string="Time Off Rights"/>
+                <group>
+                    <group>
+                        <label for="time_off_allocation"/>
+                        <div>
+                            <field name="time_off_allocation" class="oe_inline" nolabel="1" />
+                            <span class="ml8">days</span>
+                        </div>
+                    </group>
+                    <group>
+                        <div>
+                            <span>(</span>
+                            <label for="remaining_allocated_time_off"/>
+                            <span>: </span>
+                            <field name="remaining_allocated_time_off"/>
+                            <span> days)</span>
+                        </div>
                     </group>
                 </group>
                 <footer>
-                    <button name="validate_full_time" string="Create new contract" type="object" class="oe_highlight"/>
+                    <button name="validate_full_time" string="Create new contract and new time off allocation" type="object" class="oe_highlight"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -54,7 +103,7 @@
     </record>
 
     <record id="credit_time_wizard_action" model="ir.actions.act_window">
-        <field name="name">Contract Credit Time</field>
+        <field name="name">Credit Time Work</field>
         <field name="res_model">l10n_be.hr.payroll.credit.time.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

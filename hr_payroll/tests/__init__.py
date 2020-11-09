@@ -8,3 +8,4 @@ from . import test_rule_parameter
 from . import test_payslip_computation
 from . import test_performance
 from . import test_work_entry
+from . import test_resource

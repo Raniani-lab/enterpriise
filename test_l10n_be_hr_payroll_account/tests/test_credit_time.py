@@ -99,8 +99,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'contract_id': self.original_contract.id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
-            'resource_calendar_id': new_calendar.id,
-            'work_time': '0',
+            'resource_calendar_id': new_calendar.id
         })
         wizard.validate_credit_time()
 
@@ -177,7 +176,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'name': 'Credit Time Calendar',
             'company_id': self.env.company.id,
             'hours_per_day': 7.6,
-            'full_time_required_hours': 30.4,
+            'full_time_required_hours': 38,
             'attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                 (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
@@ -194,8 +193,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'contract_id': self.original_contract.id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
-            'resource_calendar_id': new_calendar.id,
-            'work_time': '0.8',
+            'resource_calendar_id': new_calendar.id
         })
         wizard.validate_credit_time()
 

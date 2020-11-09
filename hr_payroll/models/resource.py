@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.osv.expression import AND
 from odoo.tools import float_compare
 from odoo import models, fields, api
 
@@ -24,10 +23,16 @@ class ResourceCalendar(models.Model):
         for calendar in self:
             calendar.is_fulltime = not float_compare(calendar.full_time_required_hours, calendar.hours_per_week, 3)
 
-    @api.depends('hours_per_week', 'full_time_required_hours')
+    @api.depends('hours_per_week', 'full_time_required_hours', 'attendance_ids.work_entry_type_id')
     def _compute_work_time_rate(self):
         for calendar in self:
-            if calendar.full_time_required_hours:
-                calendar.work_time_rate = calendar.hours_per_week / calendar.full_time_required_hours * 100
+            if not calendar.hours_per_week:
+                calendar.work_time_rate = calendar.hours_per_week
             else:
-                calendar.work_time_rate = 100
+                total_absence_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if attendance.work_entry_type_id.is_leave)
+                if calendar.two_weeks_calendar:
+                    total_absence_hours = total_absence_hours / 2
+                if calendar.full_time_required_hours:
+                    calendar.work_time_rate = (calendar.hours_per_week - total_absence_hours) / calendar.full_time_required_hours * 100
+                else:
+                    calendar.work_time_rate = (calendar.hours_per_week - total_absence_hours) / calendar.hours_per_week * 100

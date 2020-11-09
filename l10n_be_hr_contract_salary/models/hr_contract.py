@@ -23,7 +23,7 @@ class HrContract(models.Model):
 
     def _get_gross_from_employer_costs(self, yearly_cost):
         self.ensure_one()
-        return super()._get_gross_from_employer_costs(yearly_cost) * (float(self.work_time_rate) if self.time_credit else 1)
+        return super()._get_gross_from_employer_costs(yearly_cost) * ((self.resource_calendar_id.work_time_rate / 100) if self.time_credit else 1)
 
     def _get_final_yearly_costs_wage(self):
         if self.time_credit:

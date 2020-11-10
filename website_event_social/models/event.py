@@ -23,7 +23,7 @@ class EventSocial(models.Model):
         if not self.user_has_groups('social.group_social_user'):
             raise AccessError(_('You do not have access to this action.'))
 
-        action = self.env.ref('social.action_social_post').read()[0]
+        action = self.env['ir.actions.act_window']._for_xml_id('social.action_social_post')
         action['views'] = [[False, 'form']]
         current_website = self.env['website'].get_current_website()
         social_account = self.env['social.account'].search([(

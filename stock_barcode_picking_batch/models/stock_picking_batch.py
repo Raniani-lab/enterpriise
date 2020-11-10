@@ -47,7 +47,7 @@ class StockPickingBatch(models.Model):
         :rtype: dict
         """
         picking_batch = self.env['stock.picking.batch'].create({})
-        action = self.env.ref('stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action').read()[0]
+        action = self.env['ir.actions.client']._for_xml_id('stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action')
         action = dict(action, target='fullscreen', context={'active_id': picking_batch.id})
         action = {'action': action}
         return action

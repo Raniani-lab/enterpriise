@@ -4,8 +4,10 @@
 import ast
 import json
 from itertools import groupby
-from odoo import api, models, fields, _
 from collections import OrderedDict
+from odoo import api, models, fields, _
+from odoo.addons.web.controllers.main import clean_action
+
 
 class L10nInReportAccount(models.AbstractModel):
     _name = "l10n.in.report.account"
@@ -239,7 +241,8 @@ class L10nInReportAccount(models.AbstractModel):
         gst_id = params.get('id').split('_')
         gst_return_type = gst_id[0]
         gst_section = gst_id[1] if len(gst_id) > 1 else None
-        [action_read] = self.env['ir.actions.client'].browse(int(params.get('actionId'))).read()
+        [action_read] = self.env['ir.actions.client'].browse(int(params.get('actionId'))).sudo().read()
+        action_read = clean_action(action_read, env=self.env)
         context = action_read.get('context') and ast.literal_eval(action_read['context']) or {}
         context.update({'gst_return_type': gst_return_type, 'gst_section': gst_section})
         action_read['context'] = context

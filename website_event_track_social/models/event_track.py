@@ -70,7 +70,7 @@ class Track(models.Model):
         if not self.push_reminder_posts:
             raise UserError(_('There are no push reminders associated with this track'))
 
-        action = self.env.ref('social.action_social_post').read()[0]
+        action = self.env['ir.actions.act_window']._for_xml_id('social.action_social_post')
         action['views'] = [[False, 'form']]
         action['res_id'] = self.push_reminder_posts[0].id
         return action

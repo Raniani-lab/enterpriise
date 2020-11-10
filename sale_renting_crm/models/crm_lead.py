@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
-from odoo.exceptions import UserError
 
 
 class CrmLead(models.Model):
@@ -33,7 +32,7 @@ class CrmLead(models.Model):
 
     def action_rental_quotations_new(self):
         if not self.partner_id:
-            raise UserError(_("Please select or create a customer before creating a quote."))
+            return self.env["ir.actions.actions"]._for_xml_id("sale_renting_crm.crm_lead_to_rental_action")
         return self.action_new_rental_quotation()
 
     def _get_action_rental_context(self):

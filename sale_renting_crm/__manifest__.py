@@ -13,7 +13,9 @@ This shortcut allows you to generate a rental order based on the selected case.
     """,
     'depends': ['sale_renting', 'crm'],
     'data': [
+        'security/ir.model.access.csv',
         'views/crm_lead_views.xml',
+        'wizard/crm_lead_rental_views.xml',
     ],
     'auto_install': True,
 }

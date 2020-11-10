@@ -15,7 +15,8 @@
             <header>
                 <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','new')]}"/>
                 <button name="action_done" string="Done" type="object" groups="hr_appraisal.group_hr_appraisal_user" attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('waiting_feedback', '=', True)]}"/>
-                <button name="action_cancel" string="Cancel" states="pending" type="object"  groups="hr_appraisal.group_hr_appraisal_user"/>
+                <button name="action_cancel" string="Cancel" states="pending" type="object" groups="hr_appraisal.group_hr_appraisal_user"/>
+                <button name="action_back" string="Back" states="done,cancel" type="object" groups="hr_appraisal.group_hr_appraisal_user"/>
                 <field name="state" widget="statusbar" statusbar_visible="new,pending,done" options="{'fold_field': 'fold'}"/>
             </header>
             <sheet>
@@ -68,9 +69,9 @@
                         <div class="row">
                             <div class="col-12 row">
                                 <h3 class="col-6">Employee Feedback</h3>
-                                <span class="col-3 text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('state', '=', 'new')]}">Unpublished</span>
-                                <span class="col-3 text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', False), ('state', '=', 'new')]}">Published</span>
-                                <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle" class="col-2" attrs="{'invisible': [('can_see_employee_publish', '=', False)]}"/>
+                                <span class="col-4 text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('state', '=', 'new')]}">Unpublished</span>
+                                <span class="col-4 text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', False), ('state', '=', 'new')]}">Visible to Manager</span>
+                                <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle" class="col-1" attrs="{'invisible': [('can_see_employee_publish', '=', False)]}"/>
                             </div>
                             <div class="col-12">
                                 <field name="employee_feedback" nolabel="1" attrs="{
@@ -93,9 +94,9 @@
                         <div class="row">
                             <div class="col-12 row">
                                 <h3 class="col-6">Manager Feedback</h3>
-                                <span class="col-3 text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('state', '=', 'new')]}">Unpublished</span>
-                                <span class="col-3 text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', False), ('state', '=', 'new')]}">Published</span>
-                                <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="col-2" attrs="{'invisible': [('can_see_manager_publish', '=', False)]}"/>
+                                <span class="col-4 text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('state', '=', 'new')]}">Unpublished</span>
+                                <span class="col-4 text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', False), ('state', '=', 'new')]}">Visible to Employee</span>
+                                <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="col-1" attrs="{'invisible': [('can_see_manager_publish', '=', False)]}"/>
                             </div>
                             <div class="col-12">
                                 <field name="manager_feedback" nolabel="1" attrs="{

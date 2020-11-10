@@ -33,7 +33,7 @@ class HrAppraisal(models.Model):
         'hr.department', related='employee_id.department_id', string='Department', store=True)
     image_128 = fields.Image(related='employee_id.image_128')
     image_1920 = fields.Image(related='employee_id.image_1920')
-    job_id = fields.Many2one('hr.job', related='employee_id.job_id')
+    job_id = fields.Many2one('hr.job', related='employee_id.job_id', readonly=False)
     last_appraisal_id = fields.Many2one('hr.appraisal', related='employee_id.last_appraisal_id')
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
     employee_feedback_template = fields.Html(compute='_compute_feedback_templates')
@@ -75,13 +75,13 @@ class HrAppraisal(models.Model):
             appraisal.can_see_employee_publish = user_employee == appraisal.employee_id
             appraisal.can_see_manager_publish = user_employee in appraisal.manager_ids
 
-    @api.depends('employee_id.job_id')
+    @api.depends('job_id')
     def _compute_feedbacks(self):
         for appraisal in self.filtered(lambda a: a.state == 'new'):
             appraisal.employee_feedback = appraisal.job_id.employee_feedback_template or appraisal.company_id.appraisal_employee_feedback_template
             appraisal.manager_feedback = appraisal.job_id.manager_feedback_template or appraisal.company_id.appraisal_manager_feedback_template
 
-    @api.depends('employee_id.job_id')
+    @api.depends('job_id')
     def _compute_feedback_templates(self):
         for appraisal in self:
             appraisal.employee_feedback_template = appraisal.job_id.employee_feedback_template or appraisal.company_id.appraisal_employee_feedback_template
@@ -211,6 +211,9 @@ class HrAppraisal(models.Model):
                 'last_appraisal_id': appraisal.id,
                 'last_appraisal_date': current_date,
                 'next_appraisal_date': False})
+
+    def action_back(self):
+        self.action_confirm()
 
     def action_open_last_appraisal(self):
         self.ensure_one()

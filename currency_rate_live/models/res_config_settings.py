@@ -270,7 +270,7 @@ class ResCompany(models.Model):
             date_mx = datetime.datetime.now(timezone('America/Mexico_City'))
             today = date_mx.strftime(DEFAULT_SERVER_DATE_FORMAT)
             yesterday = (date_mx - datetime.timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT)
-            res = requests.get(url % (','.join(foreigns), yesterday, today, token))
+            res = requests.get(url % (','.join(foreigns), yesterday, today, token), timeout=30)
             res.raise_for_status()
             series = res.json()['bmx']['series']
             series = {serie['idSerie']: {dato['fecha']: dato['dato'] for dato in serie['datos']} for serie in series if 'datos' in serie}

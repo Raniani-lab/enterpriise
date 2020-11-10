@@ -104,7 +104,7 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
             'resource_calendar_id': self.resource_calendar_id.id,
             'standard_calendar_id': self.contract_id.resource_calendar_id.id,
             'time_credit': True,
-            'work_time_rate': self.work_time,
+            'work_time_rate': self.work_time / 100,
             'state': 'draft',
         })
 

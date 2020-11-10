@@ -153,7 +153,6 @@ class TestPayrollCommon(SavepointCase):
             'ip': False,
             'ip_wage_rate': 25.0,
             'time_credit': False,
-            'work_time_rate': False,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         })

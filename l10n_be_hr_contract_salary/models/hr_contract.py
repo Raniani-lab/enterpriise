@@ -23,11 +23,11 @@ class HrContract(models.Model):
 
     def _get_gross_from_employer_costs(self, yearly_cost):
         self.ensure_one()
-        return super()._get_gross_from_employer_costs(yearly_cost) * self._get_work_time_rate_as_float()
+        return super()._get_gross_from_employer_costs(yearly_cost) * self._get_work_time_rate()
 
     def _get_wage_with_holidays_yearly_cost(self):
         self.ensure_one()
-        work_time_rate = self._get_work_time_rate_as_float()
+        work_time_rate = self._get_work_time_rate()
         if self.time_credit and work_time_rate != 0:
             return self._get_salary_costs_factor() * self.wage_with_holidays / work_time_rate
         else:

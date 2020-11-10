@@ -69,14 +69,7 @@ class HrContract(models.Model):
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
     time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
-    # TODO: (xbo) remove the work_time_rate, normally this field should not be used.
-    work_time_rate = fields.Selection([
-        ('0', 'Set To Full Time'),
-        ('0.5', '1/2'),
-        ('0.8', '4/5'),
-        ('0.9', '9/10')
-        ], string='Work time rate', readonly=True,
-        help='Work time rate versus full time working schedule.')
+    work_time_rate = fields.Float(string='Work time rate', readonly=True, help='Work time rate versus full time working schedule.')
     time_credit_full_time_wage = fields.Monetary('Full Time Wage', compute='_compute_time_credit_full_time_wage',
                                                  store=True, readonly=False, default=0)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
@@ -94,7 +87,7 @@ class HrContract(models.Model):
     @api.depends('wage')
     def _compute_time_credit_full_time_wage(self):
         for contract in self:
-            work_time_rate = contract._get_work_time_rate_as_float()
+            work_time_rate = contract._get_work_time_rate()
             if contract.time_credit and work_time_rate != 0:
                 contract.time_credit_full_time_wage = contract.wage / work_time_rate
             else:
@@ -162,9 +155,9 @@ class HrContract(models.Model):
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
 
-    def _get_work_time_rate_as_float(self):
+    def _get_work_time_rate(self):
         self.ensure_one()
-        return float(self.work_time_rate) if self.time_credit else 1.0
+        return self.work_time_rate if self.time_credit else 1.0
 
     @api.model
     def _get_private_car_reimbursed_amount(self, distance):

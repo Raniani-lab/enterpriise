@@ -738,7 +738,7 @@ class TestOutOfContractCreditTime(AccountTestInvoicingCommon):
             'ip': True,
             'ip_wage_rate': 25.0,
             'time_credit': True,
-            'work_time_rate': "0.8",
+            'work_time_rate': 0.8,
             'fiscal_voluntarism': False,
             'fiscal_voluntary_rate': 0.0
         }])

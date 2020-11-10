@@ -185,14 +185,14 @@ class AccountMove(models.Model):
             'payment_method': cfdi_node.get('formaDePago', cfdi_node.get('MetodoPago')),
             'bank_account': cfdi_node.get('NumCtaPago'),
             'sello': cfdi_node.get('sello', cfdi_node.get('Sello', 'No identificado')),
-            'sello_sat': tfd_node and tfd_node.get('selloSAT', tfd_node.get('SelloSAT', 'No identificado')),
+            'sello_sat': tfd_node is not None and tfd_node.get('selloSAT', tfd_node.get('SelloSAT', 'No identificado')),
             'cadena': get_cadena(cfdi_node, CFDI_XSLT_CADENA),
             'certificate_number': cfdi_node.get('noCertificado', cfdi_node.get('NoCertificado')),
-            'certificate_sat_number': tfd_node and tfd_node.get('NoCertificadoSAT'),
+            'certificate_sat_number': tfd_node is not None and tfd_node.get('NoCertificadoSAT'),
             'expedition': cfdi_node.get('LugarExpedicion'),
             'fiscal_regime': cfdi_node.Emisor.get('RegimenFiscal', ''),
             'emission_date_str': cfdi_node.get('fecha', cfdi_node.get('Fecha', '')).replace('T', ' '),
-            'stamp_date': tfd_node and tfd_node.get('FechaTimbrado', '').replace('T', ' '),
+            'stamp_date': tfd_node is not None and tfd_node.get('FechaTimbrado', '').replace('T', ' '),
         }
 
     @api.model

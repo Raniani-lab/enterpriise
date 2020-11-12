@@ -25,6 +25,7 @@ odoo.define('web_studio.ModelConfigurator', function (require) {
                     use_stages: { label: this.env._t('Pipeline stages'), help: this.env._t('Stage and visualize records in a custom pipeline'), value: false },
                     use_tags: { label: this.env._t('Tags'), help: this.env._t('Categorize records with custom tags'), value: false },
                     use_image: { label: this.env._t('Picture'), help: this.env._t('Attach a picture to a record'), value: false },
+                    lines: { label: this.env._t('Lines'), help: this.env._t('Add details to your records with an embedded list view'), value: false },
                     use_notes: { label: this.env._t('Notes'), help: this.env._t('Write additional notes or comments'), value: false },
                     use_value: { label: this.env._t('Monetary value'), help: this.env._t('Set a price or cost on records'), value: false },
                     use_company: { label: this.env._t('Company'), help: this.env._t('Restrict a record to a specific company'), value: false },

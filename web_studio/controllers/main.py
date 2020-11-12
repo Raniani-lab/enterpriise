@@ -587,12 +587,15 @@ class WebStudioController(http.Controller):
             # create a new field if it does not exist
             if 'node' in op:
                 if op['node'].get('tag') == 'field' and op['node'].get('field_description'):
-                    model = op['node']['field_description']['model_name']
-                    # Check if field exists before creation
-                    field = IrModelFields.search([
-                        ('name', '=', op['node']['field_description']['name']),
-                        ('model', '=', model),
-                    ], limit=1)
+                    if op['node']['field_description'].get('special') == 'lines':
+                        field = request.env['ir.model']._get(model)._setup_one2many_lines()
+                    else:
+                        model = op['node']['field_description']['model_name']
+                        # Check if field exists before creation
+                        field = IrModelFields.search([
+                            ('name', '=', op['node']['field_description']['name']),
+                            ('model', '=', model),
+                        ], limit=1)
                     if not field:
                         field = self.create_new_field(op['node']['field_description'])
                     op['node']['attrs']['name'] = field.name

@@ -108,7 +108,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             // Prevent drops outside of groups if not in whitelist
             var whitelist = ['o_web_studio_field_picture', 'o_web_studio_field_html',
                 'o_web_studio_field_many2many', 'o_web_studio_field_one2many',
-                'o_web_studio_field_tabs', 'o_web_studio_field_columns'];
+                'o_web_studio_field_tabs', 'o_web_studio_field_columns', 'o_web_studio_field_lines'];
             var hookTypeBlacklist = ['genericTag', 'afterGroup', 'afterNotebook', 'insideSheet'];
             var fieldClasses = $helper[0].className.split(' ');
             if (_.intersection(fieldClasses, whitelist).length === 0 && hookTypeBlacklist.indexOf(hook.type) > -1) {

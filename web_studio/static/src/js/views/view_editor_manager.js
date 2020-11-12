@@ -364,6 +364,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     ['2', "High"],
                     ['3', "Very High"],
                 ];
+            } else if (field_description.special === 'lines') {
+                // there's nothing to do, the operation will be fully handled server-side
             } else if (_.contains(['selection', 'one2many', 'many2one', 'many2many', 'related'], field_description.type)) {
                 def_field_values = new Promise(function (resolve, reject) {
                     var prom;

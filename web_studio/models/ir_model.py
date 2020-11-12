@@ -5,14 +5,14 @@ import unicodedata
 import uuid
 import re
 from odoo.osv import expression
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.tools import ustr
 
 _logger = logging.getLogger(__name__)
 
 OPTIONS_WL = ['use_active', 'use_responsible', 'use_partner', 'use_company',
               'use_notes', 'use_value', 'use_image', 'use_tags', 'use_sequence',
-              'use_mail', 'use_stages', 'use_date', 'use_double_dates']
+              'use_mail', 'use_stages', 'use_date', 'use_double_dates', 'lines']
 
 
 def sanitize_for_xmlid(s):
@@ -143,6 +143,8 @@ class IrModel(models.Model):
             extra_models |= main_model._setup_date()
         if 'use_double_dates' in valid_options:
             extra_models |= main_model._setup_double_dates()
+        if 'lines' in valid_options:
+            main_model._setup_one2many_lines()
         # set the ordering of the model, depending on the use of sequences and stages
         # stages create a kanban view and a priority field, in which case the list view
         # will not have the handle widget to avoid inconsistencies
@@ -164,6 +166,56 @@ class IrModel(models.Model):
             (main_model, _) = self.studio_model_create(name)
             return main_model.name_get()[0]
         return super().name_create(name)
+
+    def _setup_one2many_lines(self):
+        """ Creates a new model (with sequence and description fields) and a
+            one2many field pointing to that model.
+        """
+        # create the Line model
+        model_name = self.model.replace('.', '_')
+        if model_name[:2] != 'x_':
+            model_name = 'x_' + model_name
+
+        relation_field_name = model_name + '_id'
+        line_model_values = {
+            'name': model_name[2:] + '_line',
+            'model': model_name + '_line_' + uuid.uuid4().hex[:5],
+            'field_id': [
+                (Command.create({
+                    'name': 'x_studio_sequence',
+                    'ttype': 'integer',
+                    'field_description': _('Sequence'),
+                })),
+                (Command.create({
+                    'name': 'x_name',
+                    'ttype': 'char',
+                    'required': True,
+                    'field_description': _('Description'),
+                    'translate': True,
+                })),
+                (Command.create({
+                    'name': relation_field_name,
+                    'ttype': 'many2one',
+                    'relation': self.model,
+                })),
+            ],
+        }
+        line_model = self.with_context(list_editable="bottom").studio_model_create(
+            '%s  Lines' % model_name[2:].replace('_', ' ').title(),
+            vals=line_model_values,
+        )[0]
+        line_model._setup_access_rights()
+        self.env['ir.ui.view'].create_automatic_views(line_model.model)
+
+        # create and return the one2many pointing to the Line model
+        return self.env['ir.model.fields'].create({
+            'name': model_name + '_line_ids_' + uuid.uuid4().hex[:5],
+            'ttype': 'one2many',
+            'relation': line_model.model,
+            'relation_field': relation_field_name,
+            'field_description': _('New Lines'),
+            'model_id': self.id,
+        })
 
     def _setup_active(self):
         for model in self:

@@ -32,17 +32,21 @@ class TestStudioIrModel(TransactionCase):
             }
         )
 
-    
     def test_00_model_creation(self):
         """Test that a model gets created with the selected options."""
         model_options = ['use_partner', 'use_stages', 'use_image',
-                         'use_responsible']
+                         'use_responsible', 'lines']
         (model, extra_models) = self.env['ir.model'].studio_model_create('Rockets', options=model_options)
         self.assertEqual(len(extra_models), 1, 'one extra model should have been created for stages')
+
+        line_model = self.env['ir.model'].search([('model', 'like', model.model + '_line')])
+        self.assertEqual(len(line_model), 1, 'one extra model should have been created for lines')
+
         created_fields = self.env[model.model]._fields.keys()
         expected_fields = ['x_studio_partner_id', 'x_studio_stage_id', 'x_studio_image',
-                           'x_studio_user_id']
-        self.assertTrue(set(expected_fields).issubset(set(created_fields)),
+                           'x_studio_user_id', model.model + '_line_ids']
+
+        self.assertTrue(all(list(filter(lambda x: item in x, created_fields)) for item in expected_fields),
                       'some expected fields have not been created automatically')
 
     def test_01_mail_inheritance(self):

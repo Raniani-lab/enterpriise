@@ -47,6 +47,10 @@ const CommonMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      * @private
      */
     async _onConfigureModel() {
+        if (!this.el.querySelector('input[name="name"]').value) {
+            this.el.querySelector('label').classList.add('o_studio_error');
+            return;
+        }
         this.$footer.find('.btn').attr('disabled', '').addClass('disabled');
         this.modelConfiguratorDialog = new ModelConfiguratorDialog(this, { confirmLabel: this.confirmLabel });
         this.modelConfiguratorDialog.open();

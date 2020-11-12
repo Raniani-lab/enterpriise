@@ -4137,6 +4137,46 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('add a one2many lines field', async function (assert) {
+        assert.expect(1);
+
+        let fieldsView;
+        const arch = `
+            <form>
+                <group>
+                    <field name="display_name"/>
+                </group>
+            </form>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (args.method === 'search_count') {
+                    throw new Error('should not do a search_count');
+                }
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.field_description.special, 'lines');
+                    // the server sends the arch in string but it's post-processed
+                    // by the ViewEditorManager
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields_views: {
+                            form: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = Object.assign({}, vem.fields_view);
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_lines'), $('.o_web_studio_hook'));
+
+        vem.destroy();
+    });
+
     QUnit.test('add a many2many field', async function(assert) {
         assert.expect(7);
 

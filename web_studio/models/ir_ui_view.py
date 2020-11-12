@@ -192,6 +192,17 @@ class View(models.Model):
         sheet_content.append(E.group(left_group, right_group, name=group_name))
         if 'x_studio_notes' in model._fields:
             sheet_content.append(E.group(E.field(name='x_studio_notes', placeholder=_('Type down your notes here...'), nolabel='1')))
+
+        # if there is a '%_line_ids' field, display it as a list in a notebook
+        lines_field = [f for f in model._fields if ("%s_line_ids" % model._name) in f]
+        if lines_field:
+            xml_node = E.notebook()
+            xml_node_page = E.page({'string': 'Details', 'name': 'lines'})
+            xml_node_page.append(E.field(name=lines_field[0]))
+
+            xml_node.insert(0, xml_node_page)
+            sheet_content.append(xml_node)
+
         form = E.form(E.header(*header_content), E.sheet(*sheet_content, string=model._description))
         chatter_widgets = list()
         if ir_model.is_mail_thread:

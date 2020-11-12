@@ -69,6 +69,7 @@ var FilterSeparatorComponent = AbstractComponent.extend({
 var AbstractNewFieldComponent = AbstractComponent.extend({
     structure: 'field',
     type: false,
+    special: false,
 
     /**
      * @override
@@ -86,6 +87,7 @@ var AbstractNewFieldComponent = AbstractComponent.extend({
         this.$el.data('field_description', {
             type: this.type,
             field_description: 'New ' + this.label,
+            special: this.special,
         });
         this.$el.data('new_attrs', this.fieldAttrs);
         return this._super.apply(this, arguments);
@@ -155,6 +157,12 @@ var One2manyFieldComponent = AbstractNewFieldComponent.extend({
     type: 'one2many',
     label: _lt('One2many'),
     className: 'o_web_studio_field_one2many',
+});
+const LinesFieldComponent = AbstractNewFieldComponent.extend({
+    type: 'one2many',
+    label: _lt('Lines'),
+    className: 'o_web_studio_field_lines',
+    special: 'lines',
 });
 var Many2oneFieldComponent = AbstractNewFieldComponent.extend({
     type: 'many2one',
@@ -258,6 +266,7 @@ form_component_widget_registry
         BooleanFieldComponent,
         SelectionFieldComponent,
         BinaryFieldComponent,
+        LinesFieldComponent,
         One2manyFieldComponent,
         Many2oneFieldComponent,
         Many2manyFieldComponent,

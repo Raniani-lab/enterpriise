@@ -147,6 +147,8 @@ QUnit.module('Studio', {
         await testUtils.dom.click($('.o_web_studio_add_menu_modal .o_field_widget[name="model_choice"] [data-value="new"]'));
         assert.isNotVisible($('.o_web_studio_add_menu_modal .o_field_many2one'),
             "there should be no visible many2one for the model in the dialog");
+        // Define a name for new model
+        $('input[name="name"]').val("new_model");
         await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-primary'));
         assert.containsOnce($, '.o_web_studio_model_configurator input[name="use_partner"]',
             "the ModelConfigurator should show the available model options");

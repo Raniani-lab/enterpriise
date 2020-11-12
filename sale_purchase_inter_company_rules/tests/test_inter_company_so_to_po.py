@@ -39,15 +39,15 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommonSOPO):
         # I check that Quotation of purchase order and order line is same as sale order
         purchase_order = self.env['purchase.order'].search([('company_id', '=', partner.id)], limit=1)
 
-        self.assertTrue(purchase_order.state == "draft", "Invoice should be in draft state.")
-        self.assertTrue(purchase_order.partner_id == company.partner_id, "Vendor does not correspond to Company %s." % company.name)
-        self.assertTrue(purchase_order.company_id == partner, "Company is not correspond to purchase order.")
-        self.assertTrue(purchase_order.amount_total == 450.0, "Total amount is incorrect.")
-        self.assertTrue(purchase_order.order_line[0].product_id == self.product_consultant, "Product in line is incorrect.")
-        self.assertTrue(purchase_order.order_line[0].name == 'Service', "Product name is incorrect.")
-        self.assertTrue(purchase_order.order_line[0].price_unit == 450, "Price unit is incorrect.")
-        self.assertTrue(purchase_order.order_line[0].product_qty == 1, "Product qty is incorrect.")
-        self.assertTrue(purchase_order.order_line[0].price_subtotal == 450, "line total is incorrect.")
+        self.assertEqual(purchase_order.state, "draft", "Invoice should be in draft state.")
+        self.assertEqual(purchase_order.partner_id, company.partner_id, "Vendor does not correspond to Company %s." % company.name)
+        self.assertEqual(purchase_order.company_id, partner, "Company is not correspond to purchase order.")
+        self.assertEqual(purchase_order.amount_total, 517.5, "Total amount is incorrect.")
+        self.assertEqual(purchase_order.order_line[0].product_id, self.product_consultant, "Product in line is incorrect.")
+        self.assertEqual(purchase_order.order_line[0].name, 'Service', "Product name is incorrect.")
+        self.assertEqual(purchase_order.order_line[0].price_unit, 450, "Price unit is incorrect.")
+        self.assertEqual(purchase_order.order_line[0].product_qty, 1, "Product qty is incorrect.")
+        self.assertEqual(purchase_order.order_line[0].price_subtotal, 450, "line total is incorrect.")
         return purchase_order
 
     def test_00_inter_company_sale_purchase(self):

@@ -33,16 +33,16 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
         """
 
         # Find related sale order based on client order reference.
-        sale_order = self.env['sale.order'].search([('client_order_ref', '=', purchase_order.name)], limit=1)
+        sale_order = self.env['sale.order'].with_company(partner).search([('client_order_ref', '=', purchase_order.name)], limit=1)
 
-        self.assertTrue(sale_order.state == "draft", "sale order should be in draft state.")
-        self.assertTrue(sale_order.partner_id == company.partner_id, "Vendor does not correspond to Company %s." % company)
-        self.assertTrue(sale_order.company_id == partner, "Applied company in created sale order is incorrect.")
-        self.assertTrue(sale_order.amount_total == 450.0, "Total amount is incorrect.")
-        self.assertTrue(sale_order.order_line[0].product_id == self.product_consultant, "Product in line is incorrect.")
-        self.assertTrue(sale_order.order_line[0].name == 'Service', "Product name is incorrect.")
-        self.assertTrue(sale_order.order_line[0].product_uom_qty == 1, "Product qty is incorrect.")
-        self.assertTrue(sale_order.order_line[0].price_unit == 450, "Unit Price in line is incorrect.")
+        self.assertEqual(sale_order.state, "draft", "sale order should be in draft state.")
+        self.assertEqual(sale_order.partner_id, company.partner_id, "Vendor does not correspond to Company %s." % company)
+        self.assertEqual(sale_order.company_id, partner, "Applied company in created sale order is incorrect.")
+        self.assertEqual(sale_order.amount_total, 517.5, "Total amount is incorrect.")
+        self.assertEqual(sale_order.order_line[0].product_id, self.product_consultant, "Product in line is incorrect.")
+        self.assertEqual(sale_order.order_line[0].name, 'Service', "Product name is incorrect.")
+        self.assertEqual(sale_order.order_line[0].product_uom_qty, 1, "Product qty is incorrect.")
+        self.assertEqual(sale_order.order_line[0].price_unit, 450, "Unit Price in line is incorrect.")
 
     def test_00_inter_company_sale_purchase(self):
         """ Configure "Sale/Purchase" option and then Create purchase order and find related

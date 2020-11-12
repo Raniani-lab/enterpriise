@@ -15,14 +15,6 @@ class TestInterCompanyInvoice(TestInterCompanyRulesCommon):
             'rule_type': 'invoice_and_refund'
         })
 
-        # Configure Chart of Account for company_a.
-        self.env.user.company_id = self.company_a
-        self.env['account.chart.template'].browse(1).with_company(self.company_a).try_loading()
-
-        # Configure Chart of Account for company_b.
-        self.env.user.company_id = self.company_b
-        self.env['account.chart.template'].browse(1).with_company(self.company_b).try_loading()
-
         # Create customer invoice for company A. (No need to call onchange as all the needed values are specified)
         self.res_users_company_a.company_ids = [(4, self.company_b.id)]
         customer_invoice = self.env['account.move'].with_user(self.res_users_company_a).create({

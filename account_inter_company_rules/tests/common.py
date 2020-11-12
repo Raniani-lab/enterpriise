@@ -1,31 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.tests import common
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
-class TestInterCompanyRulesCommon(common.TransactionCase):
+class TestInterCompanyRulesCommon(AccountTestInvoicingCommon):
+    """This test needs sale_purchase_inter_company_rules to run."""
 
     @classmethod
     def setUpClass(cls):
         super(TestInterCompanyRulesCommon, cls).setUpClass()
 
-        # Create a new company named company_a
-        cls.company_a = cls.env['res.company'].create({
-            'name': 'Company A',
-            'currency_id': cls.env.ref('base.EUR').id,
-        })
-
-        # Set warehouse on company A
-        cls.company_a.warehouse_id = cls.env['stock.warehouse'].search([('company_id', '=', cls.company_a.id)])
-
-        # Create a new company named company_b
-        cls.company_b = cls.env['res.company'].create({
-            'name': 'Company B',
-            'currency_id': cls.env.ref('base.EUR').id,
-        })
-
-        # Set warehouse on company B
-        cls.company_b.warehouse_id = cls.env['stock.warehouse'].search([('company_id', '=', cls.company_b.id)])
+        cls.company_a = cls.company_data['company']
+        cls.company_b = cls.company_data_2['company']
 
         # Create a new product named product_consultant
         cls.product_consultant = cls.env['product.product'].create({
@@ -34,6 +21,8 @@ class TestInterCompanyRulesCommon(common.TransactionCase):
             'uom_po_id': cls.env.ref('uom.product_uom_hour').id,
             'categ_id': cls.env.ref('product.product_category_all').id,
             'type': 'service',
+            'taxes_id': [(6, 0, (cls.company_a.account_sale_tax_id + cls.company_b.account_sale_tax_id).ids)],
+            'supplier_taxes_id': [(6, 0, (cls.company_a.account_purchase_tax_id + cls.company_b.account_purchase_tax_id).ids)],
             'company_id': False
         })
 
@@ -45,8 +34,6 @@ class TestInterCompanyRulesCommon(common.TransactionCase):
             'company_id': cls.company_a.id,
             'company_ids': [(6, 0, [cls.company_a.id])],
             'groups_id': [(6, 0, [
-                cls.env.ref('sales_team.group_sale_salesman').id,
-                cls.env.ref('purchase.group_purchase_user').id,
                 cls.env.ref('account.group_account_user').id,
                 cls.env.ref('account.group_account_manager').id
             ])]
@@ -60,8 +47,6 @@ class TestInterCompanyRulesCommon(common.TransactionCase):
             'company_id': cls.company_b.id,
             'company_ids': [(6, 0, [cls.company_b.id])],
             'groups_id': [(6, 0, [
-                cls.env.ref('sales_team.group_sale_salesman').id,
-                cls.env.ref('purchase.group_purchase_user').id,
                 cls.env.ref('account.group_account_user').id
             ])]
         })

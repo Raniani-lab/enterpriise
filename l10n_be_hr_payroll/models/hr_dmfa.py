@@ -335,7 +335,7 @@ class HrDMFAReport(models.Model):
         """ Some contribution are not specified at the worker level but globally for the whole company """
         onss_double_holidays = self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_onss_rule')
         lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id == onss_double_holidays)
-        return sum(lines.mapped('total'))
+        return -sum(lines.mapped('total'))
 
 
 class HrDMFALocationUnit(models.Model):

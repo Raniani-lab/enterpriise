@@ -9,6 +9,7 @@ import logging
 import pytz
 import uuid
 from math import ceil, modf
+from random import randint
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
@@ -894,8 +895,11 @@ class PlanningRole(models.Model):
     _order = 'sequence'
     _rec_name = 'name'
 
+    def _get_default_color(self):
+        return randint(1, 11)
+
     name = fields.Char('Name', required=True)
-    color = fields.Integer("Color", default=0)
+    color = fields.Integer("Color", default=_get_default_color)
     employee_ids = fields.Many2many('hr.employee', string='Employees')
     sequence = fields.Integer()
 

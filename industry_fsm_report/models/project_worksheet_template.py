@@ -3,6 +3,7 @@
 from ast import literal_eval
 from lxml import etree
 import time
+from random import randint
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
@@ -13,6 +14,9 @@ class ProjectWorksheetTemplate(models.Model):
     _name = 'project.worksheet.template'
     _description = 'Project Worksheet Template'
 
+    def _get_default_color(self):
+        return randint(1, 11)
+
     name = fields.Char(string='Name', required=True)
     sequence = fields.Integer()
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
@@ -20,7 +24,7 @@ class ProjectWorksheetTemplate(models.Model):
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
     company_ids = fields.Many2many('res.company', string='Companies')
     report_view_id = fields.Many2one('ir.ui.view', domain=[('type', '=', 'qweb')], readonly=True)
-    color = fields.Integer('Color', default=1)
+    color = fields.Integer('Color', default=_get_default_color)
     active = fields.Boolean(default=True)
 
     def _compute_worksheet_count(self):

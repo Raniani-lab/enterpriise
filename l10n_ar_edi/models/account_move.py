@@ -4,6 +4,7 @@ from odoo.exceptions import UserError, RedirectWarning
 from odoo.tools.float_utils import float_repr, float_round
 from datetime import datetime
 from . import afip_errors
+import re
 import logging
 
 
@@ -525,6 +526,7 @@ class AccountMove(models.Model):
             if 'BaseImp' in item and 'Importe' in item:
                 item['BaseImp'] = float_repr(item['BaseImp'], precision_digits=2)
                 item['Importe'] = float_repr(item['Importe'], precision_digits=2)
+        vat = partner_id_code and self.commercial_partner_id.vat and re.sub(r'\D+', '', self.commercial_partner_id.vat)
 
         tributes = self._get_tributes()
         optionals = self._get_optionals_data()
@@ -539,7 +541,7 @@ class AccountMove(models.Model):
                'FeDetReq': [{'FECAEDetRequest': {
                    'Concepto': int(self.l10n_ar_afip_concept),
                    'DocTipo': partner_id_code or 0,
-                   'DocNro': partner_id_code and int(self.commercial_partner_id.vat) or 0,
+                   'DocNro': vat and int(vat) or 0,
                    'CbteDesde': invoice_number,
                    'CbteHasta': invoice_number,
                    'CbteFch': self.invoice_date.strftime(WS_DATE_FORMAT['wsfe']),

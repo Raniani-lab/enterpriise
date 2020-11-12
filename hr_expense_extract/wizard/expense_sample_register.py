@@ -50,7 +50,7 @@ class ExpenseSampleRegister(models.TransientModel):
     def _compute_journal(self):
         for wizard in self:
             wizard.journal_id = self.env['account.journal'].search([('company_id', '=', self.company_id.id), ('type', 'in', ('bank', 'cash'))], limit=1)
-            wizard.payment_method_id = wizard.journal_id.outbound_payment_method_ids[0]
+            wizard.payment_method_id = wizard.journal_id.outbound_payment_method_ids[:1]
 
     @api.depends('amount')
     def _compute_partial(self):

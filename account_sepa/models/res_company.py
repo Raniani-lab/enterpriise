@@ -46,15 +46,15 @@ class ResCompany(models.Model):
                 company.sepa_orgid_issr = ''
                 company.sepa_orgid_id = ''
 
-    @api.depends('partner_id.country_id')
+    @api.depends('country_id')
     def _compute_sepa_pain_version(self):
         """ Set default value for the field sepa_pain_version"""
         for company in self:
             if company.country_id.code == 'DE':
                 company.sepa_pain_version = 'pain.001.003.03'
-            if company.country_id.code == 'CH':
+            elif company.country_id.code == 'CH':
                 company.sepa_pain_version = 'pain.001.001.03.ch.02'
-            if company.partner_id.country_id.code == 'SE':
+            elif company.country_id.code == 'SE':
                 company.sepa_pain_version = 'pain.001.001.03.se'
             else:
                 company.sepa_pain_version = 'pain.001.001.03'

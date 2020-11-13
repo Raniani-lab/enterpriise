@@ -28,7 +28,6 @@
         <link rel="stylesheet" type="text/css" href="/web/static/src/scss/primary_variables.scss"/>
         <link rel="stylesheet" type="text/css" href="/web_enterprise/static/src/scss/primary_variables.scss"/>
         <link rel="stylesheet" type="text/css" href="/web_tour/static/src/scss/tip.scss"/>
-        <link rel="stylesheet" type="text/css" href="/web_tour/static/src/scss/keyframes.scss"/>
 
         <!-- integration -->
         <link rel="stylesheet" type="text/css" href="/sign/static/src/css/iframe.css"/>

@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.saas~14+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-28 12:10+0000\n"
-"PO-Revision-Date: 2017-03-09 20:25+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2020-11-13 07:59-0600\n"
+"Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>\n"
 "Language-Team: \n"
-"Language: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 2.4.1\n"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:127
@@ -24,6 +25,9 @@ msgid ""
 "\n"
 "Please fill the missing information in the partners and try again."
 msgstr ""
+"\n"
+"\n"
+"Complete la información que falta en los socios y vuelva a intentarlo."
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:124
@@ -34,6 +38,10 @@ msgid ""
 "The following partners do not have a type of operation: \n"
 " - %s"
 msgstr ""
+"\n"
+"\n"
+"Los siguientes socios no tienen un tipo de operación:\n"
+" - %s"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:120
@@ -44,6 +52,10 @@ msgid ""
 "The following partners do not have a valid RFC: \n"
 " - %s"
 msgstr ""
+"\n"
+"\n"
+"Los siguientes socios no tienen una RFC válida:\n"
+" - %s"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,l10n_mx_type_of_operation:0
@@ -818,57 +830,57 @@ msgstr "899 Otras cuentas de orden"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_edi_addenda
 msgid "A view representing the addenda"
-msgstr ""
+msgstr "Una vista representando la addenda"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_account_payable_id
 msgid "Account Payable"
-msgstr ""
+msgstr "Cuenta a pagar"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_account_receivable_id
 msgid "Account Receivable"
-msgstr ""
+msgstr "Cuenta a cobrar"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Acción requerida"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__active
 msgid "Active"
-msgstr ""
+msgstr "Activo"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Actividades"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Estado de la actividad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_edi_addenda
 msgid "Addenda"
-msgstr ""
+msgstr "Addenda"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_edi_addenda_doc
 msgid "Addenda Documentation"
-msgstr ""
+msgstr "Documentación de Addenda"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__additional_info
 msgid "Additional info"
-msgstr ""
+msgstr "Información adicional"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__type
 msgid "Address Type"
-msgstr ""
+msgstr "Tipo de dirección"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__demonym
@@ -878,7 +890,7 @@ msgstr "Adjetivo para la relación entre una persona y un país."
 #. module: l10n_mx_reports
 #: selection:res.country,name_position:0
 msgid "After Address"
-msgstr ""
+msgstr "Después de la dirección"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__lang
@@ -886,51 +898,53 @@ msgid ""
 "All the emails and documents sent to this contact will be translated in this "
 "language."
 msgstr ""
+"Todos los correos electrónicos y documentos enviados a este contacto serán "
+"traducidos a este idioma."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Nº de archivos adjuntos"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,trust:0
 msgid "Bad Debtor"
-msgstr ""
+msgstr "Deudor Malo"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__bank_account_count
 msgid "Bank"
-msgstr ""
+msgstr "Banco"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__bank_ids
 msgid "Banks"
-msgstr ""
+msgstr "Bancos"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__barcode
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras"
 
 #. module: l10n_mx_reports
 #: selection:res.country,name_position:0
 msgid "Before Address"
-msgstr ""
+msgstr "Antes de la dirección"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__is_blacklisted
 msgid "Blacklist"
-msgstr ""
+msgstr "Lista negra"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,invoice_warn:0 selection:res.partner,sale_warn:0
 msgid "Blocking Message"
-msgstr ""
+msgstr "Mensaje de bloqueo"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_bounce
 msgid "Bounce"
-msgstr ""
+msgstr "Rebote"
 
 #. module: l10n_mx_reports
 #: model:ir.actions.client,name:l10n_mx_reports.action_coa
@@ -941,12 +955,14 @@ msgstr "COA"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__channel_ids
 msgid "Channels"
-msgstr ""
+msgstr "Canales"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__is_company
 msgid "Check if the contact is a company, otherwise it is a person"
 msgstr ""
+"Marque esta casilla si el contacto es una compañía. En caso contrario, es "
+"una persona"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__customer
@@ -954,6 +970,8 @@ msgid ""
 "Check this box if this contact is a customer. It can be selected in sales "
 "orders."
 msgstr ""
+"Marque esta casilla si este contacto es un cliente. Puede ser seleccionado "
+"en órdenes de venta."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__supplier
@@ -961,11 +979,13 @@ msgid ""
 "Check this box if this contact is a vendor. It can be selected in purchase "
 "orders."
 msgstr ""
+"Marque esta casilla si este contacto es un proveedor. Puede ser seleccionado "
+"en órdenes de compra."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__employee
 msgid "Check this box if this contact is an Employee."
-msgstr ""
+msgstr "Marque si el contacto es un empleado."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__enforce_cities
@@ -974,98 +994,101 @@ msgid ""
 "Check this box to ensure every address created in that country has a 'City' "
 "chosen in the list of the country's cities."
 msgstr ""
+"Marque esta casilla para asegurarse de que cada dirección creada en ese país "
+"tenga una 'Ciudad' elegida en la lista de ciudades del país."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__city
 msgid "City"
-msgstr ""
+msgstr "Ciudad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__city_id
 msgid "City of Address"
-msgstr ""
+msgstr "Ciudad de Dirección"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__l10n_mx_edi_code
 msgid "Code MX"
-msgstr ""
+msgstr "Código MX"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_edi_colony
 msgid "Colony Name"
-msgstr ""
+msgstr "Nombre de la colonia"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__color
 msgid "Color Index"
-msgstr ""
+msgstr "Índice de Colores"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__commercial_partner_id
 msgid "Commercial Entity"
-msgstr ""
+msgstr "Entidad comercial"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__ref_company_ids
 msgid "Companies that refers to partner"
-msgstr ""
+msgstr "Compañías que se refieren a la empresa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__company_id
 #: selection:res.partner,company_type:0
 msgid "Company"
-msgstr ""
+msgstr "Compañía"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__company_name
 msgid "Company Name"
-msgstr ""
+msgstr "Nombre de la empresa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__commercial_company_name
 msgid "Company Name Entity"
-msgstr ""
+msgstr "Nombre de la empresa Entidad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__company_type
 msgid "Company Type"
-msgstr ""
+msgstr "Tipo de compañía"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__partner_gid
 msgid "Company database ID"
-msgstr ""
+msgstr "ID de base de datos de la empresa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__contact_address
 msgid "Complete Address"
-msgstr ""
+msgstr "Dirección completa"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_res_partner
 #: selection:res.partner,type:0
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__child_ids
 msgid "Contacts"
-msgstr ""
+msgstr "Contactos"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__contracts_count
 msgid "Contracts Count"
-msgstr ""
+msgstr "Conteo de Contratos"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__payment_token_count
 msgid "Count Payment Token"
-msgstr ""
+msgstr "Contar token de pago"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_bounce
 msgid "Counter of the number of bounced emails for this contact"
 msgstr ""
+"Contador del número de correos electrónicos rebotados para este contacto"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:26
@@ -1078,22 +1101,22 @@ msgstr "País"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__phone_code
 msgid "Country Calling Code"
-msgstr ""
+msgstr "Código llamada del país"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__code
 msgid "Country Code"
-msgstr ""
+msgstr "Código de país"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__country_group_ids
 msgid "Country Groups"
-msgstr ""
+msgstr "Grupos de países"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__name
 msgid "Country Name"
-msgstr ""
+msgstr "Nombre del País"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__l10n_mx_edi_code
@@ -1101,46 +1124,49 @@ msgid ""
 "Country code defined by the SAT in the catalog to CFDI version 3.3 and new "
 "complements. Will be used in the CFDI to indicate the country reference."
 msgstr ""
+"Código de país definido por el SAT en el catálogo a CFDI versión 3.3 y "
+"nuevos complementos. Se utilizará en el CFDI para indicar la referencia del "
+"país."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__create_uid
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__create_date
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:59
 #: code:addons/l10n_mx_reports/models/trial_balance.py:63
 #, python-format
 msgid "Credit"
-msgstr ""
+msgstr "Haber"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__credit_limit
 msgid "Credit Limit"
-msgstr ""
+msgstr "Límite de crédito"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__currency_id
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Moneda"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__name_position
 msgid "Customer Name Position"
-msgstr ""
+msgstr "Posición del nombre del cliente"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_payment_term_id
 msgid "Customer Payment Terms"
-msgstr ""
+msgstr "Plazo de pago de cliente"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:323
@@ -1158,19 +1184,19 @@ msgstr "Información DIOT"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__date
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:58
 #: code:addons/l10n_mx_reports/models/trial_balance.py:62
 #, python-format
 msgid "Debit"
-msgstr ""
+msgstr "Debe"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__trust
 msgid "Degree of trust you have in this debtor"
-msgstr ""
+msgstr "Grado de confianza para este deudor"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__demonym
@@ -1183,6 +1209,8 @@ msgid ""
 "Determines where the customer/company name should be placed, i.e. after or "
 "before the address."
 msgstr ""
+"Determina dónde se debe colocar el nombre del cliente / empresa, es decir, "
+"antes o después de la dirección."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_l10n_mx_account_diot__display_name
@@ -1205,16 +1233,26 @@ msgid ""
 "%(country_name)s: the name of the country\n"
 "%(country_code)s: the code of the country"
 msgstr ""
+"Formato de visualización que se utilizará para las direcciones que "
+"pertenecen a este país.\n"
+"\n"
+"Puede usar un patrón de cadena de estilo Python con todos los campos de la "
+"dirección (por ejemplo, use '% (street) s' para mostrar el campo 'street') "
+"más\n"
+"%(state_name)s: el nombre del estado\n"
+"%(state_code)s: el código del estado\n"
+"%(country_name)s: el nombre del país\n"
+"%(country_code)s: el código del país"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__street_number2
 msgid "Door"
-msgstr ""
+msgstr "No. Ext."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__street_number2
 msgid "Door Number"
-msgstr ""
+msgstr "No. Int."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__partner_share
@@ -1223,22 +1261,25 @@ msgid ""
 "partner is a customer without access or with a limited access created for "
 "sharing data."
 msgstr ""
+"Cualquier cliente (no un usuario), cualquier usuario compartido. Indica que "
+"el socio actual es un cliente sin acceso o con un acceso limitado creado "
+"para compartir datos."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__email
 msgid "Email"
-msgstr ""
+msgstr "Correo electrónico"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__employee
 msgid "Employee"
-msgstr ""
+msgstr "Empleado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__enforce_cities
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__country_enforce_cities
 msgid "Enforce Cities"
-msgstr ""
+msgstr "Forzar Ciudades"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:31
@@ -1255,32 +1296,33 @@ msgstr "Exportar para SAT (XML)"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_account_position_id
 msgid "Fiscal Position"
-msgstr ""
+msgstr "Posición fiscal"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Seguidores"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Seguidores (Canales)"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Seguidores (Contactos)"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__followup_status
 msgid "Followup status"
-msgstr ""
+msgstr "Estado de seguimiento"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__email_formatted
 msgid "Format email address \"Name <email@domain>\""
 msgstr ""
+"De formato a la dirección de correo electrónico \"Nombre <email@dominio>\""
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__street_format
@@ -1294,31 +1336,39 @@ msgid ""
 "%(street_number)s: the house number\n"
 "%(street_number2)s: the door number"
 msgstr ""
+"Formato a utilizar para calles pertenecientes a este país.\n"
+"\n"
+"Puede usar el patrón de cadena de estilo Python con todos los campos de la "
+"calle (por ejemplo, use '%(street_name)s,%(street_number)s' si desea mostrar "
+"el nombre de la calle, seguido de una coma y la casa número)\n"
+"%(street_name)s: el nombre de la calle\n"
+"%(street_number)s: el número de la casa\n"
+"%(street_number2)s: el número de puerta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__email_formatted
 msgid "Formatted Email"
-msgstr ""
+msgstr "Email formateado"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,trust:0
 msgid "Good Debtor"
-msgstr ""
+msgstr "Buen Deudor"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__has_unreconciled_entries
 msgid "Has Unreconciled Entries"
-msgstr ""
+msgstr "Tiene apuntes no conciliados"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__street_number
 msgid "House"
-msgstr ""
+msgstr "Casa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__street_number
 msgid "House Number"
-msgstr ""
+msgstr "Número de casa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_edi_addenda_doc
@@ -1327,6 +1377,9 @@ msgid ""
 "information here to help the invoice people to fill properly the fields in "
 "the invoice)"
 msgstr ""
+"¿Cómo se deben hacer las addendas para este cliente (intente poner aquí "
+"información legible por humanos para ayudar a la gente de la factura a "
+"completar correctamente los campos en la factura)?"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_l10n_mx_account_diot__id
@@ -1340,22 +1393,22 @@ msgstr "ID"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__im_status
 msgid "IM Status"
-msgstr ""
+msgstr "Estado MI"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Si está marcado, hay nuevos mensajes que requieren su atención."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__team_id
@@ -1363,6 +1416,8 @@ msgid ""
 "If set, this Sales Team will be used for sales and assignations related to "
 "this partner"
 msgstr ""
+"Si establecido, este Equipo de Ventas será utilizado para ventas y "
+"asignaciones relacionadas a este contacto"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__is_blacklisted
@@ -1370,12 +1425,14 @@ msgid ""
 "If the email address is on the blacklist, the contact won't receive mass "
 "mailing anymore, from any list"
 msgstr ""
+"Si la dirección de email esta en la lista negra, el contacto ya no recibirá "
+"correo masivo de cualquier lista"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__image
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__image
 msgid "Image"
-msgstr ""
+msgstr "Imagen"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:29
@@ -1386,7 +1443,7 @@ msgstr "Importación 16%"
 #. module: l10n_mx_reports
 #: selection:res.partner,followup_status:0
 msgid "In need of action"
-msgstr ""
+msgstr "En necesidad de acción"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__l10n_mx_type_of_operation
@@ -1409,73 +1466,73 @@ msgstr ""
 #. module: l10n_mx_reports
 #: selection:res.partner,company_type:0
 msgid "Individual"
-msgstr ""
+msgstr "Individual"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__industry_id
 msgid "Industry"
-msgstr ""
+msgstr "Industria"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:54
 #, python-format
 msgid "Initial Balance"
-msgstr ""
+msgstr "Saldo inicial"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__address_view_id
 msgid "Input View"
-msgstr ""
+msgstr "Vista de entrada"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__ref
 msgid "Internal Reference"
-msgstr ""
+msgstr "Referencia interna"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__invoice_warn
 msgid "Invoice"
-msgstr ""
+msgstr "Factura"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,type:0
 msgid "Invoice address"
-msgstr ""
+msgstr "Dirección facturación"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__invoice_ids
 msgid "Invoices"
-msgstr ""
+msgstr "Facturas"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Es un seguidor"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__is_company
 msgid "Is a Company"
-msgstr ""
+msgstr "Es una empresa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__customer
 msgid "Is a Customer"
-msgstr ""
+msgstr "Es un cliente"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__supplier
 msgid "Is a Vendor"
-msgstr ""
+msgstr "Es un proveedor"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__function
 msgid "Job Position"
-msgstr ""
+msgstr "Puesto de trabajo"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__journal_item_count
 msgid "Journal Items"
-msgstr ""
+msgstr "Apuntes contables"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_nationality
@@ -1495,7 +1552,7 @@ msgstr "Tipo de Tercero"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__lang
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_l10n_mx_account_diot____last_update
@@ -1510,13 +1567,13 @@ msgstr "Última modificación en"
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__write_uid
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Última actualización por"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__write_date
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última actualización el"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__last_time_entries_checked
@@ -1525,31 +1582,34 @@ msgid ""
 "It is set either if there's not at least an unreconciled debit and an "
 "unreconciled credit or if you click the \"Done\" button."
 msgstr ""
+"Última vez que se conciliaron facturas y pagos de este asociado. Se "
+"configura incluso si no hay ningún débito o crédito por conciliar, o si "
+"pulsa el botón \"Hecho\"."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__last_time_entries_checked
 msgid "Latest Invoices & Payments Matching Date"
-msgstr ""
+msgstr "Fecha de la última conciliación de facturas y pagos"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__address_format
 msgid "Layout in Reports"
-msgstr ""
+msgstr "Diseño en informes"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__l10n_mx_edi_locality
 msgid "Locality Name"
-msgstr ""
+msgstr "Nombre de la localidad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Adjuntos principales"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__image_medium
 msgid "Medium-sized image"
-msgstr ""
+msgstr "Imagen de tamaño mediano"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__image_medium
@@ -1558,26 +1618,29 @@ msgid ""
 "128x128px image, with aspect ratio preserved. Use this field in form views "
 "or some kanban views."
 msgstr ""
+"Imagen de tamaño mediano de este contacto. Se redimensiona automáticamente "
+"como una imagen de 128x128px, con una relación de aspecto preservada. "
+"Utilice este campo en vistas de formulario o en algunas vistas kanban."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error de Envío de Mensaje"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__invoice_warn_msg
 msgid "Message for Invoice"
-msgstr ""
+msgstr "Mensaje para factura"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__sale_warn_msg
 msgid "Message for Sales Order"
-msgstr ""
+msgstr "Mensaje para la Orden de Venta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Mensajes"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_l10n_mx_coa_report
@@ -1592,23 +1655,23 @@ msgstr "Reporte del Balance de Comprobación de México"
 #. module: l10n_mx_reports
 #: model:ir.ui.menu,name:l10n_mx_reports.account_reports_legal_mexican_statements_menu
 msgid "Mexico"
-msgstr ""
+msgstr "México"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/coa.py:75
 #, python-format
 msgid "Misconfigured Accounts"
-msgstr ""
+msgstr "Cuentas mal configuradas"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__mobile
 msgid "Mobile"
-msgstr ""
+msgstr "Móvil"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__name
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:27
@@ -1634,92 +1697,92 @@ msgstr "Naturaleza"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__payment_next_action_date
 msgid "Next Action Date"
-msgstr ""
+msgstr "Próxima fecha de acción"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Siguiente plazo de actividad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Resumen de la siguiente actividad"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Siguiente tipo de actividad"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,invoice_warn:0 selection:res.partner,sale_warn:0
 msgid "No Message"
-msgstr ""
+msgstr "Sin mensaje"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,followup_status:0
 msgid "No action needed"
-msgstr ""
+msgstr "No se necesita acción"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,trust:0
 msgid "Normal Debtor"
-msgstr ""
+msgstr "Deudor Normal"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__comment
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Número de acciones"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Número de error"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Número de mensajes que requieren una acción"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Número de mensajes con error de envío"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Número de mensajes no leidos"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__ocn_token
 msgid "OCN Token"
-msgstr ""
+msgstr "Token de OCN"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__online_partner_bank_account
 msgid "Online Partner Bank Account"
-msgstr ""
+msgstr "Cuenta bancaria en línea de contacto"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr ""
+msgstr "Nombre del proveedor del contacto en línea"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,type:0
 msgid "Other address"
-msgstr ""
+msgstr "Otra direccion"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "Vencidas"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:30
@@ -1737,47 +1800,47 @@ msgstr "Pagado 16%"
 #: code:addons/l10n_mx_reports/models/account_diot.py:33
 #, python-format
 msgid "Paid 16% - Non-Creditable"
-msgstr ""
+msgstr "Pagado 16% - No acreditable"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__parent_name
 msgid "Parent name"
-msgstr ""
+msgstr "Nombre del padre"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__contract_ids
 msgid "Partner Contracts"
-msgstr ""
+msgstr "Contratos de la Empresa"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__partner_ledger_label
 msgid "Partner Ledger Label"
-msgstr ""
+msgstr "Etiqueta de Diario del Contacto"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__debit_limit
 msgid "Payable Limit"
-msgstr ""
+msgstr "Límite a pagar"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__payment_token_ids
 msgid "Payment Tokens"
-msgstr ""
+msgstr "Tokens de Pago"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__phone
 msgid "Phone"
-msgstr ""
+msgstr "Teléfono"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,activity_state:0
 msgid "Planned"
-msgstr ""
+msgstr "Planeado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_product_pricelist
 msgid "Pricelist"
-msgstr ""
+msgstr "Lista de precios"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:327
@@ -1788,42 +1851,42 @@ msgstr "Imprimir DIOT (TXT)"
 #. module: l10n_mx_reports
 #: selection:res.partner,type:0
 msgid "Private Address"
-msgstr ""
+msgstr "Dirección privada"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__parent_id
 msgid "Related Company"
-msgstr ""
+msgstr "Empresa relacionada"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Usuario responsable"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__sale_order_count
 msgid "Sale Order Count"
-msgstr ""
+msgstr "Recuento de Orden de Venta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__sale_order_ids
 msgid "Sales Order"
-msgstr ""
+msgstr "Pedido de venta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__team_id
 msgid "Sales Team"
-msgstr ""
+msgstr "Equipo de ventas"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__sale_warn
 msgid "Sales Warnings"
-msgstr ""
+msgstr "Advertencias de venta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__user_id
 msgid "Salesperson"
-msgstr ""
+msgstr "Comercial"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__invoice_warn
@@ -1833,51 +1896,55 @@ msgid ""
 "Selecting \"Blocking Message\" will throw an exception with the message and "
 "block the flow. The Message has to be written in the next field."
 msgstr ""
+"Si selecciona la opción \"Aviso\" se notificará a los usuarios con el "
+"mensaje, si selecciona \"Mensaje de bloqueo\" se lanzará una excepción con "
+"el mensaje y se bloqueará el flujo. El mensaje debe escribirse en el "
+"siguiente campo."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__self
 msgid "Self"
-msgstr ""
+msgstr "Self"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__partner_share
 msgid "Share Partner"
-msgstr ""
+msgstr "Compartir Contacto"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,type:0
 msgid "Shipping address"
-msgstr ""
+msgstr "Dirección de envío"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__signup_expiration
 msgid "Signup Expiration"
-msgstr ""
+msgstr "Expiración de registro"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__signup_token
 msgid "Signup Token"
-msgstr ""
+msgstr "Token de registro"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__signup_type
 msgid "Signup Token Type"
-msgstr ""
+msgstr "Tipo de token de registro"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__signup_valid
 msgid "Signup Token is Valid"
-msgstr ""
+msgstr "El token de registro es válido"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__signup_url
 msgid "Signup URL"
-msgstr ""
+msgstr "URL de registro"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__image_small
 msgid "Small-sized image"
-msgstr ""
+msgstr "Imagen de tamaño pequeño"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__image_small
@@ -1886,16 +1953,19 @@ msgid ""
 "image, with aspect ratio preserved. Use this field anywhere a small image is "
 "required."
 msgstr ""
+"Imagen de pequeño tamaño de este contacto. Se redimensiona automáticamente "
+"como una imagen de 64x64px, con la relación de aspecto preservada. Utilice "
+"este campo en cualquier lugar donde se requiera una imagen pequeña."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__state_id
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__state_ids
 msgid "States"
-msgstr ""
+msgstr "Estados"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__activity_state
@@ -1905,47 +1975,53 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Estado basado en actividades\n"
+"Vencida: la fecha tope ya ha pasado\n"
+"Hoy: La fecha tope es hoy\n"
+"Planificada: futuras actividades."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__street
 msgid "Street"
-msgstr ""
+msgstr "Calle"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__street_format
 msgid "Street Format"
-msgstr ""
+msgstr "Formato de calle"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__street_name
 msgid "Street Name"
-msgstr ""
+msgstr "Nombre de Calle"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__street2
 msgid "Street2"
-msgstr ""
+msgstr "Calle2"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__subscription_count
 msgid "Subscriptions"
-msgstr ""
+msgstr "Suscripciones"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__category_id
 msgid "Tags"
-msgstr ""
+msgstr "Etiquetas"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__vat
 msgid "Tax ID"
-msgstr ""
+msgstr "RFC"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__online_partner_bank_account
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 msgstr ""
+"Campo técnico utilizado para almacenar información de plaid/yodlee para "
+"coincidir con contacto"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__online_partner_vendor_name
@@ -1953,6 +2029,8 @@ msgid ""
 "Technical field used to store information from plaid/yodlee to match partner "
 "(used when a purchase is made)"
 msgstr ""
+"Campo técnico utilizado para almacenar información de plaid/yodlee para "
+"coincidir con contacto (utilizado cuando se realiza una compra)"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__code
@@ -1960,6 +2038,8 @@ msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
 msgstr ""
+"EL código ISO del país en dos caracteres.\n"
+"Puede utilizar este campo para la búsqueda rápida."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__vat
@@ -1967,27 +2047,31 @@ msgid ""
 "The Tax Identification Number. Complete it if the contact is subjected to "
 "government taxes. Used in some legal statements."
 msgstr ""
+"El número de identificación fiscal. Compórtelo si el contacto está sujeto a "
+"impuestos del gobierno. Se utiliza en algunas declaraciones legales."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__payment_next_action_date
 msgid "The date before which no action should be taken."
-msgstr ""
+msgstr "La fecha antes de la cual no se debe realizar ninguna acción."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_account_position_id
 msgid ""
 "The fiscal position determines the taxes/accounts used for this contact."
 msgstr ""
+"La posición fiscal determina los impuestos/cuentas utilizados para este "
+"contacto."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__name
 msgid "The full name of the country."
-msgstr ""
+msgstr "Nombre del país."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__user_id
 msgid "The internal user in charge of this contact."
-msgstr ""
+msgstr "El usuario interno a cargo de este contacto."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__has_unreconciled_entries
@@ -1995,6 +2079,8 @@ msgid ""
 "The partner has at least one unreconciled debit and credit since last time "
 "the invoices & payments matching was performed."
 msgstr ""
+"El asociado tiene al menos un débito o crédito no conciliado desde la última "
+"vez que se realizó la conciliación de facturas y pagos."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__tz
@@ -2004,12 +2090,16 @@ msgid ""
 "use the same timezone that is otherwise used to pick and render date and "
 "time values: your computer's timezone."
 msgstr ""
+"Zona horaria del contacto, usada para mostrar la fecha y hora adecuadas en "
+"los informes. Es importante establecer un valor para este campo. Debería "
+"usar la misma zona horaria usada generalmente para mostrar los valores de "
+"fecha y hora: la zona horaria de su ordenador."
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:118
 #, python-format
 msgid "The report cannot be generated because of: "
-msgstr ""
+msgstr "El informe no se puede generar debido a: "
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:291
@@ -2028,6 +2118,10 @@ msgid ""
 "the section \"Misconfigured Accounts\", please configure your tag and try "
 "generate the report XML again."
 msgstr ""
+"Este XML no se pudo generar porque algunas cuentas no están configuradas "
+"correctamente y no se pueden agregar en este informe. Estas cuentas se "
+"encuentran en la sección \"Cuentas mal configuradas\", configure su etiqueta "
+"e intente generar el informe XML nuevamente."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_account_payable_id
@@ -2035,6 +2129,8 @@ msgid ""
 "This account will be used instead of the default one as the payable account "
 "for the current partner"
 msgstr ""
+"Esta cuenta se utilizará en lugar de la cuenta por defecto como la cuenta "
+"pendiente de pago del asociado actual"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_account_receivable_id
@@ -2042,6 +2138,8 @@ msgid ""
 "This account will be used instead of the default one as the receivable "
 "account for the current partner"
 msgstr ""
+"Esta cuenta se utilizará en lugar de la cuenta por defecto como la cuenta "
+"pendiente de cobro del asociado actual"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__image
@@ -2049,6 +2147,8 @@ msgid ""
 "This field holds the image used as avatar for this contact, limited to "
 "1024x1024px"
 msgstr ""
+"Este campo contiene la imagen utilizada como avatar para este contacto, "
+"limitada a 1024x1024px"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_supplier_payment_term_id
@@ -2056,6 +2156,8 @@ msgid ""
 "This payment term will be used instead of the default one for purchase "
 "orders and vendor bills"
 msgstr ""
+"Se utilizará esta condición de pago, en lugar de la predeterminada, para los "
+"pedidos de compra y las facturas de proveedor"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_payment_term_id
@@ -2063,6 +2165,8 @@ msgid ""
 "This payment term will be used instead of the default one for sales orders "
 "and customer invoices"
 msgstr ""
+"Este plazo de pago se utilizará en lugar del predeterminado para pedidos de "
+"cliente y facturas de clientes"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__property_product_pricelist
@@ -2070,26 +2174,28 @@ msgid ""
 "This pricelist will be used, instead of the default one, for sales to the "
 "current partner"
 msgstr ""
+"Esta lista de precios se utilizará en lugar de la lista por defecto, para "
+"las ventas al contacto actual"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__tz
 msgid "Timezone"
-msgstr ""
+msgstr "Zona horaria"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__tz_offset
 msgid "Timezone offset"
-msgstr ""
+msgstr "Compensación de zona horaria"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__title
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Hoy"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:283
@@ -2103,42 +2209,42 @@ msgstr "Total"
 #: code:addons/l10n_mx_reports/models/trial_balance.py:102
 #, python-format
 msgid "Total %s"
-msgstr ""
+msgstr "Total %s"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__total_due
 msgid "Total Due"
-msgstr ""
+msgstr "Total Pagadero"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__total_invoiced
 msgid "Total Invoiced"
-msgstr ""
+msgstr "Total facturado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__total_overdue
 msgid "Total Overdue"
-msgstr ""
+msgstr "Total atrasado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__debit
 msgid "Total Payable"
-msgstr ""
+msgstr "Total a pagar"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__credit
 msgid "Total Receivable"
-msgstr ""
+msgstr "Total a cobrar"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__credit
 msgid "Total amount this customer owes you."
-msgstr ""
+msgstr "Importe total que le debe el cliente."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__debit
 msgid "Total amount you have to pay to this vendor."
-msgstr ""
+msgstr "Importe total a pagar a este proveedor."
 
 #. module: l10n_mx_reports
 #: model:ir.ui.menu,name:l10n_mx_reports.menu_action_account_report_diot
@@ -2166,27 +2272,29 @@ msgstr "Tipo de Tercero"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Mensajes sin leer"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Nº de mensajes sin leer"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__unreconciled_aml_ids
 msgid "Unreconciled Aml"
-msgstr ""
+msgstr "Aml no reconciliado"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__barcode
 msgid "Use a barcode to identify this contact from the Point of Sale."
 msgstr ""
+"Utilice un código de barras para identificar este contacto desde el punto de "
+"venta."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__vat_label
 msgid "Use this field if you want to change vat label."
-msgstr ""
+msgstr "Utilice este campo si desea cambiar la etiqueta del RFC."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__address_view_id
@@ -2196,6 +2304,11 @@ msgid ""
 "display addresses (in reports for example), while this field is used to "
 "modify the input form for addresses."
 msgstr ""
+"Utilice este campo si desea reemplazar la forma habitual de codificar una "
+"dirección completa. Tenga en cuenta que el campo address_format se usa para "
+"modificar la forma en que se muestran las direcciones (en informes, por "
+"ejemplo), mientras que este campo se usa para modificar el formulario de "
+"entrada de direcciones."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__type
@@ -2203,21 +2316,23 @@ msgid ""
 "Used by Sales and Purchase Apps to select the relevant address depending on "
 "the context."
 msgstr ""
+"Utilizado por las aplicaciones de ventas y compras para seleccionar la "
+"dirección relevante según el contexto."
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__ocn_token
 msgid "Used for sending notification to registered devices"
-msgstr ""
+msgstr "Se utiliza para enviar notificaciones a dispositivos registrados"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__user_ids
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__currency_id
 msgid "Utility field to express amount currency"
-msgstr ""
+msgstr "Campo útil para expresar importe en divisa"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:25
@@ -2228,37 +2343,37 @@ msgstr "RFC"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__vat_label
 msgid "Vat Label"
-msgstr ""
+msgstr "Etiqueta de RFC"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__property_supplier_payment_term_id
 msgid "Vendor Payment Terms"
-msgstr ""
+msgstr "Plazo de pago del proveedor"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,invoice_warn:0 selection:res.partner,sale_warn:0
 msgid "Warning"
-msgstr ""
+msgstr "Alerta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__website
 msgid "Website"
-msgstr ""
+msgstr "Sitio web"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Mensajes del sitio web"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_partner__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historial de comunicaciones del sitio web"
 
 #. module: l10n_mx_reports
 #: selection:res.partner,followup_status:0
 msgid "With overdue invoices"
-msgstr ""
+msgstr "Con facturas vencidas"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:32
@@ -2269,4 +2384,4 @@ msgstr "Retenido"
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_partner__zip
 msgid "Zip"
-msgstr ""
+msgstr "CP"

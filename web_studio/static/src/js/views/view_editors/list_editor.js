@@ -34,7 +34,7 @@ return ListRenderer.extend(EditorMixin, {
             if (self.show_invisible) {
                 var validChildren = _.filter(self.arch.children, function (child) {
                     // Editing controls is not supported in studio
-                    return child.tag !== 'control';
+                    return child.tag !== 'control' && child.tag !== 'header';
                 });
                 self.invisible_columns = _.difference(validChildren, self.columns);
                 self.columns = validChildren;

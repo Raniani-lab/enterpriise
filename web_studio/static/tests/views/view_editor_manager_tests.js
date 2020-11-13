@@ -757,6 +757,32 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('list editor with header and invisible element', async function(assert){
+        assert.expect(4)
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: "tasks",
+            arch: "<tree string='List'>" +
+            "<header><button name=\"action_do_something\" type=\"object\" string=\"The Button\"/></header>" +
+            "<field name='name' class=\"my_super_name_class\" />" +
+            "<field name='description' class=\"my_super_description_class\" invisible=\"True\"/>" +
+            "</tree>",
+        });
+
+        assert.isVisible(vem.$("td.my_super_name_class"), "The name field should be visible");
+        assert.containsNone(vem, 'my_super_description_class', "The description field should not exist");
+
+        // click on show invisible
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+
+        assert.isVisible(vem.$("td.my_super_name_class"), "The name field should still be visible");
+        assert.isVisible(vem.$("td.my_super_description_class"), "The description field should be visible");
+
+        vem.destroy();
+    })
+
     QUnit.test('list editor with control node tag', async function(assert) {
         assert.expect(2);
 

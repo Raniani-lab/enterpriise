@@ -115,6 +115,8 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'receivable_account_id': cls.company_data['default_account_receivable'].id,
         })
 
+        # Add the payment method to the pos_config
+        cls.pos_config.write({'payment_method_ids': [(4, cls.pos_payment_method.id, 0)]})
 
     def _create_and_pay_pos_order(self, qty, price_unit):
         tax_amount = (self.pos_tax.amount / 100) * qty * price_unit # Only possible because the tax is 'percent' and price excluded. Don't do this at home !

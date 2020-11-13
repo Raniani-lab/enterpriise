@@ -25,10 +25,10 @@ class TestMarketAutoFlow(TestMACommon):
         # --------------------------------------------------
         # CAMPAIGN, based on marketing.test.sms (customers)
         #
-        # ACT1         mailing DONE
-        #   ACT2.1       -> reply -> send an SMS after 1h with a promotional link DONE
-        #     ACT3.1       -> sms_click -> send a confirmation SMS right at click TODO
-        #   ACT2.2       -> not opened within 1 day-> update description through server action DONE
+        # ACT1           MAIL mailing
+        #   ACT2.1       -> reply -> send an SMS after 1h with a promotional link
+        #     ACT3.1       -> sms_click -> send a confirmation SMS right at click
+        #   ACT2.2       -> not opened within 1 day-> update description through server action
         # --------------------------------------------------
 
         cls.campaign = cls.env['marketing.campaign'].with_user(cls.user_markauto).create({
@@ -185,7 +185,7 @@ for record in records:
 
         test_records_1_replied = test_records_1_ok[:2]
         for record in test_records_1_replied:
-            self.gateway_reply_wrecord(MAIL_TEMPLATE, record)
+            self.gateway_mail_reply_wrecord(MAIL_TEMPLATE, record)
 
         self.assertMarketAutoTraces([{
             'status': 'processed',
@@ -270,16 +270,18 @@ for record in records:
             'schedule_date': False,
         }], act2_1)
 
-
         # ACT2_1 FOLLOWUP: CLICK ON LINKS -> ACT3_1: CONFIRMATION SMS SENT
         # ------------------------------------------------------------
 
-        # TDE CLEANME: improve those tools
+        self._clear_outoing_sms()
+        # TDE CLEANME: improve those tools, but sms gateway resets finding existing
+        # sms, which is why we do in two steps
         test_records_1_clicked = test_records_1_replied[0]
         sms_sent = self._find_sms_sent(test_records_1_clicked.customer_id, test_records_1_clicked.phone_sanitized)
+
         # mock SMS gateway as in the same transaction, next activity is processed
         with self.mockSMSGateway():
-            self.gateway_sms_click(sms_sent)
+            self.gateway_sms_sent_click(sms_sent)
 
         with self.mockSMSGateway():
             self.env['sms.sms'].sudo()._process_queue()
@@ -299,6 +301,8 @@ for record in records:
 
         # ACT2_2: PROCESS SERVER ACTION ON NOT-REPLIED (+1D 2H)
         # ------------------------------------------------------------
+
+        self._clear_outoing_sms()
 
         date_reference_new = date_reference + relativedelta(days=1, hours=2)
         self._set_mock_datetime_now(date_reference_new)

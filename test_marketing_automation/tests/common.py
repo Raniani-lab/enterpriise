@@ -87,7 +87,7 @@ class TestMACommon(TestMailFullCommon):
                         info['records']
                     )
                 else:
-                    self.assertSMSStatistics(
+                    self.assertSMSTraces(
                         [{'partner': record.customer_id,  # TDE FIXME: make it generic
                           'number': record.phone_sanitized,  # TDE FIXME: make it generic
                           'state': info['trace_status'],
@@ -95,7 +95,8 @@ class TestMACommon(TestMailFullCommon):
                           'content': info.get('trace_content')
                          } for record in info['records']],
                         activity.mass_mailing_id,
-                        info['records']
+                        info['records'],
+                        sent_unlink=True
                     )
             else:
                 self.assertEqual(linked_traces.mailing_trace_ids, self.env['mailing.trace'])

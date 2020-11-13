@@ -23,7 +23,7 @@ class ProductProduct(models.Model):
             products_qties = SaleOrderLine.read_group(
                 [('id', 'in', task.sale_order_id.order_line.ids)],
                 ['product_id', 'product_uom_qty'], ['product_id'])
-            qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties])
+            qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties if x['product_id']])
             for product in self:
                 product.fsm_quantity = qty_dict.get(product.id, 0)
         else:

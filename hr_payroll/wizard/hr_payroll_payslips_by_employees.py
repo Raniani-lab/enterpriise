@@ -63,18 +63,19 @@ class HrPayslipEmployees(models.TransientModel):
         else:
             payslip_run = self.env['hr.payslip.run'].browse(self.env.context.get('active_id'))
 
-        if not self.employee_ids:
+        employees = self.with_context(active_test=False).employee_ids
+        if not employees:
             raise UserError(_("You must select employee(s) to generate payslip(s)."))
 
         payslips = self.env['hr.payslip']
         Payslip = self.env['hr.payslip']
 
-        contracts = self.employee_ids._get_contracts(payslip_run.date_start, payslip_run.date_end, states=['open', 'close'])
+        contracts = employees._get_contracts(payslip_run.date_start, payslip_run.date_end, states=['open', 'close'])
         contracts._generate_work_entries(payslip_run.date_start, payslip_run.date_end)
         work_entries = self.env['hr.work.entry'].search([
             ('date_start', '<=', payslip_run.date_end),
             ('date_stop', '>=', payslip_run.date_start),
-            ('employee_id', 'in', self.employee_ids.ids),
+            ('employee_id', 'in', employees.ids),
         ])
         self._check_undefined_slots(work_entries, payslip_run)
 

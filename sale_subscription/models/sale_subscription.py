@@ -1075,14 +1075,14 @@ class SaleSubscriptionLine(models.Model):
     price_subtotal = fields.Float(compute='_compute_amount', string='Subtotal', digits='Account', store=True)
     currency_id = fields.Many2one('res.currency', 'Currency', related='analytic_account_id.currency_id', store=True)
 
-    @api.depends('quantity', 'discount', 'price_unit', 'analytic_account_id.pricelist_id', 'uom_id')
+    @api.depends('quantity', 'discount', 'price_unit', 'analytic_account_id.pricelist_id', 'uom_id', 'company_id')
     def _compute_amount(self):
         """
         Compute the amounts of the Subscription line.
         """
         AccountTax = self.env['account.tax']
         for line in self:
-            price = AccountTax._fix_tax_included_price(line.price_unit, line.product_id.sudo().taxes_id, AccountTax)
+            price = AccountTax._fix_tax_included_price_company(line.price_unit, line.product_id.sudo().taxes_id, AccountTax, line.company_id)
             price_subtotal = line.quantity * price * (100.0 - line.discount) / 100.0
             if line.analytic_account_id.pricelist_id.sudo().currency_id:
                 price_subtotal = line.analytic_account_id.pricelist_id.sudo().currency_id.round(price_subtotal)

@@ -27,22 +27,20 @@ QUnit.module('form_renderer_tests.js', {
         // In the case of mail fields, we don't really need them,
         // but they still need to be defined.
         this.createView = async (viewParams, ...args) => {
-            await afterNextRender(async () => {
-                const viewArgs = Object.assign(
-                    {
-                        archs: {
-                            'mail.activity,false,list': '<tree/>',
-                            'mail.followers,false,list': '<tree/>',
-                            'mail.message,false,list': '<tree/>',
-                        },
+            const viewArgs = Object.assign(
+                {
+                    archs: {
+                        'mail.activity,false,list': '<tree/>',
+                        'mail.followers,false,list': '<tree/>',
+                        'mail.message,false,list': '<tree/>',
                     },
-                    viewParams,
-                );
-                const { afterEvent, env, widget } = await start(viewArgs, ...args);
-                this.afterEvent = afterEvent;
-                this.env = env;
-                this.widget = widget;
-            });
+                },
+                viewParams,
+            );
+            const { afterEvent, env, widget } = await start(viewArgs, ...args);
+            this.afterEvent = afterEvent;
+            this.env = env;
+            this.widget = widget;
         };
     },
     afterEach() {
@@ -51,7 +49,7 @@ QUnit.module('form_renderer_tests.js', {
 });
 
 QUnit.test('Message list loads new messages on scroll', async function (assert) {
-    assert.expect(8);
+    assert.expect(7);
 
     this.data['res.partner'].records.push({
         id: 11,
@@ -97,7 +95,18 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
                 assert.step('message_fetch');
             }
             return this._super.call(this, ...arguments);
-        }
+        },
+        waitUntilEvent: {
+            eventName: 'o-thread-view-hint-processed',
+            message: "should wait until partner 11 thread displayed its messages",
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'res.partner' &&
+                    threadViewer.thread.id === 11
+                );
+            },
+        },
     });
     assert.verifySteps(
         ['message_fetch'],
@@ -106,14 +115,23 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
 
     const allMessages = document.querySelectorAll('.o_MessageList_message');
     const lastMessage = allMessages[allMessages.length - 1];
-
-    const messageList = document.querySelector('.o_Chatter_scrollPanel');
-    await afterNextRender(async () => {
-        // This will trigger the DOM Event "scroll"
-        messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
+    await this.afterEvent({
+        eventName: 'o-thread-view-hint-processed',
+        func: () => {
+            const messageList = document.querySelector('.o_Chatter_scrollPanel');
+            messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
+        },
+        message: "should wait until partner 11 thread loaded more messages after scrolling to bottom a first time",
+        predicate: ({ hint, threadViewer }) => {
+            return (
+                hint.type === 'more-messages-loaded' &&
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === 11
+            );
+        },
     });
     const lastMessageRect = lastMessage.getBoundingClientRect();
-    const listRect = messageList.getBoundingClientRect();
+    const listRect = document.querySelector('.o_Chatter_scrollPanel').getBoundingClientRect();
     assert.ok(
         lastMessageRect.top > listRect.top && lastMessageRect.bottom < listRect.bottom,
         "The last message should be visible"
@@ -123,18 +141,24 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         'The message_fetch to load new messages should be done when scrolling to the bottom'
     );
 
-    await afterNextRender(async () => {
-        // This will trigger the DOM Event "scroll"
-        messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
+    await this.afterEvent({
+        eventName: 'o-thread-view-hint-processed',
+        func: () => {
+            const messageList = document.querySelector('.o_Chatter_scrollPanel');
+            messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
+        },
+        message: "should wait until partner 11 thread loaded more messages after scrolling to bottom a second time",
+        predicate: ({ hint, threadViewer }) => {
+            return (
+                hint.type === 'more-messages-loaded' &&
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === 11
+            );
+        },
     });
     assert.verifySteps(
         ['message_fetch'],
         'The message_fetch to load new messages should be done when scrolling to the bottom'
-    );
-    assert.strictEqual(
-        messageList.scrollTop,
-        messageList.scrollHeight - messageList.clientHeight,
-        "The message list should be scrolled to its bottom"
     );
 });
 
@@ -223,8 +247,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         "The controller container should not be scrolled"
     );
 
-    // afterNextRender here needed due to scroll management issue (task-2358066)
-    await afterNextRender(() => this.afterEvent({
+    await this.afterEvent({
         eventName: 'o-thread-view-hint-processed',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
@@ -238,16 +261,20 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
                 threadViewer.thread.id === 11
             );
         },
-    }));
+    });
     await this.afterEvent({
         eventName: 'o-component-message-list-scrolled',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
             messageList.scrollTop = messageList.scrollHeight - messageList.clientHeight;
         },
-        message: "should wait until partner 11 thread scrolled to bottom",
-        predicate: ({ threadViewer }) => {
-            return threadViewer.thread.model === 'res.partner' && threadViewer.thread.id === 11;
+        message: "should wait until partner 11 thread scrolled to bottom after doing it manually",
+        predicate: ({ scrollTop, threadViewer }) => {
+            // Ideally should also ensure proper scrollTop is received here (task-2382735)
+            return (
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === 11
+            );
         },
     });
     const messageList = document.querySelector('.o_Chatter_scrollPanel');

@@ -536,8 +536,8 @@
                                     <field name="payment_mode" string="Create Invoice" widget="radio"/>
                                     <field name="invoice_mail_template_id"
                                            string="Invoice Email"
-                                           attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment', 'success_payment'])],
-                                                   'required': [('payment_mode', 'in', ['validate_send', 'validate_send_payment', 'success_payment'])]}"/>
+                                           attrs="{'invisible': [('payment_mode', 'not in', ['validate_send', 'validate_send_payment'])],
+                                                   'required': [('payment_mode', 'in', ['validate_send', 'validate_send_payment'])]}"/>
                                 </group>
                                 <group name="online">
                                     <group>

@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
 
 from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta, MO, SU
@@ -317,28 +318,60 @@ class Payslip(models.Model):
         self.ensure_one()
         if self.env.context.get('salary_simulation'):
             return 1
+        calendar = self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id
+        tz = pytz.timezone(calendar.tz)
+        hours_per_week = calendar.hours_per_week
+        contract = self.contract_id
+
         # Out of contract ratio
         out_wd = self.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
         if out_wd:
-            after_contract_public_holiday_wd = out_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE510')
-            after_contract_public_holiday_hours = sum(after_contract_public_holiday_wd.mapped('number_of_hours'))
             out_hours = sum([wd.number_of_hours for wd in out_wd])
-            remaining_hours = sum([wd.number_of_hours for wd in self.worked_days_line_ids - out_wd]) - after_contract_public_holiday_hours
-            out_ratio = remaining_hours / (out_hours + remaining_hours)
+            # Don't count out of contract time that actually was a credit time 
+            if self.contract_id.time_credit:
+                if contract.date_start > self.date_from:
+                    start = self.date_from
+                    end = contract.date_start
+                    start_dt = tz.localize(fields.Datetime.to_datetime(start))
+                    end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
+                    credit_time_attendances = self.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                    standard_attendances = self.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                    out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
+                if contract.date_end and contract.date_end < self.date_to:
+                    start = contract.date_end
+                    end = self.date_end
+                    start_dt = tz.localize(fields.Datetime.to_datetime(start))
+                    end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
+                    credit_time_attendances = self.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                    standard_attendances = self.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                    out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
+            out_ratio = 1 - 3 / (13 * hours_per_week) * out_hours if hours_per_week else 1
         else:
             out_ratio = 1
+
         # Hourly formula ratio
-        calendar = self.contract_id.resource_calendar_id or self.employee_id.resource_calendar_id
-        hours_per_week = calendar.hours_per_week
         mapped_data = defaultdict(lambda: 0)
         for wd in self.worked_days_line_ids - out_wd:
             mapped_data[wd.work_entry_type_id.id] += wd.number_of_hours
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids + self.env.ref('hr_payroll.hr_work_entry_type_out_of_contract')
-        unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
-        # Paid Wage = Wage - Wage * (3 / 13 / 38) * unpaid_hours
-        #           = Wage * (1 - 3 / (13 * 38) * unpaid_hours)
-        hourly_ratio = 1 - 3 / (13 * hours_per_week) * unpaid_hours if hours_per_week else 0
-        return out_ratio * hourly_ratio
+        # If the whole payslip period is covered by unpaid work entries, returns 0 to 
+        # avoid having a small salary for month with less working that than the average
+        if all(wd.work_entry_type_id in unpaid_work_entry_types for wd in self.worked_days_line_ids):
+            return 0
+        # If all the work entries are unpaid but there is a public time off, don't prorate the value,
+        # has it has already been done.
+        # YTI: To check: Master. It could be possible to only rely on work entries and sum them.
+        public_time_off = self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday')
+        if all(wd.work_entry_type_id in (unpaid_work_entry_types + public_time_off) for wd in self.worked_days_line_ids) and \
+                any(wd.work_entry_type_id == public_time_off for wd in self.worked_days_line_ids):
+            mapped_data[public_time_off.id]
+            return 3 / (13 * hours_per_week) * mapped_data[public_time_off.id]
+        else:
+            # Paid Wage = Wage - Wage * (3 / 13 / 38) * unpaid_hours
+            #           = Wage * (1 - 3 / (13 * 38) * unpaid_hours)
+            unpaid_hours = sum(mapped_data.get(entry_type.id, 0) for entry_type in unpaid_work_entry_types)
+            hourly_ratio = out_ratio - 3 / (13 * hours_per_week) * unpaid_hours if hours_per_week else 0
+        return hourly_ratio
 
     def _is_invalid(self):
         invalid = super()._is_invalid()
@@ -348,6 +381,12 @@ class Payslip(models.Model):
             if country.code == 'BE' and lang_employee not in ["fr_BE", "nl_BE", "de_BE"]:
                 return _('This document is a translation. This is not a legal document.')
         return invalid
+
+    def _get_negative_net_input_type(self):
+        self.ensure_one()
+        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'):
+            return self.env.ref('l10n_be_hr_payroll.input_negative_net')
+        return super()._get_negative_net_input_type()
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 

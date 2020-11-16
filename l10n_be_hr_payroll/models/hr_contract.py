@@ -7,7 +7,7 @@ from collections import defaultdict
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.tools import float_round, date_utils
 from odoo.tools.float_utils import float_compare
 
@@ -366,3 +366,15 @@ class HrContract(models.Model):
             if total_sick_days + this_leave_current_duration > 30:
                 return partial_sick_work_entry_type
         return result
+
+    def _get_work_entries_values(self, date_start, date_stop):
+        res = super()._get_work_entries_values(date_start, date_stop)
+        partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
+        leave_ids = list(set([we['leave_id'] for we in res if we['work_entry_type_id'] == partial_sick_work_entry_type.id and 'leave_id' in we]))
+        for leave in self.env['hr.leave'].sudo().browse(leave_ids):
+            leave.activity_schedule(
+                'mail.mail_activity_data_todo',
+                note=_("Sick time off to report to DRS for %s.,", date_start.strftime('%B %Y')),
+                user_id=leave.holiday_status_id.responsible_id.id or self.env.user.id,
+            )
+        return res

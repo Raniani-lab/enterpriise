@@ -802,5 +802,5 @@ class TestHalfTime1DayUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -13.08, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1311.17, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 138.46, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1299.63, places=2)

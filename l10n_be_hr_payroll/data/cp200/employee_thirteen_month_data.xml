@@ -29,11 +29,9 @@
             <field name="amount_python_compute">
 result = categories.BASIC
 if contract.internet:
-    result += 5.0
-if contract.mobile and not contract.internet:
-    result += 4.0 + 5.0
-if contract.mobile and contract.internet:
-    result += 4.0
+    result += result_rules['ATN.INT']['total']
+if contract.mobile:
+    result += result_rules['ATN.MOB']['total']
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>

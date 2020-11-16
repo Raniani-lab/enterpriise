@@ -39,7 +39,6 @@ class HrPayslip(models.Model):
     date_to = fields.Date(string='To', readonly=True, required=True,
         default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()),
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    # this is chaos: 4 states are defined, 3 are used ('verify' isn't) and 5 exist ('confirm' seems to have existed)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('verify', 'Waiting'),
@@ -112,9 +111,13 @@ class HrPayslip(models.Model):
                 payslip.negative_net_to_report_amount = False
                 payslip.negative_net_to_report_message = False
 
+    def _get_negative_net_input_type(self):
+        self.ensure_one()
+        return self.env.ref('hr_payroll.input_deduction')
+
     def action_report_negative_amount(self):
         self.ensure_one()
-        deduction_input_type = self.env.ref('hr_payroll.input_deduction')
+        deduction_input_type = self._get_negative_net_input_type()
         deduction_input_line = self.input_line_ids.filtered(lambda l: l.input_type_id == deduction_input_type)
         if deduction_input_line:
             deduction_input_line.amount += abs(self.negative_net_to_report_amount)
@@ -141,6 +144,8 @@ class HrPayslip(models.Model):
 
     @api.depends('worked_days_line_ids', 'input_line_ids')
     def _compute_line_ids(self):
+        if not self.env.context.get("payslip_no_recompute"):
+            return
         for payslip in self.filtered(lambda p: p.line_ids and p.state in ['draft', 'verify']):
             payslip.line_ids = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in payslip._get_payslip_lines()]
 
@@ -253,10 +258,11 @@ class HrPayslip(models.Model):
         return super(HrPayslip, self).unlink()
 
     def compute_sheet(self):
-        for payslip in self.filtered(lambda slip: slip.state in ['draft', 'verify']):
+        payslips = self.filtered(lambda slip: slip.state in ['draft', 'verify'])
+        # delete old payslip lines
+        payslips.line_ids.unlink()
+        for payslip in payslips:
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')
-            # delete old payslip lines
-            payslip.line_ids.unlink()
             lines = [(0, 0, line) for line in payslip._get_payslip_lines()]
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
         return True
@@ -352,16 +358,8 @@ class HrPayslip(models.Model):
             'float_round': float_round
         }
 
-    def _get_payslip_lines(self):
-        def _sum_salary_rule_category(localdict, category, amount):
-            if category.parent_id:
-                localdict = _sum_salary_rule_category(localdict, category.parent_id, amount)
-            localdict['categories'].dict[category.code] = localdict['categories'].dict.get(category.code, 0) + amount
-            return localdict
-
+    def _get_localdict(self):
         self.ensure_one()
-        result = {}
-        rules_dict = {}
         worked_days_dict = {line.code: line for line in self.worked_days_line_ids if line.code}
         inputs_dict = {line.code: line for line in self.input_line_ids if line.code}
 
@@ -372,15 +370,34 @@ class HrPayslip(models.Model):
             **self._get_base_local_dict(),
             **{
                 'categories': BrowsableObject(employee.id, {}, self.env),
-                'rules': BrowsableObject(employee.id, rules_dict, self.env),
+                'rules': BrowsableObject(employee.id, {}, self.env),
                 'payslip': Payslips(employee.id, self, self.env),
                 'worked_days': WorkedDays(employee.id, worked_days_dict, self.env),
                 'inputs': InputLine(employee.id, inputs_dict, self.env),
                 'employee': employee,
-                'contract': contract
+                'contract': contract,
+                'result_rules': BrowsableObject(employee.id, {}, self.env)
             }
         }
+        return localdict
+
+    def _get_payslip_lines(self):
+        self.ensure_one()
+
+        localdict = self.env.context.get('force_payslip_localdict', None)
+        if localdict is None:
+            localdict = self._get_localdict()
+
+        rules_dict = localdict['rules'].dict
+        result_rules_dict = localdict['result_rules'].dict
+
+        blacklisted_rule_ids = self.env.context.get('prevent_payslip_computation_line_ids', [])
+
+        result = {}
+
         for rule in sorted(self.struct_id.rule_ids, key=lambda x: x.sequence):
+            if rule.id in blacklisted_rule_ids:
+                continue
             localdict.update({
                 'result': None,
                 'result_qty': 1.0,
@@ -392,9 +409,10 @@ class HrPayslip(models.Model):
                 #set/overwrite the amount computed for this rule in the localdict
                 tot_rule = amount * qty * rate / 100.0
                 localdict[rule.code] = tot_rule
+                result_rules_dict[rule.code] = {'total': tot_rule, 'amount': amount, 'quantity': qty}
                 rules_dict[rule.code] = rule
                 # sum the amount for its salary category
-                localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
+                localdict = rule.category_id._sum_salary_rule_category(localdict, tot_rule - previous_amount)
                 # create/overwrite the rule in the temporary results
                 result[rule.code] = {
                     'sequence': rule.sequence,
@@ -402,8 +420,8 @@ class HrPayslip(models.Model):
                     'name': rule.name,
                     'note': rule.note,
                     'salary_rule_id': rule.id,
-                    'contract_id': contract.id,
-                    'employee_id': employee.id,
+                    'contract_id': localdict['contract'].id,
+                    'employee_id': localdict['employee'].id,
                     'amount': amount,
                     'quantity': qty,
                     'rate': rate,

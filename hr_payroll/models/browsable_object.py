@@ -13,6 +13,9 @@ class BrowsableObject(object):
     def __getattr__(self, attr):
         return attr in self.dict and self.dict.__getitem__(attr) or 0.0
 
+    def __getitem__(self, key):
+        return self.dict[key] or 0.0
+
 class InputLine(BrowsableObject):
     """a class that will be used into the python code, mainly for usability purposes"""
     def sum(self, code, from_date, to_date=None):

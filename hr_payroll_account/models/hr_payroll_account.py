@@ -214,8 +214,8 @@ class HrPayrollStructure(models.Model):
 
     @api.constrains('journal_id')
     def _check_journal_id(self):
-        for record in self:
-            if record.journal_id.currency_id and record.journal_id.currency_id != record.journal_id.company_id.currency_id:
+        for record_sudo in self.sudo():
+            if record_sudo.journal_id.currency_id and record_sudo.journal_id.currency_id != record_sudo.journal_id.company_id.currency_id:
                 raise ValidationError(
                     _('Incorrect journal: The journal must be in the same currency as the company')
                 )

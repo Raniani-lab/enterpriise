@@ -46,6 +46,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_small_unemployment"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_maternity" model="hr.work.entry.type">
@@ -63,6 +64,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_maternity"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_paternity_company" model="hr.work.entry.type">
@@ -92,6 +94,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_unpredictable"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_training" model="hr.work.entry.type">
@@ -114,6 +117,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_training_time_off"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_long_sick" model="hr.work.entry.type">
@@ -170,6 +174,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_extra_legal"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_part_sick" model="hr.work.entry.type">
@@ -192,6 +197,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_recovery"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
          <record id="work_entry_type_european" model="hr.work.entry.type">
@@ -207,6 +213,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
             <field name="work_entry_type_id" ref="work_entry_type_european"></field>
+            <field name="company_id" eval="False"/>
         </record>
 
         <record id="work_entry_type_credit_time" model="hr.work.entry.type">
@@ -222,6 +229,7 @@
             <field name="color_name">lavender</field>
             <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
             <field name="work_entry_type_id" ref="work_entry_type_credit_time"></field>
+            <field name="company_id" eval="False"/>
         </record>
         <record id="hr_contract.structure_type_employee_cp200" model="hr.payroll.structure.type">
             <field name="time_credit_type_id" ref="l10n_be_hr_payroll.work_entry_type_credit_time"/>

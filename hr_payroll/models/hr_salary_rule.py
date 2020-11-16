@@ -162,6 +162,12 @@ class HrSalaryRuleCategory(models.Model):
         if not self._check_recursion():
             raise ValidationError(_('Error! You cannot create recursive hierarchy of Salary Rule Category.'))
 
+    def _sum_salary_rule_category(self, localdict, amount):
+        self.ensure_one()
+        if self.parent_id:
+            localdict = self.parent_id._sum_salary_rule_category(localdict, amount)
+        localdict['categories'].dict[self.code] = localdict['categories'].dict.get(self.code, 0) + amount
+        return localdict
 
 class HrSalaryRule(models.Model):
     _name = 'hr.salary.rule'

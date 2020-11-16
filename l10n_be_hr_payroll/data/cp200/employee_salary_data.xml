@@ -20,6 +20,24 @@
             <field name="default_struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="input_fixed_commission" model="hr.payslip.input.type">
+            <field name="name">Fixed Commission</field>
+            <field name="code">COMMISSION</field>
+            <field name="country_id" ref="base.be"/>
+            <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+        </record>
+        <record id="cp200_employees_salary_fixed_commission" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Fixed Commission</field>
+            <field name="code">COMMISSION</field>
+            <field name="sequence">15</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.COMMISSION</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.COMMISSION.amount</field>
+            <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <!-- Salary Rules -->
         <record id="cp200_employees_salary_atn_internet" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
@@ -83,13 +101,13 @@ else:
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 result = categories.BASIC
-if categories.BASIC:
+if inputs.COMMISSION:
+    result += result_rules['COMMISSION']['total']
+if result:
     if contract.internet:
-        result += 5.0
-    if contract.mobile and not contract.internet:
-        result += 4.0 + 5.0
-    if contract.mobile and contract.internet:
-        result += 4.0
+        result += result_rules['ATN.INT']['total']
+    if contract.mobile:
+        result += result_rules['ATN.MOB']['total']
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -210,7 +228,8 @@ else:
 if not categories.BASIC:
     result = 0
 else:
-    result = -contract.car_atn
+    result_qty = result_rules['ATN.CAR']['quantity']
+    result = -result_rules['ATN.CAR']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -227,7 +246,8 @@ else:
 if not categories.BASIC:
     result = 0
 else:
-    result = -5.0
+    result_qty = result_rules['ATN.INT']['quantity']
+    result = -result_rules['ATN.INT']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -244,7 +264,8 @@ else:
 if not categories.BASIC:
     result = 0
 else:
-    result = -7.0
+    result_qty = result_rules['ATN.LAP']['quantity']
+    result = -result_rules['ATN.LAP']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -288,10 +309,9 @@ else:
             <field name="amount_python_compute">
 if not categories.BASIC:
     result = 0
-elif contract.mobile and not contract.internet:
-    result = -4.0 - 5.0
-elif contract.mobile and contract.internet:
-    result = -4.0
+elif contract.mobile:
+    result_qty = result_rules['ATN.MOB']['quantity']
+    result = -result_rules['ATN.MOB']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -423,5 +443,21 @@ result = inputs.EXPENSES.amount if inputs.EXPENSES else 0
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="input_negative_net" model="hr.payslip.input.type">
+            <field name="name">Negative Net</field>
+            <field name="code">NEGATIVE</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="cp200_employees_salary_negative_net" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Negative Net</field>
+            <field name="code">NEGATIVE</field>
+            <field name="sequence">198</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.NEGATIVE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -inputs.NEGATIVE.amount</field>
+            <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        </record>
     </data>
 </odoo>

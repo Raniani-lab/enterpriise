@@ -336,10 +336,10 @@ class TestSmallUnemployment(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -23.66, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -22.89, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 143.08, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 662.5, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -43.17, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2122.49, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2115.57, places=2)
 
 
 @tagged('post_install', '-at_install', 'small_unemployment_1_week')
@@ -681,7 +681,7 @@ class TestSmallUnemployment1Week(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -23.66, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -16.35, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 101.54, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 662.5, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -43.17, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2129.03, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2080.57, places=2)

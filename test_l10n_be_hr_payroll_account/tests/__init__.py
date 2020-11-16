@@ -21,3 +21,4 @@ from . import test_small_unemployment
 from . import test_sick_time_off
 from . import test_variable_revenues
 from . import test_private_car
+from . import test_maternity_time_off

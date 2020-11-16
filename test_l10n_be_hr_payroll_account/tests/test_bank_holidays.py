@@ -641,6 +641,10 @@ class TestPublicHolidayCompensation(AccountTestInvoicingCommon):
         }])
 
     def test_public_holiday_compensation(self):
+        public_compensation_type = self.env.ref('test_l10n_be_hr_payroll_account.work_entry_type_phc')
+        # YTI TODO: master: Get rif of this.
+        if 'representation_fees' in public_compensation_type:
+            public_compensation_type.representation_fees = True
         work_entries = self.contract._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
         work_entries.action_validate()
         self.payslip._onchange_employee()

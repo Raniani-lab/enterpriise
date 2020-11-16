@@ -50,7 +50,7 @@ class HrPayslip(models.Model):
             input_lines_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
             input_lines_vals.append((0, 0, {
                 'amount': total,
-                'input_type_id': expense_type
+                'input_type_id': expense_type.id
             }))
             payslip.update({'input_line_ids': input_lines_vals})
 

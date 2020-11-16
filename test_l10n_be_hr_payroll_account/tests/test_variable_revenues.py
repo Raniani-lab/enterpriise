@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+import unittest
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests.common import tagged
 
@@ -12,7 +13,10 @@ class TestVariableRevenues(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
         super().setUpClass(chart_template_ref=chart_template_ref)
-
+        # The test depends on fleet, but not the module. This module is
+        # merged into l10n_be_hr_payroll in 14.1
+        if "fleet.vehicle.model.brand" not in cls.env:
+            return
         cls.company_data['company'].country_id = cls.env.ref('base.be')
 
         cls.env.user.tz = 'Europe/Brussels'
@@ -322,7 +326,12 @@ class TestVariableRevenues(AccountTestInvoicingCommon):
             'date_to': datetime.date(2020, 9, 30)
         }])
 
+
     def test_variable_revenues(self):
+        # The test depends on fleet, but not the module. This module is
+        # merged into l10n_be_hr_payroll in 14.1
+        if "fleet.vehicle.model.brand" not in self.env:
+            raise unittest.SkipTest("This test need l10n_be_hr_payroll_fleet")
         work_entries = self.contract._generate_work_entries(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
         work_entries.action_validate()
         self.commission_payslip._onchange_employee()

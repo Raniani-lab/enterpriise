@@ -1,6 +1,10 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
+
+from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_compare
 
@@ -12,6 +16,9 @@ class HrPayslipWorkedDays(models.Model):
 
     @api.depends('is_paid', 'is_credit_time', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
+        # YTI TODO master: This crappy hack can removed as soon as hr_payroll_edit_lines is merged into hr_payroll
+        if 'edited' in self.payslip_id:
+            self = self.filtered(lambda wd: not wd.payslip_id.edited)
         monthly_self = self.filtered(lambda wd: wd.payslip_id.wage_type == "monthly")
 
         credit_time_days = monthly_self.filtered(lambda worked_day: worked_day.is_credit_time)
@@ -35,19 +42,36 @@ class HrPayslipWorkedDays(models.Model):
         if paid_be_wds:
             for be_wd in paid_be_wds:
                 payslip = be_wd.payslip_id
+                contract = payslip.contract_id
                 calendar = payslip.contract_id.resource_calendar_id or payslip.employee_id.resource_calendar_id
+                tz = pytz.timezone(calendar.tz)
                 hours_per_week = calendar.hours_per_week
                 wage = payslip._get_contract_wage() if payslip.contract_id else 0
                 # If out of contract, we should use a 'rule of 3' instead of the hourly formula to
                 # deduct the real wage
                 out_be_wd = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
-                # after_contract_public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_after_contract_public_holiday', raise_if_not_found=False)
-                after_contract_public_holiday_wd = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE510')
-                after_contract_public_holiday_hours = sum(after_contract_public_holiday_wd.mapped('number_of_hours'))
                 if out_be_wd:
                     out_hours = sum([wd.number_of_hours for wd in out_be_wd])
-                    remaining_hours = sum([wd.number_of_hours for wd in be_wd.payslip_id.worked_days_line_ids - out_be_wd]) - after_contract_public_holiday_hours
-                    out_ratio = remaining_hours / (out_hours + remaining_hours)
+                    # Don't count out of contract time that actually was a credit time 
+                    if payslip.contract_id.time_credit:
+                        if contract.date_start > payslip.date_from:
+                            start = payslip.date_from
+                            end = contract.date_start
+                            start_dt = tz.localize(fields.Datetime.to_datetime(start))
+                            end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
+                            credit_time_attendances = payslip.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                            standard_attendances = payslip.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                            out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
+                        if contract.date_end and contract.date_end < payslip.date_to:
+                            start = contract.date_end
+                            end = payslip.date_end
+                            start_dt = tz.localize(fields.Datetime.to_datetime(start))
+                            end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
+                            credit_time_attendances = payslip.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                            standard_attendances = payslip.contract_id.standard_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]
+                            out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
+
+                    out_ratio = 1 - 3 / (13 * hours_per_week) * out_hours if hours_per_week else 1
                 else:
                     out_ratio = 1
                 ####################################################################################

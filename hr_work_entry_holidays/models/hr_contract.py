@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
+
 from datetime import date
 from odoo import api, models
 
@@ -37,3 +39,22 @@ class HrContract(models.Model):
             if interval[0] >= leave[0] and interval[1] <= leave[1]:
                 result.append(('leave_id', leave[2].holiday_id.id))
         return result
+
+    def _get_interval_leave_work_entry_type(self, interval, leaves):
+        # returns the work entry time related to the leave that
+        # includes the whole interval.
+        # Overriden in hr_work_entry_contract_holiday to select the
+        # global time off first (eg: Public Holiday > Home Working)
+        interval_start = interval[0].astimezone(pytz.utc).replace(tzinfo=None)
+        interval_stop = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
+        including_rcleaves = [l[2] for l in leaves if l[2] and interval_start >= l[2].date_from and interval_stop <= l[2].date_to]
+        including_global_rcleaves = [l for l in including_rcleaves if not l.holiday_id]
+        including_holiday_rcleaves = [l for l in including_rcleaves if l.holiday_id]
+        rc_leave = False
+        if including_global_rcleaves:
+            rc_leave = including_global_rcleaves[0]
+        elif including_holiday_rcleaves:
+            rc_leave = including_holiday_rcleaves[0]
+        if rc_leave:
+            return self._get_leave_work_entry_type_dates(rc_leave, interval_start, interval_stop)
+        return self.env.ref('hr_work_entry_contract.work_entry_type_leave')

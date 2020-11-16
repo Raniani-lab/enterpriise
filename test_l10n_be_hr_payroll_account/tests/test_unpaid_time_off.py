@@ -338,10 +338,10 @@ class TestUnpaidTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -20.97, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -21.8, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 136.15, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 601.35, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -39.18, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2011.68, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1997.83, places=2)
 
 
 @tagged('post_install', '-at_install', 'unpaid_half_days')
@@ -691,10 +691,10 @@ class TestUnpaidHalfDays(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -20.26, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -21.8, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 136.15, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 585.25, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -38.13, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2008.57, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1994.73, places=2)
 
 
 @tagged('post_install', '-at_install', 'unjustified_reason')
@@ -1030,7 +1030,7 @@ class TestUnjustifiedReason(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -22.31, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -22.89, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 143.08, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP'), 631.92, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('IP.DED'), -41.18, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2058.58, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 2051.66, places=2)

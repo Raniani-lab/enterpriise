@@ -45,6 +45,18 @@ class HrContract(models.Model):
         # YTI TODO master: Remove this method
         return []
 
+    def _get_interval_leave_work_entry_type(self, interval, leaves):
+        # returns the work entry time related to the leave that
+        # includes the whole interval.
+        # Overriden in hr_work_entry_contract_holiday to select the
+        # global time off first (eg: Public Holiday > Home Working)
+        for leave in leaves:
+            if interval[0] >= leave[0] and interval[1] <= leave[1] and leave[2]:
+                interval_start = interval[0].astimezone(pytz.utc).replace(tzinfo=None)
+                interval_stop = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
+                return self._get_leave_work_entry_type_dates(leave[2], interval_start, interval_stop)
+        return self.env.ref('hr_work_entry_contract.work_entry_type_leave')
+
     def _get_contract_work_entries_values(self, date_start, date_stop):
         self.ensure_one()
         contract_vals = []
@@ -90,7 +102,6 @@ class HrContract(models.Model):
                 'state': 'draft',
             }]
 
-        default_leave_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_leave')
         for interval in real_leaves:
             # Could happen when a leave is configured on the interface on a day for which the
             # employee is not supposed to work, i.e. no attendance_ids on the calendar.
@@ -98,13 +109,9 @@ class HrContract(models.Model):
             # sql constraint error
             if interval[0] == interval[1]:  # if start == stop
                 continue
-            leave_entry_type = default_leave_entry_type
+            leave_entry_type = self._get_interval_leave_work_entry_type(interval, leaves)
             interval_start = interval[0].astimezone(pytz.utc).replace(tzinfo=None)
             interval_stop = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
-            for leave in leaves:
-                if interval[0] >= leave[0] and interval[1] <= leave[1] and leave[2]:
-                    leave_entry_type = self._get_leave_work_entry_type_dates(leave[2], interval_start, interval_stop)
-                    break
             contract_vals += [dict([
                 ('name', "%s%s" % (leave_entry_type.name + ": " if leave_entry_type else "", employee.name)),
                 ('date_start', interval_start),
@@ -202,5 +209,5 @@ class HrContract(models.Model):
     def write(self, vals):
         result = super(HrContract, self).write(vals)
         if vals.get('date_end') or vals.get('date_start'):
-            self._remove_work_entries()
+            self.sudo()._remove_work_entries()
         return result

@@ -328,3 +328,64 @@ class TestSamplePayslip(AccountTestInvoicingCommon):
         self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -21.8, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
         self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1864.08, places=2)
+
+
+    def test_edit_payslip_lines(self):
+        """
+        Test the edtion of payslip lines in this sample payslip
+        We want to edit the amount of the payslip line containing ATN.INT as code.
+        After the edition, we recompute the following payslip lines and we check if the payslip line containing the ATN.INT.2 as code
+        has been edited. It should be the opposite amount of the ATN.INT.
+        We also want to edit hte amount of the payslip line containing ATN.MOB as code.
+        Same process than the previous edition.
+        After these both editions, we need to check if all payslip lines are correct and we have the expected total for the NET SALARY.
+        """
+        work_entries = self.contract._generate_work_entries(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
+        work_entries.action_validate()
+        self.payslip._onchange_employee()
+        self.payslip.compute_sheet()
+
+        action = self.payslip.action_edit_payslip_lines()
+        wizard = self.env[action['res_model']].browse(action['res_id'])
+
+        # Edit the amount of the payslip line with the ATN.INT code
+        atn_int_line = wizard.line_ids.filtered(lambda line: line.code == 'ATN.INT')
+        atn_int_line.amount = 6.0
+        wizard.recompute_following_lines(atn_int_line.id)
+        self.assertEqual(atn_int_line.amount, 6.0)
+        self.assertAlmostEqual(atn_int_line.total, 6.0, places=2)
+
+        # Check if the ATN.INT.2 has also been edited
+        atn_int_2_line = wizard.line_ids.filtered(lambda line: line.code == 'ATN.INT.2')
+        self.assertEqual(atn_int_2_line.amount, -atn_int_line.amount)
+        self.assertAlmostEqual(atn_int_2_line.total, -6.0, places=2)
+
+        # Edit the amount of the payslip line with the ATN.MOB code
+        atn_mob_line = wizard.line_ids.filtered(lambda line: line.code == 'ATN.MOB')
+        atn_mob_line.amount = 5.0
+        wizard.recompute_following_lines(atn_mob_line.id)
+        self.assertEqual(atn_mob_line.amount, 5.0)
+        self.assertAlmostEqual(atn_mob_line.total, 5.0, places=2)
+
+        # Check if the ATN.MOB.2
+        atn_mob_2_line = wizard.line_ids.filtered(lambda line: line.code == 'ATN.MOB.2')
+        self.assertEqual(atn_mob_2_line.amount, -5.0)
+        self.assertAlmostEqual(atn_mob_2_line.total, -5.0, places=2)
+
+        # Check if the payslip is correctly recomputed
+        wizard.action_validate_edition()
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('BASIC'), 2650.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT'), 6.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB'), 5.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('SALARY'), 2661.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ONSS'), -347.79, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 2454.35, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -542.93, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -6.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -5.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), -23.66, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -21.8, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1863.82, places=2)

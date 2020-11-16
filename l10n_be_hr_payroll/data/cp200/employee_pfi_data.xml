@@ -83,11 +83,9 @@ if contract.mobile and contract.internet:
             <field name="amount_python_compute">
 result = categories.BASIC
 if contract.internet:
-    result += 5.0
-if contract.mobile and not contract.internet:
-    result += 4.0 + 5.0
-if contract.mobile and contract.internet:
-    result += 4.0
+    result += result_rules['ATN.INT']['total']
+if contract.mobile:
+    result += result_rules['ATN.MOB']['total']
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
@@ -133,7 +131,10 @@ result *= -0.2
             <field name="condition_select">python</field>
             <field name="condition_python">result = bool(contract.transport_mode_car and contract.car_atn)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -contract.car_atn</field>
+            <field name="amount_python_compute">
+result_qty = result_rules['ATN.CAR']['quantity']
+result = -result_rules['ATN.CAR']['amount']
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
 
@@ -145,7 +146,10 @@ result *= -0.2
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.internet</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -5.0</field>
+            <field name="amount_python_compute">
+result_qty = result_rules['ATN.INT']['quantity']
+result = -result_rules['ATN.INT']['amount']
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
 
@@ -158,10 +162,9 @@ result *= -0.2
             <field name="condition_python">result = contract.mobile</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if contract.mobile and not contract.internet:
-    result = -4.0 - 5.0
-if contract.mobile and contract.internet:
-    result = -4.0
+if contract.mobile:
+    result_qty = result_rules['ATN.MOB']['quantity']
+    result = -result_rules['ATN.MOB']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
@@ -174,7 +177,10 @@ if contract.mobile and contract.internet:
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.has_laptop</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -7.0</field>
+            <field name="amount_python_compute">
+result_qty = result_rules['ATN.LAP']['quantity']
+result = -result_rules['ATN.LAP']['amount']
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
         </record>
 

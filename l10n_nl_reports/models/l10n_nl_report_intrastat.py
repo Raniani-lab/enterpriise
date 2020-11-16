@@ -39,7 +39,6 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             FROM account_move_line l
             LEFT JOIN res_partner p ON l.partner_id = p.id
             LEFT JOIN res_country c ON p.country_id = c.id
-            LEFT JOIN account_move_line_account_tax_rel amlt ON l.id = amlt.account_move_line_id
             LEFT JOIN account_account_tag_account_move_line_rel line_tag on line_tag.account_move_line_id = l.id
             LEFT JOIN product_product product on product.id = l.product_id
             LEFT JOIN product_template product_t on product.product_tmpl_id = product_t.id

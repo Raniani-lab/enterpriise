@@ -1,31 +1,41 @@
 odoo.define('web_mobile.barcode.tests', function (require) {
     "use strict";
 
-    var field_registry = require('web.field_registry');
-    var FormView = require('web.FormView');
-    var relational_fields = require('web.relational_fields');
-    var testUtils = require('web.test_utils');
+    const fieldRegistry = require('web.field_registry');
+    const FormView = require('web.FormView');
+    const { FieldMany2One } = require('web.relational_fields');
+    const { createView, dom, mock } = require('web.test_utils');
 
-    var barcode_fields = require('web_mobile.barcode_fields');
+    const FieldMany2OneBarcode = require('web_mobile.barcode_fields');
     const mobile = require('web_mobile.core');
 
-    var createView = testUtils.createView;
-
-    var NAME_SEARCH = "name_search";
-    var PRODUCT_PRODUCT = 'product.product';
-    var SALE_ORDER_LINE = 'sale_order_line';
-    var PRODUCT_FIELD_NAME = 'product_id';
-    var ARCHS = {
-        'product.product,false,kanban': '<kanban>' +
-            '<templates><t t-name="kanban-box">' +
-                '<div class="oe_kanban_global_click"><field name="display_name"/></div>' +
-            '</t></templates>' +
-        '</kanban>',
+    const NAME_SEARCH = "name_search";
+    const PRODUCT_PRODUCT = 'product.product';
+    const SALE_ORDER_LINE = 'sale_order_line';
+    const PRODUCT_FIELD_NAME = 'product_id';
+    const ARCHS = {
+        'product.product,false,kanban': `
+            <kanban><templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click"><field name="display_name"/></div>
+                </t>
+            </templates></kanban>`,
         'product.product,false,search': '<search></search>',
     };
 
+    async function mockRPC(route, args) {
+        const result = await this._super(...arguments);
+        if (args.method === NAME_SEARCH && args.model === PRODUCT_PRODUCT) {
+            const records = this.data[PRODUCT_PRODUCT].records
+                .filter((record) => record.barcode === args.kwargs.name)
+                .map((record) => [record.id, record.name]);
+            return records.concat(result);
+        }
+        return result;
+    }
+
     QUnit.module('web_mobile', {
-        beforeEach: function () {
+        beforeEach() {
             this.data = {
                 [PRODUCT_PRODUCT]: {
                     fields: {
@@ -37,7 +47,15 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                         id: 111,
                         name: 'product_cable_management_box',
                         barcode: '601647855631',
-                    }]
+                    }, {
+                        id: 112,
+                        name: 'product_n95_mask',
+                        barcode: '601647855632',
+                    }, {
+                        id: 113,
+                        name: 'product_surgical_mask',
+                        barcode: '601647855633',
+                    }],
                 },
                 [SALE_ORDER_LINE]: {
                     fields: {
@@ -54,83 +72,96 @@ odoo.define('web_mobile.barcode.tests', function (require) {
         },
     }, function () {
 
-        QUnit.test("web_mobile: barcode button in a mobile environment", async function (assert) {
-            var self = this;
-
-            assert.expect(3);
+        QUnit.test("web_mobile: barcode button in a mobile environment with single results", async function (assert) {
+            assert.expect(2);
 
             // simulate a mobile environment
-            field_registry.add('many2one_barcode', barcode_fields);
-            var __scanBarcode = mobile.methods.scanBarcode;
-            var __showToast = mobile.methods.showToast;
-            var __vibrate = mobile.methods.vibrate;
+            fieldRegistry.add('many2one_barcode', FieldMany2OneBarcode);
+            mock.patch(mobile.methods, {
+                scanBarcode: async () => ({
+                    data: this.data[PRODUCT_PRODUCT].records[0].barcode
+                }),
+                showToast: () => {},
+                vibrate: () => {},
+            });
 
-            mobile.methods.scanBarcode = function () {
-                return Promise.resolve({
-                    'data': self
-                        .data[PRODUCT_PRODUCT]
-                        .records[0]
-                        .barcode
-                });
-            };
-
-            mobile.methods.showToast = function (data) {};
-
-            mobile.methods.vibrate = function () {};
-
-            var form = await createView({
+            const form = await createView({
                 View: FormView,
-                arch:
-                    '<form>' +
-                        '<sheet>' +
-                            '<field name="' + PRODUCT_FIELD_NAME + '" widget="many2one_barcode"/>' +
-                        '</sheet>' +
-                    '</form>',
+                arch: `
+                    <form>
+                        <sheet>
+                            <field name="${PRODUCT_FIELD_NAME}" widget="many2one_barcode"/>
+                        </sheet>
+                    </form>`,
                 data: this.data,
                 model: SALE_ORDER_LINE,
                 archs: ARCHS,
-                mockRPC: function (route, args) {
-                    if (args.method === NAME_SEARCH && args.model === PRODUCT_PRODUCT) {
-                        return this._super.apply(this, arguments).then(function (result) {
-                            var records = self
-                                .data[PRODUCT_PRODUCT]
-                                .records
-                                .filter(function (record) {
-                                    return record.barcode === args.kwargs.name;
-                                })
-                                .map(function (record) {
-                                    return [record.id, record.name];
-                                })
-                            ;
-                            return records.concat(result);
-                        });
-                    }
-                    return this._super.apply(this, arguments);
-                },
+                mockRPC,
             });
 
-            var $scanButton = form.$('.o_barcode_mobile');
+            const $scanButton = form.$('.o_barcode_mobile');
 
             assert.equal($scanButton.length, 1, "has scanner button");
 
-            await testUtils.dom.click($scanButton);
+            await dom.click($scanButton);
 
-            var $modal = $('.o_modal_full .modal-lg');
-            assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
-
-            await testUtils.dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
-
-            var selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
-            assert.equal(selectedId, self.data[PRODUCT_PRODUCT].records[0].id,
-                "product found and selected (" +
-                self.data[PRODUCT_PRODUCT].records[0].barcode + ")");
-
-            mobile.methods.vibrate = __vibrate;
-            mobile.methods.showToast = __showToast;
-            mobile.methods.scanBarcode = __scanBarcode;
-            field_registry.add('many2one_barcode', relational_fields.FieldMany2One);
+            const selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
+            assert.equal(selectedId, this.data[PRODUCT_PRODUCT].records[0].id,
+                `product found and selected (${this.data[PRODUCT_PRODUCT].records[0].barcode})`);
 
             form.destroy();
+            fieldRegistry.add('many2one_barcode', FieldMany2One);
+            mock.unpatch(mobile.methods);
+        });
+
+        QUnit.test("web_mobile: barcode button in a mobile environment with multiple results", async function (assert) {
+            assert.expect(4);
+
+            // simulate a mobile environment
+            fieldRegistry.add('many2one_barcode', FieldMany2OneBarcode);
+            mock.patch(mobile.methods, {
+                scanBarcode: async () => ({
+                    data: "mask"
+                }),
+                showToast: () => {},
+                vibrate: () => {},
+            });
+
+            const form = await createView({
+                View: FormView,
+                arch: `
+                    <form>
+                        <sheet>
+                            <field name="${PRODUCT_FIELD_NAME}" widget="many2one_barcode"/>
+                        </sheet>
+                    </form>`,
+                data: this.data,
+                model: SALE_ORDER_LINE,
+                archs: ARCHS,
+                mockRPC,
+            });
+
+            const $scanButton = form.$('.o_barcode_mobile');
+
+            assert.equal($scanButton.length, 1, "has scanner button");
+
+            await dom.click($scanButton);
+
+            const $modal = $('.o_modal_full .modal-lg');
+            assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
+
+            assert.equal($modal.find('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2,
+                'there should be 2 records displayed');
+
+            await dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
+
+            const selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
+            assert.equal(selectedId, this.data[PRODUCT_PRODUCT].records[1].id,
+                `product found and selected (${this.data[PRODUCT_PRODUCT].records[1].barcode})`);
+
+            form.destroy();
+            fieldRegistry.add('many2one_barcode', FieldMany2One);
+            mock.unpatch(mobile.methods);
         });
     });
 });

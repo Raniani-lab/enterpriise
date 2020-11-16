@@ -5,6 +5,7 @@ var field_registry = require('web.field_registry');
 require('web._field_registry');
 var relational_fields = require('web.relational_fields');
 
+const { _t } = require('web.core');
 const mobile = require('web_mobile.core');
 
 /**
@@ -37,6 +38,14 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      */
     _isExternalButtonVisible: function () {
         return this.$external_button.is(':visible');
+    },
+    /**
+     * Hide the search more option
+     *
+     * @param {Array} values
+     */
+    _manageSearchMore(values) {
+        return values;
     },
     /**
      * @override
@@ -91,8 +100,18 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      * @param barcode
      * @private
      */
-    _onBarcodeScanned: function (barcode) {
-        this._search(barcode);
+    async _onBarcodeScanned(barcode) {
+        const results = await this._search(barcode);
+        const records = results.filter(r => !!r.id);
+        if (records.length === 1) {
+            this._setValue({ id: records[0].id });
+        } else {
+            const dynamicFilters = [{
+                description: _.str.sprintf(_t('Quick search: %s'), barcode),
+                domain: [['id', 'in', records.map(r => r.id)]],
+            }];
+            this._searchCreatePopup("search", false, {}, dynamicFilters);
+        }
     },
 });
 

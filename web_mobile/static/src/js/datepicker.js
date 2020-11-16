@@ -2,11 +2,6 @@ odoo.define("web_mobile.datepicker", function (require) {
     "use strict";
 
     const mobile = require("web_mobile.core");
-
-    if (!mobile.methods.requestDateTimePicker) {
-        return;
-    }
-
     const web_datepicker = require("web.datepicker");
     const Widget = require("web.Widget");
 
@@ -16,12 +11,14 @@ odoo.define("web_mobile.datepicker", function (require) {
      * improve usability of Application (Due to Mobile users are used to native
      * date picker).
      */
-
     web_datepicker.DateWidget.include({
         /**
          * @override
          */
         start() {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
             this.$input = this.$("input.o_datepicker_input");
             this._setupMobilePicker();
         },
@@ -31,12 +28,20 @@ odoo.define("web_mobile.datepicker", function (require) {
          *
          * @override
          */
-        destroy: Widget.prototype.destroy,
+        destroy() {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
+            Widget.prototype.destroy.apply(this, arguments);
+        },
 
         /**
          * @override
          */
         maxDate() {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
             console.warn("Unsupported in the mobile applications");
         },
 
@@ -44,6 +49,9 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          */
         minDate() {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
             console.warn("Unsupported in the mobile applications");
         },
 
@@ -55,7 +63,11 @@ odoo.define("web_mobile.datepicker", function (require) {
          * @override
          * @private
          */
-        _setLibInputValue() {},
+        _setLibInputValue() {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
+        },
 
         /**
          * @private
@@ -70,6 +82,19 @@ odoo.define("web_mobile.datepicker", function (require) {
                 this.$input.val(data);
                 this.changeDatetime();
             });
+        },
+
+        //--------------------------------------------------------------------------
+        // Handlers
+        //--------------------------------------------------------------------------
+
+        /**
+         * @override
+         */
+        _onInputClicked: function () {
+            if (!mobile.methods.requestDateTimePicker) {
+                return this._super(...arguments);
+            }
         },
     });
 });

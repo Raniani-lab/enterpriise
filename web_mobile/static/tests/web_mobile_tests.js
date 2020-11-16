@@ -14,7 +14,7 @@ const mobile = require('web_mobile.core');
 const UserPreferencesFormView = require('web_mobile.UserPreferencesFormView');
 const { base64ToBlob } = require('web_mobile.testUtils');
 
-const {createParent, createView} = testUtils;
+const {createParent, createView, mock} = testUtils;
 
 const MY_IMAGE = 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
 
@@ -39,6 +39,8 @@ QUnit.module('web_mobile', {
                     website: {},
                     function: {},
                     title: {},
+                    date: {string: "A date", type: "date"},
+                    datetime: {string: "A datetime", type: "datetime"},
                 },
                 records: [{
                     id: 1,
@@ -453,6 +455,83 @@ QUnit.module('web_mobile', {
         view.destroy();
         testUtils.mock.unpatch(session);
         mobile.methods.updateAccount = __updateAccount;
+    });
+
+    QUnit.module('FieldDate');
+
+    QUnit.test('date field: toggle datepicker', async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            requestDateTimePicker({ value, type }) {
+                assert.step("requestDateTimePicker");
+                assert.strictEqual(false, value, "field shouldn't have an initial value");
+                assert.strictEqual("date", type, "datepicker's mode should be 'date'");
+                return Promise.resolve({ data: "2020-01-12", });
+            },
+        });
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch:'<form><field name="date"/></form>',
+            translateParameters: {  // Avoid issues due to localization formats
+                date_format: '%m/%d/%Y',
+            },
+        });
+
+        assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
+            "datepicker shouldn't be present initially");
+
+        await testUtils.dom.openDatepicker(form.$('.o_datepicker'));
+
+        assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
+            "datepicker shouldn't be opened");
+        assert.verifySteps(["requestDateTimePicker"], "native datepicker should have been called");
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020");
+
+        form.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
+    QUnit.module('FieldDateTime');
+
+    QUnit.test('datetime field: toggle datepicker', async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            requestDateTimePicker({ value, type }) {
+                assert.step("requestDateTimePicker");
+                assert.strictEqual(false, value, "field shouldn't have an initial value");
+                assert.strictEqual("datetime", type, "datepicker's mode should be 'datetime'");
+                return Promise.resolve({ data: "2020-01-12 12:00:00" });
+            },
+        });
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch:'<form><field name="datetime"/></form>',
+            translateParameters: {  // Avoid issues due to localization formats
+                date_format: '%m/%d/%Y',
+                time_format: '%H:%M:%S',
+            },
+        });
+
+        assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
+            "datepicker shouldn't be present initially");
+
+        await testUtils.dom.openDatepicker(form.$('.o_datepicker'));
+
+        assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
+            "datepicker shouldn't be opened");
+        assert.verifySteps(["requestDateTimePicker"], "native datepicker should have been called");
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020 12:00:00");
+
+        form.destroy();
+        mock.unpatch(mobile.methods);
     });
 });
 });

@@ -570,7 +570,7 @@ class HrPayslipWorkedDays(models.Model):
     is_paid = fields.Boolean(compute='_compute_is_paid', store=True)
     amount = fields.Monetary(string='Amount', compute='_compute_amount', store=True)
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract',
-        help="The contract for which applied this worked days")
+        help="The contract for which apply this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')
 
     @api.depends('work_entry_type_id', 'payslip_id', 'payslip_id.struct_id')
@@ -611,7 +611,7 @@ class HrPayslipInput(models.Model):
                                "1%% commission of basic salary per product can defined in expression "
                                "like: result = inputs.SALEURO.amount * contract.wage * 0.01.")
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
-        help="The contract for which applied this input")
+        help="The contract for which apply this input")
 
     @api.depends('input_type_id')
     def _compute_name(self):

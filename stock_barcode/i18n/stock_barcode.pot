@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:04+0000\n"
-"PO-Revision-Date: 2020-09-29 14:04+0000\n"
+"POT-Creation-Date: 2020-11-16 13:44+0000\n"
+"PO-Revision-Date: 2020-11-16 13:44+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -266,6 +266,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__display_name
 msgid "Display Name"
 msgstr ""
@@ -327,6 +328,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__id
 msgid "ID"
 msgstr ""
@@ -400,6 +402,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type____last_update
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -544,6 +547,11 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "Package"
+msgstr ""
+
+#. module: stock_barcode
+#: model:ir.model,name:stock_barcode.model_stock_quant_package
+msgid "Packages"
 msgstr ""
 
 #. module: stock_barcode
@@ -816,6 +824,15 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:0
+#, python-format
+msgid ""
+"The scanned package must not be assigned to a location or must be assigned "
+"to the current dest location."
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
 #, python-format
 msgid "The scanned serial number is already used."
@@ -897,7 +914,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:0
 #, python-format
-msgid "To use packages, enable 'Delivery Packages'from the settings"
+msgid "To use packages, enable 'Delivery Packages' from the settings"
 msgstr ""
 
 #. module: stock_barcode

@@ -377,7 +377,7 @@ var PickingClientAction = ClientAction.extend({
     _putInPack: function () {
         var self = this;
         if (this.currentState.group_tracking_lot === false) {
-            this.do_warn(false, _t("To use packages, enable 'Delivery Packages'from the settings"));
+            this.do_warn(false, _t("To use packages, enable 'Delivery Packages' from the settings"));
             return;
         }
         this.mutex.exec(function () {

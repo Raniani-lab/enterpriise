@@ -4,7 +4,6 @@
 {
     'name': 'LT - Accounting Reports',
     'version': '1.0.0',
-    'summary': 'accounting, report, Lithuanian',
     'description': """
         Accounting reports for Lithuania
 

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-29 15:49+0000\n"
-"PO-Revision-Date: 2020-10-29 15:49+0000\n"
+"POT-Creation-Date: 2020-11-16 13:44+0000\n"
+"PO-Revision-Date: 2020-11-16 13:44+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -115,11 +115,6 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Contract Start Date</strong>"
-msgstr ""
-
-#. module: hr_payroll
-#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
-msgid "<strong>Contract Type </strong>"
 msgstr ""
 
 #. module: hr_payroll
@@ -2132,12 +2127,12 @@ msgstr ""
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_input__contract_id
-msgid "The contract for which applied this input"
+msgid "The contract for which apply this input"
 msgstr ""
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_worked_days__contract_id
-msgid "The contract for which applied this worked days"
+msgid "The contract for which apply this worked days"
 msgstr ""
 
 #. module: hr_payroll

@@ -1295,7 +1295,7 @@ class SaleSubscriptionStage(models.Model):
                              "as a tooltip over the stage's name.", translate=True)
     sequence = fields.Integer(default=1)
     fold = fields.Boolean(string='Folded in Kanban',
-                          help='This stage is folded in the kanban view when there are not records in that stage to display.')
+                          help='This stage is folded in the kanban view when there are no records in that stage to display.')
     rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',
                                          help="Send an email to the customer when the subscription is moved to this stage.",
                                          domain=[('model', '=', 'sale.subscription')])

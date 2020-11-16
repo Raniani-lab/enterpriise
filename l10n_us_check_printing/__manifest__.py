@@ -6,7 +6,7 @@
     'summary': 'Print US Checks',
     'description': """
 This module allows to print your payments on pre-printed check paper.
-You can configure the output (layout, stubs informations, etc.) in company settings, and manage the
+You can configure the output (layout, stubs information, etc.) in company settings, and manage the
 checks numbering (if you use pre-printed checks without numbers) in journal settings.
 
 Supported formats

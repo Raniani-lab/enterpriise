@@ -185,7 +185,7 @@ QUnit.module('ReportComponents', {
                 selection: {
                     type: "selection",
                     string: "Selection",
-                    default_value: "Use the field informations",
+                    default_value: "Use the field information",
                     required: true
                 }
             },

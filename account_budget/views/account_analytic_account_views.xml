@@ -18,7 +18,7 @@
                                         <field name="paid_date"/>
                                         <field name="planned_amount" widget="monetary"/>
                                         <field name="practical_amount" sum="Practical Amount" widget="monetary"/>
-                                        <field name="theoritical_amount" sum="Theoritical Amount" widget="monetary"/>
+                                        <field name="theoritical_amount" sum="Theoretical Amount" widget="monetary"/>
                                         <field name="percentage"/>
                                         <field name="currency_id" invisible="1"/>
                                     </tree>

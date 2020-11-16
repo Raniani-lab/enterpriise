@@ -5,11 +5,11 @@ from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.addons.website_event_track.tests.common import TestEventTrackOnlineCommon
+from odoo.addons.website_event.tests.common import TestEventOnlineCommon
 from werkzeug.urls import url_join
 
 
-class TestTrackPush(TestEventTrackOnlineCommon):
+class TestTrackPush(TestEventOnlineCommon):
 
     @classmethod
     def setUpClass(cls):

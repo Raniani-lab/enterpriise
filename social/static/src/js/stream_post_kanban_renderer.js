@@ -5,6 +5,7 @@ var core = require('web.core');
 var KanbanColumn = require('web.KanbanColumn');
 var KanbanRenderer = require('web.KanbanRenderer');
 var QWeb = core.qweb;
+var utils = require('web.utils');
 
 /**
  * Simple override in order to provide a slightly modified template that shows the
@@ -127,6 +128,7 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
                     .addClass('d-none');
             }
             self._renderAccountStats();
+            self._insertThousandSeparators(self.$el, '.o_social_kanban_likes_count');
         });
     },
 
@@ -152,6 +154,8 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
                 this.$before.append($socialAccountsStats);
             }
 
+            this._insertThousandSeparators(this.$before, '.social_account_stat_value');
+
             // This DOM element is periodically refreshed (removed/re-rendered) by the kanban view (when refreshing statistics).
             // If the element is removed while its popover is open, the popover will not be closed automatically anymore.
             // That's why we need to listen to the "remove" event and dispose the popover accordingly.
@@ -172,6 +176,21 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
     _createBeforeSectionElement: function () {
         return $('<section/>', {
             class: 'o_social_stream_post_kanban_before d-flex flex-nowrap border-bottom'
+        });
+    },
+
+    /**
+     * Format the content of integer fields to improve readability, by adding thousand separators,
+     * which depend on current language. e.g. 1232342 displays 1,232,342 for en_us language. 
+     * 
+     * @param {jQuery} $elementExplored  - Element where toFormatSelector is searched for.
+     * @param {String} toFormatSelector - Selector of elements containing integer values to be formatted.
+     * @private
+     */
+    _insertThousandSeparators: function ($elementExplored, toFormatSelector) {
+        $elementExplored.find(toFormatSelector).each(function(){
+            var integerText = $(this).text();
+            $(this).text(utils.insert_thousand_seps(integerText));
         });
     },
 

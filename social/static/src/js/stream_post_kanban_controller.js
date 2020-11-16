@@ -6,6 +6,7 @@ var core = require('web.core');
 var dialogs = require('web.view_dialogs');
 var KanbanController = require('web.KanbanController');
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
+var utils = require('web.utils');
 
 var _t = core._t;
 var QWeb = core.qweb;
@@ -249,6 +250,8 @@ var StreamPostKanbanController = KanbanController.extend({
      * - We don't display '0', we hide the text instead
      * - If the count is 0 and we subtract 1 (it can happen with Facebook's 'reactions'), keep 0
      *
+     * Adds thousand separators when updating the $target text.
+     * 
      * @param {$.Element} $target
      * @private
      */
@@ -256,7 +259,9 @@ var StreamPostKanbanController = KanbanController.extend({
         var userLikes = $target.data('userLikes');
         $target.data('userLikes', !userLikes);
         var likesCount = $target.find('.o_social_kanban_likes_count').text();
-        likesCount = likesCount === '' ? 0 : parseInt(likesCount);
+        // Remove non-digit characters (e.g. thousands_separators).
+        var likesCountNumberString = likesCount.replaceAll(/[^0-9]/g, '');
+        likesCount = likesCount === '' ? 0 : parseInt(likesCountNumberString);
 
         if (userLikes) {
             if (likesCount > 0) {
@@ -269,7 +274,8 @@ var StreamPostKanbanController = KanbanController.extend({
         if (likesCount === 0) {
             likesCount = '';
         }
-        $target.find('.o_social_kanban_likes_count').text(likesCount);
+        
+        $target.find('.o_social_kanban_likes_count').text(utils.insert_thousand_seps(likesCount.toString()));
     },
 
     /**

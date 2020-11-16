@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <div t-attf-class="d-flex align-items-center #{isCommentEdit? 'mt-3 mb-5' : 'mt-2'}">
-                    <small class="text-600">Press Enter to post.</small>
+                    <small class="text-600">Press Enter to post. Press Shift+Enter to insert a Line Break.</small>
                     <div t-if="isCommentEdit" class="o_social_comment_commands ml-3">
                         <a t-attf-class="o_social_edit_comment_cancel btn btn-sm btn-outline-secondary"
                             href="#"
@@ -400,7 +400,7 @@
     <t t-name="social.AccountsStatsValue">
         <div class="d-flex align-items-center">
             <i t-attf-class="text-600 mr-1 fa {{icon}}" style="line-height: 1"/>
-            <b t-esc="value" style="line-height: 1"/>
+            <b class="social_account_stat_value" t-esc="value" style="line-height: 1"/>
             <t t-if="socialAccount.has_trends">
                 <t t-set="isUp" t-value="trend >= 0"/>
                 <small t-attf-class="ml-2 font-weight-bold text-#{isUp ? 'success' : 'danger'}" style="line-height: 1">

@@ -88,7 +88,7 @@ class Task(models.Model):
                     secondary = False
                 else:
                     primary = False
-            task.write({
+            task.update({
                 'display_mark_as_done_primary': primary,
                 'display_mark_as_done_secondary': secondary,
             })
@@ -98,7 +98,7 @@ class Task(models.Model):
         for task in self:
             enabled = 1 if task.project_id.allow_timesheets else 0
             satisfied = 1 if enabled and task.total_hours_spent else 0
-            task.write({
+            task.update({
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
             })

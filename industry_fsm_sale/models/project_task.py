@@ -69,7 +69,7 @@ class Task(models.Model):
                     secondary = False
                 else:  # Means invoice status is 'Nothing to Invoice'
                     primary = False
-            task.write({
+            task.update({
                 'display_create_invoice_primary': primary,
                 'display_create_invoice_secondary': secondary,
             })

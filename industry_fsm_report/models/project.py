@@ -80,7 +80,7 @@ class Task(models.Model):
                     sign_s = False
                 else:
                     sign_p = False
-            task.write({
+            task.update({
                 'display_sign_report_primary': sign_p,
                 'display_sign_report_secondary': sign_s,
             })
@@ -101,7 +101,7 @@ class Task(models.Model):
                     send_s = False
                 else:
                     send_p = False
-            task.write({
+            task.update({
                 'display_send_report_primary': send_p,
                 'display_send_report_secondary': send_s,
             })

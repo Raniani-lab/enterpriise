@@ -16,7 +16,7 @@ class generic_tax_report(models.AbstractModel):
     _name = 'account.generic.tax.report'
     _description = 'Generic Tax Report'
 
-    filter_multi_company = None
+    filter_multi_company = None # Can change dynamically with a config parameter (see _get_options)
     filter_date = {'mode': 'range', 'filter': 'last_month'}
     filter_all_entries = False
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
@@ -39,6 +39,12 @@ class generic_tax_report(models.AbstractModel):
 
     @api.model
     def _get_options(self, previous_options=None):
+        if self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company'):
+            if len(self.env.companies.mapped('currency_id')) > 1:
+                raise UserError(_("The multi-company option of the tax report does not allow opening it for companies in different currencies."))
+
+            self.filter_multi_company = True
+
         rslt = super(generic_tax_report, self)._get_options(previous_options)
         rslt['date']['strict_range'] = True
         return rslt
@@ -636,6 +642,7 @@ class generic_tax_report(models.AbstractModel):
 
         period_number = len(options['comparison'].get('periods'))
         line_id = 0
+        multi_comp_suffix = lambda tax_obj: options.get('multi_company') and " - %s" % tax_obj.company_id.name or ''
         for tp in types:
             if not any(tax.get('show') for key, tax in groups[tp].items()):
                 continue
@@ -654,9 +661,9 @@ class generic_tax_report(models.AbstractModel):
                         columns += [{'name': self.format_value(period['net'] * sign), 'style': 'white-space:nowrap;'},{'name': self.format_value(period['tax'] * sign), 'style': 'white-space:nowrap;'}]
 
                     if tax['obj'].amount_type == 'group':
-                        report_line_name = tax['obj'].name
+                        report_line_name = tax['obj'].name + multi_comp_suffix(tax['obj'])
                     else:
-                        report_line_name = '%s (%s)' % (tax['obj'].name, tax['obj'].amount)
+                        report_line_name = '%s (%s)' % (tax['obj'].name, tax['obj'].amount) + multi_comp_suffix(tax['obj'])
 
                     lines.append({
                         'id': tax['obj'].id,
@@ -692,7 +699,8 @@ class generic_tax_report(models.AbstractModel):
             for line in self.env['account.tax.report'].browse(options['tax_report']).line_ids:
                 yield line
         else:
-            for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', '=', self.env.company.id)]):
+            company_term = self.env.companies.ids if options.get('multi_company') else self.env.company.ids
+            for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', 'in', company_term)]):
                 yield tax
 
     @api.model

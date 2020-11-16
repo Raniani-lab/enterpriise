@@ -2703,6 +2703,11 @@ msgid "The menu item generated for this report, or None if there isn't any."
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_generic_tax_report.py:0
+msgid "The multi-company option of the tax report does not allow opening it for companies in different currencies."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "There are"
 msgstr ""

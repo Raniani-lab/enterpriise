@@ -26,6 +26,7 @@ Key Features
         'security/sale_amazon_security.xml',
         'data/amazon_data.xml',
         'data/amazon_cron.xml',
+        'data/mail_template_data.xml',
         'views/amazon_account_views.xml',
         'views/amazon_marketplace_views.xml',
         'views/amazon_offer_views.xml',

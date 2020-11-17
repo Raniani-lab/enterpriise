@@ -283,3 +283,43 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
 
         self.assertEqual(inv1.payment_state, 'in_payment')
         self.assertEqual(inv2.payment_state, 'paid')
+
+    def test_get_reconciliation_dict_with_tag_ids(self):
+        bank_stmt = self.env['account.bank.statement'].create({
+            'company_id': self.company.id,
+            'journal_id': self.bank_journal_euro.id,
+            'date': time.strftime('%Y-07-15'),
+            'name': 'test',
+        })
+        bank_stmt_line = self.env['account.bank.statement.line'].create({
+            'payment_ref': 'testLine',
+            'statement_id': bank_stmt.id,
+            'amount': 100,
+            'date': time.strftime('%Y-07-15'),
+            'partner_name': 'test',
+        })
+        tax = self.tax_purchase_a.copy()
+        tax.invoice_repartition_line_ids[0].write({
+            'tag_ids': [(0, 0, {
+                'name': 'the_tag',
+                'applicability': 'taxes',
+                'country_id': self.env.ref('base.us').id,
+            })]
+        })
+        reconciliation_model = self.env['account.reconcile.model'].create({
+            'name': 'Charge with Tax',
+            'company_id': self.company.id,
+            'line_ids': [(0, 0, {
+                'company_id': self.company.id,
+                'account_id': self.company_data['default_account_expense'].id,
+                'amount_type': 'percentage',
+                'amount_string': '100',
+                'tax_ids': [(6, 0, [tax.id])]
+            })]
+        })
+        res = self.env["account.reconciliation.widget"].get_reconciliation_dict_from_model(reconciliation_model.id, bank_stmt_line.id, 7.50)
+
+        self.assertEqual(len(res), 2)
+        self.assertEqual(res[0]['tax_ids'][0]['id'], tax.id)
+        self.assertTrue('id' in res[0]['tax_tag_ids'][0])
+        self.assertEqual(res[0]['tax_tag_ids'][0]['display_name'], 'the_tag')

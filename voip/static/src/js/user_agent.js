@@ -808,13 +808,18 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
 
         this._currentInviteSession.on('rejected', () =>
             this._onCurrentInviteSessionRejected(inviteSession));
-        if (window.Notification && window.Notification.requestPermission) {
-            window.Notification.requestPermission()
-                .then(permission => this._onWindowNotificationPermissionRequested({ content, inviteSession, permission }))
-                .catch(() => this._onWindowNotificationPermissionRequested({ content, inviteSession }));
-        } else {
-            this._onWindowNotificationPermissionRequested({ content, inviteSession })
+        if (!window.Notifcation || !window.Notification.requestPermission) {
+           this._onWindowNotificationPermissionRequested({ content, inviteSession });
+           return;
         }
+        const res = window.Notification.requestPermission();
+        if (!res) {
+           this._onWindowNotificationPermissionRequested({ content, inviteSession });
+           return;
+        }
+        res
+            .then(permission => this._onWindowNotificationPermissionRequested({ content, inviteSession, permission }))
+            .catch(() => this._onWindowNotificationPermissionRequested({ content, inviteSession }));
     },
     /**
      * Starts the first ringing tone

@@ -25,7 +25,7 @@
         'views/res_config_settings_views.xml',
         'views/planning_templates.xml',
         'data/planning_cron.xml',
-        'data/mail_data.xml',
+        'data/mail_template_data.xml',
     ],
     'demo': [
         'data/planning_demo.xml',

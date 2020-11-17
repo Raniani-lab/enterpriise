@@ -3136,6 +3136,10 @@ QUnit.module('documents_kanban_tests.js', {
         });
 
         await testUtils.dom.click(kanban.$('.o_documents_attachment'));
+
+        // making sure that the documentInspector is already rendered as it is painted after the selection.
+        await testUtils.nextTick();
+
         await testUtils.dom.click(kanban.$('.o_inspector_request_icon'));
         await testUtils.nextTick();
 

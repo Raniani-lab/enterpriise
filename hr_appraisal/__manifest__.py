@@ -3,7 +3,7 @@
 
 {
     'name': 'Appraisal',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Human Resources/Appraisals',
     'sequence': 180,
     'summary': 'Assess your employees',
@@ -43,7 +43,7 @@ Key Features
         'views/hr_job_views.xml',
         'views/assets_templates.xml',
         'data/hr_appraisal_data.xml',
-        'data/mail_data.xml',
+        'data/mail_template_data.xml',
         'wizard/hr_departure_wizard_views.xml',
     ],
     "demo": [

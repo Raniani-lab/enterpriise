@@ -69,10 +69,10 @@ odoo.define("web_enterprise.HomeMenuWrapper", function (require) {
                     webIcon: menuItem.web_icon,
                 };
                 if (!menuItem.parent_id) {
+                    const [iconClass, color, backgroundColor] = (item.webIcon || '').split(',');
                     if (menuItem.web_icon_data) {
                         item.webIconData = `data:image/png;base64,${menuItem.web_icon_data}`.replace(/\s/g, "");
-                    } else if (item.webIcon) {
-                        const [iconClass, color, backgroundColor] = item.webIcon.split(',');
+                    } else if (backgroundColor !== undefined) { // Could split in three parts?
                         item.webIcon = { iconClass, color, backgroundColor };
                     } else {
                         item.webIconData = '/web_enterprise/static/src/img/default_icon_app.png';

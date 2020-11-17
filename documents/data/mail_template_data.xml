@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <!--Email template -->
         <record id="mail_template_document_request" model="mail.template">
             <field name="name">Document Request: Send by email</field>

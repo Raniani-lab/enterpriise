@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="assets_backend" name="data merge assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/data_merge/static/src/scss/data_merge.scss"/>
-            <script type="text/javascript" src="/data_merge/static/src/js/data_merge_list_view.js"></script>
-        </xpath>
-    </template>
-
-    <template id="merge_message">
+    <template id="data_merge_merged">
         <t t-esc="res_model_label" /> merged into <a t-att-data-oe-model="res_model_name" t-att-data-oe-id="res_id" href="#"><t t-esc="master_record" /></a>
     </template>
 
-    <template id="merge_message_master">
+    <template id="data_merge_main">
         <t t-esc="res_model_label" />
         <a t-if="archived" t-att-data-oe-model="res_model_name" t-att-data-oe-id="res_id" href="#"><t t-esc="merged_record" /></a>
         <t t-else="" t-esc="merged_record" />
@@ -22,7 +15,7 @@
         </ul>
     </template>
 
-    <template id="notification">
+    <template id="data_merge_duplicate">
 I've identified <t t-esc="num_records" /> duplicate records with the '<t t-esc="res_model_label" />' deduplication rule.<br/>
 You can merge them <a t-attf-href="/web?#action=data_merge.action_data_merge_record_notification&amp;active_id={{model_id}}&amp;menu_id={{menu_id}}">here</a>.
     </template>

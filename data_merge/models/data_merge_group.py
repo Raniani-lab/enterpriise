@@ -187,8 +187,8 @@ class DataMergeGroup(models.Model):
                 'archived': rec._original_records().exists(),
             })
             if self.model_id.removal_mode == 'archive':
-                rec._original_records().message_post_with_view('data_merge.merge_message', values=values)
-            master_record._original_records().message_post_with_view('data_merge.merge_message_master', values=master_values)
+                rec._original_records().message_post_with_view('data_merge.data_merge_merged', values=values)
+            master_record._original_records().message_post_with_view('data_merge.data_merge_main', values=master_values)
 
 
     ## Generic Merge

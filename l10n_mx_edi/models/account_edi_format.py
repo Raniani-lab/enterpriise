@@ -1019,7 +1019,8 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     continue
 
             # == Create the attachment ==
-            cfdi_attachment = self._create_payment_cfdi_attachment(move, base64.encodebytes(res['cfdi_signed']))
+            cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
+            cfdi_attachment = self._create_payment_cfdi_attachment(move, cfdi_signed)
             edi_result[move] = {'attachment': cfdi_attachment}
 
             # == Chatter ==

@@ -33,15 +33,24 @@ class l10nBeWorkEntryDailyBenefitReport(models.Model):
                            private_car = true OR
                            representation_fees = true
                 ),
+                hr_time_zone_work_entries AS (
+                          SELECT work_entry.employee_id,
+                                 timezone(calendar.tz, work_entry.date_start::timestamptz) AS date_start,
+                                 timezone(calendar.tz, work_entry.date_stop::timestamptz) AS date_stop,
+                                 work_entry_type_id
+                            FROM hr_work_entry AS work_entry
+                      INNER JOIN hr_contract AS contract ON work_entry.contract_id = contract.id
+                      INNER JOIN resource_calendar AS calendar ON contract.resource_calendar_id = calendar.id
+                      WHERE      work_entry.state IN ('draft', 'validated')
+                ),
                 hr_work_entry_split_in_days AS (
                     SELECT     employee_id,
                                GREATEST (day_serie, date_start) AS date_start_day,
                                LEAST(day_serie + INTERVAL '1 day', date_stop) AS date_stop_day,
                                {field_list}
-                    FROM       hr_work_entry AS work_entry
+                    FROM       hr_time_zone_work_entries AS work_entry
                     INNER JOIN hr_work_entry_type_providing_advantages AS work_entry_type ON work_entry.work_entry_type_id = work_entry_type.id
                     CROSS JOIN generate_series(date_trunc('day', work_entry.date_start), date_trunc('day', work_entry.date_stop), INTERVAL '1 day') AS day_serie
-                    WHERE      work_entry.state IN ('draft', 'validated')
                 ),
                 hr_work_entry_one_advantage_per_row AS (
                     SELECT     employee_id,

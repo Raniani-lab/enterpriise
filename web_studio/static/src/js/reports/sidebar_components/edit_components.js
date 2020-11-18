@@ -338,15 +338,15 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
         e.data.dataPointID = this.directiveRecordId;
 
         var always = function () {
-            for (var directiveKey in self.fieldSelector) {
-                if (self.fieldSelector[directiveKey] === e.target) {
-                    break;
-                }
-            }
-
             var newAttrs = {};
             _.each(self.fieldSelector, function (fieldType, directiveKey) {
-                if (!e.data.forceChange && e.target !== self.fieldSelector[directiveKey]) {
+                var directiveTarget = self.fieldSelector[directiveKey];
+                var target = e.target;
+                if (directiveTarget instanceof owl.Component) {
+                    directiveTarget = directiveTarget.componentRef.comp;
+                    target = e.data.__originalComponent
+                }
+                if (!e.data.forceChange && target !== directiveTarget) {
                     return;
                 }
                 var data = self.model.get(self.directiveRecordId).data;
@@ -1430,10 +1430,12 @@ var TOptions = AbstractEditComponent.extend( {
             return;
         }
         var $options = $(qweb.render('web_studio.ReportDirectiveTOptions.options', this));
+        var mountedComponents = [];
         var defs = _.map(this.widget.options, function (option) {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
             if (field instanceof owl.Component) {
+                mountedComponents.push(field);
                 if (option.type === "boolean") {
                     return field.mount($option.find('label')[0], {position: 'first-child'});
                 } else {
@@ -1450,6 +1452,9 @@ var TOptions = AbstractEditComponent.extend( {
         });
         return Promise.all(defs).then (function () {
             self.$el.find('.o_studio_report_options_container').append($options);
+            if (!self.isDestroyed()) {
+                mountedComponents.forEach(widget => widget.on_attach_callback());
+            }
         });
     },
     /**

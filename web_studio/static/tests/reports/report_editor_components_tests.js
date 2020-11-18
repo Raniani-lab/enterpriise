@@ -686,6 +686,44 @@ QUnit.module('ReportComponents', {
         parent.destroy();
     });
 
+    QUnit.test('contact: no_marker boolean field', async function (assert) {
+        assert.expect(2);
+        var parent = new Widget();
+
+        await testUtils.mock.addMockEnvironment(parent, {
+            intercepts: {
+                view_change: function (ev) {
+                    assert.strictEqual(ev.data.operation.new_attrs["t-options-no_marker"], false,
+                        'Toggling no_marker checkbox should change the option value');
+                },
+            },
+        });
+        await parent.appendTo($('#qunit-fixture'));
+
+        var params = {
+            widgetsOptions: this.widgetsOptions,
+            node: {
+                attrs: {
+                    't-options': '{"widget": "contact"}',
+                    't-options-no_marker': 'True',
+                    'data-oe-id': 99,
+                    'data-oe-xpath': '/my/node/path/',
+                },
+            },
+            context: {},
+            state: null,
+            models: null,
+        };
+        var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
+        await tOptions.appendTo(parent.$el);
+
+        assert.containsOnce(tOptions, '.o_web_studio_toption_option_contact_no_marker input:checked',
+            "no_marker checkbox is checked initially");
+        await testUtils.dom.click(tOptions.$('.o_web_studio_toption_option_contact_no_marker input'));
+
+        parent.destroy();
+    });
+
     QUnit.test('no search more in many2many_select', async function (assert) {
         assert.expect(3);
         var parent = new Widget();

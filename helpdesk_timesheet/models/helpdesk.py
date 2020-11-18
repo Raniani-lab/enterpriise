@@ -55,9 +55,8 @@ class HelpdeskTeam(models.Model):
 
     @api.model
     def _init_data_create_project(self):
-        for team in self.search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False)]):
-            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, 'allow_timesheet_timer': True})
-            self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
+        # TODO: remove me in master
+        return
 
 
 class HelpdeskTicket(models.Model):

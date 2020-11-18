@@ -22,7 +22,7 @@ class TestEasypostRequest(EasypostTestCommon):
         self.assertFalse("order[shipments][1][parcel][weight]" in shipment, "Should have only 1 shipment")
 
     def test_prepare_order_shipments_multiple(self):
-        self.fedex_default_packaging.max_weight = 3
+        self.fedex_default_package_type.max_weight = 3
         SaleOrder = self.env["sale.order"]
         sol_1_vals = {"product_id": self.server.id}
         sol_2_vals = {"product_id": self.miniServer.id}
@@ -37,7 +37,7 @@ class TestEasypostRequest(EasypostTestCommon):
         self.assertFalse("order[shipments][2][parcel][weight]" in shipment, "Should have 2 shipments")
 
     def test_prepare_order_shipments_no_max_weight(self):
-        self.fedex_default_packaging.max_weight = 0
+        self.fedex_default_package_type.max_weight = 0
         SaleOrder = self.env["sale.order"]
         sol_1_vals = {"product_id": self.server.id}
         sol_2_vals = {"product_id": self.miniServer.id}

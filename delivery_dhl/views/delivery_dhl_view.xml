@@ -18,7 +18,7 @@
                         <field name="dhl_product_code" attrs="{'required': [('delivery_type', '=', 'dhl')]}"/>
                     </group>
                     <group>
-                        <field name="dhl_default_packaging_id" attrs="{'required': [('delivery_type', '=', 'dhl')]}" domain="[('package_carrier_type', '=', 'dhl')]"/>
+                        <field name="dhl_default_package_type_id" attrs="{'required': [('delivery_type', '=', 'dhl')]}" domain="[('package_carrier_type', '=', 'dhl')]"/>
                         <field name="dhl_package_weight_unit" attrs="{'required': [('delivery_type', '=', 'dhl')]}"/>
                         <field name="dhl_package_dimension_unit" attrs="{'required': [('delivery_type', '=', 'dhl')]}"/>
                         <field name="dhl_label_image_format" string="Label Format" attrs="{'required': [('delivery_type', '=', 'dhl')]}"/>

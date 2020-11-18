@@ -20,7 +20,7 @@ class DeliverCarrier(models.Model):
     easypost_production_api_key = fields.Char("Production API Key", groups="base.group_system", help="Enter your API production key from Easypost account")
     easypost_delivery_type = fields.Char('Easypost Carrier Type')
     easypost_delivery_type_id = fields.Char('Easypost Carrier Type ID, technical for API request')
-    easypost_default_packaging_id = fields.Many2one("product.packaging", string="Default Package Type for Easypost", domain="[('easypost_carrier', '=', easypost_delivery_type)]")
+    easypost_default_package_type_id = fields.Many2one("stock.package.type", string="Default Package Type for Easypost", domain="[('easypost_carrier', '=', easypost_delivery_type)]")
     easypost_default_service_id = fields.Many2one("easypost.service", string="Default Service Level", help="If not set, the less expensive available service level will be chosen.", domain="[('easypost_carrier', '=', easypost_delivery_type)]")
     easypost_label_file_type = fields.Selection([
         ('PNG', 'PNG'), ('PDF', 'PDF'),
@@ -172,8 +172,8 @@ class DeliverCarrier(models.Model):
         # Note: Easypost API not provide shipment/order cancel mechanism
         raise UserError(_("You can't cancel Easypost shipping."))
 
-    def _easypost_get_services_and_product_packagings(self):
-        """ Get the list of services and product packagings by carrier
+    def _easypost_get_services_and_package_types(self):
+        """ Get the list of services and package types by carrier
         type. They are stored in 2 dict stored in 2 distinct static json file.
         The dictionaries come from an easypost doc parsing since packages and
         services list are not available with an API request. The purpose of a
@@ -181,7 +181,7 @@ class DeliverCarrier(models.Model):
         implements a way to do it.
         """
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        response_package = requests.get(url_join(base_url, '/delivery_easypost/static/data/packagings_by_carriers.json'))
+        response_package = requests.get(url_join(base_url, '/delivery_easypost/static/data/package_types_by_carriers.json'))
         response_service = requests.get(url_join(base_url, '/delivery_easypost/static/data/services_by_carriers.json'))
         packages = response_package.json()
         services = response_service.json()

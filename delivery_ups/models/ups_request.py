@@ -99,7 +99,7 @@ class Package():
         if quant_pack:
             self.dimension = {'length': quant_pack.packaging_length, 'width': quant_pack.width, 'height': quant_pack.height}
         else:
-            self.dimension = {'length': carrier.ups_default_packaging_id.packaging_length, 'width': carrier.ups_default_packaging_id.width, 'height': carrier.ups_default_packaging_id.height}
+            self.dimension = {'length': carrier.ups_default_package_type_id.packaging_length, 'width': carrier.ups_default_package_type_id.width, 'height': carrier.ups_default_package_type_id.height}
         self.packaging_type = quant_pack and quant_pack.shipper_package_code or False
 
 

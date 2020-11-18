@@ -68,8 +68,8 @@ class EasypostRequest():
         if not carrier.easypost_delivery_type:
             raise UserError(_("The %s carrier is missing (Missing field(s) :\n Delivery Carrier Type)", carrier.name))
 
-        if not carrier.easypost_default_packaging_id:
-            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Default Product Packaging)", carrier.name))
+        if not carrier.easypost_default_package_type_id:
+            raise UserError(_("The %s carrier is missing (Missing field(s) :\n Default Package Type)", carrier.name))
 
         if not order and not picking:
             raise UserError(_("Sale Order/Stock Picking is missing."))
@@ -128,7 +128,7 @@ class EasypostRequest():
         in different packages. It also ignores customs info.
         """
         # Max weight for carrier default package
-        max_weight = carrier._easypost_convert_weight(carrier.easypost_default_packaging_id.max_weight)
+        max_weight = carrier._easypost_convert_weight(carrier.easypost_default_package_type_id.max_weight)
         # Order weight
         total_weight = carrier._easypost_convert_weight(order._get_estimated_weight())
 
@@ -140,13 +140,13 @@ class EasypostRequest():
             # Remainder for last package.
             last_shipment_weight = float_round(total_weight % max_weight, precision_digits=1)
             for shp_id in range(0, total_shipment):
-                shipments.update(self._prepare_parcel(shp_id, carrier.easypost_default_packaging_id, max_weight, carrier.easypost_label_file_type))
+                shipments.update(self._prepare_parcel(shp_id, carrier.easypost_default_package_type_id, max_weight, carrier.easypost_label_file_type))
                 shipments.update(self._options(shp_id, carrier))
             if not float_is_zero(last_shipment_weight, precision_digits=1):
-                shipments.update(self._prepare_parcel(total_shipment, carrier.easypost_default_packaging_id, last_shipment_weight, carrier.easypost_label_file_type))
+                shipments.update(self._prepare_parcel(total_shipment, carrier.easypost_default_package_type_id, last_shipment_weight, carrier.easypost_label_file_type))
                 shipments.update(self._options(total_shipment, carrier))
         else:
-            shipments.update(self._prepare_parcel(0, carrier.easypost_default_packaging_id, total_weight, carrier.easypost_label_file_type))
+            shipments.update(self._prepare_parcel(0, carrier.easypost_default_package_type_id, total_weight, carrier.easypost_label_file_type))
             shipments.update(self._options(0, carrier))
         return shipments
 
@@ -174,7 +174,7 @@ class EasypostRequest():
             else:
                 weight = sum([ml.product_id.weight * ml.product_uom_id._compute_quantity(ml.qty_done, ml.product_id.uom_id, rounding_method='HALF-UP') for ml in move_lines_without_package])
             weight = carrier._easypost_convert_weight(weight)
-            shipment.update(self._prepare_parcel(0, carrier.easypost_default_packaging_id, weight, carrier.easypost_label_file_type))
+            shipment.update(self._prepare_parcel(0, carrier.easypost_default_package_type_id, weight, carrier.easypost_label_file_type))
             # Add customs info for this package.
             shipment.update(self._customs_info(0, move_lines_without_package.filtered(lambda ml: ml.product_id.type in ['product', 'consu'])))
             shipment.update(self._options(0, carrier))
@@ -190,7 +190,7 @@ class EasypostRequest():
                     weight = package.shipping_weight
                 weight = carrier._easypost_convert_weight(weight)
                 # Prepare an easypost parcel with same info than package.
-                shipment.update(self._prepare_parcel(shipment_id, package.packaging_id, weight=weight, label_format=carrier.easypost_label_file_type))
+                shipment.update(self._prepare_parcel(shipment_id, package.package_type_id, weight=weight, label_format=carrier.easypost_label_file_type))
                 # Add customs info for current shipment.
                 shipment.update(self._customs_info(shipment_id, move_lines))
                 shipment.update(self._options(shipment_id, carrier))
@@ -204,7 +204,7 @@ class EasypostRequest():
         an order). https://www.easypost.com/docs/api.html#parcels
         params:
         - Shipment_id int: The current easypost shipement.
-        - Package 'product.packaging': Used package for shipement
+        - Package 'stock.package.type': Used package for shipement
         - Weight float(oz): Product's weight contained in package
         - label_format str: Format for label to print.
         return dict: a dict with necessary keys in order to create
@@ -227,7 +227,7 @@ class EasypostRequest():
                     'order[shipments][%d][parcel][height]' % shipment_id: package.height
                 })
         else:
-            raise UserError(_('Product packaging used in pack %s is not configured for easypost.', package.display_name))
+            raise UserError(_('Package type used in pack %s is not configured for easypost.', package.display_name))
         return shipment
 
     def _customs_info(self, shipment_id, lines):

@@ -18,7 +18,7 @@
                             <field name="fedex_droppoff_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                         </group>
                         <group>
-                            <field name="fedex_default_packaging_id" attrs="{'required': [('delivery_type', '=', 'fedex')]}" domain="[('package_carrier_type', '=', 'fedex')]"/>
+                            <field name="fedex_default_package_type_id" attrs="{'required': [('delivery_type', '=', 'fedex')]}" domain="[('package_carrier_type', '=', 'fedex')]"/>
                             <field name="fedex_weight_unit" string="Package Weight Unit" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_label_stock_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_label_file_type" string="Label Format" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>

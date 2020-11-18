@@ -23,8 +23,8 @@ def _parse_html_list(root_html, class_to_match, code_carrier_name_map):
             object_by_carrier[carrier_name].append(object_node.text_content())
     return object_by_carrier
 
-def _get_product_packaging(html, code_carrier_name_map):
-    """ return a dictionary {'carrier name': [product packagings]}"""
+def _get_package_type(html, code_carrier_name_map):
+    """ return a dictionary {'carrier name': [stock package types]}"""
     return _parse_html_list(html, 'predefined-carrier-', code_carrier_name_map)
 
 def _get_service_level(html, code_carrier_name_map):
@@ -45,10 +45,10 @@ def easypost_generate_file():
     # with the parser we want to return a code with
     # {carrier name:  service name}
     code_carrier_name_map = _map_carrier_name(root_html)
-    packagings_by_carriers = _get_product_packaging(root_html, code_carrier_name_map)
+    package_types_by_carriers = _get_package_type(root_html, code_carrier_name_map)
     services_by_carriers = _get_service_level(root_html, code_carrier_name_map)
-    with open('packagings_by_carriers.json', 'w') as packagings_by_carriers_file:
-        json.dump(packagings_by_carriers, packagings_by_carriers_file)
+    with open('package_types_by_carriers.json', 'w') as package_types_by_carriers_file:
+        json.dump(package_types_by_carriers, package_types_by_carriers_file)
     with open('services_by_carriers.json', 'w') as services_by_carriers_file:
         json.dump(services_by_carriers, services_by_carriers_file)
 

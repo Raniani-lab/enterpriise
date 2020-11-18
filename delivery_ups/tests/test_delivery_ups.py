@@ -35,7 +35,7 @@ class TestDeliveryUPS(TransactionCase):
         wiz_action = picking.action_put_in_pack()
         self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
-            'delivery_packaging_id': picking.carrier_id.ups_default_packaging_id.id
+            'delivery_package_type_id': picking.carrier_id.ups_default_package_type_id.id
         })
         wiz.action_put_in_pack()
 
@@ -52,9 +52,9 @@ class TestDeliveryUPS(TransactionCase):
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
         carrier.write({'ups_default_service_type': '08',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_packaging_id.write({'height': '3',
-                                                'width': '3',
-                                                'packaging_length': '3'})
+        carrier.ups_default_package_type_id.write({'height': '3',
+                                                   'width': '3',
+                                                   'packaging_length': '3'})
 
         so_vals = {'partner_id': self.agrolait.id,
                    'order_line': [(0, None, sol_vals)]}
@@ -90,15 +90,15 @@ class TestDeliveryUPS(TransactionCase):
     def test_02_ups_multipackage_flow(self):
         SaleOrder = self.env['sale.order']
 
-        # Set packaging type = 'Pallet' and service type = 'UPS Worldwide Express Freight'
+        # Set package type = 'Pallet' and service type = 'UPS Worldwide Express Freight'
         # so in this case height, width and length required.
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
-        carrier.write({'ups_default_packaging_id': self.env.ref('delivery_ups.ups_packaging_30').id,
+        carrier.write({'ups_default_package_type_id': self.env.ref('delivery_ups.ups_packaging_30').id,
                        'ups_default_service_type': '96',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_packaging_id.write({'height': '3',
-                                                'width': '3',
-                                                'packaging_length': '3'})
+        carrier.ups_default_package_type_id.write({'height': '3',
+                                                   'width': '3',
+                                                   'packaging_length': '3'})
 
         sol_1_vals = {'product_id': self.iPadMini.id,
                       'name': "[A1232] Large Cabinet",
@@ -161,9 +161,9 @@ class TestDeliveryUPS(TransactionCase):
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
         carrier.write({'ups_default_service_type': '08',
                        'ups_package_dimension_unit': 'IN'})
-        carrier.ups_default_packaging_id.write({'height': '3',
-                                                'width': '3',
-                                                'packaging_length': '3'})
+        carrier.ups_default_package_type_id.write({'height': '3',
+                                                   'width': '3',
+                                                   'packaging_length': '3'})
 
         StockPicking = self.env['stock.picking']
 

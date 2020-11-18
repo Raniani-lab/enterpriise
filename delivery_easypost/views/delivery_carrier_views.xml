@@ -19,7 +19,7 @@
               </div>
               <field name="easypost_delivery_type" string="Carrier Type" readonly="1" attrs="{'invisible': [('easypost_delivery_type', '=', False)]}"/>
               <field
-                name="easypost_default_packaging_id" string="Default Package Type"
+                name="easypost_default_package_type_id" string="Default Package Type"
                 context="{'default_easypost_carrier': easypost_delivery_type, 'default_package_carrier_type': delivery_type}"
                 attrs="{'invisible': [('easypost_delivery_type', '=', False)], 'required': [('easypost_delivery_type', '!=', False)]}"/>
               <field name="easypost_default_service_id" context="{'default_easypost_carrier': easypost_delivery_type}" attrs="{'invisible': [('easypost_delivery_type', '=', False)]}"/>
@@ -59,10 +59,10 @@
       </page>
     </field>
   </record>
-  <record id="view_product_packaging_delivery_form_inherit_easypost" model="ir.ui.view">
-    <field name="name">product.packaging.form.delivery.inherit.easypost</field>
-    <field name="model">product.packaging</field>
-    <field name="inherit_id" ref="delivery.product_packaging_delivery_form"/>
+  <record id="view_stock_package_type_form_inherit_easypost" model="ir.ui.view">
+    <field name="name">stock.package.type.forms.inherit.easypost</field>
+    <field name="model">stock.package.type</field>
+    <field name="inherit_id" ref="stock.stock_package_type_form"/>
     <field name="arch" type="xml">
       <xpath expr="//field[@name='package_carrier_type']" position='after'>
         <field name="easypost_carrier" attrs="{'invisible': [('package_carrier_type', '!=', 'easypost')]}"/>

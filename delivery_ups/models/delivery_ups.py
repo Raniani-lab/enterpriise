@@ -35,7 +35,7 @@ class ProviderUPS(models.Model):
     ups_passwd = fields.Char(string='UPS Password', groups="base.group_system")
     ups_shipper_number = fields.Char(string='UPS Shipper Number', groups="base.group_system")
     ups_access_number = fields.Char(string='UPS Access Key', groups="base.group_system")
-    ups_default_packaging_id = fields.Many2one('product.packaging', string='UPS Package Type')
+    ups_default_package_type_id = fields.Many2one('stock.package.type', string='UPS Package Type')
     ups_default_service_type = fields.Selection(_get_ups_service_types, string="UPS Service Type", default='03')
     ups_duty_payment = fields.Selection([('SENDER', 'Sender'), ('RECIPIENT', 'Recipient')], required=True, default="RECIPIENT")
     ups_package_weight_unit = fields.Selection([('LBS', 'Pounds'), ('KGS', 'Kilograms')], default='LBS')
@@ -72,7 +72,7 @@ class ProviderUPS(models.Model):
         superself = self.sudo()
         srm = UPSRequest(self.log_xml, superself.ups_username, superself.ups_passwd, superself.ups_shipper_number, superself.ups_access_number, self.prod_environment)
         ResCurrency = self.env['res.currency']
-        max_weight = self.ups_default_packaging_id.max_weight
+        max_weight = self.ups_default_package_type_id.max_weight
         packages = []
         total_qty = 0
         total_weight = order._get_estimated_weight()
@@ -113,7 +113,7 @@ class ProviderUPS(models.Model):
         ups_service_type = self.ups_default_service_type
         result = srm.get_shipping_price(
             shipment_info=shipment_info, packages=packages, shipper=order.company_id.partner_id, ship_from=order.warehouse_id.partner_id,
-            ship_to=order.partner_shipping_id, packaging_type=self.ups_default_packaging_id.shipper_package_code, service_type=ups_service_type,
+            ship_to=order.partner_shipping_id, packaging_type=self.ups_default_package_type_id.shipper_package_code, service_type=ups_service_type,
             saturday_delivery=self.ups_saturday_delivery, cod_info=cod_info)
 
         if result.get('error_message'):
@@ -149,7 +149,7 @@ class ProviderUPS(models.Model):
             if picking.package_ids:
                 # Create all packages
                 for package in picking.package_ids:
-                    packages.append(Package(self, package.shipping_weight, quant_pack=package.packaging_id, name=package.name))
+                    packages.append(Package(self, package.shipping_weight, quant_pack=package.package_type_id, name=package.name))
                     package_names.append(package.name)
             # Create one package with the rest (the content that is not in a package)
             if picking.weight_bulk:
@@ -183,7 +183,7 @@ class ProviderUPS(models.Model):
             if check_value:
                 raise UserError(check_value)
 
-            package_type = picking.package_ids and picking.package_ids[0].packaging_id.shipper_package_code or self.ups_default_packaging_id.shipper_package_code
+            package_type = picking.package_ids and picking.package_ids[0].package_type_id.shipper_package_code or self.ups_default_package_type_id.shipper_package_code
             srm.send_shipping(
                 shipment_info=shipment_info, packages=packages, shipper=picking.company_id.partner_id, ship_from=picking.picking_type_id.warehouse_id.partner_id,
                 ship_to=picking.partner_id, packaging_type=package_type, service_type=ups_service_type, duty_payment=picking.carrier_id.ups_duty_payment,
@@ -245,7 +245,7 @@ class ProviderUPS(models.Model):
             if picking.package_ids:
                 # Create all packages
                 for package in picking.package_ids:
-                    packages.append(Package(self, package.shipping_weight, quant_pack=package.packaging_id, name=package.name))
+                    packages.append(Package(self, package.shipping_weight, quant_pack=package.package_type_id, name=package.name))
                     package_names.append(package.name)
             # Create one package with the rest (the content that is not in a package)
             if picking.weight_bulk:
@@ -283,7 +283,7 @@ class ProviderUPS(models.Model):
         if check_value:
             raise UserError(check_value)
 
-        package_type = picking.package_ids and picking.package_ids[0].packaging_id.shipper_package_code or self.ups_default_packaging_id.shipper_package_code
+        package_type = picking.package_ids and picking.package_ids[0].package_type_id.shipper_package_code or self.ups_default_package_type_id.shipper_package_code
         srm.send_shipping(
             shipment_info=shipment_info, packages=packages, shipper=picking.partner_id, ship_from=picking.partner_id,
             ship_to=picking.picking_type_id.warehouse_id.partner_id, packaging_type=package_type, service_type=ups_service_type, duty_payment='RECIPIENT', label_file_type=self.ups_label_file_type, ups_carrier_account=ups_carrier_account,

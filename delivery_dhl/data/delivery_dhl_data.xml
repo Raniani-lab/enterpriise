@@ -3,24 +3,24 @@
 <data noupdate="1">
 
     <!-- DHL Product Packagings -->
-    <record id="dhl_packaging_FLY" model="product.packaging">
+    <record id="dhl_packaging_FLY" model="stock.package.type">
         <field name="name">DHL Flyer/Smalls</field>
         <field name="shipper_package_code">FLY</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">0.23</field>
     </record>
-    <record id="dhl_packaging_COY" model="product.packaging">
+    <record id="dhl_packaging_COY" model="stock.package.type">
         <field name="name">DHL Parcels/Conveyables</field>
         <field name="shipper_package_code">COY</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">31.5</field>
     </record>
-    <record id="dhl_packaging_NCY" model="product.packaging">
+    <record id="dhl_packaging_NCY" model="stock.package.type">
         <field name="name">DHL Non-conveyables</field>
         <field name="shipper_package_code">NCY</field>
         <field name="package_carrier_type">dhl</field>
     </record>
-    <record id="dhl_packaging_PAL" model="product.packaging">
+    <record id="dhl_packaging_PAL" model="stock.package.type">
         <field name="name">DHL Pallets</field>
         <field name="shipper_package_code">PAL</field>
         <field name="height">1600</field>
@@ -29,13 +29,13 @@
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">1000</field>
     </record>
-    <record id="dhl_packaging_DBL" model="product.packaging">
+    <record id="dhl_packaging_DBL" model="stock.package.type">
         <field name="name">DHL Double Pallets</field>
         <field name="shipper_package_code">DBL</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">1000</field>
     </record>
-    <record id="dhl_packaging_BOX" model="product.packaging">
+    <record id="dhl_packaging_BOX" model="stock.package.type">
         <field name="name">DHL Box</field>
         <field name="shipper_package_code">BOX</field>
         <field name="height">409</field>
@@ -66,7 +66,7 @@
         <field name="dhl_SiteID">v62_4l4bbXq1R7</field>
         <field name="dhl_password">fQJ0pfc870</field>
         <field name="dhl_account_number">849081651</field>
-        <field name="dhl_default_packaging_id" ref="dhl_packaging_BOX"/>
+        <field name="dhl_default_package_type_id" ref="dhl_packaging_BOX"/>
     </record>
 
     <record id="product_product_delivery_dhl_intl" model="product.product">
@@ -87,7 +87,7 @@
         <field name="dhl_SiteID">v62_4l4bbXq1R7</field>
         <field name="dhl_password">fQJ0pfc870</field>
         <field name="dhl_account_number">849081651</field>
-        <field name="dhl_default_packaging_id" ref="dhl_packaging_BOX"/>
+        <field name="dhl_default_package_type_id" ref="dhl_packaging_BOX"/>
     </record>
 
 </data>

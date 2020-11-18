@@ -23,7 +23,7 @@ class Product(models.Model):
             ['barcode', 'code', 'display_name', 'uom_id', 'tracking']
         )
         packagings = self.env['product.packaging'].search_read(
-            [('barcode', '!=', None), ('product_id', '!=', None)],
+            [('barcode', '!=', None)],
             ['barcode', 'product_id', 'qty']
         )
         # for each packaging, grab the corresponding product data

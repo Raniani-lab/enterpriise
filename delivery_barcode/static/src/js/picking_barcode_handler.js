@@ -17,9 +17,9 @@ StockPickingBarcodeHandler.include({
     try_put_in_pack_delivery: function (barcode) {
         var self = this;
         var picking_id = this.view.datarecord.id;
-        var packaging_field = this.form_view.fields.delivery_packaging_ids;
-        var packaging_records = packaging_field.viewmanager.active_view.controller.records.records;
-        var pack = _.find(packaging_records, function(pck){return pck.get('barcode') === barcode});
+        var package_type_field = this.form_view.fields.delivery_package_type_ids;
+        var package_type_records = package_type_field.viewmanager.active_view.controller.records.records;
+        var pack = _.find(package_type_records, function(pck){return pck.get('barcode') === barcode});
         if (pack) {
             var pack_id = pack.attributes.id;
             return self.form_view.save()
@@ -28,7 +28,7 @@ StockPickingBarcodeHandler.include({
                 })
                 .then(function(put_in_pack_action) {
                     put_in_pack_action.context = _.extend(
-                        {'default_delivery_packaging_id': pack_id, 'active_id': picking_id},
+                        {'default_delivery_package_type_id': pack_id, 'active_id': picking_id},
                         put_in_pack_action.context || {}
                     );
                     self.open_wizard(put_in_pack_action);

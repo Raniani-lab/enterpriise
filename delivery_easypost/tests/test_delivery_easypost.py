@@ -19,7 +19,7 @@ class TestDeliveryEasypost(EasypostTestCommon):
         wiz_action = picking.action_put_in_pack()
         self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
-            'delivery_packaging_id': picking.carrier_id.easypost_default_packaging_id.id
+            'delivery_package_type_id': picking.carrier_id.easypost_default_package_type_id.id
         })
         wiz.action_put_in_pack()
 
@@ -69,7 +69,7 @@ class TestDeliveryEasypost(EasypostTestCommon):
     def test_easypost_multiple_packages_shipping(self):
         """ Same than test with one package. This
         time it will use the put in pack functionality.
-        It will send twice the default packaging with
+        It will send twice the default package type with
         2 servers and 3 mini servers.
         """
         SaleOrder = self.env['sale.order']
@@ -98,11 +98,11 @@ class TestDeliveryEasypost(EasypostTestCommon):
         picking_fedex.action_assign()
         picking_fedex.move_lines[0].write({'quantity_done': 2})
         self.wiz_put_in_pack(picking_fedex)
-        picking_fedex.move_lines[0].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
+        picking_fedex.move_lines[0].move_line_ids.result_package_id.package_type_id = self.fedex_default_package_type.id
         picking_fedex.move_lines[0].move_line_ids.result_package_id.shipping_weight = 10.0
         picking_fedex.move_lines[1].write({'quantity_done': 3})
         self.wiz_put_in_pack(picking_fedex)
-        picking_fedex.move_lines[1].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
+        picking_fedex.move_lines[1].move_line_ids.result_package_id.package_type_id = self.fedex_default_package_type.id
         picking_fedex.move_lines[1].move_line_ids.result_package_id.shipping_weight = 10.0
         self.assertGreater(picking_fedex.weight, 0.0, "Picking weight should be positive.(ep-fedex)")
         picking_fedex._action_done()

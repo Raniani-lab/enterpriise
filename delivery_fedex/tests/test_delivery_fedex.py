@@ -56,7 +56,7 @@ class TestDeliveryFedex(TransactionCase):
         wiz_action = picking.action_put_in_pack()
         self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
         wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
-            'delivery_packaging_id': picking.carrier_id.fedex_default_packaging_id.id
+            'delivery_package_type_id': picking.carrier_id.fedex_default_package_type_id.id
         })
         wiz.action_put_in_pack()
 

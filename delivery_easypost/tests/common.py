@@ -93,7 +93,7 @@ class EasypostTestCommon(TransactionCase):
         self.easypost_fedex_carrier.easypost_delivery_type = "FedEx"
         self.easypost_fedex_carrier.easypost_delivery_type_id = product_type_wizard["context"]["carrier_types"]["FedEx"]
 
-        self.fedex_default_packaging = self.env["product.packaging"].create(
+        self.fedex_default_package_type = self.env["stock.package.type"].create(
             {
                 "name": "My FedEx Box",
                 "package_carrier_type": "easypost",
@@ -103,4 +103,4 @@ class EasypostTestCommon(TransactionCase):
                 "width": 10,
             }
         )
-        self.easypost_fedex_carrier.easypost_default_packaging_id = self.fedex_default_packaging
+        self.easypost_fedex_carrier.easypost_default_package_type_id = self.fedex_default_package_type

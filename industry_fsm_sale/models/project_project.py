@@ -27,7 +27,7 @@ class Project(models.Model):
     @api.depends('is_fsm')
     def _compute_allow_quotations(self):
         for project in self:
-            project.allow_quotations = not project.is_fsm
+            project.allow_quotations = project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_allow_billable(self):

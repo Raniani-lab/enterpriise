@@ -68,8 +68,8 @@ class HrContract(models.Model):
     ip = fields.Boolean('IP', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
-    time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
-    work_time_rate = fields.Float(string='Work time rate', readonly=True, help='Work time rate versus full time working schedule.')
+    time_credit = fields.Boolean('Credit time', readonly=False, help='This is a credit time contract.')
+    work_time_rate = fields.Float(string='Work time rate', readonly=False, help='Work time rate versus full time working schedule.')
     time_credit_full_time_wage = fields.Monetary('Full Time Wage', compute='_compute_time_credit_full_time_wage',
                                                  store=True, readonly=False, default=0)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)

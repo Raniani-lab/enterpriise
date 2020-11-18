@@ -164,28 +164,34 @@ class HrContract(models.Model):
     @api.model
     def _get_private_car_reimbursed_amount(self, distance):
         # monthly train subscription amount => half is reimbursed
-        amounts_train = [
-            (0, 0.0),
-            (3, 36.0), (4, 39.5), (5, 42.5), (6, 45.0),
-            (7, 48.0), (8, 51.0), (9, 53.0), (10, 56.0),
-            (11, 59.0), (12, 62.0), (13, 64.0), (14, 67.0),
-            (15, 70.0), (16, 72.0), (17, 75.0), (18, 78.0),
-            (19, 81.0), (20, 83.0), (21, 86.0), (22, 89.0),
-            (23, 91.0), (24, 94.0), (25, 97.0), (26, 100.0),
-            (27, 102.0), (28, 105.0), (29, 108.0), (30, 110.0),
-            (33, 115.0), (36, 122.0), (39, 128.0), (42, 135.0),
-            (42, 135.0), (45, 142.0), (48, 148.0), (51, 155.0),
-            (54, 160.0), (57, 164.0), (60, 169.0), (65, 176.0),
-            (70, 183.0), (75, 191.0), (80, 199.0), (85, 207.0),
-            (90, 215.0), (95, 223.0), (100, 231.0), (105, 239.0),
-            (110, 247.0), (115, 255.0), (120, 263.0), (125, 271.0),
-            (130, 279.0), (135, 286.0), (140, 294.0), (145, 302.0),
-        ]
-
-        for distance_boundary, amount in amounts_train:
+        # Generally this is not mandatory
+        # See: https://emploi.belgique.be/fr/themes/remuneration/intervention-de-lemployeur-dans-les-frais-de-deplacement-domicile-lieu-de
+        # But this is the case for the CP200
+        # See: https://www.sfonds200.be/fonds-social/infos-sectorielles/frais-de-transport/prive-2020
+        private_car_reimbursement_scale = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'private_car_reimbursement_scale', raise_if_not_found=False)
+        if not private_car_reimbursement_scale:
+            # YTI TODO master: return 0
+            private_car_reimbursement_scale = [
+                (0, 0.0),
+                (3, 37.0), (4, 40.5), (5, 43.5), (6, 46.5),
+                (7, 49.5), (8, 52.0), (9, 55.0), (10, 58.0),
+                (11, 61.0), (12, 63.0), (13, 66.0), (14, 69.0),
+                (15, 72.0), (16, 75.0), (17, 77.0), (18, 80.0),
+                (19, 83.0), (20, 86.0), (21, 88.0), (22, 91.0),
+                (23, 94.0), (24, 97.0), (25, 100.0), (26, 102.0),
+                (27, 105.0), (28, 108.0), (29, 111.0), (30, 114.0),
+                (33, 118.0), (36, 125.0), (39, 132.0), (42, 139.0),
+                (45, 146.0), (48, 153.0), (51, 159.0), (54, 164.0),
+                (57, 169.0), (60, 174.0), (65, 181.0), (70, 189.0),
+                (75, 197.0), (80, 205.0), (85, 213.0), (90, 221.0),
+                (95, 229.0), (100, 238.0), (105, 246.0), (110, 254.0),
+                (115, 262.0), (120, 270.0), (125, 278.0), (130, 287.0),
+                (135, 295.0), (140, 303.0), (145, 311.0), (150, 322.0)]
+        for distance_boundary, amount in private_car_reimbursement_scale:
             if distance <= distance_boundary:
                 return amount / 2
-        return 313.0 / 2
+        return private_car_reimbursement_scale[-1][1] / 2
 
     @api.model
     def update_state(self):

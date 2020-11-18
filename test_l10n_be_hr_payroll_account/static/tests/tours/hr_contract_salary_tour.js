@@ -194,19 +194,19 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Change km_home_work on personal info",
             trigger: 'input[name="km_home_work"]',
-            extra_trigger: 'input[name="Gross"][value="2892.37"]',
+            extra_trigger: 'input[name="Gross"][value="2889.27"]',
             run: 'text 75',
         },
         {
             content: "Reset 150 km",
             trigger: 'input[name="km_home_work"]',
-            extra_trigger: 'input[name="Gross"][value="2934.32"]',
+            extra_trigger: 'input[name="Gross"][value="2932.26"]',
             run: 'text 150',
         },
         {
             content: "Unchoose Private Car Transportation",
             trigger: 'input[name="fold_private_car_reimbursed_amount"]',
-            extra_trigger: 'input[name="Gross"][value="2892.37"]',
+            extra_trigger: 'input[name="Gross"][value="2889.27"]',
             run: 'click',
         },
         {

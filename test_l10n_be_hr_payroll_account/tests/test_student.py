@@ -91,6 +91,6 @@ class TestStudent(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_salary_line_total('BASIC'), 586.98, places=2)
         self.assertAlmostEqual(payslip._get_salary_line_total('ONSS'), -15.91, places=2)
         self.assertAlmostEqual(payslip._get_salary_line_total('GROSS'), 571.07, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('CAR.PRIV'), 13.86, places=2)
+        self.assertAlmostEqual(payslip._get_salary_line_total('CAR.PRIV'), 14.29, places=2)
         self.assertAlmostEqual(payslip._get_salary_line_total('MEAL_V_EMP'), -6.54, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('NET'), 578.39, places=2)
+        self.assertAlmostEqual(payslip._get_salary_line_total('NET'), 578.82, places=2)

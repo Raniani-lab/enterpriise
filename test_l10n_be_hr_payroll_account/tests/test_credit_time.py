@@ -271,11 +271,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -3.27,
             'PUB.TRANS': 24.0,
-            'CAR.PRIV': 6.77,
+            'CAR.PRIV': 7.02,
             'REP.FEES': 18.46,
             'IP': 92.31,
             'IP.DED': -6.0,
-            'NET': 409.2
+            'NET': 409.44
         }
         error = []
         for code, value in payslip_results.items():
@@ -321,11 +321,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'M.ONSS': -13.5,
             'MEAL_V_EMP': -17.44,
             'PUB.TRANS': 24.0,
-            'CAR.PRIV': 35.96,
+            'CAR.PRIV': 37.27,
             'REP.FEES': 98.08,
             'IP': 530.77,
             'IP.DED': -34.58,
-            'NET': 1920.26,
+            'NET': 1921.57,
         }
 
         error = []

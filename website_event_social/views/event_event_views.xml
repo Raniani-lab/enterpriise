@@ -12,9 +12,6 @@
             <button name="action_send_push" string="Send Push" type="object"
                 groups="social.group_social_user"
                 attrs="{'invisible': ['|', ('registration_ids', '=', []), ('firebase_enable_push_notifications', '!=', True)]}"/>
-            <button name="action_send_push_reminders" string="Send Push Reminders" type="object"
-                groups="base.group_no_one"
-                attrs="{'invisible': [('firebase_enable_push_notifications', '!=', True)]}"/>
         </xpath>
     </field>
 </record>

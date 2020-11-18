@@ -45,7 +45,6 @@ class EventSocial(models.Model):
         return action
 
     def action_send_push_reminders(self):
+        # TODO awa: remove me in master and keep implementation in website_event_track_social module
         if not self.user_has_groups('social.group_social_user'):
             raise AccessError(_('You do not have access to this action.'))
-
-        self.env['social.post']._cron_publish_scheduled()

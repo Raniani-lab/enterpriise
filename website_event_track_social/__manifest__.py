@@ -15,6 +15,7 @@
         'website_event_track',
     ],
     'data': [
+        'views/event_event_views.xml',
         'views/event_track_views.xml'
     ],
     'demo': [

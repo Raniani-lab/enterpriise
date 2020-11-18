@@ -2,24 +2,23 @@
     'use strict';
 
     function _interopNamespace(e) {
-        if (e && e.__esModule) { return e; } else {
-            var n = Object.create(null);
-            if (e) {
-                Object.keys(e).forEach(function (k) {
-                    if (k !== 'default') {
-                        var d = Object.getOwnPropertyDescriptor(e, k);
-                        Object.defineProperty(n, k, d.get ? d : {
-                            enumerable: true,
-                            get: function () {
-                                return e[k];
-                            }
-                        });
-                    }
-                });
-            }
-            n['default'] = e;
-            return Object.freeze(n);
+        if (e && e.__esModule) return e;
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () {
+                            return e[k];
+                        }
+                    });
+                }
+            });
         }
+        n['default'] = e;
+        return Object.freeze(n);
     }
 
     var owl__namespace = /*#__PURE__*/_interopNamespace(owl);
@@ -919,28 +918,55 @@
      * - [3, 6, 10], 9 => 1
      * - [3, 6, 10], 42 => 2
      * - [3, 6, 10], 2 => -1
+     * - [3, undefined, 6, undefined, 10], 9 => 2
+     * - [3, 6, undefined, undefined, undefined, 10], 2 => -1
      */
     function dichotomicPredecessorSearch(range, target) {
-        const typeofTarget = typeof target;
-        let min = 0;
-        let max = range.length - 1;
-        let avg = Math.ceil((min + max) / 2);
-        let current = range[avg];
-        while (max - min > 0) {
-            if (typeofTarget === typeof current && current <= target) {
-                min = avg;
-            }
-            else {
-                max = avg - 1;
-            }
-            avg = Math.ceil((min + max) / 2);
-            current = range[avg];
-        }
-        if (target < current) {
-            // all values in the range are greater than the target, -1 is returned.
+        const targetType = typeof target;
+        let valMin;
+        let valMinIndex = undefined;
+        let indexLeft = 0;
+        let indexRight = range.length - 1;
+        if (typeof range[indexLeft] === targetType && target < range[indexLeft]) {
             return -1;
         }
-        return avg;
+        if (typeof range[indexRight] === targetType && range[indexRight] <= target) {
+            return indexRight;
+        }
+        let indexMedian;
+        let currentIndex;
+        let currentVal;
+        let currentType;
+        while (indexRight - indexLeft >= 0) {
+            indexMedian = Math.ceil((indexLeft + indexRight) / 2);
+            currentIndex = indexMedian;
+            currentVal = range[currentIndex];
+            currentType = typeof currentVal;
+            // 1 - linear search to find value with the same type
+            while (indexLeft <= currentIndex && targetType !== currentType) {
+                currentIndex--;
+                currentVal = range[currentIndex];
+                currentType = typeof currentVal;
+            }
+            // 2 - check if value match
+            if (currentType === targetType && currentVal <= target) {
+                if (valMin === undefined ||
+                    valMin < currentVal ||
+                    (valMin === currentVal && valMinIndex < currentIndex)) {
+                    valMin = currentVal;
+                    valMinIndex = currentIndex;
+                }
+            }
+            // 3 - give new indexs for the Binary search
+            if (currentType === targetType && currentVal > target) {
+                indexRight = currentIndex - 1;
+            }
+            else {
+                indexLeft = indexMedian + 1;
+            }
+        }
+        // note that valMinIndex could be 0
+        return valMinIndex !== undefined ? valMinIndex : -1;
     }
     /**
      * Perform a dichotomic search and return the index of the nearest match more than
@@ -954,27 +980,55 @@
      * - [10, 6, 3], 9 => 0
      * - [10, 6, 3], 42 => -1
      * - [10, 6, 3], 2 => 2
+     * - [10, undefined, 6, undefined, 3], 9 => 0
+     * - [10, 6, undefined, undefined, undefined, 3], 2 => 5
      */
     function dichotomicSuccessorSearch(range, target) {
-        const typeofTarget = typeof target;
-        let min = 0;
-        let max = range.length - 1;
-        let avg = Math.floor((min + max) / 2);
-        let current = range[avg];
-        while (max - min > 0) {
-            if (typeofTarget === typeof current && target >= current) {
-                max = avg;
+        const targetType = typeof target;
+        let valMax;
+        let valMaxIndex = undefined;
+        let indexLeft = 0;
+        let indexRight = range.length - 1;
+        if (typeof range[indexLeft] === targetType && target > range[indexLeft]) {
+            return -1;
+        }
+        if (typeof range[indexRight] === targetType && range[indexRight] > target) {
+            return indexRight;
+        }
+        let indexMedian;
+        let currentIndex;
+        let currentVal;
+        let currentType;
+        while (indexRight - indexLeft >= 0) {
+            indexMedian = Math.ceil((indexLeft + indexRight) / 2);
+            currentIndex = indexMedian;
+            currentVal = range[currentIndex];
+            currentType = typeof currentVal;
+            // 1 - linear search to find value with the same type
+            while (indexLeft <= currentIndex && targetType !== currentType) {
+                currentIndex--;
+                currentVal = range[currentIndex];
+                currentType = typeof currentVal;
+            }
+            // 2 - check if value match
+            if (currentType === targetType && currentVal >= target) {
+                if (valMax === undefined ||
+                    valMax > currentVal ||
+                    (valMax === currentVal && valMaxIndex > currentIndex)) {
+                    valMax = currentVal;
+                    valMaxIndex = currentIndex;
+                }
+            }
+            // 3 - give new indexs for the Binary search
+            if (currentType === targetType && currentVal <= target) {
+                indexRight = currentIndex - 1;
             }
             else {
-                min = avg + 1;
+                indexLeft = indexMedian + 1;
             }
-            avg = Math.floor((min + max) / 2);
-            current = range[avg];
         }
-        if (target > current) {
-            return avg - 1;
-        }
-        return avg;
+        // note that valMaxIndex could be 0
+        return valMaxIndex !== undefined ? valMaxIndex : -1;
     }
 
     /**
@@ -5821,8 +5875,8 @@
             const zone = toZone(range);
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
-                    const cell = this.workbook.activeSheet.rows[row].cells[col];
-                    if (cell && cell.value && !Number.isNaN(Number.parseFloat(cell.value))) {
+                    const cell = this.getters.getCell(col, row);
+                    if (cell && !Number.isNaN(Number.parseFloat(cell.value))) {
                         const r = Math.round(((rule.minimum.color >> 16) % 256) - colorDiffUnitR * (cell.value - minValue));
                         const g = Math.round(((rule.minimum.color >> 8) % 256) - colorDiffUnitG * (cell.value - minValue));
                         const b = Math.round((rule.minimum.color % 256) - colorDiffUnitB * (cell.value - minValue));
@@ -9106,11 +9160,12 @@
         addMerge(sheetId, zone) {
             const sheet = this.workbook.sheets[sheetId];
             const { left, right, top, bottom } = zone;
-            let tl = toXC(left, top);
-            let br = toXC(right, bottom);
+            const tl = toXC(left, top);
+            const br = toXC(right, bottom);
             if (tl === br) {
                 return;
             }
+            const topLeft = this.getters.getCell(left, top);
             let id = this.nextId++;
             this.history.updateState(["sheets", sheetId, "merges", id], {
                 id,
@@ -9125,10 +9180,12 @@
                 for (let col = left; col <= right; col++) {
                     const xc = toXC(col, row);
                     if (col !== left || row !== top) {
-                        this.dispatch("CLEAR_CELL", {
+                        this.dispatch("UPDATE_CELL", {
                             sheet: sheetId,
                             col,
                             row,
+                            style: topLeft ? topLeft.style : undefined,
+                            content: undefined,
                         });
                     }
                     if (sheet.mergeCellMap[xc]) {
@@ -9137,6 +9194,7 @@
                     this.history.updateState(["sheets", sheetId, "mergeCellMap", xc], id);
                 }
             }
+            this.applyBorderMerge(zone, sheetId);
             for (let m of previousMerges) {
                 const { top, bottom, left, right } = sheet.merges[m];
                 for (let r = top; r <= bottom; r++) {
@@ -9153,6 +9211,50 @@
                     }
                 }
                 this.history.updateState(["sheets", sheetId, "merges", m], undefined);
+            }
+        }
+        applyBorderMerge(zone, sheet) {
+            const { left, right, top, bottom } = zone;
+            const topLeft = this.getters.getCell(left, top);
+            const bottomRight = this.getters.getCell(right, bottom) || topLeft;
+            const bordersTopLeft = topLeft ? this.getters.getCellBorder(topLeft) : null;
+            const bordersBottomRight = (bottomRight ? this.getters.getCellBorder(bottomRight) : null) || bordersTopLeft;
+            this.dispatch("SET_FORMATTING", {
+                sheet,
+                target: [{ left, right, top, bottom }],
+                border: "clear",
+            });
+            if (bordersBottomRight && bordersBottomRight.right) {
+                const zone = [{ left: right, right, top, bottom }];
+                this.dispatch("SET_FORMATTING", {
+                    sheet,
+                    target: zone,
+                    border: "right",
+                });
+            }
+            if (bordersTopLeft && bordersTopLeft.left) {
+                const zone = [{ left, right: left, top, bottom }];
+                this.dispatch("SET_FORMATTING", {
+                    sheet,
+                    target: zone,
+                    border: "left",
+                });
+            }
+            if (bordersTopLeft && bordersTopLeft.top) {
+                const zone = [{ left, right, top, bottom: top }];
+                this.dispatch("SET_FORMATTING", {
+                    sheet,
+                    target: zone,
+                    border: "top",
+                });
+            }
+            if (bordersBottomRight && bordersBottomRight.bottom) {
+                const zone = [{ left, right, top: bottom, bottom }];
+                this.dispatch("SET_FORMATTING", {
+                    sheet,
+                    target: zone,
+                    border: "bottom",
+                });
             }
         }
         removeMerge(sheetId, zone) {
@@ -9780,16 +9882,24 @@
                 let merge = merges[id];
                 if (overlap(merge, viewport)) {
                     const refCell = cells[merge.topLeft];
+                    const bottomRight = cells[toXC(merge.right, merge.bottom)];
                     const width = cols[merge.right].end - cols[merge.left].start;
                     let text, textWidth, style, align, border;
-                    if (refCell) {
+                    if (refCell || bottomRight) {
                         text = refCell ? this.getters.getCellText(refCell) : "";
-                        textWidth = this.getters.getCellWidth(refCell);
-                        style = this.getters.getCellStyle(refCell);
+                        textWidth = refCell ? this.getters.getCellWidth(refCell) : null;
+                        style = refCell ? this.getters.getCellStyle(refCell) : null;
                         align = text
                             ? (style && style.align) || computeAlign(refCell, this.getters.shouldShowFormulas())
                             : null;
-                        border = this.getters.getCellBorder(refCell);
+                        const borderTopLeft = refCell ? this.getters.getCellBorder(refCell) : null;
+                        const borderBottomRight = bottomRight ? this.getters.getCellBorder(bottomRight) : null;
+                        border = {
+                            bottom: borderBottomRight ? borderBottomRight.bottom : null,
+                            left: borderTopLeft ? borderTopLeft.left : null,
+                            right: borderBottomRight ? borderBottomRight.right : null,
+                            top: borderTopLeft ? borderTopLeft.top : null,
+                        };
                     }
                     style = style || {};
                     // Small trick: the code that draw the background color skips the color
@@ -10463,6 +10573,7 @@
                 for (let f of sheet.figures) {
                     if (f.tag === "chart") {
                         this.outOfDate.add(f.id);
+                        this.chartFigures.add(f.id);
                     }
                 }
             }
@@ -11581,6 +11692,7 @@
         name: _lt("New sheet"),
         sequence: 60,
         action: CREATE_SHEET_ACTION,
+        separator: true,
     })
         .addChild("view_formulas", ["view"], {
         name: (env) => env.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
@@ -12178,10 +12290,10 @@
       padding: 3px 5px;
     }
     button.o-remove-selection {
+      margin-left: -30px;
       background: transparent;
       border: none;
       color: #333;
-      font-size: 17px;
       cursor: pointer;
     }
     button.o-btn {
@@ -12531,7 +12643,7 @@
                 const fontStyle = cellRule.style.italic ? "italic" : "normal";
                 const color = cellRule.style.textColor || "none";
                 const backgroundColor = cellRule.style.fillColor || "none";
-                return `font-weight:${fontWeight}
+                return `font-weight:${fontWeight};
                text-decoration:${fontDecoration};
                font-style:${fontStyle};
                color:${color};
@@ -12946,6 +13058,7 @@
          */
         autofill(apply) {
             if (!this.autofillZone || this.direction === undefined) {
+                this.tooltip = undefined;
                 return;
             }
             const source = this.getters.getSelectedZone();
@@ -13266,8 +13379,22 @@
                 x.zone.bottom < this.workbook.activeSheet.rows.length &&
                 x.zone.right < this.workbook.activeSheet.cols.length);
         }
+        /**
+         *
+         * @param ranges {"[sheet!]XC": color}
+         * @private
+         */
         removeHighlights(ranges) {
-            this.highlights = this.highlights.filter((h) => ranges[this.getters.zoneToXC(h.zone)] !== h.color);
+            const activeSheetId = this.getters.getActiveSheet();
+            const rangesBySheets = {};
+            for (let [range, color] of Object.entries(ranges)) {
+                const [xc, sheetName] = range.split("!").reverse();
+                const sheetId = this.getters.getSheetIdByName(sheetName);
+                rangesBySheets[sheetId || activeSheetId] = Object.assign({ [xc]: color }, rangesBySheets[sheetId || activeSheetId] || {});
+            }
+            const shouldBeKept = (highlight) => !(rangesBySheets[highlight.sheet] &&
+                rangesBySheets[highlight.sheet][this.getters.zoneToXC(highlight.zone)] === highlight.color);
+            this.highlights = this.highlights.filter(shouldBeKept);
         }
         /**
          * Highlight selected zones (which are not already highlighted).
@@ -13307,12 +13434,17 @@
         drawGrid(renderingContext) {
             // rendering selection highlights
             const { ctx, viewport, thinLineWidth } = renderingContext;
-            ctx.lineWidth = 3 * thinLineWidth;
-            for (let h of this.highlights.filter((highlight) => highlight.sheet === this.getters.getActiveSheet())) {
+            const sheetId = this.getters.getActiveSheet();
+            const lineWidth = 3 * thinLineWidth;
+            ctx.lineWidth = lineWidth;
+            for (let h of this.highlights.filter((highlight) => highlight.sheet === sheetId)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
-                    ctx.strokeRect(x, y, width, height);
+                    ctx.strokeRect(x + lineWidth / 2, y + lineWidth / 2, width - lineWidth, height - lineWidth);
+                    ctx.globalCompositeOperation = "source-over";
+                    ctx.fillStyle = h.color + "20";
+                    ctx.fillRect(x + lineWidth, y + lineWidth, width - 2 * lineWidth, height - 2 * lineWidth);
                 }
             }
         }
@@ -14188,7 +14320,7 @@
     //------------------------------------------------------------------------------
     const TEMPLATE$7 = xml$8 /* xml */ `
     <div>
-      <div class="o-menu" t-att-style="style" t-on-scroll="onScroll">
+      <div class="o-menu" t-att-style="style" t-on-scroll="onScroll" t-on-wheel.stop="">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
           <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
           <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
@@ -15048,7 +15180,7 @@
             }
             const el = this.composerRef.el;
             if (el.clientWidth !== el.scrollWidth) {
-                el.style.width = (el.scrollWidth + 20);
+                el.style.width = `${el.scrollWidth + 20}px`;
             }
             const content = el.childNodes.length ? el.textContent : "";
             this.dispatch("SET_CURRENT_CONTENT", { content });
@@ -15213,23 +15345,26 @@
         autoComplete(value) {
             this.saveSelection();
             if (value) {
-                if (this.tokenAtCursor && ["SYMBOL", "FUNCTION"].includes(this.tokenAtCursor.type)) {
-                    this.selectionStart = this.tokenAtCursor.start;
-                    this.selectionEnd = this.tokenAtCursor.end;
-                }
-                if (this.autoCompleteState.provider === "functions") {
-                    if (this.tokens.length && this.tokenAtCursor) {
-                        const currentTokenIndex = this.tokens.indexOf(this.tokenAtCursor);
+                if (this.tokenAtCursor) {
+                    let start = this.tokenAtCursor.end;
+                    let end = this.tokenAtCursor.end;
+                    if (["SYMBOL", "FUNCTION"].includes(this.tokenAtCursor.type)) {
+                        start = this.tokenAtCursor.start;
+                    }
+                    if (this.autoCompleteState.provider && this.tokens.length) {
+                        value += "(";
+                        const currentTokenIndex = this.tokens
+                            .map((token) => token.start)
+                            .indexOf(this.tokenAtCursor.start);
                         if (currentTokenIndex + 1 < this.tokens.length) {
                             const nextToken = this.tokens[currentTokenIndex + 1];
-                            if (nextToken.type !== "LEFT_PAREN") {
-                                value += "(";
+                            if (nextToken.type === "LEFT_PAREN") {
+                                end++;
                             }
                         }
-                        else {
-                            value += "(";
-                        }
                     }
+                    this.selectionStart = start;
+                    this.selectionEnd = end;
                 }
                 this.addText(value);
             }
@@ -17371,9 +17506,9 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
-    exports.__info__.version = '1.0.0';
-    exports.__info__.date = '2020-09-25T08:00:20.903Z';
-    exports.__info__.hash = '05dff20';
+    exports.__info__.version = "1.0.1";
+    exports.__info__.date = "2020-11-24T10:51:53.741Z";
+    exports.__info__.hash = "8ff7283";
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

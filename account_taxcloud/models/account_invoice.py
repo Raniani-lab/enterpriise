@@ -49,6 +49,12 @@ class AccountMove(models.Model):
     def _get_TaxCloudRequest(self, api_id, api_key):
         return TaxCloudRequest(api_id, api_key)
 
+    def get_taxcloud_reporting_date(self):
+        if self.invoice_date:
+            return datetime.datetime.combine(self.invoice_date, datetime.datetime.min.time())
+        else:
+            return fields.Datetime.context_timestamp(self, datetime.datetime.now())
+
     def validate_taxes_on_invoice(self):
         self.ensure_one()
         company = self.company_id
@@ -112,7 +118,7 @@ class AccountMove(models.Model):
                     line_form.tax_ids.add(tax)
 
         if self.env.context.get('taxcloud_authorize_transaction'):
-            current_date = fields.Datetime.context_timestamp(self, datetime.datetime.now())
+            reporting_date = self.get_taxcloud_reporting_date()
 
             if self.move_type == 'out_invoice':
                 request.client.service.AuthorizedWithCapture(
@@ -121,8 +127,8 @@ class AccountMove(models.Model):
                     request.customer_id,
                     request.cart_id,
                     self.id,
-                    current_date,  # DateAuthorized
-                    current_date,  # DateCaptured
+                    reporting_date,  # DateAuthorized
+                    reporting_date,  # DateCaptured
                 )
             elif self.move_type == 'out_refund':
                 request.set_invoice_items_detail(self)

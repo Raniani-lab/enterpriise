@@ -80,6 +80,7 @@ class TaxCloudRequest(object):
 
     def set_invoice_items_detail(self, invoice):
         self.customer_id = invoice.partner_id.id
+        self.taxcloud_date = invoice.get_taxcloud_reporting_date()
         self.cart_id = invoice.id
         self.cart_items = self.factory.ArrayOfCartItem()
         self.cart_items.CartItem = self._process_lines(invoice.invoice_line_ids)
@@ -117,7 +118,7 @@ class TaxCloudRequest(object):
             return formatted_response
 
         try:
-            response = self.client.service.Lookup(
+            response = self.client.service.LookupForDate(
                 self.api_login_id,
                 self.api_key,
                 customer_id,
@@ -125,7 +126,9 @@ class TaxCloudRequest(object):
                 self.cart_items,
                 self.origin,
                 self.destination,
-                False
+                False, # deliveredBySeller
+                None, # exemptCert
+                self.taxcloud_date, # useDate
             )
             formatted_response['response'] = response
             if response.ResponseType == 'OK':

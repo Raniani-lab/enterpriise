@@ -57,8 +57,8 @@ odoo.define('hr_payroll.generate.commission.payslips', function (require) {
             }).then(function() {
                 var recordID = self.model.localData[self.handle].data.id;
                 self._rpc({
-                    model: 'hr.payroll.edit.payslip.lines.wizard',
-                    method: 'recompute_lines',
+                    model: 'hr.payroll.generate.commission.payslips',
+                    method: 'import_employee_file',
                     args: [recordID],
                 }).then(function(action) {
                     self.do_action(action);

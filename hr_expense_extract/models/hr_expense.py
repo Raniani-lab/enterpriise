@@ -196,7 +196,6 @@ class HrExpense(models.Model):
 
             self.name = description_ocr
             self.date = date_ocr
-            self.unit_amount = total_ocr
             self.reference = bill_reference_ocr
             self.predicted_category = description_ocr
 
@@ -208,6 +207,9 @@ class HrExpense(models.Model):
                     '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                     ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)   
             
+            self.unit_amount = 0
+            self.total_amount = total_ocr
+
         elif result['status_code'] == NOT_READY:
             self.extract_state = 'extract_not_ready'
         else:

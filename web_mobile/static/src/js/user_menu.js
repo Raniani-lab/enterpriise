@@ -44,7 +44,7 @@ UserMenu.include({
     _onMenuShortcut: function () {
         var urlData = $.bbq.getState();
         if (urlData.menu_id) {
-            var menus = web_client.menu_data;
+            var menus = web_client.menu.menu_data;
             var menu = _.filter(menus.children, function (child) {
                 return child.id === parseInt(urlData.menu_id);
             });

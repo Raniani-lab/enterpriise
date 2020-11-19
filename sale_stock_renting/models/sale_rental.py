@@ -23,6 +23,7 @@ class RentalOrderLine(models.Model):
         super(RentalOrderLine, non_rental)._compute_qty_at_date()
         for line in (self - non_rental):
             virtual_available_at_date = 0.0
+            reservation_begin = False
             if line.product_id and line.product_id.type == "product" and line.pickup_date and line.return_date:
                 reservation_begin, reservation_end = line.product_id._unavailability_period(line.pickup_date, line.return_date)
                 rentable_qty = line.product_id.with_context(
@@ -39,9 +40,9 @@ class RentalOrderLine(models.Model):
                 )
                 virtual_available_at_date = max(rentable_qty - rented_qty_during_period, 0)
             line.virtual_available_at_date = virtual_available_at_date
-            line.scheduled_date = False
+            line.scheduled_date = reservation_begin
             line.forecast_expected_date = False
-            line.free_qty_today = False
+            line.free_qty_today = virtual_available_at_date
             line.qty_available_today = False
             line.warehouse_id = False
 

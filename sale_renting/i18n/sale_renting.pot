@@ -702,6 +702,11 @@ msgid ""
 msgstr ""
 
 #. module: sale_renting
+#: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
+msgid "Ok"
+msgstr ""
+
+#. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
 msgid ""
 "Once the quotation is confirmed, it becomes a rental order.<br> You will be "

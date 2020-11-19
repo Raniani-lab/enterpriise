@@ -209,6 +209,9 @@
             </group>
           </group>
         </sheet>
+        <footer>
+          <button type="button" string="Ok" special="cancel" class="btn-primary" close="1" />
+        </footer>
       </form>
     </field>
   </record>

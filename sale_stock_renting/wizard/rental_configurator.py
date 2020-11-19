@@ -113,7 +113,7 @@ class RentalWizard(models.TransientModel):
 
     @api.onchange('lot_ids')
     def _onchange_lot_ids(self):
-        if len(self.lot_ids) > self.quantity:
+        if self.tracking == 'serial' and self.lot_ids:
             self.quantity = len(self.lot_ids)
 
     @api.onchange('quantity')

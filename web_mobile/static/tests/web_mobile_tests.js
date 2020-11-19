@@ -460,7 +460,7 @@ QUnit.module('web_mobile', {
     QUnit.module('FieldDate');
 
     QUnit.test('date field: toggle datepicker', async function (assert) {
-        assert.expect(7);
+        assert.expect(8);
 
         mock.patch(mobile.methods, {
             requestDateTimePicker({ value, type }) {
@@ -475,7 +475,7 @@ QUnit.module('web_mobile', {
             View: FormView,
             model: 'partner',
             data: this.data,
-            arch:'<form><field name="date"/></form>',
+            arch:'<form><field name="date"/><field name="name"/></form>',
             translateParameters: {  // Avoid issues due to localization formats
                 date_format: '%m/%d/%Y',
             },
@@ -489,7 +489,15 @@ QUnit.module('web_mobile', {
         assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
             "datepicker shouldn't be opened");
         assert.verifySteps(["requestDateTimePicker"], "native datepicker should have been called");
-        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020");
+        // ensure focus has been restored to the date field
+        form.$('.o_datepicker_input').focus();
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020",
+            "should be properly formatted");
+
+        // focus another field
+        await testUtils.dom.click(form.$('.o_field_widget[name=name]').focus());
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020",
+            "shouldn't have changed after loosing focus");
 
         form.destroy();
         mock.unpatch(mobile.methods);
@@ -498,7 +506,7 @@ QUnit.module('web_mobile', {
     QUnit.module('FieldDateTime');
 
     QUnit.test('datetime field: toggle datepicker', async function (assert) {
-        assert.expect(7);
+        assert.expect(8);
 
         mock.patch(mobile.methods, {
             requestDateTimePicker({ value, type }) {
@@ -513,7 +521,7 @@ QUnit.module('web_mobile', {
             View: FormView,
             model: 'partner',
             data: this.data,
-            arch:'<form><field name="datetime"/></form>',
+            arch:'<form><field name="datetime"/><field name="name"/></form>',
             translateParameters: {  // Avoid issues due to localization formats
                 date_format: '%m/%d/%Y',
                 time_format: '%H:%M:%S',
@@ -528,7 +536,15 @@ QUnit.module('web_mobile', {
         assert.containsNone(document.body, '.bootstrap-datetimepicker-widget',
             "datepicker shouldn't be opened");
         assert.verifySteps(["requestDateTimePicker"], "native datepicker should have been called");
-        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020 12:00:00");
+        // ensure focus has been restored to the datetime field
+        form.$('.o_datepicker_input').focus();
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020 12:00:00",
+            "should be properly formatted");
+
+        // focus another field
+        await testUtils.dom.click(form.$('.o_field_widget[name=name]').focus());
+        assert.strictEqual(form.$('.o_datepicker_input').val(), "01/12/2020 12:00:00",
+            "shouldn't have changed after loosing focus");
 
         form.destroy();
         mock.unpatch(mobile.methods);

@@ -20,6 +20,8 @@ odoo.define("web_mobile.datepicker", function (require) {
                 return this._super(...arguments);
             }
             this.$input = this.$("input.o_datepicker_input");
+            // forcefully removes the library's classname to "disable" library's event listeners
+            this.$input.removeClass('datetimepicker-input')
             this._setupMobilePicker();
         },
 

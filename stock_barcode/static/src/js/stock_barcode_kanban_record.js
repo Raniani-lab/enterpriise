@@ -10,13 +10,13 @@ var StockBarcodeKanbanRecord = KanbanRecord.extend({
      */
     _openRecord: function () {
         if (this.modelName === 'stock.inventory' && this.$el.parents('.o_stock_barcode_kanban').length) {
-            this.do_action({
-                type: 'ir.actions.client',
-                tag: 'stock_barcode_inventory_client_action',
-                params: {
-                    'model': 'stock.inventory',
-                    'inventory_id': this.id,
-                }
+            this._rpc({
+                model: 'stock.inventory',
+                method: 'action_client_action',
+                args: [this.recordData.id],
+            })
+            .then((result) => {
+                this.do_action(result);
             });
         } else {
             this._super.apply(this, arguments);

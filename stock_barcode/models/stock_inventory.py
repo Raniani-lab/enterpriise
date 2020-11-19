@@ -23,6 +23,8 @@ class StockInventory(models.Model):
         """ Open the mobile view specialized in handling barcodes on mobile devices.
         """
         self.ensure_one()
+        if self.state == 'draft':
+            self.action_start()
         return {
             'type': 'ir.actions.client',
             'tag': 'stock_barcode_inventory_client_action',

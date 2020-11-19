@@ -154,8 +154,13 @@ class HrContract(models.Model):
         date_stop = datetime.combine(fields.Datetime.to_datetime(date_stop), datetime.max.time())
 
         for contract in self:
+            contract_start = fields.Datetime.to_datetime(contract.date_start)
+            contract_stop = datetime.combine(fields.Datetime.to_datetime(contract.date_end or datetime.max.date()),
+                                             datetime.max.time())
+            date_start_work_entries = max(date_start, contract_start)
+            date_stop_work_entries = min(date_stop, contract_stop)
             if force:
-                vals_list.extend(contract._get_work_entries_values(date_start, date_stop))
+                vals_list.extend(contract._get_work_entries_values(date_start_work_entries, date_stop_work_entries))
                 continue
 
             # In case the date_generated_from == date_generated_to, move it to the date_start to
@@ -167,16 +172,12 @@ class HrContract(models.Model):
                     'date_generated_to': date_start,
                 })
             # For each contract, we found each interval we must generate
-            contract_start = fields.Datetime.to_datetime(contract.date_start)
-            contract_stop = datetime.combine(fields.Datetime.to_datetime(contract.date_end or datetime.max.date()), datetime.max.time())
             last_generated_from = min(contract.date_generated_from, contract_stop)
-            date_start_work_entries = max(date_start, contract_start)
             if last_generated_from > date_start_work_entries:
                 contract.date_generated_from = date_start_work_entries
                 vals_list.extend(contract._get_work_entries_values(date_start_work_entries, last_generated_from))
 
             last_generated_to = max(contract.date_generated_to, contract_start)
-            date_stop_work_entries = min(date_stop, contract_stop)
             if last_generated_to < date_stop_work_entries:
                 contract.date_generated_to = date_stop_work_entries
                 vals_list.extend(contract._get_work_entries_values(last_generated_to, date_stop_work_entries))

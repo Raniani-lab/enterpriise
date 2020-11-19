@@ -495,7 +495,7 @@ class ReportPartnerLedger(models.AbstractModel):
         columns = [
             {'name': aml['journal_code']},
             {'name': aml['account_code']},
-            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name'])},
+            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'class': 'o_account_report_line_ellipsis'},
             {'name': date_maturity or '', 'class': 'date'},
             {'name': aml['matching_number'] or ''},
             {'name': self.format_value(cumulated_init_balance), 'class': 'number'},

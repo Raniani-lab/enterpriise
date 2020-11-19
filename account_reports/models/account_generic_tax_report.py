@@ -268,7 +268,7 @@ class generic_tax_report(models.AbstractModel):
         return move
 
     def _get_columns_name(self, options):
-        columns_header = [{}]
+        columns_header = [{'style': 'width: 100%'}]
 
         if options.get('tax_report') and not options.get('group_by'):
             columns_header.append({'name': '%s \n %s' % (_('Balance'), self.format_date(options)), 'class': 'number', 'style': 'white-space: pre;'})

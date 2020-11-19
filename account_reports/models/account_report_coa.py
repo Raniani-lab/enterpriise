@@ -29,14 +29,14 @@ class AccountChartOfAccountReport(models.AbstractModel):
     @api.model
     def _get_columns(self, options):
         header1 = [
-            {'name': '', 'style': 'width:40%'},
+            {'name': '', 'style': 'width: 100%'},
             {'name': _('Initial Balance'), 'class': 'number', 'colspan': 2},
         ] + [
             {'name': period['string'], 'class': 'number', 'colspan': 2}
             for period in reversed(options['comparison'].get('periods', []))
         ] + [
             {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
-            {'name': _('Total'), 'class': 'number', 'colspan': 2},
+            {'name': _('End Balance'), 'class': 'number', 'colspan': 2},
         ]
         header2 = [
             {'name': '', 'style': 'width:40%'},

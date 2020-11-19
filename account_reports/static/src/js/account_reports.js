@@ -16,6 +16,34 @@ var Widget = require('web.Widget');
 var QWeb = core.qweb;
 var _t = core._t;
 
+/*
+ *  Clone the table to be able to keep the header in a fixed position.
+ *  This is used as a scroll handler.
+ */
+function moveScroll(){
+    var scroll = $(".o_content").offset().top;
+    var anchor_top = $(".o_account_reports_table").offset().top;
+    var anchor_bottom = $(".js_account_report_footnotes").offset().top;
+    if (scroll > anchor_top && scroll < anchor_bottom) {
+        var clone_table = $("#table_header_clone");
+        if(clone_table.length == 0){
+            clone_table = $(".o_account_reports_table").clone();
+            clone_table.attr('id', 'table_header_clone');
+            clone_table.css({
+                top: scroll,
+                width: $(".o_account_reports_table").width(),
+            });
+            $(".table-responsive").append(clone_table);
+        }
+    } else {
+        $("#table_header_clone").remove();
+    }
+}
+function recomputeHeader() {
+    $("#table_header_clone").remove();
+    moveScroll();
+}
+
 var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
     /**
      * @constructor
@@ -189,6 +217,10 @@ var accountReportsWidget = AbstractAction.extend({
         if("default_filter_accounts" in (this.odoo_context || {}))
             this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
+    destroy: function () {
+        $(window).off('resize', recomputeHeader);
+        this._super.apply(this, arguments);
+    },
     parse_reports_informations: function(values) {
         this.report_options = values.options;
         this.odoo_context = values.context;
@@ -246,6 +278,8 @@ var accountReportsWidget = AbstractAction.extend({
     },
     render_template: function() {
         this.$('.o_content').html(this.main_html);
+        this.$('.o_content').scroll(moveScroll);
+        $(window).resize(recomputeHeader);
         this.$('.o_content').find('.o_account_reports_summary_edit').hide();
         this.$('[data-toggle="tooltip"]').tooltip();
         this._add_line_classes();
@@ -832,7 +866,7 @@ var accountReportsWidget = AbstractAction.extend({
     fold: function(line) {
         var self = this;
         var line_id = line.data('id');
-        line.find('.fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
+        line.find('.o_account_reports_caret_icon .fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
         line.toggleClass('folded');
         $(line).parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
         var $lines_to_hide = this.$el.find('tr[data-parent-id="'+line_id+'"]');
@@ -862,7 +896,7 @@ var accountReportsWidget = AbstractAction.extend({
         if ($lines_in_dom.length > 0) {
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
             $lines_in_dom.show();
-            line.find('.fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
+            line.find('.o_account_reports_caret_icon .fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
             line[0].dataset.unfolded = 'True';
             this._add_line_classes();
             return true;

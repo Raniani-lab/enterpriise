@@ -170,7 +170,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             {'name': ''}
         ] + self._apply_groups([
             {'name': _("Date"), 'class': 'date'},
-            {'name': _("Label"), 'class': 'whitespace_print o_account_report_line_ellipsis'},
+            {'name': _("Label"), 'class': 'o_account_report_line_ellipsis'},
             {'name': _("Amount Currency"), 'class': 'number'},
             {'name': _("Currency"), 'class': 'number'},
             {'name': _("Amount"), 'class': 'number'},
@@ -183,10 +183,10 @@ class AccountBankReconciliationReport(models.AbstractModel):
         report_currency = journal_currency or company_currency
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
         report_lines = []
-        
+
         if not unfolded_lines:
             return report_lines
-        
+
         line_id = unfolded_lines[0]['parent_id']
         is_unfolded = unfold_all or line_id in options['unfolded_lines']
 
@@ -211,7 +211,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             'parent_id': 'current_balance_line',
         }
         report_lines += [section_report_line] + unfolded_lines
-        
+
         if self.env.company.totals_below_sections:
             report_lines.append({
                 'id': '%s_total' % line_id,
@@ -326,7 +326,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
                 'caret_options': 'account.bank.statement',
                 'level': 3,
             }
-            
+
             residual_amount = monetary_columns[2]['no_format']
             if residual_amount > 0.0:
                 st_report_line['parent_id'] = 'plus_unreconciled_statement_lines'
@@ -340,7 +340,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             is_parent_unfolded = unfold_all or st_report_line['parent_id'] in options['unfolded_lines']
             if not is_parent_unfolded:
                 st_report_line['style'] = 'display: none;'
-        
+
         return (
             self._build_section_report_lines(options, journal, plus_report_lines, plus_total,
                 _("Including Unreconciled Bank Statement Receipts"),
@@ -380,7 +380,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
 
         # Include payments made in the future.
         options_wo_date = {**options, 'date': None}
-        
+
         tables, where_clause, where_params = self.with_company(journal.company_id)._query_get(options_wo_date, domain=[
             ('journal_id', '=', journal.id),
             ('account_id', 'in', accounts.ids),
@@ -403,7 +403,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             FROM ''' + tables + '''
             JOIN account_account account ON account.id = account_move_line.account_id
             WHERE ''' + where_clause + '''
-            GROUP BY 
+            GROUP BY
                 account_move_line.account_id,
                 account_move_line.payment_id,
                 account_move_line.currency_id,
@@ -519,7 +519,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             is_parent_unfolded = unfold_all or pay_report_line['parent_id'] in options['unfolded_lines']
             if not is_parent_unfolded:
                 pay_report_line['style'] = 'display: none;'
-        
+
         return (
             self._build_section_report_lines(options, journal, plus_report_lines, plus_total,
                 _("(+) Outstanding Receipts"),

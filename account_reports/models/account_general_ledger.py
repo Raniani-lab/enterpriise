@@ -685,9 +685,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         name = '%s %s' % (account.code, account.name)
-        max_length = self._context.get('print_mode') and 100 or 60
-        if len(name) > max_length and not self._context.get('no_format'):
-            name = name[:max_length] + '...'
         columns = [
             {'name': self.format_value(debit), 'class': 'number'},
             {'name': self.format_value(credit), 'class': 'number'},
@@ -698,9 +695,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return {
             'id': 'account_%d' % account.id,
             'name': name,
-            'title_hover': name,
             'columns': columns,
-            'level': 2,
+            'level': 1,
             'unfoldable': has_lines,
             'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
             'colspan': 4,
@@ -734,15 +730,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             caret_type = 'account.move'
 
-        if aml['ref'] and aml['name']:
-            title = '%s - %s' % (aml['name'], aml['ref'])
-        elif aml['ref']:
-            title = aml['ref']
-        elif aml['name']:
-            title = aml['name']
-        else:
-            title = ''
-
         if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
             currency = self.env['res.currency'].browse(aml['currency_id'])
         else:
@@ -750,8 +737,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
         columns = [
             {'name': format_date(self.env, aml['date']), 'class': 'date'},
-            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'title': title, 'class': 'whitespace_print o_account_report_line_ellipsis'},
-            {'name': aml['partner_name'], 'title': aml['partner_name'], 'class': 'whitespace_print'},
+            {'name': self._format_aml_name(aml['name'], aml['ref']), 'class': 'o_account_report_line_ellipsis'},
+            {'name': aml['partner_name'], 'class': 'o_account_report_line_ellipsis'},
             {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
             {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
             {'name': self.format_value(cumulated_balance), 'class': 'number'},
@@ -761,7 +748,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return {
             'id': aml['id'],
             'caret_options': caret_type,
-            'class': 'top-vertical-align',
             'parent_id': 'account_%d' % aml['account_id'],
             'name': aml['move_name'],
             'columns': columns,

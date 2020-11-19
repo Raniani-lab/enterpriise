@@ -1337,7 +1337,7 @@ class AccountReport(models.AbstractModel):
         return formatLang(self.env, amount, currency_obj=currency_id)
 
     @api.model
-    def _format_aml_name(self, line_name, move_ref, move_name):
+    def _format_aml_name(self, line_name, move_ref, move_name=None):
         ''' Format the display of an account.move.line record. As its very costly to fetch the account.move.line
         records, only line_name, move_ref, move_name are passed as parameters to deal with sql-queries more easily.
 
@@ -1347,7 +1347,7 @@ class AccountReport(models.AbstractModel):
         :return:            The formatted name of the account.move.line record.
         '''
         names = []
-        if move_name and move_name != '/':
+        if move_name is not None and move_name != '/':
             names.append(move_name)
         if move_ref and move_ref != '/':
             names.append(move_ref)

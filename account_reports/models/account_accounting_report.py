@@ -98,7 +98,7 @@ class AccountingReport(models.AbstractModel):
 
     # COLUMN/CELL FORMATTING ###################################################
     # ##########################################################################
-    def _field_column(self, field_name, sortable=False, name=None):
+    def _field_column(self, field_name, sortable=False, name=None, ellipsis=False):
         """Build a column based on a field.
 
         The type of the field determines how it is displayed.
@@ -122,9 +122,10 @@ class AccountingReport(models.AbstractModel):
                                    getter=getter,
                                    formatter=formatter,
                                    classes=classes,
+                                   ellipsis=ellipsis,
                                    sortable=sortable)
 
-    def _custom_column(self, name, getter, formatter=None, classes=None, sortable=False):
+    def _custom_column(self, name, getter, formatter=None, classes=None, sortable=False, ellipsis=False):
         """Build custom column.
 
         :return ColumnDetail: A usable column declaration to build the html
@@ -134,6 +135,8 @@ class AccountingReport(models.AbstractModel):
         classes = classes or []
         if sortable:
             classes += ['sortable']
+        if ellipsis:
+            classes += ['o_account_report_line_ellipsis']
         return ColumnDetail(name=name,
                             classes=' '.join(classes),
                             getter=getter,

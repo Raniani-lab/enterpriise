@@ -159,7 +159,6 @@ class L10nInReportAccount(models.AbstractModel):
                 gst_section_lines.append({
                     'id': groups_line.get(first_section['name']),
                     'name': groups_line.get(first_section['name']),
-                    'class': 'top-vertical-align',
                     'level': 2,
                     'colspan': 0,
                     'columns': self.set_columns(gst_section_fields, groups_line),
@@ -174,7 +173,7 @@ class L10nInReportAccount(models.AbstractModel):
                         'id': fields_value.get('id'),
                         'caret_options': 'account.move',
                         'name': fields_value.get('account_move_id')[1],
-                        'class': 'top-vertical-align o_account_reports_level2',
+                        'class': 'o_account_reports_level2',
                         'level': 1,
                         'colspan': 0,
                         'columns': self.set_columns(gst_section_fields, fields_value),

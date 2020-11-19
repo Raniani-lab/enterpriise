@@ -105,7 +105,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 move.move_type AS move_type,
                 move.name AS move_name,
                 journal.code AS journal_code,
-                account.name AS account_name,
+                account.code || ' ' || account.name AS account_name,
                 account.code AS account_code,""" + ','.join([("""
                 CASE WHEN period_table.period_index = {i}
                 THEN %(sign)s * ROUND((
@@ -165,7 +165,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             self._header_column(),
             self._field_column('report_date'),
             self._field_column('journal_code', name="Journal"),
-            self._field_column('account_name', name="Account"),
+            self._field_column('account_name', name="Account", ellipsis=True),
             self._field_column('expected_pay_date'),
             self._field_column('period0', name=_("As of: %s") % format_date(self.env, options['date']['date_to'])),
             self._field_column('period1', sortable=True),

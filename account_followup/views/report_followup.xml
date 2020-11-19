@@ -198,8 +198,6 @@
             <t t-call="web._assets_helpers"/>
             <t t-call="web._assets_bootstrap"/>
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/fonts.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_financial_report.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_report_print.scss"/>
             <link rel="stylesheet" type="text/scss" href="/account_followup/static/src/scss/account_followup_letter.scss" />
         </template>
 

@@ -27,6 +27,10 @@
     background-color: $o-view-background-color;
     color: $o-main-text-color;
 
+    .dropdown-toggle::after {
+        display: none; // disable bootstrap's carret and do it manaully for positionning
+    }
+
     padding-bottom: 125px;
     @include o-webclient-padding($top: $o-sheet-vpadding, $bottom: $o-sheet-vpadding);
     .o_account_reports_level0 {
@@ -36,7 +40,6 @@
         border-bottom-style: double;
     }
     .o_account_reports_table {
-        white-space: nowrap;
         margin-bottom: 128px;
         th.o_account_report_column_header {
             &.sortable::before {
@@ -52,6 +55,9 @@
                 content: '\f175';
                 color: black;
             }
+            &:first-child {
+                border: none;
+            }
         }
     }
     .account_report_line_name a {
@@ -63,49 +69,49 @@
     .o_reports_date_to {
         margin-left: 20px;
     }
-    .o_account_report_column_header {
-        padding-left: 8px;
-        padding-right: 8px;
-    }
     .o_account_report_line {
-        white-space: nowrap;
+        span {
+            white-space: nowrap;
+        }
         position: relative;
     }
     // truncate span content and ad '...' if content width > span width
-    .o_account_report_line_ellipsis {
+    .o_account_report_line_ellipsis, .o_account_report_name_ellipsis{
         position: relative;
-        width: 100%;
         span {
-            margin-left: 8px;
-            margin-right: 8px;
+            position: absolute;
         }
-    }
-    .o_account_report_line_ellipsis:nth-child(n+2):before {
-        content: '&nbsp;';
-        visibility: hidden;
-    }
-    .o_account_report_line_ellipsis span {
-        position: absolute;
-        left: 0;
-        right: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        > span, span[class^="o_account_reports_domain_line_"] {
+            left: 0;
+            right: 0;
+            top: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
     .o_account_report_name_ellipsis {
-        position: relative;
-        width: 100%;
-        span {
-            margin-right: 8px;
-        }
+        min-width: 200px;
+        max-width: 50%;
     }
-    .o_account_report_name_ellipsis span {
-        position: absolute;
-        left: 0;
-        right: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .ellipsis_width {
+        height: 0 !important;
+        position: relative !important;
+        white-space: initial !important;
+        display: inline-block !important;
+        visibility: hidden;
+    }
+
+    tr:focus {
+        outline: none;
+
+        .o_account_report_line_ellipsis, .o_account_report_name_ellipsis {
+            span {
+                white-space: initial;
+                overflow: initial;
+                z-index: 1;
+            }
+        }
     }
     // ----------------------------------------------------------------
     .o_account_report_summary {
@@ -135,12 +141,20 @@
         display: none;
     }
     .o_account_reports_table {
+        &#table_header_clone {
+            position: fixed;
+            tbody {
+                visibility: collapse;
+                tr {
+                    border: none;
+                }
+            }
+        }
 
         width: 100%;
 
         .number {
             text-align: right;
-            width: 6%;
         }
         .text {
             text-align: left;
@@ -149,6 +163,9 @@
             text-align: center;
         }
         th{
+            background-color: white;
+            background-clip: padding-box;
+            border: 1px solid #e6e6e6;
             .subtitle{
                 font-weight:normal;
             }
@@ -191,7 +208,7 @@
         padding-left: 8px;
         padding-right: 8px;
     }
-    .top-vertical-align {
+    table > tbody > tr >  td{
         vertical-align: top;
     }
     .o_account_reports_summary {
@@ -318,133 +335,70 @@
     td.o_foldable_total {
         font-weight: bold;
     }
+    @mixin report_level($indent) {
+        border-bottom: 1px solid #eee;
+        > td.o_account_report_line_indent > span:last-child {
+            margin-left: ($indent + 1) * 10px;
+        }
+        &.total {
+            > td > span:last-child {
+                margin-left: $indent * 10px;
+            }
+        }
+    }
     .o_account_reports_level0 {
         & td {
             padding-top: 32px;
+            span {
+                top: unset;
+            }
         }
         > td.o_account_report_line_indent.o_foldable_total > span:last-child {
             margin-left: 10px;
         }
     }
     .o_account_reports_level1 {
-        border-width: 2px;
-        border-color: #bbb;
-        border-bottom-style: solid;
+        @include report_level(1);
         font-weight: bold;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 10px;
-        }
-        &.total {
-            > td > span:last-child {
-                margin-left: 0px;
-            }
-        }
+        border-bottom: 2px solid #bbb;
     }
     .o_account_reports_level2 {
-        border-bottom: 1px solid #bbb;
+        @include report_level(2);
         font-weight: bold;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 20px;
-        }
-        &.total {
-            > td > span:last-child {
-                margin-left: 10px;
-            }
-        }
+        border-bottom: 1px solid #bbb;
     }
     .o_account_reports_level3 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 30px;
-        }
-        &.total {
-            > td.o_account_report_line_indent > span:last-child {
-                margin-left: 20px;
-            }
-        }
+        @include report_level(3);
     }
     .o_account_reports_level4 {
-        .o_account_reports_caret_icon {
-            margin-left: 20px;
-        }
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 40px;
-        }
-        &.total {
-            > td.o_account_report_line_indent > span:last-child {
-                margin-left: 30px;
-            }
-        }
+        @include report_level(4);
     }
     .o_account_reports_level5 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 50px;
-        }
-        &.total {
-            > td.o_account_report_line_indent > span:last-child {
-                margin-left: 40px;
-            }
-        }
+        @include report_level(5);
     }
     .o_account_reports_level6 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 60px;
-        }
-        &.total {
-            > td.o_account_report_line_indent > span:last-child {
-                margin-left: 50px;
-            }
-        }
+        @include report_level(6);
     }
     .o_account_reports_level7 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 70px;
-        }
-        &.total {
-            > td.o_account_report_line_indent > span:last-child {
-                margin-left: 60px;
-            }
-        }
+        @include report_level(7);
     }
     .o_account_reports_level8 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 80px;
-        }
+        @include report_level(8);
     }
     .o_account_reports_level9 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 90px;
-        }
+        @include report_level(9);
     }
     .o_account_reports_level10 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 100px;
-        }
+        @include report_level(10);
     }
     .o_account_reports_level11 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 110px;
-        }
+        @include report_level(11);
     }
     .o_account_reports_level12 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 120px;
-        }
+        @include report_level(12);
     }
     .o_account_reports_level13 {
-        border-bottom: 1px solid #eee;
-        > td.o_account_report_line_indent > span:last-child {
-            margin-left: 130px;
-        }
+        @include report_level(13);
     }
     .o_account_reports_default_style {
         border-bottom: 1px solid #eee;
@@ -480,7 +434,12 @@
     .o_account_coa_column_contrast td:nth-child(4n-2),
     td.o_account_coa_column_contrast:nth-child(4n-1),
     td.o_account_coa_column_contrast:nth-child(4n-2) {
-        background-color: #F8F8F8;
+        background-color: #FAFAFA;
+        background-clip: padding-box;
+    }
+    .table-hover tbody tr:hover td {
+        background-color: #F0F0F0;
+        background-clip: padding-box;
     }
 }
 

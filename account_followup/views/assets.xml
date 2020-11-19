@@ -8,7 +8,6 @@
                 <script type="text/javascript" src="/account_followup/static/src/js/followup_form_model.js"></script>
                 <script type="text/javascript" src="/account_followup/static/src/js/followup_form_renderer.js"></script>
                 <script type="text/javascript" src="/account_followup/static/src/js/followup_form_controller.js"></script>
-                <link rel="stylesheet" type="text/scss" href="/account_reports/static/src/scss/account_financial_report.scss"/>
                 <link rel="stylesheet" type="text/scss" href="/account_followup/static/src/scss/account_followup_report.scss"/>
             </xpath>
         </template>

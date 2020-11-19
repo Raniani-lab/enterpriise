@@ -8,8 +8,8 @@ var PrinterProxy = require('pos_iot.Printer');
 
 models.load_fields("res.users", "lang");
 models.load_fields("pos.payment.method", "iot_device_id");
-models.register_payment_method('ingenico', PaymentIOT);
-
+models.register_payment_method('ingenico', PaymentIOT.PaymentIngenico);
+models.register_payment_method('worldline', PaymentIOT.PaymentWorldline);
 models.load_models([{
     model: 'iot.device',
     fields: ['iot_ip', 'iot_id', 'identifier', 'type', 'manual_measurement'],

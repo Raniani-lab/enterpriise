@@ -15,7 +15,15 @@ IoTLongpolling.include({
             url: url,
         });
         posmodel.proxy.proxy_connection_status(url, false);
+
+        if (posmodel.get_order().selected_paymentline &&
+            posmodel.get_order().selected_paymentline.payment_method.use_payment_terminal === 'worldline' &&
+            ['waiting', 'waitingCard', 'waitingCancel'].includes(posmodel.get_order().selected_paymentline.payment_status)) {
+
+            posmodel.get_order().selected_paymentline.set_payment_status('force_done');
+        }
     },
+
     _onSuccess: function (iot_ip, result) {
         posmodel.proxy.proxy_connection_status(iot_ip, true);
         return this._super.apply(this, arguments);
@@ -30,4 +38,7 @@ IoTLongpolling.include({
         return res;
     },
 });
+
+return IoTLongpolling;
+
 });

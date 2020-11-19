@@ -9,6 +9,8 @@
                 <field name="payment_terminal_ids" invisible="1"/>
                 <field name="iot_device_id" domain="[('id', 'in', payment_terminal_ids)]"
                     attrs="{'invisible': [('use_payment_terminal', '!=', 'ingenico')], 'required': [('use_payment_terminal', '=', 'ingenico')]}"/>
+                <field name="iot_device_id" domain="[('id', 'in', payment_terminal_ids)]"
+                    attrs="{'invisible': [('use_payment_terminal', '!=', 'worldline')], 'required': [('use_payment_terminal', '=', 'worldline')]}"/>
             </xpath>
         </field>
     </record>

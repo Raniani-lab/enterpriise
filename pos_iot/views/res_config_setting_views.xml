@@ -18,6 +18,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-6 o_setting_box" title="The transactions are processed by Worldline. Set your Worldline device on the related payment method.">
+                    <div class="o_setting_left_pane">
+                        <field name="worldline_payment_terminal"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="worldline_payment_terminal" string="Worldline"/>
+                        <div class="text-muted">
+                            Accept payments with a Worldline payment terminal
+                        </div>
+                    </div>
+                </div>
             </div>
         </field>
     </record>

@@ -12,6 +12,8 @@ class PoSPaymentMethod(models.Model):
         selection_list = super(PoSPaymentMethod, self)._get_payment_terminal_selection()
         if self.env['ir.config_parameter'].sudo().get_param('pos_iot.ingenico_payment_terminal'):
             selection_list.append(('ingenico', 'Ingenico'))
+        elif self.env['ir.config_parameter'].sudo().get_param('pos_iot.worldline_payment_terminal'):
+            selection_list.append(('worldline', 'Worldline'))
         return selection_list
 
     @api.onchange('use_payment_terminal')
@@ -25,4 +27,6 @@ class PoSPaymentMethod(models.Model):
             domain = [('type', '=', 'payment')]
             if payment_method.use_payment_terminal == 'ingenico':
                 domain.append(('manufacturer', '=', 'Ingenico'))
+            elif payment_method.use_payment_terminal == 'worldline':
+                domain.append(('manufacturer', '=', 'Worldline'))
             payment_method.payment_terminal_ids = self.env['iot.device'].search(domain)

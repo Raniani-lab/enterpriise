@@ -8,33 +8,35 @@ const { Gui } = require('point_of_sale.Gui');
 var _t = core._t;
 
 var PaymentIOT = PaymentInterface.extend({
+    get_terminal() {
+        return this.payment_method.terminal_proxy;
+    },
+
     send_payment_request: function (cid) {
         var self = this;
         this._super.apply(this, this.arguments);
-        var paymentline = this.pos.get_order().get_paymentline(cid)
-        var terminal_proxy = paymentline.payment_method.terminal_proxy
-        if (!terminal_proxy) {
-            this._showErrorConfig();
-            return Promise.resolve(false);
-        }
 
-        this.terminal = terminal_proxy;
+        return new Promise(function (resolve) {
+            self._waitingResponse = self._waitingPayment;
+            self.get_terminal().add_listener(self._onValueChange.bind(self, resolve, self.pos.get_order()));
+            self._send_request(self.get_payment_data(cid));
+        });
+    },
 
-        var data = {
+    get_payment_data: function (cid) {
+        var paymentline = this.pos.get_order().get_paymentline(cid);
+        return {
             messageType: 'Transaction',
             TransactionID: parseInt(this.pos.get_order().uid.replace(/-/g, '')),
             cid: cid,
             amount: Math.round(paymentline.amount*100),
         };
-        return new Promise(function (resolve) {
-            self._waitingResponse = self._waitingPayment;
-            self.terminal.add_listener(self._onValueChange.bind(self, resolve, self.pos.get_order()));
-            self._send_request(data);
-        });
     },
+
     send_payment_cancel: function (order, cid) {
         var self = this;
-        if (this.terminal) {
+        var terminal = this.get_terminal();
+        if (terminal) {
             this._super.apply(this, this.arguments);
             var data = {
                 messageType: 'Cancel',
@@ -42,7 +44,7 @@ var PaymentIOT = PaymentInterface.extend({
             };
             return new Promise(function (resolve) {
                 self._waitingResponse = self._waitingCancel;
-                self.terminal.add_listener(self._onValueChange.bind(self, resolve, order));
+                terminal.add_listener(self._onValueChange.bind(self, resolve, order));
                 self._send_request(data);
             });
         }
@@ -52,7 +54,7 @@ var PaymentIOT = PaymentInterface.extend({
     // extra private methods
     _send_request: function (data) {
         var self = this;
-        this.terminal.action(data)
+        this.get_terminal().action(data)
             .then(self._onActionResult.bind(self))
             .guardedCatch(self._onActionFail.bind(self));
     },
@@ -89,10 +91,10 @@ var PaymentIOT = PaymentInterface.extend({
                 'title': _t('Payment terminal error'),
                 'body':  _t(data.Error),
             });
-            this.terminal.remove_listener();
+            this.get_terminal().remove_listener();
             resolve(false);
         } else if (data.Response === 'Approved') {
-            this.terminal.remove_listener();
+            this.get_terminal().remove_listener();
             resolve(true);
         } else if (['WaitingForCard', 'WaitingForPin'].includes(data.Stage)) {
             line.set_payment_status('waitingCard');
@@ -101,10 +103,10 @@ var PaymentIOT = PaymentInterface.extend({
 
     _waitingCancel: function (resolve, data) {
         if (['Finished', 'None'].includes(data.Stage)) {
-            this.terminal.remove_listener();
+            this.get_terminal().remove_listener();
             resolve(true);
         } else if (data.Error) {
-            this.terminal.remove_listener();
+            this.get_terminal().remove_listener();
             resolve(true);
         }
     },
@@ -131,5 +133,63 @@ var PaymentIOT = PaymentInterface.extend({
         }
     },
 });
-return PaymentIOT;
+
+var PaymentWorldline = PaymentIOT.extend({
+    send_payment_cancel: function (order, cid) {
+        if (this.get_terminal()) {
+            this._send_request({ messageType: 'Cancel' });
+        }
+
+        return new Promise((resolve) => {
+            this.cancel_resolve = resolve;
+        });
+    },
+
+    send_payment_request: function (cid) {
+        var paymentline = this.pos.get_order().get_paymentline(cid);
+        paymentline.transaction_id = Math.floor(Math.random() * Math.pow(2, 32)); // 4 random bytes
+        return this._super.apply(this, arguments);
+    },
+
+    get_payment_data: function (cid) {
+        var data = this._super.apply(this, arguments);
+        data.actionIdentifier = this.pos.get_order().get_paymentline(cid).transaction_id;
+        return data;
+    },
+
+    _waitingPayment: function (resolve, data, line) {
+        if (data.Stage == 'Cancel') {
+            // Result of a cancel request
+            if (data.Error) {
+                // Cancel failed, wait for transaction response
+                this.cancel_resolve(false);
+                line.set_payment_status('waitingCard');
+                Gui.showPopup('ErrorPopup', {
+                    'title': _t('Transaction could not be cancelled'),
+                    'body':  data.Error,
+                });
+            } else {
+                this.get_terminal().remove_listener();
+                this.cancel_resolve(true);
+                resolve(false);
+            }
+        } else if (data.Disconnected) {
+            // Terminal disconnected
+            line.set_payment_status('force_done');
+            Gui.showPopup('ErrorPopup', {
+                'title': _t('Terminal Disconnected'),
+                'body':  _t('Please check the network connection and then check the status of the last transaction manually.'),
+            });
+        } else if (line.payment_status !== 'retry') {
+            // Result of a transaction
+            return this._super.apply(this, arguments);
+        }
+    },
+});
+
+
+return {
+    PaymentIngenico: PaymentIOT,
+    PaymentWorldline: PaymentWorldline,
+};
 });

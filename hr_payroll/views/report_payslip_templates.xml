@@ -4,6 +4,7 @@
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
             <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.employee_id.address_home_id.lang or o.env.lang)"/>
                 <div class="page">
                     <h2 t-field="o.name"/>
                     <t t-set="is_invalid" t-value="o._is_invalid()"/>
@@ -119,6 +120,14 @@
                     <p class="text-center">Made by Odoo</p>
                 </div>
             </t>
+        </t>
+    </t>
+</template>
+
+<template id="report_payslip_lang">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="hr_payroll.report_payslip" t-lang="o.employee_id.address_home_id.lang"/>
         </t>
     </t>
 </template>

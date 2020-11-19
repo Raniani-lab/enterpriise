@@ -16,7 +16,7 @@ class TestPayrollCommon(SavepointCase):
         cls.belgian_company = cls.env.ref('l10n_be_hr_payroll.res_company_be')
 
         cls.env.user.company_ids |= cls.belgian_company
-        cls.env.company = cls.belgian_company
+        cls.env = cls.env(context=dict(cls.env.context, allowed_company_ids=cls.belgian_company.ids))
 
         cls.holiday_leave_types = cls.env['hr.leave.type'].create([{
             'name': 'Paid Time Off %s' % year,

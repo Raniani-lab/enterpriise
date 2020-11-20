@@ -21,7 +21,8 @@ class AccountPayment(models.Model):
 
     @api.constrains('payment_method_id', 'journal_id')
     def _check_sepa_bank_account(self):
+        sepa_payment_method = self.env.ref('account_sepa.account_payment_method_sepa_ct')
         for rec in self:
-            if rec.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
+            if rec.payment_method_id == sepa_payment_method:
                 if not rec.journal_id.bank_account_id or not rec.journal_id.bank_account_id.acc_type == 'iban':
                     raise ValidationError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.", rec.journal_id.name))

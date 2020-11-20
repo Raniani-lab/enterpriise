@@ -213,7 +213,7 @@ class MarketingActivity(models.Model):
 
     @api.constrains('parent_id')
     def _check_parent_id(self):
-        if any(not activity._check_recursion() for activity in self):
+        if not self._check_recursion():
             raise ValidationError(_("Error! You can't create recursive hierarchy of Activity."))
 
     @api.model

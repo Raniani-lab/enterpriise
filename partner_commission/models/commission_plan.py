@@ -66,12 +66,6 @@ class CommissionRule(models.Model):
         ('check_rate', 'CHECK(rate >= 0 AND rate <= 100)', 'Rate should be between 0 and 100.'),
     ]
 
-    @api.constrains('rate')
-    def _check_rate(self):
-        for rule in self:
-            if rule.rate < 0 or rule.rate > 100:
-                raise ValidationError(_('Rate should be between 0 and 100'))
-
     @api.constrains('product_id', 'category_id')
     def _check_product_category(self):
         for rule in self:

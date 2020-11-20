@@ -129,5 +129,6 @@ class RentalWizard(models.TransientModel):
 
     @api.constrains('product_id', 'rental_order_line_id')
     def _pickedup_product_no_change(self):
-        if self.rental_order_line_id and self.product_id != self.rental_order_line_id.product_id and self.rental_order_line_id.qty_delivered > 0:
-            raise ValidationError(_("You cannot change the product of a picked-up line."))
+        for wizard in self:
+            if wizard.rental_order_line_id and wizard.product_id != wizard.rental_order_line_id.product_id and wizard.rental_order_line_id.qty_delivered > 0:
+                raise ValidationError(_("You cannot change the product of a picked-up line."))

@@ -128,6 +128,15 @@ class MarketingCampaign(models.Model):
 
         return new_compaign
 
+    @api.onchange('model_id')
+    def _onchange_model_id(self):
+        if any(campaign.marketing_activity_ids for campaign in self):
+            return {'warning': {
+                'title': _("Warning"),
+                'message': _("Switching Target Model invalidates the existing activities. "
+                             "Either update your activity actions to match the new Target Model or delete them.")
+            }}
+
     def action_set_synchronized(self):
         self.write({'last_sync_date': Datetime.now()})
         self.mapped('marketing_activity_ids').write({'require_sync': False})

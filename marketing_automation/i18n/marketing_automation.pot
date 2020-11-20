@@ -1362,6 +1362,12 @@ msgid "Success"
 msgstr ""
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:81
+#, python-format
+msgid "Switching Target Model invalidates the existing activities. Either update your activity actions to match the new Target Model or delete them."
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__require_sync
 msgid "Sync of participants is required"
 msgstr ""
@@ -1532,6 +1538,12 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_type
 msgid "Validity Duration Type"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:80
+#, python-format
+msgid "Warning"
 msgstr ""
 
 #. module: marketing_automation

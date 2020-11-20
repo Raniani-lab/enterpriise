@@ -21,6 +21,12 @@ class ProjectOverview(models.Model):
         values.update({'with_forecasts': any(self.mapped('allow_forecast'))})
         return values
 
+    def _plan_get_employee_ids(self):
+        employee_ids = self.env['planning.slot'].sudo().read_group([('project_id', 'in', self.ids), ('employee_id', '!=', False)], ['employee_id'], ['employee_id'])
+        employee_ids = [e['employee_id'][0] for e in employee_ids]
+        employee_ids.extend(super(ProjectOverview, self)._plan_get_employee_ids())
+        return employee_ids
+
     def _table_get_line_values(self, employees=None):
         result = super(ProjectOverview, self)._table_get_line_values(employees)
 

@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="account.view_account_payment_search"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='company_id']" position="after">
-                    <filter string="SCT Payments To Send" domain="[('payment_method_id.code', '=', 'sepa_ct'), ('state', '=', 'posted')]" name="sepa_to_send"/>
+                    <filter string="SCT Payments To Send" domain="[('payment_method_id.code', '=', 'sepa_ct'), ('state', '=', 'posted'), ('is_move_sent', '=', False)]" name="sepa_to_send"/>
                     <separator/>
                 </xpath>
             </field>

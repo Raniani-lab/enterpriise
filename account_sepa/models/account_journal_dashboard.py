@@ -9,7 +9,8 @@ class account_journal(models.Model):
         domain_sepa_ct_to_send = [
             ('journal_id', '=', self.id),
             ('payment_method_id.code', '=', 'sepa_ct'),
-            ('state','=','posted')
+            ('state', '=', 'posted'),
+            ('is_move_sent','=', False),
         ]
         return dict(
             super(account_journal, self).get_journal_dashboard_datas(),

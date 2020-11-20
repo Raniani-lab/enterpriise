@@ -144,6 +144,9 @@ class Payslip(models.Model):
             # YTI TODO master: This condition could be dropped (fix in stable release)
             if not after_contract_public_holiday_type:
                 return res
+            # If the contract is followed by another one (eg. after an appraisal)
+            if self.contract_id.employee_id.contract_ids.filtered(lambda c: c.state in ['open', 'close'] and c.date_start > self.contract_id.date_end):
+                return res
             public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday')
             public_leaves = self.contract_id.resource_calendar_id.global_leave_ids.filtered(
                 lambda l: l.work_entry_type_id == public_holiday_type)
@@ -154,7 +157,7 @@ class Payslip(models.Model):
             # If less than 1 month of occupation -> payment of the time off occurring within 15 days after contract.
             # Occupation = duration since the start of the contract, from date to date
             public_leaves = public_leaves.filtered(
-                lambda l: (self.contract_id.date_end - l.date_from.date()).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= l.date_from.date() else 15))  
+                lambda l: (l.date_from.date() - self.contract_id.date_end).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= self.contract_id.date_end else 15))  
             if public_leaves:
                 res.append({
                     'sequence': after_contract_public_holiday_type.sequence,

@@ -88,6 +88,11 @@
                     ('is_fsm', '=?', context.get('fsm_mode'))
                 ]</attribute>
             </field>
+            <field name="partner_phone" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('partner_id', '=', False), ('is_fsm', '=', False)]}
+                </attribute>
+            </field>
         </field>
     </record>
 

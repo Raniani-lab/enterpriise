@@ -107,9 +107,9 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             tax = extract_response['results'][0]['invoice_lines'][i]['taxes']['selected_values'][0]
             if tax['content'] == 0:
                 self.assertEqual(len(invoice_line.tax_ids), 0)
-            elif tax['content'] == 21:
+            else:
                 self.assertEqual(len(invoice_line.tax_ids), 1)
-                self.assertEqual(invoice_line.tax_ids[0].amount, 15)
+                self.assertEqual(invoice_line.tax_ids[0].amount, tax['content'])
                 self.assertEqual(invoice_line.tax_ids[0].amount_type, 'percent')
             self.assertEqual(invoice_line.price_subtotal, extract_response['results'][0]['invoice_lines'][i]['subtotal']['selected_value']['content'])
             self.assertEqual(invoice_line.price_total, extract_response['results'][0]['invoice_lines'][i]['total']['selected_value']['content'])
@@ -125,7 +125,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
         self.assertEqual(len(invoice.invoice_line_ids), 2)
 
-        # line 1 and 3 should be merged as they both have a 21% tax
+        # line 1 and 3 should be merged as they both have a 15% tax
         self.assertEqual(invoice.invoice_line_ids[0].name, "Test 1\nTest 3")
         self.assertEqual(invoice.invoice_line_ids[0].price_unit, 200)
         self.assertEqual(invoice.invoice_line_ids[0].quantity, 1)

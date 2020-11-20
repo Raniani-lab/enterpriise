@@ -75,7 +75,7 @@ odoo.define("documents_spreadsheet.pivot_side_panel", function (require) {
         getPivotName(pivot) {
             if (pivot && pivot.cache) {
                 const modelName = pivot.cache.getModelLabel();
-                return sprintf(_t("%s (#%s)"), modelName, pivot && pivot.id);
+                return sprintf("%s (#%s)", modelName, pivot && pivot.id);
             }
         }
 

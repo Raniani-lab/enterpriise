@@ -60,13 +60,6 @@ msgid "${number} Rows below"
 msgstr ""
 
 #. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
-#, python-format
-msgid "%s (#%s)"
-msgstr ""
-
-#. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #, python-format
 msgid "%s (copy)"

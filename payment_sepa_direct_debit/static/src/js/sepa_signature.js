@@ -61,6 +61,23 @@ var SepaSignatureForm = SignatureForm.extend({
             options.nameAndSignatureOptions || {});
     },
     /**
+     * @override: Correctly set up the signature area if it is inside a modal
+     */
+    start: function() {
+        var self = this;
+        var hasBeenReset = false;
+
+        this.$el.closest('.modal').on('shown.bs.modal', function() {
+            if(!hasBeenReset) {
+                // Reset it only the first time it is open to get correct
+                // size. After we want to keep its content on reopen.
+                hasBeenReset = true;
+                self.nameAndSignature.resetSignature();
+            }
+        });
+        return this._super.apply(this, arguments);
+    },
+    /**
      *  Return the signature fields content to be used outside of the widget
      */
     _getValues: function () {

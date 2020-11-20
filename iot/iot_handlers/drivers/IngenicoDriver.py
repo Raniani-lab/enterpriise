@@ -354,6 +354,17 @@ class OutgoingIngenicoMessage(IngenicoMessage):
             return b'\x00' * toAdd + msg
         return msg
 
+    @staticmethod
+    def _getCRC32(msg):
+        """Return the crc for the specified message as a bytestring.
+
+        The result will always be 4 bytes long.
+
+        Args:
+            msg (b): the message to calculate the CRC for
+        """
+        return unhexlify('{:08x}'.format(crc32(msg)))
+
     @classmethod
     def _generateTag(cls, tagName, content):
         """Return formatted tag with tag identifier + length + content.
@@ -464,7 +475,7 @@ class OutgoingIngenicoMessage(IngenicoMessage):
         Args:
             innerBody (b): formatted body excluding body-tag and length.
         """
-        return self._generateTag("Mdc", unhexlify('{:02x}'.format(crc32(innerBody))))
+        return self._generateTag("Mdc", self._getCRC32(innerBody))
 
     def _generateBody(self, messageTypeId):
         """Return formatted body and Modification Detection Code.

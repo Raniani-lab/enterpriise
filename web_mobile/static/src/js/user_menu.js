@@ -1,31 +1,27 @@
 odoo.define('web_mobile.user_menu', function (require) {
 "use strict";
 
-var core = require('web.core');
-var UserMenu = require('web.UserMenu');
-var web_client = require('web.web_client');
 
+const { _t } = require('web.core');
 const mobile = require('web_mobile.core');
-
-var _t = core._t;
+const UserMenu = require('web.UserMenu');
+const webClient = require('web.web_client');
 
 // Hide the logout link in mobile
 UserMenu.include({
     /**
      * @override
      */
-    start: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (mobile.methods.switchAccount) {
-                self.$('a[data-menu="logout"]').addClass('d-none');
-                self.$('a[data-menu="account"]').addClass('d-none');
-                self.$('a[data-menu="switch"]').removeClass('d-none');
-            }
-            if (mobile.methods.addHomeShortcut) {
-                self.$('a[data-menu="shortcut"]').removeClass('d-none');
-            }
-        });
+    async start() {
+        await this._super(...arguments);
+        if (mobile.methods.switchAccount) {
+            this.el.querySelector('a[data-menu="logout"]').classList.add('d-none');
+            this.el.querySelector('a[data-menu="account"]').classList.add('d-none');
+            this.el.querySelector('a[data-menu="switch"]').classList.remove('d-none');
+        }
+        if (mobile.methods.addHomeShortcut) {
+            this.el.querySelector('a[data-menu="shortcut"]').classList.remove('d-none');
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -35,30 +31,27 @@ UserMenu.include({
     /**
      * @private
      */
-    _onMenuSwitch: function () {
+    _onMenuSwitch() {
         mobile.methods.switchAccount();
     },
     /**
      * @private
      */
-    _onMenuShortcut: function () {
-        var urlData = $.bbq.getState();
-        if (urlData.menu_id) {
-            var menus = web_client.menu.menu_data;
-            var menu = _.filter(menus.children, function (child) {
-                return child.id === parseInt(urlData.menu_id);
-            });
+    _onMenuShortcut() {
+        const { menu_id } = $.bbq.getState();
+        if (menu_id) {
+            const menu = webClient.menu.menu_data.children.find(child => child.id === parseInt(menu_id));
             mobile.methods.addHomeShortcut({
-                'title': document.title,
-                'shortcut_url': document.URL,
-                'web_icon': menu && menu[0].web_icon_data
+                title: document.title,
+                shortcut_url: document.URL,
+                web_icon: menu && menu.web_icon_data,
             });
-         } else {
-             mobile.methods.showToast({
-                 "message": _t("No shortcut for Home Menu")
-             });
-         }
-         },
+        } else {
+            mobile.methods.showToast({
+                message: _t("No shortcut for Home Menu"),
+            });
+        }
+    },
 });
 
 });

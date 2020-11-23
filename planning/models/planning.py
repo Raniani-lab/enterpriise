@@ -66,6 +66,7 @@ class Planning(models.Model):
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
     is_assigned_to_me = fields.Boolean('Is This Shift Assigned To The Current User', compute='_compute_is_assigned_to_me')
+    conflicting_slot_ids = fields.Many2many('planning.slot', compute='_compute_overlap_slot_count')
     overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count')
     is_past = fields.Boolean('Is This Shift In The Past?', compute='_compute_past_shift')
 
@@ -213,17 +214,22 @@ class Planning(models.Model):
         if self.ids:
             self.flush(['start_datetime', 'end_datetime', 'employee_id'])
             query = """
-                SELECT S1.id,count(*) FROM
+                SELECT S1.id,ARRAY_AGG(DISTINCT S2.id) as conflict_ids FROM
                     planning_slot S1, planning_slot S2
                 WHERE
-                    S1.start_datetime < S2.end_datetime and S1.end_datetime > S2.start_datetime and S1.id <> S2.id and S1.employee_id = S2.employee_id
+                    S1.start_datetime < S2.end_datetime
+                    AND S1.end_datetime > S2.start_datetime
+                    AND S1.id <> S2.id AND S1.employee_id = S2.employee_id
+                    AND S1.allocated_percentage + S2.allocated_percentage > 100
                     and S1.id in %s
                 GROUP BY S1.id;
             """
             self.env.cr.execute(query, (tuple(self.ids),))
             overlap_mapping = dict(self.env.cr.fetchall())
             for slot in self:
-                slot.overlap_slot_count = overlap_mapping.get(slot.id, 0)
+                slot_result = overlap_mapping.get(slot.id, [])
+                slot.overlap_slot_count = len(slot_result)
+                slot.conflicting_slot_ids = [(6, 0, slot_result)]
         else:
             self.overlap_slot_count = 0
 
@@ -740,17 +746,11 @@ class Planning(models.Model):
         """ get overlapping domain for current shifts
             :returns dict : map with slot id as key and domain as value
         """
+        # We create a dictionnary of simple domain to retrieve the conflicting slots
         domain_mapping = {}
         for slot in self:
-            domain_mapping[slot.id] = [
-                '&',
-                    '&',
-                        ('employee_id', '!=', False),
-                        ('employee_id', '=', slot.employee_id.id),
-                    '&',
-                        ('start_datetime', '<', slot.end_datetime),
-                        ('end_datetime', '>', slot.start_datetime)
-            ]
+            # The view displays the conflicting slots + the one affected
+            domain_mapping[slot.id] = [('id', 'in', slot.conflicting_slot_ids.ids + [slot.id])]
         return domain_mapping
 
     def _prepare_template_values(self):

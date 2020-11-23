@@ -5,10 +5,10 @@ from contextlib import contextmanager
 
 from odoo import fields
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestCommonForecast(SavepointCase):
+class TestCommonForecast(TransactionCase):
 
     @classmethod
     def setUpEmployees(cls):

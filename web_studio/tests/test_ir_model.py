@@ -1,7 +1,7 @@
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from odoo.addons.web_studio.models.ir_model import OPTIONS_WL
 
-class TestStudioIrModel(SavepointCase):
+class TestStudioIrModel(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

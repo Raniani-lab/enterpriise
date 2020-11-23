@@ -4,12 +4,12 @@
 import base64
 import io
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from PIL import Image
 from datetime import datetime
 
 
-class TestTimerButtons(SavepointCase):
+class TestTimerButtons(TransactionCase):
     """ Test visibility of the following buttons:
         - START/STOP/PAUSE/RESUME
         - Send/Sign Report

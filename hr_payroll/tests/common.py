@@ -4,11 +4,11 @@
 from datetime import datetime
 
 from odoo.fields import Date, Datetime
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from dateutil.relativedelta import relativedelta
 
 
-class TestPayslipBase(SavepointCase):
+class TestPayslipBase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

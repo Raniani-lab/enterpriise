@@ -4,7 +4,7 @@
 from odoo.tests import Form, common
 
 
-class TestDuplicateProducts(common.SavepointCase):
+class TestDuplicateProducts(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(TestDuplicateProducts, cls).setUpClass()

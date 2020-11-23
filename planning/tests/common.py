@@ -5,10 +5,10 @@ from contextlib import contextmanager
 
 from odoo import fields
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestCommonPlanning(SavepointCase):
+class TestCommonPlanning(TransactionCase):
 
     @contextmanager
     def _patch_now(self, datetime_str):

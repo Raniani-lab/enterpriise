@@ -5,12 +5,12 @@ import base64
 from odoo.fields import Date, Datetime
 from odoo.exceptions import AccessError
 from odoo.tests import Form
-from odoo.tests.common import SavepointCase, new_test_user
+from odoo.tests.common import TransactionCase, new_test_user
 
 TEXT = base64.b64encode(bytes("TEST", 'utf-8'))
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 
-class SpreadsheetDocuments(SavepointCase):
+class SpreadsheetDocuments(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

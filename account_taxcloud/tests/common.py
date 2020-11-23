@@ -3,12 +3,12 @@
 import os
 from unittest import skipIf
 
-from odoo.tests.common import tagged, SavepointCase
+from odoo.tests.common import tagged, TransactionCase
 
 
 @tagged("external")
 @skipIf(not os.getenv("TAXCLOUD_LOGIN_ID" or not os.getenv("TAXCLOUD_API_KEY")), "no taxcloud credentials")
-class TestAccountTaxcloudCommon(SavepointCase):
+class TestAccountTaxcloudCommon(TransactionCase):
     @classmethod
     def setUpClass(cls):
         res = super().setUpClass()

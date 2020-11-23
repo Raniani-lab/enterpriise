@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from odoo.tests.common import SavepointCase, tagged
+from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 

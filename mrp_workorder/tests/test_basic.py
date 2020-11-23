@@ -3,7 +3,7 @@
 
 from datetime import datetime, timedelta
 from odoo.tests import Form
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from odoo.addons.mrp.tests.common import TestMrpCommon
 from odoo.exceptions import ValidationError, UserError
 
@@ -1654,7 +1654,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.assertTrue(wo3.date_planned_start > wo2.date_planned_start, "Workorder 2 should be before the 3")
 
 
-class TestRoutingAndKits(SavepointCase):
+class TestRoutingAndKits(TransactionCase):
     @classmethod
     def setUpClass(cls):
         """

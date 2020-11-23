@@ -2,10 +2,10 @@ from psycopg2 import IntegrityError
 
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
 
-class TestStudioApproval(SavepointCase):
+class TestStudioApproval(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

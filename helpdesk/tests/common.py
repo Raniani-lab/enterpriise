@@ -3,11 +3,10 @@
 from contextlib import contextmanager
 
 from odoo import fields
-from odoo.tests.common import SavepointCase
-from odoo import fields
+from odoo.tests.common import TransactionCase
 
 
-class HelpdeskCommon(SavepointCase):
+class HelpdeskCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

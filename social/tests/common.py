@@ -5,7 +5,7 @@ from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common
 
 
-class SocialCase(common.SavepointCase):
+class SocialCase(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(SocialCase, cls).setUpClass()

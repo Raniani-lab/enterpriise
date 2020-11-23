@@ -5,12 +5,12 @@ from datetime import datetime
 from unittest.mock import patch
 
 from odoo.fields import Date, Datetime
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 from dateutil.relativedelta import relativedelta
 from odoo.addons.hr_contract_salary.models.hr_contract import HrContract
 
 
-class TestAdvantages(SavepointCase):
+class TestAdvantages(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

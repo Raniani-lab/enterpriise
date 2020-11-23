@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields
-from odoo.tests.common import Form, SavepointCase
+from odoo.tests.common import Form, TransactionCase
 
 
-class TestApprovalsCommon(SavepointCase):
+class TestApprovalsCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

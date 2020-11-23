@@ -3,10 +3,10 @@
 
 from dateutil.relativedelta import relativedelta
 from odoo.fields import Date
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestWorkEntryBase(SavepointCase):
+class TestWorkEntryBase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

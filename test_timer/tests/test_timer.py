@@ -3,10 +3,10 @@
 
 from odoo.exceptions import AccessError
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestTimer(SavepointCase):
+class TestTimer(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

@@ -6,13 +6,13 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
 from odoo import fields
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 NOW = datetime(2018, 10, 10, 9, 18)
 NOW2 = datetime(2019, 1, 8, 9, 0)
 
 
-class HelpdeskSLA(SavepointCase):
+class HelpdeskSLA(TransactionCase):
 
     @classmethod
     def setUpClass(cls):

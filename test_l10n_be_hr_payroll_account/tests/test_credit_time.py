@@ -4,8 +4,7 @@
 import time
 import datetime
 from odoo.tools.float_utils import float_compare
-from odoo.tests import common, tagged
-from odoo.tests.common import SavepointCase
+from odoo.tests import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 @tagged('post_install', '-at_install', 'credit_time')

@@ -3,7 +3,7 @@
 from odoo.tests import common
 
 
-class TestInterCompanyRulesCommon(common.SavepointCase):
+class TestInterCompanyRulesCommon(common.TransactionCase):
 
     @classmethod
     def setUpClass(cls):

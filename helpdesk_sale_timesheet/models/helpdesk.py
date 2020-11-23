@@ -28,11 +28,6 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     use_helpdesk_sale_timesheet = fields.Boolean('Reinvoicing Timesheet activated on Team', related='team_id.use_helpdesk_sale_timesheet', readonly=True)
-    # TODO: [XBO] remove me in master
-    display_create_so_button_primary = fields.Boolean(compute="_compute_sale_order_button_visibility", compute_sudo=True)
-    # TODO: [XBO] remove me in master
-    display_create_so_button_secondary = fields.Boolean(compute="_compute_sale_order_button_visibility", compute_sudo=True)
-    # TODO: [XBO] remove me in master (or we can change in a related field to the order_id in sale_line_id)
     sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", compute_sudo=True, store=True, readonly=False)
     sale_line_id = fields.Many2one('sale.order.line', string="Sales Order Item", search="_sale_line_id_search", compute="_compute_sale_line_id", readonly=False, domain="[('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done']), ('order_id', '=?', project_sale_order_id)]")
     project_sale_order_id = fields.Many2one('sale.order', string="Project's sale order", related='project_id.sale_order_id')
@@ -71,25 +66,6 @@ class HelpdeskTicket(models.Model):
                      ('partner_id', 'child_of', t.partner_id.commercial_partner_id.id)
             ])._origin
         super(HelpdeskTicket, self - reinvoiced)._compute_related_task_ids()
-
-    @api.depends('use_helpdesk_sale_timesheet', 'project_id.allow_billable', 'project_id.sale_order_id', 'task_id.sale_line_id', 'total_hours_spent')
-    def _compute_sale_order_button_visibility(self):
-        # TODO: remove me in master (the button will be removed too)
-        for ticket in self:
-            primary, secondary = False, False
-            if ticket.use_helpdesk_sale_timesheet and ticket.project_id.allow_billable:
-                if ticket.project_id and ticket.project_id.bill_type == "customer_project" and not ticket.project_id.sale_order_id:
-                    if ticket.total_hours_spent > 0:
-                        primary = True
-                    else:
-                        secondary = True
-                elif ticket.project_id and ticket.project_id.bill_type == "customer_task" and ticket.task_id and not ticket.task_id.sale_line_id:
-                    if ticket.total_hours_spent > 0:
-                        primary = True
-                    else:
-                        secondary = True
-            ticket.display_create_so_button_primary = primary
-            ticket.display_create_so_button_secondary = secondary
 
     def _search_sol_in_timesheets(self):
         # TODO: [XBO] remove me when the sale_line_id field in ticket is stored
@@ -180,52 +156,6 @@ class HelpdeskTicket(models.Model):
         if recompute_so_lines:
             recompute_so_lines._compute_qty_delivered()
         return res
-
-    def create_sale_order(self):
-        # TODO: [XBO] remove me in master.
-        # TODO: [XBO] Moreover remove 'ticket_timesheet_ids' context key used in the 'project.create.sale.order' wizard
-        self.ensure_one()
-        if self.project_id.bill_type == "customer_task":
-            # open project.task create sale order wizard
-            if self.partner_id:
-                customer = self.partner_id.id
-            else:
-                customer = self.task_id.partner_id.id
-
-            return {
-                "name": _("Create Sales Order"),
-                "type": 'ir.actions.act_window',
-                "res_model": 'project.task.create.sale.order',
-                "views": [[False, "form"]],
-                "target": 'new',
-                "context": {
-                    'active_id': self.task_id.id,
-                    'active_model': 'project.task',
-                    'form_view_initial_mode': 'edit',
-                    'default_partner_id': customer,
-                    'default_product_id': self.env.ref('sale_timesheet.time_product').id,
-                },
-            }
-        # open project.project create sale order wizard
-        if self.partner_id:
-            customer = self.partner_id.id
-        else:
-            customer = self.project_id.partner_id.id
-
-        return {
-            "name": _("Create Sales Order"),
-            "type": 'ir.actions.act_window',
-            "res_model": 'project.create.sale.order',
-            "views": [[False, "form"]],
-            "target": 'new',
-            "context": {
-                'active_id': self.project_id.id,
-                'active_model': 'project.project',
-                'default_partner_id': customer,
-                'default_product_id': self.env.ref('sale_timesheet.time_product').id,
-                'ticket_timesheet_ids': self.timesheet_ids.ids
-            },
-        }
 
     @api.depends('sale_line_id', 'project_id.sale_order_id', 'task_id.sale_order_id')
     def _compute_helpdesk_sale_order(self):

@@ -81,7 +81,7 @@ class MarketingActivity(models.Model):
     allowed_parent_ids = fields.Many2many('marketing.activity', string='Allowed parents', help='All activities which can be the parent of this one', compute='_compute_allowed_parent_ids')
     child_ids = fields.One2many('marketing.activity', 'parent_id', string='Child Activities')
     trigger_type = fields.Selection([
-        ('begin', 'beginning of campaign'),
+        ('begin', 'beginning of workflow'),
         ('activity', 'another activity'),
         ('mail_open', 'Mail: opened'),
         ('mail_not_open', 'Mail: not opened'),

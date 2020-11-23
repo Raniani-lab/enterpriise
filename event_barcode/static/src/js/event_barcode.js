@@ -115,7 +115,24 @@ var EventScanView = AbstractAction.extend({
     _onClickBackToEvents: function(ev) {
         ev.preventDefault();
         if (this.isMultiEvent) {
-            this.do_action("event.action_event_view");
+            // define action from scratch instead of using existing 'action_event_view' to avoid
+            // messing with menu bar
+            this.do_action({
+                type: 'ir.actions.act_window',
+                name: _t('Events'),
+                res_model: 'event.event',
+                views: [
+                    [false, 'kanban'],
+                    [false, 'calendar'],
+                    [false, 'list'],
+                    [false, 'gantt'],
+                    [false, 'form'],
+                    [false, 'pivot'],
+                    [false, 'graph'],
+                    [false, 'map'],
+                ],
+                target:'main'
+            });
         } else {
             return this.do_action({
                 type: 'ir.actions.act_window',

@@ -4,6 +4,8 @@
 import datetime
 from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.tools.float_utils import float_compare
+
 
 @tagged('post_install', '-at_install', 'low_salary')
 class TestLowSalary(AccountTestInvoicingCommon):
@@ -306,20 +308,30 @@ class TestLowSalary(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_hours('WORK100'), 167.2, places=2)
 
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('BASIC'), 1800.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('SALARY'), 1809.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ONSS'), -236.44, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('EmpBonus.1'), 164.9, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('GROSS'), 1878.6, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P'), -278.78, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('P.P.DED'), 54.65, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('MEAL_V_EMP'), -23.98, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(self.payslip._get_salary_line_total('NET'), 1630.35, places=2)
+        payslip_results = {
+            'BASIC': 1800.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 1809.0,
+            'ONSS': -236.44,
+            'EmpBonus.1': 176.14,
+            'ATN.CAR': 141.14,
+            'GROSS': 1889.85,
+            'P.P': -278.78,
+            'P.P.DED': 58.37,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -23.98,
+            'REP.FEES': 150.0,
+            'NET': 1645.31,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = self.payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
+
+

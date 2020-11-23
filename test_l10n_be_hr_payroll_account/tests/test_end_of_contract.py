@@ -331,18 +331,18 @@ class TestEndOfContract(AccountTestInvoicingCommon):
             'ATN.MOB': 4.0,
             'SALARY': 1802.85,
             'ONSS': -235.63,
-            'EmpBonus.1': 166.25,
+            'EmpBonus.1': 177.49,
             'ATN.CAR': 141.14,
-            'GROSS': 1874.60,
-            'P.P': -272.36,
-            'P.P.DED': 55.09,
+            'GROSS': 1885.85,
+            'P.P': -278.78,
+            'P.P.DED': 58.82,
             'ATN.CAR.2': -141.14,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -15.26,
             'REP.FEES': 94.62,
-            'NET': 1586.55,
+            'NET': 1595.10,
         }
         error = []
         for code, value in payslip_results.items():

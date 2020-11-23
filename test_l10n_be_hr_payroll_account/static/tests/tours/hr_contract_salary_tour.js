@@ -12,7 +12,7 @@ Tour.register('hr_contract_salary_tour', {
     },[
         {
             content: "Go on configurator",
-            trigger: 'div#top_menu_collapse',
+            trigger: '.navbar',
             run: function () {
                 window.location.href = window.location.origin + '/web';
             },

@@ -275,25 +275,33 @@ class TestSickTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('WORK100'), 38.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 129.2, places=2)
 
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('BASIC'), 2650.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('SALARY'), 2659.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ONSS'), -347.53, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSSIP'), 2452.61, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.PART'), -662.5, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSS'), 1790.11, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P'), -240.26, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('M.ONSS'), -23.66, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('MEAL_V_EMP'), -5.45, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP'), 662.5, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.DED'), -43.17, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('NET'), 2139.93, places=2)
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2452.61,
+            'IP.PART': -662.5,
+            'GROSS': 1790.11,
+            'P.P': -240.26,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -23.66,
+            'MEAL_V_EMP': -5.45,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -43.17,
+            'NET': 2139.93,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = september_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
         october_payslip = self.env['hr.payslip'].create([{
             'name': "Test Payslip October",
@@ -324,27 +332,35 @@ class TestSickTimeOff(AccountTestInvoicingCommon):
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 38.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE214'), 30.4, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('BASIC'), 2160.77, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('SALARY'), 2169.77, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ONSS'), -283.59, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('EmpBonus.1'), 85.74, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSSIP'), 2113.07, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.PART'), -540.19, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSS'), 1572.88, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P'), -143.96, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P.DED'), 28.42, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('M.ONSS'), -16.37, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('MEAL_V_EMP'), -14.17, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('REP.FEES'), 122.31, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP'), 540.19, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.DED'), -35.2, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('NET'), 1903.95, places=2)
+        payslip_results = {
+            'BASIC': 2160.77,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2169.77,
+            'ONSS': -283.59,
+            'EmpBonus.1': 96.99,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2124.31,
+            'IP.PART': -540.19,
+            'GROSS': 1584.12,
+            'P.P': -150.38,
+            'P.P.DED': 32.14,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -16.37,
+            'MEAL_V_EMP': -14.17,
+            'REP.FEES': 122.31,
+            'IP': 540.19,
+            'IP.DED': -35.2,
+            'NET': 1912.5,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = october_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
     def test_relapse_with_guaranteed_salary(self):
         # Sick 1 Week (1 - 2 september)
@@ -1225,27 +1241,35 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 98.8, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE300'), 38.0, places=2)
 
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('BASIC'), 2120.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('SALARY'), 2129.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ONSS'), -278.26, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('EmpBonus.1'), 94.69, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSSIP'), 2086.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.PART'), -530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSS'), 1556.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P'), -137.54, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P.DED'), 31.38, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('M.ONSS'), -13.27, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('MEAL_V_EMP'), -4.36, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('REP.FEES'), 106.73, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP'), 530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.DED'), -34.53, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('NET'), 1884.84, places=2)
+        payslip_results = {
+            'BASIC': 2120.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2129.0,
+            'ONSS': -278.26,
+            'EmpBonus.1': 105.93,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2097.81,
+            'IP.PART': -530.0,
+            'GROSS': 1567.81,
+            'P.P': -143.96,
+            'P.P.DED': 35.11,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -13.27,
+            'MEAL_V_EMP': -4.36,
+            'REP.FEES': 106.73,
+            'IP': 530.0,
+            'IP.DED': -34.53,
+            'NET': 1893.38,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = september_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
         october_payslip = self.env['hr.payslip'].create([{
             'name': "Test Payslip",
@@ -1280,27 +1304,36 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE214'), 30.4, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('WORK100'), 76.0, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('BASIC'), 1630.77, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('SALARY'), 1639.77, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ONSS'), -214.32, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('EmpBonus.1'), 201.62, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSSIP'), 1768.21, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.PART'), -407.69, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSS'), 1360.52, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P'), -78.02, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P.DED'), 66.82, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('MEAL_V_EMP'), -10.9, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('REP.FEES'), 80.77, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP'), 407.69, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.DED'), -26.56, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('NET'), 1650.18, places=2)
+        payslip_results = {
+            'BASIC': 1630.77,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 1639.77,
+            'ONSS': -214.32,
+            'EmpBonus.1': 205.65,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 1772.24,
+            'IP.PART': -407.69,
+            'GROSS': 1364.55,
+            'P.P': -78.02,
+            'P.P.DED': 68.15,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -10.9,
+            'REP.FEES': 80.77,
+            'IP': 407.69,
+            'IP.DED': -26.56,
+            'NET': 1655.54,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = october_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
+
 
     def test_relapse_with_guaranteed_salary_credit_time(self):
         # Sick 2 days (1 - 2 september)
@@ -1425,27 +1458,35 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('WORK100'), 76.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 53.2, places=2)
 
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('BASIC'), 2120.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('SALARY'), 2129.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ONSS'), -278.26, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('EmpBonus.1'), 94.69, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSSIP'), 2086.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.PART'), -530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSS'), 1556.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P'), -137.54, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P.DED'), 31.38, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('M.ONSS'), -13.27, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('MEAL_V_EMP'), -10.9, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('REP.FEES'), 106.73, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP'), 530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.DED'), -34.53, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('NET'), 1878.3, places=2)
+        payslip_results = {
+            'BASIC': 2120.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2129.0,
+            'ONSS': -278.26,
+            'EmpBonus.1': 105.93,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2097.81,
+            'IP.PART': -530.0,
+            'GROSS': 1567.81,
+            'P.P': -143.96,
+            'P.P.DED': 35.11,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -13.27,
+            'MEAL_V_EMP': -10.9,
+            'REP.FEES': 106.73,
+            'IP': 530.0,
+            'IP.DED': -34.53,
+            'NET': 1886.84,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = september_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
         october_payslip = self.env['hr.payslip'].create([{
             'name': "Test Payslip",
@@ -1476,27 +1517,36 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 30.4, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('WORK100'), 106.4, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('BASIC'), 2120.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('SALARY'), 2129.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ONSS'), -278.26, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('EmpBonus.1'), 94.69, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSSIP'), 2086.57, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.PART'), -530.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSS'), 1556.57, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P'), -137.54, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P.DED'), 31.38, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('M.ONSS'), -13.27, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('MEAL_V_EMP'), -15.26, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('REP.FEES'), 115.38, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP'), 530.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.DED'), -34.53, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('NET'), 1882.59, places=2)
+        payslip_results = {
+            'BASIC': 2120.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2129.0,
+            'ONSS': -278.26,
+            'EmpBonus.1': 105.93,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2097.81,
+            'IP.PART': -530.0,
+            'GROSS': 1567.81,
+            'P.P': -143.96,
+            'P.P.DED': 35.11,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -13.27,
+            'MEAL_V_EMP': -15.26,
+            'REP.FEES': 115.38,
+            'IP': 530.0,
+            'IP.DED': -34.53,
+            'NET': 1891.14,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = october_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
+
 
     def test_sick_more_than_30_days_credit_time(self):
         # Sick 1 september - 15 october
@@ -1602,27 +1652,35 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE300'), 38.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_number_of_hours('LEAVE110'), 129.2, places=2)
 
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('BASIC'), 2120.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('SALARY'), 2129.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ONSS'), -278.26, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('EmpBonus.1'), 94.69, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSSIP'), 2086.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.PART'), -530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('GROSS'), 1556.57, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P'), -137.54, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('P.P.DED'), 31.38, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('M.ONSS'), -13.27, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('MEAL_V_EMP'), 0.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('REP.FEES'), 106.73, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP'), 530.0, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('IP.DED'), -34.53, places=2)
-        self.assertAlmostEqual(september_payslip._get_salary_line_total('NET'), 1889.2, places=2)
+        payslip_results = {
+            'BASIC': 2120.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2129.0,
+            'ONSS': -278.26,
+            'EmpBonus.1': 105.93,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2097.81,
+            'IP.PART': -530.0,
+            'GROSS': 1567.81,
+            'P.P': -143.96,
+            'P.P.DED': 35.11,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -13.27,
+            'MEAL_V_EMP': 0.0,
+            'REP.FEES': 106.73,
+            'IP': 530.0,
+            'IP.DED': -34.53,
+            'NET': 1897.74,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = september_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
         october_payslip = self.env['hr.payslip'].create([{
             'name': "Test Payslip October",
@@ -1653,24 +1711,32 @@ class TestSickTimeOffCreditTime(AccountTestInvoicingCommon):
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE214'), 68.4, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('WORK100'), 68.4, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('BASIC'), 1019.23, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT'), 5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB'), 4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('SALARY'), 1028.23, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ONSS'), -134.39, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('EmpBonus.1'), 134.39, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR'), 141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSSIP'), 1169.37, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.PART'), -254.81, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('GROSS'), 914.57, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P'), 0.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('P.P.DED'), 0.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.CAR.2'), -141.14, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.INT.2'), -5.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('ATN.MOB.2'), -4.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('M.ONSS'), 0.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('MEAL_V_EMP'), -9.81, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('REP.FEES'), 37.5, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP'), 254.81, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('IP.DED'), -16.59, places=2)
-        self.assertAlmostEqual(october_payslip._get_salary_line_total('NET'), 1030.33, places=2)
+        payslip_results = {
+            'BASIC': 1019.23,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 1028.23,
+            'ONSS': -134.39,
+            'EmpBonus.1': 134.39,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 1169.37,
+            'IP.PART': -254.81,
+            'GROSS': 914.57,
+            'P.P': 0.0,
+            'P.P.DED': 0.0,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -9.81,
+            'REP.FEES': 37.5,
+            'IP': 254.81,
+            'IP.DED': -16.59,
+            'NET': 1030.33,
+        }
+        error = []
+        for code, value in payslip_results.items():
+            payslip_line_value = october_payslip._get_salary_line_total(code)
+            if float_compare(payslip_line_value, value, 2):
+                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))

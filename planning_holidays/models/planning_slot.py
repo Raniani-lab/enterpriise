@@ -19,7 +19,10 @@ def format_date(env, date):
 class Slot(models.Model):
     _inherit = 'planning.slot'
 
-    leave_warning = fields.Char(compute='_compute_leave_warning')
+    leave_warning = fields.Char(compute='_compute_leave_warning', compute_sudo=True)
+    is_absent = fields.Boolean(
+        'Employees on Time Off', compute='_compute_leave_warning', search='_search_is_absent',
+        compute_sudo=True, readonly=True)
 
     @api.depends_context('lang')
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
@@ -102,6 +105,37 @@ class Slot(models.Model):
                 warning = _('%(employee)s is on time off%(period_leaves)s.',
                             employee=slot.employee_id.name, period_leaves=period_leaves)
             slot.leave_warning = warning if period_leaves else False
+            slot.is_absent = bool(period_leaves)
+
+    @api.model
+    def _search_is_absent(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+
+        slots = self.search([('employee_id', '!=', False)])
+        if not slots:
+            return []
+
+        start_dt = min(slots.mapped('start_datetime'))
+        end_dt = max(slots.mapped('end_datetime'))
+        leaves = self.env['hr.leave'].search([
+            ('employee_id', 'in', slots.mapped('employee_id').ids),
+            ('state', '=', 'validate'),
+            ('date_from', '<=', end_dt),
+            ('date_to', '>=', start_dt)
+        ])
+        mapped_leaves = defaultdict(lambda: self.env['hr.leave'])
+        for leave in leaves:
+            mapped_leaves[leave.employee_id] |= leave
+
+        slot_ids = []
+        for slot in slots.filtered(lambda s: s.employee_id in mapped_leaves):
+            period = self._group_leaves(mapped_leaves[slot.employee_id], slot.employee_id, slot.start_datetime, slot.end_datetime)
+            if period:
+                slot_ids.append(slot.id)
+        if operator == '!=':
+            value = not value
+        return [('id', 'in' if value else 'not in', slot_ids)]
 
     @api.model
     def _group_leaves(self, leaves, employee_id, start_datetime, end_datetime):

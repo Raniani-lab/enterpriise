@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo.tests import Form
+from odoo.tests import Form, common
 from odoo.addons.industry_fsm_sale.tests.test_industry_fsm_sale_flow import TestFsmFlowSale
 
 
+@common.tagged('post_install', '-at_install')
 class TestFsmFlowStock(TestFsmFlowSale):
 
     @classmethod

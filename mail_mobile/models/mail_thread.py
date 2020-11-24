@@ -2,10 +2,10 @@
 import copy
 import re
 import urllib.parse
-from html2text import html2text
 
-from odoo import _, models, api
+from odoo import models, api
 from odoo.addons.iap.tools import iap_tools
+from odoo.tools import html2plaintext
 
 import logging as logger
 _logger = logger.getLogger(__name__)
@@ -63,7 +63,7 @@ class MailThread(models.AbstractModel):
                 channel_partner_ids = []
             pids = (set(notif_pids) | set(channel_partner_ids)) - set(author_id)
             self._send_notification_to_partners(pids, message, msg_vals)
-        elif msg_type == 'notification' or msg_type == 'user_notification':
+        elif msg_type in ('notification', 'user_notification', 'email'):
             # Send notification to partners except for the author and those who
             # doesn't want to handle notifications in Odoo.
             pids = (set(notif_pids) - set(author_id) - set(no_inbox_pids))
@@ -142,11 +142,10 @@ class MailThread(models.AbstractModel):
         if type(body) == bytes:
             body = body.decode("utf-8")
         if payload_length < 4000:
-            payload_body = body
-            payload_body = re.sub(r'<a(.*?)>', r'<a>', payload_body)  # To-Do : Replace this fix
+            payload_body = html2plaintext(body)
             if generate_tracking_message:
-                payload_body += self._generate_tracking_message(message, '<br/>')
-            payload['body'] = html2text(payload_body)[:4000 - payload_length]
+                payload_body += self._generate_tracking_message(message)
+            payload['body'] = payload_body[:4000 - payload_length]
 
         chunks = []
         at_mention_ocn_token_list = []

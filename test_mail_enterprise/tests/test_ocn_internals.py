@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import socket
+
 from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
+from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
 from odoo.tests import tagged
 from unittest.mock import patch
 
@@ -182,4 +185,37 @@ class TestPushNotification(MailCommon):
             jsonrpc.call_args[1]['params']['data']['android_channel_id'],
             'AtMention',
             'The type of Android channel must be AtMention'
+        )
+
+    @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
+    def test_push_notifications_mail_replay(self, jsonrpc):
+        self._init_mail_gateway()
+        test_record = self.env['mail.test.gateway'].with_context(self._test_context).create({
+            'name': 'Test',
+            'email_from': 'ignasse@example.com',
+        })
+        test_record.message_subscribe(partner_ids=[self.user_inbox.partner_id.id])
+
+        fake_email = self.env['mail.message'].create({
+            'model': 'mail.test.gateway',
+            'res_id': test_record.id,
+            'subject': 'Public Discussion',
+            'message_type': 'email',
+            'subtype_id': self.env.ref('mail.mt_comment').id,
+            'author_id': self.user_email.partner_id.id,
+            'message_id': '<123456-openerp-%s-mail.test.gateway@%s>' % (test_record.id, socket.gethostname()),
+        })
+
+        self.format_and_process(
+            MAIL_TEMPLATE, self.user_email.email_formatted,
+            self.user_inbox.email_formatted,
+            subject='Test Subject Reply By mail',
+            extra='In-Reply-To:\r\n\t%s\n' % fake_email.message_id,
+        )
+        jsonrpc.assert_called_once()
+        self.assertEqual(jsonrpc.call_args[1]['params']['data']['author_name'], self.user_email.name)
+        self.assertIn(
+            "Please call me as soon as possible this afternoon!\n\n--\nSylvie",
+            jsonrpc.call_args[1]['params']['data']['body'],
+            'The body must contain the text send by mail'
         )

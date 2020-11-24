@@ -166,7 +166,7 @@
                 flex-grow: 1;
             }
             .o_field_many2one {
-                > .o_input_dropdown {
+                .o_input_dropdown {
                     width: auto;
                     > .o_dropdown_button {
                         right: 18px;
@@ -183,7 +183,7 @@
                         color: $o-web-studio-text-light;
                     }
                 }
-                > .o_external_button {
+                .o_external_button {
                     border: 0;
                     padding-right: 0;
                     background-color: transparent;

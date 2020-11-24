@@ -113,6 +113,18 @@ class HelpdeskTicket(models.Model):
             if ticket.sale_order_id and not ticket.partner_id:
                 ticket.partner_id = ticket.sale_order_id.partner_id
 
+    def action_view_so(self):
+        self.ensure_one()
+        action_window = {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.order",
+            "name": "Sales Order",
+            "views": [[False, "form"]],
+            "context": {"create": False, "show_sale": True},
+            "res_id": self.sale_order_id.id
+        }
+        return action_window
+
 
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'

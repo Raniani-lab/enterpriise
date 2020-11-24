@@ -22,17 +22,21 @@ class MailThread(models.AbstractModel):
 
     # Push Notification
 
-    def _notify_compute_recipients(self, message, msg_vals):
+    def _notify_thread(self, message, msg_vals=False, notify_by_email=True, **kwargs):
+        rdata = super(MailThread, self)._notify_thread(message, msg_vals, notify_by_email, **kwargs)
+        self._notify_record_by_ocn(message, rdata, msg_vals, **kwargs)
+        return rdata
+
+    def _notify_record_by_ocn(self, message, rdata, msg_vals=False, **kwargs):
         """ We want to send a Cloud notification for every mentions of a partner
         and every direct message. We have to take into account the risk of
         duplicated notifications in case of a mention in a channel of `chat` type.
         """
-        rdata = super(MailThread, self)._notify_compute_recipients(message, msg_vals)
 
         icp_sudo = self.env['ir.config_parameter'].sudo()
         # Avoid to send notification if this feature is disabled or if no user use the mobile app.
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
-            return rdata
+            return
 
         notif_pids = []
         no_inbox_pids = []
@@ -45,7 +49,7 @@ class MailThread(models.AbstractModel):
         chat_cids = [r['id'] for r in rdata['channels'] if r['type'] == 'chat']
 
         if not notif_pids and not chat_cids:
-            return rdata
+            return
 
         msg_sudo = message.sudo()  # why sudo?
         msg_type = msg_vals.get('message_type') or msg_sudo.message_type
@@ -64,7 +68,6 @@ class MailThread(models.AbstractModel):
             # doesn't want to handle notifications in Odoo.
             pids = (set(notif_pids) - set(author_id) - set(no_inbox_pids))
             self._send_notification_to_partners(pids, message, msg_vals)
-        return rdata
 
     @api.model
     def _send_notification_to_partners(self, pids, message, msg_vals):

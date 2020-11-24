@@ -194,7 +194,8 @@ class SocialPost(models.Model):
         """Every post will have a unique corresponding utm.source for statistics computation purposes.
         This way, it will be possible to see every leads/quotations generated through a particular post."""
 
-        if not self.user_has_groups('social.group_social_manager') and \
+        if not self.env.is_superuser() and \
+           not self.user_has_groups('social.group_social_manager') and \
            any(vals.get('state', 'draft') != 'draft' for vals in vals_list):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
 
@@ -209,7 +210,8 @@ class SocialPost(models.Model):
         return super(SocialPost, self).create(vals_list)
 
     def write(self, vals):
-        if not self.user_has_groups('social.group_social_manager') and \
+        if not self.env.is_superuser() and \
+           not self.user_has_groups('social.group_social_manager') and \
            (vals.get('state', 'draft') != 'draft' or any(post.state != 'draft' for post in self)):
             raise AccessError(_('You are not allowed to create/update posts in a state other than "Draft".'))
 

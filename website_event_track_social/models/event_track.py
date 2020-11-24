@@ -21,7 +21,7 @@ class Track(models.Model):
         compute='_compute_push_reminder_fields', store=True, readonly=False)
     push_reminder_posts = fields.One2many(
         'social.post', 'event_track_id', string="Push Reminders",
-        groups="social.group_social_user")
+        groups="social.group_social_manager")
 
     @api.depends('event_id')
     def _compute_firebase_enable_push_notifications(self):
@@ -89,7 +89,7 @@ class Track(models.Model):
         - If it's a track that is 'default wishlisted', we send the push to all attendees
         - Otherwise, we only send the push to attendees that have wishlisted the track. """
 
-        push_social_accounts = self.env['social.account'].search([
+        push_social_accounts = self.env['social.account'].sudo().search([
             ('media_id', '=', self.env.ref('social_push_notifications.social_media_push_notifications').id)
         ])
         push_account_by_website = {
@@ -97,7 +97,7 @@ class Track(models.Model):
             for account in push_social_accounts
         }
 
-        existing_reminders = self.env['social.post'].search([
+        existing_reminders = self.env['social.post'].sudo().search([
             ('event_track_id', 'in', self.ids)
         ])
         existing_reminder_per_track = {
@@ -155,4 +155,4 @@ class Track(models.Model):
                 posts_to_create.append(post_values)
 
         if posts_to_create:
-            self.env['social.post'].create(posts_to_create)
+            self.env['social.post'].sudo().create(posts_to_create)

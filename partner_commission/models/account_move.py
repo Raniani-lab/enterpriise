@@ -42,9 +42,15 @@ class AccountMove(models.Model):
         return purchase
 
     def _make_commission(self):
-        for move in self.filtered(lambda m: m.move_type in ['out_invoice', 'in_invoice']):
-            if move.commission_po_line_id or not move.referrer_id:
-                continue
+        for move in self.filtered(lambda m: m.move_type in ['out_invoice', 'in_invoice', 'out_refund']):
+            if move.move_type in ['out_invoice', 'in_invoice']:
+                sign = 1
+                if move.commission_po_line_id or not move.referrer_id:
+                    continue
+            else:
+                sign = -1
+                if not move.commission_po_line_id:
+                    continue
 
             comm_by_rule = defaultdict(float)
 
@@ -90,35 +96,23 @@ class AccountMove(models.Model):
                 'name': desc,
                 'product_id': product.id,
                 'product_qty': 1,
-                'price_unit': total,
+                'price_unit': total * sign,
                 'product_uom': product.uom_id.id,
                 'date_planned': fields.Datetime.now(),
                 'order_id': purchase.id,
                 'qty_received': 1,
             })
 
-            # link the purchase order line to the invoice
-            move.commission_po_line_id = line
-
-            msg_body = 'New commission. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, total, currency_obj=move.currency_id))
+            if move.move_type in ['out_invoice', 'in_invoice']:
+                # link the purchase order line to the invoice
+                move.commission_po_line_id = line
+                msg_body = 'New commission. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, total, currency_obj=move.currency_id))
+            else:
+                msg_body = 'Commission refunded. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, total, currency_obj=move.currency_id))
             purchase.message_post(body=msg_body)
 
     def _refund_commission(self):
-        for move in self.filtered('commission_po_line_id'):
-            purchase = move._get_commission_purchase_order()
-            line = move.commission_po_line_id
-            self.env['purchase.order.line'].sudo().create({
-                'name': _('Refund for %s', line.name),
-                'product_id': line.product_id.id,
-                'product_qty': 1,
-                'price_unit': -line.price_unit,
-                'product_uom': line.product_id.uom_id.id,
-                'date_planned': fields.Datetime.now(),
-                'order_id': purchase.id,
-                'qty_received': 1,
-            })
-            msg_body = 'Commission refunded. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, -line.price_unit, currency_obj=move.currency_id))
-            purchase.message_post(body=msg_body)
+        return self._make_commission()
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
         if not default_values_list:
@@ -132,7 +126,7 @@ class AccountMove(models.Model):
 
     def action_invoice_paid(self):
         res = super().action_invoice_paid()
-        self.filtered(lambda move: move.move_type == 'out_refund')._refund_commission()
+        self.filtered(lambda move: move.move_type == 'out_refund')._make_commission()
         self.filtered(lambda move: move.move_type == 'out_invoice')._make_commission()
         return res
 

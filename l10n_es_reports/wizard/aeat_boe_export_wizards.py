@@ -116,7 +116,11 @@ class Mod347BOEWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.mod347.export.wizard'
     _description = "BOE Export Wizard for (mod347)"
 
-    cash_basis_mod347_data = fields.One2many(comodel_name='l10n_es_reports.aeat.mod347.manual.partner.data', inverse_name='parent_wizard_id', relation='l10n_es_reports_mod347_boe_wizard_cash_basis_rel', string="Cash Basis Data", help="Manual entries containing the amounts perceived for the partners with cash basis criterion during this year. Leave empty for partners for which this criterion does not apply.")
+    cash_basis_mod347_data = fields.One2many(
+        comodel_name='l10n_es_reports.aeat.mod347.manual.partner.data',
+        inverse_name='parent_wizard_id',
+        string="Cash Basis Data",
+        help="Manual entries containing the amounts perceived for the partners with cash basis criterion during this year. Leave empty for partners for which this criterion does not apply.")
 
     def get_partners_manual_parameters_map(self):
         cash_basis_dict = {}

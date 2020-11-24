@@ -295,7 +295,7 @@
                     <ITE_8 t-esc="invoice.currency_id.name"/>
                     <ITE_10 t-esc="(line.name or '')[:150]"/>
                     <ITE_11 t-esc="(line.name or '')[:150]"/>
-                    <ITE_18 t-esc="line.product_id.product_tmpl_id.default_code"/>
+                    <ITE_18 t-esc="line.product_id.default_code or line.product_id.product_tmpl_id.default_code"/>
                     <ITE_19 t-esc="'%.2f' % line.price_subtotal"/>
                     <ITE_20 t-esc="invoice.currency_id.name"/>
                     <ITE_21 t-esc="'%.2f' % line.price_subtotal"/>

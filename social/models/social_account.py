@@ -60,7 +60,7 @@ class SocialAccount(models.Model):
         help="Percentage of increase/decrease of the stories over a defined period.")
     has_trends = fields.Boolean("Has Trends?",
         help="Defines whether this account has statistics tends or not.")
-    has_account_stats = fields.Boolean("Has Account Stats", default=True, required=True,
+    has_account_stats = fields.Boolean("Has Account Stats", default=True,
         help="""Defines whether this account has Audience/Engagements/Stories stats.
         Account with stats are displayed on the dashboard.""")
     utm_medium_id = fields.Many2one('utm.medium', string="UTM Medium", required=True, ondelete='restrict',

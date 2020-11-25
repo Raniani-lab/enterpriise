@@ -127,7 +127,12 @@ models.Order = models.Order.extend({
         if (!this.pos.loyalty || !this.get_client()) {
             return 0;
         } else {
-            return round_pr(this.get_client().loyalty_points + this.get_new_points(), 1);
+            if(this.state != 'paid'){
+                return round_pr(this.get_client().loyalty_points + this.get_new_points(), 1);
+            }
+            else{
+                return round_pr(this.get_client().loyalty_points, 1);
+            }
         }
     },
 

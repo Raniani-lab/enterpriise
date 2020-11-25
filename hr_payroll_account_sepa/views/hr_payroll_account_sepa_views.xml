@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
         <field name="arch" type="xml">
             <button name="action_validate" position="after">
-                <button name="action_open_sepa_wizard" type="object" string="Make Payment" states="close" class="oe_highlight"/>
+                <button name="action_open_sepa_wizard" type="object" string="Make Payment" states="close,paid" class="oe_highlight"/>
             </button>
             <field name="credit_note" position="after">
                 <field name="sepa_export_date"/>

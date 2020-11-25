@@ -11,8 +11,8 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     state = fields.Selection(selection_add=[('paid', 'Paid')])
-    sepa_export_date = fields.Date(string='Generation Date', readonly=True, help="Creation date of the related export file.")
-    sepa_export = fields.Binary(string='SEPA File', readonly=True, help="Export file related to this payslip")
+    sepa_export_date = fields.Date(string='Generation Date', help="Creation date of the related export file.")
+    sepa_export = fields.Binary(string='SEPA File', help="Export file related to this payslip")
     sepa_export_filename = fields.Char(string='File Name', help="Name of the export file generated for this payslip", store=True)
 
     def action_open_sepa_wizard(self):
@@ -71,11 +71,11 @@ class HrPayslip(models.Model):
         self.filtered(lambda slip: slip.state == 'done').write({'state': 'paid'})
 
         # Set payslip runs to paid state, if needed
-        payslip_runs = self.mapped('payslip_run_id').filtered(
-            lambda run: run.state == 'close' and all(slip.state in ['paid', 'cancel'] for slip in run.slip_ids))
-        payslip_runs.write({
+        self.mapped('payslip_run_id').write({
             'sepa_export_date': fields.Date.today(),
             'sepa_export': xml_binary,
             'sepa_export_filename': (file_name or 'SEPA_export') + '.xml',
-            'state': 'paid',
         })
+        payslip_runs = self.mapped('payslip_run_id').filtered(
+            lambda run: run.state == 'close' and all(slip.state in ['paid', 'cancel'] for slip in run.slip_ids))
+        payslip_runs.write({'state': 'paid'})

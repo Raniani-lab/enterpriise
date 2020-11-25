@@ -197,6 +197,33 @@
             .o_view_controller {
                 width: 100%;
             }
+
+            @include media-breakpoint-down(xs) {
+                .o_dashboard_subview_buttons {
+                    .btn-group {
+                        .o_graph_button {
+                            padding: 2px 8px;
+                        }
+
+                        &.o_sort_align {
+                            margin-left: 0;
+                        }
+
+                        &.o_graph_align, &.o_stack_align {
+                            margin-left: 0;
+                            margin-right: 1.4%;
+                        }
+                    }
+
+                    .o_dropdown:not(:first-child) {
+                        margin-right: 8px;
+                    }
+
+                    .o_button_switch {
+                        margin-right: 11.7%;
+                    }
+                }
+            }
         }
     }
 }

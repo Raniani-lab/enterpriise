@@ -380,7 +380,7 @@ class AccountEdiFormat(models.Model):
         is_payment_code_bank_ok = payment_method_code in ('02', '03', '04', '28', '29', '99')
 
         partner_bank = move.partner_bank_id.bank_id
-        if partner_bank.country and partner_bank.country.code != 'MX':
+        if not partner_bank.country or partner_bank.country.code != 'MX':
             partner_bank_vat = 'XEXX010101000'
         else:
             partner_bank_vat = partner_bank.l10n_mx_edi_vat
@@ -999,6 +999,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             # == Call the web-service ==
             if test_mode:
                 res['cfdi_signed'] = res['cfdi_str']
+                res['cfdi_encoding'] = 'str'
             else:
                 pac_name = move.company_id.l10n_mx_edi_pac
 

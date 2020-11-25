@@ -34,7 +34,7 @@ class Certificate(models.Model):
         compute='_check_credentials', string='Expiration date', help='The date on which the certificate expires',
         store=True)
     subject_serial_number = fields.Char(
-        compute='_check_credentials', string='Subject Serial Number', store=True,
+        compute='_check_serial_number', string='Subject Serial Number', store=True, readonly=False, copy=False,
         help='This is the document of the owner of this certificate.'
              'Some certificates does not provide this number and you must fill it by hand')
     company_id = fields.Many2one(
@@ -66,6 +66,20 @@ class Certificate(models.Model):
             x.with_context(tz='America/Santiago'), x.cert_expiration))) >= 1
 
     @api.depends('signature_key_file', 'signature_pass_phrase')
+    def _check_serial_number(self):
+        """
+        This method is only for the readonly false compute
+        """
+        for record in self:
+            if not record.signature_key_file or not record.signature_pass_phrase:
+                continue
+            try:
+                certificate = record._get_data()
+            except Exception as e:
+                raise UserError(_('The certificate signature_key_file is invalid: %s.') % e)
+            record.subject_serial_number = certificate[1].get_subject().serialNumber
+
+    @api.depends('signature_key_file', 'signature_pass_phrase')
     def _check_credentials(self):
         """
         Check the validity of signature_key_file/key/signature_pass_phrase and fill the fields
@@ -85,7 +99,6 @@ class Certificate(models.Model):
                 raise UserError(_('The certificate signature_key_file is invalid: %s.') % e)
             # Assign extracted values from the certificate
             record.cert_expiration = cert_expiration.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-            record.subject_serial_number = certificate[1].get_subject().serialNumber
             record.certificate = certificate[0]
             record.private_key = certificate[2]
             if chilean_current_dt > cert_expiration:

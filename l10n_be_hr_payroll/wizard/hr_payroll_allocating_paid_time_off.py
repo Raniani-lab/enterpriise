@@ -70,7 +70,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                     (SELECT id, employee_id, resource_calendar_id, date_start, date_end FROM hr_contract
                         WHERE
                             {where_structure}
-                            employee_id IS NOT NULL
+                            employee_id IN (SELECT id FROM hr_employee WHERE active IS TRUE)
                             AND state IN ('open', 'pending', 'close')
                             AND date_start <= %(stop)s
                             AND (date_end IS NULL OR date_end >= %(start)s)
@@ -141,13 +141,13 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
 
             if contract_next_period.id:
                 calendar = contract_next_period.resource_calendar_id
-                paid_time_off_to_allocate = max_hours_to_allocate / calendar.hours_per_day
+                paid_time_off_to_allocate = max_hours_to_allocate / calendar.hours_per_day if calendar.hours_per_day else 0
                 if paid_time_off_to_allocate > 20:
                     paid_time_off_to_allocate = 20
                 else:
                     paid_time_off_to_allocate = float_round(paid_time_off_to_allocate, 0)
 
-            paid_time_off = float_round(max_hours_to_allocate / calendar_of_company.hours_per_day, 0)
+            paid_time_off = float_round(max_hours_to_allocate / calendar_of_company.hours_per_day if calendar_of_company.hours_per_day else 0, 0)
 
             alloc_employee_ids.append((0, 0, {
                 'employee_id': employee_id,

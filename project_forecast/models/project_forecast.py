@@ -96,7 +96,7 @@ class PlanningShift(models.Model):
     @api.constrains('task_id', 'project_id')
     def _check_task_in_project(self):
         for forecast in self:
-            if forecast.task_id and (forecast.task_id not in forecast.project_id.tasks):
+            if forecast.task_id and (forecast.task_id not in forecast.project_id.with_context(active_test=False).tasks):
                 raise ValidationError(_("Your task is not in the selected project."))
 
     def _read_group_project_id(self, projects, domain, order):

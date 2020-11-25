@@ -136,7 +136,7 @@ class DataMergeModel(models.Model):
         ])
         if num_records:
             partner_ids = self.notify_user_ids.partner_id.ids
-            template = self.env.ref('data_merge.notification')
+            template = self.env.ref('data_merge.data_merge_duplicate')
             menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
             kwargs = {
                 'body': template._render(dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id, menu_id=menu_id)),

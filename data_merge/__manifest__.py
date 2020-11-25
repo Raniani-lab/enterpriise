@@ -3,18 +3,19 @@
 
 {
     'name': 'Data Cleaning (merge)',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Productivity/Data Cleaning',
     'summary': 'Find duplicate records and merge them',
     'description': """Find duplicate records and merge them""",
     'depends': ['mail', 'data_cleaning'],
     'data': [
         'security/ir.model.access.csv',
+        'views/assets.xml',
         'views/data_merge_rule_views.xml',
         'views/data_merge_model_views.xml',
         'views/data_merge_record_views.xml',
         'views/data_merge_views.xml',
-        'views/data_merge_templates.xml',
+        'data/mail_templates.xml',
         'data/data_merge_cron.xml',
         'data/data_merge_data.xml',
     ],

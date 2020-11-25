@@ -9,7 +9,7 @@
     'data': [
         'views/payment_views.xml',
         'views/payment_sepa_direct_debit_templates.xml',
-        'data/mail_templates.xml',
+        'data/mail_template_data.xml',
         'data/payment_acquirer_data.xml',
     ],
     'installable': True,

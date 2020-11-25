@@ -56,6 +56,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_dhl_dom" model="delivery.carrier">
         <field name="name">DHL USA</field>
@@ -76,6 +77,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_dhl_intl" model="delivery.carrier">
         <field name="name">DHL USA -&gt; International</field>

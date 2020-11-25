@@ -84,6 +84,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_ups_us" model="delivery.carrier">
         <field name="name">UPS US</field>
@@ -106,6 +107,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_ups_be" model="delivery.carrier">
         <field name="name">UPS BE</field>

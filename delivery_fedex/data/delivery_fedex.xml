@@ -54,6 +54,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_fedex_inter" model="delivery.carrier">
         <field name="name">Fedex International</field>
@@ -75,6 +76,7 @@
       <field name="sale_ok" eval="False"/>
       <field name="purchase_ok" eval="False"/>
       <field name="list_price">0.0</field>
+      <field name="invoice_policy">order</field>
     </record>
     <record id="delivery_carrier_fedex_us" model="delivery.carrier">
         <field name="name">Fedex US</field>

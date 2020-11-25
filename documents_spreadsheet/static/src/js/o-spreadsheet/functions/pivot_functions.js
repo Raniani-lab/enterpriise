@@ -69,7 +69,7 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
                     }
                     return pivot.cache.getField(value).string;
                 } else {
-                    return await _getValue(pivot, this.env.services.rpc, field, value);
+                    return (await _getValue(pivot, this.env.services.rpc, field, value)) || "";
                 }
             },
             async: true,
@@ -116,6 +116,11 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
     }
     /**
      * Return the label to display from a value and a field
+     * @param {Pivot} pivot
+     * @param {Function} rpc
+     * @param {string} field
+     * @param {string} value
+     * @returns {Promise<string | undefined>}
      */
     async function _getValue(pivot, rpc, field, value) {
         const undef = _t("(Undefined)");

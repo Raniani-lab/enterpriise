@@ -356,6 +356,64 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
         QUnit.module("Spreadsheet");
 
+        QUnit.test("relational PIVOT.HEADER with missing id", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="product" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("UPDATE_CELL", {
+                col: 4,
+                row: 9,
+                content: `=PIVOT.HEADER("1", "product", "1111111")`,
+                sheet: model.getters.getActiveSheet(),
+            });
+            await nextTick();
+            assert.ok(model.getters.getCell(4, 9).error);
+
+            // This is obviously not the desired error message. It happens because Odoo
+            // RPC errors do not have a simple string message but an object with the
+            // error details.
+            // Will be fixed with task 2393876
+            assert.equal(model.getters.getCell(4, 9).error, "[object Object]");
+            actionManager.destroy();
+        });
+
+        QUnit.test("relational PIVOT.HEADER with undefined id", async function (assert) {
+            assert.expect(2);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                debug: 1,
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="foo" type="col"/>
+                    <field name="product" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            model.dispatch("UPDATE_CELL", {
+                col: 4,
+                row: 9,
+                content: `=PIVOT.HEADER("1", "product", A25)`,
+                sheet: model.getters.getActiveSheet(),
+            });
+            assert.equal(model.getters.getCell(0, 24), null, "the cell should be empty");
+            await nextTick();
+            assert.equal(model.getters.getCell(4, 9).value, "");
+            actionManager.destroy();
+        });
+
         QUnit.test("Reinsert a pivot", async function (assert) {
             assert.expect(1);
 

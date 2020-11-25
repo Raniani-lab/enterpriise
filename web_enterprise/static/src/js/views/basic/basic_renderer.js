@@ -35,8 +35,8 @@ BasicRenderer.include({
 
     _addListener: function () {
         this.tooltipNodes.forEach((nodeElement) => {
-            nodeElement.addEventListener('touchstart', this._onTouchStart);
-            nodeElement.addEventListener('touchend', this._onTouchEnd);
+            nodeElement.addEventListener('touchstart', this._onTouchStartTooltip);
+            nodeElement.addEventListener('touchend', this._onTouchEndTooltip);
             nodeElement.classList.add('o_user_select_none');
         });
     },
@@ -72,8 +72,8 @@ BasicRenderer.include({
     _removeListeners: function () {
         while (this.tooltipNodes.length) {
             const node = this.tooltipNodes.shift();
-            node.removeEventListener('touchstart', this._onTouchStart);
-            node.removeEventListener('touchend', this._onTouchEnd);
+            node.removeEventListener('touchstart', this._onTouchStartTooltip);
+            node.removeEventListener('touchend', this._onTouchEndTooltip);
             node.classList.remove('o_user_select_none');
         }
     },
@@ -81,7 +81,7 @@ BasicRenderer.include({
      * @private
      * @param {TouchEvent} event
      */
-    _onTouchEnd: function (event) {
+    _onTouchEndTooltip: function (event) {
         clearTimeout(this.showTimer);
         const $node = $(event.target);
         $node.tooltip('hide');
@@ -90,7 +90,7 @@ BasicRenderer.include({
      * @private
      * @param {TouchEvent} event
      */
-    _onTouchStart: function (event) {
+    _onTouchStartTooltip: function (event) {
         const $node = $(event.target);
         this.showTimer = setTimeout(() => {
             $node.tooltip('show');

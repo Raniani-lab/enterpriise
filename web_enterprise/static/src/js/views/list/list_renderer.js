@@ -12,9 +12,9 @@ const ListRenderer = require('web.ListRenderer');
 ListRenderer.include({
 
     events: Object.assign({}, ListRenderer.prototype.events, {
-        'touchstart .o_data_row': '_onTouchStart',
-        'touchmove .o_data_row': '_onTouchMove',
-        'touchend .o_data_row': '_onTouchEnd',
+        'touchstart .o_data_row': '_onTouchStartSelectionMode',
+        'touchmove .o_data_row': '_onTouchMoveSelectionMode',
+        'touchend .o_data_row': '_onTouchEndSelectionMode',
     }),
 
     init() {
@@ -99,12 +99,12 @@ ListRenderer.include({
     },
 
     /**
-     * Following @see _onTouchStart, we cancel the long-touch if it was shorter
+     * Following @see _onTouchStartSelectionMode, we cancel the long-touch if it was shorter
      * than @see LONG_TOUCH_THRESHOLD.
      *
      * @private
      */
-    _onTouchEnd() {
+    _onTouchEndSelectionMode() {
         const elapsedTime = Date.now() - this.touchStartMs;
         if (elapsedTime < this.LONG_TOUCH_THRESHOLD) {
             this._resetLongTouchTimer();
@@ -112,11 +112,11 @@ ListRenderer.include({
     },
 
     /**
-     * Following @see _onTouchStart, we cancel the long-touch.
+     * Following @see _onTouchStartSelectionMode, we cancel the long-touch.
      *
      * @private
      */
-    _onTouchMove() {
+    _onTouchMoveSelectionMode() {
         this._resetLongTouchTimer();
     },
 
@@ -128,7 +128,7 @@ ListRenderer.include({
      * @private
      * @param ev
      */
-    _onTouchStart(ev) {
+    _onTouchStartSelectionMode(ev) {
         if (this.selection.length) {
             // in selection mode, only selection is allowed.
             ev.preventDefault();

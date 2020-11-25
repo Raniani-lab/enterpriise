@@ -527,7 +527,7 @@ class MrpProductionWorkcenterLine(models.Model):
         """Create new sml if quantity produced is bigger than the reserved one"""
         vals_list = []
         # apply putaway
-        location_dest_id = self.move_id.location_dest_id._get_putaway_strategy(self.product_id) or self.move_id.location_dest_id
+        location_dest_id = self.move_id.location_dest_id._get_putaway_strategy(self.product_id)
         quants = self.env['stock.quant']._gather(self.product_id, self.move_id.location_id, lot_id=self.lot_id, strict=False)
         # Search for a sub-locations where the product is available.
         # Loop on the quants to get the locations. If there is not enough

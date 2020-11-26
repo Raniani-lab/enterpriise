@@ -604,9 +604,6 @@ var LinesWidget = Widget.extend({
      * @param {jQueryElement} $line
      */
     _updateIncrementButtons: function ($line) {
-        if (this.istouchSupported) {
-            return;
-        }
         const id = $line.data('id');
         const qtyDone = parseFloat($line.find('.qty-done').text());
         const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
@@ -625,7 +622,12 @@ var LinesWidget = Widget.extend({
             if (qtyDone < line.product_uom_qty) {
                 const $button = $line.find('button[class*="o_add_"]');
                 const qty = line.product_uom_qty - qtyDone;
-                if (this.shiftPressed) {
+                if (this.istouchSupported) {
+                    // Updates the remaining quantities...
+                    const $reservedButton = $button.filter('.o_add_reserved');
+                    $button.data('reserved', qty);
+                    $reservedButton.text(`+ ${qty}`);
+                } else if (this.shiftPressed) {
                     // Updates the remaining quantities...
                     $button.data('reserved', qty);
                     $button.text(`+ ${qty}`);

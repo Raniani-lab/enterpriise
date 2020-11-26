@@ -165,6 +165,11 @@
                         t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
                         + 1
                     </button>
+                    <button t-if="istouchSupported &amp;&amp; isPickingRelated &amp;&amp; (line.product_id.tracking !== 'serial')"
+                        class="o_line_button o_add_reserved btn btn-primary ml-2 ml-sm-4"
+                        t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
+                        <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>
+                    </button>
                     <button t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
                         - 1
                     </button>

@@ -18,7 +18,7 @@
                 <attribute name="attrs">{'invisible': ['|', ('bill_type', '!=', 'customer_project'), ('is_fsm', '=', True)], 'readonly': [('sale_order_id', '!=', False)]}</attribute>
             </xpath>
             <xpath expr="//page[@name='billing_employee_rate']//group/field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('sale_order_id', '=', False), ('bill_type', '!=', 'customer_project'), ('is_fsm', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('bill_type', '!=', 'customer_project'), ('is_fsm', '=', True)]}</attribute>
             </xpath>
 
             <xpath expr="//field[@name='sale_line_employee_ids']" position="attributes">

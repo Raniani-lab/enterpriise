@@ -89,7 +89,7 @@ class QualityPoint(models.Model):
                 'register_consumed_materials',
                 'register_byproducts'
             ])
-        bom_domain = OR([self.env['mrp.bom']._bom_find_domain(product=product._origin, bom_type='normal') for product in points.product_ids])
+        bom_domain = OR([self.env['mrp.bom']._bom_find_domain(product=product._origin) for product in points.product_ids])
         bom_ids = self.env['mrp.bom'].search(bom_domain)
         product_by_points = defaultdict(lambda: self.env['quality.point'])
         for point in points:

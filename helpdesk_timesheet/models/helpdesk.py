@@ -53,11 +53,6 @@ class HelpdeskTeam(models.Model):
             team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {})
         return result
 
-    @api.model
-    def _init_data_create_project(self):
-        # TODO: remove me in master
-        return
-
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'

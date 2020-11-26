@@ -129,7 +129,7 @@ class AccountBatchPayment(models.Model):
 
             payment_dict = {
                 'id' : payment.id,
-                'name': payment.ref or 'SCT-' + self.journal_id.code + '-' + str(fields.Date.today()),
+                'name': str(payment.id) + '-' + (payment.ref or 'SCT-' + self.journal_id.code + '-' + str(fields.Date.today())),
                 'payment_date' : payment.date,
                 'amount' : payment.amount,
                 'journal_id' : self.journal_id.id,

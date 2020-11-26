@@ -29,7 +29,6 @@
 
     // ------- Make full-width tables to fit odoo layout -------
     > thead, > tbody, > tfoot {
-        .o_web_client:not(.o_touch_device) & {
         > tr > * {
             &:first-child {
                 padding-left: $o-horizontal-padding!important;
@@ -40,7 +39,6 @@
             &.o_list_record_selector {
                 padding-right: 5px!important;
             }
-        }
         }
     }
 }
@@ -163,7 +161,7 @@
 }
 
 // Standalone list views
-body:not(.o_touch_device) .o_content > .o_list_view > .table-responsive > .table {
+.o_content > .o_list_view > .table-responsive > .table {
     // List views always have the table-sm class, maybe we should remove
     // it (and consider it does not exist) and change the default table paddings
     @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2);
@@ -192,7 +190,13 @@ body:not(.o_touch_device) .o_content > .o_list_view > .table-responsive > .table
         background-color: $table-hover-bg !important;
     }
 
-    .o_web_client.o_touch_device .o_content table.o_list_table.table tr > :first-child {
-        display: none;
+    .o_web_client.o_touch_device .o_content table.o_list_table.table tr > {
+        :first-child {
+            display: none;
+        }
+        // first-child will be hidden so add left padding to second child
+        :nth-child(2) {
+            padding-left: $o-horizontal-padding!important;
+        }
     }
 }

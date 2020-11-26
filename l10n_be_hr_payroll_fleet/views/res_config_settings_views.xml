@@ -13,9 +13,9 @@
               <div class="o_setting_right_pane">
                 <span class="o_form_label">New Vehicle Request</span>
                 <div class="text-muted content-group mt16">
-                  <span>An employee cannot request a new vehicle if there are more than </span>
+                  <span>An employee cannot request a new car if there are more than </span>
                   <field name="max_unused_cars" class="text-center oe_inline" />
-                  <span> existing vehicles availables.</span>
+                  <span> existing cars availables.</span>
                 </div>
               </div>
             </div>

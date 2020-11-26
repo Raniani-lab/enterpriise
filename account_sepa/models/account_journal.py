@@ -303,7 +303,7 @@ class AccountJournal(models.Model):
 
         CdtTrfTxInf.append(self._get_CdtrAcct(partner_bank, sct_generic))
 
-        val_RmtInf = self._get_RmtInf(payment)
+        val_RmtInf = self._get_RmtInf(payment, local_instrument)
         if val_RmtInf is not False:
             CdtTrfTxInf.append(val_RmtInf)
         return CdtTrfTxInf
@@ -346,16 +346,21 @@ class AccountJournal(models.Model):
 
         return CdtrAcct
 
-    def _get_RmtInf(self, payment):
+    def _get_RmtInf(self, payment, local_instrument=None):
         if not payment['ref']:
             return False
         RmtInf = etree.Element("RmtInf")
 
-        # In Switzerland, postal accounts always require a structured communication with the ISR reference
-        if self._get_local_instrument(payment) == 'CH01':
+        # In Switzerland, postal accounts and QR-IBAN accounts always require a structured communication with the ISR reference
+        qr_iban = self._is_qr_iban(payment)
+        if local_instrument == 'CH01' or qr_iban:
             ref = payment['ref'].replace(' ', '')
             ref = ref.rjust(27, '0')
-            create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf', 'Ref'], ref)
+            CdtrRefInf = create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf'])[1]
+            if qr_iban:
+                create_xml_node_chain(CdtrRefInf, ['Tp', 'CdOrPrtry', 'Prtry'], "QRR")
+            Ref = etree.SubElement(CdtrRefInf, "Ref")
+            Ref.text = ref
         else:
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
             Ustrd.text = sanitize_communication(payment['ref'])
@@ -376,6 +381,24 @@ class AccountJournal(models.Model):
             ref = payment_comm.replace(' ', '')
             return ref == mod10r(ref[:-1])
         return False
+
+    def _is_qr_iban(self, payment):
+        """ Tells if the bank account linked to the payment has a QR-IBAN account number.
+        QR-IBANs are specific identifiers used in Switzerland as references in
+        QR-codes. They are formed like regular IBANs, but are actually something
+        different.
+        """
+        partner_bank_ids = self.env['res.partner'].browse(payment['partner_id']).bank_ids
+        iban = partner_bank_ids[0].sanitized_acc_number \
+            if partner_bank_ids and partner_bank_ids[0].acc_type == 'iban' \
+            and partner_bank_ids[0].sanitized_acc_number[:2] == 'CH' else None
+        if not iban or len(iban) < 9:
+            return False
+        iid_start_index = 4
+        iid_end_index = 8
+        iid = iban[iid_start_index : iid_end_index+1]
+        return re.match('\d+', iid) \
+            and 30000 <= int(iid) <= 31999 # Those values for iid are reserved for QR-IBANs only
 
     def _get_local_instrument(self, payment):
         """ Local instrument node is used to indicate the use of some regional

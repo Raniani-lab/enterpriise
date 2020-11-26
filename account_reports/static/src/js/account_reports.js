@@ -880,6 +880,11 @@ var accountReportsWidget = AbstractAction.extend({
                 .then(function(result){
                     $(line).parent('tr').replaceWith(result);
                     self._add_line_classes();
+                    self.$('.js_account_report_foldable').each(function() {
+                        if(!$(this).data('unfolded')) {
+                            self.fold($(this));
+                        }
+                    });
                 });
         }
     },

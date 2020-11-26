@@ -319,7 +319,17 @@
         <field name="code">LU_BS_167</field>
         <field name="level" eval="4"/>
         <field name="sequence" eval="1"/>
-        <field name="domain" eval="['|', ('account_id.code', '=like', '401%'), ('account_id.code', '=like', '44113%')]" />
+        <field name="domain" eval="
+            [
+                '|', '|', '|', '|', '|', 
+                ('account_id.code', '=like', '4011%'), 
+                ('account_id.code', '=like', '4012%'), 
+                ('account_id.code', '=like', '4013%'), 
+                ('account_id.code', '=like', '4014%'), 
+                ('account_id.code', '=like', '4019%'), 
+                ('account_id.code', '=like', '44113%')
+            ]"
+        />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_1_4_2_1"/>
@@ -329,7 +339,14 @@
         <field name="code">LU_BS_169</field>
         <field name="level" eval="4"/>
         <field name="sequence" eval="2"/>
-        <field name="domain" eval="['|', ('account_id.code', '=like', '402%'), ('account_id.code', '=like', '44123%')]" />
+        <field name="domain" eval="
+            [
+                '|', '|', 
+                ('account_id.code', '=like', '4021%'), 
+                ('account_id.code', '=like', '4029%'), 
+                ('account_id.code', '=like', '44123%')
+            ]" 
+        />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_1_4_2_1"/>
@@ -461,7 +478,17 @@
         <field name="code">LU_BS_197</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
-        <field name="domain" eval="[('account_id.code', '=like', '51%')]" />
+        <field name="domain" eval="
+            [
+                '|', '|', '|', '|', '&amp;', 
+                ('account_id.code', '=like', '5130%'), 
+                ('balance', '>=', '0.00'), 
+                ('account_id.code', '=like', '5131%'), 
+                ('account_id.code', '=like', '516%'), 
+                ('account_id.code', '=like', '5171%'), 
+                ('account_id.code', '=like', '518%')
+            ]" 
+        />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_1_4"/>
@@ -760,7 +787,16 @@
         <field name="code">LU_BS_357</field>
         <field name="level" eval="3"/>
         <field name="sequence" eval="1"/>
-        <field name="domain" eval="['|', '|', ('account_id.code', '=like', '1941%'), ('account_id.code', '=like', '5132%'), ('account_id.code', '=like', '5172%')]" />
+        <field name="domain" eval="
+            [
+                '|', '|', '|', '&amp;', 
+                ('account_id.code', '=like', '5130%'), 
+                ('balance', '&lt;', '0.00'), 
+                ('account_id.code', '=like', '1941%'), 
+                ('account_id.code', '=like', '5132%'), 
+                ('account_id.code', '=like', '5172%')
+            ]" 
+        />
         <field name="groupby">account_id</field>
         <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_2"/>
@@ -816,7 +852,7 @@
         <field name="code">LU_BS_369</field>
         <field name="level" eval="3"/>
         <field name="sequence" eval="1"/>
-        <field name="domain" eval="['|', ('account_id.code', '=like', '4015%'), ('account_id.code', '=like', '4411%')]" />
+        <field name="domain" eval="['|', '|', ('account_id.code', '=like', '4015%'), ('account_id.code', '=like', '44111%'), ('account_id.code', '=like', '44112%')]" />
         <field name="groupby">account_id</field>
         <field name="formulas">-sum</field>
         <field name="parent_id" ref="account_financial_report_l10n_lu_bs_line_2_3_4"/>

@@ -228,7 +228,7 @@ class assets_report(models.AbstractModel):
                        asset.disposal_date as asset_disposal_date,
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,
-                       (SELECT COUNT(*) FROM temp_account_move WHERE asset_id = asset.id AND asset_value_change != 't') + asset.depreciation_number_import as asset_method_number,
+                       (SELECT COUNT(*) FROM temp_account_move WHERE asset_id = asset.id AND asset_value_change != 't') + COALESCE(asset.depreciation_number_import, 0) as asset_method_number,
                        asset.method_period as asset_method_period,
                        asset.method_progress_factor as asset_method_progress_factor,
                        asset.state as asset_state,

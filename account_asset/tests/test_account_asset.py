@@ -411,6 +411,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
+        self.assertEqual('10.00 %', lines[0]['columns'][3]['name'], 'Depreciation Rate = 10%')
 
         # look only at this period
         options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))

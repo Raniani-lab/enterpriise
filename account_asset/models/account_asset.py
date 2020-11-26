@@ -89,8 +89,8 @@ class AccountAsset(models.Model):
     children_ids = fields.One2many('account.asset', 'parent_id', help="The children are the gains in value of this asset")
 
     # Adapt for import fields
-    already_depreciated_amount_import = fields.Monetary(help="In case of an import from another software, you might need to use this field to have the right depreciation table report. This is the value that was already depreciated with entries not computed from this model")
-    depreciation_number_import = fields.Integer(help="In case of an import from another software, provide the number of depreciations already done before starting with Odoo.")
+    already_depreciated_amount_import = fields.Monetary(help="In case of an import from another software, you might need to use this field to have the right depreciation table report. This is the value that was already depreciated with entries not computed from this model", default=0.0)
+    depreciation_number_import = fields.Integer(help="In case of an import from another software, provide the number of depreciations already done before starting with Odoo.", default=0)
     first_depreciation_date_import = fields.Date(help="In case of an import from another software, provide the first depreciation date in it.")
 
     @api.depends('depreciation_move_ids.date', 'state')

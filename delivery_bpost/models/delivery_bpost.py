@@ -92,7 +92,12 @@ class ProviderBpost(models.Model):
             carrier_tracking_ref = TRACKING_REF_DELIM.join(shipping['main_label']['tracking_codes'])
             tracking_links = '<br/>'.join(self._tracking_link_element(code) for code in shipping['main_label']['tracking_codes'])
             logmessage = (_("Shipment created into bpost <br/> <b>Tracking Links</b> <br/>%s") % (tracking_links))
-            picking.message_post(body=logmessage, attachments=[('Labels-bpost.%s' % self.bpost_label_format, shipping['main_label']['label'])])
+            bpost_labels = [('Labels-bpost.%s' % self.bpost_label_format, shipping['main_label']['label'])]
+            if picking.sale_id:
+                for pick in picking.sale_id.picking_ids:
+                    pick.message_post(body=logmessage, attachments=bpost_labels)
+            else:
+                picking.message_post(body=logmessage, attachments=bpost_labels)
 
             if shipping['return_label']:
                 carrier_return_label_ref = TRACKING_REF_DELIM.join(shipping['return_label']['tracking_codes'])

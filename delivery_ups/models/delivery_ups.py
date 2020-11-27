@@ -218,7 +218,11 @@ class ProviderUPS(models.Model):
                 attachments = [('LabelUPS-%s.%s' % (pl[0], self.ups_label_file_type), pl[1]) for pl in package_labels]
             if self.ups_label_file_type == 'GIF':
                 attachments = [('LabelUPS.pdf', pdf.merge_pdf([pl[1] for pl in package_labels]))]
-            picking.message_post(body=logmessage, attachments=attachments)
+            if picking.sale_id:
+                for pick in picking.sale_id.picking_ids:
+                    pick.message_post(body=logmessage, attachments=attachments)
+            else:
+                picking.message_post(body=logmessage, attachments=attachments)
             shipping_data = {
                 'exact_price': price,
                 'tracking_number': carrier_tracking_ref}

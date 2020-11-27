@@ -113,7 +113,11 @@ class DeliverCarrier(models.Model):
 
             logmessage = _("Shipment created into Easypost<br/>"
                            "<b>Tracking Numbers:</b> %s<br/>") % (carrier_tracking_link)
-            pickings.message_post(body=logmessage, attachments=labels)
+            if picking.sale_id:
+                for pick in picking.sale_id.picking_ids:
+                    pick.message_post(body=logmessage, attachments=labels)
+            else:
+                picking.message_post(body=logmessage, attachments=labels)
 
             shipping_data = {'exact_price': price,
                              'tracking_number': carrier_tracking_ref}

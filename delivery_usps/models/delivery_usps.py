@@ -159,7 +159,12 @@ class ProviderUSPS(models.Model):
             carrier_tracking_ref = booking['tracking_number']
 
             logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
-            picking.message_post(body=logmessage, attachments=[('LabelUSPS-%s.%s' % (carrier_tracking_ref, self.usps_label_file_type), booking['label'])])
+            usps_labels = [('LabelUSPS-%s.%s' % (carrier_tracking_ref, self.usps_label_file_type), booking['label'])]
+            if picking.sale_id:
+                for pick in picking.sale_id.picking_ids:
+                    pick.message_post(body=logmessage, attachments=usps_labels)
+            else:
+                picking.message_post(body=logmessage, attachments=usps_labels)
 
             shipping_data = {'exact_price': price,
                              'tracking_number': carrier_tracking_ref}

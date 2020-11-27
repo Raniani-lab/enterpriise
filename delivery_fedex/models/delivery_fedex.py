@@ -419,7 +419,11 @@ class ProviderFedex(models.Model):
 
                     fedex_labels = [('LabelFedex-%s-%s.%s' % (carrier_tracking_ref, index, self.fedex_label_file_type), label)
                                     for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
-                    picking.message_post(body=logmessage, attachments=fedex_labels)
+                    if picking.sale_id:
+                        for pick in picking.sale_id.picking_ids:
+                            pick.message_post(body=logmessage, attachments=fedex_labels)
+                    else:
+                        picking.message_post(body=logmessage, attachments=fedex_labels)
                     shipping_data = {'exact_price': carrier_price,
                                      'tracking_number': carrier_tracking_ref}
                     res = res + [shipping_data]

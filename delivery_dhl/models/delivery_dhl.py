@@ -217,7 +217,12 @@ class Providerdhl(models.Model):
             dhl_response = srm._process_shipment(shipment_request)
             traking_number = dhl_response.AirwayBillNumber
             logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
-            picking.message_post(body=logmessage, attachments=[('LabelDHL-%s.%s' % (traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)])
+            dhl_labels = [('LabelDHL-%s.%s' % (traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
+            if picking.sale_id:
+                for pick in picking.sale_id.picking_ids:
+                    pick.message_post(body=logmessage, attachments=dhl_labels)
+            else:
+                picking.message_post(body=logmessage, attachments=dhl_labels)
             shipping_data = {
                 'exact_price': 0,
                 'tracking_number': traking_number,

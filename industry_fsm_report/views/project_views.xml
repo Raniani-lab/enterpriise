@@ -178,7 +178,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
         <field name="arch" type="xml">
-            <field name="project_id" position="after">
+            <field name="display_project_id" position="after">
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="display_sign_report_primary" invisible="1"/>
                 <field name="display_sign_report_secondary" invisible="1"/>
@@ -230,6 +230,9 @@
                     attrs="{'invisible': ['|', '|', ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), ('worksheet_count', '=', 0)]}">
                 </button>
             </xpath>
+            <xpath expr="//field[@name='child_ids']/tree/button[@name='action_open_task']" position="before">
+                <field name="worksheet_template_id" optional="hide"/>
+            </xpath>
         </field>
     </record>
 
@@ -277,7 +280,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context" eval="{'search_default_groupby_worksheet_template': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>

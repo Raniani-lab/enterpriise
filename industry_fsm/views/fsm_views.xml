@@ -6,7 +6,8 @@
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <tree string="Tasks" multi_edit="1" sample="1">
-                <field name="name"/>
+                <field name="child_text" invisible="1"/>
+                <field name="name" widget="name_with_subtask_count"/>
                 <field name="project_id" readonly="1"/>
                 <field name="partner_id"/>
                 <field name="user_id" widget="many2one_avatar_user" optional="show" invisible="context.get('user_invisible', False)"/>
@@ -163,7 +164,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">map,kanban,gantt,calendar,tree,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
             'show_address': True,
@@ -219,7 +220,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">map,kanban,gantt,calendar,tree,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
@@ -287,7 +288,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
             'default_user_id': False,
@@ -337,7 +338,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">tree,kanban,gantt,calendar,map,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
             'search_default_schedule': True,
@@ -384,7 +385,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">gantt,kanban,tree,calendar,map,pivot,graph,form,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context" eval="{'search_default_groupby_user': 1, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>
@@ -457,7 +458,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context" eval="{'search_default_groupby_project': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>

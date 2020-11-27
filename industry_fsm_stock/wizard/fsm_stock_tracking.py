@@ -64,5 +64,5 @@ class FsmStockTrackingLine(models.TransientModel):
     product_id = fields.Many2one('product.product')
     sale_order_line_id = fields.Many2one('sale.order.line')
     company_id = fields.Many2one('res.company', 'Company')
-    wizard_tracking_line = fields.Many2one('fsm.stock.tracking')
-    wizard_tracking_line_valided = fields.Many2one('fsm.stock.tracking')
+    wizard_tracking_line = fields.Many2one('fsm.stock.tracking', string="Tracking Line")
+    wizard_tracking_line_valided = fields.Many2one('fsm.stock.tracking', string="Validated Tracking Line")

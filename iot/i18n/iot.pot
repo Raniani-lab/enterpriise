@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-11-27 13:47+0000\n"
+"PO-Revision-Date: 2020-11-27 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -341,7 +341,7 @@ msgstr ""
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__is_scanner
-msgid "Is scanner"
+msgid "Is Scanner"
 msgstr ""
 
 #. module: iot
@@ -403,7 +403,7 @@ msgstr ""
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner
-msgid "Manually the device type between keyboard or scanner"
+msgid "Manually switch the device type between keyboard and scanner"
 msgstr ""
 
 #. module: iot

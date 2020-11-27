@@ -47,7 +47,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmSaveTimesheetStepIndex + 1, 0, {
 }, {
     trigger: '.o_web_sign_auto_button',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('Generate a signature automatically or draw it by hand.'),
+    content: _t('Generate a signature automatically or write it by hand.'),
     position: 'right',
 }, {
     trigger: '.o_portal_sign_submit:enabled',

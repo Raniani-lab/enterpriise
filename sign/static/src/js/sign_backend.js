@@ -300,7 +300,7 @@ odoo.define('sign.template', function(require) {
                     this.updateTargetResponsible();
                     this.$currentTarget.trigger('itemChange');
                 }});
-                options.buttons.push({text: _t('Add on all pages'), classes: 'btn-secondary', close: true, click: function(e) {
+                options.buttons.push({text: _t('Add to all pages'), classes: 'btn-secondary', close: true, click: function(e) {
                     this.updateTargetResponsible();
                     this.$currentTarget.draggable('destroy').resizable('destroy');
                     this.$currentTarget.trigger('itemClone');

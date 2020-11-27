@@ -530,7 +530,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         const useVOIP = await new Promise(resolve => {
             const $content = $('<main/>', {
                 role: 'alert',
-                text: _t("Made call with using")
+                text: _t("Make a call using:")
             });
 
             const $checkbox = dom.renderCheckbox({
@@ -565,7 +565,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         if (useVOIP && mobile.methods.setupVoip) {
             const hasMicroPhonePermission = await mobile.methods.setupVoip();
             if (!hasMicroPhonePermission) {
-                await new Promise(resolve => Dialog.alert(this, _t("You don't allow the access to the microphone on your device. The VoIP call receiver will not hear you"), {
+                await new Promise(resolve => Dialog.alert(this, _t("You must allow the access to the microphone on your device. Otherwise, the VoIP call receiver will not hear you."), {
                     confirm_callback: resolve,
                 }));
             }

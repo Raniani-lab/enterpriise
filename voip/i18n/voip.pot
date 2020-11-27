@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-11-27 14:15+0000\n"
+"PO-Revision-Date: 2020-11-27 14:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -132,6 +132,13 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__name
 msgid "Call Name"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "Call rejected (reason: \"%s\")"
 msgstr ""
 
 #. module: voip
@@ -526,7 +533,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
-msgid "Made call with using"
+msgid "Make a call using:"
 msgstr ""
 
 #. module: voip
@@ -901,6 +908,13 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid "The person you try to contact is currently unavailable."
+msgstr ""
+
+#. module: voip
+#. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The phonecall has no number"
@@ -1035,8 +1049,8 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid ""
-"You don't allow the access to the microphone on your device. The VoIP call "
-"receiver will not hear you"
+"You must allow the access to the microphone on your device. Otherwise, the "
+"VoIP call receiver will not hear you."
 msgstr ""
 
 #. module: voip
@@ -1077,18 +1091,4 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "sec"
-msgstr ""
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:0
-#, python-format
-msgid "The person you try to contact is currently unavailable."
-msgstr ""
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:0
-#, python-format
-msgid "Call rejected (reason: '%s')"
 msgstr ""

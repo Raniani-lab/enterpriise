@@ -307,7 +307,7 @@ class CalendarAppointmentSlot(models.Model):
     @api.constrains('hour')
     def check_hour(self):
         if any(slot.hour < 0.00 or slot.hour >= 24.00 for slot in self):
-            raise ValidationError(_("Please enter a valid hour between 0:00 to 24:00 for your slots."))
+            raise ValidationError(_("Please enter a valid hour between 0:00 and 24:00 for your slots."))
 
     def name_get(self):
         weekdays = dict(self._fields['weekday'].selection)

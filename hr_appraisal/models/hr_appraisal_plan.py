@@ -73,7 +73,7 @@ class HrAppraisalPlan(models.Model):
                 if self.event == "arrival":
                     note = _("The employee %s arrived %s months ago. An appraisal for %s is created. You can assess %s & determinate the date for '1to1' meeting before %s") % (employee.name, self.duration, employee.name, employee.name, appraisal.date_close) 
                 else:
-                    note = _("Your employee's last appraisal was %s month ago. An appraisal for %s is created. You can assess %s & determinate the date for '1to1' meeting before %s") % (self.duration, employee.name, employee.name, appraisal.date_close) 
+                    note = _("Your employee's last appraisal was %s months ago. An appraisal for %s is created. You can assess %s & determinate the date for '1to1' meeting before %s") % (self.duration, employee.name, employee.name, appraisal.date_close)
                 appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
                     'mail.mail_activity_data_todo', fields.Date.today(),
                     summary=_('Appraisal to Confirm and Send'),

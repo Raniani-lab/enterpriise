@@ -113,7 +113,7 @@ class TaxCloudRequest(object):
         _logger.info('fetching tax values for cart %s (customer: %s)', cart_id, customer_id)
         formatted_response = {}
         if not self.api_login_id or not self.api_key:
-            formatted_response['error_message'] = _("Please configure taxcloud credential on the current company"
+            formatted_response['error_message'] = _("Please configure taxcloud credentials on the current company "
                                                     "or use a different fiscal position")
             return formatted_response
 

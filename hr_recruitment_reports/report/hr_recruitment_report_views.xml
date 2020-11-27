@@ -11,9 +11,9 @@
                     <group>
                         <group col="4">
                             <group>
-                                <aggregate name="count" string="Hired Poeple" field="count" invisible="1"/>
+                                <aggregate name="count" string="Hired People" field="count" invisible="1"/>
                                 <aggregate name="refused" string="# Payslips" field="refused" invisible="1"/>
-                                <aggregate name="hired" string="Hired Poeple" field="hired"/>
+                                <aggregate name="hired" string="Hired People" field="hired"/>
                                 <formula name="recruitment_rate" string="Recruitment Rate" value="100 * record.hired / record.count" value_label="%"/>
                             </group>
                             <group>

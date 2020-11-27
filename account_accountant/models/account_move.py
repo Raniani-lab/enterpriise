@@ -62,7 +62,7 @@ class AccountMoveLine(models.Model):
         if len(all_accounts) == 2 and 'payable' in account_types and 'receivable' in account_types:
 
             if len(all_partners) != 1:
-                raise UserError(_("You cannot reconcile together the payable and receivable accounts of multiple partners at once."))
+                raise UserError(_("You cannot reconcile the payable and receivable accounts of multiple partners together at the same time."))
 
             # In case we have only lines for one (or no) partner and they all
             # are located on a single receivable or payable account,

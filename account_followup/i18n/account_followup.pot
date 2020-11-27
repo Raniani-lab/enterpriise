@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:04+0000\n"
-"PO-Revision-Date: 2020-09-29 14:04+0000\n"
+"POT-Creation-Date: 2020-11-27 13:47+0000\n"
+"PO-Revision-Date: 2020-11-27 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -74,14 +74,6 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%(company)s Payment Reminder - %(customer)s"
-msgstr ""
-
-#. module: account_followup
-#. openerp-web
-#: code:addons/account_followup/static/src/xml/account_followup_template.xml:0
-#: code:addons/account_followup/static/src/xml/account_followup_template.xml:0
-#, python-format
-msgid "&times;"
 msgstr ""
 
 #. module: account_followup
@@ -175,6 +167,11 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_chart_template
 msgid "Account Chart Template"
+msgstr ""
+
+#. module: account_followup
+#: model:ir.model,name:account_followup.model_report_account_followup_report_followup_print_all
+msgid "Account Follow-up Report"
 msgstr ""
 
 #. module: account_followup
@@ -337,6 +334,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_report__display_name
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_followup.field_account_report_manager__display_name
+#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all__display_name
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
@@ -486,6 +484,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_report__id
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_followup.field_account_report_manager__id
+#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all__id
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__id
 msgid "ID"
 msgstr ""
@@ -522,6 +521,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_report____last_update
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_followup.field_account_report_manager____last_update
+#: model:ir.model.fields,field_description:account_followup.field_report_account_followup_report_followup_print_all____last_update
 #: model:ir.model.fields,field_description:account_followup.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""

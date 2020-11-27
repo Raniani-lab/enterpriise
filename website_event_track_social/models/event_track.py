@@ -16,7 +16,7 @@ class Track(models.Model):
     push_reminder = fields.Boolean('Push Reminder',
         help="Check this if you want to send a push notification reminder to everyone that has wishlisted this track.",
         compute='_compute_push_reminder_fields', store=True, readonly=False)
-    push_reminder_delay = fields.Integer('Push Reminter Delay',
+    push_reminder_delay = fields.Integer('Push Reminder Delay',
         help="How many minutes before the start of the talk do you want to send the reminder?",
         compute='_compute_push_reminder_fields', store=True, readonly=False)
     push_reminder_posts = fields.One2many(

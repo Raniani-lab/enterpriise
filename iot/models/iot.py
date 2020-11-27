@@ -75,7 +75,8 @@ class IotDevice(models.Model):
     keyboard_layout = fields.Many2one('iot.keyboard.layout', string='Keyboard Layout')
     display_url = fields.Char('Display URL', help="URL of the page that will be displayed by the device, leave empty to use the customer facing display of the POS.")
     manual_measurement = fields.Boolean('Manual Measurement', compute="_compute_manual_measurement", help="Manually read the measurement from the device")
-    is_scanner = fields.Boolean(string='Is scanner', compute="_compute_is_scanner", inverse="_set_scanner" , help="Manually the device type between keyboard or scanner")
+    is_scanner = fields.Boolean(string='Is Scanner', compute="_compute_is_scanner", inverse="_set_scanner",
+        help="Manually switch the device type between keyboard and scanner")
 
     def name_get(self):
         return [(i.id, "[" + i.iot_id.name +"] " + i.name) for i in self]

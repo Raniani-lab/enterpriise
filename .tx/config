@@ -417,6 +417,11 @@ file_filter = hr_payroll_account_sepa/i18n/<lang>.po
 source_file = hr_payroll_account_sepa/i18n/hr_payroll_account_sepa.pot
 source_lang = en
 
+[odoo-14.hr_payroll_edit_lines]
+file_filter = hr_payroll_edit_lines/i18n/<lang>.po
+source_file = hr_payroll_edit_lines/i18n/hr_payroll_edit_lines.pot
+source_lang = en
+
 [odoo-14.hr_payroll_expense]
 file_filter = hr_payroll_expense/i18n/<lang>.po
 source_file = hr_payroll_expense/i18n/hr_payroll_expense.pot

@@ -440,7 +440,7 @@ class AccountMove(models.Model):
         tax_group_covered_goods = self.env.ref('l10n_co.tax_group_covered_goods', raise_if_not_found=False)
         for line in self.invoice_line_ids:
             price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_ids.compute_all(price_unit, quantity=line.quantity, currency=line.currency_id,
+            taxes = line.tax_ids.with_context(force_sign=line.move_id._get_tax_force_sign()).compute_all(price_unit, quantity=line.quantity, currency=line.currency_id,
                                              product=line.product_id, partner=line.partner_id)
             taxes_amount_dict[line.id] = []
             for tax in taxes['taxes']:

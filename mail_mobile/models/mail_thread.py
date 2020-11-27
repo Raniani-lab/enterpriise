@@ -49,7 +49,7 @@ class MailThread(models.AbstractModel):
 
         msg_sudo = message.sudo()  # why sudo?
         msg_type = msg_vals.get('message_type') or msg_sudo.message_type
-        author_id = [msg_vals.get('author_id')] or message.author_id.ids
+        author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else message.author_id.ids
 
         if msg_type == 'comment':
             if chat_cids:
@@ -94,7 +94,7 @@ class MailThread(models.AbstractModel):
         This info will be delivered to mobile device via Google Firebase Cloud
         Messaging (FCM). And it is having limit of 4000 bytes (4kb)
         """
-        author_id = [msg_vals.get('author_id')] or message.author_id.ids
+        author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else message.author_id.ids
         author_name = self.env['res.partner'].browse(author_id).name
         model = msg_vals.get('model') if msg_vals else message.model
         res_id = msg_vals.get('res_id') if msg_vals else message.res_id

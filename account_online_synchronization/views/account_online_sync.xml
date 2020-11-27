@@ -179,12 +179,12 @@
                 </xpath>
 
                 <!-- Replace individualy this element because it wasn't override before.. -->
-                <xpath expr='//a[@name="action_configure_bank_journal"]' position='replace'>
+                <xpath expr='//button[@name="action_configure_bank_journal"]' position='replace'>
                     <button t-if="dashboard.number_to_reconcile == 0" groups="account.group_account_manager" attrs="{'invisible': [('account_online_account_id', '!=', False)]}"
                             type="object" name="action_configure_bank_journal" class="btn btn-primary">Online Synchronization</button>
                 </xpath>
 
-                <xpath expr='//button[@name="action_configure_bank_journal"]' position='after'>
+                <xpath expr='//a[@name="action_configure_bank_journal"]' position='replace'>
                     <a t-if="dashboard.number_to_reconcile > 0" groups="account.group_account_manager" attrs="{'invisible': [('account_online_account_id', '!=', False)]}"
                             type="object" name="action_configure_bank_journal" class="oe_inline">Online Synchronization</a>
                 </xpath>

@@ -5,6 +5,7 @@ const Domain = require('web.Domain');
 var GanttView = require('web_gantt.GanttView');
 var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
+const SampleServer = require('web.SampleServer');
 var testUtils = require('web.test_utils');
 
 const createActionManager = testUtils.createActionManager;
@@ -23,7 +24,24 @@ function convertUnavailability(u) {
     };
 }
 
-var createView = testUtils.createView;
+async function createView(params) {
+    testUtils.mock.patch(SampleServer.prototype, {
+        /**
+         * Sometimes, it can happen that none of the generated dates is in
+         * the interval. To fix that, we simply return the initial date.
+         */
+        _getRandomDate(format) {
+            return moment(params.viewOptions.initialDate).format(format);
+        },
+    });
+    const view = await testUtils.createView(...arguments);
+    const oldDestroy = view.destroy;
+    view.destroy = function () {
+        oldDestroy.call(this, ...arguments);
+        testUtils.mock.unpatch(SampleServer.prototype);
+    };
+    return view;
+}
 
 // The gantt view uses momentjs for all time computation, which bypasses
 // tzOffset, making it hard to test. We had two solutions to test this:

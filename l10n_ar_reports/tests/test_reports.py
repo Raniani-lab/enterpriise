@@ -1,9 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields
-from odoo.tests.common import TransactionCase
+from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tools import date_utils
 from odoo.modules.module import get_module_resource
-from odoo.addons.account_reports.tests.common import _init_options
 from dateutil.relativedelta import relativedelta
 import logging
 import codecs
@@ -11,7 +10,7 @@ import codecs
 _logger = logging.getLogger(__name__)
 
 
-class TestReports(TransactionCase):
+class TestReports(TestAccountReportsCommon):
 
     def setUp(self):
         super(TestReports, self).setUp()
@@ -23,8 +22,11 @@ class TestReports(TransactionCase):
 
         self.vat_book = self.env['l10n_ar.vat.book']
         today = fields.Date.today()
-        self.options = _init_options(self.vat_book, today + relativedelta(years=0, month=1, day=1),
-                                     today + relativedelta(years=0, month=12, day=31))
+        self.options = self._init_options(
+            self.vat_book,
+            today + relativedelta(years=0, month=1, day=1),
+            today + relativedelta(years=0, month=12, day=31),
+        )
 
     def _test_txt_file(self, filename):
         out_txt = self.vat_book.get_txt(self.options).decode('ISO-8859-1')

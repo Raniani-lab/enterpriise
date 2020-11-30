@@ -11,6 +11,8 @@ class Project(models.Model):
     allow_quotations = fields.Boolean(
         "Extra Quotations", compute="_compute_allow_quotations", store=True, readonly=False)
     allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
+    bill_type = fields.Selection(compute="_compute_bill_type", store=True, readonly=False)
+    sale_line_id = fields.Many2one(compute="_compute_sale_line_id", store=True, readonly=False)
 
     _sql_constraints = [
         ('material_imply_billable', "CHECK((allow_material = 't' AND allow_billable = 't') OR (allow_material = 'f'))", 'The material can be allowed only when the task can be billed.'),
@@ -26,8 +28,11 @@ class Project(models.Model):
 
     @api.depends('is_fsm')
     def _compute_allow_quotations(self):
-        for project in self:
-            project.allow_quotations = not project.is_fsm
+        if not self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task'):
+            self.allow_quotations = False
+        else:
+            for project in self:
+                project.allow_quotations = project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_allow_billable(self):
@@ -51,3 +56,12 @@ class Project(models.Model):
                 fnames.add('allow_billable')
                 fnames.add('allow_material')
         return super().flush(fnames, records)
+
+    @api.depends('is_fsm')
+    def _compute_bill_type(self):
+        self.filtered(lambda p: p.is_fsm).update({'bill_type': 'customer_task'})
+
+    @api.depends('is_fsm')
+    def _compute_sale_line_id(self):
+        # We cannot have a SOL in the fsm project
+        self.filtered(lambda p: p.is_fsm).update({'sale_line_id': False})

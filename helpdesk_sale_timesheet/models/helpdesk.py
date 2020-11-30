@@ -3,6 +3,7 @@
 
 from ast import literal_eval
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
@@ -14,6 +15,12 @@ class HelpdeskTeam(models.Model):
         new_values = dict(other, allow_billable=allow_billable)
         return super(HelpdeskTeam, self)._create_project(name, allow_billable, new_values)
 
+    def write(self, vals):
+        result = super(HelpdeskTeam, self).write(vals)
+        if 'use_helpdesk_sale_timesheet' in vals and vals['use_helpdesk_sale_timesheet']:
+            projects = self.filtered(lambda team: team.project_id).mapped('project_id')
+            projects.write({'allow_billable': True, 'timesheet_product_id': projects._default_timesheet_product_id()})
+        return result
 
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
@@ -38,15 +45,13 @@ class HelpdeskTicket(models.Model):
     def _compute_sale_order_button_visibility(self):
         for ticket in self:
             primary, secondary = False, False
-            if ticket.use_helpdesk_sale_timesheet:
-                if ticket.project_id and not ticket.project_id.allow_billable and \
-                        not ticket.project_id.sale_order_id:
+            if ticket.use_helpdesk_sale_timesheet and ticket.project_id.allow_billable:
+                if ticket.project_id and ticket.project_id.bill_type == "customer_project" and not ticket.project_id.sale_order_id:
                     if ticket.total_hours_spent > 0:
                         primary = True
                     else:
                         secondary = True
-                elif ticket.project_id and ticket.project_id.allow_billable and \
-                        ticket.task_id and not ticket.task_id.sale_line_id:
+                elif ticket.project_id and ticket.project_id.bill_type == "customer_task" and ticket.task_id and not ticket.task_id.sale_line_id:
                     if ticket.total_hours_spent > 0:
                         primary = True
                     else:
@@ -56,7 +61,7 @@ class HelpdeskTicket(models.Model):
 
     def create_sale_order(self):
         self.ensure_one()
-        if self.project_id.allow_billable:
+        if self.project_id.bill_type == "customer_task":
             # open project.task create sale order wizard
             if self.partner_id:
                 customer = self.partner_id.id
@@ -94,6 +99,7 @@ class HelpdeskTicket(models.Model):
                 'active_model': 'project.project',
                 'default_partner_id': customer,
                 'default_product_id': self.env.ref('sale_timesheet.time_product').id,
+                'ticket_timesheet_ids': self.timesheet_ids.ids
             },
         }
 
@@ -106,6 +112,18 @@ class HelpdeskTicket(models.Model):
                 ticket.sale_order_id = ticket.task_id.sale_order_id
             if ticket.sale_order_id and not ticket.partner_id:
                 ticket.partner_id = ticket.sale_order_id.partner_id
+
+    def action_view_so(self):
+        self.ensure_one()
+        action_window = {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.order",
+            "name": "Sales Order",
+            "views": [[False, "form"]],
+            "context": {"create": False, "show_sale": True},
+            "res_id": self.sale_order_id.id
+        }
+        return action_window
 
 
 class AccountAnalyticLine(models.Model):

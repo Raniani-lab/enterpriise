@@ -55,9 +55,8 @@ class HelpdeskTeam(models.Model):
 
     @api.model
     def _init_data_create_project(self):
-        for team in self.search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False)]):
-            team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, 'allow_timesheet_timer': True})
-            self.env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})
+        # TODO: remove me in master
+        return
 
 
 class HelpdeskTicket(models.Model):
@@ -147,17 +146,8 @@ class HelpdeskTicket(models.Model):
 
     @api.onchange('task_id')
     def _onchange_task_id(self):
-        if self._get_timesheet() and self._origin.task_id:
-            if self.task_id:
-                msg = _("All timesheet hours will be assigned to the selected task on save. Discard to avoid the change.")
-            else:
-                msg = _("Timesheet hours will not be assigned to a customer task. Set a task to charge a customer.")
-            return {'warning':
-                {
-                    'title': _("Warning"),
-                    'message': msg
-                }
-            }
+        # TODO: remove me in master
+        return
 
     @api.constrains('project_id', 'team_id')
     def _check_project_id(self):

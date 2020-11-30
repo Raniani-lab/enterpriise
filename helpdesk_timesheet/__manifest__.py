@@ -20,4 +20,5 @@
     ],
     'demo': ['data/helpdesk_timesheet_demo.xml'],
     'license': 'OEEL-1',
+    'post_init_hook': '_helpdesk_timesheet_post_init'
 }

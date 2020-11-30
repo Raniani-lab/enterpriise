@@ -1300,7 +1300,6 @@ class TestWorkOrder(common.TestMrpCommon):
         mo_form.product_qty = 1
         mo = mo_form.save()
 
-        mo.action_assign()
         mo.action_confirm()
         mo.button_plan()
         sorted_workorder_ids = mo.workorder_ids.sorted()
@@ -1316,7 +1315,8 @@ class TestWorkOrder(common.TestMrpCommon):
         wo._next()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         wo_form.lot_id = self.mc1
-        self.assertEqual(wo_form.qty_done, 10, 'The suggested component qty_done is wrong')
+        # since lot tracked products are reserved, don't auto multiply amount
+        self.assertEqual(wo_form.qty_done, 2, 'The suggested component qty_done is wrong')
         self.assertEqual(wo_form.component_remaining_qty, 10, 'The component remaining quantity is wrong')
         wo = wo_form.save()
         wo._next()

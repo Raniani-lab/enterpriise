@@ -119,10 +119,11 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         for date_tag in ('ENC_7', 'ENC_8', 'ENC_16'):
             generated_xml = re.sub('<%s>.*</%s>' % (date_tag, date_tag), '', generated_xml)
 
-        # show the full diff
-        self.maxDiff = None
         with misc.file_open(os.path.join('l10n_co_edi', 'tests', filename_expected)) as f:
-            self.assertEqual(f.read().strip(), generated_xml.strip())
+            self.assertXmlTreeEqual(
+                self.get_xml_tree_from_string(generated_xml.encode()),
+                self.get_xml_tree_from_string(f.read().encode())
+            )
 
     def test_invoice(self):
         '''Tests if we generate an accepted XML for an invoice and a credit note.'''

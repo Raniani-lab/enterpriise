@@ -405,16 +405,20 @@ class L10nARVatBook(models.AbstractModel):
             ]
 
             if journal_type == 'sale':
+                document_codes = [
+                    '16', '19', '20', '21', '22', '23', '24', '27', '28', '29', '33', '34', '35', '37', '38', '43', '44',
+                    '45', '46', '47', '48', '49', '54', '55', '56', '57', '58', '59', '60', '61', '68', '81', '82', '83',
+                    '110', '111', '112', '113', '114', '115', '116', '117', '118', '119', '120', '150', '151', '157',
+                    '158', '159', '160', '161', '162', '163', '164', '165', '166', '167', '168', '169', '170', '171',
+                    '172', '180', '182', '183', '185', '186', '188', '189', '190', '191',
+                    '201', '202', '203', '206', '207', '208', '211', '212', '213', '331', '332']
                 row += [
                     # Field 21: Otros Tributos
                     self._format_amount(other_taxes_amount),
 
                     # Field 22: vencimiento comprobante
                     # NOTE: it does not appear in instructions but it does in application. for ticket and export invoice is not reported, also for some others but that we do not have implemented
-                    (inv.l10n_latam_document_type_id.code in [
-                        '19', '20', '21', '16', '55', '81', '82', '83', '110', '111', '112', '113', '114', '115', '116',
-                        '117', '118', '119', '120', '201', '202', '203', '206', '207', '208', '211', '212', '213'] and
-                        '00000000' or inv.invoice_date_due.strftime('%Y%m%d')),
+                    inv.l10n_latam_document_type_id.code in document_codes and '00000000' or inv.invoice_date_due.strftime('%Y%m%d')
                 ]
             else:
                 row.append(self._format_amount(vat_amount))  # Field 21: Crédito Fiscal Computable

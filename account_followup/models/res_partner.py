@@ -184,6 +184,7 @@ class ResPartner(models.Model):
                 JOIN account_move move ON move.id = aml.move_id
                                        AND move.state = 'posted'
                 WHERE aml.reconciled IS NOT TRUE
+                AND aml.blocked IS FALSE
                 AND aml.company_id = %(company_id)s
                 {where}
             )

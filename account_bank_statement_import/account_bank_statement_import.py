@@ -214,9 +214,10 @@ class AccountBankStatementImport(models.TransientModel):
         for st_vals in stmts_vals:
             filtered_st_lines = []
             for line_vals in st_vals['transactions']:
-                if 'unique_import_id' not in line_vals \
-                   or not line_vals['unique_import_id'] \
-                   or not bool(BankStatementLine.sudo().search([('unique_import_id', '=', line_vals['unique_import_id'])], limit=1)):
+                if (line_vals['amount'] != 0
+                   and ('unique_import_id' not in line_vals
+                   or not line_vals['unique_import_id']
+                   or not bool(BankStatementLine.sudo().search([('unique_import_id', '=', line_vals['unique_import_id'])], limit=1)))):
                     filtered_st_lines.append(line_vals)
                 else:
                     ignored_statement_lines_import_ids.append(line_vals['unique_import_id'])

@@ -2249,6 +2249,11 @@ msgid "Total to pay on"
 msgstr ""
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "The net amount will be recovered from the first positive remuneration established after this."
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_rule_parameter__unique
 msgid "Two rule parameters cannot have the same code."
 msgstr ""

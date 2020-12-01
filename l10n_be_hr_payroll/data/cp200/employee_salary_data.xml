@@ -14,6 +14,10 @@
                 (4, ref('l10n_be_hr_payroll.work_entry_type_part_sick')),
                 (4, ref('l10n_be_hr_payroll.work_entry_type_maternity')),
                 (4, ref('l10n_be_hr_payroll.work_entry_type_breast_feeding')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_paternity_legal')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_unjustified_reason')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_medical_assistance')),
+                (4, ref('l10n_be_hr_payroll.work_entry_type_youth_time_off')),
             ]"/>
         </record>
         <record id="hr_contract.structure_type_employee_cp200" model="hr.payroll.structure.type">
@@ -48,10 +52,7 @@
             <field name="condition_python">result = bool(contract.internet)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result = 5.0
+result = 5.0
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -65,9 +66,7 @@ else:
             <field name="condition_python">result = bool(contract.mobile)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-elif contract.mobile and not contract.internet:
+if contract.mobile and not contract.internet:
     result = 4.0 + 5.0
 elif contract.mobile and contract.internet:
     result = 4.0
@@ -84,10 +83,7 @@ elif contract.mobile and contract.internet:
             <field name="condition_python">result = bool(contract.has_laptop)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result = 7.0
+result = 7.0
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -103,11 +99,12 @@ else:
 result = categories.BASIC
 if inputs.COMMISSION:
     result += result_rules['COMMISSION']['total']
-if result:
-    if contract.internet:
-        result += result_rules['ATN.INT']['total']
-    if contract.mobile:
-        result += result_rules['ATN.MOB']['total']
+if contract.internet:
+    result += result_rules['ATN.INT']['total']
+if contract.mobile:
+    result += result_rules['ATN.MOB']['total']
+if contract.has_laptop:
+    result += result_rules['ATN.LAP']['total']
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -159,10 +156,7 @@ if result:
             <field name="condition_python">result = bool(contract.transport_mode_car and contract.car_atn)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result = contract.car_atn
+result = contract.car_atn
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -225,11 +219,8 @@ else:
             <field name="condition_python">result = bool(contract.transport_mode_car and contract.car_atn)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result_qty = result_rules['ATN.CAR']['quantity']
-    result = -result_rules['ATN.CAR']['amount']
+result_qty = result_rules['ATN.CAR']['quantity']
+result = -result_rules['ATN.CAR']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -243,11 +234,8 @@ else:
             <field name="condition_python">result = contract.internet</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result_qty = result_rules['ATN.INT']['quantity']
-    result = -result_rules['ATN.INT']['amount']
+result_qty = result_rules['ATN.INT']['quantity']
+result = -result_rules['ATN.INT']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -261,11 +249,8 @@ else:
             <field name="condition_python">result = contract.has_laptop</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-else:
-    result_qty = result_rules['ATN.LAP']['quantity']
-    result = -result_rules['ATN.LAP']['amount']
+result_qty = result_rules['ATN.LAP']['quantity']
+result = -result_rules['ATN.LAP']['amount']
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -307,9 +292,7 @@ else:
             <field name="condition_python">result = contract.mobile</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-if not categories.BASIC:
-    result = 0
-elif contract.mobile:
+if contract.mobile:
     result_qty = result_rules['ATN.MOB']['quantity']
     result = -result_rules['ATN.MOB']['amount']
             </field>

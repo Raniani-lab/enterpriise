@@ -101,7 +101,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <p>Total to pay on <td><span t-field="o.employee_id.bank_account_id"/></td>, bank account of <span t-field="o.employee_id"/>: <td><span t-field="o.net_wage"/></td></p>
+                    <p t-if="o.net_wage &gt;= 0">Total to pay on <td><span t-field="o.employee_id.bank_account_id"/></td>, bank account of <span t-field="o.employee_id"/>: <td><span t-field="o.net_wage"/></td></p>
+                    <p t-if="o.net_wage &lt; 0">The net amount will be recovered from the first positive remuneration established after this.</p>
 
                     <table name="contract-infos" class="table table-sm table-bordered">
                         <tr>
@@ -127,7 +128,7 @@
 <template id="report_payslip_lang">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
-            <t t-call="hr_payroll.report_payslip" t-lang="o.employee_id.address_home_id.lang"/>
+            <t t-call="hr_payroll.report_payslip" t-lang="o.employee_id.sudo().address_home_id.lang"/>
         </t>
     </t>
 </template>

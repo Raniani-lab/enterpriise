@@ -440,5 +440,24 @@
             <field name="rule_parameter_id" ref="rule_parameter_private_car_reimbursement_scale"/>
             <field name="date_from" eval="datetime(2020, 2, 1).date()"/>
         </record>
+
+        <record id="rule_parameter_training_time_off_threshold" model="hr.rule.parameter">
+            <field name="name">Training Time Off: Reimbursement Threshold</field>
+            <field name="code">training_time_off_threshold</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <!-- 2018-2019 -->
+        <record id="rule_parameter_training_time_off_threshold_2018" model="hr.rule.parameter.value">
+            <field name="parameter_value">2928.0</field>
+            <field name="rule_parameter_id" ref="rule_parameter_training_time_off_threshold"/>
+            <field name="date_from" eval="datetime(2018, 9, 1).date()"/>
+        </record>
+        <!-- 2020-2021 -->
+        <record id="rule_parameter_training_time_off_threshold_2020" model="hr.rule.parameter.value">
+            <field name="parameter_value">2987</field>
+            <field name="rule_parameter_id" ref="rule_parameter_training_time_off_threshold"/>
+            <field name="date_from" eval="datetime(2020, 12, 1).date()"/>
+        </record>
+
     </data>
 </odoo>

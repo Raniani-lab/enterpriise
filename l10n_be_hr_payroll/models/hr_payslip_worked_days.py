@@ -39,6 +39,7 @@ class HrPayslipWorkedDays(models.Model):
 
         paid_be_wds = (monthly_self - credit_time_days - variable_salary_wd).filtered(
             lambda wd: wd.payslip_id.struct_id.country_id.code == "BE" and wd.is_paid)
+
         if paid_be_wds:
             for be_wd in paid_be_wds:
                 payslip = be_wd.payslip_id
@@ -47,8 +48,8 @@ class HrPayslipWorkedDays(models.Model):
                 tz = pytz.timezone(calendar.tz)
                 hours_per_week = calendar.hours_per_week
                 wage = payslip._get_contract_wage() if payslip.contract_id else 0
-                # If out of contract, we should use a 'rule of 3' instead of the hourly formula to
-                # deduct the real wage
+
+                # If out of contract, we use the hourly formula to deduct the real wage
                 out_be_wd = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
                 if out_be_wd:
                     out_hours = sum([wd.number_of_hours for wd in out_be_wd])
@@ -74,6 +75,26 @@ class HrPayslipWorkedDays(models.Model):
                     out_ratio = 1 - 3 / (13 * hours_per_week) * out_hours if hours_per_week else 1
                 else:
                     out_ratio = 1
+
+                # For training time off: The maximum reimbursement is fixed by a threshold that you can 
+                # find at https://www.leforem.be/entreprises/aides-financieres-conge-education-paye.html
+                # In that case we have to adapt the wage.
+                wage_to_deduct = 0
+                max_hours_per_week = contract.standard_calendar_id.hours_per_week or contract.resource_calendar_id.hours_per_week
+                training_ratio = 3 / (13 * max_hours_per_week) if max_hours_per_week else 0
+                training_wds = paid_be_wds.filtered(lambda wd: wd.work_entry_type_id.code == "LEAVE260")
+                if training_wds:
+                    training_hours = sum(training_wds.mapped('number_of_hours'))
+                    uncapped_training_amount = wage * 3 / 13 / max_hours_per_week * training_hours
+                    training_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+                        'training_time_off_threshold', payslip.date_to, raise_if_not_found=False)
+                    # YTI: Could be dropped in master
+                    if not training_threshold:
+                        training_threshold = 2928.0
+                    if wage > training_threshold:
+                        hourly_wage_to_deduct = (wage - training_threshold) * training_ratio
+                        wage_to_deduct = training_hours * hourly_wage_to_deduct
+
                 ####################################################################################
                 #  Example:
                 #  Note: 3/13/38) * wage : hourly wage, if 13th months and 38 hours/week calendar
@@ -85,15 +106,22 @@ class HrPayslipWorkedDays(models.Model):
                 #
                 #  TOTAL PAID : WORK100 + PAID + UNPAID = (1 - 3/13/38 * 15 ) * wage
                 ####################################################################################
+                main_worked_day = "WORK100"
+                if main_worked_day not in be_wd.payslip_id.worked_days_line_ids.mapped('code'):
+                    main_worked_day = be_wd.payslip_id.worked_days_line_ids.filtered(
+                        lambda wd: wd.is_paid and wd.code not in ['LEAVE300', 'LEAVE301']).code
+
                 if be_wd.code == 'OUT':
                     worked_day_amount = 0
-                elif be_wd.code == "WORK100":
+                elif wage_to_deduct and be_wd.code == 'LEAVE260':
+                    worked_day_amount = min(wage, training_threshold) * training_ratio * training_hours
+                elif be_wd.code == main_worked_day:  # WORK100 (Generally)
                     # Case with half days mixed with full days
                     work100_wds = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == "WORK100")
                     number_of_hours = sum([
                         wd.number_of_hours * (1 if wd.code != 'LEAVE510' else out_ratio)
                         for wd in be_wd.payslip_id.worked_days_line_ids
-                        if wd.code not in ['WORK100', 'OUT'] and not wd.is_credit_time])
+                        if wd.code not in [main_worked_day, 'OUT'] and not wd.is_credit_time])
                     if len(work100_wds) > 1:
                         # In this case, we cannot use the hourly formula since the monthly
                         # salary must always be the same, without having an identical number of
@@ -132,6 +160,8 @@ class HrPayslipWorkedDays(models.Model):
                     worked_day_amount = wage * ratio
                     if be_wd.code == 'LEAVE510':
                         worked_day_amount *= out_ratio
+                    if worked_day_amount > wage:
+                        worked_day_amount = wage
                 be_wd.amount = worked_day_amount
 
         super(HrPayslipWorkedDays, self - credit_time_days - paid_be_wds - variable_salary_wd)._compute_amount()

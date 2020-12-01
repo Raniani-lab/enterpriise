@@ -249,10 +249,10 @@ class TestExamples(AccountTestInvoicingCommon):
 
     def test_without_car_without_atn(self):
         values = OrderedDict([
-            ('BASIC', 3655.33),
+            ('BASIC', 3655.32),
             ('ATN.INT', 0.00),
             ('ATN.MOB', 0.0),
-            ('SALARY', 3655.33),
+            ('SALARY', 3655.32),
             ('ONSS', -477.75),
             ('ATN.CAR', 0),
             ('GROSSIP', 3177.57),
@@ -267,7 +267,7 @@ class TestExamples(AccountTestInvoicingCommon):
             ('REP.FEES', 150),
             ('IP', 913.83),
             ('IP.DED', -59.58),
-            ('NET', 2708.79),
+            ('NET', 2708.78),
         ])
 
         employee = {

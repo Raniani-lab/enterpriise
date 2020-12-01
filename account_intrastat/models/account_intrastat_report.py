@@ -234,7 +234,7 @@ class IntrastatReport(models.AbstractModel):
                 if cache_key not in cache:
                     product = self.env['product.template'].browse(vals[index]['template_id'])
                     intrastat_code = product.search_intrastat_code()
-                    cache[cache_key] = vals[index]['commodity_code'] = intrastat_code.name
+                    cache[cache_key] = vals[index]['commodity_code'] = intrastat_code.code
                 vals[index]['commodity_code'] = cache.get(cache_key)
 
             # Check the currency.

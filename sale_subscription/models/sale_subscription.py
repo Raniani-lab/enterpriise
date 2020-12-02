@@ -32,6 +32,7 @@ class SaleSubscription(models.Model):
     _description = "Subscription"
     _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin']
     _check_company_auto = True
+    _mail_post_access = 'read'
 
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.company.currency_id.id)], limit=1).id

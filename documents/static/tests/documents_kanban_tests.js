@@ -3143,6 +3143,50 @@ QUnit.module('documents_kanban_tests.js', {
         kanban.destroy();
     });
 
+    QUnit.test('documents: max upload limit', async function (assert) {
+        assert.expect(2);
+
+        const file = await testUtils.file.createFile({
+            name: 'text.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+
+        const kanban = await createDocumentsView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            services: {
+                notification: {
+                    notify(notification) {
+                        assert.strictEqual(
+                            notification.message,
+                            "File is too Large.",
+                            "the notification message should be the response error message"
+                        );
+                    },
+                },
+            },
+            arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+            async mockRPC(route, args) {
+                if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
+                    return Promise.resolve(11);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.strictEqual(file.size, 12, 'Upload file size is greater than upload limit');
+        testUtils.file.dropFile(kanban.$('.o_documents_view'), file);
+        await testUtils.nextTick();
+
+        kanban.destroy();
+    });
+
     QUnit.test('documents: upload replace bars', async function (assert) {
         assert.expect(5);
 

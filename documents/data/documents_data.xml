@@ -275,5 +275,10 @@
             <field name="activity_date_deadline_range">0</field>
             <field name="activity_date_deadline_range_type">days</field>
         </record>
+
+        <record id="ir_config_document_upload_limit" model="ir.config_parameter">
+            <field name="key">document.max_fileupload_size</field>
+            <field name="value">67000000</field>
+        </record>
     </data>
 </odoo>

@@ -95,7 +95,13 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }).then((res) => {
             this._hasShareReadAccessRights = res;
         });
-        return Promise.all([parentPromise, readAccessRightsPromise]);
+        const maxLimitPromise = this._rpc({
+            model: 'documents.document',
+            method: 'get_document_max_upload_limit',
+        }).then((res) => {
+            this._maxUploadLimit = res;
+        });
+        return Promise.all([parentPromise, readAccessRightsPromise, maxLimitPromise]);
     },
 
     /**
@@ -510,12 +516,33 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
             $uploadInput.attr('multiple', multiple ? true : null);
             const cleanup = $.prototype.remove.bind($uploadInput);
             $uploadInput.on('change', async changeEv => {
-                await this._uploadFiles(changeEv.target.files, { recordId }).finally(cleanup);
+                const isValidSize = this._validateMaxUploadLimit(changeEv.target.files);
+                if (isValidSize) {
+                    await this._uploadFiles(changeEv.target.files, { recordId }).finally(cleanup);
+                }
             });
             this._promptFileInput($uploadInput);
         };
     },
 
+    /**
+     * Check document maximum upload size
+     *
+     * @private
+     * @param {Object[]} files
+     * @returns {boolean}
+     */
+    _validateMaxUploadLimit(files) {
+        const isFileLarge = Array.from(files).some(file => file.size > this._maxUploadLimit);
+        if (this._maxUploadLimit && isFileLarge) {
+            this.displayNotification({
+                message: _t("File is too Large."),
+                type: 'danger',
+            });
+            return false;
+        }
+        return true;
+    },
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -656,7 +683,10 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         ev.preventDefault();
         this.renderer.$el.removeClass('o_documents_drop_over');
         this.$('.o_documents_upload_text').remove();
-        await this._uploadFiles(ev.originalEvent.dataTransfer.files);
+        const isValidSize = this._validateMaxUploadLimit(ev.originalEvent.dataTransfer.files);
+        if (isValidSize) {
+            await this._uploadFiles(ev.originalEvent.dataTransfer.files);
+        }
     },
     /**
      * Update the controller when the DocumentViewer has modified an attachment

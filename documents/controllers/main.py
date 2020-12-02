@@ -325,12 +325,17 @@ class ShareRoute(http.Controller):
                 share_id,
                 button_text,
             )
+        Documents = request.env['documents.document']
         if document_id and available_documents:
             if available_documents.type != 'empty':
                 return http.request.not_found()
             try:
+                max_upload_size = Documents.get_document_max_upload_limit()
                 file = request.httprequest.files.getlist('requestFile')[0]
                 data = file.read()
+                if max_upload_size and (len(data) > int(max_upload_size)):
+                    # TODO return error when converted to json
+                    return logger.exception("File is too Large.")
                 mimetype = file.content_type
                 write_vals = {
                     'mimetype': mimetype,
@@ -345,8 +350,12 @@ class ShareRoute(http.Controller):
                 available_documents.message_post(body=chatter_message)
         elif not document_id and available_documents is not False:
             try:
+                max_upload_size = Documents.get_document_max_upload_limit()
                 for file in request.httprequest.files.getlist('files'):
                     data = file.read()
+                    if max_upload_size and (len(data) > int(max_upload_size)):
+                        # TODO return error when converted to json
+                        return logger.exception("File is too Large.")
                     mimetype = file.content_type
                     document_dict = {
                         'mimetype': mimetype,
@@ -357,7 +366,7 @@ class ShareRoute(http.Controller):
                         'owner_id': share.owner_id.id,
                         'folder_id': folder_id,
                     }
-                    document = request.env['documents.document'].with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
+                    document = Documents.with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
                     document.message_post(body=chatter_message)
                     if share.activity_option:
                         document.documents_set_activity(settings_record=share)

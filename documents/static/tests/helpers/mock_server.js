@@ -27,6 +27,9 @@ patch(MockServer.prototype, 'documents', {
         if (args.model === 'documents.share' && args.method === 'check_access_rights') {
             return true;
         }
+        if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
+            return Promise.resolve(67000000);
+        }
         return this._super(...arguments);
     },
     /**

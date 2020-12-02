@@ -551,3 +551,10 @@ class Document(models.Model):
             return {'values': model_values}
 
         return super(Document, self).search_panel_select_multi_range(field_name, **kwargs)
+
+    @api.model
+    def get_document_max_upload_limit(self):
+        try:
+            return int(self.env['ir.config_parameter'].sudo().get_param('document.max_fileupload_size', default=0))
+        except Exception:
+            return False

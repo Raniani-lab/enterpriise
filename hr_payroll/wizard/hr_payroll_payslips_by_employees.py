@@ -70,7 +70,9 @@ class HrPayslipEmployees(models.TransientModel):
         payslips = self.env['hr.payslip']
         Payslip = self.env['hr.payslip']
 
-        contracts = employees._get_contracts(payslip_run.date_start, payslip_run.date_end, states=['open', 'close'])
+        contracts = employees._get_contracts(
+            payslip_run.date_start, payslip_run.date_end, states=['open', 'close']
+        ).filtered(lambda c: c.active)
         contracts._generate_work_entries(payslip_run.date_start, payslip_run.date_end)
         work_entries = self.env['hr.work.entry'].search([
             ('date_start', '<=', payslip_run.date_end),
@@ -82,7 +84,14 @@ class HrPayslipEmployees(models.TransientModel):
         if(self.structure_id.type_id.default_struct_id == self.structure_id):
             work_entries = work_entries.filtered(lambda work_entry: work_entry.state != 'validated')
             if work_entries._check_if_error():
-                raise UserError(_("Some work entries could not be validated."))
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('Some work entries could not be validated.'),
+                        'sticky': False,
+                    }
+                }
 
 
         default_values = Payslip.default_get(Payslip.fields_get())

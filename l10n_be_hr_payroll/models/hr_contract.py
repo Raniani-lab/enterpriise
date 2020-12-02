@@ -220,10 +220,14 @@ class HrContract(models.Model):
         calendar = self.resource_calendar_id
         standard_calendar = self.standard_calendar_id
 
+        # YTI TODO master: The domain is hacky, but we can't modify the method signature
+        # Add an argument compute_leaves=True on the method
         standard_attendances = standard_calendar._work_intervals_batch(
             pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
             pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resources=resource)[resource.id]
+            resources=resource,
+            domain=[('resource_id', '=', -1)])[resource.id]
+
 
         # YTI TODO master: The domain is hacky, but we can't modify the method signature
         # Add an argument compute_leaves=True on the method

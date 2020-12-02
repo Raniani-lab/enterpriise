@@ -3122,7 +3122,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-
     def test_variable_revenues(self):
         self.env['resource.calendar.leaves'].create([{
             'name': "Absence",
@@ -3231,3 +3230,37 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
+
+    def test_credit_time_keep_old_time_off(self):
+        # Test Case: When setting a credit time, we change the calendar
+        # and thus it could be possible to loose the time off that were planned
+        # and validated before the contract change.
+        # Ensure that the time off are not lost.
+
+        sick_time_off = self.env['hr.leave'].new({
+            'name': 'Maternity Time Off : 15 weeks',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2020, 11, 9),
+            'request_date_to': datetime.date(2020, 11, 10),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 2,
+        })
+        sick_time_off._compute_date_from_to()
+        sick_time_off = self.env['hr.leave'].create(sick_time_off._convert_to_write(sick_time_off._cache))
+        sick_time_off.action_validate()
+
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week,
+            'time_credit': True,
+            'work_time_rate': "0.8",
+            'wage': 2120.0,
+            'date_start': datetime.date(2020, 9, 16),
+            'date_end': datetime.date(2020, 12, 31),
+        })
+
+        work_entries = self.contract._generate_work_entries(datetime.date(2020, 11, 1), datetime.date(2020, 11, 30))
+        sick_work_entries = work_entries.filtered(lambda we: we.work_entry_type_id == self.sick_time_off_type.work_entry_type_id)
+        self.assertEqual(len(sick_work_entries), 4)

@@ -65,7 +65,7 @@ class HrPayslipWorkedDays(models.Model):
                             out_hours -= sum([(stop - start).total_seconds() / 3600 for start, stop, dummy in standard_attendances - credit_time_attendances])
                         if contract.date_end and contract.date_end < payslip.date_to:
                             start = contract.date_end
-                            end = payslip.date_end
+                            end = payslip.date_to
                             start_dt = tz.localize(fields.Datetime.to_datetime(start))
                             end_dt = tz.localize(fields.Datetime.to_datetime(end) + timedelta(days=1, seconds=-1))
                             credit_time_attendances = payslip.contract_id.resource_calendar_id._attendance_intervals_batch(start_dt, end_dt)[False]

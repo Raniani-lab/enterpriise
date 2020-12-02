@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from datetime import date, datetime
 from odoo import api, fields, models
 from odoo.addons.resource.models.resource_mixin import timezone_datetime
+from odoo.addons.resource.models.resource import datetime_to_string, string_to_datetime, Intervals
 
 import pytz
-
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'
@@ -70,9 +71,42 @@ class HrContract(models.Model):
         attendances = calendar._attendance_intervals_batch(
             start_dt, end_dt, resources=resource, tz=tz
         )[resource.id]
-        leaves = calendar._leave_intervals_batch(
-            start_dt, end_dt, resources=resource, tz=tz
-        )[resource.id]
+
+        # Other calendars: In case the employee has declared time off in another calendar
+        # Example: Take a time off, then a credit time.
+        # YTI TODO: This mimics the behavior of _leave_intervals_batch, while waiting to be cleaned
+        # in master.
+        resources_list = [self.env['resource.resource'], resource]
+        resource_ids = [False, resource.id]
+        leave_domain = [
+            ('time_type', '=', 'leave'),
+            # ('calendar_id', '=', self.id), --> Get all the time offs
+            ('resource_id', 'in', resource_ids),
+            ('date_from', '<=', datetime_to_string(end_dt)),
+            ('date_to', '>=', datetime_to_string(start_dt)),
+        ]
+        result = defaultdict(lambda: [])
+        tz_dates = {}
+        for leave in self.env['resource.calendar.leaves'].search(leave_domain):
+            for resource in resources_list:
+                if leave.resource_id.id not in [False, resource.id]:
+                    continue
+                tz = tz if tz else pytz.timezone((resource or self).tz)
+                if (tz, start_dt) in tz_dates:
+                    start = tz_dates[(tz, start_dt)]
+                else:
+                    start = start_dt.astimezone(tz)
+                    tz_dates[(tz, start_dt)] = start
+                if (tz, end_dt) in tz_dates:
+                    end = tz_dates[(tz, end_dt)]
+                else:
+                    end = end_dt.astimezone(tz)
+                    tz_dates[(tz, end_dt)] = end
+                dt0 = string_to_datetime(leave.date_from).astimezone(tz)
+                dt1 = string_to_datetime(leave.date_to).astimezone(tz)
+                result[resource.id].append((max(start, dt0), min(end, dt1), leave))
+        mapped_leaves = {r.id: Intervals(result[r.id]) for r in resources_list}
+        leaves = mapped_leaves[resource.id]
 
         real_attendances = attendances - leaves
         real_leaves = attendances - real_attendances

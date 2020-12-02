@@ -45,8 +45,6 @@ class IntrastatReport(models.AbstractModel):
             }
             raise RedirectWarning(error_msg, action_error, _('Add company registry'))
 
-        cache = {}
-
         # create in_vals corresponding to invoices with cash-in
         in_vals = []
         if incl_arrivals:
@@ -54,7 +52,7 @@ class IntrastatReport(models.AbstractModel):
                 date_from, date_to, journal_ids=journal_ids, invoice_types=('in_invoice', 'out_refund'), with_vat=with_vat)
             self._cr.execute(query, params)
             query_res = self._cr.dictfetchall()
-            in_vals = self._fill_missing_values(query_res, cache)
+            in_vals = self._fill_missing_values(query_res)
 
         # create out_vals corresponding to invoices with cash-out
         out_vals = []
@@ -63,7 +61,7 @@ class IntrastatReport(models.AbstractModel):
                 date_from, date_to, journal_ids=journal_ids, invoice_types=('out_invoice', 'in_refund'), with_vat=with_vat)
             self._cr.execute(query, params)
             query_res = self._cr.dictfetchall()
-            out_vals = self._fill_missing_values(query_res, cache)
+            out_vals = self._fill_missing_values(query_res)
 
         return self.env.ref('l10n_be_intrastat.intrastat_report_export_xml')._render({
             'company': company,

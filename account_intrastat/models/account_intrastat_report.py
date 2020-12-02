@@ -123,6 +123,7 @@ class IntrastatReport(models.AbstractModel):
                 code.code AS commodity_code,
                 inv_line.id AS id,
                 prodt.id AS template_id,
+                prodt.categ_id AS category_id,
                 inv.id AS invoice_id,
                 inv.currency_id AS invoice_currency_id,
                 inv.name AS invoice_number,
@@ -164,7 +165,7 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN res_country company_country ON comp_partner.country_id = company_country.id
                 INNER JOIN product_product prod ON inv_line.product_id = prod.id
                 LEFT JOIN product_template prodt ON prod.product_tmpl_id = prodt.id
-                LEFT JOIN account_intrastat_code code ON prodt.intrastat_id = code.id
+                LEFT JOIN account_intrastat_code code ON code.id = COALESCE(prod.intrastat_variant_id, prodt.intrastat_id)
                 LEFT JOIN uom_uom inv_line_uom ON inv_line.product_uom_id = inv_line_uom.id
                 LEFT JOIN uom_uom prod_uom ON prodt.uom_id = prod_uom.id
                 LEFT JOIN account_incoterms inv_incoterm ON inv.invoice_incoterm_id = inv_incoterm.id
@@ -212,40 +213,30 @@ class IntrastatReport(models.AbstractModel):
         return query, params
 
     @api.model
-    def _fill_missing_values(self, vals, cache=None):
+    def _fill_missing_values(self, vals_list):
         ''' Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
 
         :param vals:    A dictionary created by the dictfetchall method.
-        :param cache:   A cache dictionary used to avoid performance loss.
         '''
-        if cache is None:
-            cache = {}
 
         # Prefetch data before looping
-        self.env['product.template'].browse([v['template_id'] for v in vals]).read(['intrastat_id', 'categ_id'])
-        self.env['product.category'].search([]).read(['intrastat_id', 'parent_id'])
+        category_ids = self.env['product.category'].browse({vals['category_id'] for vals in vals_list})
+        self.env['product.category'].search([('id', 'parent_of', category_ids.ids)]).read(['intrastat_id', 'parent_id'])
 
-        for index in range(len(vals)):
+        for vals in vals_list:
             # Check account.intrastat.code
             # If missing, retrieve the commodity code by looking in the product category recursively.
-            if not vals[index]['commodity_code']:
-                cache_key = 'commodity_code_%d' % vals[index]['template_id']
-                if cache_key not in cache:
-                    product = self.env['product.template'].browse(vals[index]['template_id'])
-                    intrastat_code = product.search_intrastat_code()
-                    cache[cache_key] = vals[index]['commodity_code'] = intrastat_code.code
-                vals[index]['commodity_code'] = cache.get(cache_key)
+            if not vals['commodity_code']:
+                category_id = self.env['product.category'].browse(vals['category_id'])
+                vals['commodity_code'] = category_id.search_intrastat_code().code
 
             # Check the currency.
-            cache_key = 'currency_%d' % vals[index]['invoice_currency_id']
-            if cache_key not in cache:
-                cache[cache_key] = self.env['res.currency'].browse(vals[index]['invoice_currency_id'])
-
+            currency_id = self.env['res.currency'].browse(vals['invoice_currency_id'])
             company_currency_id = self.env.company.currency_id
-            if cache[cache_key] != company_currency_id:
-                vals[index]['value'] = cache[cache_key]._convert(vals[index]['value'], company_currency_id, self.env.company, vals[index]['invoice_date'])
-        return vals
+            if currency_id != company_currency_id:
+                vals['value'] = currency_id._convert(vals['value'], company_currency_id, self.env.company, vals['invoice_date'])
+        return vals_list
 
     @api.model
     def _get_lines(self, options, line_id=None):

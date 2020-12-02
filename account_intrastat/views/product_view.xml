@@ -15,6 +15,21 @@
             </field>
         </record>
 
+        <record id="product_product_form_view_inherit_account_intrastat" model="ir.ui.view">
+            <field name="name">product.product.form.inherit.account.intrastat</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group>
+                        <group name="intrastat" string="Intrastat">
+                            <field name="intrastat_id"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
         <record id="product_category_form_view_inherit_account_intrastat" model="ir.ui.view">
             <field name="name">product.category.form.inherit.account.intrastat</field>
             <field name="model">product.category</field>

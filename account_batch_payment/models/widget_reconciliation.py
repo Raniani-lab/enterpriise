@@ -14,13 +14,13 @@ class AccountReconciliation(models.AbstractModel):
     def get_move_lines_by_batch_payment(self, st_line_id, batch_payment_id):
         """ As get_move_lines_for_bank_statement_line, but returns lines from a batch deposit """
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)
-        # batch deposits from any journal can be selected in bank statement reconciliation widget,
-        # so we need to filter not only on lines of type 'liquidity' but also on any bank/cash
-        # account set as 'Allow Reconciliation'.
-        move_lines = self.env['account.move.line']
-        for payment in self.env['account.batch.payment'].browse(batch_payment_id).payment_ids:
-            move_lines |= payment.line_ids.filtered(lambda r: r.account_id == payment.journal_id.payment_debit_account_id)
 
+        # Fetch blue lines for this batch.
+        query, params = self._get_query_reconciliation_widget_liquidity_lines(st_line, domain=[('payment_id.batch_payment_id', '=', batch_payment_id)])
+        self._cr.execute(query, params)
+
+        # Convert to js dictionaries.
+        move_lines = self.env['account.move.line'].browse(res['id'] for res in self._cr.dictfetchall())
         return [self._prepare_js_reconciliation_widget_move_line(st_line, line) for line in move_lines]
 
     @api.model

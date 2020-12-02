@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
+from odoo.tools.sql import column_exists, create_column
 
 import re
 
@@ -72,6 +73,11 @@ class AccountMove(models.Model):
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
+
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id"):
+            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id", "int4")
+        return super()._auto_init()
 
     l10n_mx_edi_customs_number = fields.Char(
         help='Optional field for entering the customs information in the case '

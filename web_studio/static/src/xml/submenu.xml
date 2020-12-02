@@ -153,6 +153,7 @@
                     title="Gantt View"
                     t-if="_.contains(widget.active_view_types, 'gantt')"><i class="fa fa-tasks"/></a>
                 <a
+                    aria-label="Dashboard View"
                     data-name="dashboard"
                     href="#"
                     title="Dashboard View"
@@ -168,7 +169,7 @@
                     data-name="activity"
                     href="#"
                     title="Activity View"
-                    t-if="_.contains(widget.active_view_types, 'activity')"><i class="fa fa-th"/></a>
+                    t-if="_.contains(widget.active_view_types, 'activity')"><i class="fa fa-clock-o"/></a>
                 <!-- searchview is always active -->
                 <a
                     aria-label="Search View"

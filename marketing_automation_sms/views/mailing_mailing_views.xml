@@ -40,6 +40,15 @@
             <xpath expr="//page[@name='mail_body']" position="attributes">
                 <attribute name="attrs">{'invisible': [('mailing_type', '!=', 'mail')]}</attribute>
             </xpath>
+            <xpath expr="//field[@name='subject']" position="attributes">
+                <attribute name="attrs">{'invisible': [('mailing_type', '=', 'sms')], 'required': [('mailing_type', '=', 'mail')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sms_subject']" position="attributes">
+                <attribute name="attrs">{'invisible': [('mailing_type', '=', 'mail')], 'required': [('mailing_type', '=', 'sms')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='body_plaintext']" position="attributes">
+                <attribute name="attrs">{'readonly': [('mailing_type', '=', 'mail')], 'required': [('mailing_type', '=', 'sms')]}</attribute>
+            </xpath>
         </field>
     </record>
 

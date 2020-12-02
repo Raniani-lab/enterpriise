@@ -27,6 +27,9 @@
             <xpath expr="//field[@name='subject']" position="attributes">
                 <attribute name="attrs">{}</attribute>
             </xpath>
+            <xpath expr="//field[@name='preview']" position="attributes">
+                <attribute name="attrs">{'readonly': [('mailing_type', '!=', 'mail')], 'invisible': [('mailing_type', '!=', 'mail')]}</attribute>
+            </xpath>
             <xpath expr="//page[@name='mail_body']" position="replace">
                 <page string="Mail Body" name="mail_body">
                     <field name="body_html" class="oe_read_only" widget="html" options="{

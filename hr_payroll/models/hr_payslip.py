@@ -417,7 +417,7 @@ class HrPayslip(models.Model):
                 result[rule.code] = {
                     'sequence': rule.sequence,
                     'code': rule.code,
-                    'name': rule.name,
+                    'name': rule.with_context(lang=self.employee_id.sudo().address_home_id.lang).name,
                     'note': rule.note,
                     'salary_rule_id': rule.id,
                     'contract_id': localdict['contract'].id,
@@ -449,8 +449,16 @@ class HrPayslip(models.Model):
             self.contract_id = contracts[0]
             self.struct_id = contracts[0].structure_type_id.default_struct_id
 
+        lang = employee.sudo().address_home_id.lang or self.env.user.lang
+        context = {'lang': lang}
         payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        self.name = '%s - %s - %s' % (payslip_name, self.employee_id.name or '', format_date(self.env, self.date_from, date_format="MMMM y"))
+        del context
+
+        self.name = '%s - %s - %s' % (
+            payslip_name,
+            self.employee_id.name or '',
+            format_date(self.env, self.date_from, date_format="MMMM y", lang_code=lang)
+        )
 
         if date_to > date_utils.end_of(fields.Date.today(), 'month'):
             self.warning_message = _(
@@ -529,7 +537,7 @@ class HrPayslipLine(models.Model):
     _description = 'Payslip Line'
     _order = 'contract_id, sequence, code'
 
-    name = fields.Char(required=True, translate=True)
+    name = fields.Char(required=True)
     note = fields.Text(string='Description')
     sequence = fields.Integer(required=True, index=True, default=5,
                               help='Use to arrange calculation sequence')

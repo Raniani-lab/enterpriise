@@ -76,6 +76,16 @@ msgstr ""
 "* Quand l'utilisateur annule la fiche de paie, le statut est 'Rejetée'."
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid ", bank account of"
+msgstr ", compte bancaire de"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
+msgid "13th pay salary"
+msgstr "13ème mois"
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span class=\"ml-2\"> hours/week</span>"
 msgstr ""
@@ -156,7 +166,12 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Computed On</strong>"
-msgstr ""
+msgstr "<strong>Calculé le </strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Contract Start Date</strong>"
+msgstr "<strong>Date de début du contrat</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -194,6 +209,31 @@ msgid "<strong>Reference</strong>"
 msgstr "<strong>Référence</strong>"
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Employee</strong>"
+msgstr "<strong>Employé</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Identification</strong>"
+msgstr "<strong>Identification</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Marital Status</strong>"
+msgstr "<strong>Status Civil</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Pay Period</strong>"
+msgstr "<strong>Période de paie</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Person in charge</strong>"
+msgstr "<strong>Personnes à charge</strong>"
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
 msgid "<strong>Register Name:</strong>"
 msgstr "<strong>Nom de dossier:</strong>"
@@ -213,6 +253,11 @@ msgstr "<strong>Total</strong>"
 #, python-format
 msgid "A leave cannot be set across multiple contracts."
 msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Working Schedule</strong>"
+msgstr "<strong>Horaire de travail</strong>"
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave
@@ -2221,6 +2266,20 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid ""
+"This payslip can be erroneous! Work entries may not be generated for the "
+"period from %(start)s to %(end)s."
+msgstr ""
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid "This payslip is not validated. This is not a legal document."
+msgstr "Cette fiche de paie n'est pas validée. Ce n'est pas un document légal."
+
+#. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.payroll_report_action
 msgid "This report performs analysis on your payslip."
 msgstr ""
@@ -2316,6 +2375,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Total Working Days"
 msgstr "Nb. jours travaillés"
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__sum_worked_hours
+msgid "Total hours of attendance and time off (paid or not)"
+msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "Total to pay on"
+msgstr "Total à verser sur"
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_rule_parameter__unique

@@ -78,6 +78,16 @@ msgstr ""
 "* Wenn die Lohnabrechnung abgebrochen wird ist der Status 'Abgelehnt'."
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid ", bank account of"
+msgstr ", Bankkonto von"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
+msgid "13th pay salary"
+msgstr ""
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span class=\"ml-2\"> hours/week</span>"
 msgstr ""
@@ -155,7 +165,12 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Computed On</strong>"
-msgstr ""
+msgstr "<strong>Berechnet am </strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Contract Start Date</strong>"
+msgstr "<strong>Vertragsbeginn</strong/>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -193,6 +208,31 @@ msgid "<strong>Reference</strong>"
 msgstr "<strong>Referenz</strong>"
 
 #. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Employee</strong>"
+msgstr "<strong>Arbeitnehmer</strong/>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Identification</strong>"
+msgstr "<strong>Identifizierung</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Marital Status</strong>"
+msgstr "<strong>Familienstand</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Pay Period</strong>"
+msgstr "<strong>Zahlungsfrist</strong>"
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Person in charge</strong>"
+msgstr "<strong>Verantwortliche Person</strong>"
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
 msgid "<strong>Register Name:</strong>"
 msgstr "<strong>Abrechnungsstelle:</strong>"
@@ -212,6 +252,11 @@ msgstr "<strong>Gesamt</strong>"
 #, python-format
 msgid "A leave cannot be set across multiple contracts."
 msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "<strong>Working Schedule</strong>"
+msgstr "<strong>Arbeitsplan</strong>"
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave
@@ -528,7 +573,7 @@ msgstr "Berechnen"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__compute_date
 msgid "Computed On"
-msgstr ""
+msgstr "Berechnet am"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_select
@@ -2213,6 +2258,20 @@ msgid ""
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid ""
+"This payslip can be erroneous! Work entries may not be generated for the "
+"period from %(start)s to %(end)s."
+msgstr ""
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid "This payslip is not validated. This is not a legal document."
+msgstr "Diese Gehaltsabrechnung wird nicht validiert. Dies ist kein juristisches Dokument."
+
+#. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.payroll_report_action
 msgid "This report performs analysis on your payslip."
 msgstr ""
@@ -2306,6 +2365,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Total Working Days"
 msgstr "Gesamt Arbeitstage"
+
+#. module: hr_payroll
+#: model:ir.model.fields,help:hr_payroll.field_hr_payslip__sum_worked_hours
+msgid "Total hours of attendance and time off (paid or not)"
+msgstr ""
+
+#. module: hr_payroll
+#: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
+msgid "Total to pay on"
+msgstr "Insgesamt zu zahlen"
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_rule_parameter__unique

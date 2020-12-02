@@ -78,3 +78,9 @@ msgstr "Dernière mis à jour le"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Refund"
 msgstr "Rembourser"
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
+msgid "This payslip is not validated. This is not a legal document."
+msgstr "Cette fiche de paie n'est pas validée. Ce n'est pas un document légal."

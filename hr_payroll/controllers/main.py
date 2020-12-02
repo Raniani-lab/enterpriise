@@ -29,7 +29,7 @@ class HrPayroll(Controller):
                 report = request.env.ref('hr_payroll.action_report_payslip', False)
             else:
                 report = payslip.struct_id.report_id
-            report = report.with_context(lang=payslip.employee_id.address_home_id.lang)
+            report = report.with_context(lang=payslip.employee_id.sudo().address_home_id.lang)
             pdf_content, _ = report._render_qweb_pdf(payslip.id, data={'company_id': payslip.company_id})
             reader = PdfFileReader(io.BytesIO(pdf_content), strict=False, overwriteWarnings=False)
 

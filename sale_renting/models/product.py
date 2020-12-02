@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import date
 from odoo import api, fields, models, _
+from odoo.tools import format_amount
 
 
 class ProductTemplate(models.Model):
@@ -40,7 +41,8 @@ class ProductTemplate(models.Model):
         rentable_products = self.filtered('rent_ok')
         rental_priced_products = rentable_products.filtered('rental_pricing_ids')
         (self - rentable_products).display_price = ""
-        (rentable_products - rental_priced_products).display_price = _("Fallback on Sales price")
+        for product in (rentable_products - rental_priced_products):
+            product.display_price = _("%(amount)s (fixed)", amount=format_amount(self.env, product.list_price, product.currency_id))
         # No rental pricing defined, fallback on list price
         for product in rental_priced_products:
             product.display_price = product.rental_pricing_ids[0].display_name

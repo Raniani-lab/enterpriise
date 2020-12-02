@@ -69,25 +69,25 @@ class View(models.Model):
                     templates_count += 1
                 else:
                     msg = _('Gantt view can contain only one templates tag')
-                    self.handle_view_error(msg)
+                    self.handle_view_error(msg, child)
             elif child.tag != 'field':
                 msg = _('Gantt child can only be field or template, got %s')
-                self.handle_view_error(msg % child.tag)
+                self.handle_view_error(msg % child.tag, child)
 
         default_scale = node.get('default_scale')
         if default_scale:
             if default_scale not in ('day', 'week', 'month', 'year'):
-                self.handle_view_error(_("Invalid default_scale '%s' in gantt", default_scale))
+                self.handle_view_error(_("Invalid default_scale '%s' in gantt", default_scale), node)
         attrs = set(node.attrib)
         if not 'date_start' in attrs:
             msg = _("Gantt must have a 'date_start' attribute")
-            self.handle_view_error(msg)
+            self.handle_view_error(msg, node)
 
         if not 'date_stop' in attrs:
             msg = _("Gantt must have a 'date_stop' attribute")
-            self.handle_view_error(msg)
+            self.handle_view_error(msg, node)
 
         remaining = attrs - GANTT_VALID_ATTRIBUTES
         if remaining:
             msg = _("Invalid attribute%s (%s) in gantt view. Attributes must be in (%s)")
-            self.handle_view_error(msg % ('s' if len(remaining) > 1 else '', ','.join(remaining), ','.join(GANTT_VALID_ATTRIBUTES)))
+            self.handle_view_error(msg % ('s' if len(remaining) > 1 else '', ','.join(remaining), ','.join(GANTT_VALID_ATTRIBUTES)), node)

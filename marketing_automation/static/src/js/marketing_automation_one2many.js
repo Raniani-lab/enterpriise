@@ -17,13 +17,6 @@ var HierarchyKanban = FieldOne2Many.extend({
         'add_child_act': '_onAddChild',
     }),
 
-    /**
-     * @override
-     */
-    on_attach_callback: function () {
-        this.renderer.on_attach_callback();
-    },
-
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

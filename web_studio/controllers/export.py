@@ -307,7 +307,7 @@ def get_fields_to_export(record):
         # deduce the fields_to_export from available data
         fields_to_export = set(record._fields.keys())
         fields_to_export -= set(models.MAGIC_COLUMNS)
-        fields_to_export -= set(record.CONCURRENCY_CHECK_FIELD)
+        fields_to_export.discard(record.CONCURRENCY_CHECK_FIELD)
         if FIELDS_NOT_TO_EXPORT.get(record._name):
             fields_to_export -= set(FIELDS_NOT_TO_EXPORT.get(record._name))
     return fields_to_export

@@ -3313,11 +3313,10 @@
             const colName = typeofField === "string" ? field.toUpperCase() : field;
             index = indexColNameDB.get(colName);
             if (index === undefined) {
-                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one of: ${[
-                ...indexColNameDB.keys(),
-            ]
-                .map((v) => "'" + v + "'")
-                .join(", ")}.`));
+                const options = [
+                    ...indexColNameDB.keys(),
+                ].map((v) => "'" + v + "'") .join(", ");
+                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one of: ${options}.`));
             }
         } // Ex: index = 2
         // 3 - For each criteria row, find database row that correspond

@@ -1313,11 +1313,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one of: ${[\n"
-"                ...indexColNameDB.keys(),\n"
-"            ]\n"
-"                .map((v) => \"'\" + v + \"'\")\n"
-"                .join(\", \")}."
+"Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one "
+"of: ${options}."
 msgstr ""
 
 #. module: documents_spreadsheet

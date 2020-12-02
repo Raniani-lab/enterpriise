@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+
 from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare, float_round, ormcache
@@ -40,6 +42,7 @@ class SaleOrder(models.Model):
         request.set_location_destination_detail(self.partner_shipping_id)
 
         request.set_order_items_detail(self)
+        request.taxcloud_date = fields.Datetime.context_timestamp(self, datetime.datetime.now())
 
         response = self._get_all_taxes_values(request, request.hash)
 

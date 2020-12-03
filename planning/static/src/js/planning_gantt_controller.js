@@ -7,34 +7,21 @@ var _t = core._t;
 var Dialog = require('web.Dialog');
 var dialogs = require('web.view_dialogs');
 
-var QWeb = core.qweb;
 var PlanningGanttController = GanttController.extend({
     events: _.extend({}, GanttController.prototype.events, {
         'click .o_gantt_button_copy_previous_week': '_onCopyWeekClicked',
         'click .o_gantt_button_send_all': '_onSendAllClicked',
     }),
+    buttonTemplateName: 'PlanningGanttView.buttons',
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
-    /**
-     * @override
-     * @param {jQuery} [$node] to which the buttons will be appended
-     */
-    renderButtons: function ($node) {
-        var state = this.model.get();
-        this.$buttons = $(QWeb.render('PlanningGanttView.buttons', {
-            groupedBy: state.groupedBy,
-            widget: this,
-            SCALES: this.SCALES,
-            activateScale: state.scale,
-            allowedScales: this.allowedScales,
-            activeActions: this.activeActions,
-        }));
-        if ($node) {
-            this.$buttons.appendTo($node);
-        }
+    _renderButtonQWebParameter: function () {
+        return Object.assign({}, this._super(...arguments), {
+            activeActions: this.activeActions
+        });
     },
 
     //--------------------------------------------------------------------------

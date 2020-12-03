@@ -30,6 +30,8 @@ var GanttController = AbstractController.extend({
         updating_pill_started: '_onPillUpdatingStarted',
         updating_pill_stopped: '_onPillUpdatingStopped',
     }),
+    buttonTemplateName: 'GanttView.buttons',
+
     /**
      * @override
      * @param {Widget} parent
@@ -63,17 +65,23 @@ var GanttController = AbstractController.extend({
      * @param {jQuery} [$node] to which the buttons will be appended
      */
     renderButtons: function ($node) {
+        this.$buttons = this._renderButtonsQWeb();
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
+    },
+    _renderButtonsQWeb: function () {
+        return $(QWeb.render(this.buttonTemplateName, this._renderButtonQWebParameter()));
+    },
+    _renderButtonQWebParameter: function () {
         var state = this.model.get();
-        this.$buttons = $(QWeb.render('GanttView.buttons', {
+        return {
             groupedBy: state.groupedBy,
             widget: this,
             SCALES: this.SCALES,
             activateScale: state.scale,
             allowedScales: this.allowedScales,
-        }));
-        if ($node) {
-            this.$buttons.appendTo($node);
-        }
+        };
     },
 
     //--------------------------------------------------------------------------

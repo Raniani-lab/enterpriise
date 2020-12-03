@@ -54,6 +54,12 @@
         <script type="text/javascript" src="/documents/static/src/js/documents_public_pages.js"/>
     </template>
 
+    <template id="tests_assets" name="documents_tests_assets" inherit_id="web.tests_assets">
+        <xpath expr="." position="inside">
+          <script type="text/javascript" src="/documents/static/tests/mock_server.js"/>
+        </xpath>
+    </template>
+
     <template id="qunit_suite" name="documents test suite" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/documents/static/src/bugfix/bugfix_tests.js"></script>
@@ -62,7 +68,6 @@
             <script type="text/javascript" src="/documents/static/tests/documents_kanban_tests.js"></script>
             <script type="text/javascript" src="/documents/static/tests/documents_pdf_manager_tests.js"></script>
             <script type="text/javascript" src="/documents/static/tests/documents_systray_activity_menu_tests.js"></script>
-            <script type="text/javascript" src="/documents/static/tests/mock_server.js"></script>
         </xpath>
     </template>
 
@@ -70,7 +75,6 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/documents/static/tests/documents_test_utils.js"></script>
             <script type="text/javascript" src="/documents/static/tests/documents_kanban_mobile_tests.js"></script>
-            <script type="text/javascript" src="/documents/static/tests/mock_server.js"></script>
         </xpath>
     </template>
 

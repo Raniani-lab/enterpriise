@@ -768,7 +768,7 @@ class AEATAccountFinancialReport(models.Model):
         if province_code == '99' and (not line_partner.country_id or not line_partner.country_id.code):
             raise UserError(_("Partner with %s (id %d) is not associated to any Spanish province, and should hence have a country code. For this, fill in its 'country' field.") % (line_partner.name, line_partner.id))
 
-        rslt += self._boe_format_string(line_partner.country_id.code, length=2)
+        rslt += self._boe_format_string(line_partner.country_id.code or '', length=2)
         rslt += self._boe_format_string(' ') # Constant
         rslt += self._boe_format_string(operation_key, length=1)
 

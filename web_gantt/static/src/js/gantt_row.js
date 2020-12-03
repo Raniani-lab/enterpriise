@@ -161,25 +161,6 @@ var GanttRow = Widget.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Bind popover on pills
-     *
-     * @private
-     */
-    _bindPopover: function () {
-        var self = this;
-        this.$('.o_gantt_pill').popover({
-            container: this.$el,
-            trigger: 'hover',
-            delay: {show: this.POPOVER_DELAY},
-            html: true,
-            placement: 'top',
-            content: function () {
-                return self.viewInfo.popoverQWeb.render('gantt-popover', self._getPopoverContext($(this).data('id')));
-            },
-        });
-    },
-
-    /**
      * binds the popover of a specific pill
      * @param target
      * @private

@@ -1,0 +1,1 @@
+from . import stock_barcode_picking_batch_group_pickings

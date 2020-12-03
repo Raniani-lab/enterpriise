@@ -12,7 +12,7 @@
                             <label class="col-md-2 col-form-label" t-att-for="line[0]"><t t-esc="line[0]"/></label>
                             <div class="col-md-5 mt8">
                                 <a role="button" data-toggle="modal" data-target="#hr_cs_modal" name="details" data-backdrop="false" data-dismiss="modal">Details</a>
-                                <a role="button" name="recompute" title="Recompute" aria-label="Recompute"><i class="fas fa-sync fa-spin"/></a>
+                                <a role="button" name="recompute" title="Recompute" aria-label="Recompute"><i class="fa fa-refresh fa-spin"/></a>
                             </div>
                         </t>
                         <t t-if="!is_net">

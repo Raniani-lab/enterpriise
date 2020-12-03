@@ -2,6 +2,7 @@ odoo.define('web_gantt.GanttRow', function (require) {
 "use strict";
 
 var core = require('web.core');
+var config = require('web.config');
 var session = require('web.session');
 var Widget = require('web.Widget');
 const pyUtils = require('web.py_utils');
@@ -1077,7 +1078,7 @@ var GanttRow = Widget.extend({
         if (!this.isTotal) {
             this._setDraggable($pill);
         }
-        if (!this.isGroup) {
+        if (!this.isGroup && !config.device.isMobile) {
             this._bindPillPopover(ev.target);
         }
     },

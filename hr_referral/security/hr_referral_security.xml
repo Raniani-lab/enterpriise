@@ -31,6 +31,20 @@
         <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
     </record>
 
+    <record id="hr_applicant_referral_user_rule" model="ir.rule">
+        <field name="name">User Referral Applicants</field>
+        <field name="model_id" ref="model_hr_applicant"/>
+        <field name="domain_force">[('ref_user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('hr_referral.group_hr_recruitment_referral_user'))]"/>
+    </record>
+
+    <record id="hr_applicant_officer_rule" model="ir.rule">
+        <field name="name">Officer Applicants</field>
+        <field name="model_id" ref="model_hr_applicant"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
+    </record>
+
     <record model="ir.rule" id="hr_referral_alert_comp_rule">
         <field name="name">Referral Alerts multi-company</field>
         <field name="model_id" ref="model_hr_referral_alert"/>

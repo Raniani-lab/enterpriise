@@ -189,8 +189,7 @@ class AccountBatchPayment(models.Model):
 
         self.ensure_one()
         if self.payment_ids:
-            self.payment_ids.write({'is_move_sent': True, 'payment_reference': self.name})
-            self.state = 'sent'
+            self.payment_ids.mark_as_sent()
 
             if self.file_generation_enabled:
                 return self.export_batch_payment()

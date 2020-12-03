@@ -75,13 +75,26 @@ var GanttController = AbstractController.extend({
     },
     _renderButtonQWebParameter: function () {
         var state = this.model.get();
+        var nbGroups = state.groupedBy.length;
+        var minNbGroups = this.collapseFirstLevel ? 0 : 1;
+        var displayExpandCollapseButtons = nbGroups > minNbGroups;
         return {
             groupedBy: state.groupedBy,
             widget: this,
             SCALES: this.SCALES,
             activateScale: state.scale,
             allowedScales: this.allowedScales,
+            displayExpandCollapseButtons: displayExpandCollapseButtons,
         };
+    },
+    /**
+     * @override
+     */
+    updateButtons: function () {
+        if (!this.$buttons) {
+            return;
+        }
+        this.$buttons.html(this._renderButtonsQWeb());
     },
 
     //--------------------------------------------------------------------------
@@ -274,26 +287,6 @@ var GanttController = AbstractController.extend({
             this.model.reschedule.bind(this.model),
             [ids, schedule, isUTC]
         );
-    },
-    /**
-     * Overridden to hide expand/collapse buttons when they have no effect.
-     *
-     * @override
-     * @private
-     */
-    _update: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.$buttons) {
-                // When using a saved gantt model from the dashboard
-                // the control panel is missing
-                var nbGroups = self.model.get().groupedBy.length;
-                var minNbGroups = self.collapseFirstLevel ? 0 : 1;
-                var displayButtons = nbGroups > minNbGroups;
-                self.$buttons.find('.o_gantt_button_expand_rows').toggle(displayButtons);
-                self.$buttons.find('.o_gantt_button_collapse_rows').toggle(displayButtons);
-            }
-        });
     },
 
     //--------------------------------------------------------------------------

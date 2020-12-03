@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, RedirectWarning
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime, timedelta
 
@@ -33,7 +33,17 @@ class IntrastatReport(models.AbstractModel):
 
         company = self.env.company
         if not company.company_registry:
-            raise UserError(_('Missing company registry information on the company'))
+            error_msg = _('Missing company registry information on the company')
+            action_error = {
+                'name': _('company %s', company.name),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'res.company',
+                'views': [[False, 'form']],
+                'target': 'new',
+                'res_id': company.id,
+            }
+            raise RedirectWarning(error_msg, action_error, _('Add company registry'))
 
         cache = {}
 

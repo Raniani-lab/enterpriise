@@ -135,7 +135,7 @@ class AccountMove(models.Model):
         """When a message is posted on an account.move, send the attachment to iap-ocr if
         the res_config is on "auto_send" and if this is the first attachment."""
         message = super(AccountMove, self).message_post(**kwargs)
-        if self.company_id.extract_show_ocr_option_selection == 'auto_send':
+        if self.company_id.extract_show_ocr_option_selection == 'auto_send' and not self.env.context.get('no_new_invoice'):
             for record in self:
                 if record.move_type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
                     record.retry_ocr()

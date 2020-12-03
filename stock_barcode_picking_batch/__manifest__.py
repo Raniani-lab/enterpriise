@@ -9,6 +9,7 @@
     'description': "",
     'depends': ['stock_barcode', 'stock_picking_batch'],
     'data': [
+        'views/stock_barcode_picking.xml',
         'views/stock_barcode_picking_batch.xml',
         'views/stock_barcode_picking_batch_templates.xml',
         'views/stock_move_line_views.xml',

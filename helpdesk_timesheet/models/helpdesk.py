@@ -37,12 +37,13 @@ class HelpdeskTeam(models.Model):
             **other,
         })
 
-    @api.model
-    def create(self, vals):
-        if vals.get('use_helpdesk_timesheet') and not vals.get('project_id'):
-            allow_billable = vals.get('use_helpdesk_sale_timesheet')
-            vals['project_id'] = self._create_project(vals['name'], allow_billable, {}).id
-        return super(HelpdeskTeam, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('use_helpdesk_timesheet') and not vals.get('project_id'):
+                allow_billable = vals.get('use_helpdesk_sale_timesheet')
+                vals['project_id'] = self._create_project(vals['name'], allow_billable, {}).id
+        return super().create(vals_list)
 
     def write(self, vals):
         if 'use_helpdesk_timesheet' in vals and not vals['use_helpdesk_timesheet']:

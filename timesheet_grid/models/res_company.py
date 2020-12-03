@@ -32,11 +32,12 @@ class Company(models.Model):
     ], string='Manager Reminder Frequency', required=True, default="weeks")
     timesheet_mail_manager_nextdate = fields.Datetime('Next scheduled date for manager reminder', readonly=True)
 
-    @api.model
-    def create(self, values):
-        company = super(Company, self).create(values)
-        company._timesheet_postprocess(values)
-        return company
+    @api.model_create_multi
+    def create(self, vals_list):
+        companies = super().create(vals_list)
+        for company, values in zip(companies, vals_list):
+            company._timesheet_postprocess(values)
+        return companies
 
     def write(self, values):
         result = super(Company, self).write(values)

@@ -216,13 +216,14 @@ class MarketingActivity(models.Model):
         if not self._check_recursion():
             raise ValidationError(_("Error! You can't create recursive hierarchy of Activity."))
 
-    @api.model
-    def create(self, values):
-        campaign_id = values.get('campaign_id')
-        if not campaign_id:
-            campaign_id = self.default_get(['campaign_id'])['campaign_id']
-        values['require_sync'] = self.env['marketing.campaign'].browse(campaign_id).state == 'running'
-        return super(MarketingActivity, self).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for values in vals_list:
+            campaign_id = values.get('campaign_id')
+            if not campaign_id:
+                campaign_id = self.default_get(['campaign_id'])['campaign_id']
+            values['require_sync'] = self.env['marketing.campaign'].browse(campaign_id).state == 'running'
+        return super().create(vals_list)
 
     def write(self, values):
         if any(field in values.keys() for field in ('interval_number', 'interval_type')):

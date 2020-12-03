@@ -9,10 +9,10 @@ class ResCompany(models.Model):
 
     background_image = fields.Binary(string="Home Menu Background Image", attachment=True)
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Override to ensure a default exists for all studio-created company/currency fields."""
-        new_company = super().create(vals)
+        companies = super().create(vals_list)
         company_fields = self.env['ir.model.fields'].sudo().search([
             ('name', '=', 'x_studio_company_id'),
             ('ttype', '=', 'many2one'),
@@ -20,9 +20,10 @@ class ResCompany(models.Model):
             ('store', '=', True),
             ('state', '=', 'manual')
         ])
-        for company_field in company_fields:
-            self.env['ir.default'].set(company_field.model_id.model, company_field.name,
-                                       new_company.id, company_id=new_company.id)
+        for new_company in companies:
+            for company_field in company_fields:
+                self.env['ir.default'].set(company_field.model_id.model, company_field.name,
+                                        new_company.id, company_id=new_company.id)
         currency_fields = self.env['ir.model.fields'].sudo().search([
             ('name', '=', 'x_studio_currency_id'),
             ('ttype', '=', 'many2one'),
@@ -30,7 +31,8 @@ class ResCompany(models.Model):
             ('store', '=', True),
             ('state', '=', 'manual')
         ])
-        for currency_field in currency_fields:
-            self.env['ir.default'].set(currency_field.model_id.model, currency_field.name,
-                                       new_company.currency_id.id,company_id=new_company.id)
-        return new_company
+        for new_company in companies:
+            for currency_field in currency_fields:
+                self.env['ir.default'].set(currency_field.model_id.model, currency_field.name,
+                                        new_company.currency_id.id,company_id=new_company.id)
+        return companies

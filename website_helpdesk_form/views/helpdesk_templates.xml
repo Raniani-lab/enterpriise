@@ -11,7 +11,7 @@
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure oe_empty">
                 <div class="container">
-                    <div clas="row">
+                    <div class="row">
                         <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
                             <t t-set="ticket" t-value="request.website._website_form_last_record().sudo()"/>
                         </t>

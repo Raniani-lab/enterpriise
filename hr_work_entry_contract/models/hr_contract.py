@@ -28,22 +28,7 @@ class HrContract(models.Model):
         return leave.work_entry_type_id
 
     # Is used to add more values, for example leave_id (in hr_work_entry_holidays)
-    def _get_more_vals_leave(self, leave):
-        # YTI TODO master: Remove this method
-        return []
-
-    # Is used to add more values, for example leave_id (in hr_work_entry_holidays)
     def _get_more_vals_leave_interval(self, interval, leaves):
-        return []
-
-    def _get_contract_presence_entries_values(self, date_start, date_stop, default_work_entry_type):
-        # Deprecated. Use _get_contract_work_entries_values directly.
-        # YTI TODO master: Remove this method
-        return []
-
-    def _get_contract_leave_entries_values(self, date_start, date_stop):
-        # Deprecated. Use _get_contract_work_entries_values directly.
-        # YTI TODO master: Remove this method
         return []
 
     def _get_interval_leave_work_entry_type(self, interval, leaves):

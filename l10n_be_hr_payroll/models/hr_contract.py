@@ -171,23 +171,7 @@ class HrContract(models.Model):
         private_car_reimbursement_scale = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
             'private_car_reimbursement_scale', raise_if_not_found=False)
         if not private_car_reimbursement_scale:
-            # YTI TODO master: return 0
-            private_car_reimbursement_scale = [
-                (0, 0.0),
-                (3, 37.0), (4, 40.5), (5, 43.5), (6, 46.5),
-                (7, 49.5), (8, 52.0), (9, 55.0), (10, 58.0),
-                (11, 61.0), (12, 63.0), (13, 66.0), (14, 69.0),
-                (15, 72.0), (16, 75.0), (17, 77.0), (18, 80.0),
-                (19, 83.0), (20, 86.0), (21, 88.0), (22, 91.0),
-                (23, 94.0), (24, 97.0), (25, 100.0), (26, 102.0),
-                (27, 105.0), (28, 108.0), (29, 111.0), (30, 114.0),
-                (33, 118.0), (36, 125.0), (39, 132.0), (42, 139.0),
-                (45, 146.0), (48, 153.0), (51, 159.0), (54, 164.0),
-                (57, 169.0), (60, 174.0), (65, 181.0), (70, 189.0),
-                (75, 197.0), (80, 205.0), (85, 213.0), (90, 221.0),
-                (95, 229.0), (100, 238.0), (105, 246.0), (110, 254.0),
-                (115, 262.0), (120, 270.0), (125, 278.0), (130, 287.0),
-                (135, 295.0), (140, 303.0), (145, 311.0), (150, 322.0)]
+            return 0
         for distance_boundary, amount in private_car_reimbursement_scale:
             if distance <= distance_boundary:
                 return amount / 2

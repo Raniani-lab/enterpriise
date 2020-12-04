@@ -142,9 +142,6 @@ class Payslip(models.Model):
         # this public holiday should be taken into account in the worked days lines
         if self.contract_id.date_end and self.date_from <= self.contract_id.date_end <= self.date_to:
             after_contract_public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_after_contract_public_holiday', raise_if_not_found=False)
-            # YTI TODO master: This condition could be dropped (fix in stable release)
-            if not after_contract_public_holiday_type:
-                return res
             # If the contract is followed by another one (eg. after an appraisal)
             if self.contract_id.employee_id.contract_ids.filtered(lambda c: c.state in ['open', 'close'] and c.date_start > self.contract_id.date_end):
                 return res

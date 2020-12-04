@@ -11,6 +11,8 @@
             </xpath>
             <xpath expr="//field[@name='is_leave']" position="after">
                 <field name="leave_right"/>
+                <field name="representation_fees"/>
+                <field name="private_car"/>
             </xpath>
         </field>
     </record>

@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models, tools
 
-
+# YTI TODO master: Remove in favor of l10n_be.work.entry.daily.benefit.report
 class l10nBeMealVoucherReport(models.Model):
     _name = "l10n_be.meal.voucher.report"
     _description = 'Meal Voucher Summary / Report'

@@ -4,6 +4,8 @@
 
          <record id="hr_work_entry.work_entry_type_attendance" model="hr.work.entry.type">
             <field name="dmfa_code">1</field>
+            <field name="private_car">True</field>
+            <field name="representation_fees">True</field>
         </record>
 
         <record id="hr_work_entry_contract.work_entry_type_compensatory" model="hr.work.entry.type">
@@ -12,6 +14,8 @@
 
         <record id="hr_work_entry_contract.work_entry_type_home_working" model="hr.work.entry.type">
             <field name="dmfa_code">1</field>
+            <field name="meal_voucher">True</field>
+            <field name="representation_fees">True</field>
         </record>
 
         <record id="hr_work_entry_contract.work_entry_type_unpaid_leave" model="hr.work.entry.type">
@@ -20,10 +24,12 @@
 
         <record id="hr_work_entry_contract.work_entry_type_sick_leave" model="hr.work.entry.type">
             <field name="dmfa_code">50</field>
+            <field name="representation_fees">True</field>
         </record>
 
          <record id="hr_work_entry_contract.work_entry_type_legal_leave" model="hr.work.entry.type">
             <field name="dmfa_code">1</field>
+            <field name="representation_fees">True</field>
         </record>
 
         <record id="hr_payroll.hr_work_entry_type_out_of_contract" model="hr.work.entry.type">
@@ -72,6 +78,7 @@
             <field name="code">LEAVE220</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
+            <field name="representation_fees">True</field>
         </record>
 
          <record id="work_entry_type_paternity_legal" model="hr.work.entry.type">
@@ -101,6 +108,9 @@
             <field name="name">Training</field>
             <field name="code">LEAVE265</field>
             <field name="color">5</field>
+            <field name="meal_voucher">True</field>
+            <field name="private_car">True</field>
+            <field name="representation_fees">True</field>
         </record>
 
          <record id="work_entry_type_training_time_off" model="hr.work.entry.type">
@@ -132,6 +142,9 @@
             <field name="code">LEAVE290</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
+            <field name="meal_voucher">True</field>
+            <field name="private_car">True</field>
+            <field name="representation_fees">True</field>
         </record>
 
          <record id="work_entry_type_medical_assistance" model="hr.work.entry.type">
@@ -203,6 +216,7 @@
             <field name="code">LEAVE215</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
+            <field name="representation_fees">True</field>
         </record>
         <record id="holiday_type_recovery" model="hr.leave.type">
             <field name="name">Recovery Bank Holiday</field>
@@ -252,6 +266,8 @@
             <field name="color">3</field>
             <field name="is_leave">True</field>
         </record>
-
+        <record id="hr_work_entry_contract.work_entry_type_leave" model="hr.work.entry.type">
+            <field name="representation_fees">True</field>
+        </record>
     </data>
 </odoo>

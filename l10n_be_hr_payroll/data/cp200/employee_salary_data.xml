@@ -329,8 +329,12 @@ else:
             <field name="amount_python_compute">
 if not categories.BASIC:
     result = 0
+    result_qty = 0
 else:
-    result = contract.private_car_reimbursed_amount
+    calendar = contract.resource_calendar_id
+    days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+    daily_amount = contract.private_car_reimbursed_amount * 3 / 13 / days_per_week
+    result = max(0, contract.private_car_reimbursed_amount - daily_amount * payslip.private_car_missing_days)
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
@@ -346,8 +350,12 @@ else:
             <field name="amount_python_compute">
 if not categories.BASIC:
     result = 0
+    result_qty = 0
 else:
-    result = contract.representation_fees
+    calendar = contract.resource_calendar_id
+    days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+    daily_amount = contract.representation_fees * 3 / 13 / days_per_week
+    result = max(0, contract.representation_fees - daily_amount * payslip.representation_fees_missing_days)
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>

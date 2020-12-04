@@ -117,6 +117,7 @@
         <field name="name">Public Holiday</field>
         <field name="code">LEAVE500</field>
         <field name="is_leave">True</field>
+        <field name="representation_fees">True</field>
     </record>
 
     <record id="work_entry_type_after_contract_public_holiday" model="hr.work.entry.type">

@@ -93,11 +93,11 @@ class ShiftController(http.Controller):
         # Calculation of the minTime and maxTime values in timeGridDay and timeGridWeek
         # We want to avoid displaying overly large hours range each day or hiding slots outside the
         # normal working hours
-        attendances = employee_sudo.resource_calendar_id._work_intervals(
+        attendances = employee_sudo.resource_calendar_id._work_intervals_batch(
             pytz.utc.localize(planning_sudo.start_datetime),
             pytz.utc.localize(planning_sudo.end_datetime),
             resource=employee_sudo.resource_id, tz=employee_tz
-        )
+        )[employee_sudo.resource_id.id]
         if attendances and attendances._items:
             checkin_min = min(map(lambda a: a[0].hour, attendances._items))  # hour in the timezone of the employee
             checkout_max = max(map(lambda a: a[1].hour, attendances._items))  # idem

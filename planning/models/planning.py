@@ -375,7 +375,7 @@ class Planning(models.Model):
 
     def _company_working_hours(self, start, end):
         company = self.company_id or self.env.company
-        work_interval = company.resource_calendar_id._work_intervals(start, end)
+        work_interval = company.resource_calendar_id._work_intervals_batch(start, end)[False]
         intervals = [(start, stop) for start, stop, attendance in work_interval]
         start_datetime, end_datetime = (intervals[0][0], intervals[-1][-1]) if intervals else (start, end)
 

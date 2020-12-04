@@ -567,12 +567,12 @@ class IncommingIngenicoMessage(IngenicoMessage):
         # Receive message length and reduce it with length of magic string
         length = self._bcdToInt(self.dev.recv(4)) - 8
         # Check if message is from Ingenico terminal by comparing magic string
-        magic = self.dev.recv(8)
-        if magic and magic == self._const.magic:
+        self.magic = self.dev.recv(8)
+        if self.magic and self.magic == self._const.magic:
             # Receive and decode message
             self._tagTree, leftLength = self._getMsg(length)
         else:
-            raise ValueError('Out of magic!')
+            _logger.warning('Out of magic!')
 
     def _getLength(self):
         """Return the message length of the tag
@@ -689,7 +689,7 @@ class IngenicoDriver(Driver):
         try:
             # Setup socket connection
             msg = IncommingIngenicoMessage(device.dev)
-            if msg and msg._const.magic == b'P4Y-ECR!' and msg.getMessageType() == "HelloRequest":
+            if msg and msg.magic == b'P4Y-ECR!' and msg.getMessageType() == "HelloRequest":
                 device.terminalId = msg.getTerminalId()
                 device.protocolId = msg.getProtocolId()
                 OutgoingIngenicoMessage( device.dev, device.terminalId, cls._ecrId, device.protocolId, "HelloResponse", b'\x00')

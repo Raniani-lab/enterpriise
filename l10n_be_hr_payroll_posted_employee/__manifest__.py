@@ -12,9 +12,7 @@
     'description': """
     """,
     'data': [
-        'data/salary_rules_data.xml',
         'wizard/create_company_global_time_off_views.xml',
-        'views/hr_contract_views.xml',
         'views/resource_calendar_views.xml',
         'security/ir.model.access.csv',
     ],

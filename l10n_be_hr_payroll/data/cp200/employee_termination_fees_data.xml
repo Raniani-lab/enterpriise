@@ -430,7 +430,8 @@ else:
         <field name="name">Social employer contributions to the ONSS</field>
         <field name="code">ONSS</field>
         <field name="sequence">23</field>
-        <field name="condition_select">none</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_onss</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = NET - OUTPLACEMENT

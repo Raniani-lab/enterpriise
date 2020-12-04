@@ -115,7 +115,8 @@ if contract.has_laptop:
             <field name="name">Social contribution</field>
             <field name="code">ONSS</field>
             <field name="sequence">41</field>
-            <field name="condition_select">none</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result=not contract.no_onss</field>
             <field name="amount_select">percentage</field>
             <field name="amount_percentage_base">SALARY</field>
             <field name="amount_percentage">-13.07</field>
@@ -190,7 +191,8 @@ result = contract.car_atn
             <field name="name">Withholding Tax</field>
             <field name="code">P.P</field>
             <field name="sequence">120</field>
-            <field name="condition_select">none</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result=not contract.no_withholding_taxes</field>
             <field name="appears_on_payslip" eval="True"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = compute_withholding_taxes(payslip, categories, worked_days, inputs)

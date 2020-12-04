@@ -141,6 +141,12 @@
                     </group>
                 </group>
             </xpath>
+            <group name="salary_info" position="inside">
+                <group string="Posted Employee" name="posted_employee">
+                    <field name="no_onss"/>
+                    <field name="no_withholding_taxes"/>
+                </group>
+            </group>
             <page name="information" position="after">
                 <page string="Attachment of Salary" name="salary_attachment">
                     <group>

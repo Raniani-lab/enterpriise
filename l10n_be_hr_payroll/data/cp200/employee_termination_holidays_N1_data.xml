@@ -85,7 +85,8 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
         <field name="name">Social contribution</field>
         <field name="code">ONSS</field>
         <field name="sequence">10</field>
-        <field name="condition_select">none</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_onss</field>
         <field name="amount_select">percentage</field>
         <field name="amount_percentage_base">PAY_SIMPLE</field>
         <field name="amount_percentage">-13.07</field>

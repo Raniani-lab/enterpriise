@@ -44,6 +44,10 @@ Python.prototype.toString = function () {
 function extract (expr) {
     switch (expr.id) {
         case '(name)':
+            switch (expr.value) {
+                case 'true': return true;
+                case 'false': return false;
+            }
             return new Python(expr.value, 'field');
         case '(string)':
         case '(number)':

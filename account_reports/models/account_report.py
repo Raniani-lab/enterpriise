@@ -1486,7 +1486,7 @@ class AccountReport(models.AbstractModel):
         try:
             # the date is parsable to a xlsx compatible date
             lg = self.env['res.lang']._lang_get(self.env.user.lang) or get_lang(self.env)
-            return ('date', datetime.strptime(cell['name'], lg.date_format))
+            return ('date', datetime.datetime.strptime(cell['name'], lg.date_format))
         except:
             # the date is not parsable thus is returned as text
             return ('text', cell['name'])

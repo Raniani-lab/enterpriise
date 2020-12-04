@@ -30,6 +30,7 @@ class AccountBankStatementImport(models.TransientModel):
     def import_file(self):
         """ Process the file chosen in the wizard, create bank statement(s) and go to reconciliation. """
         self.ensure_one()
+        statement_ids_all = []
         statement_line_ids_all = []
         notifications_all = []
         # Let the appropriate implementation module parse the file and return the required data
@@ -49,24 +50,59 @@ class AccountBankStatementImport(models.TransientModel):
             # Prepare statement data to be used for bank statements creation
             stmts_vals = self._complete_stmts_vals(stmts_vals, journal, account_number)
             # Create the bank statements
-            statement_line_ids, notifications = self._create_bank_statements(stmts_vals)
+            statement_ids, statement_line_ids, notifications = self._create_bank_statements(stmts_vals)
+            statement_ids_all.extend(statement_ids)
             statement_line_ids_all.extend(statement_line_ids)
             notifications_all.extend(notifications)
+
             # Now that the import worked out, set it as the bank_statements_source of the journal
             if journal.bank_statements_source != 'file_import':
                 # Use sudo() because only 'account.group_account_manager'
                 # has write access on 'account.journal', but 'account.group_account_user'
                 # must be able to import bank statement files
                 journal.sudo().bank_statements_source = 'file_import'
-        # Finally dispatch to reconciliation interface
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'bank_statement_reconciliation_view',
-            'context': {'statement_line_ids': statement_line_ids_all,
-                        'company_ids': self.env.user.company_ids.ids,
-                        'notifications': notifications_all,
-            },
-        }
+
+            # Post the warnings on the statements
+            msg = ""
+            for notif in notifications:
+                msg += (
+                    f"{notif['message']}<br/><br/>"
+                    f"{notif['details']['name']}<br/>"
+                    f"{notif['details']['model']}<br/>"
+                    f"{notif['details']['ids']}<br/><br/>"
+                )
+            if msg:
+                statements = self.env['account.bank.statement'].browse(statement_ids)
+                for statement in statements:
+                    statement.message_post(body=msg)
+
+        statements = self.env['account.bank.statement'].browse(statement_ids_all)
+        # Dispatch to reconciliation interface if all statements are posted.
+        if all(s.state == 'posted' for s in statements):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'bank_statement_reconciliation_view',
+                'context': {'statement_line_ids': statement_line_ids_all,
+                            'company_ids': self.env.user.company_ids.ids,
+                            'notifications': notifications_all,
+                },
+            }
+
+        # Dispatch to the statemtent list/form view instead.
+        result = self.env['ir.actions.act_window']._for_xml_id('account.action_bank_statement_tree')
+        if len(statements) > 1:
+            result['domain'] = [('id', 'in', statements.ids)]
+        elif len(statements) == 1:
+            form = self.env.ref('account.view_bank_statement_form', False)
+            form_view = [(form.id if form else False, 'form')]
+            if 'views' in result:
+                result['views'] = form_view + [(state, view) for state, view in result['views'] if view != 'form']
+            else:
+                result['views'] = form_view
+            result['res_id'] = statements.id
+        else:
+            result = {'type': 'ir.actions.act_window_close'}
+        return result
 
     def _journal_creation_wizard(self, currency, account_number):
         """ Calls a wizard that allows the user to carry on with journal creation """
@@ -209,6 +245,7 @@ class AccountBankStatementImport(models.TransientModel):
         BankStatementLine = self.env['account.bank.statement.line']
 
         # Filter out already imported transactions and create statements
+        statement_ids = []
         statement_line_ids = []
         ignored_statement_lines_import_ids = []
         for st_vals in stmts_vals:
@@ -231,6 +268,7 @@ class AccountBankStatementImport(models.TransientModel):
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
                 statement = BankStatement.create(st_vals)
+                statement_ids.append(statement.id)
                 if number and number.isdecimal():
                     statement._set_next_sequence()
                     format, format_values = statement._get_sequence_format_param(statement.name)
@@ -258,4 +296,4 @@ class AccountBankStatementImport(models.TransientModel):
                     'ids': BankStatementLine.search([('unique_import_id', 'in', ignored_statement_lines_import_ids)]).ids
                 }
             }]
-        return statement_line_ids, notifications
+        return statement_ids, statement_line_ids, notifications

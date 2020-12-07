@@ -32,6 +32,12 @@ class Product(models.Model):
         to_add.extend([dict(t[0], **products_to_read[t[1]]) for t in to_read])
         return {product.pop('barcode'): product for product in products + to_add}
 
+    @api.model
+    def _get_product_field_by_barcode(self, barcode, field='id'):
+        product = self.search_read([('barcode', '=', barcode)], [field], limit=1)
+        if product:
+            return product[0][field]
+
     def read_product_and_package(self, lot_ids=False, fetch_product=False):
         """ Fetch product and/or package fields value used by the barcode app.
 

@@ -98,6 +98,22 @@ class StockInventory(models.Model):
         return inventories
 
     @api.model
+    def filter_on_product(self, barcode):
+        """ Search for a product corresponding to the scanned barcode and return
+        the inventory kanban view filtered on this product.
+        """
+        product_name = self.env['product.product']._get_product_field_by_barcode(barcode, 'name')
+        if product_name:
+            action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_barcode_inventory_type_action_kanban')
+            action['context'] = dict(self.env.context)
+            action['context']['search_default_product_ids'] = product_name
+            return {'action': action}
+        return {'warning': {
+            'title': _("No product found for barcode %s", barcode),
+            'message': _("Scan a product to filter the inventories."),
+        }}
+
+    @api.model
     def open_new_inventory(self):
         action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_inventory_client_action")
         company_user = self.env.company

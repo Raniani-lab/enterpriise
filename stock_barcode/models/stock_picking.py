@@ -391,6 +391,33 @@ class StockPicking(models.Model):
         }}
 
     @api.model
+    def filter_on_product(self, barcode):
+        """ Search for a product corresponding to the scanned barcode and return
+        the picking kanban view filtered on this product.
+        """
+        product_id = self.env['product.product']._get_product_field_by_barcode(barcode)
+        if product_id:
+            picking_type = self.env['stock.picking.type'].search_read(
+                [('id', '=', self.env.context.get('active_id'))],
+                ['name'],
+            )[0]
+            if not self.search_count([
+                ('product_id', '=', product_id),
+                ('picking_type_id', '=', picking_type['id'])
+            ]):
+                return {'warning': {
+                    'title': _("No %s ready for this product", picking_type['name']),
+                }}
+            action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_picking_action_kanban')
+            action['context'] = dict(self.env.context)
+            action['context']['search_default_product_id'] = product_id
+            return {'action': action}
+        return {'warning': {
+            'title': _("No product found for barcode %s", barcode),
+            'message': _("Scan a product to filter the transfers."),
+        }}
+
+    @api.model
     def open_new_picking(self):
         """ Creates a new picking of the current picking type and open it.
 

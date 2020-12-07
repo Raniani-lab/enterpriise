@@ -238,14 +238,15 @@ const GridModel = AbstractModel.extend({
      * @private
      * @param {Object} rows
      * @param {boolean} grouped
-     * @returns {string[]}
+     * @returns {Object with keys id (string) and label (string[])}
      */
-    _getRowLabel(row, grouped) {
+    _getRowInfo(row, grouped) {
         let groupBy = this.groupedBy;
         if (grouped) {
             groupBy = groupBy.slice(1);
         }
         const rowValues = [];
+        const rowIds = [];
         for (let i = 0; i < groupBy.length; i++) {
             const rowField = groupBy[i];
             let value = row.values[rowField];
@@ -256,10 +257,12 @@ const GridModel = AbstractModel.extend({
                     return choice[0] === value;
                 });
             }
+            const id = value && ["many2one", "selection"].includes(fieldType) ? value[0] : value;
             value = value && ["many2one", "selection"].includes(fieldType) ? value[1] : value;
             rowValues.push(value);
+            rowIds.push(id);
         }
-        return rowValues;
+        return { id: rowIds.join(','), label: rowValues };
     },
     /**
      * @private
@@ -328,7 +331,9 @@ const GridModel = AbstractModel.extend({
         results.forEach((group, groupIndex) => {
             results[groupIndex].totals = this._computeTotals(group.grid);
             group.rows.forEach((row, rowIndex) => {
-                results[groupIndex].rows[rowIndex].label = this._getRowLabel(row, true);
+                const { id, label } = this._getRowInfo(row, true);
+                results[groupIndex].rows[rowIndex].id = id;
+                results[groupIndex].rows[rowIndex].label = label;
             });
         });
 
@@ -392,7 +397,9 @@ const GridModel = AbstractModel.extend({
 
         const rows = result.rows;
         rows.forEach((row, rowIndex) => {
-            result.rows[rowIndex].label = this._getRowLabel(row, false);
+            const { id, label } = this._getRowInfo(row, false);
+            result.rows[rowIndex].label = label;
+            result.rows[rowIndex].id = id;
         });
         this._gridData = {
             isGrouped: false,

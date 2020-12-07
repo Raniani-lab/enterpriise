@@ -174,7 +174,7 @@
     </t>
 
     <t t-name="web_grid.GridRows" owl="1">
-        <t t-foreach="grid.rows" t-as="rowlabel" t-key="grid.rows[rowlabel_index].label">
+        <t t-foreach="grid.rows" t-as="rowlabel" t-key="grid.rows[rowlabel_index].id">
             <t t-set="row" t-value="grid.grid[rowlabel_index]"/>
             <tr>
                 <th>

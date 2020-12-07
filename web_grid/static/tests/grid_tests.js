@@ -1139,6 +1139,39 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
+    QUnit.test('grid with two tasks with same name, and widget', async function (assert) {
+        assert.expect(2);
+
+        this.data.task.records = [
+            { id: 1, display_name: "Awesome task", project_id: 31 },
+            { id: 2, display_name: "Awesome task", project_id: 31 }
+        ];
+        this.data['analytic.line'].records = [
+            { id: 1, task_id: 1, date: "2017-01-30", unit_amount: 2 },
+            { id: 2, task_id: 2, date: "2017-01-31", unit_amount: 5.5 },
+        ];
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_toggle"/>'
+                </grid>`,
+            currentDate: "2017-01-31",
+        });
+
+        assert.containsN(grid, '.o_view_grid tbody tr:not(.o_grid_padding)', 2);
+        assert.strictEqual(grid.$('.o_view_grid tbody tr th').text().trim(), "Awesome taskAwesome task");
+
+        grid.destroy();
+    });
+
     QUnit.module('GridViewComponents');
 
     QUnit.test('float_toggle component', async function (assert) {

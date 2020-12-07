@@ -127,9 +127,6 @@
                                     <div class="col-lg-6" title="Sync now">
                                         <button name="sync_policies" icon="fa-lg fa-refresh" type="object" string="Policies" class="btn-link"></button>
                                     </div>
-                                    <div class="col-lg-6" title="Sync now">
-                                        <button name="button_sync_product_status" icon="fa-lg fa-refresh" type="object" string="Products &amp; Transactions" class="btn-link"></button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

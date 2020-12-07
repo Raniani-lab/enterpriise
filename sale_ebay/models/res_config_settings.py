@@ -99,10 +99,6 @@ class ResConfigSettings(models.TransientModel):
         self.env['ebay.category']._cron_sync()
 
     @api.model
-    def button_sync_product_status(self, context=None):
-        self.env['product.template'].sync_product_status()
-
-    @api.model
     def sync_policies(self, context=None):
         self.env['ebay.policy'].sync_policies()
 

@@ -7,6 +7,7 @@
             <script type="text/javascript" src="/hr_payroll/static/src/js/work_entries_calendar.js"></script>
             <script type="text/javascript" src="/hr_payroll/static/src/js/work_entries_gantt.js"></script>
             <script type="text/javascript" src="/hr_payroll/static/src/js/payslip.js"></script>
+            <script type="text/javascript" src="/hr_payroll/static/src/js/payslip_line_one2many.js"></script>
         </xpath>
     </template>
 

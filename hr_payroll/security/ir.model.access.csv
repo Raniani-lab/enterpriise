@@ -21,3 +21,6 @@ access_hr_payroll_report_manager,hr.payroll.report,model_hr_payroll_report,hr_pa
 access_hr_payslip_employees,access.hr.payslip.employees,model_hr_payslip_employees,hr_payroll.group_hr_payroll_manager,1,1,1,0
 access_hr_payroll_index,access.hr.payroll.index,model_hr_payroll_index,hr_contract.group_hr_contract_manager,1,1,1,0
 access_hr_work_entry_report_manager,hr.work.entry.report,model_hr_work_entry_report,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_hr_payroll_edit_payslip_lines_wizard,access.hr.payroll.edit.payslip.lines.wizard,model_hr_payroll_edit_payslip_lines_wizard,hr_payroll.group_hr_payroll_manager,1,1,1,0
+access_hr_payroll_edit_payslip_line,access.hr.payroll.edit.payslip.line,model_hr_payroll_edit_payslip_line,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_hr_payroll_edit_payslip_worked_days_line,access.hr.payroll.edit.payslip.worked.days.line,model_hr_payroll_edit_payslip_worked_days_line,hr_payroll.group_hr_payroll_manager,1,1,1,1

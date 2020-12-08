@@ -15,9 +15,15 @@ const BasicRenderer = require('web.BasicRenderer');
 
 BasicRenderer.include({
     SHOW_AFTER_DELAY: 250,
-    showTimer: undefined,
-    tooltipNodes: [],
 
+    /**
+     * @override
+     */
+    init() {
+        this._super(...arguments);
+        this.showTimer = undefined;
+        this.tooltipNodes = [];
+    },
     /**
      * @override
      */

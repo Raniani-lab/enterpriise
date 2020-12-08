@@ -6,6 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+@tagged('-at_install', 'post_install')
 class TestMono(common.TestEdi):
 
     @classmethod
@@ -18,7 +19,7 @@ class TestMono(common.TestEdi):
         cls.env = cls.env(context=context)
 
 
-@tagged('fe', 'mono')
+@tagged('fe', 'mono', '-at_install', 'post_install')
 class TestFE(TestMono):
 
     @classmethod
@@ -81,7 +82,7 @@ class TestFE(TestMono):
         self._test_case('invoice_mipyme_c', 'product_service')
 
 
-@tagged('fex', 'mono')
+@tagged('fex', 'mono', '-at_install', 'post_install')
 class TestFEX(common.TestFex, TestMono):
 
     def test_01_invoice_e_product(self):

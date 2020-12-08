@@ -3,7 +3,7 @@ from odoo.tests import tagged
 from . import common
 
 
-@tagged('fex', 'ri')
+@tagged('fex', 'ri', '-at_install', 'post_install')
 class TestFex(common.TestFex):
 
     def test_00_connection(self):

@@ -23,6 +23,8 @@ BasicRenderer.include({
         this._super(...arguments);
         this.showTimer = undefined;
         this.tooltipNodes = [];
+        this._onTouchStartTooltipBind = this._onTouchStartTooltip.bind(this);
+        this._onTouchEndTooltipBind = this._onTouchEndTooltip.bind(this);
     },
     /**
      * @override
@@ -41,8 +43,8 @@ BasicRenderer.include({
 
     _addListener: function () {
         this.tooltipNodes.forEach((nodeElement) => {
-            nodeElement.addEventListener('touchstart', this._onTouchStartTooltip);
-            nodeElement.addEventListener('touchend', this._onTouchEndTooltip);
+            nodeElement.addEventListener('touchstart', this._onTouchStartTooltipBind);
+            nodeElement.addEventListener('touchend', this._onTouchEndTooltipBind);
             nodeElement.classList.add('o_user_select_none');
         });
     },
@@ -78,8 +80,8 @@ BasicRenderer.include({
     _removeListeners: function () {
         while (this.tooltipNodes.length) {
             const node = this.tooltipNodes.shift();
-            node.removeEventListener('touchstart', this._onTouchStartTooltip);
-            node.removeEventListener('touchend', this._onTouchEndTooltip);
+            node.removeEventListener('touchstart', this._onTouchStartTooltipBind);
+            node.removeEventListener('touchend', this._onTouchEndTooltipBind);
             node.classList.remove('o_user_select_none');
         }
     },

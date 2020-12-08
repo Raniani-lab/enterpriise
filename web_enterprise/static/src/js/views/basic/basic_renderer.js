@@ -100,6 +100,7 @@ BasicRenderer.include({
      */
     _onTouchStartTooltip: function (event) {
         const $node = $(event.target);
+        clearTimeout(this.showTimer);
         this.showTimer = setTimeout(() => {
             $node.tooltip('show');
         }, this.SHOW_AFTER_DELAY);

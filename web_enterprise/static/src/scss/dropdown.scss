@@ -58,3 +58,15 @@
     color: darken($o-main-text-color, 20%);
     box-shadow: none;
 }
+
+@include media-breakpoint-down(sm) {
+    .dropdown-menu {
+        .btn-primary {
+            color: white;
+        }
+
+        .btn-secondary{
+            color: $o-brand-primary;
+        }
+    }
+}

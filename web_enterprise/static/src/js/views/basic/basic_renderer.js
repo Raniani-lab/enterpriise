@@ -99,6 +99,10 @@ BasicRenderer.include({
      * @param {TouchEvent} event
      */
     _onTouchStartTooltip: function (event) {
+        // Exclude children element from this handler
+        if (!event.target.classList.contains('o_user_select_none')) {
+            return;
+        }
         const $node = $(event.target);
         clearTimeout(this.showTimer);
         this.showTimer = setTimeout(() => {

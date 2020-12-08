@@ -84,7 +84,7 @@
         <t t-foreach="props.rules" t-as="rule" t-key="rule.id">
             <button class="btn"
                 t-att-class="{
-                    'btn-primary': !isMobile || rule_index === 0,
+                    'btn-primary': !isMobile,
                     'btn-secondary': isMobile,
                     'o_pdf_rule_buttons': !isMobile,
                     'dropdown-item': isMobile,

@@ -41,7 +41,7 @@ var FSMProductQty = FieldInteger.extend({
             this.do_warn(false, _t("Please enter an integer value"));
         } else {
             var changes = {};
-            changes[target_name] =  parseInt(target_value);;
+            changes[target_name] = parseInt(target_value);
             this.trigger_up('field_changed', {
                 dataPointID: this.dataPointID,
                 changes: changes,
@@ -54,10 +54,12 @@ var FSMProductQty = FieldInteger.extend({
         var target_name = $target.attr('name');
         var target_value = $target.attr('value');
 
+        const clickAddOneButton = self.$el.parents('.o_kanban_record.o_fsm_industry_product').find('button[data-name="fsm_add_quantity"].o_button_invisible');
+
         if (this.isReadonly) {
             return;
         }
-        var $input = $('<input/>', {type: "text", class: 'o_input oe_inline d-inline-block text-center', style:"width: 40px; font-size: 24px",  name: target_name});
+        var $input = $('<input/>', {type: "text", class: 'o_input oe_inline d-inline-block text-center', style: "width: 40px; font-size: 24px", name: target_name});
         if (target_value) {
             $input.attr('value', target_value);
         }
@@ -66,8 +68,16 @@ var FSMProductQty = FieldInteger.extend({
                 $input.blur();
             }
         });
+        $input.on('focus', function () {
+            if (clickAddOneButton.length) {
+                clickAddOneButton.addClass('d-none');
+            }
+        });
         $input.on('blur', function () {
             self._valueChange(target_name, $input.val());
+            if (clickAddOneButton.length) {
+                clickAddOneButton.removeClass('d-none');
+            }
         });
         $input.replaceAll($target)
                 .focus()

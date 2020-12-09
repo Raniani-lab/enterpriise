@@ -55,7 +55,7 @@ class Applicant(models.Model):
             infos = [{
                 'name': stage.name,
                 'points': stage.points,
-                'done': bool(sum(applicant.referral_points_ids.filtered(lambda point: point.stage_id == stage).mapped('points'))),
+                'done': bool(applicant.referral_points_ids.filtered(lambda point: point.stage_id == stage)),
                 'seq': stage.sequence,
             } for stage in stages]
             applicant.shared_item_infos = json.dumps(infos)

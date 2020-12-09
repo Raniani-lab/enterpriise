@@ -281,7 +281,6 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                             MonedaP="Gol"
                             Monto="8480.000"
                             FormaDePagoP="99"
-                            RfcEmisorCtaOrd="XEXX010101000"
                             TipoCambioP="0.500000">
                             <DoctoRelacionado
                                 Folio="1"

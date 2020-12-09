@@ -380,9 +380,9 @@ class AccountEdiFormat(models.Model):
         is_payment_code_bank_ok = payment_method_code in ('02', '03', '04', '28', '29', '99')
 
         partner_bank = move.partner_bank_id.bank_id
-        if not partner_bank.country or partner_bank.country.code != 'MX':
+        if partner_bank.country and partner_bank.country.code != 'MX':
             partner_bank_vat = 'XEXX010101000'
-        else:
+        else:  # if no partner_bank (e.g. cash payment), partner_bank_vat is not set.
             partner_bank_vat = partner_bank.l10n_mx_edi_vat
 
         payment_account_ord = re.sub(r'\s+', '', move.partner_bank_id.acc_number or '') or None

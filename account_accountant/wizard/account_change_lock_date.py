@@ -10,17 +10,19 @@ class AccountChangeLockDate(models.TransientModel):
     _description = 'Change Lock Date'
 
     period_lock_date = fields.Date(
-        string='Lock Date for Non-Advisers',
+        string='Invoice/Bill Lock Date',
         default=lambda self: self.env.company.period_lock_date,
-        help='Only users with the Adviser role can edit accounts prior to and inclusive of this date. Use it for period locking inside an open fiscal year, for example.')
+        help='Prevents Bills or Invoices creation prior to the defined date. Except for Advisors users.')
     fiscalyear_lock_date = fields.Date(
-        string='Lock Date for All Users',
+        string='All Users Lock Date',
         default=lambda self: self.env.company.fiscalyear_lock_date,
-        help='No users, including Advisers, can edit accounts prior to and inclusive of this date. Use it for fiscal year locking for example.')
+        help='Prevents Journal Entry creation or modification prior to the defined date for all users. '
+             'As a closed period, all accounting operations are prohibited.')
     tax_lock_date = fields.Date(
-        "Tax Lock Date",
+        string="Tax Return Lock Date",
         default=lambda self: self.env.company.tax_lock_date,
-        help='No users can edit journal entries related to a tax prior and inclusive of this date.')
+        help='Prevents Tax Returns modification prior to the defined date (Journal Entries involving taxes). '
+             'The Tax Return Lock Date is automatically set when the corresponding Journal Entry is posted.')
 
 
     def change_lock_date(self):

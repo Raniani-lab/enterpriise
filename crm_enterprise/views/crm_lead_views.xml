@@ -194,6 +194,13 @@
                 'search_default_opportunity': True,
                 'search_default_filter_create_date': 1}"/>
             <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No data found!
+                </p><p>
+                    Use this menu to have an overview of your Pipeline.
+                </p>
+            </field>
         </record>
 
         <record id="crm_opportunity_action_dashboard_dashboard" model="ir.actions.act_window.view">
@@ -238,6 +245,13 @@
             <field name="domain">['|', ('active','=',True), ('active','=',False)]</field>
             <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
             <field name="context" eval="{'search_default_filter_creation_date': 1}"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No data found!
+                </p><p>
+                    This Dashboard allows you to see at a glance how well you are doing.
+                </p>
+            </field>
         </record>
 
         <record id="crm_lead_action_dashboard_dashboard" model="ir.actions.act_window.view">

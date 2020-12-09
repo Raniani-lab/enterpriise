@@ -3,6 +3,7 @@ odoo.define('web_studio.WebClient', function (require) {
 
 const ajax = require('web.ajax');
 const { bus, _t } = require('web.core');
+const localStorage = require('web.local_storage');
 const session = require('web.session');
 const WebClient = require('web.WebClient');
 
@@ -119,8 +120,11 @@ WebClient.include({
     show_application: async function () {
         const _super = this._super.bind(this);
         const qs = $.deparam.querystring();
-        this.studioMode = ['main', 'app_creator'].includes(qs.studio) && qs.studio;
+        const openStudioOnReload = localStorage.getItem('openStudioOnReload');
+        this.studioMode = (['main', 'app_creator'].includes(qs.studio) && qs.studio) ||
+                          (['main', 'app_creator'].includes(openStudioOnReload) && openStudioOnReload);
         if (this.studioMode) {
+            localStorage.setItem('openStudioOnReload', false);
             await ajax.loadLibs({ assetLibs: this._studioAssets });
         }
         await _super(...arguments);

@@ -66,6 +66,7 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/form_view_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view_mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/promote_studio.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/web_calendar_mobile.scss"/>
 
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/navbar_mobile.scss"/>
@@ -99,12 +100,14 @@
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_tabs_mobile_mixin.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/kanban/kanban_view.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/list/list_controller.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/views/list/list_renderer_desktop.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/list/list_renderer_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/relational_fields.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/upgrade_fields.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/view_dialogs.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/widgets/debug_manager.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/widgets/promote_studio_dialog.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/widgets/user_menu.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/widgets/snackbar.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/widgets/switch_company_menu.js"></script>
@@ -118,6 +121,7 @@
             <script type="text/javascript" src="/web_enterprise/static/tests/home_menu_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/expiration_panel_tests.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/tests/upgrade_fields_tests.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/tests/views/list_tests.js"></script>
         </xpath>
         <xpath expr="//script[@src='/web/static/tests/chrome/menu_tests.js']" position="replace">
             <script type="text/javascript" src="/web_enterprise/static/tests/menu_tests.js"></script>

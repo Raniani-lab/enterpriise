@@ -1,6 +1,7 @@
 odoo.define('web_studio.tests.tour', function (require) {
 "use strict";
 
+const localStorage = require('web.local_storage');
 const tour = require('web_tour.tour');
 
 const { randomString } = require('web_studio.utils');
@@ -863,5 +864,63 @@ tour.register('web_studio_approval_tour', {
     trigger: '.o_notification.bg-warning'
 }
 ]);
+
+tour.register('web_studio_custom_field_tour', {
+    test: true,
+    url: "/web",
+}, [{
+    // go to Apps menu
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+}, {
+    // click on the list view
+    trigger: '.o_switch_view.o_list',
+}, {
+    // click on optional column dropdown
+    trigger: '.o_optional_columns_dropdown_toggle'
+}, {
+    // click on add custom field
+    trigger: '.dropdown-item-studio'
+}, {
+    // go to home menu
+    trigger: '.o_menu_toggle',
+    extra_trigger: '.o_web_client.o_in_studio'
+}, {
+    //leave studio
+    trigger: '.o_web_studio_leave'
+}, {
+    // studio left.
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+    extra_trigger: '.o_web_client:not(.o_in_studio)',
+}]);
+
+tour.register('web_studio_local_storage_tour', {
+    test: true,
+    url: "/web",
+}, [{
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+    run: function () {
+        localStorage.setItem('openStudioOnReload', "main");
+        window.location.reload();
+    },
+}, {
+    // should be directly in studio mode
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+    extra_trigger: '.o_web_client.o_in_studio'
+}, {
+    trigger: '.o_menu_toggle',
+}, {
+    trigger: '.o_web_studio_leave',
+}, {
+    // studio left.
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+    extra_trigger: '.o_web_client:not(.o_in_studio)',
+    run: function () {
+        window.location.reload();
+    },
+}, {
+    // studio left after refresh.
+    trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
+    extra_trigger: '.o_web_client:not(.o_in_studio)'
+}]);
 
 });

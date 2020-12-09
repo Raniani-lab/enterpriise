@@ -187,5 +187,45 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
                 "The listview should not contains an edit field");
             list.destroy();
         });
+
+        QUnit.test("add custom field button not shown in mobile (with opt. col.)", async function (assert) {
+            assert.expect(3);
+
+            const list = await testUtils.createView({
+                arch: `
+                    <tree>
+                        <field name="foo"/>
+                        <field name="bar" optional="hide"/>
+                    </tree>`,
+                data: this.data,
+                model: 'foo',
+                touchScreen: true,
+                View: ListView,
+            });
+            assert.containsOnce(list.$('table'), '.o_optional_columns_dropdown_toggle');
+            await testUtils.dom.click(list.$('table .o_optional_columns_dropdown_toggle'));
+            const $dropdown = list.$('div.o_optional_columns');
+            assert.containsOnce($dropdown, 'div.dropdown-item');
+            assert.containsNone($dropdown, 'button.dropdown-item-studio');
+
+            list.destroy();
+        });
+
+        QUnit.test("add custom field button not shown to non-system users (wo opt. col.)", async function (assert) {
+            assert.expect(1);
+            const list = await testUtils.createView({
+                arch: `
+                    <tree>
+                        <field name="foo"/>
+                        <field name="bar"/>
+                    </tree>`,
+                data: this.data,
+                model: 'foo',
+                touchScreen: true,
+                View: ListView,
+            });
+            assert.containsNone(list.$('table'), '.o_optional_columns_dropdown_toggle');
+            list.destroy();
+        });
     });
 });

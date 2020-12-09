@@ -10,7 +10,7 @@ Create Reports for Field Service
 ================================
 
 """,
-    'depends': ['web_studio', 'industry_fsm'],
+    'depends': ['worksheet', 'industry_fsm'],
     'data': [
         'security/industry_fsm_report_security.xml',
         'security/ir.model.access.csv',

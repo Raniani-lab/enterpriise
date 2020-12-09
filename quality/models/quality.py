@@ -274,6 +274,10 @@ class QualityCheck(models.Model):
             self.team_id = self.point_id.team_id.id
             self.test_type_id = self.point_id.test_type_id.id
 
+    def _is_pass_fail_applicable(self):
+        """ Return true if do_fail and do_pass can be applied."""
+        return False
+
     @api.model
     def create(self, vals):
         if 'name' not in vals or vals['name'] == _('New'):

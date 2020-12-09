@@ -16,7 +16,7 @@ class TaskCustomReport(models.AbstractModel):
         for task in docs:
             if task.worksheet_template_id:
                 x_model = task.worksheet_template_id.model_id.model
-                worksheet = self.env[x_model].search([('x_task_id', '=', task.id)], limit=1, order="create_date DESC")  # take the last one
+                worksheet = self.env[x_model].search([('x_project_task_id', '=', task.id)], limit=1, order="create_date DESC")  # take the last one
                 worksheet_map[task.id] = worksheet
 
         return {

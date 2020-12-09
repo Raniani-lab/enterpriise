@@ -13,10 +13,10 @@ class Project(models.Model):
         "Worksheets", compute='_compute_allow_worksheets', store=True, readonly=False,
         help="Enables customizable worksheets on tasks.")
     worksheet_template_id = fields.Many2one(
-        'project.worksheet.template', compute="_compute_worksheet_template_id", store=True, readonly=False,
+        'worksheet.template', compute="_compute_worksheet_template_id", store=True, readonly=False,
         string="Default Worksheet",
         help="Choose a default worksheet template for this project (you can change it individually on each task).",
-        domain="['|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+        domain="[('res_model_id.model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
 
     @api.depends('is_fsm')
     def _compute_allow_worksheets(self):
@@ -40,8 +40,9 @@ class Task(models.Model):
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     worksheet_template_id = fields.Many2one(
-        'project.worksheet.template', string="Worksheet Template",
-        compute='_compute_worksheet_template_id', store=True, readonly=False)
+        'worksheet.template', string="Worksheet Template", 
+        compute='_compute_worksheet_template_id', store=True, readonly=False,
+        domain="[('res_model_id.model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
@@ -118,14 +119,14 @@ class Task(models.Model):
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):
         for record in self:
-            record.worksheet_count = record.worksheet_template_id and self.env[record.worksheet_template_id.model_id.model].search_count([('x_task_id', '=', record.id)]) or 0
+            record.worksheet_count = record.worksheet_template_id and self.env[record.worksheet_template_id.model_id.model].search_count([('x_project_task_id', '=', record.id)]) or 0
 
     def has_to_be_signed(self):
         return self.allow_worksheets and not self.worksheet_signature
 
     def action_fsm_worksheet(self):
         action = self.worksheet_template_id.action_id.sudo().read()[0]
-        worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_task_id', '=', self.id)])
+        worksheet = self.env[self.worksheet_template_id.model_id.model].search([('x_project_task_id', '=', self.id)])
         context = literal_eval(action.get('context', '{}'))
         action.update({
             'res_id': worksheet.id if worksheet else False,
@@ -133,7 +134,7 @@ class Task(models.Model):
             'context': {
                 **context,
                 'edit': True,
-                'default_x_task_id': self.id,
+                'default_x_project_task_id': self.id,
                 'form_view_initial_mode': 'edit',
             },
         })

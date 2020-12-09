@@ -25,42 +25,6 @@
         </field>
     </record>
 
-    <record id="project_worksheet_template_view_form" model="ir.ui.view">
-        <field name="name">project.worksheet.template.view.form</field>
-        <field name="model">project.worksheet.template</field>
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <field name="model_id" invisible="True"/>
-                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" groups="base.group_system"/>
-                    <button name="action_fsm_report" type="object" string="Analysis" />
-                </header>
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-pencil">
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_value"><field name="worksheet_count"/></span>
-                                <span class="o_stat_text"> Worksheets</span>
-                            </div>
-                        </button>
-                    </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="active" invisible="1"/>
-                            <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
-                            <field name="color"  widget="color_picker"/>
-                        </group>
-                        <group>
-                            <field name="model_id" invisible="True"/>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
     <record id="project_task_view_kanban_fsm_report" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm.report</field>
         <field name="model">project.task</field>
@@ -114,36 +78,17 @@
         </field>
     </record>
 
-    <record id="project_worksheet_template_view_list" model="ir.ui.view">
-        <field name="name">project.worksheet.template.view.tree</field>
-        <field name="model">project.worksheet.template</field>
-        <field name="arch" type="xml">
-            <tree multi_edit="1" sample="1">
-                <field name="name" string="Template name"/>
-                <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
-                <field name="worksheet_count" string="Worksheets" optional="hide"/>
-                <field name="color" widget="color_picker"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="project_worksheet_template_view_search" model="ir.ui.view">
-        <field name="name">project.worksheet.template.view.search</field>
-        <field name="model">project.worksheet.template</field>
-        <field name="arch" type="xml">
-            <search string="Project Worksheet Template Search">
-                <field name="name"/>
-                <separator/>
-                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
-            </search>
-        </field>
-    </record>
-
     <record id="action_fsm_worksheets" model="ir.actions.act_window">
         <field name="name">Worksheet Templates</field>
-        <field name="res_model">project.worksheet.template</field>
+        <field name="res_model">worksheet.template</field>
         <field name="view_mode">tree,form,graph,pivot</field>
-        <field name="search_view_id" ref="project_worksheet_template_view_search"/>
+        <field name="search_view_id"/>
+        <field name="domain">[('res_model_id.model', '=', 'project.task')]</field>
+        <field name="context">
+            {
+                'default_res_model_name': 'project.task',
+            }
+        </field>
     </record>
 
     <record id="project_project_form_inherit_industry_fsm_report" model="ir.ui.view">
@@ -292,8 +237,14 @@
 
     <record id="fsm_worksheets_action_settings" model="ir.actions.act_window" >
         <field name="name">Worksheets Templates</field>
-        <field name="res_model">project.worksheet.template</field>
+        <field name="res_model">worksheet.template</field>
         <field name="view_mode">tree,graph,pivot,form</field>
+        <field name="domain">[('res_model_id.model', '=', 'project.task')]</field>
+        <field name="context">
+            {
+                'default_res_model_name': 'project.task',
+            }
+        </field>
     </record>
 
     <record id="industry_fsm.project_project_action_only_fsm" model="ir.actions.act_window">

@@ -8,7 +8,7 @@ class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     worksheet_template_id = fields.Many2one(
-        'project.worksheet.template', string="Worksheet Template",
+        'worksheet.template', string="Worksheet Template",
         compute='_compute_worksheet_template_id', store=True, readonly=False)
 
     @api.depends('service_tracking', 'project_id')

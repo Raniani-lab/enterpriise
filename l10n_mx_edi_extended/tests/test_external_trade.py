@@ -42,6 +42,6 @@ class TestExternalTrade(TestMxExtendedEdiCommon):
 
             self.invoice._post()
             values = self.edi_format._l10n_mx_edi_get_invoice_cfdi_values(self.invoice)
-            self.assertEqual(values['ext_trade_goods_details'][0]['line_total_usd'], 6000)  # 1000*2 + 2000*5 wo discount and converted to USD (/2)
-            self.assertEqual(values['ext_trade_goods_details'][1]['line_total_usd'], 250)  # 250*2 wo discount and converted to USD (/2)
-            self.assertEqual(values['ext_trade_total_price_subtotal_usd'], 6250)
+            self.assertEqual(values['ext_trade_goods_details'][0]['line_total_usd'], 24000)  # 1000*2 + 2000*5 wo discount and converted to USD (*4/2)
+            self.assertEqual(values['ext_trade_goods_details'][1]['line_total_usd'], 1000)  # 250*2 wo discount and converted to USD (*4/2)
+            self.assertEqual(values['ext_trade_total_price_subtotal_usd'], 25000)

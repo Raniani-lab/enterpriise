@@ -24,6 +24,11 @@
                     <t t-foreach="natural_persons" t-as="person">
                         <t t-call="l10n_be_hr_payroll.NaturalPerson"/>
                     </t>
+                    <ContributionUnrelatedToNP>
+                        <UnrelatedEmployerClass t-esc="employer_class"/>
+                        <UnrelatedWorkerCode>870</UnrelatedWorkerCode>
+                        <UnrelatedAmount t-esc="double_holiday_pay_contribution"/>
+                    </ContributionUnrelatedToNP>
                 </EmployerDeclaration>
             </Form>
         </DmfAOriginal>

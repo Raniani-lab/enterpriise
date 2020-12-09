@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 from odoo import fields
 
@@ -83,6 +85,29 @@ class Payslips(BrowsableObject):
                     (self.employee_id, from_date, to_date, code))
         res = self.env.cr.fetchone()
         return res and res[0] or 0.0
+
+    def sum_worked_days(self, code, from_date, to_date=None):
+        if to_date is None:
+            to_date = fields.Date.today()
+
+        query = """
+            SELECT sum(hwd.amount)
+            FROM hr_payslip hp, hr_payslip_worked_days hwd, hr_work_entry_type hwet
+            WHERE hp.state = 'done'
+            AND hp.id = hwd.payslip_id
+            AND hwet.id = hwd.work_entry_type_id
+            AND hp.employee_id = %(employee)s
+            AND hp.date_to <= %(stop)s
+            AND hwet.code = %(code)s
+            AND hp.date_from >= %(start)s"""
+
+        self.env.cr.execute(query, {
+            'employee': self.employee_id,
+            'code': code,
+            'start': from_date,
+            'stop': to_date})
+        res = self.env.cr.fetchone()
+        return res[0] if res else 0.0
 
     @property
     def paid_amount(self):

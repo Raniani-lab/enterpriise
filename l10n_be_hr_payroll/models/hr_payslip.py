@@ -280,26 +280,16 @@ class Payslip(models.Model):
         })
         return res
 
-    def _get_paid_amount_13th_month(self):
-        # Counts the number of fully worked month
-        # If any day in the month is not covered by the contract dates coverage
-        # the entire month is not taken into account for the proratization
-        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
-        if not contracts:
-            return 0.0
-
-        year = self.date_to.year
-
-        # 1. Number of months
+    def _compute_number_complete_months_of_work(self, date_from, date_to, contracts):
         invalid_days_by_months = defaultdict(dict)
-        for day in rrule.rrule(rrule.DAILY, dtstart=date(year, 1, 1), until=date(year, 12, 31)):
+        for day in rrule.rrule(rrule.DAILY, dtstart=date_from, until=date_to):
             invalid_days_by_months[day.month][day.date()] = True
 
         for contract in contracts:
             work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
 
-            previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date(year, 1, 1))
-            next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date(year, 12, 31))
+            previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date_from)
+            next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date_to)
             days_to_check = rrule.rrule(rrule.DAILY, dtstart=previous_week_start, until=next_week_end)
             for day in days_to_check:
                 day = day.date()
@@ -315,18 +305,36 @@ class Payslip(models.Model):
             for month, days in invalid_days_by_months.items()
             if not any(days.values())
         ]
-        n_months = len(complete_months)
+        return len(complete_months)
+
+    def _compute_presence_prorata(self, date_from, date_to, contracts):
+        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
+        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
+        hours = contracts._get_work_hours(date_from, date_to)
+        paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
+        unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
+
+        return paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
+
+    def _get_paid_amount_13th_month(self):
+        # Counts the number of fully worked month
+        # If any day in the month is not covered by the contract dates coverage
+        # the entire month is not taken into account for the proratization
+        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
+        if not contracts:
+            return 0.0
+
+        year = self.date_to.year
+        date_from = date(year, 1, 1)
+        date_to = date(year, 12, 31)
+
+        # 1. Number of months
+        n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
         if n_months < 6:
             return 0
 
         # 2. Deduct absences
-        unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
-        paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
-        hours = contracts._get_work_hours(date(year, 1, 1), date(year, 12, 31))
-        paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
-        unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
-
-        presence_prorata = paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
+        presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
         basic = self.contract_id._get_contract_wage()
         return basic * n_months / 12 * presence_prorata
 
@@ -334,6 +342,24 @@ class Payslip(models.Model):
         self.ensure_one()
         warrant_input_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
         return sum(self.input_line_ids.filtered(lambda a: a.input_type_id == warrant_input_type).mapped('amount'))
+
+    def _get_paid_double_holiday(self):
+        self.ensure_one()
+        contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
+        if not contracts:
+            return 0.0
+
+        year = self.date_from.year - 1
+        date_from = date(year, 1, 1)
+        date_to = date(year, 12, 31)
+
+        # 1. Number of months
+        n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
+
+        # 2. Deduct absences
+        presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
+        basic = self.contract_id._get_contract_wage()
+        return basic * n_months / 12 * presence_prorata
 
     def _get_paid_amount(self):
         self.ensure_one()
@@ -345,11 +371,94 @@ class Payslip(models.Model):
             struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
+            struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
+            if self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+                return self._get_paid_double_holiday()
         return super()._get_paid_amount()
 
     def _is_active_belgian_languages(self):
         active_langs = self.env['res.lang'].with_context(active_test=True).search([]).mapped('code')
         return any(l in active_langs for l in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
+
+    def _get_sum_european_time_off_days(self, check=False):
+        """
+            Sum European Time Off Worked Days (LEAVE216) contained in any payslips over
+            the last year.
+            We search if there is a payslip over this year, with a the code 'EU.LEAVE.DEDUC'.
+            If yes, then we don't take the worked days in the previous year.
+
+            We also search the 'LEAVE216' worked days contained in any payslip two year ago, as
+            they are deducted from the double holiday pay during this period. It's usually on the
+            following holiday pay (next year), but we cannot have a negative Net Salary.
+            That's why we can deduct these leaves two years after.
+        """
+        work_days_code = 'LEAVE216'
+        payslip_line_code = 'EU.LEAVE.DEDUC'
+        year = self.date_from.year - 1
+        date_from = fields.Date.to_string(date(year, 1, 1))
+        date_to = fields.Date.to_string(date(year, 12, 31))
+
+        if check:
+            select = "1"
+            limit_records = "LIMIT 1"
+        else:
+            select = "sum(hwd.amount)"
+            limit_records = ""
+
+        # If the european leaves have not been deducted in the last double holiday pay
+        # we should deduct them this year
+        date_from_earlier = fields.Date.to_string(date(year - 1, 1, 1))
+        period_start = fields.Date.to_string(date(year + 1, 1, 1))
+        period_stop = fields.Date.to_string(date(year + 1, 12, 31))
+
+        query = """
+            SELECT {select}
+            FROM hr_payslip hp, hr_payslip_worked_days hwd, hr_work_entry_type hwet
+            WHERE hp.state in ('done', 'paid')
+            AND hp.id = hwd.payslip_id
+            AND hwet.id = hwd.work_entry_type_id
+            AND hp.employee_id = %(employee)s
+            AND hp.date_to <= %(stop)s
+            AND hwet.code = %(work_days_code)s
+            AND (
+                hp.date_from >= %(start)s
+                AND NOT EXISTS(
+                    SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
+                    WHERE hp.id <> hp2.id
+                    AND hp2.state in ('done', 'paid')
+                    AND hp2.id = hpl.slip_id
+                    AND hp2.employee_id = hp.employee_id
+                    AND hp2.date_from >= %(period_start)s
+                    AND hp2.date_to <= %(period_stop)s
+                ) OR (
+                    hp.date_from >= %(start_earlier)s
+                    AND NOT EXISTS(
+                        SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
+                        WHERE hp.id <> hp2.id
+                        AND hp2.state in ('done', 'paid')
+                        AND hp2.id = hpl.slip_id
+                        AND hp2.employee_id = hp.employee_id
+                        AND hp2.date_from >= %(start)s
+                        AND hp2.date_to <= %(stop)s
+                        AND hpl.code = %(payslip_line_code)s LIMIT 1
+                    )
+                )
+            )
+            {limit}""".format(
+                select=select,
+                limit=limit_records)
+
+        self.env.cr.execute(query, {
+            'employee': self.employee_id.id,
+            'work_days_code': work_days_code,
+            'start': date_from,
+            'stop': date_to,
+            'start_earlier': date_from_earlier,
+            'period_start': period_start,
+            'period_stop': period_stop,
+            'payslip_line_code': payslip_line_code})
+        res = self.env.cr.fetchone()
+        return res[0] if res else 0.0
 
     def _is_invalid(self):
         invalid = super()._is_invalid()

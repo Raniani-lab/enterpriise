@@ -26,6 +26,18 @@
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
 
+        <record id="cp200_employees_double_holiday_european_leaves_deduction" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll_head_dp"/>
+            <field name="name">European Leaves Deduction</field>
+            <field name="code">EU.LEAVE.DEDUC</field>
+            <field name="sequence">3</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.dict._get_sum_european_time_off_days(check=True))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.dict._get_sum_european_time_off_days()</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        </record>
+
         <record id="cp200_employees_double_holiday_atn_internet" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_impos"/>
             <field name="name">Benefit in Kind (Internet)</field>

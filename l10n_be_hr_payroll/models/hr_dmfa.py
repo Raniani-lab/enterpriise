@@ -329,14 +329,20 @@ class HrDMFAReport(models.Model):
             'data': self,
             'global_contribution': format_amount(self._get_global_contribution(payslips)),
             'natural_persons': DMFANaturalPerson.init_multi([(employee, self.quarter_start, self.quarter_end) for employee in employees]),
+            'double_holiday_pay_contribution': format_amount(self._get_double_holiday_pay_contribution(payslips))
         }
 
     def _get_global_contribution(self, payslips):
         """ Some contribution are not specified at the worker level but globally for the whole company """
         onss_double_holidays = self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_onss_rule')
         lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id == onss_double_holidays)
-        return sum(lines.mapped('total'))
+        return -sum(lines.mapped('total'))
 
+    def _get_double_holiday_pay_contribution(self, payslips):
+        double_holiday_pays = self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_pay_basic')
+        european_leaves_deductions = self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_european_leaves_deduction')
+        lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id in double_holiday_pays + european_leaves_deductions)
+        return sum(lines.mapped('total'))
 
 class HrDMFALocationUnit(models.Model):
     _name = 'l10n_be.dmfa.location.unit'

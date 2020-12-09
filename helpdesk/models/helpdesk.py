@@ -508,6 +508,9 @@ class HelpdeskSLA(models.Model):
         TICKET_PRIORITY, string='Minimum Priority',
         default='0', required=True,
         help='Tickets under this priority will not be taken into account.')
+    partner_ids = fields.Many2many(
+        'res.partner', string="Customers",
+        help="This SLA Policy will apply to any tickets from the selected customers. Leave empty to apply this SLA Policy to any ticket without distinction.")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
     time_days = fields.Integer(
         'Days', default=0, required=True,

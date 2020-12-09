@@ -115,6 +115,18 @@ class HelpdeskTicket(models.Model):
             if ticket.sale_order_id and not ticket.partner_id:
                 ticket.partner_id = ticket.sale_order_id.partner_id
 
+    @api.model
+    def _sla_reset_trigger(self):
+        field_list = super()._sla_reset_trigger()
+        field_list.append('sale_line_id')
+        return field_list
+
+    def _sla_find_extra_domain(self):
+        domain = super()._sla_find_extra_domain()
+        return expression.OR([domain, [
+            '|', ('sale_line_ids', 'in', self.sale_line_id.ids), ('sale_line_ids', '=', False),
+        ]])
+
     def action_view_so(self):
         self.ensure_one()
         action_window = {
@@ -178,3 +190,12 @@ class AccountAnalyticLine(models.Model):
                     ('helpdesk_ticket_id', '!=', False),
                 ('so_line', 'in', order_lines_ids.ids)
         ]])
+
+
+class HelpdeskSLA(models.Model):
+    _inherit = 'helpdesk.sla'
+
+    sale_line_ids = fields.Many2many(
+        'sale.order.line', string="Sales Order Items",
+        domain="[('is_service', '=', True)]",
+        help="This SLA Policy will apply to any tickets with the selected Sales Order Item as reference. Leave empty to apply this SLA Policy to any ticket without distinction.")

@@ -609,7 +609,7 @@ class HelpdeskTicket(models.Model):
     @api.model
     def _sla_reset_trigger(self):
         """ Get the list of field for which we have to reset the SLAs (regenerate) """
-        return ['team_id', 'priority', 'ticket_type_id', 'tag_ids']
+        return ['team_id', 'priority', 'ticket_type_id', 'tag_ids', 'partner_id']
 
     def _sla_apply(self, keep_reached=False):
         """ Apply SLA to current tickets: erase the current SLAs, then find and link the new SLAs to each ticket.
@@ -638,6 +638,12 @@ class HelpdeskTicket(models.Model):
         sla_status_to_remove.unlink()
         return self.env['helpdesk.sla.status'].create(sla_status_value_list)
 
+    def _sla_find_extra_domain(self):
+        self.ensure_one()
+        return [
+            '|', '|', ('partner_ids', 'parent_of', self.partner_id.ids), ('partner_ids', 'child_of', self.partner_id.ids), ('partner_ids', '=', False)
+        ]
+
     def _sla_find(self):
         """ Find the SLA to apply on the current tickets
             :returns a map with the tickets linked to the SLA to apply on them
@@ -665,12 +671,12 @@ class HelpdeskTicket(models.Model):
                 tickets_map[key] |= ticket
                 # group the SLA to apply, by key
                 if key not in sla_domain_map:
-                    sla_domain_map[key] = [
+                    sla_domain_map[key] = expression.AND([[
                         ('team_id', '=', ticket.team_id.id), ('priority', '<=', ticket.priority),
                         '|',
                             '&', ('stage_id.sequence', '>=', ticket.stage_id.sequence), ('target_type', '=', 'stage'),
                             ('target_type', '=', 'assigning'),
-                        '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)]
+                        '|', ('ticket_type_id', '=', ticket.ticket_type_id.id), ('ticket_type_id', '=', False)], ticket._sla_find_extra_domain()])
 
         result = {}
         for key, tickets in tickets_map.items():  # only one search per ticket group

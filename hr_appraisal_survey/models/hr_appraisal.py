@@ -17,7 +17,6 @@ class HrAppraisal(models.Model):
             'res_model': 'appraisal.ask.feedback',
             'target': 'new',
             'name': 'Ask Feedback',
-            'context': self.env.context,
         }
 
     def action_open_survey_inputs(self):

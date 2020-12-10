@@ -310,6 +310,11 @@
             </field>
         </record>
 
+        <!-- make sure this view will be loaded after timesheet_grid.timesheet_view_search -->
+        <record id="hr_timesheet.hr_timesheet_line_my_timesheet_search" model="ir.ui.view">
+            <field name="inherit_id" ref="timesheet_view_search" />
+        </record>
+
         <record id="hr_timesheet_line_inherit_my_timesheet_search" model="ir.ui.view">
             <field name="name">view.search.my.timesheet.inherit</field>
             <field name="model">account.analytic.line</field>

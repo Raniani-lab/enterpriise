@@ -29,7 +29,7 @@ class Document(models.Model):
 
     def write(self, vals):
         for document in self:
-            if document.handler == 'spreadsheet':
+            if 'raw' in vals and document.handler == 'spreadsheet':
                 self.env['spreadsheet.contributor']._update(self.env.user, document)
         return super().write(vals)
 

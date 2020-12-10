@@ -205,7 +205,7 @@
                                 <label for="time_days" string="Within" attrs="{'invisible': [('target_type', '=', 'stage')]}"/>
                             </div>
                             <div class="o_row">
-                                <field name="time_days"/> days<br/>
+                                <field name="time_days" help="Number of working days/hours to reach the given stage based on the ticket's creation date."/> days<br/>
                                 <field name="time_hours"/> hours<br/>
                                 <field name="time_minutes"/> minutes<br/>
                             </div>

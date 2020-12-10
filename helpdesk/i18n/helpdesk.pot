@@ -1793,6 +1793,13 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
+msgid ""
+"Number of working days/hours to reach the given stage based on the ticket's "
+"creation date."
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_report_analysis__sla_status__ongoing
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__ongoing
 msgid "Ongoing"

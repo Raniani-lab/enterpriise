@@ -528,10 +528,12 @@ class HelpdeskSLA(models.Model):
 
     def _inverse_time_hours(self):
         for sla in self:
+            resource_calendar = sla.team_id.resource_calendar_id or self.env.company.resource_calendar_id
+            avg_hour = resource_calendar.hours_per_day
             sla.time_hours = max(0, sla.time_hours)
-            if sla.time_hours >= 24:
-                sla.time_days += sla.time_hours / 24
-                sla.time_hours = sla.time_hours % 24
+            if sla.time_hours >= avg_hour:
+                sla.time_days += sla.time_hours / avg_hour
+                sla.time_hours = sla.time_hours % avg_hour
 
     def _inverse_time_minutes(self):
         for sla in self:

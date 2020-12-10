@@ -191,7 +191,7 @@
 
                         // use original padding-left for handle cell in editable list
                         tr > :first-child.o_handle_cell {
-                            padding-left: $o-horizontal-padding;
+                            padding-left: 0.3rem;
                         }
                         tr > :first-child {
                             @include o-form-sheet-inner-left-padding;

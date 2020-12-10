@@ -128,7 +128,7 @@
                                         <samp t-else="" class="text-muted"> </samp>
                                         <field name="tag_ids" widget="documents_many2many_tags"/>
                                     </div>
-                                    <div class="o_kanban_record_bottom">
+                                    <div class="o_kanban_record_bottom flex-wrap">
                                         <time class="oe_kanban_bottom_left">
                                             <field name="create_date" widget="date"/>
                                         </time>

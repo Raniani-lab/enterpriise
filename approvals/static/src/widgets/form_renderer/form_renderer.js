@@ -29,8 +29,8 @@ FormRenderer.include({
      */
     _makeChatterContainerComponent() {
         this._super(...arguments);
-        this.on('o_approval_approved', this, ev => this.trigger_up('reload'));
-        this.on('o_approval_refused', this, ev => this.trigger_up('reload'));
+        this.on('o_approval_approved', this, ev => this.trigger_up('reload', { keepChanges: true }));
+        this.on('o_approval_refused', this, ev => this.trigger_up('reload', { keepChanges: true }));
     },
 });
 

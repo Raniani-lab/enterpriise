@@ -26,7 +26,7 @@ KanbanActivity.include({
             method: 'action_approve',
             args: [[approverID]],
         }).then(result => {
-            this.trigger_up('reload')
+            this.trigger_up('reload', { keepChanges: true });
         });
     },
     /**
@@ -40,7 +40,7 @@ KanbanActivity.include({
             method: 'action_refuse',
             args: [[approverID]],
         }).then(result => {
-            this.trigger_up('reload');
+            this.trigger_up('reload', { keepChanges: true });
         });
     },
 });

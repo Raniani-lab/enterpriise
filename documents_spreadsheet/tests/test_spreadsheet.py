@@ -47,7 +47,7 @@ class SpreadsheetDocuments(TransactionCase):
         model = self.env.ref('documents.model_documents_document')
         group = self.env.ref('documents.group_documents_manager')
 
-        self.env["documents.document"].with_user(user).create({
+        manager_doc = self.env["documents.document"].with_user(user).create({
             "raw": r"{}",
             "folder_id": self.folder.id,
             "handler": "spreadsheet",
@@ -64,8 +64,12 @@ class SpreadsheetDocuments(TransactionCase):
             'groups': [(4, group.id)],
             'domain_force': "[('id', '=', -9999)]", # always rejects
         })
+
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+        self.assertNotIn(manager_doc.id, [s['id'] for s in spreadsheets], "filtering issue")
+
         with self.assertRaises(AccessError, msg="record rule should have raised"):
-            self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+            manager_doc.with_user(user).raw = '{}'
 
     def test_spreadsheet_to_display_access_field_groups(self):
         existing_groups = self.env['documents.document']._fields['name'].groups

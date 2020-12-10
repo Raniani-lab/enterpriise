@@ -42,18 +42,9 @@ class Document(models.Model):
 
     @api.model
     def get_spreadsheets_to_display(self):
-        self.check_access_rights('read')
-        self.flush(['name'])
-        self.env['spreadsheet.contributor'].flush()
-        self.env.cr.execute("""
-            SELECT DD.id, DD.name
-            FROM documents_document DD
-            LEFT JOIN spreadsheet_contributor SC on DD.id = SC.document_id and SC.user_id = %(user_id)s
-            WHERE DD.handler = 'spreadsheet' AND DD.active
-            ORDER BY SC.last_update_date DESC, DD.write_date DESC
-         """, { 'user_id': self.env.user.id })
-        result = self.env.cr.dictfetchall()
-        documents = self.browse([d['id'] for d in result])
-        documents.check_field_access_rights('read', ['name'])
-        documents.check_access_rule('read')
-        return result
+        Contrib = self.env['spreadsheet.contributor']
+        contribs = Contrib.search([('user_id', '=', self.env.user.id)], order='last_update_date desc')
+        user_docs = contribs.document_id
+        visible_docs = self.search([('handler', '=', 'spreadsheet')])
+        # keep only visible docs, but preserve order of contribs
+        return (user_docs & visible_docs).read(['name'])

@@ -22,4 +22,4 @@ class ProductCategory(models.Model):
 
     def search_intrastat_code(self):
         self.ensure_one()
-        return self.intrastat_id or (self.parent_id and self.parent_id.search_intrastat_code())
+        return self.intrastat_id or (self.parent_id and self.parent_id.search_intrastat_code()) or self.intrastat_id

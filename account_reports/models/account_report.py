@@ -717,7 +717,7 @@ class AccountReport(models.AbstractModel):
         action_id = int(params.get('actionId'))
         action = self.env['ir.actions.actions'].sudo().browse([action_id])
         action_type = action.type
-        action = self.env[action.type].browse([action_id])
+        action = self.env[action.type].sudo().browse([action_id])
         action_read = clean_action(action.read()[0], env=action.env)
         if action_type == 'ir.actions.client':
             # Check if we are opening another report and if yes, pass options and ignore_session

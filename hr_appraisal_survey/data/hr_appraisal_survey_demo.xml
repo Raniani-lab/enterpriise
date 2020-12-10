@@ -254,7 +254,7 @@
     <!-- Employee Opinion form -->
     <record model="survey.survey" id="opinion_form">
         <field name="title">Employee Opinion Form</field>
-        <field name="state">open</field>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="access_mode">token</field>
         <field name="users_can_go_back" eval="True"/>
         <field name="description" type="xml"><p> </p></field>

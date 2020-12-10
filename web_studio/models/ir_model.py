@@ -375,6 +375,12 @@ class IrModel(models.Model):
                 'model_id': model.id,
                 'copied': True,
             })
+            self.env['ir.model.fields'].create({
+                'name': 'x_color',
+                'ttype': 'integer',
+                'field_description': _('Color'),
+                'model_id': model.id,
+            })
             kanban_state_field = self.env['ir.model.fields'].create({
                 'name': 'x_studio_kanban_state',
                 'ttype': 'selection',

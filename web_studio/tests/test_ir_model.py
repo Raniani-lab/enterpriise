@@ -196,6 +196,7 @@ class TestStudioIrModel(TransactionCase):
         fields = self.env[model.model]._fields
         self.assertIn('x_studio_stage_id', fields, 'a custom stage field should be set up')
         self.assertIn('x_studio_priority', fields, 'a custom priority field should be set up')
+        self.assertIn('x_color', fields, 'a custom color field should be set up')
         self.assertIn('x_studio_kanban_state', fields, 'a custom kanban state field should be set up')
         auto_stage = self.env[extra_model.model].search([])
         default = self.env['ir.default'].get(model.model, 'x_studio_stage_id')

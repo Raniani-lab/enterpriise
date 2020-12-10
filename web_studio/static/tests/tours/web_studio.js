@@ -457,6 +457,44 @@ tour.register('web_studio_hide_fields_tour', {
     trigger: '.o_web_studio_leave',
 }]);
 
+tour.register('web_studio_model_option_value_tour', {
+    url: "/web?studio=app_creator&debug=tests",
+}, [{
+    trigger: '.o_web_studio_new_app',
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: `
+        .o_web_studio_app_creator_name
+        > input`,
+    run: `text ${randomString(6)}`,
+}, {
+    trigger: `
+        .o_web_studio_selectors
+        .o_web_studio_selector:eq(2)`,
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: `
+        .o_web_studio_app_creator_menu
+        > input`,
+    run: `text ${randomString(6)}`,
+}, {
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    // check monetary value in model configurator
+    trigger: 'input[name="use_value"]',
+},{
+    trigger: '.o_web_studio_model_configurator_next',
+}, {
+    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="graph"]',
+    timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
+}, {
+    // wait for the graph editor to be rendered
+    extra_trigger: '.o_graph_renderer',
+    trigger: '.o_web_studio_leave'
+}]);
+
 tour.register('web_studio_new_report_tour', {
     url: "/web",
     test: true,

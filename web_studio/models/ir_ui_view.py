@@ -99,6 +99,7 @@ class View(models.Model):
         # pivot: only if x_studio_value
         if 'x_studio_value' in model._fields:
             views |= self.auto_pivot_view(res_model)
+            views |= self.auto_graph_view(res_model)
         return views
 
     def auto_list_view(self, res_model):
@@ -313,6 +314,21 @@ class View(models.Model):
             'name': "Default %s view for %s" % ('pivot', res_model),
         })
 
+    def auto_graph_view(self, res_model):
+        fields = list()
+        fields.append(E.field(name='x_studio_value', type='measure'))
+        fields.append(E.field(name='create_date', type='row'))
+        graph = E.graph()
+        graph.extend(fields)
+        arch = etree.tostring(graph, encoding='unicode', pretty_print=True)
+
+        return self.create({
+            'type': 'graph',
+            'model': res_model,
+            'arch': arch,
+            'name': "Default %s view for %s" % ('graph', res_model),
+        })
+
     def auto_kanban_view(self, res_model):
         model = self.env[res_model]
         pre_fields = list()  # fields not used in a t-field node but needed for display
@@ -322,6 +338,7 @@ class View(models.Model):
         headers_div = E.div({'class': 'o_kanban_record_headings', 'name': 'studio_auto_kanban_headings'})
         headers_div.append(E.field(name='x_studio_priority', widget='boolean_favorite', nolabel='1'))
         headers_div.append(title)
+        pre_fields.append(E.field(name='x_color'))
         dropdown_div = E.div({'class': 'o_dropdown_kanban dropdown'})
         dropdown_toggle = E.a({
             'role': 'button',
@@ -336,7 +353,8 @@ class View(models.Model):
         dropdown_menu = E.div({'class': 'dropdown-menu', 'role': 'menu'})
         dropdown_menu.extend([
             E.a({'t-if': 'widget.editable', 'role': 'menuitem', 'type': 'edit', 'class': 'dropdown-item'},_('Edit')),
-            E.a({'t-if': 'widget.deletable', 'role': 'menuitem', 'type': 'delete', 'class': 'dropdown-item'}, _('Delete'))
+            E.a({'t-if': 'widget.deletable', 'role': 'menuitem', 'type': 'delete', 'class': 'dropdown-item'}, _('Delete')),
+            E.ul({'class': 'oe_kanban_colorpicker', 'data-field': 'x_color'})
         ])
         dropdown_div.extend([dropdown_toggle, dropdown_menu])
         top_div = E.div({'class': 'o_kanban_record_top', 'name': 'studio_auto_kanban_top'})
@@ -358,7 +376,7 @@ class View(models.Model):
             bottom_right_div.append(unassigned_var)
             bottom_right_div.append(img)
         content_div.extend([top_div, body_div, bottom_div])
-        card_div = E.div({'class': "o_kanban_record oe_kanban_global_click o_kanban_record_has_image_fill"})
+        card_div = E.div({'class': "o_kanban_record oe_kanban_global_click o_kanban_record_has_image_fill", 'color': 'x_color'})
         if 'x_studio_value' and 'x_studio_currency_id' in model._fields:
             pre_fields.append(E.field(name='x_studio_currency_id'))
             bottom_left_div.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))

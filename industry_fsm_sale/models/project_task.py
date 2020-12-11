@@ -256,3 +256,12 @@ class Task(models.Model):
         ]).write({
             'so_line': sale_order_line.id
         })
+
+
+class ProjectTaskRecurrence(models.Model):
+    _inherit = 'project.task.recurrence'
+
+    def _get_sale_line_id(self, task):
+        if not task.is_fsm:
+            return super()._get_sale_line_id(task)
+        return False

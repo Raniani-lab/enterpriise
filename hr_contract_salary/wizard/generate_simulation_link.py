@@ -102,6 +102,9 @@ class GenerateSimulationLink(models.TransientModel):
             if not wizard.job_title or (wizard.applicant_id and wizard.applicant_id.job_id and wizard.job_title != wizard.applicant_id.job_id.name):
                 wizard.job_title = wizard.contract_id.employee_id.job_title or wizard.contract_id.job_id.name
 
+    def name_get(self):
+        return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]
+
     def send_offer(self):
         try:
             template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id

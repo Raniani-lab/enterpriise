@@ -244,6 +244,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
     _makeFileUpload({ recordId }) {
         return Object.assign({
             folderId: this.searchModel.get('selectedFolderId'),
+            tag_ids: this.searchModel.get('selectedTagIds'),
             recordId,
         },
         fileUploadMixin._makeFileUpload.apply(this, arguments));
@@ -257,6 +258,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         return {
             document_id: recordId,
             folder_id: this.searchModel.get('selectedFolderId'),
+            tag_ids: this.searchModel.get('selectedTagIds'),
             owner_id: context && context.default_owner_id,
             partner_id: context && context.default_partner_id,
         };

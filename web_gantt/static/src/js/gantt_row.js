@@ -2,6 +2,7 @@ odoo.define('web_gantt.GanttRow', function (require) {
 "use strict";
 
 var core = require('web.core');
+var config = require('web.config');
 var session = require('web.session');
 var Widget = require('web.Widget');
 const pyUtils = require('web.py_utils');
@@ -159,25 +160,6 @@ var GanttRow = Widget.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
-    /**
-     * Bind popover on pills
-     *
-     * @private
-     */
-    _bindPopover: function () {
-        var self = this;
-        this.$('.o_gantt_pill').popover({
-            container: this.$el,
-            trigger: 'hover',
-            delay: {show: this.POPOVER_DELAY},
-            html: true,
-            placement: 'top',
-            content: function () {
-                return self.viewInfo.popoverQWeb.render('gantt-popover', self._getPopoverContext($(this).data('id')));
-            },
-        });
-    },
 
     /**
      * binds the popover of a specific pill
@@ -1096,7 +1078,7 @@ var GanttRow = Widget.extend({
         if (!this.isTotal) {
             this._setDraggable($pill);
         }
-        if (!this.isGroup) {
+        if (!this.isGroup && !config.device.isMobile) {
             this._bindPillPopover(ev.target);
         }
     },

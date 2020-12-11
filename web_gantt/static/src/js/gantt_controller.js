@@ -3,6 +3,7 @@ odoo.define('web_gantt.GanttController', function (require) {
 
 var AbstractController = require('web.AbstractController');
 var core = require('web.core');
+var config = require('web.config');
 var dialogs = require('web.view_dialogs');
 var confirmDialog = require('web.Dialog').confirm;
 
@@ -30,6 +31,8 @@ var GanttController = AbstractController.extend({
         updating_pill_started: '_onPillUpdatingStarted',
         updating_pill_stopped: '_onPillUpdatingStopped',
     }),
+    buttonTemplateName: 'GanttView.buttons',
+
     /**
      * @override
      * @param {Widget} parent
@@ -63,17 +66,37 @@ var GanttController = AbstractController.extend({
      * @param {jQuery} [$node] to which the buttons will be appended
      */
     renderButtons: function ($node) {
+        this.$buttons = this._renderButtonsQWeb();
+        if ($node) {
+            this.$buttons.appendTo($node);
+        }
+    },
+    _renderButtonsQWeb: function () {
+        return $(QWeb.render(this.buttonTemplateName, this._renderButtonQWebParameter()));
+    },
+    _renderButtonQWebParameter: function () {
         var state = this.model.get();
-        this.$buttons = $(QWeb.render('GanttView.buttons', {
+        var nbGroups = state.groupedBy.length;
+        var minNbGroups = this.collapseFirstLevel ? 0 : 1;
+        var displayExpandCollapseButtons = nbGroups > minNbGroups;
+        return {
             groupedBy: state.groupedBy,
             widget: this,
             SCALES: this.SCALES,
             activateScale: state.scale,
             allowedScales: this.allowedScales,
-        }));
-        if ($node) {
-            this.$buttons.appendTo($node);
+            displayExpandCollapseButtons: displayExpandCollapseButtons,
+            isMobile: config.device.isMobile,
+        };
+    },
+    /**
+     * @override
+     */
+    updateButtons: function () {
+        if (!this.$buttons) {
+            return;
         }
+        this.$buttons.html(this._renderButtonsQWeb());
     },
 
     //--------------------------------------------------------------------------
@@ -266,26 +289,6 @@ var GanttController = AbstractController.extend({
             this.model.reschedule.bind(this.model),
             [ids, schedule, isUTC]
         );
-    },
-    /**
-     * Overridden to hide expand/collapse buttons when they have no effect.
-     *
-     * @override
-     * @private
-     */
-    _update: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            if (self.$buttons) {
-                // When using a saved gantt model from the dashboard
-                // the control panel is missing
-                var nbGroups = self.model.get().groupedBy.length;
-                var minNbGroups = self.collapseFirstLevel ? 0 : 1;
-                var displayButtons = nbGroups > minNbGroups;
-                self.$buttons.find('.o_gantt_button_expand_rows').toggle(displayButtons);
-                self.$buttons.find('.o_gantt_button_collapse_rows').toggle(displayButtons);
-            }
-        });
     },
 
     //--------------------------------------------------------------------------
@@ -498,9 +501,9 @@ var GanttController = AbstractController.extend({
     _onScaleClicked: function (ev) {
         ev.preventDefault();
         var $button = $(ev.currentTarget);
-        this.$buttons.find('.o_gantt_button_scale').removeClass('active');
-        $button.addClass('active');
-        this.$buttons.find('.o_gantt_dropdown_selected_scale').text($button.text());
+        if ($button.hasClass('active')) {
+            return;
+        }
         this.update({ scale: $button.data('value') });
     },
     /**

@@ -245,7 +245,7 @@ var GanttRenderer = AbstractRenderer.extend({
             self.$el.empty();
             _.invoke(oldRowWidgets, 'destroy');
 
-            self._replaceElement(QWeb.render('GanttView', {widget: self}));
+            self._replaceElement(QWeb.render('GanttView', {widget: self, isMobile: config.device.isMobile}));
             const $containment = $('<div id="o_gantt_containment"/>');
             self.$('.o_gantt_row_container').append($containment);
             if (!self.state.groupedBy.length) {

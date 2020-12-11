@@ -17,10 +17,10 @@
                 <span class="fa fa-arrow-right"/>
             </button>
         </div>
-        <button t-foreach="allowedScales" t-as="scale" t-attf-class="o_gantt_button_scale btn btn-secondary #{activateScale == scale ? 'active' : ''}" type="button" t-att-data-value="scale">
-            <t t-esc="SCALES[scale].string"/>
-        </button>
-        <div class="btn-group">
+        <div class="btn-group o_gantt_range">
+            <t t-call="GanttView.RangeButtons"/>
+        </div>
+        <div t-attf-class="btn-group #{displayExpandCollapseButtons ? '' : 'd-none'}">
             <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows">
                 <i class="fa fa-expand"/>
             </button>
@@ -30,8 +30,34 @@
         </div>
     </div>
 
+    <t t-name="GanttView.RangeButtons">
+        <t t-if="isMobile">
+            <t t-call="GanttView.RangeButtons.Mobile"/>
+        </t>
+        <t t-else="">
+            <t t-call="GanttView.RangeButtons.Loop"/>
+        </t>
+    </t>
+
+    <t t-name="GanttView.RangeButtons.Mobile">
+        <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+            <t t-esc="SCALES[activateScale].string"/>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <t t-call="GanttView.RangeButtons.Loop"/>
+        </ul>
+    </t>
+
+    <t t-name="GanttView.RangeButtons.Loop">
+        <t t-foreach="allowedScales" t-as="scale">
+            <button t-attf-class="o_gantt_button_scale btn btn-secondary #{scale == activateScale ? 'active' : ''} #{isMobile ? 'dropdown-item' : ''}" type="button" t-att-data-value="scale">
+                <t t-esc="SCALES[scale].string"/>
+            </button>
+        </t>
+    </t>
+
     <div t-name="GanttView" class="o_gantt_view">
-        <div class="container-fluid p-0">
+        <div class="o_gantt_view_container container-fluid p-0">
             <div class="row no-gutters o_gantt_header_container position-sticky bg-white">
                 <div class="col-2 o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
                     <span class="font-weight-bold" t-esc="widget.string"/>
@@ -43,7 +69,7 @@
                         </div>
                     </div>
                     <div class="row no-gutters o_gantt_header_scale">
-                        <t t-set="formats" t-value="{'week': 'dddd, Do', 'month': 'DD', 'year': 'MMMM'}"/>
+                        <t t-set="formats" t-value="{'week': 'dddd, Do', 'month': 'DD', 'year': isMobile ? 'MMM' : 'MMMM'}"/>
 
                         <t t-foreach="widget.viewInfo.slots" t-as="slot">
                             <t t-set="isToday" t-value="slot.isSame(new Date(), 'day') &amp;&amp; widget.state.scale !== 'day'"/>

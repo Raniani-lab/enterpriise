@@ -52,7 +52,6 @@ class AccountLinkJournal(models.TransientModel):
         vals = {
             'account_online_account_id': account.online_account_id.id,
             'bank_statements_source': 'online_sync',
-            'bank_statement_creation_groupby': account.journal_statements_creation,
             'currency_id': account.currency_id.id,
         }
         if account.account_number:
@@ -60,6 +59,9 @@ class AccountLinkJournal(models.TransientModel):
         if create:
             vals['name'] = account.name
             vals['type'] = 'bank'
+            vals['bank_statement_creation_groupby'] = account.journal_statements_creation
+        else:
+            vals['bank_statement_creation_groupby'] = account.journal_id.bank_statement_creation_groupby or account.journal_statements_creation
         return vals
 
     def sync_now(self):

@@ -10,7 +10,7 @@ class DemoSocialLivePost(models.Model):
 
     def _refresh_statistics(self):
         """ Overridden to bypass third-party API calls. """
-        pass
+        return
 
     def _post_facebook(self, facebook_target_id):
         facebook_stream = self.env.ref('social_demo.social_stream_facebook_page', raise_if_not_found=False)

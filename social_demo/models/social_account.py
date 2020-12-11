@@ -10,15 +10,23 @@ class DemoSocialAccount(models.Model):
 
     def _compute_statistics(self):
         """ Overridden to bypass third-party API calls. """
-        pass
+        return
 
     def _create_default_stream_facebook(self):
         """ Overridden to bypass third-party API calls. """
-        pass
+        return
 
     def _create_default_stream_twitter(self):
         """ Overridden to bypass third-party API calls. """
-        pass
+        return
+
+    def _create_default_stream_youtube(self):
+        """ Overridden to bypass third-party API calls. """
+        return
+
+    def _refresh_youtube_token(self):
+        """ Overridden to bypass third-party API calls. """
+        return
 
     def twitter_search_users(self, query):
         """ Returns some fake suggestions """

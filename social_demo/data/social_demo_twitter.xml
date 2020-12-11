@@ -66,6 +66,14 @@
         <field name="engagement">8622</field>
     </record>
 
+    <record id="social_live_post_twitter_4" model="social.live.post">
+        <field name="state">posted</field>
+        <field name="twitter_tweet_id">4</field>
+        <field name="post_id" ref="social_post_global_3" />
+        <field name="account_id" ref="social_account_twitter" />
+        <field name="engagement">7511</field>
+    </record>
+
     <record id="social_stream_post_twitter_1" model="social.stream.post">
         <field name="stream_id" ref="social_stream_twitter_account" />
         <field name="twitter_tweet_id">1</field>
@@ -98,6 +106,19 @@
         <field name="message">Get 20% out of your purchases on https://mycompany.com/shop
 Better run to our website while it lasts 🏃</field>
         <field name="published_date" eval="time.strftime('%Y-01-07 09:00:00')"/>
+    </record>
+
+    <record id="social_stream_post_twitter_4" model="social.stream.post">
+        <field name="stream_id" ref="social_stream_twitter_account" />
+        <field name="twitter_tweet_id">4</field>
+        <field name="twitter_retweet_count">725</field>
+        <field name="twitter_likes_count">8008</field>
+        <field name="author_name">My Company Account</field>
+        <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
+        <field name="message">We are glad to announce a new product for this year! 🍾
+
+https://www.youtube.com/watch?v=m5FAPOdqWUc</field>
+        <field name="published_date" eval="time.strftime('%Y-01-10 09:00:00')"/>
     </record>
 
     <record id="social_stream_post_twitter_image_1" model="social.stream.post.image">

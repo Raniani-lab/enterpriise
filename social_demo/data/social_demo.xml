@@ -89,6 +89,17 @@
         <field name="linkedin_account_urn">urn:li:organization:31337</field>
     </record>
 
+    <record id="social_account_youtube" model="social.account">
+        <field name="name">My Company</field>
+        <field name="image" type="base64" file="base/static/img/res_partner_2-image.png"/>
+        <field name="audience">4578</field>
+        <field name="engagement">4587</field>
+        <field name="stories">88164</field>
+        <field name="has_trends" eval="False" />
+        <field name="media_id" ref="social_youtube.social_media_youtube"/>
+        <field name="linkedin_account_urn">urn:li:organization:31337</field>
+    </record>
+
     <!-- GLOBAL POSTS -->
 
     <record id="social_post_global" model="social.post">
@@ -107,6 +118,17 @@ Better run to our website while it lasts 🏃</field>
         <field name="state">posted</field>
         <field name="utm_campaign_id" ref="social_utm_campaign" />
         <field name="account_ids" eval="[(6, 0, [ref('social_demo.social_account_facebook'), ref('social_demo.social_account_twitter'), ref('social_demo.social_account_linkedin')])]" />
+    </record>
+
+    <record id="social_post_global_3" model="social.post">
+        <field name="message">We are glad to announce a new product for this year! 🍾</field>
+        <field name="create_uid" ref="base.user_admin"/>
+        <field name="published_date" eval="time.strftime('%Y-01-10 09:00:00')"/>
+        <field name="state">posted</field>
+        <field name="utm_campaign_id" ref="social_utm_campaign" />
+        <field name="youtube_title">Happy New Year!</field>
+        <field name="youtube_video_id">m5FAPOdqWUc</field>
+        <field name="account_ids" eval="[(6, 0, [ref('social_demo.social_account_facebook'), ref('social_demo.social_account_twitter'), ref('social_demo.social_account_linkedin'), ref('social_demo.social_account_youtube')])]" />
     </record>
 </data>
 </odoo>

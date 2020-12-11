@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 15:44+0000\n"
-"PO-Revision-Date: 2020-11-27 15:44+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -278,6 +278,18 @@ msgid "Action Performed"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_mail_activity_type__category
+msgid "Action to Perform"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
 msgid "Active"
@@ -301,6 +313,11 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
 msgid "Activity State"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_mail_activity_type
+msgid "Activity Type"
 msgstr ""
 
 #. module: sign
@@ -684,6 +701,7 @@ msgid "Display"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_mail_activity_type__display_name
 #: model:ir.model.fields,field_description:sign.field_res_partner__display_name
 #: model:ir.model.fields,field_description:sign.field_res_users__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_item__display_name
@@ -986,11 +1004,17 @@ msgid "HR"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_send_request__has_default_template
+msgid "Has Default Template"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
 msgid "Height"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_mail_activity_type__id
 #: model:ir.model.fields,field_description:sign.field_res_partner__id
 #: model:ir.model.fields,field_description:sign.field_res_users__id
 #: model:ir.model.fields,field_description:sign.field_sign_item__id
@@ -1090,6 +1114,11 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__is_mail_sent
+msgid "Is Mail Sent"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__is_one_responsible
 msgid "Is One Responsible"
 msgstr ""
@@ -1105,6 +1134,7 @@ msgid "Last Action Date"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_mail_activity_type____last_update
 #: model:ir.model.fields,field_description:sign.field_res_partner____last_update
 #: model:ir.model.fields,field_description:sign.field_res_users____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_item____last_update
@@ -1200,6 +1230,11 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__url
 msgid "Link to Share"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_send_request__activity_id
+msgid "Linked Activity"
 msgstr ""
 
 #. module: sign
@@ -1476,11 +1511,6 @@ msgid "On Invitation"
 msgstr ""
 
 #. module: sign
-#: model:sign.template,redirect_url_text:sign.template_sign_1
-#: model:sign.template,redirect_url_text:sign.template_sign_2
-#: model:sign.template,redirect_url_text:sign.template_sign_3
-#: model:sign.template,redirect_url_text:sign.template_sign_4
-#: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
 msgstr ""
@@ -1666,6 +1696,19 @@ msgid "Request Item Infos"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/components/sign_request/sign_request.xml:0
+#: code:addons/sign/static/src/components/sign_request/sign_request.xml:0
+#: code:addons/sign/static/src/xml/activity.xml:0
+#: code:addons/sign/static/src/xml/activity.xml:0
+#: code:addons/sign/static/src/xml/activity.xml:0
+#: model:ir.model.fields.selection,name:sign.selection__mail_activity_type__category__sign_request
+#: model:mail.activity.type,name:sign.mail_activity_data_signature_request
+#, python-format
+msgid "Request Signature"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid ""
 "Request a signature to upload a template (or use an existing one)\n"
@@ -1690,6 +1733,7 @@ msgstr ""
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:0
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_item_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Resend"
@@ -1713,6 +1757,8 @@ msgstr ""
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: model:ir.model.fields,field_description:sign.field_sign_item__responsible_id
+#: model:ir.model.fields,field_description:sign.field_sign_template__user_id
+#: model:ir.model.fields,field_description:sign.field_sign_template_share__user_id
 #, python-format
 msgid "Responsible"
 msgstr ""
@@ -1850,7 +1896,9 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/js/sign_backend.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_item_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -1878,6 +1926,13 @@ msgstr ""
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_request_send_copy
 msgid "Send a copy"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_backend.js:0
+#, python-format
+msgid "Send the invitation"
 msgstr ""
 
 #. module: sign
@@ -2070,11 +2125,14 @@ msgid "Signature Items"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/components/sign_request/sign_request.js:0
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
 #: model:ir.model,name:sign.model_sign_request
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_request_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#, python-format
 msgid "Signature Request"
 msgstr ""
 
@@ -2087,6 +2145,7 @@ msgstr ""
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %s"
 msgstr ""
@@ -2132,6 +2191,14 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Signature configuration"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/wizard/sign_send_request.py:0
+#, python-format
+msgid ""
+"Signature requested for template: %s\n"
+"Signatories: %s"
 msgstr ""
 
 #. module: sign
@@ -2368,6 +2435,17 @@ msgstr ""
 msgid ""
 "The signature access you are trying to reach does not exist. Maybe the signature request has been deleted or modified. <br/>\n"
 "                    If there still exists a signature request for this document, check your inbox to get your access!"
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "The signature mail has been send to %s."
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_request_item__is_mail_sent
+msgid "The signature mail has been sent."
 msgstr ""
 
 #. module: sign

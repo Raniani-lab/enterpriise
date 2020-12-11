@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 15:44+0000\n"
-"PO-Revision-Date: 2020-11-27 15:44+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -169,15 +169,15 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid ""
-"<span class=\"col-3 text-right\" attrs=\"{'invisible': ['|', ('employee_feedback_published', '=', True), ('state', '=', 'new')]}\">Unpublished</span>\n"
-"                                <span class=\"col-3 text-right\" attrs=\"{'invisible': ['|', ('employee_feedback_published', '=', False), ('state', '=', 'new')]}\">Published</span>"
+"<span class=\"col-4 text-right\" attrs=\"{'invisible': ['|', ('employee_feedback_published', '=', True), ('state', '=', 'new')]}\">Unpublished</span>\n"
+"                                <span class=\"col-4 text-right\" attrs=\"{'invisible': ['|', ('employee_feedback_published', '=', False), ('state', '=', 'new')]}\">Visible to Manager</span>"
 msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid ""
-"<span class=\"col-3 text-right\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('state', '=', 'new')]}\">Unpublished</span>\n"
-"                                <span class=\"col-3 text-right\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('state', '=', 'new')]}\">Published</span>"
+"<span class=\"col-4 text-right\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('state', '=', 'new')]}\">Unpublished</span>\n"
+"                                <span class=\"col-4 text-right\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('state', '=', 'new')]}\">Visible to Employee</span>"
 msgstr ""
 
 #. module: hr_appraisal
@@ -287,6 +287,11 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_plan__event
 msgid "After"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+msgid "Application Settings"
 msgstr ""
 
 #. module: hr_appraisal
@@ -474,6 +479,11 @@ msgid "Automatically generate appraisals"
 msgstr ""
 
 #. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+msgid "Back"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee_base
 msgid "Basic Employee"
 msgstr ""
@@ -554,7 +564,7 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "Configure Feedback Templates by Job"
+msgid "Configure General Feedback Template"
 msgstr ""
 
 #. module: hr_appraisal
@@ -586,11 +596,6 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_plan__duration
 msgid "Create a New Appraisal"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
-msgid "Create a new appraisal"
 msgstr ""
 
 #. module: hr_appraisal
@@ -887,9 +892,7 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_sms_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -1139,6 +1142,11 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
+msgid "Or Configure Feedback Templates by Job"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__employee_id
 msgid "Owner"
 msgstr ""
@@ -1154,6 +1162,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "People I Manage"
+msgstr ""
+
+#. module: hr_appraisal
+#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
+msgid "Plan appraisals with your colleagues, collect and discuss feedback."
 msgstr ""
 
 #. module: hr_appraisal
@@ -1207,14 +1220,13 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_sms_error
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
-msgid "SMS Delivery error"
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+msgid "Schedule The Final Interview"
 msgstr ""
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid "Schedule The Final Interview"
+#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
+msgid "Schedule an appraisal"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1371,18 +1383,6 @@ msgid "Waiting Feedback from Employee/Managers"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website Messages"
-msgstr ""
-
-#. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website communication history"
-msgstr ""
-
-#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_plan.py:0
 #, python-format
 msgid ""
@@ -1394,13 +1394,6 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
-msgid ""
-"You will be able to plan an appraisal with your employees, to ask your appraisal with your\n"
-"            manager, to realize 360° Feedback with the Survey app, to make custom forms and to see the results."
 msgstr ""
 
 #. module: hr_appraisal

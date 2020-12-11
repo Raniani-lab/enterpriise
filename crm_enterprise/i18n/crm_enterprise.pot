@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-12-11 07:33+0000\n"
+"PO-Revision-Date: 2020-12-11 07:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,6 +73,12 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_map
 msgid "Customer"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
+#: model:ir.ui.menu,name:crm_enterprise.crm_enterprise_dashboard_menu
+msgid "Dashboard"
 msgstr ""
 
 #. module: crm_enterprise
@@ -162,11 +168,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_pivot
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Leads"
-msgstr ""
-
-#. module: crm_enterprise
-#: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
-msgid "Leads Analysis"
 msgstr ""
 
 #. module: crm_enterprise

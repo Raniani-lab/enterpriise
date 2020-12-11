@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-29 15:49+0000\n"
-"PO-Revision-Date: 2020-10-29 15:49+0000\n"
+"POT-Creation-Date: 2020-12-11 07:33+0000\n"
+"PO-Revision-Date: 2020-12-11 07:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -186,9 +186,23 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "April"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Are you sure you want to delete this sheet ?"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "August"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -224,6 +238,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Average of values depending on multiple criteria."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
+#, python-format
+msgid "Back"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -665,7 +686,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #, python-format
 msgid "Day"
@@ -683,6 +703,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Day of the week of the date provided (as number)."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "December"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -904,6 +931,13 @@ msgstr ""
 #, python-format
 msgid ""
 "Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "February"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1583,6 +1617,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_component.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_context_menu.js:0
 #, python-format
 msgid "Insert pivot cell"
@@ -1729,6 +1764,27 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Italic"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "January"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "July"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "June"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1894,6 +1950,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "March"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Maximum numeric value in a dataset."
@@ -1911,6 +1974,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Maximum value in a numeric dataset."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "May"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1981,7 +2051,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
@@ -2177,6 +2246,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "November"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Nth largest element from a data set."
@@ -2243,6 +2319,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "OR has no valid input data."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "October"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2336,6 +2419,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
+#, python-format
+msgid "Pivots"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Please enter a valid sheet name"
@@ -2378,7 +2468,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
@@ -2408,9 +2497,16 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
+#, python-format
+msgid "Refresh pivot values"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
-msgid "Refresh measures"
+msgid "Refresh values"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2614,6 +2710,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your pivot"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "September"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3101,6 +3204,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "View"
@@ -3115,7 +3219,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #, python-format
 msgid "Week"
@@ -3195,7 +3298,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/pivot_side_panel.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
@@ -3280,6 +3382,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "nope"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
+#, python-format
+msgid "re-Insert Pivot"
 msgstr ""
 
 #. module: documents_spreadsheet

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -519,7 +519,6 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
-#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -533,6 +532,7 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__image
+#: model:ir.model.fields,field_description:approvals.field_approval_request__category_image
 msgid "Image"
 msgstr ""
 
@@ -569,6 +569,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__write_date
 #: model:ir.model.fields,field_description:approvals.field_approval_request__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
+msgid "Let's go to the"
 msgstr ""
 
 #. module: approvals
@@ -665,7 +671,18 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: approvals
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
+msgid "No Approvals"
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action
+msgid "No Approvals Requests"
+msgstr ""
+
+#. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review_category
 msgid "No new approvals to review"
 msgstr ""
 
@@ -861,11 +878,6 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr ""
-
-#. module: approvals
 #: code:addons/approvals/models/approval_category.py:0
 #: code:addons/approvals/models/approval_category.py:0
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence
@@ -963,16 +975,6 @@ msgid "User Status"
 msgstr ""
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__website_message_ids
-msgid "Website Messages"
-msgstr ""
-
-#. module: approvals
-#: model:ir.model.fields,help:approvals.field_approval_request__website_message_ids
-msgid "Website communication history"
-msgstr ""
-
-#. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
@@ -988,4 +990,16 @@ msgstr ""
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to attach at lease one document."
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
+msgid "menu"
+msgstr ""
+
+#. module: approvals
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action
+#: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
+msgid "new request"
 msgstr ""

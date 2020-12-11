@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2020-12-11 07:33+0000\n"
+"PO-Revision-Date: 2020-12-11 07:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,11 @@ msgid "Contract"
 msgstr ""
 
 #. module: hr_contract_sign
+#: model:ir.model,name:hr_contract_sign.model_hr_contract_history
+msgid "Contract history"
+msgstr ""
+
+#. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__follower_ids
 msgid "Copy to"
 msgstr ""
@@ -57,6 +62,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__display_name
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__display_name
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__display_name
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__display_name
 #: model:ir.model.fields,field_description:hr_contract_sign.field_res_users__display_name
@@ -107,6 +113,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__id
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__id
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__id
 #: model:ir.model.fields,field_description:hr_contract_sign.field_res_users__id
@@ -115,6 +122,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract____last_update
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history____last_update
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard____last_update
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee____last_update
 #: model:ir.model.fields,field_description:hr_contract_sign.field_res_users____last_update
@@ -143,6 +151,7 @@ msgstr ""
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__sign_request_ids
+#: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__sign_request_ids
 msgid "Requested Signatures"
 msgstr ""
 
@@ -174,6 +183,7 @@ msgid "Sign document in contract"
 msgstr ""
 
 #. module: hr_contract_sign
+#: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Signature Request"
@@ -199,4 +209,14 @@ msgstr ""
 #, python-format
 msgid ""
 "You can't delete a contract linked to a signed document, archive it instead."
+msgstr ""
+
+#. module: hr_contract_sign
+#: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
+msgid "document"
+msgstr ""
+
+#. module: hr_contract_sign
+#: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
+msgid "documents"
 msgstr ""

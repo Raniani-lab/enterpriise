@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:48+0000\n"
-"PO-Revision-Date: 2020-11-27 13:48+0000\n"
+"POT-Creation-Date: 2020-12-11 07:33+0000\n"
+"PO-Revision-Date: 2020-12-11 07:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -86,6 +86,27 @@ msgid "Access Token Validity Date"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__active
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__active
+msgid "Active"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation
+msgid "Activity Creation"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation_type
+msgid "Activity Creation Type"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
+msgid "Activity Type"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__advantage_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__advantage_ids
 msgid "Advantage"
@@ -155,6 +176,16 @@ msgid "Archive/Delete redundant generated salary data"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
+msgid "Archived"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_responsible_id
+msgid "Assigned to"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_bachelor
 msgid "Bachelor"
 msgstr ""
@@ -172,16 +203,6 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_birthdate
 msgid "Birthdate"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract__contract_type__cdd
-msgid "CDD"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract__contract_type__cdi
-msgid "CDI"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -210,13 +231,15 @@ msgid "Child"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_city
-msgid "City"
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation_type
+msgid ""
+"Choose whether to create a next activity each time that the advantage is "
+"taken by the employee or on modification only."
 msgstr ""
 
 #. module: hr_contract_salary
-#: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
-msgid "Click here to create new contracts."
+#: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_city
+msgid "City"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -232,11 +255,6 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
-msgid "Configure the simulation"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -256,8 +274,14 @@ msgid "Contract Information:"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_start_date
+msgid "Contract Start Date"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__default_contract_id
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Contract Template"
 msgstr ""
@@ -269,13 +293,13 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_type
 #, python-format
 msgid "Contract Type"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_update_template_id
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__contract_update_template_id
 msgid "Contract Update Document Template"
 msgstr ""
 
@@ -309,6 +333,16 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Contract field used to manually encode an advantage value."
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model,name:hr_contract_salary.model_hr_contract_history
+msgid "Contract history"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__countersigned
+msgid "Contract is countersigned"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -405,12 +439,14 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__default_contract_id
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Default contract used when making an offer to an applicant."
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__sign_template_id
 msgid ""
 "Default document that the applicant will have to sign to accept a contract "
 "offer."
@@ -418,6 +454,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__contract_update_template_id
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__contract_update_template_id
 msgid ""
 "Default document that the employee will have to sign to update his contract."
 msgstr ""
@@ -439,6 +476,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__display_name
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__display_name
@@ -488,7 +526,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__final_yearly_costs
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__final_yearly_costs
 msgid "Employee Budget"
 msgstr ""
 
@@ -496,11 +533,6 @@ msgstr ""
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_contract_id
 msgid "Employee Contract"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
-msgid "Employee Costs"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -515,7 +547,12 @@ msgid "Employee Photo"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:hr.contract.salary.advantage,name:hr_contract_salary.advantage_extra_time_off
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__running
+msgid "Employee signs his contract"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__holidays
 msgid "Extra Time Off"
 msgstr ""
 
@@ -577,6 +614,7 @@ msgid "Generate Offer Link"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Generate Simulation Link"
 msgstr ""
@@ -641,6 +679,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__id
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__id
@@ -720,6 +759,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report____last_update
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value____last_update
@@ -758,6 +798,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
+msgid "Let's create one"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -806,7 +851,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__monthly_yearly_costs
-msgid "Monthly Equivalent Cost"
+msgid "Monthly Cost (FTE)"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -855,6 +900,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_template_id
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__sign_template_id
 msgid "New Contract Document Template"
 msgstr ""
 
@@ -876,6 +922,11 @@ msgstr ""
 msgid ""
 "No HR responsible defined on the job position. Please contact an "
 "administrator."
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
+msgid "No Template found"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -905,8 +956,11 @@ msgid "Number of days of paid leaves the employee gets per year."
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
-msgid "Open Link"
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#, python-format
+msgid "Oops"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -924,16 +978,6 @@ msgstr ""
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_other
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_gender_other
 msgid "Other"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract__contract_type__pfi
-msgid "PFI"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__holidays
-msgid "Paid Time Off"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1044,6 +1088,16 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__red
 msgid "Red"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
+msgid "Reference Monthly Wage"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_yearly_cost
+msgid "Reference Yearly Cost"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1228,6 +1282,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_search
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
 msgid "Structure Type"
 msgstr ""
 
@@ -1247,8 +1302,23 @@ msgid "Text"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation
+msgid ""
+"The benefit is created when the employee signs his contract at the end of "
+"the salary configurator or when the HR manager countersigns the contract."
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "The contract from which this contract has been duplicated."
+msgstr ""
+
+#. module: hr_contract_salary
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#, python-format
+msgid ""
+"The employee is not linked to an existing user, please contact the "
+"administrator.."
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1257,17 +1327,46 @@ msgid "The number of signatures on the pdf contract with the most signatures."
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
+msgid ""
+"The type of activity that will be created automatically on the contract if "
+"this advantage is chosen by the employee."
+msgstr ""
+
+#. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 msgid "There is no available option to customize your salary"
 msgstr ""
 
 #. module: hr_contract_salary
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#, python-format
+msgid "This contract has been updated, please request an updated link.."
+msgstr ""
+
+#. module: hr_contract_salary
+#: code:addons/hr_contract_salary/controllers/main.py:0
+#, python-format
+msgid ""
+"This link is invalid. Please contact the HR Responsible to get a new one..."
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__monthly_yearly_costs
-msgid "Total monthly cost of the employee for the employer."
+msgid ""
+"Total monthly cost of the employee for the employer for a full time "
+"equivalent."
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__final_yearly_costs
+msgid ""
+"Total yearly cost of the employee for the employer for a full time "
+"equivalent."
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_yearly_cost
 msgid "Total yearly cost of the employee for the employer."
 msgstr ""
 
@@ -1286,24 +1385,56 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__value_type
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
 msgid "Value Type"
 msgstr ""
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 #, python-format
 msgid "Wage"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_on_signature
+msgid "Wage on Signature"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__wage_on_signature
+msgid "Wage on contract signature"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 msgid "Wage update with holidays retenues"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
+msgid "Wage with Holidays"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__onchange
+msgid "When the advantage is modified"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__always
+msgid "When the advantage is set"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_type__periodicity__yearly
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume_category__periodicity__yearly
 msgid "Yearly"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__final_yearly_costs
+msgid "Yearly Cost (FTE)"
 msgstr ""
 
 #. module: hr_contract_salary

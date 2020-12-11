@@ -4,35 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: sale_subscription
-#: model:sale.subscription.template,description:sale_subscription.monthly_subscription
-#: model:sale.subscription.template,description:sale_subscription.yearly_subscription
-msgid ""
-"\n"
-"Payment\n"
-"All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any service purchased.\n"
-"\n"
-"Refund Policy\n"
-"Services are entitled to be refunded based on complaint. If a service is unsatisfactory, a written explanation is needed before the service may be considered for a refund. Buyer must take into account the description of the service before requesting a refund. If the services matches the description by the seller and the buyer is unsatisfied, seller is not responsible for refund.\n"
-"\n"
-"Cancellation\n"
-"A service may be cancelled up until payment has been processed. Once payment has been processed, the buyer is responsible for payment.\n"
-"\n"
-"Complaints\n"
-"Any complaints about services or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well.\n"
-"            "
-msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:0
@@ -669,6 +650,15 @@ msgid "A 'Subscription Product' cannot be a 'Storable Product' !"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__website_published
+msgid ""
+"A code server action can be executed from the website, using a dedicated "
+"controller. The address is <base>/website/action/<website_path>. Set this "
+"field as True to allow users to run this action. If it is set to False the "
+"action cannot be run through the website."
+msgstr ""
+
+#. module: sale_subscription
 #: code:addons/sale_subscription/models/product.py:0
 #, python-format
 msgid "A subscription product cannot be a storable product."
@@ -879,6 +869,11 @@ msgid ""
 "Automatic payment succeeded. Payment reference: <a href=# data-oe-"
 "model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a "
 "href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
+msgid "Available on the Website"
 msgstr ""
 
 #. module: sale_subscription
@@ -2148,9 +2143,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__monthly
-#: model:product.product,uom_name:sale_subscription.product_office_cleaning
-#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
-#: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Months"
 msgstr ""
 
@@ -2263,18 +2255,6 @@ msgid ""
 "Odoo automatically sets subscriptions to be renewed in a pending\n"
 "            state. After the negotiation, the salesman should close or renew\n"
 "            pending subscriptions."
-msgstr ""
-
-#. module: sale_subscription
-#: model:product.product,name:sale_subscription.product_office_cleaning
-#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
-msgid "Office Cleaning Subscription (Monthly)"
-msgstr ""
-
-#. module: sale_subscription
-#: model:product.product,name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,name:sale_subscription.product_office_cleaning_yearly_product_template
-msgid "Office Cleaning Subscription (Yearly)"
 msgstr ""
 
 #. module: sale_subscription
@@ -3246,12 +3226,6 @@ msgid "Tags"
 msgstr ""
 
 #. module: sale_subscription
-#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
-#: model:sale.subscription.alert,name:sale_subscription.subscription_alert_percent_revenue
-msgid "Take action on less satisfied clients"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
 msgid "Target Model"
 msgstr ""
@@ -3348,6 +3322,11 @@ msgid "The full URL to access the document through the website."
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__website_url
+msgid "The full URL to access the server action through the website."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_next_date
 msgid ""
 "The next invoice will be created on this date then the period will be "
@@ -3420,11 +3399,6 @@ msgstr ""
 #: code:addons/sale_subscription/wizard/sale_subscription_wizard.py:0
 #, python-format
 msgid "This upsell order has been created from the subscription "
-msgstr ""
-
-#. module: sale_subscription
-#: model:uom.category,name:sale_subscription.uom_categ_time
-msgid "Time"
 msgstr ""
 
 #. module: sale_subscription
@@ -3600,11 +3574,21 @@ msgid "Use Calendar"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_resource_field_id
+msgid "Use employee work schedule"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
 msgid ""
 "Use subscriptions to follow tasks, issues, timesheets or invoicing based on\n"
 "                work done, expenses and/or sales orders. Odoo will automatically manage\n"
 "                the alerts for the renewal of the subscriptions to the right salesperson."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_resource_field_id
+msgid "Use the user's working schedule."
 msgstr ""
 
 #. module: sale_subscription
@@ -3657,8 +3641,18 @@ msgid "Website Messages"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_path
+msgid "Website Path"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_url
 msgid "Website URL"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_url
+msgid "Website Url"
 msgstr ""
 
 #. module: sale_subscription
@@ -3724,9 +3718,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__yearly
-#: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,uom_name:sale_subscription.product_office_cleaning_yearly_product_template
-#: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Years"
 msgstr ""
 

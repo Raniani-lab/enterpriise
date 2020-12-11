@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-16 13:44+0000\n"
-"PO-Revision-Date: 2020-11-16 13:44+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cube mr-3\" title=\"Quantity\"/>"
+msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+msgid "<i class=\"fa fa-fw fa-lg fa-cubes mr-3\" title=\"Locations\"/>"
 msgstr ""
 
 #. module: stock_barcode
@@ -98,11 +103,6 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "<span>On Hand</span>"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields.selection,name:stock_barcode.selection__res_company__keyboard_layout__azerty
-msgid "AZERTY Keyboard"
 msgstr ""
 
 #. module: stock_barcode
@@ -173,11 +173,6 @@ msgid "Close"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model,name:stock_barcode.model_res_company
-msgid "Companies"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_res_config_settings
 msgid "Config Settings"
 msgstr ""
@@ -227,12 +222,6 @@ msgid "Description"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,help:stock_barcode.field_res_company__keyboard_layout
-#: model:ir.model.fields,help:stock_barcode.field_res_config_settings__keyboard_layout
-msgid "Desired order for keyboard shortcuts to appear in."
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__picking_location_dest_id
 msgid "Destination Location"
 msgstr ""
@@ -250,13 +239,7 @@ msgid "Discard"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields.selection,name:stock_barcode.selection__res_company__keyboard_layout__alphabetical
-msgid "Display Alphabetically"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_product_product__display_name
-#: model:ir.model.fields,field_description:stock_barcode.field_res_company__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
@@ -318,7 +301,6 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_product_product__id
-#: model:ir.model.fields,field_description:stock_barcode.field_res_company__id
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
@@ -353,6 +335,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #: model:ir.actions.act_window,name:stock_barcode.stock_barcode_inventory_type_action_kanban
+#: model:ir.actions.server,name:stock_barcode.action_open_barcode_inventory_adjustment_view
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "Inventory Adjustments"
@@ -374,25 +357,12 @@ msgid "Inventory Locations"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_res_company__keyboard_layout
-#: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__keyboard_layout
-msgid "Keyboard Layout"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__group_barcode_keyboard_shortcuts
-#: model:res.groups,name:stock_barcode.group_barcode_keyboard_shortcuts
-msgid "Keyboard Shortcuts"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
 msgid "LN/SN Product Lines"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_product_product____last_update
-#: model:ir.model.fields,field_description:stock_barcode.field_res_company____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line____last_update
@@ -449,6 +419,11 @@ msgid "Lot"
 msgstr ""
 
 #. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
+msgid "Lot/SN:"
+msgstr ""
+
+#. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Lot/Serial Number Details"
@@ -486,13 +461,13 @@ msgstr ""
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:0
 #, python-format
-msgid "No picking corresponding to barcode %(barcode)s"
+msgid "No picking or location or product corresponding to barcode %(barcode)s"
 msgstr ""
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:0
 #, python-format
-msgid "No picking or location corresponding to barcode %(barcode)s"
+msgid "No picking or product corresponding to barcode %(barcode)s"
 msgstr ""
 
 #. module: stock_barcode
@@ -545,8 +520,18 @@ msgid "Owner"
 msgstr ""
 
 #. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
+msgid "Owner:"
+msgstr ""
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "Package"
+msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
+msgid "Package:"
 msgstr ""
 
 #. module: stock_barcode
@@ -632,15 +617,15 @@ msgid "Product Moves (Stock Move Line)"
 msgstr ""
 
 #. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
+msgid "Product Stock Quant"
+msgstr ""
+
+#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Put In Pack"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields.selection,name:stock_barcode.selection__res_company__keyboard_layout__qwerty
-msgid "QWERTY Keyboard"
 msgstr ""
 
 #. module: stock_barcode
@@ -651,6 +636,11 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_reserved
 msgid "Qty Reserved"
+msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
+msgid "Qty:"
 msgstr ""
 
 #. module: stock_barcode
@@ -691,6 +681,7 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
@@ -1088,6 +1079,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
+msgid "product"
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
+#, python-format
 msgid "stock barcodes sheet"
 msgstr ""
 
@@ -1117,4 +1115,11 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
 msgid "to open it."
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
+#, python-format
+msgid "to show its location and quantity."
 msgstr ""

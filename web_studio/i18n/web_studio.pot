@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-29 15:49+0000\n"
-"PO-Revision-Date: 2020-10-29 15:49+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2945,6 +2945,13 @@ msgid "Quick Create"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "Quick Create Field"
+msgstr ""
+
+#. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
 msgid "Qweb"
 msgstr ""
@@ -3809,6 +3816,15 @@ msgstr ""
 msgid ""
 "This field is placed after another element that is only displayed under "
 "certain conditions."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid ""
+"This field will be used when creating records directly from the calendar "
+"view."
 msgstr ""
 
 #. module: web_studio

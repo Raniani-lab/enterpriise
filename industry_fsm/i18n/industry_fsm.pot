@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -282,27 +282,6 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model:project.task,legend_normal:industry_fsm.planning_task_0
-#: model:project.task,legend_normal:industry_fsm.planning_task_1
-#: model:project.task,legend_normal:industry_fsm.planning_task_10
-#: model:project.task,legend_normal:industry_fsm.planning_task_11
-#: model:project.task,legend_normal:industry_fsm.planning_task_12
-#: model:project.task,legend_normal:industry_fsm.planning_task_13
-#: model:project.task,legend_normal:industry_fsm.planning_task_14
-#: model:project.task,legend_normal:industry_fsm.planning_task_15
-#: model:project.task,legend_normal:industry_fsm.planning_task_16
-#: model:project.task,legend_normal:industry_fsm.planning_task_17
-#: model:project.task,legend_normal:industry_fsm.planning_task_18
-#: model:project.task,legend_normal:industry_fsm.planning_task_19
-#: model:project.task,legend_normal:industry_fsm.planning_task_2
-#: model:project.task,legend_normal:industry_fsm.planning_task_20
-#: model:project.task,legend_normal:industry_fsm.planning_task_3
-#: model:project.task,legend_normal:industry_fsm.planning_task_4
-#: model:project.task,legend_normal:industry_fsm.planning_task_5
-#: model:project.task,legend_normal:industry_fsm.planning_task_6
-#: model:project.task,legend_normal:industry_fsm.planning_task_7
-#: model:project.task,legend_normal:industry_fsm.planning_task_8
-#: model:project.task,legend_normal:industry_fsm.planning_task_9
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
 msgid "In Progress"
@@ -398,40 +377,19 @@ msgid "No tasks found. Let's create one!"
 msgstr ""
 
 #. module: industry_fsm
-#: model:project.task,legend_blocked:industry_fsm.planning_task_0
-#: model:project.task,legend_blocked:industry_fsm.planning_task_1
-#: model:project.task,legend_blocked:industry_fsm.planning_task_10
-#: model:project.task,legend_blocked:industry_fsm.planning_task_11
-#: model:project.task,legend_blocked:industry_fsm.planning_task_12
-#: model:project.task,legend_blocked:industry_fsm.planning_task_13
-#: model:project.task,legend_blocked:industry_fsm.planning_task_14
-#: model:project.task,legend_blocked:industry_fsm.planning_task_15
-#: model:project.task,legend_blocked:industry_fsm.planning_task_16
-#: model:project.task,legend_blocked:industry_fsm.planning_task_17
-#: model:project.task,legend_blocked:industry_fsm.planning_task_18
-#: model:project.task,legend_blocked:industry_fsm.planning_task_19
-#: model:project.task,legend_blocked:industry_fsm.planning_task_2
-#: model:project.task,legend_blocked:industry_fsm.planning_task_20
-#: model:project.task,legend_blocked:industry_fsm.planning_task_3
-#: model:project.task,legend_blocked:industry_fsm.planning_task_4
-#: model:project.task,legend_blocked:industry_fsm.planning_task_5
-#: model:project.task,legend_blocked:industry_fsm.planning_task_6
-#: model:project.task,legend_blocked:industry_fsm.planning_task_7
-#: model:project.task,legend_blocked:industry_fsm.planning_task_8
-#: model:project.task,legend_blocked:industry_fsm.planning_task_9
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
 msgid "Not validated"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_open
-msgid "Number of Working Days to Open the task"
+#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_close
+msgid "Number of Working Days to close the task"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_close
-msgid "Number of Working Days to close the task"
+#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_open
+msgid "Number of Working Days to open the task"
 msgstr ""
 
 #. module: industry_fsm
@@ -510,27 +468,6 @@ msgid "Provide custom worksheet reports to be signed off by customers"
 msgstr ""
 
 #. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_0
-#: model:project.task,legend_done:industry_fsm.planning_task_1
-#: model:project.task,legend_done:industry_fsm.planning_task_10
-#: model:project.task,legend_done:industry_fsm.planning_task_11
-#: model:project.task,legend_done:industry_fsm.planning_task_12
-#: model:project.task,legend_done:industry_fsm.planning_task_13
-#: model:project.task,legend_done:industry_fsm.planning_task_14
-#: model:project.task,legend_done:industry_fsm.planning_task_15
-#: model:project.task,legend_done:industry_fsm.planning_task_16
-#: model:project.task,legend_done:industry_fsm.planning_task_17
-#: model:project.task,legend_done:industry_fsm.planning_task_18
-#: model:project.task,legend_done:industry_fsm.planning_task_19
-#: model:project.task,legend_done:industry_fsm.planning_task_2
-#: model:project.task,legend_done:industry_fsm.planning_task_20
-#: model:project.task,legend_done:industry_fsm.planning_task_3
-#: model:project.task,legend_done:industry_fsm.planning_task_4
-#: model:project.task,legend_done:industry_fsm.planning_task_5
-#: model:project.task,legend_done:industry_fsm.planning_task_6
-#: model:project.task,legend_done:industry_fsm.planning_task_7
-#: model:project.task,legend_done:industry_fsm.planning_task_8
-#: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_0
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
 msgid "Ready"

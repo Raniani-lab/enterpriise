@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -127,20 +127,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
-msgid ""
-"<small class=\"oe_edit_only text-muted\" attrs=\"{'invisible': "
-"[('trigger_type', '=', 'begin')]}\">(save the campaign to make its "
-"activities selectable)</small>"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "<span class=\"col-2 px-0 pt-1\">after</span>"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
-msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
 msgstr ""
 
 #. module: marketing_automation
@@ -229,18 +216,6 @@ msgstr ""
 msgid ""
 "Activity will only be performed if record satisfies this domain, obtained "
 "from the combination of the activity filter and its inherited filter"
-msgstr ""
-
-#. module: marketing_automation
-#: model:mailing.mailing,name:marketing_automation.mass_mailing_after_7_days
-#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
-msgid "After 7 days"
-msgstr ""
-
-#. module: marketing_automation
-#: model:marketing.activity,name:marketing_automation.marketing_activity_2
-#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
-msgid "After 7 days (if not yet customers)"
 msgstr ""
 
 #. module: marketing_automation
@@ -375,17 +350,6 @@ msgid "Color Index"
 msgstr ""
 
 #. module: marketing_automation
-#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
-#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
-msgid "Commercial prospection"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__company_id
-msgid "Company"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
@@ -418,11 +382,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__currency_id
-msgid "Currency"
 msgstr ""
 
 #. module: marketing_automation
@@ -644,12 +603,6 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "It will be generated automatically once you save this record."
-msgstr ""
-
-#. module: marketing_automation
-#: model:mailing.mailing,sms_subject:marketing_automation.mass_mailing_after_7_days
-#: model:mailing.mailing,subject:marketing_automation.mass_mailing_after_7_days
-msgid "Join partnership!"
 msgstr ""
 
 #. module: marketing_automation
@@ -891,13 +844,6 @@ msgid "Mass mailing statistics"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
-#: model:marketing.activity,name:marketing_automation.marketing_activity_3
-#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
-msgid "Message for sales person"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_id
@@ -1003,14 +949,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:mailing.mailing,name:marketing_automation.mass_mailing_offer_free_trial
-#: model:marketing.activity,name:marketing_automation.marketing_activity_1
-#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
-#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
-msgid "Offer free catalog"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Opened"
@@ -1099,26 +1037,9 @@ msgid "Participants of %s (%s)"
 msgstr ""
 
 #. module: marketing_automation
-#. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
-#, python-format
-msgid "Please save the campaign to add a child activity"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "Please save the campaign to add child activity"
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__processed
 msgid "Processed"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__quotation_count
-msgid "Quotation Count"
 msgstr ""
 
 #. module: marketing_automation
@@ -1214,11 +1135,6 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__user_id
 msgid "Responsible"
-msgstr ""
-
-#. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__invoiced_amount
-msgid "Revenues generated by the campaign"
 msgstr ""
 
 #. module: marketing_automation
@@ -1362,9 +1278,11 @@ msgid "Success"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:81
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
-msgid "Switching Target Model invalidates the existing activities. Either update your activity actions to match the new Target Model or delete them."
+msgid ""
+"Switching Target Model invalidates the existing activities. Either update "
+"your activity actions to match the new Target Model or delete them."
 msgstr ""
 
 #. module: marketing_automation
@@ -1541,7 +1459,7 @@ msgid "Validity Duration Type"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:80
+#: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -1550,12 +1468,6 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__weeks
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__weeks
 msgid "Weeks"
-msgstr ""
-
-#. module: marketing_automation
-#: model:mailing.mailing,sms_subject:marketing_automation.mass_mailing_offer_free_trial
-#: model:mailing.mailing,subject:marketing_automation.mass_mailing_offer_free_trial
-msgid "Welcome!"
 msgstr ""
 
 #. module: marketing_automation

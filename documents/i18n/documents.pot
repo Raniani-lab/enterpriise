@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2020-12-11 07:32+0000\n"
+"PO-Revision-Date: 2020-12-11 07:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -642,8 +642,9 @@ msgstr ""
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_finance_folder
 msgid ""
-"Automate your inbox using scanned documents or emails sent to <strong>inbox-"
-"financial</strong> email alias."
+"Automate your inbox using scanned documents or emails sent to <span "
+"class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
+"alias</span>."
 msgstr ""
 
 #. module: documents
@@ -654,16 +655,6 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
 msgid "Bill"
-msgstr ""
-
-#. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand1_folder
-msgid "Brand 1"
-msgstr ""
-
-#. module: documents
-#: model:documents.folder,name:documents.documents_marketing_brand2_folder
-msgid "Brand 2"
 msgstr ""
 
 #. module: documents
@@ -1294,8 +1285,8 @@ msgstr ""
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
 msgid ""
-"Incoming letters sent to inbox email alias will be added to your inbox "
-"automatically."
+"Incoming letters sent to <span class=\"o_folder_description_alias\">inbox "
+"email alias</span> will be added to your inbox automatically."
 msgstr ""
 
 #. module: documents
@@ -1398,7 +1389,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid ""
-"Let's tag this bill as legal<br/> <i>Tips: actions can be tailored to your "
+"Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
 msgstr ""
 
@@ -1688,6 +1679,13 @@ msgid ""
 "Optional ID of a thread (record) to which all incoming messages will be "
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_views.xml:0
+#, python-format
+msgid "Or send emails to"
 msgstr ""
 
 #. module: documents
@@ -2085,14 +2083,6 @@ msgid "Split PDF"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
-#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
-#, python-format
-msgid "Split and apply the action"
-msgstr ""
-
-#. module: documents
 #: model:documents.facet,name:documents.documents_finance_status
 #: model:documents.facet,name:documents.documents_internal_status
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
@@ -2234,6 +2224,13 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
 msgid "Thumbnail"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_views.xml:0
+#, python-format
+msgid "Tip: configure your scanner to send all documents to this address."
 msgstr ""
 
 #. module: documents

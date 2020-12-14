@@ -236,11 +236,14 @@ class MarketingCampaign(models.Model):
         ]
         action['context'] = dict(self.env.context)
         action['context'].update({
+            # defaults
             'default_mailing_model_id': self.model_id.id,
             'default_campaign_id': self.utm_campaign_id.id,
             'default_use_in_marketing_automation': True,
             'default_mailing_type': 'mail',
-            'default_state': 'done'
+            'default_state': 'done',
+            # action
+            'create': False,
         })
         return action
 

@@ -17,11 +17,15 @@ class CameraDriver(Driver):
         self.device_connection = 'direct'
         self.device_name = device.card.decode('utf-8')
 
+        self._actions.update({
+            '': self._action_default,
+        })
+
     @classmethod
     def supported(cls, device):
         return device.driver.decode('utf-8') == 'uvcvideo'
 
-    def action(self, data):
+    def _action_default(self, data):
         try:
             """
             Check the max resolution for webcam.

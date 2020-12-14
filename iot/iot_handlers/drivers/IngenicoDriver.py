@@ -681,6 +681,10 @@ class IngenicoDriver(Driver):
         self.device_manufacturer = 'Ingenico'
         self.cid = None
 
+        self._actions.update({
+            '': self._action_default,
+        })
+
     @classmethod
     def supported(cls, device): 
         """Try to initialize a connection with the payment terminal.
@@ -718,7 +722,7 @@ class IngenicoDriver(Driver):
         OutgoingIngenicoMessage( self, self._terminalId, self._ecrId, 
                 self._protocolId, messageType, self._getSequence(), **kwargs)
 
-    def action(self, data):
+    def _action_default(self, data):
         """Action trigered on request from Odoo.
         Override
         """

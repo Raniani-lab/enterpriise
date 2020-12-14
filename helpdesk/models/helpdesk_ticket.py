@@ -844,12 +844,13 @@ class HelpdeskTicket(models.Model):
             return self.env.ref('helpdesk.mt_ticket_stage')
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
-    def _notify_get_groups(self):
+    def _notify_get_groups(self, msg_vals=None):
         """ Handle helpdesk users and managers recipients that can assign
         tickets directly from notification emails. Also give access button
         to portal and portal customers. If they are notified they should
         probably have access to the document. """
-        groups = super(HelpdeskTicket, self)._notify_get_groups()
+        groups = super(HelpdeskTicket, self)._notify_get_groups(msg_vals=msg_vals)
+        msg_vals = msg_vals or {}
 
         self.ensure_one()
         for group_name, group_method, group_data in groups:
@@ -859,7 +860,7 @@ class HelpdeskTicket(models.Model):
         if self.user_id:
             return groups
 
-        take_action = self._notify_get_action_link('assign')
+        take_action = self._notify_get_action_link('assign', **msg_vals)
         helpdesk_actions = [{'url': take_action, 'title': _('Assign to me')}]
         helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
         new_groups = [(

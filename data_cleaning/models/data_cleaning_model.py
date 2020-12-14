@@ -74,8 +74,6 @@ class DataCleaningModel(models.Model):
     def _clean_records_format_phone(self, actions, field):
         self.ensure_one()
 
-        PhoneFormat = self.env['data_cleaning.record'].phone_format
-
         self._cr.execute("""
             SELECT res_id, data_cleaning_rule_id
             FROM data_cleaning_record
@@ -89,7 +87,7 @@ class DataCleaningModel(models.Model):
         result = []
         for record in records:
             record_country = self.env['data_cleaning.record']._get_country_id(record)
-            formatted = PhoneFormat(record[field], record_country)
+            formatted = self.env['data_cleaning.record']._phone_format(record[field], record_country)
             if (record.id, rule_ids[0]) not in existing_rows and formatted and record[field] != formatted:
                 result.append({
                     'res_id': record['id'],

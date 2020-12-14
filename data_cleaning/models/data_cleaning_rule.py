@@ -34,7 +34,7 @@ ACTIONS_PYTHON = {
     'case_first': lambda record, value: capwords(value),
     'case_upper': lambda record, value: value.upper(),
     'case_lower': lambda record, value: value.lower(),
-    'phone': lambda record, value: record.phone_format(value, record.country_id),
+    'phone': lambda record, value: record._phone_format(value, record.country_id),
     'html': lambda record, value: html2plaintext(value),
 }
 

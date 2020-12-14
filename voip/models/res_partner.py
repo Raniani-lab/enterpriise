@@ -29,14 +29,14 @@ except ImportError:
 
 class Contact(models.Model):
     _name = 'res.partner'
-    _inherit = ['res.partner', 'phone.validation.mixin', 'voip.queue.mixin']
+    _inherit = ['res.partner', 'voip.queue.mixin']
 
     sanitized_phone = fields.Char("Phone number sanitized", compute='_compute_sanitized_phone', store=True)
     sanitized_mobile = fields.Char("Mobile number sanitized", compute='_compute_sanitized_mobile', store=True)
 
     def _voip_sanitization(self, number):
         if _phonenumbers_lib_imported:
-            country = self._phone_get_country()
+            country = self.country_id or self.env.company.country_id
             country_code = country.code if country else None
             try:
                 phone_nbr = phonenumbers.parse(number, region=country_code, keep_raw_input=True)

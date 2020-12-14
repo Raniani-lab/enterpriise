@@ -48,7 +48,7 @@ class DataCleaningRecord(models.Model):
         return company_id
 
     @api.model
-    def phone_format(self, number, country=None):
+    def _phone_format(self, number, country=None):
         if not country:
             country = self.env.company.country_id
 

@@ -5,15 +5,12 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     const Dialog = require("web.OwlDialog");
     const PivotDialog =require("documents_spreadsheet.PivotDialog")
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
-    const {
-        convertPivotFormulas,
-        absoluteToRelative,
-        fetchCache,
-    } = require("documents_spreadsheet.pivot_utils");
+
+    const uuidv4 = spreadsheet.helpers.uuidv4;
 
     const Spreadsheet = spreadsheet.Spreadsheet;
     const Model = spreadsheet.Model;
-    const { useState, useRef, useSubEnv } = owl.hooks;
+    const { useState, useRef, useSubEnv, useExternalListener } = owl.hooks;
     const _t = core._t;
 
     class SpreadsheetComponent extends owl.Component {
@@ -23,7 +20,6 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 newSpreadsheet: this.newSpreadsheet.bind(this),
                 saveAsTemplate: this._saveAsTemplate.bind(this),
                 makeCopy: this.makeCopy.bind(this),
-                saveData: this.saveData.bind(this),
                 openPivotDialog: this.openPivotDialog.bind(this),
             });
             this.state = useState({
@@ -43,18 +39,45 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             this.insertPivotValueCallback = undefined;
             this.confirmDialog = () => true;
             this.data = props.data;
+            this.stateUpdateMessages = props.stateUpdateMessages;
             this.res_id = props.res_id;
+            this.client = {
+                id: uuidv4(),
+                name: this.env.session.name,
+                userId: this.env.session.uid,
+            }
+            this.transportService = this.props.transportService;
+            useExternalListener(window, "beforeunload", this._onLeave.bind(this));
         }
+
+        get model() {
+            return this.spreadsheet.comp.model;
+        }
+
         mounted() {
+            this.spreadsheet.comp.model.on("update", this, () => this.trigger("spreadsheet-sync-status", {
+                synced: this.model.getters.isFullySynchronized(),
+                numberOfConnectedUsers: this.getConnectedUsers(),
+            }));
             if (this.props.showFormulas) {
                 this.spreadsheet.comp.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
             }
-            window.onbeforeunload = () => {
-                this.saveData();
-            };
+            if (this.props.initCallback) {
+                this.props.initCallback(this.spreadsheet.comp.model);
+            }
         }
+
+        /**
+         * Return the number of connected users. If one user has more than
+         * one open tab, it's only counted once.
+         * @return {number}
+         */
+        getConnectedUsers() {
+            return new Set([...this.model.getters.getConnectedClients().values()].map((client) => client.userId)).size;
+        }
+
         willUnmount() {
-            window.onbeforeunload = null;
+            this._onLeave();
         }
         /**
          * Open a dialog to ask a confirmation to the user.
@@ -112,8 +135,12 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          * current spreadsheet
          */
         getSaveData() {
-            const spreadsheet_data = JSON.stringify(this.spreadsheet.comp.model.exportData());
-            return { spreadsheet_data, thumbnail: this.getThumbnail() };
+            const data = this.spreadsheet.comp.model.exportData();
+            return {
+                data: JSON.stringify(data),
+                revisionId: data.revisionId,
+                thumbnail: this.getThumbnail()
+            };
         }
         getMissingValueDialogTitle() {
             const title = _t("Insert pivot cell");
@@ -126,7 +153,10 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
         getPivotTitle() {
             if (this.pivot) {
-                const name = this.pivot.cache && this.pivot.cache.getModelLabel() || this.pivot.model;
+                const getters = this.spreadsheet.comp.model.getters;
+                const name = getters.isCacheLoaded(this.pivot.id)
+                                ? getters.getCache(this.pivot.id).getModelLabel()
+                                : this.pivot.model;
                 const id = this.pivot.id;
                 return `${name} (#${id})`;
             }
@@ -149,15 +179,16 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          * Make a copy of the current document
          */
         makeCopy() {
-            const { spreadsheet_data, thumbnail } = this.getSaveData();
-            this.saveData();
-            this.trigger("make_copy", { spreadsheet_data, thumbnail, id: this.res_id });
+            const { data, thumbnail } = this.getSaveData();
+            this.trigger("make_copy", {
+                data,
+                thumbnail,
+            });
         }
         /**
          * Create a new spreadsheet
          */
         newSpreadsheet() {
-            this.saveData();
             this.trigger("new_spreadsheet");
         }
 
@@ -176,7 +207,10 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                     },
                 }
             });
-            await Promise.all(model.getters.getPivots().map((pivot) => fetchCache(pivot, rpc, { initialDomain: true, force: true })));
+            await Promise.all(model.getters.getPivots().map((pivot) => model.getters.getAsyncCache(pivot.id, {
+                initialDomain: true,
+                force: true
+            })));
             model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
             const data = model.exportData();
             const name = this.props.name;
@@ -205,19 +239,17 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
         openPivotDialog(ev){
             this.pivot = this.spreadsheet.comp.model.getters.getPivot(ev.pivotId);
+            this.cache = this.spreadsheet.comp.model.getters.getCache(ev.pivotId);
             this.insertPivotValueCallback = ev.insertPivotValueCallback;
             this.state.pivotDialog.isDisplayed = true;
         }
-        /**
-         * Saves the spreadsheet data in the database
-         *
-         */
-        saveData() {
-            const { spreadsheet_data, thumbnail } = this.getSaveData();
-            this.trigger("spreadsheet_saved", {
-                data: spreadsheet_data,
-                thumbnail,
-            });
+        _onLeave() {
+            if (this.alreadyLeft) {
+                return;
+            }
+            this.alreadyLeft = true;
+            this.spreadsheet.comp.model.off("update", this);
+            this.trigger("spreadsheet_saved", this.getSaveData());
         }
     }
 

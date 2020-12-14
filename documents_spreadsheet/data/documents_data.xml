@@ -10,5 +10,6 @@
             </field>
             <field name="sequence">30</field>
         </record>
+
     </data>
 </odoo>

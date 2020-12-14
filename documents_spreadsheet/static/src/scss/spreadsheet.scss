@@ -159,8 +159,26 @@
         }
     }
 
+    .o_spreadsheet_sync_status {
+        display: inline-block;
+        font-size: small;
+        padding-right: 10px;
+        padding-top: 4px;
+    }
+
+    .o_spreadsheet_number_users {
+        display: inline-block;
+        font-size: small;
+    }
+
     .o_cp_top_left {
         width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .breadcrumb {
+            flex-grow: 2;
+        }
     }
 
     .o_cp_top_right {

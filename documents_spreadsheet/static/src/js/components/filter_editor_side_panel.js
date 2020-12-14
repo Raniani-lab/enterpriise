@@ -4,7 +4,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const core = require("web.core");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
-    const CancelledReason = require("documents_spreadsheet.CancelledReason");
+    const CommandResult = require("documents_spreadsheet.CommandResult");
     const {
         FieldSelectorWidget,
         FieldSelectorAdapter,
@@ -60,6 +60,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.FieldSelectorWidget = FieldSelectorWidget;
             this.ModelSelectorWidget = ModelSelectorWidget;
             this.TagSelectorWidget = TagSelectorWidget;
+            this.getters = this.env.getters;
         }
 
         /**
@@ -90,12 +91,13 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
          * @returns {Array<string>}
          */
         get relatedModels() {
+            const getters = this.env.getters;
             return [
                 ...new Set(
-                    this.env.getters
+                    getters
                         .getPivots()
-                        .filter((pivot) => pivot.isLoaded)
-                        .map((pivot) => Object.values(pivot.cache.getFields()))
+                        .filter((pivot) => getters.isCacheLoaded(pivot.id))
+                        .map((pivot) => Object.values(getters.getCache(pivot.id).getFields()))
                         .flat()
                         .filter((field) => field.type === "many2one")
                         .map((field) => field.relation)
@@ -129,9 +131,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
             this.state.relation.relatedModelID = ev.detail.value;
             await this.fetchModel();
-            for (const pivot of this.pivots.filter((pivot) => pivot.isLoaded)) {
+            const getters = this.env.getters;
+            for (const pivot of this.pivots.filter((pivot) => getters.isCacheLoaded(pivot.id))) {
                 const [field, fieldDesc] =
-                    Object.entries(pivot.cache.getFields()).find(
+                    Object.entries(getters.getCache(pivot.id).getFields()).find(
                         ([fieldName, fieldDesc]) =>
                             fieldDesc.type === "many2one" &&
                             fieldDesc.relation === this.state.relation.relatedModelName
@@ -161,7 +164,9 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
         onSelectedField(id, ev) {
             const fieldName = ev.detail.chain[0];
-            const field = this.pivots.find((pivot) => pivot.id === id).cache.getField(fieldName);
+            const pivot = this.pivots.find((pivot) => pivot.id === id);
+            const cache = this.getters.getCache(pivot.id);
+            const field = cache.getField(fieldName);
             if (field) {
                 this.state.pivotFields[id] = {
                     field: fieldName,
@@ -194,10 +199,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 fields: this.state.pivotFields,
             };
             const result = this.env.dispatch(cmd, { id, filter });
-            if (
-                result.status === "CANCELLED" &&
-                result.reason === CancelledReason.DuplicatedFilterLabel
-            ) {
+            if (result=== CommandResult.DuplicatedFilterLabel) {
                 this.env.services.notification.notify({
                     type: "danger",
                     title: this.env._t("Duplicated Label"),

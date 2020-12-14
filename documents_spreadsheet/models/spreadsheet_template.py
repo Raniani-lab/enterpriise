@@ -5,8 +5,8 @@ from odoo import fields, models, _
 
 
 class SpreadsheetTemplate(models.Model):
-    _name = 'spreadsheet.template'
-    _description= "Spreadsheet Template"
+    _name = "spreadsheet.template"
+    _description = "Spreadsheet Template"
     _order = "sequence"
 
     name = fields.Char(required=True, translate=True)
@@ -16,7 +16,7 @@ class SpreadsheetTemplate(models.Model):
 
     def copy(self, default=None):
         self.ensure_one()
-        chosen_name = default.get('name') if default else None
-        new_name = chosen_name or _('%s (copy)', self.name)
+        chosen_name = default.get("name") if default else None
+        new_name = chosen_name or _("%s (copy)", self.name)
         default = dict(default or {}, name=new_name)
         return super().copy(default)

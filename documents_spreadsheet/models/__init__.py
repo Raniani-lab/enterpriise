@@ -3,4 +3,5 @@
 
 from . import document
 from . import spreadsheet_contributor
+from . import spreadsheet_revision
 from . import spreadsheet_template

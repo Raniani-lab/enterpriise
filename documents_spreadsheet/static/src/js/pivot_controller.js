@@ -5,12 +5,12 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
     const config = require('web.config');
     const PivotController = require("web.PivotController");
     const session = require("web.session");
-    const SpreadsheetSelectorDialog = require("documents_spreadsheet.SpreadsheetSelectorDialog");
+
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
+    const SpreadsheetSelectorDialog = require("documents_spreadsheet.SpreadsheetSelectorDialog");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const _t = core._t;
-    const GridModel = spreadsheet.Model;
     const uuidv4 = spreadsheet.helpers.uuidv4;
 
     PivotController.include({
@@ -58,7 +58,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                     args: [],
                 });
                 const dialog = new SpreadsheetSelectorDialog(self, spreadsheets).open();
-                dialog.on("confirm", this, this._save_sheet);
+                dialog.on("confirm", this, this._insertInSpreadsheet);
             }
         },
         /**
@@ -76,84 +76,70 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
         //----------------------------------------------------------------------
 
         /**
-         * Initialize a Spreadsheet Model in headless mode.
-         * This model can be either created from scratch (workbookData is null)
-         * or restored from a saved workbook (workbookData is not null).
-         *
-         * In case of the model is restored from an existing workbook, a new
-         * sheet is created.
-         *
-         * @param {Object|null} workbookData Data with which to initialise the
-         * model
+         * Create a new empty spreadsheet
          *
          * @private
-         * @returns o_spreadsheet Model
+         * @returns ID of the newly created spreadsheet
          */
-        _initializeModel(workbookData) {
-            const isNewModel = !workbookData;
-            if (isNewModel) {
-                workbookData = {};
-            }
-            const model = new GridModel(workbookData, {
-                mode: "headless",
-                evalContext: { env: this.renderer.env },
+        async _createEmptySpreadsheet() {
+            return await this._rpc({
+                model: "documents.document",
+                method: "create",
+                args: [
+                    {
+                        name: _t("Untitled spreadsheet"),
+                        mimetype: "application/o-spreadsheet",
+                        handler: "spreadsheet",
+                        raw: "{}",
+                    },
+                ],
             });
-            if (!isNewModel) {
-                model.dispatch("CREATE_SHEET", {
-                    sheetId: uuidv4(),
-                    position: model.getters.getSheets().length,
+        },
+        /**
+         * Get the function to be called when the spreadsheet is opened in order
+         * to insert the pivot.
+         *
+         * @param {boolean} isEmptySpreadsheet True if the pivot is inserted in
+         *                                     an empty spreadsheet, false
+         *                                     otherwise
+         *
+         * @private
+         * @returns Function to call
+         */
+        async _getCallbackBuildPivot(isEmptySpreadsheet) {
+            const { pivot, cache } = await this._getPivotForSpreadsheet();
+            return (model) => {
+                if (!isEmptySpreadsheet) {
+                    const sheetId = uuidv4();
+                    const sheetIdFrom = model.getters.getActiveSheetId();
+                    model.dispatch("CREATE_SHEET", {
+                        sheetId,
+                        position: model.getters.getVisibleSheets().length
+                    });
+                    model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId});
+                }
+                model.dispatch("BUILD_PIVOT", {
+                    sheetId: model.getters.getActiveSheetId(),
+                    pivot,
+                    cache,
+                    anchor: [0, 0],
                 });
             }
-            return model;
         },
         /**
          * Retrieves the pivot data from an existing view instance.
          *
          * @private
-         * @returns o-spreadsheet Pivot
+         * @returns {Object} { pivot: Pivot, cache: PivotCache}
          */
         async _getPivotForSpreadsheet() {
             const payload = this.model.get();
             const pivot = pivotUtils.sanitizePivot(payload);
-            await pivotUtils.createPivotCache(pivot, this._rpc.bind(this));
-            pivot.lastUpdate = Date.now();
-            return pivot;
+            const cache = await pivotUtils.createPivotCache(pivot, this._rpc.bind(this));
+            return { pivot, cache };
         },
         /**
-         * Retrieves the sheet data after inserting a pivot.
-         * The pivot can be inserted in a new workbook (if workbookData is null)
-         * or inserted in a new sheet of an existing workbook.
-         *
-         * @param {Object|null} workbookData WorkbookData of the existing workbook.
-         *
-         * @private
-         * @returns o_spreadsheet Model
-         */
-        async _getSpreadsheetModel(workbookData) {
-            const pivot = await this._getPivotForSpreadsheet();
-            const model = this._initializeModel(workbookData);
-            const anchor = [0, 0];
-            model.dispatch("BUILD_PIVOT", { pivot, anchor });
-            return model;
-        },
-        /**
-         * Retrieves the sheet data after inserting a pivot.
-         * The pivot can be inserted in a new workbook (if workbookData is null)
-         * or inserted in a new sheet of an existing workbook.
-         *
-         * @param {Object|null} workbookData WorkbookData of the existing workbook.
-         *
-         * @private
-         * @returns {Object} Data to inject in o_spreadsheet with the new pivot
-         * inserted.
-         */
-        async _getSpreadsheetData(workbookData) {
-            const model = await this._getSpreadsheetModel(workbookData);
-            return JSON.stringify(model.exportData());
-        },
-        /**
-         * Save a pivot in a Workbook (new or existing) and open the
-         * corresponding Workbook.
+         * Open a new spreadsheet or an existing one and insert the pivot in it.
          *
          * @param {number|false} spreadsheet Id of the document in which the
          *                                   pivot should be inserted. False if
@@ -161,40 +147,16 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
          *
          * @private
          */
-        async _save_sheet(spreadsheet) {
+        async _insertInSpreadsheet(spreadsheet) {
             let documentId;
             let notificationMessage;
+            const initCallback = await this._getCallbackBuildPivot(!spreadsheet);
             if (!spreadsheet) {
-                documentId = await this._rpc({
-                    model: "documents.document",
-                    method: "create",
-                    args: [
-                        {
-                            name: _t("Untitled spreadsheet"),
-                            mimetype: "application/o-spreadsheet",
-                            handler: "spreadsheet",
-                            raw: await this._getSpreadsheetData(),
-                        },
-                    ],
-                });
+                documentId = await this._createEmptySpreadsheet();
                 notificationMessage = _t("New spreadsheet created in Documents");
             } else {
                 documentId = spreadsheet.id;
-                const spreadsheetData = await this._rpc({
-                    model: "documents.document",
-                    method: "search_read",
-                    fields: ["raw"],
-                    domain: [["id", "=", documentId]],
-                });
-                const raw = await this._getSpreadsheetData(
-                    JSON.parse(spreadsheetData[0].raw)
-                );
-                await this._rpc({
-                    model: "documents.document",
-                    method: "write",
-                    args: [[documentId], { raw }],
-                });
-                notificationMessage = _.str.sprintf(
+                notificationMessage = notificationMessage = _.str.sprintf(
                     _t("New sheet inserted in '%s'"),
                     spreadsheet.name
                 );
@@ -209,6 +171,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 tag: "action_open_spreadsheet",
                 params: {
                     active_id: documentId,
+                    initCallback,
                 },
             });
         },

@@ -33,6 +33,12 @@ odoo.define("documents_spreadsheet.ControlPanel", function (require) {
         isFavorited:{
             type: Boolean,
             optional: true
+        },
+        isSpreadsheetSynced: {
+            type: Boolean,
+        },
+        numberOfConnectedUsers: {
+            type: Number,
         }
     });
 

@@ -560,7 +560,6 @@ class SaleSubscription(models.Model):
 
         company = self.env.company or self.company_id
 
-        fpos = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
         journal = self.template_id.journal_id or self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', company.id)], limit=1)
         if not journal:
             raise UserError(_('Please define a sale journal for the company "%s".') % (company.name or '', ))
@@ -575,6 +574,7 @@ class SaleSubscription(models.Model):
         use_sale_order = sale_order and sale_order.partner_id == self.partner_id
         partner_id = sale_order.partner_invoice_id.id if use_sale_order else self.partner_invoice_id.id or addr['invoice']
         partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
+        fpos = self.env['account.fiscal.position'].with_company(company).get_fiscal_position(self.partner_id.id, partner_shipping_id)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
         if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.company_id.invoice_terms:
             narration += '\n' + self.company_id.invoice_terms

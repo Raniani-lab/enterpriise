@@ -5,7 +5,7 @@ from odoo import api, models
 
 
 class QualityCustomReport(models.AbstractModel):
-    _name = 'report.quality_worksheet.worksheet_custom'
+    _name = 'report.quality_control_worksheet.worksheet_custom'
     _description = 'Quality Worksheet Custom Report'
 
     @api.model

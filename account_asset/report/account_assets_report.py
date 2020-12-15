@@ -157,7 +157,7 @@ class assets_report(models.AbstractModel):
             line = {
                 'id': id,
                 'level': 1,
-                'name': name if len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
+                'name': name if self._context.get('print_mode') or len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
                 'columns': [
                     {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
                     {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},

@@ -98,13 +98,14 @@ class HrContract(models.Model):
 
     def _get_advantage_values_company_bike_depreciated_cost(self, contract, advantages):
         has_bike = advantages['fold_company_bike_depreciated_cost']
-        if not has_bike:
+        selected_bike = advantages.get('select_company_bike_depreciated_cost', None)
+        if not has_bike or not selected_bike:
             return {
                 'transport_mode_bike': False,
                 'new_bike_model_id': False,
                 'bike_id': False,
             }
-        bike, bike_id = advantages['select_company_bike_depreciated_cost'].split('-')
+        bike, bike_id = selected_bike.split('-')
         new_bike = bike == 'new'
         if new_bike:
             return {

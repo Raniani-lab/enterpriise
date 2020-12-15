@@ -215,7 +215,7 @@ class WebsiteCalendar(http.Controller):
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?message=no-cancel')
-        event.unlink()
+        event.with_context(archive_on_error=True).unlink()
         return request.redirect('/calendar?message=cancel')
 
     @http.route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)

@@ -69,6 +69,15 @@ var FilterSeparatorComponent = AbstractComponent.extend({
 var AbstractNewFieldComponent = AbstractComponent.extend({
     structure: 'field',
     type: false,
+
+    /**
+     * @override
+     * @param {Object} attrs
+     */
+    init: function (parent, attrs) {
+        this._super(parent);
+        this.fieldAttrs = attrs;
+    },
     /**
      * @override
      */
@@ -78,6 +87,7 @@ var AbstractNewFieldComponent = AbstractComponent.extend({
             type: this.type,
             field_description: 'New ' + this.label,
         });
+        this.$el.data('new_attrs', this.fieldAttrs);
         return this._super.apply(this, arguments);
     },
 });
@@ -159,8 +169,9 @@ var ExistingFieldComponent = AbstractComponent.extend({
      * @param {String} field_description
      * @param {String} type
      * @param {Boolean} store
+     * @param {Object} attrs
      */
-    init: function (parent, name, field_description, type, store) {
+    init: function (parent, name, field_description, type, store, attrs) {
         this._super(parent);
         this.structure = 'field';
         this.label = field_description;
@@ -168,17 +179,19 @@ var ExistingFieldComponent = AbstractComponent.extend({
         this.className = 'o_web_studio_field_' + type;
         this.type = type;
         this.store = store;
+        this.fieldAttrs = attrs;
     },
     /**
      * @override
      */
     start: function () {
-        this.$el.data('new_attrs',{
+        const newAttrs = Object.assign(this.fieldAttrs || {}, {
             name: this.description,
             label: this.label,
             type: this.type,
             store: this.store ? "true":"false",
         });
+        this.$el.data('new_attrs', newAttrs);
         this.$el.attr("title", this.label);
         return this._super.apply(this, arguments);
     },
@@ -189,7 +202,8 @@ var AbstractNewWidgetComponent = AbstractNewFieldComponent.extend({
      * @override
      */
     start: function () {
-        this.$el.data('new_attrs', this.attrs);
+        const newAttrs = Object.assign(this.fieldAttrs || {}, this.attrs);
+        this.$el.data('new_attrs', newAttrs);
         return this._super.apply(this, arguments);
     },
 });

@@ -1748,7 +1748,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'field':
                 var field_description = event.data.field_description;
-                new_attrs = _.pick(new_attrs, ['name', 'widget', 'options', 'display']);
+                new_attrs = _.pick(new_attrs, ['name', 'widget', 'options', 'display', 'optional']);
                 this._addField(type, field_description, node, xpath_info, position,
                     new_attrs, event.data);
                 break;

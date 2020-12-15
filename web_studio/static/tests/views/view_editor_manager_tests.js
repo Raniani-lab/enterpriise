@@ -389,6 +389,37 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('new field should come with show as default value of optional', async function (assert) {
+        assert.expect(1);
+
+        let fieldsView;
+        const arch = "<tree><field name='display_name'/></tree>";
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].node.attrs.optional,
+                        "show", "default value of optional should be 'show'");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = Object.assign({}, vem.fields_view);
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), $('.o_web_studio_hook'));
+
+        vem.destroy();
+    });
+
     QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
         assert.expect(4);
 

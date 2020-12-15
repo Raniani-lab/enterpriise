@@ -513,7 +513,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             const fields = _.sortBy(this.fields_not_in_view, function (field) {
                 return field.string.toLowerCase();
             });
-            formWidgets = fields.map(field => new formComponent(this, field.name, field.string, field.type));
+            const attrs = {};
+            if (this.view_type === 'list') {
+                attrs.optional = 'show';
+            }
+            formWidgets = fields.map(field => {
+                return new formComponent(this, field.name, field.string, field.type, field.store, Object.assign({}, attrs));
+            });
         }
 
         if (this._searchValue) {
@@ -545,7 +551,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      */
     _renderNewFieldsSection: function () {
         const widgetClasses = form_component_widget_registry.get('new_field');
-        const formWidgets = widgetClasses.map(FormComponent => new FormComponent(this));
+        const attrs = {};
+        if (this.view_type === 'list') {
+            attrs.optional = 'show';
+        }
+        const formWidgets = widgetClasses.map(FormComponent => {
+            return new FormComponent(this, Object.assign({}, attrs));
+        });
         const $sectionTitle = $('<h3>', {
             html: _t('New Fields'),
         });

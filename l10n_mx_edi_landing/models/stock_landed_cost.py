@@ -25,7 +25,7 @@ class StockLandedCost(models.Model):
     _sql_constraints = [
         (
             'l10n_mx_edi_customs_number',
-            'UNIQUE (l10n_mx_edi_customs_number, company_id)',
+            'UNIQUE (l10n_mx_edi_customs_number)',
             _('The custom number must be unique!'),
         )
     ]

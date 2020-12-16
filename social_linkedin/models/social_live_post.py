@@ -5,7 +5,7 @@ import requests
 from urllib.parse import quote
 from werkzeug.urls import url_join
 
-from odoo import models, fields, _
+from odoo import models, fields, tools, _
 from odoo.exceptions import UserError
 
 
@@ -19,34 +19,40 @@ class SocialLivePostLinkedin(models.Model):
         accounts = self.env['social.account'].search([('media_type', '=', 'linkedin')])
 
         for account in accounts:
-            linkedin_post_ids = self.env['social.live.post'].sudo().search([('account_id', '=', account.id)], order='create_date DESC', limit=700)
+            linkedin_post_ids = self.env['social.live.post'].sudo().search([('account_id', '=', account.id)], order='create_date DESC', limit=1000)
             if not linkedin_post_ids:
                 continue
 
             linkedin_post_ids = {post.linkedin_post_id: post for post in linkedin_post_ids}
 
-            endpoint = url_join(
-                self.env['social.media']._LINKEDIN_ENDPOINT,
-                'organizationalEntityShareStatistics?shares=List(%s)' % ','.join([quote(urn) for urn in linkedin_post_ids]))
+            session = requests.Session()
 
-            response = requests.get(
-                endpoint, params={'q': 'organizationalEntity', 'organizationalEntity': account.linkedin_account_urn, 'count': 700},
-                headers=account._linkedin_bearer_headers())
+            # The LinkedIn API limit the query parameters to 4KB
+            # An LinkedIn URN is approximatively 40 characters
+            # So we keep a big margin and we split over 50 LinkedIn posts
+            for batch_linkedin_post_ids in tools.split_every(50, linkedin_post_ids):
+                endpoint = url_join(
+                    self.env['social.media']._LINKEDIN_ENDPOINT,
+                    'organizationalEntityShareStatistics?shares=List(%s)' % ','.join(map(quote, batch_linkedin_post_ids)))
 
-            if response.status_code != 200 or 'elements' not in response.json():
-                account.sudo().write({'is_media_disconnected': True})
-                continue
+                response = session.get(
+                    endpoint, params={'q': 'organizationalEntity', 'organizationalEntity': account.linkedin_account_urn, 'count': 50},
+                    headers=account._linkedin_bearer_headers())
 
-            for stats in response.json()['elements']:
-                urn = stats.get('share')
-                stats = stats.get('totalShareStatistics')
+                if response.status_code != 200 or 'elements' not in response.json():
+                    account.sudo().is_media_disconnected = True
+                    break
 
-                if not urn or not stats or urn not in linkedin_post_ids:
-                    continue
+                for stats in response.json()['elements']:
+                    urn = stats.get('share')
+                    stats = stats.get('totalShareStatistics')
 
-                linkedin_post_ids[urn].write({
-                    'engagement': stats.get('likeCount', 0) + stats.get('commentCount', 0) + stats.get('shareCount', 0)
-                })
+                    if not urn or not stats or urn not in batch_linkedin_post_ids:
+                        continue
+
+                    linkedin_post_ids[urn].update({
+                        'engagement': stats.get('likeCount', 0) + stats.get('commentCount', 0) + stats.get('shareCount', 0)
+                    })
 
     def _post(self):
         linkedin_live_posts = self.filtered(lambda post: post.account_id.media_type == 'linkedin')

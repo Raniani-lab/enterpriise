@@ -910,7 +910,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             @param field: a many2one field
         """
 
-        if field.ttype != 'many2one' or field.relation != model:
+        if (field.ttype != 'many2one' and field.ttype != 'many2many') or field.relation != model:
             raise UserError(_('The related field of a button has to be a many2one to %s.', model))
 
         model = request.env['ir.model'].search([('model', '=', model)], limit=1)
@@ -921,10 +921,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         button_count_field = request.env['ir.model.fields'].search([('name', '=', button_count_field_name), ('model_id', '=', model.id)])
         if not button_count_field:
             compute_function = """
-                    results = self.env['%(model)s'].read_group([('%(field)s', 'in', self.ids)], ['%(field)s'], ['%(field)s'])
-                    dic = {}
-                    for x in results: dic[x['%(field)s'][0]] = x['%(field)s_count']
-                    for record in self: record['%(count_field)s'] = dic.get(record.id, 0)
+                    for record in self: record['%(count_field)s'] = self.env['%(model)s'].search_count([('%(field)s', '=', record.id)])
                 """ % {
                     'model': field.model,
                     'field': field.name,
@@ -942,7 +939,8 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # The action could already exist but we don't want to recreate one each time
         button_action_domain = "[('%s', '=', active_id)]" % (field.name)
-        button_action_context = "{'search_default_%s': active_id,'default_%s': active_id}" % (field.name, field.name)
+        active_id = 'active_id' if field.ttype == 'many2one' else '[active_id]'
+        button_action_context = "{'search_default_%s': active_id,'default_%s': %s}" % (field.name, field.name, active_id)
         button_action = request.env['ir.actions.act_window'].search([
             ('name', '=', button_name), ('res_model', '=', field.model),
             ('domain', '=', button_action_domain), ('context', '=', button_action_context),

@@ -5578,7 +5578,7 @@ QUnit.module('ViewEditorManager', {
             chatter_allowed: true,
             mockRPC: function (route, args) {
                 if (args.method === 'name_search' && args.model === 'ir.model.fields') {
-                    assert.deepEqual(args.kwargs.args, [['relation', '=', 'partner'], ['ttype', '=', 'many2one'], ['store', '=', true]],
+                    assert.deepEqual(args.kwargs.args, [['relation', '=', 'partner'], ['ttype', 'in', ['many2one', 'many2many']], ['store', '=', true]],
                         "the domain should be correctly set when searching for a related field for new button");
                     return Promise.resolve([]);
                 }

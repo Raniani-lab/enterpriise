@@ -64,7 +64,7 @@ class StockReport(models.Model):
             res = [{}]
 
         if stock_value:
-            products = self.env['product.product']
+            products = self.env['product.product'].with_context(active_test=False)
             # Split the recordset for faster computing.
             value = sum(
                 product.value_svl

@@ -352,6 +352,7 @@ class Planning(models.Model):
             user_tz = pytz.timezone(slot._get_tz())
             employee = slot.employee_id if slot.employee_id else slot.env.user.employee_id
 
+            previous_end = slot.end_datetime or False
             start = slot.start_datetime or self._default_start_datetime()
             end = slot.end_datetime or self._default_end_datetime()
             work_interval = employee._adjust_to_calendar(start, end)
@@ -373,6 +374,8 @@ class Planning(models.Model):
                 h, m = divmod(slot.template_id.duration, 1)
                 delta = timedelta(hours=int(h), minutes=int(m * 60))
                 slot.end_datetime = slot.start_datetime + delta
+                if previous_end:
+                    slot.end_datetime += previous_end.date() - slot.end_datetime.date()
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_publication_warning(self):

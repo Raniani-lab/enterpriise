@@ -56,6 +56,7 @@ class StockPicking(models.Model):
             account.base_marketplace_id.code,
             error_message,
             **account._build_get_api_connector_kwargs())
+        picking_done = self.env['stock.picking']
         for picking in self:
             amazon_order_ref = picking.sale_id.amazon_order_ref
             items_data = picking.move_lines.filtered('sale_line_id.amazon_item_ref').mapped(
@@ -72,8 +73,9 @@ class StockPicking(models.Model):
                 break
             _logger.info("sent shipment confirmation (feed id %s) to amazon for order with "
                          "amazon_order_ref %s" % (feed_submission_id, amazon_order_ref))
-        self.write({'amazon_sync_pending': False})
-    
+            picking_done |= picking
+        picking_done.write({'amazon_sync_pending': False})
+
     def _get_carrier_details(self):
         """ Return the shipper name and tracking number. Overridden by sale_amazon_delivery. """
         return None, None

@@ -114,6 +114,7 @@ var EditMenuDialog = Dialog.extend({
             attribute: 'data-menu-id',
             expression: '()(.+)', // nestedSortable takes the second match of an expression (*sigh*)
             relocate: this.moveMenu.bind(this),
+            rtl: _t.database.parameters.direction === "rtl",
         });
         this.opened().then(() => {
             if (this.scrollToBottom) {

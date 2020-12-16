@@ -8,6 +8,7 @@ from odoo.tools.misc import remove_accents
 
 import base64
 import re
+from datetime import datetime
 
 def check_valid_SEPA_str(string):
     if re.search('[^-A-Za-z0-9/?:().,\'+ ]', string) is not None:
@@ -116,7 +117,7 @@ class AccountBatchPayment(models.Model):
             xml_doc = self.journal_id.create_iso20022_credit_transfer(payment_dicts, self.sct_batch_booking, self.sct_generic)
             return {
                 'file': base64.encodebytes(xml_doc),
-                'filename': "SCT-" + self.journal_id.code + "-" + str(fields.Date.today()) + ".xml",
+                'filename': "SCT-" + self.journal_id.code + "-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".xml",
             }
 
         return super(AccountBatchPayment, self)._generate_export_file()

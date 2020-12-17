@@ -3427,6 +3427,58 @@ QUnit.module('documents_kanban_tests.js', {
         list.destroy();
     });
 
+    QUnit.test('documents List: selection using keyboard', async function (assert) {
+        assert.expect(5);
+
+        const list = await createDocumentsView({
+            View: DocumentsListView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+            <tree>
+                <field name="type" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="owner_id"/>
+                <field name="type"/>
+            </tree>`,
+        });
+
+        let $recordSelector = list.$('.o_document_list_record[data-res-id="5"] .o_list_record_selector');
+        $recordSelector.focus().trigger($.Event('keydown', {
+            keyCode: $.ui.keyCode.ENTER,
+            which: $.ui.keyCode.ENTER,
+        }));
+        await testUtils.nextTick();
+        assert.containsOnce(list, '.o_list_record_selector input:checked',
+            "there should be 1 selected record");
+        assert.ok($recordSelector.find('input').prop('checked'),
+            "the right record should be selected");
+
+        $recordSelector = list.$('.o_document_list_record[data-res-id="4"] .o_list_record_selector');
+        $recordSelector.focus().trigger($.Event('keydown', {
+            keyCode: $.ui.keyCode.ENTER,
+            which: $.ui.keyCode.ENTER,
+        }));
+        await testUtils.nextTick();
+        assert.containsOnce(list, '.o_list_record_selector input:checked',
+            "there should be 1 selected record");
+        assert.ok($recordSelector.find('input').prop('checked'),
+            "the right record should be selected");
+
+        // Press Enter key with Shift key should select multiple records
+        list.$('.o_document_list_record[data-res-id="3"] td:first').focus().trigger($.Event('keydown', {
+            keyCode: $.ui.keyCode.ENTER,
+            which: $.ui.keyCode.ENTER,
+            shiftKey: true,
+        }));
+        await testUtils.nextTick();
+        assert.containsN(list, '.o_list_record_selector input:checked', 2,
+            "there should be 2 selected records");
+
+        list.destroy();
+    });
+
     QUnit.test('documents: Versioning', async function (assert) {
         assert.expect(13);
 

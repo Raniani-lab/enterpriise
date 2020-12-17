@@ -98,6 +98,21 @@ const DocumentsListRenderer = ListRenderer.extend({
     },
     /**
      * @override
+     */
+    _onKeyDown(ev) {
+        if (ev.keyCode === 13) { // Enter key
+            ev.stopPropagation();
+            const $tr = $(ev.currentTarget).closest('tr');
+            this._toggleSelect(ev, {
+                isKeepSelection: false,
+                resId: $tr.data('res-id'),
+            });
+        } else {
+            return this._super(...arguments);
+        }
+    },
+    /**
+     * @override
      * @param {MouseEvent} ev
      */
     _onRowClicked(ev) {

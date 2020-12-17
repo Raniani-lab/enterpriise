@@ -493,20 +493,23 @@ class HelpdeskTicket(models.Model):
         # to avoid intrusive changes in the 'mail' module
         # TDE TODO: to extract and clean in mail thread
         for vals in list_value:
-            if 'partner_name' in vals and 'partner_email' in vals and 'partner_id' not in vals:
-                parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(vals['partner_email'])
+            partner_id = vals.get('partner_id', False)
+            partner_name = vals.get('partner_name', False)
+            partner_email = vals.get('partner_email', False)
+            if partner_name and partner_email and not partner_id:
+                parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(partner_email)
                 if not parsed_name:
-                    parsed_name = vals['partner_name']
+                    parsed_name = partner_name
                 try:
                     vals['partner_id'] = self.env['res.partner'].find_or_create(
-                        tools.formataddr((parsed_name, parsed_email))
+                        tools.formataddr((partner_name, parsed_email))
                     ).id
                 except UnicodeEncodeError:
                     # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall
                     # back on a simple partner creation.
                     vals['partner_id'] = self.env['res.partner'].create({
-                        'name': vals['partner_name'],
-                        'email': vals['partner_email'],
+                        'name': partner_name,
+                        'email': partner_email,
                     }).id
 
         # determine partner email for ticket with partner but no email given

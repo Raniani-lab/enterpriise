@@ -3428,7 +3428,7 @@ QUnit.module('documents_kanban_tests.js', {
     });
 
     QUnit.test('documents List: selection using keyboard', async function (assert) {
-        assert.expect(5);
+        assert.expect(6);
 
         const list = await createDocumentsView({
             View: DocumentsListView,
@@ -3475,6 +3475,14 @@ QUnit.module('documents_kanban_tests.js', {
         await testUtils.nextTick();
         assert.containsN(list, '.o_list_record_selector input:checked', 2,
             "there should be 2 selected records");
+
+        list.$('.o_document_list_record[data-res-id="2"] .o_list_record_selector').focus().trigger($.Event('keydown', {
+            keyCode: $.ui.keyCode.SPACE,
+            which: $.ui.keyCode.SPACE,
+        }));
+        await testUtils.nextTick();
+        assert.containsN(list, '.o_list_record_selector input:checked', 3,
+            "there should be 3 selected records");
 
         list.destroy();
     });

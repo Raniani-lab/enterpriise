@@ -107,6 +107,16 @@ const DocumentsListRenderer = ListRenderer.extend({
                 isKeepSelection: false,
                 resId: $tr.data('res-id'),
             });
+        } else if (ev.keyCode === 32) {
+            // press space on focused checkbox should be handled properly else it will
+            // call _onClickListSelector as well as _onToggleCheckbox of list_renderer
+            ev.preventDefault();
+            ev.stopPropagation();
+            const $tr = $(ev.currentTarget).closest('tr');
+            this._toggleSelect(ev, {
+                isKeepSelection: true,
+                resId: $tr.data('res-id'),
+            });
         } else {
             return this._super(...arguments);
         }

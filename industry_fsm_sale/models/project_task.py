@@ -169,11 +169,13 @@ class Task(models.Model):
             domain = expression.AND([domain, [('id', '!=', deposit_product)]])
 
         kanban_view = self.env.ref('industry_fsm_sale.view_product_product_kanban_material')
+        search_view = self.env.ref('industry_fsm_sale.product_search_form_view_inherit_fsm_sale')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Choose Products'),
             'res_model': 'product.product',
             'views': [(kanban_view.id, 'kanban'), (False, 'form')],
+            'search_view_id': [search_view.id, 'search'],
             'domain': domain,
             'context': {
                 'fsm_mode': True,

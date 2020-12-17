@@ -58,4 +58,18 @@
     </field>
 </record>
 
+    <record id="product_search_form_view_inherit_fsm_sale" model="ir.ui.view">
+        <field name="name">product.product.search.inherit.fsm.sale</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <searchpanel>
+                    <field name="categ_id" icon="fa-th-list" string="Product Category" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
 </odoo>

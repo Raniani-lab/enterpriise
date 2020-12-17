@@ -43,12 +43,9 @@ class StockPicking(models.Model):
         res = super(StockPicking, self)._create_backorder()
         if self.env.context.get('skip_check'):
             return res
-        # Transfer the quality checks from the original picking to the backorder
-        # note this will not apply to quality checks for partially completed move lines (quality_state!='none' at this point)
         for backorder in res:
-            backorder.backorder_id.check_ids.filtered(lambda qc: qc.quality_state == 'none').write({
-                'picking_id': backorder.id,
-            })
+            backorder.backorder_id.check_ids.filtered(lambda qc: qc.quality_state == 'none').unlink()
+            backorder.move_lines._create_quality_checks()
         return res
 
     def _action_done(self):

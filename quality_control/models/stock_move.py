@@ -11,11 +11,14 @@ class StockMove(models.Model):
 
     def _action_confirm(self, merge=True, merge_into=False):
         moves = super(StockMove, self)._action_confirm(merge=merge, merge_into=merge_into)
+        moves._create_quality_checks()
+        return moves
 
+    def _create_quality_checks(self):
         # Groupby move by picking. Use it in order to generate missing quality checks.
         pick_moves = defaultdict(lambda: self.env['stock.move'])
         check_vals_list = []
-        for move in moves:
+        for move in self:
             if move.picking_id:
                 pick_moves[move.picking_id] |= move
         for picking, moves in pick_moves.items():
@@ -31,5 +34,3 @@ class StockMove(models.Model):
                 })
             check_vals_list += picking_check_vals_list
         self.env['quality.check'].sudo().create(check_vals_list)
-
-        return moves

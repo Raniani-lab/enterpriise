@@ -85,3 +85,25 @@ class TestPayslipFlow(TestPayslipBase):
 
         self.assertEqual(len(payslip_run.slip_ids), 1)
         self.assertEqual(payslip_run.slip_ids.struct_id.id, specific_structure.id)
+
+    def test_02_payslip_batch_with_archived_employee(self):
+        # activate Richard's contract
+        self.richard_emp.contract_ids[0].state = 'open'
+        # archive his contact
+        self.richard_emp.action_archive()
+
+        # 13th month pay
+        payslip_run = self.env['hr.payslip.run'].create({
+            'date_start': datetime.date.today() + relativedelta(years=-1, month=8, day=1),
+            'date_end': datetime.date.today() + relativedelta(years=-1, month=8, day=31),
+            'name': 'End of the year bonus'
+        })
+        # I create record for generating the payslip for this Payslip run.
+        payslip_employee = self.env['hr.payslip.employees'].create({
+            'employee_ids': [(4, self.richard_emp.id)],
+            'structure_id': self.ref('hr_payroll.structure_003'),
+        })
+        # I generate the payslip by clicking on Generat button wizard.
+        payslip_employee.with_context(active_id=payslip_run.id).compute_sheet()
+
+        self.assertEqual(len(payslip_run.slip_ids), 1)

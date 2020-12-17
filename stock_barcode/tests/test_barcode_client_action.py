@@ -1053,6 +1053,52 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         # Check the new package is well transfered
         self.assertEqual(pack1.location_id, self.shelf2)
 
+    def test_pack_multiple_location_02(self):
+        """ Creates an internal transfer and reserves a package. Then this test will scan the
+        location source, the package (already in the barcode view) and the location destination.
+        """
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+
+        # Creates a package with 1 quant in it.
+        pack1 = self.env['stock.quant.package'].create({
+            'name': 'PACK0002020',
+        })
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product1,
+            location_id=self.shelf1,
+            quantity=5,
+            package_id=pack1,
+        )
+
+        # Creates an internal transfer for this package.
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.shelf1.id,
+            'location_dest_id': self.shelf2.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        url = self._get_client_action_url(internal_picking.id)
+
+        self.env['stock.move'].create({
+            'name': 'test_delivery_reserved_2_1',
+            'location_id': self.shelf1.id,
+            'location_dest_id': self.shelf2.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 5,
+            'picking_id': internal_picking.id,
+        })
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+
+        self.start_tour(url, 'test_pack_multiple_location_02', login='admin', timeout=180)
+
+        # Checks the new package is well transfered.
+        self.assertEqual(pack1.location_id, self.shelf2)
+
     def test_put_in_pack_from_multiple_pages(self):
         """ In an internal picking where prod1 and prod2 are reserved in shelf1 and shelf2, processing
         all these products and then hitting put in pack should move them all in the new pack.

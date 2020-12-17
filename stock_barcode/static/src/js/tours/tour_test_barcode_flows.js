@@ -3046,6 +3046,32 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 ]);
 
+tour.register('test_pack_multiple_location_02', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00'
+    },
+
+    {
+        trigger: '.o_current_location:contains("WH/Stock/Section 1")',
+        run: 'scan PACK0002020',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00',
+    },
+
+    {
+        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification.bg-success'
+    },
+]);
+
 tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

@@ -1207,7 +1207,7 @@ var ClientAction = AbstractAction.extend({
                                 lot_name: quant.lot_id[1],
                                 owner_id: quant.owner_id,
                             });
-                            self.scannedLines.push(res.lineDescription.virtual_id);
+                            self.scannedLines.push(res.id || res.virtualId);
                             if (! self.show_entire_packs) {
                                 if (res.isNewLine) {
                                     linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model, true]]);

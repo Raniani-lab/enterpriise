@@ -59,7 +59,7 @@
                     </div>
                     <div class="o_sign_document_buttons">
                         <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/completed" class="btn btn-primary o_sign_download_document_button">Download Document</a>
-                        <a role="button" t-if="sign_request.start_sign" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Certificate</a>
+                        <a role="button" t-if="sign_request.state == 'signed'" t-attf-href="/sign/download/{{sign_request.id}}/{{sign_request.access_token}}/log" class="btn btn-secondary o_sign_download_log_button">Certificate</a>
                     </div>
                 </div>
 

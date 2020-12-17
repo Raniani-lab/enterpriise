@@ -85,6 +85,7 @@ class HrEmployeeBase(models.AbstractModel):
                 'search_default_group_by_employee': True,
                 'filter_employee_ids': self.ids,
                 'hide_open_shift': True,
+                'default_employee_id': self.id,
             }
         })
         return action

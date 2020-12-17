@@ -275,10 +275,12 @@ KanbanRenderer.include(Object.assign({}, KanbanTabsMobileMixin, {
             kanbanColumnContainer.classList.add('o_kanban_columns_content');
             kanbanColumnContainer.appendChild(newFragment);
             fragment.appendChild(kanbanColumnContainer);
-            $(qweb.render('KanbanView.MobileTabs', {
-                data: data,
-                quickCreateEnabled: self._canCreateColumn()
-            })).prependTo(fragment);
+            if (data.length) {
+                $(qweb.render('KanbanView.MobileTabs', {
+                    data: data,
+                    quickCreateEnabled: self._canCreateColumn()
+                })).prependTo(fragment);
+            }
         }));
     },
 

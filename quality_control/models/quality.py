@@ -350,7 +350,7 @@ class ProductTemplate(models.Model):
         action['context'] = dict(self.env.context)
         action['context'].update({
             'search_default_product_ids': self.product_variant_ids.ids,
-            'default_product_tmpl_ids': self.product_variant_ids.ids,
+            'default_product_ids': self.product_variant_ids.ids,
         })
         return action
 

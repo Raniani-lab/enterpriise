@@ -747,6 +747,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(' ' * 9) # TIN of the legal representant; blank if 14 years or older
         rslt += self._boe_format_string(' ' * 88)
         rslt += self._boe_format_string(' ' * 13) # "Sello Electronico" => for administration
+        rslt += b'\r\n'
 
         return rslt
 
@@ -861,6 +862,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_number(cash_basis_data or 0, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
         rslt += self._boe_format_string(' ' * 201)
+        rslt += b'\r\n'
 
         return rslt
 
@@ -926,6 +928,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(' ' * 204)
         rslt += self._boe_format_string(' ' * 9) # TIN of the legal representative, if under 14 years old
         rslt += self._boe_format_string(' ' * 101) # Constant
+        rslt += b'\r\n'
         return rslt
 
     def _mod_349_write_type2_invoice_record(self, report_data, year, key, current_company):
@@ -939,6 +942,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(key, length=1)
         rslt += self._boe_format_number(report_data['line_data']['columns'][0]['no_format'], length=13, decimal_places=2, in_currency=True)
         rslt += self._boe_format_string(' ' * 354)
+        rslt += b'\r\n'
 
         return rslt
 
@@ -985,5 +989,6 @@ class AEATAccountFinancialReport(models.Model):
             rslt += self._boe_format_number(current_company.currency_id.round(previous_report_amount - total_refund), length=13, decimal_places=2, in_currency=True)
             rslt += self._boe_format_number(previous_report_amount, length=13, decimal_places=2, in_currency=True)
             rslt += self._boe_format_string(' ' * 322)
+            rslt += b'\r\n'
 
         return rslt

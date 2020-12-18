@@ -17,13 +17,13 @@ class SocialPushNotificationsCase(SocialCase):
         cls.social_accounts.write({'firebase_use_own_account': True})
 
     def test_post(self):
-        # Create some visitors with or without push_token in different timezone
-        timezones = ['Europe/Brussels', 'America/New_York', 'Asia/Vladivostok']
+        # Create some visitors with or without push_token in different timezone (or no timezone)
+        timezones = ['Europe/Brussels', 'America/New_York', 'Asia/Vladivostok', False]
         Visitor = self.env['website.visitor']
         visitor_vals = []
-        for i in range(0, 3):
+        for i in range(0, 4):
             visitor_vals.append({
-                'name': timezones[i],
+                'name': timezones[i] or 'Visitor',
                 'timezone': timezones[i],
                 'push_token': 'fake_token_%s' % i if i != 0 else False,
             })

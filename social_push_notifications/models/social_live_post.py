@@ -49,7 +49,7 @@ class SocialLivePostPushNotifications(models.Model):
                 now_utc = pytz.utc.localize(fields.Datetime.now())
 
                 def get_filtered_timezone_visitors(visitor):
-                    visitor_tz = pytz.timezone(visitor.timezone or self.env.user.tz)
+                    visitor_tz = pytz.timezone(visitor.timezone or 'UTC')
                     visitor_local_datetime = now_utc.astimezone(visitor_tz).replace(tzinfo=None)
                     return visitor_local_datetime > post_user_datetime
 

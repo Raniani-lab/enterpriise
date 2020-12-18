@@ -1,4 +1,4 @@
-odoo.define("web.spreadsheet_tests", function (require) {
+odoo.define("documents_spreadsheet.spreadsheet_tests", function (require) {
     "use strict";
 
     const PivotView = require("web.PivotView");
@@ -16,9 +16,8 @@ odoo.define("web.spreadsheet_tests", function (require) {
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
     const topbarMenuRegistry = spreadsheet.registries.topbarMenuRegistry;
-    const toCartesian = spreadsheet.helpers.toCartesian;
     const { Model } = spreadsheet;
-
+    const { toCartesian } = spreadsheet.helpers;
     const createView = testUtils.createView;
 
 
@@ -759,7 +758,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const pivot = await pivotView._getPivotForSpreadsheet();
             pivotView.destroy();
 
-            model.dispatch("ADD_PIVOT", {
+            model.dispatch("BUILD_PIVOT", {
                 anchor: [12, 0], // this position is still free
                 pivot: pivot,
             });
@@ -805,7 +804,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const pivot = await pivotView._getPivotForSpreadsheet();
             pivotView.destroy();
 
-            model.dispatch("ADD_PIVOT", {
+            model.dispatch("BUILD_PIVOT", {
                 anchor: [12, 0], // this position is still free
                 pivot: pivot,
             });
@@ -852,7 +851,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const pivot = await pivotView._getPivotForSpreadsheet();
             pivotView.destroy();
 
-            model.dispatch("ADD_PIVOT", {
+            model.dispatch("BUILD_PIVOT", {
                 anchor: [12, 0], // this position is still free
                 pivot: pivot,
             });

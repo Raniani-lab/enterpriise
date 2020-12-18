@@ -127,10 +127,10 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
          * @returns o_spreadsheet Model
          */
         async _getSpreadsheetModel(workbookData) {
-            var pivot = await this._getPivotForSpreadsheet();
+            const pivot = await this._getPivotForSpreadsheet();
             const model = this._initializeModel(workbookData);
             const anchor = [0, 0];
-            model.dispatch("ADD_PIVOT", { pivot, anchor });
+            model.dispatch("BUILD_PIVOT", { pivot, anchor });
             return model;
         },
         /**

@@ -935,7 +935,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const [ p1 ] = Object.values(model.getters.getPivots());
                 assert.strictEqual(p1.id, 1, "It should have id 1");
                 const [ p2, p3 ] = [ Object.assign({}, p1), Object.assign({}, p1) ];
-                model.dispatch("ADD_PIVOT", {
+                model.dispatch("BUILD_PIVOT", {
                     anchor: [12, 0],
                     pivot: p2,
                 });
@@ -943,7 +943,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     Object.values(model.getters.getPivots()).map((p) => p.id), [1, 2],
                     "Last pivot should have id 2",
                 );
-                model.dispatch("ADD_PIVOT", {
+                model.dispatch("BUILD_PIVOT", {
                     anchor: [12, 0],
                     pivot: p3,
                 });

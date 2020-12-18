@@ -83,10 +83,8 @@
                     </header>
                     <sheet>
                         <group>
-                            <label for="name" class="oe_edit_only" string="Name"/>
-                            <h2><field name="name"/></h2>
-                            <label for="date" class="oe_edit_only"/>
-                            <div><field name="date"/></div>
+                            <h2><field name="name" placeholder="Name"/></h2>
+                            <div><field name="date" placeholder="Date"/></div>
                             <group colspan="3" col="6">
                                 <field name="bank_id"/>
                                 <field name="number"/>
@@ -170,8 +168,7 @@
             <field name="arch" type="xml">
                 <form string="Advice Lines">
                     <sheet>
-                    <label for="advice_id" class="oe_edit_only"/>
-                    <h1><field name="advice_id"/></h1>
+                        <h1><field name="advice_id" placeholder="Bank Advice"/></h1>
                         <group>
                             <field name="employee_id" />
                             <field name="name" />

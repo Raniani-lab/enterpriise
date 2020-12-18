@@ -418,8 +418,8 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
                     <div class="oe_title">
-                        <label for="name" string="Short Summary" class="oe_edit_only"/>
-                        <h2><field name="name" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
+                        <label for="name" string="Short Summary"/>
+                        <h2><field name="name" placeholder="e.g. Awesome Product 2.0" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
                     </div>
                     <group>
                         <group>

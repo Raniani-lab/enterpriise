@@ -124,8 +124,8 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="integrity" invisible="1"/>
                     <div class="oe_title">
-                        <label for="reference" class="oe_edit_only"/>
-                        <h1><field name="reference"/></h1>
+                        <label for="reference" string="Document Name"/>
+                        <h1><field name="reference" placeholder="e.g. Non-disclosure agreement"/></h1>
                     </div>
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': [('integrity', '=', True)]}">
                         The integrity of the document's history cannot be verified. This could mean that signature values or the underlying PDF document may have been modified after the fact.

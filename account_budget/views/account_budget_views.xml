@@ -79,9 +79,9 @@ Budgets
                 </header>
                 <sheet string="Budget">
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
+                        <label for="name"/>
                         <h1>
-                            <field name="name" attrs="{'readonly':[('state','!=','draft')]}" placeholder="Budget Name"/>
+                            <field name="name" attrs="{'readonly':[('state','!=','draft')]}" placeholder="e.g. Budget 2021: Optimistic"/>
                         </h1>
                     </div>
                     <group>

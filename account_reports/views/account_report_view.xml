@@ -9,9 +9,8 @@
                 <form string="Account Report">
                     <sheet>
                         <div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1><field name="name"/></h1>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <h1><field name="name" placeholder="Report Name"/></h1>
+                            <field name="company_id" placeholder="Related Company" groups="base.group_multi_company"/>
                         </div>
                         <group string="Report Definition">
                             <group>

@@ -9,8 +9,8 @@
             <form>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name" required="1" placeholder="E.g. Missing Expense"/></h1>
+                        <label for="name" string="Document Name"/>
+                        <h1><field name="name" required="1" placeholder="e.g. Missing Expense"/></h1>
                     </div>
                     <group>
                         <group>

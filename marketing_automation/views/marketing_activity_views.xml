@@ -7,7 +7,7 @@
             <form string="Activity">
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only" string="Name" />
+                        <label for="name" string="Activity Name" />
                         <h1><field name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
                     </div>
                     <group>

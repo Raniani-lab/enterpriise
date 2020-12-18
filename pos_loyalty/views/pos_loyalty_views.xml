@@ -36,8 +36,7 @@
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                         <field name="active" invisible="1"/>
                         <div class="oe_title">
-                            <label class="oe_edit_only" for="name" string="Loyalty Program Name"/>
-                            <h1><field name="name"/></h1>
+                            <h1><field name="name" placeholder="Loyalty Program Name"/></h1>
                         </div>
 
                         <div>
@@ -92,7 +91,7 @@
             <field name="arch" type="xml">
                 <form string="Loyalty Rule">
                     <div class="oe_title">
-                        <label class="oe_edit_only" for="name" string="Rule Name"/>
+                        <label for="name" string="Rule Name"/>
                         <h1><field name="name"/></h1>
                     </div>
                     <group col="2">
@@ -114,8 +113,8 @@
             <field name="arch" type="xml">
                 <form string="Loyalty Reward">
                     <div class="oe_title">
-                        <label class="oe_edit_only" for="name" string="Reward Name"/>
-                        <h1><field name="name"/></h1>
+                        <label for="name" string="Reward Name"/>
+                        <h1><field name="name" placeholder="e.g. Free Mug"/></h1>
                     </div>
                     <group>
                         <field name="point_cost" attrs="{ 'invisible':[('reward_type','=','resale')] }"/>

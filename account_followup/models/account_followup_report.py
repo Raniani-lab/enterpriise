@@ -301,9 +301,10 @@ class AccountFollowupReport(models.AbstractModel):
         Send by mail the followup to the customer
         """
         partner = self.env['res.partner'].browse(options.get('partner_id'))
-        non_blocked_invoices = partner.unpaid_invoices.filtered(lambda inv: not any(inv.line_ids.mapped('blocked')))
-        if not non_blocked_invoices:
+        non_blocked_amls = partner.unreconciled_aml_ids.filtered(lambda aml: not aml.blocked)
+        if not non_blocked_amls:
             return True
+        non_blocked_invoices = partner.unpaid_invoices.filtered(lambda inv: not any(inv.line_ids.mapped('blocked')))
         non_printed_invoices = non_blocked_invoices.filtered(lambda inv: not inv.message_main_attachment_id)
         if non_printed_invoices and partner.followup_level.join_invoices:
             raise UserError(_('You are trying to send a followup report to a partner for which you didn\'t print all the invoices ({})').format(" ".join(non_printed_invoices.mapped('name'))))

@@ -169,7 +169,7 @@ class WebsiteCalendar(http.Controller):
             return request.not_found()
         timezone = request.session.get('timezone')
         if not timezone:
-            timezone = request.env.context.get('tz') or event.appointment_type_id.appointment_tz or event.partner_ids and event.partner_ids[0].tz
+            timezone = request.env.context.get('tz') or event.appointment_type_id.appointment_tz or event.partner_ids and event.partner_ids[0].tz or event.user_id.tz or 'UTC'
             request.session['timezone'] = timezone
         tz_session = pytz.timezone(timezone)
 

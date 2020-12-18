@@ -6,6 +6,7 @@ from firebase_admin import messaging
 
 from unittest.mock import patch
 
+from odoo import fields
 from odoo.addons.social.tests.common import SocialCase
 from odoo.addons.social_push_notifications.models.social_account import SocialAccountPushNotifications
 
@@ -29,14 +30,17 @@ class SocialPushNotificationsCase(SocialCase):
             })
         visitors = Visitor.create(visitor_vals)
         self.social_post.create_uid.write({'tz': timezones[0]})
+        self.social_post.write({
+            'use_visitor_timezone': True,
+            'post_method': 'scheduled',
+            'scheduled_date': fields.Datetime.now() - datetime.timedelta(minutes=1)
+        })
 
         self.assertEqual(self.social_post.state, 'draft')
 
         self.social_post._action_post()
 
         live_posts = self.env['social.live.post'].search([('post_id', '=', self.social_post.id)])
-        # make sure live_posts' create_date is after 'now'
-        live_posts.write({'create_date': live_posts[0].create_date - datetime.timedelta(minutes=1)})
         self.assertEqual(len(live_posts), 2)
 
         self.assertTrue(all(live_post.state == 'ready' for live_post in live_posts))

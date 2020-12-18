@@ -17,7 +17,7 @@ class SocialPushNotificationsController(http.Controller):
             return {}
 
         title = current_website.notification_request_title or _("Want to discover new versions?")
-        body = current_website.notification_request_body or _("Enable push notifications to be notified about new features and events.")
+        body = current_website.notification_request_body or _("Enable push notifications to be notified about new features.")
         delay = current_website.notification_request_delay or 3
 
         if current_website.notification_request_icon:

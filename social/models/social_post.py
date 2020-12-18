@@ -58,8 +58,8 @@ class SocialPost(models.Model):
         ('now', 'Send now'),
         ('scheduled', 'Schedule later')], string="When", default='now', required=True,
         help="Publish your post immediately or schedule it at a later time.")
-    scheduled_date = fields.Datetime('Scheduled post date')
-    published_date = fields.Datetime('Published date', readonly=True,
+    scheduled_date = fields.Datetime('Scheduled Date')
+    published_date = fields.Datetime('Published Date', readonly=True,
         help="When the global post was published. The actual sub-posts published dates may be different depending on the media.")
     # stored for better calendar view performance
     calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True, readonly=False,

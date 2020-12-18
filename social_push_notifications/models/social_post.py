@@ -18,8 +18,9 @@ class SocialPostPushNotifications(models.Model):
     display_push_notifications_preview = fields.Boolean('Display Push Notifications Preview', compute='_compute_display_push_notifications_preview')
     push_notifications_preview = fields.Html('Push Notifications Preview', compute='_compute_push_notifications_preview')
 
-    use_visitor_timezone = fields.Boolean("Send at Visitors' Timezone", default=True,
-        help="e.g: If you post at 15:00, visitors will receive the post at 15:00 their time.")
+    use_visitor_timezone = fields.Boolean("Send at Visitors' Timezone", compute='_compute_use_visitor_timezone',
+        readonly=False, store=True,
+        help="e.g: If you post at 15:00 your time, all visitors will receive the post at 15:00 their time.")
     visitor_domain = fields.Char(string="Visitor Domain", default=[['push_token', '!=', False]], help="Domain to send push notifications to visitors.")
 
     @api.depends('message', 'account_ids.media_id.media_type')
@@ -53,6 +54,12 @@ class SocialPostPushNotifications(models.Model):
     def _compute_display_push_notification_attributes(self):
         for post in self:
             post.display_push_notification_attributes = 'push_notifications' in post.account_ids.media_id.mapped('media_type')
+
+    @api.depends('post_method')
+    def _compute_use_visitor_timezone(self):
+        for post in self:
+            if post.post_method == 'now' or not post.use_visitor_timezone:
+                post.use_visitor_timezone = False
 
     @api.model_create_multi
     def create(self, vals_list):

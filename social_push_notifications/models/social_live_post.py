@@ -40,11 +40,11 @@ class SocialLivePostPushNotifications(models.Model):
                 link_tracker = self.env['link.tracker'].create(link_tracker_values)
                 target_link = link_tracker.short_url
 
-            if not post.use_visitor_timezone:
+            if not post.use_visitor_timezone or not post.scheduled_date:
                 target_visitors = self.env['website.visitor'].search(visitor_domain)
             else:
                 # We need to filter the target_visitors based on their timezone
-                post_date = post.scheduled_date or live_post.create_date
+                post_date = post.scheduled_date
                 post_user_datetime = pytz.utc.localize(post_date).astimezone(pytz.timezone(post.create_uid.tz)).replace(tzinfo=None)
                 now_utc = pytz.utc.localize(fields.Datetime.now())
 

@@ -13,18 +13,22 @@
                 <xpath expr="//group[@name='social_post_global']" position="inside">
                     <div name="notification_request_parameters" colspan="2" class="o_horizontal_separator mt-5"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}">
-                        Web Notification Options
+                        Push Notification Options
                     </div>
                     <field name="display_push_notification_attributes" invisible="1"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
                     <field name="push_notification_title"
+                        string="Notification Title"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
                     <field name="push_notification_target_url"
+                        string="Target URL"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
                     <field name="push_notification_image" widget="image" class="o_push_notification_image_field"
+                        string="Icon Image"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
                     <field name="use_visitor_timezone"
-                        attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
+                        string="Local Time"
+                        attrs="{'invisible': ['|', ('display_push_notification_attributes', '=', False), ('post_method', '=', 'now')]}"/>
                     <field nolabel="1" colspan="2" name="visitor_domain" widget="domain" options="{'model': 'website.visitor'}"
                         attrs="{'invisible': [('display_push_notification_attributes', '=', False)]}"/>
                 </xpath>

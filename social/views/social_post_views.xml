@@ -207,7 +207,7 @@
                             </div>
                             <field name="message" widget="text_emojis" class="o_social_post_message_wrapper" options="{'onchange_on_keydown': true}"
                                      attrs="{'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}" />
-                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"
+                            <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments" options="{'accepted_file_extensions': 'image/*'}"
                                  attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}" />
                             <field string="Campaign" name="utm_campaign_id"
                                 attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"
@@ -216,7 +216,7 @@
                             <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
                         </group>
                         <group name="previews_placeholder" class="o_social_post_preview_group m-0">
-                            <div class="o_social_post_empty_preview o_view_nocontent bg-100"
+                            <div class="o_social_post_empty_preview overflow-hidden o_view_nocontent bg-100"
                                 attrs="{'invisible': [('account_ids', '!=', []), ('message', '!=', False), ('message', '!=', '')]}">
                                 <div class="o_nocontent_help">
                                     <p class="o_view_nocontent_smiling_face">

@@ -31,7 +31,7 @@ class ShareRoute(http.Controller):
         if share_id:
             share = env['documents.share'].sudo().browse(int(share_id))
             record = share._get_documents_and_check_access(share_token, [int(id)], operation='read')
-        if not record:
+        if not record or not record.exists():
             return (404, [], None)
 
         #check access right

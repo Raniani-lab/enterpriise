@@ -16,7 +16,7 @@ class AccountBatchPayment(models.Model):
         ('draft', 'New'),
         ('sent', 'Sent'),
         ('reconciled', 'Reconciled'),
-    ], store=True, compute='_compute_state')
+    ], store=True, compute='_compute_state', default='draft')
     journal_id = fields.Many2one('account.journal', string='Bank', domain=[('type', '=', 'bank')], required=True, readonly=True, states={'draft': [('readonly', False)]})
     payment_ids = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True, readonly=True, states={'draft': [('readonly', False)]})
     amount = fields.Monetary(compute='_compute_amount', store=True, readonly=True)

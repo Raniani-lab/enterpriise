@@ -45,7 +45,6 @@
         <field name="search_view_id" ref="hr_leave_view_search_manager_inherit_work_entry"/>
         <field name="view_id" ref="hr_leave_view_tree_inherit_work_entry"/>
         <field name="context">{
-            'search_default_approve': 1,
             'search_default_gray':1,
             'hide_employee_name': 1
         }</field>
@@ -60,7 +59,7 @@
 
     <menuitem
         id="menu_work_entry_leave_to_approve"
-        name="Time Off to Approve"
+        name="Time Off to Report"
         action="hr_leave_work_entry_action"
         parent="hr_work_entry_contract.menu_hr_payroll_work_entries_root"
         sequence="75"

@@ -302,7 +302,7 @@ class TestHR(common.TransactionCase):
             is_leave=True,
         )
         self.link_leave_work_entry_type(
-            user=self.hr_payroll_manager,
+            user=self.hr_holidays_manager,
             work_entry_type=work_entry_type_leave,
             leave_type=self.leave_type_1,
         )

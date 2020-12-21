@@ -47,7 +47,8 @@ class Task(models.Model):
             is_not_timesheet_line = sale_line_id.product_id != task.project_id.timesheet_product_id
             is_not_empty = sale_line_id.product_uom_qty != 0
             is_not_service_from_so = sale_line_id != task.sale_line_id
-            return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so])
+            is_task_related = sale_line_id.task_id == task
+            return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so, is_task_related])
 
         for task in self:
             material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task))
@@ -96,6 +97,13 @@ class Task(models.Model):
         })
         action['context'] = context
         return action
+
+    def _get_last_sol_of_customer(self):
+        self.ensure_one()
+        # For FSM task, we don't want to search the last SOL of the customer.
+        if self.is_fsm:
+            return False
+        return super(Task, self)._get_last_sol_of_customer()
 
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')

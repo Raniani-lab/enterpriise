@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
             return
 
         task = self.env['project.task'].browse(task_id)
-        sale_lines = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id)])
+        sale_lines = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id)])
         for product in self:
             if product.tracking != 'none':
                 sale_product = sale_lines.filtered(lambda sale: sale.product_id == product)
@@ -47,7 +47,7 @@ class ProductProduct(models.Model):
             self.quantity_decreasable = True
             return
 
-        sale_lines = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id)])
+        sale_lines = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id)])
 
         for product in self:
             sale_product = sale_lines.filtered(lambda sale: sale.product_id == product)
@@ -65,7 +65,7 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         task = self.env['project.task'].browse(task_id)
         sale_lines = self.env['sale.order.line'].search([
-            ('order_id', '=', task.sale_order_id.id), ('product_id', '=', self.id), ('product_uom_qty', '>', 0)])
+            ('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id), ('product_id', '=', self.id), ('product_uom_qty', '>', 0)])
         tracking_line_ids = [(0, 0, {
             'lot_id': line.fsm_lot_id.id,
             'quantity': line.product_uom_qty - line.qty_delivered,

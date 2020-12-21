@@ -71,14 +71,18 @@ class HelpdeskTicket(models.Model):
             result['project_id'] = self.env['helpdesk.team'].browse(result['team_id']).project_id.id
         return result
 
+    # TODO: [XBO] change this field in related and stored (to count the number of tickets per project) field to the one in helpdesk.team
     project_id = fields.Many2one("project.project", string="Project", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]")
+    # TODO: [XBO] remove me in master
     task_id = fields.Many2one(
         "project.task", string="Task", compute='_compute_task_id', store=True, readonly=False,
         domain="[('id', 'in', _related_task_ids)]", tracking=True,
         help="The task must have the same customer as this ticket.")
+    # TODO: [XBO] remove me in master (since task_id field will be removed too)
     _related_task_ids = fields.Many2many('project.task', compute='_compute_related_task_ids')
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
+    # TODO: [XBO] remove me in master (since task_id field will be removed too)
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
     timesheet_timer = fields.Boolean(related='team_id.timesheet_timer')
@@ -129,6 +133,7 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('project_id', 'company_id')
     def _compute_related_task_ids(self):
+        # TODO: [XBO] remove me in master because the task_id will be removed, then this compute and the _related_task_ids field will be useless
         for t in self:
             domain = [('project_id.allow_timesheets', '=', True), ('company_id', '=', t.company_id.id)]
             if t.project_id:
@@ -142,6 +147,7 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('project_id')
     def _compute_task_id(self):
+        # TODO: [XBO] remove me in master (task_id field will be removed)
         with_different_project = self.filtered(lambda t: t.project_id != t.task_id.project_id)
         with_different_project.update({'task_id': False})
 
@@ -152,12 +158,14 @@ class HelpdeskTicket(models.Model):
 
     @api.constrains('project_id', 'team_id')
     def _check_project_id(self):
+        # TODO: [XBO] see in master if we must remove this method, but since project_id will be a related field, this constrains will be useless.
         for ticket in self:
             if ticket.use_helpdesk_timesheet and not ticket.project_id:
                 raise ValidationError(_("The project is required to track time on ticket."))
 
     @api.constrains('project_id', 'task_id')
     def _check_task_in_project(self):
+        # TODO: [XBO] remove me in master (task_id field will be removed in master)
         for ticket in self:
             if ticket.task_id:
                 if ticket.task_id.project_id != ticket.project_id:
@@ -204,6 +212,7 @@ class HelpdeskTicket(models.Model):
         return result
 
     def action_view_ticket_task(self):
+        # TODO: [XBO] remove me in master (task_id field will be removed in master)
         self.ensure_one()
         return {
             'view_mode': 'form',

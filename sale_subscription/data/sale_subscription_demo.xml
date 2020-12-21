@@ -63,7 +63,6 @@ Any complaints about services or sellers may be sent to our support team: suppor
         <!-- Recurring products -->
         <record id="product_office_cleaning" model="product.product">
             <field name="name">Office Cleaning Subscription (Monthly)</field>
-            <field name="default_code">SERV_89553</field>
             <field name="recurring_invoice">True</field>
             <field name="subscription_template_id" ref="monthly_subscription"/>
             <field name="categ_id" ref="product.product_category_3"/>
@@ -76,7 +75,6 @@ Any complaints about services or sellers may be sent to our support team: suppor
 
         <record id="product_office_cleaning_yearly" model="product.product">
             <field name="name">Office Cleaning Subscription (Yearly)</field>
-            <field name="default_code">SERV_89137</field>
             <field name="recurring_invoice">True</field>
             <field name="subscription_template_id" ref="yearly_subscription"/>
             <field name="categ_id" ref="product.product_category_3"/>

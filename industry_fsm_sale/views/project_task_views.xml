@@ -161,24 +161,16 @@
         <record id="view_task_form2_inherit_sale_timesheet" model="ir.ui.view">
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="sale_project.view_sale_project_inherit_form"/>
+        <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_so']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('sale_order_id', '=', False)]}</attribute>
             </xpath>
-            <!-- Sales order item is invisible if it's a fsm task. In that case we show the sale order. -->
-            <xpath expr="//field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', '|', ('allow_billable', '=', False), ('partner_id', '=', False), ('is_fsm', '=', True)]}
-                </attribute>
-            </xpath>
-            <xpath expr="//field[@name='sale_order_id']" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': ['|', ('is_fsm', '=', False), '|', ('allow_billable', '=', False), '&amp;', ('allow_billable', '=', True), ('partner_id', '=', False)], 'readonly': ['|', '|', ('sale_order_id', '!=', False), ('material_line_product_count', '!=', 0), ('effective_hours', '!=', 0)]}
-                </attribute>
-                <attribute name="options">{'no_create': True, 'no_edit': True, 'delete': False}</attribute>
-                <attribute name="force_save">1</attribute>
-            </xpath>
+            <field name="partner_id" position="attributes">
+                <attribute name="options">{'always_reload': True}</attribute>
+                <attribute name="context">{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}</attribute>
+                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+            </field>
         </field>
     </record>
 

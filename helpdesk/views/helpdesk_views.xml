@@ -413,7 +413,7 @@
                     <field name="name"/>
                     <field name="domain_user_ids" invisible="1"/>
                     <field name="user_id" domain="[('id', 'in', domain_user_ids)]" options="{'no_open': True}"/>
-                    <field name="partner_id" options="{'no_open': True}"/>
+                    <field name="partner_id" options="{'no_open': True}" widget="res_partner_many2one"/>
                     <field name="priority" nolabel="1" widget="priority"/>
                     <div class="float-right"><field name="kanban_state" widget="state_selection"/></div>
                 </group>
@@ -536,8 +536,7 @@
                             <field name="sla_deadline" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
                         </group>
                         <group>
-                            <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"
-                                   context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>
+                            <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>
                             <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
                             <field name="partner_email" widget="email" string="Email"/>
                             <field name="partner_phone" widget="phone" string="Phone"/>

@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
                 SaleOrderLine = SaleOrderLine.sudo()
 
             products_qties = SaleOrderLine.read_group(
-                [('id', 'in', task.sale_order_id.order_line.ids)],
+                [('id', 'in', task.sale_order_id.order_line.ids), ('task_id', '=', task.id)],
                 ['product_id', 'product_uom_qty'], ['product_id'])
             qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties if x['product_id']])
             for product in self:
@@ -33,7 +33,7 @@ class ProductProduct(models.Model):
         task = self._get_contextual_fsm_task()
         if task:
             for product in self:
-                sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), '|', '|', ('qty_delivered', '=', 0.0), ('qty_delivered_method', '=', 'manual'), ('state', 'not in', ['sale', 'done'])], limit=1)
+                sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), ('task_id', '=', task.id), '|', '|', ('qty_delivered', '=', 0.0), ('qty_delivered_method', '=', 'manual'), ('state', 'not in', ['sale', 'done'])], limit=1)
                 if sale_line:  # existing line: change ordered qty (and delivered, if delivered method)
                     vals = {
                         'product_uom_qty': product.fsm_quantity
@@ -47,16 +47,11 @@ class ProductProduct(models.Model):
                         'product_id': product.id,
                         'product_uom_qty': product.fsm_quantity,
                         'product_uom': product.uom_id.id,
+                        'task_id': task.id
                     }
                     if product.service_type == 'manual':
                         vals['qty_delivered'] = product.fsm_quantity
 
-                    # Note: force to False to avoid changing planned hours when modifying product_uom_qty on SOL
-                    # for materials. Set the current task for service to avoid re-creating a task on SO confirmation.
-                    if product.type == 'service':
-                        vals['task_id'] = task.id
-                    else:
-                        vals['task_id'] = False
                     if task.sale_order_id.pricelist_id.discount_policy == 'without_discount':
                         sol = self.env['sale.order.line'].new(vals)
                         sol._onchange_discount()

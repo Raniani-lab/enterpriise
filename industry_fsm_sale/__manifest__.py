@@ -20,6 +20,7 @@ Create Sales order with timesheets and products from tasks
         'views/product_product_views.xml',
         'views/project_project_views.xml',
         'views/res_config_settings_views.xml',
+        'views/sale_order_views.xml',
     ],
     'application': False,
     'auto_install': True,

@@ -15,6 +15,7 @@
 
     'depends': ['sale_timesheet', 'timesheet_grid'],
     'data': [
+        'views/hr_timesheet_views.xml',
         'views/res_config_settings_views.xml',
     ],
     'demo': [

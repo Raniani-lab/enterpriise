@@ -139,6 +139,7 @@ class TestFsmFlowStock(TestFsmFlowSale):
                     'product_id': self.product_lot.id,
                     'product_uom_qty': 1,
                     'fsm_lot_id': self.lot_id2.id,
+                    'task_id': self.task.id,
                 })
             ]
         })

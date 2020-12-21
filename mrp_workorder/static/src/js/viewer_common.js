@@ -11,7 +11,7 @@ var mrpViewerCommon = {
         this._super.apply(this, arguments);
         this.iFrameId = (record.id + '.' + name).replace(/\./g, "_");
         this.invisible = this._isInvisible(parent);
-        this.page = this.recordData['worksheet_page'] || this.page || 1;
+        this.page = this._getActualPageNumber();
     },
     /**
      * Gets called when parent is attached to DOM
@@ -69,6 +69,22 @@ var mrpViewerCommon = {
             }
         });
         return invisible;
+    },
+
+    /**
+     * Returns either the pdf page number or 1
+     *
+     * @private
+     * @returns { number }
+     */
+    _getActualPageNumber: function () {
+        let pdfViewer = document.querySelector(".o_pdfview_iframe");
+        let pdfViewerDocument = pdfViewer ? pdfViewer.contentDocument : null;
+        let defaultValue = this.recordData['worksheet_page'] || this.page || 1;
+        if (pdfViewerDocument && pdfViewerDocument.querySelector("#pageNumber")) {
+            return parseInt(pdfViewerDocument.querySelector("#pageNumber").value, 10) || defaultValue;
+        }
+        return defaultValue;
     },
 
     /**

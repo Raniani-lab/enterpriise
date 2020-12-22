@@ -23,7 +23,7 @@ odoo.define("web_enterprise.ExpirationPanel", function (require) {
 
             this.state = useState({
                 alertType: diffDays <= 6 ? "danger" : (diffDays <= 16 ? "warning" : "info"),
-                buttonText: "Register",
+                buttonText: this.env._t("Register"),
                 diffDays: diffDays,
                 message: 'register',
                 validDate: moment(expirationDate).format("LL"),
@@ -177,7 +177,7 @@ odoo.define("web_enterprise.ExpirationPanel", function (require) {
                 this.state.validDate = moment(expirationDate).format("LL");
             } else {
                 this.state.alertType = "danger";
-                this.state.buttonText = "Retry";
+                this.state.buttonText = this.env._t("Retry");
                 this.state.displayRegisterForm = true;
                 if (linkedSubscriptionUrl) {
                     this.state.message = "link";

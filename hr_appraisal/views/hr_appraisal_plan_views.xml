@@ -13,13 +13,13 @@
     </record>
 
     <record id="action_hr_appraisal_plan" model="ir.actions.act_window">
-        <field name="name">Appraisal Plans</field>
+        <field name="name">Appraisals Plans</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.appraisal.plan</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_appraisal_plan" name="Appraisal Plans"
+    <menuitem id="menu_appraisal_plan" name="Appraisals Plans"
         action="hr_appraisal.action_hr_appraisal_plan"
         parent="menu_hr_appraisal_configuration" sequence="4"
         groups="hr_appraisal.group_hr_appraisal_manager"/>

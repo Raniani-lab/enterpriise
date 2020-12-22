@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <odoo>
 
-    <menuitem name="Appraisal" id="menu_hr_appraisal_root" web_icon="hr_appraisal,static/description/icon.png" sequence="25"/>
+    <menuitem name="Appraisals" id="menu_hr_appraisal_root" web_icon="hr_appraisal,static/description/icon.png" sequence="25"/>
     <menuitem name="Configuration"
         id="menu_hr_appraisal_configuration"
         parent="menu_hr_appraisal_root"
@@ -307,7 +307,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="open_view_hr_appraisal_tree">
-        <field name="name">Appraisal</field>
+        <field name="name">Appraisals</field>
         <field name="res_model">hr.appraisal</field>
         <field name="view_mode">kanban,tree,gantt,calendar,form,activity</field>
         <field name="context">{"search_default_next_month":1}</field>
@@ -320,7 +320,7 @@
         </field>
     </record>
 
-    <menuitem name="Appraisal"
+    <menuitem name="Appraisals"
         parent="menu_hr_appraisal_root"
         id="menu_open_view_hr_appraisal_tree"
         action="open_view_hr_appraisal_tree"

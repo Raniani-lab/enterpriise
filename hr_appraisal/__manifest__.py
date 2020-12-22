@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Appraisal',
+    'name': 'Appraisals',
     'version': '1.1',
     'category': 'Human Resources/Appraisals',
     'sequence': 180,

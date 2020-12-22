@@ -119,6 +119,9 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
+        # report._get_lines() makes SQL queries without flushing
+        report.flush()
+
         with freeze_time('2016-01-02'):
 
             options = report._get_options(None)
@@ -248,6 +251,9 @@ class TestReconciliationReport(TestAccountReportsCommon):
         # ==== Report ====
 
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+
+        # report._get_lines() makes SQL queries without flushing
+        report.flush()
 
         with freeze_time('2016-01-02'), self.debug_mode(report):
 

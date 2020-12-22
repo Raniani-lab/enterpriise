@@ -425,6 +425,8 @@ tour.register('web_studio_hide_fields_tour', {
 }, {
     // wait for the list editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_list_view_editor',
+    trigger: '.o_web_studio_existing_fields_icon',
+}, {
     trigger: `
         .o_web_studio_sidebar
         .o_web_studio_existing_fields

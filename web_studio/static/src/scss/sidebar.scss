@@ -49,6 +49,10 @@
         > h3 {
             color: white;
             margin: 10px 0 15px 0;
+            cursor: default;
+            &.o_web_studio_existing_fields_header {
+                cursor: pointer;
+            }
         }
 
         > hr {
@@ -268,6 +272,16 @@
             }
             &:after {
                 @include o-position-absolute(6px, auto, auto , 7px);
+            }
+        }
+        .o_web_studio_existing_fields_section > h6 {
+            cursor: default;
+        }
+        .o_web_studio_existing_fields {
+            margin-top: inherit;
+            .o_web_studio_component {
+                @include size(100%, 32px);
+                max-width: $o-web-studio-sidebar-width;
             }
         }
         .o_web_studio_sidebar_toolbox {

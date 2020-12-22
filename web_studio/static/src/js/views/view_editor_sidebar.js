@@ -104,6 +104,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'click .o_web_studio_attrs':                         '_onDomainAttrs',
         'focus .o_display_filter input#domain':              '_onDomainEditor',
         'keyup .o_web_studio_sidebar_search_input':          '_onSearchInputChange',
+        'click .o_web_studio_existing_fields_header':        '_onClickExistingFieldHeader',
     },
     /**
      * @constructor
@@ -151,9 +152,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this.MODIFIERS_IN_NODE_AND_ATTRS = ['readonly', 'invisible', 'required'];
 
         this.state = params.state || {};
+        this.previousState = params.previousState || {};
 
         this._searchValue = '';
         this._isSearchValueActive = false;
+        this._isExistingFieldFolded = '_isExistingFieldFolded' in this.previousState ?
+                                      this.previousState._isExistingFieldFolded :
+                                      true;
 
         const Widget = this.state.attrs.Widget;
         this.widgetKey = this._getWidgetKey(Widget);
@@ -290,6 +295,12 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     // Public
     //--------------------------------------------------------------------------
 
+    /**
+     * @override
+     */
+    getLocalState: function () {
+        return { _isExistingFieldFolded: this._isExistingFieldFolded };
+    },
     /**
      * Transform an array domain into its string representation.
      *
@@ -534,17 +545,26 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         }
 
         const $sidebarContent = this.$('.o_web_studio_sidebar_content');
+        const $existingFieldsSection = $('<div/>', {class: `o_web_studio_existing_fields_section`});
         const $section = this._renderSection(formWidgets);
         $section.addClass('o_web_studio_existing_fields');
         if ($existingFields.length) {
-            $sidebarContent.append($section);
+            this.$('.o_web_studio_existing_fields_section').append($section);
         } else {
             const $sectionTitle = $('<h3>', {
-                html: _t('Existing Fields'),
+                text: _t('Existing Fields'),
+                class: 'o_web_studio_existing_fields_header',
+            }).append($('<i/>', {class: `o_web_studio_existing_fields_icon fa fa-caret-right ml-2`}));
+            const $sectionSubtitle = $('<h6>', {
+                class: 'small text-white',
+                text: _t('The following fields are currently not in the view.'),
             });
             const $sectionSearchDiv = core.qweb.render('web_studio.ExistingFieldsInputSearch');
-            $sidebarContent.append($sectionTitle, $sectionSearchDiv, $section);
+            $existingFieldsSection.append($sectionSubtitle, $sectionSearchDiv, $section);
+            $sidebarContent.append($sectionTitle, $existingFieldsSection);
         }
+
+        this._updateExistingFieldSection();
     },
     /**
      * @private
@@ -684,6 +704,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             this._registerWidget(this.mapPopupFieldHandle, 'map_popup', many2many);
             return many2many.appendTo(this.$('.o_map_popup_fields'));
         });
+    },
+    /**
+     * Applies the correct classNames on the "Existing Fields" section according
+     * to the "_isExistingFieldFolded" flag.
+     *
+     * @private
+     */
+    _updateExistingFieldSection() {
+        const icon = this.el.querySelector('.o_web_studio_existing_fields_icon');
+        const section = this.el.querySelector('.o_web_studio_existing_fields_section');
+        if (this._isExistingFieldFolded) {
+            icon.classList.replace('fa-caret-down', 'fa-caret-right');
+            section.classList.add('d-none');
+        } else {
+            icon.classList.replace('fa-caret-right', 'fa-caret-down');
+            section.classList.remove('d-none');
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -1098,6 +1135,15 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this._searchValue = this.$('.o_web_studio_sidebar_search_input').val();
         this._isSearchValueActive = true;
         this._render();
+    },
+    /**
+     * fold/unfold the 'existing fields' section.
+     *
+     * @private
+     */
+    _onClickExistingFieldHeader: function () {
+        this._isExistingFieldFolded = !this._isExistingFieldFolded;
+        this._updateExistingFieldSection();
     },
     /**
      * @private

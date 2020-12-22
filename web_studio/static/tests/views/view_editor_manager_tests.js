@@ -6013,6 +6013,77 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('input[name="enable_sms"]'));
         vem.destroy();
     });
+
+    QUnit.test('folds/unfolds the existing fields into sidebar', async function (assert) {
+        assert.expect(10);
+
+        let fieldsView;
+        const arch = `<form>
+            <group>
+                <field name="display_name"/>
+            </group>
+        </form>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route) {
+                if (route === '/web_studio/edit_view') {
+                    fieldsView.arch = `<form>
+                        <group>
+                            <field name="char_field"/>
+                            <field name="display_name"/>
+                        </group>
+                    </form>`;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        },
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(vem.fields_view));
+
+        assert.containsN(vem, '.o_web_studio_field_type_container', 3,
+            "there should be three sections in Add (new & existing fields & Components");
+        assert.hasClass(vem.el.querySelector('.o_web_studio_existing_fields_icon'), 'fa-caret-right',
+            "should have a existing fields folded");
+        assert.isNotVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "the existing fields section should not be visible");
+
+        // Unfold the existing fields section
+        await testUtils.dom.click(vem.el.querySelector('.o_web_studio_existing_fields_icon'));
+
+        assert.containsN(vem, '.o_web_studio_field_type_container', 3,
+            "there should be three sections in Add (new & existing fields & Components");
+        assert.hasClass(vem.el.querySelector('.o_web_studio_existing_fields_icon'), 'fa-caret-down',
+            "should have a existing fields unfolded");
+        assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "the existing fields section should be visible");
+
+        // drag and drop the new char field
+        await testUtils.dom.dragAndDrop(vem.el.querySelector('.o_web_studio_existing_fields .o_web_studio_field_char'),
+            vem.el.querySelector('.o_group .o_web_studio_hook'));
+        assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "keep the existing fields section visible when adding the new field");
+
+        // fold the existing fields section
+        await testUtils.dom.click(vem.el.querySelector('.o_web_studio_existing_fields_icon'));
+
+        assert.containsN(vem, '.o_web_studio_field_type_container', 3,
+            "there should be three sections in Add (new & existing fields & Components");
+        assert.hasClass(vem.el.querySelector('.o_web_studio_existing_fields_icon'), 'fa-caret-right',
+            "should have a existing fields folded");
+        assert.isNotVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "the existing fields section should not be visible");
+
+        vem.destroy();
+    });
 });
 });
 

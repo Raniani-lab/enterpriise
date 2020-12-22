@@ -1078,7 +1078,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      */
-    _instantiateSidebar: function (state) {
+    _instantiateSidebar: function (state, previousState) {
 
         var defaultMode = this._getDefaultSidebarMode();
         state = _.defaults(state || {}, {
@@ -1092,6 +1092,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             fields: this.fields,
             renamingAllowedFields: this.renamingAllowedFields,
             state: state,
+            previousState: previousState,
             isEditingX2m: !!this.x2mField,
             // In case of a search view, the editor doesn't have state
             editorData: this.editor.state && this.editor.state.data || {},

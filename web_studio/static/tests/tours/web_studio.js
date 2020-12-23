@@ -8,28 +8,6 @@ const { randomString } = require('web_studio.utils');
 let createdAppString = null;
 let createdMenuString = null;
 
-const changeWysiwygContent = async function($el, newText) {
-    const Wysiwyg = odoo.__DEBUG__.services['web_editor.wysiwyg'];
-    const parent = $el.closest('.o_web_studio_sidebar_text').parent()
-    // Change wysiwyg content.
-    const wysiwyg = parent.data("wysiwyg");
-    await Wysiwyg.setRange(wysiwyg, $el[0], 0);
-    await wysiwyg.editorHelpers.text(wysiwyg.editor, $el[0], newText);
-    // Force wysiwyg to trigger to blur
-    await new Promise(resolve => setTimeout(resolve, 100));
-    const bodyEl = document.querySelector('body')
-    bodyEl.dispatchEvent(new MouseEvent('mousedown'));
-    bodyEl.dispatchEvent(new MouseEvent('click'));
-    document.activeElement.blur();
-
-    const range = new Range();
-    range.setStart(bodyEl, 0);
-    range.setEnd(bodyEl, 0);
-    const selection = document.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-}
-
 tour.register('web_studio_tests_tour', {
     test: true,
     url: "/web?debug=tests",
@@ -520,11 +498,14 @@ tour.register('web_studio_new_report_tour', {
     // click on the newly added field
     trigger: '.o_web_studio_report_editor iframe .h2 > span:contains(New Title)',
 }, {
-    // change the text of the H2 to 'Test'
+    // change the text of the H2 to 'test'
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
-    run: async function () {
-        await changeWysiwygContent(this.$anchor, "Test");
-    },
+    run: function () {
+        this.$anchor.focusIn();
+        this.$anchor[0].firstChild.textContent = 'Test';
+        this.$anchor.keydown();
+        this.$anchor.blur();
+    }
 }, {
     // click outside to blur the field
     trigger: '.o_web_studio_report_editor',
@@ -578,9 +559,12 @@ tour.register('web_studio_new_report_tour', {
 }, {
     // update column title 'name' into another title
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
-    run: async function () {
-        await changeWysiwygContent(this.$anchor, "new column title");
-    },
+        run: function () {
+        this.$anchor.focusIn();
+        this.$anchor[0].firstChild.textContent = 'new column title';
+        this.$anchor.keydown();
+        this.$anchor.blur();
+    }
 }, {
     // click outside to blur the field
     trigger: '.o_web_studio_report_editor',
@@ -661,9 +645,12 @@ tour.register('web_studio_new_report_basic_layout_tour', {
 }, {
     // change the text of the H2 to 'test'
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
-    run: async function () {
-        await changeWysiwygContent(this.$anchor, "Test");
-    },
+    run: function () {
+        this.$anchor.focusIn();
+        this.$anchor[0].firstChild.textContent = 'Test';
+        this.$anchor.keydown();
+        this.$anchor.blur();
+    }
 }, {
     // click outside to blur the field
     trigger: '.o_web_studio_report_editor',
@@ -716,9 +703,12 @@ tour.register('web_studio_new_report_basic_layout_tour', {
 }, {
     // update column title 'name' into another title
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
-    run: async function () {
-        await changeWysiwygContent(this.$anchor, "new column title");
-    },
+    run: function () {
+        this.$anchor.focusIn();
+        this.$anchor[0].firstChild.textContent = 'new column title';
+        this.$anchor.keydown();
+        this.$anchor.blur();
+    }
 }, {
     // click outside to blur the field
     trigger: '.o_web_studio_report_editor',
@@ -789,7 +779,7 @@ tour.register('web_studio_approval_tour', {
     // set stupid domain that is always truthy
     trigger: '.o_domain_debug_container input',
     run: function () {
-        this.$anchor.focusin();
+        this.$anchor.focusIn();
         this.$anchor.val('[["id", "!=", False]]');
         this.$anchor.change();
     }

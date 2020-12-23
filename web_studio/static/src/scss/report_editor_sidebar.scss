@@ -234,11 +234,8 @@
                             margin: 0;
                         }
                     }
-                    .o_web_studio_text {
-                        position: relative;
-                        .btn-sm {
-                            padding: 3px 8px;
-                        }
+                    .o_web_studio_text .btn-sm {
+                        padding: 3px 8px;
                     }
                     .o_field_selector_value {
                         background-color: $o-web-studio-bg-dark;
@@ -267,15 +264,6 @@
             .card:last-child .card-header:before {
                 bottom: 50%;
             }
-        }
-        // style for the JW editor zone
-        .note-editing-area .note-editable {
-            background-color: #fff;
-            color: #000;
-            padding: 10px;
-            overflow: auto;
-            outline: none;
-            min-height:80px;
         }
     }
 }

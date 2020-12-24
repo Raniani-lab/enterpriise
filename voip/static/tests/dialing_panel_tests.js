@@ -3,6 +3,7 @@ odoo.define('voip.tests_panel', function (require) {
 
 const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
 
+const mobile = require('web_mobile.core');
 const DialingPanel = require('voip.DialingPanel');
 const UserAgent = require('voip.UserAgent');
 
@@ -603,6 +604,67 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
     assert.verifySteps(['hangup_call']);
 
     parent.destroy();
+});
+
+QUnit.test('DialingPanel is closable with the BackButton in the mobile app', async function (assert) {
+    assert.expect(13);
+
+    testUtils.mock.patch(mobile.methods, {
+        overrideBackButton({ enabled }) {
+            assert.step(`overrideBackButton: ${enabled}`);
+        },
+    });
+
+    const { dialingPanel, parent } = await createDialingPanel({
+        data: this.data,
+        async mockRPC(route, args) {
+            if (args.method === 'get_pbx_config') {
+                return { mode: 'demo' };
+            }
+            if (args.model === 'voip.phonecall') {
+                if (args.method === 'get_missed_call_info') {
+                    return [];
+                }
+                if (args.method === 'get_next_activities_list') {
+                    return [];
+                }
+            }
+            return this._super(...arguments);
+        },
+    });
+
+    // ensure DialingPanel is open
+    await dialingPanel._showWidget();
+    assert.isVisible(dialingPanel, "should be visible");
+    assert.verifySteps([
+        'overrideBackButton: true',
+    ], "should be enabled when opened");
+
+    // simulate 'backbutton' events triggered by the app
+    await testUtils.dom.triggerEvent(document, 'backbutton');
+    assert.isNotVisible(dialingPanel, "should be closed");
+    assert.verifySteps([
+        'overrideBackButton: false',
+    ], "should be disabled when closed");
+
+    await dialingPanel._showWidget();
+    await testUtils.dom.click(dialingPanel.$('.o_dial_fold'));
+    assert.verifySteps([
+        'overrideBackButton: true',
+        'overrideBackButton: false',
+    ]);
+    await testUtils.dom.click(dialingPanel.$('.o_dial_fold'));
+    assert.verifySteps([
+        'overrideBackButton: true',
+    ], "should be enabled when unfolded");
+
+    await testUtils.dom.click(dialingPanel.$('.o_dial_window_close'));
+    assert.verifySteps([
+        'overrideBackButton: false',
+    ], "should be disabled when closed");
+
+    parent.destroy();
+    testUtils.mock.unpatch(mobile.methods);
 });
 
 });

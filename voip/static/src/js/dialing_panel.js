@@ -11,7 +11,6 @@ const config = require('web.config');
 const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const mobile = require('web_mobile.core');
-const mobileMixins = require('web_mobile.mixins');
 const realSession = require('web.session');
 const Widget = require('web.Widget');
 
@@ -20,7 +19,7 @@ const HEIGHT_OPEN = '480px';
 const HEIGHT_FOLDED = '0px';
 const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
 
-const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEventMixin,{
+const DialingPanel = Widget.extend({
     template: 'voip.DialingPanel',
     events: {
         'click .o_dial_accept_button': '_onClickAcceptButton',
@@ -71,6 +70,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         this._isShow = false;
         this._isWebRTCSupport = window.RTCPeerConnection && window.MediaStream && navigator.mediaDevices;
         this._onInputSearch = _.debounce(this._onInputSearch.bind(this), 500);
+        this._onBackButton = this._onBackButton.bind(this);
         this._tabs = {
             contacts: new PhoneCallContactsTab(this),
             nextActivities: new PhoneCallActivitiesTab(this),
@@ -78,26 +78,6 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         };
         this._userAgent = new UserAgent(this);
         this._missedCounter = 0; // amount of missed call
-    },
-    /**
-     * We override destroy() to be able to call on_detach_callback at the very
-     * last moment before detaching the DialingPanel from the DOM.
-     *
-     * @override
-     */
-    destroy() {
-        this.on_detach_callback();
-        this._super(...arguments);
-    },
-    /**
-     * Call on_attach_callback when the DialingPanel has been just attached to
-     * the DOM.
-     *
-     * @override
-     */
-    async appendTo() {
-        await this._super(...arguments);
-        this.on_attach_callback();
     },
     /**
      * @override
@@ -429,6 +409,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         if (!this._isShow) {
             this.$el.show();
             this._isShow = true;
+            mobile.backButtonManager.addListener(this, this._onBackButton);
             this._isFolded = false;
             if (this._isWebRTCSupport) {
                 this._$searchInput.focus();
@@ -460,12 +441,14 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             if (!this._isFolded) {
                 this.$el.hide();
                 this._isShow = false;
+                mobile.backButtonManager.removeListener(this, this._onBackButton);
             } else {
                 return this._toggleFold({ isFolded: false });
             }
         } else {
             this.$el.show();
             this._isShow = true;
+            mobile.backButtonManager.addListener(this, this._onBackButton);
             if (this._isFolded) {
                 await this._toggleFold();
             }
@@ -489,6 +472,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
             this._isFolded = _.isBoolean(isFolded) ? isFolded : !this._isFolded;
             this._fold();
         }
+        mobile.backButtonManager[this._isFolded ? 'removeListener' : 'addListener'](this, this._onBackButton);
     },
     /**
      * @private
@@ -720,6 +704,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
         $('.o_dial_transfer_button').popover('hide');
         this.$el.hide();
         this._isShow = false;
+        mobile.backButtonManager.removeListener(this, this._onBackButton);
     },
     /**
      * @private
@@ -986,7 +971,7 @@ const DialingPanel = Widget.extend(Object.assign({}, mobileMixins.BackButtonEven
     _onUnmuteCall() {
         this._userAgent.unmuteCall();
     },
-}));
+});
 
 return DialingPanel;
 

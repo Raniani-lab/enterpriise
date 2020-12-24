@@ -16,6 +16,7 @@
                         <t t-set="final_subtotal" t-value="final_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                     </t>
                 </t>
+                <t t-set="display_discount" t-value="any(line.discount for line in order.order_line)"/>
                 <t t-if="doc.allow_billable and order and final_subtotal != 0">
                     <h2>Time &amp; Material</h2>
                     <div class="table-responsive-sm">
@@ -25,7 +26,7 @@
                                 <th class="text-left">Description</th>
                                 <th class="text-right">Quantity</th>
                                 <th t-if="final_subtotal != 0" class="text-right">Unit Price</th>
-                                <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                                <th t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
                                     <span>Disc.%</span>
                                 </th>
                                 <th class="text-right">

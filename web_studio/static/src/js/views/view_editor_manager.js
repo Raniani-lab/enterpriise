@@ -144,21 +144,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
 
     //--------------------------------------------------------------------------
-    // Getters
-    //--------------------------------------------------------------------------
-
-    /**
-     * @returns {boolean}
-     */
-    get showInvisible() {
-        return Boolean(
-            this.sidebar &&
-            this.sidebar.state &&
-            this.sidebar.state.show_invisible
-        );
-    },
-
-    //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
@@ -906,6 +891,17 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
+     * @private
+     * @returns {boolean}
+     */
+    _getShowInvisible() {
+        return Boolean(
+            this.sidebar &&
+            this.sidebar.state &&
+            this.sidebar.state.show_invisible
+        );
+    },
+    /**
      * @override
      * @param {Object} [params]
      * @param {Object} [params.node] mandatory if mode "properties"
@@ -917,7 +913,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             newState = _.extend({}, params, {
                 renamingAllowedFields: this.renamingAllowedFields,
                 mode: mode,
-                show_invisible: this.showInvisible,
+                show_invisible: this._getShowInvisible(),
             });
         } else {
             newState = this.sidebar.state;
@@ -1021,7 +1017,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         if (this.view_type === 'search') {
             if (this.mode === 'edition') {
                 const editorParams = _.defaults(params, {
-                    show_invisible: this.showInvisible,
+                    show_invisible: this._getShowInvisible(),
                 });
                 this.view = new Editors.search(this, fields_view, editorParams);
             } else {
@@ -1059,7 +1055,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 var editorParams = _.defaults(params, {
                     mode: 'readonly',
                     chatter_allowed: chatterAllowed,
-                    show_invisible: this.showInvisible,
+                    show_invisible: this._getShowInvisible(),
                     arch: this.view.arch,
                     x2mField: this.x2mField,
                     viewType: this.view_type,

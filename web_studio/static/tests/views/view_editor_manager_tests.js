@@ -814,6 +814,28 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     })
 
+    QUnit.test('list editor with invisible element checkbox', async function(assert){
+        assert.expect(2)
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: "tasks",
+            arch: `<tree string='List'>
+                    <field name='name' class="my_super_name_class" />
+                    <field name='description' class="my_super_description_class" invisible="True"/>
+                </tree>`
+        });
+
+        // click on show invisible
+        await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar .o_web_studio_view'));
+        assert.hasAttrValue(document.querySelector('input#show_invisible'), 'checked', undefined, "show invisible checkbox is not checked");
+        await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar input#show_invisible'));
+        await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar .o_web_studio_new'));
+        await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar .o_web_studio_view'));
+        assert.hasAttrValue(document.querySelector('input#show_invisible'), 'checked', 'checked', "show invisible checkbox should be checked");
+        vem.destroy();
+    });
+
     QUnit.test('list editor with control node tag', async function(assert) {
         assert.expect(2);
 

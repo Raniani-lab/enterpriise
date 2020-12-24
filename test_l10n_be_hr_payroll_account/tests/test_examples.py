@@ -18,6 +18,7 @@ class TestExamples(AccountTestInvoicingCommon):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data['company'].country_id = cls.env.ref('base.be')
+
         cls.env.company.resource_calendar_id = cls.env['resource.calendar'].create({
             'name': 'Standard 38 hours/week',
             'company_id': cls.env.company.id,

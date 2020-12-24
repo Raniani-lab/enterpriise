@@ -32,4 +32,4 @@ class HrPayslipRunSepaWizard(models.TransientModel):
 
     def generate_sepa_xml_file(self):
         payslip_run_id = self.env['hr.payslip.run'].browse(self.env.context['active_id'])
-        payslip_run_id.mapped('slip_ids')._create_xml_file(self.journal_id, self.file_name)
+        payslip_run_id.mapped('slip_ids').sudo()._create_xml_file(self.journal_id, self.file_name)

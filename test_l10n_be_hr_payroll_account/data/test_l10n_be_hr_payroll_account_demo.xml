@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="l10n_be_hr_payroll.res_company_be" model="res.company">
+        <field name="sepa_orgid_id">123456789</field>
+    </record>
+
     <function model="hr.contract" name="write">
         <value model='hr.contract' eval="obj().search([]).ids"/>
         <value model="hr.contract" eval="{

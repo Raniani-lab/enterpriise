@@ -171,10 +171,13 @@ class HrContractSalary(main.HrContractSalary):
 
     def _get_new_contract_values(self, contract, employee, advantages):
         res = super()._get_new_contract_values(contract, employee, advantages)
-        res['has_laptop'] = contract.has_laptop
-        res['time_credit'] = contract.time_credit
-        res['work_time_rate'] = contract.work_time_rate
-        res['time_credit_full_time_wage'] = contract.time_credit_full_time_wage
+        fields_to_copy = [
+            'has_laptop', 'time_credit', 'work_time_rate', 'time_credit_full_time_wage',
+            'rd_percentage', 'no_onss', 'no_withholding_taxes'
+        ]
+        for field_to_copy in fields_to_copy:
+            if field_to_copy in contract:
+                res[field_to_copy] = contract[field_to_copy]
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

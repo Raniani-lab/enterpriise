@@ -250,6 +250,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
+    def _validate_move_lines(self, lines, results):
+        error = []
+        for code, move_type, amount in results:
+            if not any(l.account_id.code == code and not float_compare(l[move_type], amount, 2) for l in lines):
+                error.append("Couldn't find %s move line on account %s with amount %s" % (move_type, code, amount))
+        self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
+
     def test_low_salary(self):
         self.contract.wage = 1800
         self.contract.ip = False
@@ -258,7 +265,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1800.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 22.0, places=2)
@@ -304,7 +311,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('PHC1'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1671.54, places=2)
@@ -355,7 +362,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1141.54, places=2)
@@ -414,7 +421,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 60.21, places=2)
@@ -487,7 +494,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 48.92, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE510'), 1.0, places=2)
@@ -524,7 +531,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE510'), 0.0, places=2)
@@ -540,7 +547,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 81.54, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
@@ -588,7 +595,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 15)
+        self.assertEqual(len(payslip.line_ids), 19)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -639,7 +646,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 15)
+        self.assertEqual(len(payslip.line_ids), 19)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('PHC1'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -694,7 +701,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 19)
+        self.assertEqual(len(payslip.line_ids), 23)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 57.94, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 64.37, places=2)
@@ -749,7 +756,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2120.0, places=2)
@@ -821,7 +828,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 489.23, places=2)
@@ -887,7 +894,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
@@ -953,7 +960,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE110'), 244.62, places=2)
@@ -1009,7 +1016,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 16)
+        self.assertEqual(len(payslip.line_ids), 20)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -1049,7 +1056,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 224.23, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 1100.77, places=2)
@@ -1103,7 +1110,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         # 0 LEAVE120, 1-2 WORK100
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 122.31, places=2)
@@ -1170,7 +1177,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 61.15, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
@@ -1237,7 +1244,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 21)
+        self.assertEqual(len(september_payslip.line_ids), 25)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 815.38, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
@@ -1277,7 +1284,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE500'), 81.54, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
@@ -1317,7 +1324,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(november_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(november_payslip.input_line_ids), 0)
-        self.assertEqual(len(november_payslip.line_ids), 21)
+        self.assertEqual(len(november_payslip.line_ids), 25)
 
         self.assertAlmostEqual(november_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
 
@@ -1365,7 +1372,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 15)
+        self.assertEqual(len(payslip.line_ids), 19)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -1411,7 +1418,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2405.38, places=2)
@@ -1472,7 +1479,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 57.94, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 0.0, places=2)
@@ -1530,7 +1537,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE250'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -1584,7 +1591,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 18)
+        self.assertEqual(len(payslip.line_ids), 22)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 3707.48, places=2)
 
@@ -1640,7 +1647,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 15)
+        self.assertEqual(len(payslip.line_ids), 19)
 
         payslip_results = {
             'BASIC': 2650.0,
@@ -1807,7 +1814,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 19)
+        self.assertEqual(len(september_payslip.line_ids), 23)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 570.77, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2079.23, places=2)
@@ -1845,7 +1852,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 1549.23, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 611.54, places=2)
@@ -1980,7 +1987,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 19)
+        self.assertEqual(len(september_payslip.line_ids), 23)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 1223.08, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 1426.92, places=2)
@@ -2018,7 +2025,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 19)
+        self.assertEqual(len(october_payslip.line_ids), 23)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 611.54, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 2038.46, places=2)
@@ -2132,7 +2139,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 19)
+        self.assertEqual(len(september_payslip.line_ids), 23)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2650.0, places=2)
 
@@ -2167,7 +2174,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 1304.62, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
@@ -2308,7 +2315,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 21)
+        self.assertEqual(len(september_payslip.line_ids), 25)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 530.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 1590.0, places=2)
@@ -2351,7 +2358,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 4)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 489.23, places=2)
@@ -2501,7 +2508,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 21)
+        self.assertEqual(len(september_payslip.line_ids), 25)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 1263.85, places=2)
@@ -2544,7 +2551,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 489.23, places=2)
@@ -2675,7 +2682,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 21)
+        self.assertEqual(len(september_payslip.line_ids), 25)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2120.0, places=2)
@@ -2715,7 +2722,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 21)
+        self.assertEqual(len(october_payslip.line_ids), 25)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
@@ -2770,7 +2777,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 19)
+        self.assertEqual(len(payslip.line_ids), 23)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE205'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -2829,7 +2836,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 19)
+        self.assertEqual(len(payslip.line_ids), 23)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE205'), 856.15, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1793.85, places=2)
@@ -2878,7 +2885,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 20)
+        self.assertEqual(len(payslip.line_ids), 24)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -2978,7 +2985,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 416.38, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2984.08, places=2)
@@ -3084,7 +3091,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 17)
+        self.assertEqual(len(payslip.line_ids), 21)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE260'), 152.88, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 305.77, places=2)
@@ -3167,7 +3174,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(commission_payslip.worked_days_line_ids), 0)
         self.assertEqual(len(commission_payslip.input_line_ids), 1)
-        self.assertEqual(len(commission_payslip.line_ids), 12)
+        self.assertEqual(len(commission_payslip.line_ids), 16)
 
         payslip_results = {
             'BASIC': 2650.0,
@@ -3189,7 +3196,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(classic_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(classic_payslip.input_line_ids), 0)
-        self.assertEqual(len(classic_payslip.line_ids), 19)
+        self.assertEqual(len(classic_payslip.line_ids), 23)
 
         self.assertAlmostEqual(classic_payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(classic_payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -3264,3 +3271,478 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         work_entries = self.contract._generate_work_entries(datetime.date(2020, 11, 1), datetime.date(2020, 11, 30))
         sick_work_entries = work_entries.filtered(lambda we: we.work_entry_type_id == self.sick_time_off_type.work_entry_type_id)
         self.assertEqual(len(sick_work_entries), 4)
+
+    def test_accounting_entries(self):
+        # Test case: Create 2 payslips (1 classic / 1 low salary)
+        # Generate and validate the accounting entries
+
+        # 1rst contract
+        self.contract.write({
+            'transport_mode_private_car': True,
+            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
+        })
+
+        # Second contract
+        second_employee = self.env['hr.employee'].create([{
+            'name': "Test Employee",
+            'address_home_id': self.address_home.id,
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'marital': "single",
+            'km_home_work': 75,
+        }])
+
+        second_car = self.env['fleet.vehicle'].create([{
+            'name': "Test Car 2",
+            'license_plate': "TEST2",
+            'driver_id': second_employee.address_home_id.id,
+            'company_id': self.env.company.id,
+            'model_id': self.model.id,
+            'first_contract_date': datetime.date(2020, 12, 17),
+            'co2': 88.0,
+            'car_value': 38000.0,
+            'fuel_type': "diesel",
+            'acquisition_date': datetime.date(2020, 1, 1)
+        }])
+
+        second_vehicle_contract = self.env['fleet.vehicle.log.contract'].create({
+            'name': "Test Contract",
+            'vehicle_id': second_car.id,
+            'company_id': self.env.company.id,
+            'start_date': datetime.date(2020, 12, 17),
+            'expiration_date': datetime.date(2021, 12, 17),
+            'state': "open",
+            'cost_frequency': "monthly",
+            'recurring_cost_amount_depreciated': 450.0
+        })
+
+        second_contract = self.env['hr.contract'].create([{
+            'name': "Contract For Payslip Test",
+            'employee_id': second_employee.id,
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'car_id': second_car.id,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'date_start': datetime.date(2018, 12, 31),
+            'wage': 2000.0,
+            'state': "open",
+            'transport_mode_car': True,
+            'transport_mode_private_car': True,
+            'fuel_card': 150.0,
+            'internet': 38.0,
+            'representation_fees': 150.0,
+            'mobile': 30.0,
+            'meal_voucher_amount': 7.45,
+            'eco_checks': 250.0,
+            'ip_wage_rate': 25.0,
+            'ip': True,
+        }])
+
+        # Generate Batch / payslips
+        work_entries = self.contract._generate_work_entries(datetime.date(2020, 12, 1), datetime.date(2020, 12, 31))
+        payslip_run_id = self.env['hr.payslip.employees'].with_context(
+            default_date_start='2020-12-01',
+            default_date_end='2020-12-31',
+            allowed_company_ids=self.env.company.ids,
+        ).create({}).compute_sheet()['res_id']
+        payslip_run = self.env['hr.payslip.run'].browse(payslip_run_id)
+
+        payslips = payslip_run.slip_ids
+        self.assertEqual(len(payslips), 2)
+
+        payslip_1 = payslips.filtered(lambda p: p.employee_id == self.employee)
+        self.assertEqual(len(payslip_1.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip_1.input_line_ids), 0)
+        self.assertEqual(len(payslip_1.line_ids), 24)
+
+        self.assertAlmostEqual(payslip_1._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
+        self.assertAlmostEqual(payslip_1._get_worked_days_line_number_of_days('WORK100'), 23.0, places=2)
+        self.assertAlmostEqual(payslip_1._get_worked_days_line_number_of_hours('WORK100'), 174.8, places=2)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'ONSSTOTAL': 347.53,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2452.61,
+            'IP.PART': -662.5,
+            'GROSS': 1790.11,
+            'P.P': -265.94,
+            'PPTOTAL': 265.94,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -23.66,
+            'MEAL_V_EMP': -25.07,
+            'CAR.PRIV': 98.5,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -43.17,
+            'NET': 2193.13,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYER': 721.65,
+        }
+        self._validate_payslip(payslip_1, payslip_results)
+        # ================================================ #
+        #         Accounting entries for slip 1            #
+        # ================================================ #
+        # Basic salary 2650
+
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Basic_Salary - IP                            1987.5
+        # 453000    Withholding Taxes  Precompte - low salary bonus                         265.94
+
+        # 643000    IP                                                          662.5
+        # 453000    IP Deduction                                                             43.17
+
+        # 454000    ONSS worker - Employment Bonus                                          347.53
+        # 454000    ONSS Misceleneous                                                        23.66
+
+        # 620200    Private Car                                                  98.5
+        # 620200    Frais de rep                                                  150
+
+        # 455000    Meal vouchers retenue                                                    25.07
+        # 455000    Remunration dues = NET                                                 2193.13
+
+        # 454000    ONSS Employer                                                           721.65
+        # 621000    ONSS Employer                                              721.65
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                             3620.15      3620.15
+
+        payslip_2 = payslips.filtered(lambda p: p.employee_id == second_employee)
+
+        self.assertEqual(len(payslip_2.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip_2.input_line_ids), 0)
+        self.assertEqual(len(payslip_2.line_ids), 26)
+
+        self.assertAlmostEqual(payslip_2._get_worked_days_line_amount('WORK100'), 2000.0, places=2)
+        self.assertAlmostEqual(payslip_2._get_worked_days_line_number_of_days('WORK100'), 23.0, places=2)
+        self.assertAlmostEqual(payslip_2._get_worked_days_line_number_of_hours('WORK100'), 174.8, places=2)
+
+        payslip_results = {
+            'BASIC': 2000.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2009.0,
+            'ONSS': -262.58,
+            'EmpBonus.1': 132.26,
+            'ONSSTOTAL': 130.32,
+            'ATN.CAR': 141.14,
+            'GROSSIP': 2019.83,
+            'IP.PART': -500.0,
+            'GROSS': 1519.83,
+            'P.P': -150.38,
+            'P.P.DED': 43.83,
+            'PPTOTAL': 106.55,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -4.15,
+            'MEAL_V_EMP': -25.07,
+            'CAR.PRIV': 98.5,
+            'REP.FEES': 150.0,
+            'IP': 500.0,
+            'IP.DED': -32.58,
+            'NET': 1949.83,
+            'REMUNERATION': 1500.0,
+            'ONSSEMPLOYER': 545.24,
+        }
+        self._validate_payslip(payslip_2, payslip_results)
+        # ================================================ #
+        #         Accounting entries for slip 2            #
+        # ================================================ #
+        # Basic salary 2000
+
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Basic_Salary - IP                              1500
+        # 453000    Withholding Taxes  Precompte - low salary bonus                         106.55
+
+        # 643000    IP                                                            500
+        # 453000    IP Deduction                                                             32.58
+
+        # 454000    ONSS worker - Employment Bonus                                          130.32
+        # 454000    ONSS Misceleneous                                                         4.15
+
+        # 620200    Private Car                                                  98.5
+        # 620200    Frais de rep                                                  150
+
+        # 455000    Meal vouchers retenue                                                    25.07
+        # 455000    Remunration dues = NET                                                 1949.83
+
+        # 454000    ONSS Employer                                                           545.24
+        # 621000    ONSS Employer                                              545.24
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                             2793.74      2793.74
+
+        # Generate accounting entries
+        payslip_run.action_validate()
+        account_move = payslip_1.move_id
+        move_lines = account_move.line_ids
+
+        balance = 6413.89
+        move_line_results = [
+            ('620200', 'debit', 3487.5),        # remuneration
+            ('453000', 'credit', 372.49),       # PP
+            ('643000', 'debit', 1162.5),        # IP
+            ('453000', 'credit', 75.75),        # IP DED
+            ('454000', 'credit', 477.85),       # ONSS - Emp Bonus
+            ('454000', 'credit', 27.81),        # Misc ONSS
+            ('620200', 'debit', 197),           # Private Car
+            ('620200', 'debit', 300),           # Representation Fees
+            ('455000', 'credit', 50.14),        # Meal vouchers
+            ('455000', 'credit', 4142.96),      # NET
+            ('454000', 'credit', 1266.89),      # ONSS Employer
+            ('621000', 'debit', 1266.89),       # ONSS Employer
+        ]
+        # ================================================ #
+        #         Accounting entries for Batch             #
+        # ================================================ #
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Basic_Salary - IP                            3487.5
+        # 453000    Withholding Taxes  Precompte - low salary bonus                         372.49
+
+        # 643000    IP                                                         1162.5
+        # 453000    IP Deduction                                                             75.75
+
+        # 454000    ONSS worker - Employment Bonus                                          477.85
+        # 454000    ONSS Misceleneous                                                        27.81
+
+        # 620200    Private Car                                                   197
+        # 620200    Frais de rep                                                  300
+
+        # 455000    Meal vouchers retenue                                                    50.14
+        # 455000    Remunration dues = NET                                                 4142.96
+
+        # 454000    ONSS Employer                                                          1266.89
+        # 621000    ONSS Employer                                             1266.89
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                             6413.89      6413.89
+
+        self.assertEqual(len(move_lines), 12)
+        self.assertFalse(float_compare(sum(l.debit for l in move_lines), balance, 2))
+        self.assertFalse(float_compare(sum(l.credit for l in move_lines), balance, 2))
+        self._validate_move_lines(move_lines, move_line_results)
+
+    def test_accounting_entries_commissions(self):
+        # hr_payroll_structure_cp200_structure_commission
+        # Test case: Create 2 payslips (1 classic / 1 low salary)
+        # Generate and validate the accounting entries
+
+        # YTI: Drop this in master
+        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission', raise_if_not_found=False)
+        if not structure:
+            return
+
+        # 1rst contract
+        self.contract.write({
+            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
+        })
+
+        # Second contract
+        second_employee = self.env['hr.employee'].create([{
+            'name': "Test Employee",
+            'address_home_id': self.address_home.id,
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'marital': "single",
+            'km_home_work': 75,
+        }])
+
+        second_car = self.env['fleet.vehicle'].create([{
+            'name': "Test Car 2",
+            'license_plate': "TEST2",
+            'driver_id': second_employee.address_home_id.id,
+            'company_id': self.env.company.id,
+            'model_id': self.model.id,
+            'first_contract_date': datetime.date(2020, 12, 17),
+            'co2': 88.0,
+            'car_value': 38000.0,
+            'fuel_type': "diesel",
+            'acquisition_date': datetime.date(2020, 1, 1)
+        }])
+
+        second_vehicle_contract = self.env['fleet.vehicle.log.contract'].create({
+            'name': "Test Contract",
+            'vehicle_id': second_car.id,
+            'company_id': self.env.company.id,
+            'start_date': datetime.date(2020, 12, 17),
+            'expiration_date': datetime.date(2021, 12, 17),
+            'state': "open",
+            'cost_frequency': "monthly",
+            'recurring_cost_amount_depreciated': 450.0
+        })
+
+        second_contract = self.env['hr.contract'].create([{
+            'name': "Contract For Payslip Test",
+            'employee_id': second_employee.id,
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
+            'car_id': second_car.id,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'date_start': datetime.date(2018, 12, 31),
+            'wage': 1500.0,
+            'state': "open",
+            'transport_mode_car': True,
+            'fuel_card': 150.0,
+            'internet': 38.0,
+            'representation_fees': 150.0,
+            'mobile': 30.0,
+            'meal_voucher_amount': 7.45,
+            'eco_checks': 250.0,
+            'ip_wage_rate': 25.0,
+            'ip': True,
+        }])
+
+        # Generate Batch / payslips
+        work_entries = self.contract._generate_work_entries(datetime.date(2020, 12, 1), datetime.date(2020, 12, 31))
+        payslip_run_id = self.env['hr.payslip.employees'].with_context(
+            default_date_start='2020-12-01',
+            default_date_end='2020-12-31',
+            default_structure_id=structure.id,
+            allowed_company_ids=self.env.company.ids,
+        ).create({}).compute_sheet()['res_id']
+        payslip_run = self.env['hr.payslip.run'].browse(payslip_run_id)
+
+        payslips = payslip_run.slip_ids
+        self.assertEqual(len(payslips), 2)
+
+        payslip_1 = payslips.filtered(lambda p: p.employee_id == self.employee)
+        payslip_1.input_line_ids.amount = 3000
+        payslip_1.compute_sheet()
+
+        self.assertEqual(len(payslip_1.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip_1.input_line_ids), 1)
+        self.assertEqual(len(payslip_1.line_ids), 16)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'COM': 3000.0,
+            'SALARY': 5650.0,
+            'ONSS': -738.46,
+            'GROSS': 4911.55,
+            'P.P': -1784.93,
+            'M.ONSS': -48.54,
+            'ONSS.ADJ': 346.36,
+            'P.P.ADJ': 636.82,
+            'M.ONSS.ADJ': 23.66,
+            'BASIC.ADJ': -2650.0,
+            'ONSS.TOTAL': 392.1,
+            'PPTOTAL': 1148.11,
+            'M.ONSS.TOTAL': 24.88,
+            'NET': 1434.91,
+            'ONSSEMPLOYER': 814.2,
+        }
+        self._validate_payslip(payslip_1, payslip_results)
+
+        # ================================================ #
+        #         Accounting entries for slip 1            #
+        # ================================================ #
+        # Basic salary 2650 - Commissions 3000
+
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Commissions                                    3000
+        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                  1148.11
+
+        # 454000    ONSS worker - Employment Bonus - adj                                     392.1
+        # 454000    ONSS Misceleneous - adj                                                  24.88
+
+        # 455000    Remunration dues = NET                                                 1434.91
+
+        # 454000    ONSS Employer                                                           814.19
+        # 621000    ONSS Employer                                              814.19
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                             3814.19      3814.19
+
+        payslip_2 = payslips.filtered(lambda p: p.employee_id == second_employee)
+        payslip_2.input_line_ids.amount = 500
+        payslip_2.compute_sheet()
+
+        self.assertEqual(len(payslip_2.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip_2.input_line_ids), 1)
+        self.assertEqual(len(payslip_2.line_ids), 18)
+
+        payslip_results = {
+            'BASIC': 1500.0,
+            'COM': 500.0,
+            'SALARY': 2000.0,
+            'ONSS': -261.4,
+            'EmpBonus.1': 134.23,
+            'GROSS': 1872.83,
+            'P.P': -272.36,
+            'P.P.DED': 44.48,
+            'M.ONSS': 0.0,
+            'ONSS.ADJ': 0.0,
+            'P.P.ADJ': 162.76,
+            'M.ONSS.ADJ': 0.0,
+            'BASIC.ADJ': -1500.0,
+            'ONSS.TOTAL': 127.17,
+            'PPTOTAL': 65.11,
+            'M.ONSS.TOTAL': 0.0,
+            'NET': 307.72,
+            'ONSSEMPLOYER': 135.7,
+        }
+        self._validate_payslip(payslip_2, payslip_results)
+        # ================================================ #
+        #         Accounting entries for slip 2            #
+        # ================================================ #
+        # Basic salary 1500 - Commissions 500
+
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Commissions                                     500
+        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                    65.12
+
+        # 454000    ONSS worker - Employment Bonus - adj                                    127.17
+        # 454000    ONSS Misceleneous - adj                                                      0
+
+        # 455000    Remunration dues = NET                                                  307.71
+
+        # 454000    ONSS Employer                                                           135.07
+        # 621000    ONSS Employer                                              135.07
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                               635.7        635.7
+        # Generate accounting entries
+        payslip_run.action_validate()
+        account_move = payslip_1.move_id
+        move_lines = account_move.line_ids
+
+        balance = 4449.9
+        move_line_results = [
+            ('620200', 'debit', 3500),        # remuneration
+            ('453000', 'credit', 1213.22),       # PP
+            ('454000', 'credit', 519.27),       # ONSS - Emp Bonus
+            ('454000', 'credit', 24.88),        # Misc ONSS
+            ('455000', 'credit', 1742.63),      # NET
+            ('454000', 'credit', 949.9),      # ONSS Employer
+            ('621000', 'debit', 949.9),       # ONSS Employer
+        ]
+        # ================================================ #
+        #         Accounting entries for Batch             #
+        # ================================================ #
+        # Account   Formula                                                     Debit       Credit
+        # 620200    Remuneration: Commissions                                    3500
+        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                  1213.23
+
+        # 454000    ONSS worker - Employment Bonus - adj                                    519.27
+        # 454000    ONSS Misceleneous - adj                                                  24.88
+
+        # 455000    Remunration dues = NET                                                 1742.62
+
+        # 454000    ONSS Employer                                                           949.89
+        # 621000    ONSS Employer                                              949.89
+        # ----------------------------------------------------------------------------------------
+        # BALANCE                                                             4449.89      4449.89
+        # Generate accounting entries
+
+        self.assertEqual(len(move_lines), 7)
+        self.assertFalse(float_compare(sum(l.debit for l in move_lines), balance, 2))
+        self.assertFalse(float_compare(sum(l.credit for l in move_lines), balance, 2))
+        self._validate_move_lines(move_lines, move_line_results)

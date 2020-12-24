@@ -18,6 +18,13 @@ class BrowsableObject(object):
     def __getitem__(self, key):
         return self.dict[key] or 0.0
 
+class ResultRules(BrowsableObject):
+    def __getattr__(self, attr):
+        return attr in self.dict and self.dict.__getitem__(attr) or {'total': 0, 'amount': 0, 'quantity': 0}
+
+    def __getitem__(self, key):
+        return self.dict[key] if key in self.dict else {'total': 0, 'amount': 0, 'quantity': 0}
+
 class InputLine(BrowsableObject):
     """a class that will be used into the python code, mainly for usability purposes"""
     def sum(self, code, from_date, to_date=None):

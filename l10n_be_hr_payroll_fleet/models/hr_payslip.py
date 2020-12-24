@@ -13,5 +13,10 @@ class HrPayslip(models.Model):
     def _onchange_employee(self):
         res = super(HrPayslip, self)._onchange_employee()
         if self.contract_id.car_id:
-            self.vehicle_id = self.contract_id.car_id
+            if self.contract_id.car_id.future_driver_id:
+                tmp_vehicle = self.env['fleet.vehicle'].search(
+                    [('driver_id', '=', self.contract_id.car_id.future_driver_id.id)], limit=1)
+                self.vehicle_id = tmp_vehicle
+            else:
+                self.vehicle_id = self.contract_id.car_id
         return res

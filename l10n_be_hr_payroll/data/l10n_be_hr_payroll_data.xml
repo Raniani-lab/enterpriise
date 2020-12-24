@@ -36,7 +36,7 @@
         <field name="parent_id" ref="hr_payroll.ALW"/>
     </record>
     <record id="hr_payroll_head_pp" model="hr.salary.rule.category">
-        <field name="name">Withholding Tax Grid 2018 (Precompte Professionnel Bareme 2018)</field>
+        <field name="name">Withholding Taxes</field>
         <field name="code">PP</field>
         <field name="parent_id" ref="hr_payroll.DED"/>
     </record>
@@ -91,6 +91,30 @@
     <record id="hr_payroll_termination_holidays" model="hr.salary.rule.category">
         <field name="name">Terminaison Holidays</field>
         <field name="code">TERMINAISON</field>
+    </record>
+    <record id="hr_salary_rule_category_remuneration" model="hr.salary.rule.category">
+        <field name="name">Accounting: Remuneration</field>
+        <field name="code">REMUNERATION</field>
+    </record>
+    <record id="hr_salary_rule_category_owed_remuneration" model="hr.salary.rule.category">
+        <field name="name">Accounting: Owed Remuneration</field>
+        <field name="code">OWEDREMUNERATION</field>
+    </record>
+    <record id="hr_salary_rule_category_onss_employer" model="hr.salary.rule.category">
+        <field name="name">ONSS (Employer)</field>
+        <field name="code">ONSSEMPLOYER</field>
+    </record>
+    <record id="hr_salary_rule_category_withholding_taxes_total" model="hr.salary.rule.category">
+        <field name="name">Withholding Taxes (Total)</field>
+        <field name="code">PPTOTAL</field>
+    </record>
+    <record id="hr_salary_rule_category_onss_total" model="hr.salary.rule.category">
+        <field name="name">ONSS (Total)</field>
+        <field name="code">ONSSTOTAL</field>
+    </record>
+    <record id="hr_salary_rule_category_m_onss_total" model="hr.salary.rule.category">
+        <field name="name">Special Social Cotisation (Total)</field>
+        <field name="code">MONSSTOTAL</field>
     </record>
 
     <record id="hr_work_entry.work_entry_type_attendance" model="hr.work.entry.type">

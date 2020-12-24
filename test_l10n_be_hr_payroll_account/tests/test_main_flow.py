@@ -280,7 +280,10 @@ class TestHR(common.TransactionCase):
                 structure=struct,
                 employee=self.user.employee_id,
                 start=Date.today().replace(day=16),
-                car=self.env['fleet.vehicle'].search([('driver_id', '=', self.user.employee_id.address_home_id.id)], limit=1),
+                car=self.env['fleet.vehicle'].search([
+                    ('driver_id', '=', self.user.employee_id.address_home_id.id),
+                    ('company_id', '=', self.user.employee_id.company_id.id),
+                ], limit=1),
                 wage=2500,
                 state='draft',
             )

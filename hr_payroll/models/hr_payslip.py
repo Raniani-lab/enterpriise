@@ -7,7 +7,7 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
+from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, date_utils
 from odoo.tools.misc import format_date
@@ -205,7 +205,9 @@ class HrPayslip(models.Model):
                     pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
                 else:
                     pdf_name = _("Payslip")
-                self.env['ir.attachment'].create({
+                # Sudo to allow payroll managers to create document.document without access to the
+                # application
+                self.env['ir.attachment'].sudo().create({
                     'name': pdf_name,
                     'type': 'binary',
                     'datas': base64.encodebytes(pdf_content),
@@ -377,7 +379,7 @@ class HrPayslip(models.Model):
                 'inputs': InputLine(employee.id, inputs_dict, self.env),
                 'employee': employee,
                 'contract': contract,
-                'result_rules': BrowsableObject(employee.id, {}, self.env)
+                'result_rules': ResultRules(employee.id, {}, self.env)
             }
         }
         return localdict

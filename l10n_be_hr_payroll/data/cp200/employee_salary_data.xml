@@ -136,6 +136,20 @@ if contract.has_laptop:
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="cp200_employees_salary_onss_total" model="hr.salary.rule">
+            <field name="category_id" ref="hr_salary_rule_category_onss_total"/>
+            <field name="name">ONSS (TOTAL)</field>
+            <field name="code">ONSSTOTAL</field>
+            <field name="sequence">43</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = abs(categories.ONSS) - abs(categories.EmpBonus)
+            </field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <record id="cp200_employees_salary_reim_travel" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="name">Reimbursement of travel expenses</field>
@@ -212,6 +226,21 @@ result = contract.car_atn
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>
 
+        <record id="cp200_employees_salary_withholding_taxes_total" model="hr.salary.rule">
+            <field name="category_id" ref="hr_salary_rule_category_withholding_taxes_total"/>
+            <field name="name">Withholding Taxes (Total)</field>
+            <field name="code">PPTOTAL</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">131</field>
+            <field name="condition_select">none</field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = abs(categories.PP) - abs(result_rules['P.P.DED']['total'] if bool(categories.EmpBonus) else 0)
+            </field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
         <record id="cp200_employees_salary_company_car_2" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_div_net"/>
             <field name="name">Benefit in Kind (Company Car)</field>
@@ -263,7 +292,7 @@ result = -result_rules['ATN.LAP']['amount']
             <field name="code">M.ONSS</field>
             <field name="amount_select">fix</field>
             <field name="sequence">165</field>
-            <field name="appears_on_payslip" eval="False"/>
+            <field name="appears_on_payslip" eval="True"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = compute_special_social_cotisations(payslip, categories, worked_days, inputs)</field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
@@ -451,6 +480,32 @@ result = inputs.EXPENSES.amount if inputs.EXPENSES else 0
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = -inputs.NEGATIVE.amount</field>
             <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        </record>
+
+        <record id="cp200_employees_salary_remuneration" model="hr.salary.rule">
+            <field name="category_id" ref="hr_salary_rule_category_remuneration"/>
+            <field name="name">Accounting: Remuneration</field>
+            <field name="code">REMUNERATION</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">500</field>
+            <field name="condition_select">none</field>
+            <field name="amount_python_compute">
+result = categories.BASIC + categories.COMMISSION - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+            <field name="appears_on_payslip" eval="False"/>
+        </record>
+
+        <record id="cp200_employees_salary_onss_employer" model="hr.salary.rule">
+            <field name="category_id" ref="hr_salary_rule_category_onss_employer"/>
+            <field name="name">Accounting: ONSS (Employer)</field>
+            <field name="code">ONSSEMPLOYER</field>
+            <field name="sequence">502</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = SALARY * EMPLOYER_ONSS</field>
+            <field name="partner_id" ref="res_partner_onss"/>
+            <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+            <field name="appears_on_payslip" eval="False"/>
         </record>
     </data>
 </odoo>

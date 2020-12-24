@@ -10,6 +10,7 @@ from collections import defaultdict
 from datetime import date, timedelta
 from odoo.tools import float_round, date_utils
 from odoo.exceptions import UserError
+from odoo.addons.l10n_be_hr_payroll.models.hr_contract import EMPLOYER_ONSS
 
 
 class Payslip(models.Model):
@@ -277,6 +278,9 @@ class Payslip(models.Model):
             'compute_withholding_reduction': compute_withholding_reduction,
             'compute_withholding_taxes_adjustment': compute_withholding_taxes_adjustment,
             'compute_special_social_cotisations_commissions': compute_special_social_cotisations_commissions,
+            'compute_employment_bonus_employees_commissions': compute_employment_bonus_employees_commissions,
+            'compute_withholding_reduction_commissions': compute_withholding_reduction_commissions,
+            'EMPLOYER_ONSS': EMPLOYER_ONSS,
         })
         return res
 
@@ -486,6 +490,14 @@ class Payslip(models.Model):
                 ))
         return super().action_payslip_done()
 
+    def _get_pp_taxable_amount(self):
+        commission_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
+        commissions_payslips = self.filtered(lambda p: p.struct_id == commission_structure)
+        result = sum(abs(p._get_salary_line_total('COM')) for p in commissions_payslips)
+
+        remaining_payslips = self - commissions_payslips
+        return result + sum(abs(p._get_salary_line_total('GROSS')) for p in remaining_payslips)
+
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
@@ -624,6 +636,8 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
 
 def compute_ip(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
+    if not contract.ip:
+        return 0.0
     return payslip.dict._get_paid_amount() * contract.ip_wage_rate / 100.0
 
 def compute_ip_deduction(payslip, categories, worked_days, inputs):
@@ -859,3 +873,36 @@ def compute_special_social_cotisations_commissions(payslip, categories, worked_d
         else:
             result = -51.64
     return result
+
+# ref: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/deductions/workers_reductions/workbonus.html
+def compute_employment_bonus_employees_commissions(payslip, categories, worked_days, inputs):
+    bonus_basic_amount = payslip.rule_parameter('work_bonus_basic_amount')
+    wage_lower_bound = payslip.rule_parameter('work_bonus_reference_wage_low')
+    ratio = 1
+
+    if payslip.worked_days_line_ids:
+        rc = payslip.contract_id.resource_calendar_id
+        worked_hours = sum(payslip.worked_days_line_ids.mapped('number_of_hours'))
+        if not rc.full_time_required_hours or not rc.hours_per_day:
+            ratio = 0
+        else:
+            full_time_hours = sum(payslip.worked_days_line_ids.mapped('number_of_days')) * rc.full_time_required_hours / (rc.full_time_required_hours / rc.hours_per_day)
+            ratio = worked_hours / full_time_hours
+
+    salary = categories.BASIC * ratio
+    adjusted_onss = -categories.BASIC * 0.1307
+
+    if salary <= wage_lower_bound:
+        result = bonus_basic_amount
+    elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
+        coeff = payslip.rule_parameter('work_bonus_coeff')
+        result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
+    else:
+        return -adjusted_onss * ratio
+    return min(result, -adjusted_onss) * ratio
+
+def compute_withholding_reduction_commissions(payslip, categories, worked_days, inputs):
+    if categories.EmpBonus:
+        adjusted_pp = compute_withholding_taxes_adjustment(payslip, categories, worked_days, inputs)
+        return min(abs(adjusted_pp), categories.EmpBonus * 0.3314)
+    return 0.0

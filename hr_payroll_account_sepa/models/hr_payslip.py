@@ -57,7 +57,7 @@ class HrPayslip(models.Model):
                 sct_generic = True
 
         # Generate XML File
-        xml_doc = journal_id.create_iso20022_credit_transfer(payments_data, True, sct_generic)
+        xml_doc = journal_id.sudo().create_iso20022_credit_transfer(payments_data, True, sct_generic)
         xml_binary = base64.encodebytes(xml_doc)
 
         # Save XML file on the payslip

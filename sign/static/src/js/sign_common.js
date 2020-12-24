@@ -727,7 +727,13 @@ odoo.define('sign.document_signing', function (require) {
             var self = this;
             return this._super.apply(this, arguments).then(function () {
                 if (self.defaultSignature && self.defaultSignature !== self.emptySignature) {
+                    var settings = self.$signatureField.jSignature('getSettings');
+                    var decorColor = settings['decor-color'];
+                    self.$signatureField.jSignature('updateSetting', 'decor-color', null);
+                    self.$signatureField.jSignature('reset');
                     self.$signatureField.jSignature("importData", self.defaultSignature);
+                    settings['decor-color'] = decorColor;
+
                     return self._waitForSignatureNotEmpty();
                 }
             });

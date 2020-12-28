@@ -35,6 +35,14 @@ var FORMAT_OPTIONS = {
     },
 };
 
+function dateToServer (date, fieldType) {
+    date = date.clone().locale('en');
+    if (fieldType === "date") {
+        return date.local().format('YYYY-MM-DD');
+    }
+    return date.utc().format('YYYY-MM-DD HH:mm:ss');
+}
+
 /*
 
 ABOUT
@@ -557,8 +565,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 route: '/sale_subscription_dashboard/compute_stat',
                 params: {
                     stat_type: this.selected_stat,
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
+                    start_date: dateToServer(this.start_date, 'date'),
+                    end_date: dateToServer(this.end_date, 'date'),
                     filters: this.filters,
                     context: session.user_context,
                 },
@@ -614,8 +622,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 route: '/sale_subscription_dashboard/get_stats_history',
                 params: {
                     stat_type: this.selected_stat,
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
+                    start_date: dateToServer(this.start_date, 'date'),
+                    end_date: dateToServer(this.end_date, 'date'),
                     filters: this.filters,
                     context: session.user_context,
                 },
@@ -646,8 +654,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 route: '/sale_subscription_dashboard/get_stats_by_plan',
                 params: {
                     stat_type: this.selected_stat,
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
+                    start_date: dateToServer(this.start_date, 'date'),
+                    end_date: dateToServer(this.end_date, 'date'),
                     filters: this.filters,
                     context: session.user_context,
                 },
@@ -678,8 +686,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                 route: '/sale_subscription_dashboard/compute_graph',
                 params: {
                     stat_type: this.selected_stat,
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
+                    start_date: dateToServer(this.start_date, 'date'),
+                    end_date: dateToServer(this.end_date, 'date'),
                     points_limit: 0,
                     filters: this.filters,
                     context: session.user_context,
@@ -698,8 +706,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         self._rpc({
                 route: '/sale_subscription_dashboard/compute_graph_mrr_growth',
                 params: {
-                    start_date: this.start_date.format('YYYY-MM-DD'),
-                    end_date: this.end_date.format('YYYY-MM-DD'),
+                    start_date: dateToServer(this.start_date, 'date'),
+                    end_date: dateToServer(this.end_date, 'date'),
                     points_limit: 0,
                     filters: this.filters,
                     context: session.user_context,
@@ -895,7 +903,7 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
         const data = await  this._rpc({
             route: '/sale_subscription_dashboard/get_default_values_forecast',
             params: {
-                end_date: this.end_date.format('YYYY-MM-DD'),
+                end_date: dateToServer(this.end_date, 'date'),
                 forecast_type: forecast_type,
                 filters: this.filters,
                 context: session.user_context,
@@ -1057,8 +1065,8 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
                 route: '/sale_subscription_dashboard/compute_graph_and_stats',
                     params: {
                         stat_type: this.stat_type,
-                        start_date: this.start_date.format('YYYY-MM-DD'),
-                        end_date: this.end_date.format('YYYY-MM-DD'),
+                        start_date: dateToServer(this.start_date, 'date'),
+                        end_date: dateToServer(this.end_date, 'date'),
                         points_limit: 30,
                         filters: this.filters,
                         context: session.user_context,
@@ -1127,7 +1135,7 @@ var SaleSubscriptionDashboardForecastBox = Widget.extend({
                     route: '/sale_subscription_dashboard/get_default_values_forecast',
                     params: {
                         forecast_type: this.stat_type,
-                        end_date: this.end_date.format('YYYY-MM-DD'),
+                        end_date: dateToServer(this.end_date, 'date'),
                         filters: this.filters,
                         context: session.user_context,
                     },
@@ -1208,8 +1216,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         self._rpc({
             route: '/sale_subscription_dashboard/get_values_salesmen',
             params: {
-                start_date: this.start_date.format('YYYY-MM-DD'),
-                end_date: this.end_date.format('YYYY-MM-DD'),
+                start_date: dateToServer(this.start_date, 'date'),
+                end_date: dateToServer(this.end_date, 'date'),
                 salesman_ids: this.salesman,
                 context: session.user_context,
             },

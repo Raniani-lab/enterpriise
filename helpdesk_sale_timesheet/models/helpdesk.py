@@ -135,7 +135,7 @@ class AccountAnalyticLine(models.Model):
 
     @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
     def _compute_so_line(self):
-        for timesheet in self._get_not_billed():
+        for timesheet in self.filtered(lambda t: not t.is_so_line_edited)._get_not_billed():
             if not timesheet.project_id.allow_billable:
                 timesheet.so_line = False
                 continue
@@ -159,13 +159,6 @@ class AccountAnalyticLine(models.Model):
 
     def _check_timesheet_can_be_billed(self):
         return super(AccountAnalyticLine, self)._check_timesheet_can_be_billed() or self.so_line == self.helpdesk_ticket_id.sale_line_id
-
-    @api.constrains('helpdesk_ticket_id')
-    def _check_sale_line_in_project_map(self):
-        try:
-            super(AccountAnalyticLine, self)._check_sale_line_in_project_map()
-        except ValidationError:
-            raise ValidationError(_("This timesheet line cannot be billed: there is no Sale Order Item defined on the task, nor on the project and nor on the ticket. Please define one to save your timesheet line."))
 
     @api.depends('so_line.product_id', 'project_id', 'task_id', 'task_id.bill_type', 'task_id.pricing_type', 'helpdesk_ticket_id')
     def _compute_timesheet_invoice_type(self):

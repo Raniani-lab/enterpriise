@@ -934,6 +934,7 @@ class AccountReport(models.AbstractModel):
         if params and 'id' in params:
             active_id = self._get_caret_option_target_id(params['id'])
             ctx.update({
+                    'active_id': active_id,
                     'search_default_account_id': [active_id],
             })
 

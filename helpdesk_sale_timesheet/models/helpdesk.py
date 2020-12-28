@@ -206,7 +206,7 @@ class AccountAnalyticLine(models.Model):
         except ValidationError:
             raise ValidationError(_("This timesheet line cannot be billed: there is no Sale Order Item defined on the task, nor on the project and nor on the ticket. Please define one to save your timesheet line."))
 
-    @api.depends('so_line.product_id', 'project_id', 'task_id', 'non_allow_billable', 'task_id.bill_type', 'task_id.pricing_type', 'task_id.non_allow_billable', 'helpdesk_ticket_id')
+    @api.depends('so_line.product_id', 'project_id', 'task_id', 'task_id.bill_type', 'task_id.pricing_type', 'helpdesk_ticket_id')
     def _compute_timesheet_invoice_type(self):
         """ Compute the correct timesheet_invoice_type for timesheets linked to a ticket
 

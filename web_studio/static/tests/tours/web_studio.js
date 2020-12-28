@@ -263,6 +263,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_leave',
 }, {
     // come back to the home menu to check if the menu data have changed
+    extra_trigger: '.o_web_client:not(.o_in_studio)',
     trigger: '.o_menu_toggle.fa-th',
 }, {
     trigger: 'input.o_menu_search_input',

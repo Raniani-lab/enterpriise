@@ -75,11 +75,6 @@ class Task(models.Model):
                 'display_create_invoice_secondary': secondary,
             })
 
-    @api.depends('is_fsm', 'display_timesheet_timer', 'timer_start')
-    def _compute_display_create_order(self):
-        super()._compute_display_create_order()
-        self.filtered(lambda t: t.is_fsm or (t.display_timesheet_timer and t.timer_start)).display_create_order = False
-
     def action_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it
         so_to_confirm = self.filtered(

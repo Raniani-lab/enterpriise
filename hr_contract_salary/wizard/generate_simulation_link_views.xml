@@ -13,7 +13,6 @@
                     <field name="employee_contract_employee_id" invisible="1"/>
                     <field name="employee_id" invisible="1"/>
                     <field name="applicant_id" invisible="1"/>
-                    <field name="contract_start_date"/>
                     <field name="final_yearly_costs"/>
                 </group>
                 <group>

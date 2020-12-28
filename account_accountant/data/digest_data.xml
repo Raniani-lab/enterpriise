@@ -17,5 +17,20 @@
 </div>
             </field>
         </record>
+         <record id="digest_tip_account_accountant_1" model="digest.tip">
+            <field name="name">Tip: Find an Accountant or register your Accounting Firm</field>
+            <field name="sequence">1000</field>
+            <field name="group_id" ref="account.group_account_user" />
+            <field name="tip_description" type="html">
+<div>
+    <b class="tip_title">Tip: Find an Accountant or register your Accounting Firm</b>
+    <p class="tip_content">Click here to find an accountant or if you want to list out your accounting services on Odoo</p>
+    <p>
+        <a class="tip_button" href="https://odoo.com/accounting-firms" target="_blank"><span class="tip_button_text">Find an Accountant</span></a>
+        <a class="tip_button" href="https://odoo.com/accounting-firms/register" target="_blank"><span class="tip_button_text">Register your Accounting Firm</span></a>
+    </p>
+</div>
+            </field>
+        </record>
     </data>
 </odoo>

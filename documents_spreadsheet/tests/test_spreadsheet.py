@@ -122,3 +122,32 @@ class SpreadsheetDocuments(TransactionCase):
             template.with_user(user).unlink()
         template.name = "bye"
         template.unlink()
+
+    def test_contributor_write_raw(self):
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        user = new_test_user(self.env, "Test Manager", groups='documents.group_documents_manager')
+        document.with_user(user).write({
+            "raw": r"{}"
+        })
+        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id),("document_id", "=", document.id)])
+        self.assertEqual(len(contributor), 1, "The contribution should be registered")
+
+    def test_contributor_move_workspace(self):
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        new_folder = self.env["documents.folder"].create({"name": "New folder"})
+        user = new_test_user(self.env, "Test Manager", groups='documents.group_documents_manager')
+        document.with_user(user).write({
+            "folder_id": new_folder.id
+        })
+        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id),("document_id", "=", document.id)])
+        self.assertEqual(len(contributor), 0, "The contribution should not be registered")

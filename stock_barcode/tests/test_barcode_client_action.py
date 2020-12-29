@@ -526,6 +526,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'picking_type_id': self.picking_type_out.id,
+            'note': "A Test Note",
         })
         picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
         url = self._get_client_action_url(delivery_picking.id)

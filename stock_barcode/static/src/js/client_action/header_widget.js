@@ -15,6 +15,7 @@ var HeaderWidget = Widget.extend({
     init: function (parent) {
         this._super.apply(this, arguments);
         this.title = parent.title;
+        this.note = parent.note;
     },
 
     //--------------------------------------------------------------------------

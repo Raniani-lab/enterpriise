@@ -81,6 +81,7 @@
                             <field name="state"/>
                         </tree>
                     </field>
+                    <field name="note" readonly="1" attrs="{'invisible': [('note', '=', False)]}"/>
                 </group>
             </form>
         </field>

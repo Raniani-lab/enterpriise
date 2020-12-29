@@ -29,10 +29,6 @@ class StockPicking(models.Model):
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
         """
-        if self.env.context.get('company_id'):
-            company = self.env['res.company'].browse(self.env.context['company_id'])
-        else:
-            company = self.env.company
         picking_fields_to_read = self._get_picking_fields_to_read()
         move_line_ids_fields_to_read = self._get_move_line_ids_fields_to_read()
         pickings = self.read(picking_fields_to_read)
@@ -294,6 +290,7 @@ class StockPicking(models.Model):
             'picking_type_code',
             'company_id',
             'immediate_transfer',
+            'note',
         ]
 
     @api.model

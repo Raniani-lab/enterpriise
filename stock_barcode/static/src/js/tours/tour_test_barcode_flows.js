@@ -1301,6 +1301,13 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
 ]);
 
 tour.register('test_delivery_reserved_1', {test: true}, [
+    // test that picking note properly pops up + close it
+    {
+        trigger: '.alert:contains("A Test Note")',
+    },
+    {
+        trigger: '.close',
+    },
     {
         trigger: '.o_barcode_client_action',
         run: function() {

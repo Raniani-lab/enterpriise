@@ -15,6 +15,10 @@
                 <button class="nav-link btn o_close o_hidden"><i class="fa fa-times"/></button>
             </nav>
         </div>
+        <div t-if="widget.note" class="alert alert-warning alert-dismissible text-left mb-0">
+            <button type="button" class="close" data-dismiss="alert" title="Close" aria-label="Close">&#215;</button>
+            <span t-esc="widget.note"/>
+        </div>
     </t>
 
     <t t-name="stock_barcode_settings_widget">

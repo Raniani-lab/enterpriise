@@ -72,6 +72,7 @@ var PickingClientAction = ClientAction.extend({
             );
 
             self.isImmediatePicking = self.currentState.immediate_transfer;
+            self.note = self.currentState.note;
         });
     },
 

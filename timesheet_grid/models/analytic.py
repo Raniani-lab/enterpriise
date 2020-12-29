@@ -607,6 +607,8 @@ class AnalyticLine(models.Model):
     def action_add_time_to_timer(self, time):
         if self.validated:
             raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+        if not self.user_id.employee_ids:
+            raise UserError(_('To set a time to a project, your current user must be linked to an employee'))
         timer = self.user_timer_id
         if not timer:
             self.action_timer_start()

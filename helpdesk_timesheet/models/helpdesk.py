@@ -63,7 +63,7 @@ class HelpdeskTicket(models.Model):
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
     timesheet_timer = fields.Boolean(related='team_id.timesheet_timer')
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
-    total_hours_spent = fields.Float(compute='_compute_total_hours_spent', default=0)
+    total_hours_spent = fields.Float(compute='_compute_total_hours_spent', default=0, compute_sudo=True, store=True)
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
     display_timer = fields.Boolean(compute='_compute_display_timer')
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')

@@ -22,8 +22,7 @@ class HrPayslipEmployees(models.TransientModel):
 
     employee_ids = fields.Many2many('hr.employee', 'hr_employee_group_rel', 'payslip_id', 'employee_id', 'Employees',
                                     default=lambda self: self._get_employees(), required=True,
-                                    compute='_compute_employee_ids', store=True, readonly=False,
-                                    domain=['|', ('active', '=', False), ('active', '=', True)])
+                                    compute='_compute_employee_ids', store=True, readonly=False)
     structure_id = fields.Many2one('hr.payroll.structure', string='Salary Structure')
     department_id = fields.Many2one('hr.department')
 

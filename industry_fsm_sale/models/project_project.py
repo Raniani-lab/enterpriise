@@ -11,7 +11,7 @@ class Project(models.Model):
     allow_quotations = fields.Boolean(
         "Extra Quotations", compute="_compute_allow_quotations", store=True, readonly=False)
     allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
-    bill_type = fields.Selection(compute="_compute_bill_type", store=True, readonly=False)
+    pricing_type = fields.Selection(compute="_compute_pricing_type", store=True, readonly=False)
     sale_line_id = fields.Many2one(compute="_compute_sale_line_id", store=True, readonly=False)
 
     _sql_constraints = [
@@ -58,8 +58,8 @@ class Project(models.Model):
         return super().flush(fnames, records)
 
     @api.depends('is_fsm')
-    def _compute_bill_type(self):
-        self.filtered(lambda p: p.is_fsm).update({'bill_type': 'customer_task'})
+    def _compute_pricing_type(self):
+        self.filtered('is_fsm').update({'pricing_type': 'task_rate'})
 
     @api.depends('is_fsm')
     def _compute_sale_line_id(self):

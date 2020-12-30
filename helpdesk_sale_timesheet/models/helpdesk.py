@@ -54,14 +54,14 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.remaining_hours_so = mapped_remaining_hours[ticket._origin.id]
 
-    @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet', 'project_id.bill_type', 'project_id.sale_line_id')
+    @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet', 'project_id.pricing_type', 'project_id.sale_line_id')
     def _compute_sale_line_id(self):
         billable_tickets = self.filtered('use_helpdesk_sale_timesheet')
         (self - billable_tickets).update({
             'sale_line_id': False
         })
         for ticket in billable_tickets:
-            if ticket.project_id and ticket.project_id.bill_type == 'customer_project':
+            if ticket.project_id and ticket.project_id.pricing_type != 'task_rate':
                 ticket.sale_line_id = ticket.project_id.sale_line_id
             # Check sale_line_id and customer are coherent
             if ticket.sale_line_id.order_partner_id.commercial_partner_id != ticket.commercial_partner_id:
@@ -75,7 +75,7 @@ class HelpdeskTicket(models.Model):
         if not self.commercial_partner_id or not self.project_id.allow_billable or not self.use_helpdesk_sale_timesheet:
             return False
         domain = [('is_service', '=', True), ('order_partner_id', 'child_of', self.commercial_partner_id.id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done']), ('remaining_hours', '>', 0)]
-        if self.project_id.bill_type == 'customer_project' and self.project_sale_order_id:
+        if self.project_id.pricing_type != 'task_rate' and self.project_sale_order_id:
             domain.append(('order_id', '=?', self.project_sale_order_id.id))
         return self.env['sale.order.line'].search(domain, limit=1)
 
@@ -156,7 +156,7 @@ class AccountAnalyticLine(models.Model):
     def _check_timesheet_can_be_billed(self):
         return super(AccountAnalyticLine, self)._check_timesheet_can_be_billed() or self.so_line == self.helpdesk_ticket_id.sale_line_id
 
-    @api.depends('so_line.product_id', 'project_id', 'task_id', 'task_id.bill_type', 'task_id.pricing_type', 'helpdesk_ticket_id')
+    @api.depends('so_line.product_id', 'project_id', 'task_id', 'task_id.pricing_type', 'helpdesk_ticket_id')
     def _compute_timesheet_invoice_type(self):
         """ Compute the correct timesheet_invoice_type for timesheets linked to a ticket
 

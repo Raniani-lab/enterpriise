@@ -133,7 +133,7 @@ class HelpdeskTicket(models.Model):
         if not self.commercial_partner_id or not self.project_id.allow_billable or not self.use_helpdesk_sale_timesheet:
             return False
         domain = [('is_service', '=', True), ('order_partner_id', 'child_of', self.commercial_partner_id.id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]
-        if self.project_id.bill_type == 'customer_type' and self.project_sale_order_id:
+        if self.project_id.bill_type == 'customer_project' and self.project_sale_order_id:
             domain.append(('order_id', '=?', self.project_sale_order_id.id))
         sale_lines = self.env['sale.order.line'].search(domain)
         for line in sale_lines:

@@ -56,7 +56,7 @@ class TestEdiResults(TestMxExtendedEdiCommon):
                                 </Receptor>
                                 <Mercancias>
                                     <Mercancia
-                                        FraccionArancelaria="72123099"
+                                        FraccionArancelaria="7212100399"
                                         UnidadAduana="06"
                                         CantidadAduana="0.000"
                                         ValorDolares="20000.00"

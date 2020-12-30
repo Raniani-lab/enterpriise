@@ -21,6 +21,6 @@ class TestMxExtendedEdiCommon(TestMxEdiCommon):
         })
 
         cls.product.write({
-            'l10n_mx_edi_tariff_fraction_id': cls.env.ref('l10n_mx_edi_extended.tariff_fraction_72123099').id,
+            'l10n_mx_edi_tariff_fraction_id': cls.env.ref('l10n_mx_edi_extended.tariff_fraction_7212100399').id,
             'l10n_mx_edi_umt_aduana_id': cls.env.ref('uom.product_uom_unit').id,
         })

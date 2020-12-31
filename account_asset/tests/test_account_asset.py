@@ -3,6 +3,7 @@
 import math
 import time
 
+from datetime import date
 from dateutil.relativedelta import relativedelta
 from odoo import fields
 from odoo.exceptions import UserError, MissingError
@@ -10,6 +11,7 @@ from odoo.tests.common import Form
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from unittest.mock import patch
 
+original_context_today = fields.Date.context_today
 
 def today():
     # 31'st of december is a particular date because entries are configured
@@ -20,11 +22,21 @@ def today():
         today += relativedelta(day=30)
     return today
 
+def context_today(record, timestamp=None):
+    # Since 31'st december is faked as 30th december, we need to also fake
+    # context_today that is used in some account_move code (eg. auto_post)
+    if timestamp == None:
+        today = date.today()
+        if today.month == 12 and today.day == 31:
+            return today + relativedelta(day=30)
+    return original_context_today(record, timestamp)
+
 
 class TestAccountAsset(TestAccountReportsCommon):
 
     @classmethod
     @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
     def setUpClass(cls, today_mock):
         super(TestAccountAsset, cls).setUpClass()
         today = fields.Date.today()
@@ -51,7 +63,9 @@ class TestAccountAsset(TestAccountReportsCommon):
             with asset_form.depreciation_move_ids.edit(i) as line_edit:
                 line_edit.asset_remaining_value
 
-    def test_00_account_asset(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_00_account_asset(self, today_mock):
         """Test the lifecycle of an asset"""
         self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
 
@@ -173,7 +187,9 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(recognition.depreciation_move_ids.sorted(lambda r: r.id)[1].date, installment_date,
                          'Installment date is incorrect.')
 
-    def test_asset_form(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_asset_form(self, today_mock):
         """Test the form view of assets"""
         asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
         asset_form.name = "Test Asset"
@@ -267,7 +283,9 @@ class TestAccountAsset(TestAccountReportsCommon):
         # I check the proper depreciation lines created.
         self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
 
-    def test_asset_modify_value_00(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_asset_modify_value_00(self, today_mock):
         """Test the values of the asset and value increase 'assets' after a
         modification of residual and/or salvage values.
         Increase the residual value, increase the salvage value"""
@@ -331,7 +349,9 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(self.truck.children_ids.value_residual, 0)
         self.assertEqual(self.truck.children_ids.salvage_value, 1500)
 
-    def test_asset_modify_value_04(self):
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_asset_modify_value_04(self, today_mock):
         "Increase the residual value, decrease the salvage value; increase of book value"
         self.env['asset.modify'].create({
             'name': 'GODZILA IS REAL!',
@@ -346,6 +366,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(self.truck.children_ids.salvage_value, 0)
 
     @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
     def test_asset_modify_report(self, today_mock):
         """Test the asset value modification flows"""
         #           PY      +   -  Final    PY     +    - Final Bookvalue

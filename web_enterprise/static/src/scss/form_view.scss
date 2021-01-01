@@ -224,6 +224,26 @@
             border-bottom: none;
         }
     }
+
+    // Notebooks inside form without sheet tag
+    &.o_form_nosheet .o_notebook {
+        > .o_notebook_headers {
+            @include o-form-nosheet-negative-margin;
+            > .nav.nav-tabs {
+                @include o-form-nosheet-inner-left-padding;
+            }
+        }
+        > .tab-content > .tab-pane > :first-child {
+            // These elements will appear attached to the tabs
+            &.oe_form_field_html {
+                @include o-form-nosheet-negative-margin;
+            }
+            &.o_field_x2many.o_field_x2many_list {
+                @include o-form-nosheet-negative-margin;
+            }
+        }
+    }
+
     // Notebooks for small screen
     @include media-breakpoint-down(sm) {
         .o_notebook .o_notebook_headers {

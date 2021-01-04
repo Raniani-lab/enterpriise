@@ -323,3 +323,64 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         self.assertEqual(res[0]['tax_ids'][0]['id'], tax.id)
         self.assertTrue('id' in res[0]['tax_tag_ids'][0])
         self.assertEqual(res[0]['tax_tag_ids'][0]['display_name'], 'the_tag')
+
+    def test_prepare_writeoff_moves_multi_currency(self):
+        for invoice_type in ('out_invoice', 'in_invoice'):
+            # Create an invoice at rate 1:2.
+            invoice = self.env['account.move'].create({
+                'move_type': invoice_type,
+                'partner_id': self.partner_a.id,
+                'currency_id': self.currency_data['currency'].id,
+                'invoice_date': '2019-01-21',
+                'date': '2019-01-21',
+                'invoice_line_ids': [(0, 0, {
+                    'product_id': self.product_a.id,
+                    'price_unit': 1000.0,
+                })]
+            })
+            invoice.action_post()
+
+            # Create a payment at rate 1:2.
+            ctx = {'active_model': 'account.move', 'active_ids': invoice.ids}
+            payment_register = self.env['account.payment.register'].with_context(**ctx).create({
+                'amount': 800.0,
+                'currency_id': self.currency_data['currency'].id,
+            })
+            payment_vals = payment_register._create_payment_vals_from_wizard()
+            payment = self.env['account.payment'].create(payment_vals)
+            payment.action_post()
+
+            # Create a write-off for the residual amount.
+            account = invoice.line_ids\
+                .filtered(lambda line: line.account_id.internal_type in ('receivable', 'payable')).account_id
+            lines = (invoice + payment.move_id).line_ids.filtered(lambda line: line.account_id == account)
+            write_off_vals = self.env['account.reconciliation.widget']._prepare_writeoff_moves(lines, {
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'account_id': self.company_data['default_account_revenue'].id,
+            })
+            write_off = self.env['account.move'].create(write_off_vals)
+            write_off.action_post()
+
+            self.assertRecordValues(write_off.line_ids.sorted('balance'), [
+                {
+                    'partner_id': self.partner_a.id,
+                    'currency_id': self.currency_data['currency'].id,
+                    'debit': 0.0,
+                    'credit': 100.0,
+                    'amount_currency': -200.0,
+                },
+                {
+                    'partner_id': self.partner_a.id,
+                    'currency_id': self.currency_data['currency'].id,
+                    'debit': 100.0,
+                    'credit': 0.0,
+                    'amount_currency': 200.0,
+                },
+            ])
+
+            # Reconcile.
+            all_lines = (invoice + payment.move_id + write_off).line_ids.filtered(lambda line: line.account_id == account)
+            all_lines.reconcile()
+
+            for line in all_lines:
+                self.assertTrue(line.reconciled)

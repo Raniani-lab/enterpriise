@@ -25,9 +25,10 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         ('fired', 'Fired'),
         ('resigned', 'Resigned'),
         ('retired', 'Retired')], string='Leaving Type', required=True, default='fired')
+
     start_notice_period = fields.Date('Start notice period', required=True, default=fields.Date.context_today)
     end_notice_period = fields.Date('End notice period', required=True)
-
+    departure_description = fields.Char('Departure Description', required=True)
     oldest_contract_id = fields.Many2one('hr.contract', string='Oldest Contract', compute='_compute_oldest_contract_id')
     first_contract = fields.Date('First contract in company', required=True)
 
@@ -124,8 +125,10 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
     def validate_termination(self):
         self.employee_id.write({
             'departure_reason': self.leaving_type,
+            'departure_description': self.departure_description,
             'start_notice_period': self.start_notice_period,
             'end_notice_period': self.end_notice_period,
+            'departure_date': self.end_notice_period,
             'first_contract_in_company': self.first_contract
         })
 

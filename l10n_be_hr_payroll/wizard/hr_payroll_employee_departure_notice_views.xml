@@ -12,6 +12,7 @@
                     </group>
                     <group>
                         <field name="leaving_type" widget="radio"/>
+                        <field name="departure_description" widget="text"/>
                         <field name="salary_visibility" invisible="1"/>
                     </group>
                 </group>

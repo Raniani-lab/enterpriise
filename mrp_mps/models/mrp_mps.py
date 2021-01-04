@@ -605,7 +605,7 @@ class MrpProductionSchedule(models.Model):
             # current time interval.
             while not (date_range[index][0] <= move.date.date() and date_range[index][1] >= move.date.date()):
                 index += 1
-            key = (date_range[index], move.product_id, move.location_dest_id.get_warehouse())
+            key = (date_range[index], move.product_id, move.location_dest_id.warehouse_id)
             if move.state == 'done':
                 incoming_qty_done[key] += move.product_qty
             else:
@@ -779,7 +779,7 @@ class MrpProductionSchedule(models.Model):
             # current time interval.
             while not (date_range[index][0] <= move.date.date() and date_range[index][1] >= move.date.date()):
                 index += 1
-            key = (date_range[index], move.product_id, move.location_id.get_warehouse())
+            key = (date_range[index], move.product_id, move.location_id.warehouse_id)
             if move.state == 'done':
                 outgoing_qty_done[key] += move.product_uom_qty
             else:

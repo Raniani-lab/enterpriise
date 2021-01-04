@@ -70,7 +70,7 @@ class Applicant(models.Model):
             for applicant in self.filtered(lambda a: a.ref_user_id):
                 if 'ref_user_id' in vals:
                     applicant.referral_points_ids.unlink()
-                applicant._update_points(applicant.stage_id.id, vals.get('last_stage_id', False))
+                applicant.sudo()._update_points(applicant.stage_id.id, vals.get('last_stage_id', False))
             if 'stage_id' in vals and vals['stage_id']:
                 if not self.env['hr.recruitment.stage'].browse(vals['stage_id']).not_hired_stage:
                     self.last_valuable_stage_id = vals['stage_id']
@@ -80,7 +80,7 @@ class Applicant(models.Model):
     def create(self, vals):
         res = super(Applicant, self).create(vals)
         if res.ref_user_id and res.stage_id:
-            res._update_points(res.stage_id.id, False)
+            res.sudo()._update_points(res.stage_id.id, False)
             if not res.stage_id.not_hired_stage:
                 res.last_valuable_stage_id = res.stage_id
         return res

@@ -3,9 +3,11 @@
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from psycopg2 import IntegrityError
 import pytz
 
 from odoo.tests.common import tagged
+from odoo.tools import mute_logger
 from odoo.addons.hr_work_entry_contract.tests.common import TestWorkEntryBase
 
 
@@ -166,3 +168,15 @@ class TestWorkEntry(TestWorkEntryBase):
         work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 10, 0), datetime(2018, 10, 10, 18, 0))
         self.assertEqual(work_entry_1.state, 'conflict', "It should not conflict")
         self.assertEqual(work_entry_2.state, 'conflict', "It should conflict")
+
+    def test_no_overlap_sql_constraint(self):
+        """ Test _work_entries_no_validated_conflict sql constrains """
+        work_entry_1 = self.create_work_entry(datetime(2018, 10, 10, 9, 0), datetime(2018, 10, 10, 12, 0))
+        work_entry_1.state = 'validated'
+        work_entry_2 = self.create_work_entry(datetime(2018, 10, 10, 8, 0), datetime(2018, 10, 10, 10, 0))
+        self.assertEqual(work_entry_1.state, 'conflict')
+
+        with mute_logger('odoo.sql_db'):
+            with self.assertRaises(IntegrityError):
+                with self.cr.savepoint():
+                    (work_entry_1 + work_entry_2).write({'state': 'validated'})

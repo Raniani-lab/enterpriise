@@ -131,6 +131,10 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
             'departure_date': self.end_notice_period,
             'first_contract_in_company': self.first_contract
         })
+        if self.employee_id.contract_id:
+            self.employee_id.contract_id.write({
+                'date_end': self.end_notice_period,
+            })
 
     def _get_input_type(self, name, cp='cp200'):
         return self.env.ref('l10n_be_hr_payroll.%s_other_input_%s' % (cp, name)).id

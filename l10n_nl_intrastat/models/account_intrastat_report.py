@@ -129,7 +129,7 @@ class IntrastatReport(models.AbstractModel):
                 str(int(value)).zfill(10),                                      # Invoice value         length=10
                 '+',                                                            # Statistical sign      length=1
                 '0000000000',                                                   # Statistical value     length=10
-                (inv.number or '')[-10:].ljust(10),                             # Administration number length=10
+                (inv.name or '')[-10:].ljust(10),                               # Administration number length=10
                 ''.ljust(3),                                                    # Reserve               length=3
                 ' ',                                                            # Correction items      length=1
                 '000',                                                          # Preference            length=3

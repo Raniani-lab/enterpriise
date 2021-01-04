@@ -74,6 +74,7 @@ class FleetVehicle(models.Model):
             vehicle.tax_deduction = deduction
 
     def _get_co2_fee(self, co2, fuel_type):
+        # Reference: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/companycar.html
         if not self._from_be() or self.vehicle_type == 'bike':
             return 0
         fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')

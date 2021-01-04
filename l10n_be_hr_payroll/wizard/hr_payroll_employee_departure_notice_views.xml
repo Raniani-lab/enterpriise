@@ -34,7 +34,7 @@
                     </group>
                 </group>
                 <group class="o_label_nowrap">
-                    <field name="notice_respect" attrs="{'invisible': [('leaving_type','=','retired')]}"/>
+                    <field name="notice_respect" attrs="{'invisible': [('leaving_type','in', ['retired', 'resigned'])]}"/>
                 </group>
                 <footer>
                     <button name="validate_termination" string="Validate" type="object" class="oe_highlight" attrs="{'invisible': [('notice_respect','=','without')]}"/>

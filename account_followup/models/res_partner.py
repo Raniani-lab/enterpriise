@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
 from odoo.osv import expression
 from datetime import date, datetime, timedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.exceptions import UserError
 
+_logger = logging.getLogger(__name__)
 
 class ResPartner(models.Model):
     _name = 'res.partner'
@@ -286,4 +289,10 @@ class ResPartner(models.Model):
         followup_data = self._query_followup_level(all_partners=True)
         in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action'])
         in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute)
-        in_need_of_action_auto.execute_followup()
+        for partner in in_need_of_action_auto:
+            try:
+                partner._execute_followup_partner()
+            except UserError as e:
+                # followup may raise exception due to configuration issues
+                # i.e. partner missing email
+                _logger.exception(e)

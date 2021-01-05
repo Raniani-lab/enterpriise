@@ -5,7 +5,8 @@ import io
 import json
 
 from odoo import http, _
-from odoo.http import request
+from odoo.http import content_disposition, request
+from odoo.tools import osutil
 from odoo.tools.misc import xlsxwriter
 
 
@@ -93,10 +94,11 @@ class WebCohort(http.Controller):
 
         workbook.close()
         xlsx_data = output.getvalue()
+        filename = osutil.clean_filename(_("Cohort %(title)s (%(model_name)s)", title=result['title'], model_name=result['model']))
         response = request.make_response(
             xlsx_data,
             headers=[('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-                    ('Content-Disposition', 'attachment; filename=%sCohort.xlsx' % result['title'])],
+                    ('Content-Disposition', content_disposition(filename + '.xlsx'))],
             cookies={'fileToken': token}
         )
         return response

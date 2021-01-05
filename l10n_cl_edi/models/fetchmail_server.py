@@ -165,7 +165,7 @@ class FetchmailServer(models.Model):
         xml_content = etree.fromstring(att_content)
         for dte in xml_content.xpath('//ns0:%s' % dte_tag, namespaces=XML_NAMESPACES):
             document_number = self._get_document_number(dte)
-            issuer_vat = self._get_dte_issuer_vat(dte)
+            issuer_vat = self._get_dte_receptor_vat(dte)
             partner = self._get_partner(issuer_vat)
             if not partner:
                 _logger.error('Partner for incoming customer claim has not been found for %s' % issuer_vat)
@@ -368,6 +368,10 @@ class FetchmailServer(models.Model):
     def _get_dte_issuer_vat(self, xml_content):
         return (xml_content.findtext('.//ns0:RUTEmisor', namespaces=XML_NAMESPACES).upper() or
                 xml_content.findtext('.//ns0:RutEmisor', namespaces=XML_NAMESPACES).upper())
+
+    def _get_dte_receptor_vat(self, xml_content):
+        return (xml_content.findtext('.//ns0:RUTRecep', namespaces=XML_NAMESPACES).upper() or
+                xml_content.findtext('.//ns0:RutReceptor', namespaces=XML_NAMESPACES).upper())
 
     def _get_dte_partner_name(self, xml_content):
         return xml_content.findtext('.//ns0:RznSoc', namespaces=XML_NAMESPACES)

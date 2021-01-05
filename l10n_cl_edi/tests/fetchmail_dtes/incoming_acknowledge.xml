@@ -15,8 +15,8 @@
         <CodEnvio>1112395686</CodEnvio>
         <EnvioDTEID>EnvioDTE-76213329-6-76585700-7-20191112-113228-0DC164CC</EnvioDTEID>
         <Digest>Rx6dZVKkMwz06eupdhLymiiOtyk=</Digest>
-        <RutEmisor>76086428-5</RutEmisor>
-        <RutReceptor>76882486-K</RutReceptor>
+        <RutEmisor>76882486-K</RutEmisor>
+        <RutReceptor>76086428-5</RutReceptor>
         <EstadoRecepEnv>0</EstadoRecepEnv>
         <RecepEnvGlosa>ENVIO RECIBIDO CONFORME</RecepEnvGlosa>
         <NroDTE>1</NroDTE>
@@ -24,8 +24,8 @@
             <TipoDTE>34</TipoDTE>
             <Folio>254</Folio>
             <FchEmis>2020-02-12</FchEmis>
-            <RUTEmisor>76086428-5</RUTEmisor>
-            <RUTRecep>76882486-K</RUTRecep>
+            <RUTEmisor>76882486-K</RUTEmisor>
+            <RUTRecep>76086428-5</RUTRecep>
             <MntTotal>79</MntTotal>
             <EstadoRecepDTE>0</EstadoRecepDTE>
             <RecepDTEGlosa>El DTE se ha recepcionado correctamente.</RecepDTEGlosa>

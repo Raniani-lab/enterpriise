@@ -37,3 +37,7 @@ def post_init_hook(cr, registry):
                JOIN res_country_state ON res_country_state.id = res_city.state_id
                WHERE res_city.id IN %s
         ''', [tuple(cities.ids)])
+
+    # UNSPSC category codes can be used in Mexico.
+    product_unspsc = env['product.unspsc.code'].search([('active', '=', False), ('code', '=ilike', '%00')])
+    product_unspsc.active = True

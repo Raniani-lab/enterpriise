@@ -177,10 +177,10 @@ class AccountFollowupReport(models.AbstractModel):
             summary = followup_line.with_context(lang=lang)[field]
             try:
                 summary = summary % {'partner_name': partner.name,
-                                     'date': time.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                                     'date': format_date(self.env, fields.Date.today(), lang_code=partner.lang),
                                      'user_signature': html2plaintext(self.env.user.signature or ''),
                                      'company_name': self.env.company.name,
-                                     'amount_due': partner.total_due,
+                                     'amount_due': formatLang(self.env, partner.total_due, currency_obj=partner.currency_id), 
                                      }
             except ValueError as exception:
                 message = _("An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s") \

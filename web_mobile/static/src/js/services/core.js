@@ -71,6 +71,79 @@ if (methods.hashChange) {
     });
 }
 
-return {'methods': methods};
+/**
+ * By using the back button feature the default back button behavior from the
+ * app is actually overridden so it is important to keep count to restore the
+ * default when no custom listener are remaining.
+ */
+class BackButtonManager {
+
+    constructor() {
+        this._listeners = new Map();
+        this._onGlobalBackButton = this._onGlobalBackButton.bind(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Enables the func listener, overriding default back button behavior.
+     *
+     * @param {Widget|Component} listener
+     * @param {function} func
+     */
+    addListener(listener, func) {
+        if (!methods.overrideBackButton) {
+            return;
+        }
+        if (this._listeners.has(listener)) {
+            throw new Error("This listener was already registered.");
+        }
+        this._listeners.set(listener, func);
+        if (this._listeners.size === 1) {
+            document.addEventListener('backbutton', this._onGlobalBackButton);
+            methods.overrideBackButton({ enabled: true });
+        }
+    }
+    /**
+     * Disables the func listener, restoring the default back button behavior if
+     * no other listeners are present.
+     *
+     * @param {Widget|Component} listener
+     * @param {function} func
+     */
+    removeListener(listener, func) {
+        if (!methods.overrideBackButton) {
+            return;
+        }
+        if (!this._listeners.has(listener)) {
+            return;
+        }
+        this._listeners.delete(listener);
+        if (this._listeners.size === 0) {
+            document.removeEventListener('backbutton', this._onGlobalBackButton);
+            methods.overrideBackButton({ enabled: false });
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    _onGlobalBackButton() {
+        const [listener, func] = [...this._listeners].pop();
+        if (listener) {
+            func.apply(listener, arguments);
+        }
+    }
+};
+
+const backButtonManager = new BackButtonManager();
+
+return {
+    backButtonManager,
+    methods,
+};
 
 });

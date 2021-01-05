@@ -4,15 +4,6 @@ odoo.define('web_mobile.mixins', function (require) {
 const session = require('web.session');
 const mobile = require('web_mobile.core');
 
-var backButtonEventListeners = [];
-
-function onGlobalBackButton() {
-    var listener = backButtonEventListeners[backButtonEventListeners.length - 1];
-    if (listener) {
-        listener._onBackButton.apply(listener, arguments);
-    }
-}
-
 /**
  * Mixin to setup lifecycle methods and allow to use 'backbutton' events sent
  * from the native application.
@@ -26,25 +17,13 @@ var BackButtonEventMixin = {
      * Register event listener for 'backbutton' event when attached to the DOM
      */
     on_attach_callback: function () {
-        if (mobile.methods.overrideBackButton) {
-            backButtonEventListeners.push(this);
-            if (backButtonEventListeners.length === 1) {
-                document.addEventListener('backbutton', onGlobalBackButton);
-                mobile.methods.overrideBackButton({enabled: true});
-            }
-        }
+        mobile.backButtonManager.addListener(this, this._onBackButton);
     },
     /**
      * Unregister event listener for 'backbutton' event when detached from the DOM
      */
     on_detach_callback: function () {
-        if (mobile.methods.overrideBackButton) {
-            backButtonEventListeners = _.without(backButtonEventListeners, this);
-            if (backButtonEventListeners.length === 0) {
-                document.removeEventListener('backbutton', onGlobalBackButton);
-                mobile.methods.overrideBackButton({enabled: false});
-            }
-        }
+        mobile.backButtonManager.removeListener(this, this._onBackButton);
     },
 
     //--------------------------------------------------------------------------
@@ -88,4 +67,66 @@ return {
     UpdateDeviceAccountControllerMixin,
 };
 
+});
+
+odoo.define('web_mobile.hooks', function (require) {
+"use strict";
+
+const { backButtonManager } = require('web_mobile.core');
+
+const { Component } = owl;
+const { onWillUnmount } = owl.hooks;
+
+/**
+ * This hook provides support for executing code when the back button is pressed
+ * on the mobile application of Odoo. This actually replaces the default back
+ * button behavior so this feature should only be enabled when it is actually
+ * useful.
+ *
+ * The feature must be enabled manually after every (re)mount (or whenever it is
+ * appropriate), it can be disabled manually, and it is automatically disabled
+ * on unmount and on destroy.
+ *
+ * @param {function} func the function to execute when the back button is
+ *  pressed. The function is called with the custom event as param.
+ * @returns {Object} exports the enable and disable functions to allow
+ *  controlling the state of the listeners.
+ */
+function useBackButton(func) {
+    const component = Component.current;
+
+    /**
+     * Enables the func listener, overriding default back button behavior.
+     */
+    function enable() {
+        backButtonManager.addListener(component, func);
+    }
+
+    /**
+     * Disables the func listener, restoring the default back button behavior if
+     * no other listeners are present.
+     */
+    function disable() {
+        backButtonManager.removeListener(component, func);
+    }
+
+    onWillUnmount(() => {
+        disable();
+    });
+
+    const superDestroy = component.destroy.bind(component);
+    component.destroy = function () {
+        disable();
+        superDestroy();
+    };
+
+    return {
+        disable,
+        enable,
+    };
+}
+
+return {
+    useBackButton,
+};
 });

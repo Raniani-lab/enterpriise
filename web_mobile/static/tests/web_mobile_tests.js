@@ -9,10 +9,14 @@ const session = require('web.session');
 const testUtils = require('web.test_utils');
 const Widget = require('web.Widget');
 
+const { useBackButton } = require('web_mobile.hooks');
 const { BackButtonEventMixin, UpdateDeviceAccountControllerMixin } = require('web_mobile.mixins');
 const mobile = require('web_mobile.core');
 const UserPreferencesFormView = require('web_mobile.UserPreferencesFormView');
 const { base64ToBlob } = require('web_mobile.testUtils');
+
+const { Component, tags } = owl;
+const { xml } = tags;
 
 const {createParent, createView, mock} = testUtils;
 
@@ -278,7 +282,7 @@ QUnit.module('web_mobile', {
 
         assert.verifySteps([], "shouldn't have register handle before attached to the DOM");
 
-        dom.append($('qunit-fixtures'), dummy.$el, {in_DOM: true, callbacks: [{widget: dummy}]});
+        dom.append($('qunit-fixture'), dummy.$el, {in_DOM: true, callbacks: [{widget: dummy}]});
 
         // simulate 'backbutton' event triggered by the app
         document.dispatchEvent(backButtonEvent);
@@ -316,13 +320,13 @@ QUnit.module('web_mobile', {
         });
         const backButtonEvent = new Event('backbutton');
         const dummy1 = new DummyWidget(null, {name: 'dummy1'});
-        dom.append($('qunit-fixtures'), dummy1.$el, {in_DOM: true, callbacks: [{widget: dummy1}]});
+        dom.append($('qunit-fixture'), dummy1.$el, {in_DOM: true, callbacks: [{widget: dummy1}]});
 
         const dummy2 = new DummyWidget(null, {name: 'dummy2'});
-        dom.append($('qunit-fixtures'), dummy2.$el, {in_DOM: true, callbacks: [{widget: dummy2}]});
+        dom.append($('qunit-fixture'), dummy2.$el, {in_DOM: true, callbacks: [{widget: dummy2}]});
 
         const dummy3 = new DummyWidget(null, {name: 'dummy3'});
-        dom.append($('qunit-fixtures'), dummy3.$el, {in_DOM: true, callbacks: [{widget: dummy3}]});
+        dom.append($('qunit-fixture'), dummy3.$el, {in_DOM: true, callbacks: [{widget: dummy3}]});
 
         // simulate 'backbutton' events triggered by the app
         document.dispatchEvent(backButtonEvent);
@@ -345,6 +349,111 @@ QUnit.module('web_mobile', {
         dummy2.destroy();
         dummy3.destroy();
         mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.module('useBackButton');
+
+    QUnit.test('component should receive a backbutton event', async function (assert) {
+        assert.expect(5);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class DummyComponent extends Component {
+            constructor() {
+                super();
+                this._backButtonHandler = useBackButton(this._onBackButton);
+            }
+
+            mounted() {
+                this._backButtonHandler.enable();
+            }
+
+            _onBackButton(ev) {
+                assert.step(`${ev.type} event`);
+            }
+        }
+        DummyComponent.template = xml`<div/>`;
+
+        const dummy = new DummyComponent();
+
+        await dummy.mount(document.createDocumentFragment());
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.verifySteps([], "shouldn't have register handle before attached to the DOM");
+        dummy.unmount();
+
+        await dummy.mount(document.getElementById('qunit-fixture'));
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        dummy.unmount();
+        assert.verifySteps([
+            'overrideBackButton: true',
+            'backbutton event',
+            'overrideBackButton: false',
+        ], "should have enabled/disabled the back-button override");
+
+        dummy.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
+    QUnit.test('multiple components should receive backbutton events in the right order', async function (assert) {
+        assert.expect(6);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class DummyComponent extends Component {
+            constructor() {
+                super(...arguments);
+                this._backButtonHandler = useBackButton(this._onBackButton);
+            }
+
+            mounted() {
+                this._backButtonHandler.enable();
+            }
+
+            _onBackButton(ev) {
+                assert.step(`${this.props.name}: ${ev.type} event`);
+                this.unmount();
+            }
+        }
+        DummyComponent.template = xml`<div/>`;
+
+        const fixture = document.getElementById('qunit-fixture');
+
+        const dummy1 = new DummyComponent(null, { name: 'dummy1'});
+        await dummy1.mount(fixture);
+
+        const dummy2 = new DummyComponent(null, { name: 'dummy2'});
+        await dummy2.mount(fixture);
+
+        const dummy3 = new DummyComponent(null, { name: 'dummy3'});
+        await dummy3.mount(fixture);
+
+        // simulate 'backbutton' events triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+
+        assert.verifySteps([
+            'overrideBackButton: true',
+            'dummy3: backbutton event',
+            'dummy2: backbutton event',
+            'dummy1: backbutton event',
+            'overrideBackButton: false',
+        ]);
+
+        dummy1.destroy();
+        dummy2.destroy();
+        dummy3.destroy();
+        mock.unpatch(mobile.methods);
     });
 
     QUnit.module('Dialog');

@@ -230,6 +230,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
 
     <record id="hr_payslip_demo_lap_february" model="hr.payslip">
@@ -253,6 +254,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_february"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
 
     <record id="hr_payslip_demo_lap_march" model="hr.payslip">
@@ -276,6 +278,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_march"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
 
     <record id="hr_payslip_demo_lap_april" model="hr.payslip">
@@ -299,6 +302,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_april"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
 
     <record id="hr_payslip_demo_lap_may" model="hr.payslip">
@@ -322,6 +326,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_may"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
 
     <record id="hr_payslip_demo_lap_june" model="hr.payslip">
@@ -345,6 +350,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_june"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
 
     <record id="hr_payslip_demo_lap_july" model="hr.payslip">
@@ -368,6 +374,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_july"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
 
     <record id="hr_payslip_demo_lap_august" model="hr.payslip">
@@ -400,6 +407,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
 
     <record id="hr_payslip_demo_lap_september" model="hr.payslip">
@@ -423,6 +431,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_september"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
 
     <record id="hr_payslip_demo_lap_october" model="hr.payslip">
@@ -446,6 +455,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_october"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
 
     <record id="hr_payslip_demo_lap_november" model="hr.payslip">
@@ -469,6 +479,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_november"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
 
     <record id="hr_payslip_demo_lap_december" model="hr.payslip">
@@ -492,6 +503,7 @@
         <field name="payslip_id" ref="hr_payslip_demo_lap_december"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_december')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_december')]]"/>
 
     <record id="hr_payslip_demo_lap_13th_month" model="hr.payslip">
@@ -506,6 +518,7 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
 
     <!-- Additional Demo Data -->

@@ -31,8 +31,8 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             [('employee_id', '=', employee_id.id), ('date_to', '>=', previous_year),
             ('date_from', '<', current_year)])
 
-        result['payslip_n_ids'] = payslip_n_ids.ids
-        result['payslip_n1_ids'] = payslip_n1_ids.ids
+        result['payslip_n_ids'] = [(4, p.id) for p in payslip_n_ids]
+        result['payslip_n1_ids'] = [(4, p.id) for p in payslip_n1_ids]
         result['net_n'] = sum(payslip.basic_wage for payslip in payslip_n_ids)
         result['net_n1'] = sum(payslip.basic_wage for payslip in payslip_n1_ids)
 
@@ -43,8 +43,8 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         time_off_allocation_n_ids = self.env['hr.leave.allocation'].search(
             [('employee_id', '=', employee_id.id)])
 
-        result['time_off_n_ids'] = time_off_n_ids.ids
-        result['time_off_allocation_n_ids'] = time_off_allocation_n_ids.ids
+        result['time_off_n_ids'] = [(4, t.id) for t in time_off_n_ids]
+        result['time_off_allocation_n_ids'] = [(4, t.id) for t in time_off_allocation_n_ids]
         result['time_off_taken'] = sum(time_off.number_of_days for time_off in time_off_n_ids)
         result['time_off_allocated'] = sum(allocation.number_of_days for allocation in time_off_allocation_n_ids)
         return result

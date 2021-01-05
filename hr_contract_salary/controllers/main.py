@@ -627,6 +627,9 @@ class HrContractSalary(http.Controller):
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
         new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
+        if isinstance(new_contract, dict) and new_contract.get('error'):
+            return new_contract
+
         self.send_email(new_contract, **kw)
 
         applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()

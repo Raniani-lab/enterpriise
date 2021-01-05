@@ -27,5 +27,8 @@ the registration is confirmed.
         'web.assets_qweb': [
             'event_barcode/static/src/xml/**/*',
         ],
+        'web.report_assets_common': [
+            '/event_barcode/static/src/scss/event_foldable_badge_report.scss',
+        ],
     }
 }

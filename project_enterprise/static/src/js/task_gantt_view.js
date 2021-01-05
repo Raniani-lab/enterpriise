@@ -5,12 +5,14 @@ import GanttView from 'web_gantt.GanttView';
 import GanttController from 'web_gantt.GanttController';
 import GanttRenderer from 'web_gantt.GanttRenderer';
 import { TaskGanttModel } from '@project_enterprise/js/task_gantt_model';
+import { ProjectControlPanel } from '@project/js/project_control_panel';
 
 export const TaskGanttView = GanttView.extend({
     config: Object.assign({}, GanttView.prototype.config, {
         Controller: GanttController,
         Renderer: GanttRenderer,
         Model: TaskGanttModel,
+        ControlPanel: ProjectControlPanel,
     }),
 });
 

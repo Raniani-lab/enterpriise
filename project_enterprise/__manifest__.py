@@ -20,5 +20,8 @@ Bridge module for project and enterprise
         'web.assets_backend': [
             'project_enterprise/static/**/*',
         ],
+        'web.assets_qweb': [
+            'project_enterprise/static/src/xml/**/*',
+        ],
     }
 }

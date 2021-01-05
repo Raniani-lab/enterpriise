@@ -1,0 +1,20 @@
+@include media-breakpoint-down(sm) {
+    .o_controller_with_rightpanel {
+        flex-direction: column;
+        overflow: auto !important;
+        max-height: fit-content;
+
+        .o_renderer_with_searchpanel.o_kanban_view {
+            width: 100%;
+        }
+
+        .o_rightpanel {
+            border: 1px solid lightgray;
+            flex-basis: auto;
+            height: auto;
+            overflow: visible;
+            padding: $o-rightpanel-p-small $o-rightpanel-p;
+            width: 100%;
+        }
+    }
+}

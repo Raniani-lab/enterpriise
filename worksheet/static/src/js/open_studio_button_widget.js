@@ -2,8 +2,11 @@ odoo.define('worksheet.open_studio_button', function (require) {
 "use strict";
 
 
+var core = require('web.core');
 var widget_registry = require('web.widget_registry');
 var Widget = require('web.Widget');
+
+var _t = core._t;
 
 
 var OpenStudioButton = Widget.extend({
@@ -26,7 +29,7 @@ var OpenStudioButton = Widget.extend({
      */
     start: function () {
         this._super.apply(this, arguments);
-        this.$el.text(_('Design Worksheet Template'));
+        this.$el.text(_t('Design Worksheet Template'));
     },
 
     /**

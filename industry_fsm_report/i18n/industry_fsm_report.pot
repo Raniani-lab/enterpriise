@@ -193,19 +193,30 @@ msgid "Default Worksheet"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_sale_order_line__delivered_price_subtotal
+msgid "Delivered Subtotal"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_sale_order_line__delivered_price_total
+msgid "Delivered Total"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,field_description:industry_fsm_report.field_sale_order_line__delivered_price_tax
+msgid "Delivered Total Tax"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Description"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model:ir.model.fields,field_description:industry_fsm_report.fsm_template_field2
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_worksheet_template_2
-msgid "Description of the Intervention"
-msgstr ""
-
-#. module: industry_fsm_report
-#: model:ir.model,name:industry_fsm_report.model_x_custom_worksheet_x_project_worksheet_template_2
-msgid "Device Installation & Maintenance"
+#. openerp-web
+#: code:addons/industry_fsm_report/static/src/js/report_widget.js:0
+#, python-format
+msgid "Design Worksheet Template"
 msgstr ""
 
 #. module: industry_fsm_report

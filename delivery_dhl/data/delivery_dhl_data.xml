@@ -63,9 +63,9 @@
         <field name="product_id" ref="delivery_dhl.product_product_delivery_dhl_usa"/>
         <field name="delivery_type">dhl</field>
         <field name="dhl_product_code">N</field>
-        <field name="dhl_SiteID">CustomerTest</field>
-        <field name="dhl_password">alkd89nBV</field>
-        <field name="dhl_account_number">803921577</field>
+        <field name="dhl_SiteID">v62_4l4bbXq1R7</field>
+        <field name="dhl_password">fQJ0pfc870</field>
+        <field name="dhl_account_number">849081651</field>
         <field name="dhl_default_packaging_id" ref="dhl_packaging_BOX"/>
     </record>
 
@@ -84,9 +84,9 @@
         <field name="product_id" ref="delivery_dhl.product_product_delivery_dhl_intl"/>
         <field name="delivery_type">dhl</field>
         <field name="dhl_product_code">D</field>
-        <field name="dhl_SiteID">CustomerTest</field>
-        <field name="dhl_password">alkd89nBV</field>
-        <field name="dhl_account_number">803921577</field>
+        <field name="dhl_SiteID">v62_4l4bbXq1R7</field>
+        <field name="dhl_password">fQJ0pfc870</field>
+        <field name="dhl_account_number">849081651</field>
         <field name="dhl_default_packaging_id" ref="dhl_packaging_BOX"/>
     </record>
 

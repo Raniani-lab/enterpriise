@@ -184,11 +184,11 @@
     <!-- Page : Rating of a particular team -->
     <template id="team_rating_progress_data" name="Ticket Rating Page">
         <div class="progress">
-            <div class="progress-bar bg-success" t-attf-style="width: #{stats[duration][10]}%;" title="Happy" role="img" aria-label="Happy">
-                <t t-esc="int(stats[duration][10])"/>%
-            </div>
-            <div class="progress-bar bg-warning" t-attf-style="width: #{stats[duration][5]}%;" title="Average" role="img" aria-label="Average">
+            <div class="progress-bar bg-success" t-attf-style="width: #{stats[duration][5]}%;" title="Happy" role="img" aria-label="Happy">
                 <t t-esc="int(stats[duration][5])"/>%
+            </div>
+            <div class="progress-bar bg-warning" t-attf-style="width: #{stats[duration][3]}%;" title="Average" role="img" aria-label="Average">
+                <t t-esc="int(stats[duration][3])"/>%
             </div>
             <div class="progress-bar bg-danger" t-attf-style="width: #{stats[duration][1]}%;" title="Bad" role="img" aria-label="Bad">
                 <t t-esc="int(stats[duration][1])"/>%

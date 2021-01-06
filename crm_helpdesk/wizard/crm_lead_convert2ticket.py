@@ -33,7 +33,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         lead = self.lead_id
         partner = self.partner_id
         if not partner and (lead.partner_name or lead.contact_name):
-            lead.handle_partner_assignment(create_missing=True)
+            lead._handle_partner_assignment(create_missing=True)
             partner = lead.partner_id
 
         # prepare new helpdesk.ticket values

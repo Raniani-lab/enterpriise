@@ -41,8 +41,8 @@ class Lead(models.Model):
         if not self.env.context.get('assign_leads_to_salesteams'):
             self.env['website.crm.score'].assign_scores_to_leads(lead_ids=self.ids)
 
-    def merge_dependences(self, opportunities):
+    def _merge_dependences(self, opportunities):
         self._merge_scores(opportunities)
 
         # Call default merge function
-        return super(Lead, self).merge_dependences(opportunities)
+        return super(Lead, self)._merge_dependences(opportunities)

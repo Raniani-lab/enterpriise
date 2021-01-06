@@ -23,7 +23,10 @@ class IoTController(http.Controller):
         zip_list = []
         module_ids = request.env['ir.module.module'].sudo().search([('state', '=', 'installed')])
         for module in module_ids.mapped('name') + ['hw_drivers']:
-            for directory, files in modules.get_module_filetree(module, 'iot_handlers').items():
+            filetree = modules.get_module_filetree(module, 'iot_handlers')
+            if not filetree:
+                continue
+            for directory, files in filetree.items():
                 for file in files:
                     if file.startswith('.') or file.startswith('_'):
                         continue

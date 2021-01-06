@@ -282,7 +282,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
         for res in self._cr.dictfetchall():
 
             # Rate representing the remaining percentage to be reconciled with something.
-            reconcile_rate = abs(res['suspense_balance']) / abs(res['suspense_balance']) + abs(res['other_balance'])
+            reconcile_rate = abs(res['suspense_balance']) / (abs(res['suspense_balance']) + abs(res['other_balance']))
 
             amount = res['amount'] * reconcile_rate
 

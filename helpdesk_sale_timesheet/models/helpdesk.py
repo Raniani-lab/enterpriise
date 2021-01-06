@@ -13,6 +13,8 @@ from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_T
 class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
+    project_id = fields.Many2one(domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id), ('pricing_type', '=', 'task_rate')]")
+
     def _create_project(self, name, allow_billable, other):
         new_values = dict(other, allow_billable=allow_billable)
         return super(HelpdeskTeam, self)._create_project(name, allow_billable, new_values)
@@ -131,21 +133,10 @@ class AccountAnalyticLine(models.Model):
 
     @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
     def _compute_so_line(self):
-        for timesheet in self.filtered(lambda t: not t.is_so_line_edited)._get_not_billed():
-            if not timesheet.project_id.allow_billable:
-                timesheet.so_line = False
-                continue
-            sol = timesheet.helpdesk_ticket_id.sale_line_id or False
-            if not timesheet.task_id and timesheet.helpdesk_ticket_id:
-                if timesheet.project_id.pricing_type == 'employee_rate':
-                    map_entry = timesheet.project_id.sale_line_employee_ids.filtered(lambda map_entry: map_entry.employee_id == timesheet.employee_id)
-                    if map_entry:
-                        sol = map_entry.sale_line_id
-                timesheet.so_line = sol
-            else:
-                super(AccountAnalyticLine, timesheet)._compute_so_line()
-                if not timesheet.so_line:  # then we give the SOL in the ticket
-                    timesheet.so_line = sol
+        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id)._get_not_billed()
+        for timesheet in non_billed_helpdesk_timesheets:
+            timesheet.so_line = timesheet.project_id.allow_billable and timesheet.helpdesk_ticket_id.sale_line_id
+        super(AccountAnalyticLine, self - non_billed_helpdesk_timesheets)._compute_so_line()
 
     def _get_portal_helpdesk_timesheet(self):
         param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)

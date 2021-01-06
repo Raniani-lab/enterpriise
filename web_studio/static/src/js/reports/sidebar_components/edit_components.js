@@ -539,18 +539,16 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @returns {Array}
      */
     _getColors: async function () {
-        if (!('web_editor.colorpicker' in qweb.templates)) {
-            await this._rpc({
+        if (!this._colorpickerArch) {
+            this._colorpickerArch = await this._rpc({
                 model: 'ir.ui.view',
-                method: 'read_template',
-                args: ['web_editor.colorpicker'],
-            }).then(function (template) {
-                return qweb.add_template('<templates>' + template + '</templates>');
+                method: 'render_public_asset',
+                args: ['web_editor.colorpicker', {}],
             });
         }
 
         var groupColors = [];
-        var $clpicker = $(qweb.render('web_editor.colorpicker'));
+        var $clpicker = $(this._colorpickerArch);
         $clpicker.children('.o_colorpicker_section').each(function () {
             if (this.dataset.display) {
                 groupColors.push(this.dataset.display);

@@ -12,3 +12,4 @@ from . import hr_work_entry
 from . import l10n_be_attachment_salary
 from . import hr_payslip_worked_days
 from . import hr_leave_allocation
+from . import hr_leave

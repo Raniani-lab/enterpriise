@@ -377,3 +377,53 @@ class HrContract(models.Model):
                 user_id=leave.holiday_status_id.responsible_id.id or self.env.user.id,
             )
         return res
+
+    def _create_credit_time_next_activity(self):
+        self.ensure_one()
+        part_time_link = "https://www.socialsecurity.be/site_fr/employer/applics/elo/index.htm"
+        part_time_link = '<a href="%s" target="_blank">%s</a>' % (part_time_link, part_time_link)
+        self.activity_schedule(
+            'mail.mail_activity_data_todo',
+            note=_('Part Time of %s must be stated at %s.',
+                   self.employee_id.name,
+                   part_time_link),
+            user_id=self.hr_responsible_id.id or self.env.user.id,
+        )
+
+    def _create_dimona_next_activity(self):
+        self.ensure_one()
+        dimona_link = "https://www.socialsecurity.be/site_fr/employer/applics/dimona/index.htm"
+        dimona_link = '<a href="%s" target="_blank">%s</a>' % (dimona_link, dimona_link)
+        self.activity_schedule(
+            'mail.mail_activity_data_todo',
+            note=_('State the Dimona at %s to declare the arrival of %s.',
+                   dimona_link,
+                   self.employee_id.name),
+            user_id=self.hr_responsible_id.id or self.env.user.id,
+            )
+
+    def _trigger_l10n_be_next_activities(self):
+        employees_with_contract_domain = [
+            ('state', 'in', ('open', 'close')),
+            ('employee_id', 'in', self.mapped('employee_id').ids),
+            ('id', 'not in', self.ids),
+        ]
+        employees_already_started = self.env['hr.contract'].search(employees_with_contract_domain).mapped('employee_id')
+        for contract in self.filtered(lambda c: c.structure_type_id and c.structure_type_id.country_id.code == "BE"):
+            if contract.time_credit:
+                contract._create_credit_time_next_activity()
+            if contract.employee_id not in employees_already_started:
+                contract._create_dimona_next_activity()
+
+    def write(self, vals):
+        res = super(HrContract, self).write(vals)
+        if vals.get('state') == 'open':
+            self._trigger_l10n_be_next_activities()
+        return res
+
+    @api.model
+    def create(self, vals):
+        contract = super(HrContract, self).create(vals)
+        if contract.state == 'open':
+            contract._trigger_l10n_be_next_activities()
+        return contract

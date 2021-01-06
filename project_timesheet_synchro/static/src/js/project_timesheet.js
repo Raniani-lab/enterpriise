@@ -174,6 +174,10 @@ odoo.define('project_timeshee.ui', function (require ) {
 
             return Promise.all(sync_defs);
         },
+        destroy: function() {
+            $(document).off('backbutton');
+            this._super.apply(this, arguments)
+        },
         /**
          * Attempts to restore the data of the user related to the username and server address given.
          * If no data is available for the user, creates a minimal data object for the user to be able to use the app

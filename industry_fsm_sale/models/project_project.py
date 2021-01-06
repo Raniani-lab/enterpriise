@@ -62,6 +62,12 @@ class Project(models.Model):
         self.filtered('is_fsm').update({'pricing_type': 'task_rate'})
 
     @api.depends('is_fsm')
+    def _compute_sale_order_id(self):
+        fsm_projects = self.filtered('is_fsm')
+        fsm_projects.update({'sale_order_id': False})
+        super(Project, self - fsm_projects)._compute_sale_order_id()
+
+    @api.depends('is_fsm')
     def _compute_sale_line_id(self):
         # We cannot have a SOL in the fsm project
         fsm_projects = self.filtered('is_fsm')

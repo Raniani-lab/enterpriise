@@ -207,13 +207,26 @@ class HrPayslip(models.Model):
                     pdf_name = _("Payslip")
                 # Sudo to allow payroll managers to create document.document without access to the
                 # application
-                self.env['ir.attachment'].sudo().create({
+                attachment = self.env['ir.attachment'].sudo().create({
                     'name': pdf_name,
                     'type': 'binary',
                     'datas': base64.encodebytes(pdf_content),
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })
+                # Send email to employees
+                subject = '%s, a new payslip is available for you' % (payslip.employee_id.name)
+                template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
+                if template:
+                    email_values = {
+                        'attachment_ids': attachment,
+                    }
+                    template.send_mail(
+                        payslip.id,
+                        email_values=email_values,
+                        notif_layout='mail.mail_notification_light')
+
+
 
     def action_payslip_cancel(self):
         if self.filtered(lambda slip: slip.state == 'done'):

@@ -22,6 +22,12 @@ msgid "A leave cannot be set across multiple contracts."
 msgstr ""
 
 #. module: hr_work_entry_holidays
+#: code:addons/hr_work_entry_holidays/models/hr_leave.py:0
+#, python-format
+msgid "There is no employee set on the time off. Please make sure you're logged in the correct company."
+msgstr ""
+
+#. module: hr_work_entry_holidays
 #: model_terms:ir.ui.view,arch_db:hr_work_entry_holidays.payroll_hr_work_entry_view_form_inherit
 msgid "Approve Time Off"
 msgstr ""

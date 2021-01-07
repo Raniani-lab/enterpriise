@@ -40,7 +40,7 @@ QUnit.module('Helpdesk Dashboard', {
 });
 
 QUnit.test('dashboard basic rendering', async function(assert) {
-    assert.expect(4);
+    assert.expect(5);
 
     var dashboard_data = this.dashboard_data;
     var kanban = await createView({
@@ -63,6 +63,8 @@ QUnit.test('dashboard basic rendering', async function(assert) {
 
     assert.containsOnce(kanban, 'div.o_helpdesk_dashboard',
             "should render the dashboard");
+    assert.strictEqual(kanban.$(".o_kanban_view_wrapper > .o_helpdesk_dashboard").length, 1,
+        "dashboard should be sibling of renderer element");
     assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), '12',
         "should have written correct target");
     assert.hasAttrValue(kanban.$('.o_target_to_set'), 'value', '12',

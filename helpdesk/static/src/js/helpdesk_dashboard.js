@@ -23,10 +23,6 @@ var _t = core._t;
 var _lt = core._lt;
 
 var HelpdeskDashboardRenderer = KanbanRenderer.extend({
-    events: _.extend({}, KanbanRenderer.prototype.events, {
-        'click .o_dashboard_action': '_onDashboardActionClicked',
-        'click .o_target_to_set': '_onDashboardTargetClicked',
-    }),
 
     //--------------------------------------------------------------------------
     // Private
@@ -62,7 +58,15 @@ var HelpdeskDashboardRenderer = KanbanRenderer.extend({
                 success_rate_enable: values.success_rate_enable,
                 values: values,
             });
-            self.$el.prepend(helpdesk_dashboard);
+            if (!self.$el.parent('.o_kanban_view_wrapper').length) {
+                self.$el.wrap('<div class="o_kanban_view_wrapper d-flex flex-column align-items-start"></div>');
+            }
+            self.$el.parent().find(".o_helpdesk_dashboard").remove();
+            self.$el.before(helpdesk_dashboard);
+            self.$el.parent().find('.o_dashboard_action')
+              .on('click', self, self._onDashboardActionClicked.bind(self));
+            self.$el.parent().find('.o_target_to_set')
+              .on('click', self, self._onDashboardTargetClicked.bind(self));
         });
     },
 

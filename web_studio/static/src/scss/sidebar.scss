@@ -207,8 +207,6 @@
                     max-width: $o-web-studio-sidebar-width - 2*$o-web-studio-sidebar-margin;
                     margin: 5px 5px 5px 0px;
                     cursor: default;
-                    padding: 3px 5px;
-                    border-radius: 3px;
                     .o_badge_text {
                         margin-right: 5px;
                         @include o-text-overflow;

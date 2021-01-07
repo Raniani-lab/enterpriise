@@ -4,6 +4,7 @@ import logging
 import unicodedata
 import uuid
 import re
+import xml.etree.ElementTree as ET
 from odoo.osv import expression
 from odoo import api, fields, models, _, Command
 from odoo.tools import ustr
@@ -531,6 +532,11 @@ class IrModel(models.Model):
             view = View.browse(view_id)
         elif create:
             arch = self.env[self.model].fields_view_get(view_id, view_type)['arch']
+            # set sample data when activating a pivot/graph view through studio
+            if view_type in ['graph', 'pivot']:
+                sample_view_arch = ET.fromstring(arch)
+                sample_view_arch.set('sample', '1')
+                arch = ET.tostring(sample_view_arch, encoding='unicode')
             view = View.create({
                 'type': view_type,
                 'model': self.model,

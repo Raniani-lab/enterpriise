@@ -89,6 +89,11 @@ var ActionEditorAction = AbstractAction.extend({
                 // TODO: try to put it in editView
                 bus.trigger('edition_mode_entered', self.viewType);
             }
+            // add class when activating a pivot/graph view through studio
+            const model = self.view_editor && self.view_editor.view.model;
+            if (model && model._isInSampleMode) {
+                self.el.classList.add('o_view_sample_data');
+            }
         });
     },
     /**

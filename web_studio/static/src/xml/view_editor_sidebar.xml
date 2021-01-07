@@ -376,6 +376,69 @@
                 </div>
             </t>
 
+            <!-- Graph view settings -->
+            <t t-if="widget.view_type === 'graph'">
+                <div class="o_web_studio_sidebar_select">
+                    <label for="type">Type</label>
+                    <select id="type" name="type">
+                        <option t-att-selected="!['pie','line'].includes(widget.state.attrs.type) ? 'selected' : undefined" value="bar">Bar</option>
+                        <option t-att-selected="widget.state.attrs.type === 'line' ? 'selected' : undefined" value="line">Line</option>
+                        <option t-att-selected="widget.state.attrs.type === 'pie' ? 'selected' : undefined" value="pie">Pie</option>
+                    </select>
+                </div>
+                <div t-if="widget.state.attrs.type != 'pie'" class="o_web_studio_sidebar_select">
+                    <label for="order">Sorting</label>
+                    <select id="order" name="order">
+                        <option></option>
+                        <option t-att-selected="widget.state.attrs.order === 'desc' ? 'selected' : undefined" value="desc">Descending</option>
+                        <option t-att-selected="widget.state.attrs.order === 'asc' ? 'selected' : undefined" value="asc">Ascending</option>
+                    </select>
+                </div>
+                <div t-if="widget.state.attrs.type != 'line'" class="o_web_studio_sidebar_checkbox">
+                    <div class="custom-control custom-checkbox">
+                        <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
+                        <input type="checkbox" id="disable_linking" name="disable_linking" class="custom-control-input" data-inverse="1" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
+                        <label for="disable_linking" class="custom-control-label">Access records from graph</label>
+                    </div>
+                </div>
+                <div t-if="!['pie','line'].includes(widget.state.attrs.type)" class="o_web_studio_sidebar_checkbox">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="stacked" name="stacked" class="custom-control-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.stacked != 'False' ? 'checked' : undefined"/>
+                        <label for="stacked" class="custom-control-label">Stacked graph</label>
+                    </div>
+                </div>
+                <div class="o_web_studio_sidebar_select">
+                    <label for="first_groupby">First dimension</label>
+                    <select id="first_groupby" name="first_groupby" type="col">
+                        <option></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[1]" t-att-selected="widget.state.attrs.groupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/>
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div t-if="widget.state.attrs.groupBys[0]" class="o_web_studio_sidebar_select">
+                    <label for="second_groupby">Second dimension</label>
+                    <select id="second_groupby" name="second_groupby" type="col">
+                        <option></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[0]" t-att-selected="widget.state.attrs.groupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/>
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div class="o_web_studio_sidebar_select">
+                    <label for="measure">Measure</label>
+                    <select id="measure" name="measure" type="measure">
+                        <option></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.name !== 'id' and field.store and ['integer', 'float', 'monetary'].includes(field.type)" t-att-selected="widget.state.attrs.measure ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string" />
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+            </t>
+
             <!-- Pivot view settings -->
             <t t-if="widget.view_type === 'pivot'">
 
@@ -384,14 +447,47 @@
                         <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
                         <input type="checkbox" id="disable_linking" name="disable_linking" class="custom-control-input" data-inverse="1" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
-                        <label for="disable_linking" class="custom-control-label">Allow Link to List View</label>
+                        <label for="disable_linking" class="custom-control-label">Access records from cell</label>
                     </div>
                 </div>
-                <div class="o_web_studio_sidebar_checkbox">
+                <div class="o_web_studio_sidebar_select">
+                    <label for="column_groupby">Column grouping</label>
+                    <select id="column_groupby" name="column_groupby" type="col">
+                        <option t-att-selected="widget.state.attrs.colGroupBys[0] ? undefined : 'selected'" type="col"></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.rowGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="col" t-att-selected="widget.state.attrs.colGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/>
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div class="o_web_studio_sidebar_select">
+                    <label for="first_row_groupby">Row grouping - First level</label>
+                    <select id="first_row_groupby" name="first_row_groupby" type="row">
+                        <option t-att-selected="widget.state.attrs.rowGroupBys[0] ? undefined : 'selected'" type="row"></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/>
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div t-if="widget.state.attrs.rowGroupBys[0]" class="o_web_studio_sidebar_select">
+                    <label for="second_row_groupby">Row grouping - Second level</label>
+                    <select id="second_row_groupby" name="second_row_groupby" type="row">
+                        <option t-att-selected="widget.state.attrs.rowGroupBys[1] ? undefined : 'selected'" type="row"></option>
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[0]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                            <t t-esc="field.string"/>
+                            <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
+                        </option>
+                    </select>
+                </div>
+                <div class="o_web_studio_sidebar_tags">
+                    <label for="pivot_measures_fields">Measures</label>
+                    <div class="o_pivot_measures_fields"/>
+                </div>
+                <div t-if="widget.state.attrs.studio_pivot_measure_field_ids" class="o_web_studio_sidebar_checkbox">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="display_quantity" name="display_quantity" class="custom-control-input" data-leave-empty='unchecked'
-                            t-att-checked="widget.state.attrs.display_quantity ? 'checked' : undefined"/>
-                        <label for="display_quantity" class="custom-control-label">Display Count</label>
+                        <input type="checkbox" id="display_quantity" name="display_quantity" class="custom-control-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.display_quantity ? 'checked' : undefined"/>
+                        <label for="display_quantity" class="custom-control-label">Display count</label>
                     </div>
                 </div>
             </t>

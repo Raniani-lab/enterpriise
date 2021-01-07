@@ -70,8 +70,9 @@ AbstractView.include({
                 self.loadParams.static = true;
             }
 
+            const withSampleData = ['graph', 'pivot'].includes(options.viewType) ? true : false;
             return Promise.all([
-                self._loadData(model, { withSampleData: false }),
+                self._loadData(model, { withSampleData }),
                 ajax.loadLibs(self)
             ]).then(function (results) {
                 var { state } = results[0];

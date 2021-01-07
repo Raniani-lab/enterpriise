@@ -498,9 +498,13 @@ tour.register('web_studio_model_option_value_tour', {
     trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="graph"]',
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
-    // wait for the graph editor to be rendered
-    extra_trigger: '.o_graph_renderer',
-    trigger: '.o_web_studio_leave'
+    // wait for the graph editor to be rendered and also check for sample data
+    extra_trigger: '.o_view_sample_data .o_graph_renderer .o_view_nocontent_empty_folder',
+    trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="pivot"]',
+}, {
+    // wait for the pivot editor to be rendered and also check for sample data
+    extra_trigger: '.o_view_sample_data .o_pivot .o_view_nocontent_empty_folder',
+    trigger: '.o_web_studio_leave',
 }]);
 
 tour.register('web_studio_new_report_tour', {

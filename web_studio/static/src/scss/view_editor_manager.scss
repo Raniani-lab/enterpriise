@@ -1,4 +1,7 @@
 .o_web_studio_client_action {
+    &.o_view_sample_data .custom-checkbox {
+        pointer-events: unset !important;
+    }
     .o_web_studio_editor_manager {
         display: flex;
         height: 100%;
@@ -8,6 +11,9 @@
             overflow: auto;
             min-width: 0;
 
+            .o_view_nocontent {
+                left: $o-web-studio-sidebar-width;
+            }
             .o_web_studio_no_preview {
                 padding: 20px;
                 color: $o-web-studio-bg-light;

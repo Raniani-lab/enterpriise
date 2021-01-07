@@ -3643,6 +3643,120 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('switching column and row groupby fields in pivot editor', async function (assert) {
+        const done = assert.async();
+        assert.expect(21);
+
+        let fieldsView;
+        let editViewCount = 0;
+
+        this.data.product.fields.display_name.store = true;
+        this.data.product.fields.m2o.store = true;
+        this.data.product.fields.coucou_id.store = true;
+        this.data.product.fields.toughness.store = true;
+
+        let arch = `
+            <pivot string='Pipeline Analysis'>
+                <field name='m2o' type='col'/>
+                <field name='coucou_id' type='row'/>
+            </pivot>`;
+
+        const pivot = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'product',
+            arch: arch,
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        assert.strictEqual(args.operations[0].target.field_names[0], "toughness",
+                            "targeted field name should be toughness");
+                        fieldsView.arch = `
+                            <pivot>
+                                <field name='m2o' type='col'/>
+                                <field name='coucou_id' type='row'/>
+                                <field name='toughness' type='row'/>
+                            </pivot>`;
+                    } else if (editViewCount === 2) {
+                        assert.strictEqual(args.operations[1].target.field_names[0], "display_name",
+                            "targeted field name should be display_name");
+                        fieldsView.arch = `
+                            <pivot string='Pipeline Analysis' colGroupBys='display_name' rowGroupBys='coucou_id,toughness'>
+                                <field name='display_name' type='col'/>
+                                <field name='coucou_id' type='row'/>
+                                <field name='toughness' type='row'/>
+                            </pivot>`;
+                    } else if (editViewCount === 3) {
+                        assert.strictEqual(args.operations[2].target.field_names[0], "m2o",
+                            "targeted field name should be m2o");
+                        fieldsView.arch = `
+                            <pivot string='Pipeline Analysis' colGroupBys='display_name' rowGroupBys='m2o'>
+                                <field name='display_name' type='col'/>
+                                <field name='m2o' type='row'/>
+                            </pivot>`;
+                    }
+                    return Promise.resolve({
+                        fields_views: { pivot: fieldsView },
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        fieldsView = JSON.parse(JSON.stringify(pivot.fields_view));
+        assert.strictEqual(pivot.view_type, 'pivot', "view type should be pivot");
+
+        return concurrency.delay(100).then(async () => {
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'm2o',
+                "the col field should contain correct value");
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'coucou_id',
+                "the row field should contain correct value");
+
+            // set the Row-Second level field value
+            await testUtils.fields.editSelect(pivot.$('select#second_row_groupby'), 'toughness');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'm2o',
+                "the column field should be correctly selected");
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'coucou_id',
+                "the first row field should contain correct value");
+            assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), 'toughness',
+                "the second row field should contain correct value");
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotaljacquesUndefined",
+                "the col headers should be as expected");
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedUndefined",
+                "the row headers should be as expected");
+
+            // change the column field value to Display Name
+            await testUtils.fields.editSelect(pivot.$('select#column_groupby'), 'display_name');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'display_name',
+                "the column field should be correctly selected");
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'coucou_id',
+                "the first row field should contain correct value");
+            assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), 'toughness',
+                "the second row field should contain correct value");
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "Totalxpadxpod",
+                "the col headers should be as expected");
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedUndefined",
+                "the row headers should be as expected");
+
+            // change the Row-First level field value to M2O
+            await testUtils.fields.editSelect(pivot.$('select#first_row_groupby'), 'm2o');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'display_name',
+                "the col field should be correctly selected");
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'm2o',
+                "the row field should contain correct value");
+            assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), '',
+                "the second row field should contain correct value");
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "Totalxpadxpod",
+                "the col headers should be as expected");
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotaljacquesUndefined",
+                "the row headers should be as expected");
+
+            pivot.destroy();
+            done();
+        });
+    });
+
     QUnit.module('Graph');
 
     QUnit.test('empty graph editor', async function (assert) {
@@ -3666,6 +3780,82 @@ QUnit.module('ViewEditorManager', {
             assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
             assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
                 "the graph should be a child of its container");
+            vem.destroy();
+            done();
+        });
+    });
+
+    QUnit.test('switching chart types in graph editor', async function (assert) {
+        let done = assert.async();
+        assert.expect(7);
+
+        let fieldsView;
+        let editViewCount = 0;
+
+        this.data.coucou.records = [{
+            id: 1,
+            display_name: 'stage1',
+        }, {
+            id: 2,
+            display_name: 'stage2',
+        }];
+
+        let arch = `
+            <graph string='Opportunities'>
+                <field name='display_name' type='col'/>
+                <field name='char_field' type='row'/>
+            </graph>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        fieldsView.arch = `
+                            <graph string='Opportunities' type='line'>
+                                <field name='display_name' type='col'/>
+                                <field name='char_field' type='row'/>
+                            </graph>`;
+                    } else if (editViewCount === 2) {
+                        fieldsView.arch = `
+                            <graph string='Opportunities' type='pie'>
+                                <field name='display_name' type='col'/>
+                                <field name='char_field' type='row'/>
+                            </graph>`;
+                    }
+                    return Promise.resolve({
+                        fields_views: { graph: fieldsView },
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super(...arguments);
+            },
+        });
+
+        // Used to generate the new fields view in mockRPC
+        fieldsView = Object.assign({}, vem.fields_view);
+        assert.containsN(vem, '.o_web_studio_sidebar_select [name="type"] option', 3, 'Default type contain 3 option');
+
+        return concurrency.delay(100).then(async () => {
+            assert.strictEqual(vem.$('select#type option:selected').val(), 'bar',
+                "should be display in bar chart mode by default");
+            assert.isVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should be visible in bar chart");
+
+            // change the type field value to line chart
+            await testUtils.fields.editSelect(vem.$('select#type'), 'line');
+            assert.strictEqual(vem.view.loadParams.mode, 'line',
+                "the default type field should contain line chart");
+            assert.isNotVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should not be visible in line chart");
+
+            // change the type field value to pie chart
+            await testUtils.fields.editSelect(vem.$('select#type'), 'pie');
+            assert.strictEqual(vem.view.loadParams.mode, 'pie',
+                "the default type field should contain pie chart");
+            assert.isNotVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should not be visible in pie chart");
+
             vem.destroy();
             done();
         });

@@ -266,6 +266,15 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             this.state.attrs.ganttPrecision = this.state.attrs.precision ? pyUtils.py_eval(this.state.attrs.precision) : {};
 
         }
+        if (this.state.mode === 'view' && this.view_type === 'pivot') {
+            this.state.attrs.colGroupBys = params.colGroupBys;
+            this.state.attrs.rowGroupBys = params.rowGroupBys;
+            this.measures = params.measures;
+        }
+        if (this.state.mode === 'view' && this.view_type === 'graph') {
+            this.state.attrs.groupBys = params.groupBys;
+            this.state.attrs.measure = params.measure;
+        }
     },
     /**
      * @override
@@ -387,6 +396,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     },
     /**
      * @private
+     * @param {OdooEvent} ev
+     * @param {Object} oldPivotMeasuresField
+     */
+    _changePivotMeasuresFields(ev, oldPivotMeasuresField) {
+        const options = {structure: 'pivot_popup'};
+        if (ev.data.changes.pivot_popup.operation === 'ADD_M2M') {
+            const ids = ev.data.changes.pivot_popup.ids;
+            options.type = 'add';
+            options.field_ids = Array.isArray(ids) ? ids.map(i => i.id) : [ids.id];
+        } else {
+            options.type = 'remove';
+            options.field_ids = [oldPivotMeasuresField.data.find(i => i.id === ev.data.changes.pivot_popup.ids[0]).res_id];
+        }
+        this.trigger_up('view_change', options);
+    },
+    /**
+     * @private
      */
     _computeFieldAttrs: function () {
         /* Compute field attributes.
@@ -490,6 +516,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         if (this.view_type === 'map' && this.$('.o_map_popup_fields').length) {
             delete(this.defs);
             return this._renderWidgetsMapPopupFields();
+        }
+        if (this.view_type === 'pivot' && this.$('.o_pivot_measures_fields').length) {
+            delete(this.defs);
+            return this._renderWidgetsPivotMeasuresFields();
         }
     },
     /**
@@ -721,6 +751,41 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             icon.classList.replace('fa-caret-right', 'fa-caret-down');
             section.classList.remove('d-none');
         }
+    },
+    /**
+     * @private
+     * @returns {Promise}
+     */
+    _renderWidgetsPivotMeasuresFields() {
+        const measuresKeys = Object.keys(this.measures);
+        const fieldIDs = JSON.parse(this.state.attrs.studio_pivot_measure_field_ids || '[]');
+        return this.model.makeRecord('ir.model', [{
+            name: 'pivot_popup',
+            fields: [{
+                name: 'id',
+                type: 'integer',
+            }, {
+                name: 'display_name',
+                type: 'char',
+            }],
+            domain: [
+                ['model', '=', this.model_name],
+                ['name', 'in', Object.keys(this.measures)]
+            ],
+            relation: 'ir.model.fields',
+            type: 'many2many',
+            value: fieldIDs,
+        }], {
+            pivot_popup: {
+                can_create: false
+            },
+        }).then(recordID => {
+            this.pivotPopupFieldHandle = recordID;
+            const record = this.model.get(this.pivotPopupFieldHandle);
+            const many2many = new Many2ManyTags(this, 'pivot_popup', record, { mode: 'edit' });
+            this._registerWidget(this.pivotPopupFieldHandle, 'pivot_popup', many2many);
+            return many2many.appendTo(this.$('.o_pivot_measures_fields'));
+        });
     },
 
     //--------------------------------------------------------------------------
@@ -1027,13 +1092,17 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         const approvalChanges = Object.keys(ev.data.changes).filter(f => f.startsWith('rule_group_'));
         const isApprovalChange = approvalChanges.length;
         const isMapChange = Object.keys(ev.data.changes).filter(f => f === 'map_popup').length;
+        const isPivotChange = Object.keys(ev.data.changes).filter(f => f === 'pivot_popup').length;
         const approvalField = isApprovalChange && approvalChanges[0];
         const oldMapPopupField = this.mapPopupFieldHandle && this.model.get(this.mapPopupFieldHandle).data.map_popup;
+        const oldPivotMeasureField = this.pivotPopupFieldHandle && this.model.get(this.pivotPopupFieldHandle).data.pivot_popup;
         const result = await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
         if (isMapChange) {
             this._changeMapPopupFields(ev, oldMapPopupField);
         } else if (isApprovalChange) {
             this._changeApprovalGroup(approvalField);
+        } else if (isPivotChange) {
+            this._changePivotMeasuresFields(ev, oldPivotMeasureField);
         } else {
             this._changeFieldGroup();
         }
@@ -1225,6 +1294,28 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     },
     /**
      * @private
+     * @param {string} attribute
+     * @param {string} input
+     * @param {Object} newAttrs
+     */
+    _onChangedGroupBys(attribute, input, newAttrs) {
+        const options = {};
+        if (!newAttrs.length || (['measure'].includes(attribute) && newAttrs.length === 1 && newAttrs[0] === '__count__') ||
+            (['second_groupby', 'second_row_groupby'].includes(attribute) && newAttrs.length < 2)) {
+            options.operationType = 'add';
+            options.name = [input];
+        } else if (newAttrs.length && input.length) {
+            options.operationType = 'replace';
+            options.oldname = ['second_groupby', 'second_row_groupby'].includes(attribute) ? newAttrs[1] : newAttrs[0];
+            options.name = [input];
+        } else {
+            options.operationType = 'remove';
+            options.name = ['second_groupby', 'second_row_groupby'].includes(attribute) ? [newAttrs[1]] : [newAttrs[0]];
+        }
+        return options;
+    },
+    /**
+     * @private
      * @param {Event} ev
      */
     _onViewChanged: function (ev) {
@@ -1269,6 +1360,56 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 type: 'attributes',
                 structure: 'view_attribute',
                 new_attrs: newAttrs,
+            });
+        } else if (this.view_type === 'graph' && ['stacked', 'first_groupby', 'second_groupby', 'measure'].includes(attribute)) {
+            if (attribute === 'stacked') {
+                const newAttrs = {};
+                newAttrs['stacked'] = attribute && $input.is(':checked') ? 'true' : 'False';
+                this.trigger_up('view_change', {
+                    type: 'attributes',
+                    structure: 'view_attribute',
+                    new_attrs: newAttrs,
+                });
+            } else {
+                let options = {};
+                options.type = $input.attr('type');
+                options.viewType = this.view_type;
+                if (attribute === 'first_groupby') {
+                    const newoptions = this._onChangedGroupBys(attribute, $input.val(), this.state.attrs.groupBys);
+                    options = {...options, ...newoptions};
+                }
+                if (attribute === 'second_groupby') {
+                    const newoptions = this._onChangedGroupBys(attribute, $input.val(), this.state.attrs.groupBys);
+                    options = {...options, ...newoptions};
+                }
+                if (attribute === 'measure') {
+                    const newoptions = this._onChangedGroupBys(attribute, $input.val(), [this.state.attrs.measure]);
+                    options = {...options, ...newoptions};
+                }
+                this.trigger_up('view_change', {
+                    structure: 'graph_pivot_groupbys_fields',
+                    options,
+                });
+            }
+        } else if (this.view_type === 'pivot' && ['column_groupby', 'first_row_groupby', 'second_row_groupby'].includes(attribute)) {
+            let options = {};
+            options.type = $input.attr('type');
+            options.viewType = this.view_type;
+            if (attribute === 'column_groupby') {
+                const newoptions = this._onChangedGroupBys(attribute, $input.val(), this.state.attrs.colGroupBys);
+                options = {...options, ...newoptions};
+            }
+            if (attribute === 'first_row_groupby') {
+                const newoptions = this._onChangedGroupBys(attribute, $input.val(), this.state.attrs.rowGroupBys);
+                options = {...options, ...newoptions};
+            }
+            if (attribute === 'second_row_groupby') {
+                const newoptions = this._onChangedGroupBys(attribute, $input.val(), this.state.attrs.rowGroupBys);
+                options = {...options, ...newoptions};
+            }
+            this.trigger_up('view_change', {
+                structure: 'graph_pivot_groupbys_fields',
+                options,
             });
         } else if (attribute) {
             var new_attrs = {};

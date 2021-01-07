@@ -606,6 +606,39 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
+     * @private
+     * @param {string} type operation type
+     * @param {integer[]} fieldIDs
+     */
+    _changePivotMeasuresFields(type, fieldIDs) {
+        framework.blockUI();
+        this._do({
+            type: 'pivot_measures_fields',
+            target: {
+                operation_type: type,
+                field_ids: fieldIDs,
+            }
+        }).finally(framework.unblockUI);
+    },
+    /**
+     * @private
+     * @param {string} type operation type
+     * @param {object} data
+     */
+    _changeGraphPivotGroupbysFields(type, data) {
+        framework.blockUI();
+        this._do({
+            type: 'graph_pivot_groupbys_fields',
+            target: {
+                operation_type: data.options.operationType,
+                field_names: data.options.name,
+                old_field_names: data.options.oldname,
+                view_type: data.options.viewType,
+                field_type: data.options.type,
+            }
+        }).finally(framework.unblockUI);
+    },
+    /**
      * @override
      */
     _applyChangeHandling: function (result, opID) {
@@ -1108,6 +1141,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
             // to have multiple times the same field defined in the search view.
             params.fields_not_in_view = this.fields;
             params.fields_in_view = [];
+        } else if (this.view_type === 'pivot') {
+            params.colGroupBys = this.view.loadParams.colGroupBys;
+            params.rowGroupBys = this.view.loadParams.rowGroupBys;
+            params.measures = this.view.controllerParams.measures;
+        } else if (this.view_type === 'graph') {
+            params.groupBys = this.view.loadParams.groupBys;
+            params.measure = this.view.loadParams.measure;
         }
 
         return new ViewEditorSidebar(this, params);
@@ -1788,6 +1828,12 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'map_popup':
                 this._changeMapPopupFields(type, event.data.field_ids);
+                break;
+            case 'pivot_popup':
+                this._changePivotMeasuresFields(type, event.data.field_ids);
+                break;
+            case 'graph_pivot_groupbys_fields':
+                this._changeGraphPivotGroupbysFields(type, event.data);
                 break;
             case 'avatar_image':
                 this._addAvatarImage(event.data);

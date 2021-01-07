@@ -46,12 +46,14 @@ class View(models.Model):
         # we need ids of the fields inside map view(that displays marker popup) to edit
         # them with similar many2many widget. So we also add them to node (only in Studio).
         # This preprocess cannot be done at validation time because the
-        # attributes `studio_groups` and `studio_map_field_ids` are not RNG valid.
+        # attributes `studio_groups`, `studio_map_field_ids` and `studio_pivot_measure_fields` are not RNG valid.
         if self._context.get('studio') and not name_manager.validate:
             if node.get('groups'):
                 self.set_studio_groups(node)
             if node.tag == 'map':
                 self.set_studio_map_popup_fields(name_manager.Model._name, node)
+            if node.tag == 'pivot':
+                self.set_studio_pivot_measure_fields(name_manager.Model._name, node)
 
         return super(View, self)._apply_groups(node, name_manager, node_info)
 
@@ -74,6 +76,13 @@ class View(models.Model):
         field_ids = self.env['ir.model.fields'].search([('model', '=', model), ('name', 'in', field_names)]).ids
         if field_ids:
             node.attrib['studio_map_field_ids'] = json.dumps(field_ids)
+
+    @api.model
+    def set_studio_pivot_measure_fields(self, model, node):
+        field_names = [field.get('name') for field in node.findall('field') if field.get('type') == 'measure']
+        field_ids = self.env['ir.model.fields'].search([('model', '=', model), ('name', 'in', field_names)]).ids
+        if field_ids:
+            node.attrib['studio_pivot_measure_field_ids'] = json.dumps(field_ids)
 
     @api.model
     def create_automatic_views(self, res_model):
@@ -314,7 +323,7 @@ class View(models.Model):
             fields.append(E.field(name='x_studio_stage_id', type='col'))
         if 'x_studio_date' in model._fields:
             fields.append(E.field(name='x_studio_date', type='row'))
-        pivot = E.pivot()
+        pivot = E.pivot(sample='1')
         pivot.extend(fields)
         arch = etree.tostring(pivot, encoding='unicode', pretty_print=True)
 
@@ -329,7 +338,7 @@ class View(models.Model):
         fields = list()
         fields.append(E.field(name='x_studio_value', type='measure'))
         fields.append(E.field(name='create_date', type='row'))
-        graph = E.graph()
+        graph = E.graph(sample='1')
         graph.extend(fields)
         arch = etree.tostring(graph, encoding='unicode', pretty_print=True)
 

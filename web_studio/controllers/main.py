@@ -31,6 +31,8 @@ OPERATIONS_WHITELIST = [
     'kanban_priority',
     'kanban_set_cover',
     'map_popup_fields',
+    'pivot_measures_fields',
+    'graph_pivot_groupbys_fields',
     'move',
     'remove',
     'statusbar',
@@ -849,6 +851,18 @@ Are you sure you want to remove the selection values of those records?""") % len
                     'position': 'replace'
                 })
 
+    def _operation_replace(self, arch, operation, model):
+        """computes an xpath that will replace operation['target'] by operation['node'] in the arch"""
+        target_expr = self._node_to_expr(operation['target'])
+
+        replace_xpath = etree.SubElement(arch, 'xpath', {
+            'expr': target_expr,
+            'position': 'replace'
+        })
+
+        replace_with = operation['node']
+        etree.SubElement(replace_xpath, replace_with['tag'], replace_with['attrs'])
+
     def _operation_add(self, arch, operation, model):
         node = operation['node']
         xpath_node = self._get_xpath_node(arch, operation)
@@ -1434,6 +1448,85 @@ Are you sure you want to remove the selection values of those records?""") % len
                     'position': 'inside',
                 }
                 self._operation_add(arch, op, model)
+            else:
+                op = {
+                    'type': 'remove',
+                    'target': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                        },
+                    }
+                }
+                self._operation_remove(arch, op)
+
+    def _operation_pivot_measures_fields(self, arch, operation, model):
+        fields = request.env['ir.model.fields'].browse(operation['target']['field_ids'])
+        for field in fields:
+            if operation['target']['operation_type'] == 'add':
+                op = {
+                    'node': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                            'type': 'measure',
+                        }
+                    },
+                    'target': {
+                        'tag': 'pivot',
+                    },
+                    'position': 'inside',
+                }
+                self._operation_add(arch, op, model)
+            else:
+                op = {
+                    'type': 'remove',
+                    'target': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                        },
+                    }
+                }
+                self._operation_remove(arch, op)
+
+    def _operation_graph_pivot_groupbys_fields(self, arch, operation, model):
+        fieldsName = request.env['ir.model.fields'].search([
+            ('name', 'in', operation['target']['field_names']),
+            ('model', '=', model),])
+        for field in fieldsName:
+            if operation['target']['operation_type'] == 'add':
+                op = {
+                    'node': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                            'type': operation['target']['field_type'],
+                        }
+                    },
+                    'target': {
+                        'tag': operation['target']['view_type'],
+                    },
+                    'position': 'inside',
+                }
+                self._operation_add(arch, op, model)
+            elif operation['target']['operation_type'] == 'replace':
+                op = {
+                    'node': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': field.name,
+                            'type': operation['target']['field_type'],
+                        }
+                    },
+                    'target': {
+                        'tag': 'field',
+                        'attrs': {
+                            'name': operation['target']['old_field_names'],
+                        },
+                    },
+                }
+                self._operation_replace(arch, op, model)
             else:
                 op = {
                     'type': 'remove',

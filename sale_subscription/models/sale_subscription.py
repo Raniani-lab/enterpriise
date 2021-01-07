@@ -1049,9 +1049,11 @@ class SaleSubscription(models.Model):
             'code': self.code,
             'currency': self.pricelist_id.currency_id.name,
             'date_end': self.date,
+            'mail_notify_force_send': False,
+            'no_new_invoice': True,
         })
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
-        self.template_id.invoice_mail_template_id.with_context(email_context).send_mail(invoice.id)
+        invoice.with_context(email_context).message_post_with_template(self.template_id.invoice_mail_template_id.id)
         invoice.is_move_sent = True
         if hasattr(invoice, "attachment_ids") and invoice.attachment_ids:
             invoice._message_set_main_attachment_id([(4, id) for id in invoice.attachment_ids.ids])

@@ -112,11 +112,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
 
-    def _get_timesheet(self):
-        # return not invoiced timesheet
-        timesheet_ids = self.timesheet_ids
-        return timesheet_ids.filtered(lambda t: (not t.timesheet_invoice_id or t.timesheet_invoice_id.state == 'cancel'))
-
     @api.model
     def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         """ Set the correct label for `unit_amount`, depending on company UoM """

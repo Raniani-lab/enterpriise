@@ -101,9 +101,56 @@ CalendarRenderer.include({
      */
     _getFullCalendarOptions: function () {
         const oldOptions = this._super(...arguments);
+        // Parameters
         oldOptions.views.dayGridMonth.columnHeaderFormat = 'ddd';
         oldOptions.weekNumbersWithinDays = false;
         oldOptions.views.dayGridMonth.weekLabel = '';
+        // Event Listeners
+        const oldEventDragStart = oldOptions.eventDragStart;
+        const oldEventPositioned = oldOptions.eventPositioned;
+        const oldEventRender = oldOptions.eventRender;
+        const oldEventResize = oldOptions.eventResize;
+        const oldEventResizeStart = oldOptions.eventResizeStart;
+        const oldSelectAllow = oldOptions.selectAllow;
+
+        oldOptions.eventDragStart = (info) => {
+            this.isSwipeEnabled = false;
+            if (oldEventDragStart) {
+                oldEventDragStart(info);
+            }
+        };
+        oldOptions.eventPositioned = (info) => {
+            this.isSwipeEnabled = false;
+            if (oldEventPositioned) {
+                oldEventPositioned(info);
+            }
+        };
+        oldOptions.eventRender = (info) => {
+            this.isSwipeEnabled = false;
+            if (oldEventRender) {
+                oldEventRender(info);
+            }
+        };
+        oldOptions.eventResize = (eventResizeInfo) => {
+            this.isSwipeEnabled = false;
+            if (oldEventResize) {
+                oldEventResize(eventResizeInfo);
+            }
+        };
+        oldOptions.eventResizeStart = (mouseResizeInfo) => {
+            this.isSwipeEnabled = false;
+            if (oldEventResizeStart) {
+                oldEventResizeStart(mouseResizeInfo);
+            }
+        };
+        oldOptions.selectAllow = (selectInfo) => {
+            this.isSwipeEnabled = false;
+            if (oldSelectAllow) {
+                return oldSelectAllow(selectInfo);
+            }
+            return true;
+        };
+
         return oldOptions;
     },
     /**
@@ -119,60 +166,6 @@ CalendarRenderer.include({
         const popoverParameters = this._super.apply(this, arguments);
         popoverParameters.container = 'body';
         return popoverParameters;
-    },
-    /**
-     * In mobile, we add the swipe and so we need to disable it on some action
-     *
-     * @override
-     * @private
-     */
-    _initCalendar: function () {
-        const self = this;
-        this._super.apply(this, arguments);
-        const oldEventDragStart = this.calendar.getOption('eventDragStart');
-        const oldEventPositioned = this.calendar.getOption('eventPositioned');
-        const oldEventRender = this.calendar.getOption('eventRender');
-        const oldEventResize = this.calendar.getOption('eventResize');
-        const oldEventResizeStart = this.calendar.getOption('eventResizeStart');
-        const oldSelectAllow = this.calendar.getOption('selectAllow');
-
-        this.calendar.setOption('eventDragStart', function (info) {
-            self.isSwipeEnabled = false;
-            if (oldEventDragStart) {
-                oldEventDragStart(info);
-            }
-        });
-        this.calendar.setOption('eventPositioned', function (info) {
-            self.isSwipeEnabled = false;
-            if (oldEventPositioned) {
-                oldEventPositioned(info);
-            }
-        });
-        this.calendar.setOption('eventRender', function (info) {
-            self.isSwipeEnabled = false;
-            if (oldEventRender) {
-                oldEventRender(info);
-            }
-        });
-        this.calendar.setOption('eventResize', function (eventResizeInfo) {
-            self.isSwipeEnabled = false;
-            if (oldEventResize) {
-                oldEventResize(eventResizeInfo);
-            }
-        });
-        this.calendar.setOption('eventResizeStart', function (mouseResizeInfo) {
-            self.isSwipeEnabled = false;
-            if (oldEventResizeStart) {
-                oldEventResizeStart(mouseResizeInfo);
-            }
-        });
-        this.calendar.setOption('selectAllow', function (selectInfo) {
-            self.isSwipeEnabled = false;
-            if (oldSelectAllow) {
-                return oldSelectAllow(selectInfo);
-            }
-            return true;
-        });
     },
     /**
      * Finalise the popover

@@ -5,7 +5,7 @@
         <xpath expr="//div[@id='o_event_name']" position="after">
             <div class="col-12">
                 <div class="text-center">
-                    <img class="barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', o.barcode, 400, 67)" alt="Barcode"></img>&amp;nbsp;
+                    <div t-field="o.barcode" t-options="{'widget': 'barcode', 'width': 400, 'height': 67, 'humanreadable': 1}"/>&amp;nbsp;
                 </div>
             </div>
         </xpath>

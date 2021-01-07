@@ -1,6 +1,7 @@
 odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
     "use strict";
 
+    const CalendarRenderer = require('web.CalendarRenderer');
     const CalendarView = require('web.CalendarView');
     const testUtils = require('web.test_utils');
 
@@ -190,5 +191,53 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
             calendar.destroy();
         });
 
+        QUnit.test('calendar: short tap on "Free Zone" opens quick create', async function (assert) {
+            assert.expect(3);
+
+            testUtils.mock.patch(CalendarRenderer, {
+                _getFullCalendarOptions: function () {
+                    const options = this._super(...arguments);
+                    const oldSelect = options.select;
+                    options.select = (selectionInfo) => {
+                        assert.step('select');
+                        if (oldSelect) {
+                            return oldSelect(selectionInfo);
+                        }
+                    };
+                    const oldDateClick = options.dateClick;
+                    options.dateClick = (dateClickInfo) => {
+                        assert.step('dateClick');
+                        if (oldDateClick) {
+                            return oldDateClick(dateClickInfo);
+                        }
+                    };
+                    return options;
+                },
+            });
+
+            const calendar = await testUtils.createCalendarView({
+                View: CalendarView,
+                model: 'event',
+                data: this.data,
+                arch: `<calendar mode="day" date_start="start" date_stop="stop"></calendar>`,
+                viewOptions: {
+                    initialDate: initialDate,
+                },
+            }, {positionalClicks: true});
+
+            // Simulate a "TAP" (touch)
+            const initCell = calendar.el.querySelector('.fc-time-grid .fc-minor[data-time="07:30:00"] .fc-widget-content:last-child');
+            const boundingClientRect = initCell.getBoundingClientRect();
+            const left = boundingClientRect.left + document.body.scrollLeft;
+            const top = boundingClientRect.top + document.body.scrollTop;
+            await testUtils.dom.triggerPositionalTapEvents(left, top);
+
+            assert.strictEqual($('.modal').length, 1, "should open a Quick create modal view in mobile on short tap");
+            assert.verifySteps(['dateClick']);
+
+            calendar.destroy();
+
+            testUtils.mock.unpatch(CalendarRenderer);
+        });
     });
 });

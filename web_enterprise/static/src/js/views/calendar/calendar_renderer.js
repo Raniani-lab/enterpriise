@@ -112,6 +112,7 @@ CalendarRenderer.include({
         const oldEventResize = oldOptions.eventResize;
         const oldEventResizeStart = oldOptions.eventResizeStart;
         const oldSelectAllow = oldOptions.selectAllow;
+        const oldSelect = oldOptions.select;
 
         oldOptions.eventDragStart = (info) => {
             this.isSwipeEnabled = false;
@@ -149,6 +150,35 @@ CalendarRenderer.include({
                 return oldSelectAllow(selectInfo);
             }
             return true;
+        };
+        oldOptions.select = (selectionInfo) => {
+            // Needed to avoid to trigger select and dateClick on long tap
+            selectionInfo.jsEvent.isSelectiong = true;
+            if (oldSelect) {
+                return oldSelect(selectionInfo);
+            }
+        };
+        // /!\ Override if dateClick is set in web module
+        oldOptions.dateClick = (dateClickInfo) => {
+            if (dateClickInfo.jsEvent.isSelectiong) {
+                return;
+            }
+            if (dateClickInfo.view.type === this.scalesInfo.month) {
+                this.trigger_up('changeDate', {
+                    date: moment(dateClickInfo.date),
+                    scale: 'day',
+                });
+                return;
+            }
+            const data = {start: dateClickInfo.date, allDay: dateClickInfo.allDay};
+            this._preOpenCreate(data);
+        };
+        // TODO refactor year view to have consistency API (use dateClick instead of yearDateClick)
+        oldOptions.yearDateClick = (yearDateClickInfo) => {
+            this.trigger_up('changeDate', {
+                date: moment(yearDateClickInfo.date),
+                scale: 'day',
+            });
         };
 
         return oldOptions;

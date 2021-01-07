@@ -7,6 +7,16 @@ var mobileMixins = require('web_mobile.mixins');
 
 Dialog.include(_.extend({}, mobileMixins.BackButtonEventMixin, {
     /**
+     * Ensure that the on_attach_callback is called after the Dialog has been
+     * attached to the DOM and opened.
+     *
+     * @override
+     */
+    init() {
+        this._super(...arguments);
+        this._opened = this._opened.then(this.on_attach_callback.bind(this));
+    },
+    /**
      * As the Dialog is based on Bootstrap's Modal we don't handle ourself when
      * the modal is detached from the DOM and we have to rely on their events
      * to call on_detach_callback.
@@ -37,15 +47,6 @@ Dialog.include(_.extend({}, mobileMixins.BackButtonEventMixin, {
     // Public
     //--------------------------------------------------------------------------
 
-    /**
-     * This method is called after the modal has been attached to the DOM and
-     * started appearing.
-     *
-     * @override
-     */
-    opened: function () {
-        return this._super.apply(this, arguments).then(this.on_attach_callback.bind(this));
-    },
     /**
      * Scroll to original position while closing modal in mobile devices
      *

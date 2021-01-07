@@ -110,7 +110,7 @@ QUnit.module('Studio', {
                             to_delete: [],
                             to_move: {
                                 2: { sequence: 1 },
-                                21: { parent_id: 2, sequence: 0 },
+                                21: { parent_menu_id: 2, sequence: 0 },
                             },
                         });
                     }

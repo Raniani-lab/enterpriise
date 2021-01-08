@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * l10n_be_hr_payroll
+# 	* l10n_be_hr_payroll
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 14:24+0000\n"
-"PO-Revision-Date: 2020-12-01 14:24+0000\n"
+"POT-Creation-Date: 2021-01-08 10:30+0000\n"
+"PO-Revision-Date: 2021-01-08 10:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -732,6 +732,22 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
 msgid "AUG"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_onss_employer
+msgid "Accounting: ONSS (Employer)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_owed_remuneration
+msgid "Accounting: Owed Remuneration"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_remuneration
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_remuneration
+msgid "Accounting: Remuneration"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -2320,6 +2336,21 @@ msgid "OCT"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_onss_employer
+msgid "ONSS (Employer)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_onss_total
+msgid "ONSS (TOTAL)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_onss_total
+msgid "ONSS (Total)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_company__onss_company_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__onss_company_id
 msgid "ONSS Company ID"
@@ -2823,6 +2854,11 @@ msgid "Some employee home address is missing or not completed!"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_m_onss_total
+msgid "Special Social Cotisation (Total)"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_n1_rules_special_contribution_termination
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_n_rules_special_contribution_termination
 msgid "Special Social contribution"
@@ -3302,7 +3338,13 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_payroll_head_pp
-msgid "Withholding Tax Grid 2018 (Precompte Professionnel Bareme 2018)"
+msgid "Withholding Taxes"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_withholding_taxes_total
+#: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_withholding_taxes_total
+msgid "Withholding Taxes (Total)"
 msgstr ""
 
 #. module: l10n_be_hr_payroll

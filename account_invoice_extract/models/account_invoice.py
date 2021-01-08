@@ -178,6 +178,7 @@ class AccountMove(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
+        self.ensure_one()
         if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
@@ -192,12 +193,15 @@ class AccountMove(models.Model):
             }
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
+            baseurl = self.env['ir.config_parameter'].get_param('web.base.url')
+            webhook_url = f"{baseurl}/account_invoice_extract/request_done"
             params = {
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachments],
                 'file_names': [x.name for x in attachments],
                 'user_infos': user_infos,
+                'webhook_url': webhook_url,
             }
             try:
                 result = self._contact_iap_extract('/iap/invoice_extract/parse', params)

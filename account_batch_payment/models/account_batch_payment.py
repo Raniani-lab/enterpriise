@@ -94,22 +94,19 @@ class AccountBatchPayment(models.Model):
             else:
                 batch.currency_id = False
 
-    @api.depends('payment_ids', 'payment_ids.amount', 'journal_id')
+    @api.depends('date', 'currency_id', 'payment_ids.amount')
     def _compute_amount(self):
         for batch in self:
-            company_currency = batch.journal_id.company_id.currency_id or self.env.company.currency_id
-            journal_currency = batch.journal_id.currency_id or company_currency
+            currency = batch.currency_id or batch.journal_id.currency_id or self.env.company.currency_id
+            date = batch.date or fields.Date.context_today(self)
             amount = 0
             for payment in batch.payment_ids:
-                payment_currency = payment.currency_id or company_currency
-                if payment_currency == journal_currency:
-                    amount += payment.amount
-                else:
-                    # note: this makes rec.date the value date, which IRL probably is the
-                    # date of the reception by the bank
-                    amount += payment_currency._convert(
-                        payment.amount, journal_currency, batch.journal_id.company_id,
-                        batch.date or fields.Date.today())
+                liquidity_lines, counterpart_lines, writeoff_lines = payment._seek_for_lines()
+                for line in liquidity_lines:
+                    if line.currency_id == currency:
+                        amount += line.amount_currency
+                    else:
+                        amount += line.company_currency_id._convert(line.balance, currency, line.company_id, date)
             batch.amount = amount
 
     @api.constrains('batch_type', 'journal_id', 'payment_ids')

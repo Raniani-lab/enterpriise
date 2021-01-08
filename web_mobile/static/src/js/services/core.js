@@ -72,6 +72,11 @@ if (methods.hashChange) {
 }
 
 /**
+ * Error related to the registration of a listener to the backbutton event
+ */
+class BackButtonListenerError extends Error {}
+
+/**
  * By using the back button feature the default back button behavior from the
  * app is actually overridden so it is important to keep count to restore the
  * default when no custom listener are remaining.
@@ -92,13 +97,14 @@ class BackButtonManager {
      *
      * @param {Widget|Component} listener
      * @param {function} func
+     * @throws {BackButtonListenerError} if the listener has already been registered
      */
     addListener(listener, func) {
         if (!methods.overrideBackButton) {
             return;
         }
         if (this._listeners.has(listener)) {
-            throw new Error("This listener was already registered.");
+            throw new BackButtonListenerError("This listener was already registered.");
         }
         this._listeners.set(listener, func);
         if (this._listeners.size === 1) {
@@ -111,14 +117,14 @@ class BackButtonManager {
      * no other listeners are present.
      *
      * @param {Widget|Component} listener
-     * @param {function} func
+     * @throws {BackButtonListenerError} if the listener has already been unregistered
      */
-    removeListener(listener, func) {
+    removeListener(listener) {
         if (!methods.overrideBackButton) {
             return;
         }
         if (!this._listeners.has(listener)) {
-            return;
+            throw new BackButtonListenerError("This listener has already been unregistered.");
         }
         this._listeners.delete(listener);
         if (this._listeners.size === 0) {
@@ -137,11 +143,13 @@ class BackButtonManager {
             func.apply(listener, arguments);
         }
     }
-};
+}
 
 const backButtonManager = new BackButtonManager();
 
 return {
+    BackButtonManager,
+    BackButtonListenerError,
     backButtonManager,
     methods,
 };

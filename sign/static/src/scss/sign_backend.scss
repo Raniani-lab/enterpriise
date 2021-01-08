@@ -62,7 +62,13 @@
             tbody > tr > td:nth-child(1) {
                 width: 150px !important;
                 @include media-breakpoint-down(md) {
-                    width: 100px !important;
+                    display: block;
+                    width: 100% !important;
+                    font-weight: normal;
+                    color: $o-brand-secondary!important;
+                    > span {
+                        margin-bottom: 0!important;
+                    }
                 }
                 color:#666666 !important;
                 font-weight: bold;
@@ -72,10 +78,14 @@
                 border-bottom: none
             }
             tbody > tr > td:nth-child(2) {
+                @include media-breakpoint-down(md) {
+                    display: block;
+                    min-height: 47px;
+                }
                 border-right-style: none;
                 &:not([style]) {
                     padding-right: 0;
-                    border: 1px solid #666666;
+                    border: 2px solid #666666;
                     border-top-style: none;
                     border-right-style: none;
                     border-left-style: none;

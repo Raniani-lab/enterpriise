@@ -96,7 +96,7 @@ class ShiftController(http.Controller):
         attendances = employee_sudo.resource_calendar_id._work_intervals_batch(
             pytz.utc.localize(planning_sudo.start_datetime),
             pytz.utc.localize(planning_sudo.end_datetime),
-            resource=employee_sudo.resource_id, tz=employee_tz
+            resources=employee_sudo.resource_id, tz=employee_tz
         )[employee_sudo.resource_id.id]
         if attendances and attendances._items:
             checkin_min = min(map(lambda a: a[0].hour, attendances._items))  # hour in the timezone of the employee

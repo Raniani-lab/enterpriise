@@ -29,6 +29,7 @@ the registration is confirmed.
         ],
         'web.report_assets_common': [
             '/event_barcode/static/src/scss/event_foldable_badge_report.scss',
+            '/event_barcode/static/src/scss/event_full_page_ticket_report.scss',
         ],
     }
 }

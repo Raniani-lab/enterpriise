@@ -60,7 +60,7 @@ class QualityPoint(models.Model):
     is_workorder_step = fields.Boolean(compute='_compute_is_workorder_step')
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
-    bom_id = fields.Many2one(related='operation_id.bom_id', readonly=False)
+    bom_id = fields.Many2one(related='operation_id.bom_id')
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
     test_type_id = fields.Many2one(
         'quality.point.test_type',

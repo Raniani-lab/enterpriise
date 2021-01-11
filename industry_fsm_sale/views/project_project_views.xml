@@ -8,8 +8,10 @@
             <xpath expr="//field[@name='pricing_type']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('allow_billable', '=', False), ('is_fsm', '=', True)], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}</attribute>
             </xpath>
-            <xpath expr="//page[@name='billing_employee_rate']//field[@name='timesheet_product_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', False), '|', '|', ('allow_timesheets', '=', False), ('sale_order_id', '!=', False), ('pricing_type', '!=', 'task_rate')], 'required': ['&amp;', ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}</attribute>
+            <xpath expr="//page[@name='billing_employee_rate']//group/field[@name='timesheet_product_id']" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="required">1</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('pricing_type', '!=', 'task_rate'), ('is_fsm', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//page[@name='billing_employee_rate']//field[@name='sale_order_id']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('pricing_type', '=', 'task_rate'), ('is_fsm', '=', True)], 'readonly': [('sale_order_id', '!=', False)]}</attribute>

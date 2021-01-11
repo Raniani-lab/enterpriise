@@ -46,7 +46,7 @@ class AccountEdiFormat(models.Model):
         :param addenda: The addenda to add as a string.
         :return cfdi:   The cfdi including the addenda.
         '''
-        addenda_values = {'record': move}
+        addenda_values = {'record': move, 'cfdi': cfdi}
 
         addenda = addenda._render(values=addenda_values).strip()
         if not addenda:

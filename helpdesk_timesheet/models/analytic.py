@@ -28,7 +28,9 @@ class AccountAnalyticLine(models.Model):
 
     def _timesheet_get_portal_domain(self):
         domain = super(AccountAnalyticLine, self)._timesheet_get_portal_domain()
-        return expression.OR([domain, self._timesheet_in_helpdesk_get_portal_domain()])
+        if not self.env.user.has_group('hr_timesheet.group_hr_timesheet_user'):
+            domain = expression.OR([domain, self._timesheet_in_helpdesk_get_portal_domain()])
+        return domain
 
     def _timesheet_in_helpdesk_get_portal_domain(self):
         return [

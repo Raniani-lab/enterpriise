@@ -11,12 +11,6 @@
                 <field name="allocation_type" invisible="1"/>
                 <field name="effective_hours" widget="float_time" attrs="{'invisible': ['|', '|', '|', ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}" decoration-danger="forecast_hours &gt; 0 and effective_hours > forecast_hours"/>
             </xpath>
-            <xpath expr="//field[@name='planned_hours']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('task_id', '=', False), ('allow_forecast', '=', False), ('allow_timesheets', '=', False)]}</attribute>
-            </xpath>
-            <xpath expr="//field[@name='forecast_hours']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('task_id', '=', False), ('allow_forecast', '=', False), ('allow_timesheets', '=', False)]}</attribute>
-            </xpath>
         </field>
     </record>
 

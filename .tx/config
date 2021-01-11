@@ -32,6 +32,11 @@ file_filter = account_auto_transfer/i18n/<lang>.po
 source_file = account_auto_transfer/i18n/account_auto_transfer.pot
 source_lang = en
 
+[odoo-master.account_avatax]
+file_filter = account_avatax/i18n/<lang>.po
+source_file = account_avatax/i18n/account_avatax.pot
+source_lang = en
+
 [odoo-master.account_bank_statement_import]
 file_filter = account_bank_statement_import/i18n/<lang>.po
 source_file = account_bank_statement_import/i18n/account_bank_statement_import.pot
@@ -1030,6 +1035,11 @@ source_lang = en
 [odoo-master.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
+source_lang = en
+
+[odoo-master.website_sale_account_avatax]
+file_filter = website_sale_account_avatax/i18n/<lang>.po
+source_file = website_sale_account_avatax/i18n/website_sale_account_avatax.pot
 source_lang = en
 
 [odoo-master.website_sale_dashboard]

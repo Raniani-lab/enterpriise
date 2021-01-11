@@ -35,9 +35,9 @@ class AccountPayment(models.Model):
         self.ensure_one()
 
         return {
-            'name': _("Paid Invoices"),
+            'name': _("Batch Payment"),
             'type': 'ir.actions.act_window',
-            'res_model': 'account.move',
+            'res_model': 'account.batch.payment',
             'context': {'create': False},
             'view_mode': 'form',
             'res_id': self.batch_payment_id.id,

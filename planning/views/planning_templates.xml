@@ -158,6 +158,9 @@
                     <t t-if="message_slug == 'already_assign'">
                         <i class="fa fa-exclamation-circle text-warning"/> This shift is already assigned to another employee.
                     </t>
+                    <t t-if="message_slug == 'deny_unassign'">
+                        <i class="fa fa-exclamation-circle text-warning"/> You can no longer unassign yourself from this shift.
+                    </t>
                 </div>
             </div>
         </t>

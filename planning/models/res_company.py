@@ -11,3 +11,7 @@ class Company(models.Model):
 
     planning_allow_self_unassign = fields.Boolean("Can Employee Un-Assign Themselves?", default=False,
         help="Let your employees un-assign themselves from shifts when unavailable")
+
+    planning_self_unassign_days_before = fields.Integer("Days before shift for unassignment", help="Deadline in days for shift unassignment")
+
+    _sql_constraints = [('planning_self_unassign_days_before_positive', 'CHECK(planning_self_unassign_days_before >= 0)', "The amount of days before unassignment must be positive or equal to zero.")]

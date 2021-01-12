@@ -65,6 +65,12 @@ class Planning(models.Model):
         copy=True, default=_default_end_datetime)
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
+    self_unassign_days_before = fields.Integer(
+        "Days before shift for unassignment",
+        related="company_id.planning_self_unassign_days_before"
+    )
+    unassign_deadline = fields.Datetime('Deadline for unassignment', compute="_compute_unassign_deadline")
+    is_unassign_deadline_passed = fields.Boolean('Is unassignement deadline not past', compute="_compute_is_unassign_deadline_passed")
     is_assigned_to_me = fields.Boolean('Is This Shift Assigned To The Current User', compute='_compute_is_assigned_to_me')
     conflicting_slot_ids = fields.Many2many('planning.slot', compute='_compute_overlap_slot_count')
     overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count')
@@ -418,6 +424,17 @@ class Planning(models.Model):
         start_datetime, end_datetime = (intervals[0][0], intervals[-1][-1]) if intervals else (start, end)
 
         return (start_datetime, end_datetime)
+
+    @api.depends('self_unassign_days_before', 'start_datetime')
+    def _compute_unassign_deadline(self):
+        for slot in self:
+            slot.unassign_deadline = fields.Datetime.subtract(slot.start_datetime, days=slot.self_unassign_days_before)
+
+    @api.depends('unassign_deadline')
+    def _compute_is_unassign_deadline_passed(self):
+        for slot in self:
+            slot.is_unassign_deadline_passed = slot.unassign_deadline < fields.Datetime.now()
+
     # ----------------------------------------------------
     # ORM overrides
     # ----------------------------------------------------
@@ -571,6 +588,8 @@ class Planning(models.Model):
         # shift to self unassign. Prevent any user in the system (portal, ...) to unassign any shift.
         if not self.allow_self_unassign:
             raise UserError(_("The company does not allow you to self unassign."))
+        if self.is_unassign_deadline_passed:
+            raise UserError(_("The deadline for unassignment has passed."))
         if self.employee_id != self.env.user.employee_id:
             raise UserError(_("You can not unassign another employee than yourself."))
         return self.sudo().write({'employee_id': False})
@@ -832,14 +851,9 @@ class Planning(models.Model):
                 filters.append(dom)
         return filters
 
-    def _format_start_end_datetime(self, record_env, tz=None, lang_code=False):
-        destination_tz = pytz.timezone(tz)
-        start_datetime = pytz.utc.localize(self.start_datetime).astimezone(destination_tz).replace(tzinfo=None)
-        end_datetime = pytz.utc.localize(self.end_datetime).astimezone(destination_tz).replace(tzinfo=None)
-        return (
-            format_datetime(record_env, self.start_datetime, tz=tz, dt_format='short', lang_code=lang_code),
-            format_datetime(record_env, self.end_datetime, tz=tz, dt_format='short', lang_code=lang_code)
-        )
+    @api.model
+    def _format_datetime_to_user_tz(self, datetime_without_tz, record_env, tz=None, lang_code=False):
+        return format_datetime(record_env, datetime_without_tz, tz=tz, dt_format='short', lang_code=lang_code)
 
     def _send_slot(self, employee_ids, start_datetime, end_datetime, include_unassigned=True, message=None):
         if not include_unassigned:
@@ -868,7 +882,7 @@ class Planning(models.Model):
         view_context = dict(self._context)
         view_context.update({
             'open_shift_available': not self.employee_id,
-            'mail_subject': _('Planning: new open shift available'),
+            'mail_subject': _('Planning: new open shift available on'),
         })
 
         if self.employee_id:
@@ -879,7 +893,7 @@ class Planning(models.Model):
                 else:
                     unavailable_link = '/planning/%s/%s/unassign/%s?message=1' % (planning.access_token, self.employee_id.sudo().employee_token, self.id)
                 view_context.update({'unavailable_link': unavailable_link})
-            view_context.update({'mail_subject': _('Planning: new shift')})
+            view_context.update({'mail_subject': _('Planning: new shift on')})
 
         mails_to_send_ids = []
         for employee in employee_ids.filtered(lambda e: e.work_email):
@@ -887,7 +901,9 @@ class Planning(models.Model):
                 view_context.update({'available_link': '/planning/assign/%s/%s' % (employee.sudo().employee_token, self.id)})
             elif not self.employee_id:
                 view_context.update({'available_link': '/planning/%s/%s/assign/%s?message=1' % (planning.access_token, employee.sudo().employee_token, self.id)})
-            start_datetime, end_datetime = self._format_start_end_datetime(employee.env, tz=employee.tz, lang_code=employee.user_partner_id.lang)
+            start_datetime = self._format_datetime_to_user_tz(self.start_datetime, employee.env, tz=employee.tz, lang_code=employee.user_partner_id.lang)
+            end_datetime = self._format_datetime_to_user_tz(self.end_datetime, employee.env, tz=employee.tz, lang_code=employee.user_partner_id.lang)
+            unassign_deadline = self._format_datetime_to_user_tz(self.unassign_deadline, employee.env, tz=employee.tz, lang_code=employee.user_partner_id.lang)
             # update context to build a link for view in the slot
             view_context.update({
                 'link': employee_url_map[employee.id],
@@ -895,6 +911,7 @@ class Planning(models.Model):
                 'end_datetime': end_datetime,
                 'employee_name': employee.name,
                 'work_email': employee.work_email,
+                'unassign_deadline': unassign_deadline
             })
             mail_id = template.with_context(view_context).send_mail(self.id, notif_layout='mail.mail_notification_light')
             mails_to_send_ids.append(mail_id)
@@ -944,6 +961,8 @@ class PlanningPlanning(models.Model):
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
     date_start = fields.Date('Date Start', compute='_compute_dates')
     date_end = fields.Date('Date End', compute='_compute_dates')
+    allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
+    self_unassign_days_before = fields.Integer("Days before shift for unassignment", related="company_id.planning_self_unassign_days_before", help="Deadline in days for shift unassignment")
 
     @api.depends('start_datetime', 'end_datetime')
     @api.depends_context('uid')
@@ -953,11 +972,10 @@ class PlanningPlanning(models.Model):
             planning.date_start = pytz.utc.localize(planning.start_datetime).astimezone(tz).replace(tzinfo=None)
             planning.date_end = pytz.utc.localize(planning.end_datetime).astimezone(tz).replace(tzinfo=None)
 
-    @api.depends('start_datetime', 'end_datetime')
     def _compute_display_name(self):
         """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
         for planning in self:
-            planning.display_name = _('Planning from %s to %s') % (format_date(self.env, planning.date_start), format_date(self.env, planning.date_end))
+            planning.display_name = _('Planning')
 
     # ----------------------------------------------------
     # Business Methods

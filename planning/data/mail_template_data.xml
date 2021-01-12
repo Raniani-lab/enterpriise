@@ -5,7 +5,7 @@
         <record id="email_template_slot_single" model="mail.template">
             <field name="name">Planning: new single shift</field>
             <field name="email_from">${object.company_id.email_formatted | safe}</field>
-            <field name="subject">${ctx.mail_subject}</field>
+            <field name="subject">${ctx.mail_subject} ${ctx.start_datetime}</field>
             <field name="email_to">${ctx.work_email}</field>
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/>
@@ -59,7 +59,7 @@
                     </div>
                     % endif
                     <div style="text-align: center">
-                        % if ctx.get('unavailable_link')
+                        % if ctx.get('unavailable_link') and not object.is_unassign_deadline_passed
                         <div style="display: inline-block; margin: 15px; text-align: center">
                             <a href="${ctx.unavailable_link}" target="_blank"
                                 style="padding: 5px 10px; color: #875A7B; text-decoration: none; background-color: #FFFFFF; border: 1px solid #FFFFFF; border-radius: 3px"
@@ -80,6 +80,12 @@
                             >View Planning</a>
                         </div>
                         % endif
+
+                        % if object.allow_self_unassign and object.self_unassign_days_before and not object.is_unassign_deadline_passed and not ctx.get('open_shift_available'):
+                        <p>
+                        As a small reminder, you have until ${ctx.get('unassign_deadline')} to unassign yourself from this shift if you are unavailable. Thank you for your understanding.
+                        </p>
+                    % endif
                     </div>
                 </div>
             </field>
@@ -131,10 +137,17 @@
                     <div>
                         <p>There are new open shifts available. Please, assign yourself if you are available.</p>
                     </div>
+                    <br/>
                     % endif
 
                     % if ctx.get('message'):
                         <p>${ctx['message']}</p>
+                    % endif
+
+                    % if object.allow_self_unassign and object.self_unassign_days_before:
+                        <p>
+                        As a small reminder, you have ${object.self_unassign_days_before} day(s) before the beginning of a shift to unassign yourself if you are unavailable. Thank you for your understanding.
+                        </p>
                     % endif
                 </div>
             </field>

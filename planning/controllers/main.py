@@ -73,6 +73,7 @@ class ShiftController(http.Controller):
                         'slot_id': slot.id,
                         'note': slot.name,
                         'allow_self_unassign': slot.allow_self_unassign,
+                        'is_unassign_deadline_passed': slot.is_unassign_deadline_passed,
                         'role': slot.role_id.name,
                     })
                     # We add the slot start and stop into the list after converting it to the timezone of the employee
@@ -118,7 +119,7 @@ class ShiftController(http.Controller):
                 # fullcalendar does not understand complex iso code like fr_BE
                 'locale': get_lang(request.env).iso_code.split("_")[0],
                 'format_datetime': lambda dt, dt_format: tools.format_datetime(request.env, dt, tz=employee_tz.zone, dt_format=dt_format),
-                'notification_text': message in ['assign', 'unassign', 'already_assign'],
+                'notification_text': message in ['assign', 'unassign', 'already_assign', 'deny_unassign'],
                 'message_slug': message,
                 'has_role': any([s.role_id.id for s in open_slots]),
                 'has_note': any([s.name for s in open_slots]),
@@ -163,6 +164,9 @@ class ShiftController(http.Controller):
         if not slot_sudo or not slot_sudo.allow_self_unassign:
             return request.not_found()
 
+        if slot_sudo.is_unassign_deadline_passed:
+            return redirect('/planning/%s/%s?message=%s' % (token_planning, token_employee, "deny_unassign"))
+
         employee_sudo = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
         if not employee_sudo or employee_sudo.id != slot_sudo.employee_id.id:
             return request.not_found()
@@ -197,6 +201,9 @@ class ShiftController(http.Controller):
         slot_sudo = request.env['planning.slot'].sudo().search([('id', '=', shift_id)], limit=1)
         if not slot_sudo or not slot_sudo.allow_self_unassign:
             return request.not_found()
+
+        if slot_sudo.is_unassign_deadline_passed:
+            return redirect('/web?#action=planning.planning_action_open_shift')
 
         employee = request.env['hr.employee'].sudo().search([('employee_token', '=', token_employee)], limit=1)
         if not employee:

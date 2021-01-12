@@ -126,7 +126,10 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             $("#note").css("display", "none");
         }
         $("#allow_self_unassign").text(calEvent.event.extendedProps.allow_self_unassign);
-        if (calEvent.event.extendedProps.allow_self_unassign) {
+        if (
+            calEvent.event.extendedProps.allow_self_unassign
+            && !calEvent.event.extendedProps.is_unassign_deadline_passed
+            ) {
             document.getElementById("dismiss_shift").style.display = "block";
         } else {
             document.getElementById("dismiss_shift").style.display = "none";

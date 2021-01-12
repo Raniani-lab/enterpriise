@@ -21,6 +21,11 @@
                                 <div class="text-muted">
                                     Let employees unassign themselves from shifts
                                 </div>
+                                <div attrs="{'invisible': [('planning_allow_self_unassign', '=', False)]}">
+                                    <br/>
+                                    <label for="planning_self_unassign_days_before" class="o_dark_label" string="Deadline"/>
+                                    <field class="oe_inline col-4 col-lg-2 mr-1 text-center" name="planning_self_unassign_days_before"/> days before the beginning of the shift
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 o_setting_box" groups="base.group_no_one">
@@ -31,7 +36,7 @@
                                  <div class="content-group">
                                     <div class="mt16">
                                         <label for="planning_generation_interval" class="o_light_label" string="Rate of shift generation"/>
-                                        <field name="planning_generation_interval" class="oe_inline col-4 col-lg-2 mr-1"/>
+                                        <field name="planning_generation_interval" class="oe_inline col-4 col-lg-2 mr-1 text-center"/>
                                         <span>months</span>
                                     </div>
                                 </div>

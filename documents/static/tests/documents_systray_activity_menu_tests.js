@@ -17,7 +17,7 @@ QUnit.module('documents', {}, function () {
     });
 
     QUnit.test('activity menu widget: documents request button', async function (assert) {
-        assert.expect(4);
+        assert.expect(6);
 
         const { widget } = await start({
             data: this.data,
@@ -48,9 +48,13 @@ QUnit.module('documents', {}, function () {
         await activityMenu.appendTo($('#qunit-fixture'));
 
         await testUtils.dom.click(activityMenu.$('> .dropdown-toggle'));
+        assert.hasClass(activityMenu.$('.dropdown-menu'), 'show',
+            "dropdown should be expanded");
         assert.verifySteps(['user_has_group:documents.group_documents_user']);
         assert.containsOnce(activityMenu, '.o_sys_documents_request');
         await testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
+        assert.doesNotHaveClass(activityMenu.$('.dropdown-menu'), 'show',
+            "dropdown should be collapsed");
 
         widget.destroy();
     });

@@ -29,6 +29,7 @@ ActivityMenu.include({
    _onRequestDocument: function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
+        this.$('.dropdown-toggle').dropdown('toggle');
         this.do_action('documents.action_request_form');
     },
 });

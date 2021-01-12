@@ -3,7 +3,7 @@
 
 from datetime import timedelta, date
 from odoo import api, fields, models, _
-from odoo.tools import float_compare, format_datetime
+from odoo.tools import float_compare, format_datetime, format_time
 
 
 class RentalOrder(models.Model):
@@ -188,12 +188,12 @@ class RentalOrderLine(models.Model):
         if (self.is_rental):
             if self.pickup_date.date() == self.return_date.date():
                 # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='h:mm a')
+                return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, time_format=False)
             else:
-                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format='short')
+                return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False)
 
             return "\n%s %s %s" % (
-                format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
+                format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format=False),
                 _("to"),
                 return_date_part,
             )
@@ -281,7 +281,7 @@ class RentalOrderLine(models.Model):
         return "%s\n%s: %s\n%s: %s" % (
             self.product_id.name,
             _("Expected"),
-            format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format='short'),
+            format_datetime(self.with_context(use_babel=True).env, self.pickup_date, tz=self.env.user.tz, dt_format=False),
             _("Returned"),
-            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, dt_format='short')
+            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, dt_format=False)
         )

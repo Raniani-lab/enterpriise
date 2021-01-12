@@ -109,7 +109,8 @@ class HrPayslipWorkedDays(models.Model):
                 main_worked_day = "WORK100"
                 if main_worked_day not in be_wd.payslip_id.worked_days_line_ids.mapped('code'):
                     main_worked_day = be_wd.payslip_id.worked_days_line_ids.filtered(
-                        lambda wd: wd.is_paid and wd.code not in ['LEAVE300', 'LEAVE301']).code
+                        lambda wd: wd.is_paid and wd.code not in ['LEAVE300', 'LEAVE301'])
+                    main_worked_day = main_worked_day[0].code if main_worked_day else False
 
                 if be_wd.code == 'OUT':
                     worked_day_amount = 0

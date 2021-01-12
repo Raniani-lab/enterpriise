@@ -23,6 +23,7 @@ Adds the following options:
     'depends': ['project_enterprise', 'timesheet_grid', 'base_geolocalize'],
     'data': [
         'data/fsm_data.xml',
+        'data/mail_template_data.xml',
         'security/fsm_security.xml',
         'security/ir.model.access.csv',
         'views/assets.xml',

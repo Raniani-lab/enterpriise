@@ -75,7 +75,7 @@ class HrWorkEntry(models.Model):
                 calendar = work_entry.contract_id.resource_calendar_id
                 if not calendar:
                     continue
-                work_entry.date_stop = calendar.plan_hours(self.duration, self.date_start, compute_leaves=True)
+                work_entry.date_stop = calendar.plan_hours(work_entry.duration, work_entry.date_start, compute_leaves=True)
                 continue
             super(HrWorkEntry, work_entry)._compute_date_stop()
 

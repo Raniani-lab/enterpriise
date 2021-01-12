@@ -232,6 +232,8 @@ class Payslip(models.Model):
         # Only complete months count
         if first_contract_date.day != 1:
             start = first_contract_date + relativedelta(day=1, months=1)
+        else:
+            start = first_contract_date
         end = self.date_from + relativedelta(day=31, months=-1)
         number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
         number_of_month = min(12, number_of_month)

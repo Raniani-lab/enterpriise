@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2021-01-12 07:57+0000\n"
+"PO-Revision-Date: 2021-01-12 07:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -654,12 +654,6 @@ msgid "Let's now create an order."
 msgstr ""
 
 #. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_2
-#: model:product.template,name:sale_renting.rental_product_2_product_template
-msgid "Meeting Room"
-msgstr ""
-
-#. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_res_company_min_extra_hour
 msgid "Minimal delay time before applying fines has to be positive."
 msgstr ""
@@ -929,12 +923,6 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr ""
-
-#. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_1
-#: model:product.template,name:sale_renting.rental_product_1_product_template
-msgid "Projector"
 msgstr ""
 
 #. module: sale_renting
@@ -1365,14 +1353,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_uom
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom
 msgid "Unit of Measure"
-msgstr ""
-
-#. module: sale_renting
-#: model:product.product,uom_name:sale_renting.rental_product_1
-#: model:product.product,uom_name:sale_renting.rental_product_2
-#: model:product.template,uom_name:sale_renting.rental_product_1_product_template
-#: model:product.template,uom_name:sale_renting.rental_product_2_product_template
-msgid "Units"
 msgstr ""
 
 #. module: sale_renting

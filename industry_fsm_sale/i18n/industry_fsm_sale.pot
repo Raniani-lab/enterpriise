@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:33+0000\n"
-"PO-Revision-Date: 2020-12-11 07:33+0000\n"
+"POT-Creation-Date: 2021-01-12 07:58+0000\n"
+"PO-Revision-Date: 2021-01-12 07:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -112,6 +112,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_name
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__display_name
@@ -144,9 +145,16 @@ msgid "Field Service"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:product.product,uom_name:industry_fsm_sale.field_service_product
+#: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
+msgid "Hours"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__id
@@ -208,6 +216,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task____last_update
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line____last_update
@@ -298,6 +307,11 @@ msgid "Record the material you used for the intervention."
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_order_form_inherit_sale_project
+msgid "Related Task"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order
 msgid "Sales Order"
 msgstr ""
@@ -335,6 +349,11 @@ msgid "Task"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_project_task_recurrence
+msgid "Task Recurrence"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which quotation have been created"
 msgstr ""
@@ -359,12 +378,6 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
 msgid "Track the material used to complete tasks"
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:product.product,uom_name:industry_fsm_sale.field_service_product
-#: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
-msgid "Units"
 msgstr ""
 
 #. module: industry_fsm_sale

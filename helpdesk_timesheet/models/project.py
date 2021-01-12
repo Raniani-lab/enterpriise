@@ -10,6 +10,7 @@ class Project(models.Model):
     ticket_count = fields.Integer('# Tickets', compute='_compute_ticket_count')
 
     helpdesk_team = fields.One2many('helpdesk.team', 'project_id')
+    has_helpdesk_team = fields.Boolean('Has Helpdesk Teams', compute='_compute_has_helpdesk_team', compute_sudo=True)
 
     @api.depends('ticket_ids.project_id')
     def _compute_ticket_count(self):
@@ -22,6 +23,15 @@ class Project(models.Model):
         data = {data['project_id'][0]: data['project_id_count'] for data in result}
         for project in self:
             project.ticket_count = data.get(project.id, 0)
+
+    @api.depends('helpdesk_team.project_id')
+    def _compute_has_helpdesk_team(self):
+        result = self.env['helpdesk.team'].read_group([
+            ('project_id', 'in', self.ids)
+        ], ['project_id'], ['project_id'])
+        data = {data['project_id'][0]: data['project_id_count'] > 0 for data in result}
+        for project in self:
+            project.has_helpdesk_team = data.get(project.id, False)
 
     @api.depends('helpdesk_team.timesheet_timer')
     def _compute_allow_timesheet_timer(self):

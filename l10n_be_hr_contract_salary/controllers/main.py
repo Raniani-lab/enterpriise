@@ -187,8 +187,10 @@ class HrContractSalary(main.HrContractSalary):
         if kw.get('package_submit', False):
             # If the chosen existing car is already taken by someone else (for example if the
             # window was open for a long time)
-            if new_contract.transport_mode_car and not new_contract.new_car and new_contract.car_id.driver_id != new_contract.employee_id.address_home_id:
-                return {'error': True, 'error_msg': _("Sorry, the selected car has been selected by someone else. Please refresh and try again.")}
+            if new_contract.transport_mode_car and not new_contract.new_car:
+                available_cars_domain = new_contract._get_available_vehicles_domain(new_contract.employee_id.address_home_id)
+                if new_contract.car_id not in request.env['fleet.vehicle'].sudo().search(available_cars_domain):
+                    return {'error': True, 'error_msg': _("Sorry, the selected car has been selected by someone else. Please refresh and try again.")}
 
             # Don't create simulation cars but create the wishlist car is set
             wishlist_car = advantages['contract'].get('fold_wishlist_car_total_depreciated_cost', False)

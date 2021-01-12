@@ -69,7 +69,12 @@ class AccountOnlineAccount(models.Model):
 
     def _retrieve_transactions(self):
         start_date = self.last_sync or fields.Date().today() - relativedelta(days=15)
-        last_stmt_line = self.env['account.bank.statement.line'].search([('date', '<=', start_date), ('online_transaction_identifier', '!=', False)], limit=1)
+        last_stmt_line = self.env['account.bank.statement.line'].search([
+                ('date', '<=', start_date), 
+                ('online_transaction_identifier', '!=', False),
+                ('journal_id', 'in', self.journal_ids.ids),
+                ('online_account_id', '=', self.id)
+            ], order="date desc", limit=1)
         transactions = []
         data = {
             'start_date': format_date(self.env, start_date, date_format='YYYY-MM-dd'),
@@ -77,7 +82,6 @@ class AccountOnlineAccount(models.Model):
             'last_transaction_identifier': last_stmt_line.online_transaction_identifier,
             'currency_code': self.journal_ids[0].currency_id.name,
         }
-        balance = self.balance
         while True:
             # While this is kind of a bad practice to do, it can happen that provider_data/account_data change between
             # 2 calls, the reason is that those field contains the encrypted information needed to access the provider
@@ -90,14 +94,13 @@ class AccountOnlineAccount(models.Model):
             })
             resp_json = self.account_online_link_id._fetch_odoo_fin('/proxy/v1/transactions', data=data)
             if resp_json.get('balance'):
-                balance = resp_json['balance']
+                self.balance = resp_json['balance']
             if resp_json.get('account_data'):
                 self.account_data = resp_json['account_data']
             transactions += resp_json.get('transactions', [])
             if not resp_json.get('next_data'):
                 break
             data['next_data'] = resp_json.get('next_data') or {}
-            self.balance = balance
 
         return self.env['account.bank.statement']._online_sync_bank_statement(transactions, self)
 
@@ -205,6 +208,7 @@ class AccountOnlineLink(models.Model):
             'request_timeout': timeout,
             'lang': get_lang(self.env).code,
             'server_version': odoo.release.serie,
+            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
             'cron': self.env.context.get('cron', False)
         }
 

@@ -64,6 +64,18 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
                 return new Date().getDate();
             }
 
+            /**
+             * Reset mobile search state
+             * @private
+             */
+            _resetSearchState() {
+                Object.assign(this.state, {
+                    showSearchBar: false,
+                    showMobileSearch: false,
+                    showViewSwitcher: false,
+                });
+            }
+
             //---------------------------------------------------------------------
             // Handlers
             //---------------------------------------------------------------------
@@ -106,11 +118,7 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
              * @private
              */
             _onSwitchView() {
-                Object.assign(this.state, {
-                    showSearchBar: false,
-                    showMobileSearch: false,
-                    showViewSwitcher: false,
-                });
+                this._resetSearchState();
             }
 
             /**

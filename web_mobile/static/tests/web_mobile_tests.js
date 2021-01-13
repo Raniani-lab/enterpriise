@@ -713,6 +713,74 @@ QUnit.module('web_mobile', {
         parent.destroy();
         mock.unpatch(mobile.methods);
     });
+
+    QUnit.module('ControlPanel');
+
+    QUnit.test('mobile search: close with backbutton event', async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        const { createActionManager } = testUtils;
+
+        this.actions = [{
+            id: 1,
+            name: "Yes",
+            res_model: 'partner',
+            type: 'ir.actions.act_window',
+            views: [[false, 'list']],
+        }];
+        this.archs = {
+            'partner,false,list': '<tree><field name="foo"/></tree>',
+            'partner,false,search': `
+                <search>
+                    <filter string="Active" name="my_projects" domain="[('boolean_field', '=', True)]"/>
+                    <field name="foo" string="Foo"/>
+                </search>`,
+        };
+        this.data = {
+            partner: {
+                fields: {
+                    foo: { string: "Foo", type: "char" },
+                    boolean_field: { string: "I am a boolean", type: "boolean" },
+                },
+                records: [
+                    { id: 1, display_name: "First record", foo: "yop" },
+                ],
+            },
+        };
+
+        const actionManager = await createActionManager({
+            actions: this.actions,
+            archs: this.archs,
+            data: this.data,
+        });
+
+        await actionManager.doAction(1);
+
+        assert.containsNone(document.body, '.o_mobile_search');
+
+        // open the search view
+        await testUtils.dom.click(actionManager.el.querySelector('button.o_enable_searchview'));
+        // open it in full screen
+        await testUtils.dom.click(actionManager.el.querySelector('.o_toggle_searchview_full'));
+
+        assert.containsOnce(document.body, '.o_mobile_search');
+        assert.verifySteps(['overrideBackButton: true']);
+
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.containsNone(document.body, '.o_mobile_search');
+        assert.verifySteps(['overrideBackButton: false']);
+
+        actionManager.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
     QUnit.module('UpdateDeviceAccountControllerMixin');
 
     QUnit.test('controller should call native updateAccount method when saving record', async function (assert) {

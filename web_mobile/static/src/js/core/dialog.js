@@ -134,3 +134,36 @@ Popover.patch('web_mobile', T => class extends T {
 });
 
 });
+
+odoo.define('web_mobile.ControlPanel', function (require) {
+"use strict";
+
+const { device } = require('web.config');
+
+if (!device.isMobile) {
+    return;
+}
+
+const ControlPanel = require('web.ControlPanel');
+const { useBackButton } = require('web_mobile.hooks');
+
+ControlPanel.patch('web_mobile', T => class extends T {
+    constructor() {
+        super(...arguments);
+        useBackButton(this._onBackButton.bind(this), () => this.state.showMobileSearch);
+    }
+
+    //---------------------------------------------------------------------
+    // Handlers
+    //---------------------------------------------------------------------
+
+    /**
+     * close mobile search on back-button
+     * @private
+     */
+    _onBackButton() {
+        this._resetSearchState();
+    }
+});
+
+});

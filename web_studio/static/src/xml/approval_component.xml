@@ -96,7 +96,7 @@
                         src="/web/static/src/img/user_menu_avatar.png"
                         class="o_web_studio_approval_avatar rounded-circle border border-muted"/>
                 </div>
-                <div class="o_web_studio_approval_description text-muted">
+                <div class="o_web_studio_approval_description">
                     <t t-if="rule.message" t-esc="rule.message"/>
                     <t t-else="">Awaiting approval</t>
                     <p class="small" t-esc="rule.group_id[1]"/>

@@ -1371,6 +1371,7 @@ odoo.define('sign.document_edition', function(require) {
                         model: 'sign.request.item',
                         method: 'resend_access',
                         args: [parseInt($envelope.parent('.o_sign_signer_status').data('id'))],
+                        context: session.user_context,
                     })
                     .then(function() { $envelope.html(_t("Resent !")); });
             },

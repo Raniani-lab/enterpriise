@@ -97,8 +97,8 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text Mitchell Admin 2',
         },
         {
-            content: "Generate Offer Link",
-            trigger: ".o_statusbar_buttons > button span:contains('Generate Offer Link')",
+            content: "Generate Offer",
+            trigger: ".o_statusbar_buttons > button span:contains('Generate Offer')",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
         },

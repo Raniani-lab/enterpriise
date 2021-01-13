@@ -70,11 +70,7 @@ class MrpProduction(models.Model):
         self.ensure_one()
         checks = self.check_ids.filtered(lambda x: x.quality_state == 'none')
         if checks:
-            action = self.env['ir.actions.act_window']._for_xml_id('quality_control.quality_check_action_small')
-            if action:
-                action['context'] = self.env.context
-                action['res_id'] = checks[0].id
-                return action
+            return checks._get_next_check_action()
 
     def action_cancel(self):
         res = super(MrpProduction, self).action_cancel()

@@ -179,7 +179,7 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         }
 
         filename = '%s-%s-274_XX.pdf' % (self.date_start.strftime("%d%B%Y"), self.date_end.strftime("%d%B%Y"))
-        export_274_sheet_pdf, _ = self.env.ref('l10n_be_hr_payroll_273S_274.action_report_employee_274_10')._render_qweb_pdf(res_ids=self.ids, data=report_data)
+        export_274_sheet_pdf, _ = self.env.ref('l10n_be_hr_payroll_273S_274.action_report_employee_274_10').sudo()._render_qweb_pdf(res_ids=self.ids, data=report_data)
 
         self.sheet_274_10_filename = filename
         self.sheet_274_10 = base64.encodebytes(export_274_sheet_pdf)

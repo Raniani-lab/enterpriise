@@ -126,7 +126,7 @@ class ResPartner(models.Model):
         '''
         self.ensure_one()
         partner_id = self.parent_id and self.parent_id.id or self.id
-        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_pdf')._render_qweb_pdf(partner_id, values_dict)
+        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_pdf').sudo()._render_qweb_pdf(partner_id, values_dict)
         return pdf_file
 
     def _check_required_values(self):

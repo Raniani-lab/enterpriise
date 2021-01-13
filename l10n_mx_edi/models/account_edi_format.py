@@ -564,6 +564,12 @@ class AccountEdiFormat(models.Model):
                 'errors': [_("The Solucion Factible service failed to sign with the following error: %s", str(e))],
             }
 
+        if (response.status != 200):
+            # ws-timbrado-timbrar - status 200 : CFDI correctamente validado y timbrado.
+            return {
+                'errors': [_("The Solucion Factible service failed to sign with the following error: %s", response.mensaje)],
+            }
+
         res = response.resultados
 
         cfdi_signed = getattr(res[0] if res else response, 'cfdiTimbrado', None)
@@ -598,6 +604,13 @@ class AccountEdiFormat(models.Model):
         except Exception as e:
             return {
                 'errors': [_("The Solucion Factible service failed to cancel with the following error: %s", str(e))],
+            }
+
+        if (response.status not in (200, 201)):
+            # ws-timbrado-cancelar - status 200 : El proceso de cancelación se ha completado correctamente.
+            # ws-timbrado-cancelar - status 201 : El folio se ha cancelado con éxito.
+            return {
+                'errors': [_("The Solucion Factible service failed to cancel with the following error: %s", response.mensaje)],
             }
 
         res = response.resultados

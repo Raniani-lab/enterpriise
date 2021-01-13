@@ -24,7 +24,7 @@
             <xpath expr="//group[@name='invoicing']" position="after">
                 <group name="subscription" string="Subscriptions">
                     <field name="recurring_invoice" />
-                    <field name="subscription_template_id" class="field_sub_template_id" attrs="{'invisible': [('recurring_invoice', '=', False)]}"/>
+                    <field name="subscription_template_id" class="field_sub_template_id" attrs="{'invisible': [('recurring_invoice', '=', False)], 'required': [('recurring_invoice','=', True)]}"/>
                 </group>
             </xpath>
         </field>

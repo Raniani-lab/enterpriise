@@ -5,7 +5,9 @@ const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
+const OwlDialog = require('web.OwlDialog');
 const session = require('web.session');
+const makeTestEnvironment = require('web.test_env');
 const testUtils = require('web.test_utils');
 const Widget = require('web.Widget');
 
@@ -616,6 +618,56 @@ QUnit.module('web_mobile', {
         parent.destroy();
         testUtils.mock.unpatch(Dialog);
         mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.module('OwlDialog');
+
+    QUnit.test("dialog is closable with backbutton event", async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class Parent extends Component {
+            constructor() {
+                super(...arguments);
+                this.state = useState({ display: true });
+            }
+            _onDialogClosed() {
+                this.state.display = false;
+                assert.step('dialog_closed');
+            }
+        }
+
+        Parent.components = { OwlDialog };
+        Parent.env = makeTestEnvironment();
+        Parent.template = xml`
+            <div>
+                <OwlDialog
+                    t-if="state.display"
+                    t-on-dialog-closed="_onDialogClosed">
+                    Some content
+                </OwlDialog>
+            </div>`;
+
+        const parent = new Parent();
+        await parent.mount(testUtils.prepareTarget());
+
+        assert.containsOnce(document.body, '.o_dialog');
+        assert.verifySteps(['overrideBackButton: true']);
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.verifySteps([
+            'dialog_closed',
+            'overrideBackButton: false',
+        ]);
+        assert.containsNone(document.body, '.o_dialog', "should have been closed");
+
+        parent.destroy();
+        mock.unpatch(mobile.methods);
     });
 
     QUnit.module('UpdateDeviceAccountControllerMixin');

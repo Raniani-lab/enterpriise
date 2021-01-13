@@ -80,3 +80,30 @@ Dialog.include(_.extend({}, mobileMixins.BackButtonEventMixin, {
 }));
 
 });
+
+odoo.define('web_mobile.OwlDialog', function (require) {
+"use strict";
+
+const OwlDialog = require('web.OwlDialog');
+const { useBackButton } = require('web_mobile.hooks');
+
+OwlDialog.patch('web_mobile', T => class extends T {
+    constructor() {
+        super(...arguments);
+        useBackButton(this._onBackButton.bind(this));
+    }
+
+    //---------------------------------------------------------------------
+    // Handlers
+    //---------------------------------------------------------------------
+
+    /**
+     * Close dialog on back-button
+     * @private
+     */
+    _onBackButton() {
+        this._close();
+    }
+});
+
+});

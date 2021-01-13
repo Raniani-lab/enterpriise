@@ -397,6 +397,46 @@ class TestAmazon(TransactionCase):
             self.assertEqual(
                 order.state, 'cancel', "cancellation of orders should be synchronized from Amazon")
 
+    @mute_logger('odoo.addons.sale_amazon.models.stock_picking')
+    def test_sync_orders_cancel_abort(self):
+        """ Test the pickings that were confirmed at odoo and then order is canceled at amazon. """
+
+        def _get_orders_data_mock(*_args, **_kwargs):
+            """ Return a one-order batch of test order data without calling MWS API. """
+            _order_status = 'Unshipped' if not self.order_canceled else 'Canceled'
+            return [dict(BASE_ORDER_DATA, OrderStatus={'value': _order_status})], \
+                   datetime(2020, 1, 1), None, False
+
+        def _get_items_data_mock(*_args, **_kwargs):
+            """ Return a one-item batch of test order line data without calling MWS API. """
+            return [BASE_ITEM_DATA], None, False
+
+        with patch('odoo.addons.sale_amazon.models.mws_connector.get_api_connector',
+                   new=lambda *args, **kwargs: None), \
+             patch('odoo.addons.sale_amazon.models.mws_connector.get_orders_data',
+                   new=_get_orders_data_mock), \
+             patch('odoo.addons.sale_amazon.models.mws_connector.get_items_data',
+                   new=_get_items_data_mock), \
+             patch('odoo.addons.sale_amazon.models.mws_connector.submit_feed',
+                   new=Mock(return_value=(0, False))) as mock:
+
+            # sync order created on Amazon
+            self.order_canceled = False
+            self.account._sync_orders(auto_commit=False)
+
+            # check order and validate picking
+            order = self.env['sale.order'].search([('amazon_order_ref', '=', '123456789')])
+            self.assertNotEqual(order.state, 'canceled')
+            picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
+            for ml in picking.move_line_ids:
+                ml.qty_done = ml.product_uom_qty
+            picking._action_done()
+            self.assertEqual(picking.state, 'done')
+
+            # sync order canceled on Amazon
+            self.order_canceled = True
+            self.account._sync_orders(auto_commit=False)
+
     @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
     @mute_logger('odoo.addons.sale_amazon.models.stock_picking')
     def test_sync_pickings(self):

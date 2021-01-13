@@ -733,6 +733,15 @@ msgid "The marketplaces this account sells on"
 msgstr ""
 
 #. module: sale_amazon
+#: code:addons/sale_amazon/models/sale.py:0
+#, python-format
+msgid ""
+"The order has been canceled by the Amazon customer while some products have "
+"already been delivered. Please create a return for this order to adjust the "
+"stock."
+msgstr ""
+
+#. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
 msgid ""
 "The original sign-up marketplace of this account. Used for authentication "

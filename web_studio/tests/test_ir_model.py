@@ -394,3 +394,24 @@ class TestStudioIrModel(TransactionCase):
         })
         action = model._create_default_action('x_rockets')
         self.assertEqual(action.view_mode, 'tree,form', 'tree and form should be set as a default view mode on window action')
+
+    def test_22_rename_window_action(self):
+        """ Test renaming a menu will rename the windows action."""
+
+        model = self.env['ir.model'].create({
+            'name': 'Rockets',
+            'model': 'x_rockets',
+            'field_id': [
+                Command.create({'name': 'x_name', 'ttype': 'char', 'field_description': 'Name'}),
+            ]
+        })
+        action = model._create_default_action('Rockets')
+        action_ref = 'ir.actions.act_window,' + str(action.id)
+        new_menu = self.env['ir.ui.menu'].with_context(studio=True).create({
+            'name': 'Rockets',
+            'action': action_ref,
+        })
+        self.assertEqual(action.name, new_menu.name, 'action and menu name should be same')
+        # rename the menu name
+        new_menu.name = 'new Rockets'
+        self.assertEqual(action.name, new_menu.name, 'rename the menu name should rename the window action name')

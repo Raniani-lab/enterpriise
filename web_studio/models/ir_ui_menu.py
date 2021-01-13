@@ -15,6 +15,14 @@ class IrUiMenu(models.Model):
         help='Indicates that this menu was created by Studio to hold configuration sub-menus',
         readonly=True)
 
+    def write(self, vals):
+        """ When renaming a menu will rename the windows action.
+        """
+        for menu in self:
+            if menu._context.get('studio') and 'name' in vals and menu.action:
+                menu.action.name = vals['name']
+        return super().write(vals)
+
     @api.model
     def load_menus(self, debug):
         menu_root = super(IrUiMenu, self).load_menus(debug)

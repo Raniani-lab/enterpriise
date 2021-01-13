@@ -552,10 +552,11 @@ class IrModel(models.Model):
         VIEWS_ORDER = {'kanban': 0, 'tree': 1, 'form': 2, 'calendar': 3, 'gantt': 4, 'map': 5,
                        'pivot': 6, 'graph': 7, 'qweb': 8, 'activity': 9}
         sorted_view_types = list(sorted(available_view_types, key=lambda vt: VIEWS_ORDER.get(vt, 10)))
+        view_mode = ','.join(sorted_view_types) if sorted_view_types else 'tree,form'
         action = self.env['ir.actions.act_window'].create({
             'name': name,
             'res_model': self.model,
-            'view_mode': ','.join(sorted_view_types),
+            'view_mode': view_mode,
             'help': _("""
                 <p class="o_view_nocontent_smiling_face">
                     This is your new action.

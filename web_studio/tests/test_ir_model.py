@@ -1,6 +1,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.addons.web_studio.models.ir_model import OPTIONS_WL
 from odoo.exceptions import ValidationError
+from odoo import Command
 
 class TestStudioIrModel(TransactionCase):
 
@@ -380,3 +381,16 @@ class TestStudioIrModel(TransactionCase):
                     "name": "x_studio_hello___hap",
                 }
             )
+
+    def test_21_set_view_mode_new_window_action(self):
+        """Test that the `view_mode` for window action is set correctly."""
+
+        model = self.env['ir.model'].create({
+            'name': 'Rockets',
+            'model': 'x_rockets',
+            'field_id': [
+                Command.create({'name': 'x_name', 'ttype': 'char', 'field_description': 'Name'}),
+            ]
+        })
+        action = model._create_default_action('x_rockets')
+        self.assertEqual(action.view_mode, 'tree,form', 'tree and form should be set as a default view mode on window action')

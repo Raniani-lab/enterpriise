@@ -61,6 +61,7 @@ class purchase_order(models.Model):
             for line in rec.order_line.sudo():
                 sale_order_data['order_line'] += [(0, 0, rec._prepare_sale_order_line_data(line, company))]
             sale_order = self.env['sale.order'].with_context(allowed_company_ids=inter_user.company_ids.ids).with_user(intercompany_uid).create(sale_order_data)
+            sale_order.order_line._compute_tax_id()
             msg = _("Automatically generated from %(origin)s of company %(company)s.", origin=self.name, company=company.name)
             sale_order.message_post(body=msg)
 
@@ -117,8 +118,6 @@ class purchase_order(models.Model):
         """
         # it may not affected because of parallel company relation
         price = line.price_unit or 0.0
-        taxes = line.product_id.taxes_id or line.taxes_id
-        company_taxes = taxes.filtered(lambda t: t.company_id.id == company.id)
         quantity = line.product_id and line.product_uom._compute_quantity(line.product_qty, line.product_id.uom_id) or line.product_qty
         price = line.product_id and line.product_uom._compute_price(price, line.product_id.uom_id) or price
         return {

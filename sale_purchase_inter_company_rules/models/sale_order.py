@@ -49,6 +49,7 @@ class sale_order(models.Model):
             for line in rec.order_line.sudo():
                 po_vals['order_line'] += [(0, 0, rec._prepare_purchase_order_line_data(line, rec.date_order, company))]
             purchase_order = self.env['purchase.order'].create(po_vals)
+            purchase_order.order_line._compute_tax_id()
             msg = _("Automatically generated from %(origin)s of company %(company)s.", origin=self.name, company=company.name)
             purchase_order.message_post(body=msg)
 
@@ -105,15 +106,6 @@ class sale_order(models.Model):
         """
         # price on PO so_line should be so_line - discount
         price = so_line.price_unit - (so_line.price_unit * (so_line.discount / 100))
-
-        # computing Default taxes of so_line. It may not affect because of parallel company relation
-        taxes = so_line.tax_id
-        if so_line.product_id:
-            taxes = so_line.product_id.supplier_taxes_id
-
-        # fetch taxes by company not by inter-company user
-        company_taxes = taxes.filtered(lambda t: t.company_id == company)
-
         quantity = so_line.product_id and so_line.product_uom._compute_quantity(so_line.product_uom_qty, so_line.product_id.uom_po_id) or so_line.product_uom_qty
         price = so_line.product_id and so_line.product_uom._compute_price(price, so_line.product_id.uom_po_id) or price
         return {
@@ -124,6 +116,5 @@ class sale_order(models.Model):
             'price_unit': price or 0.0,
             'company_id': company.id,
             'date_planned': so_line.order_id.expected_date or date_order,
-            'taxes_id': [(6, 0, company_taxes.ids)],
             'display_type': so_line.display_type,
         }

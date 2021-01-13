@@ -6,6 +6,7 @@ const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
 const OwlDialog = require('web.OwlDialog');
+const Popover = require('web.Popover');
 const session = require('web.session');
 const makeTestEnvironment = require('web.test_env');
 const testUtils = require('web.test_utils');
@@ -670,6 +671,48 @@ QUnit.module('web_mobile', {
         mock.unpatch(mobile.methods);
     });
 
+    QUnit.module('Popover');
+
+    QUnit.test("popover is closable with backbutton event", async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class Parent extends Component {}
+
+        Parent.components = { Popover };
+        Parent.env = makeTestEnvironment();
+        Parent.template = xml`
+            <div>
+                <Popover>
+                    <t t-set="opened">
+                        Some content
+                    </t>
+                    <button id="target">
+                        Show me
+                    </button>
+                </Popover>
+            </div>`;
+
+        const parent = new Parent();
+        await parent.mount(testUtils.prepareTarget());
+
+        assert.containsNone(document.body, '.o_popover');
+        await testUtils.dom.click(document.querySelector('#target'));
+        assert.containsOnce(document.body, '.o_popover');
+        assert.verifySteps(['overrideBackButton: true']);
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.verifySteps(['overrideBackButton: false']);
+        assert.containsNone(document.body, '.o_popover', "should have been closed");
+
+        parent.destroy();
+        mock.unpatch(mobile.methods);
+    });
     QUnit.module('UpdateDeviceAccountControllerMixin');
 
     QUnit.test('controller should call native updateAccount method when saving record', async function (assert) {

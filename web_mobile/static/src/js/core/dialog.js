@@ -107,3 +107,30 @@ OwlDialog.patch('web_mobile', T => class extends T {
 });
 
 });
+
+odoo.define('web_mobile.Popover', function (require) {
+"use strict";
+
+const Popover = require('web.Popover');
+const { useBackButton } = require('web_mobile.hooks');
+
+Popover.patch('web_mobile', T => class extends T {
+    constructor() {
+        super(...arguments);
+        useBackButton(this._onBackButton.bind(this), () => this.state.displayed);
+    }
+
+    //---------------------------------------------------------------------
+    // Handlers
+    //---------------------------------------------------------------------
+
+    /**
+     * Close popover on back-button
+     * @private
+     */
+    _onBackButton() {
+        this._close();
+    }
+});
+
+});

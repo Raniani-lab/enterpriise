@@ -5,7 +5,10 @@ const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
+const OwlDialog = require('web.OwlDialog');
+const Popover = require('web.Popover');
 const session = require('web.session');
+const makeTestEnvironment = require('web.test_env');
 const testUtils = require('web.test_utils');
 const Widget = require('web.Widget');
 
@@ -15,7 +18,7 @@ const mobile = require('web_mobile.core');
 const UserPreferencesFormView = require('web_mobile.UserPreferencesFormView');
 const { base64ToBlob } = require('web_mobile.testUtils');
 
-const { Component, tags } = owl;
+const { Component, tags, useState } = owl;
 const { xml } = tags;
 
 const {createParent, createView, mock} = testUtils;
@@ -256,6 +259,54 @@ QUnit.module('web_mobile', {
         kanban.destroy();
     });
 
+    QUnit.module('core', function () {
+        QUnit.test('BackButtonManager', async function (assert) {
+            assert.expect(13);
+
+            mock.patch(mobile.methods, {
+                overrideBackButton({ enabled }) {
+                    assert.step(`overrideBackButton: ${enabled}`);
+                },
+            });
+
+            const { BackButtonManager, BackButtonListenerError } = mobile;
+            const manager = new BackButtonManager();
+            const DummyWidget = Widget.extend({
+                _onBackButton(ev) {
+                    assert.step(`${ev.type} event`);
+                },
+            });
+            const dummy = new DummyWidget();
+
+            manager.addListener(dummy, dummy._onBackButton);
+            assert.verifySteps(['overrideBackButton: true']);
+
+            // simulate 'backbutton' event triggered by the app
+            await testUtils.dom.triggerEvent(document, 'backbutton');
+            assert.verifySteps(['backbutton event']);
+
+            manager.removeListener(dummy);
+            assert.verifySteps(['overrideBackButton: false']);
+            await testUtils.dom.triggerEvent(document, 'backbutton');
+            assert.verifySteps([], "shouldn't trigger any handler");
+
+            manager.addListener(dummy, dummy._onBackButton);
+            assert.throws(() => {
+                manager.addListener(dummy, dummy._onBackButton);
+            }, BackButtonListenerError, "should raise an error if adding a listener twice");
+            assert.verifySteps(['overrideBackButton: true']);
+
+            manager.removeListener(dummy);
+            assert.throws(() => {
+                manager.removeListener(dummy);
+            }, BackButtonListenerError, "should raise an error if removing a non-registered listener");
+            assert.verifySteps(['overrideBackButton: false']);
+
+            dummy.destroy();
+            mock.unpatch(mobile.methods)
+        });
+    });
+
     QUnit.module('BackButtonEventMixin');
 
     QUnit.test('widget should receive a backbutton event', async function (assert) {
@@ -368,10 +419,6 @@ QUnit.module('web_mobile', {
                 this._backButtonHandler = useBackButton(this._onBackButton);
             }
 
-            mounted() {
-                this._backButtonHandler.enable();
-            }
-
             _onBackButton(ev) {
                 assert.step(`${ev.type} event`);
             }
@@ -415,10 +462,6 @@ QUnit.module('web_mobile', {
                 this._backButtonHandler = useBackButton(this._onBackButton);
             }
 
-            mounted() {
-                this._backButtonHandler.enable();
-            }
-
             _onBackButton(ev) {
                 assert.step(`${this.props.name}: ${ev.type} event`);
                 this.unmount();
@@ -453,6 +496,72 @@ QUnit.module('web_mobile', {
         dummy1.destroy();
         dummy2.destroy();
         dummy3.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
+    QUnit.test('component should receive a backbutton event: custom activation', async function (assert) {
+        assert.expect(10);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class DummyComponent extends Component {
+            constructor() {
+                super();
+                this._backButtonHandler = useBackButton(this._onBackButton, this.shouldActivateBackButton.bind(this));
+                this.state = useState({
+                    show: false,
+                });
+            }
+
+            toggle() {
+                this.state.show = !this.state.show;
+            }
+
+            shouldActivateBackButton() {
+                return this.state.show;
+            }
+
+            _onBackButton(ev) {
+                assert.step(`${ev.type} event`);
+            }
+        }
+        DummyComponent.template = xml`<button t-esc="state.show" t-on-click="toggle"/>`;
+
+        const dummy = new DummyComponent();
+
+        await dummy.mount(document.getElementById('qunit-fixture'));
+        assert.verifySteps([], "shouldn't have enabled backbutton mount");
+        await testUtils.dom.click(dummy.el);
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        await testUtils.dom.click(dummy.el);
+        assert.verifySteps([
+            'overrideBackButton: true',
+            'backbutton event',
+            'overrideBackButton: false',
+        ], "should have enabled/disabled the back-button override");
+        dummy.unmount();
+
+        // enabled at mount
+        dummy.state.show = true;
+        await dummy.mount(document.getElementById('qunit-fixture'));
+        assert.verifySteps([
+            'overrideBackButton: true',
+        ], "shouldn have enabled backbutton at mount");
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        // unmounting without disabling first
+        dummy.unmount();
+        assert.verifySteps([
+            'backbutton event',
+            'overrideBackButton: false',
+        ], "should have disabled the back-button override during unmount");
+
+        dummy.destroy();
         mock.unpatch(mobile.methods);
     });
 
@@ -510,6 +619,166 @@ QUnit.module('web_mobile', {
         parent.destroy();
         testUtils.mock.unpatch(Dialog);
         mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.module('OwlDialog');
+
+    QUnit.test("dialog is closable with backbutton event", async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class Parent extends Component {
+            constructor() {
+                super(...arguments);
+                this.state = useState({ display: true });
+            }
+            _onDialogClosed() {
+                this.state.display = false;
+                assert.step('dialog_closed');
+            }
+        }
+
+        Parent.components = { OwlDialog };
+        Parent.env = makeTestEnvironment();
+        Parent.template = xml`
+            <div>
+                <OwlDialog
+                    t-if="state.display"
+                    t-on-dialog-closed="_onDialogClosed">
+                    Some content
+                </OwlDialog>
+            </div>`;
+
+        const parent = new Parent();
+        await parent.mount(testUtils.prepareTarget());
+
+        assert.containsOnce(document.body, '.o_dialog');
+        assert.verifySteps(['overrideBackButton: true']);
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.verifySteps([
+            'dialog_closed',
+            'overrideBackButton: false',
+        ]);
+        assert.containsNone(document.body, '.o_dialog', "should have been closed");
+
+        parent.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
+    QUnit.module('Popover');
+
+    QUnit.test("popover is closable with backbutton event", async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        class Parent extends Component {}
+
+        Parent.components = { Popover };
+        Parent.env = makeTestEnvironment();
+        Parent.template = xml`
+            <div>
+                <Popover>
+                    <t t-set="opened">
+                        Some content
+                    </t>
+                    <button id="target">
+                        Show me
+                    </button>
+                </Popover>
+            </div>`;
+
+        const parent = new Parent();
+        await parent.mount(testUtils.prepareTarget());
+
+        assert.containsNone(document.body, '.o_popover');
+        await testUtils.dom.click(document.querySelector('#target'));
+        assert.containsOnce(document.body, '.o_popover');
+        assert.verifySteps(['overrideBackButton: true']);
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.verifySteps(['overrideBackButton: false']);
+        assert.containsNone(document.body, '.o_popover', "should have been closed");
+
+        parent.destroy();
+        mock.unpatch(mobile.methods);
+    });
+
+    QUnit.module('ControlPanel');
+
+    QUnit.test('mobile search: close with backbutton event', async function (assert) {
+        assert.expect(7);
+
+        mock.patch(mobile.methods, {
+            overrideBackButton({ enabled }) {
+                assert.step(`overrideBackButton: ${enabled}`);
+            },
+        });
+
+        const { createActionManager } = testUtils;
+
+        this.actions = [{
+            id: 1,
+            name: "Yes",
+            res_model: 'partner',
+            type: 'ir.actions.act_window',
+            views: [[false, 'list']],
+        }];
+        this.archs = {
+            'partner,false,list': '<tree><field name="foo"/></tree>',
+            'partner,false,search': `
+                <search>
+                    <filter string="Active" name="my_projects" domain="[('boolean_field', '=', True)]"/>
+                    <field name="foo" string="Foo"/>
+                </search>`,
+        };
+        this.data = {
+            partner: {
+                fields: {
+                    foo: { string: "Foo", type: "char" },
+                    boolean_field: { string: "I am a boolean", type: "boolean" },
+                },
+                records: [
+                    { id: 1, display_name: "First record", foo: "yop" },
+                ],
+            },
+        };
+
+        const actionManager = await createActionManager({
+            actions: this.actions,
+            archs: this.archs,
+            data: this.data,
+        });
+
+        await actionManager.doAction(1);
+
+        assert.containsNone(document.body, '.o_mobile_search');
+
+        // open the search view
+        await testUtils.dom.click(actionManager.el.querySelector('button.o_enable_searchview'));
+        // open it in full screen
+        await testUtils.dom.click(actionManager.el.querySelector('.o_toggle_searchview_full'));
+
+        assert.containsOnce(document.body, '.o_mobile_search');
+        assert.verifySteps(['overrideBackButton: true']);
+
+        // simulate 'backbutton' event triggered by the app
+        await testUtils.dom.triggerEvent(document, 'backbutton');
+        assert.containsNone(document.body, '.o_mobile_search');
+        assert.verifySteps(['overrideBackButton: false']);
+
+        actionManager.destroy();
+        mock.unpatch(mobile.methods);
     });
 
     QUnit.module('UpdateDeviceAccountControllerMixin');

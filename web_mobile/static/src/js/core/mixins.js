@@ -74,8 +74,8 @@ odoo.define('web_mobile.hooks', function (require) {
 
 const { backButtonManager } = require('web_mobile.core');
 
-const { Component } = owl;
-const { onWillUnmount } = owl.hooks;
+const { Component, hooks } = owl;
+const { onWillUnmount, onMounted, onPatched } = hooks;
 
 /**
  * This hook provides support for executing code when the back button is pressed
@@ -83,23 +83,26 @@ const { onWillUnmount } = owl.hooks;
  * button behavior so this feature should only be enabled when it is actually
  * useful.
  *
- * The feature must be enabled manually after every (re)mount (or whenever it is
- * appropriate), it can be disabled manually, and it is automatically disabled
- * on unmount and on destroy.
+ * The feature is either enabled on mount or, using the `shouldEnable` function
+ * argument as condition, when the component is patched. In both cases,
+ * the feature is automatically disabled on unmount.
  *
  * @param {function} func the function to execute when the back button is
  *  pressed. The function is called with the custom event as param.
- * @returns {Object} exports the enable and disable functions to allow
- *  controlling the state of the listeners.
+ * @param {function} [shouldEnable] the function to execute when the DOM is 
+ *  patched to check if the backbutton should be enabled or disabled ; 
+ *  if undefined will be enabled on mount and disabled on unmount.
  */
-function useBackButton(func) {
+function useBackButton(func, shouldEnable) {
     const component = Component.current;
+    let isEnabled = false;
 
     /**
      * Enables the func listener, overriding default back button behavior.
      */
     function enable() {
         backButtonManager.addListener(component, func);
+        isEnabled = true;
     }
 
     /**
@@ -107,23 +110,34 @@ function useBackButton(func) {
      * no other listeners are present.
      */
     function disable() {
-        backButtonManager.removeListener(component, func);
+        backButtonManager.removeListener(component);
+        isEnabled = false;
     }
 
-    onWillUnmount(() => {
-        disable();
+    onMounted(() => {
+        if (shouldEnable && !shouldEnable()) {
+            return;
+        }
+        enable();
     });
 
-    const superDestroy = component.destroy.bind(component);
-    component.destroy = function () {
-        disable();
-        superDestroy();
-    };
+    onPatched(() => {
+        if (!shouldEnable) {
+            return;
+        }
+        const shouldBeEnabled = shouldEnable();
+        if (shouldBeEnabled && !isEnabled) {
+            enable();
+        } else if (!shouldBeEnabled && isEnabled) {
+            disable();
+        }
+    });
 
-    return {
-        disable,
-        enable,
-    };
+    onWillUnmount(() => {
+        if (isEnabled) {
+            disable();
+        }
+    });
 }
 
 return {

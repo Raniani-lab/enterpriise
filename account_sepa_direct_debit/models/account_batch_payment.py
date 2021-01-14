@@ -73,3 +73,21 @@ class AccountBatchPayment(models.Model):
             }
 
         return super(AccountBatchPayment, self)._generate_export_file()
+
+    def check_payments_for_errors(self):
+        rslt = super(AccountBatchPayment, self).check_payments_for_errors()
+
+        if self.payment_method_code != 'sdd':
+            return rslt
+
+        if len(self.payment_ids):
+            sdd_scheme = self.payment_ids[0].sdd_mandate_id.sdd_scheme
+            dif_scheme_payements = self.payment_ids.filtered(lambda x: x.sdd_mandate_id.sdd_scheme != sdd_scheme)
+            if dif_scheme_payements:
+                rslt.append({
+                    'title': _("All the payments in the batch must have the same SDD scheme."),
+                    'records': dif_scheme_payements,
+                    'help': _("SDD scheme is set on the customer mandate.")
+                })
+
+        return rslt

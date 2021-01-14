@@ -1081,3 +1081,16 @@ msgid ""
 "to send instructions to your bank to debit your account and (B) your bank to"
 " debit your account in accordance with the instructions from"
 msgstr ""
+
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
+#, python-format
+msgid "All the payments in the batch must have the same SDD scheme."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
+#, python-format
+msgid "SDD scheme is set on the customer mandate."
+msgstr ""

@@ -133,7 +133,7 @@ class AccountAnalyticLine(models.Model):
 
     @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
     def _compute_so_line(self):
-        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id)._get_not_billed()
+        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id and t._is_not_billed())
         for timesheet in non_billed_helpdesk_timesheets:
             timesheet.so_line = timesheet.project_id.allow_billable and timesheet.helpdesk_ticket_id.sale_line_id
         super(AccountAnalyticLine, self - non_billed_helpdesk_timesheets)._compute_so_line()

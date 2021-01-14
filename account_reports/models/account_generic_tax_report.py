@@ -365,6 +365,7 @@ class generic_tax_report(models.AbstractModel):
         # Overridden to add an option to the tax report to display it grouped by tax grid.
         rslt = super(generic_tax_report, self)._get_templates()
         rslt['search_template'] = 'account_reports.search_template_generic_tax_report'
+        rslt['main_template'] = 'account_reports.template_tax_report'
         return rslt
 
     def _sql_cash_based_taxes(self, group_by_account=False):

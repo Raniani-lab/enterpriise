@@ -44,7 +44,7 @@ class Task(models.Model):
     def _compute_material_line_totals(self):
 
         def if_fsm_material_line(sale_line_id, task):
-            is_not_timesheet_line = sale_line_id.product_id != task.project_id.timesheet_product_id
+            is_not_timesheet_line = sale_line_id.product_id != task.timesheet_product_id
             is_not_empty = sale_line_id.product_uom_qty != 0
             is_not_service_from_so = sale_line_id != task.sale_line_id
             is_task_related = sale_line_id.task_id == task
@@ -162,8 +162,8 @@ class Task(models.Model):
         self = self.with_company(self.company_id)
 
         domain = [('sale_ok', '=', True), '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
-        if self.project_id and self.project_id.timesheet_product_id:
-            domain = expression.AND([domain, [('id', '!=', self.project_id.timesheet_product_id.id)]])
+        if self.project_id and self.timesheet_product_id:
+            domain = expression.AND([domain, [('id', '!=', self.timesheet_product_id.id)]])
         deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
         if deposit_product:
             domain = expression.AND([domain, [('id', '!=', deposit_product)]])
@@ -241,11 +241,11 @@ class Task(models.Model):
     def _fsm_create_sale_order_line(self):
         sale_order_line = self.env['sale.order.line'].sudo().create({
             'order_id': self.sale_order_id.id,
-            'product_id': self.project_id.timesheet_product_id.id,
+            'product_id': self.timesheet_product_id.id,
             'project_id': self.project_id.id,
             'task_id': self.id,
             'product_uom_qty': self.total_hours_spent,
-            'product_uom': self.project_id.timesheet_product_id.uom_id.id,
+            'product_uom': self.timesheet_product_id.uom_id.id,
         })
         self.write({
             'sale_line_id': sale_order_line.id,

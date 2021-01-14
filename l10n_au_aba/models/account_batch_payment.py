@@ -31,7 +31,7 @@ class AccountBatchPayment(models.Model):
                 raise UserError(_("The account %s, of journal '%s', is not set up for ABA payments.\nPlease fill in its ABA fields.") % (bank_account.acc_number, self.journal_id.name))
 
             for payment in self.payment_ids:
-                if payment.partner_bank_account_id.acc_type != 'aba' or not payment.partner_bank_account_id.aba_bsb:
+                if payment.partner_bank_id.acc_type != 'aba' or not payment.partner_bank_id.aba_bsb:
                     raise UserError(_("Bank account for payment '%s' has an invalid BSB or account number.", payment.name))
 
             return {
@@ -83,12 +83,12 @@ class AccountBatchPayment(models.Model):
             if credit > 99999999.99 or debit > 99999999.99:
                 raise UserError(_('Individual amount of payment %s is too high for ABA file - Please adjust', payment.name))
             detail_record = '1' \
-                    + _normalise_bsb(payment.partner_bank_account_id.aba_bsb) \
-                    + to_fixed_width(payment.partner_bank_account_id.acc_number, 9, right=True) \
+                    + _normalise_bsb(payment.partner_bank_id.aba_bsb) \
+                    + to_fixed_width(payment.partner_bank_id.acc_number, 9, right=True) \
                     + ' ' + '50' \
                     + to_fixed_width(str(round(aud_currency.round(credit) * 100)), 10, '0', right=True) \
-                    + to_fixed_width(payment.partner_bank_account_id.acc_holder_name or payment.partner_id.name, 32) \
-                    + to_fixed_width(payment.communication or 'Payment', 18) \
+                    + to_fixed_width(payment.partner_bank_id.acc_holder_name or payment.partner_id.name, 32) \
+                    + to_fixed_width(payment.ref or 'Payment', 18) \
                     + _normalise_bsb(bank_account.aba_bsb) \
                     + to_fixed_width(bank_account.acc_number, 9, right=True) \
                     + to_fixed_width(bank_account.acc_holder_name or self.journal_id.company_id.name, 16) \

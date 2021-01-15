@@ -29,9 +29,8 @@ class HelpdeskTicket(models.Model):
 
     use_helpdesk_sale_timesheet = fields.Boolean('Reinvoicing Timesheet activated on Team', related='team_id.use_helpdesk_sale_timesheet', readonly=True)
     sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", compute_sudo=True, store=True, readonly=False)
-    sale_line_id = fields.Many2one('sale.order.line', string="Sales Order Item", search="_sale_line_id_search", compute="_compute_sale_line_id", readonly=False, domain="[('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done']), ('order_id', '=?', project_sale_order_id)]")
+    sale_line_id = fields.Many2one('sale.order.line', string="Sales Order Item", compute="_compute_sale_line_id", store=True, readonly=False, domain="[('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done']), ('order_id', '=?', project_sale_order_id)]")
     project_sale_order_id = fields.Many2one('sale.order', string="Project's sale order", related='project_id.sale_order_id')
-    sale_line_id_source = fields.Char(compute="_compute_sale_line_id")
     remaining_hours_available = fields.Boolean(related="sale_line_id.remaining_hours_available")
     remaining_hours_so = fields.Float('Remaining Hours on SO', compute='_compute_remaining_hours_so')
 
@@ -55,41 +54,20 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.remaining_hours_so = mapped_remaining_hours[ticket._origin.id]
 
-    def _search_sol_in_timesheets(self):
-        # TODO: [XBO] remove me when the sale_line_id field in ticket is stored
-        self.ensure_one()
-        if not self.timesheet_ids:
-            return False
-        sale_lines = self.timesheet_ids.mapped('so_line')
-        if sale_lines and len(sale_lines) == 1 and sale_lines.exists() and sale_lines.order_partner_id.commercial_partner_id == self.commercial_partner_id:
-            return sale_lines
-        determined_sol_ids = [t._timesheet_determine_sale_line(t.task_id, t.employee_id, t.project_id).id for t in self.timesheet_ids]
-        candidat_sols = sale_lines.filtered(lambda sol: sol.id not in determined_sol_ids)
-        return len(candidat_sols) == 1 and candidat_sols  # return the sol if only one SOL is in the variable or return False
-
     @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet', 'project_id.bill_type', 'project_id.sale_line_id')
     def _compute_sale_line_id(self):
         billable_tickets = self.filtered('use_helpdesk_sale_timesheet')
         (self - billable_tickets).update({
-            'sale_line_id_source': 'none',
             'sale_line_id': False
         })
         for ticket in billable_tickets:
-            sol = ticket._search_sol_in_timesheets()
-            if sol:
-                ticket.sale_line_id = sol
-                ticket.sale_line_id_source = 'timesheet'
-            else:
-                if ticket.project_id:
-                    ticket.sale_line_id = ticket.project_id.sale_line_id
-                    ticket.sale_line_id_source = 'project'
+            if ticket.project_id and ticket.project_id.bill_type == 'customer_project':
+                ticket.sale_line_id = ticket.project_id.sale_line_id
             # Check sale_line_id and customer are coherent
             if ticket.sale_line_id.order_partner_id.commercial_partner_id != ticket.commercial_partner_id:
                 ticket.sale_line_id = False
             if not ticket.sale_line_id:
                 ticket.sale_line_id = ticket._get_last_sol_of_customer()
-            if not ticket.sale_line_id_source:
-                ticket.sale_line_id_source = 'none'
 
     def _get_last_sol_of_customer(self):
         # Get the last SOL made for the customer in the current task where we need to compute
@@ -104,23 +82,6 @@ class HelpdeskTicket(models.Model):
             if line.remaining_hours_available and line.remaining_hours > 0:
                 return line
         return False
-
-    def _sale_line_id_search(self, operator, value):
-        if operator not in ['=', '!=', 'in']:
-            raise NotImplementedError("Unsupported operation.")
-        all_tickets = self.env['helpdesk.ticket'].search([])
-        if (operator == '=' and not value) or (operator == '!=' and value):
-            no_sale_line_ids = all_tickets.filtered(lambda t: t.sale_line_id_source == 'none')
-            domain = [('id', 'in', no_sale_line_ids.ids)]
-        else:
-            timesheet_based_ids = all_tickets.filtered(lambda t: t.sale_line_id_source == 'timesheet')
-            timesheet_based_ids_domain = ['&', ('id', 'in', timesheet_based_ids.ids),
-                                          ('timesheet_ids.so_line', operator, value)] if timesheet_based_ids else []
-            project_based_ids = all_tickets.filtered(lambda t: t.sale_line_id_source == 'project')
-            project_based_ids_domain = ['&', ('id', 'in', project_based_ids.ids),
-                                        ('project_id', operator, value)] if project_based_ids else []
-            domain = expression.OR([timesheet_based_ids_domain, project_based_ids_domain])
-        return domain
 
     def write(self, values):
         recompute_so_lines = None

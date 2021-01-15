@@ -19,7 +19,11 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_1</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7071%'), '|', ('account_id.code', '=like', '7072%'), '|', ('account_id.code', '=like', '7073%'), ('account_id.code', '=like', '7097%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7071%'),
+'|', ('account_id.code', '=like', '7072%'),
+'|', ('account_id.code', '=like', '7073%'),
+('account_id.code', '=like', '7097%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp2" model="account.financial.html.report.line">
     <field name="name">Production vendue (biens et service)</field>
@@ -28,7 +32,22 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_2</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7011%'), '|', ('account_id.code', '=like', '7012%'), '|', ('account_id.code', '=like', '702%'), '|', ('account_id.code', '=like', '703%'), '|', ('account_id.code', '=like', '7041%'), '|', ('account_id.code', '=like', '7042%'), '|', ('account_id.code', '=like', '705%'), '|', ('account_id.code', '=like', '706%'), '|', ('account_id.code', '=like', '708%'), '|', ('account_id.code', '=like', '7091%'), '|', ('account_id.code', '=like', '7092%'), '|', ('account_id.code', '=like', '7094%'), '|', ('account_id.code', '=like', '7095%'), '|', ('account_id.code', '=like', '7096%'), ('account_id.code', '=like', '7098%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7011%'),
+'|', ('account_id.code', '=like', '7012%'),
+'|', ('account_id.code', '=like', '702%'),
+'|', ('account_id.code', '=like', '703%'),
+'|', ('account_id.code', '=like', '7041%'),
+'|', ('account_id.code', '=like', '7042%'),
+'|', ('account_id.code', '=like', '705%'),
+'|', ('account_id.code', '=like', '706%'),
+'|', ('account_id.code', '=like', '708%'),
+'|', ('account_id.code', '=like', '7091%'),
+'|', ('account_id.code', '=like', '7092%'),
+'|', ('account_id.code', '=like', '7094%'),
+'|', ('account_id.code', '=like', '7095%'),
+'|', ('account_id.code', '=like', '7096%'),
+('account_id.code', '=like', '7098%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp3" model="account.financial.html.report.line">
     <field name="name">Production Stockée</field>
@@ -37,7 +56,14 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_3</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '71331%'), '|', ('account_id.code', '=like', '71335%'), '|', ('account_id.code', '=like', '71341%'), '|', ('account_id.code', '=like', '71345%'), '|', ('account_id.code', '=like', '71351%'), '|', ('account_id.code', '=like', '71355%'), ('account_id.code', '=like', '71358%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '71331%'),
+'|', ('account_id.code', '=like', '71335%'),
+'|', ('account_id.code', '=like', '71341%'),
+'|', ('account_id.code', '=like', '71345%'),
+'|', ('account_id.code', '=like', '71351%'),
+'|', ('account_id.code', '=like', '71355%'),
+('account_id.code', '=like', '71358%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp4" model="account.financial.html.report.line">
     <field name="name">Production immobilisée</field>
@@ -46,7 +72,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_4</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '721%'), ('account_id.code', '=like', '722%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '721%'),
+('account_id.code', '=like', '722%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp5" model="account.financial.html.report.line">
     <field name="name">Subventions d'exploitation</field>
@@ -64,7 +92,16 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_6</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '78111%'), '|', ('account_id.code', '=like', '78112%'), '|', ('account_id.code', '=like', '7815%'), '|', ('account_id.code', '=like', '78161%'), '|', ('account_id.code', '=like', '78162%'), '|', ('account_id.code', '=like', '78173%'), '|', ('account_id.code', '=like', '78174%'), '|', ('account_id.code', '=like', '791%'), ('account_id.code', '=like', '796%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '78111%'),
+'|', ('account_id.code', '=like', '78112%'),
+'|', ('account_id.code', '=like', '7815%'),
+'|', ('account_id.code', '=like', '78161%'),
+'|', ('account_id.code', '=like', '78162%'),
+'|', ('account_id.code', '=like', '78173%'),
+'|', ('account_id.code', '=like', '78174%'),
+'|', ('account_id.code', '=like', '791%'),
+('account_id.code', '=like', '796%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp7" model="account.financial.html.report.line">
     <field name="name">Autres produits</field>
@@ -73,7 +110,14 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exp_A"/>
     <field name="code">i_7</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7511%'), '|', ('account_id.code', '=like', '7516%'), '|', ('account_id.code', '=like', '7518%'), '|', ('account_id.code', '=like', '752%'), '|', ('account_id.code', '=like', '753%'), '|', ('account_id.code', '=like', '754%'), ('account_id.code', '=like', '758%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7511%'),
+'|', ('account_id.code', '=like', '7516%'),
+'|', ('account_id.code', '=like', '7518%'),
+'|', ('account_id.code', '=like', '752%'),
+'|', ('account_id.code', '=like', '753%'),
+'|', ('account_id.code', '=like', '754%'),
+('account_id.code', '=like', '758%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_exp" model="account.financial.html.report.line">
     <field name="name">Charges d'exploitation (II)</field>
@@ -90,7 +134,11 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_1</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6071%'), '|', ('account_id.code', '=like', '6072%'), '|', ('account_id.code', '=like', '608%'), ('account_id.code', '=like', '6097%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6071%'),
+'|', ('account_id.code', '=like', '6072%'),
+'|', ('account_id.code', '=like', '608%'),
+('account_id.code', '=like', '6097%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc2" model="account.financial.html.report.line">
     <field name="name">Variation de stocks (marchandises)</field>
@@ -108,7 +156,23 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_3</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6011%'), '|', ('account_id.code', '=like', '6012%'), '|', ('account_id.code', '=like', '6017%'), '|', ('account_id.code', '=like', '60211%'), '|', ('account_id.code', '=like', '60212%'), '|', ('account_id.code', '=like', '60221%'), '|', ('account_id.code', '=like', '60222%'), '|', ('account_id.code', '=like', '60223%'), '|', ('account_id.code', '=like', '60224%'), '|', ('account_id.code', '=like', '60225%'), '|', ('account_id.code', '=like', '60261%'), '|', ('account_id.code', '=like', '60265%'), '|', ('account_id.code', '=like', '60267%'), '|', ('account_id.code', '=like', '6091%'), '|', ('account_id.code', '=like', '6092%'), ('account_id.code', '=like', '6098%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6011%'),
+'|', ('account_id.code', '=like', '6012%'),
+'|', ('account_id.code', '=like', '6017%'),
+'|', ('account_id.code', '=like', '60211%'),
+'|', ('account_id.code', '=like', '60212%'),
+'|', ('account_id.code', '=like', '60221%'),
+'|', ('account_id.code', '=like', '60222%'),
+'|', ('account_id.code', '=like', '60223%'),
+'|', ('account_id.code', '=like', '60224%'),
+'|', ('account_id.code', '=like', '60225%'),
+'|', ('account_id.code', '=like', '60261%'),
+'|', ('account_id.code', '=like', '60265%'),
+'|', ('account_id.code', '=like', '60267%'),
+'|', ('account_id.code', '=like', '6091%'),
+'|', ('account_id.code', '=like', '6092%'),
+('account_id.code', '=like', '6098%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc4" model="account.financial.html.report.line">
     <field name="name">Variations de stocks (matières premières et approvisionnements)</field>
@@ -117,7 +181,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_4</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6031%'), ('account_id.code', '=like', '6032%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6031%'),
+('account_id.code', '=like', '6032%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc5" model="account.financial.html.report.line">
     <field name="name">Autres achats et charges externes</field>
@@ -126,7 +192,78 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_5</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '604%'), '|', ('account_id.code', '=like', '605%'), '|', ('account_id.code', '=like', '6061%'), '|', ('account_id.code', '=like', '6063%'), '|', ('account_id.code', '=like', '6064%'), '|', ('account_id.code', '=like', '6068%'), '|', ('account_id.code', '=like', '6094%'), '|', ('account_id.code', '=like', '6095%'), '|', ('account_id.code', '=like', '6096%'), '|', ('account_id.code', '=like', '611%'), '|', ('account_id.code', '=like', '6122%'), '|', ('account_id.code', '=like', '6125%'), '|', ('account_id.code', '=like', '6132%'), '|', ('account_id.code', '=like', '6135%'), '|', ('account_id.code', '=like', '6136%'), '|', ('account_id.code', '=like', '614%'), '|', ('account_id.code', '=like', '6152%'), '|', ('account_id.code', '=like', '6155%'), '|', ('account_id.code', '=like', '6156%'), '|', ('account_id.code', '=like', '6161%'), '|', ('account_id.code', '=like', '6162%'), '|', ('account_id.code', '=like', '61636%'), '|', ('account_id.code', '=like', '61637%'), '|', ('account_id.code', '=like', '61638%'), '|', ('account_id.code', '=like', '6164%'), '|', ('account_id.code', '=like', '6165%'), '|', ('account_id.code', '=like', '617%'), '|', ('account_id.code', '=like', '6181%'), '|', ('account_id.code', '=like', '6183%'), '|', ('account_id.code', '=like', '6185%'), '|', ('account_id.code', '=like', '619%'), '|', ('account_id.code', '=like', '6211%'), '|', ('account_id.code', '=like', '6214%'), '|', ('account_id.code', '=like', '6221%'), '|', ('account_id.code', '=like', '6222%'), '|', ('account_id.code', '=like', '6224%'), '|', ('account_id.code', '=like', '6225%'), '|', ('account_id.code', '=like', '6226%'), '|', ('account_id.code', '=like', '6227%'), '|', ('account_id.code', '=like', '6228%'), '|', ('account_id.code', '=like', '6231%'), '|', ('account_id.code', '=like', '6232%'), '|', ('account_id.code', '=like', '6233%'), '|', ('account_id.code', '=like', '6234%'), '|', ('account_id.code', '=like', '6235%'), '|', ('account_id.code', '=like', '6236%'), '|', ('account_id.code', '=like', '6237%'), '|', ('account_id.code', '=like', '6238%'), '|', ('account_id.code', '=like', '6241%'), '|', ('account_id.code', '=like', '6242%'), '|', ('account_id.code', '=like', '6243%'), '|', ('account_id.code', '=like', '6244%'), '|', ('account_id.code', '=like', '6247%'), '|', ('account_id.code', '=like', '6248%'), '|', ('account_id.code', '=like', '6251%'), '|', ('account_id.code', '=like', '6255%'), '|', ('account_id.code', '=like', '6256%'), '|', ('account_id.code', '=like', '6257%'), '|', ('account_id.code', '=like', '626%'), '|', ('account_id.code', '=like', '6271%'), '|', ('account_id.code', '=like', '6272%'), '|', ('account_id.code', '=like', '6275%'), '|', ('account_id.code', '=like', '6276%'), '|', ('account_id.code', '=like', '6278%'), '|', ('account_id.code', '=like', '6281%'), '|', ('account_id.code', '=like', '6284%'), '|', ('account_id.code', '=like', '629%'), '|', ('account_id.code', '=like', '6511%'), '|', ('account_id.code', '=like', '6516%'), '|', ('account_id.code', '=like', '6518%'), ('account_id.code', '=like', '653%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '604%'),
+'|', ('account_id.code', '=like', '605%'),
+'|', ('account_id.code', '=like', '6061%'),
+'|', ('account_id.code', '=like', '6063%'),
+'|', ('account_id.code', '=like', '6064%'),
+'|', ('account_id.code', '=like', '6068%'),
+'|', ('account_id.code', '=like', '6094%'),
+'|', ('account_id.code', '=like', '6095%'),
+'|', ('account_id.code', '=like', '6096%'),
+'|', ('account_id.code', '=like', '611%'),
+'|', ('account_id.code', '=like', '6122%'),
+'|', ('account_id.code', '=like', '6125%'),
+'|', ('account_id.code', '=like', '6132%'),
+'|', ('account_id.code', '=like', '6135%'),
+'|', ('account_id.code', '=like', '6136%'),
+'|', ('account_id.code', '=like', '614%'),
+'|', ('account_id.code', '=like', '6152%'),
+'|', ('account_id.code', '=like', '6155%'),
+'|', ('account_id.code', '=like', '6156%'),
+'|', ('account_id.code', '=like', '6161%'),
+'|', ('account_id.code', '=like', '6162%'),
+'|', ('account_id.code', '=like', '61636%'),
+'|', ('account_id.code', '=like', '61637%'),
+'|', ('account_id.code', '=like', '61638%'),
+'|', ('account_id.code', '=like', '6164%'),
+'|', ('account_id.code', '=like', '6165%'),
+'|', ('account_id.code', '=like', '617%'),
+'|', ('account_id.code', '=like', '6181%'),
+'|', ('account_id.code', '=like', '6183%'),
+'|', ('account_id.code', '=like', '6185%'),
+'|', ('account_id.code', '=like', '619%'),
+'|', ('account_id.code', '=like', '6211%'),
+'|', ('account_id.code', '=like', '6214%'),
+'|', ('account_id.code', '=like', '6221%'),
+'|', ('account_id.code', '=like', '6222%'),
+'|', ('account_id.code', '=like', '6224%'),
+'|', ('account_id.code', '=like', '6225%'),
+'|', ('account_id.code', '=like', '6226%'),
+'|', ('account_id.code', '=like', '6227%'),
+'|', ('account_id.code', '=like', '6228%'),
+'|', ('account_id.code', '=like', '6231%'),
+'|', ('account_id.code', '=like', '6232%'),
+'|', ('account_id.code', '=like', '6233%'),
+'|', ('account_id.code', '=like', '6234%'),
+'|', ('account_id.code', '=like', '6235%'),
+'|', ('account_id.code', '=like', '6236%'),
+'|', ('account_id.code', '=like', '6237%'),
+'|', ('account_id.code', '=like', '6238%'),
+'|', ('account_id.code', '=like', '6241%'),
+'|', ('account_id.code', '=like', '6242%'),
+'|', ('account_id.code', '=like', '6243%'),
+'|', ('account_id.code', '=like', '6244%'),
+'|', ('account_id.code', '=like', '6247%'),
+'|', ('account_id.code', '=like', '6248%'),
+'|', ('account_id.code', '=like', '6251%'),
+'|', ('account_id.code', '=like', '6255%'),
+'|', ('account_id.code', '=like', '6256%'),
+'|', ('account_id.code', '=like', '6257%'),
+'|', ('account_id.code', '=like', '626%'),
+'|', ('account_id.code', '=like', '6271%'),
+'|', ('account_id.code', '=like', '6272%'),
+'|', ('account_id.code', '=like', '6275%'),
+'|', ('account_id.code', '=like', '6276%'),
+'|', ('account_id.code', '=like', '6278%'),
+'|', ('account_id.code', '=like', '6281%'),
+'|', ('account_id.code', '=like', '6284%'),
+'|', ('account_id.code', '=like', '629%'),
+'|', ('account_id.code', '=like', '6511%'),
+'|', ('account_id.code', '=like', '6516%'),
+'|', ('account_id.code', '=like', '6518%'),
+('account_id.code', '=like', '653%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc8" model="account.financial.html.report.line">
     <field name="name">Impôts et taxes</field>
@@ -135,7 +272,23 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_6</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '635111%'), '|', ('account_id.code', '=like', '635112%'), '|', ('account_id.code', '=like', '63512%'), '|', ('account_id.code', '=like', '63513%'), '|', ('account_id.code', '=like', '63514%'), '|', ('account_id.code', '=like', '6352%'), '|', ('account_id.code', '=like', '6353%'), '|', ('account_id.code', '=like', '63541%'), '|', ('account_id.code', '=like', '6358%'), '|', ('account_id.code', '=like', '6371%'), '|', ('account_id.code', '=like', '6372%'), '|', ('account_id.code', '=like', '6374%'), '|', ('account_id.code', '=like', '6378%'), '|', ('account_id.code', '=like', '644%'), '|', ('account_id.code', '=like', '649%'), ('account_id.code', '=like', '696%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '635111%'),
+'|', ('account_id.code', '=like', '635112%'),
+'|', ('account_id.code', '=like', '63512%'),
+'|', ('account_id.code', '=like', '63513%'),
+'|', ('account_id.code', '=like', '63514%'),
+'|', ('account_id.code', '=like', '6352%'),
+'|', ('account_id.code', '=like', '6353%'),
+'|', ('account_id.code', '=like', '63541%'),
+'|', ('account_id.code', '=like', '6358%'),
+'|', ('account_id.code', '=like', '6371%'),
+'|', ('account_id.code', '=like', '6372%'),
+'|', ('account_id.code', '=like', '6374%'),
+'|', ('account_id.code', '=like', '6378%'),
+'|', ('account_id.code', '=like', '644%'),
+'|', ('account_id.code', '=like', '649%'),
+('account_id.code', '=like', '696%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc9" model="account.financial.html.report.line">
     <field name="name">Salaires et traitements</field>
@@ -144,7 +297,13 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_7</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6411%'), '|', ('account_id.code', '=like', '6412%'), '|', ('account_id.code', '=like', '6413%'), '|', ('account_id.code', '=like', '6414%'), '|', ('account_id.code', '=like', '6415%'), ('account_id.code', '=like', '648%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6411%'),
+'|', ('account_id.code', '=like', '6412%'),
+'|', ('account_id.code', '=like', '6413%'),
+'|', ('account_id.code', '=like', '6414%'),
+'|', ('account_id.code', '=like', '6415%'),
+('account_id.code', '=like', '648%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc10" model="account.financial.html.report.line">
     <field name="name">Charges sociales</field>
@@ -153,7 +312,29 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_8</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6451%'), '|', ('account_id.code', '=like', '6452%'), '|', ('account_id.code', '=like', '6453%'), '|', ('account_id.code', '=like', '6454%'), '|', ('account_id.code', '=like', '6458%'), '|', ('account_id.code', '=like', '646%'), '|', ('account_id.code', '=like', '6471%'), '|', ('account_id.code', '=like', '6472%'), '|', ('account_id.code', '=like', '6473%'), '|', ('account_id.code', '=like', '6474%'), '|', ('account_id.code', '=like', '6475%'), '|', ('account_id.code', '=like', '6311%'), '|', ('account_id.code', '=like', '6312%'), '|', ('account_id.code', '=like', '6313%'), '|', ('account_id.code', '=like', '6314%'), '|', ('account_id.code', '=like', '6318%'), '|', ('account_id.code', '=like', '6331%'), '|', ('account_id.code', '=like', '6332%'), '|', ('account_id.code', '=like', '6333%'), '|', ('account_id.code', '=like', '6334%'), '|', ('account_id.code', '=like', '6335%'), ('account_id.code', '=like', '6338%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6451%'),
+'|', ('account_id.code', '=like', '6452%'),
+'|', ('account_id.code', '=like', '6453%'),
+'|', ('account_id.code', '=like', '6454%'),
+'|', ('account_id.code', '=like', '6458%'),
+'|', ('account_id.code', '=like', '646%'),
+'|', ('account_id.code', '=like', '6471%'),
+'|', ('account_id.code', '=like', '6472%'),
+'|', ('account_id.code', '=like', '6473%'),
+'|', ('account_id.code', '=like', '6474%'),
+'|', ('account_id.code', '=like', '6475%'),
+'|', ('account_id.code', '=like', '6311%'),
+'|', ('account_id.code', '=like', '6312%'),
+'|', ('account_id.code', '=like', '6313%'),
+'|', ('account_id.code', '=like', '6314%'),
+'|', ('account_id.code', '=like', '6318%'),
+'|', ('account_id.code', '=like', '6331%'),
+'|', ('account_id.code', '=like', '6332%'),
+'|', ('account_id.code', '=like', '6333%'),
+'|', ('account_id.code', '=like', '6334%'),
+'|', ('account_id.code', '=like', '6335%'),
+('account_id.code', '=like', '6338%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc11" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur immobilisations : dotations aux amortissements</field>
@@ -162,7 +343,10 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_9</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '68111%'), '|', ('account_id.code', '=like', '68112%'), ('account_id.code', '=like', '6812%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '68111%'),
+'|', ('account_id.code', '=like', '68112%'),
+('account_id.code', '=like', '6812%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc12" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur immobilisations : dotations aux provisions</field>
@@ -171,7 +355,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_10</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '68161%'), ('account_id.code', '=like', '68162%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '68161%'),
+('account_id.code', '=like', '68162%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc13" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions sur actif circulant : dotations aux provisions</field>
@@ -180,7 +366,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exp"/>
     <field name="code">ii_11</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '68173%'), ('account_id.code', '=like', '68174%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '68173%'),
+('account_id.code', '=like', '68174%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc14" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions pour risques et charges: dotations aux provisions</field>
@@ -212,7 +400,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr16"/>
     <field name="code">III</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7551%'), ('account_id.code', '=like', '7555%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7551%'),
+('account_id.code', '=like', '7555%')]"/>
   </record>
   <record id="p_n_l_pertes_supportee_ou_benefice_transfere_iv" model="account.financial.html.report.line">
     <field name="name">Pertes supportée ou bénéfice transféré (IV)</field>
@@ -221,7 +411,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr16"/>
     <field name="code">IV</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6551%'), ('account_id.code', '=like', '6555%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6551%'),
+('account_id.code', '=like', '6555%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod_fin" model="account.financial.html.report.line">
     <field name="name">Produits financiers (V)</field>
@@ -238,7 +430,9 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_fin"/>
     <field name="code">v_1</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7611%'), ('account_id.code', '=like', '7616%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7611%'),
+('account_id.code', '=like', '7616%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp10" model="account.financial.html.report.line">
     <field name="name">D'autres valeurs mobilières et créances de l'actif immobilisé</field>
@@ -247,7 +441,10 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_fin"/>
     <field name="code">v_2</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7621%'), '|', ('account_id.code', '=like', '7626%'), ('account_id.code', '=like', '7627%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7621%'),
+'|', ('account_id.code', '=like', '7626%'),
+('account_id.code', '=like', '7627%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp11" model="account.financial.html.report.line">
     <field name="name">Autres intérêts et produits assimilés</field>
@@ -256,7 +453,12 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_fin"/>
     <field name="code">v_3</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7631%'), '|', ('account_id.code', '=like', '7638%'), '|', ('account_id.code', '=like', '764%'), '|', ('account_id.code', '=like', '765%'), ('account_id.code', '=like', '768%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7631%'),
+'|', ('account_id.code', '=like', '7638%'),
+'|', ('account_id.code', '=like', '764%'),
+'|', ('account_id.code', '=like', '765%'),
+('account_id.code', '=like', '768%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp12" model="account.financial.html.report.line">
     <field name="name">Reprises sur provisions et transferts de charges</field>
@@ -265,7 +467,10 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_fin"/>
     <field name="code">v_4</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7865%'), '|', ('account_id.code', '=like', '78662%'), ('account_id.code', '=like', '78665%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7865%'),
+'|', ('account_id.code', '=like', '78662%'),
+('account_id.code', '=like', '78665%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp13" model="account.financial.html.report.line">
     <field name="name">Différences positives de change</field>
@@ -300,7 +505,12 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_fin"/>
     <field name="code">vi_1</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6861%'), '|', ('account_id.code', '=like', '6865%'), '|', ('account_id.code', '=like', '68662%'), '|', ('account_id.code', '=like', '68665%'), ('account_id.code', '=like', '6868%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6861%'),
+'|', ('account_id.code', '=like', '6865%'),
+'|', ('account_id.code', '=like', '68662%'),
+'|', ('account_id.code', '=like', '68665%'),
+('account_id.code', '=like', '6868%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc15" model="account.financial.html.report.line">
     <field name="name">Charges diverses</field>
@@ -309,7 +519,12 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_fin"/>
     <field name="code">vi_2</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6541%'), '|', ('account_id.code', '=like', '6544%'), '|', ('account_id.code', '=like', '658%'), '|', ('account_id.code', '=like', '668%'), ('account_id.code', '=like', '672%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6541%'),
+'|', ('account_id.code', '=like', '6544%'),
+'|', ('account_id.code', '=like', '658%'),
+'|', ('account_id.code', '=like', '668%'),
+('account_id.code', '=like', '672%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc18" model="account.financial.html.report.line">
     <field name="name">Intérêts et charges assimilées</field>
@@ -318,7 +533,16 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_fin"/>
     <field name="code">vi_3</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '66116%'), '|', ('account_id.code', '=like', '66117%'), '|', ('account_id.code', '=like', '6615%'), '|', ('account_id.code', '=like', '6616%'), '|', ('account_id.code', '=like', '6617%'), '|', ('account_id.code', '=like', '66181%'), '|', ('account_id.code', '=like', '66188%'), '|', ('account_id.code', '=like', '664%'), ('account_id.code', '=like', '665%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '66116%'),
+'|', ('account_id.code', '=like', '66117%'),
+'|', ('account_id.code', '=like', '6615%'),
+'|', ('account_id.code', '=like', '6616%'),
+'|', ('account_id.code', '=like', '6617%'),
+'|', ('account_id.code', '=like', '66181%'),
+'|', ('account_id.code', '=like', '66188%'),
+'|', ('account_id.code', '=like', '664%'),
+('account_id.code', '=like', '665%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc19" model="account.financial.html.report.line">
     <field name="name">Différences négatives de change</field>
@@ -367,7 +591,13 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_1</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7711%'), '|', ('account_id.code', '=like', '7713%'), '|', ('account_id.code', '=like', '7714%'), '|', ('account_id.code', '=like', '7715%'), '|', ('account_id.code', '=like', '7717%'), ('account_id.code', '=like', '7718%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7711%'),
+'|', ('account_id.code', '=like', '7713%'),
+'|', ('account_id.code', '=like', '7714%'),
+'|', ('account_id.code', '=like', '7715%'),
+'|', ('account_id.code', '=like', '7717%'),
+('account_id.code', '=like', '7718%')]"/>
   </record>
   <record id="p_n_l_produits_exceptionnels" model="account.financial.html.report.line">
     <field name="name">Produits exceptionnels</field>
@@ -385,7 +615,16 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_3</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '7751%'), '|', ('account_id.code', '=like', '7752%'), '|', ('account_id.code', '=like', '7756%'), '|', ('account_id.code', '=like', '7758%'), '|', ('account_id.code', '=like', '777%'), '|', ('account_id.code', '=like', '7781%'), '|', ('account_id.code', '=like', '7782%'), '|', ('account_id.code', '=like', '7783%'), ('account_id.code', '=like', '7788%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '7751%'),
+'|', ('account_id.code', '=like', '7752%'),
+'|', ('account_id.code', '=like', '7756%'),
+'|', ('account_id.code', '=like', '7758%'),
+'|', ('account_id.code', '=like', '777%'),
+'|', ('account_id.code', '=like', '7781%'),
+'|', ('account_id.code', '=like', '7782%'),
+'|', ('account_id.code', '=like', '7783%'),
+('account_id.code', '=like', '7788%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrp17" model="account.financial.html.report.line">
     <field name="name">Reprises sur provisions et transferts de charges</field>
@@ -394,7 +633,15 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_prod_exc"/>
     <field name="code">vii_4</field>
     <field name="formulas">-sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '78725%'), '|', ('account_id.code', '=like', '78726%'), '|', ('account_id.code', '=like', '78727%'), '|', ('account_id.code', '=like', '7873%'), '|', ('account_id.code', '=like', '7874%'), '|', ('account_id.code', '=like', '7875%'), '|', ('account_id.code', '=like', '7876%'), ('account_id.code', '=like', '797%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '78725%'),
+'|', ('account_id.code', '=like', '78726%'),
+'|', ('account_id.code', '=like', '78727%'),
+'|', ('account_id.code', '=like', '7873%'),
+'|', ('account_id.code', '=like', '7874%'),
+'|', ('account_id.code', '=like', '7875%'),
+'|', ('account_id.code', '=like', '7876%'),
+('account_id.code', '=like', '797%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_char_exc" model="account.financial.html.report.line">
     <field name="name">Charges exceptionnels (VIII)</field>
@@ -411,7 +658,14 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exc"/>
     <field name="code">viii_1</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6711%'), '|', ('account_id.code', '=like', '6712%'), '|', ('account_id.code', '=like', '6713%'), '|', ('account_id.code', '=like', '6714%'), '|', ('account_id.code', '=like', '6715%'), '|', ('account_id.code', '=like', '6717%'), ('account_id.code', '=like', '6718%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6711%'),
+'|', ('account_id.code', '=like', '6712%'),
+'|', ('account_id.code', '=like', '6713%'),
+'|', ('account_id.code', '=like', '6714%'),
+'|', ('account_id.code', '=like', '6715%'),
+'|', ('account_id.code', '=like', '6717%'),
+('account_id.code', '=like', '6718%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc22" model="account.financial.html.report.line">
     <field name="name">Sur opérations au capital</field>
@@ -420,7 +674,15 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exc"/>
     <field name="code">viii_2</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6751%'), '|', ('account_id.code', '=like', '6752%'), '|', ('account_id.code', '=like', '6756%'), '|', ('account_id.code', '=like', '6758%'), '|', ('account_id.code', '=like', '6781%'), '|', ('account_id.code', '=like', '6782%'), '|', ('account_id.code', '=like', '6783%'), ('account_id.code', '=like', '6788%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6751%'),
+'|', ('account_id.code', '=like', '6752%'),
+'|', ('account_id.code', '=like', '6756%'),
+'|', ('account_id.code', '=like', '6758%'),
+'|', ('account_id.code', '=like', '6781%'),
+'|', ('account_id.code', '=like', '6782%'),
+'|', ('account_id.code', '=like', '6783%'),
+('account_id.code', '=like', '6788%')]"/>
   </record>
   <record id="account_financial_report_line_fr_cdrc23" model="account.financial.html.report.line">
     <field name="name">Dotations aux amortissements et aux provisions</field>
@@ -429,7 +691,13 @@
     <field name="parent_id" ref="account_financial_report_line_01_fr_cdr_char_exc"/>
     <field name="code">viii_3</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6871%'), '|', ('account_id.code', '=like', '68725%'), '|', ('account_id.code', '=like', '6873%'), '|', ('account_id.code', '=like', '6874%'), '|', ('account_id.code', '=like', '6875%'), ('account_id.code', '=like', '6876%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6871%'),
+'|', ('account_id.code', '=like', '68725%'),
+'|', ('account_id.code', '=like', '6873%'),
+'|', ('account_id.code', '=like', '6874%'),
+'|', ('account_id.code', '=like', '6875%'),
+('account_id.code', '=like', '6876%')]"/>
   </record>
   <record id="p_n_l_4_resultat_exceptionnel_vii_viii" model="account.financial.html.report.line">
     <field name="name">4.Résultat exceptionnel (VII-VIII)</field>
@@ -454,7 +722,14 @@
     <field name="parent_id" ref="p_n_l_4_resultat_exceptionnel_vii_viii"/>
     <field name="code">X</field>
     <field name="formulas">sum</field>
-    <field name="domain" eval="[ '|', ('account_id.code', '=like', '6951%'), '|', ('account_id.code', '=like', '6952%'), '|', ('account_id.code', '=like', '6954%'), '|', ('account_id.code', '=like', '697%'), '|', ('account_id.code', '=like', '6981%'), '|', ('account_id.code', '=like', '6989%'), ('account_id.code', '=like', '699%')]"/>
+    <field name="domain" eval="[
+'|', ('account_id.code', '=like', '6951%'),
+'|', ('account_id.code', '=like', '6952%'),
+'|', ('account_id.code', '=like', '6954%'),
+'|', ('account_id.code', '=like', '697%'),
+'|', ('account_id.code', '=like', '6981%'),
+'|', ('account_id.code', '=like', '6989%'),
+('account_id.code', '=like', '699%')]"/>
   </record>
   <record id="account_financial_report_line_01_fr_cdr_prod" model="account.financial.html.report.line">
     <field name="name">Total des produits (I+III+V+VII)</field>

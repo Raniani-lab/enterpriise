@@ -51,7 +51,7 @@ QUnit.module('voip', {
             },
         });
 
-        var $phoneLink = form.$('a.o_form_uri.o_field_widget');
+        var $phoneLink = form.$('div.o_form_uri.o_field_phone.o_field_widget > a');
         assert.strictEqual($phoneLink.length, 1,
             "should have a anchor with correct classes");
         assert.strictEqual($phoneLink.text(), 'yop',
@@ -71,7 +71,7 @@ QUnit.module('voip', {
 
         // save
         await testUtils.form.clickSave(form);
-        $phoneLink = form.$('a.o_form_uri.o_field_widget');
+        $phoneLink = form.$('div.o_form_uri.o_field_phone.o_field_widget > a');
         assert.strictEqual($phoneLink.text(), 'new',
             "new value should be displayed properly");
         assert.hasAttrValue($phoneLink, 'href', 'tel:new',
@@ -100,7 +100,7 @@ QUnit.module('voip', {
         assert.strictEqual(list.$('tbody td:not(.o_list_record_selector)').first().text(), 'yopSMS',
             "value should be displayed properly");
 
-        var $phoneLink = list.$('a.o_form_uri.o_field_widget');
+        var $phoneLink = list.$('div.o_form_uri.o_field_phone.o_field_widget > a');
         assert.strictEqual($phoneLink.length, 5,
             "should have anchors with correct classes");
         assert.hasAttrValue($phoneLink.first(), 'href', 'tel:yop',
@@ -120,7 +120,7 @@ QUnit.module('voip', {
         assert.doesNotHaveClass($cell.parent(), 'o_selected_row', 'should not be in edit mode anymore');
         assert.strictEqual(list.$('tbody td:not(.o_list_record_selector)').first().text(), 'newSMS',
             "value should be properly updated");
-        $phoneLink = list.$('a.o_form_uri.o_field_widget');
+        $phoneLink = list.$('div.o_form_uri.o_field_phone.o_field_widget > a');
         assert.strictEqual($phoneLink.length, 5,
             "should still have anchors with correct classes");
         assert.hasAttrValue($phoneLink.first(), 'href', 'tel:new',

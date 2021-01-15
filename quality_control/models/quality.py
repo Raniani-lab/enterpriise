@@ -231,7 +231,8 @@ class QualityCheck(models.Model):
         if check.quality_state == 'fail' and check._is_pass_fail_applicable() and (check.failure_message or check.warning_message):
             return self.show_failure_message()
         if check.picking_id:
-            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
+            checkable_products = check.picking_id.mapped('move_line_ids').mapped('product_id')
+            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none' and x.product_id in checkable_products)
             if checks:
                 return checks[0]._get_next_check_action()
             if self.env.context.get('pickings_to_check_quality'):  # handle pre_done_hook + multi cases
@@ -246,7 +247,8 @@ class QualityCheck(models.Model):
     def redirect_after_failure(self):
         check = self[0]
         if check.picking_id:
-            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
+            checkable_products = check.picking_id.mapped('move_line_ids').mapped('product_id')
+            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none' and x.product_id in checkable_products)
             if checks:
                 action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_small")
                 action['res_id'] = checks.ids[0]

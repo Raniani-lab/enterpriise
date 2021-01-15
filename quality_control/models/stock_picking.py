@@ -18,8 +18,9 @@ class StockPicking(models.Model):
         for picking in self:
             todo = False
             fail = False
+            checkable_products = picking.mapped('move_line_ids').mapped('product_id')
             for check in picking.check_ids:
-                if check.quality_state == 'none':
+                if check.quality_state == 'none' and check.product_id in checkable_products:
                     todo = True
                 elif check.quality_state == 'fail':
                     fail = True
@@ -34,7 +35,8 @@ class StockPicking(models.Model):
 
     def check_quality(self):
         self.ensure_one()
-        checks = self.check_ids.filtered(lambda check: check.quality_state == 'none')
+        checkable_products = self.mapped('move_line_ids').mapped('product_id')
+        checks = self.check_ids.filtered(lambda check: check.quality_state == 'none' and check.product_id in checkable_products)
         if checks:
             return checks._get_next_check_action()
         return False

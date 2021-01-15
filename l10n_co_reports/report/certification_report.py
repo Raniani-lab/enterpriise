@@ -4,7 +4,7 @@
 import re
 from datetime import datetime
 
-from odoo import models
+from odoo import models, fields
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
@@ -40,12 +40,13 @@ class CertificationReport(models.AbstractModel):
         if not docs:
             raise UserError(_('You have to expand at least one partner.'))
 
+        current_date = fields.Datetime.to_datetime(data['wizard_values'].get("declaration_date")) or datetime.now()
         return {
             'docs': docs,
             'options': data['wizard_values'],
             'report_name': data['report_name'],
             'company': self.env.company,
-            'current_year': self.env.company.compute_fiscalyear_dates(datetime.now())['date_from'].year,
+            'current_year': self.env.company.compute_fiscalyear_dates(current_date)['date_from'].year,
         }
 
 

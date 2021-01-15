@@ -8,11 +8,8 @@ from odoo.tools.float_utils import float_compare
 
 class HrContractSalary(main.HrContractSalary):
 
-    def _get_compute_results(self, new_contract):
-        result = super()._get_compute_results(new_contract)
-
-        # generate a payslip corresponding to only this contract
-        payslip = request.env['hr.payslip'].sudo().create({
+    def _generate_payslip(self, new_contract):
+        return request.env['hr.payslip'].sudo().create({
             'employee_id': new_contract.employee_id.id,
             'contract_id': new_contract.id,
             'struct_id': new_contract.structure_type_id.default_struct_id.id,
@@ -22,6 +19,12 @@ class HrContractSalary(main.HrContractSalary):
             'date_to': request.env['hr.payslip'].default_get(['date_to'])['date_to'],
         })
 
+    def _get_compute_results(self, new_contract):
+        result = super()._get_compute_results(new_contract)
+
+        # generate a payslip corresponding to only this contract
+        payslip = self._generate_payslip(new_contract)
+
         payslip.with_context(salary_simulation=True, lang=None).compute_sheet()
 
         result['payslip_lines'] = [(
@@ -29,7 +32,7 @@ class HrContractSalary(main.HrContractSalary):
             abs(round(line.total, 2)),
             line.code,
             'no_sign' if line.code in ['BASIC', 'SALARY', 'GROSS', 'NET'] else float_compare(line.total, 0, precision_digits=2)
-        ) for line in payslip.line_ids]
+        ) for line in payslip.line_ids.filtered(lambda l: l.appears_on_payslip)]
         resume_lines = request.env['hr.contract.salary.resume'].search([
             '|',
             ('structure_type_id', '=', False),

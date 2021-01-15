@@ -647,7 +647,6 @@ def compute_ip_deduction(payslip, categories, worked_days, inputs):
     ip_amount = compute_ip(payslip, categories, worked_days, inputs)
     if not ip_amount:
         return 0.0
-    ip_amount += categories.ONSS * payslip.contract_id.ip_wage_rate / 100.0
     ip_deduction_bracket_1 = payslip.rule_parameter('ip_deduction_bracket_1')
     ip_deduction_bracket_2 = payslip.rule_parameter('ip_deduction_bracket_2')
     if 0.0 <= ip_amount <= ip_deduction_bracket_1:

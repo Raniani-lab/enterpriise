@@ -305,8 +305,8 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'CAR.PRIV': 7.02,
             'REP.FEES': 18.46,
             'IP': 92.31,
-            'IP.DED': -5.98,
-            'NET': 409.46
+            'IP.DED': -6.92,
+            'NET': 408.51
         }
         error = []
         for code, value in payslip_results.items():
@@ -355,8 +355,8 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'CAR.PRIV': 37.27,
             'REP.FEES': 98.08,
             'IP': 530.77,
-            'IP.DED': -34.57,
-            'NET': 1918.63,
+            'IP.DED': -39.81,
+            'NET': 1913.39,
         }
 
         error = []

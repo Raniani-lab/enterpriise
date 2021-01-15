@@ -239,3 +239,9 @@ class HrContractSalary(main.HrContractSalary):
         result = super()._get_compute_results(new_contract)
         result['double_holiday_wage'] = round(new_contract.double_holiday_wage, 2)
         return result
+
+    def _generate_payslip(self, new_contract):
+        payslip = super()._generate_payslip(new_contract)
+        if new_contract.car_id:
+            payslip.vehicle_id = new_contract.car_id
+        return payslip

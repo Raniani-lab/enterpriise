@@ -52,7 +52,7 @@
         <field name="company_id" ref="base.main_company"/>
     </record>
 
-    <!-- Payslip Admin  -->
+    <!-- Payslip Admin -->
     <record id="hr_payslip_admin" model="hr.payslip">
         <field name="name" eval="'Mitchell Admin ' + time.strftime('June %Y')"/>
         <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>

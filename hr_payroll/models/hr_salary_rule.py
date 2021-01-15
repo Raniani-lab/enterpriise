@@ -18,7 +18,7 @@ class HrPayrollStructure(models.Model):
     def _get_default_rule_ids(self):
         return [
             (0, 0, {
-                'name': 'Basic Salary',
+                'name': _('Basic Salary'),
                 'sequence': 1,
                 'code': 'BASIC',
                 'category_id': self.env.ref('hr_payroll.BASIC').id,
@@ -27,7 +27,7 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = payslip.paid_amount',
             }),
             (0, 0, {
-                'name': 'Gross',
+                'name': _('Gross'),
                 'sequence': 100,
                 'code': 'GROSS',
                 'category_id': self.env.ref('hr_payroll.GROSS').id,
@@ -36,7 +36,7 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = categories.BASIC + categories.ALW',
             }),
             (0, 0, {
-                'name': 'Deduction',
+                'name': _('Deduction'),
                 'sequence': 198,
                 'code': 'DEDUCTION',
                 'category_id': self.env.ref('hr_payroll.DED').id,
@@ -46,7 +46,7 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = -inputs.DEDUCTION.amount',
             }),
             (0, 0, {
-                'name': 'Reimbursement',
+                'name': _('Reimbursement'),
                 'sequence': 199,
                 'code': 'REIMBURSEMENT',
                 'category_id': self.env.ref('hr_payroll.ALW').id,
@@ -56,7 +56,7 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = inputs.REIMBURSEMENT.amount',
             }),
             (0, 0, {
-                'name': 'Net Salary',
+                'name': _('Net Salary'),
                 'sequence': 200,
                 'code': 'NET',
                 'category_id': self.env.ref('hr_payroll.NET').id,

@@ -378,6 +378,9 @@ class HrContract(models.Model):
             )
         return res
 
+    def _get_bypassing_work_entry_type(self):
+        return super()._get_bypassing_work_entry_type() | self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick')
+
     def _create_credit_time_next_activity(self):
         self.ensure_one()
         part_time_link = "https://www.socialsecurity.be/site_fr/employer/applics/elo/index.htm"

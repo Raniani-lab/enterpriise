@@ -102,3 +102,5 @@ class HrContractSalaryPersonalInfoValue(models.Model):
     personal_info_id = fields.Many2one('hr.contract.salary.personal.info')
     value = fields.Char(required=True)
     hide_children = fields.Boolean(help="Hide children personal info when checked.")
+    # YTI TODO MASTER: Add a sequence field, and order on it
+

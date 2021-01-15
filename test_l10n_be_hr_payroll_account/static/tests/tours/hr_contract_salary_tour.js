@@ -284,19 +284,19 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Take IP",
             trigger: 'input[name="ip_value_radio"]:eq(1)',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'click',
         },
         {
             content: "Untake IP",
             trigger: 'input[name="ip_value_radio"]:eq(0)',
-            extra_trigger: 'input[name="Net"][value="2386.18"]',
+            extra_trigger: 'input[name="Net"][value="2382.56"]',
             run: 'click',
         },
         {
             content: "Untake Rep Fees",
             trigger: 'input[name="representation_fees_radio"]:eq(0)',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'click',
         },
         {
@@ -447,13 +447,13 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: 'Uncheck Disabled',
             trigger: "input[name='disabled']",
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'click',
         },
         {
             content: "Set Married",
             trigger: 'label[for=marital]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: function () {
                 $('select[name=marital] option:contains(Married)').prop('selected', true);
                 $('select[name=marital]').trigger('change');
@@ -462,19 +462,19 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Check Disabled Spouse Bool",
             trigger: 'input[name=disabled_spouse_bool]',
-            extra_trigger: 'input[name="Net"][value="2394.88"]',
+            extra_trigger: 'input[name="Net"][value="2399.84"]',
             run: 'click',
         },
         {
             content: "Uncheck Disabled Spouse Bool",
             trigger: 'input[name=disabled_spouse_bool]',
-            extra_trigger: 'input[name="Net"][value="2394.88"]',
+            extra_trigger: 'input[name="Net"][value="2399.84"]',
             run: 'click',
         },
         {
             content: "Set High Spouse Income",
             trigger: 'label[for=spouse_fiscal_status]',
-            extra_trigger: 'input[name="Net"][value="2394.88"]',
+            extra_trigger: 'input[name="Net"][value="2399.84"]',
             run: function () {
                 $('select[name=spouse_fiscal_status] option:contains("With High Income")').prop('selected', true);
                 $('select[name=spouse_fiscal_status]').trigger('change');
@@ -483,7 +483,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Unset Married",
             trigger: 'label[for=marital]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: function () {
                 $('select[name=marital] option:contains(Single)').prop('selected', true);
                 $('select[name=marital]').trigger('change');
@@ -492,91 +492,91 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: 'Set Children',
             trigger: 'input[name=children]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'text 3'
         },
         {
             content: 'Check Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
-            extra_trigger: 'input[name="Net"][value="2365.04"]',
+            extra_trigger: 'input[name="Net"][value="2371.59"]',
             run: 'click'
         },
         {
             content: 'Set 1 Disabled Children',
             trigger: 'input[name=disabled_children_number]',
-            extra_trigger: 'input[name="Net"][value="2365.04"]',
+            extra_trigger: 'input[name="Net"][value="2371.59"]',
             run: 'text 1'
         },
         {
             content: 'Uncheck Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
-            extra_trigger: 'input[name="Net"][value="2575.04"]',
+            extra_trigger: 'input[name="Net"][value="2583.59"]',
             run: 'click'
         },
         {
             content: 'Unset Children',
             trigger: 'input[name=children]',
-            extra_trigger: 'input[name="Net"][value="2365.04"]',
+            extra_trigger: 'input[name="Net"][value="2371.59"]',
             run: 'text 0'
         },
         {
             content: 'Check Other Dependent People',
             trigger: 'input[name=other_dependent_people]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'click',
         },
         {
             content: 'Set 2 Senior',
             trigger: 'input[name=other_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'text 2',
         },
         {
             content: 'Set 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2273.04"]',
+            extra_trigger: 'input[name="Net"][value="2277.59"]',
             run: 'text 1',
         },
         {
             content: 'Set 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2354.04"]',
+            extra_trigger: 'input[name="Net"][value="2358.59"]',
             run: 'text 2',
         },
         {
             content: 'Set 1 disabled Junior',
             trigger: 'input[name=other_disabled_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2428.04"]',
+            extra_trigger: 'input[name="Net"][value="2432.59"]',
             run: 'text 1',
         },
         {
             content: 'Unset 1 disabled Senior',
             trigger: 'input[name=other_disabled_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2465.04"]',
+            extra_trigger: 'input[name="Net"][value="2469.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2428.04"]',
+            extra_trigger: 'input[name="Net"][value="2432.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2354.04"]',
+            extra_trigger: 'input[name="Net"][value="2358.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 2 Seniors',
             trigger: 'input[name=other_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2273.04"]',
+            extra_trigger: 'input[name="Net"][value="2277.59"]',
             run: 'text 0',
         },
         {
             content: 'Uncheck Other Dependent People',
             trigger: 'input[name=other_dependent_people]',
-            extra_trigger: 'input[name="Net"][value="2085.04"]',
+            extra_trigger: 'input[name="Net"][value="2089.59"]',
             run: 'click',
         },
         {

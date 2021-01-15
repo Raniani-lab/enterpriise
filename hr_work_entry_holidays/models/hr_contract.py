@@ -40,6 +40,9 @@ class HrContract(models.Model):
                 result.append(('leave_id', leave[2].holiday_id.id))
         return result
 
+    def _get_bypassing_work_entry_type(self):
+        return self.env['hr.work.entry.type']
+
     def _get_interval_leave_work_entry_type(self, interval, leaves):
         # returns the work entry time related to the leave that
         # includes the whole interval.
@@ -51,7 +54,17 @@ class HrContract(models.Model):
         including_global_rcleaves = [l for l in including_rcleaves if not l.holiday_id]
         including_holiday_rcleaves = [l for l in including_rcleaves if l.holiday_id]
         rc_leave = False
-        if including_global_rcleaves:
+
+        # Example: In CP200: Long term sick > Public Holidays (which is global)
+        bypassing_work_entry_types = self._get_bypassing_work_entry_type()
+        if bypassing_work_entry_types:
+            bypassing_rc_leave = [l for l in including_holiday_rcleaves if l.holiday_id.holiday_status_id.work_entry_type_id in bypassing_work_entry_types]
+        else:
+            bypassing_rc_leave = []
+
+        if bypassing_rc_leave:
+            rc_leave = bypassing_rc_leave[0]
+        elif including_global_rcleaves:
             rc_leave = including_global_rcleaves[0]
         elif including_holiday_rcleaves:
             rc_leave = including_holiday_rcleaves[0]

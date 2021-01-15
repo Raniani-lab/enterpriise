@@ -3249,7 +3249,7 @@ msgstr "Congés non payés"
 #: model:hr.leave.type,name:l10n_be_hr_payroll.holiday_type_unpredictable
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_unpredictable
 msgid "Unpredictable Reason"
-msgstr "Raison imprévisible"
+msgstr "Raison impérieuse"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_termination_unreasonable_dismissal
@@ -3363,7 +3363,7 @@ msgstr "Avec de faibles pensions"
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_thirteen_month_p_p
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_pfi_salary_withholding_taxes
 msgid "Withholding Tax"
-msgstr "Retenue"
+msgstr "Précompte Professionnel"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_payroll_head_pp

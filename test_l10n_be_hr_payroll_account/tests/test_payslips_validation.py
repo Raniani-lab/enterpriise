@@ -224,6 +224,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_sick_leave').id,
         })
 
+        cls.long_term_sick_time_off_type = cls.env['hr.leave.type'].create({
+            'name': 'Sick Time Off',
+            'allocation_type': 'no',
+            'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick').id,
+        })
+
     @classmethod
     def _generate_payslip(cls, date_from, date_to):
         payslip = cls.env['hr.payslip'].create([{
@@ -255,6 +261,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         for code, move_type, amount in results:
             if not any(l.account_id.code == code and not float_compare(l[move_type], amount, 2) for l in lines):
                 error.append("Couldn't find %s move line on account %s with amount %s" % (move_type, code, amount))
+        if error:
+            for line in lines:
+                for move_type in ['credit', 'debit']:
+                    if line[move_type]:
+                        error.append('%s - %s - %s' % (line.account_id.code, move_type, line[move_type]))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
     def test_low_salary(self):
@@ -396,8 +407,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -8.72,
             'REP.FEES': 28.85,
             'IP': 285.39,
-            'IP.DED': -18.58,
-            'NET': 1143.08,
+            'IP.DED': -21.40,
+            'NET': 1140.26,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -455,8 +466,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -11.99,
             'REP.FEES': 73.85,
             'IP': 326.15,
-            'IP.DED': -21.24,
-            'NET': 1345.22,
+            'IP.DED': -24.46,
+            'NET': 1342.0,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -736,8 +747,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -21.8,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2123.59,
+            'IP.DED': -49.69,
+            'NET': 2117.07,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -787,8 +798,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -18.53,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1879.21,
+            'IP.DED': -39.75,
+            'NET': 1874.0,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -862,8 +873,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -14.17,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1883.57,
+            'IP.DED': -39.75,
+            'NET': 1878.36,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -928,8 +939,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -16.35,
             'REP.FEES': 89.42,
             'IP': 468.85,
-            'IP.DED': -30.55,
-            'NET': 1778.67,
+            'IP.DED': -35.16,
+            'NET': 1774.05,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -994,8 +1005,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -16.35,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1881.39,
+            'IP.DED': -39.75,
+            'NET': 1876.18,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1016,7 +1027,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 20)
+        self.assertEqual(len(payslip.line_ids), 19)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -1275,8 +1286,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -7.63,
             'REP.FEES': 46.15,
             'IP': 203.85,
-            'IP.DED': -13.27,
-            'NET': 840.64,
+            'IP.DED': -15.29,
+            'NET': 838.62,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -1315,8 +1326,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': 0.0,
             'REP.FEES': 4.62,
             'IP': 20.39,
-            'IP.DED': -1.31,
-            'NET': 84.85,
+            'IP.DED': -1.53,
+            'NET': 84.63,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -1324,7 +1335,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(november_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(november_payslip.input_line_ids), 0)
-        self.assertEqual(len(november_payslip.line_ids), 25)
+        self.assertEqual(len(november_payslip.line_ids), 23)
 
         self.assertAlmostEqual(november_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
 
@@ -1337,11 +1348,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB': 4.0,
             'SALARY': 9.0,
             'ONSS': -1.18,
-            'EmpBonus.1': 1.18,
+            'EmpBonus.1': 0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 150.14,
+            'GROSSIP': 148.97,
             'IP.PART': 0.0,
-            'GROSS': 150.14,
+            'GROSS': 148.97,
             'P.P': 0.0,
             'ATN.CAR.2': -141.14,
             'ATN.INT.2': -5.0,
@@ -1351,7 +1362,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 0.0,
             'IP': 0.0,
             'IP.DED': 0.0,
-            'NET': 0.0,
+            'NET': -1.18,
         }
         self._validate_payslip(november_payslip, payslip_results)
 
@@ -1449,8 +1460,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -21.8,
             'REP.FEES': 136.15,
             'IP': 601.35,
-            'IP.DED': -39.18,
-            'NET': 2006.38,
+            'IP.DED': -45.1,
+            'NET': 2000.46,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1516,8 +1527,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -21.8,
             'REP.FEES': 136.15,
             'IP': 585.26,
-            'IP.DED': -38.14,
-            'NET': 2002.63,
+            'IP.DED': -43.89,
+            'NET': 1996.87,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1568,8 +1579,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -22.89,
             'REP.FEES': 143.08,
             'IP': 631.92,
-            'IP.DED': -41.18,
-            'NET': 2060.21,
+            'IP.DED': -47.39,
+            'NET': 2053.99,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1616,8 +1627,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CAR.PRIV': 69.5,
             'REP.FEES': 150.0,
             'IP': 741.5,
-            'IP.DED': -48.33,
-            'NET': 2754.6,
+            'IP.DED': -55.61,
+            'NET': 2747.31,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1843,8 +1854,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -5.45,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2139.93,
+            'IP.DED': -49.69,
+            'NET': 2133.41,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -1886,8 +1897,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -14.17,
             'REP.FEES': 122.31,
             'IP': 540.19,
-            'IP.DED': -35.2,
-            'NET': 1912.5,
+            'IP.DED': -40.51,
+            'NET': 1907.18,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2016,8 +2027,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -13.08,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2132.3,
+            'IP.DED': -49.69,
+            'NET': 2125.78,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2054,8 +2065,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -18.53,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2126.85,
+            'IP.DED': -49.69,
+            'NET': 2120.33,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2165,8 +2176,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': 0.0,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2145.38,
+            'IP.DED': -49.69,
+            'NET': 2138.86,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2205,8 +2216,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -11.99,
             'REP.FEES': 73.85,
             'IP': 326.16,
-            'IP.DED': -21.24,
-            'NET': 1345.23,
+            'IP.DED': -24.46,
+            'NET': 1342.01,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2349,8 +2360,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -4.36,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1893.38,
+            'IP.DED': -39.75,
+            'NET': 1888.17,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2395,8 +2406,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -10.9,
             'REP.FEES': 80.77,
             'IP': 407.69,
-            'IP.DED': -26.56,
-            'NET': 1655.55,
+            'IP.DED': -30.58,
+            'NET': 1651.53,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2542,8 +2553,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -10.9,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1886.84,
+            'IP.DED': -39.75,
+            'NET': 1881.63,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2585,8 +2596,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -15.26,
             'REP.FEES': 115.38,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1891.14,
+            'IP.DED': -39.75,
+            'NET': 1885.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2713,8 +2724,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': 0.0,
             'REP.FEES': 106.73,
             'IP': 530.0,
-            'IP.DED': -34.53,
-            'NET': 1897.74,
+            'IP.DED': -39.75,
+            'NET': 1892.53,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2756,8 +2767,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -9.81,
             'REP.FEES': 37.5,
             'IP': 254.81,
-            'IP.DED': -16.59,
-            'NET': 1030.33,
+            'IP.DED': -19.11,
+            'NET': 1027.81,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2806,8 +2817,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -22.89,
             'REP.FEES': 143.08,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2115.57,
+            'IP.DED': -49.69,
+            'NET': 2109.05,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2865,8 +2876,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -16.35,
             'REP.FEES': 101.54,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2080.57,
+            'IP.DED': -49.69,
+            'NET': 2074.05,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2885,7 +2896,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 24)
+        self.assertEqual(len(payslip.line_ids), 23)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -3018,8 +3029,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -15.26,
             'REP.FEES': 106.73,
             'IP': 883.9,
-            'IP.DED': -57.62,
-            'NET': 2602.59,
+            'IP.DED': -66.29,
+            'NET': 2593.91,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3124,8 +3135,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -15.26,
             'REP.FEES': 106.73,
             'IP': 662.5,
-            'IP.DED': -43.18,
-            'NET': 2106.62,
+            'IP.DED': -49.69,
+            'NET': 2100.12,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3228,8 +3239,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -22.89,
             'REP.FEES': 150.0,
             'IP': 677.05,
-            'IP.DED': -44.12,
-            'NET': 2158.64,
+            'IP.DED': -50.78,
+            'NET': 2151.98,
         }
         error = []
         for code, value in payslip_result.items():
@@ -3383,8 +3394,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CAR.PRIV': 98.5,
             'REP.FEES': 150.0,
             'IP': 662.5,
-            'IP.DED': -43.17,
-            'NET': 2193.13,
+            'IP.DED': -49.69,
+            'NET': 2186.61,
             'REMUNERATION': 1987.5,
             'ONSSEMPLOYER': 721.65,
         }
@@ -3448,8 +3459,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CAR.PRIV': 98.5,
             'REP.FEES': 150.0,
             'IP': 500.0,
-            'IP.DED': -32.58,
-            'NET': 1949.83,
+            'IP.DED': -37.5,
+            'NET': 1944.91,
             'REMUNERATION': 1500.0,
             'ONSSEMPLOYER': 545.24,
         }
@@ -3490,13 +3501,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ('620200', 'debit', 3487.5),        # remuneration
             ('453000', 'credit', 372.49),       # PP
             ('643000', 'debit', 1162.5),        # IP
-            ('453000', 'credit', 75.75),        # IP DED
+            ('453000', 'credit', 87.19),        # IP DED
             ('454000', 'credit', 477.85),       # ONSS - Emp Bonus
             ('454000', 'credit', 27.81),        # Misc ONSS
             ('620200', 'debit', 197),           # Private Car
             ('620200', 'debit', 300),           # Representation Fees
             ('455000', 'credit', 50.14),        # Meal vouchers
-            ('455000', 'credit', 4142.96),      # NET
+            ('455000', 'credit', 4131.52),      # NET
             ('454000', 'credit', 1266.89),      # ONSS Employer
             ('621000', 'debit', 1266.89),       # ONSS Employer
         ]
@@ -3508,7 +3519,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # 453000    Withholding Taxes  Precompte - low salary bonus                         372.49
 
         # 643000    IP                                                         1162.5
-        # 453000    IP Deduction                                                             75.75
+        # 453000    IP Deduction                                                             87.19
 
         # 454000    ONSS worker - Employment Bonus                                          477.85
         # 454000    ONSS Misceleneous                                                        27.81
@@ -3517,7 +3528,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # 620200    Frais de rep                                                  300
 
         # 455000    Meal vouchers retenue                                                    50.14
-        # 455000    Remunration dues = NET                                                 4142.96
+        # 455000    Remunration dues = NET                                                 4131.52
 
         # 454000    ONSS Employer                                                          1266.89
         # 621000    ONSS Employer                                             1266.89
@@ -3746,3 +3757,62 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertFalse(float_compare(sum(l.debit for l in move_lines), balance, 2))
         self.assertFalse(float_compare(sum(l.credit for l in move_lines), balance, 2))
         self._validate_move_lines(move_lines, move_line_results)
+
+    def test_long_term_sick_leave(self):
+        public_holiday = self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2020, 3, 17, 6, 0, 0),
+            'date_to': datetime.datetime(2020, 3, 17, 18, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        long_term_sick = self.env['hr.leave'].new({
+            'name': 'Long Term Sick',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.long_term_sick_time_off_type.id,
+            'request_date_from': datetime.date(2020, 3, 1),
+            'request_date_to': datetime.date(2020, 3, 31),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 22,
+        })
+        long_term_sick._compute_date_from_to()
+        long_term_sick = self.env['hr.leave'].create(long_term_sick._convert_to_write(long_term_sick._cache))
+        long_term_sick.action_validate()
+
+        payslip = self._generate_payslip(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE280'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE280'), 22.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE280'), 167.2, places=2)
+
+        payslip_results = {
+            'BASIC': 0.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 9.0,
+            'ONSS': -1.18,
+            'ONSSTOTAL': 1.18,
+            'ATN.CAR': 141.14,
+            'GROSS': 148.97,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'ATN.CAR.2': -141.14,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': 0.0,
+            'REP.FEES': 0.0,
+            'NET': -1.18,
+            'REMUNERATION': 0.0,
+            'ONSSEMPLOYER': 2.44,
+        }
+        self._validate_payslip(payslip, payslip_results)

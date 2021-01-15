@@ -16,7 +16,7 @@
                 <div states="waiting,done">
                     <h2 attrs="{'invisible': [('xml_file', '=', False), ('pdf_file', '=', False)]}">Generation Complete</h2>
                     <p attrs="{'invisible': [('pdf_file', '=', False)]}">
-                        Download the 274.XX PDF file: <field name="pdf_file" readonly="1" filename="pdf_filename"/>
+                        Download the 273S PDF file: <field name="pdf_file" readonly="1" filename="pdf_filename"/>
                     </p>
                     <p attrs="{'invisible': [('xml_file', '=', False)]}" class="oe_inline">
                         Download the XML Export file: <field name="xml_file" readonly="1" filename="xml_filename"/>

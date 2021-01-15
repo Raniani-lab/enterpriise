@@ -4,6 +4,7 @@ import logging
 
 from . import mws_connector as mwsc
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 from odoo.addons.sale_amazon.lib import mws
 
@@ -20,9 +21,42 @@ class StockPicking(models.Model):
         pickings = self
         if 'date_done' in vals:
             amazon_pickings = self.sudo().filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
+            amazon_pickings._check_sales_order_line_completion()
             super(StockPicking, amazon_pickings).write(dict(amazon_sync_pending=True, **vals))
             pickings -= amazon_pickings
         return super(StockPicking, pickings).write(vals)
+
+    def _check_sales_order_line_completion(self):
+        """ Check that all stock moves related to a sales order line are set done at the same time.
+
+        This allows to block a confirmation of a stock picking linked to an Amazon sales order if a
+        product's components are not all shipped together. This is necessary because Amazon does not
+        allow a product shipment to be confirmed multiple times ; its components should come in a
+        single package. Furthermore, the customer would expect all the components to be delivered
+        at once rather than received only a fraction of a product.
+
+        :raise: UserError if a stock move is set done while other moves related to the same Amazon
+                sales order line are not
+        """
+        for picking in self:
+            # To assess the completion of a sales order line, we group related moves together and
+            # sum the total demand and done quantities.
+            sales_order_lines_completion = {}
+            for move in picking.move_lines.filtered('sale_line_id.amazon_item_ref'):
+                completion = sales_order_lines_completion.setdefault(move.sale_line_id, [0, 0])
+                completion[0] += move.product_uom_qty
+                completion[1] += move.quantity_done
+
+            # Check that all sales order lines are either entirely shipped or not shipped at all
+            for sales_order_line, completion in sales_order_lines_completion.items():
+                demand_qty, done_qty = completion
+                completion_ratio = done_qty / demand_qty if demand_qty else 0
+                if 0 < completion_ratio < 1:  # The completion ratio must be either 0% or 100%
+                    raise UserError(
+                        _("Products delivered to Amazon customers must have their respective parts "
+                          "in the same package. Operations related to the product %s were not all "
+                          "confirmed at once.") % sales_order_line.product_id.display_name
+                    )
     
     @api.model
     def _sync_pickings(self, account_ids=()):

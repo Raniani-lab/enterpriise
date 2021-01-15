@@ -514,6 +514,15 @@ msgid "Product Template"
 msgstr ""
 
 #. module: sale_amazon
+#: code:addons/sale_amazon/models/stock_picking.py:0
+#, python-format
+msgid ""
+"Products delivered to Amazon customers must have their respective parts "
+"in the same package. Operations related to the product %s were not all "
+"confirmed at once."
+msgstr ""
+
+#. module: sale_amazon
 #: model_terms:ir.actions.act_window,help:sale_amazon.list_amazon_account_action
 msgid "Register your Amazon account"
 msgstr ""

@@ -55,18 +55,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.remaining_hours_so = mapped_remaining_hours[ticket._origin.id]
 
-    @api.depends('project_id', 'use_helpdesk_sale_timesheet', 'partner_id.commercial_partner_id')
-    def _compute_related_task_ids(self):
-        # TODO: [XBO] remove me in master because the task_id will be removed, then this compute and the _related_task_ids field will be useless
-        reinvoiced = self.filtered(lambda t: t.project_id and t.use_helpdesk_sale_timesheet and t.partner_id)
-        for t in reinvoiced:
-            t._related_task_ids = self.env['project.task'].search([
-                ('project_id', '=', t.project_id.id),
-                '|', ('partner_id', '=', False),
-                     ('partner_id', 'child_of', t.partner_id.commercial_partner_id.id)
-            ])._origin
-        super(HelpdeskTicket, self - reinvoiced)._compute_related_task_ids()
-
     def _search_sol_in_timesheets(self):
         # TODO: [XBO] remove me when the sale_line_id field in ticket is stored
         self.ensure_one()
@@ -79,7 +67,7 @@ class HelpdeskTicket(models.Model):
         candidat_sols = sale_lines.filtered(lambda sol: sol.id not in determined_sol_ids)
         return len(candidat_sols) == 1 and candidat_sols  # return the sol if only one SOL is in the variable or return False
 
-    @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet')
+    @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet', 'project_id.bill_type', 'project_id.sale_line_id')
     def _compute_sale_line_id(self):
         billable_tickets = self.filtered('use_helpdesk_sale_timesheet')
         (self - billable_tickets).update({
@@ -157,7 +145,7 @@ class HelpdeskTicket(models.Model):
             recompute_so_lines._compute_qty_delivered()
         return res
 
-    @api.depends('sale_line_id', 'project_id.sale_order_id', 'task_id.sale_order_id')
+    @api.depends('sale_line_id', 'project_id.sale_order_id')
     def _compute_helpdesk_sale_order(self):
         # TODO: remove me in master (sale_order_id will be removed or changes in related field)
         for ticket in self:
@@ -165,8 +153,6 @@ class HelpdeskTicket(models.Model):
                 ticket.sale_order_id = ticket.sale_line_id.order_id
             elif ticket.project_id.sale_order_id:
                 ticket.sale_order_id = ticket.project_id.sale_order_id
-            elif ticket.task_id.sale_order_id:
-                ticket.sale_order_id = ticket.task_id.sale_order_id
             if ticket.sale_order_id and not ticket.partner_id:
                 ticket.partner_id = ticket.sale_order_id.partner_id
 

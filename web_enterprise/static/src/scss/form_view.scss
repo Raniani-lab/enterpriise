@@ -35,7 +35,7 @@
     }
 
     // Fields
-    td.o_td_label .o_form_label:not(.o_status) {
+    .o_td_label .o_form_label:not(.o_status), .o_checkbox_optional_field > .o_form_label {
         min-height: 23px;
     }
     td:not(.o_field_cell) .o_form_uri > span:first-child {

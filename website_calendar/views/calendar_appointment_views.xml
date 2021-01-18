@@ -5,7 +5,7 @@
         <field name="name">calendar.appointment.type.kanban</field>
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard">
+            <kanban class="o_kanban_dashboard" sample="1">
                 <field name="id" invisible="1" />
                 <templates>
                     <t t-name="kanban-box">
@@ -43,7 +43,7 @@
         <field name="name">calendar.appointment.type.tree</field>
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" multi_edit="1">
+            <tree string="Appointment Type" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name" readonly="1"/>
                 <field name="location"/>

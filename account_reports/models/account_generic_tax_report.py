@@ -38,13 +38,18 @@ class generic_tax_report(models.AbstractModel):
         ], limit=1)
 
         options['tax_report'] = (previous_options or {}).get('tax_report')
-        if options['tax_report'] in ('account_tax', 'tax_account'):
+
+        generic_reports_with_groupby = {'account_tax', 'tax_account'}
+
+        if options['tax_report'] not in {0, *generic_reports_with_groupby} and options['tax_report'] not in available_reports.ids:
+            # Replace the report in options by the default report if it is not the generic report
+            # (always available for all companies) and the report in options is not available for this company
+            options['tax_report'] = available_reports and available_reports[0].id or 0
+
+        if options['tax_report'] in generic_reports_with_groupby:
             options['group_by'] = options['tax_report']
         else:
             options['group_by'] = False
-
-        if options['tax_report'] is None and options['tax_report'] not in available_reports.ids:
-            options['tax_report'] = available_reports and available_reports[0].id or None
 
     @api.model
     def _get_options(self, previous_options=None):

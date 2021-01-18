@@ -60,7 +60,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
                 category.code as category_code,
                 account.company_id,
                 aml.account_id,
-                MAX(rate.rate) as account_rate"""
+                COALESCE(MAX(rate.rate), 0) as account_rate"""
         from_ = """
             FROM account_move_line aml
             JOIN account_move move ON aml.move_id = move.id

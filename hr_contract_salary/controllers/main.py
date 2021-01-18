@@ -96,19 +96,19 @@ class SignContract(Sign):
                 sent_templates |= sign_template
 
                 res = sign_request.initialize_new(
-                    sign_template.id,
-                    [{
+                    template_id=sign_template.id,
+                    signers=[{
                         'role': request.env.ref('sign.sign_item_role_employee').id,
                         'partner_id': contract.employee_id.address_home_id.id
                     }, {
                         'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                         'partner_id': contract.hr_responsible_id.partner_id.id
                     }],
-                    [contract.hr_responsible_id.partner_id.id],
-                    'Signature Request - ' + advantage.name or contract.name,
-                    'Signature Request - ' + advantage.name or contract.name,
-                    '',
-                    False)
+                    followers=[contract.hr_responsible_id.partner_id.id],
+                    refererence=_('Signature Request - %s', advantage.name or contract.name),
+                    subject=_('Signature Request - %s', advantage.name or contract.name),
+                    message='',
+                    send=False)
 
                 sign_request = request.env['sign.request'].browse(res['id']).sudo()
                 sign_request.toggle_favorited()
@@ -738,16 +738,16 @@ class HrContractSalary(http.Controller):
             sign_request = request.env['sign.request'].sudo()
 
         res = sign_request.initialize_new(
-            sign_template.id,
-            [
+            template_id=sign_template.id,
+            signers=[
                 {'role': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id},
                 {'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}
             ],
-            [new_contract.hr_responsible_id.partner_id.id],
-            'Signature Request - ' + new_contract.name,
-            'Signature Request - ' + new_contract.name,
-            '',
-            False
+            followers=[new_contract.hr_responsible_id.partner_id.id],
+            reference=_('Signature Request - %s', new_contract.name),
+            subject=_('Signature Request - %s', new_contract.name),
+            message='',
+            send=False
         )
 
         # Prefill the sign boxes

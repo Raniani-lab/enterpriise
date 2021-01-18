@@ -67,17 +67,17 @@ class HrContractSignDocumentWizard(models.TransientModel):
         second_role.remove(self.employee_role_id.id)
 
         res = sign_request.initialize_new(
-            self.sign_template_id.id,
-            [
+            template_id=self.sign_template_id.id,
+            signers=[
                 {'role': self.employee_role_id.id,
                  'partner_id': self.employee_id.user_id.partner_id.id},
                 {'role': second_role.pop(),
                  'partner_id': self.responsible_id.partner_id.id}
             ],
-            self.follower_ids.ids.append(self.responsible_id.partner_id.id),
-            'Signature Request - ' + self.contract_id.name,
-            self.subject,
-            self.message
+            followers=self.follower_ids.ids.append(self.responsible_id.partner_id.id),
+            reference=_('Signature Request - %s', self.contract_id.name),
+            subject=self.subject,
+            message=self.message
         )
 
         sign_request = self.env['sign.request'].browse(res['id'])

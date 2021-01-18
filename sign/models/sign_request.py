@@ -20,7 +20,7 @@ from werkzeug.urls import url_join
 from random import randint
 
 from odoo import api, fields, models, http, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr, config, get_lang
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, config, get_lang, is_html_empty
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
@@ -86,6 +86,8 @@ class SignRequest(models.Model):
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
+    message = fields.Html('sign.message')
+    message_cc = fields.Html('sign.message_cc')
 
     @api.depends('request_item_ids.state')
     def _compute_count(self):
@@ -230,11 +232,6 @@ class SignRequest(models.Model):
                 vals['action'] = 'create'
                 vals = Log._update_vals_with_http_request(vals)
                 Log.create(vals)
-                followers = sign_request.message_follower_ids.mapped('partner_id')
-                followers -= sign_request.create_uid.partner_id
-                followers -= sign_request.request_item_ids.mapped('partner_id')
-                if followers:
-                    sign_request.send_follower_accesses(followers, subject, message)
                 included_request_items.action_sent()
             else:
                 sign_request.action_draft()
@@ -289,33 +286,6 @@ class SignRequest(models.Model):
         self.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners).send_signature_accesses(subject, message)
         return True
 
-    def send_follower_accesses(self, followers, subject=None, message=None):
-        self.ensure_one()
-        tpl = self.env.ref('sign.sign_template_mail_follower')
-        for follower in followers:
-            if not follower.email:
-                continue
-            if not self.create_uid.email:
-                raise UserError(_("Please configure the sender's email address"))
-            tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
-            body = tpl_follower._render({
-                'record': self,
-                'link': url_join(self.get_base_url(), 'sign/document/%s/%s' % (self.id, self.access_token)),
-                'subject': subject,
-                'body': message,
-            }, engine='ir.qweb', minimal_qcontext=True)
-            self.env['sign.request']._message_send_mail(
-                body, 'mail.mail_notification_light',
-                {'record_name': self.reference},
-                {'model_description': 'signature', 'company': self.create_uid.company_id},
-                {'email_from': self.create_uid.email_formatted,
-                 'author_id': self.create_uid.partner_id.id,
-                 'email_to': follower.email_formatted,
-                 'subject': subject or _('%s : Signature request', self.reference)},
-                 lang=follower.lang,
-            )
-            self.message_subscribe(partner_ids=follower.ids)
-
     def send_completed_document(self):
         self.ensure_one()
         if len(self.request_item_ids) <= 0 or self.state != 'signed':
@@ -350,6 +320,7 @@ class SignRequest(models.Model):
             'res_model': self._name,
             'res_id': self.id,
         })
+        signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         tpl = self.env.ref('sign.sign_template_mail_completed')
         for signer in self.request_item_ids:
             if not signer.signer_email:
@@ -361,6 +332,9 @@ class SignRequest(models.Model):
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, signer.access_token)),
                 'subject': '%s signed' % self.reference,
                 'body': False,
+                'recipient_name': signer.partner_id.name,
+                'recipient_id': signer.partner_id.id,
+                'signers': signers
             }, engine='ir.qweb', minimal_qcontext=True)
 
             if not self.create_uid.email:
@@ -393,7 +367,9 @@ class SignRequest(models.Model):
                 'record': self,
                 'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
                 'subject': '%s signed' % self.reference,
-                'body': '',
+                'body': self.message_cc if not is_html_empty(self.message_cc) else False,
+                'recipient_name': follower.name,
+                'signers': signers
             }, engine='ir.qweb', minimal_qcontext=True)
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
@@ -553,9 +529,9 @@ class SignRequest(models.Model):
         return mail
 
     @api.model
-    def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
+    def initialize_new(self, template_id, signers, followers, reference, subject, message, message_cc=None, send=True, without_mail=False):
         sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_employee'))
-        sign_request = self.create({'template_id': id, 'reference': reference})
+        sign_request = self.create({'template_id': template_id, 'reference': reference, 'message': message, 'message_cc': message_cc})
         sign_request.message_subscribe(partner_ids=followers)
         sign_request.activity_update(sign_users)
         sign_request.set_signers(signers)
@@ -576,7 +552,6 @@ class SignRequest(models.Model):
         followers = list(set(followers) - old_followers)
         if followers:
             sign_request.message_subscribe(partner_ids=followers)
-            sign_request.send_follower_accesses(self.env['res.partner'].browse(followers))
         return sign_request.id
 
     @api.model
@@ -657,7 +632,7 @@ class SignRequestItem(models.Model):
                 'record': signer,
                 'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,
-                'body': message if message != '<p><br></p>' else False,
+                'body': message if not is_html_empty(message) else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
             if not signer.signer_email:
@@ -716,8 +691,9 @@ class SignRequestItem(models.Model):
         sign_request_item = self.browse(id)
         sign_request_item.write({'is_mail_sent': True})
         sign_request_item.sign_request_id.message_post(body=_('The signature mail has been send to %s.') % sign_request_item.partner_id.name)
+        message = sign_request_item.sign_request_id.message
         subject = _("Signature Request - %s") % (sign_request_item.sign_request_id.template_id.attachment_id.name)
-        self.browse(id).send_signature_accesses(subject=subject)
+        self.browse(id).send_signature_accesses(subject=subject, message=message)
 
     def _reset_sms_token(self):
         for record in self:

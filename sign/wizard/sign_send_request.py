@@ -49,7 +49,8 @@ class SignSendRequest(models.TransientModel):
     is_user_signer = fields.Boolean(compute='_compute_is_user_signer')
 
     subject = fields.Char(string="Subject", required=True)
-    message = fields.Html("Message")
+    message = fields.Html("Message", help="Message to be sent to signers of the specified document")
+    message_cc = fields.Html("CC Message", help="Message to be sent to followers of the signed document")
     filename = fields.Char("Filename", required=True)
 
     @api.onchange('template_id')
@@ -94,7 +95,18 @@ class SignSendRequest(models.TransientModel):
         reference = self.filename
         subject = self.subject
         message = self.message
-        return self.env['sign.request'].initialize_new(template_id, signers, followers, reference, subject, message, send, without_mail)
+        message_cc = self.message_cc
+        return self.env['sign.request'].initialize_new(
+            template_id=template_id,
+            signers=signers,
+            followers=followers,
+            reference=reference,
+            subject=subject,
+            message=message,
+            message_cc=message_cc,
+            send=send,
+            without_mail=without_mail
+        )
 
     def send_request(self):
         res = self.create_request()

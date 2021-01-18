@@ -93,8 +93,14 @@ class StockPicking(models.Model):
         picking_done = self.env['stock.picking']
         for picking in self:
             amazon_order_ref = picking.sale_id.amazon_order_ref
-            items_data = picking.move_lines.filtered('sale_line_id.amazon_item_ref').mapped(
-                lambda l: (l.sale_line_id.amazon_item_ref, l.quantity_done))
+            confirmed_order_lines = picking.move_lines.filtered(
+                lambda m: m.sale_line_id.amazon_item_ref  # Only consider moves for Amazon products
+                and m.quantity_done > 0  # Only notify Amazon for shipped products
+                and m.quantity_done == m.product_uom_qty  # Only consider fully shipped products
+            ).sale_line_id
+            items_data = confirmed_order_lines.mapped(
+                lambda l: (l.amazon_item_ref, l.product_uom_qty)
+            )  # Take the quantity from the sales order line in case the picking contains a BoM
             xml_feed = mwsc.generate_order_fulfillment_feed(
                 account.seller_key, amazon_order_ref, items_data, *picking._get_carrier_details())
             error_message = _("An error was encountered when confirming shipping of the order with "

@@ -31,6 +31,15 @@ class AccountBatchPayment(models.Model):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()
         rslt.append('sdd')
         return rslt
+    
+    @api.constrains('batch_type', 'journal_id', 'payment_ids')
+    def _check_payments_constrains(self):
+        super(AccountBatchPayment, self)._check_payments_constrains()
+        if self.payment_method_code == 'sdd':
+            for record in self:
+                all_sdd_schemes = set(record.payment_ids.mapped('sdd_mandate_id.sdd_scheme'))
+                if len(all_sdd_schemes) > 1:
+                    raise ValidationError(_("All the payments in the batch must have the same SDD scheme."))
 
     def validate_batch(self):
         self.ensure_one()

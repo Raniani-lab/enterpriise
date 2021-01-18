@@ -46,5 +46,29 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="view_account_payment_tree" model="ir.ui.view">
+            <field name="name">sdd.account.payment.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="sdd_mandate_scheme" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_payment_search" model="ir.ui.view">
+            <field name="name">sdd.account.payment.search</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='company']" position="after">
+                    <filter string="SDD CORE" name="sdd_mandate_scheme_f1" domain="[('sdd_mandate_scheme','=','CORE')]"/>
+                    <filter string="SDD B2B" name="sdd_mandate_scheme_f2" domain="[('sdd_mandate_scheme','=','B2B')]"/>
+                </xpath>
+            </field>
+        </record>
+        
     </data>
 </odoo>

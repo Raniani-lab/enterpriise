@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
-    <div t-name="PlanningGanttView.buttons">
-        <t t-call="GanttView.buttons"/>
-        <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary mr-3" title="Copy previous week">
-            Copy previous week
-        </button>
-         <button t-if="activeActions.edit" class="o_gantt_button_send_all btn btn-primary" title="Send schedule">
-            Send schedule
-        </button>
-    </div>
+    <t t-name="PlanningGanttView.buttons" t-extend="GanttView.buttons">
+        <t t-jquery="> :last-child" t-operation="after">
+            <button t-if="activeActions.create &amp;&amp; activateScale == 'week'" class="o_gantt_button_copy_previous_week btn btn-secondary" title="Copy previous week">
+                Copy previous week
+            </button>
+            <button t-if="activeActions.edit" class="o_gantt_button_send_all btn btn-primary mt-1" title="Send schedule">
+                Send schedule
+            </button>
+        </t>
+    </t>
 
     <t t-name="PlanningGanttView.Row" t-extend="HrGanttView.Row">
         <t t-jquery="*[t-esc='pill.display_name']" t-operation="attributes">

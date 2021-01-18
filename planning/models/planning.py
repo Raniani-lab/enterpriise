@@ -90,6 +90,7 @@ class Planning(models.Model):
         store=True, readonly=True, copy=False,
         help="If checked, it means that the shift contains has changed since its last publish.")
     # template dummy fields (only for UI purpose)
+    template_creation = fields.Boolean("Save As Template", store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
     template_id = fields.Many2one('planning.slot.template', string='Shift Templates', compute='_compute_template_id', readonly=False, store=True)
     template_reset = fields.Boolean()
@@ -347,6 +348,18 @@ class Planning(models.Model):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
                 slot.recurrency_id.unlink()  # will set recurrency_id to NULL
 
+    def _inverse_template_creation(self):
+        PlanningTemplate = self.env['planning.slot.template']
+        for slot in self.filtered(lambda s: s.template_creation):
+            values = slot._prepare_template_values()
+            domain = [(x, '=', values[x]) for x in values.keys()]
+            existing_templates = PlanningTemplate.search(domain, limit=1)
+            if not existing_templates:
+                template = PlanningTemplate.create(values)
+                slot.write({'template_id': template.id, 'previous_template_id': template.id})
+            else:
+                slot.write({'template_id': existing_templates.id})
+
     @api.depends('employee_id', 'template_id')
     def _compute_datetime(self):
         for slot in self:
@@ -534,26 +547,6 @@ class Planning(models.Model):
         if self.employee_id != self.env.user.employee_id:
             raise UserError(_("You can not unassign another employee than yourself."))
         return self.sudo().write({'employee_id': False})
-
-    def action_create_template(self):
-        values = self._prepare_template_values()
-        domain = [(x, '=', values[x]) for x in values.keys()]
-        existing_templates = self.env['planning.slot.template'].search(domain, limit=1)
-        if not existing_templates:
-            template = self.env['planning.slot.template'].create(values)
-            self.write({'template_id': template.id, 'previous_template_id': template.id})
-            message = _("Your template was successfully saved.")
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'message': message,
-                    'type': 'success',
-                    'sticky': False,
-                }
-            }
-        else:
-            self.write({'template_id': existing_templates.id})
 
     # ----------------------------------------------------
     # Gantt - Calendar view

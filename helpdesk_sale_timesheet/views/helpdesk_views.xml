@@ -53,7 +53,7 @@
             </xpath>
             <xpath expr="//field[@name='task_id']" position="after">
                 <field name="project_sale_order_id" invisible="1" />
-                <field name="sale_line_id" attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False)]}" options="{'no_create': True, 'no_open': True}" />
+                <field name="sale_line_id" attrs="{'invisible': ['|', '|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False), ('timesheet_ids', '=', [])]}" options="{'no_create': True, 'no_open': True}" />
             </xpath>
         </field>
     </record>

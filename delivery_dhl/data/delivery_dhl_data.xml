@@ -23,9 +23,9 @@
     <record id="dhl_packaging_PAL" model="product.packaging">
         <field name="name">DHL Pallets</field>
         <field name="shipper_package_code">PAL</field>
-        <field name="height">10</field>
-        <field name="width">10</field>
-        <field name="packaging_length">10</field>
+        <field name="height">1600</field>
+        <field name="width">1200</field>
+        <field name="packaging_length">1200</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">1000</field>
     </record>
@@ -38,9 +38,9 @@
     <record id="dhl_packaging_BOX" model="product.packaging">
         <field name="name">DHL Box</field>
         <field name="shipper_package_code">BOX</field>
-        <field name="height">10</field>
-        <field name="width">10</field>
-        <field name="packaging_length">10</field>
+        <field name="height">409</field>
+        <field name="width">444</field>
+        <field name="packaging_length">541</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">70</field>
     </record>

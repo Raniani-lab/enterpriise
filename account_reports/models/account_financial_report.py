@@ -193,6 +193,9 @@ class ReportAccountFinancialReport(models.Model):
         :param blank_if_zero:   An optional flag forcing the string to be empty if amount is zero.
         :return:
         '''
+        if not financial_line.formulas:
+            return ''
+
         if self._context.get('no_format'):
             return amount
 

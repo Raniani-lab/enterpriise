@@ -75,7 +75,7 @@ class SocialMediaLinkedin(models.Model):
             'scope': 'r_liteprofile r_emailaddress w_member_social rw_organization_admin w_organization_social r_organization_social',
             'o_redirect_uri': o_redirect_uri,
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        }).text
+        }, timeout=10).text
 
         if iap_add_accounts_url == 'unauthorized':
             raise UserError(_("You don't have an active subscription. Please buy one here: %s") % 'https://www.odoo.com/buy')

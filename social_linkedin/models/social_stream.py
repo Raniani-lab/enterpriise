@@ -41,7 +41,8 @@ class SocialStreamLinkedIn(models.Model):
 
         posts_response = requests.get(
             posts_endpoint, params={'q': 'authors', 'projection': projection, 'count': 100},
-            headers=self.account_id._linkedin_bearer_headers())
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=10)
 
         if posts_response.status_code != 200 or 'elements' not in posts_response.json():
             self.sudo().account_id.is_media_disconnected = True
@@ -56,7 +57,7 @@ class SocialStreamLinkedIn(models.Model):
         stats_endpoint = url_join(
             self.env['social.media']._LINKEDIN_ENDPOINT,
             'socialActions?ids=List(%s)' % ','.join([quote(urn) for urn in linkedin_post_data]))
-        stats_response = requests.get(stats_endpoint, params={'count': 100}, headers=self.account_id._linkedin_bearer_headers()).json()
+        stats_response = requests.get(stats_endpoint, params={'count': 100}, headers=self.account_id._linkedin_bearer_headers(), timeout=10).json()
 
         if 'results' in stats_response:
             for post_urn, post_data in stats_response['results'].items():

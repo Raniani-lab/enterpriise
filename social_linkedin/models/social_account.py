@@ -78,7 +78,8 @@ class SocialAccountLinkedin(models.Model):
         response = requests.get(
             endpoint,
             params=params,
-            headers=self._linkedin_bearer_headers())
+            headers=self._linkedin_bearer_headers(),
+            timeout=10)
 
         if response.status_code != 200:
             return {}
@@ -119,13 +120,14 @@ class SocialAccountLinkedin(models.Model):
                 'role': 'ADMINISTRATOR',
                 'projection': '(elements*(*,organization~(%s)))' % self.env['social.media']._LINKEDIN_ORGANIZATION_PROJECTION,
             },
-            headers=self._linkedin_bearer_headers(linkedin_access_token)).json()
+            headers=self._linkedin_bearer_headers(linkedin_access_token),
+            timeout=10).json()
 
         accounts = []
         if 'elements' in response and isinstance(response.get('elements'), list):
             for organization in response.get('elements'):
                 image_url = self._extract_linkedin_picture_url(organization.get('organization~'))
-                image_data = requests.get(image_url).content if image_url else None
+                image_data = requests.get(image_url, timeout=10).content if image_url else None
                 accounts.append({
                     'name': organization.get('organization~', {}).get('localizedName'),
                     'linkedin_account_urn': organization.get('organization'),

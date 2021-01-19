@@ -37,7 +37,7 @@ class SocialLivePostLinkedin(models.Model):
 
                 response = session.get(
                     endpoint, params={'q': 'organizationalEntity', 'organizationalEntity': account.linkedin_account_urn, 'count': 50},
-                    headers=account._linkedin_bearer_headers())
+                    headers=account._linkedin_bearer_headers(), timeout=10)
 
                 if response.status_code != 200 or 'elements' not in response.json():
                     account.sudo().is_media_disconnected = True
@@ -121,7 +121,7 @@ class SocialLivePostLinkedin(models.Model):
             response = requests.post(
                 url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'ugcPosts'),
                 headers=live_post.account_id._linkedin_bearer_headers(),
-                json=data).json()
+                json=data, timeout=10).json()
 
             response_id = response.get('id')
             values = {
@@ -159,7 +159,7 @@ class SocialLivePostLinkedin(models.Model):
         response = requests.post(
                 url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'assets?action=registerUpload'),
                 headers=account_id._linkedin_bearer_headers(),
-                json=data).json()
+                json=data, timeout=10).json()
 
         if 'value' not in response or 'asset' not in response['value']:
             raise UserError(_('Failed during upload registering'))
@@ -173,7 +173,7 @@ class SocialLivePostLinkedin(models.Model):
         headers = account_id._linkedin_bearer_headers()
         headers['Content-Type'] = 'application/octet-stream'
 
-        response = requests.request('POST', upload_url, data=file, headers=headers)
+        response = requests.request('POST', upload_url, data=file, headers=headers, timeout=10)
 
         if response.status_code != 201:
             raise UserError(_('Failed during image upload'))

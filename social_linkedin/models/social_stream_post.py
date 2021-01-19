@@ -66,7 +66,8 @@ class SocialStreamPostLinkedIn(models.Model):
                 'count': count,
                 'projection': '(paging,elements*(%s))' % self.env['social.media']._LINKEDIN_COMMENT_PROJECTION
             },
-            headers=self.account_id._linkedin_bearer_headers()).json()
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=10).json()
 
         if 'elements' not in response:
             self.sudo().account_id.is_media_disconnected = True
@@ -93,7 +94,8 @@ class SocialStreamPostLinkedIn(models.Model):
 
         response = requests.request(
             'DELETE', endpoint, params={'actor': self.account_id.linkedin_account_urn},
-            headers=self.account_id._linkedin_bearer_headers())
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=10)
 
         if response.status_code != 204:
             self.sudo().account_id.is_media_disconnected = True
@@ -116,7 +118,8 @@ class SocialStreamPostLinkedIn(models.Model):
                      'socialActions/%s/comments' % quote(self.linkedin_post_urn)),
             params={'projection': '(%s)' % self.env['social.media']._LINKEDIN_COMMENT_PROJECTION},
             json=data,
-            headers=self.account_id._linkedin_bearer_headers()).json()
+            headers=self.account_id._linkedin_bearer_headers(),
+            timeout=10).json()
 
         if 'created' not in response:
             self.sudo().account_id.is_media_disconnected = True

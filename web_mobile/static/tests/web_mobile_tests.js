@@ -568,10 +568,12 @@ QUnit.module('web_mobile', {
     QUnit.module('Dialog');
 
     QUnit.test('dialog is closable with backbutton event', async function (assert) {
-        assert.expect(5);
+        assert.expect(7);
 
         const __overrideBackButton = mobile.methods.overrideBackButton;
-        mobile.methods.overrideBackButton = function () {};
+        mobile.methods.overrideBackButton = function ({enabled}) {
+            assert.step(`overrideBackButton: ${enabled}`);
+        };
 
         testUtils.mock.patch(Dialog, {
             close: function () {
@@ -611,8 +613,10 @@ QUnit.module('web_mobile', {
         // The goal of this assert is to check that our event called the
         // opened/close methods on Dialog.
         assert.verifySteps([
+            'overrideBackButton: true',
             'opened',
             'close',
+            'overrideBackButton: false',
         ], "should have open/close dialog");
         assert.containsNone(document.body, '.modal', "modal should be closed");
 

@@ -363,14 +363,14 @@
             <tree string="Sale Subscriptions" multi_edit="1" sample="1">
                 <field name="code" readonly="1" decoration-bf="1"/>
                 <field name="partner_id" readonly="1"/>
-                <field name="recurring_next_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}"/>
+                <field name="recurring_next_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}" optional="show"/>
+                <field name="activity_ids" widget="list_activity"/>
                 <field name="pricelist_id" invisible="1"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user"/>
-                <field name="activity_ids" widget="list_activity"/>
                 <field name="team_id" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1"/>
                 <field name="recurring_total"/>
-                <field name="percentage_satisfaction"/>
+                <field name="percentage_satisfaction" optional="hide"/>
                 <field name="recurring_total_incl" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'"/>
                 <field name="to_renew" invisible="1"/>

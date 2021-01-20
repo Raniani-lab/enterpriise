@@ -891,7 +891,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if credentials.get('errors'):
                     edi_result[invoice] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
-                        'attachment': self._create_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
+                        'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
@@ -899,7 +899,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 if res.get('errors'):
                     edi_result[invoice] = {
                         'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
-                        'attachment': self._create_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
+                        'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
                     }
                     continue
 
@@ -919,7 +919,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 })
 
             # == Create the attachment ==
-            cfdi_attachment = self._create_cfdi_attachment(invoice, res['cfdi_signed'])
+            cfdi_attachment = self._create_invoice_cfdi_attachment(invoice, res['cfdi_signed'])
             edi_result[invoice] = {'attachment': cfdi_attachment}
 
             # == Chatter ==
@@ -929,17 +929,28 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             )
         return edi_result
 
-    def _create_cfdi_attachment(self, invoice, data):
+    def _create_invoice_cfdi_attachment(self, invoice, data):
         cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
-        return self.env['ir.attachment'].create({
+        description = _('Mexican invoice CFDI generated for the %s document.') % invoice.name
+        return self._create_cfdi_attachment(cfdi_filename, description, invoice, data)
+
+    def _create_cfdi_attachment(self, cfdi_filename, description, move, data):
+        IrAttachment = self.env['ir.attachment']
+        values = {
             'name': cfdi_filename,
-            'res_id': invoice.id,
-            'res_model': invoice._name,
+            'res_id': move.id,
+            'res_model': move._name,
             'type': 'binary',
             'datas': data,
             'mimetype': 'application/xml',
-            'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
-        })
+            'description': description,
+        }
+        attachment = IrAttachment.search([('name', '=', cfdi_filename), ('res_model', '=', move._name), ('res_id', '=', move.id), ('type', '=', 'binary')])
+        if attachment:
+            attachment.write(values)
+            return attachment[0]
+        else:
+            return IrAttachment.create(values)
 
     def _cancel_invoice_edi(self, invoices, test_mode=False):
         # OVERRIDE
@@ -1045,17 +1056,10 @@ Content-Disposition: form-data; name="xml"; filename="xml"
 
         return edi_result
 
-    def _create_payment_cfdi_attachment(self, move, datas):
+    def _create_payment_cfdi_attachment(self, move, data):
         cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
-        return self.env['ir.attachment'].create({
-                'name': cfdi_filename,
-                'res_id': move.id,
-                'res_model': move._name,
-                'type': 'binary',
-                'datas': datas,
-                'mimetype': 'application/xml',
-                'description': _('Mexican payment CFDI generated for the %s document.') % move.name,
-            })
+        descritpion = _('Mexican payment CFDI generated for the %s document.') % move.name
+        return self._create_cfdi_attachment(cfdi_filename, descritpion, move, data)
 
     def _cancel_payment_edi(self, moves, test_mode=False):
         # OVERRIDE

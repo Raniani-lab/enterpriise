@@ -335,6 +335,7 @@
         <field name="code">CH_3</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="1"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="domain" eval=""/>
         <field name="formulas">CH_30 + CH_39</field>
@@ -367,6 +368,7 @@
         <field name="code">CH_EBITDA</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="2"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="domain" eval=""/>
         <field name="formulas">CH_3 +CH_4 + CH_5 + CH_60</field>
@@ -410,6 +412,7 @@
         <field name="code">CH_EBIT</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="3"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="domain" eval=""/>
         <field name="formulas">CH_EBITDA + CH_68</field>
@@ -432,6 +435,7 @@
         <field name="code">CH_EBT</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="4"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="domain" eval=""/>
         <field name="formulas">CH_EBIT + CH_69</field>
@@ -453,6 +457,7 @@
         <field name="code">CH_RAI</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="5"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="domain" eval=""/>
         <field name="formulas">CH_EBT + CH_7 + CH_80 + CH_85</field>
@@ -496,6 +501,7 @@
         <field name="code">CH_89</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="98"/>
+        <field name="parent_id" ref=""/>
         <field name="financial_report_id" ref="account_financial_report_l10n_ch_cdr"/>
         <field name="groupby">account_id</field>
         <field name="domain" eval="[('account_id.code', '&gt;=', '89'), ('account_id.code', '&lt;', '9')]"/>

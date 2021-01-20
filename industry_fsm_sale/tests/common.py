@@ -20,6 +20,7 @@ class TestFsmFlowSaleCommon(AccountTestInvoicingCommon):
         cls.fsm_project = cls.env['project.project'].create({
             'name': 'Field Service',
             'is_fsm': True,
+            'allow_billable': True,
             'allow_timesheets': True,
             'allow_timesheet_timer': True,
         })

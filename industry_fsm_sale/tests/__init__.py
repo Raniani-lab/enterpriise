@@ -3,3 +3,4 @@
 
 from . import test_industry_fsm_sale_flow
 from . import test_multicompany
+from . import test_industry_fsm_project

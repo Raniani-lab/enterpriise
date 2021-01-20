@@ -24,7 +24,11 @@ class CustomerPortal(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'ticket_count' in counters:
-            values['ticket_count'] = request.env['helpdesk.ticket'].search_count([])
+            values['ticket_count'] = (
+                request.env['helpdesk.ticket'].search_count([])
+                if request.env['helpdesk.ticket'].check_access_rights('read', raise_exception=False)
+                else 0
+            )
         return values
 
     def _ticket_get_page_view_values(self, ticket, access_token, **kwargs):

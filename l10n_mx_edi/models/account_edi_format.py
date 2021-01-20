@@ -458,7 +458,7 @@ class AccountEdiFormat(models.Model):
                 'errors': [_("The Finkok service failed to sign with the following error: %s", str(e))],
             }
 
-        if response.Incidencias:
+        if response.Incidencias and not response.xml:
             code = getattr(response.Incidencias.Incidencia[0], 'CodigoError', None)
             msg = getattr(response.Incidencias.Incidencia[0], 'MensajeIncidencia', None)
             errors = []

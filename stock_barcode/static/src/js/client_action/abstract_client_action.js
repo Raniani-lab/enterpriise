@@ -206,6 +206,7 @@ var ClientAction = AbstractAction.extend({
                 'group_uom': self.currentState.group_uom,
             };
             self.show_entire_packs = self.currentState.show_entire_packs;
+            self.requireLotNumber = true;
             if (self._isPickingRelated()) {
                 self.sourceLocations = self.currentState.source_location_list;
                 self.destinationLocations = self.currentState.destination_location_list;
@@ -820,7 +821,8 @@ var ClientAction = AbstractAction.extend({
             // Update the line with the processed quantity.
             if (params.product.tracking === 'none' ||
                 params.lot_id ||
-                params.lot_name
+                params.lot_name ||
+                !this.requireLotNumber
                 ) {
                 if (this._isPickingRelated()) {
                     line.qty_done += params.product.qty || 1;
@@ -839,7 +841,8 @@ var ClientAction = AbstractAction.extend({
             // Create a line with the processed quantity.
             if (params.product.tracking === 'none' ||
                 params.lot_id ||
-                params.lot_name
+                params.lot_name ||
+                !this.requireLotNumber
                 ) {
                 params.qty_done = params.product.qty || 1;
             } else {
@@ -1047,7 +1050,7 @@ var ClientAction = AbstractAction.extend({
 
         var product = this._isProduct(barcode);
         if (product) {
-            if (product.tracking !== 'none') {
+            if (product.tracking !== 'none' && self.requireLotNumber) {
                 this.currentStep = 'lot';
             }
             var res = this._incrementLines({'product': product, 'barcode': barcode});
@@ -1073,7 +1076,7 @@ var ClientAction = AbstractAction.extend({
             } else if (!(res.id || res.virtualId)) {
                 return Promise.reject(_("There are no lines to increment."));
             } else {
-                if (product.tracking === 'none') {
+                if (product.tracking === 'none' || !self.requireLotNumber) {
                     linesActions.push([this.linesWidget.incrementProduct, [res.id || res.virtualId, product.qty || 1, this.actionParams.model]]);
                 } else {
                     linesActions.push([this.linesWidget.incrementProduct, [res.id || res.virtualId, 0, this.actionParams.model]]);
@@ -1233,7 +1236,7 @@ var ClientAction = AbstractAction.extend({
      * @returns {Promise}
      */
     _step_lot: function (barcode, linesActions) {
-        if (! this.groups.group_production_lot) {
+        if (! this.groups.group_production_lot || !this.requireLotNumber)  {
             return Promise.reject();
         }
         this.currentStep = 'lot';

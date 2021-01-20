@@ -1945,6 +1945,29 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
     },
 ]);
 
+tour.register('test_receipt_from_scratch_with_lots_4', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+    },
+]);
+
+
+
 tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
 
     {

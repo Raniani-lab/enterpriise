@@ -32,6 +32,7 @@ var LinesWidget = Widget.extend({
         this.groups = parent.groups;
         this.model = parent.actionParams.model;
         this.show_entire_packs = parent.show_entire_packs;
+        this.requireLotNumber = parent.requireLotNumber;
         this.displayControlButtons = this.nbPages > 0 && parent._isControlButtonsEnabled();
         this.displayOptionalButtons = parent._isOptionalButtonsEnabled();
         this.isPickingRelated = parent._isPickingRelated();
@@ -103,6 +104,7 @@ var LinesWidget = Widget.extend({
             groups: this.groups,
             model: model,
             isPickingRelated: this.isPickingRelated,
+            requireLotNumber: this.requireLotNumber,
         }));
         $body.prepend($line);
         $line.on('click', '.o_edit', this._onClickEditLine.bind(this));
@@ -328,6 +330,7 @@ var LinesWidget = Widget.extend({
                 groups: this.groups,
                 isPickingRelated: this.isPickingRelated,
                 istouchSupported: this.istouchSupported,
+                requireLotNumber: this.requireLotNumber,
             }));
             $body.prepend($lines);
             for (const line of $lines) {

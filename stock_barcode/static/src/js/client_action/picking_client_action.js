@@ -73,6 +73,7 @@ var PickingClientAction = ClientAction.extend({
 
             self.isImmediatePicking = self.currentState.immediate_transfer;
             self.note = self.currentState.note;
+            self.requireLotNumber = self.currentState.use_create_lots || self.currentState.use_existing_lots;
         });
     },
 
@@ -272,7 +273,7 @@ var PickingClientAction = ClientAction.extend({
     },
 
     _lineIsTrackedAndComplete (line, product) {
-        return product.tracking === 'serial' && line.qty_done > 0;
+        return product.tracking === 'serial' && line.qty_done > 0 && this.requireLotNumber;
     },
 
     _lineReservationIsFulfilled: function (line) {

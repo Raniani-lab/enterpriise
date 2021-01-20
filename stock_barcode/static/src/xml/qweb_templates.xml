@@ -156,7 +156,7 @@
                         <div t-if="line.owner_id">
                             <i class="fa fa-fw fa-user-o"/> <t t-esc="line.owner_id[1]"/>
                         </div>
-                        <div t-if="line.product_id.tracking !== 'none'">
+                        <div t-if="line.product_id.tracking !== 'none' and requireLotNumber">
                             <i class="fa fa-fw fa-barcode"/>
                             <span class="o_line_lot_name" t-esc="(line.lot_id &amp;&amp; line.lot_id[1]) || (line.prod_lot_id &amp;&amp;line.prod_lot_id[1]) || line.lot_name || ''"/>
                         </div>

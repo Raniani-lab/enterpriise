@@ -134,7 +134,7 @@ class HrContract(models.Model):
         params = self.env['ir.config_parameter'].sudo()
         max_unused_cars = params.get_param('l10n_be_hr_payroll_fleet.max_unused_cars', default=1000)
         for contract in self:
-            contract.max_unused_cars = int(max_unused_cars)
+            contract.max_unused_cars = 999999 if contract.env.context.get('is_applicant') else int(max_unused_cars)
 
     @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public')
     def _onchange_transport_mode(self):

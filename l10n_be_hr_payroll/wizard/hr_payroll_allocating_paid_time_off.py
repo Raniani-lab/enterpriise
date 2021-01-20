@@ -168,12 +168,14 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
             if alloc.paid_time_off_to_allocate * alloc.resource_calendar_id.hours_per_day > max_leaves_allocated:
                 number_of_days = alloc.paid_time_off
 
-            allocation_values.append({
-                'name': _('Paid Time Off Allocation'),
-                'holiday_status_id': self.holiday_status_id.id,
-                'employee_id': alloc.employee_id.id,
-                'number_of_days': number_of_days,
-                'max_leaves_allocated': max_leaves_allocated})
+            number_of_days = round(number_of_days * 2) / 2  # round the paid time off until x.5
+            if number_of_days:
+                allocation_values.append({
+                    'name': _('Paid Time Off Allocation'),
+                    'holiday_status_id': self.holiday_status_id.id,
+                    'employee_id': alloc.employee_id.id,
+                    'number_of_days': number_of_days,
+                    'max_leaves_allocated': max_leaves_allocated})
         allocations = self.env['hr.leave.allocation'].create(allocation_values)
 
         return {

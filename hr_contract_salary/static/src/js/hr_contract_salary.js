@@ -127,7 +127,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }));
         this.$("div[name='salary_package_resume']").html(resumeSidebar);
         $("input[name='wage_with_holidays']").val(data['wage_with_holidays']);
-        $("div[name='compute_loading']").addClass('d-none');
         $("div[name='net']").removeClass('d-none').hide().slideDown( "slow" );
         $("input[name='NET']").removeClass('o_outdated');
     },

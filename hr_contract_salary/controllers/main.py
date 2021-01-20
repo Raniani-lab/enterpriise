@@ -141,6 +141,8 @@ class HrContractSalary(http.Controller):
                 'active': False,
             })
 
+        if 'applicant_id' in kw:
+            contract = contract.with_context(is_applicant=True)
         values = self._get_salary_package_values(contract)
 
         redirect_to_job = False

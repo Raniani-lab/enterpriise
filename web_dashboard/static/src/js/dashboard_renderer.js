@@ -237,7 +237,7 @@ var DashboardRenderer = FormRenderer.extend({
      *
      * @private
      */
-    _renderSubViewButtons: function ($el, controller) {
+    _renderSubViewButtons: async function ($el, controller) {
         var $buttons = $('<div>', {class: 'o_' + controller.viewType + '_buttons o_dashboard_subview_buttons'});
 
         // render the view's buttons
@@ -268,7 +268,7 @@ var DashboardRenderer = FormRenderer.extend({
 
         $buttons.prependTo($el);
 
-        controller.updateButtons();
+        return controller.updateButtons();
     },
     /**
      * @private
@@ -340,8 +340,9 @@ var DashboardRenderer = FormRenderer.extend({
         var $div = $('<div>', {class: 'o_subview', type: viewType});
         var def = subView.getController(this).then(function (controller) {
             return controller.appendTo($div).then(function () {
-                self._renderSubViewButtons($div, controller);
-                self.subControllers[viewType] = controller;
+                return self._renderSubViewButtons($div, controller).then(() => {
+                    self.subControllers[viewType] = controller;
+                });
             });
         });
         this.defs.push(def);

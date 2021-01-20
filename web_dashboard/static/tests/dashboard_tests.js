@@ -1814,6 +1814,8 @@ QUnit.module('Views', {
 
         // go back using the breadcrumbs
         await testUtils.dom.click($('.o_control_panel .breadcrumb a'));
+        await testUtils.owlCompatibilityExtraNextTick();
+
         assert.deepEqual(cpHelpers.getFacetTexts(actionManager), []);
 
         await cpHelpers.toggleFilterMenu(actionManager);

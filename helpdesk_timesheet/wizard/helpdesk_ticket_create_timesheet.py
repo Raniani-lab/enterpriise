@@ -20,7 +20,6 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
 
     def action_generate_timesheet(self):
         values = {
-            'task_id': self.ticket_id.task_id.id,
             'project_id': self.ticket_id.project_id.id,
             'date': fields.Datetime.now(),
             'name': self.description,

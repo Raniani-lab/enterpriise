@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.osv import expression
+from odoo.exceptions import ValidationError
 
 
 class AccountAnalyticLine(models.Model):
@@ -10,10 +11,11 @@ class AccountAnalyticLine(models.Model):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', 'Helpdesk Ticket')
 
-    def _compute_task_id(self):
-        super(AccountAnalyticLine, self)._compute_task_id()
-        for line in self.filtered(lambda line: line.helpdesk_ticket_id):
-            line.task_id = line.helpdesk_ticket_id.task_id
+    @api.constrains('task_id', 'helpdesk_ticket_id')
+    def _check_no_link_task_and_ticket(self):
+        # Check if any timesheets are not linked to a ticket and a task at the same time
+        if any(timesheet.task_id and timesheet.helpdesk_ticket_id for timesheet in self):
+            raise ValidationError(_("A timesheet cannot be linked to a task and a ticket at the same time."))
 
     def _timesheet_preprocess(self, vals):
         helpdesk_ticket_id = vals.get('helpdesk_ticket_id')
@@ -21,14 +23,14 @@ class AccountAnalyticLine(models.Model):
             ticket = self.env['helpdesk.ticket'].browse(helpdesk_ticket_id)
             if ticket.project_id:
                 vals['project_id'] = ticket.project_id.id
-            if ticket.task_id:
-                vals['task_id'] = ticket.task_id.id
         vals = super(AccountAnalyticLine, self)._timesheet_preprocess(vals)
         return vals
 
     def _timesheet_get_portal_domain(self):
         domain = super(AccountAnalyticLine, self)._timesheet_get_portal_domain()
-        return expression.OR([domain, self._timesheet_in_helpdesk_get_portal_domain()])
+        if not self.env.user.has_group('hr_timesheet.group_hr_timesheet_user'):
+            domain = expression.OR([domain, self._timesheet_in_helpdesk_get_portal_domain()])
+        return domain
 
     def _timesheet_in_helpdesk_get_portal_domain(self):
         return [

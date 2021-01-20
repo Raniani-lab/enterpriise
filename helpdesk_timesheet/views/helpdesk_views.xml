@@ -44,8 +44,6 @@
                     <field name="display_timer_stop" invisible="1"/>
                     <field name="display_timer_pause" invisible="1"/>
                     <field name="display_timer_resume" invisible="1"/>
-                    <field name="is_closed" invisible="1"/>
-                    <field name="is_task_active" invisible="1"/>
                     <field name="encode_uom_in_days" invisible="1"/>
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', ('display_timer_start_primary', '=', False), ('display_timer', '=', False)]}" icon="fa-clock-o"/>
@@ -69,8 +67,6 @@
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
                 <field name="project_id" invisible="1"/>
-                <field name="_related_task_ids" invisible="1"/>
-                <field name="task_id" context="{'default_project_id': project_id, 'default_partner_id': partner_id}" invisible="1" widget="task_with_hours"/>
             </xpath>
             <xpath expr="//field[@name='description']" position="replace">
                 <notebook>
@@ -80,7 +76,7 @@
                     <page string="Timesheets" name="timesheets"
                         attrs="{'invisible': ['|', ('project_id', '=', False), ('use_helpdesk_timesheet', '=', False)]}"
                         groups="hr_timesheet.group_hr_timesheet_user">
-                        <field name='timesheet_ids' mode="tree,kanban" attrs="{'readonly': [('task_id', '!=', False), '|', ('is_closed', '=', True), ('is_task_active', '=', False)]}" context="{'default_project_id': project_id, 'default_task_id': task_id}" groups="hr_timesheet.group_hr_timesheet_user">
+                        <field name='timesheet_ids' mode="tree,kanban" context="{'default_project_id': project_id}" groups="hr_timesheet.group_hr_timesheet_user">
                             <tree editable="bottom" string="Timesheet Activities" default_order="date">
                                 <field name="date"/>
                                 <field name="user_id" invisible="1"/>

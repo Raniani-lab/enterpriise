@@ -35,8 +35,8 @@
             </xpath>
             <field name="job_id" position="after">
                 <field name="contract_type_id"/>
-                <label for="wage_on_signature" attrs="{'invisible': [('wage_on_signature', '=', 0)]}"/>
-                <div class="o_row" name="wage" attrs="{'invisible': [('wage_on_signature', '=', 0)]}">
+                <label for="wage_on_signature"/>
+                <div class="o_row" name="wage">
                     <field name="wage_on_signature" nolabel="1"/>
                     <span>/ month</span>
                 </div>

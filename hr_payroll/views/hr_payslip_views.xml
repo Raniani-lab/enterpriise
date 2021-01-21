@@ -197,9 +197,9 @@
                 <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 <button string="Refund" name="refund_sheet" states="done" type='object'/>
                 <button string="Set to Draft" name="action_payslip_draft" type="object" states="cancel"/>
-                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight" title="Recompute the payslip lines"/>
+                <button string="Compute Sheet" name="compute_sheet" type="object" states="draft,verify" class="oe_highlight" help="Recompute the payslip lines only, not the worked days / input lines"/>
                 <button string="Cancel Payslip" name="action_payslip_cancel" type="object" states="draft,done,verify"/>
-                <button string="Recompute Worked Days" name="action_refresh_from_work_entries" type="object" title="Recompute the worked days lines and the payslip lines, in case you modified the work entries" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'verify']), ('employee_id', '=', False)]}"/>
+                <button string="Recompute Whole Sheet" name="action_refresh_from_work_entries" type="object" help="Recompute the worked days / input lines and the payslip lines, in case you modified the work entries" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'verify']), ('employee_id', '=', False)]}"/>
                 <button string="Print" name="action_print_payslip" type="object"/>
                 <button string="Export Payslip" name="action_export_payslip" type="object" attrs="{'invisible': [('is_superuser', '=', False)]}"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,done"/>

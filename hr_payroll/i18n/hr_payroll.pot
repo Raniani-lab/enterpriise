@@ -58,6 +58,11 @@ msgid "-> Report"
 msgstr ""
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
+msgid "13th pay salary"
+msgstr ""
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span class=\"ml-2\"> hours/week</span>"
 msgstr ""
@@ -372,11 +377,13 @@ msgid "Average Net Wage"
 msgstr ""
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_worker_basic
 #: model:hr.salary.rule.category,name:hr_payroll.BASIC
 msgid "Basic"
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
 #: code:addons/hr_payroll/models/hr_salary_rule.py:0
 #, python-format
 msgid "Basic Salary"
@@ -511,9 +518,13 @@ msgid "Company"
 msgstr ""
 
 #. module: hr_payroll
-#: model:hr.salary.rule.category,name:hr_payroll.COMP
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_form
 msgid "Company Contribution"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule.category,name:hr_payroll.COMP
+msgid "Company Part"
 msgstr ""
 
 #. module: hr_payroll
@@ -604,6 +615,16 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_payroll.action_contribution_registers
 #: model:ir.actions.report,name:hr_payroll.action_report_register
 msgid "Contribution Registers"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_convanceallowance1
+msgid "Conveyance Allowance"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_ca_gravie
+msgid "Conveyance Allowance For Gravie"
 msgstr ""
 
 #. module: hr_payroll
@@ -739,7 +760,10 @@ msgid "Days of Unpaid Time Off"
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#: code:addons/hr_payroll/models/hr_salary_rule.py:0
 #: model:hr.salary.rule.category,name:hr_payroll.DED
+#, python-format
 msgid "Deduction"
 msgstr ""
 
@@ -1089,7 +1113,10 @@ msgid "Generated Payslips"
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#: code:addons/hr_payroll/models/hr_salary_rule.py:0
 #: model:hr.salary.rule.category,name:hr_payroll.GROSS
+#, python-format
 msgid "Gross"
 msgstr ""
 
@@ -1140,6 +1167,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__hours_per_week
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__hours_per_week
 msgid "Hours per Week"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
+msgid "House Rent Allowance"
 msgstr ""
 
 #. module: hr_payroll
@@ -1420,6 +1452,11 @@ msgid "Maximum Range"
 msgstr ""
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_meal_voucher
+msgid "Meal Voucher"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
 msgid "Message Delivery error"
 msgstr ""
@@ -1497,6 +1534,7 @@ msgid "Net"
 msgstr ""
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
 #: code:addons/hr_payroll/models/hr_salary_rule.py:0
 #, python-format
 msgid "Net Salary"
@@ -1909,6 +1947,16 @@ msgid "Print"
 msgstr ""
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_professionaltax1
+msgid "Professional Tax"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_providentfund1
+msgid "Provident Fund"
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_python_compute
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_rule__amount_select__code
 msgid "Python Code"
@@ -1965,19 +2013,19 @@ msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
-msgid "Recompute Worked Days"
+msgid "Recompute Whole Sheet"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
-msgid "Recompute the payslip lines"
+msgid "Recompute the payslip lines only, not the worked days / input lines"
 msgstr ""
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid ""
-"Recompute the worked days lines and the payslip lines, in case you modified "
-"the work entries"
+"Recompute the worked days / input lines and the payslip lines, in case you "
+"modified the work entries"
 msgstr ""
 
 #. module: hr_payroll
@@ -2009,6 +2057,13 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_type__1
 msgid "Regular Working Day"
+msgstr ""
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#: code:addons/hr_payroll/models/hr_salary_rule.py:0
+#, python-format
+msgid "Reimbursement"
 msgstr ""
 
 #. module: hr_payroll
@@ -2314,6 +2369,11 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__sum_worked_hours
 msgid "Sum Worked Hours"
+msgstr ""
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_sum_alw_category
+msgid "Sum of Allowance category"
 msgstr ""
 
 #. module: hr_payroll

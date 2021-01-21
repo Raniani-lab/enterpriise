@@ -101,7 +101,7 @@ class Payslip(models.Model):
         'date_from', 'date_to')
     def _compute_has_attachment_salary(self):
         for payslip in self:
-            payslip.has_attachment_salary = any(
+            payslip.has_attachment_salary = payslip.is_regular and any(
                 a.date_from <= payslip.date_to and
                 a.date_to >= payslip.date_from for a in payslip.contract_id.attachment_salary_ids)
 

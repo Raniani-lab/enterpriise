@@ -7,10 +7,13 @@
         <field name="inherit_id" ref="hr_work_entry.hr_work_entry_type_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='main_group']" position="after">
-                <group string="Display in Payslip">
-                    <group>
+                <group>
+                    <group string="Display in Payslip">
                         <field name="round_days"/>
                         <field name="round_days_type" attrs="{'invisible': [('round_days', '=', 'NO')]}"/>
+                    </group>
+                    <group string="Unpaid">
+                        <field name="unpaid_structure_ids" widget="many2many_tags"/>
                     </group>
                 </group>
             </xpath>

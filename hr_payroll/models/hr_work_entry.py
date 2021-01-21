@@ -15,3 +15,6 @@ class HrWorkEntryType(models.Model):
     is_unforeseen = fields.Boolean(default=False, string="Unforeseen Absence")
     round_days = fields.Selection([('NO', 'No Rounding'), ('HALF', 'Half Day'), ('FULL', 'Day')], string="Rounding", required=True, default='NO')
     round_days_type = fields.Selection([('HALF-UP', 'Closest'), ('UP', 'Up'), ('DOWN', 'Down')], string="Round Type", required=True, default='DOWN')
+    unpaid_structure_ids = fields.Many2many(
+        'hr.payroll.structure', 'hr_payroll_structure_hr_work_entry_type_rel',
+        string="Structures considering this work entry type as unpaid")

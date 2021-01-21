@@ -78,9 +78,12 @@ class Payslip(models.Model):
                 lambda a: a.date_from <= self.date_to and a.date_to >= self.date_from)
 
             for garnished_type in list(set(valid_attachments.mapped('garnished_type'))):
-                amount = sum(valid_attachments.filtered(lambda a: a.garnished_type == garnished_type).mapped('amount'))
+                attachments = valid_attachments.filtered(lambda a: a.garnished_type == garnished_type)
+                amount = sum(attachments.mapped('amount'))
+                name = ', '.join(attachments.mapped('name'))
                 input_type_id = attachment_types[garnished_type]
                 input_line_vals.append((0, 0, {
+                    'name': name,
                     'amount': amount,
                     'input_type_id': input_type_id,
                 }))

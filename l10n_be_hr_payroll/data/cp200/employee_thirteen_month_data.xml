@@ -82,7 +82,10 @@ if contract.mobile:
             <field name="sequence">174</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = inputs.ATTACH_SALARY</field>
-            <field name="amount_python_compute">result = -inputs.ATTACH_SALARY.amount</field>
+            <field name="amount_python_compute">
+result = -inputs.ATTACH_SALARY.amount
+result_name = inputs.ATTACH_SALARY.name
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
         </record>
 
@@ -94,7 +97,10 @@ if contract.mobile:
             <field name="sequence">174</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = inputs.ASSIG_SALARY</field>
-            <field name="amount_python_compute">result = -inputs.ASSIG_SALARY.amount</field>
+            <field name="amount_python_compute">
+result = -inputs.ASSIG_SALARY.amount
+result_name = inputs.ASSIG_SALARY.name
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
         </record>
 
@@ -106,7 +112,10 @@ if contract.mobile:
             <field name="sequence">174</field>
             <field name="condition_select">python</field>
             <field name="condition_python">result = inputs.CHILD_SUPPORT</field>
-            <field name="amount_python_compute">result = -inputs.CHILD_SUPPORT.amount</field>
+            <field name="amount_python_compute">
+result = -inputs.CHILD_SUPPORT.amount
+result_name = inputs.CHILD_SUPPORT.name
+            </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
         </record>
 

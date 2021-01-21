@@ -6,15 +6,20 @@
         <field name="inherit_id" ref="l10n_be_hr_payroll.hr_contract_view_form"/>
         <field name="arch" type="xml">
             <field name="transport_mode_car" position="replace">
-                <label for="car_id" string="Company Car" name="car_id_label" groups="fleet.fleet_group_manager"/>
-                <div name="car_id_div" groups="fleet.fleet_group_manager">
+                <div name="car_id_div"
+                    colspan="2" class="o_checkbox_optional_field"
+                    groups="fleet.fleet_group_manager">
+                    <label for="car_id" string="Company Car" name="car_id_label"/>
                     <field name="transport_mode_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
                     <field name="car_id" nolabel="1" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
                 </div>
             </field>
             <xpath expr="//label[@for='fuel_card']" position="before">
-                <label for="new_car_model_id" string="Requested New Car Model" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
-                <div attrs="{'invisible': [('transport_mode_car', '=', False)]}" name="car_id_div" groups="fleet.fleet_group_manager">
+                <div name="new_car_model_id_div"
+                    colspan="2" class="o_checkbox_optional_field"
+                    groups="fleet.fleet_group_manager"
+                    attrs="{'invisible': [('transport_mode_car', '=', False)]}">
+                    <label for="new_car_model_id" string="Requested New Car Model"/>
                     <field name="new_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
                     <field name="new_car_model_id" attrs="{'invisible': [('new_car', '=', False)]}" nolabel="1"/>
                 </div>

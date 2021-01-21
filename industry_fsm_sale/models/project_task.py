@@ -221,8 +221,10 @@ class Task(models.Model):
         if self.user_has_groups('project.group_project_user'):
             SaleOrder = SaleOrder.sudo()
 
-        domain = ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
-        team = self.env['crm.team'].sudo()._get_default_team_id(domain=domain)
+        # TDE note: normally company comes from project, user should be in same company
+        # and _get_default_team_id already enforces company coherency + match
+        # Sale.onchange_user_id() that also calls _get_default_team_id
+        team = self.env['crm.team'].sudo()._get_default_team_id(user_id=self.user_id.id, domain=None)
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
@@ -231,9 +233,8 @@ class Task(models.Model):
             'team_id': team.id if team else False,
         })
         sale_order.onchange_partner_id()
-
-        # write after creation since onchange_partner_id sets the current user
-        sale_order.write({'user_id': self.user_id.id})
+        # update after creation since onchange_partner_id sets the current user
+        sale_order.user_id = self.user_id.id
         sale_order.onchange_user_id()
 
         self.sale_order_id = sale_order

@@ -13,7 +13,10 @@ def _generate_payslips(cr, registry):
     if env.ref('l10n_be_hr_payroll.res_company_be', raise_if_not_found=False):
         if not env['hr.payslip'].sudo().search_count([('employee_id.name', '=', 'Marian Weaver')]):
 
-            employees = env['hr.employee'].search([('company_id', '=', env.ref('l10n_be_hr_payroll.res_company_be').id)])
+            employees = env['hr.employee'].search([
+                ('company_id', '=', env.ref('l10n_be_hr_payroll.res_company_be').id),
+                ('id', '!=', env.ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck').id),
+            ])
             wizard_vals = {
                 'employee_ids': [(4, employee.id) for employee in employees],
                 'structure_id': env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id

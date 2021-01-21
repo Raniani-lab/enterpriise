@@ -1831,7 +1831,7 @@
         <field name="color_name">brown</field>
         <field name="request_unit">hour</field>
         <field name="unpaid" eval="True"/>
-        <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
+        <field name="validity_start" eval="False"/>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_unpaid"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -2169,6 +2169,609 @@
     <function model="hr.leave" name="action_validate">
         <value model="hr.leave" eval="obj().search([('state', '=', 'validate1'),('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
     </function>
+
+    <!-- Data for employee departure -->
+    <record id="res_partner_joseph_noluck" model="res.partner">
+        <field name="name">Joseph Noluck</field>
+        <field name="street">47 Chemin de la malchance</field>
+        <field name="city">Libramont-Chevigny</field>
+        <field name="zip">6800</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="phone">+003249459832</field>
+        <field name="email">joseph.noluck@example.com</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="res_partner_joseph_noluck_private_address" model="res.partner">
+        <field name="name">Joseph Noluck</field>
+        <field name="street">47 Chemin de la malchance</field>
+        <field name="city">Libramont-Chevigny</field>
+        <field name="zip">6800</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="phone">+003249459832</field>
+        <field name="email">joseph.noluck@example.com</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="type">private</field>
+    </record>
+
+    <record id="res_partner_bank_account_joseph_noluck" model="res.partner.bank">
+        <field name="acc_number">BE44666834865266</field>
+        <field name="bank_id" ref="base.bank_ing"/>
+        <field name="partner_id" ref="res_partner_joseph_noluck_private_address"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="hr_employee_joseph_noluck" model="hr.employee">
+        <field name="name">Joseph Noluck (jon)</field>
+        <field name="gender">male</field>
+        <field name="marital">single</field>
+        <field name="job_title">Software Developer</field>
+        <field name="address_home_id" ref="res_partner_joseph_noluck_private_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="emergency_contact">Jacqueline Noluck</field>
+        <field name="emergency_phone">+0032498765474</field>
+        <field name="birthday">1990-09-05</field>
+        <field name="km_home_work">102</field>
+        <field name="place_of_birth">Libramont-Chevigny</field>
+        <field name="country_of_birth" ref="base.be"/>
+        <field name="certificate">master</field>
+        <field name="study_field">Civil Engineering</field>
+        <field name="study_school">Université Catholique de Louvain-la-Neuve</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="parent_id" ref="l10n_be_hr_contract_salary.employee_max"/>
+        <field name="country_id" ref="base.be"/>
+        <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
+        <field name="identification_id">90-09-05-874-51</field>
+        <field name="bank_account_id" ref="res_partner_bank_account_joseph_noluck"/>
+        <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jon-image.jpg"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="fleet_vehicle_audi_a3_joseph_noluck" model="fleet.vehicle">
+        <field name="model_id" ref="fleet.model_a3"/>
+        <field name="license_plate">1-HGN-535</field>
+        <field name="acquisition_date" eval="time.strftime('2019-01-01')"/>
+        <field name="co2">88</field>
+        <field name="driver_id" ref="res_partner_joseph_noluck_private_address"/>
+        <field name="car_value">38000</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="fleet_vehicle_log_contract_audi_a3_joseph_noluck" model="fleet.vehicle.log.contract">
+        <field name="recurring_cost_amount_depreciated">450.0</field>
+        <field name="state">open</field>
+        <field name="vehicle_id" ref="fleet_vehicle_audi_a3_joseph_noluck"/>
+    </record>
+
+    <record id="hr_contract_cdi_joseph_noluck_1" model="hr.contract">
+        <field name="name">CDI - Joseph Noluck - Experienced Developer - 2019</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="wage">3000</field>
+        <field name="commission_on_target">1500</field>
+        <field name="transport_mode_car" eval="True"/>
+        <field name="new_car" eval="False"/>
+        <field name="car_id" ref="fleet_vehicle_audi_a3_joseph_noluck"/>
+        <field name="state">close</field>
+        <field name="ip_wage_rate">25</field>
+        <field name="ip" eval="True"/>
+        <field name="hr_responsible_id" ref="base.user_demo"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="date_start" eval="time.strftime('2019-01-01')"/>
+        <field name="date_end" eval="time.strftime('2019-12-31')"/>
+        <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+    </record>
+
+    <record id="hr_contract_cdi_joseph_noluck_2" model="hr.contract">
+        <field name="name">CDI - Joseph Noluck - Experienced Developer - 2020</field>
+        <field name="department_id" ref="hr_department_2"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="wage">3200</field>
+        <field name="commission_on_target">1500</field>
+        <field name="transport_mode_car" eval="True"/>
+        <field name="new_car" eval="False"/>
+        <field name="car_id" ref="fleet_vehicle_audi_a3_joseph_noluck"/>
+        <field name="state">open</field>
+        <field name="ip_wage_rate">25</field>
+        <field name="ip" eval="True"/>
+        <field name="hr_responsible_id" ref="base.user_demo"/>
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
+        <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="date_start" eval="time.strftime('2020-01-01')"/>
+        <field name="date_end" eval="False"/>
+        <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+    </record>
+
+    <record id="hr_employee_joseph_noluck" model="hr.employee">
+        <field name="contract_id" ref="hr_contract_cdi_joseph_noluck_2"/>
+    </record>
+
+    <record id="holiday_status_paid_time_off_2019" model="hr.leave.type">
+        <field name="name">Paid Time Off 2019</field>
+        <field name="allocation_type">fixed</field>
+        <field name="leave_validation_type">both</field>
+        <field name="color_name">black</field>
+        <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+        <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+        <field name="validity_start" eval="time.strftime('2019-01-01')"/>
+        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
+    </record>
+
+    <record id="holiday_status_paid_time_off_2020" model="hr.leave.type">
+        <field name="name">Paid Time Off 2020</field>
+        <field name="allocation_type">fixed</field>
+        <field name="leave_validation_type">both</field>
+        <field name="color_name">black</field>
+        <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+        <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+        <field name="validity_start" eval="time.strftime('2020-01-01')"/>
+        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
+    </record>
+
+    <record id="hr_holidays_allocation_joseph_noluck_2019" model="hr.leave.allocation">
+        <field name="name">Paid Time Off Joseph Noluck - 2019</field>
+        <field name="holiday_status_id" ref="holiday_status_paid_time_off_2019"/>
+        <field name="number_of_days">20</field>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="create_date" eval="time.strftime('2019-01-01')"/>
+    </record>
+
+    <record id="hr_holidays_allocation_joseph_noluck_2020" model="hr.leave.allocation">
+        <field name="name">Paid Time Off Joseph NolucK - 2020</field>
+        <field name="holiday_status_id" ref="holiday_status_paid_time_off_2020"/>
+        <field name="number_of_days">20</field>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="create_date" eval="time.strftime('2020-01-01')"/>
+    </record>
+
+    <function model="hr.leave.allocation" name="action_confirm">
+        <value model="hr.leave.allocation" eval="obj().search([
+            ('state', '=', 'draft'),
+            ('id', 'in', [
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])
+        ]).ids"/>
+    </function>
+
+    <function model="hr.leave.allocation" name="action_approve">
+        <value model="hr.leave.allocation" eval="obj().search([
+            ('state', '=', 'confirm'),
+            ('id', 'in', [
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])
+        ]).ids"/>
+    </function>
+
+    <function model="hr.leave.allocation" name="action_validate">
+        <value model="hr.leave.allocation" eval="obj().search([
+            ('state', '=', 'validate1'),
+            ('id', 'in', [
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
+                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])
+        ]).ids"/>
+    </function>
+
+    <record id="hr_holidays_joseph_noluck_unpaid" model="hr.leave">
+        <field name="name">Joseph Noluck Unpaid</field>
+        <field name="holiday_status_id" ref="test_l10n_be_hr_payroll_account.holiday_status_unpaid"/>
+        <field name="date_from" eval="time.strftime('2019-03-04 01:00:00')"/>
+        <field name="date_to" eval="time.strftime('2019-03-15 23:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('2019-03-04 01:00:00')"/>
+        <field name="request_date_to" eval="time.strftime('2019-03-15 23:00:00')"/>
+        <field name="number_of_days">10</field>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+    </record>
+
+    <record id="hr_holidays_joseph_noluck_legal_2019" model="hr.leave">
+        <field name="name">Joseph Noluck Legal Time Off</field>
+        <field name="holiday_status_id" ref="holiday_status_paid_time_off_2019"/>
+        <field name="date_from" eval="time.strftime('2019-05-06 01:00:00')"/>
+        <field name="date_to" eval="time.strftime('2019-05-31 23:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('2019-05-06 01:00:00')"/>
+        <field name="request_date_to" eval="time.strftime('2019-05-31 23:00:00')"/>
+        <field name="number_of_days">20</field>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+    </record>
+
+    <record id="hr_holidays_joseph_noluck_legal_2020" model="hr.leave">
+        <field name="name">Joseph Noluck Legal Time Off</field>
+        <field name="holiday_status_id" ref="holiday_status_paid_time_off_2020"/>
+        <field name="date_from" eval="time.strftime('2020-01-13 01:00:00')"/>
+        <field name="date_to" eval="time.strftime('2020-01-17 23:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('2020-01-13 01:00:00')"/>
+        <field name="request_date_to" eval="time.strftime('2020-01-17 23:00:00')"/>
+        <field name="number_of_days">5</field>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+    </record>
+
+    <function model="hr.leave" name="action_confirm">
+        <value model="hr.leave" eval="obj().search([
+            ('state', '=', 'draft'),
+            ('employee_id', '=', obj().env.ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck').id)
+        ]).ids"/>
+    </function>
+    <function model="hr.leave" name="action_approve">
+        <value model="hr.leave" eval="obj().search([
+            ('state', '=', 'confirm'),
+            ('employee_id', '=', obj().env.ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck').id)
+        ]).ids"/>
+    </function>
+    <function model="hr.leave" name="action_validate">
+        <value model="hr.leave" eval="obj().search([
+            ('state', '=', 'validate1'),
+            ('employee_id', '=', obj().env.ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck').id)
+        ]).ids"/>
+    </function>
+
+    <function model="hr.contract" name="_generate_work_entries">
+        <value eval="[ref('test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1')]"/>
+        <value eval="time.strftime('2019-01-01')"/>
+        <value eval="time.strftime('2019-12-31')"/>
+    </function>
+
+    <function model="hr.contract" name="_generate_work_entries">
+        <value eval="[ref('test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2')]"/>
+        <value eval="time.strftime('2020-01-01')"/>
+        <value eval="time.strftime('2020-03-31')"/>
+    </function>
+
+    <record id="hr_payslip_batch_joseph_no_luck" model="hr.payslip.run">
+        <field name="name">Joseph Noluck Payslips</field>
+        <field name="date_start" eval="time.strftime('2019-01-01')"/>
+        <field name="date_end" eval="time.strftime('2020-03-31')"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="hr_payslip_demo_jon_january_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - January 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-01-01')"/>
+        <field name="date_to" eval="time.strftime('2019-01-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/001</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <record id="hr_payslip_input_commission_january_2019" model="hr.payslip.input">
+        <field name="payslip_id" ref="hr_payslip_demo_jon_january_2019"/>
+        <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
+        <field name="amount">2000</field>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_january_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_january_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_february_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - February 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-02-01')"/>
+        <field name="date_to" eval="time.strftime('2019-02-28')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/002</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_february_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_february_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_march_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - March 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-03-01')"/>
+        <field name="date_to" eval="time.strftime('2019-03-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/003</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_march_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_march_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_april_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - April 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-04-01')"/>
+        <field name="date_to" eval="time.strftime('2019-04-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/004</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_april_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_april_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_warrant_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - Warrant - 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-04-01')"/>
+        <field name="date_to" eval="time.strftime('2019-04-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant"/>
+        <field name="number">SLIP/NOLUCK/WARRANT/2019</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_warrant_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_warrant_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_may_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - May 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-05-01')"/>
+        <field name="date_to" eval="time.strftime('2019-05-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/005</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_may_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_may_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_june_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - June 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-06-01')"/>
+        <field name="date_to" eval="time.strftime('2019-06-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/006</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_june_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_june_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_double_holiday_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - Double Holidays - 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-06-01')"/>
+        <field name="date_to" eval="time.strftime('2019-06-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday"/>
+        <field name="number">SLIP/NOLUCK/DOUBLE/2019</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_double_holiday_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_double_holiday_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_july_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - July 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-07-01')"/>
+        <field name="date_to" eval="time.strftime('2019-07-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/007</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <record id="hr_payslip_input_commission_july_2019" model="hr.payslip.input">
+        <field name="payslip_id" ref="hr_payslip_demo_jon_july_2019"/>
+        <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
+        <field name="amount">2000</field>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_july_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_july_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_august_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - August 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-08-01')"/>
+        <field name="date_to" eval="time.strftime('2019-08-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/008</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_august_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_august_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_september_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - September 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-09-01')"/>
+        <field name="date_to" eval="time.strftime('2019-09-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/009</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_september_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_september_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_october_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - October 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-10-01')"/>
+        <field name="date_to" eval="time.strftime('2019-10-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/010</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <record id="hr_payslip_input_commission_october_2019" model="hr.payslip.input">
+        <field name="payslip_id" ref="hr_payslip_demo_jon_october_2019"/>
+        <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
+        <field name="amount">2000</field>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_october_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_october_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_november_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - November 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-11-01')"/>
+        <field name="date_to" eval="time.strftime('2019-11-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/011</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_november_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_november_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_december_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - December 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-12-01')"/>
+        <field name="date_to" eval="time.strftime('2019-12-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/012</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_december_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_december_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_13th_month_2019" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - Thirteen Month 2019"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_1"/>
+        <field name="date_from" eval="time.strftime('2019-12-01')"/>
+        <field name="date_to" eval="time.strftime('2019-12-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month"/>
+        <field name="number">SLIP/NOLUCK/13TH/2019</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_13th_month_2019')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_13th_month_2019')]]"/>
+
+    <record id="hr_payslip_demo_jon_january_2020" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - January 2020"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2"/>
+        <field name="date_from" eval="time.strftime('2020-01-01')"/>
+        <field name="date_to" eval="time.strftime('2020-01-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/013</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <record id="hr_payslip_input_commission_january_2020" model="hr.payslip.input">
+        <field name="payslip_id" ref="hr_payslip_demo_jon_january_2020"/>
+        <field name="input_type_id" ref="l10n_be_hr_payroll.input_fixed_commission"/>
+        <field name="amount">2000</field>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_january_2020')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_january_2020')]]"/>
+
+    <record id="hr_payslip_demo_jon_february_2020" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - February 2020"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2"/>
+        <field name="date_from" eval="time.strftime('2020-02-01')"/>
+        <field name="date_to" eval="time.strftime('2020-02-29')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/014</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_february_2020')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_february_2020')]]"/>
+
+    <record id="hr_payslip_demo_jon_march_2020" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - March 2020"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2"/>
+        <field name="date_from" eval="time.strftime('2020-03-01')"/>
+        <field name="date_to" eval="time.strftime('2020-03-31')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/015</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_march_2020')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_march_2020')]]"/>
+
+    <record id="notice_period_wizard" model="hr.payslip.employee.depature.notice">
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="leaving_type">fired</field>
+        <field name="start_notice_period" eval="time.strftime('2020-04-15')"/>
+        <field name="end_notice_period" eval="time.strftime('2020-04-15')"/>
+        <field name="first_contract" eval="time.strftime('2019-01-01')"/>
+        <field name="notice_respect">without</field>
+        <field name="departure_description">Doesn't reach his target anymore</field>
+    </record>
+    <function model="hr.payslip.employee.depature.notice" name="compute_termination_fee">
+        <value eval="[ref('test_l10n_be_hr_payroll_account.notice_period_wizard')]"/>
+    </function>
+
+    <function model="hr.payslip" name="write">
+        <value model="hr.payslip" eval="obj().search([
+            ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')),
+            ('employee_id', '=', ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck'))
+        ]).ids"/>
+        <value eval="{
+            'number': 'SLIP/NOLUCK/TERMINATION',
+            'payslip_run_id': ref('test_l10n_be_hr_payroll_account.hr_payslip_batch_joseph_no_luck')
+        }"/>
+    </function>
+
+    <function model="hr.payslip" name="compute_sheet">
+        <value model="hr.payslip" eval="obj().search([
+            ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')),
+            ('employee_id', '=', ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck'))
+        ]).ids"/>
+    </function>
+
+    <record id="hr_payslip_demo_jon_april_2020" model="hr.payslip">
+        <field name="name">Joseph Noluck (jon) - April 2020"</field>
+        <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2"/>
+        <field name="date_from" eval="time.strftime('2020-04-01')"/>
+        <field name="date_to" eval="time.strftime('2020-04-30')"/>
+        <field name="employee_id" ref="hr_employee_joseph_noluck"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="number">SLIP/NOLUCK/016</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+        <field name="payslip_run_id" ref="hr_payslip_batch_joseph_no_luck"/>
+    </record>
+    <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_jon_april_2020')]]"/>
+
+    <!-- Reset company on superuser -->
 
     <function model="res.users" name="write">
         <value eval="[1, 2]"/>

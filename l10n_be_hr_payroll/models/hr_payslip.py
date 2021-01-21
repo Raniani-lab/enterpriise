@@ -203,7 +203,7 @@ class Payslip(models.Model):
                     'number_of_hours': self.contract_id.resource_calendar_id.hours_per_day * len(public_leaves),
                 })
         # Handle loss on commissions
-        if self.contract_id.commission_on_target:
+        if self._get_last_year_average_variable_revenues():
             we_types_ids = (
                 self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday') + self.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment')
             ).ids
@@ -219,18 +219,17 @@ class Payslip(models.Model):
         return res
 
     def _get_last_year_average_variable_revenues(self):
-        if not self.contract_id.commission_on_target:
-            return 0
-        commission_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
         payslips = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),
-            ('struct_id', '=', commission_structure.id),
             ('state', '=', 'done'),
             ('date_from', '>=', self.date_from + relativedelta(months=-12)),
+            ('date_from', '<', self.date_from),
         ], order="date_from asc")
         complete_payslips = payslips.filtered(
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
-        total_amount = sum(p._get_salary_line_total('COM') for p in complete_payslips)
+        total_amount = 0
+        for code in ['COM', 'COMMISSION']:
+            total_amount += sum(p._get_salary_line_total(code) for p in complete_payslips)
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:

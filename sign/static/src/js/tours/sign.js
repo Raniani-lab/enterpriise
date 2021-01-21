@@ -9,6 +9,7 @@ var _t = core._t;
 tour.register('sign_tour', {
     url: "/web",
     rainbowManMessage: "<b>Congratulations</b>, your first document is fully signed!",
+    sequence: 150,
 },  [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
     content: _t("Let's <b>prepare & sign</b> our first document."),

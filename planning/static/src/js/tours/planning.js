@@ -7,6 +7,7 @@ odoo.define('planning.tour', function (require) {
     var _t = core._t;
 
     tour.register('planning_tour', {
+        sequence: 120,
         'skip_enabled': false,
     }, [{
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',

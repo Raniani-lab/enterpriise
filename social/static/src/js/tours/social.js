@@ -9,6 +9,7 @@ var _t = core._t;
 tour.register('social_tour', {
         url: "/web",
         rainbowManMessage: `<strong> ${_t('Congrats! Come back in a few minutes to check your statistics.')} </strong>`,
+        sequence: 190,
     },
     [
         tour.stepUtils.showAppsMenuItem(),

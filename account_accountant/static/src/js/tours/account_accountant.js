@@ -29,6 +29,7 @@ odoo.define('account_accountant.tour', function (require) {
                 return message;
             },
             url: "/web",
+            sequence: 50,
         },
         [
             ...tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Let’s automate your bills, bank transactions and accounting processes.')),
@@ -81,6 +82,7 @@ odoo.define('account_accountant.tour', function (require) {
 
     tour.register('account_accountant_tour_upload_ocr_step', {
             rainbowMan: false,
+            sequence: 70,
         },
         [
             {

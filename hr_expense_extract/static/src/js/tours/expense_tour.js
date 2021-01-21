@@ -10,6 +10,7 @@ odoo.define('hr_expense_extract.tour', function(require) {
         url: "/web",
         rainbowMan: true,
         rainbowManMessage: "<b>Congratulations</b>, you are now an expert of Expenses.",
+        sequence: 42,
     }, [tour.stepUtils.showAppsMenuItem(), {
         trigger: '.o_app[data-menu-xmlid="hr_expense.menu_hr_expense_root"]',
         content: _t("Wasting time recording your receipts? Let’s try a better way."),

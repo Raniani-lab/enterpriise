@@ -7,6 +7,7 @@ const tour = require('web_tour.tour');
 tour.register('documents_tour', {
     url: "/web",
     rainbowManMessage: _t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."),
+    sequence: 180,
 }, [{
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents."),

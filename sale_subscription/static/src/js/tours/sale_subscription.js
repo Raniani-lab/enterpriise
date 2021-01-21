@@ -7,7 +7,8 @@ var tour = require('web_tour.tour');
 var _t = core._t;
 
 tour.register('sale_subscription_tour', {
-	url: "/web",
+    url: "/web",
+    sequence: 250,
 }, [{
     trigger: '.o_app[data-menu-xmlid="sale_subscription.menu_sale_subscription_root"]',
 	content: _t('Want recurring billing via subscription management ? Get started by clicking here'),

@@ -7,7 +7,7 @@ var tour = require('web_tour.tour');
 var _t = core._t;
 
 tour.register('timesheet_tour', {
-    sequence: 20,
+    sequence: 100,
     rainbowManMessage: _t("Congratulations, you are now a master of Timesheets.</b>Psst: try the  [a] - [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and see what happens next!"),
     url: "/web",
 }, [tour.stepUtils.showAppsMenuItem(), {

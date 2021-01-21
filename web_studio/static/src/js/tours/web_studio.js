@@ -10,6 +10,7 @@ var _t = core._t;
 
 tour.register('web_studio_home_menu_background_tour', {
     url: "/web",
+    sequence: 260,
 }, [{
     trigger: '.o_web_studio_navbar_item',
     content: _t('Want to customize the background? Let’s activate <b>Odoo Studio</b>.'),
@@ -27,6 +28,7 @@ tour.register('web_studio_home_menu_background_tour', {
 
 tour.register('web_studio_new_app_tour', {
     url: "/web?studio=app_creator",
+    sequence: 270,
 }, [{
     trigger: '.o_web_studio_new_app',
     auto: true,

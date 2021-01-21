@@ -196,11 +196,11 @@ QUnit.module('Views', {
         var task2 = this.data.tasks.records[1];
         var startDateUTCString = task2.start;
         var startDateUTC = moment.utc(startDateUTCString);
-        var startDateLocalString = startDateUTC.local().format('DD MMM, hh:mm A');
+        var startDateLocalString = startDateUTC.local().format('DD MMM, LT');
 
         var stopDateUTCString = task2.stop;
         var stopDateUTC = moment.utc(stopDateUTCString);
-        var stopDateLocalString = stopDateUTC.local().format('DD MMM, hh:mm A');
+        var stopDateLocalString = stopDateUTC.local().format('DD MMM, LT');
 
         var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
         GanttRow.prototype.POPOVER_DELAY = 0;

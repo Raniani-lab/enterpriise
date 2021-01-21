@@ -186,8 +186,8 @@
             </li>
             <li class="d-flex flex-column">
                 <span t-esc="display_name"/>
-                <span t-esc="userTimezoneStartDate.format('DD MMM, hh:mm A')"/>
-                <span t-esc="userTimezoneStopDate.format('DD MMM, hh:mm A')"/>
+                <span t-esc="userTimezoneStartDate.format('DD MMM, LT')"/>
+                <span t-esc="userTimezoneStopDate.format('DD MMM, LT')"/>
             </li>
         </ul>
     </div>

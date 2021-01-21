@@ -22,11 +22,11 @@
                         </div>
                         <div class="d-flex flex-row">
                             <div class="col-2 px-0 text-nowrap"><strong>Start:</strong></div>
-                            <div class="col pl-2 pr-0"> <span t-esc="userTimezoneStartDate.format('DD MMM, hh:mm A')"/></div>
+                            <div class="col pl-2 pr-0"> <span t-esc="userTimezoneStartDate.format('DD MMM, LT')"/></div>
                         </div>
                         <div class="d-flex flex-row">
                             <div class="col-2 px-0 text-nowrap"><strong>Stop:</strong></div>
-                            <div class="col pl-2 pr-0"> <span t-esc="userTimezoneStopDate.format('DD MMM, hh:mm A')"/></div>
+                            <div class="col pl-2 pr-0"> <span t-esc="userTimezoneStopDate.format('DD MMM, LT')"/></div>
                         </div>
                         <div class="d-flex flex-row">
                             <div class="col-2 px-0 text-nowrap"><strong>Stage:</strong></div>

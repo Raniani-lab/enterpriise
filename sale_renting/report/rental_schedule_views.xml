@@ -68,8 +68,8 @@
                              <div class="col">
                                  <ul class="pl-1 mb-0">
                                      <li><strong>Order #: </strong> <t t-esc="name"/></li>
-                                     <li><strong>Pickup : </strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm A')"/></li>
-                                     <li><strong>Return : </strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm A')"/></li>
+                                     <li><strong>Pickup : </strong> <t t-esc="userTimezoneStartDate.format('L LT')"/></li>
+                                     <li><strong>Return : </strong> <t t-esc="userTimezoneStopDate.format('L LT')"/></li>
                                      <li><strong>Status : </strong> <t t-field="report_line_status"/>
                                         <!-- t-field doesn't work, report_line_status isn't a field but a string -->
                                         <t t-if="late">

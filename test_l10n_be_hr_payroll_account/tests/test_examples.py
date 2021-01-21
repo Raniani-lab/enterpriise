@@ -110,6 +110,8 @@ class TestExamples(AccountTestInvoicingCommon):
                                    structure_type_id=payslip_values.get('struct_id').type_id.id,
                                    employee_id=employee.id)
             contract_id = self.env['hr.contract'].create(contract_values)
+            if contract_id.holidays:
+                contract_id.wage_on_signature = contract_id.wage_with_holidays
             contract_id.resource_calendar_id.tz = "Europe/Brussels"
             contract_id.write({'state': 'open'})
 
@@ -213,6 +215,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'CDI - Laurie Poiret - Experienced Developer',
             'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'wage': 2650,
+            'wage_on_signature': 2650,
             'commission_on_target': 0.0,
             'transport_mode_car': True,
             'new_car': False,
@@ -238,6 +241,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'Contract For Roger',
             'date_start': datetime.date(2019, 1, 1),
             'wage': 2500,
+            'wage_on_signature': 2500,
         }
         payslip = {
             'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'),
@@ -278,6 +282,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'Contract For Roger',
             'date_start': datetime.date(2018, 1, 1),
             'wage': 3746.33,
+            'wage_on_signature': 3746.33,
             'meal_voucher_amount': 7.45,
             'representation_fees': 150,
             'internet': 0,
@@ -463,6 +468,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'Contract For Roger',
             'date_start': datetime.date(2019, 1, 1),
             'wage': 3470.36,
+            'wage_on_signature': 3470.36,
             'fuel_card': 150,
             'holidays': 1,
             'meal_voucher_amount': 7.45,
@@ -505,6 +511,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'representation_fees': 0,
             'others_reimbursed_amount': 105.04,
             'wage': 2075.44,
+            'wage_on_signature': 2075.44,
             'internet': False,
             'mobile': False,
         }
@@ -556,6 +563,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'Contract For Roger',
             'date_start': datetime.date(2015, 1, 1),
             'wage': 2706.14,
+            'wage_on_signature': 2706.14,
             'representation_fees': 150,
             'others_reimbursed_amount': 200,
             'internet': True,
@@ -608,6 +616,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'PFI Contract for Roger',
             'date_start': datetime.date(2015, 1, 1),
             'wage': 2264.76,
+            'wage_on_signature': 2264.76,
             'meal_voucher_amount': 7.45,
             'others_reimbursed_amount': 100,
             'internet': False,
@@ -651,6 +660,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'PFI Contract for Roger',
             'date_start': datetime.date(2015, 1, 1),
             'wage': 1653.11,
+            'wage_on_signature': 1653.11,
             'meal_voucher_amount': 7.45,
             'internet': False,
             'mobile': False,
@@ -705,6 +715,7 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'PFI Contract for Roger',
             'date_start': datetime.date(2015, 1, 1),
             'wage': 1572.8,
+            'wage_on_signature': 1572.8,
             'meal_voucher_amount': 7.45,
             'internet': True,
             'mobile': True,

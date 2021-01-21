@@ -206,6 +206,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'structure_type_id': cls.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': datetime.date(2018, 12, 31),
             'wage': 2650.0,
+            'wage_on_signature': 2650.0,
             'state': "open",
             'transport_mode_car': True,
             'fuel_card': 150.0,
@@ -269,7 +270,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
     def test_low_salary(self):
-        self.contract.wage = 1800
+        self.contract.wage_on_signature = 1800
         self.contract.ip = False
 
         payslip = self._generate_payslip(self.date_from, self.date_to)
@@ -366,6 +367,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'date_start': datetime.date(2020, 9, 16),
             'date_end': datetime.date(2020, 12, 31),
         })
@@ -523,6 +525,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 10, 14),
             'date_end': False,
             'wage': 2650.0,
+            'wage_on_signature': 2650.0,
             'state': "open",
             'transport_mode_car': True,
             'fuel_card': 150.0,
@@ -759,6 +762,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -830,6 +834,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -896,6 +901,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -962,6 +968,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -1017,6 +1024,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 27),
             'wage': 0.0,
+            'wage_on_signature': 0.0,
             'ip': False,
             'time_credit': True,
             'work_time_rate': 0,
@@ -1060,6 +1068,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.contract.write({
             'resource_calendar_id': self.resource_calendar_half_time.id,
             'wage': 1325.0,
+            'wage_on_signature': 1325.0,
             'ip': False,
         })
 
@@ -1114,6 +1123,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.contract.write({
             'resource_calendar_id': self.resource_calendar_half_time.id,
             'wage': 1325.0,
+            'wage_on_signature': 1325.0,
             'ip': False,
         })
 
@@ -1181,6 +1191,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.contract.write({
             'resource_calendar_id': self.resource_calendar_half_time.id,
             'wage': 1325.0,
+            'wage_on_signature': 1325.0,
             'ip': False,
         })
 
@@ -1597,6 +1608,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ip_wage_rate': 20.0,
             'car_id': False,
         })
+        self.contract.wage_on_signature = self.contract.wage_with_holidays
 
         payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
 
@@ -2228,6 +2240,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 1, 1),
             'date_end': datetime.date(2021, 9, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -2422,6 +2435,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 1, 1),
             'date_end': datetime.date(2021, 9, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -2610,6 +2624,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 1, 1),
             'date_end': datetime.date(2021, 9, 30),
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'time_credit': True,
             'work_time_rate': 80,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -2888,6 +2903,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 8, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 0.0,
+            'wage_on_signature': 0.0,
             'time_credit': True,
             'work_time_rate': 0,
             'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
@@ -2983,6 +2999,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 4, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 3608.66,
+            'wage_on_signature': 3608.66,
             'fuel_card': 200.0,
             'mobile': 0.0,
             'ip': True,
@@ -3089,6 +3106,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_start': datetime.date(2020, 4, 1),
             'date_end': datetime.date(2020, 11, 30),
             'wage': 2650,
+            'wage_on_signature': 2650,
             'fuel_card': 200.0,
             'mobile': 0.0,
             'ip': True,
@@ -3275,6 +3293,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'time_credit': True,
             'work_time_rate': "0.8",
             'wage': 2120.0,
+            'wage_on_signature': 2120.0,
             'date_start': datetime.date(2020, 9, 16),
             'date_end': datetime.date(2020, 12, 31),
         })
@@ -3339,6 +3358,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': datetime.date(2018, 12, 31),
             'wage': 2000.0,
+            'wage_on_signature': 2000.0,
             'state': "open",
             'transport_mode_car': True,
             'transport_mode_private_car': True,
@@ -3601,6 +3621,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
             'date_start': datetime.date(2018, 12, 31),
             'wage': 1500.0,
+            'wage_on_signature': 1500.0,
             'state': "open",
             'transport_mode_car': True,
             'fuel_card': 150.0,

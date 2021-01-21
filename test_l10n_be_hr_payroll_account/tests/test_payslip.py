@@ -9,7 +9,7 @@ class TestPayslipBase(common.TransactionCase):
 
     def setUp(self):
         super(TestPayslipBase, self).setUp()
-
+        self.env.company.country_id = self.env.ref('base.be')
         self.employee = self.env['hr.employee'].create({
             'name': 'employee',
         })
@@ -22,6 +22,7 @@ class TestPayslipBase(common.TransactionCase):
         return self.env['hr.contract'].create({
             'name': 'Contract for %s' % self.employee.name,
             'wage': wage,
+            'wage_on_signature': wage,
             'employee_id': self.employee.id,
             'state': 'open',
             'date_start': date_start,

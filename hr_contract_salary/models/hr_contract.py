@@ -50,7 +50,11 @@ class HrContract(models.Model):
     monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Cost (FTE)', readonly=True,
         help="Total monthly cost of the employee for the employer for a full time equivalent.")
 
-
+    def _get_contract_wage_field(self):
+        self.ensure_one()
+        if self.structure_type_id.country_id.code == 'BE':
+            return 'wage_on_signature'
+        return super()._get_contract_wage_field()
 
     @api.depends('origin_contract_id')
     def _compute_is_origin_contract_template(self):

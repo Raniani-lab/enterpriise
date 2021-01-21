@@ -48,7 +48,7 @@ class SignContract(Sign):
                 contract.applicant_id.access_token = False
                 contract.applicant_id.emp_id = contract.employee_id
             self._create_activity_advantage(contract, 'running')
-            contract.wage_on_signature = contract.wage
+            contract.wage_on_signature = contract.wage_with_holidays
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
@@ -484,6 +484,8 @@ class HrContractSalary(http.Controller):
         return result
 
     def _get_compute_results(self, new_contract):
+        new_contract.wage_on_signature = new_contract.wage_with_holidays
+
         result = {}
         result['wage_with_holidays'] = round(new_contract.wage_with_holidays, 2)
         resume_lines = request.env['hr.contract.salary.resume'].search([

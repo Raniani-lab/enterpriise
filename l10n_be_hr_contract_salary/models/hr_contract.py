@@ -47,12 +47,6 @@ class HrContract(models.Model):
     def _compute_final_yearly_costs(self):
         super(HrContract, self)._compute_final_yearly_costs()
 
-    def _get_contract_wage_field(self):
-        self.ensure_one()
-        if self.structure_type_id.country_id.code == "BE":
-            return 'wage_with_holidays'
-        return super()._get_contract_wage_field()
-
     def _get_salary_costs_factor(self):
         res = super()._get_salary_costs_factor()
         if self.structure_type_id == self.env.ref('hr_contract.structure_type_employee_cp200'):

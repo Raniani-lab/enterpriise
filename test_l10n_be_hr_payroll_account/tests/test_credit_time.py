@@ -62,6 +62,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'resource_calendar_id': cls.classic_38h_calendar.id,
             'structure_type_id': cls.env.ref('hr_contract.structure_type_employee_cp200').id,
             'wage': 3000,
+            'wage_on_signature': 3000,
             'fuel_card': 150,
             'meal_voucher_amount': 7.45,
             'representation_fees': 150,
@@ -108,7 +109,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(len(contracts), 2)
         self.assertEqual(self.original_contract.date_end, datetime.date(2020, 3, 4))
         self.assertEqual(new_contract.date_start, datetime.date(2020, 3, 5))
-        self.assertEqual(new_contract.wage, 0)
+        self.assertEqual(new_contract._get_contract_wage(), 0)
 
         new_contract.state = 'open'
 
@@ -234,7 +235,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(len(contracts), 2)
         self.assertEqual(self.original_contract.date_end, datetime.date(2020, 3, 4))
         self.assertEqual(new_contract.date_start, datetime.date(2020, 3, 5))
-        self.assertEqual(new_contract.wage, 2400)
+        self.assertEqual(new_contract._get_contract_wage(), 2400)
 
         new_contract.state = 'open'
 

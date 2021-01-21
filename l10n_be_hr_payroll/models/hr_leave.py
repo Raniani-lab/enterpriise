@@ -28,11 +28,10 @@ class HolidaysRequest(models.Model):
             self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick'),
             self.env.ref('l10n_be_hr_payroll.work_entry_type_maternity'),
             self.env.ref('l10n_be_hr_payroll.work_entry_type_paternity_legal'),
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment'),
             self.env.ref('l10n_be_hr_payroll.work_entry_type_unpredictable'),
             self.env.ref('l10n_be_hr_payroll.work_entry_type_youth_time_off'),
         ]
-        # TODO LTU in master: add l10n_be_hr_payroll.work_entry_type_work_accident directly in the list
+        # TODO LTU in 14.2: add l10n_be_hr_payroll.work_entry_type_work_accident directly in the list
         work_entry_type_work_accident = self.env.ref('l10n_be_hr_payroll.work_entry_type_work_accident',
                                                      raise_if_not_found=False)
         if work_entry_type_work_accident:

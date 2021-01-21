@@ -165,8 +165,32 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         checked ? $(foldedContent).removeClass('d-none') : $(foldedContent).addClass('d-none');
     },
 
+    _isInvalidInput() {
+        let isInvalidInput;
+        $('input[data-field-type=integer]').toArray().forEach(input => {
+            if (input.value && !Number.isInteger(parseFloat(input.value))) {
+                isInvalidInput = true;
+                if (!input.classList.contains('border-danger')) {
+                    $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Not a valid input in integer field') + "</div>");
+                    input.classList.toggle('border-danger', isInvalidInput);
+                    $(".alert").delay(4000).slideUp(200, function () {
+                        $(this).alert('close');
+                    });
+                }
+            } else if(input.classList.contains('border-danger')) {
+                input.classList.remove('border-danger');
+            }
+        });
+        return isInvalidInput;
+    },
+
     async onchangeAdvantage(event) {
         // Check that https://github.com/odoo/enterprise/commit/e4fdb4df1d0d6aa5e8880ce1b4cc289a075479fd#diff-aa5bcb2caed35c99a7bd3e018a104342 is still valid
+
+        // Will check when the user has entered a floating value in the integer field
+        if (this._isInvalidInput()) {
+            return false;
+        }
         let advantageField = event.target.name;
         if (advantageField.includes('_slider')) {
             advantageField = advantageField.replace("_slider", "");
@@ -314,6 +338,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         const atpos = email.indexOf("@");
         const dotpos = email.lastIndexOf(".");
         const invalid_email = atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length;
+        const isInvalidInput = this._isInvalidInput();
 
         let requiredEmptyRadio;
         const radios = Array.prototype.slice.call(document.querySelectorAll('input[type=radio]:required'));
@@ -354,7 +379,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $(".alert").delay(4000).slideUp(200, function () {
             $(this).alert('close');
         });
-        return !invalid_email && !requiredEmptyInput && !requiredEmptySelect && !requiredEmptyRadio;
+        return !invalid_email && !requiredEmptyInput && !requiredEmptySelect && !requiredEmptyRadio && !isInvalidInput;
     },
 
     async getFormInfo() {

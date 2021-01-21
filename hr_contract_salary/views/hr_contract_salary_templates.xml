@@ -126,6 +126,7 @@
                                             applies-on="contract"
                                             class="form-control form-control-primary mb8 advantage_input"
                                             t-att-name="advantage.field + '_manual'"
+                                            t-att-data-field-type="advantage.manual_res_field_id.ttype"
                                             t-att-data-requested_documents="advantage.requested_documents"
                                             t-att-value="initial_values[advantage.field + '_manual']"/>
                                     </t>
@@ -306,6 +307,7 @@
                 type="number"
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
+                t-att-data-field-type="personal_info.display_type"
                 t-att-class="'form-control personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
                 t-att-value="initial_values[personal_info.field]"
                 t-att-required="personal_info.is_required and not hidden_children"/>

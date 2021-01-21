@@ -78,6 +78,7 @@ class HrContractSalary(main.HrContractSalary):
         elif advantage_field == 'train_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_train_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field in ['private_car_reimbursed_amount', 'km_home_work']:
+            new_value = new_value if new_value else 0
             if advantage_field == 'km_home_work':
                 res['extra_values'] = [('private_car_reimbursed_amount_manual', new_value)]
             else:

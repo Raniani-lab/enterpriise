@@ -99,7 +99,7 @@ class HrPayslip(models.Model):
                 payslip.negative_net_to_report_amount = sum(p._get_salary_line_total('NET') for p in payslips_to_report)
                 payslip.negative_net_to_report_message = _(
                     'Note: There are previous payslips with a negative amount for a total of %s to report.',
-                    payslip.negative_net_to_report_amount)
+                    round(payslip.negative_net_to_report_amount, 2))
                 if payslips_to_report and payslip.state == 'verify' and payslip.contract_id and not payslip.activity_ids.filtered(lambda a: a.activity_type_id == activity_type):
                     payslip.activity_schedule(
                         'hr_payroll.mail_activity_data_hr_payslip_negative_net',

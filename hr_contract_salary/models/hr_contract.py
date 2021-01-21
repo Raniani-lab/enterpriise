@@ -39,7 +39,7 @@ class HrContract(models.Model):
         help="Number of days of paid leaves the employee gets per year.")
     wage_with_holidays = fields.Monetary(compute='_compute_wage_with_holidays', inverse='_inverse_wage_with_holidays',
         tracking=True, string="Wage with Holidays")
-    wage_on_signature = fields.Monetary(string="Wage on Signature", help="Wage on contract signature")
+    wage_on_signature = fields.Monetary(string="Wage on Signature", help="Wage on contract signature", tracking=True)
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(compute='_compute_final_yearly_costs',

@@ -3,8 +3,13 @@
 
     <template id="assets_backend" name="Mail Enterprise Assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/mail_enterprise/static/src/js/attachment_viewer.js"/>
             <script type="text/javascript" src="/mail_enterprise/static/src/bugfix/bugfix.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/chat_window/chat_window.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/chatter_container/chatter_container.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/dialog/dialog.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/messaging_menu/messaging_menu.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/js/attachment_viewer.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/models/chatter/chatter.js"/>
             <script type="text/javascript" src="/mail_enterprise/static/src/widgets/form_renderer/form_renderer.js"/>
 
             <link rel="stylesheet" type="text/scss" href="/mail_enterprise/static/src/scss/mail_enterprise.scss"/>
@@ -22,9 +27,12 @@
 
     <template id="qunit_suite" name="mail_tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/mail_enterprise/static/src/bugfix/bugfix_tests.js"></script>
-            <script type="text/javascript" src="/mail_enterprise/static/tests/attachment_preview_tests.js"></script>
-            <script type="text/javascript" src="/mail_enterprise/static/src/widgets/form_renderer/form_renderer_tests.js"></script>
+            <script type="text/javascript" src="/mail_enterprise/static/src/bugfix/bugfix_tests.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/attachment/attachment_tests.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/chat_window_manager/chat_window_manager_tests.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/components/messaging_menu/messaging_menu_tests.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/src/widgets/form_renderer/form_renderer_tests.js"/>
+            <script type="text/javascript" src="/mail_enterprise/static/tests/attachment_preview_tests.js"/>
         </xpath>
     </template>
 

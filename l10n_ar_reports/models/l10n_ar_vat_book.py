@@ -312,8 +312,7 @@ class L10nARVatBook(models.AbstractModel):
             invoice_number, pos_number = self._get_pos_and_invoice_invoice_number(inv)
             doc_code, doc_number = self._get_partner_document_code_and_number(inv.partner_id)
 
-            amounts = inv._l10n_ar_get_amounts(company_currency=True)
-            amount_total = (1 if inv.is_inbound() else -1) * inv.amount_total_signed
+            amounts = inv._l10n_ar_get_amounts()
             vat_amount = amounts['vat_amount']
             vat_exempt_base_amount = amounts['vat_exempt_base_amount']
             vat_untaxed_base_amount = amounts['vat_untaxed_base_amount']
@@ -356,12 +355,11 @@ class L10nARVatBook(models.AbstractModel):
                     row.append((inv.l10n_latam_document_number).rjust(16, '0'))
                 else:
                     row.append(''.rjust(16, ' '))
-
             row += [
                 doc_code,  # Field 6: Código de documento del comprador.
                 doc_number,  # Field 7: Número de Identificación del comprador
                 inv.commercial_partner_id.name.ljust(30, ' ')[:30],  # Field 8: Apellido y Nombre del comprador.
-                self._format_amount(amount_total),  # Field 9: Importe Total de la Operación.
+                self._format_amount(inv.amount_total),  # Field 9: Importe Total de la Operación.
                 self._format_amount(vat_untaxed_base_amount),  # Field 10: Importe total de conceptos que no integran el precio neto gravado
             ]
 
@@ -438,7 +436,7 @@ class L10nARVatBook(models.AbstractModel):
 
         for inv in invoices:
             lines = []
-            vat_taxes = inv._get_vat(company_currency=True)
+            vat_taxes = inv._get_vat()
 
             # tipically this is for invoices with zero amount
             if not vat_taxes and inv.l10n_latam_document_type_id.purchase_aliquots == 'not_zero':

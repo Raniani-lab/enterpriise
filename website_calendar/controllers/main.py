@@ -122,19 +122,26 @@ class WebsiteCalendar(http.Controller):
                 'email': email,
             })
 
-        description = (_('Country: %s', country_name) + '\n' +
-                      _('Mobile: %s', phone) + '\n' +
-                      _('Email: %s', email) + '\n')
+        description_bits = []
+        if country_name:
+            description_bits.append(_(' * Country: %s', country_name))
+        if phone:
+            description_bits.append(_(' * Mobile: %s', phone))
+        if email:
+            description_bits.append(_(' * Email: %s', email))
+
         for question in appointment_type.question_ids:
             key = 'question_' + str(question.id)
             if question.question_type == 'checkbox':
                 answers = question.answer_ids.filtered(lambda x: (key + '_answer_' + str(x.id)) in kwargs)
-                description += question.name + ': ' + ', '.join(answers.mapped('name')) + '\n'
+                if answers:
+                    description_bits.append(' * %s: %s' % (question.name, ', '.join(answers.mapped('name'))))
+            elif question.question_type == 'text' and kwargs.get(key):
+                answers = [line for line in kwargs[key].split('\n') if line.strip()]
+                description_bits.append(' * %s:\n%s' % (question.name, '\n'.join(answers)))
             elif kwargs.get(key):
-                if question.question_type == 'text':
-                    description += '\n* ' + question.name + ' *\n' + kwargs.get(key, False) + '\n\n'
-                else:
-                    description += question.name + ': ' + kwargs.get(key) + '\n'
+                description_bits.append(' * %s: %s' % (question.name, kwargs.get(key).strip()))
+        description = '\n'.join(description_bits)
 
         categ_id = request.env.ref('website_calendar.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
@@ -143,7 +150,9 @@ class WebsiteCalendar(http.Controller):
         # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'
         # Because we only want to notify the author in the context of Online Appointments
         # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
-        event = request.env['calendar.event'].with_context(mail_notify_author=True).sudo().create({
+        event = request.env['calendar.event'].with_context(
+            mail_notify_author=True,
+        ).sudo().create({
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master

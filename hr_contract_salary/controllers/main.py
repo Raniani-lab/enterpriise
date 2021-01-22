@@ -267,7 +267,7 @@ class HrContractSalary(http.Controller):
                 elif personal_info.dropdown_selection == 'state':
                     values = [(state.id, state.name) for state in states]
                 elif personal_info.dropdown_selection == 'lang':
-                    values = [(lang.id, lang.name) for lang in langs]
+                    values = [(lang.code, lang.name) for lang in langs]
                 dropdown_options[personal_info.field] = values
         return mapped_personal_infos, dropdown_options, initial_values
 

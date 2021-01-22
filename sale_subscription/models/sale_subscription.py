@@ -392,7 +392,7 @@ class SaleSubscription(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice_type")
         action["context"] = {
             "create": False,
-            "default_type": "out_invoice"
+            "default_move_type": "out_invoice"
         }
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]
@@ -881,7 +881,7 @@ class SaleSubscription(models.Model):
             for company_id in set(data['company_id'][0] for data in sub_data):
                 sub_ids = [s['id'] for s in sub_data if s['company_id'][0] == company_id]
                 subs = self.with_company(company_id).with_context(company_id=company_id).browse(sub_ids)
-                Invoice = self.env['account.move'].with_context(type='out_invoice', company_id=company_id).with_company(company_id)
+                Invoice = self.env['account.move'].with_context(move_type='out_invoice', company_id=company_id).with_company(company_id)
                 for subscription in subs:
                     subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
                     if automatic and auto_commit:

@@ -8,13 +8,13 @@
             <div class="o_searchview o_mobile_search">
                 <div class="o_mobile_search_header">
                     <button type="button" class="o_mobile_search_button btn"
-                        t-on-click.stop="state.showMobileSearch = false"
+                        t-on-click="state.showMobileSearch = false"
                         >
                         <i class="fa fa-arrow-left"/>
                         <strong class="ml8">FILTER</strong>
                     </button>
                     <button type="button" class="o_mobile_search_button btn"
-                        t-on-click.stop="model.dispatch('clearQuery')"
+                        t-on-click="model.dispatch('clearQuery')"
                         >
                         <t>CLEAR</t>
                     </button>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary o_mobile_search_footer"
-                    t-on-click.stop="state.showMobileSearch = false"
+                    t-on-click="state.showMobileSearch = false"
                     >
                     <t>SEE RESULT</t>
                 </button>
@@ -65,12 +65,12 @@
                             <button type="button" class="o_enable_searchview btn btn-link fa"
                                 t-if="props.withBreadcrumbs"
                                 t-att-class="state.showSearchBar ? 'fa-arrow-left' : 'fa-search'"
-                                t-on-click.stop="state.showSearchBar = !state.showSearchBar"
+                                t-on-click="state.showSearchBar = !state.showSearchBar"
                             />
                             <t t-if="state.showSearchBar or !props.withBreadcrumbs">
                                 <SearchBar t-if="props.withSearchBar" fields="fields"/>
                                 <button type="button" class="o_toggle_searchview_full btn fa fa-filter"
-                                    t-on-click.stop="state.showMobileSearch = !state.showMobileSearch"
+                                    t-on-click="state.showMobileSearch = !state.showMobileSearch"
                                 />
                             </t>
                         </t>

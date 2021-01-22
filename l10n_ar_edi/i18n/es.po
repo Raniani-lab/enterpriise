@@ -123,11 +123,6 @@ msgid "AFIP Authorization Mode"
 msgstr "Modo Autorización AFIP"
 
 #. module: l10n_ar_edi
-#: model:ir.model.fields,field_description:l10n_ar_edi.field_account_move__l10n_ar_afip_barcode
-msgid "AFIP Barcode"
-msgstr "Código de Barra AFIP"
-
-#. module: l10n_ar_edi
 #: model:ir.actions.act_window,name:l10n_ar_edi.act_afipws_auth
 msgid "AFIP Connections"
 msgstr "Conecciones AFIP"
@@ -166,6 +161,11 @@ msgstr "Verificación de factura en AFIP"
 #, python-format
 msgid "AFIP Messages"
 msgstr "Mensajes AFIP"
+
+#. module: l10n_ar_edi
+#: model:ir.model.fields,field_description:l10n_ar_edi.field_account_move__l10n_ar_afip_qr_code
+msgid "AFIP QR Code"
+msgstr "Código QR AFIP"
 
 #. module: l10n_ar_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ar_edi.view_afipws_auth_form
@@ -327,11 +327,6 @@ msgstr "Disponible"
 #: model:ir.model.fields,field_description:l10n_ar_edi.field_l10n_ar_afip_ws_consult__available_document_type_ids
 msgid "Available Document Type"
 msgstr "Tipo de Documentos Disponibles"
-
-#. module: l10n_ar_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
-msgid "Barcode"
-msgstr "Código de barra"
 
 #. module: l10n_ar_edi
 #: model:ir.model.fields.selection,name:l10n_ar_edi.selection__account_move__l10n_ar_afip_auth_mode__cae
@@ -985,6 +980,11 @@ msgid "Production"
 msgstr "Producción"
 
 #. module: l10n_ar_edi
+#: model_terms:ir.ui.view,arch_db:l10n_ar_edi.report_invoice_document
+msgid "QR Code"
+msgstr "Código QR"
+
+#. module: l10n_ar_edi
 #: code:addons/l10n_ar_edi/models/res_currency.py:0
 #, python-format
 msgid "Rate:"
@@ -1217,15 +1217,12 @@ msgid "There was a problem with the connection to the %s webservice: %s"
 msgstr "Hubo un problema con la conexión al webservice %s: %s"
 
 #. module: l10n_ar_edi
-#: model:ir.model.fields,help:l10n_ar_edi.field_account_move__l10n_ar_afip_barcode
+#: model:ir.model.fields,help:l10n_ar_edi.field_account_move__l10n_ar_afip_qr_code
 msgid ""
-"This barcode is included in the invoice report and is built using the CAE "
-"returned by the AFIP when the invoice has been validated. This barcode is "
-"mandatory by the AFIP in the electronic invoices when this ones are printed"
+"This QR code is mandatory by the AFIP in the electronic invoices when this "
+"ones are printed."
 msgstr ""
-"Este código de barras se incluye en el informe de la factura y se crea "
-"utilizando el CAE devuelto por la AFIP cuando la factura ha sido validada. "
-"Este código de barras es obligatorio por la AFIP en las facturas "
+"Este código QR es obligatorio por la AFIP en las facturas "
 "electrónicas cuando se imprimen"
 
 #. module: l10n_ar_edi

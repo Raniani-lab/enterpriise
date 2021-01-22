@@ -282,4 +282,16 @@
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="parent_id" ref="hr_contract_salary_personal_info_other_dependent_people"/>
     </record>
+
+    <record id="hr_contract_salary_personal_info_lang" model="hr.contract.salary.personal.info">
+        <field name="name">Payroll Language</field>
+        <field name="helper">Choose French, Dutch or German</field>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'res.partner'), ('name', '=', 'lang')])"/>
+        <field name="applies_on">address</field>
+        <field name="display_type">dropdown</field>
+        <field name="position">left</field>
+        <field name="info_type_id" ref="hr_contract_salary.hr_contract_salary_personal_info_type_general"/>
+        <field name="dropdown_selection">lang</field>
+        <field name="is_required" eval="True"/>
+    </record>
 </odoo>

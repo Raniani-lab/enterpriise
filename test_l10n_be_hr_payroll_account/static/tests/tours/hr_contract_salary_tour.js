@@ -440,6 +440,14 @@ Tour.register('hr_contract_salary_tour', {
             },
         },
         {
+            content: "Lang",
+            trigger: 'label[for=lang]:eq(0)',
+            run: function () {
+                $('select[name=lang] option:contains(English)').prop('selected', true);
+                $('select[name=lang]').trigger('change');
+            },
+        },
+        {
             content: 'Check Disabled',
             trigger: "input[name='disabled']",
             run: 'click',

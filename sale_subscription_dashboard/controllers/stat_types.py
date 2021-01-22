@@ -94,6 +94,7 @@ def compute_net_revenue(start_date, end_date, filters):
         "account_move_line.move_id = account_move.id",
         "account_move.move_type IN ('out_invoice', 'out_refund')",
         "account_move.state NOT IN ('draft', 'cancel')",
+        "account_move_line.exclude_from_invoice_tab = False",
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {

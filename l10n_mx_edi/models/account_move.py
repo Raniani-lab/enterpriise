@@ -281,7 +281,7 @@ class AccountMove(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends('move_type', 'company_id')
+    @api.depends('move_type', 'company_id', 'state')
     def _compute_l10n_mx_edi_cfdi_request(self):
         for move in self:
             if move.country_code != 'MX':
@@ -290,7 +290,10 @@ class AccountMove(models.Model):
                 move.l10n_mx_edi_cfdi_request = 'on_invoice'
             elif move.move_type == 'out_refund':
                 move.l10n_mx_edi_cfdi_request = 'on_refund'
-            elif move.payment_id or move.statement_line_id:
+            elif (move.payment_id and move.payment_id.payment_type == 'inbound' and
+                'PPD' in move._get_reconciled_invoices().mapped('l10n_mx_edi_payment_policy')):
+                move.l10n_mx_edi_cfdi_request = 'on_payment'
+            elif move.statement_line_id:
                 move.l10n_mx_edi_cfdi_request = 'on_payment'
             else:
                 move.l10n_mx_edi_cfdi_request = False

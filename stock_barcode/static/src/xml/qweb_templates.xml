@@ -110,7 +110,7 @@
             <t t-foreach="lines" t-as="line">
                 <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap"
                     t-att-data-id="line.virtual_id || line.id"
-                    t-att-data-barcode="line.product_barcode">
+                    t-att-data-barcode="line.product_barcode || line.product_id.barcode">
                     <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                         <t t-if="line.product_id.code">
                             <div class="o_barcode_line_title">

@@ -61,6 +61,7 @@ class TestBarcodeClientAction(HttpCase):
         # Two stockable products without tracking
         self.product1 = self.env['product.product'].create({
             'name': 'product1',
+            'default_code': 'TEST',
             'type': 'product',
             'categ_id': self.env.ref('product.product_category_all').id,
             'barcode': 'product1',

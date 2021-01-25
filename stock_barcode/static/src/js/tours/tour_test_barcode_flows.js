@@ -94,6 +94,9 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertValidateEnabled(true);
             var $line = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($line, true);
+            // Checks the product code and name are on separate lines.
+            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
+            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
         }
     },
 
@@ -2524,6 +2527,15 @@ tour.register('test_inventory_adjustment', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
+    {
+        trigger: '.o_barcode_line',
+        run: function() {
+            // Checks the product code and name are on separate lines.
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
+            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
+        }
+    },
 
     {
         trigger: '.o_barcode_client_action',
@@ -2543,6 +2555,15 @@ tour.register('test_inventory_adjustment', {test: true}, [
 
     {
         trigger :'.o_save',
+    },
+    {
+        trigger: '.o_barcode_client_action .o_barcode_line',
+        run: function() {
+            // Checks the product code and name are on separate lines.
+            const $line = helper.getLine({barcode: 'product1'});
+            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
+            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
+        }
     },
 
     {

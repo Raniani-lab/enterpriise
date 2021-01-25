@@ -382,6 +382,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
         cellField: String,
         colField: String,
         createInline: Boolean,
+        displayEmpty: Boolean,
         fields: Object,
         groupBy: Array,
         hasBarChartTotal: Boolean,

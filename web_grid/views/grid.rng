@@ -23,6 +23,9 @@
                 <attribute name="create_inline"/>
             </optional>
             <optional>
+                <attribute name="display_empty"/>
+            </optional>
+            <optional>
                 <attribute name="js_class"/>
             </optional>
             <optional>

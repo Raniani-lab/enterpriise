@@ -34,6 +34,7 @@ var GridController = AbstractController.extend({
         this.adjustName = params.adjustName;
         this.canCreate = params.activeActions.create;
         this.createInline = params.createInline;
+        this.displayEmpty = params.displayEmpty;
         this.mutex = new concurrency.Mutex();
     },
 
@@ -73,7 +74,7 @@ var GridController = AbstractController.extend({
             return;
         }
         const state = this.model.get();
-        this.$buttons.find('.o_grid_button_add').toggleClass('d-none', this.createInline && !!state.data[0].rows.length);
+        this.$buttons.find('.o_grid_button_add').toggleClass('d-none', this.createInline && (!!state.data[0].rows.length || this.displayEmpty));
         this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.data[0].prev);
         this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.data[0].next);
         this.$buttons.find('.grid_button_initial').toggleClass('d-none', !state.data[0].initial);

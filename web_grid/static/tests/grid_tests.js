@@ -1266,6 +1266,41 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('"create_inline is truthy with no data and display_empty is truthy', async function (assert) {
+        assert.expect(3);
+
+        this.arch = '<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid" create_inline="1" display_empty="1">' +
+                        '<field name="project_id" type="row" section="1"/>' +
+                        '<field name="task_id" type="row"/>' +
+                        '<field name="date" type="col">' +
+                            '<range name="week" string="Week" span="week" step="day"/>' +
+                            '<range name="month" string="Month" span="month" step="day"/>' +
+                        '</field>' +
+                        '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                    '</grid>';
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2000-01-01",
+            viewOptions: {
+                action: {
+                    views: [{viewID: 23, type: 'form'}],
+                },
+            },
+            archs: this.archs,
+        });
+        assert.ok(grid.$buttons.find('.o_grid_button_add').is(':hidden'), "'Add a line' control panel button should not be visible");
+        const $addLineRow = grid.$('tr.o_grid_add_line_row th div div a[role="button"]:contains("Add a line")');
+        assert.strictEqual($addLineRow.length, 1, "'Add a line' row should be visible");
+        await testUtils.dom.click($addLineRow);
+        assert.ok($('.modal').length, "should have opened a modal");
+        await testUtils.dom.click($('.modal .modal-footer button.o_form_button_cancel'));
+        grid.destroy();
+    });
+
     QUnit.module('GridViewComponents');
 
     QUnit.test('float_toggle component', async function (assert) {

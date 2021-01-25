@@ -1877,6 +1877,7 @@ msgid "Group"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view

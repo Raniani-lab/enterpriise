@@ -528,7 +528,8 @@ class TestAccountAsset(TestAccountReportsCommon):
         asset = asset_form.save()
 
         self.assertTrue(asset.name, 'An asset should have been created')
-        move_id._reverse_moves()
+        reversed_move_id = move_id._reverse_moves()
+        reversed_move_id.action_post()
         with self.assertRaises(MissingError, msg='The asset should have been deleted'):
             asset.name
 
@@ -638,3 +639,116 @@ class TestAccountAsset(TestAccountReportsCommon):
             len(depreciation_lines), 3,
             'Three entries with a debit of 150 must be created on the Deferred Expense Account'
         )
+
+    def test_asset_partial_credit_note(self):
+        """Test partial credit note on an in invoice that has generated draft assets.
+
+        Test case:
+        - Create in invoice with the following lines:
+
+            Product  |  Unit Price  |  Quantity  |  Multiple assets  | # assets that will be deleted
+          --------------------------------------------------------------------------------------------
+           Product B |     200      |      4     |       TRUE        |          0
+           Product A |     100      |      7     |       FALSE       |          1
+           Product A |     100      |      5     |       TRUE        |          1
+           Product A |     150      |      6     |       TRUE        |          2
+           Product A |     100      |      7     |       FALSE       |          0
+
+        - Add a credit note with the following lines:
+
+            Product  |  Unit Price  |  Quantity
+          ---------------------------------------
+           Product A |     100      |      1
+           Product A |     150      |      2
+           Product A |     100      |      7
+        """
+        asset_model = self.env['account.asset'].create({
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'name': 'Maintenance Contract - 3 Years',
+            'method_number': 3,
+            'method_period': '12',
+            'prorata': False,
+            'asset_type': 'purchase',
+            'state': 'model',
+        })
+        self.company_data['default_account_assets'].create_asset = 'draft'
+        self.company_data['default_account_assets'].asset_model = asset_model
+        account_assets_multiple = self.company_data['default_account_assets'].copy()
+        account_assets_multiple.multiple_assets_per_line = True
+
+        product_a = self.env['product.product'].create({
+            'name': 'Product A',
+            'default_code': 'PA',
+            'lst_price': 100.0,
+            'standard_price': 100.0,
+        })
+        product_b = self.env['product.product'].create({
+            'name': 'Product B',
+            'default_code': 'PB',
+            'lst_price': 200.0,
+            'standard_price': 200.0,
+        })
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_line_ids': [
+                (0, 0, {
+                    'product_id': product_b,
+                    'name': 'Product B',
+                    'account_id': account_assets_multiple.id,
+                    'price_unit': 200.0,
+                    'quantity': 4,
+                }),
+                (0, 0, {
+                    'product_id': product_a,
+                    'name': 'Product A',
+                    'account_id': self.company_data['default_account_assets'].id,
+                    'price_unit': 100.0,
+                    'quantity': 7,
+                }),
+                (0, 0, {
+                    'product_id': product_a,
+                    'name': 'Product A',
+                    'account_id': account_assets_multiple.id,
+                    'price_unit': 100.0,
+                    'quantity': 5,
+                }),
+                (0, 0, {
+                    'product_id': product_a,
+                    'name': 'Product A',
+                    'account_id': account_assets_multiple.id,
+                    'price_unit': 150.0,
+                    'quantity': 6,
+                }),
+                (0, 0, {
+                    'product_id': product_a,
+                    'name': 'Product A',
+                    'account_id': self.company_data['default_account_assets'].id,
+                    'price_unit': 100.0,
+                    'quantity': 7,
+                }),
+            ],
+        })
+        invoice.action_post()
+        product_a_100_lines = invoice.line_ids.filtered(lambda l: l.product_id == product_a and l.price_unit == 100.0)
+        product_a_150_lines = invoice.line_ids.filtered(lambda l: l.product_id == product_a and l.price_unit == 150.0)
+        product_b_lines = invoice.line_ids.filtered(lambda l: l.product_id == product_b)
+        self.assertEqual(len(invoice.line_ids.mapped(lambda l: l.asset_ids)), 17)
+        self.assertEqual(len(product_b_lines.asset_ids), 4)
+        self.assertEqual(len(product_a_100_lines.asset_ids), 7)
+        self.assertEqual(len(product_a_150_lines.asset_ids), 6)
+        credit_note = invoice._reverse_moves()
+        with Form(credit_note) as move_form:
+            move_form.invoice_line_ids.remove(0)
+            move_form.invoice_line_ids.remove(0)
+            with move_form.invoice_line_ids.edit(0) as line_form:
+                line_form.quantity = 1
+            with move_form.invoice_line_ids.edit(1) as line_form:
+                line_form.quantity = 2
+        credit_note.action_post()
+        self.assertEqual(len(invoice.line_ids.mapped(lambda l: l.asset_ids)), 13)
+        self.assertEqual(len(product_b_lines.asset_ids), 4)
+        self.assertEqual(len(product_a_100_lines.asset_ids), 5)
+        self.assertEqual(len(product_a_150_lines.asset_ids), 4)

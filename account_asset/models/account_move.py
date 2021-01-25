@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_round
 from odoo.tools.misc import formatLang
 from dateutil.relativedelta import relativedelta
+from collections import defaultdict, namedtuple
 
 
 class AccountMove(models.Model):
@@ -42,6 +43,8 @@ class AccountMove(models.Model):
         # look for any asset to create, in case we just posted a bill on an account
         # configured to automatically create assets
         posted._auto_create_asset()
+        # check if we are reversing a move and delete assets of original move if it's the case
+        posted._delete_reversed_entry_assets()
         return posted
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
@@ -75,13 +78,6 @@ class AccountMove(models.Model):
 
                 msg = _('Depreciation entry %s reversed (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
                 move.asset_id.message_post(body=msg)
-
-            # If an asset was created for this move, delete it when reversing the move
-            for line in move.line_ids:
-                for asset in line.asset_ids:
-                    if asset.state == 'draft' or all(state == 'draft' for state in asset.depreciation_move_ids.mapped('state')):
-                        asset.state = 'draft'
-                        asset.unlink()
 
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel)
 
@@ -273,6 +269,53 @@ class AccountMove(models.Model):
         elif self.asset_ids[0].asset_type == 'expense':
             ret['name'] = _('Deferred Expenses')
         return ret
+
+    def _delete_reversed_entry_assets(self):
+        ReverseKey = namedtuple('ReverseKey', ['product_id', 'price_unit', 'quantity'])
+
+        def build_key(line):
+            return ReverseKey(**{k: line[k] for k in ReverseKey._fields})
+
+        for move in self.filtered(lambda m: m.reversed_entry_id):
+            reversed_products = move.invoice_line_ids.mapped(build_key)
+            # handle single asset per line by checking match on product_id, price_unit and quantity
+            for line in move.reversed_entry_id.line_ids.filtered(lambda l: (
+                l.asset_ids
+                and not l.account_id.multiple_assets_per_line
+                and build_key(l) in reversed_products
+            )):
+                try:
+                    index = reversed_products.index(build_key(line))
+                except ValueError:
+                    continue
+
+                for asset in line.asset_ids:
+                    if asset.state == 'draft' or all(state == 'draft' for state in asset.depreciation_move_ids.mapped('state')):
+                        asset.state = 'draft'
+                        asset.unlink()
+                del reversed_products[index]
+
+            # handle multiple assets per line by counting the remaining reversed quantities
+            rp_count = defaultdict(float)
+            for rp in reversed_products:
+                rp_count[(rp.product_id.id, rp.price_unit)] += rp.quantity
+
+            for line in move.reversed_entry_id.line_ids.filtered(lambda l: (
+                l.asset_ids
+                and l.account_id.multiple_assets_per_line
+                and rp_count.get((l.product_id.id, l.price_unit))
+            )):
+                for asset in line.asset_ids:
+                    if (
+                        rp_count[(line.product_id.id, line.price_unit)] > 0
+                        and (asset.state == 'draft' or all(
+                            state == 'draft'
+                            for state in asset.depreciation_move_ids.mapped('state')
+                        ))
+                    ):
+                        asset.state = 'draft'
+                        asset.unlink()
+                        rp_count[(line.product_id.id, line.price_unit)] -= 1
 
 
 class AccountMoveLine(models.Model):

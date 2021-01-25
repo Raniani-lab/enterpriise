@@ -207,6 +207,10 @@ class assets_report(models.AbstractModel):
 
     def _get_assets_lines(self, options):
         "Get the data from the database"
+
+        self.env['account.move.line'].check_access_rights('read')
+        self.env['account.asset'].check_access_rights('read')
+
         where_account_move = " AND state != 'cancel'"
         if not options.get('all_entries'):
             where_account_move = " AND state = 'posted'"

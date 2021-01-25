@@ -108,6 +108,32 @@ class ECSalesReport(models.AbstractModel):
         options['filename'] = filename
         return filename
 
+    def _get_report_data(self, options):
+        date_from = options['date'].get('date_from')
+        date_to = options['date'].get('date_to')
+
+        dt_from = fields.Date.from_string(date_from)
+        dt_to = fields.Date.from_string(date_to)
+
+        month = None
+        quarter = None
+
+        # dt_from is 1st day of months 1,4,7 or 10 and dt_to is last day of dt_from month+2
+        if dt_from.day == 1 and dt_from.month % 3 == 1 and dt_to == dt_from + relativedelta(day=31, month=dt_from.month + 2):
+            quarter = int((dt_from.month + 2) / 3)
+        # dt_from is 1st day & dt_to is last day of same month
+        elif dt_from.day == 1 and dt_from + relativedelta(day=31) == dt_to:
+            month = date_from[5:7]
+        else:
+            raise UserError(_('Check from/to dates. XML must cover 1 full month or 1 full quarter.'))
+
+        year = date_from[:4]
+
+        options['get_file_data'] = True
+        xml_data = self.with_context(no_format=True)._get_lines(options)
+
+        return xml_data, month, quarter, year
+
     @api.model
     def get_xml(self, options):
         if self._get_report_country_code() != 'LU':
@@ -130,33 +156,14 @@ class ECSalesReport(models.AbstractModel):
         file_ref = options['filename']
         company_vat = company_vat.replace(' ', '').upper()[2:]
 
-        date_from = options['date'].get('date_from')
-        date_to = options['date'].get('date_to')
-
-        dt_from = fields.Date.from_string(date_from)
-        dt_to = fields.Date.from_string(date_to)
-
-        month = None
-        quarter = None
-
-        # dt_from is 1st day of months 1,4,7 or 10 and dt_to is last day of dt_from month+2
-        if dt_from.day == 1 and dt_from.month % 3 == 1 and dt_to == dt_from + relativedelta(day=31, month=dt_from.month + 2):
-            quarter = (dt_from.month + 2) / 3
-        # dt_from is 1st day & dt_to is last day of same month
-        elif dt_from.day == 1 and dt_from + relativedelta(day=31) == dt_to:
-            month = date_from[5:7]
-        else:
-            raise UserError(_('Check from/to dates. XML must cover 1 full month or 1 full quarter.'))
-
-        options['get_file_data'] = True
-        xml_data = self.with_context(no_format=True)._get_lines(options)
+        xml_data, month, quarter, year = self._get_report_data(options)
 
         xml_data.update({
             "file_ref": file_ref,
             "matr_number": matr_number,
             "rcs_number": rcs_number,
             "company_vat": company_vat,
-            "year": date_from[:4],
+            "year": year,
             "period": month or quarter,
             "type_labes": month and ['TVA_LICM', 'TVA_PSIM'] or ['TVA_LICT', 'TVA_PSIT'],
         })

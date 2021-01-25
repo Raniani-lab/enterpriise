@@ -673,7 +673,7 @@ class generic_tax_report(models.AbstractModel):
             if group_by and tax['obj'].amount_type == 'group':
                 raise UserError(_('Tax report groupped by account is not available for taxes of type Group'))
             all_vals = list(chain.from_iterable(zip(net_vals, tax_vals)))
-            show = any(bool(n) for n in net_vals)
+            show = any(bool(n) for n in all_vals)
 
             if show:
                 for total in total_lines:

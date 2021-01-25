@@ -22,6 +22,7 @@
 
     <menuitem
         id="menu_social_configuration"
+        groups="group_social_manager"
         parent="menu_social_global"
         name="Configuration"
         sequence="30" />
@@ -31,7 +32,7 @@
         name="Settings"
         parent="menu_social_configuration"
         sequence="33"
-        groups="base.group_system" />
+        groups="base.group_no_one" />
 
     <menuitem
         id="menu_social_media"

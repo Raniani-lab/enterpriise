@@ -28,8 +28,11 @@ class SaleOrder(models.Model):
         out_of_sync_orders = self.env[self._name]
         if self.env.context.get('canceled_by_amazon'):
             for order in self:
-                picking = self.env['stock.picking'].search([('sale_id', '=', order.id)])
-                if picking.state == 'done':
+                picking = self.env['stock.picking'].search([
+                    ('sale_id', '=', order.id),
+                    ('state', '=', 'done')
+                ])
+                if picking:
                     # picking was processed on Odoo, while Amazon canceled it
                     order.message_post(
                         body=_(

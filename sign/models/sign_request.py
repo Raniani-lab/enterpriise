@@ -115,7 +115,7 @@ class SignRequest(models.Model):
         for request in self:
             request.request_item_infos = [{
                 'id': item.id,
-                'partner_name': item.partner_id.name or _('Public User'),
+                'partner_name': item.partner_id.sudo().name or _('Public User'),
                 'state': item.state,
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]

@@ -11,7 +11,7 @@ function getLine (description) {
     var $res;
     $('.o_barcode_line').each(function () {
         var $line = $(this);
-        var barcode = $line.data('barcode').trim();
+        const barcode = $line[0].dataset.barcode.trim();
         if (description.barcode === barcode) {
             if ($res) {
                 $res.add($line);

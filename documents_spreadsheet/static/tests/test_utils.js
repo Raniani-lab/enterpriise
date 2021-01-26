@@ -25,7 +25,8 @@ odoo.define("documents_spreadsheet.test_utils", function (require) {
 
     function getCellContent(model, xc) {
         const sheetId = model.getters.getActiveSheetId();
-        return model.getters.getCell(sheetId, ...toCartesian(xc)).formula.text;
+        const cell = model.getters.getCell(sheetId, ...toCartesian(xc));
+        return model.getters.getFormulaCellContent(sheetId, cell);
     }
 
     function setCellContent(model, xc, content) {

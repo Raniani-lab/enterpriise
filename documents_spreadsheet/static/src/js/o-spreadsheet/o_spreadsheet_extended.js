@@ -3,6 +3,7 @@ odoo.define("documents_spreadsheet.spreadsheet_extended", function (require) {
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const PivotPlugin = require("documents_spreadsheet.PivotPlugin");
     const PivotStructurePlugin = require("documents_spreadsheet.PivotStructurePlugin");
+    const PivotTemplatePlugin = require("documents_spreadsheet.PivotTemplatePlugin");
     const FiltersPlugin = require("documents_spreadsheet.FiltersPlugin");
     const corePluginRegistry = spreadsheet.registries.corePluginRegistry;
     const uiPluginRegistry = spreadsheet.registries.uiPluginRegistry;
@@ -10,6 +11,7 @@ odoo.define("documents_spreadsheet.spreadsheet_extended", function (require) {
     corePluginRegistry.add("odooPivotPlugin", PivotPlugin);
     corePluginRegistry.add("odooFiltersPlugin", FiltersPlugin);
     uiPluginRegistry.add("odooPivotStructurePlugin", PivotStructurePlugin);
+    uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
 
     return spreadsheet;
 });

@@ -12,8 +12,7 @@ var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const { WidgetAdapterMixin } = require('web.OwlCompatibility');
 
-var Wysiwyg = require('web_editor.wysiwyg');
-var SummernoteManager = require('web_editor.rte.summernote');
+var wysiwygLoader = require('web_editor.loader');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
@@ -452,8 +451,6 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";
-
-        new SummernoteManager(this);
     },
     /**
      * @override
@@ -1120,16 +1117,11 @@ var Text = AbstractEditComponent.extend({
     //--------------------------------------------------------------------------
 
     _onBlurWysiwygEditor: function () {
-        var self = this;
-        return this.wysiwyg.save().then(function (result) {
-            if (result.isDirty) {
-                self._triggerViewChange({text: result.html});
-            }
-        });
+        this._triggerViewChange({text: this.wysiwyg.getValue()});
     },
-    _startWysiwygEditor: function () {
+    _startWysiwygEditor: async function () {
         var self = this;
-        this.wysiwyg = new Wysiwyg(this, {
+        const options = {
             focus: false,
             height: 180,
             toolbar: [
@@ -1146,8 +1138,15 @@ var Text = AbstractEditComponent.extend({
             recordInfo: {
                 context: this.context,
             },
-        });
+            value: this.directiveFields.text.value,
+            resizable: true,
+            toolbarTemplate: 'web_studio.Sidebar.web_editor_toolbar',
+        };
+        this.wysiwyg = await wysiwygLoader.createWysiwyg(this, options);
         this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
+
+        this.$textarea.after(this.$wysiwygWrapper);
+        this.$textarea.hide();
 
         this.$textarea.off().on('input', function (e) { // to test simple
             e.preventDefault();
@@ -1156,7 +1155,7 @@ var Text = AbstractEditComponent.extend({
             self.wysiwyg.trigger_up('wysiwyg_blur');
         });
 
-        return this.wysiwyg.attachTo(this.$textarea);
+        return this.wysiwyg.insertAfter(this.$textarea);
     },
     /**
      * @override

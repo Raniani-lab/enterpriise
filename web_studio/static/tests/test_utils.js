@@ -15,32 +15,6 @@ var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
 var weTestUtils = require('web_editor.test_utils');
-var Wysiwyg = require('web_editor.wysiwyg.root');
-
-/**
- * Test Utils
- *
- * In this module, we define some utility functions to create Studio objects.
- */
-
-var assetsLoaded;
-function loadAssetLib(parent) {
-    if (assetsLoaded) { // avoid flickering when begin to edit
-        return assetsLoaded;
-    }
-    assetsLoaded = new Promise(function (resolve, reject) {
-        var wysiwyg = new Wysiwyg(parent, {
-            recordInfo: {
-                context: {},
-            }
-        });
-        wysiwyg.attachTo($('<textarea>')).then(function () {
-            wysiwyg.destroy();
-            resolve();
-        });
-    });
-    return assetsLoaded;
-}
 
 /**
  * Create a ReportEditorManager widget.
@@ -98,7 +72,6 @@ async function createReportEditorManager(params) {
     weTestUtils.patch();
     params.data = weTestUtils.wysiwygData(params.data);
 
-    await loadAssetLib(parent);
     var rem = new ReportEditorManager(parent, params);
     // also destroy to parent widget to avoid memory leak
     rem.destroy = function () {
@@ -147,27 +120,25 @@ async function createSidebar(params) {
     params.data = weTestUtils.wysiwygData(params.data);
     await testUtils.mock.addMockEnvironment(parent, params);
 
-    return loadAssetLib(parent).then(function () {
-        var sidebar = new ReportEditorSidebar(parent, params);
-        sidebar.destroy = function () {
-            // remove the override to properly destroy sidebar and its children
-            // when it will be called the second time (by its parent)
-            delete sidebar.destroy;
-            parent.destroy();
-            weTestUtils.unpatch();
-        };
+    var sidebar = new ReportEditorSidebar(parent, params);
+    sidebar.destroy = function () {
+        // remove the override to properly destroy sidebar and its children
+        // when it will be called the second time (by its parent)
+        delete sidebar.destroy;
+        parent.destroy();
+        weTestUtils.unpatch();
+    };
 
-        var selector = params.debug ? 'body' : '#qunit-fixture';
-        if (params.debug) {
-            $('body').addClass('debug');
-        }
-        parent.appendTo(selector);
+    var selector = params.debug ? 'body' : '#qunit-fixture';
+    if (params.debug) {
+        $('body').addClass('debug');
+    }
+    parent.appendTo(selector);
 
-        var fragment = document.createDocumentFragment();
-        return sidebar.appendTo(fragment).then(function () {
-            sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
-            return sidebar;
-        });
+    var fragment = document.createDocumentFragment();
+    return sidebar.appendTo(fragment).then(function () {
+        sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
+        return sidebar;
     });
 }
 

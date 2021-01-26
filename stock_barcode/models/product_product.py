@@ -7,6 +7,15 @@ from odoo import models, api
 class Product(models.Model):
     _inherit = 'product.product'
 
+    def _get_fields_per_product_id(self):
+        """ Gets the `barcode`, `code` and `tracking` for each product by `id`.
+
+        :return: a dict where keys are product id and values are dict with fields values.
+        :rtype: dict
+        """
+        products_search_read = self.read(['barcode', 'code', 'tracking'])
+        return {res.pop('id'): res for res in products_search_read}
+
     @api.model
     def get_all_products_by_barcode(self):
         products = self.env['product.product'].with_context(display_default_code=False).search_read(

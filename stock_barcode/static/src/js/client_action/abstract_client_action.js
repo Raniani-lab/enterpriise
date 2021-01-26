@@ -563,16 +563,29 @@ var ClientAction = AbstractAction.extend({
     },
 
     /**
-     * Helper to create a new line.
-     * To implement by specialized client actions.
+     * Helper to create a new line. Must be implement by specialized client
+     * actions to add the model specific attributes.
      *
-     * @abstract
      * @private
      * @param {Object} params attributes of the line (model depending, see implementation)
      * @returns {Object} created line
      */
     _makeNewLine: function (params) {
-        return {};
+        const virtual_id = this._getNewVirtualId();
+        const currentPage = this.pages[this.currentPageIndex];
+        const product_id = Object.assign({ barcode: params.barcode }, params.product);
+        const newLine = {
+            display_name: params.product.display_name,
+            location_id: {
+                id: currentPage.location_id,
+                name: currentPage.location_name,
+            },
+            package_id: params.package_id,
+            product_barcode: params.barcode,
+            product_id,
+            virtual_id,
+        };
+        return newLine;
     },
 
     /**

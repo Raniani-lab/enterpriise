@@ -166,31 +166,15 @@ var InventoryClientAction = ClientAction.extend({
      * @override
      */
     _makeNewLine: function (params) {
-        var virtualId = this._getNewVirtualId();
-        var currentPage = this.pages[this.currentPageIndex];
-        var newLine = {
-            'inventory_id': this.currentState.id,
-            'product_id': {
-                'id': params.product.id,
-                'display_name': params.product.display_name,
-                'barcode': params.barcode,
-                'tracking': params.product.tracking,
-            },
-            'product_barcode': params.barcode,
-            'display_name': params.product.display_name,
-            'product_qty': params.qty_done,
-            'theoretical_qty': 0,
-            'product_uom_id': params.product.uom_id[0],
-            'location_id': {
-                'id': currentPage.location_id,
-                'name': currentPage.location_name,
-            },
-            'package_id': params.package_id,
-            'state': 'confirm',
-            'reference': this.name,
-            'virtual_id': virtualId,
-            'partner_id': params.owner_id,
-        };
+        let newLine = this._super(...arguments);
+        newLine = Object.assign(newLine, {
+            inventory_id: this.currentState.id,
+            partner_id: params.owner_id,
+            product_qty: params.qty_done,
+            product_uom_id: params.product.uom_id[0],
+            state: 'confirm',
+            theoretical_qty: 0,
+        });
         return newLine;
     },
 

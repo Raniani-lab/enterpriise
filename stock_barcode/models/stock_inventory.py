@@ -70,9 +70,7 @@ class StockInventory(models.Model):
             for res in self.env['stock.location'].search_read([('id', 'in', location_ids)], ['parent_path']):
                 parent_path_per_location_id[res.pop("id")] = res
 
-            tracking_and_barcode_per_product_id = {}
-            for res in self.env['product.product'].with_context(active_test=False).search_read([('id', 'in', product_ids)], ['tracking', 'barcode', 'code']):
-                tracking_and_barcode_per_product_id[res.pop("id")] = res
+            tracking_and_barcode_per_product_id = self.env['product.product'].browse(product_ids)._get_fields_per_product_id()
 
             for line_id in inventory['line_ids']:
                 id, name = line_id.pop('product_id')

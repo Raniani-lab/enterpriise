@@ -1284,6 +1284,86 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertTrue(add_move_finished)
         self.assertTrue(add_move_finished.quantity_done, 1)
 
+    def test_add_component_2(self):
+        """ Adds an extra component when qty_producing is 0 (default value when opening tablet view for a product without tracking).
+        Checks that the quantity consumed of the additional component is correct and not doubled as before """
+        mrp_order_form = Form(self.env['mrp.production'])
+
+        table = self.env['product.product'].create({
+            'name': 'Table',
+            'type': 'product',
+            'tracking': 'none'})
+
+        table_leg = self.env['product.product'].create({
+            'name': 'Table Leg',
+            'type': 'product',
+            'tracking': 'none'})
+
+        bom_table = self.env['mrp.bom'].create({
+            'product_tmpl_id': table.product_tmpl_id.id,
+            'product_qty': 1.0,
+            'operation_ids': [
+                (0, 0, {'name': 'Cutting Machine', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 12, 'sequence': 1}),
+            ]})
+
+        self.env['mrp.bom.line'].create({
+            'product_id': table_leg.id,
+            'product_qty': 2.0,
+            'bom_id': bom_table.id,
+            'operation_id': bom_table.operation_ids[0].id})
+
+        mrp_order_form.product_id = table
+        mrp_order_form.product_qty = 10
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.workorder_ids[0].button_start()
+
+        # Open tablet view
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+
+        # Add an additional product
+        additional_form = Form(self.env['mrp_workorder.additional.product'].with_context({
+            'default_workorder_id': wo.id,
+            'default_type': 'component',
+        }))
+        additional_form.product_id = self.product_1
+        additional_form.product_qty = 6
+        additional_wizard = additional_form.save()
+        additional_wizard.add_product()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.qty_producing = 5
+        wo = wo_form.save()
+        wo._next()
+        self.assertEqual(production.move_raw_ids[1].quantity_done, 3)
+
+        # Same test for byproducts
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = table
+        mrp_order_form.product_qty = 10
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.workorder_ids[0].button_start()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo = wo_form.save()
+
+        additional_form = Form(self.env['mrp_workorder.additional.product'].with_context({
+            'default_workorder_id': wo.id,
+            'default_type': 'byproduct',
+        }))
+        additional_form.product_id = self.product_1
+        additional_form.product_qty = 6
+        additional_wizard = additional_form.save()
+        additional_wizard.add_product()
+
+        wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
+        wo_form.qty_producing = 5
+        wo = wo_form.save()
+        wo._next()
+        self.assertEqual(production.move_byproduct_ids[0].quantity_done, 3)
+
     def test_produce_more_than_planned(self):
         self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],

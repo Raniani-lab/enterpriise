@@ -43,6 +43,7 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
                     self.product_id,
                     self.product_qty,
                     self.product_id.uom_id,
+                    operation_id=wo.operation_id.id,
                 )
             )
         else:
@@ -52,6 +53,7 @@ class MrpWorkorderAdditionalProduct(models.TransientModel):
                     self.product_id.id,
                     self.product_qty,
                     self.product_id.uom_id.id,
+                    operation_id=wo.operation_id.id,
                 )
             )
 

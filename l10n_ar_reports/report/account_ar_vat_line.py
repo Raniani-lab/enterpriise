@@ -125,7 +125,7 @@ LEFT JOIN
     ON ntg.id = nt.tax_group_id
 LEFT JOIN
     res_partner AS rp
-    ON rp.id = am.partner_id
+    ON rp.id = am.commercial_partner_id
 LEFT JOIN
     l10n_latam_identification_type AS lit
     ON rp.l10n_latam_identification_type_id = lit.id

@@ -3837,3 +3837,52 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 2.44,
         }
         self._validate_payslip(payslip, payslip_results)
+
+
+    def test_commissions_with_low_salary_no_employment_bonus(self):
+        self.contract.write({
+            'wage_on_signature': 2300,
+            'ip': False,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.env['hr.payslip.input'].create([{
+            'name': "Commissions",
+            'payslip_id': payslip.id,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+            'amount': 3000.0
+        }])
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 1)
+        self.assertEqual(len(payslip.line_ids), 20)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2300.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 21.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 159.6, places=2)
+
+        payslip_results = {
+            'BASIC': 2300.0,
+            'COMMISSION': 3000.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 5309.0,
+            'ONSS': -693.89,
+            'ONSSTOTAL': 693.89,
+            'ATN.CAR': 150.53,
+            'GROSS': 4765.65,
+            'P.P': -1698.62,
+            'PPTOTAL': 1698.62,
+            'ATN.CAR.2': -150.53,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -19.81,
+            'MEAL_V_EMP': -22.89,
+            'REP.FEES': 150.0,
+            'NET': 3014.8,
+            'REMUNERATION': 2300.0,
+            'ONSSEMPLOYER': 1440.86,
+        }
+        self._validate_payslip(payslip, payslip_results)

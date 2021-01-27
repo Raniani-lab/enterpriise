@@ -147,6 +147,7 @@
         <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="wage">2650</field>
+        <field name="wage_on_signature">2650</field>
         <field name="commission_on_target">0.0</field>
         <field name="transport_mode_car" eval="True"/>
         <field name="new_car" eval="True"/>
@@ -164,6 +165,7 @@
         <field name="employee_id" ref="hr_employee_laurie_poiret"/>
         <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="wage_on_signature">2500</field>
         <field name="wage">2500</field>
         <field name="commission_on_target">0.0</field>
         <field name="transport_mode_car" eval="True"/>
@@ -190,6 +192,7 @@
         <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="wage">2650</field>
+        <field name="wage_on_signature">2650</field>
         <field name="commission_on_target">0.0</field>
         <field name="transport_mode_car" eval="True"/>
         <field name="new_car" eval="False"/>

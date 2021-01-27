@@ -64,8 +64,8 @@ odoo.define("web.SearchPanelMobile", function (require) {
                         category.activeValueId
                     );
                     const orderedCategoryNames = [
-                        category.activeValueId,
                         ...parentIds,
+                        category.activeValueId,
                     ].map(
                         (valueId) => category.values.get(valueId).display_name
                     );

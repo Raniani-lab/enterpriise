@@ -10,6 +10,9 @@
             <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
                 <button string="New Rental" name="action_rental_quotations_new" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('type', '=', 'lead'), '&amp;', ('probability', '=', 0), ('active', '=', False)]}"/>
             </xpath>
+            <button name="action_set_won_rainbowman" position="attributes">
+                <attribute name="class" remove="oe_highlight"/>
+            </button>
             <button name="action_schedule_meeting" position="after">
                 <button class="oe_stat_button" type="object" name="action_view_rental_quotation" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('rental_quotation_count', '=', 0), ('type', '=', 'lead')]}">
                     <field name="rental_quotation_count" widget="statinfo" string="Rental Quotations"/>

@@ -379,7 +379,9 @@ class HrContract(models.Model):
         return res
 
     def _get_bypassing_work_entry_type(self):
-        return super()._get_bypassing_work_entry_type() | self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick')
+        return super()._get_bypassing_work_entry_type() \
+            | self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick') \
+            | self.env.ref('l10n_be_hr_payroll.work_entry_type_maternity')
 
     def _create_credit_time_next_activity(self):
         self.ensure_one()

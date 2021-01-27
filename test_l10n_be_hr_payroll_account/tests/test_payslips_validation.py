@@ -1325,30 +1325,27 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         october_payslip = self._generate_payslip(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
 
-        self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(october_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 25)
+        self.assertEqual(len(october_payslip.line_ids), 23)
 
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE500'), 81.54, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE500'), 1.0, places=2)
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE210'), 21.0, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE210'), 22.0, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE210'), 159.6, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE210'), 167.2, places=2)
 
         payslip_results = {
-            'BASIC': 81.54,
+            'BASIC': 0,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 90.54,
-            'ONSS': -11.83,
-            'EmpBonus.1': 11.83,
+            'SALARY': 9,
+            'ONSS': -1.18,
+            'EmpBonus.1': 0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 231.68,
-            'IP.PART': -20.39,
-            'GROSS': 211.3,
+            'GROSSIP': 148.97,
+            'IP.PART': 0,
+            'GROSS': 148.97,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -1356,10 +1353,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': 0.0,
-            'REP.FEES': 4.62,
-            'IP': 20.39,
-            'IP.DED': -1.53,
-            'NET': 84.63,
+            'REP.FEES': 0,
+            'IP': 0,
+            'IP.DED': 0,
+            'NET': -1.18,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -4008,3 +4005,46 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 721.65,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_maternity_time_off_bank_holidays(self):
+        # Maternity time off > bank holiday
+        # Means that the time off isn't paid by the employer
+
+        maternity_time_off = self.env['hr.leave'].new({
+            'name': 'Maternity Time Off : 2 days',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
+            'request_date_from': datetime.date(2020, 12, 31),
+            'request_date_to': datetime.date(2021, 1, 1),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 2,
+        })
+        maternity_time_off._compute_date_from_to()
+        maternity_time_off = self.env['hr.leave'].create(maternity_time_off._convert_to_write(maternity_time_off._cache))
+
+        self.env['resource.calendar.leaves'].create({
+            'name': "Bank Holiday",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 1, 1, 5, 0, 0),
+            'date_to': datetime.datetime(2021, 1, 1, 18, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 25)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE210'), 1.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 20.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 7.6, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)

@@ -229,7 +229,7 @@ class HrPayslip(models.Model):
 
 
     def action_payslip_cancel(self):
-        if self.filtered(lambda slip: slip.state == 'done'):
+        if not self.env.user._is_system() and self.filtered(lambda slip: slip.state == 'done'):
             raise UserError(_("Cannot cancel a payslip that is done."))
         self.write({'state': 'cancel'})
         self.mapped('payslip_run_id').action_close()

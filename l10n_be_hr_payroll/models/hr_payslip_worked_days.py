@@ -133,7 +133,27 @@ class HrPayslipWorkedDays(models.Model):
                             ratio = (out_ratio - 3 / (13 * hours_per_week) * number_of_hours) if hours_per_week else 0
                             worked_day_amount = wage * ratio
                             if float_compare(be_wd.number_of_hours, max(work100_wds.mapped('number_of_hours')), 2): # lowest lines
-                                ratio = 3 / (13 * hours_per_week) * (work100_wds - be_wd).number_of_hours if hours_per_week else 0
+                                # Don't remove this strange hack. Here is the use case:
+                                # Set an employee on the payslip, it calls _onchange_employee to:
+                                # 1/ Set a contract
+                                # 2/ Set a structure
+                                # 3/ Compute the worked days
+                                # The actions 1/ and 2/ implies to call the _onchange_method again
+                                # So we will create all the worked days (let's say n records) 3 times
+                                # (and the 2 first batches will be dropped).
+                                # The 2 first batches won't be part of the cache of the record, so
+                                # be_wd.payslip_id.worked_days_line_ids will return only n records
+                                # But in an indeterministic way, the records could still be marked
+                                # as to recompute, for the stored / computed amount field.
+                                # So self will contain 3 * n records in that case.
+                                # This could lead to a situation in which work100_wds contains the
+                                # 2 valid attendance worked days, and be_wd is an invalid other worked
+                                # day, leading to a singleton error when trying to read the number_of_hours
+                                # field.
+                                if be_wd not in work100_wds:
+                                    ratio = 0
+                                else:
+                                    ratio = 3 / (13 * hours_per_week) * (work100_wds - be_wd).number_of_hours if hours_per_week else 0
                                 worked_day_amount = worked_day_amount * (1 - ratio)
                             else:  # biggest line
                                 ratio = 3 / (13 * hours_per_week) * be_wd.number_of_hours if hours_per_week else 0
@@ -147,7 +167,11 @@ class HrPayslipWorkedDays(models.Model):
                                 # worked_day_amount = worked_day_amount * (1 - ratio)
                             else:  # biggest line
                                 total_wage = (out_ratio - 3 / (13 * hours_per_week) * number_of_hours) * wage if hours_per_week else 0
-                                ratio = 3 / (13 * hours_per_week) * (work100_wds - be_wd).number_of_hours if hours_per_week else 0
+                                # Don't remove this strange hack -> See explanation above
+                                if be_wd not in work100_wds:
+                                    ratio = 0
+                                else:
+                                    ratio = 3 / (13 * hours_per_week) * (work100_wds - be_wd).number_of_hours if hours_per_week else 0
                                 worked_day_amount = total_wage - wage * ratio
                                 # ratio = 3 / (13 * hours_per_week) * be_wd.number_of_hours if hours_per_week else 0
                                 # worked_day_amount = worked_day_amount * ratio

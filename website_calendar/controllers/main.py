@@ -139,7 +139,11 @@ class WebsiteCalendar(http.Controller):
         categ_id = request.env.ref('website_calendar.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
         partner_ids = list(set([Employee.user_id.partner_id.id] + [Partner.id]))
-        event = request.env['calendar.event'].sudo().create({
+        # FIXME AWA/TDE double check this and/or write some tests to ensure behavior
+        # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'
+        # Because we only want to notify the author in the context of Online Appointments
+        # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
+        event = request.env['calendar.event'].with_context(mail_notify_author=True).sudo().create({
             'name': _('%s with %s') % (appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master

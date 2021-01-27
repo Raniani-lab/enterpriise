@@ -2,13 +2,23 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
 
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     batch_payment_id = fields.Many2one('account.batch.payment', ondelete='set null', copy=False)
+    amount_signed = fields.Monetary(
+        currency_field='currency_id', compute='_compute_amount_signed',
+        help='Negative value of amount field if payment_type is outbound')
+
+    @api.depends('amount', 'payment_type')
+    def _compute_amount_signed(self):
+        for payment in self:
+            if payment.payment_type == 'outbound':
+                payment.amount_signed = -payment.amount
+            else:
+                payment.amount_signed = payment.amount
 
     @api.model
     def create_batch_payment(self):

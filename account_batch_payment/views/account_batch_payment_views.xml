@@ -53,7 +53,7 @@ if records:
                                     <field name="date"/>
                                     <field name="partner_id"/>
                                     <field name="ref"/>
-                                    <field name="amount" sum="Total"/>
+                                    <field name="amount_signed" sum="Total" string="Amount"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="state" invisible="1"/>
                                 </tree>

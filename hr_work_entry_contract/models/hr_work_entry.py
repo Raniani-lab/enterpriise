@@ -64,10 +64,6 @@ class HrWorkEntry(models.Model):
         if res.get('contract_id'):
             self.contract_id = res.get('contract_id')
 
-    @api.depends('work_entry_type_id', 'contract_id')
-    def _compute_duration(self):
-        super(HrWorkEntry, self)._compute_duration()
-
     @api.depends('date_start', 'duration')
     def _compute_date_stop(self):
         for work_entry in self:

@@ -129,6 +129,13 @@ msgid "Validated Time Off to Defer"
 msgstr ""
 
 #. module: hr_payroll_holidays
+#: model:ir.model.fields,help:hr_payroll_holidays.field_hr_leave__to_defer
+msgid ""
+"Whether this time off has been validated after the validation of the related"
+" payslip. This means that this time off should be deferred to a next month."
+msgstr ""
+
+#. module: hr_payroll_holidays
 #. openerp-web
 #: code:addons/hr_payroll_holidays/static/src/xml/templates.xml:0
 #, python-format

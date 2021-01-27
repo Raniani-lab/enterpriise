@@ -7,7 +7,7 @@ from odoo import fields, models, _
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
 
-    to_defer = fields.Boolean()
+    to_defer = fields.Boolean(help="Whether this time off has been validated after the validation of the related payslip. This means that this time off should be deferred to a next month.")
 
     def action_validate(self):
         all_payslips = self.env['hr.payslip'].sudo().search([

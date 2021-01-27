@@ -44,7 +44,7 @@ class HrPayslip(models.Model):
         ('verify', 'Waiting'),
         ('done', 'Done'),
         ('cancel', 'Rejected'),
-    ], string='Status', index=True, readonly=True, copy=False, default='draft',
+    ], string='Status', index=True, readonly=True, copy=False, default='draft', tracking=True,
         help="""* When the payslip is created the status is \'Draft\'
                 \n* If the payslip is under verification, the status is \'Waiting\'.
                 \n* If the payslip is confirmed then status is set to \'Done\'.

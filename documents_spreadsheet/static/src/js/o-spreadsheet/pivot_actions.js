@@ -39,10 +39,15 @@ odoo.define("documents_spreadsheet.pivot_actions", function (require) {
         name: `${pivot.cache && pivot.cache.getModelLabel() || pivot.model} (#${pivot.id})`,
         sequence: index,
         action: async (env) => {
-            const xc = env.getters.getMainCell(toXC(...env.getters.getPosition()));
-            const [ col, row ] = toCartesian(xc);
+            const sheetId = env.getters.getActiveSheetId();
+            const [ col, row ] = env.getters.getMainCell(sheetId, ...env.getters.getPosition());
             const insertPivotValueCallback = (formula) => {
-                env.dispatch("UPDATE_CELL", { sheet: env.getters.getActiveSheet(), col, row, content: formula });
+                env.dispatch("UPDATE_CELL", {
+                    sheetId,
+                    col,
+                    row,
+                    content: formula,
+                });
             }
 
             await fetchCache(pivot, env.services.rpc, { dataOnly: true, force: true });

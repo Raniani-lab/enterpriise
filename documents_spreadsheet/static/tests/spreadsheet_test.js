@@ -5,7 +5,12 @@ odoo.define("web.spreadsheet_tests", function (require) {
     const testUtils = require("web.test_utils");
     const spreadsheetUtils = require("documents_spreadsheet.test_utils")
 
-    const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
+    const {
+        createSpreadsheetFromPivot,
+        mockRPCFn,
+        getCellContent,
+        getCellValue,
+    } = spreadsheetUtils;
 
     const { createActionManager, fields, nextTick, dom } = testUtils;
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
@@ -16,9 +21,6 @@ odoo.define("web.spreadsheet_tests", function (require) {
 
     const createView = testUtils.createView;
 
-    function getCellValue(model, xc) {
-        return model.getters.getCell(...toCartesian(xc)).value;
-    }
 
     QUnit.module("Spreadsheet Client Action", {
         beforeEach: function () {
@@ -370,20 +372,21 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
+            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("UPDATE_CELL", {
                 col: 4,
                 row: 9,
                 content: `=PIVOT.HEADER("1", "product", "1111111")`,
-                sheet: model.getters.getActiveSheet(),
+                sheetId,
             });
             await nextTick();
-            assert.ok(model.getters.getCell(4, 9).error);
+            assert.ok(model.getters.getCell(sheetId, 4, 9).error);
 
             // This is obviously not the desired error message. It happens because Odoo
             // RPC errors do not have a simple string message but an object with the
             // error details.
             // Will be fixed with task 2393876
-            assert.equal(model.getters.getCell(4, 9).error, "[object Object]");
+            assert.equal(model.getters.getCell(sheetId, 4, 9).error, "[object Object]");
             actionManager.destroy();
         });
 
@@ -391,7 +394,6 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.expect(2);
 
             const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                debug: 1,
                 model: "partner",
                 data: this.data,
                 arch: `
@@ -402,15 +404,16 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
+            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("UPDATE_CELL", {
                 col: 4,
                 row: 9,
                 content: `=PIVOT.HEADER("1", "product", A25)`,
-                sheet: model.getters.getActiveSheet(),
+                sheetId,
             });
-            assert.equal(model.getters.getCell(0, 24), null, "the cell should be empty");
+            assert.equal(model.getters.getCell(sheetId, 0, 24), null, "the cell should be empty");
             await nextTick();
-            assert.equal(model.getters.getCell(4, 9).value, "");
+            assert.equal(model.getters.getCell(sheetId, 4, 9).value, "");
             actionManager.destroy();
         });
 
@@ -428,11 +431,12 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
+            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+            assert.equal(getCellContent(model, "E10"), `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
             actionManager.destroy();
         });
@@ -451,14 +455,15 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true, id: "111" });
+            model.dispatch("CREATE_SHEET", { cols: 1, rows: 1, activate: true, sheetId: "111" });
             model.dispatch("SELECT_CELL", { col: 0, row: 0 });
+            const sheetId = model.getters.getActiveSheetId();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getNumberCols(model.getters.getActiveSheet()), 5);
-            assert.equal(model.getters.getNumberRows(model.getters.getActiveSheet()), 5);
-            assert.equal(model.getters.getCell(1, 2).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+            assert.equal(model.getters.getActiveSheet().cols.length, 5);
+            assert.equal(model.getters.getActiveSheet().rows.length, 5);
+            assert.equal(getCellContent(model, "B3"), `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
             actionManager.destroy();
         });
@@ -485,13 +490,14 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 name: "name",
                 display_name: "name",
             }];
+            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","7","foo","1")`,
+            assert.equal(getCellContent(model, "E10"), `=PIVOT("1","probability","bar","7","foo","1")`,
                 "It should contain a pivot formula");
-            assert.equal(model.getters.getCell(4, 10).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+            assert.equal(getCellContent(model, "E11"), `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a new row");
             actionManager.destroy();
         });
@@ -510,9 +516,10 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            assert.equal(/*A3*/model.getters.getCell(0, 2).value, 110,);
-            assert.equal(/*B3*/model.getters.getCell(1, 2).value, 11);
-            assert.equal(/*C3*/model.getters.getCell(2, 2).value, 10);
+            const sheetId = model.getters.getActiveSheetId();
+            assert.equal(/*A3*/model.getters.getCell(sheetId, 0, 2).value, 110,);
+            assert.equal(/*B3*/model.getters.getCell(sheetId, 1, 2).value, 11);
+            assert.equal(/*C3*/model.getters.getCell(sheetId, 2, 2).value, 10);
              // previously in group bar=110, now it's in a new group bar=99
             this.data.partner.records[0].bar = 99;
             this.data.partner.records[1].bar = 99;
@@ -523,9 +530,9 @@ odoo.define("web.spreadsheet_tests", function (require) {
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
-            assert.equal(/*A3*/model.getters.getCell(0, 2).value, 99, "The header should have been updated");
-            assert.equal(/*B3*/model.getters.getCell(1, 2).value, 77, "The value should have been updated");
-            assert.equal(/*C3*/model.getters.getCell(2, 2).value, 88, "The value should have been updated");
+            assert.equal(/*A3*/model.getters.getCell(sheetId, 0, 2).value, 99, "The header should have been updated");
+            assert.equal(/*B3*/model.getters.getCell(sheetId, 1, 2).value, 77, "The value should have been updated");
+            assert.equal(/*C3*/model.getters.getCell(sheetId, 2, 2).value, 88, "The value should have been updated");
             actionManager.destroy();
         });
 
@@ -561,14 +568,15 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 value: [41],
             });
             await nextTick();
-            assert.equal(/*B3*/model.getters.getCell(1, 2).value, "", "The value should have been filtered");
-            assert.equal(/*C3*/model.getters.getCell(2, 2).value, "", "The value should have been filtered");
+            const sheetId = model.getters.getActiveSheetId();
+            assert.equal(/*B3*/model.getters.getCell(sheetId, 1, 2).value, "", "The value should have been filtered");
+            assert.equal(/*C3*/model.getters.getCell(sheetId, 2, 2).value, "", "The value should have been filtered");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
-            assert.equal(/*B3*/model.getters.getCell(1, 2).value, "", "The value should still be filtered");
-            assert.equal(/*C3*/model.getters.getCell(2, 2).value, "", "The value should still be filtered");
+            assert.equal(/*B3*/model.getters.getCell(sheetId, 1, 2).value, "", "The value should still be filtered");
+            assert.equal(/*C3*/model.getters.getCell(sheetId, 2, 2).value, "", "The value should still be filtered");
             actionManager.destroy();
         });
 
@@ -586,14 +594,15 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
+            const sheetId = model.getters.getActiveSheetId();
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getCell(4, 9).content, `=PIVOT("1","probability","bar","110","foo","1")`,
+            assert.equal(getCellContent(model, "E10"), `=PIVOT("1","probability","bar","110","foo","1")`,
                 "It should contain a pivot formula");
             model.dispatch("UNDO");
-            assert.notOk(model.getters.getCell(4, 9), "It should have removed the re-inserted pivot");
+            assert.notOk(model.getters.getCell(sheetId, 4, 9), "It should have removed the re-inserted pivot");
             actionManager.destroy();
         });
 
@@ -611,14 +620,15 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER("1","foo","1","measure","probability")`,
+            const sheetId = model.getters.getActiveSheetId();
+            assert.equal(getCellContent(model, "B2"), `=PIVOT.HEADER("1","foo","1","measure","probability")`,
                 "It should contain a pivot formula");
             model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
-            assert.ok(model.getters.isInMerge("A2"));
+            assert.ok(model.getters.isInMerge(sheetId, ...toCartesian("A2")));
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getCell(1, 1).content, `=PIVOT.HEADER("1","foo","1","measure","probability")`,
+            assert.equal(getCellContent(model, "B2"), `=PIVOT.HEADER("1","foo","1","measure","probability")`,
                 "It should contain a pivot formula");
             actionManager.destroy();
         });
@@ -637,10 +647,11 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            assert.equal(model.getters.getCell(1, 2).value, 11);
-            assert.equal(model.getters.getCell(2, 2).value, 10);
-            assert.equal(model.getters.getCell(1, 3).value, 11);
-            assert.equal(model.getters.getCell(2, 3).value, 10);
+            const sheetId = model.getters.getActiveSheetId();
+            assert.equal(model.getters.getCell(sheetId, 1, 2).value, 11);
+            assert.equal(model.getters.getCell(sheetId, 2, 2).value, 10);
+            assert.equal(model.getters.getCell(sheetId, 1, 3).value, 11);
+            assert.equal(model.getters.getCell(sheetId, 2, 3).value, 10);
             actionManager.destroy();
         });
 
@@ -1211,12 +1222,11 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 }
             });
             await testUtils.nextTick();
-            const [sheet] = model.getters.getSheets();
             // It contains product twice
-            assert.equal(sheet.cells.A4.content, `=PIVOT.HEADER("1","foo","1","product","37")`);
-            assert.equal(sheet.cells.A5.content, `=PIVOT.HEADER("1","foo","1","product","41")`);
-            assert.equal(sheet.cells.A7.content, `=PIVOT.HEADER("1","foo","12","product","37")`);
-            assert.equal(sheet.cells.A8.content, `=PIVOT.HEADER("1","foo","12","product","41")`);
+            assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","1","product","37")`);
+            assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","foo","1","product","41")`);
+            assert.equal(getCellContent(model, "A7"), `=PIVOT.HEADER("1","foo","12","product","37")`);
+            assert.equal(getCellContent(model, "A8"), `=PIVOT.HEADER("1","foo","12","product","41")`);
             model.dispatch("SET_PIVOT_FILTER_VALUE", {
                 id: "42",
                 value: [17],
@@ -1266,12 +1276,11 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 }
             });
             await testUtils.nextTick();
-            const [sheet] = model.getters.getSheets();
             // It contains undefined headers
-            assert.equal(sheet.cells.A4.content, `=PIVOT.HEADER("1","foo","1","product","41")`);
-            assert.equal(sheet.cells.A5.content, `=PIVOT.HEADER("1","foo","1","product","false")`);
-            assert.equal(sheet.cells.A7.content, `=PIVOT.HEADER("1","foo","12","product","41")`);
-            assert.equal(sheet.cells.A8.content, `=PIVOT.HEADER("1","foo","12","product","false")`);
+            assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","1","product","41")`);
+            assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","foo","1","product","false")`);
+            assert.equal(getCellContent(model, "A7"), `=PIVOT.HEADER("1","foo","12","product","41")`);
+            assert.equal(getCellContent(model, "A8"), `=PIVOT.HEADER("1","foo","12","product","false")`);
             model.dispatch("SET_PIVOT_FILTER_VALUE", {
                 id: "42",
                 value: [17],
@@ -1300,17 +1309,18 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
+            const sheetId = model.getters.getActiveSheetId();
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
             await testUtils.nextTick();
             assert.containsOnce(document.body, ".o_pivot_table_dialog");
             await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
-            assert.equal(model.getters.getCell(3, 7).content, model.getters.getCell(1, 0).content);
+            assert.equal(getCellContent(model, "D8"), getCellContent(model, "B1"));
             model.dispatch("UNDO");
-            assert.equal(model.getters.getCell(3, 7), undefined);
+            assert.equal(model.getters.getCell(sheetId, 3, 7), undefined);
             model.dispatch("REDO");
-            assert.equal(model.getters.getCell(3, 7).content, model.getters.getCell(1, 0).content);
+            assert.equal(getCellContent(model, "D8"), getCellContent(model, "B1"));
             actionManager.destroy();
         });
 
@@ -1328,9 +1338,9 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            const missingValue = model.getters.getCell(1, 2).content;
+            const missingValue = getCellContent(model, "B3");
             model.dispatch("SELECT_CELL", { col: 1, row: 2 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
@@ -1342,7 +1352,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
             await dom.click(document.body.querySelector(".o_missing_value"));
-            assert.equal(model.getters.getCell(3, 7).content, missingValue);
+            assert.equal(getCellContent(model, "D8"), missingValue);
             actionManager.destroy();
         });
 
@@ -1362,7 +1372,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 1, row: 4 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             model.dispatch("SELECT_CELL", { col: 3, row: 7 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
@@ -1392,9 +1402,9 @@ odoo.define("web.spreadsheet_tests", function (require) {
         </pivot>`,
                 mockRPC: mockRPCFn,
             });
-            const missingValue = model.getters.getCell(2, 3).content;
+            const missingValue = getCellContent(model, "C4");
             model.dispatch("SELECT_CELL", { col: 2, row: 3 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             model.dispatch("SELECT_CELL", { col: 9, row: 9 });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
@@ -1406,7 +1416,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             assert.containsOnce(document.body, ".o_missing_value");
             assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
             await dom.click(document.body.querySelector(".o_missing_value"));
-            assert.equal(model.getters.getCell(9, 9).content, missingValue);
+            assert.equal(getCellContent(model, "J10"), missingValue);
             actionManager.destroy();
         });
 
@@ -1452,7 +1462,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 1, row: 0 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1479,7 +1489,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
                 mockRPC: mockRPCFn,
             });
             model.dispatch("SELECT_CELL", { col: 0, row: 2 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);
@@ -1508,7 +1518,7 @@ odoo.define("web.spreadsheet_tests", function (require) {
             await nextTick();
             await nextTick();
             model.dispatch("SELECT_CELL", { col: 5, row: 3 });
-            model.dispatch("DELETE_CONTENT", { sheet: model.getters.getActiveSheet(), target: model.getters.getSelectedZones() });
+            model.dispatch("DELETE_CONTENT", { sheetId: model.getters.getActiveSheetId(), target: model.getters.getSelectedZones() });
             const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
             const insertValue = cellMenuRegistry.getChildren(root, env)[0];
             await insertValue.action(env);

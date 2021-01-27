@@ -15,13 +15,13 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
 
     functionRegistry
         .add("FILTER_VALUE", {
-            description: _t("Get the value from a filter."),
+            description: _t("Return the current value of a spreadsheet filter."),
             compute: async function (filterName) {
                 return this.getters.getFilterDisplayValue(filterName)
             },
             async: true,
             args: args(`
-                filter_name (string) ${_t("Name of the filter.")}
+                filter_name (string) ${_t("The label of the filter whose value to return.")}
             `),
             returns: ["STRING"],
         })
@@ -40,15 +40,9 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
             args: args(`
             pivot_id (string) ${_t("ID of the pivot.")}
             measure_name (string) ${_t("Name of the measure.")}
-            domains (string,optional,repeating) ${_t("Domains list.")}
+            domain_field_name (string,optional,repeating) ${_t("Field name.")}
+            domain_value (string,optional,repeating) ${_t("Value.")}
         `),
-            // When multi-optional arguments will be implemented:
-            // args: args`
-            //     pivot_id (string) ID of the pivot.
-            //     measure_name (string) Name of the measure.
-            //     domains (string,optional,repeating) Field name of the domain.
-            //     values (string,optional,repeating) Value for a domain.
-            // `,
             returns: ["NUMBER", "STRING"],
         })
         .add("PIVOT_HEADER", {
@@ -75,7 +69,8 @@ odoo.define("documents_spreadsheet.pivot_functions", function (require) {
             async: true,
             args: args(`
             pivot_id (string) ${_t("ID of the pivot.")}
-            domains (string,optional,repeating) ${_t("Domains list.")}
+            domain_field_name (string,optional,repeating) ${_t("Field name.")}
+            domain_value (string,optional,repeating) ${_t("Value.")}
         `),
             returns: ["NUMBER", "STRING"],
         })

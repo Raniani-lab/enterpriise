@@ -20,6 +20,9 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
     const CancelledReason = require("documents_spreadsheet.CancelledReason");
     const pyUtils = require("web.py_utils");
 
+    const core = require("web.core");
+    const _t = core._t;
+
     const MONTHS = {
         january: { value: 0, granularity: 'month' },
         february: { value: 1, granularity: 'month' },
@@ -42,8 +45,8 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
     };
     const PERIOD_OPTIONS = Object.assign({}, MONTHS, YEARS);
 
-    class FiltersPlugin extends spreadsheet.BasePlugin {
-        constructor(workbook, getters, history, dispatch, config) {
+    class FiltersPlugin extends spreadsheet.CorePlugin {
+        constructor(getters, history, dispatch, config) {
             super(...arguments);
             this.rpc = config.evalContext.env ? config.evalContext.env.services.rpc : undefined;
             this.globalFilters = [];
@@ -63,9 +66,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
          */
         allowDispatch(cmd) {
             switch (cmd.type) {
-                case "START":
-                    this._setUpFilters();
-                    break;
                 case "EDIT_PIVOT_FILTER":
                     if (!this.globalFilters.find((x) => x.id === cmd.id)) {
                         return { status: "CANCELLED", reason: CancelledReason.FilterNotFound };
@@ -99,6 +99,9 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
          */
         handle(cmd) {
             switch (cmd.type) {
+                case "START":
+                    this._setUpFilters();
+                    break;
                 case "ADD_PIVOT_FILTER":
                     this.recordsDisplayName[cmd.filter.id] = cmd.filter.defaultValueDisplayNames;
                     this._addGlobalFilter(cmd.filter);
@@ -160,7 +163,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             const filter = this.globalFilters.find((filter) => filter.label === filterName);
             if (!filter) {
                 throw new Error(_.str.sprintf(_t(`Filter "%s" not found`), filterName));
-            };
+            }
             switch (filter.type) {
                 case "text":
                     return filter.value || "";
@@ -247,7 +250,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                     ? filter
                     : {
                           id: filter.id,
-                          value: newFilter.defaultValue,
                           label: newFilter.label,
                           type: newFilter.type,
                           rangeType: newFilter.rangeType,
@@ -314,18 +316,19 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
         _updateFilterLabelInFormulas(currentLabel, newLabel) {
             const sheets = this.getters.getSheets();
             for (let sheet of sheets) {
-                for (let cell of Object.values(sheet.cells)) {
+                for (let cell of Object.values(this.getters.getCells(sheet.id))) {
                     if (cell.type === "formula") {
-                        const newContent = cell.content.replace(
+                        const newContent = cell.formula.text.replace(
                             new RegExp(`FILTER\\.VALUE\\(\\s*"${currentLabel}"\\s*\\)`, "g"),
                             `FILTER.VALUE("${newLabel}")`
                         );
-                        if (newContent !== cell.content) {
+                        if (newContent !== cell.formula.text) {
+                            const { col, row } = this.getters.getCellPosition(cell.id);
                             this.dispatch("UPDATE_CELL", {
-                                sheet: sheet.id,
+                                sheetId: sheet.id,
                                 content: newContent,
-                                col: cell.col,
-                                row: cell.row,
+                                col,
+                                row,
                             });
                         }
                     }
@@ -367,15 +370,16 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                         }
                         const field = filter.fields[pivot.id].field;
                         const type = filter.fields[pivot.id].type;
-                        const dateFilterRange = (filter.rangeType === "month")
-                            ? constructDateRange({
-                                referenceMoment: moment(),
-                                fieldName: field,
-                                fieldType: type,
-                                granularity: "month",
-                                setParam: this._getSelectedOptions(values)
-                            })
-                            : constructDateDomain(moment(), field, type, values);
+                        const dateFilterRange =
+                            filter.rangeType === "month"
+                                ? constructDateRange({
+                                      referenceMoment: moment(),
+                                      fieldName: field,
+                                      fieldType: type,
+                                      granularity: "month",
+                                      setParam: this._getSelectedOptions(values),
+                                  })
+                                : constructDateDomain(moment(), field, type, values);
                         const dateDomain = Domain.prototype.arrayToString(
                             pyUtils.eval("domain", dateFilterRange.domain, {})
                         );
@@ -415,7 +419,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             }
             return selectedOptions;
         }
-
     }
 
     FiltersPlugin.modes = ["normal", "headless", "readonly"];

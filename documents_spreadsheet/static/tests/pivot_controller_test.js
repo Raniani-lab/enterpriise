@@ -8,19 +8,29 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const CancelledReason = require('documents_spreadsheet.CancelledReason');
     const { Model } = spreadsheet;
-    const toCartesian = spreadsheet.helpers.toCartesian;
-    const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
+    const {
+        createSpreadsheetFromPivot,
+        mockRPCFn,
+        setCellContent,
+        getCellContent,
+        getCellValue
+    } = spreadsheetUtils;
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
 
     const createView = testUtils.createView;
 
     function getAutofillValue(model, from, column, increment) {
-        const content = model.getters.getCell(...toCartesian(from)).content;
+        const content = getCellContent(model, from);
         return model.getters.getNextValue(content, column, increment);
     }
 
-    function getCellContent(model, xc) {
-        return model.getters.getCell(...toCartesian(xc)).content;
+    function getStyleId(data, style) {
+        for (let [key, value] of Object.entries(data.styles)) {
+            if (JSON.stringify(value) === JSON.stringify(style)) {
+                return parseInt(key, 10);
+            }
+        }
+        return undefined;
     }
 
     const LAST_YEAR_FILTER = {
@@ -154,7 +164,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
             QUnit.module("Spreadsheet export");
 
             QUnit.test("simple pivot export", async function (assert) {
-                assert.expect(8);
+                assert.expect(9);
 
                 const pivot = await createView({
                     View: PivotView,
@@ -170,11 +180,12 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 5);
-                assert.strictEqual(cells.A1.content, "");
-                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells.B1.content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells.B2.content, '=PIVOT.HEADER("1","measure","foo")');
-                assert.strictEqual(cells.B3.content, '=PIVOT("1","foo")');
+                assert.strictEqual(cells.A1.content, undefined);
+                assert.strictEqual(cells.A1.formula, undefined);
+                assert.strictEqual(cells.A3.formula.text, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B1.formula.text, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B2.formula.text, '=PIVOT.HEADER("1","measure","foo")');
+                assert.strictEqual(cells.B3.formula.text, '=PIVOT("1","foo")');
                 assert.strictEqual(cells.B3.format, "#,##0.00");
                 assert.strictEqual(spreadsheetData.sheets[0].merges[0], "A1:A2");
                 pivot.destroy();
@@ -195,11 +206,21 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                const model = await pivot._getSpreadsheetModel();
-                const cells = model.getters.getSheets()[0].cells
-                assert.strictEqual(cells["A3"].content, `=PIVOT.HEADER("1","date:week","16/2016")`);
-                assert.strictEqual(cells["A4"].content, `=PIVOT.HEADER("1","date:week","44/2016")`);
-                assert.strictEqual(cells["A5"].content, `=PIVOT.HEADER("1","date:week","51/2016")`);
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                const cells = spreadsheetData.sheets[0].cells;
+                assert.strictEqual(
+                    cells["A3"].formula.text,
+                    `=PIVOT.HEADER("1","date:week","16/2016")`
+                );
+                assert.strictEqual(
+                    cells["A4"].formula.text,
+                    `=PIVOT.HEADER("1","date:week","44/2016")`
+                );
+                assert.strictEqual(
+                    cells["A5"].formula.text,
+                    `=PIVOT.HEADER("1","date:week","51/2016")`
+                );
                 pivot.destroy();
             });
 
@@ -221,19 +242,19 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 8);
-                assert.strictEqual(cells.B1.content, '=PIVOT.HEADER("1")');
-                assert.strictEqual(cells.B2.content, '=PIVOT.HEADER("1","measure","foo")');
+                assert.strictEqual(cells.B1.formula.text, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.B2.formula.text, '=PIVOT.HEADER("1","measure","foo")');
                 assert.strictEqual(
                     spreadsheetData.styles[cells.B2.style].bold,
                     undefined
                 );
                 assert.strictEqual(
-                    cells.C2.content,
+                    cells.C2.formula.text,
                     '=PIVOT.HEADER("1","measure","probability")'
                 );
-                assert.strictEqual(cells.B3.content, '=PIVOT("1","foo")');
+                assert.strictEqual(cells.B3.formula.text, '=PIVOT("1","foo")');
                 assert.strictEqual(cells.B3.format, "#,##0.00");
-                assert.strictEqual(cells.C3.content, '=PIVOT("1","probability")');
+                assert.strictEqual(cells.C3.formula.text, '=PIVOT("1","probability")');
                 assert.strictEqual(cells.C3.format, "#,##0.00");
                 const merges = spreadsheetData.sheets[0].merges;
                 assert.strictEqual(merges.length, 2);
@@ -285,18 +306,18 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 29);
-                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1","bar","false")');
-                assert.strictEqual(cells.A4.content, '=PIVOT.HEADER("1","bar","true")');
-                assert.strictEqual(cells.A5.content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells.A3.formula.text, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells.A4.formula.text, '=PIVOT.HEADER("1","bar","true")');
+                assert.strictEqual(cells.A5.formula.text, '=PIVOT.HEADER("1")');
                 assert.strictEqual(
-                    cells.B2.content,
+                    cells.B2.formula.text,
                     '=PIVOT.HEADER("1","foo","1","measure","probability")'
                 );
                 assert.strictEqual(
-                    cells.C3.content,
+                    cells.C3.formula.text,
                     '=PIVOT("1","probability","bar","false","foo","2")'
                 );
-                assert.strictEqual(cells.F5.content, '=PIVOT("1","probability")');
+                assert.strictEqual(cells.F5.formula.text, '=PIVOT("1","probability")');
                 const merges = spreadsheetData.sheets[0].merges;
                 assert.strictEqual(merges.length, 1);
                 assert.strictEqual(merges[0], "A1:A2");
@@ -324,28 +345,30 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
+                const firstRowStyleId = getStyleId(spreadsheetData, { fillColor: "#f2f2f2", bold: true });
+                const othersRowStyleId = getStyleId(spreadsheetData, { fillColor: "#f2f2f2" });
                 assert.strictEqual(Object.keys(cells).length, 17);
-                assert.strictEqual(cells.A3.content, '=PIVOT.HEADER("1","bar","false")');
-                assert.strictEqual(cells.A3.style, 3);
+                assert.strictEqual(cells.A3.formula.text, '=PIVOT.HEADER("1","bar","false")');
+                assert.strictEqual(cells.A3.style, firstRowStyleId);
                 assert.strictEqual(
-                    cells["A4"].content,
+                    cells["A4"].formula.text,
                     '=PIVOT.HEADER("1","bar","false","product_id","37")'
                 );
-                assert.strictEqual(cells.A4.style, 2);
+                assert.strictEqual(cells.A4.style, othersRowStyleId);
                 assert.strictEqual(
-                    cells["A5"].content,
+                    cells["A5"].formula.text,
                     '=PIVOT.HEADER("1","bar","false","product_id","41")'
                 );
-                assert.strictEqual(cells["A6"].content, '=PIVOT.HEADER("1","bar","true")');
+                assert.strictEqual(cells["A6"].formula.text, '=PIVOT.HEADER("1","bar","true")');
                 assert.strictEqual(
-                    cells["A7"].content,
+                    cells["A7"].formula.text,
                     '=PIVOT.HEADER("1","bar","true","product_id","37")'
                 );
                 assert.strictEqual(
-                    cells["A8"].content,
+                    cells["A8"].formula.text,
                     '=PIVOT.HEADER("1","bar","true","product_id","41")'
                 );
-                assert.strictEqual(cells["A9"].content, '=PIVOT.HEADER("1")');
+                assert.strictEqual(cells["A9"].formula.text, '=PIVOT.HEADER("1")');
                 pivot.destroy();
             });
 
@@ -373,7 +396,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","product_id","false")');
+                assert.strictEqual(
+                    cells["A3"].formula.text,
+                    '=PIVOT.HEADER("1","product_id","false")'
+                );
                 pivot.destroy();
             });
 
@@ -401,7 +427,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const data = await pivot._getSpreadsheetData();
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData["sheets"][0]["cells"];
-                assert.strictEqual(cells["A3"].content, '=PIVOT.HEADER("1","date:day","false")');
+                assert.strictEqual(
+                    cells["A3"].formula.text,
+                    '=PIVOT.HEADER("1","date:day","false")'
+                );
                 pivot.destroy();
             });
 
@@ -428,47 +457,42 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const cells = spreadsheetData["sheets"][0]["cells"];
 
                 assert.strictEqual(Object.keys(cells).length, 23);
-                assert.strictEqual(cells["A1"].content, '');
-                assert.strictEqual(cells["A4"].style, 3);
+                const firstRowStyleId = getStyleId(spreadsheetData, { fillColor: "#f2f2f2", bold: true });
+                assert.strictEqual(cells["A1"].content, undefined);
+                assert.strictEqual(cells["A4"].style, firstRowStyleId);
+                assert.strictEqual(cells["B1"].formula.text, '=PIVOT.HEADER("1","bar","false")');
                 assert.strictEqual(
-                    cells["B1"].content,
-                    '=PIVOT.HEADER("1","bar","false")',
+                    cells["B2"].formula.text,
+                    '=PIVOT.HEADER("1","bar","false","product_id","37")'
                 );
                 assert.strictEqual(
-                    cells["B2"].content,
-                    '=PIVOT.HEADER("1","bar","false","product_id","37")',
+                    cells["B3"].formula.text,
+                    '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")'
+                );
+                assert.strictEqual(cells["C2"].style, firstRowStyleId);
+                assert.strictEqual(
+                    cells["C2"].formula.text,
+                    '=PIVOT.HEADER("1","bar","false","product_id","41")'
                 );
                 assert.strictEqual(
-                    cells["B3"].content,
-                    '=PIVOT.HEADER("1","bar","false","product_id","37","measure","probability")',
+                    cells["C3"].formula.text,
+                    '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")'
                 );
-                assert.strictEqual(cells["C2"].style, 3);
+                assert.strictEqual(cells["D1"].formula.text, '=PIVOT.HEADER("1","bar","true")');
                 assert.strictEqual(
-                    cells["C2"].content,
-                    '=PIVOT.HEADER("1","bar","false","product_id","41")',
-                );
-                assert.strictEqual(
-                    cells["C3"].content,
-                    '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")',
+                    cells["D2"].formula.text,
+                    '=PIVOT.HEADER("1","bar","true","product_id","37")'
                 );
                 assert.strictEqual(
-                    cells["D1"].content,
-                    '=PIVOT.HEADER("1","bar","true")',
+                    cells["D3"].formula.text,
+                    '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")'
                 );
                 assert.strictEqual(
-                    cells["D2"].content,
-                    '=PIVOT.HEADER("1","bar","true","product_id","37")',
-                );
-                assert.strictEqual(
-                    cells["D3"].content,
-                    '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")',
-                );
-                assert.strictEqual(
-                    cells["E2"].content,
+                    cells["E2"].formula.text,
                     '=PIVOT.HEADER("1","bar","true","product_id","41")'
                 );
                 assert.strictEqual(
-                    cells["E3"].content,
+                    cells["E3"].formula.text,
                     '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")'
                 );
                 pivot.destroy();
@@ -494,8 +518,8 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 const spreadsheetData = JSON.parse(data);
                 const cells = spreadsheetData.sheets[0].cells;
                 assert.strictEqual(Object.keys(cells).length, 8);
-                assert.strictEqual(cells.C2.content, '=PIVOT.HEADER("1","measure","__count")');
-                assert.strictEqual(cells.C3.content, '=PIVOT("1","__count")');
+                assert.strictEqual(cells.C2.formula.text, '=PIVOT.HEADER("1","measure","__count")');
+                assert.strictEqual(cells.C3.formula.text, '=PIVOT("1","__count")');
                 pivot.destroy();
             });
 
@@ -862,6 +886,36 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("Autofill content which contains pivots but which is not a pivot", async function (assert) {
+                assert.expect(2);
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <field name="date" interval="year" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const model = await pivot._getSpreadsheetModel();
+                const a3 = getCellContent(model, "A3").replace("=", "");
+                const content = `=${a3} + ${a3}`;
+                const sheetId = model.getters.getActiveSheetId();
+                model.dispatch("UPDATE_CELL", { sheetId, col: 5, row: 5, content });
+                assert.strictEqual(
+                    getAutofillValue(model, "F6", false, 1),
+                    content
+                );
+                assert.strictEqual(
+                    getAutofillValue(model, "F6", true, 1),
+                    content
+                );
+                pivot.destroy();
+            })
+
             QUnit.test("pivot ids are correctly assigned", async function (assert) {
                 assert.expect(3);
 
@@ -917,6 +971,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     mockRPC: mockRPCFn,
                 });
                 const model = await pivot._getSpreadsheetModel();
+                const sheetId = model.getters.getActiveSheetId();
                 const [p1] = Object.values(model.getters.getPivots());
                 assert.deepEqual(
                     p1.domain,
@@ -924,10 +979,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     "It should have the correct domain"
                 );
                 assert.equal(
-                    model.getters.getCell(0, 2).content,
+                    model.getters.getCell(sheetId, 0, 2).formula.text,
                     `=PIVOT.HEADER("1","bar","true")`
                 );
-                assert.equal(model.getters.getCell(0, 3).content, `=PIVOT.HEADER("1")`);
+                assert.equal(model.getters.getCell(sheetId, 0, 3).formula.text, `=PIVOT.HEADER("1")`);
                 pivot.destroy();
             });
 
@@ -1395,9 +1450,9 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
             QUnit.test("FILTER.VALUE text filter", async function (assert) {
                 assert.expect(3);
                 const model = new Model();
-                model.dispatch("SET_VALUE", { xc: "A10", text: `=FILTER.VALUE("Text Filter")` });
+                setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "#ERROR");
+                assert.equal(getCellValue(model, "A10"), "#ERROR");
                 model.dispatch("ADD_PIVOT_FILTER", {
                     filter: {
                         id: "42",
@@ -1412,20 +1467,20 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     },
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "");
+                assert.equal(getCellValue(model, "A10"), "");
                 const [filter] = model.getters.getGlobalFilters();
                 model.dispatch("SET_PIVOT_FILTER_VALUE", {
                     id: filter.id,
                     value: "Hello",
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "Hello");
+                assert.equal(getCellValue(model, "A10"), "Hello");
             });
 
             QUnit.test("FILTER.VALUE date filter", async function (assert) {
                 assert.expect(2);
                 const model = new Model();
-                model.dispatch("SET_VALUE", { xc: "A10", text: `=FILTER.VALUE("Date Filter")` });
+                setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
                 await testUtils.nextTick();
                 model.dispatch("ADD_PIVOT_FILTER", {
                     filter: {
@@ -1451,7 +1506,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     },
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, `Q1 ${moment().year()}`);
+                assert.equal(getCellValue(model, "A10"), `Q1 ${moment().year()}`);
                 model.dispatch("SET_PIVOT_FILTER_VALUE", {
                     id: filter.id,
                     rangeType: "year",
@@ -1460,7 +1515,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     },
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, `${moment().year()}`);
+                assert.equal(getCellValue(model, "A10"), `${moment().year()}`);
             });
 
             QUnit.test("FILTER.VALUE relation filter", async function (assert) {
@@ -1483,10 +1538,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                         },
                     }
                 );
-                model.dispatch("SET_VALUE", {
-                    xc: "A10",
-                    text: `=FILTER.VALUE("Relation Filter")`,
-                });
+                setCellContent(model, "A10", `=FILTER.VALUE("Relation Filter")`);
                 await testUtils.nextTick();
                 model.dispatch("ADD_PIVOT_FILTER", {
                     filter: {
@@ -1505,7 +1557,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     value: [1],
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "Jean-Jacques");
+                assert.equal(getCellValue(model, "A10"), "Jean-Jacques");
 
                 // Two records; displayNames defined => no rpc
                 model.dispatch("SET_PIVOT_FILTER_VALUE", {
@@ -1514,7 +1566,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     displayNames: ["Jean-Jacques", "Raoul Grosbedon"],
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "Jean-Jacques, Raoul Grosbedon");
+                assert.equal(getCellValue(model, "A10"), "Jean-Jacques, Raoul Grosbedon");
 
                 // another record; displayNames not defined => rpc
                 model.dispatch("SET_PIVOT_FILTER_VALUE", {
@@ -1522,7 +1574,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     value: [2],
                 });
                 await testUtils.nextTick();
-                assert.equal(model.getters.getCell(0, 9).value, "Raoul Grosbedon");
+                assert.equal(getCellValue(model, "A10"), "Raoul Grosbedon");
                 assert.verifySteps(["name_get_1", "name_get_2"]);
             });
 
@@ -1544,10 +1596,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                             },
                         },
                     });
-                    model.dispatch("SET_VALUE", {
-                        xc: "A10",
-                        text: `=FILTER.VALUE("Cuillère") & FILTER.VALUE( "Cuillère" )`,
-                    });
+                    setCellContent(model, "A10", `=FILTER.VALUE("Cuillère") & FILTER.VALUE( "Cuillère" )`);
                     const [filter] = model.getters.getGlobalFilters();
                     const newFilter = {
                         type: "date",
@@ -1559,9 +1608,10 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                             },
                         },
                     };
+                    const sheetId = model.getters.getActiveSheetId();
                     model.dispatch("EDIT_PIVOT_FILTER", { id: filter.id, filter: newFilter });
                     assert.equal(
-                        model.getters.getCell(0, 9).content,
+                        model.getters.getCell(sheetId, 0, 9).formula.text,
                         `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
                     );
                 }

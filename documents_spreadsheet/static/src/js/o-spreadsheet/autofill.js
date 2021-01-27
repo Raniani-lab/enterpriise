@@ -20,16 +20,16 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
     //--------------------------------------------------------------------------
 
     autofillRulesRegistry.add("autofill_pivot", {
-        condition: (cell) => cell && cell.type === "formula" && cell.content.match(/=\s*PIVOT/),
+        condition: (cell) => cell && cell.type === "formula" && cell.formula.text.match(/=\s*PIVOT/),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
-                (cell) => cell && cell.type === "formula" && cell.content.match(/=\s*PIVOT/)
+                (cell) => cell && cell.type === "formula" && cell.formula.text.match(/=\s*PIVOT/)
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
         sequence: 10,
     }).add("autofill_pivot_position", {
-        condition: (cell) => cell && cell.type === "formula" && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
+        condition: (cell) => cell && cell.type === "formula" && cell.formula.text.match(/=.*PIVOT.*PIVOT\.POSITION/),
         generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     });
@@ -61,12 +61,22 @@ odoo.define("documents_spreadsheet.autofill", function (require) {
                     steps = rule.current;
             }
             const content = getters.getNextValue(data.content, isColumn, steps);
-            const tooltip = content ? {
+            let tooltip = {
                 props: {
-                    content: getters.getTooltipFormula(content, isColumn),
-                },
-                component: AutofillTooltip,
-            } : undefined;
+                    content: data.content,
+                }
+            };
+            if (content && content !== data.content) {
+                tooltip = {
+                    props: {
+                        content: getters.getTooltipFormula(content, isColumn),
+                    },
+                    component: AutofillTooltip,
+                }
+            }
+            if (!content) {
+                tooltip = undefined;
+            }
             return {
                 cellData: {
                     style: undefined,

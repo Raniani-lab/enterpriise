@@ -15,7 +15,7 @@
     const core = require("web.core");
     const _t = core._t;
     const PivotCache = require("documents_spreadsheet.pivot_cache");
-    const { parse, astToFormula, helpers } = require("documents_spreadsheet.spreadsheet");
+    const { parse, normalize, astToFormula, helpers } = require("documents_spreadsheet.spreadsheet");
     const { Model } = require("documents_spreadsheet.spreadsheet");
 
     const formats = {
@@ -233,7 +233,7 @@
         };
     }
     /**
-     * Applies a transformation function to all given cells.
+     * Applies a transformation function to all given formula cells.
      * The transformation function takes as fist parameter the cell AST and should
      * return a modified AST.
      * Any additional parameter is forwarded to the transformation function.
@@ -244,8 +244,10 @@
      */
     function convertFormulas(cells, convertFunction, ...args) {
         cells.forEach((cell) => {
-            const ast = convertFunction(parse(cell.content), ...args);
-            cell.content = ast ? `=${astToFormula(ast)}`: "";
+            if (cell.formula) {
+                const ast = convertFunction(parse(cell.formula.text), ...args);
+                cell.formula = ast ? normalize(`=${astToFormula(ast)}`): undefined;
+            }
         });
     }
 
@@ -379,7 +381,7 @@
         return Object.values(data.sheets || [])
             .map((sheet) => Object.values(sheet.cells))
             .flat()
-            .filter((cell) => regex.test(cell.content));
+            .filter((cell) => regex.test(cell.content || cell.formula && cell.formula.text));
     }
 
 
@@ -409,13 +411,13 @@
         });
         for (let sheet of model.getters.getSheets()) {
             const invalidRows = [];
-            for (let rowIndex = 0; rowIndex < model.getters.getNumberRows(sheet.id); rowIndex++) {
+            for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
                 const { cells } = model.getters.getRow(sheet.id, rowIndex);
                 const [valid, invalid] = Object.values(cells)
-                    .filter((cell) => /^\s*=.*PIVOT/.test(cell.content))
+                    .filter((cell) => cell.formula && /^\s*=.*PIVOT/.test(cell.formula.text))
                     .reduce(
                         ([valid, invalid], cell) => {
-                            const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.content);
+                            const isInvalid = cell.formula && /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.formula.text);
                             return [isInvalid ? valid : valid + 1, isInvalid ? invalid + 1 : invalid];
                         },
                         [0, 0]
@@ -424,7 +426,7 @@
                     invalidRows.push(rowIndex);
                 }
             }
-            model.dispatch("REMOVE_ROWS", { rows: invalidRows, sheet: sheet.id });
+            model.dispatch("REMOVE_ROWS", { rows: invalidRows, sheetId: sheet.id });
         }
         data = model.exportData();
         convertFormulas(

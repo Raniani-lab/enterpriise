@@ -193,6 +193,7 @@
             <field name="code">LEAVE213</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>
+            <field name="representation_fees">True</field>
         </record>
         <record id="holiday_type_extra_legal" model="hr.leave.type">
             <field name="name">Extra Legal Time Off</field>

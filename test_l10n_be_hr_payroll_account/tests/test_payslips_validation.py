@@ -4048,3 +4048,33 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 7.6, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
+
+
+    def test_extra_legal_representation_fees(self):
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2021, 1, 4, 7, 0, 0),
+            'date_to': datetime.datetime(2021, 1, 4, 15, 36, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_extra_legal').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE213'), 122.31, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE213'), 1.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 20.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE213'), 7.6, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)

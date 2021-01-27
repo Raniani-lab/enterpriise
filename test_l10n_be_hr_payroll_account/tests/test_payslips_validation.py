@@ -142,6 +142,27 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ]],
         }])
 
+        cls.resource_calendar_1_5_monday_on = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 1/5 Monday On",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': False,
+            'hours_per_week': 7.6,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [(0, 0, {
+                'name': "Attendance",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 8.0, 12.0, "morning"),
+                ("0", 13.0, 16.6, "afternoon"),
+            ]],
+        }])
+
         cls.resource_calendar_0_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar: 0 Hours per week",
             'company_id': cls.env.company.id,
@@ -3884,5 +3905,106 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 3014.8,
             'REMUNERATION': 2300.0,
             'ONSSEMPLOYER': 1440.86,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+
+    def test_private_car_capping_part_time(self):
+        # Private car reimbursement should be 10 intead of 50 for employees working 1 day per week
+        self.employee.km_home_work = 25
+
+        self.contract.write({
+            'transport_mode_car': False,
+            'transport_mode_private_car': True,
+            'resource_calendar_id': self.resource_calendar_1_5_monday_on.id,
+            'ip': False,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 18)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 4.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 30.4, places=2)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'ONSSTOTAL': 347.53,
+            'GROSS': 2311.47,
+            'P.P': -480.6,
+            'PPTOTAL': 480.6,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -23.66,
+            'MEAL_V_EMP': -4.36,
+            'CAR.PRIV': 10.0,
+            'REP.FEES': 150.0,
+            'NET': 1953.85,
+            'REMUNERATION': 2650.0,
+            'ONSSEMPLOYER': 721.65,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_private_car_capping_part_time_1_time_off(self):
+        # Private car reimbursement should be 10 intead of 50 for employees working 1 day per week
+        self.employee.km_home_work = 25
+
+        self.contract.write({
+            'transport_mode_car': False,
+            'transport_mode_private_car': True,
+            'resource_calendar_id': self.resource_calendar_1_5_monday_on.id,
+            'ip': False,
+        })
+
+        self.leaves = self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_1_5_monday_on.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2021, 1, 11, 7, 0, 0),
+            'date_to': datetime.datetime(2021, 1, 11, 15, 36, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave').id
+        }])
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 18)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE110'), 611.54, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2038.46, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE110'), 1.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 3.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE110'), 7.6, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 22.8, places=2)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'ONSSTOTAL': 347.53,
+            'GROSS': 2311.47,
+            'P.P': -480.6,
+            'PPTOTAL': 480.6,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -23.66,
+            'MEAL_V_EMP': -3.27,
+            'CAR.PRIV': 7.69,
+            'REP.FEES': 150.0,
+            'NET': 1952.63,
+            'REMUNERATION': 2650.0,
+            'ONSSEMPLOYER': 721.65,
         }
         self._validate_payslip(payslip, payslip_results)

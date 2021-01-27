@@ -353,11 +353,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'M.ONSS': -13.51,
             'MEAL_V_EMP': -17.44,
             'PUB.TRANS': 24.0,
-            'CAR.PRIV': 37.27,
+            'CAR.PRIV': 29.82,
             'REP.FEES': 98.08,
             'IP': 530.77,
             'IP.DED': -39.81,
-            'NET': 1913.39,
+            'NET': 1905.93,
         }
 
         error = []

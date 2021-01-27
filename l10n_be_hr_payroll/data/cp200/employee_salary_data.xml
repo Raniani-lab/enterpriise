@@ -365,8 +365,13 @@ if not categories.BASIC:
 else:
     calendar = contract.resource_calendar_id
     days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
-    daily_amount = contract.private_car_reimbursed_amount * 3 / 13 / days_per_week
-    result = max(0, contract.private_car_reimbursed_amount - daily_amount * payslip.private_car_missing_days)
+
+    if days_per_week:
+        total_amount = contract.private_car_reimbursed_amount / 5 * days_per_week
+        daily_amount = total_amount * 3 / 13 / days_per_week
+        result = max(0, total_amount - daily_amount * payslip.private_car_missing_days)
+    else:
+        result = 0
             </field>
             <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         </record>

@@ -1124,8 +1124,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 150.0,
-            'NET': 1404.88,
+            'REP.FEES': 75.0,
+            'NET': 1329.88,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1183,8 +1183,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -14.17,
-            'REP.FEES': 150.0,
-            'NET': 1405.97,
+            'REP.FEES': 75.0,
+            'NET': 1330.97,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1253,8 +1253,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -13.08,
-            'REP.FEES': 138.46,
-            'NET': 1299.63,
+            'REP.FEES': 69.23,
+            'NET': 1230.4,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3943,8 +3943,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -4.36,
             'CAR.PRIV': 10.0,
-            'REP.FEES': 150.0,
-            'NET': 1953.85,
+            'REP.FEES': 30.0,
+            'NET': 1833.85,
             'REMUNERATION': 2650.0,
             'ONSSEMPLOYER': 721.65,
         }
@@ -3999,8 +3999,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -3.27,
             'CAR.PRIV': 7.69,
-            'REP.FEES': 150.0,
-            'NET': 1952.63,
+            'REP.FEES': 30.0,
+            'NET': 1832.63,
             'REMUNERATION': 2650.0,
             'ONSSEMPLOYER': 721.65,
         }
@@ -4083,3 +4083,48 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
         self.contract.state = 'cancel'
         self.assertEqual(payslip.state, 'cancel')
+
+    def test_credit_time_representation_fees(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'date_start': datetime.date(2020, 12, 1),
+            'date_end': datetime.date(2021, 2, 28),
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE300'), 4, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
+
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 115.38, places=2)
+
+    def test_contractual_part_time_representation_fees(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
+
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 120.0, places=2)

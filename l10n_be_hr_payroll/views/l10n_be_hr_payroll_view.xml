@@ -26,6 +26,7 @@
                     <field name="time_credit"/>
                     <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
                 </div>
+                <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}"/>
                 <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)]}"/>
             </xpath>
             <xpath expr="//header" position="inside">

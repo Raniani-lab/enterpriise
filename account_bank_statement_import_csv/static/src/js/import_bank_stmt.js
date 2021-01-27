@@ -51,17 +51,20 @@ var DataImportStmt = BaseImport.DataImport.extend({
             if(message.ids){
                 self.statement_line_ids = message.ids
             }
+            if(message.messages && message.messages.length > 0) {
+                self.statement_id = message.messages[0].statement_id
+            }
         });
         return superProm;
     },
     exit: function () {
+        if (!this.statement_id) return;
         this.do_action({
-            name: _t("Reconciliation on Bank Statements"),
-            context: {
-                'statement_line_ids': this.statement_line_ids
-            },
-            type: 'ir.actions.client',
-            tag: 'bank_statement_reconciliation_view'
+            type: 'ir.actions.act_window',
+            res_model: 'account.bank.statement',
+            res_id: this.statement_id,
+            views: [[false, 'form']],
+            target: 'current',
         });
     },
 

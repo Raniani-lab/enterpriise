@@ -4078,3 +4078,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
 
         self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+
+    def test_payslip_on_contract_cancelation(self):
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+        self.contract.state = 'cancel'
+        self.assertEqual(payslip.state, 'cancel')

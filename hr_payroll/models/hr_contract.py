@@ -99,3 +99,11 @@ class HrContract(models.Model):
 
     def _get_default_work_entry_type(self):
         return self.structure_type_id.default_work_entry_type_id or super(HrContract, self)._get_default_work_entry_type()
+
+    def write(self, vals):
+        if 'state' in vals and vals['state'] == 'cancel':
+            self.env['hr.payslip'].search([
+                ('contract_id', 'in', self.filtered(lambda c: c.state != 'cancel').ids),
+                ('state', 'in', ['draft', 'verify']),
+            ]).action_payslip_cancel()
+        return super().write(vals)

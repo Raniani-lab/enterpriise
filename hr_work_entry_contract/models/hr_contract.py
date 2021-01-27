@@ -69,6 +69,7 @@ class HrContract(models.Model):
             ('resource_id', 'in', resource_ids),
             ('date_from', '<=', datetime_to_string(end_dt)),
             ('date_to', '>=', datetime_to_string(start_dt)),
+            ('company_id', '=', self.env.company.id),
         ]
         result = defaultdict(lambda: [])
         tz_dates = {}

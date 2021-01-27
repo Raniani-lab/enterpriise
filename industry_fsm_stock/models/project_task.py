@@ -11,8 +11,21 @@ class Task(models.Model):
     def action_fsm_validate(self):
         result = super(Task, self).action_fsm_validate()
 
-        for task in self:
-            if task.allow_billable and task.sale_order_id:
+        for task in self.filtered(lambda x: x.allow_billable and x.sale_order_id):
+            exception = False
+            sale_line = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id)])
+            for order_line in sale_line:
+                to_log = {}
+                total_qty = sum(order_line.move_ids.filtered(lambda p: p.state not in ['cancel']).mapped('product_uom_qty'))
+                if float_compare(order_line.product_uom_qty, total_qty, order_line.product_uom.rounding) < 0:
+                    to_log[order_line] = (order_line.product_uom_qty, total_qty)
+
+                if to_log:
+                    exception = True
+                    documents = self.env['stock.picking']._log_activity_get_documents(to_log, 'move_ids', 'UP')
+                    documents = {k: v for k, v in documents.items() if k[0].state not in ['cancel', 'done']}
+                    self.env['sale.order']._log_decrease_ordered_quantity(documents)
+            if not exception:
                 task.sudo()._validate_stock()
         return result
 

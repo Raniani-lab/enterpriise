@@ -53,7 +53,7 @@ class HrWorkEntryRegenerationWizard(models.TransientModel):
     @api.depends('date_from', 'date_to', 'employee_id')
     def _compute_search_criteria_completed(self):
         for wizard in self:
-            wizard.search_criteria_completed = self.date_from and self.date_to and self.employee_id
+            wizard.search_criteria_completed = wizard.date_from and wizard.date_to and wizard.employee_id and wizard.earliest_available_date and wizard.latest_available_date
 
     @api.onchange('date_from', 'date_to', 'employee_id')
     def _check_dates(self):
@@ -65,11 +65,11 @@ class HrWorkEntryRegenerationWizard(models.TransientModel):
                     date_from = wizard.date_from
                     wizard.date_from = wizard.date_to
                     wizard.date_to = date_from
-                if wizard.date_from < wizard.earliest_available_date:
+                if wizard.earliest_available_date and wizard.date_from < wizard.earliest_available_date:
                     wizard.date_from = wizard.earliest_available_date
                     wizard.earliest_available_date_message = 'The earliest available date is {date}' \
                         .format(date=self._date_to_string(wizard.earliest_available_date))
-                if wizard.date_to > wizard.latest_available_date:
+                if wizard.latest_available_date and wizard.date_to > wizard.latest_available_date:
                     wizard.date_to = wizard.latest_available_date
                     wizard.latest_available_date_message = 'The latest available date is {date}' \
                         .format(date=self._date_to_string(wizard.latest_available_date))

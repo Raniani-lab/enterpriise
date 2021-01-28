@@ -11,6 +11,43 @@ class TestPlanning(TestCommonPlanning):
     def setUpClass(cls):
         super().setUpClass()
         cls.setUpEmployees()
+        calendar_joseph = cls.env['resource.calendar'].create({
+            'name': 'Calendar 1',
+            'tz': 'UTC',
+            'hours_per_day': 8.0,
+            'attendance_ids': [
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 9, 'hour_to': 13, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 14, 'hour_to': 18, 'day_period': 'afternoon'}),
+            ]
+        })
+        calendar_bert = cls.env['resource.calendar'].create({
+            'name': 'Calendar 2',
+            'tz': 'UTC',
+            'hours_per_day': 4,
+            'attendance_ids': [
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 17, 'day_period': 'morning'}),
+            ],
+        })
+        calendar = cls.env['resource.calendar'].create({
+            'name': 'Classic 40h/week',
+            'tz': 'UTC',
+            'hours_per_day': 8.0,
+            'attendance_ids': [
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Afternoon', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Wednesday Morning', 'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Wednesday Afternoon', 'dayofweek': '2', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'})
+            ]
+        })
+        cls.env.user.company_id.resource_calendar_id = calendar
+        cls.employee_joseph.resource_calendar_id = calendar_joseph
+        cls.employee_bert.resource_calendar_id = calendar_bert
         cls.slot = cls.env['planning.slot'].create({
             'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
             'end_datetime': datetime(2019, 6, 27, 18, 0, 0),
@@ -68,6 +105,54 @@ class TestPlanning(TestCommonPlanning):
         self.slot.employee_id = self.employee_janice.id
         self.assertEqual(self.slot.template_id, self.template, 'It should keep the template')
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust for employee timezone: 11am EDT -> 3pm UTC')
+
+    def test_change_employee(self):
+        """ Ensures that changing the employee does not have an impact to the shift. """
+        self.env.user.tz = 'UTC'
+        self.slot.employee_id = self.employee_joseph.id
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 8, 0), 'It should not adjust to employee calendar')
+        self.assertEqual(self.slot.end_datetime, datetime(2019, 6, 27, 18, 0), 'It should not adjust to employee calendar')
+        self.slot.employee_id = self.employee_bert.id
+        self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 8, 0), 'It should not adjust to employee calendar')
+        self.assertEqual(self.slot.end_datetime, datetime(2019, 6, 27, 18, 0), 'It should not adjust to employee calendar')
+
+    def test_create_with_employee(self):
+        """ This test's objective is to mimic shift creation from the gant view and ensure that the correct behavior is met.
+            This test objective is to test the default values when creating a new shift for an employee when provided defaults are within employee's calendar workdays
+        """
+        self.env.user.tz = 'UTC'
+        PlanningSlot = self.env['planning.slot'].with_context(
+            tz='UTC',
+            default_start_datetime='2019-06-27 00:00:00',
+            default_end_datetime='2019-06-27 23:59:59',
+            default_employee_id=self.employee_joseph.id)
+        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+        self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 27, 9, 0), 'It should be adjusted to employee calendar: 0am -> 9pm')
+        self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 27, 18, 0), 'It should be adjusted to employee calendar: 0am -> 18pm')
+
+    def test_create_with_employee_outside_schedule(self):
+        """ This test objective is to test the default values when creating a new shift for an employee when provided defaults are not within employee's calendar workdays """
+        self.env.user.tz = 'UTC'
+        PlanningSlot = self.env['planning.slot'].with_context(
+            tz='UTC',
+            default_start_datetime='2019-06-26 00:00:00',
+            default_end_datetime='2019-06-26 23:59:59',
+            default_employee_id=self.employee_joseph.id)
+        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+        self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 26, 00, 0), 'It should still be the default start_datetime 0am')
+        self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 26, 23, 59, 59), 'It should adjust to employee calendar: 0am -> 9pm')
+
+    def test_create_without_employee(self):
+        """ This test objective is to test the default values when creating a new shift when no employee is set """
+        self.env.user.tz = 'UTC'
+        PlanningSlot = self.env['planning.slot'].with_context(
+            tz='UTC',
+            default_start_datetime='2019-06-27 00:00:00',
+            default_end_datetime='2019-06-27 23:59:59',
+            default_employee_id=False)
+        defaults = PlanningSlot.default_get(['employee_id', 'start_datetime', 'end_datetime'])
+        self.assertEqual(defaults.get('start_datetime'), datetime(2019, 6, 27, 8, 0), 'It should adjust to employee calendar: 0am -> 9pm')
+        self.assertEqual(defaults.get('end_datetime'), datetime(2019, 6, 27, 17, 0), 'It should adjust to employee calendar: 0am -> 9pm')
 
     def test_unassign_employee_with_template(self):
         # we are going to put everybody in EDT, because if the employee has a different timezone from the company this workflow does not work.

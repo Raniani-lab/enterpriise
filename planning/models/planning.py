@@ -360,36 +360,54 @@ class Planning(models.Model):
             else:
                 slot.write({'template_id': existing_templates.id})
 
-    @api.depends('employee_id', 'template_id')
+    @api.model
+    def _calculate_start_end_dates(self,
+                                 start_datetime,
+                                 end_datetime,
+                                 employee_id,
+                                 template_id,
+                                 previous_template_id,
+                                 template_reset):
+        user_tz = pytz.timezone(self._get_tz())
+        employee = employee_id if employee_id else self.env.user.employee_id
+
+        previous_end = end_datetime or False
+        start = start_datetime or self._default_start_datetime()
+        end = end_datetime or self._default_end_datetime()
+        if employee and employee.tz == self.env.user.tz:
+            work_interval_start, work_interval_end = employee._adjust_to_calendar(start, end)[employee]
+            start, end = (work_interval_start or start, work_interval_end or end)
+
+        if not previous_template_id and not template_reset:
+            if start and not start_datetime:
+                start = start.astimezone(pytz.utc).replace(tzinfo=None)
+            if end and not end_datetime:
+                end = end.astimezone(pytz.utc).replace(tzinfo=None)
+
+        if template_id and start_datetime:
+            h = int(template_id.start_time)
+            m = round(modf(template_id.start_time)[0] * 60.0)
+            start = pytz.utc.localize(start_datetime).astimezone(user_tz)
+            start = start.replace(hour=int(h), minute=int(m))
+            start = start.astimezone(pytz.utc).replace(tzinfo=None)
+
+            h, m = divmod(template_id.duration, 1)
+            delta = timedelta(hours=int(h), minutes=int(m * 60))
+            end = start + delta
+            if previous_end:
+                end += previous_end.date() - end.date()
+
+        return (start, end)
+
+    @api.depends('template_id')
     def _compute_datetime(self):
-        for slot in self:
-            user_tz = pytz.timezone(slot._get_tz())
-            employee = slot.employee_id if slot.employee_id else slot.env.user.employee_id
-
-            previous_end = slot.end_datetime or False
-            start = slot.start_datetime or self._default_start_datetime()
-            end = slot.end_datetime or self._default_end_datetime()
-            work_interval = employee._adjust_to_calendar(start, end)
-            start_datetime, end_datetime = work_interval[employee] if employee and employee.tz == slot.env.user.tz else (start, end)
-
-            if not slot.previous_template_id and not slot.template_reset:
-                if start_datetime and not slot.start_datetime:
-                    slot.start_datetime = start_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-                if end_datetime and not slot.end_datetime:
-                    slot.end_datetime = end_datetime.astimezone(pytz.utc).replace(tzinfo=None)
-
-            if slot.template_id and slot.start_datetime:
-                h = int(slot.template_id.start_time)
-                m = round(modf(slot.template_id.start_time)[0] * 60.0)
-                start = pytz.utc.localize(slot.start_datetime).astimezone(user_tz)
-                start = start.replace(hour=int(h), minute=int(m))
-                slot.start_datetime = start.astimezone(pytz.utc).replace(tzinfo=None)
-
-                h, m = divmod(slot.template_id.duration, 1)
-                delta = timedelta(hours=int(h), minutes=int(m * 60))
-                slot.end_datetime = slot.start_datetime + delta
-                if previous_end:
-                    slot.end_datetime += previous_end.date() - slot.end_datetime.date()
+        for slot in self.filtered(lambda s: s.template_id):
+            slot.start_datetime, slot.end_datetime = self._calculate_start_end_dates(slot.start_datetime,
+                                                                                     slot.end_datetime,
+                                                                                     slot.employee_id,
+                                                                                     slot.template_id,
+                                                                                     slot.previous_template_id,
+                                                                                     slot.template_reset)
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id')
     def _compute_publication_warning(self):
@@ -411,16 +429,28 @@ class Planning(models.Model):
     def default_get(self, fields_list):
         res = super(Planning, self).default_get(fields_list)
 
-        if not res.get('employee_id') and 'start_datetime' in fields_list:
-            start_datetime = fields.Datetime.from_string(res.get('start_datetime'))
-            end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else False
-            start = pytz.utc.localize(start_datetime)
-            end = pytz.utc.localize(end_datetime) if end_datetime else self._default_end_datetime()
-            opening_hours = self._company_working_hours(start, end)
-            res['start_datetime'] = opening_hours[0].astimezone(pytz.utc).replace(tzinfo=None)
+        if res.get('employee_id'):
+            employee_id = self.env['hr.employee'].browse(res.get('employee_id'))
+            template_id, previous_template_id = [res.get(key) for key in ['template_id', 'previous_template_id']]
+            template_id = template_id and self.env['planning.slot.template'].browse(template_id)
+            previous_template_id = template_id and self.env['planning.slot.template'].browse(previous_template_id)
+            res['start_datetime'], res['end_datetime'] = self._calculate_start_end_dates(res.get('start_datetime'),
+                                                                                       res.get('end_datetime'),
+                                                                                       employee_id,
+                                                                                       template_id,
+                                                                                       previous_template_id,
+                                                                                       res.get('template_reset'))
+        else:
+            if 'start_datetime' in fields_list:
+                start_datetime = fields.Datetime.from_string(res.get('start_datetime'))
+                end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else False
+                start = pytz.utc.localize(start_datetime)
+                end = pytz.utc.localize(end_datetime) if end_datetime else self._default_end_datetime()
+                opening_hours = self._company_working_hours(start, end)
+                res['start_datetime'] = opening_hours[0].astimezone(pytz.utc).replace(tzinfo=None)
 
-            if 'end_datetime' in fields_list:
-                res['end_datetime'] = opening_hours[1].astimezone(pytz.utc).replace(tzinfo=None)
+                if 'end_datetime' in fields_list:
+                    res['end_datetime'] = opening_hours[1].astimezone(pytz.utc).replace(tzinfo=None)
 
         return res
 

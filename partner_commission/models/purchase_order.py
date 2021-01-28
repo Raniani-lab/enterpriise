@@ -63,7 +63,7 @@ class PurchaseOrder(models.Model):
                 ('purchase_type', '=', 'commission'),
             ])
 
-            template = self.env.ref('purchase.email_template_edi_purchase')
+            template = self.env.ref('purchase.email_template_edi_purchase_done')
 
             for po in purchases.filtered(lambda p: p.invoice_commission_count > 0):
                 try:

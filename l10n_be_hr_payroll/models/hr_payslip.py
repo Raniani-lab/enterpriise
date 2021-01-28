@@ -194,7 +194,7 @@ class Payslip(models.Model):
             # If less than 1 month of occupation -> payment of the time off occurring within 15 days after contract.
             # Occupation = duration since the start of the contract, from date to date
             public_leaves = public_leaves.filtered(
-                lambda l: (l.date_from.date() - self.contract_id.date_end).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= self.contract_id.date_end else 15))  
+                lambda l: 0 < (l.date_from.date() - self.contract_id.date_end).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= self.contract_id.date_end else 15))
             if public_leaves:
                 res.append({
                     'sequence': after_contract_public_holiday_type.sequence,

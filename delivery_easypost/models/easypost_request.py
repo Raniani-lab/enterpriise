@@ -417,6 +417,18 @@ class EasypostRequest():
             tracking_public_urls.append([shipment['tracking_code'], shipment['tracker']['public_url']])
         return tracking_public_urls
 
+    def get_tracking_link_from_code(self, code):
+        """ Retrieve the information from the tracking code entered manually.
+        https://www.easypost.com/docs/api#retrieve-a-list-of-trackers
+        Return data relative to tracker.
+        """
+        tracking_public_urls = []
+        endpoint = "trackers"
+        response = self._make_api_request(endpoint, 'get', data={'tracking_code': code})
+        for tracker in response.get('trackers'):
+            tracking_public_urls.append([tracker['tracking_code'], tracker['public_url']])
+        return tracking_public_urls
+
     def _sort_rates(self, rates):
         """ Sort rates by price. This function
         can be override in order to modify the default

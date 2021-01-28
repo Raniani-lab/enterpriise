@@ -156,7 +156,12 @@ class DeliverCarrier(models.Model):
         carrier use a single link for all packages.
         """
         ep = EasypostRequest(self.sudo().easypost_production_api_key if self.prod_environment else self.sudo().easypost_test_api_key, self.log_xml)
-        tracking_urls = ep.get_tracking_link(picking.ep_order_ref)
+        if picking.ep_order_ref:
+            tracking_urls = ep.get_tracking_link(picking.ep_order_ref)
+        else:
+            tracking_urls = []
+            for code in picking.carrier_tracking_ref.split('+'):
+                tracking_urls += ep.get_tracking_link_from_code(code.strip())
         return len(tracking_urls) == 1 and tracking_urls[0][1] or json.dumps(tracking_urls)
 
     def easypost_cancel_shipment(self, pickings):

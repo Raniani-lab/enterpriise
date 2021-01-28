@@ -96,11 +96,11 @@ class SDDTest(AccountTestInvoicingCommon):
         self.pay_with_mandate(invoice_no_bic, mandate_no_bic)
 
         # These invoice should have been paid thanks to the mandate
-        self.assertEqual(invoice_agrolait.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_agrolait.payment_state, self.env['account.move']._get_invoice_in_payment_state(), 'This invoice should have been paid thanks to the mandate')
         self.assertEqual(invoice_agrolait.sdd_mandate_id, mandate_agrolait)
-        self.assertEqual(invoice_china_export.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_china_export.payment_state, self.env['account.move']._get_invoice_in_payment_state(), 'This invoice should have been paid thanks to the mandate')
         self.assertEqual(invoice_china_export.sdd_mandate_id, mandate_china_export)
-        self.assertEqual(invoice_no_bic.payment_state, 'in_payment', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_no_bic.payment_state, self.env['account.move']._get_invoice_in_payment_state(), 'This invoice should have been paid thanks to the mandate')
         self.assertEqual(invoice_no_bic.sdd_mandate_id, mandate_no_bic)
 
         #The 'one-off' mandate should now be closed

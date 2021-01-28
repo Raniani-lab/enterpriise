@@ -9,12 +9,12 @@ Batch Payments
 =======================================
 Batch payments allow grouping payments.
 
-They are for example used to regroup serveral received checks before you deposit them in a single batch to the bank.
+They are used namely, but not only, to group several cheques before depositing them in a single batch to the bank.
 The total amount deposited will then appear as a single transaction on your bank statement.
-When you proceed with the reconciliation, simply select the corresponding batch payment to reconcile all the payments within.
+When you reconcile, simply select the corresponding batch payment to reconcile all the payments in the batch.
     """,
     'website': 'https://www.odoo.com/page/accounting',
-    'depends' : ['account_accountant'],
+    'depends': ['account'],
     'data': [
         'security/account_batch_payment_security.xml',
         'security/ir.model.access.csv',

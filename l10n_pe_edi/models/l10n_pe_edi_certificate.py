@@ -85,18 +85,6 @@ class Certificate(models.Model):
             raise ValidationError(_('The certificate is expired since %s') % record.date_end)
         return record
 
-    def write(self, data):
-        res = super(Certificate, self).write(data)
-        # 'clear_caches' must be called explicitly due to the use of '@tools.ormcache'.
-        self.clear_caches()
-        return res
-
-    def unlink(self):
-        res = super(Certificate, self).unlink()
-        # 'clear_caches' must be called explicitly due to the use of '@tools.ormcache'.
-        self.clear_caches()
-        return res
-
     # -------------------------------------------------------------------------
     # BUSINESS METHODS
     # -------------------------------------------------------------------------

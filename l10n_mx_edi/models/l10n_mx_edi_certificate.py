@@ -160,17 +160,6 @@ class Certificate(models.Model):
             except Exception:
                 raise ValidationError(_('The certificate key and/or password is/are invalid.'))
 
-    @api.model
-    def create(self, data):
-        res = super(Certificate, self).create(data)
-        self.clear_caches()
-        return res
-
-    def write(self, data):
-        res = super(Certificate, self).write(data)
-        self.clear_caches()
-        return res
-
     @api.ondelete(at_uninstall=True)
     def _unlink_except_invoices(self):
         mx_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')

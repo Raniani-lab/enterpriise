@@ -1,12 +1,16 @@
 odoo.define('account_invoice_extract.Fields', function (require) {
 "use strict";
 
+var core = require('web.core');
+
 var InvoiceExtractField = require('account_invoice_extract.Field');
 
 var Class = require('web.Class');
 var Mixins = require('web.mixins');
 var ServicesMixin = require('web.ServicesMixin');
 var session = require('web.session');
+
+var _t = core._t;
 
 /**
  * This class groups the fields that are supported by the OCR. Also, it manages
@@ -26,22 +30,22 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, ServicesMix
         Mixins.EventDispatcherMixin.init.call(this, arguments);
         this.setParent(parent);
 
-        var vendor_text = 'Vendor';
+        var vendor_text = _t('Vendor');
         if (is_customer_invoice) {
-            vendor_text = 'Customer';
+            vendor_text = _t('Customer');
         }
         this._fields = [
-            new InvoiceExtractField(this, { text: 'VAT', fieldName: 'VAT_Number' }),
+            new InvoiceExtractField(this, { text: _t('VAT'), fieldName: 'VAT_Number' }),
             new InvoiceExtractField(this, { text: vendor_text, fieldName: 'supplier' }),
-            new InvoiceExtractField(this, { text: 'Date', fieldName: 'date' }),
-            new InvoiceExtractField(this, { text: 'Due Date', fieldName: 'due_date' }),
-            new InvoiceExtractField(this, { text: 'Vendor Reference', fieldName: 'invoice_id' }),
+            new InvoiceExtractField(this, { text: _t('Date'), fieldName: 'date' }),
+            new InvoiceExtractField(this, { text: _t('Due Date'), fieldName: 'due_date' }),
+            new InvoiceExtractField(this, { text: _t('Vendor Reference'), fieldName: 'invoice_id' }),
         ];
 
         this._fields[0].setActive();
         session.user_has_group('base.group_multi_currency').then(function(has_multi_currency) {
             if (has_multi_currency) {
-                self._fields.push(new InvoiceExtractField(self, { text: 'Currency', fieldName: 'currency' }));
+                self._fields.push(new InvoiceExtractField(self, { text: _t('Currency'), fieldName: 'currency' }));
             }
         });
     },

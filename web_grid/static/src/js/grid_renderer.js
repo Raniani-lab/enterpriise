@@ -248,6 +248,13 @@ odoo.define('web_grid.GridRenderer', function (require) {
 
         /**
          * @private
+         * @param {OwlEvent} ev
+         */
+        _onClickCreateInline(ev) {
+            this.trigger('create-inline');
+        }
+        /**
+         * @private
          * @param path path to the cell
          */
         _onClickCellInformation(path) {
@@ -374,6 +381,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
         cellComponentOptions: Object,
         cellField: String,
         colField: String,
+        createInline: Boolean,
+        displayEmpty: Boolean,
         fields: Object,
         groupBy: Array,
         hasBarChartTotal: Boolean,

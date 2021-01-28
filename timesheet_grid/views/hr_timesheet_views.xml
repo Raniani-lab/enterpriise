@@ -152,7 +152,13 @@
             <field name="name">account.analytic.line.grid.project</field>
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
-                <grid string="Timesheets" adjustment="object" adjust_name="adjust_grid" js_class="timesheet_timer_grid" barchart_total="1">
+                <grid string="Timesheets"
+                      adjustment="object"
+                      adjust_name="adjust_grid"
+                      js_class="timesheet_timer_grid"
+                      barchart_total="1"
+                      create_inline="1"
+                      display_empty="1">
                     <field name="project_id" type="row"/>
                     <field name="validated" type="readonly"/>
                     <field name="task_id" type="row"/>
@@ -169,7 +175,13 @@
             <field name="name">account.analytic.line.grid.project</field>
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
-                <grid string="Timesheets" adjustment="object" adjust_name="adjust_grid" js_class="timesheet_grid" barchart_total="1">
+                <grid string="Timesheets"
+                      adjustment="object"
+                      adjust_name="adjust_grid"
+                      js_class="timesheet_grid"
+                      barchart_total="1"
+                      create_inline="1"
+                      display_empty="1">
                     <field name="project_id" type="row" section="1"/>
                     <field name="validated" type="readonly"/>
                     <field name="task_id" type="row"/>
@@ -216,7 +228,13 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" eval="False"/>
             <field name="arch" type="xml">
-                <grid string="Timesheets" adjustment="object" adjust_name="adjust_grid" js_class="timesheet_grid" barchart_total="1">
+                <grid string="Timesheets"
+                      adjustment="object"
+                      adjust_name="adjust_grid"
+                      js_class="timesheet_grid"
+                      barchart_total="1"
+                      create_inline="1"
+                      display_empty="1">
                     <field name="validated" type="readonly"/>
                     <field name="employee_id" type="row"/>
                     <field name="date" type="col">
@@ -277,7 +295,13 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" eval="False"/>
             <field name="arch" type="xml">
-                <grid string="Timesheets" create="false" edit="false" js_class="timesheet_grid" barchart_total="1">
+                <grid string="Timesheets"
+                      create="false"
+                      edit="false"
+                      js_class="timesheet_grid"
+                      barchart_total="1"
+                      create_inline="1"
+                      display_empty="1">
                     <field name="project_id" type="row" section="1"/>
                     <field name="task_id" type="row"/>
                     <field name="date" type="col">

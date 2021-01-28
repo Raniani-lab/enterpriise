@@ -10,13 +10,44 @@ class HrLeave(models.Model):
     to_defer = fields.Boolean(help="Whether this time off has been validated after the validation of the related payslip. This means that this time off should be deferred to a next month.")
 
     def action_validate(self):
+        # Get employees payslips
         all_payslips = self.env['hr.payslip'].sudo().search([
             ('employee_id', 'in', self.mapped('employee_id').ids),
-            ('state', '=', 'done')]).filtered(lambda p: p.is_regular)
+            ('state', '=', 'done'),
+        ]).filtered(lambda p: p.is_regular)
+        # Mark Leaves to Defer
         for leave in self:
             if any(payslip.employee_id == leave.employee_id and (payslip.date_from <= leave.date_to.date() and payslip.date_to >= leave.date_from.date()) for payslip in all_payslips):
                 leave.to_defer = True
-        return super(HrLeave, self).action_validate()
+        res = super().action_validate()
+        self._recompute_payslips()
+        return res
+
+    def action_refuse(self):
+        res = super().action_refuse()
+        self._recompute_payslips()
+        return res
+
+    def _recompute_payslips(self):
+        # Recompute draft/waiting payslips
+        all_payslips = self.env['hr.payslip'].sudo().search([
+            ('employee_id', 'in', self.mapped('employee_id').ids),
+            ('state', 'in', ['draft', 'verify']),
+        ]).filtered(lambda p: p.is_regular)
+        draft_payslips = self.env['hr.payslip']
+        waiting_payslips = self.env['hr.payslip']
+        for leave in self:
+            for payslip in all_payslips:
+                if payslip.employee_id == leave.employee_id and (payslip.date_from <= leave.date_to.date() and payslip.date_to >= leave.date_from.date()):
+                    if payslip.state == 'draft':
+                        draft_payslips |= payslip
+                    elif payslip.state == 'verify':
+                        waiting_payslips |= payslip
+        if draft_payslips:
+            draft_payslips._onchange_employee()
+        if waiting_payslips:
+            waiting_payslips.action_refresh_from_work_entries()
+
 
     def _cancel_work_entry_conflict(self):
         leaves_to_defer = self.filtered(lambda l: l.to_defer)

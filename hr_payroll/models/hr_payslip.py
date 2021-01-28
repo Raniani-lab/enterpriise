@@ -510,15 +510,8 @@ class HrPayslip(models.Model):
 
     def _get_new_worked_days_lines(self):
         if self.struct_id.use_worked_day_lines:
-            # computation of the salary worked days
-            worked_days_line_values = self._get_worked_day_lines()
-            worked_days_lines = self.worked_days_line_ids.browse([])
-            for r in worked_days_line_values:
-                r['payslip_id'] = self.id
-                worked_days_lines |= worked_days_lines.new(r)
-            return worked_days_lines
-        else:
-            return [(5, False, False)]
+            return [(5, 0, 0)] + [(0, 0, vals) for vals in self._get_worked_day_lines()]
+        return [(5, False, False)]
 
     def _get_salary_line_total(self, code):
         lines = self.line_ids.filtered(lambda line: line.code == code)

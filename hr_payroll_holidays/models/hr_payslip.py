@@ -13,7 +13,8 @@ class HrPayslip(models.Model):
             employees = self.mapped('employee_id')
             leaves_to_defer = self.env['hr.leave'].search([
                 ('employee_id', 'in', employees.ids),
-                ('to_defer', '=', True)
+                ('to_defer', '=', True),
+                ('state', '!=', 'refuse'),
             ])
             if leaves_to_defer:
                 raise ValidationError(_(

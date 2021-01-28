@@ -750,6 +750,52 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('editing a value does not glitch [REQUIRE FOCUS]', async function (assert) {
+        assert.expect(3);
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-25",
+            viewOptions: {
+                context: {some_value: 2},
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'search') {
+                    return Promise.resolve([1, 2, 3, 4, 5]);
+                }
+                if (args.method === 'adjust_grid') {
+                    const proms = [];
+                    proms.push(new Promise(resolve => setTimeout(resolve, 50)));
+                    proms.push(this._super.apply(this, arguments));
+                    return Promise.all(proms);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const $cell = grid.$('.o_grid_cell_container:eq(0)');
+        let $div = $cell.find('div.o_grid_input');
+        await testUtils.dom.triggerEvent($div, 'focus');
+        const $input = $cell.find('input.o_grid_input');
+        await testUtils.dom.triggerEvent($input, 'focus');
+        document.execCommand('insertText', false, "8.5");
+        await testUtils.dom.triggerEvent($input, 'blur');
+        $div = $cell.find('div.o_grid_input');
+        assert.doesNotHaveClass($div, 'o_has_error',
+            "input should not be formatted like there is an error");
+        assert.strictEqual($div.text(), "8:30",
+            "text should not go back to previous value (0:00).");
+        await new Promise(resolve => setTimeout(resolve, 100));
+        $div = $cell.find('div.o_grid_input');
+        assert.strictEqual($div.text(), "8:30",
+            "text should have been properly parsed/formatted");
+
+        grid.destroy();
+    });
+
     QUnit.test('changing timestamp removes errors [REQUIRE FOCUS]', async function (assert) {
         assert.expect(2);
 

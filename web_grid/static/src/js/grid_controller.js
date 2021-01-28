@@ -121,6 +121,11 @@ var GridController = AbstractController.extend({
         // convert row values to a domain, concat to action domain
         var state = this.model.get();
         var domain = this.model.domain.concat(cell.row.domain);
+        // early rendering of the new value.
+        // FIXME: only the model should modify the state, so in master
+        // move the _adjust method in the model so that it can properly
+        // handle "pending" data
+        utils.into(state.data, cell.cell_path).value = newValue;
 
         var self = this;
         return this.mutex.exec(function () {

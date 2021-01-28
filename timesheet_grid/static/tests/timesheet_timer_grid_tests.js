@@ -559,5 +559,56 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('Edit cell manually with shift key pressed', async function (assert) {
+        assert.expect(4);
+
+        const grid = await createView({
+            View: TimesheetTimerGridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            groupBy: ["task_id", "project_id"],
+            currentDate: "2017-01-25",
+            mockRPC: function (route, args) {
+                if (args.method === 'get_timer_data') {
+                    return Promise.resolve({
+                        'step_timer': 30,
+                        'favorite_project': 31
+                    });
+                } else if (args.method === 'search') {
+                    return Promise.resolve([1, 2, 3, 4, 5]);
+                } else if (args.method === 'adjust_grid') {
+                    return Promise.resolve([]);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const $cell = grid.$('.o_grid_cell_container:eq(0)');
+        const $div = $cell.find('div.o_grid_input');
+        assert.doesNotHaveClass($div, 'o_has_error', "input should not show any error at start");
+
+        await testUtils.dom.triggerEvent($(window)[0].$("body"), 'keydown', {key: 'Shift'});
+        await testUtils.dom.triggerEvent($div, 'focus');
+        const $input = $cell.find('input.o_grid_input');
+        await testUtils.dom.triggerEvent($input, 'focus');
+        document.execCommand('insertText', false, "0");
+        document.execCommand('insertText', false, "4");
+        assert.strictEqual($input.val(), "04",
+            "val should be 04");
+        await testUtils.dom.triggerEvent($input, 'keyup', {key: 'Shift'});
+        document.execCommand('insertText', false, ":");
+        await testUtils.dom.triggerEvent($input, 'keydown', {key: 'Shift'});
+        document.execCommand('insertText', false, "3");
+        document.execCommand('insertText', false, "0");
+        await testUtils.dom.triggerEvent($input, 'keyup', {key: 'Shift'});
+        assert.doesNotHaveClass($input, 'o_has_error',
+            "input should not be formatted like there is an error");
+        assert.strictEqual($input.val(), "04:30",
+            "val should be 04:30");
+
+        grid.destroy();
+    });
+
 });
 });

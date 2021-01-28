@@ -284,7 +284,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
          * @param {KeyboardEvent} ev
          */
         async _onKeydown(ev) {
-            if (ev.key === 'Shift' && !this.stateTimer.timerRunning && !$("input.o_grid_input").length) {
+            if (ev.key === 'Shift' && !this.stateTimer.timerRunning && !this.state.editMode) {
                 this.stateTimer.addTimeMode = true;
             } else if (!ev.altKey && this.showTimerButton && ! ['input', 'textarea'].includes(ev.target.tagName.toLowerCase())) {
                 if (ev.key === 'Escape' && this.stateTimer.timerRunning) {
@@ -304,7 +304,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
          * @param {KeyboardEvent} ev
          */
         _onKeyup(ev) {
-            if (ev.key === 'Shift') {
+            if (ev.key === 'Shift' && !this.state.editMode) {
                 this.stateTimer.addTimeMode = false;
             }
         }

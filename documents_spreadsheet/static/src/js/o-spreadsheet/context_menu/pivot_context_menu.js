@@ -3,7 +3,10 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
 
     const core = require("web.core");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
-    const { REINSERT_PIVOT_CHILDREN, INSERT_PIVOT_CELL_CHILDREN } = require("documents_spreadsheet.pivot_actions");
+    const {
+        REINSERT_PIVOT_CHILDREN,
+        INSERT_PIVOT_CELL_CHILDREN,
+    } = require("documents_spreadsheet.pivot_actions");
 
     const _t = core._t;
     const cellMenuRegistry = spreadsheet.registries.cellMenuRegistry;
@@ -30,10 +33,10 @@ odoo.define("documents_spreadsheet.pivot_context_menu", function (require) {
             name: _t("Pivot properties"),
             sequence: 121,
             action(env) {
-                const [col,row] = env.getters.getPosition();
+                const [col, row] = env.getters.getPosition();
                 const pivotId = env.getters.getPivotFromPosition(col, row);
                 env.dispatch("SELECT_PIVOT", { pivotId });
-                env.openSidePanel("PIVOT_PROPERTIES_PANEL", { });
+                env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
             },
             isVisible: (env) => env.getters.getPivots().length,
         });

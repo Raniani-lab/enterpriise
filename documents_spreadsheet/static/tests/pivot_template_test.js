@@ -12,30 +12,46 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
     const { nextTick, dom, fields, createActionManager, createView } = testUtils;
     const { createDocumentsView } = require("documents.test_utils");
 
-    const { createSpreadsheetFromPivot, mockRPCFn } = spreadsheetUtils;
+    const {
+        createSpreadsheetFromPivot,
+        mockRPCFn,
+        setCellContent,
+        getCellContent
+    } = spreadsheetUtils;
 
 
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
     const topbarMenuRegistry = spreadsheet.registries.topbarMenuRegistry;
-    const { parse, astToFormula } = spreadsheet;
+    const { parse, normalize, astToFormula, Model } = spreadsheet;
 
     async function convertFormula(config) {
-        const [actionManager, model, env] = await createSpreadsheetFromPivot({
+        const [ actionManager, m1, env ] = await createSpreadsheetFromPivot({
             model: "partner",
             data: config.data,
             arch: config.arch,
             mockRPC: mockRPCFn,
         });
-        const { pivots } = model.exportData();
         const spreadsheetAction = actionManager.getCurrentController().widget;
+        const rpc = spreadsheetAction._rpc.bind(spreadsheetAction);
+        //reload the model in headless mode, with the conversion plugin
+        const model = new Model(m1.exportData(), {
+            mode: "headless",
+            evalContext: {
+                env: {
+                    services: { rpc },
+                },
+            }
+        });
         await Promise.all(
-            Object.values(pivots).map((pivot) =>
-                pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
+            model.getters.getPivots().map((pivot) =>
+                pivotUtils.fetchCache(pivot, rpc, { force: true, initialDomain: true })
             )
         );
-        const ast = config.convertFunction(parse(config.formula), pivots);
+        setCellContent(model, "A1", `=${config.formula}`);
+        model.dispatch(config.convert);
         actionManager.destroy();
-        return astToFormula(ast);
+        // Remove the equal sign
+        return getCellContent(model, "A1").slice(1);
     }
 
     QUnit.module(
@@ -208,7 +224,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 const result = await convertFormula({
                     data: this.data,
                     formula,
-                    convertFunction: pivotUtils.absoluteToRelative,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     arch: `
                     <pivot string="Partners">
                         <field name="foo" type="col"/>
@@ -234,7 +250,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id","37","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -245,7 +261,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT.HEADER("1","product_id","37","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -256,7 +272,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -267,7 +283,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -291,7 +307,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     data: this.data,
                     arch,
                     formula: `PIVOT("1","probability","product_id",37,"bar","110")`,
-                    convertFunction: pivotUtils.absoluteToRelative,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
                 });
                 assert.equal(
                     result,
@@ -301,7 +317,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     data: this.data,
                     arch,
                     formula: `PIVOT.HEADER("1","product_id",41,"bar","110")`,
-                    convertFunction: pivotUtils.absoluteToRelative,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
                 });
                 assert.equal(
                     result,
@@ -324,7 +340,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id","37","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -335,7 +351,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -346,7 +362,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id","41","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -357,7 +373,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT.HEADER("1","product_id","41","bar","110")`,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     });
                     assert.equal(
                         result,
@@ -381,7 +397,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 1),"bar","110")`,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     });
                     assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
 
@@ -389,7 +405,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     });
                     assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
 
@@ -397,7 +413,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     });
                     assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
 
@@ -405,44 +421,11 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         data: this.data,
                         arch,
                         formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id", 2),"bar","110")`,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     });
                     assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
                 }
             );
-
-            QUnit.test("Template data does not contain pivot cache", async function (assert) {
-                assert.expect(3);
-                const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
-                    mockRPC: mockRPCFn,
-                });
-                const { pivots, sheets } = model.exportData();
-                await pivotUtils.convertPivotFormulas(
-                    env.services.rpc,
-                    [sheets[0].cells.B3],
-                    pivotUtils.relativeToAbsolute,
-                    pivots
-                );
-                const pivotStates = Object.values(pivots).map((pivot) => [
-                    pivot.cache,
-                    pivot.isLoaded,
-                    pivot.lastUpdate,
-                ]);
-                for (const [cache, isLoaded, last] of pivotStates) {
-                    assert.equal(cache, undefined);
-                    assert.equal(isLoaded, false);
-                    assert.equal(last, undefined);
-                }
-                actionManager.destroy();
-            });
 
             QUnit.test("Will convert additional template position to id -1", async function (
                 assert
@@ -476,15 +459,12 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
                     )
                 );
-                model.dispatch("SET_VALUE", {
-                    xc: "A1",
-                    text: `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar","110")`,
-                });
+                setCellContent(model, "A1", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar","110")`);
                 const data = await pivotUtils.getDataFromTemplate(
                     env.services.rpc,
                     "this is a fake id"
                 );
-                assert.notOk(data.sheets[0].cells.A1.content);
+                assert.notOk(data.sheets[0].cells.A1);
                 actionManager.destroy();
             });
 
@@ -502,7 +482,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     let result = await convertFormula({
                         formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
                         data: this.data,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                         arch,
                     });
                     assert.equal(result, `PIVOT("1","probability","product_id","37","bar","110")`);
@@ -510,7 +490,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     result = await convertFormula({
                         formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`,
                         data: this.data,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                         arch,
                     });
                     assert.equal(result, `PIVOT.HEADER("1","product_id","37","bar","110")`);
@@ -518,7 +498,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     result = await convertFormula({
                         formula: `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
                         data: this.data,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                         arch,
                     });
                     assert.equal(result, `PIVOT("1","probability","product_id","41","bar","110")`);
@@ -526,7 +506,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     result = await convertFormula({
                         formula: `PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")`,
                         data: this.data,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                         arch,
                     });
                     assert.equal(result, `PIVOT.HEADER("1","product_id","41","bar","110")`);
@@ -543,7 +523,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")
                     )`,
                     data: this.data,
-                    convertFunction: pivotUtils.relativeToAbsolute,
+                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     arch: `
                     <pivot string="Partners">
                         <field name="bar" type="col"/>
@@ -568,7 +548,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110")
                     `,
                     data: this.data,
-                    convertFunction: pivotUtils.relativeToAbsolute,
+                    convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                     arch: `
                     <pivot string="Partners">
                         <field name="bar" type="col"/>
@@ -591,7 +571,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                             -PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")
                         `,
                         data: this.data,
-                        convertFunction: pivotUtils.relativeToAbsolute,
+                        convert: "CONVERT_PIVOT_FROM_TEMPLATE",
                         arch: `
                     <pivot string="Partners">
                         <field name="bar" type="col"/>
@@ -614,7 +594,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         PIVOT("1","probability","product_id","41","bar","110")
                     `,
                     data: this.data,
-                    convertFunction: pivotUtils.absoluteToRelative,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     arch: `
                         <pivot string="Partners">
                             <field name="bar" type="col"/>
@@ -637,7 +617,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         -PIVOT("1","probability","product_id","37","bar","110")
                     `,
                         data: this.data,
-                        convertFunction: pivotUtils.absoluteToRelative,
+                        convert: "CONVERT_PIVOT_TO_TEMPLATE",
                         arch: `
                             <pivot string="Partners">
                                 <field name="bar" type="col"/>
@@ -656,67 +636,45 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 assert
             ) {
                 assert.expect(1);
-                const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                    model: "partner",
-                    data: this.data,
-                    arch: `
-                        <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
-                    mockRPC: mockRPCFn,
-                });
-                const { pivots } = model.exportData();
-                const spreadsheetAction = actionManager.getCurrentController().widget;
-                await Promise.all(
-                    Object.values(pivots).map((pivot) =>
-                        pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
-                    )
-                );
-                let ast = parse(`
+                const result = await convertFormula({
+                    formula: `
                     SUM(
                         PIVOT("1","probability","product_id","37","bar","110"),
                         PIVOT("1","probability","product_id","41","bar","110")
                     )
-                `);
-                ast = pivotUtils.absoluteToRelative(ast, pivots);
+                `,
+                    data: this.data,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
+                    arch: `
+                        <pivot string="Partners">
+                        <field name="bar" type="col"/>
+                        <field name="product_id" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                });
                 assert.equal(
-                    astToFormula(ast),
+                    result,
                     `SUM(PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110"),PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",2),"bar","110"))`
                 );
-
-                actionManager.destroy();
             });
 
             QUnit.test("Computed ids are not changed", async function (assert) {
                 assert.expect(1);
-                const [actionManager, model, env] = await createSpreadsheetFromPivot({
-                    model: "partner",
+                const result = await convertFormula({
+                    formula: `PIVOT("1","probability","product_id",A2,"bar","110")`,
                     data: this.data,
+                    convert: "CONVERT_PIVOT_TO_TEMPLATE",
                     arch: `
                         <pivot string="Partners">
-                            <field name="bar" type="col"/>
-                            <field name="product_id" type="row"/>
-                            <field name="probability" type="measure"/>
-                        </pivot>`,
-                    mockRPC: mockRPCFn,
+                        <field name="bar" type="col"/>
+                        <field name="product_id" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
                 });
-                const { pivots } = model.exportData();
-                const spreadsheetAction = actionManager.getCurrentController().widget;
-                await Promise.all(
-                    Object.values(pivots).map((pivot) =>
-                        pivotUtils.fetchCache(pivot, spreadsheetAction._rpc.bind(spreadsheetAction))
-                    )
-                );
-                let ast = parse(`PIVOT("1","probability","product_id",A2,"bar","110")`);
-                ast = pivotUtils.absoluteToRelative(ast, pivots);
                 assert.equal(
-                    astToFormula(ast),
+                    result,
                     `PIVOT("1","probability","product_id",A2,"bar","110")`
                 );
-
-                actionManager.destroy();
             });
 
             QUnit.test("Save as template menu", async function (assert) {
@@ -749,11 +707,11 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                             );
                             assert.ok(context.default_thumbnail);
                             assert.equal(
-                                cells.A3.content,
+                                cells.A3.formula.text,
                                 `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1))`
                             );
                             assert.equal(
-                                cells.B3.content,
+                                cells.B3.formula.text,
                                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
                             );
                         },
@@ -780,10 +738,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`,
-                });
+                setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`)
 
                 function selectB2(model) {
                     model.dispatch("SET_SELECTION", {
@@ -797,7 +752,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 10000),"bar",PIVOT.POSITION("1","bar", 4444))`
                 );
 
@@ -806,7 +761,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 0 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 0).content,
+                    getCellContent(model, "B1"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9998),"bar",PIVOT.POSITION("1","bar", 4444))`
                 );
 
@@ -815,7 +770,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 2, row: 1 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(2, 1).content,
+                    getCellContent(model, "C2"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4445))`
                 );
 
@@ -824,7 +779,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 0, row: 1 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(0, 1).content,
+                    getCellContent(model, "A2"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4443))`
                 );
 
@@ -844,10 +799,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`,
-                });
+                setCellContent(model, "B2", `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
 
                 // DOWN
                 model.dispatch("SET_SELECTION", {
@@ -857,7 +809,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `= - PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 10000),"bar",PIVOT.POSITION("1","bar", 4444))`
                 );
 
@@ -877,13 +829,11 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=SUM(
+                setCellContent(model, "B2",
+                    `=SUM(
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444)),
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 666),"bar",PIVOT.POSITION("1","bar", 4444))
-                    )`.replace(/\n/g, ""),
-                });
+                    )`.replace(/\n/g, ""));
 
                 model.dispatch("SET_SELECTION", {
                     anchor: [1, 1],
@@ -893,7 +843,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL");
                 // Well this does not work, it only updates the last PIVOT figure. But at least it does not crash.
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=SUM(
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444)),
                         PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 667),"bar",PIVOT.POSITION("1","bar", 4444))
@@ -916,10 +866,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=PIVOT.POSITION("1","foo", 3333)`,
-                });
+                setCellContent(model, "B2", `=PIVOT.POSITION("1","foo", 3333)`);
                 function selectB2(model) {
                     model.dispatch("SET_SELECTION", {
                         anchor: [1, 1],
@@ -932,7 +879,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=PIVOT.POSITION("1","foo", 3333)`,
                     "Should have copied the origin value"
                 );
@@ -952,10 +899,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`,
-                });
+                setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`);
                 function selectB2(model) {
                     model.dispatch("SET_SELECTION", {
                         anchor: [1, 1],
@@ -968,7 +912,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`,
                     "Should have copied the origin value"
                 );
@@ -989,11 +933,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                         </pivot>`,
                     mockRPC: mockRPCFn,
                 });
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`,
-                });
-
+                setCellContent(model, "B2", `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`);
                 function selectB2(model) {
                     model.dispatch("SET_SELECTION", {
                         anchor: [1, 1],
@@ -1006,7 +946,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 10000),"bar",PIVOT.POSITION("1","bar", 4444))`,
                     "It should have incremented the last row group position"
                 );
@@ -1028,11 +968,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                     mockRPC: mockRPCFn,
                 });
                 // last row field (foo) is not a position
-                model.dispatch("SET_VALUE", {
-                    xc: "B2",
-                    text: `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`,
-                });
-
+                setCellContent(model, "B2", `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`);
                 function selectB2(model) {
                     model.dispatch("SET_SELECTION", {
                         anchor: [1, 1],
@@ -1045,7 +981,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
                 model.dispatch("AUTOFILL");
                 assert.equal(
-                    model.getters.getCell(1, 2).content,
+                    getCellContent(model, "B3"),
                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`,
                     "It should not have changed the formula"
                 );
@@ -1190,7 +1126,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
             QUnit.test("Will convert additional template position to empty cell", async function (
                 assert
             ) {
-                assert.expect(4);
+                assert.expect(5);
                 const data = Object.assign({}, this.data);
                 // 1. create a spreadsheet with a pivot
                 const [actionManager, model, env] = await createSpreadsheetFromPivot({
@@ -1213,18 +1149,12 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                 );
 
                 // 2. Set a template position which is too high
-                model.dispatch("SET_VALUE", {
-                    xc: "F1", // there are other pivot headers on row 1
-                    text: `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",999),"bar","110")`,
-                });
-                model.dispatch("SET_VALUE", {
-                    xc: "F15", // there are no other pivot headers on row 15
-                    text: `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",888),"bar","110")`,
-                });
-                model.dispatch("SET_VALUE", {
-                    xc: "F16",
-                    text: `Coucou petite perruche`,
-                });
+                // there are other pivot headers on row 1
+                setCellContent(model, "F1", `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",999),"bar","110")`);
+                // there are not other pivot headers on row 15
+                setCellContent(model, "F15", `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",888),"bar","110")`);
+                setCellContent(model, "G15", `Hello`);
+                setCellContent(model, "F16", `Coucou petite perruche`);
                 const modelData = model.exportData();
                 data["spreadsheet.template"].records.push({
                     id: 99,
@@ -1255,8 +1185,13 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
                                 `Coucou petite perruche`,
                                 "Row 15 should have been deleted"
                             );
+                            assert.equal(
+                                data.sheets[0].cells.G15,
+                                undefined,
+                                "(previous) Row 15 should have been deleted"
+                            );
                             assert.notOk(
-                                data.sheets[0].cells.F1.content,
+                                data.sheets[0].cells.F1,
                                 "The invalid F1 cell should be empty"
                             );
                         }

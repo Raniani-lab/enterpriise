@@ -8,10 +8,11 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     const {
         convertPivotFormulas,
         absoluteToRelative,
-        getCells,
+        fetchCache,
     } = require("documents_spreadsheet.pivot_utils");
 
     const Spreadsheet = spreadsheet.Spreadsheet;
+    const Model = spreadsheet.Model;
     const { useState, useRef, useSubEnv } = owl.hooks;
     const _t = core._t;
 
@@ -165,14 +166,19 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          * @returns {Promise}
          */
         async _saveAsTemplate() {
-            const data = this.spreadsheet.comp.model.exportData();
-            const { pivots } = data;
-            await convertPivotFormulas(
-                this.env.services.rpc,
-                getCells(data, /^\s*=.*PIVOT/),
-                absoluteToRelative,
-                pivots
-            );
+            const rpc = this.env.services.rpc;
+            const model = new Model(
+                this.spreadsheet.comp.model.exportData(), {
+                mode: "headless",
+                evalContext: {
+                    env: {
+                        services: { rpc },
+                    },
+                }
+            });
+            await Promise.all(model.getters.getPivots().map((pivot) => fetchCache(pivot, rpc, { initialDomain: true, force: true })));
+            model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
+            const data = model.exportData();
             const name = this.props.name;
             this.trigger("do-action", {
                 action: "documents_spreadsheet.save_spreadsheet_template_action",

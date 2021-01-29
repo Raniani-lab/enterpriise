@@ -37,8 +37,11 @@
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_actions.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_cache.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/core/pivot_plugin.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_template_plugin.js"/>
+            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/helpers.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/filters_plugin.js"/>
-            <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/cancelled_reason.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js"/>
             <script type="text/javascript" src="/documents_spreadsheet/static/src/js/spreadsheet_selector_dialog.js"/>

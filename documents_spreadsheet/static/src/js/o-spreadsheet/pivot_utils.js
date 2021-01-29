@@ -15,7 +15,6 @@
     const core = require("web.core");
     const _t = core._t;
     const PivotCache = require("documents_spreadsheet.pivot_cache");
-    const { parse, astToFormula, helpers } = require("documents_spreadsheet.spreadsheet");
     const { Model } = require("documents_spreadsheet.spreadsheet");
 
     const formats = {
@@ -232,128 +231,11 @@
             context: payload.context,
         };
     }
-    /**
-     * Applies a transformation function to all given cells.
-     * The transformation function takes as fist parameter the cell AST and should
-     * return a modified AST.
-     * Any additional parameter is forwarded to the transformation function.
-     *
-     * @param {Array<Object>} cells
-     * @param {Function} convertFunction
-     * @param {...any} args
-     */
-    function convertFormulas(cells, convertFunction, ...args) {
-        cells.forEach((cell) => {
-            const ast = convertFunction(parse(cell.content), ...args);
-            cell.content = ast ? `=${astToFormula(ast)}`: "";
-        });
-    }
-
-    /**
-     * Helper function to convert PIVOT formulas.
-     * Fetch all pivot caches before applying the transformation function.
-     * Caches are removed after the transformation.
-     * @see convertFormulas
-     * @param {Function} rpc
-     * @param {Array<Object>} cells
-     * @param {Function} convertFunction
-     * @param {Array<Object>} pivots
-     * @param  {...any} args
-     */
-    async function convertPivotFormulas(rpc, cells, convertFunction, pivots, ...args) {
-        if (!pivots || pivots.length === 0) return;
-        await Promise.all(Object.values(pivots).map((pivot) => fetchCache(pivot, rpc)));
-        convertFormulas(cells, convertFunction, pivots, ...args);
-        Object.values(pivots).forEach((pivot) => {
-            pivot.cache = undefined;
-            pivot.lastUpdate = undefined;
-            pivot.isLoaded = false;
-        })
-    }
-    /**
-     * return AST from an absolute PIVOT ast to a relative ast.
-     *
-     * Absolute PIVOT formulas use hardcoded ids while relative PIVOTS
-     * formulas use the position
-     *
-     * e.g.
-     * The following absolute formula
-     *      `PIVOT("1","probability","product_id","37","bar","110")`
-     * is converted to
-     *      `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",0),"bar","110")`
-     * @param {Object} ast
-     * @param {Object} pivots
-     * @returns {Object}
-     */
-    function absoluteToRelative(ast, pivots) {
-        switch (ast.type) {
-            case "ASYNC_FUNCALL":
-            case "FUNCALL":
-                switch (ast.value) {
-                    case "PIVOT":
-                        return _pivotAbsoluteToRelative(ast, pivots);
-                    case "PIVOT.HEADER":
-                        return _pivotHeaderAbsoluteToRelative(ast, pivots);
-                    default:
-                        return Object.assign({}, ast, {
-                            args: ast.args.map((child) => absoluteToRelative(child, pivots)),
-                        });
-                }
-            case "UNARY_OPERATION":
-                return Object.assign({}, ast, {
-                    right: absoluteToRelative(ast.right, pivots),
-                });
-            case "BIN_OPERATION":
-                return Object.assign({}, ast, {
-                    right: absoluteToRelative(ast.right, pivots),
-                    left: absoluteToRelative(ast.left, pivots),
-                });
-        }
-        return ast;
-    }
-    /**
-     * return AST from an relative PIVOT ast to a absolute PIVOT ast (sheet -> template)
-     * *
-     * relative PIVOTS formulas use the position while Absolute PIVOT
-     * formulas use hardcoded ids
-     *
-     * e.g.
-     * The following relative formula
-     *      `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",0),"bar","110")`
-     * is converted to
-     *      `PIVOT("1","probability","product_id","37","bar","110")`
-     * @param {Object} ast
-     * @param {Object} pivots
-     * @returns {Object}
-     */
-    function relativeToAbsolute(ast, pivots) {
-        switch (ast.type) {
-            case "ASYNC_FUNCALL":
-            case "FUNCALL":
-                switch (ast.value) {
-                    case "PIVOT.POSITION":
-                        return _pivotPositionToAbsolute(ast, pivots);
-                    default:
-                        return Object.assign({}, ast, {
-                            args: ast.args.map((child) => relativeToAbsolute(child, pivots)),
-                        });
-                }
-            case "UNARY_OPERATION":
-                return Object.assign({}, ast, {
-                    right: relativeToAbsolute(ast.right, pivots),
-                });
-            case "BIN_OPERATION":
-                return Object.assign({}, ast, {
-                    right: relativeToAbsolute(ast.right, pivots),
-                    left: relativeToAbsolute(ast.left, pivots),
-                });
-        }
-        return ast;
-    }
 
     /**
      * Takes a template id as input, will convert the formulas
      * from relative to absolute in a way that they can be used to create a sheet.
+     * @param {Function} rpc
      * @param {number} templateId
      * @returns {Promise<Object>} spreadsheetData
      */
@@ -364,22 +246,20 @@
             args: [templateId, ["data"]],
         });
         data = JSON.parse(atob(data));
-        const { pivots } = data;
-        await convertPivotFormulas(rpc, getCells(data, /^\s*=.*PIVOT/) , relativeToAbsolute, pivots);
-        return _removeInvalidPivotRows(rpc, data);
-    }
-
-    /**
-     * Return all cells matching a given regular expression.
-     * @param {Object} data
-     * @param {RegExp} regex
-     * @returns {Array<Object>}
-     */
-    function getCells(data, regex) {
-        return Object.values(data.sheets || [])
-            .map((sheet) => Object.values(sheet.cells))
-            .flat()
-            .filter((cell) => regex.test(cell.content));
+        const model = new Model(data, {
+            mode: "headless",
+            evalContext: {
+                env: {
+                    services: { rpc },
+                },
+            }
+        });
+        await Promise.all(model.getters.getPivots().map((pivot) => fetchCache(pivot, rpc, {
+            initialDomain: true,
+            force: true
+        })));
+        model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE");
+        return model.exportData();
     }
 
 
@@ -387,158 +267,6 @@
     // Private
     //--------------------------------------------------------------------------
 
-    /**
-     * Remove pivot formulas with invalid ids.
-     * i.e. pivot formulas containing "#IDNOTFOUND".
-     *
-     * Rows where all pivot formulas are invalid are removed, even
-     * if there are others non-empty cells.
-     * Invalid formulas next to valid ones (in the same row) are simply removed.
-     * @param {Function} rpc
-     * @param {Object} data spreadsheet data
-     * @returns {Object} cleaned spreadsheet data
-     */
-    function _removeInvalidPivotRows(rpc, data) {
-        const model = new Model(data,{
-            mode: "headless",
-            evalContext: {
-                env: {
-                    services: { rpc },
-                },
-            },
-        });
-        for (let sheet of model.getters.getSheets()) {
-            const invalidRows = [];
-            for (let rowIndex = 0; rowIndex < model.getters.getNumberRows(sheet.id); rowIndex++) {
-                const { cells } = model.getters.getRow(sheet.id, rowIndex);
-                const [valid, invalid] = Object.values(cells)
-                    .filter((cell) => /^\s*=.*PIVOT/.test(cell.content))
-                    .reduce(
-                        ([valid, invalid], cell) => {
-                            const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(cell.content);
-                            return [isInvalid ? valid : valid + 1, isInvalid ? invalid + 1 : invalid];
-                        },
-                        [0, 0]
-                    );
-                if (invalid > 0 && valid === 0) {
-                    invalidRows.push(rowIndex);
-                }
-            }
-            model.dispatch("REMOVE_ROWS", { rows: invalidRows, sheet: sheet.id });
-        }
-        data = model.exportData();
-        convertFormulas(
-            getCells(data, /^\s*=.*PIVOT.*#IDNOTFOUND/),
-            () => null,
-        );
-        return data;
-    }
-    /**
-     * Convert an absolute PIVOT function AST to a relative AST
-     *
-     * @see absoluteToRelative
-     * @param {Object} ast
-     * @param {Object} pivots
-     * @returns {Object}
-     */
-    function _pivotAbsoluteToRelative(ast, pivots) {
-        ast = Object.assign({}, ast);
-        const [pivotIdAst, measureAst, ...domainAsts] = ast.args;
-        if (pivotIdAst.type !== "STRING") return ast;
-        ast.args = [
-            pivotIdAst,
-            measureAst,
-            ..._domainToRelative(pivots, pivotIdAst, domainAsts),
-        ];
-        return ast;
-    }
-    /**
-     * Convert an absolute PIVOT.HEADER function AST to a relative AST
-     *
-     * @see absoluteToRelative
-     * @param {Object} ast
-     * @param {Object} pivots
-     * @returns {Object}
-     */
-    function _pivotHeaderAbsoluteToRelative(ast, pivots) {
-        ast = Object.assign({}, ast);
-        const [pivotIdAst, ...domainAsts] = ast.args;
-        if (pivotIdAst.type !== "STRING") return ast;
-        ast.args = [
-            pivotIdAst,
-            ..._domainToRelative(pivots, pivotIdAst, domainAsts),
-        ];
-        return ast;
-    }
-    /**
-     * Convert a PIVOT.POSITION function AST to an absolute AST
-     *
-     * @see relativeToAbsolute
-     * @param {Object} ast
-     * @param {Object} pivots
-     * @returns {Object}
-     */
-    function _pivotPositionToAbsolute(ast, pivots) {
-        const [pivotIdAst, fieldAst, positionAst] = ast.args;
-        const pivotId = JSON.parse(pivotIdAst.value);
-        const fieldName = JSON.parse(fieldAst.value);
-        const position = JSON.parse(positionAst.value);
-        const id = pivots[pivotId].cache.getFieldValues(fieldName)[position - 1];
-        return {
-            value: id ? `"${id}"` : `"#IDNOTFOUND"`,
-            type: id ? "STRING": "UNKNOWN",
-        };
-    }
-
-    /**
-     * Convert a pivot domain with hardcoded ids to a relative
-     * domain with positions instead. Each domain element is
-     * represented as an AST.
-     *
-     * e.g. (ignoring AST representation for simplicity)
-     * The following domain
-     *      "product_id", "37", "stage_id", "4"
-     * is converted to
-     *      "product_id", PIVOT.POSITION("#pivotId", "product_id", 15), "stage_id", PIVOT.POSITION("#pivotId", "stage_id", 3)
-     * @param {Object} pivots
-     * @param {Object} pivotIdAst
-     * @param {Object} domainAsts
-     * @returns {Array<Object>}
-     */
-    function _domainToRelative(pivots, pivotIdAst, domainAsts) {
-        let relativeDomain = [];
-        for (let i = 0; i <= domainAsts.length - 1; i += 2) {
-            const fieldAst = domainAsts[i];
-            const valueAst = domainAsts[i + 1];
-            const pivotId = JSON.parse(pivotIdAst.value);
-            const pivot = pivots[pivotId];
-            const fieldName = JSON.parse(fieldAst.value);
-            if (
-                _isAbsolute(fieldName, pivot) &&
-                fieldAst.type === "STRING" &&
-                ["STRING", "NUMBER"].includes(valueAst.type)
-            ) {
-                const id = JSON.parse(valueAst.value);
-                const index = pivot.cache.getFieldValues(fieldName).indexOf(id.toString());
-                relativeDomain = relativeDomain.concat([
-                    fieldAst,
-                    {
-                        type: "FUNCALL",
-                        value: "PIVOT.POSITION",
-                        args: [pivotIdAst, fieldAst, { type: "NUMBER", value: index + 1 }],
-                    },
-                ]);
-            } else {
-                relativeDomain = relativeDomain.concat([fieldAst, valueAst]);
-            }
-        }
-        return relativeDomain;
-    }
-
-    function _isAbsolute(fieldName, pivot) {
-        const field = pivot.cache.getField(fieldName.split(":")[0])
-        return field && field.type === "many2one";
-    }
     /**
      * Create a cache for the given pivot from the result of the rpcs
      * (read_group, fields_get, search_read)
@@ -864,19 +592,14 @@
     }
 
     return {
-        absoluteToRelative,
         createPivotCache,
-        convertFormulas,
-        convertPivotFormulas,
-        getCells,
         fetchCache,
+        formats,
         formatDate,
         fetchLabel,
         formatGroupBy,
         formatHeader,
-        formats,
         getDataFromTemplate,
-        relativeToAbsolute,
         sanitizePivot,
         waitForIdle
     };

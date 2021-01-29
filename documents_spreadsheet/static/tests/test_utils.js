@@ -2,6 +2,8 @@ odoo.define("documents_spreadsheet.test_utils", function (require) {
     "use strict";
     const testUtils = require("web.test_utils");
     const PivotView = require("web.PivotView");
+    const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
+    const toCartesian = spreadsheet.helpers.toCartesian;
 
     const { createActionManager, nextTick, createView } = testUtils;
 
@@ -10,6 +12,27 @@ odoo.define("documents_spreadsheet.test_utils", function (require) {
             return Promise.resolve([{ name: "partner" }]);
         }
         return this._super.apply(this, arguments);
+    }
+
+    function getCellValue(model, xc) {
+        const sheetId = model.getters.getActiveSheetId();
+        const cell = model.getters.getCell(sheetId, ...toCartesian(xc));
+        if (!cell) {
+            return undefined;
+        }
+        return model.getters.getCellValue(cell, sheetId);
+    }
+
+    function getCellContent(model, xc) {
+        const sheetId = model.getters.getActiveSheetId();
+        const cell = model.getters.getCell(sheetId, ...toCartesian(xc));
+        return model.getters.getFormulaCellContent(sheetId, cell);
+    }
+
+    function setCellContent(model, xc, content) {
+        const sheetId = model.getters.getActiveSheetId();
+        const [col, row] = toCartesian(xc);
+        model.dispatch("UPDATE_CELL", { col, row, sheetId, content });
     }
 
     async function createSpreadsheetFromPivot(pivotView) {
@@ -57,5 +80,8 @@ odoo.define("documents_spreadsheet.test_utils", function (require) {
     return {
         createSpreadsheetFromPivot,
         mockRPCFn,
+        setCellContent,
+        getCellContent,
+        getCellValue,
     };
 });

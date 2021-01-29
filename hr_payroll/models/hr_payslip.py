@@ -756,7 +756,10 @@ class HrPayslipRun(models.Model):
             payslip_run.payslip_count = len(payslip_run.slip_ids)
 
     def action_draft(self):
-        return self.write({'state': 'draft'})
+        self.write({'state': 'draft'})
+
+    def action_open(self):
+        self.write({'state': 'verify'})
 
     def action_close(self):
         if self._are_payslips_ready():

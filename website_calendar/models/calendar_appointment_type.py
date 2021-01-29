@@ -17,11 +17,20 @@ from odoo.addons.http_routing.models.ir_http import slug
 
 class CalendarAppointmentType(models.Model):
     _name = "calendar.appointment.type"
-    _description = "Online Appointment Type"
-    _inherit = ['mail.thread', "website.seo.metadata", 'website.published.mixin']
-    _order = "sequence"
+    _description = "Appointment Type"
+    _inherit = ['mail.thread', 'website.seo.metadata', 'website.published.mixin', 'website.cover_properties.mixin']
+    _order = "sequence, id"
 
-    sequence = fields.Integer('Sequence')
+    def _default_cover_properties(self):
+        res = super()._default_cover_properties()
+        res.update({
+            'background-image': 'url("/website_calendar/static/src/img/appointment_cover_0.jpg")',
+            'resize_class': 'o_record_has_cover o_half_screen_height',
+            'opacity': '0.4',
+        })
+        return res
+
+    sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Type', required=True, translate=True)
     min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
     max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
@@ -58,8 +67,10 @@ class CalendarAppointmentType(models.Model):
     def _compute_website_url(self):
         super(CalendarAppointmentType, self)._compute_website_url()
         for appointment_type in self:
-            if appointment_type.id :
+            if appointment_type.id:
                 appointment_type.website_url = '/calendar/%s/appointment' % (slug(appointment_type),)
+            else:
+                appointment_type.website_url = False
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
@@ -70,11 +81,44 @@ class CalendarAppointmentType(models.Model):
     def action_calendar_meetings(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
+        appointments = self.env['calendar.event'].search([
+            ('appointment_type_id', '=', self.id), ('start', '>=', datetime.today()
+        )], order='start')
+        nbr_appointments_week_later = self.env['calendar.event'].search_count([
+            ('appointment_type_id', '=', self.id), ('start', '>=', datetime.today() + timedelta(weeks=1))
+        ])
+
+        display_mode = "month" if nbr_appointments_week_later else "week"
+
+        if len(appointments) > 0:
+            action['res_id'] = appointments[0].id
+            start = appointments[0].start
+        else:
+            start = datetime.today()
         action['context'] = {
             'default_appointment_type_id': self.id,
-            'search_default_appointment_type_id': self.id
+            'search_default_appointment_type_id': self.id,
+            'default_mode': display_mode,
+            'initial_date': start,
         }
         return action
+
+    def action_share(self):
+        self.ensure_one()
+        return {
+            'name': _('Share Link'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'calendar.appointment.share',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_appointment_type_ids': self.ids,
+                'default_employee_ids': self.employee_ids.filtered(lambda employee: employee.user_id.id == self.env.user.id).ids,
+            }
+        }
+
+    def get_backend_menu_id(self):
+        return self.env.ref('calendar.mail_menu_calendar').id
 
     # --------------------------------------
     # Slots Generation
@@ -91,27 +135,31 @@ class CalendarAppointmentType(models.Model):
             local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))))
             local_end = appt_tz.localize(
                 datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
-            slots.append({
-                self.appointment_tz: (
-                    local_start,
-                    local_end,
-                ),
-                timezone: (
-                    local_start.astimezone(requested_tz),
-                    local_end.astimezone(requested_tz),
-                ),
-                'UTC': (
-                    local_start.astimezone(pytz.UTC).replace(tzinfo=None),
-                    local_end.astimezone(pytz.UTC).replace(tzinfo=None),
-                ),
-                'slot': slot,
-            })
+
+            while local_start.hour <= slot.end_hour - self.appointment_duration:
+                slots.append({
+                    self.appointment_tz: (
+                        local_start,
+                        local_end,
+                    ),
+                    timezone: (
+                        local_start.astimezone(requested_tz),
+                        local_end.astimezone(requested_tz),
+                    ),
+                    'UTC': (
+                        local_start.astimezone(pytz.UTC).replace(tzinfo=None),
+                        local_end.astimezone(pytz.UTC).replace(tzinfo=None),
+                    ),
+                    'slot': slot,
+                })
+                local_start = local_end
+                local_end += relativedelta(hours=self.appointment_duration)
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
 
         slots = []
         for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
-            if slot.hour > first_day.hour + first_day.minute / 60.0:
+            if slot.end_hour > first_day.hour + first_day.minute / 60.0:
                 append_slot(first_day.date(), slot)
         slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
         for day in rrule.rrule(rrule.DAILY,
@@ -168,31 +216,6 @@ class CalendarAppointmentType(models.Model):
                         return False
             return False
 
-        def is_calendar_available(slot, events, employee):
-            """ Returns True if the given slot doesn't collide with given events for the employee
-            """
-            start_dt = slot['UTC'][0]
-            end_dt = slot['UTC'][1]
-
-            event_in_scope = lambda ev: (
-                fields.Date.to_date(ev.start) <= fields.Date.to_date(end_dt)
-                and fields.Date.to_date(ev.stop) >= fields.Date.to_date(start_dt)
-            )
-
-            for ev in events.filtered(event_in_scope):
-                if ev.allday:
-                    # allday events are considered to take the whole day in the related employee's timezone
-                    event_tz = pytz.timezone(ev.event_tz or employee.user_id.tz or self.env.user.tz or slot['slot'].appointment_type_id.appointment_tz or 'UTC')
-                    ev_start_dt = datetime.combine(fields.Date.from_string(ev.start_date), time.min)
-                    ev_stop_dt = datetime.combine(fields.Date.from_string(ev.stop_date), time.max)
-                    ev_start_dt = event_tz.localize(ev_start_dt).astimezone(pytz.UTC).replace(tzinfo=None)
-                    ev_stop_dt = event_tz.localize(ev_stop_dt).astimezone(pytz.UTC).replace(tzinfo=None)
-                    if ev_start_dt < end_dt and ev_stop_dt > start_dt:
-                        return False
-                elif fields.Datetime.to_datetime(ev.start) < end_dt and fields.Datetime.to_datetime(ev.stop) > start_dt:
-                    return False
-            return True
-
         workhours = {}
         meetings = {}
 
@@ -220,7 +243,7 @@ class CalendarAppointmentType(models.Model):
                             ('stop', '>', fields.Datetime.to_string(first_day.replace(hour=0, minute=0, second=0)))
                         ])
 
-                    if is_calendar_available(slot, meetings[emp_pos], emp):
+                    if emp.user_partner_id.calendar_verify_availability(slot['UTC'][0], slot['UTC'][1]):
                         slot['employee_id'] = emp
                         break
 
@@ -278,8 +301,9 @@ class CalendarAppointmentType(models.Model):
                     }
 
             months.append({
+                'id': len(months),
                 'month': format_datetime(start, 'MMMM Y', locale=get_lang(self.env).code),
-                'weeks': dates
+                'weeks': dates,
             })
             start = start + relativedelta(months=1)
         return months

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="calendar_appointment_slot_view_form" model="ir.ui.view">
+        <field name="name">calendar.appointment.slot.view.form</field>
+        <field name="model">calendar.appointment.slot</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="appointment_type_id"/>
+                        <field name="weekday"/>
+                    </group>
+                    <group>
+                        <field name="hour" widget="float_time"/>
+                        <field name="end_hour" widget="float_time"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+</odoo>

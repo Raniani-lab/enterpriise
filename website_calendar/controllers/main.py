@@ -1,130 +1,171 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from babel.dates import format_datetime, format_date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import json
 import pytz
-from babel.dates import format_datetime, format_date
 
+from werkzeug.exceptions import NotFound
 from werkzeug.urls import url_encode
 
 from odoo import http, _, fields
 from odoo.http import request
+from odoo.osv import expression
 from odoo.tools import html2plaintext, DEFAULT_SERVER_DATETIME_FORMAT as dtf
 from odoo.tools.misc import get_lang
 
+from odoo.addons.base.models.ir_ui_view import keep_query
+from odoo.addons.http_routing.models.ir_http import slug
+from odoo.addons.website.controllers.main import QueryURL
+
 
 class WebsiteCalendar(http.Controller):
+
+    #----------------------------------------------------------
+    # Appointment HTTP Routes
+    #----------------------------------------------------------
+
     @http.route([
         '/calendar',
+        '/calendar/page/<int:page>',
+    ], type='http', auth="public", website=True, sitemap=True)
+    def calendar_appointments(self, page=1, **kwargs):
+        """
+        Display the appointments to choose (the display depends of a custom option called 'Card Design')
+
+        :param page: the page number displayed when the appointments are organized by cards
+
+        A param filter_appointment_type_ids can be passed to display a define selection of appointments types.
+        This param is propagated through templates to allow people to go back with the initial appointment
+        types filter selection
+        """
+        cards_layout = request.website.viewref('website_calendar.opt_appointments_list_cards').active
+
+        if cards_layout:
+            return request.render('website_calendar.appointments_cards_layout', self._prepare_appointments_cards_data(page, **kwargs))
+        else:
+            return request.render('website_calendar.appointments_list_layout', self._prepare_appointments_list_data(**kwargs))
+
+    @http.route([
         '/calendar/<model("calendar.appointment.type"):appointment_type>',
     ], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_choice(self, appointment_type=None, employee_id=None, message=None, **kwargs):
-        if not appointment_type:
-            country_code = request.session.geoip and request.session.geoip.get('country_code')
-            if country_code:
-                suggested_appointment_types = request.env['calendar.appointment.type'].search([
-                    '|', ('country_ids', '=', False),
-                         ('country_ids.code', 'in', [country_code])])
-            else:
-                suggested_appointment_types = request.env['calendar.appointment.type'].search([])
-            if not suggested_appointment_types:
-                return request.render("website_calendar.setup", {})
-            appointment_type = suggested_appointment_types[0]
-        else:
-            suggested_appointment_types = appointment_type
-        suggested_employees = []
-        if employee_id and int(employee_id) in appointment_type.sudo().employee_ids.ids:
-            suggested_employees = request.env['hr.employee'].sudo().browse(int(employee_id)).name_get()
-        elif appointment_type.assignation_method == 'chosen':
-            suggested_employees = appointment_type.sudo().employee_ids.name_get()
-        return request.render("website_calendar.index", {
-            'appointment_type': appointment_type,
-            'suggested_appointment_types': suggested_appointment_types,
-            'message': message,
-            'selected_employee_id': employee_id and int(employee_id),
-            'suggested_employees': suggested_employees,
-        })
+    def calendar_appointment_type(self, appointment_type, filter_employee_ids=None, timezone=None, failed=False, **kwargs):
+        """
+        Render the appointment information alongside the calendar for the slot selection
 
-    @http.route(['/calendar/get_appointment_info'], type='json', auth="public", methods=['POST'], website=True)
-    def get_appointment_info(self, appointment_id, prev_emp=False, **kwargs):
-        Appt = request.env['calendar.appointment.type'].browse(int(appointment_id)).sudo()
-        result = {
-            'message_intro': Appt.message_intro,
-            'assignation_method': Appt.assignation_method,
-        }
-        if result['assignation_method'] == 'chosen':
-            selection_template = request.env.ref('website_calendar.employee_select')
-            result['employee_selection_html'] = selection_template._render({
-                'appointment_type': Appt,
-                'suggested_employees': Appt.employee_ids.name_get(),
-                'selected_employee_id': prev_emp and int(prev_emp),
-            })
-        return result
-
-    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/appointment'], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment(self, appointment_type=None, employee_id=None, timezone=None, failed=False, **kwargs):
+        :param appointment_type: the appointment type we are currently on
+        :param filter_employee_ids: the employees that will be displayed for the appointment registration, if not given
+            all employees set for the appointment type are used
+        :param timezone: the timezone used to display the available slots
+        :param failed: used when the appointment registration has failed and the user is redirected in the slot selection page
+        :param fitler_appointment_type_ids: see ``WebsiteCalendar.calendar_appointments()`` route
+        """
+        appointment_type = appointment_type.sudo()
         request.session['timezone'] = timezone or appointment_type.appointment_tz
-        Employee = request.env['hr.employee'].sudo().browse(int(employee_id)) if employee_id else None
-        Slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], Employee)
-        return request.render("website_calendar.appointment", {
+        try:
+            filter_employee_ids = json.loads(filter_employee_ids) if filter_employee_ids else []
+        except json.decoder.JSONDecodeError:
+            raise ValueError()
+
+        if appointment_type.assignation_method == 'chosen' and not filter_employee_ids:
+            suggested_employees = appointment_type.employee_ids
+        else:
+            suggested_employees = appointment_type.employee_ids.filtered(lambda emp: emp.id in filter_employee_ids)
+
+        default_employee = suggested_employees[0] if suggested_employees else request.env['hr.employee']
+        slots = appointment_type._get_appointment_slots(request.session['timezone'], default_employee)
+        message = kwargs.get('message')
+        formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]
+
+        return request.render("website_calendar.appointment_info", {
             'appointment_type': appointment_type,
+            'suggested_employees': suggested_employees,
+            'main_object': appointment_type,
             'timezone': request.session['timezone'],
             'failed': failed,
-            'slots': Slots,
+            'slots': slots,
+            'message': message,
+            'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
+            'formated_days': formated_days,
         })
+
+    @http.route([
+        '/calendar/<model("calendar.appointment.type"):appointment_type>/appointment',
+    ], type='http', auth='public', website=True, sitemap=True)
+    def calendar_appointment(self, appointment_type, filter_employee_ids=None, timezone=None, failed=False, **kwargs):
+        return request.redirect('/calendar/%s?%s' % (slug(appointment_type), keep_query('*')))
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
     def calendar_appointment_form(self, appointment_type, employee_id, date_time, **kwargs):
+        """
+        Render the form to get information about the user for the appointment
+
+        :param appointment_type: the appointment type related
+        :param employee_id: the employee selected for the appointment
+        :param date_time: the slot datetime selected for the appointment
+        :param fitler_appointment_type_ids: see ``WebsiteCalendar.calendar_appointments()`` route
+        """
         partner_data = {}
-        if request.env.user.partner_id != request.env.ref('base.public_partner'):
-            partner_data = request.env.user.partner_id.read(fields=['name', 'mobile', 'country_id', 'email'])[0]
+        if not request.website.is_public_user():
+            partner_data = request.env.user.partner_id.read(fields=['name', 'mobile', 'email'])[0]
+        else:
+            partner_data = request.env['website.visitor']._get_visitor_from_request().read(fields=['name', 'mobile', 'email'])[0]
         day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=get_lang(request.env).code)
         date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=get_lang(request.env).code)
         return request.render("website_calendar.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
+            'main_object': appointment_type,
             'datetime': date_time,
             'datetime_locale': day_name + ' ' + date_formated,
             'datetime_str': date_time,
             'employee_id': employee_id,
-            'countries': request.env['res.country'].search([]),
         })
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, method=["POST"])
-    def calendar_appointment_submit(self, appointment_type, datetime_str, employee_id, name, phone, email, country_id=False, **kwargs):
-        timezone = request.session['timezone']
+    def calendar_appointment_submit(self, appointment_type, datetime_str, employee_id, name, phone, email, **kwargs):
+        """
+        Create the event for the appointment and redirect on the validation page with a summary of the appointment.
+
+        :param appointment_type: the appointment type related
+        :param datetime_str: the string representing the datetime
+        :param employee_id: the employee selected for the appointment
+        :param name: the name of the user sets in the form
+        :param phone: the phone of the user sets in the form
+        :param email: the email of the user sets in the form
+        """
+        timezone = request.session['timezone'] or appointment_type.appointment_tz
         tz_session = pytz.timezone(timezone)
         date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc)
         date_end = date_start + relativedelta(hours=appointment_type.appointment_duration)
 
         # check availability of the employee again (in case someone else booked while the client was entering the form)
-        Employee = request.env['hr.employee'].sudo().browse(int(employee_id))
-        if Employee.user_id and Employee.user_id.partner_id:
-            if not Employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
+        employee = request.env['hr.employee'].sudo().browse(int(employee_id)).exists()
+        if employee not in appointment_type.sudo().employee_ids:
+            raise NotFound()
+        if employee.user_id and employee.user_id.partner_id:
+            if not employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/calendar/%s/appointment?failed=employee' % appointment_type.id)
 
-        country_id = int(country_id) if country_id else None
-        country_name = country_id and request.env['res.country'].browse(country_id).name or ''
-        Partner = request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
+        visitor = request.env['website.visitor']._get_visitor_from_request()
+        Partner = visitor.partner_id or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/calendar/%s/appointment?failed=partner' % appointment_type.id)
-            if not Partner.mobile or len(Partner.mobile) <= 5 and len(phone) > 5:
+            if not Partner.mobile:
                 Partner.write({'mobile': phone})
-            if not Partner.country_id:
-                Partner.country_id = country_id
+            if not Partner.email:
+                Partner.write({'email': email})
         else:
             Partner = Partner.create({
                 'name': name,
-                'country_id': country_id,
-                'mobile': phone,
+                'mobile': Partner._phone_format(phone, country=self._find_country()),
                 'email': email,
             })
 
         description_bits = []
-        if country_name:
-            description_bits.append(_(' * Country: %s', country_name))
         if phone:
             description_bits.append(_(' * Mobile: %s', phone))
         if email:
@@ -145,7 +186,7 @@ class WebsiteCalendar(http.Controller):
 
         categ_id = request.env.ref('website_calendar.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
-        partner_ids = list(set([Employee.user_id.partner_id.id] + [Partner.id]))
+        partner_ids = list(set([employee.user_id.partner_id.id] + [Partner.id]))
         # FIXME AWA/TDE double check this and/or write some tests to ensure behavior
         # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'
         # Because we only want to notify the author in the context of Online Appointments
@@ -170,13 +211,21 @@ class WebsiteCalendar(http.Controller):
             'partner_ids': [(4, pid, False) for pid in partner_ids],
             'categ_ids': [(4, categ_id.id, False)],
             'appointment_type_id': appointment_type.id,
-            'user_id': Employee.user_id.id,
+            'user_id': employee.user_id.id,
         })
         event.attendee_ids.write({'state': 'accepted'})
-        return request.redirect('/calendar/view/' + event.access_token + '?message=new')
+        return request.redirect('/calendar/view/%s?%s' % (event.access_token, keep_query('*', message='new')))
 
     @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
-    def calendar_appointment_view(self, access_token, edit=False, message=False, **kwargs):
+    def calendar_appointment_view(self, access_token, message=False, **kwargs):
+        """
+        Render the validation of an appointment and display a summary of it
+
+        :param access_token: the access_token of the event linked to the appointment
+        :param message: allow to display an info message, possible values:
+            - new: Info message displayed when the appointment has been correctly created
+            - no-cancel: Info message displayed when an appointment can no longer be canceled
+        """
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event:
             return request.not_found()
@@ -218,21 +267,27 @@ class WebsiteCalendar(http.Controller):
             'datetime_start': date_start,
             'google_url': google_url,
             'message': message,
-            'edit': edit,
         })
 
     @http.route(['/calendar/cancel/<string:access_token>'], type='http', auth="public", website=True)
     def calendar_appointment_cancel(self, access_token, **kwargs):
+        """
+            Route to cancel an appointment event, this route is linked to a button in the validation page
+        """
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
+        appointment_type = event.appointment_type_id
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?message=no-cancel')
         event.with_context(archive_on_error=True).unlink()
-        return request.redirect('/calendar?message=cancel')
+        return request.redirect('/calendar/%s/appointment?message=cancel' % slug(appointment_type))
 
     @http.route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
     def calendar_appointment_ics(self, access_token, **kwargs):
+        """
+            Route to add the appointment event in a iCal/Outlook calendar
+        """
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event or not event.attendee_ids:
             return request.not_found()
@@ -243,3 +298,107 @@ class WebsiteCalendar(http.Controller):
             ('Content-Length', len(content)),
             ('Content-Disposition', 'attachment; filename=Appoinment.ics')
         ])
+
+    #----------------------------------------------------------
+    # Appointment JSON Routes
+    #----------------------------------------------------------
+
+    @http.route(['/calendar/<int:appointment_type_id>/get_message_intro'], type="json", auth="public", methods=['POST'], website=True)
+    def get_appointment_message_intro(self, appointment_type_id, **kwargs):
+        appointment_type = request.env['calendar.appointment.type'].browse(int(appointment_type_id)).exists()
+        if not appointment_type:
+            raise NotFound()
+
+        return appointment_type.message_intro or ''
+
+    @http.route(['/calendar/<int:appointment_type_id>/update_available_slots'], type="json", auth="public", website=True)
+    def calendar_appointment_update_available_slots(self, appointment_type_id, employee_id=None, timezone=None, **kwargs):
+        """
+            Route called when the employee or the timezone is modified to adapt the possible slots accordingly
+        """
+        appointment_type = request.env['calendar.appointment.type'].browse(int(appointment_type_id))
+
+        request.session['timezone'] = timezone or appointment_type.appointment_tz
+        employee = request.env['hr.employee'].sudo().browse(int(employee_id)) if employee_id else None
+        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], employee)
+
+        return request.env.ref('website_calendar.appointment_calendar')._render({
+            'appointment_type': appointment_type,
+            'slots': slots,
+        })
+
+    #----------------------------------------------------------
+    # Utility Methods
+    #----------------------------------------------------------
+    def _appointments_base_domain(self, filter_appointment_type_ids):
+        domain = []
+
+        if filter_appointment_type_ids:
+            domain = expression.AND([domain, [('id', 'in', json.loads(filter_appointment_type_ids))]])
+        else:
+            country = self._find_country()
+            if country:
+                country_domain = ['|', ('country_ids', '=', False), ('country_ids', 'in', [country.id])]
+                domain = expression.AND([domain, country_domain])
+
+        return domain
+
+    def _prepare_appointments_cards_data(self, page, **kwargs):
+        """
+            Compute specific data for the cards layout like the the search bar and the pager.
+        """
+        domain = self._appointments_base_domain(kwargs.get('filter_appointment_type_ids'))
+
+        Appointment = request.env['calendar.appointment.type']
+        website = request.website
+
+        # Add domain related to the search bar
+        if kwargs.get('search'):
+            domain = expression.AND([domain, [('name', 'ilike', kwargs.get('search'))]])
+
+        APPOINTMENTS_PER_PAGE = 12
+        appointment_count = Appointment.search_count(domain)
+        pager = website.pager(
+            url='/calendar',
+            url_args=kwargs,
+            total=appointment_count,
+            page=page,
+            step=APPOINTMENTS_PER_PAGE,
+            scope=5,
+        )
+
+        appointment_types = Appointment.search(domain, limit=APPOINTMENTS_PER_PAGE, offset=pager['offset'])
+        keep = QueryURL('/calendar', search=kwargs.get('search'), filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'))
+
+        return {
+            'appointment_types': appointment_types,
+            'current_search': kwargs.get('search'),
+            'keep': keep,
+            'pager': pager,
+        }
+
+    def _prepare_appointments_list_data(self, **kwargs):
+        """
+            Compute specific data for the list layout.
+        """
+        domain = self._appointments_base_domain(kwargs.get('filter_appointment_type_ids'))
+
+        appointment_types = request.env['calendar.appointment.type'].search(domain)
+        return {
+            'appointment_types': appointment_types,
+        }
+
+    def _find_country(self):
+        """
+            Find the country from the geoip lib or fallback on the user or the visitor
+        """
+        country_code = request.session.geoip and request.session.geoip.get('country_code')
+        country = request.env['res.country']
+        if country_code:
+            country = country.search([('code', '=', country_code)])
+        if not country:
+            country = request.env.user.country_id if not request.website.is_public_user() else country
+        if not country:
+            visitor = request.env['website.visitor']._get_visitor_from_request()
+            country = visitor.country_id
+        return country

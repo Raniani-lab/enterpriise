@@ -21,11 +21,13 @@ Allow clients to Schedule Appointments through your Website
         'views/calendar_event_views.xml',
         'views/calendar_appointment_question_views.xml',
         'views/calendar_appointment_type_views.xml',
+        'views/calendar_appointment_slot_views.xml',
         'views/calendar_menus.xml',
         'views/calendar_templates_appointments.xml',
         'views/calendar_templates_registration.xml',
         'views/calendar_templates_validation.xml',
         'views/website_templates.xml',
+        'wizard/calendar_appointment_share_views.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',
     ],
@@ -39,17 +41,20 @@ Allow clients to Schedule Appointments through your Website
     'assets': {
         'web.assets_frontend': [
             'website_calendar/static/src/scss/website_calendar.scss',
-            'website_calendar/static/src/js/website_calendar.js',
+            'website_calendar/static/src/js/website_calendar_select_appointment_type.js',
+            'website_calendar/static/src/js/website_calendar_select_appointment_slot.js',
         ],
         'web.assets_backend': [
-            'website_calendar/static/src/js/appointment_employee_url.js',
-            'website_calendar/static/src/scss/appointment_employee_url.scss',
+            'website_calendar/static/src/scss/calendar_appointment_type_views.scss',
         ],
         'website.assets_editor': [
             'website_calendar/static/src/js/website_calendar.editor.js',
         ],
-        'web.qunit_suite_tests': [
-            'website_calendar/static/tests/**/*',
+        'web.assets_qweb': [
+            'website_calendar/static/src/xml/**/*',
+        ],
+        'web.assets_tests': [
+            'website_calendar/static/tests/tours/*',
         ],
     }
 }

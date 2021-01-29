@@ -2432,7 +2432,7 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_part_sick
-msgid "Part Time Sick"
+msgid "Sick Time Off (Without Guaranteed Salary)"
 msgstr ""
 
 #. module: l10n_be_hr_payroll

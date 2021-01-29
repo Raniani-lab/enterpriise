@@ -206,7 +206,7 @@
         </record>
 
          <record id="work_entry_type_part_sick" model="hr.work.entry.type">
-            <field name="name">Part Time Sick</field>
+            <field name="name">Sick Time Off (Without Guaranteed Salary)</field>
             <field name="code">LEAVE214</field>
             <field name="is_leave">True</field>
             <field name="color">5</field>

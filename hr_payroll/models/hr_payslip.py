@@ -482,6 +482,8 @@ class HrPayslip(models.Model):
         payslips = self.filtered(lambda slip: slip.state in ['draft', 'verify'])
         # delete old payslip lines
         payslips.line_ids.unlink()
+        # this guarantees consistent results
+        self.env.flush_all()
         today = fields.Date.today()
         for payslip in payslips:
             number = payslip.number or self.env['ir.sequence'].next_by_code('salary.slip')

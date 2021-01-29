@@ -83,6 +83,8 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             .filtered(lambda line: line.account_id == self.receivable_account_1)\
             .reconcile()
 
+        self.env.invalidate_all()
+
         # Test the report in 2016.
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['unfold_all'] = True
@@ -101,6 +103,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 1: {'currency': self.currency_data['currency']},
             },
         )
+
+        # I don't understand why this is necessary
+        self.env.invalidate_all()
 
         # Test the report in 2017.
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2017-12-31'))

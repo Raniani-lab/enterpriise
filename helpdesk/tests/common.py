@@ -81,6 +81,8 @@ class HelpdeskCommon(TransactionCase):
             onto the create_date field.
             :param records: recordset of any odoo models
         """
+        records.flush_recordset(['create_date'])
+
         query = """
             UPDATE %s
             SET create_date = %%s

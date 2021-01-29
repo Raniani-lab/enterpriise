@@ -195,7 +195,7 @@ class TestMpsMps(common.TransactionCase):
 
         self.env['stock.quant']._update_available_quantity(self.mps_screw.product_id, self.warehouse.lot_stock_id, 50)
         # Invalidate qty_available on product.product
-        self.env.cache.invalidate()
+        self.env.invalidate_all()
         screw_mps_state = self.mps_screw.get_production_schedule_view_state()[0]
         forecast_at_first_period = screw_mps_state['forecast_ids'][0]
         self.assertEqual(forecast_at_first_period['forecast_qty'], 100)

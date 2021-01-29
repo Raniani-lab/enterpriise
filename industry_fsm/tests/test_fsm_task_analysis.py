@@ -47,6 +47,9 @@ class TestFsmFlow(TestIndustryFsmCommon):
         values = self.task.read(['remaining_hours', 'progress', 'planned_hours', 'effective_hours', 'working_days_close', 'working_hours_close', 'working_days_open', 'working_hours_open'])[0]
         values['hours_planned'] = values.pop('planned_hours')
         values['hours_effective'] = values.pop('effective_hours')
+
+        # flush before accessing an SQL view...
+        self.env.flush_all()
         task_report = self.env['report.project.task.user'].search_read([('project_id', '=', self.fsm_project.id), ('task_id', '=', self.task.id)], ['remaining_hours', 'progress', 'hours_planned', 'hours_effective', 'working_days_close', 'working_hours_close', 'working_days_open', 'working_hours_open'])[0]
         self.assertDictEqual(task_report, values)
 

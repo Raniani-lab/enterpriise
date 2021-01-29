@@ -206,11 +206,6 @@ var accountReportsWidget = AbstractAction.extend({
             sessionStorage.setItem(persist_key, JSON.stringify(this.report_options));
         }
     },
-    // We need this method to rerender the control panel when going back in the breadcrumb
-    do_show: function() {
-        this._super.apply(this, arguments);
-        this.update_cp();
-    },
     // Updates the control panel and render the elements that have yet to be rendered
     update_cp: function() {
         this.renderButtons();

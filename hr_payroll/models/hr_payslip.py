@@ -139,7 +139,7 @@ class HrPayslip(models.Model):
 
     def _is_invalid(self):
         self.ensure_one()
-        if self.state != 'done':
+        if self.state not in ['done', 'paid']:
             return _("This payslip is not validated. This is not a legal document.")
         return False
 

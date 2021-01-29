@@ -4,6 +4,10 @@
         <record id="calendar_event_type_data_online_appointment" model="calendar.event.type">
             <field name="name">Online Appointment</field>
         </record>
+        <record id="module_category_calendar" model="ir.module.category">
+            <field name="name">Online Appointments</field>
+            <field name="sequence">19</field>
+        </record>
 
         <record id="calendar_alarm_data_1h_sms" model="calendar.alarm">
             <field name="name">SMS Text Message - 1 Hours</field>

@@ -63,9 +63,9 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'privacy_visibility': 'followers',
         })
         # Prevent access right errors in test_access_rights_for_* methods
-        allowed_ids = self.user_approver | self.user_employee | self.user_manager
-        self.project_follower.allowed_internal_user_ids = [(6, 0, allowed_ids.ids)]
-
+        self.project_follower.message_subscribe(partner_ids=[
+            self.user_approver.partner_id.id, self.user_employee.partner_id.id, self.user_manager.partner_id.id
+        ])
 
     def test_access_rights_for_employee(self):
         """ Check the operations of employee with the lowest access

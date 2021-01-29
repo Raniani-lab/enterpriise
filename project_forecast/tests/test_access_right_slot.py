@@ -88,7 +88,9 @@ class TestForecastAccessRights(TestCommonForecast):
 
     def test_slot_employee_add_allow_user(self):
         # As the project is private and all user has been added in allowed list, all employees linked to user can see it.
-        self.project_opera.allowed_internal_user_ids = [(4, self.user.id, 0), (4, self.user_planning_user.id, 0), (4, self.user_planning_manager.id, 0)]
+        self.project_opera.message_subscribe(partner_ids=[
+            self.user.partner_id.id, self.user_planning_user.partner_id.id, self.user_planning_manager.partner_id.id
+        ])
         self.assertTrue(self.slot_employee_no_user.is_private_project)
         self.assertFalse(self.slot_employee.is_private_project)
         self.assertFalse(self.slot_employee_planning_user.is_private_project)
@@ -125,7 +127,9 @@ class TestForecastAccessRights(TestCommonForecast):
     def test_slot_with_task_and_user_is_allowed_task(self):
         # As the project is private and all user has been added in allowed list of task (not project),
         # all employees linked to user can see it.
-        self.task_opera_place_new_chairs.allowed_user_ids = [(4, self.user.id, 0), (4, self.user_planning_user.id, 0), (4, self.user_planning_manager.id, 0)]
+        self.task_opera_place_new_chairs.message_subscribe(partner_ids=[
+            self.user.partner_id.id, self.user_planning_user.partner_id.id, self.user_planning_manager.partner_id.id
+        ])
         self.all_slots.task_id = self.task_opera_place_new_chairs
         self.assertTrue(self.slot_employee_no_user.is_private_project)
         self.assertFalse(self.slot_employee.is_private_project)

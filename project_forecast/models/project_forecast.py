@@ -87,9 +87,9 @@ class PlanningShift(models.Model):
                 slot.is_private_project = False
             elif slot.project_id.privacy_visibility == 'followers' and not (slot.employee_id.user_id and slot.employee_id.user_id.has_group('project.group_project_manager')):
                 if slot.task_id:
-                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id not in slot.task_id.allowed_user_ids
+                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id.partner_id not in slot.task_id.message_partner_ids
                 else:
-                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id not in slot.project_id.allowed_user_ids
+                    slot.is_private_project = not slot.employee_id.user_id or slot.employee_id.user_id.partner_id not in slot.project_id.message_partner_ids
             else:
                 slot.is_private_project = False
 
@@ -182,6 +182,6 @@ class PlanningShift(models.Model):
             planning_slots = planning_slots.filtered(lambda s:
                 not s.project_id
                 or s.project_id.privacy_visibility != 'followers'
-                or employee.user_id in s.project_id.allowed_user_ids
-                or employee.user_id in s.task_id.allowed_user_ids)
+                or employee.user_id.partner_id in s.project_id.message_partner_ids
+                or employee.user_id.partner_id in s.task_id.message_partner_ids)
         return planning_slots

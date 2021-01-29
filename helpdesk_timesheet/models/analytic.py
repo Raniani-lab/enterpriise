@@ -40,9 +40,7 @@ class AccountAnalyticLine(models.Model):
                         ('task_id', '=', False),
                         ('helpdesk_ticket_id', '!=', False),
                     '|',
-                        '|',
-                            ('project_id.message_partner_ids', 'child_of', [self.env.user.partner_id.commercial_partner_id.id]),
-                            ('project_id.allowed_portal_user_ids', 'child_of', [self.env.user.id]),
+                        ('project_id.message_partner_ids', 'child_of', [self.env.user.partner_id.commercial_partner_id.id]),
                         ('helpdesk_ticket_id.message_partner_ids', 'child_of', [self.env.user.partner_id.commercial_partner_id.id]),
                 ('project_id.privacy_visibility', '=', 'portal')
         ]

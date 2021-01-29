@@ -279,7 +279,7 @@ class AccountJournal(models.Model):
 
         partner_bank = self.env['res.partner.bank'].sudo().browse(partner_bank_id)
 
-        if local_instrument != 'CH01':
+        if local_instrument != 'CH01' and not self.env.context.get('skip_bic', False):
             CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
 
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")

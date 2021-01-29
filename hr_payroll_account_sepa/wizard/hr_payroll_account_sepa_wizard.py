@@ -13,6 +13,7 @@ class HrPayslipSepaWizard(models.TransientModel):
         default=lambda self: self.env['account.journal'].search([('type', '=', 'bank')], limit=1))
 
     def generate_sepa_xml_file(self):
+        self = self.with_context(skip_bic=True)
         payslips = self.env['hr.payslip'].browse(self.env.context['active_ids'])
         payslips = payslips.filtered(lambda p: p.net_wage > 0)
         payslips.sudo()._create_xml_file(self.journal_id)
@@ -32,6 +33,7 @@ class HrPayslipRunSepaWizard(models.TransientModel):
     file_name = fields.Char(string='File name', required=True, default=_get_filename)
 
     def generate_sepa_xml_file(self):
+        self = self.with_context(skip_bic=True)
         payslip_run = self.env['hr.payslip.run'].browse(self.env.context['active_id'])
         payslips = payslip_run.mapped('slip_ids').filtered(lambda p: p.net_wage > 0)
         payslips.sudo()._create_xml_file(self.journal_id, self.file_name)

@@ -286,8 +286,10 @@ class HrPayslip(models.Model):
     def action_refresh_from_work_entries(self):
         # Refresh the whole payslip in case the HR has modified some work entries
         # after the payslip generation
-        self.ensure_one()
-        self._onchange_employee()
+        self.mapped('worked_days_line_ids').unlink()
+        self.mapped('line_ids').unlink()
+        for payslip in self:
+            payslip._onchange_employee()
         self.compute_sheet()
 
     def _round_days(self, work_entry_type, days):

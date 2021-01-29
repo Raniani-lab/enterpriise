@@ -41,7 +41,7 @@
                                     t-esc="format_float(tax_res['amount'])"/>
                             <cbc:BaseUnitMeasure
                                     t-if="tax_res['l10n_pe_edi_group_code'] == 'ICBPER'"
-                                    t-att-unitCode="line.product_id.uom_id.l10n_pe_edi_measure_unit_code"
+                                    t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
                                     t-esc='int(line.quantity)'/>
                             <cac:TaxCategory>
                                 <cbc:Percent
@@ -63,8 +63,8 @@
                         </cac:TaxSubtotal>
                 </cac:TaxTotal>
                 <cac:Item>
-                    <cbc:Description t-esc="line.product_id.name.replace('\n', ' ')"/>
-                    <cac:CommodityClassification>
+                    <cbc:Description t-esc="line.name.replace('\n', ' ')"/>
+                    <cac:CommodityClassification t-if="line.product_id">
                         <cbc:ItemClassificationCode t-esc="line.product_id.unspsc_code_id.code"/>
                     </cac:CommodityClassification>
                 </cac:Item>

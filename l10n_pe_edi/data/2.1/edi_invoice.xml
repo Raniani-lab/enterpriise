@@ -5,7 +5,7 @@
         <xpath expr="//*[name()='cbc:ID']" position="after">
             <t xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
                 <cbc:InvoicedQuantity
-                        t-att-unitCode="line.product_id.uom_id.l10n_pe_edi_measure_unit_code"
+                        t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
                         t-esc='line.quantity'/>
             </t>
         </xpath>

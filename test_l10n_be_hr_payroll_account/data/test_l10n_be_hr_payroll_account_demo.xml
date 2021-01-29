@@ -1536,6 +1536,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_admin').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_admin').department_id.id"/>
         <field eval="7540.0" name="wage"/>
+        <field eval="7540.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1555,6 +1556,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_al').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_al').department_id.id"/>
         <field eval="4000.0" name="wage"/>
+        <field eval="4000.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="kanban_state">normal</field>
@@ -1575,6 +1577,7 @@
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_mit').department_id.id"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field eval="4500.0" name="wage"/>
+        <field eval="4500.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1595,6 +1598,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_stw').department_id.id"/>
         <field eval="4500.0" name="wage"/>
+        <field eval="4500.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1614,6 +1618,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_qdp').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_qdp').department_id.id"/>
         <field eval="3750.0" name="wage"/>
+        <field eval="3750.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1633,6 +1638,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_han').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_han').department_id.id"/>
         <field eval="4600.0" name="wage"/>
+        <field eval="4600.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1653,6 +1659,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_niv').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_niv').department_id.id"/>
         <field eval="4000.0" name="wage"/>
+        <field eval="4000.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1673,6 +1680,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jth').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jth').department_id.id"/>
         <field eval="4200.0" name="wage"/>
+        <field eval="4200.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1692,6 +1700,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_chs').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_chs').department_id.id"/>
         <field eval="3750.0" name="wage"/>
+        <field eval="3750.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1711,6 +1720,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jve').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jve').department_id.id"/>
         <field eval="3950.0" name="wage"/>
+        <field eval="3950.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1731,6 +1741,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_fme').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_fme').department_id.id"/>
         <field eval="3650.0" name="wage"/>
+        <field eval="3650.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">blocked</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1751,6 +1762,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_fpi').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_fpi').department_id.id"/>
         <field eval="3750.0" name="wage"/>
+        <field eval="3750.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -1771,6 +1783,7 @@
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_vad').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_vad').department_id.id"/>
         <field eval="3750.0" name="wage"/>
+        <field eval="3750.0" name="wage_on_signature"/>
         <field name="state">open</field>
         <field name="kanban_state">normal</field>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>

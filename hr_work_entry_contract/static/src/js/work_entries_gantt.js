@@ -10,6 +10,10 @@ odoo.define('hr_work_entry_contract.work_entries_gantt', function(require) {
     var WorkEntryGanttController = GanttController.extend(WorkEntryControllerMixin, {
         events: _.extend({}, WorkEntryControllerMixin.events, GanttController.prototype.events),
 
+
+        _renderButtonsQWeb: function() {
+            return this._super.apply(this, arguments).append(this._renderWorkEntryButtons());
+        },
         _fetchRecords: function () {
             return this.model.ganttData.records;
         },

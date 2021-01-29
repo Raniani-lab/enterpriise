@@ -37,7 +37,6 @@ odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require)
          */
         _update: function () {
             var self = this;
-            self._renderRegenerateWorkEntryButton();
             return this._super.apply(this, arguments).then(function () {
                 self.firstDay = self._fetchFirstDay().toDate();
                 self.lastDay = self._fetchLastDay().toDate();
@@ -47,18 +46,32 @@ odoo.define('hr_work_entry_contract.WorkEntryControllerMixin', function(require)
             });
         },
 
+        updateButtons: function() {
+            this._super.apply(this, arguments);
+
+            if(!this.$buttons) {
+                return;
+            }
+
+            this.$buttons.find('.btn-regenerate-work-entries').on('click', this._onRegenerateWorkEntries.bind(this));
+        },
+
+        renderButtons: function($node) {
+            this._super.apply(this, arguments);
+
+            if(this.$buttons) {
+                this.$buttons.append(this._renderWorkEntryButtons());
+            }
+        },
+
         /*
             Private
         */
-        _renderRegenerateWorkEntryButton: function () {
-            if (this.modelName !== "hr.work.entry") {
-                return;
-            }
-            this.$buttons.append(QWeb.render('hr_work_entry.work_entry_button', {
+       _renderWorkEntryButtons: function() {
+            return $('<span>').append(QWeb.render('hr_work_entry.work_entry_button', {
                 button_text: _t("Regenerate Work Entries"),
                 event_class: 'btn-regenerate-work-entries',
             }));
-            this.$buttons.find('.btn-regenerate-work-entries').on('click', this._onRegenerateWorkEntries.bind(this));
         },
 
         _generateWorkEntries: function () {

@@ -126,11 +126,11 @@ class AccountEdiFormat(models.Model):
         self.ensure_one()
 
         cdr_tree = etree.fromstring(cdr_str)
-        code_elements = cdr_tree.find('.//{*}Fault/{*}faultstring')
-        message_elements = cdr_tree.find('.//{*}message')
-        if code_elements and message_elements:
-            code = code_elements[0].text
-            message = message_elements[0].text
+        code_element = cdr_tree.find('.//{*}Fault/{*}faultstring')
+        message_element = cdr_tree.find('.//{*}message')
+        if code_element is not None:
+            code = code_element.text
+            message = message_element.text
             error_messages_map = self._l10n_pe_edi_get_cdr_error_messages()
             error_message = '%s<br/><br/><b>%s</b><br/>%s|%s' % (
                 error_messages_map.get(code, _("We got an error response from the OSE. ")),
@@ -457,7 +457,7 @@ class AccountEdiFormat(models.Model):
         cdr_decoded = self._l10n_pe_edi_decode_cdr(cdr_str)
 
         if cdr_decoded.get('error'):
-            return {'error': cdr_decoded['error']}
+            return {'error': cdr_decoded['error'], 'blocking_level': 'error'}
 
         return {'xml_document': edi_str, 'cdr': cdr_str}
 

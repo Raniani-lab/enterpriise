@@ -31,6 +31,9 @@ class HrPayslip(models.Model):
         employees = self.mapped('employee_id').filtered(lambda e: not e.address_home_id)
         if employees:
             raise UserError(_("Some employees (%s) don't have a private address.") % (','.join(employees.mapped('name'))))
+        employees = self.mapped('employee_id').filtered(lambda e: e.address_home_id and not e.address_home_id.name)
+        if employees:
+            raise UserError(_("Some employees (%s) don't have a valid name on the private address.") % (','.join(employees.mapped('name'))))
         employees = self.mapped('employee_id').filtered(lambda e: not e.bank_account_id)
         if employees:
             raise UserError(_("Some employees (%s) don't have a bank account.") % (','.join(employees.mapped('name'))))

@@ -13,7 +13,6 @@ from odoo import api, fields, models, _
 from odoo.tools.misc import get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.http_routing.models.ir_http import slug
-from odoo.exceptions import ValidationError
 
 
 class CalendarAppointmentType(models.Model):
@@ -284,58 +283,3 @@ class CalendarAppointmentType(models.Model):
             })
             start = start + relativedelta(months=1)
         return months
-
-
-class CalendarAppointmentSlot(models.Model):
-    _name = "calendar.appointment.slot"
-    _description = "Online Appointment : Time Slot"
-    _rec_name = "weekday"
-    _order = "weekday, hour"
-
-    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete='cascade')
-    weekday = fields.Selection([
-        ('1', 'Monday'),
-        ('2', 'Tuesday'),
-        ('3', 'Wednesday'),
-        ('4', 'Thursday'),
-        ('5', 'Friday'),
-        ('6', 'Saturday'),
-        ('7', 'Sunday'),
-    ], string='Week Day', required=True)
-    hour = fields.Float('Starting Hour', required=True, default=8.0)
-
-    @api.constrains('hour')
-    def check_hour(self):
-        if any(slot.hour < 0.00 or slot.hour >= 24.00 for slot in self):
-            raise ValidationError(_("Please enter a valid hour between 0:00 and 24:00 for your slots."))
-
-    def name_get(self):
-        weekdays = dict(self._fields['weekday'].selection)
-        return self.mapped(lambda slot: (slot.id, "%s, %02d:%02d" % (weekdays.get(slot.weekday), int(slot.hour), int(round((slot.hour % 1) * 60)))))
-
-
-class CalendarAppointmentQuestion(models.Model):
-    _name = "calendar.appointment.question"
-    _description = "Online Appointment : Questions"
-    _order = "sequence"
-
-    sequence = fields.Integer('Sequence')
-    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete="cascade")
-    name = fields.Char('Question', translate=True, required=True)
-    placeholder = fields.Char('Placeholder', translate=True)
-    question_required = fields.Boolean('Required Answer')
-    question_type = fields.Selection([
-        ('char', 'Single line text'),
-        ('text', 'Multi-line text'),
-        ('select', 'Dropdown (one answer)'),
-        ('radio', 'Radio (one answer)'),
-        ('checkbox', 'Checkboxes (multiple answers)')], 'Question Type', default='char')
-    answer_ids = fields.Many2many('calendar.appointment.answer', 'calendar_appointment_question_answer_rel', 'question_id', 'answer_id', string='Available Answers')
-
-
-class CalendarAppointmentAnswer(models.Model):
-    _name = "calendar.appointment.answer"
-    _description = "Online Appointment : Answers"
-
-    question_id = fields.Many2many('calendar.appointment.question', 'calendar_appointment_question_answer_rel', 'answer_id', 'question_id', string='Questions')
-    name = fields.Char('Answer', translate=True, required=True)

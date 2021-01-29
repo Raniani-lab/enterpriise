@@ -1,33 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- Assets -->
-    <template id="assets_frontend" inherit_id="website.assets_frontend" name="Online Appointment">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/scss" href="/website_calendar/static/src/scss/website_calendar.scss" t-ignore="true"/>
-            <script type="text/javascript" src="/website_calendar/static/src/js/website_calendar.js"/>
-        </xpath>
-    </template>
-
-    <template id="assets_backend" inherit_id="website.assets_backend" name="Online Appointment">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/website_calendar/static/src/js/appointment_employee_url.js"/>
-            <link rel="stylesheet" type="text/scss" href="/website_calendar/static/src/scss/appointment_employee_url.scss"/>
-        </xpath>
-    </template>
-
-    <template id="assets_editor_inherit_website_calendar" inherit_id="website.assets_editor" name="website_calendar Assets Editor">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/website_calendar/static/src/js/website_calendar.editor.js"></script>
-        </xpath>
-    </template>
-
-    <template id="qunit_suite" inherit_id="web.qunit_suite_tests" name="Website Calendar Tests" >
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/website_calendar/static/tests/website_calendar_tests.js"/>
-        </xpath>
-    </template>
-
     <!-- Pages -->
     <template id="index" name="Website Appointment: Appointment Page">
         <t t-call="website.layout">
@@ -410,15 +382,4 @@
             </div>
         </t>
     </template>
-
-    <!-- User Navbar -->
-    <template id="user_navbar_inherit_website_enterprise_inherit_website_calendar" inherit_id="website_enterprise.user_navbar_inherit_website_enterprise">
-        <xpath expr="//div[@name='module_website_calendar']" position="attributes">
-            <attribute name="name"/>
-            <attribute name="t-att-data-module-id"/>
-            <attribute name="t-att-data-module-shortdesc"/>
-            <attribute name="if">env.user.has_group('website_calendar.group_calendar_manager')</attribute>
-        </xpath>
-    </template>
-
 </odoo>

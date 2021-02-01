@@ -3,6 +3,7 @@
 
 {
     'name': 'Norwegian Standard Audit File for Tax',
+    'icon': '/l10n_no/static/description/icon.png',
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

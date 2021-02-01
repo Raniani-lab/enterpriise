@@ -3,6 +3,7 @@
 
 {
     'name': 'Luxembourg Standard Audit File for Tax',
+    'icon': '/l10n_lu/static/description/icon.png',
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

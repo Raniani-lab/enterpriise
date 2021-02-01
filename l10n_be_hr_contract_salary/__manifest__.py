@@ -3,6 +3,7 @@
 
 {
     'name': 'Salary Configurator (Belgium)',
+    'icon': '/l10n_be/static/description/icon.png',
     'category': 'Human Resources',
     'summary': 'Salary Package Configurator',
     'depends': [

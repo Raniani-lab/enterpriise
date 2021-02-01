@@ -1,5 +1,6 @@
 {
     "name": """Chile - E-invoicing""",
+    'icon': '/l10n_cl/static/description/icon.png',
     'version': '1.0.',
     'category': 'Accounting/Localizations',
     'sequence': 12,

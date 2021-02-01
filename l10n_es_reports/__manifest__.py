@@ -11,6 +11,7 @@
 
 {
     'name': 'Spain - Accounting (PGCE 2008) Reports',
+    'icon': '/l10n_es/static/description/icon.png',
     'version': '4.1',
     'author': 'Spanish Localization Team',
     'website': 'https://launchpad.net/openerp-spain',

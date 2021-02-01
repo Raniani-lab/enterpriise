@@ -1,5 +1,6 @@
 {
     'name': 'Keypay Australian Payroll',
+    'icon': '/l10n_au/static/description/icon.png',
     'version': '1.0',
     'summary': 'Australian Payroll using KeyPay Integration',
     'description': """

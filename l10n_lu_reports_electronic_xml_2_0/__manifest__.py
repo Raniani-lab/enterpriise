@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Luxembourg - Accounting Reports XML 2.0',
+    'icon': '/l10n_lu/static/description/icon.png',
     'version': '1.0',
     'description': """
 ECDF-compliant XML accounting reports for Luxembourg

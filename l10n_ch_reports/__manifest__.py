@@ -3,6 +3,7 @@
 
 {
     'name': 'Switzerland - Accounting Reports',
+    'icon': '/l10n_ch/static/description/icon.png',
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

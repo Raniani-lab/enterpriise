@@ -3,6 +3,7 @@
 
 {
     'name' : 'Sale BE Intrastat Bridge',
+    'icon': '/l10n_be/static/description/icon.png',
     'category': 'Accounting/Localizations',
     'description': """
         Bridge module between sale_intrastat and l10n_be_intrastat.

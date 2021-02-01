@@ -39,6 +39,7 @@ class UtmCampaign(models.Model):
             action['context'] = {
                 "with_searchpanel": True,
                 "searchpanel_default_state": "posted",
+                "search_default_utm_campaign_id": self.id,
                 "default_utm_campaign_id": self.id
             }
             return action
@@ -54,8 +55,8 @@ class UtmCampaign(models.Model):
         }
         return action
 
-    def _get_campaign_social_posts_domain(self):
-        domain = super(UtmCampaign, self)._get_campaign_social_posts_domain()
+    def _get_social_posts_domain(self):
+        domain = super(UtmCampaign, self)._get_social_posts_domain()
         return expression.AND([domain, [('media_ids.media_type', '!=', 'push_notifications')]])
 
     def _get_social_media_accounts_domain(self):

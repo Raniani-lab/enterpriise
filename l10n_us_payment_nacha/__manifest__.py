@@ -4,7 +4,7 @@
     "summary": """Export payments as NACHA files""",
     "category": "Accounting/Accounting",
     "description": """
-        Export payments as NACHA files for use in North America.
+        Export payments as NACHA files for use in the United States.
     """,
     "version": "1.0",
     "depends": ["account_batch_payment", "l10n_us"],

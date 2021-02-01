@@ -3,11 +3,13 @@ odoo.define('industry_fsm_sale.ProductKanbanView', function (require) {
 
 const KanbanView = require('web.KanbanView');
 const KanbanModel = require('industry_fsm_sale.ProductKanbanModel');
+const KanbanController = require('industry_fsm_sale.ProductKanbanController');
 const viewRegistry = require('web.view_registry');
 
 const ProductKanbanView = KanbanView.extend({
     config: _.extend({}, KanbanView.prototype.config, {
         Model: KanbanModel,
+        Controller: KanbanController,
     }),
 });
 

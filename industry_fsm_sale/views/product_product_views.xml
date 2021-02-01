@@ -32,22 +32,7 @@
                                         <field name="currency_id" invisible="True"/>
                                     </ul>
                                 </div>
-                                <!-- CLEAN ME: buttons should be part of the field widget; style should not be inlined -->
-                                <div class="h-100 d-flex"
-                                    style="z-index:1;align-items: center;">
-                                    <button t-attf-class="btn p-0 o_qty_button {{record.fsm_quantity.raw_value != 0 ? 'btn-primary' : 'btn-light text-muted'}}" 
-                                            invisible="context.get('hide_qty_buttons')" type="object" name="fsm_remove_quantity">
-                                        <span style="font-size:1.5rem;">-</span>
-                                    </button>
-                                    <div class="p-0 oe_inline d-inline-block o_qty_button" invisible="not context.get('hide_qty_buttons')"/>
-
-                                    <field name="fsm_quantity" widget="fsmProductQuantity"/>
-
-                                    <button t-attf-class="btn p-0 o_qty_button {{record.fsm_quantity.raw_value != 0 ? 'btn-primary' : 'btn-light text-muted'}}" 
-                                            invisible="context.get('hide_qty_buttons')" type="object" name="fsm_add_quantity">
-                                    <span style="font-size:1.5rem;">+</span></button>
-                                    <div class="p-0 oe_inline d-inline-block o_qty_button" invisible="not context.get('hide_qty_buttons')"/>
-                                </div>
+                                <field name="fsm_quantity" widget="fsm_product_quantity"/>
                             </div>
                         </div>
                         <button type="object" class="col-12 h-100 w-100 o_button_invisible" name="fsm_add_quantity" invisible="context.get('hide_qty_buttons')"/>

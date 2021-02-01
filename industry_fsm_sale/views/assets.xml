@@ -2,8 +2,10 @@
 <odoo>
     <template id="assets_backend" name="fsm assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/industry_fsm_sale/static/src/scss/fsm_product_quantity.scss"/>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/fsm_product_quantity.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/model.js"></script>
+            <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/controller.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/view.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js"></script>
         </xpath>
@@ -11,6 +13,11 @@
     <template id="assets_frontend" name="industry_fsm_report_assets_front" inherit_id="web.assets_frontend">
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js"></script>
+        </xpath>
+    </template>
+    <template id="qunit_suite" name="industry_fsm_sale" inherit_id="web.qunit_suite_tests">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/industry_fsm_sale/static/tests/fsm_product_quantity_tests.js"/>
         </xpath>
     </template>
 </odoo>

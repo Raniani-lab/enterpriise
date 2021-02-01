@@ -257,6 +257,10 @@ class AccountOnlineLink(models.Model):
                 return self._fetch_odoo_fin(url, data, ignore_status)
             elif error.get('code') == 300: # redirect, not an error
                 return error
+            # If we are in the process of deleting the record ignore code 100 (invalid signature), 104 (account deleted)
+            # 106 (provider_data corrupted) and allow user to delete his record from this side.
+            elif error.get('code') in (100, 104, 106) and self.env.context.get('delete_sync'):
+                return {'delete': True}
             # Log and raise error
             error_details = error.get('data')
             subject = error.get('message')
@@ -310,7 +314,7 @@ class AccountOnlineLink(models.Model):
         to_unlink = self.env['account.online.link']
         for link in self:
             try:
-                resp_json = link._fetch_odoo_fin('/proxy/v1/delete_user', data={'provider_data': link.provider_data}, ignore_status=True) # delete proxy user
+                resp_json = link.with_context(delete_sync=True)._fetch_odoo_fin('/proxy/v1/delete_user', data={'provider_data': link.provider_data}, ignore_status=True) # delete proxy user
                 if resp_json.get('delete', True) is True:
                     to_unlink += link
             except UserError as e:

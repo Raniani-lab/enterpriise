@@ -76,7 +76,7 @@
                                 <field name="repeat_interval" class="col-2 col-lg-1"/>
                                 <span class="mr-3">Weeks</span>
                                 <field name="repeat_type" nolabel="1" attrs="{'required': [('repeat', '=', True)]}" class="col col-lg-1"/>
-                                <field name="repeat_until" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" class="col-auto col-lg-2 flex-shrink-1" nolabel="1"/>
+                                <field name="repeat_until" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}" class="col-auto col-lg-2 flex-shrink-1" nolabel="1"/>
                             </div>
                         </div>
                     </group>

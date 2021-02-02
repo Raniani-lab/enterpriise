@@ -559,11 +559,12 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
             withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
 
     # Reduction for other family charges
-    if employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors):
+    if (employee.children and employee.dependent_children) or (employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors)):
         if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
-            if employee.marital in ['divorced', 'single', 'widower']:
-                withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
-            if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
+
+            # if employee.marital in ['divorced', 'single', 'widower']:
+            #     withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+            if employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children:
                 withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
             if employee.disabled:
                 withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')

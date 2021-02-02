@@ -506,25 +506,25 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: 'Check Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
-            extra_trigger: 'input[name="Net"][value="2371.59"]',
+            extra_trigger: 'input[name="Net"][value="2408.59"]',
             run: 'click'
         },
         {
             content: 'Set 1 Disabled Children',
             trigger: 'input[name=disabled_children_number]',
-            extra_trigger: 'input[name="Net"][value="2371.59"]',
+            extra_trigger: 'input[name="Net"][value="2408.59"]',
             run: 'text 1'
         },
         {
             content: 'Uncheck Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
-            extra_trigger: 'input[name="Net"][value="2583.59"]',
+            extra_trigger: 'input[name="Net"][value="2620.59"]',
             run: 'click'
         },
         {
             content: 'Unset Children',
             trigger: 'input[name=children]',
-            extra_trigger: 'input[name="Net"][value="2371.59"]',
+            extra_trigger: 'input[name="Net"][value="2408.59"]',
             run: 'text 0'
         },
         {
@@ -542,43 +542,43 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: 'Set 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2277.59"]',
+            extra_trigger: 'input[name="Net"][value="2251.59"]',
             run: 'text 1',
         },
         {
             content: 'Set 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2358.59"]',
+            extra_trigger: 'input[name="Net"][value="2332.59"]',
             run: 'text 2',
         },
         {
             content: 'Set 1 disabled Junior',
             trigger: 'input[name=other_disabled_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2432.59"]',
+            extra_trigger: 'input[name="Net"][value="2406.59"]',
             run: 'text 1',
         },
         {
-            content: 'Unset 1 disabled Senior',
+            content: 'Unset 1 disabled Senior over 2',
             trigger: 'input[name=other_disabled_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2469.59"]',
+            extra_trigger: 'input[name="Net"][value="2443.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 2 Juniors',
             trigger: 'input[name=other_juniors_dependent]',
-            extra_trigger: 'input[name="Net"][value="2432.59"]',
+            extra_trigger: 'input[name="Net"][value="2406.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 1 disabled Senior',
             trigger: 'input[name=other_disabled_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2358.59"]',
+            extra_trigger: 'input[name="Net"][value="2332.59"]',
             run: 'text 0',
         },
         {
             content: 'Unset 2 Seniors',
             trigger: 'input[name=other_senior_dependent]',
-            extra_trigger: 'input[name="Net"][value="2277.59"]',
+            extra_trigger: 'input[name="Net"][value="2251.59"]',
             run: 'text 0',
         },
         {

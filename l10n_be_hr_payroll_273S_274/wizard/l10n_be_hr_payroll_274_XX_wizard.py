@@ -197,14 +197,23 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
     def _to_eurocent(self, amount):
         return '%s' % int(amount * 100)
 
-    def _get_declaration_data(self, payslip, pp_amount, revenue_nature):
-        eid = str(payslip.employee_id.id)
-        if len(eid) == 8:
-            declaration_number = eid
-        elif len(eid) < 8:
-            declaration_number = "1%s%s" % ('0' * (7 - len(eid)), eid)
-        else:
-            declaration_number = 10000001
+    def _get_rendering_data(self):
+        # https://finances.belgium.be/sites/default/files/downloads/Sp%C3%A9cification%20XML.doc
+        result = {
+            'creation_date': fields.Date.today().strftime("%Y-%m-%d"),
+            'last_period': self.date_start.strftime("%y%m"),
+            'declarations': [],
+            'positive_amount': 1,
+            'positive_total': 0,
+            'negative_amount': 3,
+            'negative_total': 0,
+        }
+        payslips = self._get_valid_payslips()
+
+        if len(payslips.mapped('company_id')) > 1:
+            raise UserError(_('The payslips should be from the same company.'))
+        if not payslips:
+            raise UserError(_('There is no valid payslip to declare.'))
 
         year_period_code = {
             2018: '601',
@@ -212,11 +221,11 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             2020: '801',
             2021: '901',
         }
-        reference_number = payslip.company_id.l10n_be_company_number
+        reference_number = payslips[0].company_id.l10n_be_company_number
         # payment reference - 12 Characters
         first_10_characters = "%s%s" % (
             reference_number[1:8], # 1 - 7
-            year_period_code[payslip.date_from.year],  # 8-10
+            year_period_code[payslips[0].date_from.year],  # 8-10
         )
         payment_reference = "%s%s" % (
             first_10_characters,
@@ -228,55 +237,95 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             payment_reference[7:12],
         )
 
-        return {
-            'declaration_number': declaration_number,
+        date_from = payslips[0].date_from
+        date_to = payslips[0].date_to
+        district = payslips[0].company_id.l10n_be_revenue_code[:2]
+        office = payslips[0].company_id.l10n_be_revenue_code[-2:]
+
+        if any(payslip.date_from != date_from or payslip.date_to != date_to for payslip in payslips):
+            raise UserError(_('The payslips should cover the same period'))
+
+        declaration_10 = {
+            'declaration_number': 10000010,
             'reference_number': reference_number,
-            'year': payslip.date_from.strftime("%Y"),
-            'period': '%s00' % (payslip.date_from.strftime("%m")),
-            'revenue_nature': revenue_nature,
-            'taxable_revenue': self._to_eurocent(payslip._get_pp_taxable_amount()),
-            'prepayment': self._to_eurocent(pp_amount),
+            'year': date_from.strftime("%Y"),
+            'period': '%s00' % (date_from.strftime("%m")),
+            'revenue_nature': 10,
+            'taxable_revenue': 0,
+            'prepayment': 0,
             'payment_reference': payment_reference,
-            'district': payslip.company_id.l10n_be_revenue_code[:2],
-            'office': payslip.company_id.l10n_be_revenue_code[-2:],
+            'district': district,
+            'office': office,
         }
-
-    def _get_rendering_data(self):
-        # https://finances.belgium.be/sites/default/files/downloads/Sp%C3%A9cification%20XML.doc
-        result = {
-            'creation_date': fields.Date.today().strftime("%Y-%m-%d"),
-            'last_period': self.date_start.strftime("%y%m"),
-            'declarations': [],
-            'positive_amount': 0,
-            'positive_total': 0,
-            'negative_amount': 0,
-            'negative_total': 0,
+        declaration_32 = {
+            'declaration_number': 10000032,
+            'reference_number': reference_number,
+            'year': date_from.strftime("%Y"),
+            'period': '%s00' % (date_from.strftime("%m")),
+            'revenue_nature': 32,
+            'taxable_revenue': 0,
+            'prepayment': 0,
+            'payment_reference': payment_reference,
+            'district': district,
+            'office': office,
         }
-        payslips = self._get_valid_payslips()
-
+        declaration_33 = {
+            'declaration_number': 10000033,
+            'reference_number': reference_number,
+            'year': date_from.strftime("%Y"),
+            'period': '%s00' % (date_from.strftime("%m")),
+            'revenue_nature': 33,
+            'taxable_revenue': 0,
+            'prepayment': 0,
+            'payment_reference': payment_reference,
+            'district': district,
+            'office': office,
+        }
+        declaration_34 = {
+            'declaration_number': 10000034,
+            'reference_number': reference_number,
+            'year': date_from.strftime("%Y"),
+            'period': '%s00' % (date_from.strftime("%m")),
+            'revenue_nature': 34,
+            'taxable_revenue': 0,
+            'prepayment': 0,
+            'payment_reference': payment_reference,
+            'district': district,
+            'office': office,
+        }
         for payslip in payslips:
             pp_total = payslip._get_salary_line_total('PPTOTAL')
             if pp_total >= 0:
-                result['positive_amount'] += 1
-                result['positive_total'] += pp_total
-            else:
-                result['negative_amount'] += 1
-                result['negative_total'] += pp_total
-
-            result['declarations'].append(self._get_declaration_data(payslip, pp_total, '10'))
+                pp_total_eurocent = int(pp_total * 100)
+                taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
+                declaration_10['prepayment'] += pp_total_eurocent
+                declaration_10['taxable_revenue'] += taxable_eurocent
+                result['positive_total'] += pp_total_eurocent
 
             if payslip.contract_id.rd_percentage:
                 employee = payslip.employee_id
                 deduction = - payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
-                if employee.certificate in ['doctor', 'civil_engineer']:
-                    result['declarations'].append(self._get_declaration_data(payslip, deduction, '32'))
-                elif employee.certificate == 'master':
-                    result['declarations'].append(self._get_declaration_data(payslip, deduction, '33'))
-                elif employee.certificate == 'bachelor':
-                    result['declarations'].append(self._get_declaration_data(payslip, deduction, '34'))
+                if deduction:
+                    if employee.certificate in ['doctor', 'civil_engineer']:
+                        pp_total_eurocent = int(deduction * 100)
+                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
+                        declaration_32['prepayment'] += pp_total_eurocent
+                        declaration_32['taxable_revenue'] += taxable_eurocent
+                    elif employee.certificate == 'master':
+                        pp_total_eurocent = int(deduction * 100)
+                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
+                        declaration_33['prepayment'] += pp_total_eurocent
+                        declaration_33['taxable_revenue'] += taxable_eurocent
+                    elif employee.certificate == 'bachelor':
+                        pp_total_eurocent = int(deduction * 100)
+                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
+                        declaration_34['prepayment'] += pp_total_eurocent
+                        declaration_34['taxable_revenue'] += taxable_eurocent
+                    result['negative_total'] += int(deduction * 100)
 
-        result['positive_total'] = self._to_eurocent(result['positive_total'])
-        result['negative_total'] = self._to_eurocent(result['negative_total'])
+        result['declarations'] = [declaration_10, declaration_32, declaration_33, declaration_34]
+        result['positive_total'] = str(result['positive_total'])
+        result['negative_total'] = str(result['negative_total'])
         return result
 
     def action_generate_xml(self):

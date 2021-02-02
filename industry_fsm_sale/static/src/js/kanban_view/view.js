@@ -13,4 +13,6 @@ const ProductKanbanView = KanbanView.extend({
 
 viewRegistry.add('fsm_product_kanban', ProductKanbanView);
 
+return ProductKanbanView;
+
 });

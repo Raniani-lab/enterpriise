@@ -494,11 +494,25 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
             return item[0]
     return False
 
-_get_amount = partial(_generic_get,
-    xpath='ns:Amt/text() | ns:AmtDtls/ns:TxAmt/ns:Amt/text()')
+_amount_getters = [
+    partial(_generic_get, xpath='ns:Amt/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'),
+]
 
-_get_rate = partial(_generic_get,
-    xpath='ns:XchgRate/text() | ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()')
+_amount_currency_getters = [
+    partial(_generic_get, xpath='ns:Amt/@Ccy'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy'),
+]
+
+_rate_getters = [
+    partial(_generic_get, xpath='ns:XchgRate/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'),
+]
+
+_rate_currency_getters = [
+    partial(_generic_get, xpath='ns:TrgtCcy/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
+]
 
 _get_credit_debit_indicator = partial(_generic_get,
     xpath='ns:CdtDbtInd/text()')
@@ -530,8 +544,16 @@ _get_additional_entry_info = partial(_generic_get,
     xpath='ns:AddtlNtryInf/text()')
 
 def _get_signed_amount(*nodes, namespaces):
-    amount = float(_get_amount(*nodes, namespaces=namespaces))
-    rate = float(_get_rate(*nodes, namespaces=namespaces)) or 1.0
+    for i in (0, 1):
+        amount = _amount_getters[i](*nodes, namespaces=namespaces)
+        amount_currency = _amount_currency_getters[i](*nodes, namespaces=namespaces)
+        rate = _rate_getters[i](*nodes, namespaces=namespaces)
+        rate_currency = _rate_currency_getters[i](*nodes, namespaces=namespaces)
+        if amount:
+            break
+
+    amount = float(amount)
+    rate = float(rate) if amount_currency != rate_currency and rate else 1.0
     sign = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
     return amount * rate if sign == 'CRDT' else -amount * rate
 

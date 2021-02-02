@@ -134,7 +134,7 @@ if contract.has_laptop:
             <field name="sequence">42</field>
             <field name="condition_select">python</field>
             <field name="condition_python">
-wage = result_rules['BASIC']['total'] + result_rules['COMMISSION']['total']
+wage = result_rules['SALARY']['total']
 result = categories.BASIC and wage &lt;= payslip.rule_parameter('work_bonus_reference_wage_high')
             </field>
             <field name="amount_select">code</field>

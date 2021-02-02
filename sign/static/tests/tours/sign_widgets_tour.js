@@ -33,12 +33,9 @@ odoo.define('sign_widgets_tour', function (require) {
                 run: 'click',
             },
             {
-                content: "Check widget sign is present",
-                trigger: '.o_signature',
-            },
-            {
                 content: "Edit Mitchell",
                 trigger: 'div.o_cp_buttons .o_form_button_edit',
+                extra_trigger: '.o_signature', // Check widget sign is present
                 run: 'click',
             },
             {

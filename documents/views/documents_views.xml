@@ -174,9 +174,8 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="thumbnail" nolabel="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;thumbnail&quot;}" attrs="{ 'invisible' : [('thumbnail', '=', False)]}"/>
                     <div class="oe_title" aria-label="Name">
-                        <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" class="oe_inline" attrs="{'readonly': [('is_locked', '=', True)]}" required="True"/>&amp;nbsp;
+                            <field name="name" class="oe_inline" placeholder="Document Name" attrs="{'readonly': [('is_locked', '=', True)]}" required="True"/>&amp;nbsp;
                             <i class="fa fa-lock oe_inline" title="Locked" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
                         </h1>
                     </div>
@@ -309,8 +308,8 @@
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name" placeholder="E.g. Finance"/></h1>
+                        <label for="name" class="Workspace Name"/>
+                        <h1><field name="name" placeholder="e.g. Finance"/></h1>
                     </div>
                     <group>
                         <group>
@@ -577,8 +576,8 @@
             <form>
                 <sheet>
                     <div class="oe_title">
-                      <label for="name" class="oe_edit_only"/>
-                      <h1><field name="name" placeholder="E.g. Validate document"/></h1>
+                      <label for="name" string="Action Name"/>
+                      <h1><field name="name" placeholder="e.g. Validate document"/></h1>
                       <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
                         <notebook>
@@ -727,8 +726,8 @@
             <form>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name" placeholder="E.g. Status"/></h1>
+                        <label for="name" string="Tag Category"/>
+                        <h1><field name="name" placeholder="e.g. Status"/></h1>
                     </div>
                     <notebook>
                         <page string="Tags" name="tags">
@@ -787,8 +786,8 @@
             <form>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name"/></h1>
+                        <label for="name" string="Tag Name"/>
+                        <h1><field name="name" placeholder="e.g. To Validate"/></h1>
                     </div>
                     <group>
                         <field name="facet_id" string="Category"/>

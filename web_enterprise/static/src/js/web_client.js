@@ -134,15 +134,6 @@ return AbstractWebClient.extend({
             this._ignore_hashchange = false;
             return Promise.resolve();
         }
-        try {
-            await this.clear_uncommitted_changes();
-        } catch (err) {
-            if (ev) {
-                this._ignore_hashchange = true;
-                window.location = ev.originalEvent.oldURL;
-                return;
-            }
-        }
         const stringstate = $.bbq.getState(false);
         if (!_.isEqual(this._current_state, stringstate)) {
             const state = $.bbq.getState(true);
@@ -247,7 +238,11 @@ return AbstractWebClient.extend({
         }
 
         if (display) {
-            await this.clear_uncommitted_changes();
+            try {
+                await this.clear_uncommitted_changes();
+            } catch (error) {
+                return;
+            }
             core.bus.trigger('will_show_home_menu');
 
             // Potential changes have been discarded -> the home menu will be displayed
@@ -278,6 +273,11 @@ return AbstractWebClient.extend({
             this.trigger_up('webclient_started');
             core.bus.trigger('show_home_menu');
         } else {
+            const controller = this.action_manager.getCurrentController();
+            if (controller && controller.widget) {
+                await controller.widget.willRestore(true);
+            }
+
             this.homeMenuManagerDisplayed = false;
 
             // Detach the home_menu

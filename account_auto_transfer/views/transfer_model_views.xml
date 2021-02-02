@@ -77,9 +77,9 @@
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="name" string="Name" class="oe_edit_only"/>
+                        <label for="name" string="Description"/>
                         <h1>
-                            <field name="name" placeholder="Name"/>
+                            <field name="name" placeholder="e.g. Monthly Expense Transfer"/>
                         </h1>
                     </div>
                     <group>

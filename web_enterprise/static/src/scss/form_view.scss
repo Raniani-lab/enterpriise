@@ -34,11 +34,27 @@
         }
     }
 
+    // Fields
+    td.o_td_label .o_form_label {
+        min-height: 23px;
+    }
+    td:not(.o_field_cell) .o_form_uri > span:first-child {
+        display: inline-block;
+        padding: 1px 0;
+        margin-bottom: 1px;
+    }
+
     // Title & avatar
     .oe_title {
         color: $headings-color;
         @include media-breakpoint-up(vsm, $o-extra-grid-breakpoints) {
             padding-right: $o-innergroup-rpadding;
+        }
+        h1 {
+            min-height: 55px;
+        }
+        h2 {
+            min-height: 42px;
         }
     }
 

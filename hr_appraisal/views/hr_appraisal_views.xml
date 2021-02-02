@@ -43,9 +43,9 @@
                 </div>
                 <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                 <div class="oe_title">
-                    <label for="employee_id" class="oe_edit_only"/>
+                    <label for="employee_id"/>
                     <h1>
-                        <field name="employee_id" attrs="{'readonly':[('state', '!=', 'new')]}" placeholder="Employee's Name"/>
+                        <field name="employee_id" attrs="{'readonly':[('state', '!=', 'new')]}" placeholder="e.g. John Doe"/>
                     </h1>
                 </div>
                 <group>

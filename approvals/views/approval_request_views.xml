@@ -119,7 +119,7 @@
                         <field name="category_image" widget="image" options="{'preview_image': 'category_image', 'size': [80, 80]}"/>
                     </div>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
+                        <label for="name"/>
                         <h1>
                             <field name="automated_sequence" invisible="1"/>
                             <field name="name" placeholder="E.g: Expenses Paris business trip"

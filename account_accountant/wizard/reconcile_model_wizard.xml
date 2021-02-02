@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form>
                 <div class="oe_title">
-                    <label for="name" class="oe_edit_only"/>
+                    <label for="name"/>
                     <h1><field name="name" placeholder="e.g. Bank Fees"/></h1>
                 </div>
 

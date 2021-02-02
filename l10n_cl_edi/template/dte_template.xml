@@ -51,30 +51,34 @@
                 <Transporte>
                     <DirDest/>
                     <CmnaDest/>
-                    <CiudadDest/>
+                    <CiudadDest t-esc="format_length(move.partner_id.city or move.commercial_partner_id.city or '', 20)"/>
+                    <Aduana>
+                        <CodModVenta>01</CodModVenta>
+                        <TotClauVenta t-esc="float_repr(amounts['total_amount'], 0) if not move.l10n_latam_document_type_id._is_doc_type_export() else float_repr(amounts['total_amount'], 2)"/>
+                    </Aduana>
                 </Transporte>
             </t>
                 <Totales>
                     <TpoMoneda t-if="move.currency_id != move.company_id.currency_id and move.l10n_latam_document_type_id._is_doc_type_export()" t-esc="format_length(move.currency_id.l10n_cl_short_name, 15)"/>
-                    <MntNeto t-if="amounts['subtotal_amount_taxable']" t-esc="'{:.0f}'.format(amounts['subtotal_amount_taxable'])"/>
-                    <MntExe t-if="amounts['subtotal_amount_exempt']" t-esc="'{:.0f}'.format(amounts['subtotal_amount_exempt']) if not move.l10n_latam_document_type_id._is_doc_type_export() else amounts['subtotal_amount_exempt']"/>
+                    <MntNeto t-if="amounts['subtotal_amount_taxable']" t-esc="float_repr(amounts['subtotal_amount_taxable'], 0)"/>
+                    <MntExe t-if="amounts['subtotal_amount_exempt']" t-esc="float_repr(amounts['subtotal_amount_exempt'], 0) if not move.l10n_latam_document_type_id._is_doc_type_export() else float_repr(amounts['subtotal_amount_exempt'], 2)"/>
                     <TasaIVA t-if="amounts['vat_percent']" t-esc="amounts['vat_percent']"/>
-                    <IVA t-if="amounts['vat_percent']" t-esc="'{:.0f}'.format(amounts['vat_amount'])"/>
+                    <IVA t-if="amounts['vat_percent']" t-esc="float_repr(amounts['vat_amount'], 0)"/>
                 <t t-foreach="withholdings" t-as="tax">
                     <ImptoReten>
                         <TipoImp t-esc="tax['tax_code']"/>
                         <TasaImp t-esc="tax['tax_percent']"/>
-                        <MontoImp t-esc="'{:.0f}'.format(tax['tax_amount'])"/>
+                        <MontoImp t-esc="float_repr(tax['tax_amount'], 0)"/>
                     </ImptoReten>
                 </t>
-                    <MntTotal t-esc="'{:.0f}'.format(amounts['total_amount']) if not move.l10n_latam_document_type_id._is_doc_type_export() else amounts['total_amount']"/>
+                    <MntTotal t-esc="float_repr(amounts['total_amount'], 0) if not move.l10n_latam_document_type_id._is_doc_type_export() else float_repr(amounts['total_amount'], 2)"/>
                 </Totales>
                 <OtraMoneda t-if="amounts.get('second_currency', False)">
                     <TpoMoneda t-esc="format_length(move.company_id.currency_id.l10n_cl_short_name, 15)"/>
-                    <TpoCambio t-esc="'{:.4f}'.format(amounts['second_currency']['rate'])"/>
-                    <MntNetoOtrMnda t-if="amounts['second_currency']['subtotal_amount_taxable']" t-esc="'{:.4f}'.format(amounts['second_currency']['subtotal_amount_taxable'])"/>
-                    <MntExeOtrMnda t-if="amounts['second_currency']['subtotal_amount_exempt']" t-esc="'{:.4f}'.format(amounts['second_currency']['subtotal_amount_exempt'])"/>
-                    <IVAOtrMnda t-if="amounts['second_currency']['vat_amount']" t-esc="'{:.4f}'.format(amounts['second_currency']['vat_amount'])"/>
+                    <TpoCambio t-esc="float_repr(amounts['second_currency']['rate'], 4)"/>
+                    <MntNetoOtrMnda t-if="amounts['second_currency']['subtotal_amount_taxable']" t-esc="float_repr(amounts['second_currency']['subtotal_amount_taxable'], 4)"/>
+                    <MntExeOtrMnda t-if="amounts['second_currency']['subtotal_amount_exempt']" t-esc="float_repr(amounts['second_currency']['subtotal_amount_exempt'], 4)"/>
+                    <IVAOtrMnda t-if="amounts['second_currency']['vat_amount']" t-esc="float_repr(amounts['second_currency']['vat_amount'], 4)"/>
                 <t t-foreach="withholdings" t-as="tax">
                     <ImptRetOtrMnda>
                         <TipoImpOtrMnda t-esc="tax['tax_code']"/>
@@ -82,7 +86,7 @@
                         <ValorImpOtrMnda t-esc="move.currency_id.compute(tax['tax_amount'], move.currency_id)"/>
                     </ImptRetOtrMnda>
                 </t>
-                    <MntTotOtrMnda t-esc="'{:.4f}'.format(amounts['second_currency']['total_amount'])"/>
+                    <MntTotOtrMnda t-esc="float_repr(amounts['second_currency']['total_amount'], 4)"/>
                 </OtraMoneda>
             </Encabezado>
         <t t-set="line_number" t-value="1"/>
@@ -99,9 +103,9 @@
                 <NmbItem t-esc="format_length(line.product_id.name, 80) or format_length(line.name, 80)"/>
                 <DscItem t-esc="format_length(line.name, 1000)"/>
             <t t-if="line.price_unit > 0.0 or line.price_total > 0.0">
-                <QtyItem t-esc="'{:.6f}'.format(line.quantity)"/>
+                <QtyItem t-esc="float_repr(line.quantity, 6)"/>
                 <UnmdItem t-esc="format_length(line.product_uom_id.name, 4)"/>
-                <PrcItem t-esc="'{:.6f}'.format(line_amounts['price_item'])"/>
+                <PrcItem t-esc="float_repr(line_amounts['price_item'], 6)"/>
             </t>
             <t t-if="line.discount > 0">
                 <DescuentoPct t-esc="line.discount"/>
@@ -116,11 +120,17 @@
             <t t-foreach="line.tax_ids.filtered(lambda x: x.l10n_cl_sii_code in [24, 25, 26, 27])" t-as="tax">
                 <CodImpAdic t-esc="tax.l10n_cl_sii_code"/>
             </t>
-            <t t-if="move.l10n_latam_document_type_id._is_doc_type_voucher()">
-                <MontoItem t-esc="'{:.0f}'.format(line.price_total / line.quantity)"/>
+
+            <t t-if="move.l10n_latam_document_type_id._is_doc_type_export() and format_length(move.company_id.currency_id.name, 3) == 'CLP' and not move.l10n_latam_document_type_id._is_doc_type_voucher()">
+                <MontoItem t-esc="float_repr(line.price_total, 2)"/>
             </t>
             <t t-else="">
-                <MontoItem t-esc="int(line.price_subtotal) or 0"/>
+                <t t-if="move.l10n_latam_document_type_id._is_doc_type_voucher()">
+                <MontoItem t-esc="float_repr(line.price_total, 0)"/>
+                </t>
+                <t t-else="">
+                <MontoItem t-esc="float_repr(line.price_subtotal, 0) or 0"/>
+                </t>
             </t>
             </Detalle>
         <t t-set="line_number" t-value="line_number + 1"/>

@@ -13,6 +13,7 @@ from lxml import etree
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
+from odoo.tools.float_utils import float_repr
 
 _logger = logging.getLogger(__name__)
 
@@ -419,6 +420,7 @@ class AccountMove(models.Model):
             'format_vat': self._l10n_cl_format_vat,
             'get_cl_current_strftime': self._get_cl_current_strftime,
             'format_length': self._format_length,
+            'float_repr': float_repr,
             'doc_id': doc_id_number,
             'caf': self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number)),
             'amounts': self._l10n_cl_get_amounts(),
@@ -627,6 +629,7 @@ class AccountMove(models.Model):
         dd = self.env.ref('l10n_cl_edi.dd_template')._render({
             'move': self,
             'format_vat': self._l10n_cl_format_vat,
+            'float_repr': float_repr,
             'format_length': self._format_length,
             'time_stamp': self._get_cl_current_strftime(),
             'caf': self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number)),

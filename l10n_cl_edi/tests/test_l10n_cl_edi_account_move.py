@@ -492,7 +492,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product_a.id,
                 'product_uom_id': self.product_a.uom_id.id,
-                'quantity': 1,
+                'quantity': 2,
                 'price_unit': 5018.75,
             })],
         })
@@ -504,7 +504,6 @@ class TestL10nClDte(TestL10nClEdiCommon):
 
         xml_expected_dte = misc.file_open(os.path.join(
             'l10n_cl_edi', 'tests', 'expected_dtes', 'dte_110.xml')).read()
-
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(xml_expected_dte.encode()),
             self.get_xml_tree_from_attachment(invoice.l10n_cl_sii_send_file)

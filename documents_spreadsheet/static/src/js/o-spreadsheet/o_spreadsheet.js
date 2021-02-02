@@ -8300,7 +8300,7 @@
         // ---------------------------------------------------------------------------
         getVisibleFigures(sheetId, viewport) {
             const result = [];
-            const figures = Object.values(this.figures[sheetId]) || [];
+            const figures = Object.values(this.figures[sheetId] || {});
             const { offsetX, offsetY, width, height } = viewport;
             for (let figure of figures) {
                 if (!figure) {
@@ -21217,8 +21217,8 @@
     exports.setTranslationMethod = setTranslationMethod;
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-01-29T13:31:30.084Z';
-    exports.__info__.hash = 'd3d9d99';
+    exports.__info__.date = '2021-02-02T08:44:56.609Z';
+    exports.__info__.hash = 'af3bf5a';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

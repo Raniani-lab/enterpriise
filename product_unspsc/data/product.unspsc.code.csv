@@ -51728,6 +51728,7 @@ code|name|applies_to|active
 85121808|Servicios de laboratorios de rayos x|product|TRUE
 85121809|Servicios de bancos de sangre, esperma u órganos de trasplante|product|TRUE
 85121810|Detección de drogas o alcohol|product|TRUE
+85121811|Servicio de renta de equipo de laborario|product|TRUE
 85121900|Farmacéuticos|product|FALSE
 85121901|Servicios de preparación farmacéutica|product|TRUE
 85121902|Servicios farmacéuticos comerciales|product|TRUE

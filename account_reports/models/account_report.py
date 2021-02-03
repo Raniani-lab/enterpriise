@@ -1347,7 +1347,7 @@ class AccountReport(models.AbstractModel):
         :return:            The formatted name of the account.move.line record.
         '''
         names = []
-        if move_name != '/':
+        if move_name and move_name != '/':
             names.append(move_name)
         if move_ref and move_ref != '/':
             names.append(move_ref)

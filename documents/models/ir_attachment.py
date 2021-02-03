@@ -26,7 +26,7 @@ class IrAttachment(models.Model):
         :returns: the new PDF attachments
         """
         vals_list = []
-        pdf_from_files = [PdfFileReader(open_file) for open_file in open_files]
+        pdf_from_files = [PdfFileReader(open_file, strict=False) for open_file in open_files]
         for new_file in new_files:
             output = PdfFileWriter()
             for page in new_file['new_pages']:

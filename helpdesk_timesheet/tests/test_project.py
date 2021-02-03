@@ -1,24 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import TransactionCase
+from .common import TestHelpdeskTimesheetCommon
 
 
-class TestTimesheet(TransactionCase):
-
-    def setUp(self):
-        super(TestTimesheet, self).setUp()
-
-        self.partner = self.env['res.partner'].create({
-            'name': 'Customer Task',
-            'email': 'customer@task.com',
-        })
-
-        self.analytic_account = self.env['account.analytic.account'].create({
-            'name': 'Analytic Account for Test Customer',
-            'partner_id': self.partner.id,
-            'code': 'TEST'
-        })
+class TestProject(TestHelpdeskTimesheetCommon):
 
     def test_allow_timesheets_and_timer(self):
         """

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
 
 
-class TestFsmFlowSaleCommon(AccountTestInvoicingCommon):
+class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
 
     @classmethod
     def setUpClass(cls):
@@ -20,6 +20,7 @@ class TestFsmFlowSaleCommon(AccountTestInvoicingCommon):
         cls.fsm_project = cls.env['project.project'].create({
             'name': 'Field Service',
             'is_fsm': True,
+            'allow_billable': True,
             'allow_timesheets': True,
             'allow_timesheet_timer': True,
         })

@@ -135,6 +135,9 @@ tour.register('web_studio_tests_tour', {
 }, {
     // wait for the form editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_form_view_editor',
+    // unfold 'Existing Fieldqs' section
+    trigger: '.o_web_studio_existing_fields_header',
+}, {
     // add an existing field (display_name)
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char',
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
@@ -253,6 +256,9 @@ tour.register('web_studio_tests_tour', {
 }, {
     // wait for the list editor to be rendered because the sidebar is the same
     extra_trigger: '.o_web_studio_list_view_editor',
+    // unfold 'Existing Fieldqs' section
+    trigger: '.o_web_studio_existing_fields_header',
+}, {
     // add an existing field (display_name)
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char',
     run: 'drag_and_drop .o_web_studio_list_view_editor th.o_web_studio_hook:first',

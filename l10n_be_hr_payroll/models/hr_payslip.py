@@ -221,8 +221,8 @@ class Payslip(models.Model):
     def _get_last_year_average_variable_revenues(self):
         payslips = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),
-            ('state', '=', 'done'),
-            ('date_from', '>=', self.date_from + relativedelta(months=-12)),
+            ('state', 'in', ['done', 'paid']),
+            ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
             ('date_from', '<', self.date_from),
         ], order="date_from asc")
         complete_payslips = payslips.filtered(
@@ -230,6 +230,26 @@ class Payslip(models.Model):
         total_amount = 0
         for code in ['COM', 'COMMISSION']:
             total_amount += sum(p._get_salary_line_total(code) for p in complete_payslips)
+        first_contract_date = self.employee_id.first_contract_date
+        # Only complete months count
+        if first_contract_date.day != 1:
+            start = first_contract_date + relativedelta(day=1, months=1)
+        else:
+            start = first_contract_date
+        end = self.date_from + relativedelta(day=31, months=-1)
+        number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
+        number_of_month = min(12, number_of_month)
+        return total_amount / number_of_month if number_of_month else 0
+
+    def _get_last_year_average_warrant_revenues(self):
+        warrant_payslips = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', '=', self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant').id),
+            ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
+            ('date_from', '<', self.date_from),
+        ], order="date_from asc")
+        total_amount = sum(p._get_salary_line_total("BASIC") for p in warrant_payslips)
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:
@@ -799,11 +819,12 @@ def compute_withholding_taxes_adjustment(payslip, categories, worked_days, input
             withholding_tax_amount = convert_to_month(max(basic_bareme_1 + basic_bareme_2 - 2 * payslip.rule_parameter('deduct_single_with_income'), 0))
 
     # Reduction for other family charges
-    if employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors):
+    if (employee.children and employee.dependent_children) or (employee.other_dependent_people and (employee.dependent_seniors or employee.dependent_juniors)):
         if employee.marital in ['divorced', 'single', 'widower'] or (employee.spouse_fiscal_status != 'without_income'):
-            if employee.marital in ['divorced', 'single', 'widower']:
-                withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
-            if employee.marital == 'widower' or (employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children):
+
+            # if employee.marital in ['divorced', 'single', 'widower']:
+            #     withholding_tax_amount -= payslip.rule_parameter('isolated_deduction')
+            if employee.marital in ['divorced', 'single', 'widower'] and employee.dependent_children:
                 withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')
             if employee.disabled:
                 withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction')

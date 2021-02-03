@@ -181,8 +181,8 @@ result = inputs.EXPATRIATE.amount if inputs.EXPATRIATE else 0
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result_qty = 231
-result = contract.meal_voucher_amount
+result_qty = 220 - contract.holidays
+result = contract.meal_voucher_amount * (1 - 0.1463)
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
     </record>
@@ -401,7 +401,7 @@ result_qty = inputs.DAYS.amount if inputs.DAYS else 0
     <record id="cp200_employees_termination_fees_termination_total" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_termination_salary"/>
         <field name="name">Total</field>
-        <field name="code">NET</field>
+        <field name="code">TOTALFEES</field>
         <field name="sequence">21</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
@@ -428,13 +428,12 @@ else:
     <record id="cp200_employees_termination_fees_termination_ONSS" model="hr.salary.rule">
         <field name="category_id" ref="hr_salary_rule_category_spec_soc_contribution"/>
         <field name="name">Social employer contributions to the ONSS</field>
-        <field name="code">ONSS</field>
+        <field name="code">ONSSEMPLOYER</field>
         <field name="sequence">23</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result=not contract.no_onss</field>
+        <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = NET - OUTPLACEMENT
+result = TOTALFEES - OUTPLACEMENT
 result_rate = 27
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
@@ -471,13 +470,126 @@ result = ANNUAL_SALARY_REVALUED * 3 / (12 * 13)
     <record id="cp200_employees_termination_fees_termination_total_cost" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_termination_salary"/>
         <field name="name">Total cost employer</field>
-        <field name="code">BASIC</field>
+        <field name="code">EMPLOYERCOST</field>
         <field name="sequence">50</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = NET + ONSS + OUTPLACEMENT + UNREASONABLE_DISMISSAL + NON_RESPECT_MOTIVATION
+result = TOTALFEES + ONSSEMPLOYER + OUTPLACEMENT + UNREASONABLE_DISMISSAL + NON_RESPECT_MOTIVATION
+        </field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_basic" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="name">Basic Salary</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">55</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = TOTALFEES - OUTPLACEMENT
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_onss" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_head_onss"/>
+        <field name="name">ONSS</field>
+        <field name="code">ONSS</field>
+        <field name="sequence">60</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_onss</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = result_rules['BASIC']['total']
+result_rate = -13.07
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_onss_total" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_onss_total"/>
+        <field name="name">ONSS (TOTAL)</field>
+        <field name="code">ONSSTOTAL</field>
+        <field name="sequence">65</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="amount_python_compute">
+result = - result_rules['ONSS']['total']
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_gross" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="name">GROSS</field>
+        <field name="sequence">70</field>
+        <field name="code">GROSS</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = result_rules['BASIC']['total'] - result_rules['ONSSTOTAL']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
     </record>
+
+   <record id="cp200_employees_termination_fees_withholding_taxes" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_head_pp"/>
+        <field name="name">Withholding Tax</field>
+        <field name="code">P.P</field>
+        <field name="sequence">75</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_withholding_taxes</field>
+        <field name="appears_on_payslip" eval="True"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = compute_withholding_taxes(payslip, categories, worked_days, inputs)
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_withholding_taxes_total" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_withholding_taxes_total"/>
+        <field name="name">Withholding Taxes (Total)</field>
+        <field name="code">PPTOTAL</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">80</field>
+        <field name="condition_select">none</field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = abs(categories.PP)
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_remuneration" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_remuneration"/>
+        <field name="name">Accounting: Remuneration</field>
+        <field name="code">REMUNERATION</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">180</field>
+        <field name="condition_select">none</field>
+        <field name="amount_python_compute">
+result = result_rules['BASIC']['total']</field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+        <field name="appears_on_payslip" eval="False"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_net" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="name">Net Salary</field>
+        <field name="code">NET</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">200</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = result_rules['GROSS']['total'] - result_rules['PPTOTAL']['total']
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
 </odoo>

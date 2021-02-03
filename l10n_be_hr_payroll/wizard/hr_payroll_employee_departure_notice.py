@@ -153,34 +153,41 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         self.validate_termination()
         struct_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
 
+        last_contract = self.env['hr.contract'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('state', '!=', 'cancel')
+        ], order='date_start desc', limit=1)
+
         termination_payslip = self.env['hr.payslip'].create({
             'name': '%s - %s' % (struct_id.payslip_name, self.employee_id.display_name),
             'employee_id': self.employee_id.id,
             'date_from': self.start_notice_period,
             'date_to': self.start_notice_period,
+            'contract_id': last_contract.id,
         })
         termination_payslip._onchange_employee()
         termination_payslip.struct_id = struct_id.id
         termination_payslip.worked_days_line_ids = [(5, 0, 0)]
 
-        contract_id = termination_payslip.contract_id.id
+        contract = termination_payslip.contract_id
         payslip_id = termination_payslip.id
 
-        self._create_input(payslip_id, 1, 'months', self.notice_duration_month_before_2014, contract_id)
-        self._create_input(payslip_id, 2, 'weeks', self.notice_duration_week_after_2014, contract_id)
-        self._create_input(payslip_id, 3, 'days', 0, contract_id)
-        self._create_input(payslip_id, 4, 'unreasonable_dismissal', 0, contract_id)
-        self._create_input(payslip_id, 5, 'non_respect_motivation', 0, contract_id)
-        self._create_input(payslip_id, 10, 'yearend_bonus', 0, contract_id)
-        self._create_input(payslip_id, 11, 'residence', 0, contract_id)
-        self._create_input(payslip_id, 12, 'expatriate', 0, contract_id)
-        self._create_input(payslip_id, 13, 'variable_salary', 0, contract_id)
-        self._create_input(payslip_id, 14, 'benefit_in_kind', 0, contract_id)
-        self._create_input(payslip_id, 15, 'hospital_insurance', 0, contract_id)
-        self._create_input(payslip_id, 16, 'group_insurance', 0, contract_id)
-        self._create_input(payslip_id, 17, 'stock_option', 0, contract_id)
-        self._create_input(payslip_id, 18, 'specific_rules', 0, contract_id)
-        self._create_input(payslip_id, 19, 'other', 0, contract_id)
+        self._create_input(payslip_id, 1, 'months', self.notice_duration_month_before_2014, contract.id)
+        self._create_input(payslip_id, 2, 'weeks', self.notice_duration_week_after_2014, contract.id)
+        self._create_input(payslip_id, 3, 'days', 0, contract.id)
+        self._create_input(payslip_id, 4, 'unreasonable_dismissal', 0, contract.id)
+        self._create_input(payslip_id, 5, 'non_respect_motivation', 0, contract.id)
+        self._create_input(payslip_id, 10, 'yearend_bonus', contract._get_contract_wage(), contract.id)
+        self._create_input(payslip_id, 11, 'residence', 0, contract.id)
+        self._create_input(payslip_id, 12, 'expatriate', 0, contract.id)
+        self._create_input(payslip_id, 13, 'variable_salary', termination_payslip._get_last_year_average_variable_revenues() * 12, contract.id)
+        self._create_input(payslip_id, 14, 'benefit_in_kind', 0, contract.id)
+        self._create_input(payslip_id, 15, 'hospital_insurance', contract._get_hospital_insurance_amount(), contract.id)
+        self._create_input(payslip_id, 16, 'group_insurance', 0, contract.id)
+        self._create_input(payslip_id, 17, 'stock_option', termination_payslip._get_last_year_average_warrant_revenues(), contract.id)
+        self._create_input(payslip_id, 18, 'specific_rules', 0, contract.id)
+        self._create_input(payslip_id, 19, 'other', 0, contract.id)
+        termination_payslip.compute_sheet()
         return {
             'name': _('Termination'),
             'view_mode': 'form',

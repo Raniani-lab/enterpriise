@@ -2771,6 +2771,13 @@
         ]).ids"/>
     </function>
 
+    <function model="hr.payslip" name="action_payslip_done">
+        <value model="hr.payslip" eval="obj().search([
+            ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')),
+            ('employee_id', '=', ref('test_l10n_be_hr_payroll_account.hr_employee_joseph_noluck'))
+        ]).ids"/>
+    </function>
+
     <record id="hr_payslip_demo_jon_april_2020" model="hr.payslip">
         <field name="name">Joseph Noluck (jon) - April 2020"</field>
         <field name="contract_id" ref="test_l10n_be_hr_payroll_account.hr_contract_cdi_joseph_noluck_2"/>

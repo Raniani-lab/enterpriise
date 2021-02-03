@@ -420,6 +420,10 @@ class HrContract(models.Model):
             if contract.employee_id not in employees_already_started:
                 contract._create_dimona_next_activity()
 
+    def _get_hospital_insurance_amount(self):
+        self.ensure_one()
+        return 0
+
     def write(self, vals):
         res = super(HrContract, self).write(vals)
         if vals.get('state') == 'open':

@@ -218,12 +218,8 @@ class HrPayslip(models.Model):
                 subject = '%s, a new payslip is available for you' % (payslip.employee_id.name)
                 template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
                 if template:
-                    email_values = {
-                        'attachment_ids': attachment,
-                    }
                     template.send_mail(
                         payslip.id,
-                        email_values=email_values,
                         notif_layout='mail.mail_notification_light')
 
 

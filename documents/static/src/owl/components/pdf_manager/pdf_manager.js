@@ -191,7 +191,7 @@ class PdfManager extends owl.Component {
                 this._createGroup({ name: _t("Remaining Pages"), pageIds, isSelected: true });
             }
         } catch (error) {
-            this.trigger('pdf-manager-error', { message: error.message });
+            this.trigger('pdf-manager-error', { message: error.message || error });
             if (pageIds.length) {
                 this._createGroup({ name: _t("Remaining Pages"), pageIds: pageIds, isSelected: true });
             }

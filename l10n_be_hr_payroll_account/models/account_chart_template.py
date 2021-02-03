@@ -185,91 +185,30 @@ class AccountChartTemplate(models.Model):
             # ================================================ #
             #              CP200: Termination Fees             #
             # ================================================ #
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_basic_12_92').write({
-                'account_credit': accounts['455000'].id,
+
+            # Remuneration
+            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_remuneration').write({
+                'account_debit': accounts['620200'].id
             })
 
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_year_end_bonus').write({
-                'account_debit': accounts['620200'].id,
+            # ONSS (Onss - employment bonus)
+            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_onss_total').write({
+                'account_credit': accounts['454000'].id,
             })
 
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_residence').write({
-                'account_debit': accounts['620200'].id,
+            # Total withholding taxes
+            self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_withholding_taxes_total').write({
+                'account_credit': accounts['453000'].id,
             })
 
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_ch_year').write({
-                'account_debit': accounts['620200'].id,
+            # Owed Remunerations (NET)
+            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_withholding_taxes_total').write({
+                'account_credit': accounts['455000'].id
             })
 
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_eco_checks').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_annual_variable_salary').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_pay_variable_salary').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_benefit_in_kind').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_advantage_any_kind').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_company_car_annual').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_hospital_insurance').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_group_insurance').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_stock_option').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_specific_CP').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_other_annual').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_annual_salary_revalued').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_notice_duration_month').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_notice_duration_week').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_notice_duration_day').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_termination_total').write({
-                'account_debit': accounts['620200'].id,
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_termination_outplacement').write({
-                'account_debit': accounts['620200'].id,
-            })
-
+            # ONSS Employer
             self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_termination_ONSS').write({
+                'account_debit': accounts['621000'].id,
                 'account_credit': accounts['454000'].id,
             })
 

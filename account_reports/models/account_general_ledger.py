@@ -714,8 +714,10 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(credit), 'class': 'number'},
             {'name': self.format_value(balance), 'class': 'number'},
         ]
+
+        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
         if self.user_has_groups('base.group_multi_currency'):
-            columns.insert(0, {'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
+            columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'})
         return {
             'id': 'initial_%d' % account.id,
             'class': 'o_account_reports_initial_balance',
@@ -741,7 +743,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             title = ''
 
-        if aml['currency_id']:
+        if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
             currency = self.env['res.currency'].browse(aml['currency_id'])
         else:
             currency = False
@@ -785,8 +787,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
 
         columns = []
-        if self.user_has_groups('base.group_multi_currency') and has_foreign_currency:
-            columns.append({'name': self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True), 'class': 'number'})
+        if self.user_has_groups('base.group_multi_currency'):
+            columns.append({'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'})
 
         columns += [
             {'name': self.format_value(debit), 'class': 'number'},

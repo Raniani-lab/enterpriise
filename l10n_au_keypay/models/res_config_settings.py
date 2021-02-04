@@ -16,7 +16,6 @@ class ResConfigSettings(models.TransientModel):
     l10n_au_kp_identifier = fields.Char(related='company_id.l10n_au_kp_identifier', readonly=False)
     l10n_au_kp_lock_date = fields.Date(related='company_id.l10n_au_kp_lock_date', readonly=False)
     l10n_au_kp_journal_id = fields.Many2one(related='company_id.l10n_au_kp_journal_id', readonly=False)
-    l10n_au_kp_country_code = fields.Char(related='company_id.country_id.code', readonly=True)
 
     def action_kp_payroll_fetch_payrun(self):
         account_moves = self.company_id._kp_payroll_fetch_payrun()

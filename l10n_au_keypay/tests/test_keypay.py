@@ -4,12 +4,12 @@ import datetime
 import os
 from unittest import skipIf
 
-from odoo.tests.common import tagged, SavepointCase
+from odoo.tests.common import tagged, TransactionCase
 
 
 @tagged("external")
 @skipIf(not os.getenv("KEYPAY_BUSINESS_ID" or not os.getenv("KEYPAY_API_KEY")), "no keypay credentials")
-class TestKeypay(SavepointCase):
+class TestKeypay(TransactionCase):
     @classmethod
     def setUpClass(cls):
         res = super().setUpClass()

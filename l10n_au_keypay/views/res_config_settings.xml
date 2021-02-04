@@ -15,9 +15,9 @@ action = records.action_kp_payroll_fetch_payrun()
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@id='account_reports_settings']" position="after">
-                <h2 attrs="{'invisible': [('l10n_au_kp_country_code', '!=', 'AU')]}">Australian Localization</h2>
-                <div class="row mt16 o_settings_container" id="l10n_au" groups="account.group_account_manager" attrs="{'invisible': [('l10n_au_kp_country_code', '!=', 'AU')]}">
-                    <field name="l10n_au_kp_country_code" invisible="1" />
+                <h2 attrs="{'invisible': [('country_code', '!=', 'AU')]}">Australian Localization</h2>
+                <div class="row mt16 o_settings_container" id="l10n_au" groups="account.group_account_manager" attrs="{'invisible': [('country_code', '!=', 'AU')]}">
+                    <field name="country_code" invisible="1" />
                     <div class="col-12 col-lg-6 o_setting_box" id="l10n_au_keypay">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">

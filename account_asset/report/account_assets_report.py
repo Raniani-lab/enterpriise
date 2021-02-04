@@ -8,6 +8,7 @@ import binascii
 import struct
 import time
 import itertools
+from itertools import groupby
 from collections import defaultdict
 
 MAX_NAME_LENGTH = 50
@@ -70,20 +71,30 @@ class assets_report(models.AbstractModel):
                 options['hierarchy'] = self.filter_hierarchy
 
     def get_account_codes(self, account):
-        return [(name, name) for name in self._get_account_group(account.code)[1:]]
+        return [(name, name) for name in self._get_account_group_with_company(account.code, account.company_id.id)[1:]]
 
     def _get_account_group(self, account_code, parent_group=None, group_dict=None):
         """ Get the list of parent groups for this account
         return: list containing the main group key, then the name of every group
                 for this account, beginning by the more general, until the
                 name of the account itself.
+            This method is deprecated. Call instead _get_account_group_with_company
         """
+        return self._get_account_group_with_company(account_code, self.env.company.id, parent_group, group_dict)
+
+    def _get_account_group_with_company(self, account_code, company_id, parent_group=None, group_dict=None):
+        """ Get the list of parent groups for this account
+        return: list containing the main group key, then the name of every group
+                for this account, beginning by the more general, until the
+                name of the account itself.
+        """
+
         if not account_code:
             # This is used if there is no account_asset_id
             account_code = '##'
         account_code_short = account_code[:2]
         group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
-        account_id = self.env['account.account'].search([('company_id', '=', self.env.company.id), ('code', '=', account_code)])
+        account_id = self.env['account.account'].search([('company_id', '=', company_id), ('code', '=', account_code)])
         account_string = account_id.display_name if account_id else _("No asset account")
         for k, v in group_dict.items():
             try:
@@ -91,7 +102,7 @@ class assets_report(models.AbstractModel):
                     return (parent_group or [k]) + [v['name']]
             except ValueError:
                 if k[:2] <= account_code_short <= k[-2:]:
-                    return self._get_account_group(account_code, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
+                    return self._get_account_group_with_company(account_code_short, company_id, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
         return (parent_group or [account_code_short]) + [account_string]
 
     def _get_lines(self, options, line_id=None):
@@ -99,91 +110,93 @@ class assets_report(models.AbstractModel):
         lines = []
         total = [0] * 9
         asset_lines = self._get_assets_lines(options)
-        parent_lines = []
-        children_lines = defaultdict(list)
-        for al in asset_lines:
-            if al['parent_id']:
-                children_lines[al['parent_id']] += [al]
-            else:
-                parent_lines += [al]
-        for al in parent_lines:
-            if al['asset_method'] == 'linear' and al['asset_method_number']:  # some assets might have 0 depreciations because they dont lose value
-                asset_depreciation_rate = ('{:.2f} %').format((100.0 / al['asset_method_number']) * (12 / int(al['asset_method_period'])))
-            elif al['asset_method'] == 'linear':
-                asset_depreciation_rate = ('{:.2f} %').format(0.0)
-            else:
-                asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 
-            depreciation_opening = al['depreciated_start'] - al['depreciation']
-            depreciation_closing = al['depreciated_end']
-            depreciation_minus = 0.0
+        for company_asset_lines in groupby(asset_lines, key=lambda x: x['company_id']):
+            parent_lines = []
+            children_lines = defaultdict(list)
+            for al in company_asset_lines[1]:
+                if al['parent_id']:
+                    children_lines[al['parent_id']] += [al]
+                else:
+                    parent_lines += [al]
+            for al in parent_lines:
+                if al['asset_method'] == 'linear' and al['asset_method_number']:  # some assets might have 0 depreciations because they dont lose value
+                    asset_depreciation_rate = ('{:.2f} %').format((100.0 / al['asset_method_number']) * (12 / int(al['asset_method_period'])))
+                elif al['asset_method'] == 'linear':
+                    asset_depreciation_rate = ('{:.2f} %').format(0.0)
+                else:
+                    asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 
-            opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-            asset_opening = al['asset_original_value'] if opening else 0.0
-            asset_add = 0.0 if opening else al['asset_original_value']
-            asset_minus = 0.0
+                depreciation_opening = al['depreciated_start'] - al['depreciation']
+                depreciation_closing = al['depreciated_end']
+                depreciation_minus = 0.0
 
-            if al['import_depreciated']:
-                asset_opening += asset_add
-                asset_add = 0
-                depreciation_opening += al['import_depreciated']
-                depreciation_closing += al['import_depreciated']
+                opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
+                asset_opening = al['asset_original_value'] if opening else 0.0
+                asset_add = 0.0 if opening else al['asset_original_value']
+                asset_minus = 0.0
 
-            for child in children_lines[al['asset_id']]:
-                depreciation_opening += child['depreciated_start'] - child['depreciation']
-                depreciation_closing += child['depreciated_end']
+                if al['import_depreciated']:
+                    asset_opening += asset_add
+                    asset_add = 0
+                    depreciation_opening += al['import_depreciated']
+                    depreciation_closing += al['import_depreciated']
 
-                opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-                asset_opening += child['asset_original_value'] if opening else 0.0
-                asset_add += 0.0 if opening else child['asset_original_value']
+                for child in children_lines[al['asset_id']]:
+                    depreciation_opening += child['depreciated_start'] - child['depreciation']
+                    depreciation_closing += child['depreciated_end']
 
-            depreciation_add = depreciation_closing - depreciation_opening
-            asset_closing = asset_opening + asset_add
+                    opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
+                    asset_opening += child['asset_original_value'] if opening else 0.0
+                    asset_add += 0.0 if opening else child['asset_original_value']
 
-            if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] < fields.Date.to_date(options['date']['date_to']):
-                depreciation_minus = depreciation_closing
-                depreciation_closing = 0.0
-                depreciation_opening += depreciation_add
-                depreciation_add = 0
-                asset_minus = asset_closing
-                asset_closing = 0.0
+                depreciation_add = depreciation_closing - depreciation_opening
+                asset_closing = asset_opening + asset_add
 
-            asset_gross = asset_closing - depreciation_closing
+                if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] < fields.Date.to_date(options['date']['date_to']):
+                    depreciation_minus = depreciation_closing
+                    depreciation_closing = 0.0
+                    depreciation_opening += depreciation_add
+                    depreciation_add = 0
+                    asset_minus = asset_closing
+                    asset_closing = 0.0
 
-            total = [x + y for x, y in zip(total, [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing, asset_gross])]
+                asset_gross = asset_closing - depreciation_closing
 
-            asset_line_id = self._build_line_id([
-                (None, 'account.account', al['account_id']),
-                (None, 'account.asset', al['asset_id']),
-            ])
-            name = str(al['asset_name'])
-            line = {
-                'id': asset_line_id,
-                'level': 1,
-                'name': name if self._context.get('print_mode') or len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
-                'columns': [
-                    {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
-                    {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},
-                    {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format_name': ''},
-                    {'name': asset_depreciation_rate, 'no_format_name': ''},
-                    {'name': self.format_value(asset_opening), 'no_format_name': asset_opening},  # Assets
-                    {'name': self.format_value(asset_add), 'no_format_name': asset_add},
-                    {'name': self.format_value(asset_minus), 'no_format_name': asset_minus},
-                    {'name': self.format_value(asset_closing), 'no_format_name': asset_closing},
-                    {'name': self.format_value(depreciation_opening), 'no_format_name': depreciation_opening},  # Depreciation
-                    {'name': self.format_value(depreciation_add), 'no_format_name': depreciation_add},
-                    {'name': self.format_value(depreciation_minus), 'no_format_name': depreciation_minus},
-                    {'name': self.format_value(depreciation_closing), 'no_format_name': depreciation_closing},
-                    {'name': self.format_value(asset_gross), 'no_format_name': asset_gross},  # Gross
-                ],
-                'unfoldable': False,
-                'unfolded': False,
-                'caret_options': 'account.asset.line',
-                'account_id': al['account_id']
-            }
-            if len(name) >= MAX_NAME_LENGTH:
-                line.update({'title_hover': name})
-            lines.append(line)
+                total = [x + y for x, y in zip(total, [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing, asset_gross])]
+
+                asset_line_id = self._build_line_id([
+                    (None, 'account.account', al['account_id']),
+                    (None, 'account.asset', al['asset_id']),
+                ])
+                name = str(al['asset_name'])
+                line = {
+                    'id': asset_line_id,
+                    'level': 1,
+                    'name': name if self._context.get('print_mode') or len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
+                    'columns': [
+                        {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
+                        {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},
+                        {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format_name': ''},
+                        {'name': asset_depreciation_rate, 'no_format_name': ''},
+                        {'name': self.format_value(asset_opening), 'no_format_name': asset_opening},  # Assets
+                        {'name': self.format_value(asset_add), 'no_format_name': asset_add},
+                        {'name': self.format_value(asset_minus), 'no_format_name': asset_minus},
+                        {'name': self.format_value(asset_closing), 'no_format_name': asset_closing},
+                        {'name': self.format_value(depreciation_opening), 'no_format_name': depreciation_opening},  # Depreciation
+                        {'name': self.format_value(depreciation_add), 'no_format_name': depreciation_add},
+                        {'name': self.format_value(depreciation_minus), 'no_format_name': depreciation_minus},
+                        {'name': self.format_value(depreciation_closing), 'no_format_name': depreciation_closing},
+                        {'name': self.format_value(asset_gross), 'no_format_name': asset_gross},  # Gross
+                    ],
+                    'unfoldable': False,
+                    'unfolded': False,
+                    'caret_options': 'account.asset.line',
+                    'account_id': al['account_id']
+                }
+                if len(name) >= MAX_NAME_LENGTH:
+                    line.update({'title_hover': name})
+                lines.append(line)
         lines.append({
             'id': 'total',
             'level': 0,
@@ -246,6 +259,7 @@ class assets_report(models.AbstractModel):
                        account.code as account_code,
                        account.name as account_name,
                        account.id as account_id,
+                       account.company_id as company_id,
                        COALESCE(first_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_start,
                        COALESCE(first_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_start,
                        COALESCE(last_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_end,

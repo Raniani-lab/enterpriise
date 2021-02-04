@@ -68,11 +68,13 @@
                                 <field name="method_number" required="1"/>
                                 <field name="method_period" required="1" nolabel="1"/>
                             </div>
-                            <label for="prorata" attrs="{'invisible': [('state', 'not in', ('draft', 'model')), ('prorata', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': [('state', 'not in', ('draft', 'model')), ('prorata', '=', False)]}">
+                            <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('state', 'not in', ('draft', 'model')), ('prorata', '=', False)]}">
+                                <label for="prorata"/>
                                 <field name="prorata"/>
-                                <label for="prorata_date" attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')]}"/>
-                                <field name="prorata_date" attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')], 'required': [('prorata', '=', True), ('state', '!=', 'model')]}"/>
+                                <div attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')]}" class="row no-gutters flex-grow-1 align-items-baseline">
+                                    <label class="col-12 col-sm-auto" for="prorata_date"/>
+                                    <field name="prorata_date" class="oe_inline col-12 col-sm-auto flex-grow-1" attrs="{'required': [('prorata', '=', True), ('state', '!=', 'model')]}"/>
+                                </div>
                             </div>
                             <field name="first_depreciation_date" string="Start Depreciating" required="1" attrs="{'invisible': [('state', '=', 'model')], 'readonly': [('state', '!=', 'draft')]}"/>
                         </group>

@@ -57,20 +57,17 @@
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
-                            '&amp;',
-                            ('extract_status_code', '&gt;', 99),
-                            ('extract_status_code', '&lt;', 200)]}">
+                            ('extract_status_code', '&gt;', 99)]}">
                     <button name="retry_ocr" class="btn btn-sm btn-primary pull-right mb0 mr-1" string="Resend For Digitalization" type="object"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-warning mb8"
-                     attrs="{'invisible':['|', '|', '|', '|',
+                     attrs="{'invisible':['|', '|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status', 'waiting_validation']),
-                            ('extract_status_code', '&lt;', 100),
-                            ('extract_status_code', '&gt;', 199)]}">
+                            ('extract_status_code', '&lt;', 100)]}">
                     <field name="extract_error_message"/>
                 </div>
             </xpath>

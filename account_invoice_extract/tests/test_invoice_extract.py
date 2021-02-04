@@ -306,7 +306,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             invoice2._check_status()
 
         self.assertFalse(invoice2.ref)
-        self.assertEqual(invoice2.extract_status_code, WARNING_DUPLICATE_VENDOR_REFERENCE)
+        self.assertTrue(WARNING_DUPLICATE_VENDOR_REFERENCE in invoice2.get_warnings())
 
     def test_server_error(self):
         # test that the extract state is set to 'error' if the OCR returned an error

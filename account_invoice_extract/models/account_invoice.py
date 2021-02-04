@@ -10,6 +10,8 @@ import re
 import json
 import string
 
+from datetime import timedelta
+
 _logger = logging.getLogger(__name__)
 
 PARTNER_AUTOCOMPLETE_ENDPOINT = 'https://partner-autocomplete.odoo.com'
@@ -30,8 +32,13 @@ ERROR_SERVER_IN_MAINTENANCE = 9
 ERROR_PASSWORD_PROTECTED = 10
 ERROR_TOO_MANY_PAGES = 11
 
-# codes 100-199 are reserved for warnings
-WARNING_DUPLICATE_VENDOR_REFERENCE = 100
+# codes above 100 are reserved for warnings
+# as warnings aren't mutually exclusive, the warning codes are summed, the result represent the combination of warnings
+# for example, WARNING_BASE_VALUE + WARNING_DUPLICATE_VENDOR_REFERENCE + WARNING_DATE_PRIOR_OF_LOCK_DATE means that both of these warnings should be displayed
+# these constants needs to be a power of 2
+WARNING_BASE_VALUE = 99
+WARNING_DUPLICATE_VENDOR_REFERENCE = 1
+WARNING_DATE_PRIOR_OF_LOCK_DATE = 2
 
 ERROR_MESSAGES = {
     ERROR_INTERNAL: _("An error occurred"),
@@ -43,7 +50,10 @@ ERROR_MESSAGES = {
     ERROR_SERVER_IN_MAINTENANCE: _("Server is currently under maintenance. Please retry later"),
     ERROR_PASSWORD_PROTECTED: _("Your PDF file is protected by a password. The OCR can't extract data from it"),
     ERROR_TOO_MANY_PAGES: _("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
-    WARNING_DUPLICATE_VENDOR_REFERENCE: _("Warning: there is already a vendor bill with this reference (%s)")
+}
+WARNING_MESSAGES = {
+    WARNING_DUPLICATE_VENDOR_REFERENCE: _("Warning: there is already a vendor bill with this reference (%s)"),
+    WARNING_DATE_PRIOR_OF_LOCK_DATE: _("Warning: as the bill date is prior to the lock date, the accounting date was set for the first following day"),
 }
 
 
@@ -73,9 +83,16 @@ class AccountMove(models.Model):
     def _compute_error_message(self):
         for record in self:
             if record.extract_status_code not in (SUCCESS, NOT_READY):
-                record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
-                if record.extract_status_code == WARNING_DUPLICATE_VENDOR_REFERENCE:
-                    record.extract_error_message = record.extract_error_message % record.duplicated_vendor_ref
+                warnings = self.get_warnings()
+                if warnings:
+                    warnings_messages = []
+                    if WARNING_DUPLICATE_VENDOR_REFERENCE in warnings:
+                        warnings_messages.append(WARNING_MESSAGES[WARNING_DUPLICATE_VENDOR_REFERENCE] % record.duplicated_vendor_ref)
+                    if WARNING_DATE_PRIOR_OF_LOCK_DATE in warnings:
+                        warnings_messages.append(WARNING_MESSAGES[WARNING_DATE_PRIOR_OF_LOCK_DATE])
+                    record.extract_error_message = '\n'.join(warnings_messages)
+                else:
+                    record.extract_error_message = ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL])
             else:
                 record.extract_error_message = ''
 
@@ -640,7 +657,7 @@ class AccountMove(models.Model):
                 # Retry saving without the ref, then set the error status to show the user a warning
                 except ValidationError as e:
                     self._save_form(ocr_results, no_ref=True)
-                    self.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
+                    self.add_warning(WARNING_DUPLICATE_VENDOR_REFERENCE)
                     self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
@@ -736,6 +753,9 @@ class AccountMove(models.Model):
             context_create_date = str(fields.Date.context_today(self, self.create_date))
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
                 move_form.invoice_date = date_ocr
+                if move_form.date <= self.company_id._get_user_fiscal_lock_date():
+                    move_form.date = self.company_id._get_user_fiscal_lock_date() + timedelta(days=1)
+                    self.add_warning(WARNING_DATE_PRIOR_OF_LOCK_DATE)
             if due_date_ocr and (not due_date_move_form or due_date_move_form == context_create_date):
                 move_form.invoice_date_due = due_date_ocr
             if not move_form.ref and not no_ref:
@@ -788,3 +808,22 @@ class AccountMove(models.Model):
             'type': 'ir.actions.act_url',
             'url': url,
         }
+
+    def add_warning(self, warning_code):
+        if self.extract_status_code <= WARNING_BASE_VALUE:
+            self.extract_status_code += WARNING_BASE_VALUE
+        self.extract_status_code += warning_code
+
+    def get_warnings(self):
+        """Returns the active warnings as a set"""
+        warnings = set()
+        if self.extract_status_code > WARNING_BASE_VALUE:
+            # convert the status code to a 8 characters 0-padded string representation of the binary number
+            codes = format(self.extract_status_code - WARNING_BASE_VALUE, '08b')
+
+            # revert the string so that the first character will correspond to the first bit
+            codes = codes[::-1]
+
+            warnings.add(WARNING_DUPLICATE_VENDOR_REFERENCE)
+            warnings.add(WARNING_DATE_PRIOR_OF_LOCK_DATE)
+        return warnings

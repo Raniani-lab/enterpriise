@@ -300,9 +300,11 @@ class AccountMove(models.Model):
             afip_result = values.get('l10n_ar_afip_result')
             xml_response, xml_request = transport.xml_response, transport.xml_request
             if afip_result not in ['A', 'O']:
-                self.env.cr.rollback()
+                if not self.env.context.get('l10n_ar_invoice_skip_commit'):
+                    self.env.cr.rollback()
                 inv.sudo().write({'l10n_ar_afip_xml_request': xml_request, 'l10n_ar_afip_xml_response': xml_response})
-                self.env.cr.commit()
+                if not self.env.context.get('l10n_ar_invoice_skip_commit'):
+                    self.env.cr.commit()
                 return return_info
             values.update(l10n_ar_afip_xml_request=xml_request, l10n_ar_afip_xml_response=xml_response)
             inv.sudo().write(values)

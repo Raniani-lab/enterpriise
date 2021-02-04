@@ -87,14 +87,23 @@
             <t t-set="longitude" t-value="record.partner and record.partner.partner_longitude"/>
             <li
                 t-att-class="{o_pin_located: latitude and longitude}"
-                t-att-title="(!latitude or !longitude) and 'Could not locate'"
+                t-att-title="(!latitude or !longitude) and 'Could not locate' or record.display_name"
             >
-                <a t-if="latitude and longitude" href=""
-                    t-on-click.prevent="_centerAndOpenPin(record)">
-                    <t t-esc="record.display_name"/>
-                </a>
+                <div t-if="latitude and longitude" class="d-flex">
+                    <a href="" class="o_pin_display_name" t-on-click.prevent="_centerAndOpenPin(record)">
+                        <t t-if="props.numbering">
+                            <t t-if="props.numbering" t-esc="record_index+1"/>.
+                        </t>
+                        <t t-esc="record.display_name"/>
+                    </a>
+                </div>
                 <div t-else="" class="text-muted d-flex">
-                    <span t-esc="record.display_name"/>
+                    <span class="o_pin_display_name">
+                        <t t-if="props.numbering">
+                            <t t-esc="record_index+1"/>.
+                        </t>
+                        <t t-esc="record.display_name"/>
+                    </span>
                     <span class="ml-auto" t-if="record.partner and record.partner.fetchingCoordinate">
                         <i class="fa fa-spin fa-circle-o-notch"/>
                     </span>

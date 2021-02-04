@@ -94,16 +94,13 @@ $map-marker-color: #2c8397;
 
 
         .o_pin_list_details {
+            list-style: none;
             padding-left: 0px;
             padding-bottom: 0px;
             a {
                 color: $gray-900;
             }
             > li {
-                list-style-position: inside;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
                 &.o_pin_located:hover {
                     text-decoration: none;
                     background-color: $o-gray-100;
@@ -111,11 +108,19 @@ $map-marker-color: #2c8397;
                 &:not(.o_pin_located) {
                     cursor: not-allowed;
                 }
+                > div {
+                    width: 100%;
+                    .o_pin_display_name {
+                        max-width: 90%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
             }
         }
 
         ul.o_pin_list_details {
-            list-style: none;
             cursor: default;
             padding-bottom: 2px;
         }

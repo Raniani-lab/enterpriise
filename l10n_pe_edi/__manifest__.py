@@ -38,6 +38,7 @@ We support sending and cancelling of customer invoices.
         'data/uom_data.xml',
         'data/account_tax_data.xml',
         'data/ir_sequence_data.xml',
+        'data/res_bank.xml',
         'wizards/account_invoice_refund_views.xml',
         'wizards/account_debit_note_views.xml',
         'wizards/account_cancel_wizard_views.xml',

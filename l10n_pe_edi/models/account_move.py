@@ -7,6 +7,7 @@ from lxml import etree
 from num2words import num2words
 
 from odoo import api, fields, models, _
+from odoo.tools.float_utils import float_repr, float_round
 from odoo.exceptions import UserError
 
 CATALOG52 = [
@@ -164,6 +165,24 @@ class AccountMove(models.Model):
         folio = number_match[-1].group() or None
         return {'serie': serie, 'folio': folio}
 
+    def _l10n_pe_edi_get_spot(self):
+        max_percent = max(self.invoice_line_ids.mapped('product_id.l10n_pe_withhold_percentage'))
+        if not max_percent or self.amount_total_signed < 700:
+            return {}
+        line = self.invoice_line_ids.filtered(lambda r: r.product_id.l10n_pe_withhold_percentage == max_percent)[0]
+        national_bank_account_number = self.company_id.bank_ids.filtered(
+            lambda b: b.bank_id == self.env.ref('l10n_pe_edi.peruvian_national_bank')).acc_number
+        return {
+            'ID': 'Detraccion',
+            'PaymentMeansID': line.product_id.l10n_pe_withhold_code,
+            'PayeeFinancialAccount': national_bank_account_number,
+            'PaymentMeansCode': '999',
+            'Amount': float_repr(float_round(self.amount_total_signed * (max_percent/100.0), precision_rounding=2), precision_digits=2),
+            'PaymentPercent': max_percent,
+            'spot_message': "Operación sujeta al sistema de Pago de Obligaciones Tributarias-SPOT, Banco de la Nacion %% %s Cod Serv. %s" % (
+                line.product_id.l10n_pe_withhold_percentage, line.product_id.l10n_pe_withhold_code) if self.amount_total_signed >= 700.0 else False
+        }
+
     # -------------------------------------------------------------------------
     # REPORT
     # -------------------------------------------------------------------------
@@ -244,6 +263,12 @@ class AccountMove(models.Model):
             'qr_str': '|'.join(qr_code_values) + '|\r\n',
             'amount_to_text': self._l10n_pe_edi_amount_to_text(),
         }
+
+    def _l10n_pe_edi_get_payment_means(self):
+        payment_means_id = 'Credito'
+        if not self.invoice_date_due or self.invoice_date_due == self.invoice_date:
+            payment_means_id = 'Contado'
+        return payment_means_id
 
     # -------------------------------------------------------------------------
     # BUSINESS METHODS

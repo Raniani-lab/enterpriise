@@ -119,6 +119,13 @@ class AccountEdiFormat(models.Model):
                         "document type of the invoice related and set this document with that document type. In case of "
                         "this document being posted and having a number already, reset to draft and cancel it, this "
                         "document will be cancelled locally and not reported."),
+            '3034': _lt("You need to configure the account for 'Banco de la Nación'. go to the Other Info setting"
+                        " on this invoice and select the Recipient Bank field, If you want to set it by default go to "
+                        "the partner related to your company and set the bank account related to the Banco de la "
+                        "Nación"),
+            '3128': _lt("As you have a document that must be detracted (withheld) which mean a document over 700 "
+                        "Soles With services you must select on the 'Operation Type field the correct code 1001 "
+                        "for example"),
         }
 
     @api.model
@@ -157,6 +164,8 @@ class AccountEdiFormat(models.Model):
 
         values = {
             **invoice._prepare_edi_vals_to_export(),
+            'spot': invoice._l10n_pe_edi_get_spot(),
+            'PaymentMeansID': invoice._l10n_pe_edi_get_payment_means(),
             'certificate_date': self.env['l10n_pe_edi.certificate']._get_pe_current_datetime().date(),
             'format_float': format_float,
         }

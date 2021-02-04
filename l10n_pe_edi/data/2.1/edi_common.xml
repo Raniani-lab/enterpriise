@@ -157,6 +157,28 @@
                         </cac:PartyLegalEntity>
                     </cac:Party>
                 </cac:AccountingCustomerParty>
+                <!--SPOT-->
+                <t t-if="spot">
+                    <cac:PaymentMeans>
+                        <cbc:ID t-esc="spot['ID']"/>
+                        <cbc:PaymentMeansCode t-esc="spot['PaymentMeansCode']"/>
+                        <cac:PayeeFinancialAccount>
+                            <cbc:ID t-esc="spot['PayeeFinancialAccount']"/>
+                        </cac:PayeeFinancialAccount>
+                    
+                    </cac:PaymentMeans>
+                    <cac:PaymentTerms>
+                        <cbc:ID t-esc="spot['ID']"/>
+                        <cbc:PaymentMeansID t-esc="spot['PaymentMeansID']"/>
+                        <cbc:PaymentPercent t-esc="spot['PaymentPercent']"/>
+                        <cbc:Amount t-att-currencyID="record.currency_id.name" t-esc="spot['Amount']"/>
+                    </cac:PaymentTerms>
+                </t>
+                <!--END SPOT-->
+                <cac:PaymentTerms>
+                    <cbc:ID>FormaPago</cbc:ID>
+                    <cbc:PaymentMeansID t-esc="PaymentMeansID"/>
+                </cac:PaymentTerms>
                 <cac:TaxTotal>
                     <cbc:TaxAmount
                             t-att-currencyID="record.currency_id.name"

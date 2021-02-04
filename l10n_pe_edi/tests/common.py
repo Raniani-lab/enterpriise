@@ -483,7 +483,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'invoice_date': '2017-01-01',
             'date': '2017-01-01',
             'currency_id': self.currency_data['currency'].id,
-            'l10n_latam_document_type_id': self.env.ref('l10n_pe_edi.document_type01').id,
+            'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type01').id,
             'l10n_pe_edi_legend': '1000',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product.id,
@@ -506,7 +506,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'date': '2017-01-01',
             'currency_id': self.currency_data['currency'].id,
             'reversed_entry_id': invoice.id,
-            'l10n_latam_document_type_id': self.env.ref('l10n_pe_edi.document_type07').id,
+            'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type07').id,
             'l10n_pe_edi_legend': '1000',
             'l10n_pe_edi_refund_reason': '01',
             'invoice_line_ids': [(0, 0, {
@@ -530,7 +530,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'date': '2017-01-01',
             'currency_id': self.currency_data['currency'].id,
             'debit_origin_id': invoice.id,
-            'l10n_latam_document_type_id': self.env.ref('l10n_pe_edi.document_type08').id,
+            'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type08').id,
             'l10n_pe_edi_legend': '1000',
             'l10n_pe_edi_charge_reason': '01',
             'invoice_line_ids': [(0, 0, {

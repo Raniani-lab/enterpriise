@@ -23,14 +23,11 @@ We support sending and cancelling of customer invoices.
     'depends': [
         'iap',
         'l10n_pe',
-        'l10n_latam_invoice_document',
         'product_unspsc',
-        'account_debit_note',
         'account_edi',
     ],
     "data": [
         'security/ir.model.access.csv',
-        'data/l10n_latam_document_type_data.xml',
         'data/2.1/edi_common.xml',
         'data/2.1/edi_signature.xml',
         'data/2.1/edi_invoice.xml',

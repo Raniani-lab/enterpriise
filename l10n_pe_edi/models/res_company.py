@@ -39,8 +39,3 @@ class ResCompany(models.Model):
                     [('company_id', '=', company.id)], order='date_end desc', limit=1)
             else:
                 company.l10n_pe_edi_certificate_id = False
-
-    def _localization_use_documents(self):
-        # OVERRIDE
-        self.ensure_one()
-        return self.country_id == self.env.ref('base.pe') or super()._localization_use_documents()

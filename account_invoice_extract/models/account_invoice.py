@@ -8,6 +8,7 @@ from odoo.tools.misc import clean_context
 import logging
 import re
 import json
+import string
 
 _logger = logging.getLogger(__name__)
 
@@ -473,19 +474,33 @@ class AccountMove(models.Model):
     def find_partner_id_with_name(self, partner_name):
         if not partner_name:
             return 0
-        partner_names = self.env["res.partner"].search([("name", "ilike", partner_name)])
-        if partner_names.exists():
-            partner = min(partner_names, key=len)
+        partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
+        if partners_matched:
+            partner = min(partners_matched, key=lambda rec: len(rec.name))
             return partner.id
-        else:
-            partners = {}
-            for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
-                partner_names = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
-                for partner in partner_names:
-                    partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
-            if len(partners) > 0:
-                key_max = max(partners.keys(), key=(lambda k: partners[k]))
-                return key_max
+
+        # clean the partner name of non discriminating words
+        words_to_remove = {"Europe", "Euro", "Asia", "America", "Africa", "Service", "Services", "SAS", "SARL", "SPRL", "SRL", "SA", "SCS", "GCV", "BV", "BVBA",
+                           "NV", "GMBH", "Inc", "Incorporation", "Pty", "Ltd", "Pte", "Limited", "Company", "Solution", "Solutions", "Business", "Lease", "Leasing"}
+        partner_name = partner_name.replace('-', ' ')
+        partner_name = partner_name.translate(str.maketrans('', '', string.punctuation))
+        for word_to_remove in words_to_remove:
+            partner_name = re.sub(r'\b' + word_to_remove + r' ?\b', '', partner_name, flags=re.IGNORECASE)
+        partner_name = partner_name.strip()
+
+        partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
+        if partners_matched:
+            partner = min(partners_matched, key=lambda rec: len(rec.name))
+            return partner.id
+
+        partners = {}
+        for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
+            partners_matched = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
+            for partner in partners_matched:
+                partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
+        if partners:
+            key_max = max(partners.keys(), key=(lambda k: partners[k]))
+            return key_max
         return 0
 
     def _get_taxes_record(self, taxes_ocr, taxes_type_ocr):
@@ -676,8 +691,19 @@ class AccountMove(models.Model):
             if not move_form.partner_id:
                 if vat_number_ocr:
                     partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
-                    if partner_vat.exists():
+                    if not partner_vat:
+                        partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr[2:])], limit=1)
+                    if not partner_vat:
+                        for partner in self.env["res.partner"].search([("vat", "!=", False)], limit=1000):
+                            vat = partner.vat.upper()
+                            vat_cleaned = vat.replace("BTW", "").replace("MWST", "")
+                            vat_cleaned = re.sub(r'[^A-Z0-9]', '', vat_cleaned)
+                            if vat_cleaned == vat_number_ocr or vat_cleaned == vat_number_ocr[2:]:
+                                partner_vat = partner
+                                break
+                    if partner_vat:
                         move_form.partner_id = partner_vat
+
                 if not move_form.partner_id:
                     partner_id = self.find_partner_id_with_name(supplier_ocr)
                     if partner_id != 0:

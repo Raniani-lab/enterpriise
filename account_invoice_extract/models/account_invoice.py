@@ -130,16 +130,31 @@ class AccountMove(models.Model):
     def _contact_iap_partner_autocomplete(self, local_endpoint, params):
         return iap_tools.iap_jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
 
-    @api.returns('mail.message', lambda value: value.id)
-    def message_post(self, **kwargs):
-        """When a message is posted on an account.move, send the attachment to iap-ocr if
-        the res_config is on "auto_send" and if this is the first attachment."""
-        message = super(AccountMove, self).message_post(**kwargs)
-        if self.company_id.extract_show_ocr_option_selection == 'auto_send' and not self.env.context.get('no_new_invoice'):
-            for record in self:
-                if record.move_type in ['in_invoice', 'in_refund'] and record.extract_state == "no_extract_requested":
-                    record.retry_ocr()
-        return message
+    def _ocr_create_invoice_from_attachment(self, attachment):
+        invoice = self.env['account.move'].with_context(default_move_type='in_invoice').create({})
+        invoice.message_main_attachment_id = attachment
+        invoice.retry_ocr()
+        return invoice
+
+    def _ocr_update_invoice_from_attachment(self, attachment, invoice):
+        invoice.retry_ocr()
+        return invoice
+
+    def _get_create_invoice_from_attachment_decoders(self):
+        # OVERRIDE
+        res = super()._get_create_invoice_from_attachment_decoders()
+        if self.env.company.extract_show_ocr_option_selection == 'auto_send':
+            res.append((20, self._ocr_create_invoice_from_attachment))
+        return res
+
+    def _get_update_invoice_from_attachment_decoders(self, invoice):
+        # OVERRIDE
+        res = super()._get_update_invoice_from_attachment_decoders(invoice)
+        if invoice.company_id.extract_show_ocr_option_selection == 'auto_send' and \
+           invoice.is_purchase_document() and \
+           invoice.extract_state == "no_extract_requested":
+            res.append((20, self._ocr_update_invoice_from_attachment))
+        return res
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""

@@ -267,6 +267,7 @@ const FSMProductQty = FieldInteger.extend({
     _render: function () {
         // We force to readonly because we manage the edit mode only in this widget and not with the kanban view.
         this.mode = 'readonly';
+        this.muteRemoveQuantityButton = this.record.data.hasOwnProperty('quantity_decreasable') && !this.record.data.quantity_decreasable;
         this._super.apply(this, arguments);
     },
 

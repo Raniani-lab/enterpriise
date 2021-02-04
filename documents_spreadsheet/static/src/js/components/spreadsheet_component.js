@@ -74,7 +74,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
         editText(ev) {
             this.dialogContent = undefined;
-            this.state.dialog.title = ev.detail.title;
+            this.state.dialog.title = ev.detail.title && ev.detail.title.toString();
             this.state.dialog.isEditText = true;
             this.state.inputContent = ev.detail.placeholder;
             this.confirmDialog = () => {

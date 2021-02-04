@@ -10,9 +10,10 @@ class HrReferralReward(models.Model):
     _description = 'Reward for Referrals'
     _order = 'sequence'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _mail_post_access = "read"
 
     def _group_hr_referral_domain(self):
-        group = self.env.ref('hr_recruitment.group_hr_recruitment_manager', raise_if_not_found=False)
+        group = self.env.ref('hr_referral.group_hr_recruitment_referral_user', raise_if_not_found=False)
         return [('groups_id', 'in', group.ids)] if group else []
 
     sequence = fields.Integer()
@@ -79,3 +80,26 @@ class HrReferralReward(models.Model):
             'res_model': 'hr.referral.points',
             'domain': [('id', 'in', points_ids)]
         }
+
+    @api.model
+    def create(self, values):
+        if 'gift_manager_id' in values:
+            reward_responsible_group = self.env.ref('hr_referral.group_hr_referral_reward_responsible_user', raise_if_not_found=False)
+            if reward_responsible_group and values['gift_manager_id']:
+                reward_responsible_group.sudo().write({'users': [(4, values['gift_manager_id'])]})
+        return super(HrReferralReward, self).create(values)
+
+    def write(self, values):
+        old_responsibles = self.env['res.users']
+        if 'gift_manager_id' in values:
+            old_responsibles = self.mapped('gift_manager_id')
+            gift_manager = False
+            if values['gift_manager_id']:
+                gift_manager = self.env['res.users'].browse(values['gift_manager_id'])
+                old_responsibles -= gift_manager
+            reward_responsible_group = self.env.ref('hr_referral.group_hr_referral_reward_responsible_user', raise_if_not_found=False)
+            if reward_responsible_group and gift_manager and not gift_manager.has_group('hr_referral.group_hr_referral_reward_responsible_user'):
+                reward_responsible_group.sudo().write({'users': [(4, values['gift_manager_id'])]})
+        res = super(HrReferralReward, self).write(values)
+        old_responsibles._clean_responsibles()
+        return res

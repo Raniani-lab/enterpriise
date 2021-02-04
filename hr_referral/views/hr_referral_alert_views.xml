@@ -65,7 +65,7 @@
         </field>
     </record>
 
-    <menuitem parent="menu_hr_referral_configuration" id="menu_hr_referral_alert_configuration" action="action_hr_referral_alert_configuration" sequence="4"/>
+    <menuitem parent="menu_hr_referral_configuration" id="menu_hr_referral_alert_configuration" action="action_hr_referral_alert_configuration" sequence="4" groups="hr_recruitment.group_hr_recruitment_manager"/>
 
 
 </odoo>

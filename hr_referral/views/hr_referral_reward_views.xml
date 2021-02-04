@@ -144,6 +144,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="cost"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="awarded_employees"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
@@ -153,7 +154,7 @@
     <record model="ir.actions.act_window" id="action_hr_referral_reward_configuration">
         <field name="name">Rewards</field>
         <field name="res_model">hr.referral.reward</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">tree,kanban,form,activity</field>
         <field name="groups_id" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

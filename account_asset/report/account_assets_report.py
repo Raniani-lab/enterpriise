@@ -152,10 +152,13 @@ class assets_report(models.AbstractModel):
 
             total = [x + y for x, y in zip(total, [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing, asset_gross])]
 
-            id = "_".join([self._get_account_group(al['account_code'])[0], str(al['asset_id'])])
+            asset_line_id = self._build_line_id([
+                (None, 'account.account', al['account_id']),
+                (None, 'account.asset', al['asset_id']),
+            ])
             name = str(al['asset_name'])
             line = {
-                'id': id,
+                'id': asset_line_id,
                 'level': 1,
                 'name': name if self._context.get('print_mode') or len(name) < MAX_NAME_LENGTH else name[:MAX_NAME_LENGTH - 2] + '...',
                 'columns': [

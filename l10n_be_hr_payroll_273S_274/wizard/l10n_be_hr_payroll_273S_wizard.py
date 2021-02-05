@@ -83,7 +83,7 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
         date_from = self.period + relativedelta(day=1)
         date_to = self.period + relativedelta(day=31)
         payslips = self.env['hr.payslip'].search([
-            ('state', '=', 'paid'),
+            ('state', 'in', ['done', 'paid']),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
             ('date_to', '<=', date_to)])
@@ -94,8 +94,10 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
 
         mapped_ip = defaultdict(lambda: [0, 0])
         for payslip in payslips.sudo():
-            mapped_ip[payslip.employee_id][0] += payslip._get_salary_line_total('IP')
-            mapped_ip[payslip.employee_id][1] += payslip._get_salary_line_total('IP.DED')
+            ip_amount = payslip._get_salary_line_total('IP')
+            if ip_amount:
+                mapped_ip[payslip.employee_id][0] += payslip._get_salary_line_total('IP')
+                mapped_ip[payslip.employee_id][1] += payslip._get_salary_line_total('IP.DED')
 
         currency = self.env.company.currency_id
 
@@ -110,7 +112,7 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
             },
             'period': fields.Date.today(),
             'declaration': {
-                'gross_amount': gross_amount,
+                'gross_amount': round(gross_amount / 2, 2) * 2,  # To avoid 1 cent diff (eg: 286079.05)
                 'deductable_costs':  {
                     'fixed': gross_amount / 2,
                     'actual': 0,

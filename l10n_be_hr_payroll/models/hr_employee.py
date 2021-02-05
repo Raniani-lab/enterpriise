@@ -83,6 +83,28 @@ class HrEmployee(models.Model):
             if employee.identification_id and not employee.niss:
                 employee.niss = reduce(lambda a, kv: a.replace(*kv), characters.items(), employee.identification_id)
 
+    def _is_niss_valid(self):
+        # The last 2 positions constitute the check digit. This check digit is
+        # a sequence of 2 digits forming a number between 01 and 97. This number is equal to 97
+        # minus the remainder of the division by 97 of the number formed:
+        # - either by the first 9 digits of the national number for people born before the 1st
+        # January 2000.
+        # - either by the number 2 followed by the first 9 digits of the national number for people
+        # born after December 31, 1999.
+        # (https://fr.wikipedia.org/wiki/Num%C3%A9ro_de_registre_national)
+        self.ensure_one()
+        niss = self.niss
+        if not niss or len(niss) != 11:
+            return False
+        try:
+            test = niss[:-2]
+            if test[0] in ['0', '1', '2', '3', '4', '5']:  # Should be good for several years
+                test = '2%s' % test
+            checksum = int(niss[-2:])
+            return checksum == 97 - int(test) % 97
+        except Exception:
+            return False
+
     @api.onchange('disabled_children_bool')
     def _onchange_disabled_children_bool(self):
         self.disabled_children_number = 0

@@ -87,6 +87,10 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
             ('date_to', '<=', date_to)])
+        employees = payslips.mapped('employee_id').filtered(lambda e: not e._is_niss_valid())
+        if employees:
+            raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(employees.mapped('name'))))
+
         # The first threshold is at 16320 € of gross IP, so we only consider the rate at 7.5 %. 
         # YTI TODO: Handle different thresholds in master
         gross_amount = sum(p._get_salary_line_total('IP') for p in payslips)

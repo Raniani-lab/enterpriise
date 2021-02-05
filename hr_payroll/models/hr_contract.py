@@ -20,6 +20,22 @@ class HrContract(models.Model):
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')
     wage_type = fields.Selection(related='structure_type_id.wage_type')
     hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
+    payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
+
+    def _compute_payslips_count(self):
+        count_data = self.env['hr.payslip'].read_group(
+            [('contract_id', 'in', self.ids)],
+            ['contract_id'],
+            ['contract_id'])
+        mapped_counts = {cd['contract_id'][0]: cd['contract_id_count'] for cd in count_data}
+        for contract in self:
+            contract.payslips_count = mapped_counts.get(contract.id, 0)
+
+    def action_open_payslips(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_view_hr_payslip_month_form")
+        action.update({'domain': [('contract_id', '=', self.id)]})
+        return action
 
     def _index_contracts(self):
         action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_hr_payroll_index")

@@ -27,13 +27,20 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         previous_year = current_year + relativedelta(years=-1)
         next_year = current_year + relativedelta(years=+1)
 
+        structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+        structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+
         payslip_n_ids = self.env['hr.payslip'].search([
             ('employee_id', '=', employee_id.id),
-            ('date_to', '>=', current_year)])
+            ('date_to', '>=', current_year),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', 'not in', (structure_warrant + structure_termination).ids)])
         payslip_n1_ids = self.env['hr.payslip'].search([
             ('employee_id', '=', employee_id.id),
             ('date_to', '>=', previous_year),
-            ('date_from', '<', current_year)])
+            ('date_from', '<', current_year),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', 'not in', (structure_warrant + structure_termination).ids)])
 
         result['payslip_n_ids'] = [(4, p.id) for p in payslip_n_ids]
         result['payslip_n1_ids'] = [(4, p.id) for p in payslip_n1_ids]
@@ -41,11 +48,13 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         time_off_n_ids = self.env['hr.leave'].search([
             ('employee_id', '=', employee_id.id),
             ('date_to', '>=', current_year),
-            ('date_from', '<', next_year)])
+            ('date_from', '<', next_year),
+            ('state', '=', 'validate')])
 
         time_off_allocation_n_ids = self.env['hr.leave.allocation'].search([
             ('employee_id', '=', employee_id.id),
-            ('create_date', '>=', current_year)])
+            ('create_date', '>=', current_year),
+            ('state', '=', 'validate')])
 
         result['time_off_n_ids'] = [(4, t.id) for t in time_off_n_ids]
         result['time_off_allocation_n_ids'] = [(4, t.id) for t in time_off_allocation_n_ids]

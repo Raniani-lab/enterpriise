@@ -278,7 +278,7 @@
     <menuitem
         id="menu_hr_payroll_meal_voucher"
         action="hr_payslip_report_action"
-        parent="hr_payroll.menu_hr_payroll_report"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
         sequence="20"
     />
 

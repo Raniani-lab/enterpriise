@@ -104,6 +104,6 @@
         id="menu_l10n_be_withholding_tax_exemption"
         name="274.XX Sheets"
         action="l10n_be_withholding_tax_exemption_action"
-        parent="hr_payroll.menu_hr_payroll_report"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
     />
 </odoo>

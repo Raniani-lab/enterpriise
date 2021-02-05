@@ -49,10 +49,16 @@
     </record>
 
     <menuitem
+        id="menu_reporting_l10n_be"
+        name="Belgium"
+        sequence="30"
+        parent="hr_payroll.menu_hr_payroll_report"/>
+
+    <menuitem
         id="menu_hr_allocating_paid_time_off_view"
         name="Paid Time Off Allocation"
         action="allocating_paid_time_off_wizard_action"
-        parent="hr_payroll.menu_hr_payroll_report"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
     />
 
 </odoo>

@@ -83,12 +83,14 @@
     <menuitem id="menu_report_payroll"
         name="Payroll"
         action="payroll_report_action"
+        sequence="10"
         parent="menu_hr_payroll_report"/>
 
     <menuitem
         id="menu_hr_work_entry_report"
         name="Work Entry Analysis"
         action="hr_work_entry_report_action"
+        sequence="20"
         parent="menu_hr_payroll_report"/>
 
     <!-- **** Configuration **** -->

@@ -68,7 +68,7 @@
     <menuitem
         id="menu_hr_payroll_dmfa"
         action="hr_payslip_report_action_dmfa"
-        parent="hr_payroll.menu_hr_payroll_report"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
         sequence="30"
     />
 

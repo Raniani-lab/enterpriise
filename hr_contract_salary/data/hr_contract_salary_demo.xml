@@ -129,4 +129,20 @@
         <field name="width">0.150</field>
         <field name="height">0.015</field>
     </record>
+
+    <record id="hr_contract_cdi_experienced_developer" model="hr.contract">
+        <field name="name">Experienced Developer</field>
+        <field name="department_id" ref="hr.dep_rd"/>
+        <field name="hr_responsible_id" ref="base.user_demo"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
+        <field name="job_id" ref="hr.job_developer"/>
+        <field name="wage">2650</field>
+        <field name="wage_on_signature">2650</field>
+        <field name="sign_template_id" ref="sign_template_cdi_developer"/>
+        <field name="contract_update_template_id" ref="sign_template_cdi_developer"/>
+    </record>
+
+    <record id="hr.job_developer" model="hr.job">
+        <field name="default_contract_id" ref="hr_contract_cdi_experienced_developer"/>
+    </record>
 </odoo>

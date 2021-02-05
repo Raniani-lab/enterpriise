@@ -143,7 +143,7 @@
     </record>
 
     <record id="hr_contract_cdi_experienced_developer" model="hr.contract">
-        <field name="name">CDI - Experienced Developer</field>
+        <field name="name">CDI - Experienced Developer (BE)</field>
         <field name="department_id" ref="hr.dep_rd"/>
         <field name="job_id" ref="l10n_be_hr_contract_salary.job_developer_belgium"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -158,6 +158,10 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="l10n_be_hr_contract_salary.job_developer_belgium" model="hr.job">
+        <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
     </record>
 
     <record id="hr_contract_cdi_laurie_poiret_previous" model="hr.contract">

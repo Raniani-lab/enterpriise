@@ -3,6 +3,7 @@
 
 import datetime
 import base64
+from functools import reduce
 from lxml import etree
 
 from odoo import api, fields, models, _
@@ -38,6 +39,9 @@ STRUCT_BLACKLIST_281_10 = [
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
+    niss = fields.Char(
+        'NISS Number', compute="_compute_niss", store=True, readonly=False,
+        groups="hr.group_hr_user", tracking=True)
     spouse_fiscal_status = fields.Selection([
         ('without_income', 'Without Income'),
         ('high_income', 'With High income'),
@@ -71,6 +75,13 @@ class HrEmployee(models.Model):
     nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user", help="Fiscal Identification Number")
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
+
+    @api.depends('identification_id')
+    def _compute_niss(self):
+        characters = dict.fromkeys([',', '.', '-', ' '], '')
+        for employee in self:
+            if employee.identification_id and not employee.niss:
+                employee.niss = reduce(lambda a, kv: a.replace(*kv), characters.items(), employee.identification_id)
 
     @api.onchange('disabled_children_bool')
     def _onchange_disabled_children_bool(self):

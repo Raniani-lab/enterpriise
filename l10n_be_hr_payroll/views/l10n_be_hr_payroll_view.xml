@@ -213,6 +213,9 @@
                 <xpath expr="//div[@name='div_km_home_work']" position="after">
                     <field name="has_bicycle" required="True"/>
                 </xpath>
+                <field name="identification_id" position="after">
+                    <field name="niss"/>
+                </field>
             </field>
         </record>
 

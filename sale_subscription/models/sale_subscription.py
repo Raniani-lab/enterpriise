@@ -929,10 +929,10 @@ class SaleSubscription(models.Model):
                                     new_invoice.unlink()
                             if tx is None or not tx.renewal_allowed:
                                 amount = subscription.recurring_total
+                                auto_close_limit = subscription.template_id.auto_close_limit or 15
                                 date_close = (
                                     subscription.recurring_next_date +
-                                    relativedelta(days=subscription.template_id.auto_close_limit or
-                                                  15)
+                                    relativedelta(days=auto_close_limit)
                                 )
                                 close_subscription = current_date >= date_close
                                 email_context = self.env.context.copy()
@@ -944,7 +944,8 @@ class SaleSubscription(models.Model):
                                     'code': subscription.code,
                                     'currency': subscription.pricelist_id.currency_id.name,
                                     'date_end': subscription.date,
-                                    'date_close': date_close
+                                    'date_close': date_close,
+                                    'auto_close_limit': auto_close_limit
                                 })
                                 if close_subscription:
                                     model, template_id = imd_res.get_object_reference('sale_subscription', 'email_payment_close')

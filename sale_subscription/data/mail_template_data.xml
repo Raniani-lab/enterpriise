@@ -46,13 +46,15 @@
                         Our final attempt to process a payment for your subscription failed because we have no payment method recorded for you.
                     % endif
                     <br/><br/>
-                    As your payment should have been made <strong>15 days ago</strong>, your subscription has been terminated.
+                    As your payment should have been made <strong>${ctx.get('auto_close_limit')} days ago</strong>, your subscription has been terminated.
                     Should you wish to resolve this issue, do not hesitate to contact us.<br/><br/>
                     Thank you for choosing ${company.name}!
+                    <div>
                     % if user.signature
                         <br/><br/>
                         ${user.signature | safe}
                     % endif
+                    </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
                     <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
@@ -149,10 +151,12 @@
                     Please double-check that you have sufficient funds.<br/><br/>
                     If you have any questions, do not hesitate to contact us.<br/><br/>
                     Thank you for choosing ${company.name}!
+                    <div>
                     % if user.signature:
                         <br/><br/>
                         ${user.signature | safe}
                     % endif
+                    </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
                     <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
@@ -246,10 +250,12 @@
                     If you have any questions, do not hesitate to contact us.
                     <br/><br/>
                     Thank you for choosing ${company.name}!
+                    <div>
                     % if user.signature
                         <br/><br/>
                         ${user.signature | safe}
                     % endif
+                    </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
                     <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>

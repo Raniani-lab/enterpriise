@@ -35,7 +35,7 @@
     }
 
     // Fields
-    td.o_td_label .o_form_label {
+    td.o_td_label .o_form_label:not(.o_status) {
         min-height: 23px;
     }
     td:not(.o_field_cell) .o_form_uri > span:first-child {

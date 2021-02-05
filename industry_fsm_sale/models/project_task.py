@@ -207,12 +207,12 @@ class Task(models.Model):
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """
-        sale_order = self.sale_order_id
-        if not sale_order:
-            sale_order = self._fsm_create_sale_order()
+        self.ensure_one()
+        if not self.sale_order_id:
+            self._fsm_create_sale_order()
         if self.project_id.allow_timesheets and not self.sale_line_id:
             self._fsm_create_sale_order_line()
-        return sale_order
+        return self.sale_order_id
 
     def _fsm_create_sale_order(self):
         """ Create the SO from the task, with the 'service product' sales line and link all timesheet to that line it """

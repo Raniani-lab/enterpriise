@@ -314,8 +314,8 @@ class assets_report(models.AbstractModel):
         return results
 
     def open_asset(self, options, params=None):
-        active_id = int(params.get('id').split('_')[-1])
-        line = self.env['account.asset'].browse(active_id)
+        model, active_id = self._get_model_info_from_id(params.get('id'))
+        line = self.env[model].browse(active_id)
         return {
             'name': line.name,
             'type': 'ir.actions.act_window',

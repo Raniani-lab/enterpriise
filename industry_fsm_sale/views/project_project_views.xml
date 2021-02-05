@@ -11,7 +11,7 @@
             <xpath expr="//page[@name='billing_employee_rate']//group/field[@name='timesheet_product_id']" position="attributes">
                 <attribute name="invisible">0</attribute>
                 <attribute name="required">1</attribute>
-                <attribute name="attrs">{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('pricing_type', '!=', 'task_rate'), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('allow_timesheets', '=', False), ('is_fsm', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//page[@name='billing_employee_rate']//field[@name='sale_order_id']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('pricing_type', '=', 'task_rate'), ('is_fsm', '=', True)], 'readonly': [('sale_order_id', '!=', False)]}</attribute>
@@ -21,7 +21,16 @@
             </xpath>
 
             <xpath expr="//field[@name='sale_line_employee_ids']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('pricing_type', '!=', 'employee_rate'), ('is_fsm', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['&amp;', ('pricing_type', '!=', 'employee_rate'), ('is_fsm', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.is_fsm', '=', True)], 'required': [('parent.is_fsm', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="after">
+                <field name="timesheet_product_id" attrs="{'column_invisible': [('parent.is_fsm', '=', False)], 'required': [('parent.is_fsm', '=', True)]}" context="{'default_type': 'service', 'default_service_policy': 'delivered_timesheet', 'default_service_type': 'timesheet'}"/>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('parent.is_fsm', '=', False), ('timesheet_product_id', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//div[@id='allow_billable_container']" position="after">
                 <field name="is_fsm" invisible="1"/>

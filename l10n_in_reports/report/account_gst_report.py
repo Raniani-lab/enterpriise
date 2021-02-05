@@ -301,7 +301,7 @@ class L10nInReportAccount(models.AbstractModel):
                     ('move_type', 'not in', ('out_refund', 'in_refund'))]
             elif gst_section == 'b2cs':
                 domain += [
-                    '&', '&', '&', ('partner_vat', '=', False), ('l10n_in_gst_treatment', 'not in', ['overseas']), ('move_type', 'not in', ('out_refund', 'in_refund')),
+                    '&', '&', ('partner_vat', '=', False), ('l10n_in_gst_treatment', 'not in', ['overseas']),
                     '|', ('supply_type', '=', 'Intra State'),
                     '&', ('total', '<=', '250000'), ('supply_type', '=', 'Inter State')]
             elif gst_section == 'cdnr':
@@ -311,7 +311,10 @@ class L10nInReportAccount(models.AbstractModel):
             elif gst_section == 'cdnur':
                 domain += [
                     ('partner_vat', '=', False),
-                    ('move_type', 'in', ['out_refund', 'in_refund'])]
+                    ('total', '>', '250000'),
+                    ('supply_type', '=', 'Inter State'),
+                    ('l10n_in_gst_treatment', 'not in', ['overseas']),
+                    ('move_type', 'in', ('out_refund', 'in_refund'))]
             elif gst_section == 'exp':
                 domain += [
                     ('l10n_in_gst_treatment', 'in', ['overseas','special_economic_zone']),

@@ -82,7 +82,7 @@ class ResPartner(models.Model):
                 ('state', '=', 'posted'),
                 ('payment_state', 'not in', ('paid', 'in_payment')),
                 ('move_type', 'in', self.env['account.move'].get_sale_types())
-            ])
+            ]).filtered(lambda inv: not any(inv.line_ids.mapped('blocked')))
 
     def get_next_action(self, followup_line):
         """

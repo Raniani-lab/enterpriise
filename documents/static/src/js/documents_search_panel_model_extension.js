@@ -1,8 +1,8 @@
 odoo.define("documents/static/src/js/documents_search_panel_model_extension", function (require) {
     "use strict";
 
-    const ActionModel = require("web/static/src/js/views/action_model.js");
-    const SearchPanelModelExtension = require("web/static/src/js/views/search_panel_model_extension.js");
+    const ActionModel = require("web.ActionModel");
+    const SearchPanelModelExtension = require("web.searchPanelModelExtension");
 
     // Helpers
     const isFolderCategory = (s) => s.type === "category" && s.fieldName === "folder_id";

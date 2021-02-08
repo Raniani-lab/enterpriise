@@ -7,7 +7,7 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
      */
 
     const { device } = require("web.config");
-    const SearchPanel = require("web/static/src/js/views/search_panel.js");
+    const SearchPanel = require("web.searchPanel");
     const { sprintf } = require("web.utils");
 
     const VALUE_SELECTOR = [

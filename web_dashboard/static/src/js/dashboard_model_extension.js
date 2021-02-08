@@ -1,7 +1,7 @@
 odoo.define("web_dashboard/static/src/js/dashboard_model_extension.js", function (require) {
     "use strict";
 
-    const ActionModel = require("web/static/src/js/views/action_model.js");
+    const ActionModel = require("web.ActionModel");
 
     const DASHBOARD_FACET_ID = "dashboard";
 

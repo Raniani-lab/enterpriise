@@ -4,7 +4,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
     const Dialog = require("web.OwlDialog");
     const SearchBar = require("web.SearchBar");
     const Pager = require("web.Pager");
-    const ActionModel = require("web/static/src/js/views/action_model.js");
+    const ActionModel = require("web.ActionModel");
 
     const { getDataFromTemplate } = require("documents_spreadsheet.pivot_utils");
     const { DropPrevious } = require("web.concurrency");

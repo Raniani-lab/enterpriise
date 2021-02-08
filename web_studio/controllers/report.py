@@ -282,7 +282,7 @@ class WebStudioReportController(main.WebStudioController):
         })
         root = etree.fromstring(html).getroottree()
         links = [link.get('href') for link in root.findall("//link")]
-        link_ids = [int(link.replace('/web/content/', '').split('-', 1)[0]) for link in links]
+        link_ids = [int(link.replace('/web/assets/', '').split('-', 1)[0]) for link in links]
         css = {a.name: base64.b64decode(a.datas) for a in Attachment.browse(link_ids)}
 
         return {

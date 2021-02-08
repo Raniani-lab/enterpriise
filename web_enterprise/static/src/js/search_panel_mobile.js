@@ -1,7 +1,7 @@
 odoo.define("web.SearchPanelMobile", function (require) {
     "use strict";
 
-    const SearchPanel = require("web/static/src/js/views/search_panel.js");
+    const SearchPanel = require("web.searchPanel");
     const { device } = require("web.config");
 
     if (!device.isMobile) {

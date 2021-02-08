@@ -154,6 +154,7 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
             '|', ('end_date', '>=', datetime.now()), ('end_date', '=', None),
             ('partner_id', '=', commercial_partner_id),
             ('partner_bank_id', '=', partner_bank.id),
+            ('company_id', '=', self.env.company.id),
             '|', ('one_off', '=', False), ('payment_ids', '=', False)], limit=1)
         if not mandate:
             mandate = self.env['sdd.mandate'].sudo().create({

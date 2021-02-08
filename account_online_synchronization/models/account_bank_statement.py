@@ -141,7 +141,7 @@ class AccountBankStatement(models.Model):
             # Create the lines that should be inside an existing bank statement and reset those stmt in draft
             if transactions_in_statements:
                 for st in statement_to_reset_to_draft:
-                    if st.state == 'confirm':
+                    if st.state != 'open':
                         st.message_post(body=_('Statement has been reset to draft because some transactions from online synchronization were added to it.'))
                 statement_to_reset_to_draft.write({'state': 'open'})
                 line_to_reconcile += self.env['account.bank.statement.line'].create(transactions_in_statements)
@@ -179,7 +179,7 @@ class AccountBankStatement(models.Model):
             # That way if there are missing transactions, it will show in the last statement
             # and the day missing transactions are fetched or manually written, everything will be corrected
             last_bnk_stmt = self.search([('journal_id', '=', journal.id)], limit=1)
-            if last_bnk_stmt:
+            if last_bnk_stmt and (created_stmts or transactions_in_statements):
                 last_bnk_stmt.balance_end_real = online_account.balance
             # Set last sync date as the last transaction date
             journal.account_online_account_id.sudo().write({'last_sync': max_date})

@@ -63,7 +63,7 @@
                             </cce11:Receptor>
                             <t t-if="ext_trade_delivery_partner and ext_trade_delivery_partner != record.partner_id">
                                 <cce11:Destinatario
-                                    t-att-NumRegIdTrib="ext_trade_delivery_partner.vat if ext_trade_delivery_partner.country_id == dest.commercial_partner_id.country_id else None"
+                                    t-att-NumRegIdTrib="ext_trade_delivery_partner.vat if ext_trade_delivery_partner.country_id == ext_trade_delivery_partner.commercial_partner_id.country_id else None"
                                     t-att-Nombre="ext_trade_delivery_partner.name">
                                     <cce11:Domicilio
                                         t-att-Calle="format_string(ext_trade_delivery_partner.street_name or '') or None"

@@ -21,6 +21,7 @@ class Task(models.Model):
     display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
+    warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
 
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):
@@ -75,6 +76,20 @@ class Task(models.Model):
                 'display_create_invoice_primary': primary,
                 'display_create_invoice_secondary': secondary,
             })
+
+    @api.depends('sale_line_id')
+    def _compute_warning_message(self):
+        employee_rate_fsm_tasks = self.filtered(lambda task:
+            task.pricing_type == 'employee_rate'
+            and task.sale_line_id
+            and task.timesheet_ids
+            and task.fsm_done)
+        for task in employee_rate_fsm_tasks:
+            if task.sale_line_id.order_id != task._origin.sale_line_id.order_id:
+                task.warning_message = _('By saving this change, all timesheet entries will be linked to the selected Sales Order Item without distinction.')
+            else:
+                task.warning_message = False
+        (self - employee_rate_fsm_tasks).update({'warning_message': False})
 
     def action_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it

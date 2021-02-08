@@ -29,18 +29,19 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
 
         structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
         structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+        structure_double_holidays = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
 
         payslip_n_ids = self.env['hr.payslip'].search([
             ('employee_id', '=', employee_id.id),
             ('date_to', '>=', current_year),
             ('state', 'in', ['done', 'paid']),
-            ('struct_id', 'not in', (structure_warrant + structure_termination).ids)])
+            ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
         payslip_n1_ids = self.env['hr.payslip'].search([
             ('employee_id', '=', employee_id.id),
             ('date_to', '>=', previous_year),
             ('date_from', '<', current_year),
             ('state', 'in', ['done', 'paid']),
-            ('struct_id', 'not in', (structure_warrant + structure_termination).ids)])
+            ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
 
         result['payslip_n_ids'] = [(4, p.id) for p in payslip_n_ids]
         result['payslip_n1_ids'] = [(4, p.id) for p in payslip_n1_ids]
@@ -92,7 +93,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n(self):
         for wizard in self:
             if wizard.payslip_n_ids:
-                wizard.net_n = sum(payslip.basic_wage for payslip in wizard.payslip_n_ids)
+                wizard.net_n = sum(p.basic_wage + p._get_salary_line_total('COMMISSION') for p in wizard.payslip_n_ids)
             else:
                 wizard.net_n = 0
 
@@ -100,7 +101,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n1(self):
         for wizard in self:
             if wizard.payslip_n1_ids:
-                wizard.net_n1 = sum(payslip.basic_wage for payslip in wizard.payslip_n1_ids)
+                wizard.net_n1 = sum(p.basic_wage + p._get_salary_line_total('COMMISSION') for p in wizard.payslip_n1_ids)
             else:
                 wizard.net_n1 = 0
 
@@ -139,14 +140,25 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         termination_payslip_n = self.env['hr.payslip'].create({
             'name': '%s - %s' % (struct_n_id.payslip_name, self.employee_id.display_name),
             'employee_id': self.employee_id.id,
-            'date_from': max(self.employee_id.first_contract_in_company, self.employee_id.end_notice_period.replace(month=1, day=1)),
-            'date_to': self.employee_id.end_notice_period,
         })
         termination_payslip_n._onchange_employee()
         if not termination_payslip_n.contract_id:
             termination_payslip_n.contract_id = self.employee_id.contract_id
         termination_payslip_n.struct_id = struct_n_id.id
         termination_payslip_n.worked_days_line_ids = [(5, 0, 0)]
+
+        monthly_payslips = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', '=', self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id)
+        ], order="date_from desc").filtered(
+            lambda p: 'OUT' not in p.worked_days_line_ids.mapped('code'))
+
+        if monthly_payslips:
+            annual_gross = monthly_payslips[0]._get_salary_line_total('GROSS') * 12
+        else:
+            annual_gross = 0
+
         self.env['hr.payslip.input'].create([{
             'payslip_id': termination_payslip_n.id,
             'sequence': 2,
@@ -165,6 +177,12 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
             'amount': 0,
             'contract_id': termination_payslip_n.contract_id.id
+        }, {
+            'payslip_id': termination_payslip_n.id,
+            'sequence': 5,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
+            'amount': annual_gross,
+            'contract_id': termination_payslip_n.contract_id.id
         }])
         termination_payslip_n.compute_sheet()
         termination_payslip_n.name = '%s - %s' % (struct_n_id.payslip_name, self.employee_id.display_name)
@@ -172,8 +190,6 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         termination_payslip_n1 = self.env['hr.payslip'].create({
             'name': '%s - %s' % (struct_n1_id.payslip_name, self.employee_id.display_name),
             'employee_id': self.employee_id.id,
-            'date_from': max(self.employee_id.first_contract_in_company, (self.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=1, day=1)),
-            'date_to': max(self.employee_id.first_contract_in_company, (self.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=12, day=31)),
         })
         termination_payslip_n1._onchange_employee()
         if not termination_payslip_n1.contract_id:
@@ -197,6 +213,12 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'sequence': 4,
             'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
             'amount': self.time_off_taken,
+            'contract_id': termination_payslip_n1.contract_id.id
+        }, {
+            'payslip_id': termination_payslip_n1.id,
+            'sequence': 5,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
+            'amount': annual_gross,
             'contract_id': termination_payslip_n1.contract_id.id
         }])
         termination_payslip_n1.compute_sheet()

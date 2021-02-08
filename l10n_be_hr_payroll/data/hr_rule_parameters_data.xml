@@ -522,5 +522,73 @@
             <field name="date_from" eval="datetime(2020, 12, 1).date()"/>
         </record>
 
+        <!-- Holiday Pay - PP Rates -->
+        <record id="rule_parameter_holiday_pay_rates" model="hr.rule.parameter">
+            <field name="name">Holiday Pay: Withholding Taxes Rates</field>
+            <field name="code">holiday_pay_pp_rates</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_holiday_pay_rates_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (    0.00,       8660.00,  0.00),
+    ( 8660.01,      11075.00, 19.17),
+    (11075.01,      14090.00, 21.20),
+    (14090.01,      16890.00, 26.25),
+    (16890.01,      19110.00, 31.30),
+    (19110.01,      21350.00, 34.33),
+    (21350.01,      25800.00, 36.34),
+    (25800.01,      28080.00, 39.37),
+    (28080.01,      37180.00, 42.39),
+    (37180.01,      48550.00, 47.44),
+    (48550.00,  999999999.00, 53.50)
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rates"/>
+            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+        </record>
+
+        <!-- Holiday Pay - PP Exoneration -->
+        <record id="rule_parameter_holiday_pay_exoneration" model="hr.rule.parameter">
+            <field name="name">Holiday Pay: Withholding Taxes Exoneration</field>
+            <field name="code">holiday_pay_pp_exoneration</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_holiday_pay_exoneration_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">{
+    1: 13643.00,
+    2: 17060.00,
+    3: 22320.00,
+    4: 28190.00,
+    5: 34060.00,
+    6: 39930.00,
+    7: 45800.00,
+    8: 51670.00,
+    9: 57540.00,
+    10: 63410.00,
+    11: 69280.00,
+    12: 75150.00,
+}</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_exoneration"/>
+            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+        </record>
+
+        <!-- Holiday Pay - PP rate reduction -->
+        <record id="rule_parameter_holiday_pay_rate_reduction" model="hr.rule.parameter">
+            <field name="name">Holiday Pay: Withholding Taxes Rate Reduction</field>
+            <field name="code">holiday_pay_pp_rate_reduction</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_holiday_pay_rate_reduction_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">{
+    1: (7.5, 23460.00),
+    2: (20.0, 23460.00),
+    3: (35.0, 25810.00),
+    4: (55.0, 30500.00),
+    5: (75.0, 32850.00),
+}</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rate_reduction"/>
+            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+        </record>
+
     </data>
 </odoo>

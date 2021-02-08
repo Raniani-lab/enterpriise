@@ -8,7 +8,7 @@
         <field name="type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="country_id" ref="base.be"/>
         <field name="report_id" ref="hr_payroll.action_report_payslip"/>
-        <field name="payslip_name">Certificate Relating To Annual Holidays For The Civil Year Ending The Contract Of Employment</field>
+        <field name="payslip_name">Holiday Pay (N Year)</field>
         <field name="use_worked_day_lines" eval="False"/>
     </record>
 
@@ -30,6 +30,13 @@
     <record id="cp200_other_input_time_off_taken" model="hr.payslip.input.type">
         <field name="name">Time off already taken</field>
         <field name="code">TIME_OFF_TAKEN</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
+    </record>
+
+    <record id="cp200_other_input_annual_taxable_amount" model="hr.payslip.input.type">
+        <field name="name">Annual Taxable Amount</field>
+        <field name="code">ANNUAL_TAXABLE</field>
         <field name="country_id" ref="base.be"/>
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
     </record>
@@ -104,8 +111,8 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
 
     <record id="cp200_employees_termination_n_rules_onss_termination" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_onss"/>
-        <field name="name">Social contribution</field>
-        <field name="code">ONSS</field>
+        <field name="name">ONSS (Simple Holiday)</field>
+        <field name="code">ONSS1</field>
         <field name="sequence">10</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result=not contract.no_onss</field>
@@ -118,15 +125,28 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
 
     <record id="cp200_employees_termination_n_rules_special_contribution_termination" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_onss"/>
-        <field name="name">Special Social contribution</field>
-        <field name="code">M_ONSS</field>
+        <field name="name">ONSS (Double Holiday)</field>
+        <field name="code">ONSS2</field>
         <field name="sequence">11</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.TERMINAISON_DOUBLE
+result = result_rules['PAY DOUBLE']['total']
 result_rate = -13.07
-result_qty = 6.8/7.67
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
+    </record>
+
+    <record id="cp200_employees_termination_n_rules_special_contribution_onss_total" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_onss_total"/>
+        <field name="name">ONSS (TOTAL)</field>
+        <field name="code">ONSSTOTAL</field>
+        <field name="sequence">15</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="amount_python_compute">
+result = - result_rules['ONSS1']['total'] - result_rules['ONSS2']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
@@ -135,11 +155,11 @@ result_qty = 6.8/7.67
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">Taxable Termination Amount</field>
         <field name="code">TAXABLE</field>
-        <field name="sequence">12</field>
+        <field name="sequence">20</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASIC + ONSS + M_ONSS
+result = BASIC + ONSS1 + ONSS2
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
@@ -148,12 +168,27 @@ result = BASIC + ONSS + M_ONSS
         <field name="category_id" ref="hr_payroll_head_onss"/>
         <field name="name">Professional Tax</field>
         <field name="code">PROF_TAX</field>
-        <field name="sequence">13</field>
+        <field name="sequence">25</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = TAXABLE
-result_rate = -36.34
+result_rate = - compute_termination_withholding_rate(payslip, categories, worked_days, inputs)
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
+    </record>
+
+    <record id="cp200_employees_termination_n_rules_withholding_taxes_total" model="hr.salary.rule">
+        <field name="category_id" ref="hr_salary_rule_category_withholding_taxes_total"/>
+        <field name="name">Withholding Taxes (Total)</field>
+        <field name="code">PPTOTAL</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">26</field>
+        <field name="condition_select">none</field>
+        <field name="appears_on_payslip" eval="False"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = abs(result_rules['PROF_TAX']['total'])
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>
@@ -162,7 +197,7 @@ result_rate = -36.34
         <field name="category_id" ref="hr_payroll.NET"/>
         <field name="name">Net</field>
         <field name="code">NET</field>
-        <field name="sequence">14</field>
+        <field name="sequence">30</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">

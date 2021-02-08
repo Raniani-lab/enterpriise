@@ -3,9 +3,9 @@
 <template id="report_termination_holidays_n">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
-            <t t-call="web.internal_layout">
+            <t t-call="web.external_layout">
                 <div class="page">
-                    <h3 t-field="o.name"/>
+                    <h3>Certificate Relating To Annual Holidays For The Civil Year Ending The Contract Of Employment</h3>
 
                     <h4 class="text-center">
                         <span>Holiday exercise </span><span t-esc="o.date_to.year"/>
@@ -60,8 +60,10 @@
                     <t t-set="total_annual" t-value="0" />
                     <t t-set="total" t-value="0" />
                     <h6>
-                        <span>Actual and similar remuneration for the period from </span><span t-field="o.date_from"/>
-                        <span>to </span><span t-field="o.date_to"/> <span>included:</span>
+                        <t t-set="period_from" t-value="o.employee_id.first_contract_in_company if not o.employee_id.end_notice_period else max(o.employee_id.first_contract_in_company, o.employee_id.end_notice_period.replace(month=1, day=1))"/>
+                        <t t-set="period_to" t-value="o.employee_id.end_notice_period"/>
+                        <span>Actual and similar remuneration for the period from </span><span t-esc="period_from"/>
+                        <span>to </span><span t-esc="period_to"/> <span>included:</span>
                     </h6>
 
                     <table class="table table-sm table-bordered">
@@ -74,7 +76,7 @@
                         </tbody>
                     </table>
 
-                    <h6>Holiday pay to receive:</h6>
+                    <h6>Holiday pay details:</h6>
 
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -137,9 +139,9 @@
 <template id="report_termination_holidays_n1">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
-            <t t-call="web.internal_layout">
+            <t t-call="web.external_layout">
                 <div class="page">
-                    <h3 t-field="o.name"/>
+                    <h3>Certificate Relating To Annual Vacations For The Calendar Year Preceding The End Of The Contract Of Employment</h3>
 
                     <h4 class="text-center">
                         <span>Holiday exercise </span><span t-esc="o.date_to.year"/>
@@ -194,8 +196,10 @@
                     <t t-set="total_annual" t-value="0" />
                     <t t-set="total" t-value="0" />
                     <h6>
-                        <span>Actual and similar remuneration for the period from </span><span t-field="o.date_from"/>
-                        <span>to </span><span t-field="o.date_to"/><span> included:</span>
+                        <t t-set="period_from" t-value="o.employee_id.first_contract_in_company if not o.employee_id.end_notice_period else max(o.employee_id.first_contract_in_company, (o.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=1, day=1))"/>
+                        <t t-set="period_to" t-value="o.employee_id.first_contract_in_company if not o.employee_id.end_notice_period else max(o.employee_id.first_contract_in_company, (o.employee_id.end_notice_period + relativedelta(years=-1)).replace(month=12, day=31))"/>
+                        <span>Actual and similar remuneration for the period from </span><span t-esc="period_from"/>
+                        <span>to </span><span t-esc="period_to"/><span> included:</span>
                     </h6>
 
                     <table class="table table-sm table-bordered">
@@ -213,10 +217,14 @@
                                 <td>Right to time off</td>
                                 <td><span t-esc="o.input_line_ids.filtered(lambda line: line.code == 'ALLOCATION').amount"/></td>
                             </tr>
+                            <tr>
+                                <td>Working Schedule</td>
+                                <td><span><t t-esc="o.contract_id.resource_calendar_id.hours_per_week"/> / <t t-esc="o.contract_id.resource_calendar_id.full_time_required_hours"/> Hours / Week</span></td>
+                            </tr>
                         </tbody>
                     </table>
 
-                    <h6>Holiday pay to receive:</h6>
+                    <h6>Holiday pay details:</h6>
 
                     <table class="table table-sm table-bordered">
                         <tbody>

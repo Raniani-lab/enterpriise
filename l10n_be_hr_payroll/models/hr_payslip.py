@@ -299,6 +299,7 @@ class Payslip(models.Model):
             'compute_special_social_cotisations_commissions': compute_special_social_cotisations_commissions,
             'compute_employment_bonus_employees_commissions': compute_employment_bonus_employees_commissions,
             'compute_withholding_reduction_commissions': compute_withholding_reduction_commissions,
+            'compute_termination_withholding_rate': compute_termination_withholding_rate,
             'EMPLOYER_ONSS': EMPLOYER_ONSS,
         })
         return res
@@ -395,7 +396,9 @@ class Payslip(models.Model):
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
             struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
-            if self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+            # YTI TO FIX: This is not based on the experience on the company but on the 
+            # number of allowed legal time off 
+            if False and self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
                 return self._get_paid_double_holiday()
         return super()._get_paid_amount()
 
@@ -517,6 +520,28 @@ class Payslip(models.Model):
         remaining_payslips = self - commissions_payslips
         return result + sum(abs(p._get_salary_line_total('GROSS')) for p in remaining_payslips)
 
+def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
+    if not inputs.ANNUAL_TAXABLE:
+        return 0
+    annual_taxable = inputs.ANNUAL_TAXABLE.amount
+    # Exoneration for children in charge
+    children = payslip.contract_id.employee_id.dependent_children
+    scale = payslip.rule_parameter('holiday_pay_pp_exoneration')
+    if children and children in scale and annual_taxable <= scale[children]:
+        return 0
+
+    rates = payslip.rule_parameter('holiday_pay_pp_rates')
+    for low, high, rate in rates:
+        if low <= annual_taxable <= high:
+            pp_rate = rate
+            break
+
+    # Reduction for children in charge
+    scale = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+    if children and children in scale and annual_taxable <= scale[children][1]:
+        pp_rate -= scale[children][0]
+
+    return pp_rate
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 

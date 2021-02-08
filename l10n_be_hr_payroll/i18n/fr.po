@@ -1797,8 +1797,8 @@ msgstr "A le salaire d’attachement"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n1
-msgid "Holiday pay to receive:"
-msgstr "Salaire de vacances à recevoir :"
+msgid "Holiday pay details:"
+msgstr "Détail du pécule de vacances:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__km_home_work
@@ -3142,7 +3142,7 @@ msgstr "Congés alloués au cours de l’année en cours"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n1
 msgid "Time off already taken"
-msgstr "Temps libre déjà pris"
+msgstr "Nombre de jours de vacances déjà pris"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_holiday_attests__time_off_taken

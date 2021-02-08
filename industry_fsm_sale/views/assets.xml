@@ -6,6 +6,8 @@
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/fsm_product_quantity.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/model.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/controller.js"></script>
+            <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/renderer.js"></script>
+            <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/record.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/kanban_view/view.js"></script>
             <script type="text/javascript" src="/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js"></script>
         </xpath>

@@ -35,7 +35,6 @@
                                 <field name="fsm_quantity" widget="fsm_product_quantity"/>
                             </div>
                         </div>
-                        <button type="object" class="col-12 h-100 w-100 o_button_invisible" name="fsm_add_quantity" invisible="context.get('hide_qty_buttons')"/>
                     </div>
                 </t>
             </templates>

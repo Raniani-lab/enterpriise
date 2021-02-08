@@ -30,6 +30,7 @@ const FSMProductQty = FieldInteger.extend({
         this.isReadonly = !!record.context.hide_qty_buttons;
         this.mode = 'readonly';
         this.muteRemoveQuantityButton = false;
+        this.exitEditMode = false; // use to know when the user exits the edit mode.
     },
 
     /**
@@ -124,6 +125,7 @@ const FSMProductQty = FieldInteger.extend({
         }
 
         if (!this.isReadonly) {
+            this.exitEditMode = false;
             this.mode = 'edit';
             this._renderEdit();
         }
@@ -202,6 +204,7 @@ const FSMProductQty = FieldInteger.extend({
             this.removeInvalidClass();
             if (this.mode !== 'readonly') {
                 this.mode = 'readonly';
+                this.exitEditMode = true;
                 this._renderReadonly();
             }
         } catch ({ message }) {
@@ -267,6 +270,7 @@ const FSMProductQty = FieldInteger.extend({
     _render: function () {
         // We force to readonly because we manage the edit mode only in this widget and not with the kanban view.
         this.mode = 'readonly';
+        this.exitEditMode = false;
         this.muteRemoveQuantityButton = this.record.data.hasOwnProperty('quantity_decreasable') && !this.record.data.quantity_decreasable;
         this._super.apply(this, arguments);
     },

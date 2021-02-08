@@ -569,7 +569,7 @@ var GanttRow = Widget.extend({
         function getSlotStyle(cellPart, subSlotUnavailabilities, isToday) {
             function color(d) {
                 if (isToday) {
-                    return d ? '#f4f3ed' : '#fffaeb';
+                    return d ? '#e9ecef' : '#fffaeb';
                 }
                 return d ? '#e9ecef' : '#ffffff';
             }

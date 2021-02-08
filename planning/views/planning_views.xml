@@ -150,7 +150,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='shift_templates']" position="replace">
-                <group>
+                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}">
                     <label for="template_id" class="oe_edit_only"/>
                     <div class="o_row">
                         <field name="template_id" nolabel="1" class="text-break flex-wrap"

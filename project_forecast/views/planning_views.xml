@@ -31,7 +31,7 @@
                             Please, update the privacy settings of the project accordingly.</dd>
                     </dl>
                 </span>
-                <field name="task_id" context="{'default_project_id': project_id}" attrs="{'invisible': [('project_id', '=', False)]}"  widget="task_with_hours"/>
+                <field name="task_id" context="{'default_project_id': project_id, 'default_allow_forecast': True}" widget="task_with_hours"/>
             </xpath>
             <xpath expr="//field[@name='allocated_hours']" position="after">
                 <field name="allow_forecast" invisible="1"/>

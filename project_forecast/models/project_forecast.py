@@ -26,11 +26,11 @@ class PlanningShift(models.Model):
     project_id = fields.Many2one(
         'project.project', string="Project", compute='_compute_project_id', store=True,
         readonly=False, copy=True, check_company=True, group_expand='_read_group_project_id',
-        domain="[('company_id', '=', company_id),""('allow_forecast', '=', True)]")
+        domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]")
     task_id = fields.Many2one(
         'project.task', string="Task", compute='_compute_task_id', store=True, readonly=False,
         copy=True, check_company=True, group_expand='_read_group_task_id',
-        domain="[('company_id', '=', company_id),""('project_id', '=?', project_id)]")
+        domain="[('company_id', '=', company_id), ('project_id', '=?', project_id), ('allow_forecast', '=', True)]")
     planned_hours = fields.Float("Initially Planned Hours", related="task_id.planned_hours")
     allow_forecast = fields.Boolean(related="project_id.allow_forecast")
     forecast_hours = fields.Float("Forecast Hours", compute='_compute_forecast_hours', help="Number of hours already forecast for this task (and its sub-tasks).")

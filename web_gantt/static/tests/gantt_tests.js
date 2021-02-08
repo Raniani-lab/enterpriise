@@ -3285,7 +3285,7 @@ QUnit.module('Views', {
         assert.deepEqual([...todayCells].map(c => c.getAttribute('style')), [
             null,
             "height: 0px;", // a css rule fix a minimal height
-            "height: 31px; background: linear-gradient(90deg, #f4f3ed 49%, #fffaeb 50%);"
+            "height: 31px; background: linear-gradient(90deg, #e9ecef 49%, #fffaeb 50%);"
         ]);
         assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgba(0, 0, 0, 0)");
 
@@ -3378,7 +3378,7 @@ QUnit.module('Views', {
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #f4f3ed 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
         const cell6 = cells[5];
         assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
         const cell7 = cells[6];
@@ -3495,7 +3495,7 @@ QUnit.module('Views', {
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #f4f3ed 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 95px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
         const cell6 = cells[5];
         assert.hasAttrValue(cell6, 'style', 'height: 95px; background: #e9ecef');
         const cell7 = cells[6];

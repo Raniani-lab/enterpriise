@@ -235,8 +235,8 @@ class L10nARVatBook(models.AbstractModel):
             doc_number = re.sub("[^0-9]", "", doc_number)
         elif partner.l10n_ar_afip_responsibility_type_id.code == '9':
             commercial_partner = partner.commercial_partner_id
-            doc_number = partner.l10n_ar_vat or commercial_partner.country_id.l10n_ar_legal_entity_vat \
-                if commercial_partner.is_company else commercial_partner.country_id.l10n_ar_natural_vat
+            doc_number = partner.l10n_ar_vat or (commercial_partner.country_id.l10n_ar_legal_entity_vat \
+                if commercial_partner.is_company else commercial_partner.country_id.l10n_ar_natural_vat)
             doc_code = '80'
         else:
             doc_number = partner.ensure_vat()

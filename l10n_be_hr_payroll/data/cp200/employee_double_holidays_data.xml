@@ -15,6 +15,14 @@
         <!-- Salary Rules -->
 
         <!-- 92% of monthly gross salary -->
+        <function model="hr.salary.rule" name="write">
+            <value model="hr.salary.rule" search="[
+                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
+                ('code', '=', 'BASIC')]"/>
+            <value eval="{
+                'amount_python_compute': 'result = payslip.paid_amount\nresult_rate = 92'}"/>
+        </function>
+
         <record id="cp200_employees_double_holiday_pay_basic" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_dp"/>
             <field name="name">Double Holiday Pay</field>
@@ -23,6 +31,7 @@
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.BASIC * 0.92</field>
+            <field name="active" eval="False"/>  <!-- YTI RULE TO REMOVE IN MASTER -->
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
         </record>
 
@@ -93,7 +102,7 @@ if contract.internet:
     result += result_rules['ATN.INT']['total']
 if contract.mobile:
     result += result_rules['ATN.MOB']['total']
-result = result * 0.85
+result = result / 0.92 * 0.85
             </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
@@ -165,7 +174,7 @@ result = result * 0.85
             <value model="hr.salary.rule" search="[
                 ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
                 ('code', '=', 'GROSS')]"/>
-            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW - (categories.ONSS * contract.ip_wage_rate / 100.0 if contract.ip else 0)', 'sequence': '101'}"/>
+            <value eval="{'amount_python_compute': 'result = BASIC + categories.ALW - (categories.ONSS * contract.ip_wage_rate / 100.0 if contract.ip else 0)', 'sequence': '101'}"/>
         </function>
 
         <record id="cp200_employees_double_holiday_pay_p_p" model="hr.salary.rule">
@@ -253,7 +262,7 @@ if contract.mobile:
             <value model="hr.salary.rule" search="[
                 ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
                 ('code', '=', 'NET')]"/>
-            <value eval="{'amount_python_compute': 'result = categories.DP + categories.ALW + categories.DED', 'sequence': '201'}"/>
+            <value eval="{'amount_python_compute': 'result = BASIC + categories.ALW + categories.DED', 'sequence': '201'}"/>
         </function>
 
         <record id="cp200_employees_double_holiday_salary_attachment_salary" model="hr.salary.rule">

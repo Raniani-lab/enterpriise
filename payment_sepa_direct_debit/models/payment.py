@@ -107,6 +107,12 @@ class PaymentAcquirerSepaDirectDebit(models.Model):
         if not data.get('mandate_id'):
             iban = sanitize_account_number(data['iban'])
 
+            same_iban_acc = self.env['res.partner.bank'].search([
+                ('sanitized_acc_number', '=', iban),
+                ('company_id', '=', self.env.company.id)],limit=1)
+            if same_iban_acc:
+                raise ValidationError(_("This account is not available. Please log in to continue."))
+
             # will raise a ValidationError given an invalid format
             validate_iban(iban)
 

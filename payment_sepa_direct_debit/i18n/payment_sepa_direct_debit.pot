@@ -528,6 +528,12 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
+msgid "This account is not available. Please log in to continue."
+msgstr ""
+
+#. module: payment_sepa_direct_debit
+#: code:addons/payment_sepa_direct_debit/models/payment.py:0
+#, python-format
 msgid "The bank account of the payment journal must be a valid IBAN."
 msgstr ""
 

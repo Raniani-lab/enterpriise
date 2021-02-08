@@ -235,6 +235,20 @@ class AccountBatchPayment(models.Model):
                 'help': _("Only posted and draft payments are allowed.")
             })
 
+        sent_payments = self.payment_ids.filtered(lambda x: x.is_move_sent)
+        if sent_payments:
+            rslt.append({
+                'title': _("Some payments have already been sent."),
+                'records': sent_payments,
+            })
+
+        bank_reconciled_payments = self.payment_ids.filtered(lambda x: x.is_matched)
+        if bank_reconciled_payments:
+            rslt.append({
+                'title': _("Some payments have already been matched with a bank statement."),
+                'records': bank_reconciled_payments,
+            })
+
         return rslt
 
     def _check_and_post_draft_payments(self, draft_payments):

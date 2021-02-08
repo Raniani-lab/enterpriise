@@ -134,7 +134,7 @@
                 All
             </t>
         </button>
-        <div class="dropdown-menu o_filter_menu" role="menu">
+        <div class="o_dropdown_menu dropdown-menu o_filter_menu" role="menu">
             <t t-foreach="options['journals']" t-as="j">
                 <t t-if="j.get('id') == 'divider'">
                     <div role="separator" class="dropdown-divider"/>

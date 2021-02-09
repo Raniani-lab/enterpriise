@@ -392,7 +392,8 @@ textarea.o_sign_sign_item {
 @media (max-width: 767px) { /* @screen-xs-max */
     .o_sign_sign_item_navigator {
         width: 100%;
-        top: 32px !important;
+        top: initial !important;
+        bottom: 0;
         z-index: 9999;
         line-height: 25px;
         height: 35px;
@@ -400,6 +401,7 @@ textarea.o_sign_sign_item {
         font-size: 0.8em;
         background-image: none;
         background-color: #875A7B;
+        box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
         text-align: center;
     }
     .o_sign_sign_item_navline {

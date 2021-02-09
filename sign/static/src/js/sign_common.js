@@ -1525,6 +1525,30 @@ odoo.define('sign.document_signing', function (require) {
                     });
                 }
 
+                if (config.device.isMobile && ['text', 'textarea'].includes(type.item_type)) {
+                    const inputBottomSheet = new InputBottomSheet(self, {
+                        type: type.item_type,
+                        value: $signatureItem.val(),
+                        label: `${type.tip}: ${type.placeholder}`,
+                        placeholder: $signatureItem.attr('placeholder'),
+                        onTextChange: (value) => {
+                            $signatureItem.val(value);
+                        },
+                        onValidate: (value) => {
+                            $signatureItem.val(value);
+                            $signatureItem.trigger('input');
+                            inputBottomSheet.hide();
+                            this.signatureItemNav.goToNextSignItem();
+                        },
+                    });
+                    inputBottomSheet.appendTo(document.body);
+
+                    $signatureItem.on('focus', () => {
+                        inputBottomSheet.updateInputText($signatureItem.val());
+                        inputBottomSheet.show();
+                    });
+                }
+
                 $signatureItem.on('input', function(e) {
                     self.checkSignItemsCompletion(self.role);
                     self.signatureItemNav.setTip(_t('next'));
@@ -1549,7 +1573,77 @@ odoo.define('sign.document_signing', function (require) {
             return $toComplete;
         },
     });
+    var InputBottomSheet = Widget.extend({
+        events: {
+            'blur .o_sign_item_bottom_sheet_field': '_onBlurField',
+            'keyup .o_sign_item_bottom_sheet_field': '_onKeyUpField',
+            'click .o_sign_next_button': '_onClickNext',
+        },
+        template: 'sign.item_bottom_sheet',
 
+        init(parent, options) {
+            this._super(...arguments);
+
+            this.type = options.type || 'text';
+            this.placeholder = options.placeholder || '';
+            this.label = options.label || this.placeholder;
+            this.value = options.value || '';
+            this.buttonText = options.buttonText || _t('next');
+            this.onTextChange = options.onTextChange || function () {};
+            this.onValidate = options.onValidate || function () {};
+        },
+
+        updateInputText(text) {
+            this.value = text;
+            this.el.querySelector('.o_sign_item_bottom_sheet_field').value = text;
+            this._toggleButton();
+        },
+
+        show() {
+            // hide previous bottom sheet
+            const bottomSheet = document.querySelector('.o_sign_item_bottom_sheet.show');
+            if (bottomSheet) {
+                bottomSheet.classList.remove('show');
+            }
+
+            this._toggleButton();
+            this.el.style.display = 'block';
+            setTimeout(() => this.el.classList.add('show'));
+            this.el.querySelector('.o_sign_item_bottom_sheet_field').focus();
+        },
+
+        hide() {
+            this.el.classList.remove('show');
+            this.el.addEventListener('transitionend', () => this.el.style.display = 'none', {once: true});
+        },
+
+        _toggleButton() {
+            const buttonNext = this.el.querySelector('.o_sign_next_button');
+            if (this.value.length) {
+                buttonNext.removeAttribute('disabled');
+            } else {
+                buttonNext.setAttribute('disabled', 'disabled');
+            }
+        },
+
+        _updateText() {
+            this.value = this.el.querySelector('.o_sign_item_bottom_sheet_field').value;
+            this.onTextChange(this.value);
+            this._toggleButton();
+        },
+
+        _onBlurField() {
+            this._updateText();
+        },
+
+        _onClickNext() {
+            this.onValidate(this.value);
+        },
+
+        _onKeyUpField() {
+            this._updateText();
+        },
+    });
     var SignableDocument = Document.extend({
         events: {
             'pdfToComplete .o_sign_pdf_iframe': function(e) {

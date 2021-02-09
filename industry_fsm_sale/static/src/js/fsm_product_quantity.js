@@ -161,7 +161,7 @@ const FSMProductQty = FieldInteger.extend({
     _onKeyPress: function (e) {
         e.stopPropagation();
         if (e.key.length === 1) { // then it is a character
-            if (!/[0-9]/.test(e.key)) { // if the key is not a number then bypass it.
+            if (!/[0-9]/.test(e.key) || (!this._getSelectedText() && e.target.innerText.length >= 9)) { // if the key is not a number then bypass it.
                 e.preventDefault();
             }
         }
@@ -173,6 +173,7 @@ const FSMProductQty = FieldInteger.extend({
      * @override
      */
     _onInput: function () {
+        this._formatFSMQuantity();
         if (this.hasOwnProperty('range')) {
             this._removeFSMQuantitySelection();
         }
@@ -211,6 +212,15 @@ const FSMProductQty = FieldInteger.extend({
             this.do_warn(false, _t(message));
             this.setInvalidClass();
         }
+    },
+
+    /**
+     * Format fsm quantity span based on the number of digits
+     *
+     * If the number of digits is greater than 5 then the font size is reduced.
+     */
+    _formatFSMQuantity: function () {
+        this.$fsmQuantityElement.toggleClass('small', this.$fsmQuantityElement.text().length > 5);
     },
 
     /**
@@ -273,6 +283,7 @@ const FSMProductQty = FieldInteger.extend({
         this.exitEditMode = false;
         this.muteRemoveQuantityButton = this.record.data.hasOwnProperty('quantity_decreasable') && !this.record.data.quantity_decreasable;
         this._super.apply(this, arguments);
+        this._formatFSMQuantity();
     },
 
     _renderButtons: function () {

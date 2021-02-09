@@ -208,6 +208,33 @@ QUnit.module('industry_fsm_sale', {}, function () {
         assert.strictEqual($firstFsmQuantitySpan.text(), '42', "The content of the span tag should be 12 units of product quantity.");
         kanban.destroy();
     });
+
+    QUnit.test('fsm_product_quantity: when the user edits and enters more than 5 digits, a class should be added to the active span.', async function (assert) {
+        assert.expect(10);
+
+        const kanban = await createView(this.kanban);
+
+        assert.containsN(kanban, '.o_fsm_industry_product', 3, "The number of kanban record should be equal to 3 records.");
+        let $firstFsmQuantitySpan = kanban.$('.o_fsm_industry_product:nth(0) span[name="fsm_quantity"]');
+        assert.strictEqual($firstFsmQuantitySpan.text(), '0', "The product quantity should be equal to 0.");
+        assert.strictEqual($firstFsmQuantitySpan.prop('contenteditable'), 'false', "The product quantity should not be editable.");
+        assert.doesNotHaveClass($firstFsmQuantitySpan, 'small', "The product quantity should not have this class.");
+
+        $firstFsmQuantitySpan.click();
+        assert.strictEqual($firstFsmQuantitySpan.prop('contenteditable'), 'true', "The product quantity should be editable.");
+
+        document.execCommand('insertText', false, '123456');
+
+        assert.hasClass($firstFsmQuantitySpan, 'small', "The font size of the product quantity should be smaller than before.");
+        const target = document.activeElement;
+        assert.strictEqual($firstFsmQuantitySpan[0], target, "The active element should be the first product quantity span tag.");
+        assert.strictEqual($firstFsmQuantitySpan.text(), '123456', "The content of the span tag should be 123456 units of product quantity.");
+        document.execCommand('delete');
+        assert.strictEqual($firstFsmQuantitySpan.text(), '12345', "The content of the span tag should be 12345 units of product quantity.");
+        assert.doesNotHaveClass($firstFsmQuantitySpan, 'small', "The product quantity should not have this class.");
+
+        kanban.destroy();
+    });
 });
 
 });

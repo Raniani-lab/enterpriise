@@ -105,16 +105,27 @@ class assets_report(models.AbstractModel):
                     return self._get_account_group_with_company(account_code_short, company_id, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
         return (parent_group or [account_code_short]) + [account_string]
 
+    def _get_rate_cached(self, from_currency, to_currency, company, date, cache):
+        if from_currency == to_currency:
+            return 1
+        key = (from_currency, to_currency, company, date)
+        if key not in cache:
+            cache[key] = self.env['res.currency']._get_conversion_rate(*key)
+        return cache[key]
+
     def _get_lines(self, options, line_id=None):
         options['self'] = self
         lines = []
         total = [0] * 9
         asset_lines = self._get_assets_lines(options)
+        curr_cache = {}
 
-        for company_asset_lines in groupby(asset_lines, key=lambda x: x['company_id']):
+        for company_id, company_asset_lines in groupby(asset_lines, key=lambda x: x['company_id']):
             parent_lines = []
             children_lines = defaultdict(list)
-            for al in company_asset_lines[1]:
+            company = self.env['res.company'].browse(company_id)
+            company_currency = company.currency_id
+            for al in company_asset_lines:
                 if al['parent_id']:
                     children_lines[al['parent_id']] += [al]
                 else:
@@ -127,13 +138,16 @@ class assets_report(models.AbstractModel):
                 else:
                     asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 
-                depreciation_opening = al['depreciated_start'] - al['depreciation']
-                depreciation_closing = al['depreciated_end']
+                al_currency = self.env['res.currency'].browse(al['asset_currency_id'])
+                al_rate = self._get_rate_cached(al_currency, company_currency, company, al['asset_acquisition_date'], curr_cache)
+
+                depreciation_opening = company_currency.round(al['depreciated_start'] * al_rate) - company_currency.round(al['depreciation'] * al_rate)
+                depreciation_closing = company_currency.round(al['depreciated_end'] * al_rate)
                 depreciation_minus = 0.0
 
                 opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-                asset_opening = al['asset_original_value'] if opening else 0.0
-                asset_add = 0.0 if opening else al['asset_original_value']
+                asset_opening = company_currency.round(al['asset_original_value'] * al_rate) if opening else 0.0
+                asset_add = 0.0 if opening else company_currency.round(al['asset_original_value'] * al_rate)
                 asset_minus = 0.0
 
                 if al['import_depreciated']:
@@ -143,12 +157,15 @@ class assets_report(models.AbstractModel):
                     depreciation_closing += al['import_depreciated']
 
                 for child in children_lines[al['asset_id']]:
-                    depreciation_opening += child['depreciated_start'] - child['depreciation']
-                    depreciation_closing += child['depreciated_end']
+                    child_currency = self.env['res.currency'].browse(child['asset_currency_id'])
+                    child_rate = self._get_rate_cached(child_currency, company_currency, company, child['asset_acquisition_date'], curr_cache)
+
+                    depreciation_opening += company_currency.round(child['depreciated_start'] * child_rate) - company_currency.round(child['depreciation'] * child_rate)
+                    depreciation_closing += company_currency.round(child['depreciated_end'] * child_rate)
 
                     opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-                    asset_opening += child['asset_original_value'] if opening else 0.0
-                    asset_add += 0.0 if opening else child['asset_original_value']
+                    asset_opening += company_currency.round(child['asset_original_value'] * child_rate) if opening else 0.0
+                    asset_add += 0.0 if opening else company_currency.round(child['asset_original_value'] * child_rate)
 
                 depreciation_add = depreciation_closing - depreciation_opening
                 asset_closing = asset_opening + asset_add
@@ -243,6 +260,7 @@ class assets_report(models.AbstractModel):
                        asset.parent_id as parent_id,
                        asset.name as asset_name,
                        asset.original_value as asset_original_value,
+                       asset.currency_id as asset_currency_id,
                        COALESCE(asset.first_depreciation_date_import, asset.first_depreciation_date) as asset_date,
                        asset.already_depreciated_amount_import as import_depreciated,
                        asset.disposal_date as asset_disposal_date,

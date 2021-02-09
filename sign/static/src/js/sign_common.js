@@ -422,13 +422,8 @@ odoo.define('sign.PDFIframe', function (require) {
 odoo.define('sign.Document', function (require) {
     'use strict';
 
-    var ajax = require('web.ajax');
-    var core = require('web.core');
-    var Dialog = require('web.Dialog');
     var PDFIframe = require('sign.PDFIframe');
     var Widget = require('web.Widget');
-
-    var _t = core._t;
 
     var Document = Widget.extend({
         start: function() {

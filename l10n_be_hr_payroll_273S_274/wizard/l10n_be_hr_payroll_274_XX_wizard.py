@@ -183,7 +183,6 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
 
         self.sheet_274_10_filename = filename
         self.sheet_274_10 = base64.encodebytes(export_274_sheet_pdf)
-        # YTI TODO: Bind to documents
         self.state = 'waiting'
         return {
             'type': 'ir.actions.act_window',

@@ -152,8 +152,8 @@ class HrPayslip(models.Model):
 
     def _compute_basic_net(self):
         for payslip in self:
-            payslip.basic_wage = payslip._get_salary_line_total('BASIC')
-            payslip.net_wage = payslip._get_salary_line_total('NET')
+            payslip.basic_wage = (payslip._origin or payslip)._get_salary_line_total('BASIC')
+            payslip.net_wage = (payslip._origin or payslip)._get_salary_line_total('NET')
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid')
     def _compute_worked_hours(self):

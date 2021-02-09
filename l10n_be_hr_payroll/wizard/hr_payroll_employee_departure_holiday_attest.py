@@ -15,69 +15,36 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def default_get(self, field_list=None):
         if self.env.company.country_id.code != "BE":
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
-        result = super().default_get(field_list)
-        if 'employee_id' not in result:
-            return result
-        employee_id = self.env['hr.employee'].browse(result['employee_id'])
-
-        if not employee_id.start_notice_period or not employee_id.end_notice_period:
-            raise UserError(_("Notice period not set for %s. Please, set the departure notice period first.", employee_id.name))
-
-        current_year = employee_id.end_notice_period.replace(month=1, day=1)
-        previous_year = current_year + relativedelta(years=-1)
-        next_year = current_year + relativedelta(years=+1)
-
-        structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-        structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
-        structure_double_holidays = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
-
-        payslip_n_ids = self.env['hr.payslip'].search([
-            ('employee_id', '=', employee_id.id),
-            ('date_to', '>=', current_year),
-            ('state', 'in', ['done', 'paid']),
-            ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
-        payslip_n1_ids = self.env['hr.payslip'].search([
-            ('employee_id', '=', employee_id.id),
-            ('date_to', '>=', previous_year),
-            ('date_from', '<', current_year),
-            ('state', 'in', ['done', 'paid']),
-            ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
-
-        result['payslip_n_ids'] = [(4, p.id) for p in payslip_n_ids]
-        result['payslip_n1_ids'] = [(4, p.id) for p in payslip_n1_ids]
-
-        time_off_n_ids = self.env['hr.leave'].search([
-            ('employee_id', '=', employee_id.id),
-            ('date_to', '>=', current_year),
-            ('date_from', '<', next_year),
-            ('state', '=', 'validate')])
-
-        time_off_allocation_n_ids = self.env['hr.leave.allocation'].search([
-            ('employee_id', '=', employee_id.id),
-            ('create_date', '>=', current_year),
-            ('state', '=', 'validate')])
-
-        result['time_off_n_ids'] = [(4, t.id) for t in time_off_n_ids]
-        result['time_off_allocation_n_ids'] = [(4, t.id) for t in time_off_allocation_n_ids]
-        return result
+        return super().default_get(field_list)
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=lambda self: self.env.context.get('active_id'))
 
-    payslip_n_ids = fields.Many2many('hr.payslip', string='Payslips N', store=False)
-    payslip_n1_ids = fields.Many2many('hr.payslip', string='Payslips N-1', store=False)
+    payslip_n_ids = fields.Many2many(
+        'hr.payslip', string='Payslips N',
+        compute='_compute_history', readonly=False, store=False)
+    payslip_n1_ids = fields.Many2many(
+        'hr.payslip', string='Payslips N-1',
+        compute='_compute_history', readonly=False, store=False)
 
-    net_n = fields.Monetary('Gross Annual Remuneration Current Year',
+    net_n = fields.Monetary(
+        'Gross Annual Remuneration Current Year',
         compute='_compute_net_n', store=True, readonly=False)
-    net_n1 = fields.Monetary('Gross Annual Remuneration Previous Year',
+    net_n1 = fields.Monetary(
+        'Gross Annual Remuneration Previous Year',
         compute='_compute_net_n1', store=True, readonly=False)
     currency_id = fields.Many2one(related='employee_id.contract_id.currency_id')
 
-    time_off_n_ids = fields.Many2many('hr.leave', string='Time Off N', store=False)
-    time_off_allocation_n_ids = fields.Many2many('hr.leave.allocation', string='Allocations N', store=False)
+    time_off_n_ids = fields.Many2many(
+        'hr.leave', string='Time Off N', compute='_compute_history', readonly=False, store=False)
+    time_off_allocation_n_ids = fields.Many2many(
+        'hr.leave.allocation', string='Allocations N',
+        compute='_compute_history', readonly=False, store=False)
 
-    time_off_taken = fields.Float('Time off taken during current year',
+    time_off_taken = fields.Float(
+        'Time off taken during current year',
         compute='_compute_time_off_taken', store=True, readonly=False)
-    time_off_allocated = fields.Float('Time off allocated during current year',
+    time_off_allocated = fields.Float(
+        'Time off allocated during current year',
         compute='_compute_time_off_allocated', store=True, readonly=False)
 
     unpaid_time_off_n = fields.Float('Days Unpaid time off current year', help="Number of days of unpaid time off taken during current year")
@@ -89,11 +56,62 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     fictitious_remuneration_n = fields.Monetary('Remuneration fictitious current year', compute='_compute_fictitious_remuneration_n')
     fictitious_remuneration_n1 = fields.Monetary('Remuneration fictitious previous year', compute='_compute_fictitious_remuneration_n1')
 
+    @api.depends('employee_id')
+    def _compute_history(self):
+        for record in self:
+            if record.employee_id and (not record.employee_id.start_notice_period or not record.employee_id.end_notice_period):
+                raise UserError(_("Notice period not set for %s. Please, set the departure notice period first.", record.employee_id.name))
+
+            if not record.employee_id:
+                record.update({
+                    'time_off_n_ids': [(5, 0, 0)],
+                    'time_off_allocation_n_ids': [(5, 0, 0)],
+                    'payslip_n_ids': [(5, 0, 0)],
+                    'payslip_n1_ids': [(5, 0, 0)],
+                })
+            else:
+                current_year = record.employee_id.end_notice_period.replace(month=1, day=1)
+                previous_year = current_year + relativedelta(years=-1)
+                next_year = current_year + relativedelta(years=+1)
+
+                structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+                structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+                structure_double_holidays = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
+
+                payslip_n_ids = self.env['hr.payslip'].search([
+                    ('employee_id', '=', record.employee_id.id),
+                    ('date_to', '>=', current_year),
+                    ('state', 'in', ['done', 'paid']),
+                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
+                payslip_n1_ids = self.env['hr.payslip'].search([
+                    ('employee_id', '=', record.employee_id.id),
+                    ('date_to', '>=', previous_year),
+                    ('date_from', '<', current_year),
+                    ('state', 'in', ['done', 'paid']),
+                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
+
+                record.payslip_n_ids = [(4, p._origin.id) for p in payslip_n_ids]
+                record.payslip_n1_ids = [(4, p._origin.id) for p in payslip_n1_ids]
+
+                time_off_n_ids = self.env['hr.leave'].search([
+                    ('employee_id', '=', record.employee_id.id),
+                    ('date_to', '>=', current_year),
+                    ('date_from', '<', next_year),
+                    ('state', '=', 'validate')])
+
+                time_off_allocation_n_ids = self.env['hr.leave.allocation'].search([
+                    ('employee_id', '=', record.employee_id.id),
+                    ('create_date', '>=', current_year),
+                    ('state', '=', 'validate')])
+
+                record.time_off_n_ids = [(4, t.id) for t in time_off_n_ids]
+                record.time_off_allocation_n_ids = [(4, t.id) for t in time_off_allocation_n_ids]
+
     @api.depends('payslip_n_ids')
     def _compute_net_n(self):
         for wizard in self:
             if wizard.payslip_n_ids:
-                wizard.net_n = sum(p.basic_wage + p._get_salary_line_total('COMMISSION') for p in wizard.payslip_n_ids)
+                wizard.net_n = sum(p._origin.basic_wage + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n_ids)
             else:
                 wizard.net_n = 0
 
@@ -101,7 +119,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n1(self):
         for wizard in self:
             if wizard.payslip_n1_ids:
-                wizard.net_n1 = sum(p.basic_wage + p._get_salary_line_total('COMMISSION') for p in wizard.payslip_n1_ids)
+                wizard.net_n1 = sum(p._origin.basic_wage + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n1_ids)
             else:
                 wizard.net_n1 = 0
 

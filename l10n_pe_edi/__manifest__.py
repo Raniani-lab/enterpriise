@@ -26,7 +26,7 @@ We support sending and cancelling of customer invoices.
         'l10n_latam_invoice_document',
         'product_unspsc',
         'account_debit_note',
-        'account_edi_extended',
+        'account_edi',
     ],
     "data": [
         'security/ir.model.access.csv',

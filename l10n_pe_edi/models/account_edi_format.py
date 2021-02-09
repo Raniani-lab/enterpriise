@@ -562,7 +562,7 @@ class AccountEdiFormat(models.Model):
         # OVERRIDE
         return self.code == 'pe_ubl_2_1' or super()._needs_web_services()
 
-    def _support_batching(self, move=None, state=None, company=None):
+    def _support_batching(self, move, state, company):
         # OVERRIDE
         if self.code == 'pe_ubl_2_1':
             return state == 'to_cancel' and move.is_invoice()

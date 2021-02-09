@@ -196,6 +196,7 @@
 
         <template id="assets_followup_report">
             <t t-call="web._assets_helpers"/>
+            <link rel="stylesheet" type="text/scss" href="/web/static/lib/bootstrap/scss/_variables.scss"/>
             <t t-call="web._assets_bootstrap"/>
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/fonts.scss"/>
             <link rel="stylesheet" type="text/scss" href="/account_followup/static/src/scss/account_followup_letter.scss" />

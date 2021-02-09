@@ -86,6 +86,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/views/view_editors/search_editor.js"></script>
 
         <t t-call="web._assets_helpers"/>
+        <link rel="stylesheet" type="text/scss" href="/web/static/lib/bootstrap/scss/_variables.scss"/>
         <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/main.scss"/>
         <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/icons.scss"/>
         <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/mixins.scss"/>
@@ -130,6 +131,7 @@
     <!-- Reports -->
     <template id="web_studio.report_assets" name="Web Studio Report Assets">
         <t t-call="web._assets_helpers"/>
+        <link rel="stylesheet" type="text/scss" href="/web/static/lib/bootstrap/scss/_variables.scss"/>
         <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/report_iframe.scss"/>
     </template>
 

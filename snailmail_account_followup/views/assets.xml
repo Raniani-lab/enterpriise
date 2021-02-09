@@ -9,6 +9,7 @@
     </template>
     <template id="followup_report_assets_snailmail">
         <t t-call="web._assets_helpers"/>
+        <link rel="stylesheet" type="text/scss" href="/web/static/lib/bootstrap/scss/_variables.scss"/>
         <link rel="stylesheet" type="text/scss" href="/snailmail_account_followup/static/src/scss/snailmail_account_followup_asset.scss"/>
     </template>
     <template id="report_layout" inherit_id="web.report_layout">

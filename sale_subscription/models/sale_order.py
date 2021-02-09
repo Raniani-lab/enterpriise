@@ -190,6 +190,7 @@ class SaleOrderLine(models.Model):
             previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
             if self.order_id.subscription_management != 'upsell':  # renewal or creation: one entire period
                 date_start = previous_date
+                date_start_display = previous_date
                 date_end = next_date - relativedelta(days=1)  # the period does not include the next renewal date
             else:  # upsell: pro-rated period
                 # here we have a slight problem: the date used to compute the pro-rated discount
@@ -200,6 +201,7 @@ class SaleOrderLine(models.Model):
                 total_days = (next_date - previous_date).days
                 days = round((1 - self.discount / 100.0) * total_days)
                 date_start = next_date - relativedelta(days=days+1)
+                date_start_display = next_date - relativedelta(days=days)
                 date_end = next_date - relativedelta(days=1)
 
             lang = self.order_id.partner_invoice_id.lang
@@ -207,7 +209,7 @@ class SaleOrderLine(models.Model):
             # Ugly workaround to display the description in the correct language
             if lang:
                 self = self.with_context(lang=lang)
-            period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(date_start), {}), format_date(fields.Date.to_string(date_end), {}))
+            period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(date_start_display), {}), format_date(fields.Date.to_string(date_end), {}))
             res.update({
                     'name': res['name'] + '\n' + period_msg,
                     'subscription_start_date': date_start,

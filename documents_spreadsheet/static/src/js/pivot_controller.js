@@ -99,7 +99,10 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                 evalContext: { env: this.renderer.env },
             });
             if (!isNewModel) {
-                model.dispatch("CREATE_SHEET", { activate: true, sheetId: uuidv4() });
+                model.dispatch("CREATE_SHEET", {
+                    sheetId: uuidv4(),
+                    position: model.getters.getSheets().length,
+                });
             }
             return model;
         },

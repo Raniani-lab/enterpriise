@@ -638,6 +638,55 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 pivot.destroy();
             });
 
+            QUnit.test("Add pivot sheet at the end of existing spreadsheet", async function (
+                assert
+            ) {
+                assert.expect(3);
+                const existingModel = new Model();
+                existingModel.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: async function (route, args) {
+                        if (args.method === "search_read" && args.model === "ir.model") {
+                            return [{ name: "partner" }];
+                        }
+                        if (args.method === "search_read" && args.model === "documents.document") {
+                            return [{ raw: JSON.stringify(existingModel.exportData()) }];
+                        }
+                        if (route.includes("get_spreadsheets_to_display")) {
+                            return [{ id: 1, name: "My Spreadsheet" }];
+                        }
+                        if (args.method === "write" && args.model === "documents.document") {
+                            const data = JSON.parse(args.args[1].raw);
+                            assert.deepEqual(
+                                data.sheets.map((sheet) => sheet.name),
+                                ["Sheet1", "Sheet2", "Sheet3"]
+                            );
+                            assert.step("write");
+                            return;
+                        }
+                        return this._super.apply(this, arguments);
+                    },
+                    session: { user_has_group: async () => true },
+                });
+                await testUtils.nextTick();
+                await testUtils.dom.click(pivot.$el.find(".o_pivot_add_spreadsheet"));
+                await testUtils.dom.click($(document.body.querySelector(".modal-content select")));
+                document.body
+                    .querySelector(".modal-content option[value='1']")
+                    .setAttribute("selected", "selected");
+                await testUtils.nextTick();
+                await testUtils.modal.clickButton("Confirm");
+                assert.verifySteps(["write"]);
+                pivot.destroy();
+            });
+
             QUnit.test("Autofill pivot values", async function (assert) {
                 assert.expect(26);
 

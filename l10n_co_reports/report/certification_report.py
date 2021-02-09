@@ -78,7 +78,7 @@ class ReportCertificationReport(models.AbstractModel):
         return bimonth_names[bimonth_index]
 
     def _get_domain(self, options):
-        common_domain = [('partner_id', '!=', False)]
+        common_domain = [('partner_id', '!=', False), ('parent_state', 'not in', ('draft', 'cancel'))]
         if options.get('partner_id'):
             common_domain += [('partner_id.id', '=', options.get('partner_id'))]
         if options.get('date'):

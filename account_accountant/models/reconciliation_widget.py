@@ -76,11 +76,16 @@ class AccountReconciliation(models.AbstractModel):
         trailing_query, trailing_params = self._get_trailing_query(statement_line, limit=limit, offset=offset)
 
         self._cr.execute(query + trailing_query, params + trailing_params)
-        move_lines = self.env['account.move.line'].browse(res['id'] for res in self._cr.dictfetchall())
+        results = self._cr.dictfetchall()
+        if results:
+            recs_count = results[0].get('full_count', 0)
+        else:
+            recs_count = 0
+        move_lines = self.env['account.move.line'].browse(res['id'] for res in results)
 
         js_vals_list = []
         for line in move_lines:
-            js_vals_list.append(self._prepare_js_reconciliation_widget_move_line(statement_line, line))
+            js_vals_list.append(self._prepare_js_reconciliation_widget_move_line(statement_line, line, recs_count=recs_count))
         return js_vals_list
 
     @api.model
@@ -625,8 +630,9 @@ class AccountReconciliation(models.AbstractModel):
         query_1, params_1 = self._get_query_reconciliation_widget_liquidity_lines(statement_line, domain=domain)
         query_2, params_2 = self._get_query_reconciliation_widget_receivable_payable_lines(statement_line, domain=domain)
 
+        # Using 'count(*) OVER()' to get total count despite the limit of query.
         query = '''
-            SELECT *
+            SELECT *, count(*) OVER() AS full_count
             FROM (
                 ''' + query_1 + '''
 
@@ -664,7 +670,7 @@ class AccountReconciliation(models.AbstractModel):
         return query, where_params
 
     @api.model
-    def _prepare_js_reconciliation_widget_move_line(self, statement_line, line):
+    def _prepare_js_reconciliation_widget_move_line(self, statement_line, line, recs_count=0):
         def format_name(line):
             if (line.name or '/') == '/':
                 line_name = line.move_id.name
@@ -719,6 +725,7 @@ class AccountReconciliation(models.AbstractModel):
             'amount_currency_str': amount_currency_str,
             'total_amount_currency_str': total_amount_currency_str,
             'total_amount_str': total_amount_str,
+            'recs_count': recs_count,
         }
 
         return js_vals

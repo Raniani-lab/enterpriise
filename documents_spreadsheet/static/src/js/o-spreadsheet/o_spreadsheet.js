@@ -12918,7 +12918,7 @@
                     if (mainCellCol == cmd.originCol && mainCellRow == cmd.originRow) {
                         this.pasteMerge(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.originSheet, cmd.sheetId, cmd.cut);
                     }
-                    this.pasteCell(cmd.originSheet, cmd.origin, cmd.originBorder, cmd.col, cmd.row, cmd.onlyValue, cmd.onlyFormat);
+                    this.pasteCell(cmd.originSheet, cmd.origin, cmd.originBorder, cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.onlyValue, cmd.onlyFormat);
                     break;
                 case "PASTE_FROM_OS_CLIPBOARD":
                     this.pasteFromClipboard(cmd.target, cmd.text);
@@ -13206,7 +13206,7 @@
                 });
             }
         }
-        pasteCell(originSheet, origin, originBorder, col, row, onlyValue, onlyFormat) {
+        pasteCell(originSheet, origin, originBorder, originCol, originRow, col, row, onlyValue, onlyFormat) {
             const sheetId = this.getters.getActiveSheetId();
             const targetCell = this.getters.getCell(sheetId, col, row);
             if (!onlyValue || onlyFormat) {
@@ -13224,9 +13224,8 @@
                     }
                 }
                 else if (!onlyFormat && origin.type === CellType.formula) {
-                    const position = this.getters.getCellPosition(origin.id);
-                    const offsetX = col - position.col;
-                    const offsetY = row - position.row;
+                    const offsetX = col - originCol;
+                    const offsetY = row - originRow;
                     // TODO: replace with range specific stuff
                     content = this.getters.applyOffset(sheetId, content, offsetX, offsetY);
                 }
@@ -21216,9 +21215,11 @@
     exports.registries = registries$1;
     exports.setTranslationMethod = setTranslationMethod;
 
+    Object.defineProperty(exports, '__esModule', { value: true });
+
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-02-02T08:44:56.609Z';
-    exports.__info__.hash = 'af3bf5a';
+    exports.__info__.date = '2021-02-10T07:57:10.942Z';
+    exports.__info__.hash = 'cbc83d2';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

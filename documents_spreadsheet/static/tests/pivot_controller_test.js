@@ -94,6 +94,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                             bar: { string: "bar", type: "boolean", store: true, sortable: true },
                             name: { string: "name", type: "char", store: true, sortable: true },
                             date: { string: "Date", type: "date", store: true, sortable: true },
+                            active: { string: "Active", type: "bool", default: true },
                             product_id: {
                                 string: "Product",
                                 type: "many2one",
@@ -145,6 +146,7 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                     product: {
                         fields: {
                             name: { string: "Product Name", type: "char" },
+                            active: { string: "Active", type: "bool", default: true },
                         },
                         records: [
                             {
@@ -1839,6 +1841,49 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 await reinsertPivot.action(env);
                 await testUtils.nextTick();
                 assert.equal(getCellContent(model, "B6"), getCellContent(model, "B1"));
+                actionManager.destroy();
+            });
+
+            QUnit.test("group by related field with archived record", async function (assert) {
+                assert.expect(3);
+
+                this.data["product"].records[0].active = false;
+                const [actionManager, model,] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="product_id" type="col"/>
+                        <field name="name" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
+                assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
+                assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER("1")`);
+                actionManager.destroy();
+            });
+
+            QUnit.test("group by regular field with archived record", async function (assert) {
+                assert.expect(4);
+
+                this.data["partner"].records[0].active = false;
+                const [actionManager, model,] = await createSpreadsheetFromPivot({
+                    model: "partner",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Partners">
+                        <field name="product_id" type="col"/>
+                        <field name="foo" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                assert.equal(getCellContent(model, "A3"), `=PIVOT.HEADER("1","foo","1")`);
+                assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","2")`);
+                assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","foo","17")`);
+                assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER("1")`);
                 actionManager.destroy();
             });
         }

@@ -406,7 +406,7 @@
         const records = await rpc({
             model: field.relation ? field.relation : model,
             domain: [[requestField, "in", values]],
-            context,
+            context: Object.assign({}, context, { active_test: false }),
             method: "search_read",
             fields: [requestField],
             // orderby is omitted for relational fields on purpose to have the default order of the model

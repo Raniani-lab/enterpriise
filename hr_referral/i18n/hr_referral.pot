@@ -1404,6 +1404,12 @@ msgid "Welcome Onboarding in Referral App"
 msgstr ""
 
 #. module: hr_referral
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid "You are not allowed to access applicant records."
+msgstr ""
+
+#. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
 msgid ""

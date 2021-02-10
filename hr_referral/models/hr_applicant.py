@@ -5,7 +5,7 @@ import json
 from werkzeug.urls import url_encode
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 from odoo.osv import expression
 
 
@@ -37,16 +37,21 @@ class Applicant(models.Model):
         for applicant in self:
             applicant.source_id = applicant.ref_user_id.utm_source_id
 
+    def _check_referral_fields_access(self, fields):
+        referral_fields = {'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
+                           'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update'}
+        if not self.user_has_groups('hr_recruitment.group_hr_recruitment_user'):
+            if set(fields or []) - referral_fields:
+                raise AccessError(_('You are not allowed to access applicant records.'))
+
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
-        if not self.check_access_rights('read', False):
-            referral_fields = {
-                'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
-                'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update'}
-            if not set(fields or []) - referral_fields and self.env.user:
-                domain = expression.AND([domain, [('ref_user_id', '=', self.env.user.id)]])
-                return super(Applicant, self.sudo()).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+        self._check_referral_fields_access(fields)
         return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+
+    def read(self, fields, load='_classic_read'):
+        self._check_referral_fields_access(fields)
+        return super().read(fields, load)
 
     @api.depends('referral_points_ids')
     def _compute_shared_item_infos(self):

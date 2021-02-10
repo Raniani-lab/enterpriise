@@ -42,9 +42,14 @@ class Document(models.Model):
 
     @api.model
     def get_spreadsheets_to_display(self):
-        Contrib = self.env['spreadsheet.contributor']
-        contribs = Contrib.search([('user_id', '=', self.env.user.id)], order='last_update_date desc')
+        Contrib = self.env["spreadsheet.contributor"]
+        visible_docs = self.search([("handler", "=", "spreadsheet")])
+        contribs = Contrib.search(
+            [
+                ("document_id", "in", visible_docs.ids),
+                ("user_id", "=", self.env.user.id),
+            ], order="last_update_date desc"
+        )
         user_docs = contribs.document_id
-        visible_docs = self.search([('handler', '=', 'spreadsheet')])
         # keep only visible docs, but preserve order of contribs
-        return (user_docs & visible_docs).read(['name'])
+        return (user_docs | visible_docs).read(["name"])

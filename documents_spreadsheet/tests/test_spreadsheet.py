@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import base64
 
-from odoo.fields import Date, Datetime
+from freezegun import freeze_time
+
 from odoo.exceptions import AccessError
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase, new_test_user
@@ -36,6 +37,66 @@ class SpreadsheetDocuments(TransactionCase):
         self.assertTrue(document.id in spreadsheet_ids, "It should contain the new document")
         self.assertFalse(archived_document.id in spreadsheet_ids, "It should not contain the archived document")
 
+    def test_spreadsheet_to_display_create_order(self):
+        with freeze_time('2020-02-02 18:00'):
+            spreadsheet1 = self.env["documents.document"].create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        with freeze_time('2020-02-15 18:00'):
+            spreadsheet2 = self.env["documents.document"].create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
+        # import pdb; pdb.set_trace()
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet2.id, spreadsheet1.id])
+
+    def test_spreadsheet_to_display_write_order(self):
+        with freeze_time('2020-02-02 18:00'):
+            spreadsheet1 = self.env["documents.document"].create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        with freeze_time('2020-02-15 18:00'):
+            spreadsheet2 = self.env["documents.document"].create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        spreadsheet1.raw = "data"
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
+
+    def test_spreadsheet_to_display_without_contrib(self):
+        user = new_test_user(self.env, login="Jean", groups="documents.group_documents_user")
+        with freeze_time('2020-02-02 18:00'):
+            spreadsheet1 = self.env["documents.document"].with_user(user).create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        with freeze_time('2020-02-15 18:00'):
+            spreadsheet2 = self.env["documents.document"].create({
+                "raw": r"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            })
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
+
     def test_spreadsheet_to_display_access_portal(self):
         portal = new_test_user(self.env, "Test user", groups='base.group_portal')
         with self.assertRaises(AccessError, msg="A portal user should not be able to read spreadsheet"):
@@ -53,6 +114,12 @@ class SpreadsheetDocuments(TransactionCase):
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
         })
+        visible_doc = self.env["documents.document"].with_user(user).create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
         # archive existing record rules which might allow access (disjunction between record rules)
         record_rules = self.env['ir.rule'].search([
             ('model_id', '=', model.id),
@@ -62,11 +129,11 @@ class SpreadsheetDocuments(TransactionCase):
             'name': 'test record rule',
             'model_id': model.id,
             'groups': [(4, group.id)],
-            'domain_force': "[('id', '=', -9999)]", # always rejects
+            'domain_force': f"[('id', '=', {visible_doc.id})]",  # always rejects
         })
 
         spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
-        self.assertNotIn(manager_doc.id, [s['id'] for s in spreadsheets], "filtering issue")
+        self.assertEqual([s['id'] for s in spreadsheets], [visible_doc.id], "filtering issue")
 
         with self.assertRaises(AccessError, msg="record rule should have raised"):
             manager_doc.with_user(user).raw = '{}'
@@ -134,7 +201,7 @@ class SpreadsheetDocuments(TransactionCase):
         document.with_user(user).write({
             "raw": r"{}"
         })
-        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id),("document_id", "=", document.id)])
+        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id), ("document_id", "=", document.id)])
         self.assertEqual(len(contributor), 1, "The contribution should be registered")
 
     def test_contributor_move_workspace(self):
@@ -149,5 +216,5 @@ class SpreadsheetDocuments(TransactionCase):
         document.with_user(user).write({
             "folder_id": new_folder.id
         })
-        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id),("document_id", "=", document.id)])
+        contributor = self.env["spreadsheet.contributor"].search([("user_id", "=", user.id), ("document_id", "=", document.id)])
         self.assertEqual(len(contributor), 0, "The contribution should not be registered")

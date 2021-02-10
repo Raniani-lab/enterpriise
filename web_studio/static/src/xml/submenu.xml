@@ -155,6 +155,7 @@
                 <a
                     data-name="dashboard"
                     href="#"
+                    title="Dashboard View"
                     t-if="_.contains(widget.active_view_types, 'dashboard')"><i class="fa fa-tachometer"/></a>
                 <a
                     aria-label="Cohort View"

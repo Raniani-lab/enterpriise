@@ -6633,6 +6633,51 @@ QUnit.module('ViewEditorManager', {
 
         vem.destroy();
     });
+
+    QUnit.test('existing field section should be unfolded by default in kanban', async function (assert) {
+        assert.expect(2);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_kanban_record">
+                                <field name="display_name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+
+        await testUtils.dom.click(vem.el.querySelector('.o_web_studio_new'));
+        assert.hasClass(vem.el.querySelector('.o_web_studio_existing_fields_icon'), 'fa-caret-down',
+            "should have a existing fields unfolded");
+        assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "the existing fields section should be visible");
+
+        vem.destroy();
+    });
+
+    QUnit.test('existing field section should be unfolded by default in search', async function (assert) {
+        assert.expect(2);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: `<search>
+                    <field name='display_name'/>
+                </search>`,
+        });
+
+        assert.hasClass(vem.el.querySelector('.o_web_studio_existing_fields_icon'), 'fa-caret-down',
+            "should have a existing fields unfolded");
+        assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
+            "the existing fields section should be visible");
+
+        vem.destroy();
+    });
 });
 });
 

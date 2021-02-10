@@ -169,9 +169,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
 
         this._searchValue = '';
         this._isSearchValueActive = false;
-        this._isExistingFieldFolded = '_isExistingFieldFolded' in this.previousState ?
-                                      this.previousState._isExistingFieldFolded :
-                                      true;
+        if (['kanban', 'search'].includes(this.view_type)) {
+            this._isExistingFieldFolded = false;
+        } else if ('_isExistingFieldFolded' in this.previousState) {
+            this._isExistingFieldFolded = this.previousState._isExistingFieldFolded;
+        } else {
+            this._isExistingFieldFolded = true;
+        }
 
         const Widget = this.state.attrs.Widget;
         this.widgetKey = this._getWidgetKey(Widget);

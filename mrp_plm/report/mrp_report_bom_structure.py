@@ -9,7 +9,8 @@ class ReportBomStructure(models.AbstractModel):
     def _get_bom(self, bom_id=False, product_id=False, line_qty=False, line_id=False, level=False):
         res = super(ReportBomStructure, self)._get_bom(bom_id, product_id, line_qty, line_id, level)
         res['version'] = res['bom'] and res['bom'].version or ''
-        res['ecos'] = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', res['product'].product_tmpl_id.id), ('state', '!=', 'done')]) or ''
+        product_tmpl_id = (res['product'] and res['product'].product_tmpl_id.id) or (res['bom'] and res['product'].product_tmpl_id.id)
+        res['ecos'] = self.env['mrp.eco'].search_count([('product_tmpl_id', '=', product_tmpl_id), ('state', '!=', 'done')]) or ''
         return res
 
     def _add_version_and_ecos(self, components):

@@ -113,13 +113,13 @@ odoo.define('timesheet_grid.GridModel', function (require) {
          * @param employeesGridData employees data gathered from the grid.
          * @param {String} start the range start data
          * @param {String} end the range end date
-         * @returns {Promise<null|*>}
+         * @returns {Promise<object|*>}
          */
         async fetchAllTimesheetM2OAvatarData(employeesGridData, start, end) {
 
             // If there is no data, we don't bother
             if (employeesGridData.length === 0) {
-                return null;
+                return {};
             }
 
             const hoursData = await this._rpc({

@@ -69,12 +69,13 @@ odoo.define('web_mobile.OwlDialog', function (require) {
 
 const OwlDialog = require('web.OwlDialog');
 const { useBackButton } = require('web_mobile.hooks');
+const { patch } = require('web.utils');
 
-OwlDialog.patch('web_mobile', T => class extends T {
-    constructor() {
-        super(...arguments);
+patch(OwlDialog.prototype, 'web_mobile', {
+    setup() {
+        this._super(...arguments);
         useBackButton(this._onBackButton.bind(this));
-    }
+    },
 
     //---------------------------------------------------------------------
     // Handlers
@@ -86,7 +87,7 @@ OwlDialog.patch('web_mobile', T => class extends T {
      */
     _onBackButton() {
         this._close();
-    }
+    },
 });
 
 });
@@ -96,12 +97,13 @@ odoo.define('web_mobile.Popover', function (require) {
 
 const Popover = require('web.Popover');
 const { useBackButton } = require('web_mobile.hooks');
+const { patch } = require('web.utils');
 
-Popover.patch('web_mobile', T => class extends T {
-    constructor() {
-        super(...arguments);
+patch(Popover.prototype, 'web_mobile', {
+    setup() {
+        this._super(...arguments);
         useBackButton(this._onBackButton.bind(this), () => this.state.displayed);
-    }
+    },
 
     //---------------------------------------------------------------------
     // Handlers
@@ -113,7 +115,7 @@ Popover.patch('web_mobile', T => class extends T {
      */
     _onBackButton() {
         this._close();
-    }
+    },
 });
 
 });
@@ -129,12 +131,13 @@ if (!device.isMobile) {
 
 const ControlPanel = require('web.ControlPanel');
 const { useBackButton } = require('web_mobile.hooks');
+const { patch } = require('web.utils');
 
-ControlPanel.patch('web_mobile', T => class extends T {
-    constructor() {
-        super(...arguments);
+patch(ControlPanel.prototype, 'web_mobile', {
+    setup() {
+        this._super(...arguments);
         useBackButton(this._onBackButton.bind(this), () => this.state.showMobileSearch);
-    }
+    },
 
     //---------------------------------------------------------------------
     // Handlers
@@ -146,7 +149,7 @@ ControlPanel.patch('web_mobile', T => class extends T {
      */
     _onBackButton() {
         this._resetSearchState();
-    }
+    },
 });
 
 });

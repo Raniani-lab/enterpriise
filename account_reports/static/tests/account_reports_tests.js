@@ -3,6 +3,7 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
 
     const ControlPanel = require('web.ControlPanel');
     const testUtils = require("web.test_utils");
+    const { patch, unpatch } = require("web.utils");
 
     const { createActionManager, dom } = testUtils;
 
@@ -13,20 +14,18 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
 
             let mountCount = 0;
 
-            ControlPanel.patch('test.ControlPanel', T => {
-                class ControlPanelPatchTest extends T {
-                    mounted() {
-                        mountCount = mountCount + 1;
-                        this.__uniqueId = mountCount;
-                        assert.step(`mounted ${this.__uniqueId}`);
-                        super.mounted(...arguments);
-                    }
-                    willUnmount() {
-                        assert.step(`willUnmount ${this.__uniqueId}`);
-                        super.mounted(...arguments);
-                    }
+            patch(ControlPanel.prototype, 'test.ControlPanel', {
+                mounted() {
+                    mountCount = mountCount + 1;
+                    this.__uniqueId = mountCount;
+                    assert.step(`mounted ${this.__uniqueId}`);
+                    this.__superMounted = this._super.bind(this);
+                    this.__superMounted(...arguments);
+                },
+                willUnmount() {
+                    assert.step(`willUnmount ${this.__uniqueId}`);
+                    this.__superMounted(...arguments);
                 }
-                return ControlPanelPatchTest;
             });
 
             const actionManager = await createActionManager({
@@ -92,7 +91,7 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                 'willUnmount 3',
             ]);
 
-            ControlPanel.unpatch('test.ControlPanel');
+            unpatch(ControlPanel.prototype, 'test.ControlPanel');
         });
     });
 

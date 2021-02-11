@@ -3,6 +3,7 @@ odoo.define("web.SearchPanelMobile", function (require) {
 
     const SearchPanel = require("web.searchPanel");
     const { device } = require("web.config");
+    const { patch } = require('web.utils');
 
     if (!device.isMobile) {
         return;
@@ -30,85 +31,80 @@ odoo.define("web.SearchPanelMobile", function (require) {
         return names;
     }
 
-    SearchPanel.patch("web_enterprise.SearchPanel.Mobile", (T) => {
+    patch(SearchPanel.prototype, "web_enterprise.SearchPanel.Mobile", {
+        setup() {
+            this._super(...arguments);
+            this.state.showMobileSearch = false;
+        },
+
+        //-----------------------------------------------------------------
+        // Private
+        //-----------------------------------------------------------------
+
         /**
-         * Search panel: mobile
-         * @extends SearchPanel
+         * Returns a formatted version of the active categories to populate
+         * the selection banner of the control panel summary.
+         * @private
+         * @returns {Object[]}
          */
-        class SearchPanelMobile extends T {
-
-            constructor() {
-                super(...arguments);
-
-                this.state.showMobileSearch = false;
-            }
-
-            //-----------------------------------------------------------------
-            // Private
-            //-----------------------------------------------------------------
-
-            /**
-             * Returns a formatted version of the active categories to populate
-             * the selection banner of the control panel summary.
-             * @private
-             * @returns {Object[]}
-             */
-            _getCategorySelection() {
-                const activeCategories = this.model.get("sections",
-                    (s) => s.type === "category" && s.activeValueId
+        _getCategorySelection() {
+            const activeCategories = this.model.get("sections",
+                (s) => s.type === "category" && s.activeValueId
+            );
+            const selection = [];
+            for (const category of activeCategories) {
+                const parentIds = this._getAncestorValueIds(
+                    category,
+                    category.activeValueId
                 );
-                const selection = [];
-                for (const category of activeCategories) {
-                    const parentIds = this._getAncestorValueIds(
-                        category,
-                        category.activeValueId
-                    );
-                    const orderedCategoryNames = [
-                        ...parentIds,
-                        category.activeValueId,
-                    ].map(
-                        (valueId) => category.values.get(valueId).display_name
-                    );
-                    selection.push({
-                        values: orderedCategoryNames,
-                        icon: category.icon,
-                        color: category.color,
-                    });
-                }
-                return selection;
+                const orderedCategoryNames = [
+                    ...parentIds,
+                    category.activeValueId,
+                ].map(
+                    (valueId) => category.values.get(valueId).display_name
+                );
+                selection.push({
+                    values: orderedCategoryNames,
+                    icon: category.icon,
+                    color: category.color,
+                });
             }
+            return selection;
+        },
 
-            /**
-             * Returns a formatted version of the active filters to populate
-             * the selection banner of the control panel summary.
-             * @private
-             * @returns {Object[]}
-             */
-            _getFilterSelection() {
-                const filters = this.model.get("sections", isFilter);
-                const selection = [];
-                for (const { groups, values, icon, color } of filters) {
-                    let filterValues;
-                    if (groups) {
-                        filterValues = Object.keys(groups)
-                            .map((groupId) =>
-                                nameOfCheckedValues(groups[groupId].values)
-                            )
-                            .flat();
-                    } else if (values) {
-                        filterValues = nameOfCheckedValues(values);
-                    }
-                    if (filterValues.length) {
-                        selection.push({ values: filterValues, icon, color });
-                    }
+        /**
+         * Returns a formatted version of the active filters to populate
+         * the selection banner of the control panel summary.
+         * @private
+         * @returns {Object[]}
+         */
+        _getFilterSelection() {
+            const filters = this.model.get("sections", isFilter);
+            const selection = [];
+            for (const { groups, values, icon, color } of filters) {
+                let filterValues;
+                if (groups) {
+                    filterValues = Object.keys(groups)
+                        .map((groupId) =>
+                            nameOfCheckedValues(groups[groupId].values)
+                        )
+                        .flat();
+                } else if (values) {
+                    filterValues = nameOfCheckedValues(values);
                 }
-                return selection;
+                if (filterValues.length) {
+                    selection.push({ values: filterValues, icon, color });
+                }
             }
-        }
+            return selection;
+        },
+    });
 
-        SearchPanelMobile.components.Portal = Portal;
-        SearchPanelMobile.template = "web_enterprise.SearchPanel.Mobile";
-
-        return SearchPanelMobile;
+    patch(SearchPanel, "web_enterprise.SearchPanel.Mobile", {
+        template: "web_enterprise.SearchPanel.Mobile",
+        components: {
+            ...SearchPanel.components,
+            Portal,
+        },
     });
 });

@@ -7,7 +7,7 @@ const components = {
 
 const { patch } = require('web.utils');
 
-patch(components.Activity, 'voip/static/src/components/activity/activity.js', {
+patch(components.Activity.prototype, 'voip/static/src/components/activity/activity.js', {
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------

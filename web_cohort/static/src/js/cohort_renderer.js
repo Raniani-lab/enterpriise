@@ -3,7 +3,6 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
 
     const OwlAbstractRenderer = require('web.AbstractRendererOwl');
     const field_utils = require('web.field_utils');
-    const patchMixin = require('web.patchMixin');
 
     class CohortRenderer extends OwlAbstractRenderer {
 
@@ -78,6 +77,6 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
 
     CohortRenderer.template = 'web_cohort.CohortRenderer';
 
-    return patchMixin(CohortRenderer);
+    return CohortRenderer;
 
 });

@@ -3,38 +3,35 @@ odoo.define('mail_enterprise/static/src/components/messaging_menu/messaging_menu
 const MessagingMenu = require('mail/static/src/components/messaging_menu/messaging_menu.js');
 
 const { useBackButton } = require('web_mobile.hooks');
+const { patch } = require('web.utils');
 
-MessagingMenu.patch('mail_enterprise/static/src/components/chat_window/chat_window.js', T =>
-    class extends T {
+patch(MessagingMenu.prototype, 'mail_enterprise/static/src/components/chat_window/chat_window.js', {
+    /**
+     * @override
+     */
+    _constructor() {
+        this._super(...arguments);
+        this._onBackButtonGlobal = this._onBackButtonGlobal.bind(this);
+        useBackButton(this._onBackButtonGlobal, () => this.messagingMenu && this.messagingMenu.isOpen);
+    },
 
-        /**
-         * @override
-         */
-        _constructor() {
-            super._constructor(...arguments);
-            this._onBackButtonGlobal = this._onBackButtonGlobal.bind(this);
-            useBackButton(this._onBackButtonGlobal, () => this.messagingMenu && this.messagingMenu.isOpen);
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * Handles the `backbutton` custom event. This event is triggered by the
+     * mobile app when the back button of the device is pressed.
+     *
+     * @private
+     * @param {CustomEvent} ev
+     */
+    _onBackButtonGlobal(ev) {
+        if (!this.messagingMenu) {
+            return;
         }
-
-        //--------------------------------------------------------------------------
-        // Handlers
-        //--------------------------------------------------------------------------
-
-        /**
-         * Handles the `backbutton` custom event. This event is triggered by the
-         * mobile app when the back button of the device is pressed.
-         *
-         * @private
-         * @param {CustomEvent} ev
-         */
-        _onBackButtonGlobal(ev) {
-            if (!this.messagingMenu) {
-                return;
-            }
-            this.messagingMenu.close();
-        }
-
-    }
-);
+        this.messagingMenu.close();
+    },
+});
 
 });

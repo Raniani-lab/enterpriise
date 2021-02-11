@@ -10,7 +10,7 @@ const { createComponent } = testUtils;
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_pdf_manager_tests.js', {
     beforeEach() {
-        utils.patch(PdfManager, 'documents_pdf_manager_tests', {
+        utils.patch(PdfManager.prototype, 'documents_pdf_manager_tests', {
             async _loadAssets() { },
             async _getPdf() {
                 return {
@@ -27,7 +27,7 @@ QUnit.module('documents_pdf_manager_tests.js', {
         });
     },
     afterEach() {
-        utils.unpatch(PdfManager, 'documents_pdf_manager_tests');
+        utils.unpatch(PdfManager.prototype, 'documents_pdf_manager_tests');
     },
 }, () => {
     QUnit.test('Pdf Manager basic rendering', async function (assert) {

@@ -51,7 +51,7 @@ class WebsiteCalendar(http.Controller):
     @http.route([
         '/calendar/<model("calendar.appointment.type"):appointment_type>',
     ], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_type(self, appointment_type, filter_employee_ids=None, timezone=None, failed=False, **kwargs):
+    def calendar_appointment_type(self, appointment_type, filter_employee_ids=None, timezone=None, state=False, **kwargs):
         """
         Render the appointment information alongside the calendar for the slot selection
 
@@ -59,8 +59,10 @@ class WebsiteCalendar(http.Controller):
         :param filter_employee_ids: the employees that will be displayed for the appointment registration, if not given
             all employees set for the appointment type are used
         :param timezone: the timezone used to display the available slots
-        :param failed: used when the appointment registration has failed and the user is redirected in the slot selection page
-        :param fitler_appointment_type_ids: see ``WebsiteCalendar.calendar_appointments()`` route
+        :param state: the type of message that will be displayed in case of an error/info. Possible values:
+            - cancel: Info message to confirm that an appointment has been canceled
+            - failed-employee: Error message displayed when the slot has been taken while doing the registration
+            - failed-partner: Info message displayed when the partner has already an event in the time slot selected
         """
         appointment_type = appointment_type.sudo()
         request.session['timezone'] = timezone or appointment_type.appointment_tz
@@ -76,7 +78,6 @@ class WebsiteCalendar(http.Controller):
 
         default_employee = suggested_employees[0] if suggested_employees else request.env['hr.employee']
         slots = appointment_type._get_appointment_slots(request.session['timezone'], default_employee)
-        message = kwargs.get('message')
         formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]
 
         return request.render("website_calendar.appointment_info", {
@@ -84,9 +85,8 @@ class WebsiteCalendar(http.Controller):
             'suggested_employees': suggested_employees,
             'main_object': appointment_type,
             'timezone': request.session['timezone'],
-            'failed': failed,
             'slots': slots,
-            'message': message,
+            'state': state,
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'formated_days': formated_days,
         })
@@ -147,13 +147,13 @@ class WebsiteCalendar(http.Controller):
             raise NotFound()
         if employee.user_id and employee.user_id.partner_id:
             if not employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/calendar/%s/appointment?failed=employee' % appointment_type.id)
+                return request.redirect('/calendar/%s/appointment?state=failed-employee' % appointment_type.id)
 
         visitor = request.env['website.visitor']._get_visitor_from_request()
         Partner = visitor.partner_id or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/calendar/%s/appointment?failed=partner' % appointment_type.id)
+                return request.redirect('/calendar/%s/appointment?state=failed-partner' % appointment_type.id)
             if not Partner.mobile:
                 Partner.write({'mobile': phone})
             if not Partner.email:
@@ -214,15 +214,15 @@ class WebsiteCalendar(http.Controller):
             'user_id': employee.user_id.id,
         })
         event.attendee_ids.write({'state': 'accepted'})
-        return request.redirect('/calendar/view/%s?%s' % (event.access_token, keep_query('*', message='new')))
+        return request.redirect('/calendar/view/%s?%s' % (event.access_token, keep_query('*', state='new')))
 
     @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
-    def calendar_appointment_view(self, access_token, message=False, **kwargs):
+    def calendar_appointment_view(self, access_token, state=False, **kwargs):
         """
         Render the validation of an appointment and display a summary of it
 
         :param access_token: the access_token of the event linked to the appointment
-        :param message: allow to display an info message, possible values:
+        :param state: allow to display an info message, possible values:
             - new: Info message displayed when the appointment has been correctly created
             - no-cancel: Info message displayed when an appointment can no longer be canceled
         """
@@ -266,7 +266,7 @@ class WebsiteCalendar(http.Controller):
             'event': event,
             'datetime_start': date_start,
             'google_url': google_url,
-            'message': message,
+            'state': state,
         })
 
     @http.route(['/calendar/cancel/<string:access_token>'], type='http', auth="public", website=True)
@@ -279,9 +279,9 @@ class WebsiteCalendar(http.Controller):
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
-            return request.redirect('/calendar/view/' + access_token + '?message=no-cancel')
+            return request.redirect('/calendar/view/' + access_token + '?state=no-cancel')
         event.with_context(archive_on_error=True).unlink()
-        return request.redirect('/calendar/%s/appointment?message=cancel' % slug(appointment_type))
+        return request.redirect('/calendar/%s/appointment?state=cancel' % slug(appointment_type))
 
     @http.route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
     def calendar_appointment_ics(self, access_token, **kwargs):

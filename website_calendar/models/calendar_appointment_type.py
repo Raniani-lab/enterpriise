@@ -52,7 +52,7 @@ class CalendarAppointmentType(models.Model):
         _tz_get, string='Timezone', required=True, default=lambda self: self.env.user.tz,
         help="Timezone where appointment take place")
     employee_ids = fields.Many2many('hr.employee', 'website_calendar_type_employee_rel', domain=[('user_id', '!=', False)], string='Employees')
-    assignation_method = fields.Selection([
+    assign_method = fields.Selection([
         ('random', 'Random'),
         ('chosen', 'Chosen by the Customer')], string='Assignment Method', default='random',
         help="How employees will be assigned to meetings customers book on your website.")

@@ -14,7 +14,7 @@ class WebsiteCalendarCRMTest(TestCrmCommon):
             "name": "Test Appointment",
             "appointment_duration": 1,
             "appointment_tz": "Europe/Brussels",
-            "assignation_method": "random",
+            "assign_method": "random",
             "max_schedule_days": 15,
             "min_cancellation_hours": 1,
             "min_schedule_hours": 1,

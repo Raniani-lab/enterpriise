@@ -71,7 +71,7 @@ class WebsiteCalendar(http.Controller):
         except json.decoder.JSONDecodeError:
             raise ValueError()
 
-        if appointment_type.assignation_method == 'chosen' and not filter_employee_ids:
+        if appointment_type.assign_method == 'chosen' and not filter_employee_ids:
             suggested_employees = appointment_type.employee_ids
         else:
             suggested_employees = appointment_type.employee_ids.filtered(lambda emp: emp.id in filter_employee_ids)

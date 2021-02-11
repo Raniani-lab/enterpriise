@@ -269,7 +269,10 @@ class WebsiteCalendar(http.Controller):
             'state': state,
         })
 
-    @http.route(['/calendar/cancel/<string:access_token>'], type='http', auth="public", website=True)
+    @http.route([
+        '/calendar/cancel/<string:access_token>',
+        '/calendar/<string:access_token>/cancel'
+    ], type='http', auth="public", website=True)
     def calendar_appointment_cancel(self, access_token, **kwargs):
         """
             Route to cancel an appointment event, this route is linked to a button in the validation page

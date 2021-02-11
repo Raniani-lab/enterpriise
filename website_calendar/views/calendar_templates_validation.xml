@@ -91,7 +91,7 @@
                             </a>
                         </div>
                         <div class="col-md-4 text-right">
-                            <a t-if="event.appointment_type_id" role="button" class="btn btn-danger btn-block" t-attf-href="/calendar/cancel/#{event.access_token}">
+                            <a t-if="event.appointment_type_id" role="button" class="btn btn-danger btn-block" t-attf-href="/calendar/#{event.access_token}/cancel">
                                 <i class="fa fa-fw fa-times"></i>Cancel / Reschedule
                             </a>
                         </div>

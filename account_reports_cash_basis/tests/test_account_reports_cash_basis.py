@@ -78,7 +78,7 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                              4,          5,          6],
             [
                 # Accounts.
-                ('101402 Bank',                 460.0,      0.0,        460.0),
+                ('101404 Bank',                 460.0,      0.0,        460.0),
                 ('121000 Account Receivable',   460.0,      460.0,      0.0),
                 ('400000 Product Sales',        0.0,        460.0,      -460.0),
                 # Report Total.

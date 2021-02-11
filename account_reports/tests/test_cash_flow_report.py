@@ -114,7 +114,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             0.0],
             ['Cash out',                                                            0.0],
             ['Cash and cash equivalents, closing balance',                          115.0],
-            ['101402 Bank',                                                         115.0],
+            ['101404 Bank',                                                         115.0],
             ['Total Cash and cash equivalents, closing balance',                    115.0],
         ])
 

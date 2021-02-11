@@ -123,11 +123,11 @@
 
         <menuitem
             name="Online Synchronization"
-            parent="account.account_account_menu"
+            parent="account.account_banks_menu"
             action="action_account_online_link_form"
             id="menu_action_online_link_account"
             groups="account.group_account_manager"
-            sequence="9"/>
+            sequence="4"/>
 
         <!-- Cron to synchronize transaction -->
         <record id="online_sync_cron" model="ir.cron">

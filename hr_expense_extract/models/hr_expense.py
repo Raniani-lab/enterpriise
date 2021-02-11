@@ -283,8 +283,15 @@ class HrExpense(models.Model):
                                 time.sleep(1)
                                 record._check_status()
 
+                    self.env['iap.account']._send_iap_bus_notification(
+                        service_name='invoice_ocr',
+                        title=_("Bill is Digitalized successfully"))
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
+                    self.env['iap.account']._send_iap_bus_notification(
+                        service_name='invoice_ocr',
+                        title=_("Not enough credits for Bill Digitalization"),
+                        error_type='credit')
                 else:
                     self.extract_state = 'error_status'
                     _logger.warning('There was an issue while doing the OCR operation on this file. Error: -1')

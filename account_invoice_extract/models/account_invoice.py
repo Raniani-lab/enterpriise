@@ -238,6 +238,9 @@ class AccountMove(models.Model):
                         self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
+                    self.env['iap.account']._send_iap_bus_notification(
+                        service_name='invoice_ocr',
+                        title=_lt("Bill is Digitalized successfully"))
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
@@ -254,6 +257,11 @@ class AccountMove(models.Model):
         Notify about the number of credit.
         In order to avoid to spam people each hour, an ir.config_parameter is set
         """
+        self.env['iap.account']._send_iap_bus_notification(
+            service_name='invoice_ocr',
+            title=_lt("Not enough credits for Bill Digitalization"),
+            error_type='credit')
+
         #If we don't find the config parameter, we consider it True, because we don't want to notify if no credits has been bought earlier.
         already_notified = self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True)
         if already_notified:

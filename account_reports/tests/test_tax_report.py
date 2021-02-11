@@ -328,6 +328,7 @@ class TestTaxReport(TestAccountReportsCommon):
         tax_31_5_line = self._create_tax_report_line('Tax 31.5%', tax_report, sequence=2, parent_line=tax_42_section, tag_name='tax_31_5')
         tax_10_5_line = self._create_tax_report_line('Tax 10.5%', tax_report, sequence=1, parent_line=tax_42_section, tag_name='tax_10_5')
         tax_11_line = self._create_tax_report_line('Tax 10.5%', tax_report, sequence=2, parent_line=tax_section, tag_name='tax_11', code='tax_11')
+        tax_neg_10_line = self._create_tax_report_line('Tax -10%', tax_report, sequence=3, parent_line=tax_section, tag_name='tax_neg_10', code='tax_neg_10')
         tax_difference_line = self._create_tax_report_line('Tax difference (42%-11%)', tax_report, sequence=3, formula='tax_42 - tax_11')
 
         # Create two taxes linked to report lines
@@ -389,6 +390,12 @@ class TestTaxReport(TestAccountReportsCommon):
                     'repartition_type': 'tax',
                     'plus_report_line_ids': [tax_31_5_line.id],
                 }),
+
+                (0,0, {
+                    'factor_percent': -10,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_neg_10_line.id],
+                }),
             ],
             'refund_repartition_line_ids': [
                 (0,0, {
@@ -407,6 +414,12 @@ class TestTaxReport(TestAccountReportsCommon):
                     'factor_percent': 75,
                     'repartition_type': 'tax',
                     'minus_report_line_ids': [tax_31_5_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': -10,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_neg_10_line.id],
                 }),
             ],
         })
@@ -460,11 +473,12 @@ class TestTaxReport(TestAccountReportsCommon):
                 (base_section.name,                 200),
                 (base_42_line.name,                 100),
                 (base_11_line.name,                 100),
-                (tax_section.name,                  53),
+                (tax_section.name,                  57.2),
                 (tax_42_section.name,               42),
                 (tax_10_5_line.name,                10.5),
                 (tax_31_5_line.name,                31.5),
                 (tax_11_line.name,                  11),
+                (tax_neg_10_line.name,              4.2),
                 (tax_difference_line.name,          31),
             ],
         )
@@ -490,6 +504,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 (tax_10_5_line.name,                0),
                 (tax_31_5_line.name,                0),
                 (tax_11_line.name,                  0),
+                (tax_neg_10_line.name,              0),
                 (tax_difference_line.name,          0),
             ],
         )

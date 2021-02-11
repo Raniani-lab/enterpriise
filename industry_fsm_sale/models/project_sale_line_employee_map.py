@@ -24,3 +24,10 @@ class ProjectProductEmployeeMap(models.Model):
             line.price_unit = line.timesheet_product_id.lst_price
             line.currency_id = line.timesheet_product_id.currency_id
         super(ProjectProductEmployeeMap, self - mappings_with_product_and_no_sol)._compute_price_unit()
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        if res.project_id.is_fsm and res.project_id.pricing_type == 'task_rate':
+            res.project_id.write({'pricing_type': 'employee_rate'})
+        return res

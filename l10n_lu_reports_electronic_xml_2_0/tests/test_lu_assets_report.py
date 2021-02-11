@@ -86,7 +86,8 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
             line_form.quantity = 10.0
             line_form.tax_ids.clear()
             line_form.tax_ids.add(self.tax_17)
-        move = move_form.save().action_post()
+        move = move_form.save()
+        move.action_post()
         report = self.env['account.assets.report']
         # Assets must be in a state different from draft in order to be reported
         for asset in move.asset_ids:
@@ -133,5 +134,6 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
                 line_form.tax_ids.clear()
                 for tax in move_line['taxes']:
                     line_form.tax_ids.add(tax)
-        move = move_form.save().action_post()
+        move = move_form.save()
+        move.action_post()
         return move

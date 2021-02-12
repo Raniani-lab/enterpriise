@@ -45,15 +45,23 @@ class Task(models.Model):
     @api.depends('sale_order_id.order_line.product_uom_qty', 'sale_order_id.order_line.price_total')
     def _compute_material_line_totals(self):
 
-        def if_fsm_material_line(sale_line_id, task):
+        def if_fsm_material_line(sale_line_id, task, employee_mapping_product_ids=None):
             is_not_timesheet_line = sale_line_id.product_id != task.timesheet_product_id
+            if employee_mapping_product_ids:  # Then we need to search the product in the employee mappings
+                is_not_timesheet_line = is_not_timesheet_line and sale_line_id.product_id.id not in employee_mapping_product_ids
             is_not_empty = sale_line_id.product_uom_qty != 0
             is_not_service_from_so = sale_line_id != task.sale_line_id
             is_task_related = sale_line_id.task_id == task
             return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so, is_task_related])
 
+        employee_mapping_timesheet_product_ids = defaultdict(lambda: set([]))  # keys = project_id, value = list of timesheet_product_id
+        fsm_tasks = self.filtered('is_fsm')
+        if fsm_tasks:
+            employee_mappings = self.env['project.sale.line.employee.map'].search([('project_id', 'in', fsm_tasks.mapped('project_id.id'))])
+            for mapping in employee_mappings:
+                employee_mapping_timesheet_product_ids[mapping.project_id.id].add(mapping.timesheet_product_id.id)
         for task in self:
-            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task))
+            material_sale_lines = task.sudo().sale_order_id.order_line.filtered(lambda sol: if_fsm_material_line(sol, task, employee_mapping_timesheet_product_ids[task.project_id.id]))
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
             task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
 

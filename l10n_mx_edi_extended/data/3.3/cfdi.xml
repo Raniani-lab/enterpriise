@@ -69,10 +69,10 @@
                                         t-att-Calle="format_string(ext_trade_delivery_partner.street_name or '') or None"
                                         t-att-NumeroExterior="format_string(ext_trade_delivery_partner.street_number or '') or None"
                                         t-att-NumeroInterior="format_string(ext_trade_delivery_partner.street_number2 or '') or None"
-                                        t-att-Colonia="format_string(ext_trade_delivery_partner.l10n_mx_edi_colony or '') or None"
-                                        t-att-Localidad="ext_trade_delivery_partner.l10n_mx_edi_locality"
-                                        t-att-Municipio="ext_trade_delivery_partner.city"
-                                        t-att-Estado="ext_trade_delivery_partner.state_id.code"
+                                        t-att-Colonia="ext_trade_delivery_partner.l10n_mx_edi_colony_code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else format_string(ext_trade_delivery_partner.l10n_mx_edi_colony or '') or None"
+                                        t-att-Localidad="ext_trade_delivery_partner.l10n_mx_edi_locality_id.code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else ext_trade_delivery_partner.l10n_mx_edi_locality"
+                                        t-att-Municipio="ext_trade_delivery_partner.city_id.l10n_mx_edi_code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else ext_trade_delivery_partner.city"
+                                        t-att-Estado="ext_trade_delivery_partner.state_id.code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or ext_trade_delivery_partner.state_id.code else 'NA'"
                                         t-att-Pais="ext_trade_delivery_partner.country_id.l10n_mx_edi_code"
                                         t-att-CodigoPostal="ext_trade_delivery_partner.zip"/>
                                 </cce11:Destinatario>

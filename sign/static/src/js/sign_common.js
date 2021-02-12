@@ -917,6 +917,10 @@ odoo.define('sign.document_signing', function (require) {
         },
 
         onClick: function(e) {
+            this.goToNextSignItem();
+        },
+
+        goToNextSignItem() {
             var self = this;
 
             if(!self.started) {
@@ -928,7 +932,7 @@ odoo.define('sign.document_signing', function (require) {
                         self.getParent().$iframe.prev().hide();
                         self.getParent().refreshSignItems();
 
-                        self.onClick();
+                        self.goToNextSignItem();
                     }
                 });
 
@@ -1421,7 +1425,7 @@ odoo.define('sign.document_signing', function (require) {
                         return true;
                     }
                     e.preventDefault();
-                    this.signatureItemNav.onClick();
+                    this.signatureItemNav.goToNextSignItem();
                 },
             });
         },

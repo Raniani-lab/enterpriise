@@ -178,6 +178,40 @@ class HrPayslip(models.Model):
     def action_payslip_draft(self):
         return self.write({'state': 'draft'})
 
+    def _get_pdf_reports(self):
+        self.ensure_one()
+        if not self.struct_id or not self.struct_id.report_id:
+            report = self.env.ref('hr_payroll.action_report_payslip', False)
+        else:
+            report = self.struct_id.report_id
+        return report
+
+    def _generate_pdf(self):
+        for payslip in self:
+            reports = payslip._get_pdf_reports()
+            for report in reports:
+                pdf_content, content_type = report.sudo()._render_qweb_pdf(payslip.id)
+                if report.print_report_name:
+                    pdf_name = safe_eval(report.print_report_name, {'object': payslip})
+                else:
+                    pdf_name = _("Payslip")
+                # Sudo to allow payroll managers to create document.document without access to the
+                # application
+                self.env['ir.attachment'].sudo().create({
+                    'name': pdf_name,
+                    'type': 'binary',
+                    'datas': base64.encodebytes(pdf_content),
+                    'res_model': payslip._name,
+                    'res_id': payslip.id
+                })
+            # Send email to employees
+            template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
+            if template:
+                template.send_mail(
+                    payslip.id,
+                    notif_layout='mail.mail_notification_light')
+
+
     def action_payslip_done(self):
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
@@ -195,34 +229,7 @@ class HrPayslip(models.Model):
             work_entries.action_validate()
 
         if self.env.context.get('payslip_generate_pdf'):
-            for payslip in self:
-                if not payslip.struct_id or not payslip.struct_id.report_id:
-                    report = self.env.ref('hr_payroll.action_report_payslip', False)
-                else:
-                    report = payslip.struct_id.report_id
-                pdf_content, content_type = report.sudo()._render_qweb_pdf(payslip.id)
-                if payslip.struct_id.report_id.print_report_name:
-                    pdf_name = safe_eval(payslip.struct_id.report_id.print_report_name, {'object': payslip})
-                else:
-                    pdf_name = _("Payslip")
-                # Sudo to allow payroll managers to create document.document without access to the
-                # application
-                attachment = self.env['ir.attachment'].sudo().create({
-                    'name': pdf_name,
-                    'type': 'binary',
-                    'datas': base64.encodebytes(pdf_content),
-                    'res_model': payslip._name,
-                    'res_id': payslip.id
-                })
-                # Send email to employees
-                subject = '%s, a new payslip is available for you' % (payslip.employee_id.name)
-                template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
-                if template:
-                    template.send_mail(
-                        payslip.id,
-                        notif_layout='mail.mail_notification_light')
-
-
+            self._generate_pdf()
 
     def action_payslip_cancel(self):
         if not self.env.user._is_system() and self.filtered(lambda slip: slip.state == 'done'):

@@ -44,7 +44,7 @@ class AssetsReport(models.AbstractModel):
                 * 'depreciable_values': The depreciable value of each asset
             """
             # ids of asset lines are in the form <account_group>_<asset_id>
-            asset_ids = {int(line['id'].split('_')[1]): line['id'] for line in lines if '_' in line['id']}
+            asset_ids = {self._get_model_info_from_id(line['id'])[1]: line['id'] for line in lines if '|' in line['id']}
             assets = self.env['account.asset'].search([('id', 'in', list(asset_ids.keys()))])
             # Check that all assets are in EUR and that the company has EUR as its currency;
             asset_currencies = assets.mapped('currency_id')

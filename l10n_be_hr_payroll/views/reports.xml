@@ -31,6 +31,7 @@
             <field name="print_report_name">'Termination Holidays N - %s' % (object.employee_id.name)</field>
             <field name="binding_model_id" ref="model_hr_payslip"/>
             <field name="binding_type">report</field>
+            <field name="print_report_name">'Holiday Attest (Year N) - %s' % (object.employee_id.name)</field>
         </record>
 
         <record id="action_report_termination_holidays_n1" model="ir.actions.report">
@@ -42,6 +43,7 @@
             <field name="print_report_name">'Termination Holidays N-1 - %s' % (object.employee_id.name)</field>
             <field name="binding_model_id" ref="model_hr_payslip"/>
             <field name="binding_type">report</field>
+            <field name="print_report_name">'Holiday Attest (Year N-1) - %s' % (object.employee_id.name)</field>
         </record>
 
         <record id="action_report_individual_account" model="ir.actions.report">

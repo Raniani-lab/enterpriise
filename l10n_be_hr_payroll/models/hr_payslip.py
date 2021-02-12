@@ -26,7 +26,6 @@ class Payslip(models.Model):
         compute='_compute_work_entry_dependent_benefits')
     has_attachment_salary = fields.Boolean(compute='_compute_has_attachment_salary', store=True)
 
-
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def _onchange_employee(self):
         res = super()._onchange_employee()
@@ -396,8 +395,8 @@ class Payslip(models.Model):
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
             struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
-            # YTI TO FIX: This is not based on the experience on the company but on the 
-            # number of allowed legal time off 
+            # YTI TO FIX: This is not based on the experience on the company but on the
+            # number of allowed legal time off
             if False and self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
                 return self._get_paid_double_holiday()
         return super()._get_paid_amount()
@@ -519,6 +518,14 @@ class Payslip(models.Model):
 
         remaining_payslips = self - commissions_payslips
         return result + sum(abs(p._get_salary_line_total('GROSS')) for p in remaining_payslips)
+
+    def _get_pdf_reports(self):
+        res = super()._get_pdf_reports()
+        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'):
+            return res + self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n')
+        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'):
+            return res + self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n1')
+        return res
 
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
     if not inputs.ANNUAL_TAXABLE:

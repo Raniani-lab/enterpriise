@@ -190,7 +190,7 @@ class HrPayslip(models.Model):
         for payslip in self:
             reports = payslip._get_pdf_reports()
             for report in reports:
-                pdf_content, content_type = report.sudo()._render_qweb_pdf(payslip.id)
+                pdf_content, dummy = report.sudo()._render_qweb_pdf(payslip.id)
                 if report.print_report_name:
                     pdf_name = safe_eval(report.print_report_name, {'object': payslip})
                 else:

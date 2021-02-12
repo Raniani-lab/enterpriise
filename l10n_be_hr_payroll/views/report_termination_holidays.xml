@@ -73,6 +73,15 @@
                                 <td><span t-esc="o.input_line_ids.filtered(lambda line: line.code == 'GROSS_REF').amount"
                                           t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                             </tr>
+                            <tr>
+                                <td>Time off already taken</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Working Schedule</td>
+                                <td><span><t t-esc="o.contract_id.resource_calendar_id.hours_per_week"/> / <t t-esc="o.contract_id.resource_calendar_id.full_time_required_hours"/> Hours/Week</span></td>
+                            </tr>
+
                         </tbody>
                     </table>
 
@@ -127,6 +136,12 @@
                             near future in </span><span t-esc="o.date_to.year + 1"/>.
                             <span>Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
                             until you take these days off.</span></li>
+                        </ul>
+                    </span>
+                    <span>
+                        To the attention of the next employer
+                        <ul>
+                            <li><span>Social contributions on the various vacation pay have already been paid.</span></li>
                         </ul>
                     </span>
                 </div>
@@ -219,7 +234,7 @@
                             </tr>
                             <tr>
                                 <td>Working Schedule</td>
-                                <td><span><t t-esc="o.contract_id.resource_calendar_id.hours_per_week"/> / <t t-esc="o.contract_id.resource_calendar_id.full_time_required_hours"/> Hours / Week</span></td>
+                                <td><span><t t-esc="o.contract_id.resource_calendar_id.hours_per_week"/> / <t t-esc="o.contract_id.resource_calendar_id.full_time_required_hours"/> Hours/Week</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -272,6 +287,12 @@
                             future in </span><span t-esc="o.date_to.year + 1"/>.
                             <span>Your next employer or payment agency will not pay for these days off. So you are advised to keep this amount
                             until you take these days off.</span></li>
+                        </ul>
+                    </span>
+                    <span>
+                        To the attention of the next employer
+                        <ul>
+                            <li><span>Social contributions on the various vacation pay have already been paid.</span></li>
                         </ul>
                     </span>
                 </div>

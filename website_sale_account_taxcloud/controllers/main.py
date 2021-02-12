@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import http
+from odoo import _
+from odoo.exceptions import ValidationError
 from odoo.http import request
 
 from odoo.addons.website_sale.controllers import main
@@ -13,11 +14,15 @@ class WebsiteSale(main.WebsiteSale):
 
         return res
 
-    @http.route(['/shop/payment'], type='http', auth="public", website=True)
-    def payment(self, **post):
-        response = super(WebsiteSale, self).payment(**post)
+    def checkout_form_validate(self, mode, all_form_values, data):
+        errors, error_msg = super(WebsiteSale, self).checkout_form_validate(mode, all_form_values, data)
+
         order = request.website.sale_get_order()
         if order.fiscal_position_id.is_taxcloud:
-            order.validate_taxes_on_sales_order()
+            try:
+                order.validate_taxes_on_sales_order()
+            except ValidationError:
+                errors['taxcloud'] = 'error'
+                error_msg.append(_("This address does not appear to be valid. Please make sure it has been filled in correctly."))
 
-        return response
+        return errors, error_msg

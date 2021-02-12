@@ -394,7 +394,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 (0,0, {
                     'factor_percent': -10,
                     'repartition_type': 'tax',
-                    'plus_report_line_ids': [tax_neg_10_line.id],
+                    'minus_report_line_ids': [tax_neg_10_line.id],
                 }),
             ],
             'refund_repartition_line_ids': [
@@ -419,7 +419,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 (0,0, {
                     'factor_percent': -10,
                     'repartition_type': 'tax',
-                    'minus_report_line_ids': [tax_neg_10_line.id],
+                    'plus_report_line_ids': [tax_neg_10_line.id],
                 }),
             ],
         })

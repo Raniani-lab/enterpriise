@@ -8,7 +8,7 @@ class GenerateSimulationLink(models.TransientModel):
     _inherit = 'generate.simulation.link'
 
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
-                                       default=lambda self: self.env.ref('l10n_be_hr_contract_salary.l10n_be_contract_type_cdi',
+                                       default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
 
     new_car = fields.Boolean(string="Force New Cars List", help="The employee will be able to choose a new car even if the maximum number of used cars available is reached.")

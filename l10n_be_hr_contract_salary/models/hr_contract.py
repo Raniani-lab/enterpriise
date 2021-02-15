@@ -18,7 +18,7 @@ class HrContract(models.Model):
     internet_invoice = fields.Binary(related="employee_id.internet_invoice", groups="hr_contract.group_hr_contract_manager")
     double_holiday_wage = fields.Monetary(compute='_compute_double_holiday_wage')
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
-                                       default=lambda self: self.env.ref('l10n_be_hr_contract_salary.l10n_be_contract_type_cdi',
+                                       default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
 
     def _get_gross_from_employer_costs(self, yearly_cost):

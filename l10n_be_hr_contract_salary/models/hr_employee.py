@@ -16,7 +16,7 @@ class HrEmployee(models.Model):
     def _get_first_contracts(self):
         self.ensure_one()
         contracts = super()._get_first_contracts()
-        pfi = self.env.ref('l10n_be_hr_contract_salary.l10n_be_contract_type_pfi')
+        pfi = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_pfi')
         return contracts.filtered(
             lambda c: c.company_id.country_id.code != 'BE' or (c.company_id.country_id.code == 'BE' and c.contract_type_id != pfi))
 

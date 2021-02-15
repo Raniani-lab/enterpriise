@@ -17,7 +17,7 @@ class HrPayroll281BaseWizard(models.AbstractModel):
         if self.env.company.country_id.code != "BE":
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         defaults = super().default_get(field_list)
-        if 'employee_ids' in field_list and 'employee_ids' not in defaults:
+        if 'active_ids' in self.env.context and 'employee_ids' in field_list and 'employee_ids' not in defaults:
             defaults['employee_ids'] = [(6, 0, self.env.context.get('active_ids'))]
         return defaults
 

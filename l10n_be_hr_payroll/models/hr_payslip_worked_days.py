@@ -76,7 +76,7 @@ class HrPayslipWorkedDays(models.Model):
                 else:
                     out_ratio = 1
 
-                # For training time off: The maximum reimbursement is fixed by a threshold that you can 
+                # For training time off: The maximum reimbursement is fixed by a threshold that you can
                 # find at https://www.leforem.be/entreprises/aides-financieres-conge-education-paye.html
                 # In that case we have to adapt the wage.
                 wage_to_deduct = 0
@@ -85,12 +85,8 @@ class HrPayslipWorkedDays(models.Model):
                 training_wds = paid_be_wds.filtered(lambda wd: wd.work_entry_type_id.code == "LEAVE260")
                 if training_wds:
                     training_hours = sum(training_wds.mapped('number_of_hours'))
-                    uncapped_training_amount = wage * 3 / 13 / max_hours_per_week * training_hours
                     training_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
                         'training_time_off_threshold', payslip.date_to, raise_if_not_found=False)
-                    # YTI: Could be dropped in master
-                    if not training_threshold:
-                        training_threshold = 2928.0
                     if wage > training_threshold:
                         hourly_wage_to_deduct = (wage - training_threshold) * training_ratio
                         wage_to_deduct = training_hours * hourly_wage_to_deduct

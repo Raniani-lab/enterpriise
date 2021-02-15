@@ -69,7 +69,7 @@ class HrPayroll28145Wizard(models.TransientModel):
             ('employee_id', 'in', employees.ids),
             ('date_from', '>=', start),
             ('date_to', '<=', end),
-            ('state', '=', 'done'),
+            ('state', 'in', ['done', 'paid']),
         ])
         payslips_by_employees = defaultdict(lambda: self.env['hr.payslip'])
         for payslip in payslips:

@@ -522,6 +522,10 @@ class HrPayslip(models.Model):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
+    def _get_salary_line_quantity(self, code):
+        lines = self.line_ids.filtered(lambda line: line.code == code)
+        return sum([line.quantity for line in lines])
+
     def _get_worked_days_line_amount(self, code):
         wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)
         return sum([wd.amount for wd in wds])

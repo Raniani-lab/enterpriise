@@ -48,4 +48,13 @@
         <field name="target">new</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
     </record>
+
+    <menuitem
+        id="menu_l10n_be_hr_payroll_281_10"
+        name="281.10 Sheet"
+        action="hr_payroll_281_10_wizard_action"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
+        sequence="150"
+    />
+
 </odoo>

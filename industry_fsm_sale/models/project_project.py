@@ -11,7 +11,6 @@ class Project(models.Model):
     allow_quotations = fields.Boolean(
         "Extra Quotations", compute="_compute_allow_quotations", store=True, readonly=False)
     allow_billable = fields.Boolean(store=True, readonly=False, compute='_compute_allow_billable')
-    pricing_type = fields.Selection(compute="_compute_pricing_type", store=True, readonly=False)
     sale_line_id = fields.Many2one(compute="_compute_sale_line_id", store=True, readonly=False)
 
     _sql_constraints = [
@@ -67,13 +66,15 @@ class Project(models.Model):
                 fnames.add('allow_material')
         return super().flush(fnames, records)
 
-    @api.depends('is_fsm', 'sale_line_employee_ids.employee_id')
+    @api.depends('sale_order_id', 'sale_line_employee_ids', 'allow_billable', 'is_fsm')
     def _compute_pricing_type(self):
-        for fsm_project in self.filtered('is_fsm'):
+        fsm_projects = self.filtered(lambda project: project.allow_billable and project.is_fsm)
+        for fsm_project in fsm_projects:
             if fsm_project.sale_line_employee_ids:
                 fsm_project.update({'pricing_type': 'employee_rate'})
             else:
                 fsm_project.update({'pricing_type': 'task_rate'})
+        super(Project, self - fsm_projects)._compute_pricing_type()
 
     @api.depends('is_fsm')
     def _compute_sale_order_id(self):

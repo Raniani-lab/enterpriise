@@ -568,6 +568,7 @@ class HelpdeskTicket(models.Model):
                 closed_tickets = self.filtered(lambda ticket: not ticket.close_date)
             else:  # auto reset the 'closed_by_partner' flag
                 vals['closed_by_partner'] = False
+                vals['close_date'] = False
 
         now = fields.Datetime.now()
 

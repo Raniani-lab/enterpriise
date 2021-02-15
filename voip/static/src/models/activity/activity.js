@@ -55,7 +55,11 @@ registerInstancePatchModel('mail.activity', 'voip/static/src/models/activity/act
      * @private
      */
     _onReloadChatter() {
+        if (!this.thread) {
+            return;
+        }
         this.thread.refreshActivities();
+        this.thread.refresh();
     },
 });
 

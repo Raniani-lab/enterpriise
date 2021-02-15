@@ -102,7 +102,7 @@ class ResCompany(models.Model):
             'delay_unit': 'months',
             'delay_from': 'previous_activity',
             'res_model_id': move_res_model_id,
-            'force_next': False,
+            'chaining_type': 'suggest',
         }
         if not activity_type:
             vals.update({
@@ -155,7 +155,7 @@ class ResCompany(models.Model):
                 'res_model_id': move_res_model_id,
                 'activity_type_id': activity_type.id,
                 'summary': activity_type.summary,
-                'note': activity_type.default_description,
+                'note': activity_type.default_note,
                 'date_deadline': activity_deadline,
                 'automated': True,
                 'user_id':  advisor_user.id or self.env.user.id

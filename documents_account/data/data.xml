@@ -125,8 +125,8 @@
         </record>
 
         <record id="mail_documents_activity_data_vat" model="mail.activity.type">
-            <field name="force_next">True</field>
-            <field name="default_next_type_id" ref="mail_documents_activity_data_vat"/>
+            <field name="chaining_type">trigger</field>
+            <field name="triggered_next_type_id" ref="mail_documents_activity_data_vat"/>
         </record>
 
 
@@ -139,8 +139,8 @@
         </record>
 
         <record id="mail_documents_activity_data_fs" model="mail.activity.type">
-            <field name="force_next">True</field>
-            <field name="default_next_type_id" ref="mail_documents_activity_data_fs"/>
+            <field name="chaining_type">trigger</field>
+            <field name="triggered_next_type_id" ref="mail_documents_activity_data_fs"/>
         </record>
     </data>
 </odoo>

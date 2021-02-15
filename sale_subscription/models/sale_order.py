@@ -72,7 +72,10 @@ class SaleOrder(models.Model):
             'analytic_account_id': self.analytic_account_id.id,
             'recurring_next_date': recurring_next_date,
             'recurring_invoice_day': recurring_invoice_day,
-            'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode == 'success_payment' else False
+            'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode == 'success_payment' else False,
+            'campaign_id': self.campaign_id.id,
+            'medium_id': self.medium_id.id,
+            'source_id': self.source_id.id,
         }
         default_stage = self.env['sale.subscription.stage'].search([('category', '=', 'progress')], limit=1)
         if default_stage:

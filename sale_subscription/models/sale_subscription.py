@@ -30,7 +30,7 @@ PERIODS = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'y
 class SaleSubscription(models.Model):
     _name = "sale.subscription"
     _description = "Subscription"
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin']
     _check_company_auto = True
     _mail_post_access = 'read'
 
@@ -54,7 +54,7 @@ class SaleSubscription(models.Model):
         'res.partner', string='Invoice Address',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     partner_shipping_id = fields.Many2one(
-        'res.partner', string='Service Address',
+        'res.partner', string='Delivery Address',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", )
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags',
                                domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)

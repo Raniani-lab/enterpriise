@@ -42,6 +42,13 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
+    <record id="l10n_be_leave_type_training" model="hr.leave.type">
+        <field name="name">Training</field>
+        <field name="allocation_type">no</field>
+        <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_training"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <!-- ++++++++++++++ June ++++++++++++++ -->
 
     <!-- Payslip batch -->
@@ -915,6 +922,7 @@
         <field name="address_id" ref="base.partner_admin"/>
         <field name="address_home_id" ref="hr.res_partner_admin_private_address"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_al" model="res.partner">
@@ -947,6 +955,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_al"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_mit" model="res.partner">
@@ -981,6 +990,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_niv" model="res.partner">
@@ -1014,6 +1024,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_stw" model="res.partner">
@@ -1047,6 +1058,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_chs" model="res.partner">
@@ -1080,6 +1092,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_qdp" model="res.partner">
@@ -1114,6 +1127,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_fme" model="res.partner">
@@ -1147,6 +1161,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_fpi" model="res.partner">
@@ -1180,6 +1195,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_jth" model="res.partner">
@@ -1213,6 +1229,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_ngh" model="res.partner">
@@ -1246,6 +1263,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_vad" model="res.partner">
@@ -1279,6 +1297,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_han" model="res.partner">
@@ -1310,6 +1329,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_jve" model="res.partner">
@@ -1341,6 +1361,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_jep" model="res.partner">
@@ -1372,6 +1393,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jep"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_jod" model="res.partner">
@@ -1403,6 +1425,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jod"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
+        <field name="gender">female</field>
     </record>
 
     <record id="res_partner_employee_jog" model="res.partner">
@@ -1434,6 +1457,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jog"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_jgo" model="res.partner">
@@ -1465,6 +1489,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jgo"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_lur" model="res.partner">
@@ -1496,6 +1521,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_lur"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="res_partner_employee_hne" model="res.partner">
@@ -1527,6 +1553,7 @@
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_hne"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="hr_contract_admin" model="hr.contract">
@@ -1630,9 +1657,27 @@
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
     </record>
 
+    <record id="resource_calendar_4_5_wednesday_off" model="resource.calendar">
+        <field name="name">30.4 Hours/Week : Wednesday Off</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="hours_per_day">7.6</field>
+        <field name="attendance_ids"
+            eval="[(5, 0, 0),
+                (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Monday Afternoon', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Tuesday Afternoon', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Thursday Morning', 'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'}),
+                (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+                (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
+            ]"
+        />
+    </record>
+
     <record id="hr_contract_han" model="hr.contract">
         <field name="name">Eduardo Kelley Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-3-1'"/>
+        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2, month=1, day=1)"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_han"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_han').job_id.id"/>
@@ -1648,11 +1693,14 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
+        <field name="time_credit" eval="True"/>
+        <field name="work_time_rate">80</field>
     </record>
 
     <record id="hr_contract_niv" model="hr.contract">
         <field name="name">Ramona Franklin Contract</field>
-        <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
+        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_end" eval="time.strftime('%Y')+'-12-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_niv"/>
@@ -1669,11 +1717,14 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
+        <field name="time_credit" eval="True"/>
+        <field name="work_time_rate">80</field>
     </record>
 
     <record id="hr_contract_jth" model="hr.contract">
         <field name="name">Manuel Shelton Contract</field>
-        <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
+        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_end" eval="time.strftime('%Y')+'-12-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_jth"/>
@@ -1689,12 +1740,12 @@
         <field name="default_contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_experienced_developer"/>
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
-        <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="resource_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
     </record>
 
     <record id="hr_contract_chs" model="hr.contract">
         <field name="name">Mario Lambert Contract</field>
-        <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
+        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_chs"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_chs').job_id.id"/>
@@ -1714,7 +1765,7 @@
 
     <record id="hr_contract_jve" model="hr.contract">
         <field name="name">Michael Lambert Contract</field>
-        <field name="date_start" eval="time.strftime('%Y-%m')+'-1'"/>
+        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_jve"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jve').job_id.id"/>
@@ -2238,6 +2289,7 @@
         <field name="bank_account_id" ref="res_partner_bank_account_joseph_noluck"/>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jon-image.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="gender">male</field>
     </record>
 
     <record id="fleet_vehicle_audi_a3_joseph_noluck" model="fleet.vehicle">

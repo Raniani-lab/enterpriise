@@ -7,7 +7,7 @@
             <form string="Employee Departure">
                 <group class="o_label_nowrap">
                     <group>
-                        <field name="employee_id" readonly="1"/>
+                        <field name="employee_id"/>
                         <field name="oldest_contract_id"/>
                     </group>
                     <group>
@@ -53,4 +53,19 @@
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
         <field name="binding_view_types">form</field>
     </record>
+
+    <menuitem
+        id="menu_reporting_l10n_be"
+        name="Belgium"
+        sequence="30"
+        parent="hr_payroll.menu_hr_payroll_report"/>
+
+    <menuitem
+        id="menu_l10n_be_hr_payroll_notice"
+        name="Departure: Notice period"
+        action="departure_notice_wizard_action"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
+        sequence="50"
+    />
+
 </odoo>

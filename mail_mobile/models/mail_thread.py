@@ -46,9 +46,7 @@ class MailThread(models.AbstractModel):
                 if r['notif'] != 'inbox':
                     no_inbox_pids.append(r['id'])
 
-        chat_cids = [r['id'] for r in rdata['channels'] if r['type'] == 'chat']
-
-        if not notif_pids and not chat_cids:
+        if not notif_pids:
             return
 
         msg_sudo = message.sudo()  # why sudo?
@@ -56,12 +54,7 @@ class MailThread(models.AbstractModel):
         author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else message.author_id.ids
 
         if msg_type == 'comment':
-            if chat_cids:
-                # chat_cids should all exists since they come from get_recipient_data
-                channel_partner_ids = self.env['mail.channel'].sudo().browse(chat_cids).mapped("channel_partner_ids").ids
-            else:
-                channel_partner_ids = []
-            pids = (set(notif_pids) | set(channel_partner_ids)) - set(author_id)
+            pids = set(notif_pids) - set(author_id)
             self._send_notification_to_partners(pids, message, msg_vals)
         elif msg_type in ('notification', 'user_notification', 'email'):
             # Send notification to partners except for the author and those who

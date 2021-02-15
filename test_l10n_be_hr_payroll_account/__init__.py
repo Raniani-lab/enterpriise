@@ -53,4 +53,3 @@ def _generate_payslips(cr, registry):
                 wizard = env['hr.payslip.employees'].create(wizard_vals)
                 wizard.with_context(active_id=payslip_run.id, allowed_company_ids=cids).compute_sheet()
                 payslip_run.with_context(allowed_company_ids=cids).action_validate()
-

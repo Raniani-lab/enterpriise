@@ -77,4 +77,12 @@
             <field name="paperformat_id" ref="l10n_be_hr_payroll.paperformat_individual_account"/>
             <field name="binding_model_id" eval="False"/>
         </record>
+
+        <record id="action_report_social_balance" model="ir.actions.report">
+            <field name="name">Social Balance Sheet</field>
+            <field name="model">l10n.be.social.balance.sheet</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_be_hr_payroll.report_social_balance</field>
+            <field name="report_file">l10n_be_hr_payroll.report_social_balance</field>
+        </record>
 </odoo>

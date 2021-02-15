@@ -11,3 +11,4 @@ from . import hr_payroll_281_45_wizard
 from . import hr_payroll_allocating_paid_time_off
 from . import hr_payroll_generate_commission_payslips
 from . import hr_payroll_index_wizard
+from . import l10n_be_social_balance_sheet

@@ -59,7 +59,7 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
     @api.depends('xml_file')
     def _compute_validation_state(self):
         xsd_schema_file_path = get_resource_path(
-            'l10n_be_hr_payroll_273S_274',
+            'l10n_be_hr_payroll',
             'data',
             'withholdingTaxDeclarationOriginal_202012.xsd',
         )
@@ -150,7 +150,7 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
 
     def action_generate_pdf(self):
         self.ensure_one()
-        export_273S_pdf, export_type = self.env.ref('l10n_be_hr_payroll_273S_274.action_report_ip_273S').sudo()._render_qweb_pdf(res_ids=self.ids, data=self._get_rendering_data())
+        export_273S_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_ip_273S').sudo()._render_qweb_pdf(res_ids=self.ids, data=self._get_rendering_data())
         self.pdf_filename = '%s-273S_report.pdf' % (self.period.strftime('%B%Y'))
         self.pdf_file = base64.encodebytes(export_273S_pdf)
 
@@ -166,7 +166,7 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
     def action_generate_xml(self):
         self.ensure_one()
         self.xml_filename = '%s-273S_report.xml' % (self.period.strftime('%B%Y'))
-        xml_str = self.env.ref('l10n_be_hr_payroll_273S_274.273S_xml_report')._render(self._get_rendering_data())
+        xml_str = self.env.ref('l10n_be_hr_payroll.273S_xml_report')._render(self._get_rendering_data())
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))

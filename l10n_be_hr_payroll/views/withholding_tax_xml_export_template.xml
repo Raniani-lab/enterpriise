@@ -11,7 +11,7 @@
                 <Declaration>
                     <LastPeriod><t t-esc="last_period"/></LastPeriod>
                     <t t-foreach="declarations" t-as="declaration">
-                        <t t-call="l10n_be_hr_payroll_273S_274.finprof_xml_report_single_declaration"/>
+                        <t t-call="l10n_be_hr_payroll.finprof_xml_report_single_declaration"/>
                     </t>
                     <PositiveDeclarations>
                         <Amount><t t-esc="positive_amount"/></Amount>

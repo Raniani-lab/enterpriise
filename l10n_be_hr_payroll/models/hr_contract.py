@@ -82,12 +82,20 @@ class HrContract(models.Model):
     attachment_salary_ids = fields.One2many('l10n_be.attachment.salary', 'contract_id')
     no_onss = fields.Boolean(string="No ONSS")
     no_withholding_taxes = fields.Boolean()
-
+    rd_percentage = fields.Integer("Time Percentage in R&D")
 
     _sql_constraints = [
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
     ]
+
+    @api.constrains('rd_percentage')
+    def _check_discount_percentage(self):
+        if self.filtered(lambda c: c.rd_percentage < 0 or c.rd_percentage > 100):
+            raise ValidationError(_('The time Percentage in R&D should be between 1-100'))
+        for contract in self:
+            if contract.rd_percentage and contract.employee_id.certificate not in ['civil_engineer', 'doctor', 'master', 'bachelor']:
+                raise ValidationError(_('Only employeers with a Bachelor/Master/Doctor/Civil Engineer degree can benefit from the withholding taxes exemption.'))
 
     @api.depends('wage')
     def _compute_time_credit_full_time_wage(self):

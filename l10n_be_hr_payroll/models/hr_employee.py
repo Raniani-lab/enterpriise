@@ -75,6 +75,7 @@ class HrEmployee(models.Model):
     nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user", help="Fiscal Identification Number")
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
+    certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
 
     @api.depends('identification_id')
     def _compute_niss(self):

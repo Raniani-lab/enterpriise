@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class ResCompany(models.Model):
@@ -11,6 +12,15 @@ class ResCompany(models.Model):
     onss_registration_number = fields.Char(string="ONSS Registration Number", help="9-digit code given by ONSS")
     dmfa_employer_class = fields.Char(string="DMFA Employer Class", help="3-digit code given by ONSS")
     dmfa_location_unit_ids = fields.One2many('l10n_be.dmfa.location.unit', 'company_id', string="Work address DMFA codes")
+    l10n_be_company_number = fields.Char('Company Number')
+    l10n_be_revenue_code = fields.Char('Revenue Code')
+
+    @api.constrains('l10n_be_company_number')
+    def _check_l10n_be_company_number(self):
+        for company in self.filtered(lambda c: c.l10n_be_company_number):
+            number = company.l10n_be_company_number
+            if not number.isdecimal() or len(number) != 10 or (not number.startswith('0') and not number.startswith('1')):
+                raise ValidationError(_("The company number should contain digits only, starts with a '0' or a '1' and be 10 characters long."))
 
     def _create_resource_calendar(self):
         """

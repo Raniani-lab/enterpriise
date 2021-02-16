@@ -40,6 +40,9 @@ Belgian Payroll Rules.
         'views/hr_dmfa_template.xml',
         'views/hr_dmfa_views.xml',
         'views/assets.xml',
+        'views/273S_xml_export_template.xml',
+        'views/hr_contract_views.xml',
+        'views/withholding_tax_xml_export_template.xml',
         'data/l10n_be_hr_payroll_data.xml',
         'data/cp200/work_entry_data.xml',
         'data/hr_rule_parameters_data.xml',
@@ -63,8 +66,12 @@ Belgian Payroll Rules.
         'report/hr_281_10_templates.xml',
         'report/hr_281_45_templates.xml',
         'report/hr_contract_history_report_views.xml',
+        'report/l10n_be_hr_payroll_274_XX_sheet_template.xml',
+        'report/l10n_be_hr_payroll_273S_pdf_template.xml',
         'wizard/l10n_be_social_balance_sheet_views.xml',
         'report/l10n_be_social_balance_report_template.xml',
+        'wizard/l10n_be_hr_payroll_273S_wizard_views.xml',
+        'wizard/l10n_be_hr_payroll_274_XX_wizard_views.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

@@ -147,6 +147,12 @@
                     <field name="no_onss"/>
                     <field name="no_withholding_taxes"/>
                 </group>
+                <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption">
+                    <field name="rd_percentage"/>
+                </group>
+                <group string="Impulsion Plan" name="impulsion_plan">
+                    <field name="l10n_be_impulsion_plan"/>
+                </group>
             </group>
             <page name="information" position="after">
                 <page string="Attachment of Salary" name="salary_attachment">

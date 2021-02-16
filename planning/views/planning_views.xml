@@ -68,19 +68,19 @@
                         </group>
                     </group>
                     <group>
-                        <label for="repeat" groups="planning.group_planning_manager"/>
-                        <div class="o_row">
-                            <field name="repeat" groups="planning.group_planning_manager"/>
-                            <label for="repeat_interval" string="Every" attrs="{'invisible': [('repeat', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': [('repeat', '=', False)]}">
-                                <field name="repeat_interval" class="oe_inline col-lg-1" nolabel="1"/>
-                                <span>Weeks</span>
-                                <field name="repeat_type" class="oe_inline col-lg-2" nolabel="1" attrs="{'required': [('repeat', '=', True)]}"/>
-                                <span class="col-lg-2">
-                                    <field name="repeat_until" class="oe_inline" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" nolabel="1"/>
-                                </span>
+                        <div colspan="2" class="o_checkbox_optional_field" groups="planning.group_planning_manager">
+                            <label for="repeat"/>
+                            <field name="repeat"/>
+                            <div attrs="{'invisible': [('repeat', '=', False)]}" class="d-flex flex-grow-1">
+                                <label for="repeat_interval" string="Every"/>
+                                <field name="repeat_interval" class="col-2 col-lg-1"/>
+                                <span class="mr-3">Weeks</span>
+                                <field name="repeat_type" nolabel="1" attrs="{'required': [('repeat', '=', True)]}" class="col col-lg-1"/>
+                                <field name="repeat_until" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until')]}" class="col-auto col-lg-2 flex-shrink-1" nolabel="1"/>
                             </div>
                         </div>
+                    </group>
+                    <group>
                         <field name="allow_template_creation" invisible="1"/>
                         <field name="template_creation" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
                     </group>

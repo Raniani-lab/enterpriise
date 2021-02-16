@@ -21,8 +21,8 @@
                 <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='resource_calendar_id']/parent::div" position="after">
-                <label for="time_credit"/>
-                <div class="o_row">
+                <div colspan="2" class="o_checkbox_optional_field">
+                    <label for="time_credit"/>
                     <field name="time_credit"/>
                     <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
                 </div>

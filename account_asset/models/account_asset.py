@@ -432,6 +432,12 @@ class AccountAsset(models.Model):
                     dict(self._fields['state']._description_selection(self.env)).get(asset.state)
                 ))
 
+            posted_amount = len(asset.depreciation_move_ids.filtered(lambda x: x.state == 'posted'))
+            if posted_amount > 0:
+                raise UserError(_('You cannot delete an asset linked to posted entries.'
+                                  '\nYou should either confirm the asset, then, sell or dispose of it,'
+                                  ' or cancel the linked journal entries.'))
+
     def unlink(self):
         for asset in self:
             for line in asset.original_move_line_ids:

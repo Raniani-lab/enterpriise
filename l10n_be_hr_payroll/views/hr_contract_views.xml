@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="hr_contract_view_form" model="ir.ui.view">
+    <record id="hr_contract_view_form_inherit" model="ir.ui.view">
         <field name="name">hr.contract.form</field>
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
@@ -9,6 +9,9 @@
             <group name="salary_info" position="inside">
                 <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption">
                     <field name="rd_percentage"/>
+                </group>
+                <group string="Impulsion Plan" name="impulsion_plan">
+                    <field name="l10n_be_impulsion_plan"/>
                 </group>
             </group>
         </field>

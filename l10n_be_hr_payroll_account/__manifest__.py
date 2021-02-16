@@ -13,6 +13,8 @@ Accounting Data for Belgian Payroll Rules.
     'auto_install': True,
     'data':[
         'data/l10n_be_hr_payroll_account_data.xml',
+        'views/res_config_settings_views.xml',
+        'wizard/l10n_be_hr_payroll_274_XX_wizard_views.xml',
     ],
     'demo':['data/l10n_be_hr_payroll_account_demo.xml'],
     'post_init_hook': '_post_install_hook_configure_journals',

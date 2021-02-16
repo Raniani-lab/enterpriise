@@ -101,9 +101,9 @@
                                                 <input
                                                     type="radio"
                                                     t-att-name="advantage.field + '_radio'"
-                                                    t-att-data-value="value.value"
+                                                    t-att-data-value="str(value.value)"
                                                     applies-on="contract"
-                                                    t-att-checked="not initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value == '0') else (initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value != '0') else (initial_values[advantage.field] == float(value.value)))"
+                                                    t-att-checked="not initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value == 0) else (initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value != 0) else (initial_values[advantage.field] == float(value.value)))"
                                                     t-att-class="'hide_description' if value.hide_description else ''"
                                                     t-att-data-requested_documents="advantage.requested_documents"/>
                                                 <t t-esc="value.name"/>

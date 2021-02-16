@@ -97,7 +97,7 @@ class HrContractSalary(main.HrContractSalary):
                 res['extra_values'] = [('km_home_work', new_value)]
         elif advantage_field == 'ip_value':
             contract = self._check_access_rights(contract_id)
-            res['new_value'] = contract.ip_wage_rate if int(new_value) else 0
+            res['new_value'] = contract.ip_wage_rate if float(new_value) else 0
         elif advantage_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost'] and new_value:
             car_options, vehicle_id = new_value.split('-')
             if car_options == 'new':

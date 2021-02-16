@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
-
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 class HrContractSalaryAdvantage(models.Model):
     _name = 'hr.contract.salary.advantage'
@@ -59,8 +59,8 @@ class HrContractSalaryAdvantage(models.Model):
     ])
     impacts_net_salary = fields.Boolean(default=True)
     description = fields.Char('Description')
-    slider_min = fields.Integer()
-    slider_max = fields.Integer()
+    slider_min = fields.Float()
+    slider_max = fields.Float()
     value_ids = fields.One2many('hr.contract.salary.advantage.value', 'advantage_id')
     hide_description = fields.Boolean(help="Hide the description if the advantage is not taken.")
     requested_documents_field_ids = fields.Many2many('ir.model.fields', domain=_get_binary_field_domain, string="Requested Documents")
@@ -93,6 +93,12 @@ class HrContractSalaryAdvantage(models.Model):
         for advantage in self:
             advantage.requested_documents = ','.join(advantage.requested_documents_field_ids.mapped('name'))
 
+    @api.constrains('slider_min', 'slider_max')
+    def _check_min_inferior_to_max(self):
+        for record in self:
+            if record.display_type == 'slider' and record.slider_min > record.slider_max:
+                raise ValidationError(_('The minimum value for the slider should be inferior to the maximum value.'))
+
 class HrContractSalaryAdvantageType(models.Model):
     _name = 'hr.contract.salary.advantage.type'
     _description = 'Contract Advantage Type'
@@ -114,7 +120,7 @@ class HrContractSalaryAdvantageValue(models.Model):
     name = fields.Char(translate=True)
     sequence = fields.Integer(default=100)
     advantage_id = fields.Many2one('hr.contract.salary.advantage')
-    value = fields.Char()
+    value = fields.Float()
     color = fields.Selection(selection=[
         ('green', 'Green'),
         ('red', 'Red')], string="Color", default="green")

@@ -20,6 +20,9 @@ class HrContractSalaryResume(models.Model):
     _name = 'hr.contract.salary.resume'
     _description = 'Salary Package Resume'
 
+    def _get_available_fields(self):
+        return [(field, description['string']) for field, description in self.env['hr.contract'].fields_get().items()]
+
     name = fields.Char()
     value_type = fields.Selection([
         ('fixed', 'Fixed Value'),
@@ -27,8 +30,8 @@ class HrContractSalaryResume(models.Model):
         ('monthly_total', 'Monthly Total'),
         ('sum', 'Sum of Advantages Values')], required=True, default='fixed')
     advantage_ids = fields.Many2many('hr.contract.salary.advantage')
-    code = fields.Char()
-    fixed_value = fields.Char()
+    code = fields.Selection(_get_available_fields)
+    fixed_value = fields.Float()
     category_id = fields.Many2one('hr.contract.salary.resume.category', required=True)
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
     impacts_monthly_total = fields.Boolean()

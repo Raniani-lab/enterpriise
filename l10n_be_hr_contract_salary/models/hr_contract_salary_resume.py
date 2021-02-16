@@ -9,9 +9,10 @@ class HrContractSalaryResume(models.Model):
 
     def _get_available_fields(self):
         result = super()._get_available_fields()
-        return result + [('BASIC', 'Basic'), ('SALARY', 'salary'), ('GROSS', 'gross'), ('NET', 'net')]
+        return result + [('monthly_benefit', 'Nature'),
+                         ('monthly_cash', 'Monthly Cash'),
+                         ('yearly_cash', 'Yearly Cash'),
+                         ('annual_time_off', 'Annual Time Off'),
+                         ('holidays', 'Extra Time Off')]
 
     code = fields.Selection(_get_available_fields)
-    value_type = fields.Selection(selection_add=[
-        ('payslip', 'Payslip Value')
-    ], ondelete={'payslip': 'set default'})

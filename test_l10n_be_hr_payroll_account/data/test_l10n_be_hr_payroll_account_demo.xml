@@ -918,7 +918,8 @@
         <field name="job_id" ref="hr_job_1"/>
         <field name="job_title">Chief Executive Officer</field>
         <field name="department_id" ref="hr_department_1"/>
-        <field name="identification_id">10793589456</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="base.partner_admin"/>
         <field name="address_home_id" ref="hr.res_partner_admin_private_address"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
@@ -951,7 +952,8 @@
         <field name="work_phone">(459)-462-9356</field>
         <field name="work_email">marian.weaver56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_al-image.jpg"/>
-        <field name="identification_id">10793589457</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_al"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
@@ -986,7 +988,8 @@
         <field name="mobile_phone">(791)-864-3504</field>
         <field name="work_email">bernice.jensen60@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_mit-image.jpg"/>
-        <field name="identification_id">10793589458</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
@@ -1020,7 +1023,8 @@
         <field name="work_phone">(321)-878-2565</field>
         <field name="work_email">ramona.franklin32@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_niv-image.jpg"/>
-        <field name="identification_id">10793589459</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
@@ -1054,7 +1058,8 @@
         <field name="work_phone">(620)-309-3421</field>
         <field name="work_email">jack.mccoy17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_stw-image.jpg"/>
-        <field name="identification_id">10793589460</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
@@ -1088,7 +1093,8 @@
         <field name="work_phone">(181)-781-8595</field>
         <field name="work_email">mario.lambert31@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_chs-image.jpg"/>
-        <field name="identification_id">10793589461</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
@@ -1123,7 +1129,8 @@
         <field name="work_phone">+3281813700</field>
         <field name="work_email">gilles@odoo.com</field>
         <field name="image_1920" type="base64" file="hr/static/img/employee_qdp-image.png"/>
-        <field name="identification_id">10793589462</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
@@ -1157,7 +1164,8 @@
         <field name="work_phone">(449)-505-5146</field>
         <field name="work_email">michael.crawford52@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fme-image.jpg"/>
-        <field name="identification_id">10793589464</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
@@ -1191,7 +1199,8 @@
         <field name="work_phone">(203)-276-7903</field>
         <field name="work_email">rene.chapman41@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_fpi-image.jpg"/>
-        <field name="identification_id">10793589465</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
@@ -1225,7 +1234,8 @@
         <field name="work_phone">(663)-707-8451</field>
         <field name="work_email">manuel.shelton96@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jth-image.jpg"/>
-        <field name="identification_id">10793589466</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
@@ -1259,7 +1269,8 @@
         <field name="work_phone">(916)-264-7362</field>
         <field name="work_email">rebecca.morrison35@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_ngh-image.jpg"/>
-        <field name="identification_id">10793589467</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
@@ -1293,7 +1304,8 @@
         <field name="work_phone">(360)-694-7266</field>
         <field name="work_email">sarah.meyer87@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_vad-image.jpg"/>
-        <field name="identification_id">10793589468</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
@@ -1325,7 +1337,8 @@
         <field name="work_phone">(350)-912-1201</field>
         <field name="work_email">eduardo.kelley37@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_han-image.jpg"/>
-        <field name="identification_id">10793589469</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
@@ -1357,7 +1370,8 @@
         <field name="work_phone">(114)-262-1607</field>
         <field name="work_email">Michael.lambert17@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jve-image.jpg"/>
-        <field name="identification_id">10793589470</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
@@ -1389,7 +1403,8 @@
         <field name="work_phone">(883)-331-5378</field>
         <field name="work_email">dwight.snyder59@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jep-image.jpg"/>
-        <field name="identification_id">10793589471</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jep"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
@@ -1421,7 +1436,8 @@
         <field name="work_phone">(206)-267-3735</field>
         <field name="work_email">minnie.burns56@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jod-image.jpg"/>
-        <field name="identification_id">10793589472</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jod"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
@@ -1453,7 +1469,8 @@
         <field name="work_phone">(754)-532-3841</field>
         <field name="work_email">andrew.hunt19@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jog-image.jpg"/>
-        <field name="identification_id">10793589473</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jog"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
@@ -1485,7 +1502,8 @@
         <field name="work_phone">(944)-518-8232</field>
         <field name="work_email">arnold.horton28@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jgo-image.jpg"/>
-        <field name="identification_id">10793589474</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jgo"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
@@ -1517,7 +1535,8 @@
         <field name="work_phone">(644)-169-1352</field>
         <field name="work_email">jerry.barnes69@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_lur-image.jpg"/>
-        <field name="identification_id">10793589475</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_lur"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
@@ -1549,7 +1568,8 @@
         <field name="work_email">travis.moreno99@example.com</field>
         <field name="work_phone">(482)-233-3393</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_hne-image.jpg"/>
-        <field name="identification_id">10793589476</field>
+        <field name="identification_id">93051822361</field>
+        <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_hne"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>

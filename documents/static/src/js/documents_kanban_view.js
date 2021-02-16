@@ -1,6 +1,14 @@
 odoo.define('documents.DocumentsKanbanView', function (require) {
 'use strict';
 
+/**
+ * This file defines the DocumentsKanbanView, a JS extension of the KanbanView
+ * to deal with documents.
+ *
+ * Warning: there is no groupby menu in this view as it doesn't support the
+ * grouped case. Its elements assume that the data isn't grouped.
+ */
+
 const DocumentsKanbanController = require('documents.DocumentsKanbanController');
 const DocumentsKanbanModel = require('documents.DocumentsKanbanModel');
 const DocumentsKanbanRenderer = require('documents.DocumentsKanbanRenderer');

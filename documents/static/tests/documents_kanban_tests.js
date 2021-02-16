@@ -3487,6 +3487,29 @@ QUnit.module('documents_kanban_tests.js', {
         list.destroy();
     });
 
+    QUnit.test('documents List: listview is not groupable', async function (assert) {
+        assert.expect(1);
+
+        const list = await createDocumentsView({
+            View: DocumentsListView,
+            model: 'documents.document',
+            data: this.data,
+            arch: `
+            <tree>
+                <field name="type" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="owner_id"/>
+                <field name="type"/>
+            </tree>`,
+        });
+
+        assert.containsNone(list, '.o_control_panel div.o_search_options div.o_group_by_menu',
+            "there should not be groupby menu");
+
+        list.destroy();
+    });
+
     QUnit.test('documents: Versioning', async function (assert) {
         assert.expect(13);
 

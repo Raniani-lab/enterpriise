@@ -347,3 +347,13 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
+    def action_validate(self):
+        self.ensure_one()
+        if self.social_balance_sheet:
+            self._post_process_generated_file(self.social_balance_sheet, self.social_balance_filename)
+        return {'type': 'ir.actions.act_window_close'}
+
+    # To be overwritten in documents_l10n_be_hr_payroll to create a document.document
+    def _post_process_generated_file(self, data, filename):
+        return

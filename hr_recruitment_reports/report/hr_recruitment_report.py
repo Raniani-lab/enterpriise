@@ -18,6 +18,7 @@ class HrRecruitmentReport(models.Model):
 
     create_date = fields.Date('Start Date', readonly=True)
     date_closed = fields.Date('End Date', readonly=True)
+    stage_id = fields.Many2one('hr.recruitment.stage', 'Stage', readonly=True)
 
     name = fields.Char('Applicant Name', readonly=True)
     job_id = fields.Many2one('hr.job', readonly=True)
@@ -32,6 +33,7 @@ class HrRecruitmentReport(models.Model):
                 1 as count,
                 a.create_date,
                 a.date_closed,
+                a.stage_id,
                 a.company_id,
                 a.job_id,
                 a.refuse_reason_id,

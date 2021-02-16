@@ -817,11 +817,12 @@ class Planning(models.Model):
     def _read_group_employee_id(self, employees, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
         employee_ids = self.env.context.get('filter_employee_ids', False)
-        employee_domain = [('id', 'in', employee_ids)] if employee_ids else []
-        all_employees = self.env['hr.employee'].search(employee_domain)
-        if employee_ids or len(all_employees) < 20:
-            return all_employees
+        if employee_ids:
+            return self.env['hr.employee'].search([('id', 'in', employee_ids)], order=order)
         elif self._context.get('planning_expand_employee') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            if ('employee_id', '=') in dom_tuples or ('employee_id', 'ilike') in dom_tuples:
+                filter_domain = self._expand_domain_m2o_groupby(domain, 'employee_id')
+                return self.env['hr.employee'].search(filter_domain, order=order)
             filters = self._expand_domain_dates(domain)
             employees = self.env['planning.slot'].search(filters).mapped('employee_id')
             return employees.search([('id', 'in', employees.ids)], order=order)
@@ -830,9 +831,26 @@ class Planning(models.Model):
     def _read_group_role_id(self, roles, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, list) and len(dom) == 3]
         if self._context.get('planning_expand_role') and ('start_datetime', '<=') in dom_tuples and ('end_datetime', '>=') in dom_tuples:
+            if ('role_id', '=') in dom_tuples or ('role_id', 'ilike') in dom_tuples:
+                filter_domain = self._expand_domain_m2o_groupby(domain, 'role_id')
+                return self.env['planning.role'].search(filter_domain, order=order)
             filters = self._expand_domain_dates(domain)
             return self.env['planning.slot'].search(filters).mapped('role_id')
         return roles
+
+    @api.model
+    def _expand_domain_m2o_groupby(self, domain, filter_field=False):
+        filter_domain = []
+        for dom in domain:
+            if dom[0] == filter_field:
+                field = self._fields[dom[0]]
+                if field.type == 'many2one' and len(dom) == 3:
+                    if dom[1] == '=':
+                        filter_domain = expression.OR([filter_domain, [('id', dom[1], dom[2])]])
+                    elif dom[1] == 'ilike':
+                        rec_name = self.env[field.comodel_name]._rec_name
+                        filter_domain = expression.OR([filter_domain, [(rec_name, dom[1], dom[2])]])
+        return filter_domain
 
     def _expand_domain_dates(self, domain):
         filters = []

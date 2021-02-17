@@ -12,7 +12,7 @@ class ECSalesReport(models.AbstractModel):
     def _get_report_country_code(self):
         if self.env.company.country_id.code == 'BE':
             return 'BE'
-        
+
         return super(ECSalesReport, self)._get_report_country_code()
 
     def _get_ec_sale_code_options_data(self):
@@ -22,14 +22,14 @@ class ECSalesReport(models.AbstractModel):
         return {
             'goods': {
                 'name': 'L (46L)',
-                'tax_report_line_ids': 
+                'tax_report_line_ids':
                     self.env.ref('l10n_be.tax_report_line_46L').ids +
                     self.env.ref('l10n_be.tax_report_line_48s46L').ids,
                 'code': 'L',
             },
             'triangular': {
                 'name': 'T (46T)',
-                'tax_report_line_ids': 
+                'tax_report_line_ids':
                     self.env.ref('l10n_be.tax_report_line_46T').ids +
                     self.env.ref('l10n_be.tax_report_line_48s46T').ids,
                 'code': 'T',
@@ -61,6 +61,7 @@ class ECSalesReport(models.AbstractModel):
 
         get_file_data = options.get('get_file_data', False)
         seq = amount_sum = p_count = 0
+        ec_country_to_check = self.get_ec_country_codes(options)
         lines = []
         for row in query_result:
             if not row['vat']:
@@ -71,6 +72,15 @@ class ECSalesReport(models.AbstractModel):
             if amt:
                 seq += 1
                 amount_sum += amt
+
+                if not row['vat']:
+                    if options.get('get_file_data', False):
+                        raise UserError(_('One or more partners has no VAT Number.'))
+                    else:
+                        options['missing_vat_warning'] = True
+
+                if row['same_country'] or row['partner_country_code'] not in ec_country_to_check:
+                    options['unexpected_intrastat_tax_warning'] = True
 
                 for option_code in options['ec_sale_code']:
                     if row['tax_report_line_id'] in option_code['tax_report_line_ids']:

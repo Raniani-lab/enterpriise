@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.addons.account_reports.models.account_sales_report import EC_COUNTRY_CODES
 
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
@@ -23,7 +22,7 @@ class ECSalesReport(models.AbstractModel):
     def _process_query_result(self, options, query_result):
         if self._get_report_country_code():
             return super(ECSalesReport, self)._process_query_result(options, query_result)
-        
+
         total_value = query_result and query_result[0]['total_value'] or 0
         lines = []
         context = self.env.context
@@ -60,7 +59,7 @@ class ECSalesReport(models.AbstractModel):
         tables, where_clause, where_params = self._query_get(options, [(
             'move_id.move_type', 'in', ('out_invoice', 'out_refund'))
         ])
-        where_params += [EC_COUNTRY_CODES]
+        where_params.append(tuple(self.env['account.sales.report'].get_ec_country_codes(options)))
         query = '''
                 SELECT partner.id AS partner_id,
                        partner.vat AS partner_vat,

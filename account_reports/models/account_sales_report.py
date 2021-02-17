@@ -5,9 +5,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools.misc import formatLang
 
-EC_COUNTRY_CODES = ('AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU',
-    'IE', 'IT', 'LV', 'LY', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB')
-
 
 class ECSalesReport(models.AbstractModel):
     """ This report is meant to be overridden.
@@ -51,7 +48,8 @@ class ECSalesReport(models.AbstractModel):
         else:
             options.pop('ec_sale_code', None)
             options['country_specific_report_label'] = None
-            
+
+        options['date']['strict_range'] = True
         return options
 
     @api.model
@@ -83,7 +81,6 @@ class ECSalesReport(models.AbstractModel):
         for id in ('goods', 'triangular', 'services'):
             ec_sale_code_options_data[id].update({'id': id, 'selected': False})
             options['ec_sale_code'].append(ec_sale_code_options_data[id])
-        
         if previous_options and previous_options.get('ec_sale_code'):
             for i in range(0, 3):
                 options['ec_sale_code'][i]['selected'] = previous_options['ec_sale_code'][i]['selected']
@@ -173,6 +170,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _process_query_result(self, options, query_result):
+        ec_country_to_check = self.get_ec_country_codes(options)
         lines = []
         for row in query_result:
             if not row['vat']:
@@ -186,13 +184,13 @@ class ECSalesReport(models.AbstractModel):
                     else:
                         options['missing_vat_warning'] = True
 
-                if row['same_country'] or row['partner_country_code'] not in EC_COUNTRY_CODES:
+                if row['same_country'] or row['partner_country_code'] not in ec_country_to_check:
                     options['unexpected_intrastat_tax_warning'] = True
-                
+
                 for option_code in options['ec_sale_code']:
                     if row['tax_report_line_id'] in option_code['tax_report_line_ids']:
                         ec_sale_code = option_code['name']
-                
+
                 vat = row['vat'].replace(' ', '').upper()
                 columns = [
                     vat[:2],
@@ -217,6 +215,17 @@ class ECSalesReport(models.AbstractModel):
                         'unfolded': False,
                     })
         return lines
+
+    @api.model
+    def get_ec_country_codes(self, options):
+        rslt = {'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU',
+                'IE', 'IT', 'LV', 'LY', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'}
+
+        # GB left the EU on January 1st 2021. But before this date, it's still to be considered as a EC country
+        if fields.Date.from_string(options['date']['date_from']) < fields.Date.from_string('2021-01-01'):
+            rslt.add('GB')
+
+        return rslt
 
     @api.model
     def _get_report_name(self):

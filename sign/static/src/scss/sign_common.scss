@@ -180,4 +180,37 @@
         flex: none;
     }
 }
+@include media-breakpoint-down(sm) {
 
+    .o_sign_item_bottom_sheet {
+        display: none;
+        width: 100%;
+        padding: 10px;
+        position: absolute;
+        bottom: 0;
+        background-color: $o-enterprise-color;
+        opacity: 0;
+        transition: opacity 500ms;
+
+        &.show {
+            opacity: 1;
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+        }
+
+        .o_sign_next_button {
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .o_sign_item_bottom_sheet_field {
+            display: block;
+            width: 100%;
+        }
+
+        .o_sign_label {
+            width: 100%;
+            color: white;
+            text-transform: uppercase;
+        }
+    }
+}

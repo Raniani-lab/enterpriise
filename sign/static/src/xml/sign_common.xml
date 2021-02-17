@@ -92,4 +92,15 @@
         <div class="o_nextdirectsign_message">We will send you this document by email once everyone has signed.<br/>
         </div>
     </div>
+
+    <div t-name="sign.item_bottom_sheet" class="o_sign_item_bottom_sheet">
+        <label class="o_sign_label"><t t-esc="widget.label" />
+            <input t-if="widget.type === 'text'" type="text" class="o_sign_item_bottom_sheet_field"
+                   t-att-placeholder="widget.placeholder" t-att-value="widget.value"/>
+            <textarea t-if="widget.type === 'textarea'" class="o_sign_item_bottom_sheet_field"
+                      t-att-placeholder="widget.placeholder" t-att-value="widget.value" t-esc="widget.value"/>
+        </label>
+        <button class="o_sign_next_button btn btn-primary btn-block"><t t-esc="widget.buttonText"/></button>
+    </div>
+
 </templates>

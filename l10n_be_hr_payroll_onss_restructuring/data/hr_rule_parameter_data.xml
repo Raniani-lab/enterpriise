@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ONSS Restructuring -->
+        <record id="rule_parameter_onss_restructuring_before_30" model="hr.rule.parameter">
+            <field name="name">ONSS Reduction for Restructuring - before 30 years old</field>
+            <field name="code">onss_restructuring_before_30</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_onss_restructuring_before_30_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">3071.90</field>
+            <field name="rule_parameter_id" ref="rule_parameter_onss_restructuring_before_30"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_onss_restructuring_after_30" model="hr.rule.parameter">
+            <field name="name">ONSS Reduction for Restructuring - after 30 years old</field>
+            <field name="code">onss_restructuring_after_30</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_onss_restructuring_after_30_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">4504.93</field>
+            <field name="rule_parameter_id" ref="rule_parameter_onss_restructuring_after_30"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_onss_restructuring_amount" model="hr.rule.parameter">
+            <field name="name">ONSS Reduction for Restructuring - Amount</field>
+            <field name="code">onss_restructuring_amount</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_onss_restructuring_amount_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">133.33</field>
+            <field name="rule_parameter_id" ref="rule_parameter_onss_restructuring_amount"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
+    </data>
+</odoo>

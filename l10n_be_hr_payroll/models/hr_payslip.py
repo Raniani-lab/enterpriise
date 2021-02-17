@@ -581,8 +581,11 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
             raise_if_not_found=False)
         if threshold is None:
             threshold = 410  # 2020 value
-        if payslip.contract_id.private_car_reimbursed_amount > (threshold / 12):
-            taxable_amount += payslip.contract_id.private_car_reimbursed_amount - (threshold / 12)
+        contract = payslip.contract_id
+        private_car_reimbursed_amount = contract.with_context(
+            payslip_date=payslip.date_from)._get_private_car_reimbursed_amount(contract.km_home_work)
+        if private_car_reimbursed_amount > (threshold / 12):
+            taxable_amount += private_car_reimbursed_amount - (threshold / 12)
     lower_bound = taxable_amount - taxable_amount % 15
 
     # yearly_gross_revenue = Revenu Annuel Brut

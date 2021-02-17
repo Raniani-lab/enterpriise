@@ -185,7 +185,7 @@ class HrContract(models.Model):
         # But this is the case for the CP200
         # See: https://www.sfonds200.be/fonds-social/infos-sectorielles/frais-de-transport/prive-2020
         private_car_reimbursement_scale = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
-            'private_car_reimbursement_scale', raise_if_not_found=False)
+            'private_car_reimbursement_scale', date=self.env.context.get('payslip_date'), raise_if_not_found=False)
         if not private_car_reimbursement_scale:
             return 0
         for distance_boundary, amount in private_car_reimbursement_scale:

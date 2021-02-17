@@ -1634,21 +1634,21 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(payslip.input_line_ids), 0)
         self.assertEqual(len(payslip.line_ids), 22)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 3707.48, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 3707.42, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 22.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 167.2, places=2)
 
         payslip_results = {
-            'BASIC': 3707.48,
+            'BASIC': 3707.42,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 3716.48,
+            'SALARY': 3716.42,
             'ONSS': -485.74,
-            'GROSSIP': 3230.74,
-            'IP.PART': -741.5,
-            'GROSS': 2489.24,
+            'GROSSIP': 3230.68,
+            'IP.PART': -741.48,
+            'GROSS': 2489.20,
             'P.P': -579.04,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
@@ -1656,9 +1656,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -23.98,
             'CAR.PRIV': 69.5,
             'REP.FEES': 150.0,
-            'IP': 741.5,
+            'IP': 741.48,
             'IP.DED': -55.61,
-            'NET': 2747.31,
+            'NET': 2747.26,
         }
         self._validate_payslip(payslip, payslip_results)
 

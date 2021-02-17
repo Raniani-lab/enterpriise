@@ -663,6 +663,7 @@ odoo.define('sign.document_signing', function (require) {
     var PDFIframe = require('sign.PDFIframe');
     var session = require('web.session');
     var Widget = require('web.Widget');
+    var time = require('web.time');
 
     var _t = core._t;
 
@@ -1467,7 +1468,7 @@ odoo.define('sign.document_signing', function (require) {
                 if (type.name === "Date") {
                     $signatureItem.on('focus', function(e) {
                         if($signatureItem.val() === "") {
-                            $signatureItem.val(moment().format('L'));
+                            $signatureItem.val(moment().format(time.getLangDateFormat()));
                             $signatureItem.trigger('input');
                         }
                     });

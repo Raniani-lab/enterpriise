@@ -3,11 +3,11 @@
 
 import re
 from datetime import datetime
+import json
 
 from odoo import models, fields
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
-import json
 
 
 class CertificationReport(models.AbstractModel):
@@ -161,14 +161,15 @@ class ReportCertificationReport(models.AbstractModel):
     def print_pdf(self, options):
         lines = self._get_lines(options)
         return {
-            'type': 'ir_actions_account_report_download',
-            'data': {
-                'model': self.env.context.get('model'),
-                'options': json.dumps(options),
-                'output_format': 'pdf',
-                'context': {'lines': lines, 'report_name': self._name},
-                    }
-                }
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'l10n_co_reports.retention_report.wizard',
+            'views': [(self.env.ref('l10n_co_reports.retention_report_wizard_form').id, 'form')],
+            'view_id': self.env.ref('l10n_co_reports.retention_report_wizard_form').id,
+            'target': 'new',
+            'context': {'lines': lines, 'report_name': self._name},
+            'data': {'options': json.dumps(options), 'output_format': 'pdf'},
+        }
 
 
 class ReportCertificationReportIca(models.AbstractModel):

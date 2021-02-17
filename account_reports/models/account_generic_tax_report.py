@@ -15,7 +15,7 @@ class generic_tax_report(models.AbstractModel):
     _name = 'account.generic.tax.report'
     _description = 'Generic Tax Report'
 
-    filter_multi_company = None # Can change dynamically with a config parameter (see _get_options)
+    filter_multi_company = True # Actually disabled by default, can be activated by config parameter (see _get_options)
     filter_date = {'mode': 'range', 'filter': 'last_month'}
     filter_all_entries = False
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
@@ -53,14 +53,19 @@ class generic_tax_report(models.AbstractModel):
 
     @api.model
     def _get_options(self, previous_options=None):
+        rslt = super(generic_tax_report, self)._get_options(previous_options)
+        rslt['date']['strict_range'] = True
+
         if self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company'):
             if len(self.env.companies.mapped('currency_id')) > 1:
                 raise UserError(_("The multi-company option of the tax report does not allow opening it for companies in different currencies."))
 
-            self.filter_multi_company = True
+        elif 'multi_company' in rslt:
+            # filter_multi_company is readonly. Hence, it cannot be modified before calling super().
+            # However, we only want multi company activated on the tax report if the config parameter
+            # is set. By default, it has to be disabled. So, we remove it from the resulting options.
+            del rslt['multi_company']
 
-        rslt = super(generic_tax_report, self)._get_options(previous_options)
-        rslt['date']['strict_range'] = True
         return rslt
 
     def _get_reports_buttons(self):

@@ -150,6 +150,7 @@ class HrContractSalary(http.Controller):
         contract_type_id = False
         employee_contract_id = False
         job_title = False
+        whitelist = False
 
         final_yearly_costs = contract.final_yearly_costs
 
@@ -167,6 +168,8 @@ class HrContractSalary(http.Controller):
                 job_title = value
             elif field_name in old_value:
                 old_value = old_value[field_name]
+            elif field_name == 'allow':
+                whitelist = value
             else:
                 old_value = ""
 
@@ -195,6 +198,7 @@ class HrContractSalary(http.Controller):
             'job_title': job_title,
             'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
+            'whitelist': whitelist,
             'token': kw.get('token')})
 
         response = request.render("hr_contract_salary.salary_package", values)

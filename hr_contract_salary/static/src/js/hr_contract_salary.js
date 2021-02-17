@@ -35,7 +35,25 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $('b[role="presentation"]').hide();
         $('.select2-arrow').append('<i class="fa fa-chevron-down"></i>');
         this.updateGross = _.debounce(this.updateGross, 1000);
-        this.initializeUnsetSliders()
+        this.initializeUnsetSliders();
+        var whitelist = $("input[name='whitelist']").val();
+        if (whitelist) {
+            var whitelisted_fields = whitelist.split(',');
+            $('input')
+                .toArray()
+                .forEach(input => {
+                    if (!whitelisted_fields.includes(input.name)) {
+                        $(input).attr("disabled", true);
+                    }
+                });
+            $('select')
+                .toArray()
+                .forEach(select => {
+                    if (!whitelisted_fields.includes(select.name)) {
+                        $(select).attr("disabled", true);
+                    }
+                });
+        }
 
         // When user use back button, unfold previously unfolded items.
         $('#hr_cs_configurator .hr_cs_control input.folded:checked').closest('div').find('.folded_content').removeClass('d-none')

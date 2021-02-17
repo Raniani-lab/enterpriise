@@ -27,6 +27,7 @@
                                 <input type="hidden" name="contract_type_id" t-att-value="contract_type_id"/>
                                 <input type="hidden" name="job_title" t-att-value="job_title"/>
                                 <input type="hidden" name="contract" t-att-value="contract.id"/>
+                                <input type="hidden" name="whitelist" t-att-value="whitelist"/>
                                 <input type="text" name="wage" applies-on="contract" t-att-value="contract.wage" class="d-none" disabled="disabled"/>
                                 <input type="text" name="final_yearly_costs" applies-on="contract" t-att-value="contract.final_yearly_costs" class="d-none" disabled="disabled"/>
 

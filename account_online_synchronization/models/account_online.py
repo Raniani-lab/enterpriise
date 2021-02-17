@@ -468,7 +468,7 @@ class AccountOnlineLink(models.Model):
 
     def _open_iframe(self, mode='link'):
         self.ensure_one()
-        if self.client_id and self.refresh_token:
+        if self.client_id and self.sudo().refresh_token:
             self._get_access_token()
         proxy_mode = self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.proxy_mode') or 'production'
         country = self.env.company.country_id

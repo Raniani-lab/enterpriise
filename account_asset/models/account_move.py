@@ -115,6 +115,7 @@ class AccountMove(models.Model):
                     and not move.reversed_entry_id
                     and not (move_line.currency_id or move.currency_id).is_zero(move_line.price_total)
                     and not move_line.asset_ids
+                    and move_line.price_total > 0
                 ):
                     if not move_line.name:
                         raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))

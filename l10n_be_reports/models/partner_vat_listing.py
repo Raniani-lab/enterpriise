@@ -166,7 +166,9 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
         data_file = """<?xml version="1.0" encoding="ISO-8859-1"?>
   <ns2:ClientListingConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/ClientListingConsignment" ClientListingsNbr="1">"""
 
-        data_comp = """
+        data_comp = self._get_belgian_xml_export_representative_node()
+
+        data_comp += """
         <ns2:Declarant>
             <VATNumber>%(SenderId)s</VATNumber>
             <Name>%(comp_name)s</Name>

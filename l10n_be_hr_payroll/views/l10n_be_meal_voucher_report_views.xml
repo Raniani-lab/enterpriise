@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="l10n_be_meal_voucher_report_view_search" model="ir.ui.view">
-        <field name="name">l10n_be.meal.voucher.report.search</field>
-        <field name="model">l10n_be.meal.voucher.report</field>
+    <record id="l10n_be_work_entry_daily_benefit_report_search" model="ir.ui.view">
+        <field name="name">l10n_be.work.entry.daily.benefit.report.search</field>
+        <field name="model">l10n_be.work.entry.daily.benefit.report</field>
         <field name="arch" type="xml">
             <search string="Search Meal Voucher Report">
                 <field name="employee_id"/>
@@ -11,18 +11,19 @@
         </field>
     </record>
 
-    <record id="hr_payslip_report_action" model="ir.actions.act_window">
+    <record id="l10n_be_work_entry_daily_benefit_report_action" model="ir.actions.act_window">
         <field name="name">Meal Vouchers</field>
-        <field name="res_model">l10n_be.meal.voucher.report</field>
+        <field name="res_model">l10n_be.work.entry.daily.benefit.report</field>
         <field name="view_mode">pivot</field>
         <field name="context">
             {'search_default_date_filter': 1}
         </field>
+        <field name="domain">[('benefit_name', '=', 'meal_voucher')]</field>
     </record>
 
-     <record id="l10n_be_meal_voucher_report_view_pivot" model="ir.ui.view">
-        <field name="name">l10n_be.meal.voucher.report</field>
-        <field name="model">l10n_be.meal.voucher.report</field>
+     <record id="l10n_be_work_entry_daily_benefit_report_view_pivot" model="ir.ui.view">
+        <field name="name">l10n_be.work.entry.daily.benefit.report.view.pivot</field>
+        <field name="model">l10n_be.work.entry.daily.benefit.report</field>
         <field name="arch" type="xml">
             <pivot string="Meal Vouchers" disable_linking="True" sample="1">
                 <field name="employee_id" type="row"/>
@@ -33,8 +34,8 @@
 
     <menuitem
         id="menu_hr_payroll_meal_voucher"
-        action="hr_payslip_report_action"
+        action="l10n_be_work_entry_daily_benefit_report_action"
         parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
-        sequence="20"
+        sequence="21"
     />
 </odoo>

@@ -77,18 +77,21 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
                 structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
                 structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
                 structure_double_holidays = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
+                structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+                structure_holidays_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+                structure_holidays_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
 
                 payslip_n_ids = self.env['hr.payslip'].search([
                     ('employee_id', '=', record.employee_id.id),
                     ('date_to', '>=', current_year),
                     ('state', 'in', ['done', 'paid']),
-                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
+                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
                 payslip_n1_ids = self.env['hr.payslip'].search([
                     ('employee_id', '=', record.employee_id.id),
                     ('date_to', '>=', previous_year),
                     ('date_from', '<', current_year),
                     ('state', 'in', ['done', 'paid']),
-                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays).ids)])
+                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
 
                 record.payslip_n_ids = [(4, p._origin.id) for p in payslip_n_ids]
                 record.payslip_n1_ids = [(4, p._origin.id) for p in payslip_n1_ids]
@@ -111,7 +114,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n(self):
         for wizard in self:
             if wizard.payslip_n_ids:
-                wizard.net_n = sum(p._origin.basic_wage + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n_ids)
+                wizard.net_n = sum(p._origin._get_salary_line_total('SALARY') + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n_ids)
             else:
                 wizard.net_n = 0
 
@@ -119,7 +122,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n1(self):
         for wizard in self:
             if wizard.payslip_n1_ids:
-                wizard.net_n1 = sum(p._origin.basic_wage + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n1_ids)
+                wizard.net_n1 = sum(p._origin._get_salary_line_total('SALARY') + p._origin._get_salary_line_total('COMMISSION') for p in wizard.payslip_n1_ids)
             else:
                 wizard.net_n1 = 0
 

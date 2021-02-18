@@ -44,9 +44,9 @@ class AccountBatchPayment(models.Model):
         '''
         for batch in self:
             if batch.batch_type == 'inbound':
-                available_payment_methods = batch.journal_id.inbound_payment_method_ids
+                available_payment_methods = batch.journal_id.inbound_payment_method_line_ids.mapped('payment_method_id')
             else:
-                available_payment_methods = batch.journal_id.outbound_payment_method_ids
+                available_payment_methods = batch.journal_id.outbound_payment_method_line_ids.mapped('payment_method_id')
 
             # Select the first available one by default.
             if available_payment_methods:
@@ -55,14 +55,14 @@ class AccountBatchPayment(models.Model):
                 batch.payment_method_id = False
 
     @api.depends('batch_type',
-                 'journal_id.inbound_payment_method_ids',
-                 'journal_id.outbound_payment_method_ids')
+                 'journal_id.inbound_payment_method_line_ids',
+                 'journal_id.outbound_payment_method_line_ids')
     def _compute_available_payment_method_ids(self):
         for batch in self:
             if batch.batch_type == 'inbound':
-                batch.available_payment_method_ids = batch.journal_id.inbound_payment_method_ids
+                batch.available_payment_method_ids = batch.journal_id.inbound_payment_method_line_ids.mapped('payment_method_id')
             else:
-                batch.available_payment_method_ids = batch.journal_id.outbound_payment_method_ids
+                batch.available_payment_method_ids = batch.journal_id.outbound_payment_method_line_ids.mapped('payment_method_id')
 
     @api.depends('payment_ids.move_id.is_move_sent', 'payment_ids.is_matched')
     def _compute_state(self):

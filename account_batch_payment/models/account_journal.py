@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+from odoo import models, api, _
 
 
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
     def _default_inbound_payment_methods(self):
-        vals = super(AccountJournal, self)._default_inbound_payment_methods()
-        return vals + self.env.ref('account_batch_payment.account_payment_method_batch_deposit')
+        res = super()._default_inbound_payment_methods()
+        return res | self.env.ref('account_batch_payment.account_payment_method_batch_deposit')
 
     @api.model
     def _create_batch_payment_outbound_sequence(self):
@@ -44,25 +44,6 @@ class AccountJournal(models.Model):
             #by default, share the sequence for all companies
             'company_id': False,
         })
-
-    @api.model
-    def _enable_batch_deposit_on_bank_journals(self):
-        """ Enables batch deposit payment method on bank journals. Called upon module installation via data file."""
-        batch_deposit = self.env.ref('account_batch_payment.account_payment_method_batch_deposit')
-        self.search([('type', '=', 'bank')]).write({
-                'inbound_payment_method_ids': [(4, batch_deposit.id, None)],
-        })
-
-    @api.model
-    def _enable_payment_method_on_bank_journals(self, payment_method, currency_name):
-        """ Enables the payment method on bank journals. Should be called upon module installation via data file.
-        """
-        if self.env.company.currency_id.name == currency_name:
-            domain = ['&', ('type', '=', 'bank'), '|', ('currency_id.name', '=', currency_name), ('currency_id', '=', False)]
-        else:
-            domain = ['&', ('type', '=', 'bank'), ('currency_id.name', '=', currency_name)]
-        for bank_journal in self.search(domain):
-            bank_journal.write({'outbound_payment_method_ids': [(4, payment_method.id, None)]})
 
     def open_action_batch_payment(self):
         ctx = self._context.copy()

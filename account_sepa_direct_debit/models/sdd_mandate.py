@@ -41,7 +41,7 @@ class SDDMandate(models.Model):
     partner_bank_id = fields.Many2one(string='IBAN', readonly=True, states={'draft':[('readonly',False)]}, comodel_name='res.partner.bank', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", help="Account of the customer to collect payments from.")
     start_date = fields.Date(string="Start Date", required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Date from which the mandate can be used (inclusive).")
     end_date = fields.Date(string="End Date", states={'closed':[('readonly',True)]}, help="Date until which the mandate can be used. It will automatically be closed after this date.")
-    payment_journal_id = fields.Many2one(string='Journal', comodel_name='account.journal', required=True, domain="[('company_id', '=', company_id)]", help='Journal to use to receive SEPA Direct Debit payments from this mandate.')
+    payment_journal_id = fields.Many2one(string='Journal', comodel_name='account.journal', required=True, domain="[('id', '=', suitable_journal_ids)]", help='Journal to use to receive SEPA Direct Debit payments from this mandate.')
     sdd_scheme = fields.Selection(string="SDD Scheme", selection=[('CORE', 'CORE'), ('B2B', 'B2B')],
         required=True, default='CORE', help='The B2B scheme is an optional scheme,\noffered exclusively to business payers.\n'
         'Some banks/businesses might not accept B2B SDD.',)
@@ -60,6 +60,19 @@ class SDDMandate(models.Model):
         help="Number of Direct Debit payments to be collected for this mandate, that is, the number of payments that "
              "have been generated and posted thanks to this mandate and still needs their XML file to be generated and "
              "sent to the bank to debit the customer's account.")
+    suitable_journal_ids = fields.Many2many('account.journal', compute='_compute_suitable_journal_ids')
+
+    @api.depends('company_id')
+    def _compute_suitable_journal_ids(self):
+        for m in self:
+            company_id = m.company_id.id or self.env.company.id
+            domain = [('company_id', '=', company_id), ('type', '=', 'bank')]
+            payment_method = self.env.ref('account_sepa_direct_debit.payment_method_sdd')
+
+            # Get all journals which have the payment method sdd
+            m.suitable_journal_ids = self.env['account.journal'].search(domain).filtered(
+                lambda j: payment_method in j.inbound_payment_method_line_ids.mapped('payment_method_id')
+            )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_draft(self):

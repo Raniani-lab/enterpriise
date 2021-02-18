@@ -51,7 +51,7 @@ class SepaDirectDebitCommon(PaymentCommon):
 
     def reconcile(self, payment):
         bank_journal = payment.journal_id
-        move_line = payment.line_ids.filtered(lambda aml: aml.account_id == bank_journal.payment_debit_account_id)
+        move_line = payment.line_ids.filtered(lambda aml: aml.account_id == bank_journal.company_id.account_journal_payment_debit_account_id)
 
         bank_stmt = self.env['account.bank.statement'].create({
             'journal_id': bank_journal.id,

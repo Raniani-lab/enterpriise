@@ -582,15 +582,16 @@ class AccountReconciliation(models.AbstractModel):
 
         account_ids = []
 
+        inbound_account_ids = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
+        outbound_account_ids = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
+
         # Matching on debit account.
-        allow_debit_statement_matching = journal.payment_debit_account_id != journal.default_account_id
-        if allow_debit_statement_matching:
-            account_ids.append(journal.payment_debit_account_id.id)
+        if inbound_account_ids:
+            account_ids.append(tuple(inbound_account_ids.ids))
 
         # Matching on credit account.
-        allow_credit_statement_matching = journal.payment_credit_account_id != journal.default_account_id
-        if allow_credit_statement_matching:
-            account_ids.append(journal.payment_credit_account_id.id)
+        if outbound_account_ids:
+            account_ids.append(tuple(outbound_account_ids.ids))
 
         domain = domain + [
             ('journal_id.type', 'in', ('bank', 'cash')),
@@ -658,15 +659,16 @@ class AccountReconciliation(models.AbstractModel):
 
         account_ids = []
 
+        inbound_account_ids = journal._get_journal_inbound_outstanding_payment_accounts() - journal.default_account_id
+        outbound_account_ids = journal._get_journal_outbound_outstanding_payment_accounts() - journal.default_account_id
+
         # Matching on debit account.
-        allow_debit_statement_matching = journal.payment_debit_account_id != journal.default_account_id
-        if allow_debit_statement_matching:
-            account_ids.append(journal.payment_debit_account_id.id)
+        if inbound_account_ids:
+            account_ids.append(tuple(inbound_account_ids.ids))
 
         # Matching on credit account.
-        allow_credit_statement_matching = journal.payment_credit_account_id != journal.default_account_id
-        if allow_credit_statement_matching:
-            account_ids.append(journal.payment_credit_account_id.id)
+        if outbound_account_ids:
+            account_ids.append(tuple(outbound_account_ids.ids))
 
         domain = domain + [
             ('account_id.internal_type', 'not in', ('receivable', 'payable')),

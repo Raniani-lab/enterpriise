@@ -368,7 +368,8 @@ class AccountBankReconciliationReport(models.AbstractModel):
         report_currency = journal_currency or company_currency
         unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
 
-        accounts = journal.payment_debit_account_id + journal.payment_credit_account_id
+        accounts = journal._get_journal_inbound_outstanding_payment_accounts() \
+                   + journal._get_journal_outbound_outstanding_payment_accounts()
         if not accounts:
             return [], []
 
@@ -511,7 +512,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
             }
 
             residual_amount = monetary_columns[2]['no_format']
-            if res['account_id'] == journal.payment_debit_account_id.id:
+            if res['account_id'] in journal._get_journal_inbound_outstanding_payment_accounts().ids:
                 pay_report_line['parent_id'] = 'plus_unreconciled_payment_lines'
                 plus_total += residual_amount
                 plus_report_lines.append(pay_report_line)
@@ -527,13 +528,13 @@ class AccountBankReconciliationReport(models.AbstractModel):
         return (
             self._build_section_report_lines(options, journal, plus_report_lines, plus_total,
                 _("(+) Outstanding Receipts"),
-                _("Transactions(+) that were entered into Odoo (%s), but not yet reconciled (Payments triggered by "
-                  "invoices/refunds or manually)") % journal.payment_debit_account_id.display_name,
+                _("Transactions(+) that were entered into Odoo, but not yet reconciled (Payments triggered by "
+                  "invoices/refunds or manually)"),
             ),
             self._build_section_report_lines(options, journal, less_report_lines, less_total,
                 _("(-) Outstanding Payments"),
-                _("Transactions(-) that were entered into Odoo (%s), but not yet reconciled (Payments triggered by "
-                  "bills/credit notes or manually)") % journal.payment_credit_account_id.display_name,
+                _("Transactions(-) that were entered into Odoo, but not yet reconciled (Payments triggered by "
+                  "bills/credit notes or manually)"),
             ),
         )
 

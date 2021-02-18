@@ -4,14 +4,13 @@
 
 from odoo import models
 
+
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     def _default_inbound_payment_methods(self):
-        """ We set SDD as default inbound  payment method on new bank journals.
-        """
-        rslt = super(AccountJournal, self)._default_inbound_payment_methods()
-        return rslt + self.env.ref('account_sepa_direct_debit.payment_method_sdd')
+        res = super()._default_inbound_payment_methods()
+        return res | self.env.ref('account_sepa_direct_debit.payment_method_sdd')
 
     def get_journal_dashboard_datas(self):
         """ Overridden from account in order to add on the dashboard the number

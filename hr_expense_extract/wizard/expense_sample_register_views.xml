@@ -8,7 +8,7 @@
                 <field name="sheet_id" invisible="1" /> 
                 <field name="currency_id" invisible="1"/>
                 <field name="company_id" invisible="1"/>
-                <field name="payment_method_ids" invisible="1"/>
+                <field name="available_payment_method_ids" invisible="1"/>
                 <field name="hide_payment" invisible="1"/>
                 <field name="hide_partial" invisible="1"/>
                 <group> 

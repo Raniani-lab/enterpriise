@@ -115,14 +115,17 @@ class AccountCashFlowReport(models.AbstractModel):
             where_params = []
 
         self._cr.execute('''
-            SELECT ARRAY_AGG(DISTINCT default_account_id),
-                   ARRAY_AGG(DISTINCT payment_debit_account_id),
-                   ARRAY_AGG(DISTINCT payment_credit_account_id)
+            SELECT array_remove(ARRAY_AGG(DISTINCT default_account_id), NULL),
+                   array_remove(ARRAY_AGG(DISTINCT apml.payment_account_id), NULL),
+                   ARRAY_AGG(DISTINCT rc.account_journal_payment_debit_account_id),
+                   ARRAY_AGG(DISTINCT rc.account_journal_payment_credit_account_id)
             FROM account_journal
-            WHERE ''' + where_clause, where_params
-        )
+            JOIN res_company rc ON account_journal.company_id = rc.id
+            LEFT JOIN account_payment_method_line apml ON account_journal.id = apml.journal_id
+            WHERE ''' + where_clause, where_params)
+
         res = self._cr.fetchall()[0]
-        payment_account_ids = set((res[0] or []) + (res[1] or []) + (res[2] or []))
+        payment_account_ids = set((res[0] or []) + (res[1] or []) + (res[2] or []) + (res[3] or []))
 
         if not payment_account_ids:
             return (), ()

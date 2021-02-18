@@ -6,7 +6,7 @@ from odoo.tests import tagged
 from freezegun import freeze_time
 
 
-@tagged('post_install', '-at_install', 'wololotest')
+@tagged('post_install', '-at_install')
 class BelgiumTaxReportTest(AccountSalesReportCommon):
 
     @classmethod

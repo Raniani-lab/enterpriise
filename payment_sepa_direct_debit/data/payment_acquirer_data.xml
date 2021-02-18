@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    
+
     <record id="payment.payment_acquirer_sepa_direct_debit" model="payment.acquirer">
         <field name="provider">sepa_direct_debit</field>
         <field name="image_128"
@@ -40,7 +40,7 @@
             (4,(ref('base.sk'))),
             (4,(ref('base.si'))),
             (4,(ref('base.es'))),
-            
+
             (4,(ref('base.fr'))),
             (4,(ref('base.gf'))),
             (4,(ref('base.gp'))),
@@ -50,10 +50,10 @@
             (4,(ref('base.mf'))),
             (4,(ref('base.re'))),
             (4,(ref('base.pm'))),
-            
+
             (4,(ref('base.mc'))),
             (4,(ref('base.sm'))),
-            
+
             (4,(ref('base.bg'))),
             (4,(ref('base.hr'))),
             (4,(ref('base.cz'))),
@@ -66,9 +66,15 @@
             (4,(ref('base.ro'))),
             (4,(ref('base.se'))),
             (4,(ref('base.ch'))),
-            
+
             (4,(ref('base.uk'))),
             (4,(ref('base.gi')))]"/>
     </record>
-    
+
+    <record id="payment_method_sepa_direct_debit" model="account.payment.method">
+        <field name="name">SEPA Direct Debit (acquirer)</field>
+        <field name="code">sepa_direct_debit</field>
+        <field name="payment_type">inbound</field>
+    </record>
+
 </odoo>

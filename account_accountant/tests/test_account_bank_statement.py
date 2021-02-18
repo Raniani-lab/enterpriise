@@ -67,7 +67,7 @@ class TestAccountBankStatement(TestAccountBankStatementCommon):
             'currency_id': self.currency_2.id,
             'partner_id': self.partner_a.id,
             'journal_id': self.statement.line_ids.journal_id.id,
-            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'payment_method_id': self.inbound_payment_method.id,
         })
         test_payment_2 = test_payment_1.copy()
 

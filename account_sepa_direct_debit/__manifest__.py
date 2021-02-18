@@ -45,7 +45,6 @@
         'report/empty_mandate_report.xml',
         'data/account_data.xml',
         'data/sdd_payment_method.xml',
-        'data/set_sdd_on_bank_journals.xml',
         'data/sdd_mandate_state_cron.xml',
         'views/sdd_mandate_views.xml',
         'views/account_payment_view.xml',

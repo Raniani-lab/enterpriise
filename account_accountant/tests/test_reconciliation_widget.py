@@ -500,7 +500,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='rp')
         self.assertRecordValues(suggested_amls, [{
             'payment_id': payment.id,
-            'account_id': self.company_data['default_journal_bank'].payment_credit_account_id.id,
+            'account_id': self.company_data['default_journal_bank'].company_id.account_journal_payment_credit_account_id.id,
         }])
 
         suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='misc')

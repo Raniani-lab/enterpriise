@@ -84,8 +84,8 @@ class TestSaleAccountTaxCloud(TestAccountTaxcloudCommon):
         invoice = sale_order.invoice_ids - downpayment_invoice
         invoice.action_post()
 
-        payment_method_manual_in = self.env.ref(
-            "account.account_payment_method_manual_in"
+        payment_method_manual_in = self.bank_journal.inbound_payment_method_line_ids.filtered(
+            lambda l: l.code == "manual"
         )
 
         register_payments = (

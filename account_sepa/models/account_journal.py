@@ -37,8 +37,8 @@ class AccountJournal(models.Model):
     _inherit = "account.journal"
 
     def _default_outbound_payment_methods(self):
-        vals = super(AccountJournal, self)._default_outbound_payment_methods()
-        return vals + self.env.ref('account_sepa.account_payment_method_sepa_ct')
+        res = super()._default_outbound_payment_methods()
+        return res | self.env.ref('account_sepa.account_payment_method_sepa_ct')
 
     def create_iso20022_credit_transfer(self, payments, batch_booking=False, sct_generic=False):
         """

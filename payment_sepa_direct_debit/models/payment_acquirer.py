@@ -81,27 +81,6 @@ class PaymentAcquirer(models.Model):
                     ', '.join(non_sepa_countries.mapped('name'))
                 ))
 
-    #=== CRUD METHODS ===#
-
-    @api.model
-    def _create_missing_journals(self, company=None):
-        """ Override of payment to assign the default Bank journal instead or Electronic. """
-        # Search for SDD acquirers having no journal
-        sdd_acquirers = self.env['payment.acquirer'].search([
-            ('provider', '=', 'sepa_direct_debit'),
-            ('journal_id', '=', False),
-            ('company_id', '=', (company or self.env.company).id)
-        ])
-
-        # Pick the Bank journal
-        bank_journal = self.env['account.journal'].search(
-            [('type', '=', 'bank'), ('company_id', '=', (company or self.env.company).id)], limit=1
-        )
-        if bank_journal:
-            sdd_acquirers.write({'journal_id': bank_journal.id})
-
-        return super()._create_missing_journals(company=company)
-
     #=== ACTION METHODS ===#
 
     def action_buy_sms_credits(self):
@@ -239,3 +218,9 @@ class PaymentAcquirer(models.Model):
             phone=phone, code=verification_code, signer=signer, signature=signature
         )
         return token
+
+    def _get_default_payment_method(self):
+        self.ensure_one()
+        if self.provider != 'sepa_direct_debit':
+            return super()._get_default_payment_method()
+        return self.env.ref('payment_sepa_direct_debit.payment_method_sepa_direct_debit').id

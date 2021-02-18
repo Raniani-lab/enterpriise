@@ -5,7 +5,11 @@ class AccountBankStatement(models.Model):
 
     def action_bank_reconcile_bank_statements(self):
         self.ensure_one()
-        bank_stmt_lines = self.mapped('line_ids')
+        limit = int(self.env["ir.config_parameter"].sudo().get_param("account.reconcile.batch", 1000))
+        bank_stmt_lines = self.env['account.bank.statement.line'].search([
+            ('statement_id', 'in', self.ids),
+            ('is_reconciled', '=', False),
+        ], limit=limit)
         return {
             'type': 'ir.actions.client',
             'tag': 'bank_statement_reconciliation_view',

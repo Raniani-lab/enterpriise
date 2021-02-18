@@ -28,6 +28,7 @@ class account_journal(models.Model):
                 search_default_sepa_to_send=1,
                 journal_id=self.id,
                 default_journal_id=self.id,
+                search_default_journal_id=self.id,
                 default_payment_type='outbound',
                 default_payment_method_id=self.env.ref('account_sepa.account_payment_method_sepa_ct').id,
             ),

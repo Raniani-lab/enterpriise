@@ -214,7 +214,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
          */
         _findConnectedCell: function ($cell, direction, colIndex) {
             var res = this._super.apply(this, arguments);
-            var id = res.closest('tr').data('id');
+            var id = res && res.closest('tr').data('id');
             if (id) {
                 this.trigger_up('row_selected', {
                     recordId: id,

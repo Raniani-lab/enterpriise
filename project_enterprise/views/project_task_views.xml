@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Add map view -->
-    <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,map</field>
-    </record>
 
     <!-- Adding manager gantt view to Project -->
     <record id="project_task_view_gantt" model="ir.ui.view">
@@ -111,6 +107,12 @@
     <record id="project_all_task_graph_action_view" model="ir.actions.act_window.view">
         <field name="sequence" eval="60"/>
         <field name="view_mode">graph</field>
+        <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
+    </record>
+
+    <record id="project_all_task_gantt_action_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="70"/>
+        <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
     </record>
 

@@ -338,7 +338,7 @@ class AccountBankStatementImport(models.TransientModel):
             return "{hour}:{minute}".format(hour=s[:2], minute=s[2:])
 
         def parsefloat(s, precision):
-            return str(float(rmspaces(s)) / (10 ** precision))
+            return str(float(rmspaces(s) or 0) / (10 ** precision))
 
         def parse_terminal(s):
             return _('Name: {name}, Town: {city}').format(name=rmspaces(s[:16]), city=rmspaces(s[16:]))

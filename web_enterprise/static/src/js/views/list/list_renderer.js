@@ -3,7 +3,7 @@ odoo.define('web_enterprise.MobileListRenderer', function (require) {
 
 const config = require('web.config');
 
-if (!config.device.isMobile && !config.device.touch) {
+if (!config.device.isMobile) {
     return;
 }
 

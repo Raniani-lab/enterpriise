@@ -597,6 +597,7 @@ class AccountMove(models.Model):
             try:
                 with self.env.cr.savepoint():
                     record._check_status()
+                self.env.cr.commit()
             except Exception as e:
                 _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
 

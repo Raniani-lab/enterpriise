@@ -135,6 +135,11 @@
         <field name="name">Special Social Cotisation (Total)</field>
         <field name="code">MONSSTOTAL</field>
     </record>
+    <record id="hr_payroll_onss_restructuring" model="hr.salary.rule.category">
+        <field name="name">ONSS Restructuring Reduction</field>
+        <field name="code">ONSSRESTRUCTURING</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
 
     <record id="hr_work_entry.work_entry_type_attendance" model="hr.work.entry.type">
         <field name="meal_voucher">True</field>

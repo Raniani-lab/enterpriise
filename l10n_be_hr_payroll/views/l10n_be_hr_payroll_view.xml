@@ -153,6 +153,9 @@
                 <group string="Impulsion Plan" name="impulsion_plan">
                     <field name="l10n_be_impulsion_plan"/>
                 </group>
+                <group string="ONSS Reduction" name="onss_retructuring">
+                    <field name="l10n_be_onss_restructuring"/>
+                </group>
             </group>
             <page name="information" position="after">
                 <page string="Attachment of Salary" name="salary_attachment">

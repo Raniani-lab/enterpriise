@@ -88,6 +88,7 @@ class HrContract(models.Model):
         ('25yo', '< 25 years old'),
         ('12mo', '12 months +'),
         ('55yo', '55+ years old')], string="Impulsion Plan")
+    l10n_be_onss_restructuring = fields.Boolean(string="Manage ONSS Reduction for Restructuring")
 
     _sql_constraints = [
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),

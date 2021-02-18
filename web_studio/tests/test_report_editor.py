@@ -1,7 +1,16 @@
+from odoo.addons.web_studio.controllers.main import WebStudioController
+from odoo.http import _request_stack
 from odoo.tests.common import TransactionCase
+from odoo.tools import DotDict
 
 
 class TestReportEditor(TransactionCase):
+
+    def setUp(self):
+        super(TestReportEditor, self).setUp()
+        self.session = DotDict({'debug': False})
+        _request_stack.push(self)
+        self.WebStudioController = WebStudioController()
 
     def test_copy_inherit_report(self):
         report = self.env['ir.actions.report'].create({
@@ -178,3 +187,30 @@ class TestReportEditor(TransactionCase):
         ])
         self.assertEqual(len(translations), 3)
         self.assertEqual(set(translations.mapped('src')), set(['a_', 'ab', 'aba']))
+
+    def test_report_action_translations(self):
+        self.env['ir.actions.report'].create({
+            'name': 'test report in translations',
+            'report_name': 'web_studio.test_report_action_translations',
+            'model': 'res.users',
+        })
+        view = self.env['ir.ui.view'].create({
+            'type': 'qweb',
+            'name': 'test_report_action_translations_view',
+            'key': 'web_studio.test_report_action_translations_view',
+            'arch': '<div>hello test</div>',
+        })
+
+        model = self.env['ir.model'].search([('model', '=', 'res.users')], limit=1)
+        action = self.WebStudioController._get_studio_action_translations(model)
+
+        view_ids = next((leaf[2] for leaf in action['domain'] if leaf[0] == 'res_id'), [])
+        self.assertIn(view.id, view_ids)
+
+        translations = self.env['ir.translation'].search_read(action['domain'], ['src'])
+        translation = next(trans for trans in translations if trans["src"] == "hello test")
+        self.assertTrue(translation, 'report translations should shown in "Translations" action')
+
+    def tearDown(self):
+        super(TestReportEditor, self).tearDown()
+        _request_stack.pop()

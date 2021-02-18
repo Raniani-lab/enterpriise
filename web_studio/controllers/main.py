@@ -12,6 +12,7 @@ from odoo import http, _
 from odoo.http import content_disposition, request
 from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.addons.web_studio.controllers import export
+from odoo.osv import expression
 from odoo.tools import ustr, sql
 
 
@@ -148,9 +149,20 @@ class WebStudioController(http.Controller):
     def _get_studio_action_translations(self, model, **kwargs):
         """ Open a view for translating the field(s) of the record (model, id). """
         domain = ['|', ('name', '=', model.model), ('name', 'ilike', model.model + ',')]
+        view_domains = [[('model', '=', model.model)]]
 
-        # search view + its inheritancies
-        views = request.env['ir.ui.view'].search([('model', '=', model.model)])
+        # search report views related to model
+        reports = request.env['ir.actions.report'].search([
+            ("model_id.transient", "=", False),
+            ("model_id.abstract", "=", False),
+            ("report_type", "not in", ['qweb-text']),
+            ("model", "=", model.model),
+        ])
+        for report in reports:
+            view_domains.append(report.associated_view().get('domain'))
+
+        # search view + its inheritancies + report views
+        views = request.env['ir.ui.view'].search(expression.OR(view_domains))
         domain = ['|', '&', ('name', '=', 'ir.ui.view,arch_db'), ('res_id', 'in', views.ids)] + domain
 
         def make_domain(fld, rec):

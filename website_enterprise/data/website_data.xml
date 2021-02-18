@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="feature_module_appointment" model="website.configurator.feature">
+            <field name="name">Appointment</field>
+            <field name="description">Self-service booking system</field>
+            <field name="sequence">14</field>
+            <field name="module_id" ref="base.module_website_calendar"/>
+            <field name="icon">fa-address-card</field>
+        </record>
+    </data>
+</odoo>

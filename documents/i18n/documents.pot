@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:57+0000\n"
-"PO-Revision-Date: 2021-01-12 07:57+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -154,13 +154,6 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
 
 #. module: documents
@@ -389,6 +382,11 @@ msgid "Action Count"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Action Name"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
@@ -542,6 +540,12 @@ msgid "Allows you to manage your documents."
 msgstr ""
 
 #. module: documents
+#: code:addons/documents/models/workflow.py:0
+#, python-format
+msgid "Already linked Documents"
+msgstr ""
+
+#. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
 msgid ""
 "An easy way to process incoming mails is to configure your scanner to send "
@@ -580,6 +584,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
+#, python-format
+msgid "Are you confirm deletion ?"
 msgstr ""
 
 #. module: documents
@@ -673,8 +684,10 @@ msgid "Can Upload"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr ""
 
@@ -696,6 +709,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__checksum
 msgid "Checksum/SHA1"
+msgstr ""
+
+#. module: documents
+#: code:addons/documents/models/workflow.py:0
+#, python-format
+msgid "Choose a record to link"
 msgstr ""
 
 #. module: documents
@@ -743,6 +762,12 @@ msgid "Configuration"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Configure Email Servers"
+msgstr ""
+
+#. module: documents
 #: model:ir.model,name:documents.model_res_partner
 #: model:ir.model.fields,field_description:documents.field_documents_document__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__partner_id
@@ -787,6 +812,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_uid
@@ -800,6 +826,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_date
@@ -849,6 +876,7 @@ msgstr ""
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: model_terms:ir.ui.view,arch_db:documents.share_view_tree
 #, python-format
 msgid "Delete"
 msgstr ""
@@ -882,6 +910,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_mixin__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
@@ -907,6 +936,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_count
 #: model:ir.model.fields,field_description:documents.field_res_partner__document_count
 msgid "Document Count"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "Document Name"
 msgstr ""
 
 #. module: documents
@@ -955,6 +990,7 @@ msgstr ""
 #: model:documents.facet,name:documents.documents_finance_documents
 #: model:ir.actions.act_window,name:documents.document_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__document_ids
 #: model:ir.model.fields,field_description:documents.field_res_users__document_count
 #: model:ir.module.category,name:documents.module_category_documents_management
 #: model:ir.ui.menu,name:documents.dashboard
@@ -964,6 +1000,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_link_to_record_wizard
+msgid "Documents Link to Record"
 msgstr ""
 
 #. module: documents
@@ -1046,23 +1087,10 @@ msgid "Due type"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
-msgid "E.g. Finance"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
-msgid "E.g. Missing Expense"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
-msgid "E.g. Status"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
-msgid "E.g. Validate document"
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_controller_mixin.js:0
+#, python-format
+msgid "Edit the linked Record"
 msgstr ""
 
 #. module: documents
@@ -1173,6 +1201,11 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Generate URL"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 msgid "Group By"
@@ -1196,11 +1229,6 @@ msgid "HR"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
-msgid "Has Business Option"
-msgstr ""
-
-#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #: model:ir.model.fields,field_description:documents.field_documents_document__previous_attachment_ids
@@ -1212,6 +1240,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_mixin__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
@@ -1300,6 +1329,11 @@ msgid "Internal"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__is_editable_attachment
+msgid "Is Editable Attachment"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_favorited
 msgid "Is Favorited"
 msgstr ""
@@ -1319,6 +1353,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_mixin____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_share____last_update
@@ -1336,6 +1371,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_uid
@@ -1348,6 +1384,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_date
@@ -1396,6 +1433,16 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
 msgid "Limit Read Groups to the documents of which they are owner."
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
+msgid "Link"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
+msgid "Link to record"
 msgstr ""
 
 #. module: documents
@@ -1500,8 +1547,14 @@ msgid "Miscellaneous"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__accessible_model_ids
+msgid "Models"
 msgstr ""
 
 #. module: documents
@@ -1768,6 +1821,11 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__read_group_ids
 msgid "Read Groups"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__resource_ref
+msgid "Record"
 msgstr ""
 
 #. module: documents
@@ -2067,6 +2125,11 @@ msgid "Size"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__link_model
+msgid "Specific Model Linked"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #: code:addons/documents/static/src/xml/documents_inspector.xml:0
@@ -2122,6 +2185,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Tag Categories"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "Tag Category"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Tag Name"
 msgstr ""
 
 #. module: documents
@@ -2257,6 +2330,11 @@ msgid "Tooltip"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
+msgid "True if we can edit the link attachment."
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
 msgid "Type"
 msgstr ""
@@ -2274,6 +2352,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #: model_terms:ir.ui.view,arch_db:documents.share_single
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "URL"
 msgstr ""
 
@@ -2553,8 +2632,38 @@ msgid "e.g. Discuss proposal"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+msgid "e.g. Finance"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "e.g. Missing Expense"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "e.g. Status"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "e.g. To Validate"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "e.g. Validate document"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
+msgid "is_readonly_model"
 msgstr ""
 
 #. module: documents

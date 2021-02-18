@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:33+0000\n"
-"PO-Revision-Date: 2020-12-11 07:33+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -109,6 +109,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__advantage_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__advantage_ids
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Advantage"
 msgstr ""
 
@@ -498,6 +499,11 @@ msgid "Display Type"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_doctor
+msgid "Doctor"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__document
 msgid "Document"
 msgstr ""
@@ -718,6 +724,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__info_type_id
 msgid "Info Type"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_personal_info_view_form
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_form
+msgid "Information"
 msgstr ""
 
 #. module: hr_contract_salary

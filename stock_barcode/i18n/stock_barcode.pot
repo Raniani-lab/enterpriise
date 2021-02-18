@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:32+0000\n"
-"PO-Revision-Date: 2020-12-11 07:32+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -447,6 +447,12 @@ msgid "Next"
 msgstr ""
 
 #. module: stock_barcode
+#: code:addons/stock_barcode/models/stock_picking.py:0
+#, python-format
+msgid "No %s ready for this product"
+msgstr ""
+
+#. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:0
 #, python-format
 msgid ""
@@ -468,6 +474,13 @@ msgstr ""
 #: code:addons/stock_barcode/controllers/main.py:0
 #, python-format
 msgid "No picking or product corresponding to barcode %(barcode)s"
+msgstr ""
+
+#. module: stock_barcode
+#: code:addons/stock_barcode/models/stock_inventory.py:0
+#: code:addons/stock_barcode/models/stock_picking.py:0
+#, python-format
+msgid "No product found for barcode %s"
 msgstr ""
 
 #. module: stock_barcode
@@ -686,6 +699,25 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
 msgid "Scan a"
+msgstr ""
+
+#. module: stock_barcode
+#: code:addons/stock_barcode/models/stock_inventory.py:0
+#, python-format
+msgid "Scan a product to filter the inventories."
+msgstr ""
+
+#. module: stock_barcode
+#: code:addons/stock_barcode/models/stock_picking.py:0
+#, python-format
+msgid "Scan a product to filter the transfers."
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
+#, python-format
+msgid "Scan a product to filter your records"
 msgstr ""
 
 #. module: stock_barcode

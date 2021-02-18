@@ -4,21 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:57+0000\n"
-"PO-Revision-Date: 2021-01-12 07:57+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket___related_task_ids
-msgid " Related Task"
-msgstr ""
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__ticket_count
@@ -33,6 +28,12 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_timer_ticket_view_kanban
 msgid "<i class=\"fa fa-play text-success\" title=\"Timer is Running\"/>"
+msgstr ""
+
+#. module: helpdesk_timesheet
+#: code:addons/helpdesk_timesheet/models/analytic.py:0
+#, python-format
+msgid "A timesheet cannot be linked to a task and a ticket at the same time."
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -159,6 +160,11 @@ msgid "Encode Uom In Days"
 msgstr ""
 
 #. module: helpdesk_timesheet
+#: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__has_helpdesk_team
+msgid "Has Helpdesk Teams"
+msgstr ""
+
+#. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_team
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__helpdesk_team
 msgid "Helpdesk Team"
@@ -188,16 +194,6 @@ msgstr ""
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
 #, python-format
 msgid "In Progress"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__is_closed
-msgid "Is Closed"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__is_task_active
-msgid "Is Task Active"
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -243,6 +239,7 @@ msgstr ""
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__project_id
+#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__project_id
 msgid ""
 "Project to which the tickets (and the timesheets) will be linked by default."
 msgstr ""
@@ -270,33 +267,6 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
 msgid "Stop"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__task_id
-msgid "Task"
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__is_closed
-msgid "Tasks in this stage are considered as closed."
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: code:addons/helpdesk_timesheet/models/helpdesk.py:0
-#, python-format
-msgid "The project is required to track time on ticket."
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: code:addons/helpdesk_timesheet/models/helpdesk.py:0
-#, python-format
-msgid "The task must be in ticket's project."
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__task_id
-msgid "The task must have the same customer as this ticket."
 msgstr ""
 
 #. module: helpdesk_timesheet

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:57+0000\n"
-"PO-Revision-Date: 2021-01-12 07:57+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,21 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: hr_work_entry_holidays
+#: model_terms:ir.actions.act_window,help:hr_work_entry_holidays.hr_leave_work_entry_action
+msgid ""
+"A great way to keep track on employee’s PTOs, sick days, and approval "
+"status."
+msgstr ""
+
+#. module: hr_work_entry_holidays
 #: code:addons/hr_work_entry_holidays/models/hr_leave.py:0
 #, python-format
 msgid "A leave cannot be set across multiple contracts."
+msgstr ""
+
+#. module: hr_work_entry_holidays
+#: model:ir.actions.act_window,name:hr_work_entry_holidays.hr_leave_work_entry_action
+msgid "All Time Off"
 msgstr ""
 
 #. module: hr_work_entry_holidays
@@ -66,6 +78,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_work_entry_holidays.field_hr_work_entry____last_update
 #: model:ir.model.fields,field_description:hr_work_entry_holidays.field_hr_work_entry_type____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: hr_work_entry_holidays
+#: model_terms:ir.actions.act_window,help:hr_work_entry_holidays.hr_leave_work_entry_action
+msgid "Meet the time off dashboard."
 msgstr ""
 
 #. module: hr_work_entry_holidays
@@ -119,6 +136,11 @@ msgstr ""
 #: model:ir.model,name:hr_work_entry_holidays.model_hr_leave_type
 #: model:ir.model.fields,field_description:hr_work_entry_holidays.field_hr_work_entry_type__leave_type_ids
 msgid "Time Off Type"
+msgstr ""
+
+#. module: hr_work_entry_holidays
+#: model:ir.ui.menu,name:hr_work_entry_holidays.menu_work_entry_leave_to_approve
+msgid "Time Off to Report"
 msgstr ""
 
 #. module: hr_work_entry_holidays

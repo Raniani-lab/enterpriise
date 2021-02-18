@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,12 +26,29 @@ msgid "<b class=\"tip_title\">Tip: Bulk update journal items</b>"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
+msgid ""
+"<b class=\"tip_title\">Tip: Find an Accountant or register your Accounting "
+"Firm</b>"
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
 "<br>See how to manage your customer invoices in the "
 "<b>Customers/Invoices</b> menu"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+msgid "<i>Lock all journal entries</i>"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+msgid "<i>Lock specific journal entries</i>"
 msgstr ""
 
 #. module: account_accountant
@@ -50,6 +67,16 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
+msgid "<span class=\"tip_button_text\">Find an Accountant</span>"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
+msgid "<span class=\"tip_button_text\">Register your Accounting Firm</span>"
 msgstr ""
 
 #. module: account_accountant
@@ -113,8 +140,23 @@ msgid "Accounting"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+msgid "Accounting Period Closing"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
+msgid "Accounting closing dates"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
 msgid "Add a new tag"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
+msgid "All Users Lock Date"
 msgstr ""
 
 #. module: account_accountant
@@ -239,6 +281,13 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.actions_account_fiscal_year
 msgid "Click here to create a new fiscal year."
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
+msgid ""
+"Click here to find an accountant or if you want to list out your accounting "
+"services on Odoo"
 msgstr ""
 
 #. module: account_accountant
@@ -547,6 +596,11 @@ msgid ""
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
+msgid "Invoice/Bill Lock Date"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
@@ -696,13 +750,11 @@ msgid "Load more... ("
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_lock_date
 msgid "Lock Date for All Users"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__period_lock_date
 msgid "Lock Date for Non-Advisers"
 msgstr ""
@@ -713,8 +765,8 @@ msgid "Lock Dates"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
-msgid "Lock your Fiscal Period"
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+msgid "Management Closing"
 msgstr ""
 
 #. module: account_accountant
@@ -770,7 +822,6 @@ msgid "No attachments linked."
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
 msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
@@ -778,7 +829,6 @@ msgid ""
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__fiscalyear_lock_date
 msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
@@ -810,14 +860,6 @@ msgstr ""
 msgid ""
 "Only users with the 'Adviser' role can edit accounts prior to and inclusive "
 "of this date. Use it for period locking inside an open fiscal year, for "
-"example."
-msgstr ""
-
-#. module: account_accountant
-#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
-msgid ""
-"Only users with the Adviser role can edit accounts prior to and inclusive of"
-" this date. Use it for period locking inside an open fiscal year, for "
 "example."
 msgstr ""
 
@@ -872,6 +914,11 @@ msgid "Payments without a customer can't be matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+msgid "Pick a date to lock"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr ""
@@ -881,6 +928,28 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Presets config"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
+msgid ""
+"Prevents Bills or Invoices creation prior to the defined date. Except for "
+"Advisors users."
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
+msgid ""
+"Prevents Journal Entry creation or modification prior to the defined date "
+"for all users. As a closed period, all accounting operations are prohibited."
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
+msgid ""
+"Prevents Tax Returns modification prior to the defined date (Journal Entries"
+" involving taxes). The Tax Return Lock Date is automatically set when the "
+"corresponding Journal Entry is posted."
 msgstr ""
 
 #. module: account_accountant
@@ -1004,9 +1073,13 @@ msgid "Tax Included in Price"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__tax_lock_date
 msgid "Tax Lock Date"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
+msgid "Tax Return Lock Date"
 msgstr ""
 
 #. module: account_accountant
@@ -1094,6 +1167,11 @@ msgstr ""
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_0
 msgid "Tip: Bulk update journal items"
+msgstr ""
+
+#. module: account_accountant
+#: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
+msgid "Tip: Find an Accountant or register your Accounting Firm"
 msgstr ""
 
 #. module: account_accountant

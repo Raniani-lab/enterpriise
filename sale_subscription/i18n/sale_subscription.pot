@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:32+0000\n"
-"PO-Revision-Date: 2020-12-11 07:32+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1208,7 +1208,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
 msgid ""
-"Create subscriptions to manage recurring invoicing &amp; payments. Subscriptions can\n"
+"Create subscriptions to manage recurring invoicing and payments. Subscriptions can\n"
 "                be time-bounded or not. In case of a limited period, they are flagged as to be renewed\n"
 "                one month from the end date."
 msgstr ""
@@ -2329,11 +2329,6 @@ msgid "Payment method:"
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
-msgid "Payment method: Unknown token"
-msgstr ""
-
-#. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_reminder
 msgid "Payment reminder for subscription ${object.code}"
 msgstr ""
@@ -2364,6 +2359,11 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:0
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
+msgid "Post"
 msgstr ""
 
 #. module: sale_subscription
@@ -2765,16 +2765,6 @@ msgstr ""
 msgid ""
 "Select your newly created template. Every sale of this product will generate"
 " a new subscription!"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send
-msgid "Send"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__payment_mode__validate_send_payment
-msgid "Send & try to charge"
 msgstr ""
 
 #. module: sale_subscription
@@ -3518,6 +3508,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__uom_id
 msgid "Unit of Measure"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
+msgid "Unknown token"
 msgstr ""
 
 #. module: sale_subscription

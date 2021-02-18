@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:33+0000\n"
-"PO-Revision-Date: 2020-12-11 07:33+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,53 +16,43 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"\n"
-"          Invalid number of arguments for the ${ast.value.toUpperCase()} function.\n"
-"          Expected ${fn.args.length}, but got ${result.length} instead."
-msgstr ""
-
-#. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/wizard/save_spreadsheet_template.py:0
 #, python-format
 msgid "\"%s\" saved as template"
 msgstr ""
 
 #. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "${number} Columns left"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "${number} Columns right"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "${number} Rows above"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "${number} Rows below"
-msgstr ""
-
-#. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #, python-format
 msgid "%s (copy)"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "%s Columns left"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "%s Columns right"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "%s Rows above"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "%s Rows below"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -133,28 +123,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "AND has no valid input data."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "AVERAGE.WEIGHTED expects number values."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "AVERAGE.WEIGHTED expects the weight to be positive or equal to 0."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "AVERAGE.WEIGHTED has mismatched range sizes."
+msgid "ABOUT"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -162,6 +131,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
 msgid "Add a new filter..."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Also modify formulas"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -200,16 +176,25 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "August"
+msgid "Argument must be a reference to a cell or range."
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Automatic"
+msgid "Ascending Sort"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
+#, python-format
+msgid "August"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -299,7 +284,23 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Cannot find ${key} in this registry!"
+msgid "Cannot dispatch commands in the finalize state"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Cannot sort. To sort, select only cells or only merges that have the same "
+"size."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Cell values"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -335,28 +336,28 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Clear column ${numberToLetters(first)}"
+msgid "Clear column %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Clear columns ${numberToLetters(first)} - ${numberToLetters(last)}"
+msgid "Clear columns %s - %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Clear row ${first + 1}"
+msgid "Clear row %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Clear rows ${first + 1} - ${last + 1}"
+msgid "Clear rows %s - %s"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -364,6 +365,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Column left"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Column number of a specified cell."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -629,13 +637,6 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "DATEVALUE parameter '${_dateString}' cannot be parsed to date/time."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__data
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__data
 #, python-format
@@ -727,6 +728,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Delete"
 msgstr ""
@@ -735,28 +737,28 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Delete column ${numberToLetters(first)}"
+msgid "Delete column %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Delete columns ${numberToLetters(first)} - ${numberToLetters(last)}"
+msgid "Delete columns %s - %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Delete row ${first + 1}"
+msgid "Delete row %s"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Delete rows ${first + 1} - ${last + 1}"
+msgid "Delete rows %s - %s"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -769,22 +771,20 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Did not find value '${search_key}' in LOOKUP evaluation."
+msgid "Descending Sort"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Did not find value '${search_key}' in MATCH evaluation."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Did not find value '${search_key}' in VLOOKUP evaluation."
+msgid "Did not find value '%s' in [[FUNCTION_NAME]] evaluation."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -853,6 +853,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 #, python-format
@@ -883,47 +884,11 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVEDEV caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVERAGE caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVERAGE.WEIGHTED caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVERAGEA caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVERAGEIF caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Evaluation of function AVERAGEIFS caused a divide by zero error."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
@@ -993,6 +958,20 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Find and Replace"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Find and replace"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "First position of string found in text, case-sensitive."
 msgstr ""
 
@@ -1001,6 +980,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "First position of string found in text, ignoring case."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Fixed number"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1034,6 +1020,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Format rules"
 msgstr ""
@@ -1049,9 +1036,16 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Formula"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid ""
-"Function ${name} has at least 2 arguments that are repeating. The maximum "
-"repeating arguments is 1."
+"Function ${name} has an argument that has been declared with more than one "
+"type whose type 'META'. The 'META' type can only be declared alone."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1068,16 +1062,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function CEILING expects the parameter '${CEILING.args[1].name}' to be "
-"positive when parameter '${CEILING.args[0].name}' is positive. Change "
-"'${CEILING.args[1].name}' from [${_factor}] to a positive value."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function CHAR parameter 1 value ${_tableNumber} is out of range."
+"Function ${name} has no-repeatable arguments declared after repeatable ones."
+" All repeatable arguments must be declared last."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1085,76 +1071,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function DECIMAL expects the parameter '${DECIMAL.args[1].name}' to be "
-"between 2 and 36 inclusive. Change '${DECIMAL.args[1].name}' from [${_base}]"
-" to a value between 2 and 36."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function DECIMAL expects the parameter '${parameterName}' to be a valid base"
-" ${base} representation. Change '${parameterName}' from [${value}] to a "
-"valid base ${base} representation."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function DIVIDE parameter 2 cannot be zero."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function FIND parameter 2 value should be non-empty."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function FIND parameter 3 value is 0. It should be greater than or equal to "
-"1."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function FLOOR expects the parameter '${FLOOR.args[1].name}' to be positive "
-"when parameter '${FLOOR.args[0].name}' is positive. Change "
-"'${FLOOR.args[1].name}' from [${_factor}] to a positive value."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function LARGE parameter 2 value ${n} is out of range."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function LEFT parameter 2 value is negative. It should be positive or zero."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function MOD expects the parameter '${MOD.args[1].name}' to be different "
-"from 0. Change '${MOD.args[1].name}' to a value other than 0."
+"Function DECIMAL expects the parameter '%s' to be a valid base %s "
+"representation. Change '%s' from [%s] to a valid base %s representation."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1162,105 +1080,6 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #, python-format
 msgid "Function PIVOT takes an even number of arguments."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function POWER expects the parameter '${POWER.args[1].name}' to be an "
-"integer when parameter '${POWER.args[0].name}' is negative. Change "
-"'${POWER.args[1].name}' from [${_exponent}] to an integer value."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function RANDBETWEEN parameter '${RANDBETWEEN.args[1].name}' value is "
-"${_high}. It should be greater than or equal to [${_low}]."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function REPLACE parameter 2 value is ${_position}. It should be greater "
-"than or equal to 1."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function RIGHT parameter 2 value is negative. It should be positive or zero."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function SEARCH parameter 2 value should be non-empty."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function SEARCH parameter 3 value is 0. It should be greater than or equal "
-"to 1."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function SMALL parameter 2 value ${n} is out of range."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function SQRT parameter '${SQRT.args[0].name}' value is negative. It should "
-"be positive or zero. Change '${SQRT.args[0].name}' from [${_value}] to a "
-"positive value."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function SUBSTITUTE parameter 4 value is negative. It should be positive or "
-"zero."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function WEEKDAY parameter 2 value ${_type} is out of range."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function WEEKNUM parameter 2 value ${_type} is out of range."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "Function WORKDAY.INTL parameter 3 cannot be equal to '1111111'."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1294,8 +1113,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. It should be "
-"greater than 0."
+"Function [[FUNCTION_NAME]] expects the parameter '%s' to be an integer when "
+"parameter '%s' is negative. Change '%s' from [%s] to an integer value."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1303,7 +1122,131 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. It should be "
+"Function [[FUNCTION_NAME]] expects the parameter '%s' to be between 2 and 36"
+" inclusive. Change '%s' from [%s] to a value between 2 and 36."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] expects the parameter '%s' to be different from "
+"0. Change '%s' to a value other than 0."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] expects the parameter '%s' to be positive when "
+"parameter '%s' is positive. Change '%s' from [%s] to a positive value."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter '%s' value is %s. It should be greater "
+"than or equal to [%s]."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter '%s' value is negative. It should be "
+"positive or zero. Change '%s' from [%s] to a positive value."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Function [[FUNCTION_NAME]] parameter 1 value %s is out of range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %S. Valid values are between"
+" -1 and 1 inclusive."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %s. It should be greater "
+"than 0."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %s. It should be greater "
+"than or equal to 1."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %s. Valid values are between"
+" -1 and 1 exclusive."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %s. Valid values are between"
+" -1 and 1 inclusive."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 1 value is %s. Valid values cannot be "
+"between -1 and 1 inclusive."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Function [[FUNCTION_NAME]] parameter 2 cannot be zero."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Function [[FUNCTION_NAME]] parameter 2 value %s is out of range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 2 value is ${_position}. It should be "
 "greater than or equal to 1."
 msgstr ""
 
@@ -1312,8 +1255,16 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values are "
-"between -1 and 1 exclusive."
+"Function [[FUNCTION_NAME]] parameter 2 value is %s. It should be one of: %s."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 2 value is %s. Valid values are between"
+" 1 and %s inclusive."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1322,35 +1273,31 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values are "
-"between -1 and 1 inclusive."
+"Function [[FUNCTION_NAME]] parameter 2 value is negative. It should be "
+"positive or zero."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Function [[FUNCTION_NAME]] parameter 2 value is out of range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Function [[FUNCTION_NAME]] parameter 2 value should be non-empty."
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] parameter 1 value is ${_value}. Valid values "
-"cannot be between -1 and 1 inclusive."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] parameter 2 value is ${field}. It should be one "
-"of: ${options}."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid ""
-"Function [[FUNCTION_NAME]] parameter 2 value is ${field}. Valid values are "
-"between 1 and ${dimRowDB} inclusive."
+msgid "Function [[FUNCTION_NAME]] parameter 3 cannot be equal to '1111111'."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1366,7 +1313,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Function [[FUNCTION_NAME]] parameter 3 requires a string composed of 0 or 1."
-" Actual string is '${weekend}'."
+" Actual string is '%s'."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1375,7 +1322,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Function [[FUNCTION_NAME]] parameter 3 requires a string or a number in the "
-"range 1-7 or 11-17. Actual number is ${weekend}."
+"range 1-7 or 11-17. Actual number is %s."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1384,7 +1331,33 @@ msgstr ""
 #, python-format
 msgid ""
 "Function [[FUNCTION_NAME]] parameter 3 requires a string with 7 characters. "
-"Actual string is '${weekend}'."
+"Actual string is '%s'."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 3 value is 0. It should be greater than"
+" or equal to 1."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Function [[FUNCTION_NAME]] parameter 4 value is negative. It should be "
+"positive or zero."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "General"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1399,13 +1372,6 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #, python-format
 msgid "Get the header of a pivot."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
-#, python-format
-msgid "Get the value from a filter."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1453,6 +1419,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Hide formulas"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Horizontal lookup"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1522,9 +1495,9 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid ""
-"In FIND evaluation, cannot find '${_searchFor}' within '${_textToSearch}'."
+msgid "In [[FUNCTION_NAME]] evaluation, cannot find '%s' within '%s'."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1532,7 +1505,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"In SEARCH evaluation, cannot find '${_searchFor}' within '${_textToSearch}'."
+"In this context, the function [[FUNCTION_NAME]] needs to have a cell or "
+"range in parameter."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1546,42 +1520,42 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} columns"
+msgid "Insert %s columns"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} columns left"
+msgid "Insert %s columns left"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} columns right"
+msgid "Insert %s columns right"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} rows"
+msgid "Insert %s rows"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} rows above"
+msgid "Insert %s rows above"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Insert ${number} rows below"
+msgid "Insert %s rows below"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1655,7 +1629,35 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Invalid cell description: ${xc}"
+msgid "Invalid Labels"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid Maxpoint formula"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid Midpoint formula"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid Minpoint formula"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid dataSet"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1678,13 +1680,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Invalid getter name: ${name} for plugin ${plugin.constructor}"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
 msgid "Invalid merge zone"
 msgstr ""
 
@@ -1692,7 +1687,55 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Invalid number of arguments"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Invalid number of arguments for the %s function. Expected %s maximum, but "
+"got %s instead."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Invalid number of arguments for the %s function. Expected %s minimum, but "
+"got %s instead."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Invalid number of arguments for the %s function. Expected all arguments "
+"after position %s to be supplied by groups of %s arguments"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid or no Dataset given"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Invalid sheet name"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Invalid sheet name: %s"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1785,34 +1828,6 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
 #, python-format
 msgid "June"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "LARGE has no valid input data."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "LOOKUP evaluates to an out of range column value ${index + 1}."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "LOOKUP evaluates to an out of range row value ${index + 1}."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "LOOKUP range must be a single row or a single column."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1935,13 +1950,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "MATCH range must be a single row or a single column."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 #, python-format
@@ -1953,6 +1961,27 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/components/filter_date_value.js:0
 #, python-format
 msgid "March"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Match case"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Match entire cell content"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "MaxPoint"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1985,8 +2014,8 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js:0
 #, python-format
 msgid "Measure"
 msgstr ""
@@ -2002,8 +2031,43 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Median value in a numeric dataset."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid ""
 "Merging these cells will only preserve the top-leftmost value. Merge anyway?"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "MidPoint"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Midpoint must be smaller then Maximum"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Minimum must be smaller then Maximum"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Minimum must be smaller then Midpoint"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2025,6 +2089,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Minimum value in a numeric dataset."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Minpoint"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2190,6 +2261,20 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Next"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "No Labels given"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "No match."
 msgstr ""
 
@@ -2197,7 +2282,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Nope. Don't do that"
+msgid "None"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2276,6 +2361,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Number of columns in a specified array or range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Number of days between two dates."
 msgstr ""
 
@@ -2284,6 +2376,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Number of empty values."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Number of rows in a specified array or range."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2312,13 +2411,6 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Numerical average value in a dataset."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "OR has no valid input data."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2399,6 +2491,20 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Percentage"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Percentile"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Pie"
 msgstr ""
 
@@ -2449,7 +2555,21 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Preview"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Preview text"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Previous"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2556,6 +2676,20 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Replace"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Replace all"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Replaces existing text with new text in a string."
 msgstr ""
 
@@ -2571,6 +2705,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Result of multiplying a series of numbers together."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
+#, python-format
+msgid "Return the current value of a spreadsheet filter."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2677,7 +2818,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "SMALL has no valid input data."
+msgid "Row number of a specified cell."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2696,6 +2837,20 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
 #, python-format
 msgid "Save as Template"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Search"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Search in formulas"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2757,6 +2912,27 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Single value from a table-like range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Some formulas are not supported for the Maxpoint"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Some formulas are not supported for the Midpoint"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Some formulas are not supported for the Minpoint"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2894,13 +3070,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "TIMEVALUE parameter '${_timeString}' cannot be parsed to date/time."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
 msgid "Tangent of an angle provided in radians."
 msgstr ""
 
@@ -2932,9 +3101,23 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "The anchor must be part of the provided zone"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
 #, python-format
 msgid "The argument %s is not a valid measure. Here are the measures: %s"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "The chartdefinition is invalid for an unknown reason"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2950,8 +3133,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"The function [[FUNCTION_NAME]] expects a boolean value, but '${value}' is a "
-"text, and cannot be coerced to a number."
+"The function [[FUNCTION_NAME]] expects a boolean value, but '%s' is a text, "
+"and cannot be coerced to a number."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2959,8 +3142,8 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"The function [[FUNCTION_NAME]] expects a number value, but '${value}' is a "
-"string, and cannot be coerced to a number."
+"The function [[FUNCTION_NAME]] expects a number value, but '%s' is a string,"
+" and cannot be coerced to a number."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2968,6 +3151,27 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "The logarithm of a number, base e (euler's number)."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "The maxpoint must be a number"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "The midpoint must be a number"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "The minpoint must be a number"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2995,6 +3199,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "The rule is invalid for an unknown reason"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "The sample covariance of a dataset."
 msgstr ""
 
@@ -3007,6 +3218,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
@@ -3067,7 +3279,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/components/spreadsheet_pivot_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/functions/pivot_functions.js:0
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js:0
 #, python-format
 msgid "Total"
 msgstr ""
@@ -3081,8 +3293,8 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/pivot_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/plugins/ui/pivot_structure_plugin.js:0
 #, python-format
 msgid "Undefined"
 msgstr ""
@@ -3134,7 +3346,15 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "VLOOKUP evaluates to an out of bounds range."
+msgid "Value at a given percentile of a dataset exclusive of 0 and 1."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Value at a given percentile of a dataset."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3149,6 +3369,22 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Value interpreted as a percentage."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"Value nearest to a specific quartile of a dataset exclusive of 0 and 4."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Value nearest to a specific quartile of a dataset."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3215,6 +3451,15 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Wait"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid ""
+"We found data next to your selection. Since this data was not selected, it "
+"will not be sorted. Do you want to extend your selection?"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3291,13 +3536,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
-#, python-format
-msgid "XOR has no valid input data."
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/pivot_utils.js:0
 #: code:addons/documents_spreadsheet/static/src/xml/spreadsheet.xml:0
 #, python-format
@@ -3328,8 +3566,86 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "[[FUNCTION_NAME]] has mismatched argument count ${lenY} vs ${lenX}."
+msgid "[[FUNCTION_NAME]] evaluates to an out of bounds range."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] evaluates to an out of range column value %s."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] evaluates to an out of range row value %s."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] expects number values."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] expects the weight to be positive or equal to 0."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] has mismatched argument count %s vs %s."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] has mismatched range sizes."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] has no valid input data."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] parameter '%s' cannot be parsed to date/time."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "[[FUNCTION_NAME]] range must be a single row or a single column."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "by default"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3337,22 +3653,22 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"function DATE parameter year should be greater or equal to 0 and lesser than"
-" 10000."
+"function [[FUNCTION_NAME]] parameter year should be greater or equal to 0 "
+"and lesser than 10000."
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "function DATE result should not be lesser than 01/01/1900"
+msgid "function [[FUNCTION_NAME]] result should not be lesser than 01/01/1900"
 msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "function Time result should not be negative"
+msgid "function [[FUNCTION_NAME]] result should not be negative"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3386,9 +3702,23 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "optional"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/context_menu/menu_item_registry.js:0
 #, python-format
 msgid "re-Insert Pivot"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "repeatable"
 msgstr ""
 
 #. module: documents_spreadsheet

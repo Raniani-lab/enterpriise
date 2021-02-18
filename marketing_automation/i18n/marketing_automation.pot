@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:32+0000\n"
-"PO-Revision-Date: 2020-12-11 07:32+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -144,11 +144,6 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<span class=\"oe_edit_only\">Name</span>"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
 "<span data-mode=\"graph\" class=\"active\" role=\"img\" title=\"Graph\" "
 "aria-label=\"Graph\"><i class=\"fa fa-pie-chart\"/></span><span data-"
@@ -203,6 +198,11 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_domain
 msgid "Activity Filter"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Activity Name"
 msgstr ""
 
 #. module: marketing_automation
@@ -460,6 +460,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__display_name
+#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__display_name
@@ -587,6 +588,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__id
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing__id
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__id
+#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__id
@@ -609,6 +611,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_mailing____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace____last_update
+#: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace_report____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test____last_update
@@ -760,7 +763,6 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_activity
 #: model:ir.model.fields,field_description:marketing_automation.field_account_invoice_send__marketing_activity_id
-#: model:ir.model.fields,field_description:marketing_automation.field_account_tour_upload_bill__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__marketing_activity_id
 msgid "Marketing Activity"
 msgstr ""
@@ -829,6 +831,7 @@ msgid "Mass Mailing"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model,name:marketing_automation.model_mailing_trace_report
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
 msgid "Mass Mailing Statistics"
 msgstr ""
@@ -867,11 +870,6 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__months
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__months
 msgid "Months"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
-msgid "Name"
 msgstr ""
 
 #. module: marketing_automation
@@ -1502,7 +1500,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__begin
-msgid "beginning of campaign"
+msgid "beginning of workflow"
 msgstr ""
 
 #. module: marketing_automation

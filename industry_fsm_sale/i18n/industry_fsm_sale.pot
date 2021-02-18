@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:58+0000\n"
-"PO-Revision-Date: 2021-01-12 07:58+0000\n"
+"POT-Creation-Date: 2021-02-18 14:37+0000\n"
+"PO-Revision-Date: 2021-02-18 14:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -173,11 +173,6 @@ msgid "Invoice Status"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__bill_type
-msgid "Invoice Tasks to"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_project_project__allow_billable
 msgid "Invoice your time and material from tasks."
 msgstr ""
@@ -263,6 +258,11 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Price:"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__pricing_type
+msgid "Pricing"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -364,6 +364,25 @@ msgid "The material can be allowed only when the task can be billed."
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__pricing_type
+msgid ""
+"The task rate is perfect if you would like to bill different services to "
+"different customers at different rates. The fixed rate is perfect if you "
+"bill a service at a fixed rate per hour or day worked regardless of the "
+"employee who performed it. The employee rate is preferable if your employees"
+" deliver the same service at a different rate. For instance, junior and "
+"senior consultants would deliver the same service (= consultancy), but at a "
+"different rate because of their level of seniority."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_timesheet_product_required_if_billable_and_timesheets_and_fsm_projects
+msgid ""
+"The timesheet product is required when the fsm project can be billed and "
+"timesheets are allowed."
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_all_tasks_invoice
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
@@ -392,11 +411,4 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to <b>go back to your task</b>."
-msgstr ""
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_project_project__bill_type
-msgid ""
-"When billing tasks individually, a Sales Order will be created from each task. It is perfect if you would like to bill different services to different customers at different rates. \n"
-" When billing the whole project, a Sales Order will be created from the project instead. This option is better if you would like to bill all the tasks of a given project to a specific customer either at a fixed rate, or at an employee rate."
 msgstr ""

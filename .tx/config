@@ -317,6 +317,11 @@ file_filter = helpdesk_fsm/i18n/<lang>.po
 source_file = helpdesk_fsm/i18n/helpdesk_fsm.pot
 source_lang = en
 
+[odoo-master.helpdesk_fsm_report]
+file_filter = helpdesk_fsm_report/i18n/<lang>.po
+source_file = helpdesk_fsm_report/i18n/helpdesk_fsm_report.pot
+source_lang = en
+
 [odoo-master.helpdesk_repair]
 file_filter = helpdesk_repair/i18n/<lang>.po
 source_file = helpdesk_repair/i18n/helpdesk_repair.pot
@@ -365,6 +370,11 @@ source_lang = en
 [odoo-master.hr_contract_salary]
 file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
+source_lang = en
+
+[odoo-master.hr_contract_salary_holidays]
+file_filter = hr_contract_salary_holidays/i18n/<lang>.po
+source_file = hr_contract_salary_holidays/i18n/hr_contract_salary_holidays.pot
 source_lang = en
 
 [odoo-master.hr_contract_salary_payroll]
@@ -662,6 +672,11 @@ file_filter = quality_mrp_workorder_iot/i18n/<lang>.po
 source_file = quality_mrp_workorder_iot/i18n/quality_mrp_workorder_iot.pot
 source_lang = en
 
+[odoo-master.quality_mrp_workorder_worksheet]
+file_filter = quality_mrp_workorder_worksheet/i18n/<lang>.po
+source_file = quality_mrp_workorder_worksheet/i18n/quality_mrp_workorder_worksheet.pot
+source_lang = en
+
 [odoo-master.sale_account_accountant]
 file_filter = sale_account_accountant/i18n/<lang>.po
 source_file = sale_account_accountant/i18n/sale_account_accountant.pot
@@ -917,11 +932,6 @@ file_filter = website_calendar/i18n/<lang>.po
 source_file = website_calendar/i18n/website_calendar.pot
 source_lang = en
 
-[odoo-master.website_crm_score]
-file_filter = website_crm_score/i18n/<lang>.po
-source_file = website_crm_score/i18n/website_crm_score.pot
-source_lang = en
-
 [odoo-master.website_delivery_ups]
 file_filter = website_delivery_ups/i18n/<lang>.po
 source_file = website_delivery_ups/i18n/website_delivery_ups.pot
@@ -975,6 +985,11 @@ source_lang = en
 [odoo-master.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
+source_lang = en
+
+[odoo-master.website_sale_account_taxcloud]
+file_filter = website_sale_account_taxcloud/i18n/<lang>.po
+source_file = website_sale_account_taxcloud/i18n/website_sale_account_taxcloud.pot
 source_lang = en
 
 [odoo-master.website_sale_dashboard]

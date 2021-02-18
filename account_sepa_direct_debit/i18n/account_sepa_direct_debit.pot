@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -165,6 +165,13 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__activity_type_icon
 msgid "Activity Type Icon"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
+#, python-format
+msgid "All the payments in the batch must have the same SDD scheme."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -770,8 +777,18 @@ msgid "Revoked SDD Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_payment_search
+msgid "SDD B2B"
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
 msgid "SDD Batch Booking"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_payment_search
+msgid "SDD CORE"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -803,6 +820,12 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company__sdd_creditor_identifier
 msgid "SDD creditor identifier"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
+#, python-format
+msgid "SDD scheme is set on the customer mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -1080,17 +1103,4 @@ msgstr ""
 msgid ""
 "to send instructions to your bank to debit your account and (B) your bank to"
 " debit your account in accordance with the instructions from"
-msgstr ""
-
-
-#. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
-#, python-format
-msgid "All the payments in the batch must have the same SDD scheme."
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
-#, python-format
-msgid "SDD scheme is set on the customer mandate."
 msgstr ""

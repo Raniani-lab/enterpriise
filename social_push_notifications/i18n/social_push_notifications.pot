@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:58+0000\n"
-"PO-Revision-Date: 2021-01-12 07:58+0000\n"
+"POT-Creation-Date: 2021-02-18 14:37+0000\n"
+"PO-Revision-Date: 2021-02-18 14:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -90,18 +90,10 @@ msgid "Enable Web Push Notifications"
 msgstr ""
 
 #. module: social_push_notifications
-#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
-msgid ""
-"Enable push notifications and configure this website's notifications "
-"permission request"
-msgstr ""
-
-#. module: social_push_notifications
 #: code:addons/social_push_notifications/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
-msgid ""
-"Enable push notifications to be notified about new features and events."
+msgid "Enable push notifications to be notified about new features."
 msgstr ""
 
 #. module: social_push_notifications
@@ -174,6 +166,11 @@ msgid "Icon"
 msgstr ""
 
 #. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
+msgid "Icon Image"
+msgstr ""
+
+#. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Key File"
 msgstr ""
@@ -189,6 +186,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_push_notifications.field_website____last_update
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
+msgid "Local Time"
 msgstr ""
 
 #. module: social_push_notifications
@@ -232,6 +234,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__notification_request_title
 #: model:ir.model.fields,field_description:social_push_notifications.field_website__notification_request_title
 msgid "Notification Request Title"
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
+msgid "Notification Title"
 msgstr ""
 
 #. module: social_push_notifications
@@ -286,6 +293,11 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_search
 msgid "Push Notification On"
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
+msgid "Push Notification Options"
 msgstr ""
 
 #. module: social_push_notifications
@@ -354,6 +366,13 @@ msgstr ""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
+msgid ""
+"Send push notifications and configure this website's notifications "
+"permission request"
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Sender ID"
 msgstr ""
 
@@ -381,6 +400,11 @@ msgstr ""
 #: code:addons/social_push_notifications/models/website_visitor.py:0
 #, python-format
 msgid "Some selected visitors do not allow push notifications."
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
+msgid "Target URL"
 msgstr ""
 
 #. module: social_push_notifications
@@ -458,13 +482,8 @@ msgid "Web API Key"
 msgstr ""
 
 #. module: social_push_notifications
-#: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
-msgid "Web Notification Options"
-msgstr ""
-
-#. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
-msgid "Web Push Notifications (Social app)"
+msgid "Web Push Notifications"
 msgstr ""
 
 #. module: social_push_notifications
@@ -494,8 +513,28 @@ msgid ""
 msgstr ""
 
 #. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
+msgid "e.g. \"280765099157\""
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
+msgid "e.g. \"BIzbSyXhhsFHEgphW55CSg5cV7h7c_S-AuTMKc9\""
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
+msgid "e.g. \"CCSc77KP_LX8dTAogFakOoJ_VqNP15u0-43psDJe__a9B...\""
+msgstr ""
+
+#. module: social_push_notifications
+#: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
+msgid "e.g. \"my-project-id\""
+msgstr ""
+
+#. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_post__use_visitor_timezone
 msgid ""
-"e.g: If you post at 15:00, visitors will receive the post at 15:00 their "
-"time."
+"e.g: If you post at 15:00 your time, all visitors will receive the post at "
+"15:00 their time."
 msgstr ""

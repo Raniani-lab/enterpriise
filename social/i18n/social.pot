@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 14:04+0000\n"
-"PO-Revision-Date: 2020-09-29 14:04+0000\n"
+"POT-Creation-Date: 2021-02-18 14:36+0000\n"
+"PO-Revision-Date: 2021-02-18 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -173,11 +173,13 @@ msgstr ""
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__calendar_date
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 msgid "Calendar Date"
 msgstr ""
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form_quick_create_social
 msgid "Campaign"
 msgstr ""
@@ -371,8 +373,8 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid ""
-"Enable this setting to get demo data on the social module. This must never "
-"be used on a production database!"
+"Enable this option and load demo data to test the social module.<br/>\n"
+"                                    This must never be used on a production database!"
 msgstr ""
 
 #. module: social
@@ -469,6 +471,7 @@ msgid "Go back to Social"
 msgstr ""
 
 #. module: social
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 msgid "Group By"
 msgstr ""
@@ -796,6 +799,11 @@ msgid ""
 msgstr ""
 
 #. module: social
+#: model_terms:ir.ui.view,arch_db:social.social_post_view_search
+msgid "My Posts"
+msgstr ""
+
+#. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 msgid "My Streams"
 msgstr ""
@@ -1059,7 +1067,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "Press Enter to post."
+msgid "Press Enter to post. Press Shift+Enter to insert a Line Break."
 msgstr ""
 
 #. module: social
@@ -1086,6 +1094,10 @@ msgstr ""
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__published_date
+msgid "Published Date"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__published_date
 msgid "Published date"
 msgstr ""
@@ -1151,7 +1163,7 @@ msgstr ""
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
-msgid "Scheduled post date"
+msgid "Scheduled Date"
 msgstr ""
 
 #. module: social

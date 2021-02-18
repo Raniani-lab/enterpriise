@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:48+0000\n"
-"PO-Revision-Date: 2020-11-27 13:48+0000\n"
+"POT-Creation-Date: 2021-02-18 14:37+0000\n"
+"PO-Revision-Date: 2021-02-18 14:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -528,12 +528,6 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
-msgid "This account is not available. Please log in to continue."
-msgstr ""
-
-#. module: payment_sepa_direct_debit
-#: code:addons/payment_sepa_direct_debit/models/payment.py:0
-#, python-format
 msgid "The bank account of the payment journal must be a valid IBAN."
 msgstr ""
 
@@ -547,6 +541,12 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/payment.py:0
 #, python-format
 msgid "The mandate was validated with phone number %s"
+msgstr ""
+
+#. module: payment_sepa_direct_debit
+#: code:addons/payment_sepa_direct_debit/models/payment.py:0
+#, python-format
+msgid "This account is not available. Please log in to continue."
 msgstr ""
 
 #. module: payment_sepa_direct_debit

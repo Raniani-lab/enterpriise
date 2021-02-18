@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:58+0000\n"
-"PO-Revision-Date: 2021-01-12 07:58+0000\n"
+"POT-Creation-Date: 2021-02-18 14:37+0000\n"
+"PO-Revision-Date: 2021-02-18 14:37+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,11 @@ msgid "<i class=\"fa fa-fw fa-lg fa-truck mr-3\" title=\"Transfer\"/>"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.picking_view_kanban_inherit_barcode_picking_batch
+msgid "<span class=\"fa fa-external-link-square ml-1\" title=\"Open Batch Picking\"/>"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_client_action
 msgid "Barcode Batch Picking Client Action"
 msgstr ""
@@ -35,6 +40,11 @@ msgstr ""
 #. module: stock_barcode_picking_batch
 #: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action
 msgid "Barcode Batch Picking Create Client Action"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "Batch Picking creation"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -58,11 +68,38 @@ msgid "Confirm"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__partner_id
+msgid "Contact"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: code:addons/stock_barcode_picking_batch/models/stock_picking.py:0
+#, python-format
+msgid "Create New Batch Picking ?"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
 msgid "Description"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__display_batch_button
+msgid "Display Batch Button"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__display_name
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_move_line__display_name
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__display_name
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking_batch__display_name
@@ -77,6 +114,12 @@ msgid "Error"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_picking_batch_group_pickings
+msgid "Group Pickings into a New Batch"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__id
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_move_line__id
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__id
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking_batch__id
@@ -84,10 +127,21 @@ msgid "ID"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings____last_update
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_move_line____last_update
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking____last_update
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking_batch____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__write_date
+msgid "Last Updated on"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -126,6 +180,16 @@ msgid "Open picking batch form"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__picking_type_name
+msgid "Operation Type"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_picking_batch_group_pickings__picking_id
+msgid "Picking"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #. openerp-web
 #: code:addons/stock_barcode_picking_batch/static/src/js/client_action/picking_batch_create_client_action.js:0
 #, python-format
@@ -137,6 +201,11 @@ msgstr ""
 #: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Print Batch Transfer"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "Process"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -171,6 +240,16 @@ msgstr ""
 #: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Select transfers for batch transfer"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "Several"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "Start a New Batch"
 msgstr ""
 
 #. module: stock_barcode_picking_batch
@@ -251,8 +330,18 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "for contact"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
 #. openerp-web
 #: code:addons/stock_barcode_picking_batch/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "line.package_id || line.result_package_id || line.suggested_package"
+msgstr ""
+
+#. module: stock_barcode_picking_batch
+#: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.view_batch_picking_confirmation
+msgid "should already be done or are scheduled on a date earlier than"
 msgstr ""

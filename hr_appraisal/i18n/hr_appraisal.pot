@@ -1351,6 +1351,13 @@ msgid "Unable to post message, please configure the sender's email address."
 msgstr ""
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Unpublished"
+msgstr "
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_unread
 msgid "Unread Messages"

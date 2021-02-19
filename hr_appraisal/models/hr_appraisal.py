@@ -191,6 +191,19 @@ class HrAppraisal(models.Model):
         if any(appraisal.state not in ['new', 'cancel'] for appraisal in self):
             raise UserError(_("You cannot delete appraisal which is not in draft or canceled state"))
 
+    def read(self, fields=None, load='_classic_read'):
+        check_feedback = set(fields) & {'manager_feedback', 'employee_feedback'}
+        if check_feedback:
+            fields = fields + ['can_see_employee_publish', 'can_see_manager_publish', 'employee_feedback_published', 'manager_feedback_published']
+        records = super().read(fields, load)
+        if check_feedback:
+            for appraisal in records:
+                if not appraisal['can_see_employee_publish'] and not appraisal['employee_feedback_published']:
+                    appraisal['employee_feedback'] = _('Unpublished')
+                if not appraisal['can_see_manager_publish'] and not appraisal['manager_feedback_published']:
+                    appraisal['manager_feedback'] = _('Unpublished')
+        return records
+
     def action_calendar_event(self):
         self.ensure_one()
         partners = self.manager_ids.mapped('related_partner_id') | self.employee_id.related_partner_id | self.env.user.partner_id

@@ -344,7 +344,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Check your tax configuration, go to Configuration -> Taxes and set the field"
-" 'Affectation reason' to set it by default or set the proper valie in the "
+" 'Affectation reason' to set it by default or set the proper value in the "
 "field Affect. Reason in the line"
 msgstr ""
 
@@ -691,7 +691,7 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move__l10n_pe_edi_charge_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_payment__l10n_pe_edi_charge_reason
 msgid ""
-"It contains all possible values for the refund reason according to Catalog "
+"It contains all possible values for the charge reason according to Catalog "
 "No. 10"
 msgstr ""
 
@@ -1299,7 +1299,7 @@ msgstr ""
 msgid ""
 "The document type of the invoice related is not the same of this document. "
 "Check the document type of the invoice related and set this document with "
-"that document type. Incase of this document being posted and having a number"
+"that document type. In case of this document being posted and having a number"
 " already, reset to draft and cancel it, this document will be cancelled "
 "locally and not reported."
 msgstr ""
@@ -1324,7 +1324,7 @@ msgstr ""
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid ""
-"The invoice related to this Debit Not has been canceled, set this document "
+"The invoice related to this Debit Note has been canceled, set this document "
 "to draft and cancel it."
 msgstr ""
 
@@ -1332,7 +1332,7 @@ msgstr ""
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid ""
-"The invoice related to this Debit Not has not been reported, go to the "
+"The invoice related to this Debit Note has not been reported, go to the "
 "invoice related and sign it in order to generate this Debit Note"
 msgstr ""
 

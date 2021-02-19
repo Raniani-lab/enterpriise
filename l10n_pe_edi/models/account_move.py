@@ -62,7 +62,7 @@ class AccountMove(models.Model):
             ('12', 'Adjustments affecting the IVAP'),
         ],
         string="Debit Reason",
-        help='It contains all possible values for the refund reason according to Catalog No. 10')
+        help='It contains all possible values for the charge reason according to Catalog No. 10')
     l10n_pe_edi_cancel_reason = fields.Char(
         string="Cancel Reason",
         copy=False,

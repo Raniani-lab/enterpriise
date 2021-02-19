@@ -98,9 +98,9 @@ class AccountEdiFormat(models.Model):
                         "sign it in order to generate this Credit Note."),
             '2120': _lt("The invoice related to this Credit Note has been canceled, set this document to draft and "
                         "cancel it."),
-            '2209': _lt("The invoice related to this Debit Not has not been reported, go to the invoice related and "
+            '2209': _lt("The invoice related to this Debit Note has not been reported, go to the invoice related and "
                         "sign it in order to generate this Debit Note"),
-            '2207': _lt("The invoice related to this Debit Not has been canceled, set this document to draft and "
+            '2207': _lt("The invoice related to this Debit Note has been canceled, set this document to draft and "
                         "cancel it."),
             '001': _lt("This invoice has been validated by the OSE and we can not allow set it to draft, please try "
                        "to revert it with a credit not or cancel it and create a new one instead."),
@@ -109,14 +109,14 @@ class AccountEdiFormat(models.Model):
             '1034': _lt("Check that the VAT set in the company is correct, this error generally happen when you did "
                         "not set a proper VAT in the company, go to company form and set it properly.."),
             '2371': _lt("Check your tax configuration, go to Configuration -> Taxes and set the field "
-                        "'Affectation reason' to set it by default or set the proper valie in the field Affect. Reason "
+                        "'Affectation reason' to set it by default or set the proper value in the field Affect. Reason "
                         "in the line"),
             '2204': _lt("The document type of the invoice related is not the same of this document. Check the "
-                        "document type of the invoice related and set this document with that document type. Incase of "
+                        "document type of the invoice related and set this document with that document type. In case of "
                         "this document being posted and having a number already, reset to draft and cancel it, this "
                         "document will be cancelled locally and not reported."),
             '2116': _lt("The document type of the invoice related is not the same of this document. Check the "
-                        "document type of the invoice related and set this document with that document type. Incase of "
+                        "document type of the invoice related and set this document with that document type. In case of "
                         "this document being posted and having a number already, reset to draft and cancel it, this "
                         "document will be cancelled locally and not reported."),
         }

@@ -17,10 +17,17 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         // LUL TODO adapt the company switcher widget to handle empty session
         this.session = {
             user_companies: {
-                allowed_companies: [[1, "Company 1"]],
-                current_company: [1, "Company 1"],
+                current_company: 1,
+                allowed_companies: {
+                    1: {
+                        id: 1,
+                        name: 'Company 1',
+                    },
+                },
             },
-            user_context: { allowed_company_ids: "1" },
+            user_context: {
+                allowed_company_ids: [1],
+            },
         };
         this.data = {
             all_menu_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],

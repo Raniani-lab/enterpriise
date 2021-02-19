@@ -220,3 +220,18 @@ class TestTimesheetValidation(TestCommonTimesheet):
         self.assertFalse(
             project_2.allow_timesheet_timer,
             "On 'allow_timesheets' change to FALSE, 'allow_timesheet_timer' shall be set to FALSE")
+
+    def test_timesheet_display_timer(self):
+        current_timesheet_uom = self.env.company.timesheet_encode_uom_id
+
+        # self.project_customer.allow_timesheets = True
+
+        self.env.company.timesheet_encode_uom_id = self.env.ref('uom.product_uom_hour')
+        self.assertTrue(self.timesheet1.display_timer)
+
+        # Force recompute field
+        self.env.company.timesheet_encode_uom_id = self.env.ref('uom.product_uom_day')
+        self.timesheet1._compute_display_timer()
+        self.assertFalse(self.timesheet1.display_timer)
+
+        self.env.company.timesheet_encode_uom_id = current_timesheet_uom

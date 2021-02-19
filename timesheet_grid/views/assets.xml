@@ -29,6 +29,7 @@
 
     <template id="qunit_suite" name="grid tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="//script[contains(@src, '/web_grid/static/tests/mock_server.js')]" position="after">
+            <script type="text/javascript" src="/timesheet_grid/static/tests/timesheet_uom_tests.js"></script>
             <script type="text/javascript" src="/timesheet_grid/static/tests/timesheet_grid_tests.js"></script>
             <script type="text/javascript" src="/timesheet_grid/static/tests/timesheet_timer_grid_tests.js"></script>
         </xpath>

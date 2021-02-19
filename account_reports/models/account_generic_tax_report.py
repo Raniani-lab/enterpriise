@@ -100,11 +100,17 @@ class generic_tax_report(models.AbstractModel):
             GROUP BY tax.tax_group_id, "account_move_line".tax_line_id, tax.name, "account_move_line".account_id
         """
 
-        period_start, period_end = self.env.company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
-        options['date']['date_from'] = fields.Date.to_string(period_start)
-        options['date']['date_to'] = fields.Date.to_string(period_end)
+        new_options = {
+            **options,
+            'all_entries': False,
+            'date': dict(options['date']),
+        }
 
-        tables, where_clause, where_params = self._query_get(options)
+        period_start, period_end = self.env.company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
+        new_options['date']['date_from'] = fields.Date.to_string(period_start)
+        new_options['date']['date_to'] = fields.Date.to_string(period_end)
+
+        tables, where_clause, where_params = self._query_get(new_options)
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.dictfetchall()

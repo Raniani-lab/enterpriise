@@ -72,7 +72,6 @@
             'documents/static/src/bugfix/bugfix.scss',
             'documents/static/src/scss/documents_views.scss',
             'documents/static/src/scss/documents_kanban_view.scss',
-            'documents/static/src/scss/documents_document_viewer.scss',
             'documents/static/src/owl/components/pdf_manager/pdf_manager.scss',
             'documents/static/src/owl/components/pdf_page/pdf_page.scss',
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.scss',

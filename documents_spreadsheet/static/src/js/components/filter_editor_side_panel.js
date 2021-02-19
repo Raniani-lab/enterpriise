@@ -232,6 +232,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         onDateOptionChange(ev) {
             // TODO t-model does not work ?
             this.state.date.type = ev.target.value;
+            this.state.date.defaultValue = {};
         }
     }
     FilterEditorSidePanel.template = "documents_spreadsheet.FilterEditorSidePanel";

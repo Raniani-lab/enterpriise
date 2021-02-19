@@ -1528,5 +1528,47 @@ odoo.define("documents_spreadsheet.spreadsheet_tests", function (require) {
             assert.containsN(document.body, ".o_pivot_table_dialog th", 4);
             actionManager.destroy();
         });
+
+        QUnit.test("Changing the range of a date global filter reset the default value", async function (assert) {
+            assert.expect(1);
+
+            const [actionManager, model, env] = await createSpreadsheetFromPivot({
+                model: "partner",
+                data: this.data,
+                arch: `
+                <pivot string="Partners">
+                    <field name="bar" type="col"/>
+                    <field name="product" type="col"/>
+                    <field name="probability" type="measure"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+                mockRPC: mockRPCFn,
+            });
+            const label = "This year";
+            model.dispatch("ADD_PIVOT_FILTER", { filter: {
+                id: "42",
+                type: "date",
+                rangeType: "month",
+                label,
+                fields: {
+                    1: { field: "create_date", type: "datetime" }
+                },
+                defaultValue: {
+                    period: "january"
+                }
+            }});
+            const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
+            await dom.click(searchIcon);
+            const editFilter = actionManager.el.querySelectorAll(".o_side_panel_filter_icon");
+            await dom.click(editFilter);
+            const options = actionManager.el.querySelectorAll(".o_spreadsheet_filter_editor_side_panel .o_side_panel_section")[1];
+            options.querySelector("select option[value='year']").setAttribute("selected", "selected");
+            await dom.triggerEvent(options.querySelector("select"), "change");
+            await nextTick();
+            await dom.click(actionManager.el.querySelector(".o_global_filter_save"));
+            await nextTick();
+            assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
+            actionManager.destroy();
+        });
     });
 });

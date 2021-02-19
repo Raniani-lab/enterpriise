@@ -112,8 +112,8 @@ class ResPartner(models.Model):
                     index = aml.followup_line_id.id or None
                     followup_date = fups[index][0]
                     next_level = fups[index][1]
-                    if (aml.date_maturity and aml.date_maturity <= followup_date
-                            or (aml.date and aml.date <= followup_date)):
+                    is_overdue = followup_date >= aml.date_maturity if aml.date_maturity else followup_date >= aml.date
+                    if is_overdue:
                         aml.write({'followup_line_id': next_level, 'followup_date': today})
 
     def open_action_followup(self):

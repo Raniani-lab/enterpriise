@@ -698,7 +698,7 @@ class AccountMove(models.Model):
                     if not partner_vat:
                         for partner in self.env["res.partner"].search([("vat", "!=", False)], limit=1000):
                             vat = partner.vat.upper()
-                            vat_cleaned = vat.replace("BTW", "").replace("MWST", "")
+                            vat_cleaned = vat.replace("BTW", "").replace("MWST", "").replace("ABN", "")
                             vat_cleaned = re.sub(r'[^A-Z0-9]', '', vat_cleaned)
                             if vat_cleaned == vat_number_ocr or vat_cleaned == vat_number_ocr[2:]:
                                 partner_vat = partner

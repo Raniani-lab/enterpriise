@@ -6,6 +6,7 @@ var testUtilsEnterprise = require('web_enterprise.test_utils');
 const SystrayMenu = require('web.SystrayMenu');
 const WebClient = require('web.WebClient');
 const Widget = require('web.Widget');
+const session = require('web.session');
 
 QUnit.module('web_enterprise_menu_tests', {
     beforeEach: function () {
@@ -41,7 +42,50 @@ QUnit.module('web_enterprise_menu_tests', {
     }
 }, function () {
 
-    QUnit.module('Menu');
+QUnit.module('Menu', function (hooks) {
+    let sessionUserCompaniesBackup;
+    let sessionUserContextBackup;
+    let sessionUOMIdsBackup;
+    hooks.before(function (assert) {
+        // Set multi company related session info as required in AbstractWebClient.
+        sessionUserCompaniesBackup = session.user_companies;
+        sessionUserContextBackup = session.user_context;
+        sessionUOMIdsBackup = session.uom_ids;
+
+        session.user_context = {
+            allowed_company_ids: [],
+        };
+        session.user_companies = {
+            current_company: 1,
+            allowed_companies: {
+                1: {
+                    id: 1,
+                    name: 'test',
+                    timesheet_uom_id: 1,
+                    timesheet_uom_factor: 1.0,
+                },
+            },
+        };
+        session.uom_ids = {
+            1: {
+                id: 1,
+                name: 'hour',
+                rounding: 0.01,
+                timesheet_widget: 'float_time',
+            },
+        };
+    });
+    hooks.after(function (assert) {
+        if (!!sessionUserContextBackup) {
+            session.user_context = sessionUserContextBackup;
+        }
+        if (!!sessionUserCompaniesBackup) {
+            session.user_companies = sessionUserCompaniesBackup;
+        }
+        if (!!sessionUOMIdsBackup) {
+            session.uom_ids = sessionUOMIdsBackup;
+        }
+    });
     QUnit.test('Systray on_attach_callback is called', async function (assert) {
         assert.expect(4);
 
@@ -76,7 +120,6 @@ QUnit.module('web_enterprise_menu_tests', {
         testUtils.mock.unpatch(SystrayMenu);
         parent.destroy();
     });
-
     QUnit.test('Menu rendering', async function (assert) {
         assert.expect(6);
         var menu = await testUtilsEnterprise.createMenu({ menuData: this.data });
@@ -100,5 +143,6 @@ QUnit.module('web_enterprise_menu_tests', {
             "should have third menu and children in dropdown");
         menu.destroy();
     });
+});
 });
 });

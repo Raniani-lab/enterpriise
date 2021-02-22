@@ -77,7 +77,7 @@ class AccountOnlineAccount(models.Model):
             ], order="date desc", limit=1)
         transactions = []
         data = {
-            'start_date': format_date(self.env, start_date, date_format='YYYY-MM-dd'),
+            'start_date': format_date(self.env, start_date, date_format='yyyy-MM-dd'),
             'account_id': self.online_identifier,
             'last_transaction_identifier': last_stmt_line.online_transaction_identifier,
             'currency_code': self.journal_ids[0].currency_id.name,

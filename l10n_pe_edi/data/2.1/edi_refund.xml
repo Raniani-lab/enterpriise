@@ -32,15 +32,15 @@
                 <cac:LegalMonetaryTotal>
                     <cbc:LineExtensionAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(tax_details['total_excluded'])"/>
+                            t-esc="format_float(record.amount_untaxed)"/>
                     <cbc:TaxInclusiveAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(tax_details['total_included'])"/>
+                            t-esc="format_float(record.amount_total)"/>
                     <cbc:PayableAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(tax_details['total_included'])"/>
+                            t-esc="format_float(record.amount_total)"/>
                 </cac:LegalMonetaryTotal>
-                <cac:CreditNoteLine t-foreach="invoice_lines_vals" t-as="line_vals">
+                <cac:CreditNoteLine t-foreach="invoice_line_vals_list" t-as="line_vals">
                     <t t-call="l10n_pe_edi.pe_ubl_2_1_refund_line"/>
                 </cac:CreditNoteLine>
             </t>

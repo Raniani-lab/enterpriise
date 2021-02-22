@@ -5,19 +5,15 @@ from odoo import models, fields
 class AccountEdiFormat(models.Model):
     _inherit = 'account.edi.format'
 
-    def _l10n_mx_edi_get_invoice_line_cfdi_values(self, invoice, line):
-        # OVERRIDE
-        vals = super()._l10n_mx_edi_get_invoice_line_cfdi_values(invoice, line)
-
-        # Custom numbers
-        vals['custom_numbers'] = line._l10n_mx_edi_get_custom_numbers()
-
-        return vals
-
     def _l10n_mx_edi_get_invoice_cfdi_values(self, invoice):
         # OVERRIDE
         vals = super()._l10n_mx_edi_get_invoice_cfdi_values(invoice)
         customer = vals['customer']
+
+        # Update line values for custom numbers
+        for line_vals in vals['invoice_line_vals_list']:
+            # Custom number
+            line_vals['custom_numbers'] = line_vals['line']._l10n_mx_edi_get_custom_numbers()
 
         # External Trade
         if invoice.l10n_mx_edi_external_trade:
@@ -32,7 +28,7 @@ class AccountEdiFormat(models.Model):
             vals['ext_trade_rate_usd_mxn'] = usd._convert(1.0, mxn, invoice.company_id, invoice.date)
 
             invoice_lines_gb_products = {}
-            for line_vals in vals['invoice_line_values']:
+            for line_vals in vals['invoice_line_vals_list']:
                 invoice_lines_gb_products.setdefault(line_vals['line'].product_id, [])
                 invoice_lines_gb_products[line_vals['line'].product_id].append(line_vals)
 
@@ -72,8 +68,6 @@ class AccountEdiFormat(models.Model):
                 'ext_trade_total_price_subtotal_usd': ext_trade_total_price_subtotal_usd,
                 'ext_trade_delivery_partner': self.env['res.partner'].browse(invoice._get_invoice_delivery_partner_id()),
                 'ext_trade_customer_reg_trib': customer.vat,
-
                 'customer_fiscal_residence': customer_fiscal_residence,
             })
-
         return vals

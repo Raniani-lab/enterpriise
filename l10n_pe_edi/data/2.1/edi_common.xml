@@ -22,48 +22,49 @@
                     <cac:AlternativeConditionPrice>
                         <cbc:PriceAmount
                                 t-att-currencyID="line.currency_id.name"
-                                t-esc="format_float(line_vals['tax_details']['unit_total_included'])"/>
+                                t-esc="format_float(line_vals['price_total_unit'])"/>
                         <cbc:PriceTypeCode
-                                t-esc="line_vals['tax_details']['price_unit_type_code']"/>
+                                t-esc="line_vals['price_unit_type_code']"/>
                     </cac:AlternativeConditionPrice>
                 </cac:PricingReference>
                 <cac:TaxTotal>
                     <cbc:TaxAmount
                             t-att-currencyID="line.currency_id.name"
-                            t-esc="format_float(line_vals['tax_details']['total_included'] - line_vals['tax_details']['total_excluded'])"/>
-                        <cac:TaxSubtotal t-foreach="line_vals['tax_details']['taxes']" t-as="tax_res">
+                            t-esc="format_float(line.price_total - line.price_subtotal)"/>
+                        <cac:TaxSubtotal t-foreach="line_vals['tax_detail_vals_list']" t-as="tax_detail_vals">
+                            <t t-set="tax" t-value="tax_detail_vals['tax']"/>
                             <cbc:TaxableAmount
-                                    t-if="tax_res['l10n_pe_edi_group_code'] != 'ICBPER'"
+                                    t-if="tax.tax_group_id.l10n_pe_edi_code != 'ICBPER'"
                                     t-att-currencyID="line.currency_id.name"
-                                    t-esc="format_float(tax_res['base'])"/>
+                                    t-esc="format_float(tax_detail_vals['tax_base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="line.currency_id.name"
-                                    t-esc="format_float(tax_res['amount'])"/>
+                                    t-esc="format_float(tax_detail_vals['tax_amount_currency'])"/>
                             <cbc:BaseUnitMeasure
-                                    t-if="tax_res['l10n_pe_edi_group_code'] == 'ICBPER'"
+                                    t-if="tax.tax_group_id.l10n_pe_edi_code == 'ICBPER'"
                                     t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
                                     t-esc='int(line.quantity)'/>
                             <cac:TaxCategory>
                                 <cbc:Percent
-                                        t-if="tax_res['tax_amount_type'] == 'percent'"
-                                        t-esc="tax_res['tax_amount']"/>
+                                        t-if="tax.amount_type == 'percent'"
+                                        t-esc="tax.amount"/>
                                 <cbc:PerUnitAmount
-                                        t-if="tax_res['tax_amount_type'] == 'fixed'"
+                                        t-if="tax.amount_type == 'fixed'"
                                         t-att-currencyID="line.currency_id.name"
-                                        t-esc="tax_res['tax_amount']"/>
+                                        t-esc="tax.amount"/>
                                 <cbc:TaxExemptionReasonCode
-                                        t-if="tax_res['l10n_pe_edi_group_code'] != 'ICBPER' and line.l10n_pe_edi_affectation_reason"
+                                        t-if="tax.tax_group_id.l10n_pe_edi_code != 'ICBPER' and line.l10n_pe_edi_affectation_reason"
                                         t-esc="line.l10n_pe_edi_affectation_reason"/>
                                 <cac:TaxScheme>
-                                    <cbc:ID t-esc="tax_res['l10n_pe_edi_tax_code']"/>
-                                    <cbc:Name t-esc="tax_res['l10n_pe_edi_group_code']"/>
-                                    <cbc:TaxTypeCode t-esc="tax_res['l10n_pe_edi_international_code']"/>
+                                    <cbc:ID t-esc="tax.l10n_pe_edi_tax_code"/>
+                                    <cbc:Name t-esc="tax.tax_group_id.l10n_pe_edi_code"/>
+                                    <cbc:TaxTypeCode t-esc="tax.l10n_pe_edi_international_code"/>
                                 </cac:TaxScheme>
                             </cac:TaxCategory>
                         </cac:TaxSubtotal>
                 </cac:TaxTotal>
                 <cac:Item>
-                    <cbc:Description t-esc="line.name.replace('\n', ' ')"/>
+                    <cbc:Description t-esc="(line.name or '').replace('\n', ' ')"/>
                     <cac:CommodityClassification t-if="line.product_id">
                         <cbc:ItemClassificationCode t-esc="line.product_id.unspsc_code_id.code"/>
                     </cac:CommodityClassification>
@@ -71,7 +72,7 @@
                 <cac:Price>
                     <cbc:PriceAmount
                             t-att-currencyID="line.currency_id.name"
-                            t-esc="format_float(line_vals['tax_details']['unit_total_excluded'])"/>
+                            t-esc="format_float(line_vals['price_subtotal_unit'])"/>
                 </cac:Price>
             </t>
         </template>
@@ -159,19 +160,20 @@
                 <cac:TaxTotal>
                     <cbc:TaxAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(tax_details['total_taxes'])"/>
-                        <cac:TaxSubtotal t-foreach="tax_details['grouped_taxes']" t-as="tax_res">
+                            t-esc="format_float(record.amount_tax)"/>
+                        <cac:TaxSubtotal t-foreach="tax_detail_vals_list_grouped" t-as="tax_detail_vals">
+                            <t t-set="tax" t-value="tax_detail_vals['tax']"/>
                             <cbc:TaxableAmount
                                     t-att-currencyID="record.currency_id.name"
-                                    t-esc="format_float(tax_res['base'])"/>
+                                    t-esc="format_float(tax_detail_vals['tax_base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="record.currency_id.name"
-                                    t-esc="format_float(tax_res['amount'])"/>
+                                    t-esc="format_float(tax_detail_vals['tax_amount_currency'])"/>
                             <cac:TaxCategory>
                                 <cac:TaxScheme>
-                                    <cbc:ID t-esc="tax_res['l10n_pe_edi_tax_code']"/>
-                                    <cbc:Name t-esc="tax_res['l10n_pe_edi_group_code']"/>
-                                    <cbc:TaxTypeCode t-esc="tax_res['l10n_pe_edi_international_code']"/>
+                                    <cbc:ID t-esc="tax.l10n_pe_edi_tax_code"/>
+                                    <cbc:Name t-esc="tax.tax_group_id.l10n_pe_edi_code"/>
+                                    <cbc:TaxTypeCode t-esc="tax.l10n_pe_edi_international_code"/>
                                 </cac:TaxScheme>
                             </cac:TaxCategory>
                         </cac:TaxSubtotal>

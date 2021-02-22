@@ -155,84 +155,37 @@ class AccountEdiFormat(models.Model):
                 return None
             return '%.*f' % (precision, amount)
 
-        def unit_amount(amount, quantity):
-            ''' Helper to divide amount by quantity by taking care about float division by zero. '''
-            if quantity:
-                return invoice.currency_id.round(amount / quantity)
-            else:
-                return 0.0
-
         values = {
-            'record': invoice,
-            'invoice_lines_vals': [],
+            **invoice._prepare_edi_vals_to_export(),
             'certificate_date': self.env['l10n_pe_edi.certificate']._get_pe_current_datetime().date(),
             'format_float': format_float,
-            'tax_details': {
-                'total_excluded': 0.0,
-                'total_included': 0.0,
-                'total_taxes': 0.0,
-            },
         }
-        tax_details = values['tax_details']
 
         # Invoice lines.
-        tax_res_grouped = {}
-        invoice_lines = invoice.invoice_line_ids.filtered(lambda line: not line.display_type)
-        for i, line in enumerate(invoice_lines, start=1):
-            price_unit_wo_discount = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
+        for line_vals in values['invoice_line_vals_list']:
+            line = line_vals['line']
+            line_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(line_vals['price_unit_after_discount']) else '02'
 
-            taxes_res = line.tax_ids.compute_all(
-                price_unit_wo_discount,
-                currency=line.currency_id,
-                quantity=line.quantity,
-                product=line.product_id,
-                partner=line.partner_id,
-                is_refund=invoice.move_type in ('out_refund', 'in_refund'),
+            for tax_detail_vals in line_vals['tax_detail_vals_list']:
+                tax_detail_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(tax_detail_vals['tax_amount_currency']) else '02'
+
+        tax_details_custom_gb = {}
+        for tax_detail_vals in values['tax_detail_vals_list']:
+            tax = tax_detail_vals['tax']
+
+            tuple_key = (
+                tax.tax_group_id.l10n_pe_edi_code,
+                tax.l10n_pe_edi_international_code,
+                tax.l10n_pe_edi_tax_code,
             )
-
-            taxes_res.update({
-                'unit_total_included': unit_amount(taxes_res['total_included'], line.quantity),
-                'unit_total_excluded': unit_amount(taxes_res['total_excluded'], line.quantity),
-                'price_unit_type_code': '01' if not line.currency_id.is_zero(price_unit_wo_discount) else '02',
+            tax_details_custom_gb.setdefault(tuple_key, {
+                **tax_detail_vals,
+                'tax_base_amount_currency': 0.0,
+                'tax_amount_currency': 0.0,
             })
-            for tax_res in taxes_res['taxes']:
-                tax = self.env['account.tax'].browse(tax_res['id'])
-                tax_res.update({
-                    'tax_amount': tax.amount,
-                    'tax_amount_type': tax.amount_type,
-                    'price_unit_type_code': '01' if not line.currency_id.is_zero(tax_res['amount']) else '02',
-                    'l10n_pe_edi_tax_code': tax.l10n_pe_edi_tax_code,
-                    'l10n_pe_edi_group_code': tax.tax_group_id.l10n_pe_edi_code,
-                    'l10n_pe_edi_international_code': tax.l10n_pe_edi_international_code,
-                })
-
-                tuple_key = (
-                    tax_res['l10n_pe_edi_group_code'],
-                    tax_res['l10n_pe_edi_international_code'],
-                    tax_res['l10n_pe_edi_tax_code'],
-                )
-
-                tax_res_grouped.setdefault(tuple_key, {
-                    'base': 0.0,
-                    'amount': 0.0,
-                    'l10n_pe_edi_group_code': tax_res['l10n_pe_edi_group_code'],
-                    'l10n_pe_edi_international_code': tax_res['l10n_pe_edi_international_code'],
-                    'l10n_pe_edi_tax_code': tax_res['l10n_pe_edi_tax_code'],
-                })
-                tax_res_grouped[tuple_key]['base'] += tax_res['base']
-                tax_res_grouped[tuple_key]['amount'] += tax_res['amount']
-
-                tax_details['total_excluded'] += tax_res['base']
-                tax_details['total_included'] += tax_res['base'] + tax_res['amount']
-                tax_details['total_taxes'] += tax_res['amount']
-
-                values['invoice_lines_vals'].append({
-                    'index': i,
-                    'line': line,
-                    'tax_details': taxes_res,
-                })
-
-        values['tax_details']['grouped_taxes'] = list(tax_res_grouped.values())
+            tax_details_custom_gb[tuple_key]['tax_base_amount_currency'] += tax_detail_vals['tax_base_amount_currency']
+            tax_details_custom_gb[tuple_key]['tax_amount_currency'] += tax_detail_vals['tax_amount_currency']
+        values['tax_detail_vals_list_grouped'] = list(tax_details_custom_gb.values())
 
         return values
 

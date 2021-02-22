@@ -223,7 +223,8 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         form.bom_id = self.bom_laptop
         mo_laptop = form.save()
         mo_laptop.action_confirm()
-        mo_laptop.qty_producing = 2.0
+        form.qty_producing = 2.0
+        mo_laptop = form.save()
         mo_laptop.action_assign()
 
         mo_laptop.button_plan()

@@ -10,7 +10,7 @@
     'installable': True,
     'application': True,
     'depends': [
-        'hr_work_entry_contract',
+        'hr_work_entry_contract_enterprise',
         'mail',
         'web_dashboard',
     ],

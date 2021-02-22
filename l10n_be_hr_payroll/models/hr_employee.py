@@ -305,10 +305,11 @@ class HrEmployee(models.Model):
             This holiday pay does not correspond to the 'Double Holiday Bonus'
             but to the number of leaves that the employee had before changing companies.
         """
+        holiday_pay_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
         slip_ids = self.mapped('slip_ids').filtered(
-            lambda slip: slip.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays') \
+            lambda slip: slip.struct_id == holiday_pay_n \
                     and slip.date_to.year == int(year))
-        return sum(slip._get_salary_line_total('TAXABLE') for slip in slip_ids)
+        return sum(slip._get_salary_line_total('GROSS') for slip in slip_ids)
 
     def _generate_281_10_form_pdf(self, employee_data):
         self.ensure_one()

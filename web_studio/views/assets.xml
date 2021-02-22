@@ -151,16 +151,7 @@
 
     <template id="web_studio.qunit_suite_tests" name="studio_tests" inherit_id="web.qunit_suite_tests">
         <xpath expr="." position="inside">
-            <script type="text/javascript">
-                odoo.define('web_studio.WebClient.test', function (require) {
-                    'use strict';
-                    require('web_studio.WebClient');
-                    var WebClient = require('web.WebClient');
-                    WebClient.include({
-                        _studioAssets: [],
-                    });
-                });
-            </script>
+            <script type="text/javascript" src="/web_studio/static/tests/webclient_test.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/studio_home_menu_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/home_menu_wrapper_tests.js"></script>
             <script type="text/javascript" src="/web_studio/static/tests/action_editor_action_tests.js"></script>

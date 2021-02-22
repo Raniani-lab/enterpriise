@@ -47,7 +47,7 @@ class AccountEdiFormat(models.Model):
                 )
 
                 line_total_usd = invoice.currency_id._convert(
-                    sum(line_vals['total_wo_discount'] for line_vals in line_vals_list),
+                    sum(line_vals['price_subtotal_before_discount'] for line_vals in line_vals_list),
                     usd,
                     invoice.company_id,
                     invoice.date,

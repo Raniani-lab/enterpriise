@@ -62,6 +62,6 @@ class VoipQueueMixin(models.AbstractModel):
         for phonecall in phonecalls:
             phonecall.remove_from_queue()
         self.env['bus.bus'].sendone(
-            (self._cr.dbname, 'res.partner', self.env.user.id),
+            (self._cr.dbname, 'res.partner', self.env.user.partner_id.id),
             {'type': 'refresh_voip'}
         )

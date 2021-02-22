@@ -106,7 +106,7 @@
         <field name="priority">1000</field>
         <field name="inherit_id" ref="project.quick_create_task_form"/>
         <field name="arch" type="xml">
-            <field name="project_id" position="after">
+            <field name="user_id" position="before">
                 <field name="is_fsm" invisible="1"/>
                 <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
             </field>

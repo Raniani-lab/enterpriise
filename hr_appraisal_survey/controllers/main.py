@@ -46,6 +46,7 @@ class AppraisalSurvey(Survey):
             if answer:
                 survey_sudo = answer.survey_id
 
+        post['appraisal_id'] = appraisal_id
         user_input_lines_sudo, search_filters = self._extract_filters_data(survey_sudo, post)
         survey_data = survey_sudo._prepare_statistics(user_input_lines_sudo)
         question_and_page_data = survey_sudo.question_and_page_ids._prepare_statistics(user_input_lines_sudo)

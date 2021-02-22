@@ -6,6 +6,7 @@
             <field name="model">appraisal.ask.feedback</field>
             <field name="arch" type="xml">
                 <form string="Ask Feedback">
+                    <field name="appraisal_id" invisible="1" />
                     <group col="1">
                         <group col="2">
                             <field name="survey_template_id"/>

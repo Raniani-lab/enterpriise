@@ -23,7 +23,19 @@ return KanbanRecord.extend({
                 fsmQuantityWidget._addQuantity(new Event('click'));
             }
         }
-    }
+    },
+
+    /**
+     * @override
+     * @private
+     * @returns {string} the url of the image
+     */
+    _getImageURL: function () {
+        if (!this.imageURL) {
+            this.imageURL = this._super.apply(this, arguments);
+        }
+        return this.imageURL;
+    },
 });
 
 });

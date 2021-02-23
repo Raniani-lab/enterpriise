@@ -79,29 +79,30 @@ class AccountMove(models.Model):
             else:
                 record.extract_error_message = ''
 
-    def _compute_can_show_send_resend(self, record):
+    def _compute_can_show_send_resend(self):
+        self.ensure_one()
         can_show = True
         if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             can_show = False
-        if record.state != 'draft':
+        if self.state != 'draft':
             can_show = False
-        if record.move_type not in ('in_invoice', 'in_refund'):
+        if self.move_type not in ('in_invoice', 'in_refund'):
             can_show = False
-        if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
+        if self.message_main_attachment_id is None or len(self.message_main_attachment_id) == 0:
             can_show = False
         return can_show
 
     @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_resend_button(self):
         for record in self:
-            record.extract_can_show_resend_button = record._compute_can_show_send_resend(record)
+            record.extract_can_show_resend_button = record._compute_can_show_send_resend()
             if record.extract_state not in ['error_status', 'not_enough_credit', 'module_not_up_to_date']:
                 record.extract_can_show_resend_button = False
 
     @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
         for record in self:
-            record.extract_can_show_send_button = record._compute_can_show_send_resend(record)
+            record.extract_can_show_send_button = record._compute_can_show_send_resend()
             if record.extract_state not in ['no_extract_requested']:
                 record.extract_can_show_send_button = False
 

@@ -117,7 +117,7 @@ class AccountBankStmtImportCSV(models.TransientModel):
             import_fields.remove('debit')
             import_fields.remove('credit')
 
-        currency_index = 'currency_id' in import_fields and import_fields.index('currency_id') or False
+        currency_index = 'foreign_currency_id' in import_fields and import_fields.index('foreign_currency_id') or False
         for index, line in enumerate(data):
             line.append(statement_id)
             line.append(index)

@@ -84,17 +84,17 @@ class TestHrReferral(TestHrReferralBase):
         self.assertEqual(self.red_mug_shop.points_missing, self.red_mug_shop.cost, "10 points are missing")
 
     def test_referral_no_hired_stage(self):
-        self.env.ref('hr_recruitment.stage_job3').not_hired_stage = True
+        self.env.ref('hr_recruitment.stage_job3').use_in_referral = False
         stage_parking_1 = self.env['hr.recruitment.stage'].create({
             'name': 'parking1',
-            'not_hired_stage': True,
+            'use_in_referral': False,
             'job_ids': [(6, 0, self.job_dev.ids)],
             'sequence': 15,
             'points': 500,  # points must be ignored for 'not hired stage'
         })
         stage_parking_2 = self.env['hr.recruitment.stage'].create({
             'name': 'parking2',
-            'not_hired_stage': True,
+            'use_in_referral': False,
             'job_ids': [(6, 0, self.job_dev.ids)],
             'sequence': 16,
             'points': 1000,  # points must be ignored for 'not hired stage'

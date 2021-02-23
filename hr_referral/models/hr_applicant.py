@@ -56,11 +56,12 @@ class Applicant(models.Model):
     @api.depends('referral_points_ids')
     def _compute_shared_item_infos(self):
         for applicant in self:
-            stages = self.env['hr.recruitment.stage'].search([('not_hired_stage', '=', False), '|', ('job_ids', '=', False), ('job_ids', '=', applicant.job_id.id)])
+            stages = self.env['hr.recruitment.stage'].search([('use_in_referral', '=', True), '|', ('job_ids', '=', False), ('job_ids', '=', applicant.job_id.id)])
             infos = [{
                 'name': stage.name,
                 'points': stage.points,
-                'done': bool(applicant.referral_points_ids.filtered(lambda point: point.stage_id == stage)),
+                'done': bool(len(applicant.referral_points_ids.filtered(lambda point: point.stage_id == stage and point.points > 0))
+                    > len(applicant.referral_points_ids.filtered(lambda point: point.stage_id == stage and point.points < 0))),
                 'seq': stage.sequence,
             } for stage in stages]
             applicant.shared_item_infos = json.dumps(infos)
@@ -71,14 +72,17 @@ class Applicant(models.Model):
 
     def write(self, vals):
         res = super(Applicant, self).write(vals)
-        if 'ref_user_id' in vals or 'stage_id' in vals:
+        if 'ref_user_id' in vals or 'stage_id' in vals or 'date_closed' in vals:
             for applicant in self.filtered(lambda a: a.ref_user_id):
                 if 'ref_user_id' in vals:
                     applicant.referral_points_ids.unlink()
                 applicant.sudo()._update_points(applicant.stage_id.id, vals.get('last_stage_id', False))
-            if 'stage_id' in vals and vals['stage_id']:
-                if not self.env['hr.recruitment.stage'].browse(vals['stage_id']).not_hired_stage:
-                    self.last_valuable_stage_id = vals['stage_id']
+                if 'stage_id' in vals and vals['stage_id']:
+                    if self.env['hr.recruitment.stage'].browse(vals['stage_id']).use_in_referral:
+                        applicant.last_valuable_stage_id = vals['stage_id']
+                if 'date_closed' in vals:
+                    if not vals['date_closed'] and not applicant.stage_id.hired_stage:
+                        applicant.referral_state = 'progress'
         return res
 
     @api.model
@@ -86,7 +90,7 @@ class Applicant(models.Model):
         res = super(Applicant, self).create(vals)
         if res.ref_user_id and res.stage_id:
             res.sudo()._update_points(res.stage_id.id, False)
-            if not res.stage_id.not_hired_stage:
+            if res.stage_id.use_in_referral:
                 res.last_valuable_stage_id = res.stage_id
         return res
 
@@ -115,10 +119,10 @@ class Applicant(models.Model):
         if not self.company_id:
             raise UserError(_("Applicant must have a company."))
         new_state = self.env['hr.recruitment.stage'].browse(new_state_id)
-        if new_state.not_hired_stage:
+        if not new_state.use_in_referral:
             return
         old_state = self.env['hr.recruitment.stage'].browse(old_state_id)
-        if old_state and not old_state.not_hired_stage:
+        if old_state and old_state.use_in_referral:
             old_state_sequence = old_state.sequence
         elif old_state:
             old_state_sequence = self.last_valuable_stage_id.sequence or -1
@@ -142,11 +146,13 @@ class Applicant(models.Model):
                     'ref_user_id': self.ref_user_id.id,
                     'company_id': self.company_id.id
                 })
+            if not self.date_closed and not new_state.hired_stage:
+                self.referral_state = 'progress'
 
         # Increase stage sequence
         elif new_state.sequence > old_state_sequence:
             stages_to_add = self.env['hr.recruitment.stage'].search([
-                ('not_hired_stage', '=', False),
+                ('use_in_referral', '=', True),
                 ('sequence', '>', old_state_sequence), ('sequence', '<=', new_state.sequence),
                 '|', ('job_ids', '=', False), ('job_ids', '=', self.job_id.id)])
             for stage in stages_to_add:
@@ -158,10 +164,7 @@ class Applicant(models.Model):
                     'ref_user_id': self.ref_user_id.id,
                     'company_id': self.company_id.id
                 })
-            future_stage = self.env['hr.recruitment.stage'].search_count([
-                ('not_hired_stage', '=', False), ('sequence', '>', new_state.sequence),
-                '|', ('job_ids', '=', False), ('job_ids', '=', self.job_id.id)])
-            if not future_stage:
+            if self.stage_id.hired_stage:
                 self.referral_state = 'hired'
                 self._send_notification(_('Your referrer is hired!'))
             else:
@@ -296,4 +299,4 @@ class RecruitmentStage(models.Model):
     _inherit = "hr.recruitment.stage"
 
     points = fields.Integer('Points', help="Amount of points that the referent will receive when the applicant will reach this stage")
-    not_hired_stage = fields.Boolean('Not Hired Stage', help="This option is used in app 'Referrals'. If checked, the stage is not displayed in 'Referrals Dashboard' and no points are given to the employee.")
+    use_in_referral = fields.Boolean('Show in Referrals', help="This option is used in app 'Referrals'. If checked, the stage is displayed in 'Referrals Dashboard' and points are given to the employee.")

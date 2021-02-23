@@ -71,6 +71,10 @@ class QualityPoint(models.Model):
                 '|', ('company_id', '=', False), ('company_id', '=', point.company_id.id)
             ])
 
+    @api.onchange('available_product_ids')
+    def _onchange_available_product_ids(self):
+        self.product_ids = self.product_ids._origin & self.available_product_ids
+
     def _compute_check_count(self):
         check_data = self.env['quality.check'].read_group([('point_id', 'in', self.ids)], ['point_id'], ['point_id'])
         result = dict((data['point_id'][0], data['point_id_count']) for data in check_data)

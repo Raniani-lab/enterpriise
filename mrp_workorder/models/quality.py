@@ -74,10 +74,10 @@ class QualityPoint(models.Model):
     # Used with type register_consumed_materials the product raw to encode.
     component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
 
-    @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step')
+    @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step', 'bom_id')
     def _compute_available_product_ids(self):
         super()._compute_available_product_ids()
-        points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step)
+        points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step and p.bom_id)
         for point in points_for_workorder_step:
             point.available_product_ids = point.bom_id.product_id or point.bom_id.product_tmpl_id.product_variant_ids
 

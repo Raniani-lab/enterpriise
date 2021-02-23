@@ -535,13 +535,13 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
         self.env['res.currency.rate'].create({
             'name': move_date,
             'company_id': self.us_company.id,
-            'currency_id': self.us_company.currency_id.id,
-            'rate': 1.25
+            'currency_id': self.env.ref('base.EUR').id,
+            'rate': 0.8
         })
         self.env['res.currency.rate'].create({
             'name': '2019-01-31',
             'company_id': self.us_company.id,
-            'currency_id': self.us_company.currency_id.id,
+            'currency_id': self.env.ref('base.EUR').id,
             'rate': 350.27
         })
         move = self._create_basic_move(1000, company=self.us_company, move_date=move_date,

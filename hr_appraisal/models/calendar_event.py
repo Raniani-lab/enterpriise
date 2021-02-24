@@ -11,12 +11,10 @@ class CalendarEvent(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         events = super().create(vals_list)
-        for event in events:
-            if event.res_model == 'hr.appraisal':
-                appraisal = self.env['hr.appraisal'].browse(event.res_id)
-                if appraisal.exists():
-                    appraisal.write({
-                        'meeting_id': event.id,
-                        'date_final_interview': event.start_date if event.allday else event.start
-                    })
+        for event in events.filtered(lambda e: e.res_model == 'hr.appraisal'):
+            appraisal = self.env['hr.appraisal'].browse(event.res_id)
+            if appraisal.exists():
+                appraisal.sudo().write({
+                    'meeting_ids': [(4, event.id)],
+                })
         return events

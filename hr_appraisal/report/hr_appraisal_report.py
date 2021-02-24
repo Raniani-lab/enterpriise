@@ -46,17 +46,17 @@ class HrAppraisalReport(models.Model):
                      a.employee_id,
                      e.department_id as department_id,
                      a.date_close as deadline,
-                     a.date_final_interview as final_interview,
+                     CASE WHEN min(ce.start) >= NOW() AT TIME ZONE 'UTC' THEN min(ce.start) ELSE max(ce.start) END AS final_interview,
                      a.state
                      from hr_appraisal a
                         left join hr_employee e on (e.id=a.employee_id)
+                        LEFT OUTER JOIN calendar_event ce ON ce.res_id = a.id AND ce.res_model = 'hr.appraisal'
                  GROUP BY
                      a.id,
                      a.create_date,
                      a.state,
                      a.employee_id,
                      a.date_close,
-                     a.date_final_interview,
                      e.department_id
                 )
             """)

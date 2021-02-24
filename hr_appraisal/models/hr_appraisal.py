@@ -18,6 +18,7 @@ class HrAppraisal(models.Model):
     _description = "Employee Appraisal"
     _order = 'state desc, id desc'
     _rec_name = 'employee_id'
+    _mail_post_access = 'read'
 
     def _get_default_employee(self):
         if not self.env.user.has_group('hr_appraisal.group_hr_appraisal_user'):
@@ -52,8 +53,9 @@ class HrAppraisal(models.Model):
     manager_ids = fields.Many2many(
         'hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id',
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    meeting_id = fields.Many2one('calendar.event', string='Meeting')
-    date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
+    meeting_ids = fields.Many2many('calendar.event', string='Meetings')
+    meeting_count_display = fields.Char(string='Meeting Count', compute='_compute_meeting_count')
+    date_final_interview = fields.Date(string="Final Interview", compute='_compute_final_interview')
     waiting_feedback = fields.Boolean(
         string="Waiting Feedback from Employee/Managers", compute='_compute_waiting_feedback', tracking=True)
     employee_feedback = fields.Html(compute='_compute_feedbacks', store=True, readonly=False)
@@ -94,6 +96,34 @@ class HrAppraisal(models.Model):
     def _compute_waiting_feedback(self):
         for appraisal in self:
             appraisal.waiting_feedback = not appraisal.employee_feedback_published or not appraisal.manager_feedback_published
+
+    @api.depends('meeting_ids.start')
+    def _compute_final_interview(self):
+        today = fields.Date.today()
+        with_meeting = self.filtered('meeting_ids')
+        (self - with_meeting).date_final_interview = False
+        for appraisal in with_meeting:
+            all_dates = appraisal.meeting_ids.mapped('start')
+            min_date, max_date = min(all_dates), max(all_dates)
+            if min_date.date() >= today:
+                appraisal.date_final_interview = min_date
+            else:
+                appraisal.date_final_interview = max_date
+
+    @api.depends_context('lang')
+    @api.depends('meeting_ids')
+    def _compute_meeting_count(self):
+        today = fields.Date.today()
+        for appraisal in self:
+            count = len(appraisal.meeting_ids)
+            if not count:
+                appraisal.meeting_count_display = _('No Meeting')
+            elif count == 1:
+                appraisal.meeting_count_display = _('1 Meeting')
+            elif appraisal.date_final_interview >= today:
+                appraisal.meeting_count_display = _('Next Meeting')
+            else:
+                appraisal.meeting_count_display = _('Last Meeting')
 
     def _group_expand_states(self, states, domain, order):
         return [key for key, val in self._fields['state'].selection]
@@ -158,11 +188,8 @@ class HrAppraisal(models.Model):
                         user_id=employee.user_id.id)
 
     def action_cancel(self):
-        self.write({
-            'state': 'cancel',
-            'date_final_interview': False
-        })
-        self.mapped('meeting_id').unlink()
+        self.state = 'cancel'
+        self.meeting_ids.unlink()
         self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
 
     @api.model
@@ -180,11 +207,29 @@ class HrAppraisal(models.Model):
     def write(self, vals):
         if 'state' in vals and vals['state'] == 'pending':
             self.send_appraisal()
+        previous_managers = {}
+        if 'manager_ids' in vals:
+            previous_managers = {x: y for x, y in self.mapped(lambda a: (a.id, a.manager_ids))}
         result = super(HrAppraisal, self).write(vals)
         if vals.get('date_close'):
             self.mapped('employee_id').write({'next_appraisal_date': vals.get('date_close')})
             self.activity_reschedule(['mail.mail_activity_data_todo'], date_deadline=vals['date_close'])
+        if 'manager_ids' in vals:
+            self._sync_meeting_attendees(previous_managers)
         return result
+
+    def _sync_meeting_attendees(self, manager_ids):
+        for appraisal in self.filtered('meeting_ids'):
+            previous_managers = manager_ids.get(appraisal.id, self.env['hr.employee'])
+            to_add = self.manager_ids - previous_managers
+            to_del = previous_managers - self.manager_ids
+            if to_add or to_del:
+                appraisal.meeting_ids.write({
+                    'partner_ids': [
+                        *[(3, x) for x in to_del.mapped('related_partner_id').ids],
+                        *[(4, x) for x in to_add.mapped('related_partner_id').ids],
+                    ]
+                })
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancel(self):
@@ -210,7 +255,8 @@ class HrAppraisal(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
         action['context'] = {
             'default_partner_ids': partners.ids,
-            'search_default_mymeetings': 1
+            'default_res_model': 'hr.appraisal',
+            'default_res_id': self.id,
         }
         return action
 

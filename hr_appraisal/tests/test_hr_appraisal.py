@@ -88,7 +88,7 @@ class TestHrAppraisal(TransactionCase):
         })
         self.assertTrue(appraisals.date_final_interview, "Interview Date is not created")
         # I check whether final interview meeting is created or not
-        self.assertTrue(appraisals.meeting_id, "Meeting is not linked")
+        self.assertTrue(appraisals.meeting_ids, "Meeting is not linked")
         # I close this Apprisal
         appraisals.action_done()
         # I check that state of Appraisal is done.

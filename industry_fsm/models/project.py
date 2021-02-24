@@ -43,9 +43,13 @@ class Task(models.Model):
                 fsm_project = self.env['project.project'].search([('is_fsm', '=', True)], order='sequence', limit=1)
             result['project_id'] = fsm_project.id
 
-        date_begin = result.get('planned_date_begin') and (not self.env.context.get('default_planned_date_begin') or self.env.context.get('fsm_mode'))
-        date_end = result.get('planned_date_end') and (not self.env.context.get('default_planned_date_end') or self.env.context.get('fsm_mode'))
-        if date_begin or date_end:
+        date_begin = result.get('planned_date_begin')
+        date_end = result.get('planned_date_end')
+        # force today if default is more than 25 hours (for eg. "Add" button in gantt view)
+        if self._context.get('fsm_mode'):
+            if date_begin and date_end and abs(date_end - date_begin).total_seconds() > 90000:
+                date_begin = fields.Datetime.now()
+        if date_begin and self._context.get('fsm_mode'):
             # If the task is assigned, the default start/end hours correspond to what is configured on the employee calendar
             user = self.env['res.users'].sudo().browse(result.get('user_id', False))
             if user and user.employee_id:
@@ -56,7 +60,6 @@ class Task(models.Model):
                     'company_id') else self.env.user.company_id
                 resource_calendar = company.resource_calendar_id
             user_tz = pytz.timezone(self.env.context.get('tz') or 'UTC')
-            date_begin = fields.Datetime.now()
             if (result.get('planned_date_end')-result.get('planned_date_begin')).days == 0:
                 date_begin = result.get('planned_date_begin')
             date_begin = pytz.utc.localize(date_begin).astimezone(user_tz)

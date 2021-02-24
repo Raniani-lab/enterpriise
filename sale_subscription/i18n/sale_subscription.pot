@@ -1698,7 +1698,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__payment_token_id
-msgid "If not set, the default payment token of the partner will be used."
+msgid "If not set, the automatic payment will fail."
 msgstr ""
 
 #. module: sale_subscription

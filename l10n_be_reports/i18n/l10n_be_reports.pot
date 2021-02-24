@@ -243,6 +243,12 @@ msgid "Please first fill in the full coordinates (address, mail and phone) of th
 msgstr ""
 
 #. module: l10n_be_reports
+#: code:addons/l10n_be_reports/account_report.py:37
+#, python-format
+msgid "Please first fill in the full coordinates (address, VAT, mail and phone) of the representative configured for your xml export (%s)"
+msgstr ""
+
+#. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_partner_vat_intra_context_date_from
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_partner_vat_listing_context_date_from
 msgid "Start date"

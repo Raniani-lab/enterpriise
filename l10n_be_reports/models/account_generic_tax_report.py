@@ -88,8 +88,8 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         rslt = """<?xml version="1.0"?>
 <ns2:VATConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/VATConsignment" VATDeclarationsNbr="1">
+""" + self._get_belgian_xml_export_representative_node() + """
     <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%(send_ref)s">
-    """ + self._get_belgian_xml_export_representative_node() + """
         <ns2:Declarant>
             <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">%(only_vat)s</VATNumber>
             <Name>%(cmpny_name)s</Name>

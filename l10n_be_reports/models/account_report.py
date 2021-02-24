@@ -34,7 +34,7 @@ class AccountReport(models.AbstractModel):
             }
 
             if any(not value for value in node_values.values()):
-                raise UserError(_("Please first fill in the full coordinates (address, mail and phone) of the representative configured for your xml export (%s)") % representative.name)
+                raise UserError(_("Please first fill in the full coordinates (address, VAT, mail and phone) of the representative configured for your xml export (%s)") % representative.name)
 
             vat_country_code = representative.vat[:2].upper()
             countries_count = self.env['res.country'].search([('code', 'ilike', vat_country_code)], count=True)

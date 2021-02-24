@@ -3,6 +3,7 @@
 
 from odoo.addons.survey.controllers.main import Survey
 from odoo import http
+from odoo.exceptions import AccessDenied
 from odoo.http import request
 from odoo.osv import expression
 
@@ -15,13 +16,14 @@ class AppraisalSurvey(Survey):
             return user_input_domain
         appraisal = request.env['hr.appraisal'].browse(int(post.get('appraisal_id')))
         user = request.env.user
-        if user in appraisal.manager_ids.mapped('user_id'):
+        if user in appraisal.manager_ids.mapped('user_id') or user.has_group('hr_appraisal.group_hr_appraisal_user'):
             return expression.AND([[('appraisal_id', '=', appraisal.id)], user_input_domain])
         if user in appraisal.employee_feedback_ids.mapped('user_id'):
             return expression.AND([[
                 ('appraisal_id', '=', appraisal.id),
                 ('partner_id', '=', user.partner_id.id)
             ], user_input_domain])
+        raise AccessDenied()
 
     @http.route('/appraisal/<int:appraisal_id>/results', type='http', auth='user', website=True)
     def appraisal_survey_results(self, appraisal_id, **post):
@@ -35,7 +37,8 @@ class AppraisalSurvey(Survey):
                 {'status_code': 'Oops',
                  'status_message': "Sorry, you can't access to this survey concerning your appraisal..."})
         user = request.env.user
-        if user.has_group('hr_appraisal.group_hr_appraisal_manager') or user.has_group('base.group_system') \
+        survey_sudo = request.env['survey.survey']
+        if user.has_group('hr_appraisal.group_hr_appraisal_user') or user.has_group('base.group_system') \
                 or user in appraisal.manager_ids.mapped('user_id'):
             survey_sudo = request.env['survey.user_input'].sudo().search([('appraisal_id', '=', appraisal.id)], limit=1).survey_id
         if user in appraisal.employee_feedback_ids.mapped('user_id'):
@@ -45,6 +48,8 @@ class AppraisalSurvey(Survey):
             ], limit=1)
             if answer:
                 survey_sudo = answer.survey_id
+        if not survey_sudo:
+            raise AccessDenied()
 
         post['appraisal_id'] = appraisal_id
         user_input_lines_sudo, search_filters = self._extract_filters_data(survey_sudo, post)

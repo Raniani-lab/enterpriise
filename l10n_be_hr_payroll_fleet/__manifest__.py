@@ -7,6 +7,7 @@
     'depends': ['l10n_be_hr_payroll', 'fleet'],
     'description': """
     """,
+    'version': '1.0',
     'data': [
         'security/ir.model.access.csv',
         'data/hr_rule_parameter_data.xml',

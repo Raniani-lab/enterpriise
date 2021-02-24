@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+import logging
 
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
@@ -9,9 +10,12 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round, date_utils
+from odoo.tools import float_round, date_utils, convert_file
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
+from odoo.tools.parse_version import parse_version
+
+_logger = logging.getLogger(__name__)
 
 
 class HrPayslip(models.Model):
@@ -569,6 +573,37 @@ class HrPayslip(models.Model):
     def _get_unpaid_amount(self):
         self.ensure_one()
         return self._get_contract_wage() - self._get_paid_amount()
+
+    def _get_data_files_to_update(self):
+        # Note: Use lists as modules/files order should be maintained
+        return []
+
+    def _update_payroll_data(self):
+        data_to_update = self._get_data_files_to_update()
+        updated_modules = self.env['ir.module.module']
+        for module_name, files_to_update in data_to_update:
+            module = self.env['ir.module.module'].search([('name', '=', module_name)])
+            # Caution: Incorrect field names !!
+            #   installed_version refers to the latest version (the one on disk)
+            #   latest_version refers to the installed version (the one in database)
+            installed_version = module.installed_version
+            latest_version = module.latest_version
+            # Update:
+            # - If the version number has been increased
+            # - or if the module is depending on an updated module. Example, a rule defined in
+            #   l10n_be_hr_payroll and updated in l10n_be_hr_payroll_fleet
+            depending_module = module in updated_modules.downstream_dependencies()
+            if parse_version(installed_version) > parse_version(latest_version) or depending_module:
+                updated_modules |= module
+                parameter_name = "%s_last_update_version" % (module_name)
+                last_update_version = self.env["ir.config_parameter"].sudo().get_param(parameter_name, False)
+                if not last_update_version or last_update_version != installed_version or depending_module:
+                    self.env['ir.config_parameter'].sudo().set_param(parameter_name, installed_version)
+                    _logger.info("Update %s data up to version %s", module.name, installed_version)
+
+                    idref = {}
+                    for file_to_update in files_to_update:
+                        convert_file(self.env.cr, module_name, file_to_update, idref)
 
     def action_edit_payslip_lines(self):
         self.ensure_one()

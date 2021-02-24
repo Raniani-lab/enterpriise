@@ -529,6 +529,24 @@ class Payslip(models.Model):
             return res + self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n1')
         return res
 
+    def _get_data_files_to_update(self):
+        # Note: file order should be maintained
+        return super()._get_data_files_to_update() + [(
+            'l10n_be_hr_payroll', [
+                'data/hr_rule_parameters_data.xml',
+                'data/cp200/employee_commission_on_target_data.xml',
+                'data/cp200/employee_double_holidays_data.xml',
+                'data/cp200/employee_pfi_data.xml',
+                'data/cp200/employee_salary_data.xml',
+                'data/cp200/employee_termination_fees_data.xml',
+                'data/cp200/employee_termination_holidays_N1_data.xml',
+                'data/cp200/employee_termination_holidays_N_data.xml',
+                'data/cp200/employee_thirteen_month_data.xml',
+                'data/cp200/employee_warrant_salary_data.xml',
+                'data/student/student_regular_pay_data.xml',
+            ])]
+
+
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
     if not inputs.ANNUAL_TAXABLE:
         return 0

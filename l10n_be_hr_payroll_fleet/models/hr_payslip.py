@@ -20,3 +20,11 @@ class HrPayslip(models.Model):
             else:
                 self.vehicle_id = self.contract_id.car_id
         return res
+
+    def _get_data_files_to_update(self):
+        # Note: file order should be maintained
+        return super()._get_data_files_to_update() + [(
+            'l10n_be_hr_payroll_fleet', [
+                'data/hr_rule_parameter_data.xml',
+                'data/cp200_employee_salary_data.xml',
+            ])]

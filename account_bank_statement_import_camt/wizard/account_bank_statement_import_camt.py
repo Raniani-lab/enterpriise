@@ -497,21 +497,25 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
 _amount_getters = [
     partial(_generic_get, xpath='ns:Amt/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/text()'),
 ]
 
 _amount_currency_getters = [
     partial(_generic_get, xpath='ns:Amt/@Ccy'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/@Ccy'),
 ]
 
 _rate_getters = [
     partial(_generic_get, xpath='ns:XchgRate/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'),
 ]
 
 _rate_currency_getters = [
     partial(_generic_get, xpath='ns:TrgtCcy/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,
@@ -543,13 +547,13 @@ _get_other_ref = partial(_generic_get,
 _get_additional_entry_info = partial(_generic_get,
     xpath='ns:AddtlNtryInf/text()')
 
-def _get_signed_amount(*nodes, namespaces):
-    for i in (0, 1):
+def _get_signed_amount(*nodes, namespaces, company_currency=None):
+    for i, dummy in enumerate(_amount_getters):
         amount = _amount_getters[i](*nodes, namespaces=namespaces)
         amount_currency = _amount_currency_getters[i](*nodes, namespaces=namespaces)
         rate = _rate_getters[i](*nodes, namespaces=namespaces)
         rate_currency = _rate_currency_getters[i](*nodes, namespaces=namespaces)
-        if amount:
+        if amount and (not company_currency or company_currency.name == amount_currency or company_currency.name == rate_currency):
             break
 
     amount = float(amount)
@@ -681,7 +685,7 @@ class AccountBankStatementImport(models.TransientModel):
                     entry_vals = {
                         'sequence': sequence,
                         'date': date,
-                        'amount': _get_signed_amount(entry_details, entry, namespaces=ns),
+                        'amount': _get_signed_amount(entry_details, entry, namespaces=ns, company_currency=self.env.user.company_id.currency_id),
                         'payment_ref': _get_transaction_name(entry_details, namespaces=ns),
                         'partner_name': partner_name,
                         'account_number': _get_account_number(entry_details, placeholder=counter_party, namespaces=ns),

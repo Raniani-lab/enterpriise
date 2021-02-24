@@ -1,47 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- Salary Structure -->
-    <record id="hr_payroll_structure_cp200_employee_departure_n_holidays" model="hr.payroll.structure">
-        <field name="name">CP200: Employees Termination Holidays N</field>
-        <field name="rule_ids" eval="[]"/>
-        <field name="type_id" ref="hr_contract.structure_type_employee_cp200"/>
-        <field name="country_id" ref="base.be"/>
-        <field name="report_id" ref="hr_payroll.action_report_payslip"/>
-        <field name="payslip_name">Holiday Pay (N Year)</field>
-        <field name="use_worked_day_lines" eval="False"/>
-    </record>
-
-    <!-- Salary Other Input -->
-    <record id="cp200_other_input_gross_ref" model="hr.payslip.input.type">
-        <field name="name">Gross reference remuneration</field>
-        <field name="code">GROSS_REF</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
-    </record>
-
-    <record id="cp200_other_input_allocation" model="hr.payslip.input.type">
-        <field name="name">Right to time off</field>
-        <field name="code">ALLOCATION</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
-    </record>
-
-    <record id="cp200_other_input_time_off_taken" model="hr.payslip.input.type">
-        <field name="name">Time off already taken</field>
-        <field name="code">TIME_OFF_TAKEN</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
-    </record>
-
-    <record id="cp200_other_input_annual_taxable_amount" model="hr.payslip.input.type">
-        <field name="name">Annual Taxable Amount</field>
-        <field name="code">ANNUAL_TAXABLE</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
-    </record>
-
-    <!-- Salary Rules -->
     <record id="cp200_employees_termination_n_pay_simple" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_termination_holidays_simple"/>
         <field name="name">Pay simple</field>

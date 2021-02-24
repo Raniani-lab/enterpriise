@@ -188,7 +188,7 @@ class SaleOrderLine(models.Model):
         if self.subscription_id:
             res.update(subscription_id=self.subscription_id.id)
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-            next_date = self.subscription_id.recurring_next_date
+            next_date = self.subscription_id.recurring_next_date or fields.Date.context_today(self)
             previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
             is_already_period_msg = True if _("Invoicing period") in self.name else False
             if self.order_id.subscription_management != 'upsell':  # renewal or creation: one entire period

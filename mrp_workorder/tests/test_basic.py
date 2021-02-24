@@ -232,6 +232,7 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
 
         workorder.button_start()
         workorder.record_production()
+        mo_laptop.move_raw_ids.quantity_done = 2.0
         mo_laptop.button_mark_done()
 
         # We check if the laptop go in the depot and not in the stock
@@ -282,6 +283,9 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
 
     def test_backorder_1(self):
         """Operations are set on `self.bom_kit1` but none on `self.bom_finished1`."""
+        # TODO: This test name + description don't match the test (there are no backorders
+        # or kits). Test should either be rewritten or renamed if someone can figure out
+        # what its intended purpose is.
         self.finished1 = self.env['product.product'].create({
             'name': 'finished1',
             'type': 'product',
@@ -355,9 +359,9 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         self.assertEqual(workorder2.qty_remaining, 2)
 
         mo.workorder_ids.check_ids.quality_state = 'pass'
-        action = mo.with_context(debug=True).button_mark_done()
-        immediate_wizard = Form(self.env['mrp.immediate.production'].with_context(**action['context']))
-        immediate_wizard.save().process()
+        mo.move_raw_ids.quantity_done = 2.0
+        mo.qty_producing = 2.0
+        mo.with_context(debug=True).button_mark_done()
 
         self.assertEqual(workorder1.state, 'done')
         self.assertEqual(workorder2.state, 'done')

@@ -7,10 +7,17 @@ from odoo import models, fields, api, _
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    batch_payment_id = fields.Many2one('account.batch.payment', ondelete='set null', copy=False)
+    batch_payment_id = fields.Many2one('account.batch.payment', ondelete='set null', copy=False,
+        compute="_compute_batch_payment_id", store=True, readonly=False)
     amount_signed = fields.Monetary(
         currency_field='currency_id', compute='_compute_amount_signed',
         help='Negative value of amount field if payment_type is outbound')
+    payment_method_name = fields.Char(related='payment_method_id.name')
+
+    @api.depends('state')
+    def _compute_batch_payment_id(self):
+        for payment in self:
+            payment.batch_payment_id = payment.state == 'posted' and payment.batch_payment_id or None
 
     @api.depends('amount', 'payment_type')
     def _compute_amount_signed(self):

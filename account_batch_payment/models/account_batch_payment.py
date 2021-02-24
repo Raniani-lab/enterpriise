@@ -131,6 +131,11 @@ class AccountBatchPayment(models.Model):
                 names = '\n'.join([p.name or _('Id: %s', p.id) for p in payment_null])
                 msg = _('You cannot add payments with zero amount in a Batch Payment.\nPayments:\n%s', names)
                 raise ValidationError(msg)
+            non_posted = record.payment_ids.filtered(lambda p: p.state != 'posted')
+            if non_posted:
+                names = '\n'.join([p.name or _('Id: %s', p.id) for p in non_posted])
+                msg = _('You cannot add payments that are not posted.\nPayments:\n%s', names)
+                raise ValidationError(msg)
 
     @api.model
     def create(self, vals):
@@ -226,13 +231,13 @@ class AccountBatchPayment(models.Model):
         #We first try to post all the draft batch payments
         rslt = self._check_and_post_draft_payments(self.payment_ids.filtered(lambda x: x.state == 'draft'))
 
-        wrong_state_payments = self.payment_ids.filtered(lambda x: x.state not in ('draft', 'posted'))
+        wrong_state_payments = self.payment_ids.filtered(lambda x: x.state != 'posted')
 
         if wrong_state_payments:
             rslt.append({
-                'title': _("Some payments don't have the right state to be added to a batch."),
+                'title': _("Payments must be posted to be added to a batch."),
                 'records': wrong_state_payments,
-                'help': _("Only posted and draft payments are allowed.")
+                'help': _("Set payments state to \"posted\".")
             })
 
         sent_payments = self.payment_ids.filtered(lambda x: x.is_move_sent)

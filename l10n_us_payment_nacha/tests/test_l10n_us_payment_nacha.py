@@ -27,28 +27,25 @@ class TestNacha(AccountTestInvoicingCommon):
 
     @freeze_time("2020-11-30 19:45:00")
     def testGenerateNachaFile(self):
+
+        def create_payment(partner, amount, ref):
+            payment = self.env['account.payment'].create({
+                "partner_id": partner.id,
+                "partner_bank_id": self.bank.id,
+                "ref": ref,
+                "amount": amount,
+                "payment_type": "outbound",
+                "date": datetime.datetime.today(),
+            })
+            payment.action_post()
+            return payment
+
         batch = self.env["account.batch.payment"].create({
             "journal_id": self.company_data["default_journal_bank"].id,
             "batch_type": "outbound",
-            "payment_ids": [
-                (0, 0, {
-                    "partner_id": self.partner_a.id,
-                    "partner_bank_id": self.bank.id,
-                    "ref": "test1",
-                    "amount": 123,
-                    "payment_type": "outbound",
-                    "date": datetime.datetime.today(),
-                }),
-                (0, 0, {
-                    "partner_id": self.partner_b.id,
-                    "partner_bank_id": self.bank.id,
-                    "ref": "test2",
-                    "amount": 456,
-                    "payment_type": "outbound",
-                    "date": datetime.datetime.today(),
-                }),
-            ]
         })
+        batch.payment_ids += create_payment(self.partner_a, 123, 'test1')
+        batch.payment_ids += create_payment(self.partner_b, 456, 'test2')
 
         expected = [
             # header

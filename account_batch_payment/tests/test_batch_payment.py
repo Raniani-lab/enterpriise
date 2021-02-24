@@ -36,7 +36,7 @@ class TestBatchPayment(AccountTestInvoicingCommon):
     @classmethod
     def createPayment(cls, partner, amount):
         """ Create a batch deposit payment """
-        return cls.env['account.payment'].create({
+        payment = cls.env['account.payment'].create({
             'journal_id': cls.journal.id,
             'payment_method_id': cls.batch_deposit.id,
             'payment_type': 'inbound',
@@ -45,6 +45,8 @@ class TestBatchPayment(AccountTestInvoicingCommon):
             'partner_id': partner.id,
             'partner_type': 'customer',
         })
+        payment.action_post()
+        return payment
 
     def test_BatchLifeCycle(self):
         # Create and "print" a batch payment

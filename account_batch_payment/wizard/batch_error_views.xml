@@ -22,7 +22,7 @@
 
                         <div attrs="{'invisible': [('error_line_ids', '!=', [])]}">
                             <div role="alert" class="alert alert-success">
-                                The batch can be validated
+                                The batch cannot be validated.
                             </div>
 
                             <strong>Please first consider the following warnings</strong>

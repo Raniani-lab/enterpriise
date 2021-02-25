@@ -95,6 +95,40 @@ class HrContract(models.Model):
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
     ]
 
+    has_hospital_insurance = fields.Boolean(string="Has Hospital Insurance", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_children = fields.Integer(string="# Insured Children < 19", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_adults = fields.Integer(string="# Insured Children >= 19", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_spouse = fields.Boolean(string="Insured Spouse", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    hospital_insurance_amount_per_child = fields.Float(string="Amount per Child", groups="hr_contract.group_hr_contract_manager",
+        default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_child', default=7.2)))
+    hospital_insurance_amount_per_adult = fields.Float(string="Amount per Adult", groups="hr_contract.group_hr_contract_manager",
+        default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5)))
+    insurance_amount = fields.Float(compute='_compute_insurance_amount', string="Insurance Amount", groups="hr_contract.group_hr_contract_manager", tracking=True)
+    insured_relative_adults_total = fields.Integer(compute='_compute_insured_relative_adults_total', groups="hr_contract.group_hr_contract_manager")
+
+    @api.depends('has_hospital_insurance', 'insured_relative_adults', 'insured_relative_spouse')
+    def _compute_insured_relative_adults_total(self):
+        for contract in self:
+            contract.insured_relative_adults_total = (
+                int(contract.has_hospital_insurance)
+                + contract.insured_relative_adults
+                + int(contract.insured_relative_spouse))
+
+    @api.model
+    def _get_insurance_amount(self, child_amount, child_count, adult_amount, adult_count):
+        return child_amount * child_count + adult_amount * adult_count
+
+    @api.depends(
+        'insured_relative_children', 'insured_relative_adults_total',
+        'hospital_insurance_amount_per_child', 'hospital_insurance_amount_per_adult')
+    def _compute_insurance_amount(self):
+        for contract in self:
+            contract.insurance_amount = contract._get_insurance_amount(
+                contract.hospital_insurance_amount_per_child,
+                contract.insured_relative_children,
+                contract.hospital_insurance_amount_per_adult,
+                contract.insured_relative_adults_total)
+
     @api.constrains('rd_percentage')
     def _check_discount_percentage(self):
         if self.filtered(lambda c: c.rd_percentage < 0 or c.rd_percentage > 100):
@@ -438,7 +472,7 @@ class HrContract(models.Model):
 
     def _get_hospital_insurance_amount(self):
         self.ensure_one()
-        return 0
+        return self.insurance_amount
 
     def write(self, vals):
         res = super(HrContract, self).write(vals)

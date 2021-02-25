@@ -52,6 +52,16 @@
                                     <field name="default_eco_checks" nolabel="1"/>
                                     <span>€ / year</span>
                                 </div>
+                                <label for="hospital_insurance_amount_child"/>
+                                <div>
+                                    <field name="hospital_insurance_amount_child" nolabel="1"/>
+                                    <span>€ / month</span>
+                                </div>
+                                <label for="hospital_insurance_amount_adult"/>
+                                <div>
+                                    <field name="hospital_insurance_amount_adult" nolabel="1"/>
+                                    <span>€ / month</span>
+                                </div>
                             </group>
                         </div>
                     </div>

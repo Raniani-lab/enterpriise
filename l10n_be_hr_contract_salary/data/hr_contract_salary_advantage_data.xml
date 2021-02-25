@@ -258,4 +258,61 @@
         <field name="display_type">always</field>
         <field name="description">You'll receive this amount around June. This amount will depend on the number of worked days during the previous year.</field>
     </record>
+
+    <record id="l10n_be_hospital_insurance" model="hr.contract.salary.advantage">
+        <field name="name">Hospital Insurance</field>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'has_hospital_insurance')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insurance_amount')])"/>
+        <field name="sequence">40</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="icon">fa fa-hospital-o</field>
+        <field name="display_type">radio</field>
+    </record>
+
+    <record id="l10n_be_hospital_insurance_value_0" model="hr.contract.salary.advantage.value">
+        <field name="advantage_id" ref="l10n_be_hospital_insurance"/>
+        <field name="name">No</field>
+        <field name="value">0</field>
+        <field name="color">red</field>
+        <field name="hide_description" eval="True"/>
+    </record>
+
+    <record id="l10n_be_hospital_insurance_value_1" model="hr.contract.salary.advantage.value">
+        <field name="advantage_id" ref="l10n_be_hospital_insurance"/>
+        <field name="name">Yes</field>
+        <field name="value">1</field>
+    </record>
+
+    <record id="l10n_be_insured_spouse" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_spouse')])"/>
+        <field name="sequence">41</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="folded" eval="True"/>
+        <field name="fold_label">Insured Spouse</field>
+        <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_spouse')])"/>
+        <field name="display_type">always</field>
+    </record>
+
+    <record id="l10n_be_insured_children" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_children')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_children')])"/>
+        <field name="sequence">42</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_children')])"/>
+        <field name="display_type">manual</field>
+    </record>
+
+    <record id="l10n_be_insured_adults" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_adults')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_adults')])"/>
+        <field name="sequence">43</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'has_hospital_insurance')])"/>
+        <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_adults')])"/>
+        <field name="display_type">manual</field>
+    </record>
 </odoo>

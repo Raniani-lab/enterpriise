@@ -126,7 +126,12 @@ class HrContract(models.Model):
         }
 
     def _get_advantage_values_wishlist_car_total_depreciated_cost(self, contract, advantages):
+        # make sure the key `fold_wishlist_car_total_depreciated_cost` is present, super() needs it
+        advantages['fold_wishlist_car_total_depreciated_cost'] = advantages.get('fold_wishlist_car_total_depreciated_cost')
         return {}
+
+    def _get_advantage_values_insured_relative_spouse(self, contract, advantages):
+        return {'insured_relative_spouse': advantages['fold_insured_relative_spouse']}
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
         advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')

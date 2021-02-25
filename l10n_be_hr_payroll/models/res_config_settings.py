@@ -18,3 +18,5 @@ class ResConfigSettings(models.TransientModel):
     dmfa_employer_class = fields.Char(related='company_id.dmfa_employer_class', readonly=False)
     l10n_be_company_number = fields.Char('Company Number', related='company_id.l10n_be_company_number', readonly=False)
     l10n_be_revenue_code = fields.Char('Revenue Code', related='company_id.l10n_be_revenue_code', readonly=False)
+    hospital_insurance_amount_child = fields.Float(string="Hospital Insurance Amount per Child", config_parameter='hr_contract_salary.hospital_insurance_amount_child')
+    hospital_insurance_amount_adult = fields.Float(string="Hospital Insurance Amount per Adult", config_parameter='hr_contract_salary.hospital_insurance_amount_adult')

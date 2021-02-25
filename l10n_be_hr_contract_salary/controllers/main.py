@@ -73,6 +73,9 @@ class HrContractSalary(main.HrContractSalary):
     @route(['/salary_package/onchange_advantage/'], type='json', auth='public')
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
         res = super().onchange_advantage(advantage_field, new_value, contract_id, advantages)
+        insurance_fields = [
+            'insured_relative_children', 'insured_relative_adults',
+            'fold_insured_relative_spouse', 'has_hospital_insurance']
         if advantage_field == 'public_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
@@ -102,12 +105,21 @@ class HrContractSalary(main.HrContractSalary):
             res['extra_values'] = [('wishlist_car_total_depreciated_cost', 0)]
         elif advantage_field == 'fold_company_bike_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_bike_depreciated_cost', 0)]
+        elif advantage_field in insurance_fields:
+            child_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_child', default=7.2))
+            adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5))
+            adv = advantages['contract']
+            child_count = int(adv['insured_relative_children_manual'] or False)
+            has_hospital_insurance = adv['has_hospital_insurance_radio'] == 1
+            adult_count = int(adv['insured_relative_adults_manual'] or False) + int(adv['fold_insured_relative_spouse']) + int(has_hospital_insurance)
+            insurance_amount = request.env['hr.contract']._get_insurance_amount(child_amount, child_count, adult_amount, adult_count)
+            res['extra_values'] = [('has_hospital_insurance', insurance_amount)]
         return res
 
     def _get_advantages(self, contract):
         res = super()._get_advantages(contract)
         force_new_car = request.httprequest.args.get('new_car', False)
-        if force_new_car or contract.available_cars_amount < contract.max_unused_cars:
+        if request.params.get('applicant_id') or force_new_car or contract.available_cars_amount < contract.max_unused_cars:
             res -= request.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_new_car')
         return res
 
@@ -190,6 +202,7 @@ class HrContractSalary(main.HrContractSalary):
         elif contract.new_bike_model_id:
             initial_values['select_company_bike_depreciated_cost'] = 'new-%s' % contract.new_bike_model_id.id
 
+        initial_values['has_hospital_insurance'] = contract.insurance_amount
         return mapped_advantages, advantage_types, dropdown_options, initial_values
 
     def _get_new_contract_values(self, contract, employee, advantages):
@@ -201,6 +214,7 @@ class HrContractSalary(main.HrContractSalary):
         for field_to_copy in fields_to_copy:
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
+        res['has_hospital_insurance'] = advantages['has_hospital_insurance_radio'] == 1
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

@@ -57,6 +57,7 @@ Belgian Payroll Rules.
         'data/hr_payslip_input_type_data.xml',
         'data/hr_salary_rule_category_data.xml',
         'data/hr_rule_parameters_data.xml',
+        'data/ir_config_parameter_data.xml',
         'data/cp200/employee_commission_on_target_data.xml',
         'data/cp200/employee_double_holidays_data.xml',
         'data/cp200/employee_pfi_data.xml',

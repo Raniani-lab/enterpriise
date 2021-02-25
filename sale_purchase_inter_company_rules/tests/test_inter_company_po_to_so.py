@@ -118,3 +118,74 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
         # Find related sale order based on client order reference.
         sale_order = self.env['sale.order'].search([('client_order_ref', '=', purchase_order.name)], limit=1)
         self.assertTrue((not sale_order), "Sale order created for company A from Purchase order of company B without configuration")
+
+    def test_03_inter_company_sale_purchase_auto_validation(self):
+        (self.company_b | self.company_a).update({
+            'rule_type': 'sale_purchase',
+            'auto_validation': True
+        })
+        # Set parent relation
+        self.company_b.parent_id = self.company_a.id
+        supplier = self.env['res.partner'].create({
+            'name': 'Blabli car',
+            'company_id': False
+        })
+
+        mto_route = self.env['stock.location.route'].with_context(active_test=False).search([('name', '=', 'Replenish on Order (MTO)')])
+        buy_route = self.env['stock.location.route'].search([('name', '=', 'Buy')])
+        mto_route.active = True
+
+        product_storable = self.env['product.product'].create({
+            'name': 'Storable',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'type': 'product',
+            'taxes_id': [(6, 0, (self.company_a.account_sale_tax_id + self.company_b.account_sale_tax_id).ids)],
+            'supplier_taxes_id': [(6, 0, (self.company_a.account_purchase_tax_id + self.company_b.account_purchase_tax_id).ids)],
+            'route_ids': [(6, 0, [buy_route.id, mto_route.id])],
+            'company_id': False,
+            'seller_ids': [
+                (0, 0, {
+                    'name': self.company_a.partner_id.id,
+                    'min_qty': 1,
+                    'price': 250,
+                    'company_id': self.company_b.id,
+                }),
+                (0, 0, {
+                    'name': supplier.id,
+                    'min_qty': 1,
+                    'price': 200,
+                    'company_id': self.company_a.id,
+                })
+            ]
+        })
+
+        purchase_order = Form(self.env['purchase.order'].with_company(self.company_b))
+        purchase_order.partner_id = self.company_a.partner_id
+        purchase_order.company_id = self.company_b
+        purchase_order.currency_id = self.company_b.currency_id
+        purchase_order = purchase_order.save()
+
+        with Form(purchase_order.with_company(self.company_b)) as po:
+            with po.order_line.new() as line:
+                line.product_id = product_storable
+
+        # Confirm Purchase order
+        purchase_order.with_company(self.company_b).button_confirm()
+        # Check purchase order state should be purchase.
+        self.assertEqual(purchase_order.state, 'purchase', 'Purchase order should be in purchase state.')
+
+        sale_order = self.env['sale.order'].with_company(self.company_a).search([
+            ('client_order_ref', '=', purchase_order.name),
+            ('company_id', '=', self.company_a.id)
+        ], limit=1)
+        self.assertTrue(sale_order)
+        self.assertEqual(len(sale_order.order_line), 1)
+        self.assertEqual(sale_order.order_line.product_id, product_storable)
+        # Check the MTO purchase, the seller should be the correct one
+        po = self.env['purchase.order'].with_company(self.company_a).search([
+            ('company_id', '=', self.company_a.id)
+        ], limit=1, order='id DESC')
+        self.assertTrue(po)
+        self.assertEqual(po.partner_id, supplier)
+        self.assertEqual(po.order_line.product_id, product_storable)
+        self.assertEqual(po.order_line.price_unit, 200)

@@ -42,6 +42,8 @@ class product_template(models.Model):
                 'title': _("Warning"),
                 'message': _("A 'Storable Product' cannot be a 'Subscription Product' !")
             }}
+        elif not self.recurring_invoice:
+            self.subscription_template_id = False
 
     @api.constrains('recurring_invoice', 'type')
     def _check_subscription_product(self):

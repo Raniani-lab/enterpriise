@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class SurveySurvey(models.Model):
@@ -16,3 +16,12 @@ class SurveyUserInput(models.Model):
     _inherit = 'survey.user_input'
 
     appraisal_id = fields.Many2one('hr.appraisal')
+
+    def action_open_survey_inputs(self):
+        self.ensure_one()
+        return {
+            'name': _("Survey Feedback"),
+            'type': 'ir.actions.act_url',
+            'target': 'self',
+            'url': '/appraisal/%s/results/?survey_id=%s' % (self.appraisal_id.id, self.survey_id.id),
+        }

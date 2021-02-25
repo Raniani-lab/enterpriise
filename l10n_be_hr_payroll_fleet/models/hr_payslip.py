@@ -12,13 +12,14 @@ class HrPayslip(models.Model):
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def _onchange_employee(self):
         res = super(HrPayslip, self)._onchange_employee()
-        if self.contract_id.car_id:
-            if self.contract_id.car_id.future_driver_id:
+        contract_sudo = self.contract_id.sudo()
+        if contract_sudo.car_id:
+            if contract_sudo.car_id.future_driver_id:
                 tmp_vehicle = self.env['fleet.vehicle'].search(
-                    [('driver_id', '=', self.contract_id.car_id.future_driver_id.id)], limit=1)
+                    [('driver_id', '=', contract_sudo.car_id.future_driver_id.id)], limit=1)
                 self.vehicle_id = tmp_vehicle
             else:
-                self.vehicle_id = self.contract_id.car_id
+                self.vehicle_id = contract_sudo.car_id
         return res
 
     def _get_data_files_to_update(self):

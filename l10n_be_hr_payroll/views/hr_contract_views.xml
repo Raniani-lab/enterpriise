@@ -7,18 +7,18 @@
         <field name="arch" type="xml">
             <xpath expr="//label[@for='wage']" position="before">
                 <label for="time_credit_full_time_wage"
-                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('work_time_rate', '!=', 0)]}"/>
+                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}"/>
                 <div class="o_row" name="time_credit_full_time_wage"
-                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('work_time_rate', '!=', 0)]}">
+                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}">
                     <field name="time_credit_full_time_wage" nolabel="1"/>
                     <span>/ month</span>
                 </div>
             </xpath>
             <xpath expr="//label[@for='wage']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>
             <xpath expr="//div[@name='wage']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>
             <xpath expr="//field[@name='resource_calendar_id']/parent::div" position="after">
                 <div colspan="2" class="o_checkbox_optional_field">

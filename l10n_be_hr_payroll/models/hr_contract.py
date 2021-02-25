@@ -103,12 +103,14 @@ class HrContract(models.Model):
             if contract.rd_percentage and contract.employee_id.certificate not in ['civil_engineer', 'doctor', 'master', 'bachelor']:
                 raise ValidationError(_('Only employeers with a Bachelor/Master/Doctor/Civil Engineer degree can benefit from the withholding taxes exemption.'))
 
-    @api.depends('wage')
+    @api.depends('wage', 'time_credit', 'work_time_rate')
     def _compute_time_credit_full_time_wage(self):
         for contract in self:
             work_time_rate = contract._get_work_time_rate()
             if contract.time_credit and work_time_rate != 0:
                 contract.time_credit_full_time_wage = contract.wage / work_time_rate
+            elif contract.time_credit and not work_time_rate:
+                contract.time_credit_full_time_wage = contract._get_contract_wage()
             else:
                 contract.time_credit_full_time_wage = contract.wage
 

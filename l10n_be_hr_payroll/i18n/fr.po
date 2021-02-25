@@ -1582,7 +1582,7 @@ msgstr "Fichier"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__leaving_type__fired
 msgid "Fired"
-msgstr "Tiré"
+msgstr "Licencié"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__first_contract_in_company

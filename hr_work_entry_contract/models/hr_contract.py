@@ -6,6 +6,7 @@ from datetime import date, datetime
 from odoo import api, fields, models
 from odoo.addons.resource.models.resource_mixin import timezone_datetime
 from odoo.addons.resource.models.resource import datetime_to_string, string_to_datetime, Intervals
+from odoo.osv import expression
 
 import pytz
 
@@ -227,8 +228,28 @@ class HrContract(models.Model):
                     all_we_to_unlink |= we_to_remove
         all_we_to_unlink.unlink()
 
+    def _cancel_work_entries(self):
+        if not self:
+            return
+        domain = [('state', '!=', 'validated')]
+        for contract in self:
+            date_start = fields.Datetime.to_datetime(contract.date_start)
+            contract_domain = [
+                ('contract_id', '=', contract.id),
+                ('date_start', '>=', date_start),
+            ]
+            if contract.date_end:
+                date_end = datetime.combine(contract.date_end, datetime.max.time())
+                contract_domain += [('date_stop', '<=', date_end)]
+            domain = expression.AND([domain, contract_domain])
+        work_entries = self.env['hr.work.entry'].search(domain)
+        if work_entries:
+            work_entries.unlink()
+
     def write(self, vals):
         result = super(HrContract, self).write(vals)
         if vals.get('date_end') or vals.get('date_start'):
             self.sudo()._remove_work_entries()
+        if vals.get('state') in ['draft', 'cancel']:
+            self._cancel_work_entries()
         return result

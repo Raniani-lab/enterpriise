@@ -10,6 +10,7 @@ EMPLOYER_ONSS = 0.2714
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
+    wage = fields.Monetary(compute='_compute_wage', store=True, readonly=False)
     double_holiday_wage = fields.Monetary(compute='_compute_double_holiday_wage')
     id_card = fields.Binary(related='employee_id.id_card', groups="hr_contract.group_hr_contract_manager")
     driving_license = fields.Binary(related='employee_id.driving_license', groups="hr_contract.group_hr_contract_manager")
@@ -46,6 +47,17 @@ class HrContract(models.Model):
         *self._get_advantage_fields()))
     def _compute_final_yearly_costs(self):
         super(HrContract, self)._compute_final_yearly_costs()
+
+    @api.depends('time_credit', 'work_time_rate', 'wage_on_signature')
+    def _compute_wage(self):
+        for contract in self:
+            work_time_rate = contract._get_work_time_rate()
+            if contract.time_credit and contract.work_time_rate:
+                contract.wage_with_holidays = contract._get_contract_wage() * work_time_rate
+            elif contract.time_credit and not contract.work_time_rate:
+                contract.wage_with_holidays = 0
+            elif not contract.time_credit:
+                contract.wage_with_holidays = contract._get_contract_wage()
 
     def _get_salary_costs_factor(self):
         res = super()._get_salary_costs_factor()

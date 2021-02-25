@@ -35,8 +35,10 @@ class HrPayslip(models.Model):
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     number = fields.Char(string='Reference', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    employee_id = fields.Many2one('hr.employee', string='Employee', required=True, readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    employee_id = fields.Many2one(
+        'hr.employee', string='Employee', required=True, readonly=True,
+        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), '|', ('active', '=', True), ('active', '=', False)]")
     date_from = fields.Date(string='From', readonly=True, required=True,
         default=lambda self: fields.Date.to_string(date.today().replace(day=1)), states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     date_to = fields.Date(string='To', readonly=True, required=True,

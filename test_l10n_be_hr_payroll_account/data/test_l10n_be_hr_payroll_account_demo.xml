@@ -2814,7 +2814,7 @@
 
     <record id="notice_period_wizard" model="hr.payslip.employee.depature.notice">
         <field name="employee_id" ref="hr_employee_joseph_noluck"/>
-        <field name="leaving_type">fired</field>
+        <field name="leaving_type_id" ref="hr.departure_fired" />
         <field name="start_notice_period" eval="time.strftime('2020-04-15')"/>
         <field name="end_notice_period" eval="time.strftime('2020-04-15')"/>
         <field name="first_contract" eval="time.strftime('2019-01-01')"/>

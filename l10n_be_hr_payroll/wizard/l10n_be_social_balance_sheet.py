@@ -249,12 +249,6 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             defined_work: '312',
             replacement: '313',
         }
-        mapped_reasons = {
-            'fired': '342',
-            'resigned': '343',
-            'retired': '340',
-            False: '343',
-        }
 
         in_employees = self.env['hr.employee']
         out_employees = self.env['hr.employee']
@@ -293,7 +287,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
                 workers_data[contract_type][contract_time] += 1
                 workers_data[contract_type]['fte'] += 1 * calendar.work_time_rate / 100.0
 
-                reason_code = mapped_reasons[employee.departure_reason]
+                reason_code = str(employee.departure_reason_id.reason_code or 343)
                 workers_data[reason_code][contract_time] += 1
                 workers_data[reason_code]['fte'] += 1 * calendar.work_time_rate / 100.0
 

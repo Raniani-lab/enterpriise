@@ -535,7 +535,7 @@ class AccountReport(models.AbstractModel):
                 account = self.env['account.account'].browse(line.get('account_id', self._get_caret_option_target_id(line.get('id'))))
                 codes = self.get_account_codes(account)  # id, name
                 for code in codes:
-                    hierarchy[code[0]]['id'] = 'hierarchy_' + str(code[0])
+                    hierarchy[code[0]]['id'] = self._get_generic_line_id('account.group', code[0], parent_line_id=line['id'])
                     hierarchy[code[0]]['name'] = code[1]
                     for i, column in enumerate(line['columns']):
                         if 'no_format_name' in column:

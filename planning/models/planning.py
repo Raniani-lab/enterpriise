@@ -371,7 +371,6 @@ class Planning(models.Model):
         user_tz = pytz.timezone(self._get_tz())
         employee = employee_id if employee_id else self.env.user.employee_id
 
-        previous_end = end_datetime or False
         start = start_datetime or self._default_start_datetime()
         end = end_datetime or self._default_end_datetime()
         if employee and employee.tz == self.env.user.tz:
@@ -394,8 +393,6 @@ class Planning(models.Model):
             h, m = divmod(template_id.duration, 1)
             delta = timedelta(hours=int(h), minutes=int(m * 60))
             end = start + delta
-            if previous_end:
-                end += previous_end.date() - end.date()
 
         return (start, end)
 

@@ -200,3 +200,32 @@ class TestPlanning(TestCommonPlanning):
         })
         self.assertEqual(2, self.slot_6_2.overlap_slot_count, '2 slots overlap')
         self.assertEqual(0, self.slot_6_3.overlap_slot_count, 'no slot overlap')
+
+    def test_compute_datetime_with_template_slot(self):
+        """ Test if the start and end datetimes of a planning.slot are correctly computed with the template slot
+
+            Test Case:
+            =========
+            1) Create a planning.slot.template with start_hours = 11 pm and duration = 3 hours.
+            2) Create a planning.slot for one day and add the template.
+            3) Check if the start and end dates are on two days and not one.
+            4) Check if the allocating hours is equal to the duration in the template.
+        """
+        template_slot = self.env['planning.slot.template'].create({
+            'start_time': 23,
+            'duration': 3,
+        })
+
+        slot = self.env['planning.slot'].create({
+            'start_datetime': datetime(2021, 1, 1, 0, 0),
+            'end_datetime': datetime(2021, 1, 1, 23, 59),
+            'employee_id': self.employee_bert.id,
+        })
+
+        slot.write({
+            'template_id': template_slot.id,
+        })
+
+        self.assertEqual(slot.start_datetime, datetime(2021, 1, 1, 22, 0), 'The start datetime should have the same hour and minutes defined in the template.')
+        self.assertEqual(slot.end_datetime, datetime(2021, 1, 2, 1, 0), 'The end datetime of this slot should be 3 hours after the start datetime as mentionned in the template.')
+        self.assertEqual(slot.allocated_hours, 3, 'The allocated hours of this slot should be the duration defined in the template.')

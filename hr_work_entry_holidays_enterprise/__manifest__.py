@@ -3,26 +3,22 @@
 
 
 {
-    'name': 'Time Off in Payslips',
+    'name': 'Time Off in Payslips Enterprise',
     'version': '1.0',
     'category': 'Human Resources/Payroll',
     'sequence': 95,
-    'summary': 'Manage Time Off in Payslips',
+    'summary': 'Manage Time Off in Payslips Enterprise',
     'description': """
 Manage Time Off in Payslips
 ============================
 
 This application allows you to integrate time off in payslips.
     """,
-    'depends': ['hr_holidays', 'hr_work_entry_contract'],
+    'depends': ['hr_work_entry_holidays'],
     'data': [
-        'views/hr_leave_views.xml',
         'views/hr_work_entry_views.xml',
-        'data/hr_payroll_holidays_data.xml',
     ],
-    'demo': ['data/hr_payroll_holidays_demo.xml'],
     'installable': True,
     'application': False,
     'auto_install': True,
-    'post_init_hook': '_validate_existing_work_entry',
 }

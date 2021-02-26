@@ -1,4 +1,4 @@
-odoo.define('hr_work_entry_contract.work_entries_gantt', function(require) {
+odoo.define('hr_work_entry_contract_enterprise.work_entries_gantt', function(require) {
     'use strict';
 
     var WorkEntryControllerMixin = require('hr_work_entry_contract.WorkEntryControllerMixin');

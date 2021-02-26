@@ -23,7 +23,7 @@
                         </group>
 
                         <group col="1">
-                            <widget name="pie_chart" title="Departure Reason" attrs="{'groupby': 'departure_reason', 'domain':'[(\'count_employee_exit\', \'=\', 1)]'}"/>
+                            <widget name="pie_chart" title="Departure Reason" attrs="{'groupby': 'departure_reason_id', 'domain':'[(\'count_employee_exit\', \'=\', 1)]'}"/>
                         </group>
 
                     </group>

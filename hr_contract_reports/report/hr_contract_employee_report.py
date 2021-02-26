@@ -27,11 +27,7 @@ class HrContractEmployeeReport(models.Model):
     end_date_months = fields.Integer("Months of last date of this month since 01/01/1970", readonly=True)
     date_end_contract = fields.Date('Date Last Contract Ended', group_operator="max", readonly=True)
 
-    departure_reason = fields.Selection([
-        ('fired', 'Fired'),
-        ('resigned', 'Resigned'),
-        ('retired', 'Retired')
-    ], string="Departure Reason", readonly=True)
+    departure_reason_id = fields.Many2one("hr.departure.reason", string="Departure Reason", readonly=True)
 
     def _query(self, fields='', from_clause='', outer=''):
         select_ = '''
@@ -39,7 +35,7 @@ class HrContractEmployeeReport(models.Model):
             c.id as contract_id,
             e.id as employee_id,
             e.company_id as company_id,
-            e.departure_reason as departure_reason,
+            e.departure_reason_id as departure_reason_id,
             e.department_id as department_id,
             c.wage AS wage,
             CASE WHEN serie = start.contract_start THEN 1 ELSE 0 END as count_new_employee,

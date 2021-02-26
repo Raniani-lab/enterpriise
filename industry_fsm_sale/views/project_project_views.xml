@@ -9,9 +9,6 @@
                 <attribute name="invisible">0</attribute>
                 <attribute name="attrs">{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('pricing_type', '=', False), ('is_fsm', '=', False)], 'required': [('is_fsm', '=', True), ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}</attribute>
             </xpath>
-            <xpath expr="//page[@name='billing_employee_rate']//field[@name='sale_order_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', True)], 'readonly': [('sale_order_id', '!=', False)]}</attribute>
-            </xpath>
             <xpath expr="//page[@name='billing_employee_rate']//group/field[@name='sale_line_id']" position="attributes">
                 <attribute name="attrs">{'invisible': [('is_fsm', '=', True)]}</attribute>
             </xpath>

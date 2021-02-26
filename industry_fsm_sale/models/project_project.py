@@ -66,7 +66,7 @@ class Project(models.Model):
                 fnames.add('allow_material')
         return super().flush(fnames, records)
 
-    @api.depends('sale_order_id', 'sale_line_employee_ids', 'allow_billable', 'is_fsm')
+    @api.depends('sale_line_id', 'sale_line_employee_ids', 'allow_billable', 'is_fsm')
     def _compute_pricing_type(self):
         fsm_projects = self.filtered(lambda project: project.allow_billable and project.is_fsm)
         for fsm_project in fsm_projects:
@@ -77,19 +77,13 @@ class Project(models.Model):
         super(Project, self - fsm_projects)._compute_pricing_type()
 
     @api.depends('is_fsm')
-    def _compute_sale_order_id(self):
-        fsm_projects = self.filtered('is_fsm')
-        fsm_projects.update({'sale_order_id': False})
-        super(Project, self - fsm_projects)._compute_sale_order_id()
-
-    @api.depends('is_fsm')
     def _compute_sale_line_id(self):
         # We cannot have a SOL in the fsm project
         fsm_projects = self.filtered('is_fsm')
         fsm_projects.update({'sale_line_id': False})
         super(Project, self - fsm_projects)._compute_sale_line_id()
 
-    @api.depends('sale_order_id', 'partner_id', 'pricing_type', 'is_fsm')
+    @api.depends('partner_id', 'pricing_type', 'is_fsm')
     def _compute_display_create_order(self):
         fsm_projects = self.filtered('is_fsm')
         fsm_projects.update({'display_create_order': False})

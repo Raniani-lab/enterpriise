@@ -56,7 +56,6 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         # Configuration of the employee rate project before convert it into fsm project
         self.project_employee_rate = self.project_task_rate.copy({
             'name': 'Project with pricing_type="employee_rate"',
-            'sale_order_id': self.so.id,
             'sale_line_id': self.so.order_line[0].id,
             'sale_line_employee_ids': [(0, 0, {
                 'employee_id': self.employee_user.id,

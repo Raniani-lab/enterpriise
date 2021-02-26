@@ -709,7 +709,7 @@ class ReportAccountFinancialReport(models.Model):
             'id': self._get_generic_line_id(groupby_model, groupby_id, parent_line_id=financial_report_line_id),
             'name': display_name,
             'level': financial_line.level + 1,
-            'parent_id': financial_line.id,
+            'parent_id': financial_report_line_id,
             'caret_options': financial_line.groupby == 'account_id' and 'account.account' or financial_line.groupby,
             'columns': columns,
         }

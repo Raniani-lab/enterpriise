@@ -47,7 +47,7 @@ class TestPayrollPerformance(TestPayslipBase):
         work_entry = self.create_work_entry(datetime(2018, 1, 1, 7, 0), datetime(2018, 1, 1, 12, 0))
         self.create_work_entry(datetime(2018, 1, 1, 11, 0), datetime(2018, 1, 1, 17, 0))
 
-        with self.assertQueryCount(__system__=13, admin=14):
+        with self.assertQueryCount(__system__=14, admin=15):
             work_entry.unlink()
 
     @users('__system__', 'admin')

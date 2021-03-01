@@ -118,17 +118,15 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="timesheet_grid.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath  expr="//div[@id='rating_settings']/.." position="before">
-                <div class="row mt16 o_settings_container">
-                    <div class="col-lg-6 o_setting_box" groups="base.group_no_one">
-                        <div class="o_setting_left_pane">
-                            <field name="is_fsm"/>
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="is_fsm"/>
-                            <div class="text-muted" id="allow_billable_setting">
-                                Manage tasks in the Field Service module
-                            </div>
+            <xpath  expr="//div[@id='rating_settings']" position="before">
+                <div class="col-lg-6 o_setting_box" groups="base.group_no_one">
+                    <div class="o_setting_left_pane">
+                        <field name="is_fsm"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="is_fsm"/>
+                        <div class="text-muted" id="allow_billable_setting">
+                            Manage tasks in the Field Service module
                         </div>
                     </div>
                 </div>

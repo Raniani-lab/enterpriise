@@ -75,7 +75,6 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
                 next_year = current_year + relativedelta(years=+1)
 
                 structure_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-                structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
                 structure_double_holidays = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
                 structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
                 structure_holidays_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
@@ -85,13 +84,13 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
                     ('employee_id', '=', record.employee_id.id),
                     ('date_to', '>=', current_year),
                     ('state', 'in', ['done', 'paid', 'verify']),
-                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
+                    ('struct_id', 'not in', (structure_warrant + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
                 payslip_n1_ids = self.env['hr.payslip'].search([
                     ('employee_id', '=', record.employee_id.id),
                     ('date_to', '>=', previous_year),
                     ('date_from', '<', current_year),
                     ('state', 'in', ['done', 'paid']),
-                    ('struct_id', 'not in', (structure_warrant + structure_termination + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
+                    ('struct_id', 'not in', (structure_warrant + structure_double_holidays + structure_termination + structure_holidays_n + structure_holidays_n1).ids)])
 
                 record.payslip_n_ids = [(4, p._origin.id) for p in payslip_n_ids]
                 record.payslip_n1_ids = [(4, p._origin.id) for p in payslip_n1_ids]

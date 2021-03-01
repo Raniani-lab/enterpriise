@@ -47,7 +47,7 @@ class HrPayslip(models.Model):
             payments_data.append({
                 'id' : slip.id,
                 'name': slip.number,
-                'payment_date' : slip.date_to,
+                'payment_date' : fields.Date.today(),
                 'amount' : slip.net_wage,
                 'journal_id' : journal_id.id,
                 'currency_id' : journal_id.currency_id.id,

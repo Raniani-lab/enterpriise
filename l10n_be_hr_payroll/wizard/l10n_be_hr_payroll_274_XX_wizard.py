@@ -105,6 +105,11 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
 
     @api.depends('date_start', 'date_end', 'company_id')
     def _compute_line_ids(self):
+        structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+        structure_holidays_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+        structure_holidays_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+        invalid_structures = structure_termination + structure_holidays_n1 + structure_holidays_n
+
         for wizard in self:
             mapped_pp = defaultdict(lambda: 0)
             mapped_taxable_amount = defaultdict(lambda: 0)
@@ -114,7 +119,7 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             wizard.taxable_amount = payslips._get_pp_taxable_amount()
             wizard.pp_amount = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips)
             # Valid payslips for exemption
-            payslips = payslips.filtered(lambda p: p.contract_id.rd_percentage)
+            payslips = payslips.filtered(lambda p: p.contract_id.rd_percentage and p.struct_id not in invalid_structures)
             # 32 : Civil Engineers / Doctors
             payslips_32 = payslips.filtered(lambda p: p.employee_id.certificate in ['doctor', 'civil_engineer'])
             wizard.taxable_amount_32 = payslips_32._get_pp_taxable_amount()
@@ -292,6 +297,11 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             'district': district,
             'office': office,
         }
+        structure_termination = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
+        structure_holidays_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+        structure_holidays_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+        invalid_structures = structure_termination + structure_holidays_n1 + structure_holidays_n
+
         for payslip in payslips:
             pp_total = payslip._get_salary_line_total('PPTOTAL')
             if pp_total >= 0:
@@ -301,7 +311,7 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
                 declaration_10['taxable_revenue'] += taxable_eurocent
                 result['positive_total'] += pp_total_eurocent
 
-            if payslip.contract_id.rd_percentage:
+            if payslip.struct_id not in invalid_structures and payslip.contract_id.rd_percentage:
                 employee = payslip.employee_id
                 deduction = - payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
                 if deduction:

@@ -1455,7 +1455,7 @@ var ClientAction = AbstractAction.extend({
                         args: [
                             res.lineDescription.product_id.id,
                             res.lineDescription.location_id.id,
-                            res.lineDescription.prod_lot_id[1],
+                            res.lineDescription.prod_lot_id[0],
                         ],
                     }).then(function (theoretical_qty) {
                         res.lineDescription.theoretical_qty = theoretical_qty;

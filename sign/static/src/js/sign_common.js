@@ -235,7 +235,8 @@ odoo.define('sign.PDFIframe', function (require) {
                         el.value,
                         el.option_ids,
                         el.name,
-                        el.responsible_name ? el.responsible_name : ''
+                        el.responsible_name ? el.responsible_name : '',
+                        el.alignment,
                     );
                     $signatureItem.data({itemId: el.id, order: i});
                     self.configuration[parseInt(el.page)].push($signatureItem);
@@ -344,7 +345,7 @@ odoo.define('sign.PDFIframe', function (require) {
             $signItem.css('font-size', size * 0.8);
         },
 
-        createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name, tooltip) {
+        createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name, tooltip, alignment) {
             // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
             if (value === 0) {
                 value = "0";
@@ -370,7 +371,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 var $options_display = $signatureItem.find('.o_sign_select_options_display');
                 this.display_select_options($options_display, this.select_options, selected_options, readonly, value);
             }
-            return $signatureItem.data({type: type.id, required: required, responsible: responsible, posx: posX, posy: posY, width: width, height: height, name:name, option_ids: option_ids})
+            return $signatureItem.data({type: type.id, required: required, responsible: responsible, posx: posX, posy: posY, width: width, height: height, name:name, option_ids: option_ids, alignment: alignment})
                                  .data('hasValue', !!value).toggle(!!value || this.requestState != 'signed');
         },
 
@@ -413,8 +414,9 @@ odoo.define('sign.PDFIframe', function (require) {
                 posY = 1.0-height;
             }
 
+            const alignment = $signatureItem.data('alignment');
             $signatureItem.data({posx: Math.round(posX*1000)/1000, posy: Math.round(posY*1000)/1000})
-                          .css({left: posX*100 + '%', top: posY*100 + '%', width: width*100 + '%', height: height*100 + '%'});
+                          .css({left: posX*100 + '%', top: posY*100 + '%', width: width*100 + '%', height: height*100 + '%', textAlign: alignment});
 
             var resp = $signatureItem.data('responsible');
             $signatureItem.toggleClass('o_sign_sign_item_required', ($signatureItem.data('required') && (this.editMode || resp <= 0 || resp === this.role)))

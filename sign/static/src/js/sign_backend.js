@@ -204,6 +204,10 @@ odoo.define('sign.template', function(require) {
                 this.$currentTarget.popover("hide");
                 this.$currentTarget.trigger('itemDelete');
             },
+            'click .o_sign_align_button': function (e) {
+                this.$('.o_sign_field_align_group .o_sign_align_button').removeClass("btn-primary");
+                e.target.classList.add("btn-primary");
+            },
             'click .o_sign_validate_field_button': function (e) {
                 this.hide();
             }
@@ -227,13 +231,19 @@ odoo.define('sign.template', function(require) {
 
             var self = this;
             return this._super().then(function() {
+                const fieldType = self.$currentTarget.prop('field-type');
+                if (['text', 'textarea'].includes(fieldType)) {
+                    self.$('.o_sign_field_align_group button[data-align="'+ self.$currentTarget.data('alignment') +'"]').addClass("btn-primary");
+                } else {
+                    self.$('.o_sign_field_align_group').hide();
+                }
                 sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.$currentTarget.data('responsible'), self.parties);
                 sign_utils.setAsOptionsSelect(self.$optionsSelect.find('input'), self.$currentTarget.data('itemId'), self.$currentTarget.data('option_ids'), self.select_options);
                 self.$('input[type="checkbox"]').prop('checked', self.$currentTarget.data('required'));
 
                 self.$('#o_sign_name').val(self.$currentTarget.data('name') );
                 self.title = self.$currentTarget.prop('field-name');
-                if (self.$currentTarget.prop('field-type') !== 'selection') {
+                if (fieldType !== 'selection') {
                     self.$('.o_sign_options_group').hide();
                 }
             });
@@ -272,6 +282,7 @@ odoo.define('sign.template', function(require) {
             var resp = parseInt(this.$responsibleSelect.find('select').val());
             var selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
             var required = this.$('input[type="checkbox"]').prop('checked');
+            const alignment = this.$('.o_sign_field_align_group .o_sign_align_button.btn-primary').data('align');
             var name = this.$('#o_sign_name').val();
             this.getParent().currentRole = resp;
             if (! name) {
@@ -280,7 +291,7 @@ odoo.define('sign.template', function(require) {
             if (self.$currentTarget.prop('field-type') != "checkbox") {
                 this.$currentTarget.find(".o_placeholder").text(name);
             }
-            this.$currentTarget.data({responsible: resp, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
+            this.$currentTarget.data({responsible: resp, alignment: alignment, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
             this.$currentTarget.popover("hide");
         }
     });
@@ -1215,6 +1226,7 @@ odoo.define('sign.template', function(require) {
                         'type_id': configuration[page][i].data('type'),
                         'required': configuration[page][i].data('required'),
                         'name': configuration[page][i].data('name'),
+                        'alignment': configuration[page][i].data('alignment'),
                         'option_ids': configuration[page][i].data('option_ids'),
                         'responsible_id': resp,
                         'page': page,

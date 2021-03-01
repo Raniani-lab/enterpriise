@@ -69,8 +69,6 @@ textarea.o_sign_sign_item {
     color: black;
     cursor: auto;
     white-space: pre;
-    text-align: left;
-    display: flex;
 }
 
 .o_sign_sign_item .o_sign_helper {

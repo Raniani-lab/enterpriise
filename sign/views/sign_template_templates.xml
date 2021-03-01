@@ -29,6 +29,7 @@
                     t-att-data-pos-y="str(item.posY)"
                     t-att-data-width="item.width"
                     t-att-data-height="item.height"
+                    t-att-data-alignment="item.alignment"
                     t-att-data-value="item_values[item.id] if item_values and item.id in item_values else None"/>
             </t>
         </t>

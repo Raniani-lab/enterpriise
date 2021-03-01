@@ -20,6 +20,14 @@
                     <select id="o_sign_responsible_select_input"/>
                 </div>
             </div>
+            <div class="o_sign_field_align_group">
+                <label class="w-100">Alignment</label>
+                <div class="btn-group mb-2" role="group">
+                    <button type="button" title="Left" data-align="left" class="btn btn-default o_sign_align_button fa fa-align-left fa-sm p-2"/>
+                    <button type="button" title="Center" data-align="center" class="btn btn-default o_sign_align_button fa fa-align-center fa-sm p-2"/>
+                    <button type="button" title="Right" data-align="right" class="btn btn-default o_sign_align_button fa fa-align-right fa-sm p-2"/>
+                </div>
+            </div>
             <div class="form-group">
                 <div>
                     <div class="checkbox">

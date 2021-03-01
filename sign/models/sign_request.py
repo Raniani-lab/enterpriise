@@ -447,7 +447,12 @@ class SignRequest(models.Model):
 
                 if item.type_id.item_type == "text":
                     can.setFont(font, height*item.height*0.8)
-                    can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+                    if item.alignment == "left":
+                        can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+                    elif item.alignment == "right":
+                        can.drawRightString(width*(item.posX+item.width), height*(1-item.posY-item.height*0.9), value)
+                    else:
+                        can.drawCentredString(width*(item.posX+item.width/2), height*(1-item.posY-item.height*0.9), value)
 
                 elif item.type_id.item_type == "selection":
                     content = []

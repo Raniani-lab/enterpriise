@@ -236,6 +236,7 @@ class SignItem(models.Model):
     posY = fields.Float(digits=(4, 3), string="Position Y", required=True)
     width = fields.Float(digits=(4, 3), required=True)
     height = fields.Float(digits=(4, 3), required=True)
+    alignment = fields.Char(default="center", required=True)
 
     def getByPage(self):
         items = {}

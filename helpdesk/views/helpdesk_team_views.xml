@@ -308,6 +308,31 @@
                         </div>
                         <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
+                                <field name="auto_close_ticket"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="auto_close_ticket"/>
+                                <div class="text-muted">
+                                    Close inactive tickets automatically
+                                </div>
+                                <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">
+                                    <field name="stage_ids" invisible="1"/>
+                                    <div class="mt16">
+                                        <label for="to_stage_id"/>
+                                        <field name="to_stage_id" class="ml-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
+                                    </div>
+                                    <div class="mt8">
+                                        <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
+                                    </div>
+                                    <div class="mt8">
+                                        <label for="from_stage_ids"/>
+                                        <field name="from_stage_ids" widget="many2many_tags" class="ml-2 oe_inline" context="{'default_team_id': active_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
                                 <field name="allow_portal_ticket_closing"/>
                             </div>
                             <div class="o_setting_right_pane">

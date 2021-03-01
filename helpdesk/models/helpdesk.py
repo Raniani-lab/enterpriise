@@ -5,6 +5,7 @@ import ast
 import datetime
 
 from dateutil import relativedelta
+from collections import defaultdict
 from odoo import api, fields, models, _
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.http_routing.models.ir_http import slug
@@ -58,7 +59,7 @@ class HelpdeskTeam(models.Model):
 
     use_alias = fields.Boolean('Email alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
-    allow_portal_ticket_closing = fields.Boolean('Ticket closing', help="Allow customers to close their tickets")
+    allow_portal_ticket_closing = fields.Boolean('Closure by Customers', help="Allow customers to close their tickets")
     use_website_helpdesk_form = fields.Boolean('Website Form')
     use_website_helpdesk_livechat = fields.Boolean('Live chat',
         help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],.")
@@ -83,6 +84,19 @@ class HelpdeskTeam(models.Model):
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
         default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    # auto close ticket
+    auto_close_ticket = fields.Boolean('Automatic Closing')
+    auto_close_day = fields.Integer('Inactive Period(days)',
+        default=7,
+        help="Period of inactivity after which tickets will be automatically closed.")
+    from_stage_ids = fields.Many2many('helpdesk.stage', relation='team_stage_auto_close_from_rel',
+        string='In Stages',
+        domain="[('id', 'in', stage_ids)]",
+        help="Inactive tickets in these stages will be automatically closed. Leave empty to take into account all the stages from the team.")
+    to_stage_id = fields.Many2one('helpdesk.stage',
+        string='Move to Stage',
+        domain="[('id', 'in', stage_ids)]",
+        help="Stage to which inactive tickets will be automatically moved once the period of inactivity is reached.")
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):
@@ -147,6 +161,8 @@ class HelpdeskTeam(models.Model):
         teams = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
         teams.sudo()._check_sla_group()
         teams.sudo()._check_modules_to_install()
+        if teams.filtered(lambda x: x.auto_close_ticket):
+            teams._update_cron()
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.
         return teams
 
@@ -156,6 +172,8 @@ class HelpdeskTeam(models.Model):
             self.with_context(active_test=False).mapped('ticket_ids').write({'active': vals['active']})
         self.sudo()._check_sla_group()
         self.sudo()._check_modules_to_install()
+        if 'auto_close_ticket' in vals:
+            self._update_cron()
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.
         return result
 
@@ -163,6 +181,14 @@ class HelpdeskTeam(models.Model):
         stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)  # remove stages that only belong to team in self
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
+
+    @api.model
+    def _update_cron(self):
+        cron = self.env.ref('helpdesk.ir_cron_auto_close_ticket', raise_if_not_found=False)
+        cron and cron.toggle(model=self._name, domain=[
+            ('auto_close_ticket', '=', True),
+            ('auto_close_day', '>', 0),
+        ])
 
     def _check_sla_group(self):
         sla_teams = self.filtered_domain([('use_sla', '=', True)])
@@ -428,6 +454,41 @@ class HelpdeskTeam(models.Model):
             closed_stage = self.stage_ids[-1]
         return closed_stage
 
+    def _cron_auto_close_tickets(self):
+        teams = self.env['helpdesk.team'].search_read(
+            domain=[
+                ('auto_close_ticket', '=', True),
+                ('auto_close_day', '>', 0),
+                ('to_stage_id', '!=', False)],
+            fields=[
+                'id',
+                'auto_close_day',
+                'from_stage_ids',
+                'to_stage_id']
+        )
+        teams_dict = defaultdict(dict)  # key: team_id, values: the remaining result of the search_group
+        today = fields.datetime.today()
+        for team in teams:
+            # Compute the threshold_date
+            team['threshold_date'] = today - relativedelta.relativedelta(days=team['auto_close_day'])
+            teams_dict[team['id']] = team
+        tickets_domain = [('stage_id.is_close', '=', False), ('team_id', 'in', list(teams_dict.keys()))]
+        tickets = self.env['helpdesk.ticket'].search(tickets_domain)
+
+        def is_inactive_ticket(ticket):
+            team = teams_dict[ticket.team_id.id]
+            is_write_date_ok = ticket.write_date <= team['threshold_date']
+            if team['from_stage_ids']:
+                is_stage_ok = ticket.stage_id.id in team['from_stage_ids']
+            else:
+                is_stage_ok = not ticket.stage_id.is_close
+            return is_write_date_ok and is_stage_ok
+
+        inactive_tickets = tickets.filtered(is_inactive_ticket)
+        for ticket in inactive_tickets:
+            # to_stage_id is mandatory in the view but not in the model so it is better to test it.
+            if teams_dict[ticket.team_id.id]['to_stage_id']:
+                ticket.write({'stage_id': teams_dict[ticket.team_id.id]['to_stage_id'][0]})
 
 
 class HelpdeskStage(models.Model):

@@ -43,6 +43,7 @@ Features:
         'data/mail_data.xml',
         'data/mail_template_data.xml',
         'data/helpdesk_data.xml',
+        'data/ir_cron_data.xml',
         'views/helpdesk_views.xml',
         'views/helpdesk_team_views.xml',
         'views/assets.xml',

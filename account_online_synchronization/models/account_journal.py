@@ -13,11 +13,11 @@ class AccountJournal(models.Model):
 
     @api.model
     def _get_statement_creation_possible_values(self):
-        return [('none', 'Create one statement per synchronization'),
-                ('day', 'Create daily statements'),
-                ('week', 'Create weekly statements'),
-                ('bimonthly', 'Create bi-monthly statements'),
-                ('month', 'Create monthly statements')]
+        return [('none', _('Create one statement per synchronization')),
+                ('day', _('Create daily statements')),
+                ('week', _('Create weekly statements')),
+                ('bimonthly', _('Create bi-monthly statements')),
+                ('month', _('Create monthly statements'))]
 
     next_link_synchronization = fields.Datetime("Online Link Next synchronization", related='account_online_link_id.next_refresh')
     account_online_account_id = fields.Many2one('account.online.account', ondelete='set null')

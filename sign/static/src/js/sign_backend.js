@@ -884,7 +884,7 @@ odoo.define('sign.template', function(require) {
                     },
                     privacy: {
                         type: 'selection',
-                        selection: [['employee', 'All Users'], ['invite', 'On Invitation']]
+                        selection: [['employee', _t('All Users')], ['invite', _t('On Invitation')]]
                     }
                 },
                 fieldsInfo : {

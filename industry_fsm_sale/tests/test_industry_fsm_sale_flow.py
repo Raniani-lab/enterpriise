@@ -13,13 +13,6 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.product_ordered = cls.env['product.product'].create({
-            'name': 'Individual Workplace',
-            'list_price': 885.0,
-            'type': 'service',
-            'invoice_policy': 'order',
-            'taxes_id': False,
-        })
         cls.product_delivered = cls.env['product.product'].create({
             'name': 'Acoustic Bloc Screens',
             'list_price': 2950.0,

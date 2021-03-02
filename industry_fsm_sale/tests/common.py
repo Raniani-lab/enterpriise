@@ -62,3 +62,11 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
             'name': 'Fsm task',
             'user_id': cls.project_user.id,
             'project_id': cls.fsm_project.id})
+
+        cls.product_ordered = cls.env['product.product'].create({
+            'name': 'Individual Workplace',
+            'list_price': 885.0,
+            'type': 'service',
+            'invoice_policy': 'order',
+            'taxes_id': False,
+        })

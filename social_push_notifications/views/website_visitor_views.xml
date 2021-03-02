@@ -7,9 +7,9 @@
         <field name="inherit_id" ref="website.website_visitor_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <field name="push_token" invisible="1"/>
+                <field name="has_push_notifications" invisible="1"/>
                 <button name="action_send_push_notification" string="Send Push Notification" type="object" class="oe_highlight"
-                    attrs="{'invisible': [('push_token', '=', False)]}"/>
+                    attrs="{'invisible': [('has_push_notifications', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='lang_id']" position="after">
                 <field name="has_push_notifications" />
@@ -23,9 +23,9 @@
         <field name="inherit_id" ref="website.website_visitor_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="push_token" invisible="1"/>
+                <field name="has_push_notifications" invisible="1"/>
                 <button name="action_send_push_notification" string="Send Push Notification" type="object" icon="fa-bell"
-                   attrs="{'invisible': [('push_token', '=', False)]}"/>
+                   attrs="{'invisible': [('has_push_notifications', '=', False)]}"/>
             </xpath>
         </field>
     </record>
@@ -36,16 +36,16 @@
         <field name="inherit_id" ref="website.website_visitor_view_kanban"/>
         <field name="arch" type="xml">
             <field name="page_ids" position="after">
-                <field name="push_token"/>
+                <field name="has_push_notifications"/>
             </field>
             <xpath expr="//div[hasclass('w_visitor_kanban_actions')]" position="inside">
                 <button name="action_send_push_notification" type="object" class="btn btn-secondary"
-                        attrs="{'invisible': [('push_token', '=', False)]}">Push
+                        attrs="{'invisible': [('has_push_notifications', '=', False)]}">Push
                 </button>
             </xpath>
             <xpath expr="//div[hasclass('w_visitor_kanban_actions_ungrouped')]" position="inside">
                 <button name="action_send_push_notification" type="object" class="btn btn-secondary border"
-                        attrs="{'invisible': [('push_token', '=', False)]}">Push
+                        attrs="{'invisible': [('has_push_notifications', '=', False)]}">Push
                 </button>
             </xpath>
         </field>
@@ -57,8 +57,8 @@
         <field name="inherit_id" ref="website.website_visitor_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='filter_is_archived']" position="before">
-                <filter string="Push Notification On" name="filter_push_notification_enabled" domain="[('push_token', '!=', False)]"/>
-                <filter string="Push Notification Off" name="filter_push_notification_disabled" domain="[('push_token', '=', False)]"/>
+                <filter string="Push Notification On" name="filter_push_notification_enabled" domain="[('has_push_notifications', '!=', False)]"/>
+                <filter string="Push Notification Off" name="filter_push_notification_disabled" domain="[('has_push_notifications', '=', False)]"/>
                 <separator/>
             </xpath>
         </field>

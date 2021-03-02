@@ -35,7 +35,7 @@ class TestTrackPush(TestEventOnlineCommon):
                 'is_wishlisted': True,
                 'track_id': track_1.id
             })],
-            'push_token': 'AAAAAA',
+            'push_subscription_ids': [(0, 0, {'push_token': 'AAAAAA'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
@@ -45,7 +45,7 @@ class TestTrackPush(TestEventOnlineCommon):
                 'is_wishlisted': True,
                 'track_id': track_1.id
             })],
-            'push_token': 'BBBBBB',
+            'push_subscription_ids': [(0, 0, {'push_token': 'BBBBBB'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
@@ -57,7 +57,7 @@ class TestTrackPush(TestEventOnlineCommon):
                 'is_wishlisted': True,
                 'track_id': track_2.id
             })],
-            'push_token': 'AAAAAA',
+            'push_subscription_ids': [(0, 0, {'push_token': 'CCCCCC'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
@@ -110,13 +110,13 @@ class TestTrackPush(TestEventOnlineCommon):
 
         visitors = self.env['website.visitor'].create([{
             'name': 'Regular Visitor 1',
-            'push_token': 'AAAAAA',
+            'push_subscription_ids': [(0, 0, {'push_token': 'AAAAAA'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
         }, {
             'name': 'Regular Visitor 2',
-            'push_token': 'BBBBBB',
+            'push_subscription_ids': [(0, 0, {'push_token': 'BBBBBB'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
@@ -128,7 +128,7 @@ class TestTrackPush(TestEventOnlineCommon):
                 'is_blacklisted': True,
                 'track_id': track_1.id
             })],
-            'push_token': 'AAAAAA',
+            'push_subscription_ids': [(0, 0, {'push_token': 'CCCCCC'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]

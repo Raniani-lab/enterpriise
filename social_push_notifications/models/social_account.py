@@ -97,7 +97,7 @@ class SocialAccountPushNotifications(models.Model):
             raise UserError(_("Firebase Admin Key File is missing from the configuration."))
 
         results = []
-        tokens = visitors.mapped('push_token')
+        tokens = visitors.mapped('push_subscription_ids.push_token')
         if firebase_admin and self._check_firebase_version():
             self._init_firebase_app()
             batch_size = 100
@@ -144,7 +144,7 @@ class SocialAccountPushNotifications(models.Model):
         )
         batch_size = 100
 
-        tokens = visitors.mapped('push_token')
+        tokens = visitors.mapped('push_subscription_ids.push_token')
         data.update({'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')})
         for tokens_batch in tools.split_every(batch_size, tokens, piece_maker=list):
             batch_data = dict(data)

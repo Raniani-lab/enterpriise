@@ -11,34 +11,31 @@ class TestTrackPush(TestEventOnlineCommon):
         """" Test 'Send Push to Attendees' action and verify that it correctly
         targets all visitors that are registered to the event """
 
-        registered_parent = self.env['website.visitor'].create({
+        registered_parent_visitor = self.env['website.visitor'].create({
             'name': 'Registered Parent',
-            'push_token': 'AAAAA1',
+            'push_subscription_ids': [(0, 0, {'push_token': 'AAAAA1'})],
+            'event_registration_ids': [(0, 0, {
+                'event_id': self.event_0.id
+            })]
+        })
+        register_child_visitor = self.env['website.visitor'].create({
+            'name': 'Registered Child',
+            'push_subscription_ids': [(0, 0, {'push_token': 'AAAAA2'})],
+        })
+        register_child_visitor._link_to_visitor(registered_parent_visitor)
+
+        registered_visitor = self.env['website.visitor'].create({
+            'name': 'Registered Visitor',
+            'push_subscription_ids': [(0, 0, {'push_token': 'BBBBB'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
         })
 
-        registered_visitors = self.env['website.visitor'].create([{
-            'name': 'Registered Visitor',
-            'push_token': 'BBBBB',
-            'event_registration_ids': [(0, 0, {
-                'event_id': self.event_0.id
-            })]
-        }, {
-            'name': 'Registered Child',
-            'push_token': 'AAAAA2',
-            # This one is the child of 'registered_parent' and should also be in results
-            # Typically happens when a visitor connects with multiple browsers
-            'parent_id': registered_parent.id,
-            'active': False,
-        }])
-        registered_visitors |= registered_parent
-
         # unregistered attendee that should not appear in results
         self.env['website.visitor'].create({
             'name': 'Unregistered Visitor',
-            'push_token': 'CCCCC',
+            'push_subscription_ids': [(0, 0, {'push_token': 'CCCCC'})],
         })
 
         action = self.event_0.action_send_push()
@@ -47,4 +44,13 @@ class TestTrackPush(TestEventOnlineCommon):
             .create({'message': 'Hello Attendees!'})
 
         targeted_visitors = self.env['website.visitor'].search(literal_eval(social_post.visitor_domain))
-        self.assertEqual(registered_visitors, targeted_visitors)
+        # the result should show the 2 active visitors that are registered for the event
+        self.assertEqual(targeted_visitors, registered_parent_visitor + registered_visitor)
+
+        # however, we should have 3 push_tokens to push to
+        # (the 1 from the registered_visitor and the 2 from the registered_parent_visitor)
+        self.assertEqual(len(targeted_visitors.push_subscription_ids.mapped('push_token')), 3)
+        self.assertEqual(
+            targeted_visitors.push_subscription_ids,
+            (registered_parent_visitor + registered_visitor + register_child_visitor).push_subscription_ids
+        )

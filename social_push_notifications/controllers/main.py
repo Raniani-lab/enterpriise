@@ -79,17 +79,14 @@ class SocialPushNotificationsController(http.Controller):
         if request.httprequest.cookies.get('visitor_uuid', '') != visitor_sudo.access_token:
             res['visitor_uuid'] = visitor_sudo.access_token
 
-        visitor_sudo.write({'push_token': token})
-
-        # check if other visitors already had this token
-        other_visitors_sudo = Visitor.search([('push_token', '=', token), ('id', '!=', visitor_sudo.id)])
-        # If yes, clean other visitors
-        if other_visitors_sudo:
-            other_visitors_sudo.write({'push_token': False})
+        visitor_sudo._register_push_subscription(token)
 
         return res
 
     @http.route('/social_push_notifications/unregister', type='json', auth='public')
     def unregister(self, token):
         if token:
-            request.env['website.visitor'].sudo().search([('push_token', '=', token)]).write({'push_token': False})
+            visitor_sudo = request.env['website.visitor'].sudo()._get_visitor_from_request()
+            subscription_sudo = visitor_sudo.push_subscription_ids.filtered(lambda subscription:
+                subscription.push_token == token)
+            subscription_sudo.unlink()

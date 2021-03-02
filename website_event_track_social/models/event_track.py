@@ -137,18 +137,14 @@ class Track(models.Model):
                 post_values['visitor_domain'] = str([
                     '&',
                     '&',
-                    '&',
-                    ['push_token', '!=', False],
+                    ['has_push_notifications', '=', True],
                     ['event_registered_ids', 'in', track.event_id.ids],
                     ['event_track_push_enabled_ids', 'in', track.ids],
-                    '|',
-                    ['active', '=', False],
-                    ['active', '=', True],
                 ])
             else:
                 post_values['visitor_domain'] = str([
                     '&',
-                    ['push_token', '!=', False],
+                    ['has_push_notifications', '=', True],
                     ['event_track_wishlisted_ids', 'in', track.ids]
                 ])
 

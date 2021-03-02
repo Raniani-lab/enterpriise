@@ -8,7 +8,7 @@ var _t = core._t;
 
 /**
  * This widget will trigger a native notification to be able to preview the actual
- * push notifications that will be sent to registered users (website.visitor#push_token).
+ * push notifications that will be sent to registered users (website.visitor#push_subscription_ids).
  */
 var PushPreviewButton = Widget.extend({
     tagName: 'button',

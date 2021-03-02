@@ -34,12 +34,8 @@ class EventSocial(models.Model):
             'default_use_visitor_timezone': False,
             'default_visitor_domain': str([
                 '&',
-                '&',
-                ['push_token', '!=', False],
+                ['has_push_notifications', '=', True],
                 ['event_registered_ids', 'in', self.ids],
-                '|',
-                ['active', '=', False],
-                ['active', '=', True],
             ])
         })
         return action

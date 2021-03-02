@@ -110,6 +110,4 @@ class SocialLivePostPushNotifications(models.Model):
                 registration_token_to_remove.append(matched_registrations[i]['token'])
 
         if registration_token_to_remove:
-            self.env['website.visitor'].search([('push_token', 'in', registration_token_to_remove)]).sudo().write({
-                'push_token': False
-            })
+            self.env['website.visitor.push.subscription'].search([('push_token', 'in', registration_token_to_remove)]).sudo().unlink()

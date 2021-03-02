@@ -118,9 +118,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         closing_invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
-            'invoice_line_ids': [(0, 0, {
-                'debit': 100,
-            })]
+            'invoice_line_ids': [(0, 0, {'price_unit': -100})]
         })
 
         with self.assertRaises(UserError, msg="You shouldn't be able to close if there are posted entries in the future"):
@@ -586,17 +584,19 @@ class TestAccountAsset(TestAccountReportsCommon):
             "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
             "ref": "line1",
             "move_type": "in_invoice",
-            "line_ids": [
+            "invoice_line_ids": [
                 (0, 0, {
                     "account_id": account.id,
-                    "debit": 1000.0,
                     "name": "stuff",
                     "quantity": 3.0,
+                    "price_unit": 1000.0,
                     "product_uom_id": self.env.ref('uom.product_uom_categ_unit').id,
                 }),
                 (0, 0, {
                     'account_id': self.company_data['default_account_assets'].id,
-                    'credit': 1000.0,
+                    "name": "stuff",
+                    'quantity': 1.0,
+                    'price_unit': -500.0,
                 }),
             ]
         })

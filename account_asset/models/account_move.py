@@ -171,12 +171,14 @@ class AccountMove(models.Model):
         company_currency = asset.company_id.currency_id
         current_currency = asset.currency_id
         prec = company_currency.decimal_places
-        amount = current_currency._convert(vals['amount'], company_currency, asset.company_id, depreciation_date)
+        amount_currency = vals['amount']
+        amount = current_currency._convert(amount_currency, company_currency, asset.company_id, depreciation_date)
         # Keep the partner on the original invoice if there is only one
         partner = asset.original_move_line_ids.mapped('partner_id')
         partner = partner[:1] if len(partner) <= 1 else self.env['res.partner']
         if asset.original_move_line_ids and asset.original_move_line_ids[0].move_id.move_type in ['in_refund', 'out_refund']:
             amount = -amount
+            amount_currency = -amount_currency
         move_line_1 = {
             'name': asset.name,
             'partner_id': partner.id,
@@ -186,7 +188,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
             'currency_id': current_currency.id,
-            'amount_currency': -vals['amount'],
+            'amount_currency': -amount_currency,
         }
         move_line_2 = {
             'name': asset.name,
@@ -197,7 +199,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type in ('purchase', 'expense') else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type in ('purchase', 'expense') else False,
             'currency_id': current_currency.id,
-            'amount_currency': vals['amount'],
+            'amount_currency': amount_currency,
         }
         move_vals = {
             'ref': vals['move_ref'],

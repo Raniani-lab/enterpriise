@@ -43,7 +43,10 @@ class AccountMove(models.Model):
         # and fetch pdf
         for move in self:
             # Change lock date to end date of the period
-            move.company_id.tax_lock_date = move.tax_closing_end_date
+            if not self.user_has_groups('account.group_account_manager'):
+                raise UserError(_('Only Billing Administrators are allowed to change lock dates!'))
+            move.company_id.sudo().tax_lock_date = move.tax_closing_end_date
+
             # Add pdf report as attachment to move
             options = move._compute_vat_period_date()
             ctx = self.env['account.report']._set_context(options)

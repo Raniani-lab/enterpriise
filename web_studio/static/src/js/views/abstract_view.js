@@ -3,6 +3,7 @@ odoo.define('web_studio.AbstractViewEditor', function (require) {
 
 var ajax = require('web.ajax');
 var AbstractView = require('web.AbstractView');
+const RendererWrapper = require('web.RendererWrapper');
 const utils = require('web.utils');
 
 AbstractView.include({
@@ -28,6 +29,10 @@ AbstractView.include({
      */
     createStudioRenderer: function (parent, options) {
         var Renderer = this.config.Renderer;
+        if (utils.isComponent(Renderer)) {
+            options.Component = Renderer;
+            Renderer = RendererWrapper;
+        }
         return this._createStudioRenderer(parent, Renderer, options);
     },
 

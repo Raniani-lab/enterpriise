@@ -1076,7 +1076,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @returns {string}
          */
         _buildHeaderFormula(args) {
-            return `=PIVOT.HEADER("${args.join('","')}")`;
+            return `=PIVOT.HEADER("${args.map((arg) => arg.toString().replace(/"/g, '\\"')).join('","')}")`;
         }
         /**
          * Create a pivot formula at col/row
@@ -1087,7 +1087,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @returns {string}
          */
         _buildValueFormula(args) {
-            return `=PIVOT("${args.join('","')}")`;
+            return `=PIVOT("${args.map((arg) => arg.toString().replace(/"/g, '\\"')).join('","')}")`;
         }
         /**
          * Merge a zone

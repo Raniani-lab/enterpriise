@@ -1886,6 +1886,30 @@ odoo.define("documents_spreadsheet.pivot_controller_test", function (require) {
                 assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER("1")`);
                 actionManager.destroy();
             });
+
+            QUnit.test("pivot with a quote in name", async function (assert) {
+                assert.expect(1);
+
+                this.data.product.records.push({
+                    id: 42,
+                    display_name: `name with "`,
+                });
+                const pivot = await createView({
+                    View: PivotView,
+                    model: "product",
+                    data: this.data,
+                    arch: `
+                    <pivot string="Products">
+                        <field name="display_name" type="col"/>
+                        <field name="id" type="row"/>
+                    </pivot>`,
+                    mockRPC: mockRPCFn,
+                });
+                const data = await pivot._getSpreadsheetData();
+                const spreadsheetData = JSON.parse(data);
+                assert.equal(spreadsheetData.sheets[0].cells.B1.formula.text, `=PIVOT.HEADER("1","display_name","name with \\"")`);
+                pivot.destroy();
+            });
         }
     );
 });

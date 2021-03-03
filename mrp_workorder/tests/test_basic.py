@@ -1493,6 +1493,8 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
             - wo line 1 (comp1, qty=1)
             - wo line 2 (comp1, qty=4)
             - wo line 3 (comp2, qty=1) """
+        # avoid having reservation issues by making all components consu
+        self.product_2.type = 'consu'
         # Kit bom
         self.env['mrp.bom'].create({
             'product_id': self.product_4.id,

@@ -714,7 +714,7 @@ class MrpProductionWorkcenterLine(models.Model):
         qty_todo = qty_todo - move.quantity_done
         if self.move_line_id and self.move_line_id.lot_id:
             qty_todo = min(self.move_line_id.product_uom_qty, qty_todo)
-        self.qty_done = qty_todo or 1
+        self.qty_done = qty_todo
 
     def _action_confirm(self):
         res = super()._action_confirm()

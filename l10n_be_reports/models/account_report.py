@@ -21,14 +21,15 @@ class AccountReport(models.AbstractModel):
         representative_id = int(self.env['ir.config_parameter'].sudo().get_param('l10n_be_reports.xml_export_representative_%s' % self.env.company.id))
         if representative_id:
             representative = self.env['res.partner'].browse(representative_id)
+            representative_country_code = representative.country_id.code.upper()
 
             node_values = {
-                'vat': representative.vat,
+                'vat': representative.vat[2:] if representative.vat[:2] == representative_country_code else representative.vat,
                 'name': representative.name,
                 'street': (representative.street or '') + (' ' + representative.street2 if representative.street2 else ''),
                 'zip': representative.zip,
                 'city': representative.city,
-                'country_code': representative.country_id.code.upper(),
+                'country_code': representative_country_code,
                 'mail': representative.email,
                 'phone': representative.phone or representative.mobile,
             }

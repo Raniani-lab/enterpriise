@@ -580,7 +580,13 @@ class WebStudioController(http.Controller):
         # we also create an invisible char field meant to contain the filename.
         # The char field is then associated with the binary field
         # via the 'filename' attribute of the latter.
-        for op in [op for op in operations if create_binary_field(op)]:
+        # Do it in another list to keep the order of the operations
+        # otherwise, the "append" of the filemane binary would be misplaced
+        _operations = []
+        for op in operations:
+            _operations.append(op)
+            if not create_binary_field(op):
+                continue
             bin_file_field_name = op['node']['field_description']['name']
             filename = bin_file_field_name + '_filename'
 
@@ -599,10 +605,11 @@ class WebStudioController(http.Controller):
             char_op['target']['attrs'] = {'name': bin_file_field_name}
             char_op['target']['position'] = 'after'
 
-            operations.append(char_op)
+            _operations.append(char_op)
 
             op['node']['attrs']['filename'] = filename
 
+        operations = _operations
         for op in operations:
             # create a new field if it does not exist
             if 'node' in op:

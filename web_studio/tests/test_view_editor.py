@@ -115,3 +115,74 @@ class TestEditView(TestStudioController):
               </form>
             """
         )
+
+    def test_edit_view_binary_and_attribute_then_remove_binary(self):
+        base_view = self.env['ir.ui.view'].create({
+            'name': 'TestForm',
+            'type': 'form',
+            'model': 'res.partner',
+            'arch': """
+                <form>
+                    <field name="display_name" />
+                </form>"""
+        })
+
+        add_binary_op = {
+            'type': 'add',
+            'target': {'tag': 'field',
+                       'attrs': {'name': 'display_name'},
+                       'xpath_info': [{'tag': 'form', 'indice': 1},
+                                      {'tag': 'field', 'indice': 1}]},
+            'position': 'after',
+            'node': {'tag': 'field',
+                     'attrs': {},
+                     'field_description': {'type': 'binary',
+                                           'field_description': 'New File',
+                                           'name': 'x_studio_binary_field_WocAO',
+                                           'model_name': 'res.partner'}}
+        }
+
+        self.edit_view(base_view, operations=[add_binary_op])
+
+        add_widget_op = {
+            'type': 'attributes',
+            'target': {'tag': 'field',
+                       'attrs': {'name': 'x_studio_binary_field_WocAO'},
+                       'xpath_info': [{'tag': 'form', 'indice': 1},
+                                      {'tag': 'field', 'indice': 2}]},
+            'position': 'attributes',
+            'node': {'tag': 'field',
+                     'attrs': {'filename': 'x_studio_binary_field_WocAO_filename',
+                               'name': 'x_studio_binary_field_WocAO',
+                               'modifiers': {},
+                               'id': 'x_studio_binary_field_WocAO'},
+                     'children': [],
+                     'has_label': True},
+            'new_attrs': {'widget': 'pdf_viewer', 'options': ''}
+        }
+
+        ops = [
+            add_binary_op,
+            add_widget_op
+        ]
+        self.edit_view(base_view, operations=ops)
+
+        remove_binary_op = {
+            'type': 'remove',
+            'target': {'tag': 'field',
+                       'attrs': {'name': 'x_studio_binary_field_WocAO'},
+                       'xpath_info': [{'tag': 'form', 'indice': 1},
+                                      {'tag': 'field', 'indice': 2}]},
+        }
+        self.edit_view(base_view, operations=ops + [remove_binary_op])
+        # The filename field is still present in the view
+        # this is not intentional rather, it is way easier to leave this invisible field there
+        self.assertViewArchEqual(
+            base_view.read_combined()['arch'],
+            """
+              <form>
+                <field name="display_name"/>
+                <field invisible="1" name="x_studio_binary_field_WocAO_filename"/>
+              </form>
+            """
+        )

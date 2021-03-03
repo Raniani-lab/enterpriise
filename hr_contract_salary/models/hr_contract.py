@@ -120,7 +120,7 @@ class HrContract(models.Model):
 
     @api.onchange('final_yearly_costs')
     def _onchange_final_yearly_costs(self):
-        self.wage = self._get_gross_from_employer_costs(self.final_yearly_costs)
+        self.wage_with_holidays = self._get_gross_from_employer_costs(self.final_yearly_costs)
 
     @api.depends('final_yearly_costs')
     def _compute_monthly_yearly_costs(self):

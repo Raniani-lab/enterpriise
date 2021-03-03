@@ -48,6 +48,17 @@ class HrContract(models.Model):
     def _compute_final_yearly_costs(self):
         super(HrContract, self)._compute_final_yearly_costs()
 
+    @api.depends('wage_with_holidays', 'time_credit', 'work_time_rate')
+    def _compute_time_credit_full_time_wage(self):
+        for contract in self:
+            work_time_rate = contract._get_work_time_rate()
+            if contract.time_credit and work_time_rate != 0:
+                contract.time_credit_full_time_wage = contract.wage_with_holidays / work_time_rate
+            elif contract.time_credit and not work_time_rate:
+                contract.time_credit_full_time_wage = contract._get_contract_wage()
+            else:
+                contract.time_credit_full_time_wage = contract.wage_with_holidays
+
     @api.depends('time_credit', 'work_time_rate', 'wage_on_signature')
     def _compute_wage(self):
         for contract in self:

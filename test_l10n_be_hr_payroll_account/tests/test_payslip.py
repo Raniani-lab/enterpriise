@@ -16,7 +16,7 @@ class TestPayslipBase(common.TransactionCase):
 
     def check_payslip(self, name, payslip, values):
         for code, value in values.items():
-            self.assertEqual(payslip.line_ids.filtered(lambda line: line.code == code).total, value, '%s for %s should be of %.2f' % (code, name, value))
+            self.assertAlmostEqual(payslip.line_ids.filtered(lambda line: line.code == code).total, value)
 
     def create_contract(self, date_start, date_end=False, wage=2500):
         return self.env['hr.contract'].create({

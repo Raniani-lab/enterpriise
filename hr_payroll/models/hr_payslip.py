@@ -54,7 +54,9 @@ class HrPayslip(models.Model):
                 \n* If the payslip is under verification, the status is \'Waiting\'.
                 \n* If the payslip is confirmed then status is set to \'Done\'.
                 \n* When user cancel payslip the status is \'Rejected\'.""")
-    line_ids = fields.One2many('hr.payslip.line', 'slip_id', compute='_compute_line_ids', store=True, string='Payslip Lines', readonly=True,
+    line_ids = fields.One2many(
+        'hr.payslip.line', 'slip_id', compute='_compute_line_ids', store=True,
+        string='Payslip Lines', readonly=True, copy=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Company', readonly=True, copy=False, required=True,
         default=lambda self: self.env.company,
@@ -247,13 +249,20 @@ class HrPayslip(models.Model):
         return self.employee_id.action_open_work_entries()
 
     def refund_sheet(self):
+        copied_payslips = self.env['hr.payslip']
         for payslip in self:
             copied_payslip = payslip.copy({
                 'credit_note': True,
                 'name': _('Refund: %(payslip)s', payslip=payslip.name),
+                'edited': True,
             })
-            copied_payslip.compute_sheet()
-            copied_payslip.action_payslip_done()
+            for wd in copied_payslip.worked_days_line_ids:
+                wd.number_of_hours = -wd.number_of_hours
+                wd.number_of_days = -wd.number_of_days
+                wd.amount = -wd.amount
+            for line in copied_payslip.line_ids:
+                line.amount = -line.amount
+            copied_payslips |= copied_payslip
         formview_ref = self.env.ref('hr_payroll.view_hr_payslip_form', False)
         treeview_ref = self.env.ref('hr_payroll.view_hr_payslip_tree', False)
         return {
@@ -263,7 +272,7 @@ class HrPayslip(models.Model):
             'res_model': 'hr.payslip',
             'type': 'ir.actions.act_window',
             'target': 'current',
-            'domain': "[('id', 'in', %s)]" % copied_payslip.ids,
+            'domain': [('id', 'in', copied_payslips.ids)],
             'views': [(treeview_ref and treeview_ref.id or False, 'tree'), (formview_ref and formview_ref.id or False, 'form')],
             'context': {}
         }
@@ -692,7 +701,7 @@ class HrPayslipWorkedDays(models.Model):
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
     is_paid = fields.Boolean(compute='_compute_is_paid', store=True)
-    amount = fields.Monetary(string='Amount', compute='_compute_amount', store=True)
+    amount = fields.Monetary(string='Amount', compute='_compute_amount', store=True, copy=True)
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract',
         help="The contract for which apply this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')
@@ -705,7 +714,7 @@ class HrPayslipWorkedDays(models.Model):
 
     @api.depends('is_paid', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
-        for worked_days in self:
+        for worked_days in self.filtered(lambda wd: not wd.payslip_id.edited):
             if not worked_days.contract_id:
                 worked_days.amount = 0
                 continue

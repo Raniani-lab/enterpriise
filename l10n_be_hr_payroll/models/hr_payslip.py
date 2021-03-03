@@ -732,27 +732,34 @@ def compute_ip_deduction(payslip, categories, worked_days, inputs):
 def compute_employment_bonus_employees(payslip, categories, worked_days, inputs):
     bonus_basic_amount = payslip.rule_parameter('work_bonus_basic_amount')
     wage_lower_bound = payslip.rule_parameter('work_bonus_reference_wage_low')
-    ratio = 1
 
-    if payslip.worked_days_line_ids:
-        rc = payslip.contract_id.resource_calendar_id
-        worked_hours = sum(payslip.worked_days_line_ids.mapped('number_of_hours'))
-        if not rc.full_time_required_hours or not rc.hours_per_day:
-            ratio = 0
-        else:
-            full_time_hours = sum(payslip.worked_days_line_ids.mapped('number_of_days')) * rc.full_time_required_hours / (rc.full_time_required_hours / rc.hours_per_day)
-            ratio = worked_hours / full_time_hours
+    if not payslip.dict.worked_days_line_ids:
+        return 0
 
-    salary = categories.BRUT * ratio
+    # S = (W / H) * U
+    # W = salaire brut
+    # H = le nombre d'heures de travail déclarées avec un code prestations 1, 3, 4, 5 et 20;
+    # U = le nombre maximum d'heures de prestations pour le mois concerné dans le régime de travail concerné
+    worked_days = payslip.dict.worked_days_line_ids.filtered(lambda wd: wd.code not in ['LEAVE300', 'LEAVE301'])
+    paid_hours = sum(worked_days.filtered(lambda wd: wd.amount).mapped('number_of_hours'))  # H
+    total_hours = sum(worked_days.mapped('number_of_hours'))  # U
 
+    # 1. - Détermination du salaire mensuel de référence (S)
+    salary = categories.BRUT * total_hours / paid_hours  # S = (W/H) x U
+
+    # 2. - Détermination du montant de base de la réduction (R)
     if salary <= wage_lower_bound:
         result = bonus_basic_amount
     elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):
         coeff = payslip.rule_parameter('work_bonus_coeff')
         result = bonus_basic_amount - (coeff * (salary - wage_lower_bound))
     else:
-        return -categories.ONSS * ratio
-    return min(result, -categories.ONSS) * ratio
+        result = 0
+
+    # 3. - Détermination du montant de la réduction (P)
+    result = result * paid_hours / total_hours  # P = (H/U) x R
+
+    return min(result, -categories.ONSS)
 
 def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs):
     rates = [

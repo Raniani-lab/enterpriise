@@ -72,7 +72,7 @@ class HrPayslip(models.Model):
                     move_dict['narration'] += slip.number or '' + ' - ' + slip.employee_id.name or ''
                     move_dict['narration'] += '\n'
                     for line in slip.line_ids.filtered(lambda line: line.category_id):
-                        amount = -line.total if slip.credit_note else line.total
+                        amount = line.total
                         if line.code == 'NET': # Check if the line is the 'Net Salary'.
                             for tmp_line in slip.line_ids.filtered(lambda line: line.category_id):
                                 if tmp_line.salary_rule_id.not_computed_in_net: # Check if the rule must be computed in the 'Net Salary' or not.

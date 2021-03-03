@@ -241,6 +241,13 @@
         <field name="color">8</field>
     </record>
 
+    <record id="work_entry_type_parental_time_off" model="hr.work.entry.type">
+        <field name="name">Parental Time Off</field>
+        <field name="code">LEAVE301</field>
+        <field name="is_leave">True</field>
+        <field name="color">8</field>
+    </record>
+
     <record id="work_entry_type_simple_holiday_pay_variable_salary" model="hr.work.entry.type">
         <field name="name">Simple Holiday Pay - Variable Salary</field>
         <field name="code">LEAVE1731</field>

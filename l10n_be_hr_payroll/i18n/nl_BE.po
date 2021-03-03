@@ -1725,7 +1725,7 @@ msgstr "Bruto jaarsalaris per 31 december 2013"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_basic_12_92
-msgid "Gross Monthly Salary"
+msgid "Gross Yearly Salary"
 msgstr "Bruto maandsalaris"
 
 #. module: l10n_be_hr_payroll

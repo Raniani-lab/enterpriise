@@ -19,6 +19,6 @@ class TestDoublePecule(TestPayslipBase):
             'BASIC': 2300.0,
             'SALARY': 2125.0,
             'ONSS': -277.74,
-            'P.P': -833.79,
-            'NET': 1284.04,
+            'P.P': -734.89,
+            'NET': 1287.37,
         })

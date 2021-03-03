@@ -9,9 +9,11 @@
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 if inputs.ALLOCATION and inputs.ALLOCATION.amount:
-    result_qty = 1 - (inputs.TIME_OFF_TAKEN.amount / inputs.ALLOCATION.amount)
+    qty = 1 - (inputs.TIME_OFF_TAKEN.amount / inputs.ALLOCATION.amount)
+else:
+    qty = 1
 result_rate = 7.67
-result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
+result = (inputs.GROSS_REF.amount if inputs.GROSS_REF else 0) * qty
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
     </record>

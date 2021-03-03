@@ -19,7 +19,21 @@
                     <td><span t-field="o.employee_id"/></td>
                     <td><span t-field="o.employee_id.marital"/></td>
                     <td><span t-field="o.employee_id.job_title"/></td>
-                    <td><span t-field="o.date_from"/> - <span t-field="o.date_to"/></td>
+                    <td>
+                        <t t-if="o.date_from &lt; o.contract_id.date_start">
+                            <span t-field="o.contract_id.date_start"/>
+                        </t>
+                        <t t-else="">
+                            <span t-field="o.date_from"/>
+                        </t>
+                         - 
+                        <t t-if="o.contract_id.date_end and o.date_to &gt; o.contract_id.date_end">
+                            <span t-field="o.contract_id.date_end"/>
+                        </t>
+                        <t t-else="">
+                            <span t-field="o.date_to"/>
+                        </t>
+                    </td>
                 </tr>
                 <tr>
                     <td><span t-field="o.employee_id.address_home_id.street"/></td>

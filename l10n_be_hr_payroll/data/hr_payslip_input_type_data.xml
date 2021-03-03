@@ -169,6 +169,20 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
     </record>
 
+    <record id="cp200_other_input_european_leave" model="hr.payslip.input.type">
+        <field name="name">Additional Vacation to Deduct</field>
+        <field name="code">EUROPEAN</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
+    </record>
+
+    <record id="cp200_other_input_european_leave_days" model="hr.payslip.input.type">
+        <field name="name">Additional Vacation Taken</field>
+        <field name="code">EUROPEAN_DAYS</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
+    </record>
+
     <!-- Warrants -->
     <record id="cp200_other_input_warrant" model="hr.payslip.input.type">
         <field name="name">Warrant</field>

@@ -108,6 +108,7 @@ result = result / 0.92 * 0.85
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
     </record>
 
+    <!-- YTI TODO master: Drop this rule -->
     <record id="cp200_employees_double_holiday_employment_bonus_employees" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_employment_bonus"/>
         <field name="name">Employment Bonus</field>
@@ -118,6 +119,7 @@ result = result / 0.92 * 0.85
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = compute_employment_bonus_employees(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_reim_travel" model="hr.salary.rule">

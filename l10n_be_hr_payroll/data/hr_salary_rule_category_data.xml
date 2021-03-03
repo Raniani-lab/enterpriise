@@ -93,6 +93,16 @@
         <field name="code">TERMINAISON_DOUBLE</field>
     </record>
 
+    <record id="hr_payroll_termination_holidays_double_basic" model="hr.salary.rule.category">
+        <field name="name">Terminaison Holidays Double Pay Basic</field>
+        <field name="code">DOUBLE_BASIC</field>
+    </record>
+
+    <record id="hr_payroll_termination_holidays_additional_leave" model="hr.salary.rule.category">
+        <field name="name">Terminaison Holidays Additional Leave</field>
+        <field name="code">EUROPEAN</field>
+    </record>
+
     <record id="hr_payroll_termination_holidays" model="hr.salary.rule.category">
         <field name="name">Terminaison Holidays</field>
         <field name="code">TERMINAISON</field>

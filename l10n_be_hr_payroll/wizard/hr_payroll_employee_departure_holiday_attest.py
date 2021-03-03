@@ -216,6 +216,37 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             termination_payslip_n1.contract_id = self.employee_id.contract_id
         termination_payslip_n1.struct_id = struct_n1_id.id
         termination_payslip_n1.worked_days_line_ids = [(5, 0, 0)]
+
+        # As regards the recovery of amounts for European holidays (“additional holidays”), the
+        # amount paid in advance is
+        # - or recovered from the double vacation pay (part 85%) for the following year;
+        # - or, when the worker leaves, on the amount of the exit pay. The legislation does not
+        # specifically state whether, in the event of an exit, the recovery is on the single or
+        # the double, but, in order to be consistent, I would do the recovery on the double
+        # (85% of 7.67 %).
+        # In addition, when "additional" vacation has been taken, the vacation certificate must
+        # mention: the number of days already granted + the related gross allowance.
+        current_year = self.employee_id.end_notice_period.replace(month=1, day=1)
+        previous_year = current_year + relativedelta(years=-1)
+        double_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
+        double_holiday_n = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_to', '>=', current_year),
+            ('state', 'in', ['done', 'paid', 'verify']),
+            ('struct_id', '=', double_structure.id)])
+        # Part already deducted on the double holiday for year N
+        double_amount_n = double_holiday_n._get_salary_line_total("EU.LEAVE.DEDUC")
+        # Original Amount to deduct
+        payslip_n1 = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_to', '>=', previous_year),
+            ('date_from', '<', current_year),
+            ('state', 'in', ['done', 'paid'])])
+        european_wds = payslip_n1.mapped('worked_days_line_ids').filtered(lambda wd: wd.code == 'LEAVE216')
+        european_leaves_amount = sum(european_wds.mapped('amount'))
+        european_leaves_days = sum(european_wds.mapped('number_of_days'))
+        european_amount_to_deduct = max(european_leaves_amount - double_amount_n, 0)
+
         self.env['hr.payslip.input'].create([{
             'payslip_id': termination_payslip_n1.id,
             'sequence': 1,
@@ -239,6 +270,18 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'sequence': 5,
             'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
             'amount': annual_gross,
+            'contract_id': termination_payslip_n1.contract_id.id
+        }, {
+            'payslip_id': termination_payslip_n1.id,
+            'sequence': 6,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave').id,
+            'amount': european_amount_to_deduct,
+            'contract_id': termination_payslip_n1.contract_id.id
+        }, {
+            'payslip_id': termination_payslip_n1.id,
+            'sequence': 7,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave_days').id,
+            'amount': european_leaves_days,
             'contract_id': termination_payslip_n1.contract_id.id
         }])
         termination_payslip_n1.compute_sheet()

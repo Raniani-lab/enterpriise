@@ -1727,8 +1727,8 @@ msgstr "Salaire annuel brut au 31 décembre 2013"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_basic_12_92
-msgid "Gross Monthly Salary"
-msgstr "Salaire mensuel brut"
+msgid "Gross Yearly Salary"
+msgstr "Salaire annuel brut"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_double_holiday_gross_salary
@@ -2254,7 +2254,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_termination_non_respect_motivation
 msgid "Non respect motivation (= 2 weeks)"
-msgstr "Motivation sans respect (= 2 semaines)"
+msgstr "Non-respect motivation du licenciement (= 2 semaines)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__resident_bool
@@ -3254,7 +3254,7 @@ msgstr "Raison impérieuse"
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_termination_unreasonable_dismissal
 msgid "Unreasonable dismissal"
-msgstr "Congédiement déraisonnable"
+msgstr "Licenciement 'manifestement déraisonnable'"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__has_bicycle

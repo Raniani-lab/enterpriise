@@ -289,11 +289,11 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'ATN.LAP': 7.0,
             'SALARY': 385.23,
             'ONSS': -50.35,
-            'EmpBonus.1': 50.35,
+            'EmpBonus.1': 0.0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 526.37,
+            'GROSSIP': 476.02,
             'IP.PART': -92.31,
-            'GROSS': 434.07,
+            'GROSS': 383.72,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -307,7 +307,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'REP.FEES': 18.46,
             'IP': 92.31,
             'IP.DED': -6.92,
-            'NET': 408.51
+            'NET': 358.16
         }
         error = []
         for code, value in payslip_results.items():
@@ -339,13 +339,13 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'ATN.LAP': 7.0,
             'SALARY': 2139.08,
             'ONSS': -279.58,
-            'EmpBonus.1': 103.72,
+            'EmpBonus.1': 13.24,
             'ATN.CAR': 141.14,
-            'GROSSIP': 2104.36,
+            'GROSSIP': 2013.89,
             'IP.PART': -530.77,
-            'GROSS': 1573.59,
-            'P.P': -156.8,
-            'P.P.DED': 34.37,
+            'GROSS': 1483.12,
+            'P.P': -118.28,
+            'P.P.DED': 4.39,
             'ATN.CAR.2': -141.14000000000001,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
@@ -357,7 +357,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'REP.FEES': 98.08,
             'IP': 530.77,
             'IP.DED': -39.81,
-            'NET': 1905.93,
+            'NET': 1823.99,
         }
 
         error = []

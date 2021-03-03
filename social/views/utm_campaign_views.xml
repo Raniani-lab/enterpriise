@@ -72,7 +72,7 @@
             Campaigns are the perfect tool to track your posts results.
           </p>
         </field>
-        <field name="domain">[('is_website', '=', False)]</field>
+        <field name="domain">[('is_auto_campaign', '=', False)]</field>
     </record>
 
     <menuitem

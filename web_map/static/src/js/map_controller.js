@@ -31,18 +31,9 @@ const MapController = AbstractController.extend({
      * @param {jQuery} [$node]
      */
     renderButtons: function ($node) {
-        let url = 'https://www.google.com/maps/dir/?api=1';
-        if (this.model.data.records.length) {
-            const coordinates = this.model.data.records
-                .filter(record => record.partner && record.partner.partner_latitude && record.partner.partner_longitude)
-                .map(record => record.partner.partner_latitude + ',' + record.partner.partner_longitude);
-            url += `&waypoints=${_.uniq(coordinates).join('|')}`;
-        }
         this.$buttons = $(qweb.render("MapView.buttons"), { widget: this });
-        this.$buttons.find('a').attr('href', url);
-        if ($node) {
-            this.$buttons.appendTo($node);
-        }
+        this._updateGoogleMapUrl();
+        this.$buttons.appendTo($node);
     },
     /**
      * @override
@@ -50,6 +41,27 @@ const MapController = AbstractController.extend({
     update: async function () {
         await this._super(...arguments);
         this._updatePaging();
+        this._updateGoogleMapUrl();
+    },
+    /**
+     * When the records dataset is updated, the URL to Google Maps need to be updated as well
+     * to reflect the new recordset.
+     * This will redirect the user to the displayed records even if he filters them using the search bar.
+     *
+     * @private
+     */
+    _updateGoogleMapUrl: function () {
+        var url = 'https://www.google.com/maps/dir/?api=1';
+        if (this.model.data.records.length) {
+            url += '&waypoints=';
+            var all_coord = this.model.data.records.filter((record) => record.partner && record.partner.partner_latitude && record.partner.partner_longitude);
+            _.uniq(all_coord, function (record) { return record.partner.partner_latitude + '_' + record.partner.partner_longitude; })
+                .forEach((record) => {
+                    url += record.partner.partner_latitude + ',' + record.partner.partner_longitude + '|';
+                });
+            url = url.slice(0, -1);
+        }
+        this.$buttons.find('a.btn.btn-primary').attr('href', url);
     },
 
     //--------------------------------------------------------------------------

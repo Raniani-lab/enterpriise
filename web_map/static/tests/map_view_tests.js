@@ -93,6 +93,10 @@ QUnit.module('mapView', {
                         id: 2, name: 'Foo', 'partner_latitude': 10.0, 'partner_longitude': 10.5,
                         'contact_address_complete': 'Chaussée de Namur 40, 1367, Ramillies', sequence: 3
                     },
+                    {
+                        id: 3, name: 'Bar', 'partner_latitude': 11.0, 'partner_longitude': 11.5,
+                        'contact_address_complete': 'Chaussée de Wavre 50, 1367, Ramillies', sequence: 4
+                    },
 
                 ],
                 coordinatesNoAddress: [
@@ -2105,6 +2109,27 @@ QUnit.module('mapView', {
         assert.containsNone(map.$('div.leaflet-popup-pane'), 'button.btn.btn-primary.open',
             'The button should not be present in the dom');
 
+        map.destroy();
+    });
+
+    QUnit.test('Check Google Maps URL is updating on domain change', async function (assert) {
+        assert.expect(2);
+        this.data['project.task'].records = [
+            {id: 1, name: "FooProject", sequence: 1, partner_id: 2},
+            {id: 2, name: 'BarProject', sequence: 2, partner_id: 3},
+        ];
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch: '<map res_partner="partner_id"/>',
+        });
+        assert.strictEqual(map.$('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&waypoints=10,10.5|11,11.5',
+            'The link\'s URL initially should contain the coordinates for all records');
+        //apply domain and check that the Google Maps URL on the button reflects the changes
+        await map.update({domain: [['name', '=', 'FooProject']]});
+        assert.strictEqual(map.$('a.btn.btn-primary').attr('href'), 'https://www.google.com/maps/dir/?api=1&waypoints=10,10.5',
+            'The link\'s URL after domain is applied should only contain coordinates for filtered records');
         map.destroy();
     });
 });

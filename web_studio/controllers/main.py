@@ -581,7 +581,8 @@ class WebStudioController(http.Controller):
         # The char field is then associated with the binary field
         # via the 'filename' attribute of the latter.
         for op in [op for op in operations if create_binary_field(op)]:
-            filename = op['node']['field_description']['name'] + '_filename'
+            bin_file_field_name = op['node']['field_description']['name']
+            filename = bin_file_field_name + '_filename'
 
             # Create an operation adding an additional char field
             char_op = deepcopy(op)
@@ -591,6 +592,13 @@ class WebStudioController(http.Controller):
                 'field_description': _('Filename for %s', op['node']['field_description']['name']),
             })
             char_op['node']['attrs']['invisible'] = '1'
+
+            # put the filename field after the binary field
+            char_op['target']['xpath_info'] = None
+            char_op['target']['tag'] = 'field'
+            char_op['target']['attrs'] = {'name': bin_file_field_name}
+            char_op['target']['position'] = 'after'
+
             operations.append(char_op)
 
             op['node']['attrs']['filename'] = filename

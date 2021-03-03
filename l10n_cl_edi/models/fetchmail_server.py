@@ -479,7 +479,8 @@ class FetchmailServer(models.Model):
                 'discount': float(dte_line.findtext('.//ns0:DescuentoPct', default=0, namespaces=XML_NAMESPACES)),
                 'default_tax': False
             }
-            if dte_xml.findtext('.//ns0:TasaIVA', namespaces=XML_NAMESPACES) is not None:
+            if (dte_xml.findtext('.//ns0:TasaIVA', namespaces=XML_NAMESPACES) is not None and
+                    dte_line.findtext('.//ns0:IndExe', namespaces=XML_NAMESPACES) is None):
                 values['default_tax'] = True
                 values['taxes'] = self._get_withholding_taxes(company_id, dte_line)
             invoice_lines.append(values)

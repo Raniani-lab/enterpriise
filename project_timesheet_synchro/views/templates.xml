@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="static/src/img/favicon.ico" type="image/x-icon"/>
 
         <script type="text/javascript">
-            var odoo = <t t-raw="json.dumps({
+            var odoo = <t t-out="json.dumps({
                 'session_info': session_info,
                 'debug': debug,
             })"/>;

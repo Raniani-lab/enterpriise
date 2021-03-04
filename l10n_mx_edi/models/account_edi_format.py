@@ -181,7 +181,8 @@ class AccountEdiFormat(models.Model):
         cfdi_values['price_unit_wo_discount'] = line.price_unit * (1 - (line.discount / 100.0))
         cfdi_values['total_wo_discount'] = invoice.currency_id.round(line.price_unit * line.quantity)
         cfdi_values['discount_amount'] = invoice.currency_id.round(cfdi_values['total_wo_discount'] - line.price_subtotal)
-        cfdi_values['price_subtotal_unit'] = invoice.currency_id.round(cfdi_values['total_wo_discount'] / line.quantity)
+        cfdi_values['price_subtotal_unit'] = invoice.currency_id.round(
+            cfdi_values['total_wo_discount'] / line.quantity) if line.quantity else 0
 
         # ==== Taxes ====
 

@@ -1133,7 +1133,7 @@ odoo.define('sign.document_signing', function (require) {
                 }
                 if (response === true) {
                     (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.RedirectURLText,
-                        self.requestID, {'nextSign': self.name_list.length})).open();
+                        self.requestID, {'nextSign': (self.name_list || []).length})).open();
                     self.do_hide();
                 }
                 if (typeof response === 'object') {

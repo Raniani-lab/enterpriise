@@ -186,21 +186,23 @@ class AccountMoveLine(models.Model):
                         (setweight(to_tsvector(%(lang)s, ail.name), 'B')) ||
                         (setweight(to_tsvector('simple', 'partnerid'|| replace(ail.partner_id::text, '-', 'x')), 'A')) AS document
                     FROM account_move_line ail
-                    JOIN account_move inv
-                        ON ail.move_id = inv.id
+                    JOIN account_move inv ON ail.move_id = inv.id
+                    JOIN account_account account ON ail.account_id = account.id
                     WHERE inv.move_type = 'in_invoice'
                         AND inv.state = 'posted'
                         AND ail.display_type IS NULL
                         AND NOT ail.exclude_from_invoice_tab
                         AND ail.company_id = %(company_id)s
+                        AND account.deprecated IS NOT TRUE
                     ORDER BY inv.invoice_date DESC
                     LIMIT %(limit_parameter)s
                     ) UNION ALL (
                     SELECT
                         id as account_id,
                         (setweight(to_tsvector(%(lang)s, name), 'B')) AS document
-                    FROM account_account
-                    WHERE user_type_id IN (
+                    FROM account_account account
+                    WHERE account.deprecated IS NOT TRUE
+                      AND user_type_id IN (
                         SELECT id
                         FROM account_account_type
                         WHERE internal_group = 'expense')

@@ -1459,7 +1459,9 @@ odoo.define('sign.document_signing', function (require) {
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
             if(!readonly) {
-                $signatureItem.attr('autocomplete', 'none');
+                // 'off' is not supported by all the browsers, like chrome
+                // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#browser_compatibility
+                $signatureItem.attr('autocomplete', 'new-password');
                 // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
                 if (type.name.includes('Text') && type.placeholder === $signatureItem.prop('placeholder')) {
                     $signatureItem.attr('placeholder', ' ');

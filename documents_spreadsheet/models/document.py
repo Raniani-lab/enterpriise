@@ -22,15 +22,12 @@ class Document(models.Model):
                 if 'thumbnail' in vals:
                     vals['thumbnail'] = image_process(vals['thumbnail'], size=(80, 80), crop='center')
         documents = super().create(vals_list)
-        for document in documents:
-            if document.handler == 'spreadsheet':
-                self.env['spreadsheet.contributor']._update(self.env.user, document)
+        documents._update_spreadsheet_contributors()
         return documents
 
     def write(self, vals):
-        for document in self:
-            if 'raw' in vals and document.handler == 'spreadsheet':
-                self.env['spreadsheet.contributor']._update(self.env.user, document)
+        if 'raw' in vals:
+            self._update_spreadsheet_contributors()
         return super().write(vals)
 
     @api.depends('checksum', 'handler')
@@ -39,6 +36,13 @@ class Document(models.Model):
         # They should be saved independently.
         spreadsheets = self.filtered(lambda d: d.handler == 'spreadsheet')
         super(Document, self - spreadsheets)._compute_thumbnail()
+
+    def _update_spreadsheet_contributors(self):
+        """Add the current user to the spreadsheet contributors.
+        """
+        for document in self:
+            if document.handler == 'spreadsheet':
+                self.env['spreadsheet.contributor']._update(self.env.user, document)
 
     @api.model
     def get_spreadsheets_to_display(self):

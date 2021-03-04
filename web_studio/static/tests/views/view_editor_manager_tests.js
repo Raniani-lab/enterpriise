@@ -420,6 +420,93 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('invisible field in list editor', async function (assert) {
+        assert.expect(3);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            arch: '<tree><field invisible="1" name="display_name"/></tree>',
+            data: this.data,
+            model: 'coucou',
+        });
+
+        await testUtils.dom.click(vem.$('.o_web_studio_view'));
+        await testUtils.dom.click(vem.$('#show_invisible'));
+        assert.containsOnce(vem, "th[data-name='display_name'].o_web_studio_show_invisible");
+
+        await testUtils.dom.click(vem.$("th[data-name='display_name'].o_web_studio_show_invisible"));
+        assert.containsOnce(vem, '#invisible');
+
+        assert.ok(vem.$el[0].querySelector('#invisible').checked);
+
+        vem.destroy();
+    });
+
+    QUnit.test('invisible toggle field in list editor', async function (assert) {
+        assert.expect(2);
+
+        const operations = [{
+            "type": "attributes",
+            "target": {
+                "tag": "field",
+                "attrs": {
+                    "name": "display_name"
+                },
+                "xpath_info": [{
+                    "tag": "tree",
+                    "indice": 1
+                },{
+                    "tag": "field",
+                    "indice": 1
+                }]
+            },
+            "position": "attributes",
+            "node": {
+                "tag": "field",
+                "attrs": {
+                    "invisible": "1",
+                    "name": "display_name",
+                    "modifiers": {
+                        "column_invisible": true
+                    }
+                },
+                "children": []
+            },
+            "new_attrs": {
+                "invisible": "",
+                "attrs": "{}"
+            }
+        }];
+
+        let fieldsView;
+        const archReturn = '<tree><field name="display_name" modifiers="{}" attrs="{}"/></tree>';
+        const vem = await studioTestUtils.createViewEditorManager({
+            arch: '<tree><field invisible="1" name="display_name"/></tree>',
+            data: this.data,
+            model: 'coucou',
+            mockRPC(route, args) {
+                if (route === "/web_studio/edit_view") {
+                    assert.deepEqual(args.operations, operations);
+
+                    fieldsView.arch = archReturn;
+                    return Promise.resolve({
+                        fields_views: {list: fieldsView},
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super(...arguments);
+            }
+        });
+        fieldsView = Object.assign({}, vem.fields_view);
+        await testUtils.dom.click(vem.$('.o_web_studio_view'));
+        await testUtils.dom.click(vem.$('#show_invisible'));
+        await testUtils.dom.click(vem.$("th[data-name='display_name'].o_web_studio_show_invisible"));
+        await testUtils.dom.click(vem.$('#invisible'));
+
+        assert.notOk(vem.$el[0].querySelector('#invisible').checked);
+
+        vem.destroy();
+    });
+
     QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
         assert.expect(4);
 

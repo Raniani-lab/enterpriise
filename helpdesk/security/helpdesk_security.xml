@@ -51,7 +51,7 @@
         </record>
         <!-- Split by company on tickets, teams and SLAs -->
         <record id="helpdesk_ticket_company_rule" model="ir.rule">
-            <field name="name">Project: multi-company</field>
+            <field name="name">Ticket: multi-company</field>
             <field name="model_id" ref="model_helpdesk_ticket"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),
@@ -59,7 +59,7 @@
                                         ]</field>
         </record>
         <record model="ir.rule">
-            <field name="name">Project: multi-company</field>
+            <field name="name">Team: multi-company</field>
             <field name="model_id" ref="model_helpdesk_team"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),
@@ -67,7 +67,7 @@
                                         ]</field>
         </record>
         <record id="helpdesk_sla_company_rule" model="ir.rule">
-            <field name="name">Project: multi-company</field>
+            <field name="name">SLA: multi-company</field>
             <field name="model_id" ref="model_helpdesk_sla"/>
             <field name="domain_force">['|',
                                             ('company_id', '=', False),

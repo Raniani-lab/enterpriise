@@ -18,16 +18,17 @@ from requests.exceptions import ConnectionError, HTTPError
 
 from zeep import Client, Settings
 from zeep.exceptions import TransportError
+from zeep.transports import Transport
 
 
 from odoo import _, models, fields
 from odoo.tools import xml_utils
 
-urllib3.disable_warnings()
-pool = urllib3.PoolManager(cert_reqs='CERT_NONE')
-
-
 _logger = logging.getLogger(__name__)
+
+
+TIMEOUT = 30 # default timeout for all remote operations
+pool = urllib3.PoolManager(timeout=TIMEOUT)
 
 
 SERVER_URL = {
@@ -248,7 +249,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     @l10n_cl_edi_retry(logger=_logger)
     def _get_seed_ws(self, mode):
-        return Client(wsdl=SERVER_URL[mode] + 'CrSeed.jws?WSDL').service.getSeed()
+        transport = Transport(operation_timeout=TIMEOUT)
+        return Client(wsdl=SERVER_URL[mode] + 'CrSeed.jws?WSDL', transport=transport).service.getSeed()
 
     def _get_seed(self, mode):
         """
@@ -274,7 +276,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     @l10n_cl_edi_retry(logger=_logger)
     def _get_token_ws(self, mode, signed_token):
-        return Client(wsdl=SERVER_URL[mode] + 'GetTokenFromSeed.jws?WSDL').service.getToken(signed_token)
+        transport = Transport(operation_timeout=TIMEOUT)
+        return Client(wsdl=SERVER_URL[mode] + 'GetTokenFromSeed.jws?WSDL', transport=transport).service.getToken(signed_token)
 
     def _send_xml_to_sii(self, mode, company_website, company_vat, file_name, xml_message, digital_signature,
                          post='/cgi_dte/UPL/DTEUpload'):
@@ -357,7 +360,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     @l10n_cl_edi_retry(logger=_logger)
     def _get_send_status_ws(self, mode, company_vat, track_id, token):
-        return Client(SERVER_URL[mode] + 'QueryEstUp.jws?WSDL').service.getEstUp(company_vat[:8], company_vat[-1], track_id, token)
+        transport = Transport(operation_timeout=TIMEOUT)
+        return Client(SERVER_URL[mode] + 'QueryEstUp.jws?WSDL', transport=transport).service.getEstUp(company_vat[:8], company_vat[-1], track_id, token)
 
     def _get_send_status(self, mode, track_id, company_vat, digital_signature):
         """
@@ -371,7 +375,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     @l10n_cl_edi_retry(logger=_logger, custom_msg=_('Asking for claim status failed due to:'))
     def _get_dte_claim_ws(self, mode, settings, company_vat, document_type_code, document_number):
-        return Client(CLAIM_URL[mode] + '?wsdl', settings=settings).service.listarEventosHistDoc(
+        transport = Transport(operation_timeout=TIMEOUT)
+        return Client(CLAIM_URL[mode] + '?wsdl', settings=settings, transport=transport).service.listarEventosHistDoc(
             self._l10n_cl_format_vat(company_vat)[:8],
             self._l10n_cl_format_vat(company_vat)[-1],
             str(document_type_code),
@@ -388,7 +393,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     @l10n_cl_edi_retry(logger=_logger, custom_msg=_('Document acceptance or claim failed due to:') + '<br/> ')
     def _send_sii_claim_response_ws(self, mode, settings, company_vat, document_type_code, document_number, claim_type):
-        return Client(CLAIM_URL[mode] + '?wsdl', settings=settings).service.ingresarAceptacionReclamoDoc(
+        transport = Transport(operation_timeout=TIMEOUT)
+        return Client(CLAIM_URL[mode] + '?wsdl', settings=settings, transport=transport).service.ingresarAceptacionReclamoDoc(
             self._l10n_cl_format_vat(company_vat)[:8],
             self._l10n_cl_format_vat(company_vat)[-1],
             str(document_type_code),

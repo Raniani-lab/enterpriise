@@ -26,27 +26,7 @@ tour.register('social_tour', {
         }, {
             trigger: '.o_social_media_cards',
             content: _t("Choose which <b>account</b> you would like to link first."),
-            position: 'bottom',
-            edition: 'enterprise',
-        }, {
-            trigger: 'button.o_stream_post_kanban_new_stream',
-            content: _t("Let's add <b>another stream</b> to get a better overview of this channel."),
-            position: 'bottom',
-            edition: 'enterprise',
-        }, {
-            trigger: '.o_social_add_stream_accounts',
-            content: _t("Select the <b>account</b> you just added."),
-            position: 'bottom',
-            edition: 'enterprise',
-        }, {
-            trigger: '.o_field_widget[name="stream_type_id"]',
-            content: _t("Choose the type of <b>stream</b> you would like to add."),
-            position: 'bottom',
-            edition: 'enterprise',
-        }, {
-            trigger: '.modal-footer .btn-primary',
-            content: _t("Add it to your feed."),
-            position: 'bottom',
+            position: 'right',
             edition: 'enterprise',
         }, {
             trigger: 'button.o_stream_post_kanban_new_post',

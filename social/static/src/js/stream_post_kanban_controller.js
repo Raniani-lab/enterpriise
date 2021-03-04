@@ -171,7 +171,7 @@ var StreamPostKanbanController = KanbanController.extend({
                 default_account_id: event.data.accountId
             },
             disable_multiple_selection: true,
-            on_saved: this.reload.bind(this, {}),
+            on_saved: this._notifyEmptyStream.bind(this),
             save_text: _t('Add'),
         }).open();
     },
@@ -241,6 +241,33 @@ var StreamPostKanbanController = KanbanController.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * Display a notification when creating an empty stream (with no post)
+     * this function is used as the on_saved method for view_dialogs._save
+     * 
+     * @param {*} stream_data : this is the model data + the id from social.stream.create
+     * @private
+     */
+    _notifyEmptyStream: function (stream_data) {
+        const self = this;
+        const stream_id = stream_data.res_id;
+        this.reload(this, {}).then(async function () {
+            var stream = await self._rpc({
+                model: 'social.stream',
+                method: 'search_read',
+                domain: ['&', ['id', '=', stream_id], ['stream_post_ids', '=', false]],
+                fields: ['name']
+            });
+            if (stream.length) {
+                self.displayNotification({
+                    type: "success",
+                    title: _.str.sprintf(_t('Stream Added (%s)'), stream[0].name),
+                    message: _.str.sprintf(_t('It will appear in the Feed once it has posts to display.'))
+                });
+            }
+        });
+    },
 
     /**
      * Updates the $target text based on the fact that the user has already liked

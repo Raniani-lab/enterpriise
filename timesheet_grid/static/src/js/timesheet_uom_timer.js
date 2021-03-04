@@ -5,8 +5,7 @@ const fieldRegistry = require('web.field_registry');
 const fieldUtils = require('web.field_utils');
 const TimesheetUom = require('hr_timesheet.timesheet_uom');
 const { _lt } = require('web.core');
-const session = require('web.session');
-
+const AbstractWebClient = require('web.AbstractWebClient');
 const Timer = require('timer.Timer');
 
 /**
@@ -122,31 +121,56 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
 
 });
 
-/**
- * Binding depending on Company Preference
- *
- * determine wich widget will be the timesheet one.
- * Simply match the 'timesheet_uom' widget key with the correct
- * implementation (float_time, float_toggle, ...). The default
- * value will be 'float_factor'.
-**/
-const widgetName = 'timesheet_uom' in session ?
-         session.timesheet_uom.timesheet_widget : 'float_factor';
+AbstractWebClient.include({
+    init: function () {
+        this._super(...arguments);
+        /**
+         * Binding depending on Company Preference
+         *
+         * determine wich widget will be the timesheet one.
+         * Simply match the 'timesheet_uom' widget key with the correct
+         * implementation (float_time, float_toggle, ...). The default
+         * value will be 'float_factor'.
+        **/
+        const widgetName = this.currentCompanyTimesheetUOM &&
+                           this.currentCompanyTimesheetUOM.timesheet_widget ||
+                           'float_factor';
 
-let FieldTimesheetUom = null;
+        let FieldTimesheetUom = null;
 
-if (widgetName === 'float_toggle') {
-    FieldTimesheetUom = TimesheetUom.FieldTimesheetToggle;
-} else if (widgetName === 'float_time') {
-    FieldTimesheetUom = FieldTimesheetTimeTimer;
-} else {
-    FieldTimesheetUom = (
-            fieldRegistry.get(widgetName) &&
-            fieldRegistry.get(widgetName).extend({})
-        ) || TimesheetUom.FieldTimesheetFactor;
-}
-fieldRegistry.add('timesheet_uom_timer', FieldTimesheetUom);
+        if (widgetName === 'float_toggle') {
+            FieldTimesheetUom = TimesheetUom.FieldTimesheetToggle;
+        } else if (widgetName === 'float_time') {
+            FieldTimesheetUom = FieldTimesheetTimeTimer;
+        } else {
+            FieldTimesheetUom = (
+                    fieldRegistry.get(widgetName) &&
+                    fieldRegistry.get(widgetName).extend({ })
+                ) || TimesheetUom.FieldTimesheetFactor;
+        }
+        fieldRegistry.add('timesheet_uom_timer', FieldTimesheetUom);
 
+        // bind the formatter and parser method, and tweak the options
+        const _tweak_options = (options) => {
+            if (!_.contains(options, 'factor')) {
+                options.factor = this.currentCompanyTimesheetUOMFactor;
+            }
+            return options;
+        };
+
+        fieldUtils.format.timesheet_uom_timer = function(value, field, options) {
+            options = _tweak_options(options || { });
+            const formatter = fieldUtils.format[FieldTimesheetUom.prototype.formatType];
+            return formatter(value, field, options);
+        };
+
+        fieldUtils.parse.timesheet_uom_timer = function(value, field, options) {
+            options = _tweak_options(options || { });
+            const parser = fieldUtils.parse[FieldTimesheetUom.prototype.formatType];
+            return parser(value, field, options);
+        };
+    },
+});
 
 /**
  * Extend Time widget to add the +/- button for duration
@@ -194,28 +218,8 @@ const FieldTimesheetHours = TimesheetUom.FieldTimesheetTime.extend({
 
 fieldRegistry.add('timesheet_uom_hours', FieldTimesheetHours);
 
-// bind the formatter and parser method, and tweak the options
-const _tweak_options = function(options) {
-    if (!_.contains(options, 'factor')) {
-        options.factor = session.timesheet_uom_factor;
-    }
-    return options;
-};
-
-fieldUtils.format.timesheet_uom_timer = function(value, field, options) {
-    options = _tweak_options(options || {});
-    const formatter = fieldUtils.format[FieldTimesheetUom.prototype.formatType];
-    return formatter(value, field, options);
-};
-
-fieldUtils.parse.timesheet_uom_timer = function(value, field, options) {
-    options = _tweak_options(options || {});
-    const parser = fieldUtils.parse[FieldTimesheetUom.prototype.formatType];
-    return parser(value, field, options);
-};
-
-
 return {
+    FieldTimesheetHours,
     FieldTimesheetTimeTimer,
 };
 

@@ -44,9 +44,9 @@
     </div>
 </t>
 
-<div t-name="MobileCompanySwitcher" t-foreach="widget.user_companies" t-as="company">
-    <t t-set="id" t-value="company[0]"/>
-    <t t-set="displayName" t-value="company[1]"/>
+<div t-name="MobileCompanySwitcher" t-foreach="_.values(widget.user_companies)" t-as="company">
+    <t t-set="id" t-value="company.id"/>
+    <t t-set="displayName" t-value="company.name"/>
     <t t-set="isCompanySelected" t-value="widget.allowed_company_ids.includes(id)"/>
     <t t-set="checkIcon" t-value="isCompanySelected ? 'fa-check-square' : 'fa-square-o'"/>
     <t t-set="textMuted" t-value="isCompanySelected ?  '' : 'text-muted'"/>

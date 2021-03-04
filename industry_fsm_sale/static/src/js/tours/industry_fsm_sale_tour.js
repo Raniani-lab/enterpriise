@@ -35,7 +35,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     content: _t("Use the breadcrumbs to <b>go back to your products list</b>."),
     position: "right",
 }, {
-    trigger: ".oe_kanban_action:contains('+')",
+    trigger: "button[name='fsm_add_quantity']",
     extra_trigger: '.o_fsm_material_kanban',
     content: _t('Add a product by clicking on it.'),
     position: 'right',

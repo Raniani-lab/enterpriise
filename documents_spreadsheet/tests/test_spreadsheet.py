@@ -3,8 +3,10 @@
 import base64
 
 from freezegun import freeze_time
+from psycopg2 import IntegrityError
 
 from odoo.exceptions import AccessError
+from odoo.tools import mute_logger
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase, new_test_user
 
@@ -17,6 +19,37 @@ class SpreadsheetDocuments(TransactionCase):
     def setUpClass(cls):
         super(SpreadsheetDocuments, cls).setUpClass()
         cls.folder = cls.env["documents.folder"].create({"name": "Test folder"})
+        cls.default_data_folder = cls.env.ref('documents_spreadsheet.documents_spreadsheet_folder', raise_if_not_found=False)
+
+    def test_spreadsheet_default_folder(self):
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        self.assertEqual(
+            document.folder_id,
+            self.default_data_folder,
+            "It should have been assigned the default Spreadsheet Folder"
+        )
+
+    def test_normal_doc_default_folder(self):
+        """Default spreadsheet folder is not assigned to normal documents"""
+        with self.assertRaises(IntegrityError), mute_logger('odoo.sql_db'):
+            self.env["documents.document"].create({
+                "raw": r"{}",
+                "mimetype": "application/o-spreadsheet",
+            })
+
+    def test_spreadsheet_no_default_folder(self):
+        """Folder is not overwritten by the default spreadsheet folder"""
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        self.assertEqual(document.folder_id, self.folder, "It should be in the specified folder")
 
     def test_spreadsheet_to_display(self):
         document = self.env["documents.document"].create({

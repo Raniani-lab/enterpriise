@@ -13,12 +13,9 @@ class Document(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        default_folder = self.env.ref('documents_spreadsheet.documents_spreadsheet_folder', raise_if_not_found=False)
-        if not default_folder:
-            default_folder = self.env['documents.folder'].search([], limit=1, order="sequence asc")
+        vals_list = self._assign_spreadsheet_default_folder(vals_list)
         for vals in vals_list:
             if vals.get('handler') == 'spreadsheet':
-                vals['folder_id'] = vals.get('folder_id', default_folder.id)
                 if 'thumbnail' in vals:
                     vals['thumbnail'] = image_process(vals['thumbnail'], size=(80, 80), crop='center')
         documents = super().create(vals_list)
@@ -36,6 +33,22 @@ class Document(models.Model):
         # They should be saved independently.
         spreadsheets = self.filtered(lambda d: d.handler == 'spreadsheet')
         super(Document, self - spreadsheets)._compute_thumbnail()
+
+    def _assign_spreadsheet_default_folder(self, vals_list):
+        """Make sure spreadsheet values have a `folder_id`. Assign the
+        default spreadsheet folder if there is none.
+        """
+        default_folder = self.env.ref('documents_spreadsheet.documents_spreadsheet_folder', raise_if_not_found=False)
+        if not default_folder:
+            default_folder = self.env['documents.folder'].search([], limit=1, order="sequence asc")
+        return [
+            (
+                dict(vals, folder_id=vals.get('folder_id', default_folder.id))
+                if vals.get('handler') == 'spreadsheet'
+                else vals
+            )
+            for vals in vals_list
+        ]
 
     def _update_spreadsheet_contributors(self):
         """Add the current user to the spreadsheet contributors.

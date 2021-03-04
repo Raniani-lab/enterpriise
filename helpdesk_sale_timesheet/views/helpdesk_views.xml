@@ -59,7 +59,7 @@
         <field name="inherit_id" ref="helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_line_id']" position="attributes">
-                <attribute name="context">{'with_remaining_hours': True}</attribute>
+                <attribute name="context">{'with_remaining_hours': True, 'with_price_unit': True}</attribute>
                 <attribute name="options">{"no_create": True}</attribute>
             </xpath>
             <xpath expr="//field[@name='total_hours_spent']" position="after">
@@ -77,6 +77,7 @@
                 <field name="remaining_hours_so" nolabel="1" widget="timesheet_uom" attrs="{'invisible': ['|', '|', '|', '|', ('sale_order_id', '=', False), ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False), ('sale_line_id', '=', False), ('remaining_hours_available', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='timesheet_ids']/tree/field[@name='so_line']" position="attributes">
+                <attribute name="context">{'with_remaining_hours': True, 'with_price_unit': True}</attribute>
                 <attribute name="options">{"no_create": True}</attribute>
             </xpath>
         </field>

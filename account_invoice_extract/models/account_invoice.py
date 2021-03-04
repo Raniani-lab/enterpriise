@@ -680,8 +680,6 @@ class AccountMove(models.Model):
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
-        vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-
         if 'default_journal_id' in self._context:
             self_ctx = self
         else:
@@ -754,6 +752,10 @@ class AccountMove(models.Model):
                 move_form.payment_reference = payment_ref_ocr
 
             if not move_form.invoice_line_ids:
+                # we save here as _get_invoice_lines() uses the record values in self to determine the tax records to use
+                move_form.save()
+
+                vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
                 for i, line_val in enumerate(vals_invoice_lines):
                     with move_form.invoice_line_ids.new() as line:
                         line.name = line_val['name']

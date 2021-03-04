@@ -15,9 +15,9 @@ odoo.define('hr_payroll.payslip.run.tree', function (require) {
         renderButtons: function () {
             var self = this;
             this._super.apply(this, arguments);
-            this.$buttons.append($(QWeb.render("PayslipBatchListView.generate_commission_payslips", this)));
-            this.$buttons.on('click', '.o_button_generate_commission_payslips', function () {
-                self.do_action('l10n_be_hr_payroll.action_hr_payroll_generate_commission_payslips');
+            this.$buttons.append($(QWeb.render("PayslipBatchListView.generate_warrant_payslips", this)));
+            this.$buttons.on('click', '.o_button_generate_warrant_payslips', function () {
+                self.do_action('l10n_be_hr_payroll.action_hr_payroll_generate_warrant_payslips');
             });
         }
     });

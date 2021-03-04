@@ -260,52 +260,6 @@ class AccountChartTemplate(models.Model):
                 'account_debit': accounts['455000'].id,
             })
 
-            # ================================================ #
-            #              CP200: Commissions                  #
-            # ================================================ #
-            structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
-            self.env['ir.property']._set_multi(
-                "journal_id",
-                "hr.payroll.structure",
-                {structure.id: journal},
-            )
-
-            # Remunerations
-            self.env.ref('l10n_be_hr_payroll.cp200_commission_commissions').write({
-                'account_debit': accounts['620200'].id
-            })
-
-            # ONSS (Onss - employment bonus)
-            self.env.ref('l10n_be_hr_payroll.cp200_commission_onss_total').write({
-                'account_credit': accounts['454000'].id,
-            })
-
-            # Total withholding taxes
-            self.env.ref('l10n_be_hr_payroll.cp200_commission_pp_total').write({
-                'account_credit': accounts['453000'].id,
-            })
-
-            # Special Social Cotisation (MISC ONSS)
-            self.env.ref('l10n_be_hr_payroll.cp200_commission_mis_ex_onss_total').write({
-                'account_credit': accounts['454000'].id,
-            })
-
-            # Owed Remunerations (NET)
-            self.env['hr.salary.rule'].search([
-                ('struct_id', '=', self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission').id),
-                ('code', '=', 'NET')
-            ]).write({
-                'account_credit': accounts['455000'].id
-            })
-
-            # ONSS Employer
-            self.env.ref('l10n_be_hr_payroll.cp200_commission_salary_onss_employer').write({
-                'account_debit': accounts['621000'].id,
-                'account_credit': accounts['454000'].id,
-            })
-
-            self._configure_additional_structures(accounts, journal)
-
     def _configure_additional_structures(self, accounts, journal):
         # Could be overridden to add a specific structure without having to
         # recompute the accounts and the journal.

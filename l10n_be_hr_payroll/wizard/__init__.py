@@ -9,7 +9,7 @@ from . import hr_payroll_281_base_wizard
 from . import hr_payroll_281_10_wizard
 from . import hr_payroll_281_45_wizard
 from . import hr_payroll_allocating_paid_time_off
-from . import hr_payroll_generate_commission_payslips
+from . import hr_payroll_generate_warrant_payslips
 from . import hr_payroll_index_wizard
 from . import l10n_be_social_balance_sheet
 from . import l10n_be_hr_payroll_274_XX_wizard

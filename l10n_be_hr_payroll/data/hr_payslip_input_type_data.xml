@@ -25,14 +25,6 @@
         <field name="country_id" ref="base.be"/>
     </record>
 
-    <!-- Commissions on target -->
-    <record id="cp200_other_input_commission" model="hr.payslip.input.type">
-        <field name="name">Commission on Target</field>
-        <field name="code">Commission</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission'))]"/>
-    </record>
-
     <!-- Termination Fees -->
     <!-- Salary Other Input -->
     <record id="cp200_other_input_months" model="hr.payslip.input.type">

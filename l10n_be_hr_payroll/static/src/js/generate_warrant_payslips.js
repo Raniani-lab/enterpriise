@@ -1,4 +1,4 @@
-odoo.define('hr_payroll.generate.commission.payslips', function (require) {
+odoo.define('hr_payroll.generate.warrant.payslips', function (require) {
 "use strict";
     var core = require('web.core');
     var download = require('web.download');
@@ -30,7 +30,7 @@ odoo.define('hr_payroll.generate.commission.payslips', function (require) {
                     }).then(function() {
                         var recordID = self.model.localData[self.handle].data.id;
                         self._rpc({
-                            model: 'hr.payroll.generate.commission.payslips',
+                            model: 'hr.payroll.generate.warrant.payslips',
                             method: 'export_employee_file',
                             args: [recordID],
                         }).then(function(content){
@@ -38,7 +38,7 @@ odoo.define('hr_payroll.generate.commission.payslips', function (require) {
                             download(blob, 'exported_employees.csv', 'text/csv');
                             self.do_action({
                                 type: 'ir.actions.act_window',
-                                res_model: 'hr.payroll.generate.commission.payslips',
+                                res_model: 'hr.payroll.generate.warrant.payslips',
                                 view_mode: 'form',
                                 res_id: recordID,
                                 views: [[false, 'form']],
@@ -57,7 +57,7 @@ odoo.define('hr_payroll.generate.commission.payslips', function (require) {
             }).then(function() {
                 var recordID = self.model.localData[self.handle].data.id;
                 self._rpc({
-                    model: 'hr.payroll.generate.commission.payslips',
+                    model: 'hr.payroll.generate.warrant.payslips',
                     method: 'import_employee_file',
                     args: [recordID],
                 }).then(function(action) {
@@ -73,5 +73,5 @@ odoo.define('hr_payroll.generate.commission.payslips', function (require) {
         }),
     });
 
-    viewRegistry.add('generate_commission_payslips', GenerateCommissionPayslipsFormView);
+    viewRegistry.add('generate_warrant_payslips', GenerateCommissionPayslipsFormView);
 });

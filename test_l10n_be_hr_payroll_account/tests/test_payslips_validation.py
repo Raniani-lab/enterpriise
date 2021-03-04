@@ -3660,22 +3660,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.employee.first_contract_date = datetime.date(2020, 1, 15)
 
-        commission_payslip = self.env['hr.payslip'].create([{
-            'name': "Test Payslip",
-            'employee_id': self.employee.id,
-            'contract_id': self.contract.id,
-            'company_id': self.env.company.id,
-            'vehicle_id': self.car.id,
-            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission').id,
-            'date_from': datetime.date(2020, 3, 1),
-            'date_to': datetime.date(2020, 3, 31)
-        }])
+        commission_payslip = self._generate_payslip(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
 
         self.env['hr.payslip.input'].create([{
             'name': "Test Input",
             'payslip_id': commission_payslip.id,
             'sequence': 10,
-            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_commission').id,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
             'amount': 8484.0
         }])
 
@@ -3686,24 +3677,21 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         commission_payslip.compute_sheet()
         commission_payslip.action_payslip_done()
 
-        self.assertEqual(len(commission_payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(commission_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(commission_payslip.input_line_ids), 1)
-        self.assertEqual(len(commission_payslip.line_ids), 16)
+        self.assertEqual(len(commission_payslip.line_ids), 24)
 
         payslip_results = {
             'BASIC': 2650.0,
-            'COM': 8484.0,
-            'SALARY': 11134.0,
-            'ONSS': -1455.21,
-            'GROSS': 9678.79,
-            'P.P': -4336.88,
-            'M.ONSS': -60.94,
-            'ONSS.ADJ': 346.36,
-            'P.P.ADJ': 636.82,
-            'M.ONSS.ADJ': 23.66,
-            'BASIC.ADJ': -2650.0,
-            'NET': 3637.8,
+            'COMMISSION': 8484.0,
+            'SALARY': 11143.0,
+            'ONSS': -1456.39,
+            'GROSS': 9165.25,
+            'P.P': -4064.03,
+            'M.ONSS': -23.66,
+            'NET': 5666.25,
         }
+
         self._validate_payslip(commission_payslip, payslip_results)
 
         classic_payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
@@ -4041,226 +4029,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # BALANCE                                                             6413.89      6413.89
 
         self.assertEqual(len(move_lines), 12)
-        self.assertFalse(float_compare(sum(l.debit for l in move_lines), balance, 2))
-        self.assertFalse(float_compare(sum(l.credit for l in move_lines), balance, 2))
-        self._validate_move_lines(move_lines, move_line_results)
-
-    def test_accounting_entries_commissions(self):
-        # hr_payroll_structure_cp200_structure_commission
-        # Test case: Create 2 payslips (1 classic / 1 low salary)
-        # Generate and validate the accounting entries
-
-        # YTI: Drop this in master
-        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission', raise_if_not_found=False)
-        if not structure:
-            return
-
-        # 1rst contract
-        self.contract.write({
-            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
-            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
-        })
-
-        # Second contract
-        second_employee = self.env['hr.employee'].create([{
-            'name': "Test Employee",
-            'address_home_id': self.address_home.id,
-            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
-            'company_id': self.env.company.id,
-            'marital': "single",
-            'km_home_work': 75,
-        }])
-
-        second_car = self.env['fleet.vehicle'].create([{
-            'name': "Test Car 2",
-            'license_plate': "TEST2",
-            'driver_id': second_employee.address_home_id.id,
-            'company_id': self.env.company.id,
-            'model_id': self.model.id,
-            'first_contract_date': datetime.date(2020, 12, 17),
-            'co2': 88.0,
-            'car_value': 38000.0,
-            'fuel_type': "diesel",
-            'acquisition_date': datetime.date(2020, 1, 1)
-        }])
-
-        second_vehicle_contract = self.env['fleet.vehicle.log.contract'].create({
-            'name': "Test Contract",
-            'vehicle_id': second_car.id,
-            'company_id': self.env.company.id,
-            'start_date': datetime.date(2020, 12, 17),
-            'expiration_date': datetime.date(2021, 12, 17),
-            'state': "open",
-            'cost_frequency': "monthly",
-            'recurring_cost_amount_depreciated': 450.0
-        })
-
-        second_contract = self.env['hr.contract'].create([{
-            'name': "Contract For Payslip Test",
-            'employee_id': second_employee.id,
-            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
-            'company_id': self.env.company.id,
-            'date_generated_from': datetime.datetime(2020, 12, 1, 0, 0, 0),
-            'date_generated_to': datetime.datetime(2020, 12, 1, 0, 0, 0),
-            'car_id': second_car.id,
-            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
-            'date_start': datetime.date(2018, 12, 31),
-            'wage': 1500.0,
-            'wage_on_signature': 1500.0,
-            'state': "open",
-            'transport_mode_car': True,
-            'fuel_card': 150.0,
-            'internet': 38.0,
-            'representation_fees': 150.0,
-            'mobile': 30.0,
-            'meal_voucher_amount': 7.45,
-            'eco_checks': 250.0,
-            'ip_wage_rate': 25.0,
-            'ip': True,
-        }])
-
-        # Generate Batch / payslips
-        work_entries = self.contract._generate_work_entries(datetime.date(2020, 12, 1), datetime.date(2020, 12, 31))
-        payslip_run_id = self.env['hr.payslip.employees'].with_context(
-            default_date_start='2020-12-01',
-            default_date_end='2020-12-31',
-            default_structure_id=structure.id,
-            allowed_company_ids=self.env.company.ids,
-        ).create({}).compute_sheet()['res_id']
-        payslip_run = self.env['hr.payslip.run'].browse(payslip_run_id)
-
-        payslips = payslip_run.slip_ids
-        self.assertEqual(len(payslips), 2)
-
-        payslip_1 = payslips.filtered(lambda p: p.employee_id == self.employee)
-        payslip_1.input_line_ids.amount = 3000
-        payslip_1.compute_sheet()
-
-        self.assertEqual(len(payslip_1.worked_days_line_ids), 0)
-        self.assertEqual(len(payslip_1.input_line_ids), 1)
-        self.assertEqual(len(payslip_1.line_ids), 16)
-
-        payslip_results = {
-            'BASIC': 2650.0,
-            'COM': 3000.0,
-            'SALARY': 5650.0,
-            'ONSS': -738.46,
-            'GROSS': 4911.55,
-            'P.P': -1784.93,
-            'M.ONSS': -48.54,
-            'ONSS.ADJ': 346.36,
-            'P.P.ADJ': 636.82,
-            'M.ONSS.ADJ': 23.66,
-            'BASIC.ADJ': -2650.0,
-            'ONSS.TOTAL': 392.1,
-            'PPTOTAL': 1148.11,
-            'M.ONSS.TOTAL': 24.88,
-            'NET': 1434.91,
-            'ONSSEMPLOYER': 814.2,
-        }
-        self._validate_payslip(payslip_1, payslip_results)
-
-        # ================================================ #
-        #         Accounting entries for slip 1            #
-        # ================================================ #
-        # Basic salary 2650 - Commissions 3000
-
-        # Account   Formula                                                     Debit       Credit
-        # 620200    Remuneration: Commissions                                    3000
-        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                  1148.11
-
-        # 454000    ONSS worker - Employment Bonus - adj                                     392.1
-        # 454000    ONSS Misceleneous - adj                                                  24.88
-
-        # 455000    Remunration dues = NET                                                 1434.91
-
-        # 454000    ONSS Employer                                                           814.19
-        # 621000    ONSS Employer                                              814.19
-        # ----------------------------------------------------------------------------------------
-        # BALANCE                                                             3814.19      3814.19
-
-        payslip_2 = payslips.filtered(lambda p: p.employee_id == second_employee)
-        payslip_2.input_line_ids.amount = 500
-        payslip_2.compute_sheet()
-
-        self.assertEqual(len(payslip_2.worked_days_line_ids), 0)
-        self.assertEqual(len(payslip_2.input_line_ids), 1)
-        self.assertEqual(len(payslip_2.line_ids), 17)
-
-        payslip_results = {
-            'BASIC': 1500.0,
-            'COM': 500.0,
-            'SALARY': 2000.0,
-            'ONSS': -261.4,
-            'EmpBonus.1': 0.0,
-            'GROSS': 1738.60,
-            'P.P': -214.58,
-            'P.P.DED': 0,
-            'M.ONSS': 0.0,
-            'ONSS.ADJ': 0.0,
-            'P.P.ADJ': 118.28,
-            'M.ONSS.ADJ': 0.0,
-            'BASIC.ADJ': -1500.0,
-            'ONSS.TOTAL': 261.4,
-            'PPTOTAL': 96.3,
-            'M.ONSS.TOTAL': 0.0,
-            'NET': 142.3,
-            'ONSSEMPLOYER': 135.7,
-        }
-        self._validate_payslip(payslip_2, payslip_results)
-
-        # ================================================ #
-        #         Accounting entries for slip 2            #
-        # ================================================ #
-        # Basic salary 1500 - Commissions 500
-
-        # Account   Formula                                                     Debit       Credit
-        # 620200    Remuneration: Commissions                                     500
-        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                     96.3
-
-        # 454000    ONSS worker - Employment Bonus - adj                                     261.4
-        # 454000    ONSS Misceleneous - adj                                                      0
-
-        # 455000    Remunration dues = NET                                                   142.3
-
-        # 454000    ONSS Employer                                                           135.07
-        # 621000    ONSS Employer                                              135.07
-        # ----------------------------------------------------------------------------------------
-        # BALANCE                                                               635.7        635.7
-        # Generate accounting entries
-        payslip_run.action_validate()
-        account_move = payslip_1.move_id
-        move_lines = account_move.line_ids
-
-        balance = 4449.9
-        move_line_results = [
-            ('620200', 'debit', 3500),        # remuneration
-            ('453000', 'credit', 1244.41),       # PP
-            ('454000', 'credit', 653.5),       # ONSS - Emp Bonus
-            ('454000', 'credit', 24.88),        # Misc ONSS
-            ('455000', 'credit', 1577.21),      # NET
-            ('454000', 'credit', 949.9),      # ONSS Employer
-            ('621000', 'debit', 949.9),       # ONSS Employer
-        ]
-        # ================================================ #
-        #         Accounting entries for Batch             #
-        # ================================================ #
-        # Account   Formula                                                     Debit       Credit
-        # 620200    Remuneration: Commissions                                    3500
-        # 453000    Withholding Taxes  Precompte - low salary bonus - adj                  1213.23
-
-        # 454000    ONSS worker - Employment Bonus - adj                                    519.27
-        # 454000    ONSS Misceleneous - adj                                                  24.88
-
-        # 455000    Remunration dues = NET                                                 1742.62
-
-        # 454000    ONSS Employer                                                           949.89
-        # 621000    ONSS Employer                                              949.89
-        # ----------------------------------------------------------------------------------------
-        # BALANCE                                                             4449.89      4449.89
-        # Generate accounting entries
-
-        self.assertEqual(len(move_lines), 7)
         self.assertFalse(float_compare(sum(l.debit for l in move_lines), balance, 2))
         self.assertFalse(float_compare(sum(l.credit for l in move_lines), balance, 2))
         self._validate_move_lines(move_lines, move_line_results)

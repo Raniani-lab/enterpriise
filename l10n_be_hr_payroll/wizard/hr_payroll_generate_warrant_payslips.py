@@ -13,8 +13,8 @@ from odoo.tools import pycompat
 
 
 class HrPayrollGenerateCommissionPayslips(models.TransientModel):
-    _name = 'hr.payroll.generate.commission.payslips'
-    _description = "Generate Commission Payslips"
+    _name = 'hr.payroll.generate.warrant.payslips'
+    _description = "Generate Warrant Payslips"
 
     name = fields.Char()
     date_start = fields.Date(string='Date From', required=True,
@@ -24,12 +24,8 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     line_ids = fields.One2many(
-        'hr.payroll.generate.commission.payslips.line', 'wizard_id',
+        'hr.payroll.generate.warrant.payslips.line', 'wizard_id',
         compute="_compute_line_ids", store=True, readonly=False)
-    commission_type = fields.Selection([
-        ('commission', 'Classic Commission'),
-        ('wrrant', 'Warrant'),
-    ], required=True, default='commission')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('export', 'Export the employees file'),
@@ -54,7 +50,7 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
     def _reopen_wizard(self):
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'hr.payroll.generate.commission.payslips',
+            'res_model': 'hr.payroll.generate.warrant.payslips',
             'view_mode': 'form',
             'res_id': self.id,
             'views': [(False, 'form')],
@@ -92,7 +88,7 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
             raise UserError(_('Error while importing file'))
         return self._reopen_wizard()
 
-    def generate_commission_payslips(self):
+    def generate_warrant_payslips(self):
         batch = self.env["hr.payslip.run"].create({
             'name': 'Commissions : %s - %s' % (self.date_start, self.date_end),
             'state': 'draft',
@@ -102,10 +98,7 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
         mapped_commission_values = {
             line.employee_id.id: line.commission_amount for line in self.line_ids}
 
-        if self.commission_type == 'commission':
-            structure_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission').id
-        else:
-            structure_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant').id
+        structure_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant').id
 
         action_open_batch = self.env['hr.payslip.employees'].with_context(
             active_id=batch.id, commission_real_values=mapped_commission_values
@@ -120,10 +113,10 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
         return action_open_batch
 
 class HrPayrollGenerateCommissionPayslipsLine(models.TransientModel):
-    _name = 'hr.payroll.generate.commission.payslips.line'
-    _description = "Generate Commission Payslips Lines"
+    _name = 'hr.payroll.generate.warrant.payslips.line'
+    _description = "Generate Warrant Payslips Lines"
 
-    wizard_id = fields.Many2one('hr.payroll.generate.commission.payslips')
+    wizard_id = fields.Many2one('hr.payroll.generate.warrant.payslips')
     employee_id = fields.Many2one('hr.employee', required=True)
     commission_amount = fields.Monetary()
     currency_id = fields.Many2one('res.currency', related='wizard_id.currency_id')

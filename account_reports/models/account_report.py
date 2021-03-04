@@ -1462,7 +1462,10 @@ class AccountReport(models.AbstractModel):
 
     def get_xlsx(self, options, response=None):
         output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        workbook = xlsxwriter.Workbook(output, {
+            'in_memory': True,
+            'strings_to_formulas': False,
+        })
         sheet = workbook.add_worksheet(self._get_report_name()[:31])
 
         date_default_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})

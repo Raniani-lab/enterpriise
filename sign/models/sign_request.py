@@ -21,7 +21,7 @@ from random import randint
 
 from odoo import api, fields, models, http, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, formataddr, config, get_lang
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
 
@@ -426,7 +426,11 @@ class SignRequest(models.Model):
             self.completed_document = self.template_id.attachment_id.datas
             return
 
-        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+        try:
+            old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+            old_pdf.getNumPages()
+        except:
+            raise ValidationError(_("ERROR: Invalid PDF file!"))
 
         isEncrypted = old_pdf.isEncrypted
         if isEncrypted and not old_pdf.decrypt(password):

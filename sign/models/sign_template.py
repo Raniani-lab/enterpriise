@@ -116,6 +116,7 @@ class SignTemplate(models.Model):
         # TODO: for now, PDF files without extension are recognized as application/octet-stream;base64
         try:
             file_pdf = PdfFileReader(io.BytesIO(base64.b64decode(datas)), strict=False, overwriteWarnings=False)
+            file_pdf.getNumPages()
         except Exception as e:
             raise UserError(_("This file cannot be read. Is it a valid PDF?"))
         file_type = mimetype.replace('application/', '').replace(';base64', '')

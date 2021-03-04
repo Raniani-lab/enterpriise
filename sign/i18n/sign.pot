@@ -830,6 +830,12 @@ msgid "Duplicated Template"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_request.py:342
+#, python-format
+msgid "ERROR: Invalid PDF file!"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Edit fields"
 msgstr ""

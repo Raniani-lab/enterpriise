@@ -254,10 +254,9 @@ class HelpdeskTicket(models.Model):
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
     is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
     # Used to submit tickets from a contact form
-    partner_name = fields.Char(string='Customer Name', compute='_compute_partner_info', store=True, readonly=False)
-    partner_email = fields.Char(string='Customer Email', compute='_compute_partner_info', store=True, readonly=False)
-    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_info', store=True, readonly=False)
-
+    partner_name = fields.Char(string='Customer Name', compute='_compute_partner_name', store=True, readonly=False)
+    partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', store=True, readonly=False)
+    partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_phone', store=True, readonly=False)
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
@@ -391,11 +390,21 @@ class HelpdeskTicket(models.Model):
                 ticket.stage_id = ticket.team_id._determine_stage()[ticket.team_id.id]
 
     @api.depends('partner_id')
-    def _compute_partner_info(self):
+    def _compute_partner_name(self):
         for ticket in self:
             if ticket.partner_id:
                 ticket.partner_name = ticket.partner_id.name
+
+    @api.depends('partner_id')
+    def _compute_partner_email(self):
+        for ticket in self:
+            if ticket.partner_id:
                 ticket.partner_email = ticket.partner_id.email
+
+    @api.depends('partner_id')
+    def _compute_partner_phone(self):
+        for ticket in self:
+            if ticket.partner_id:
                 ticket.partner_phone = ticket.partner_id.phone
 
     @api.depends('partner_id')
@@ -465,7 +474,7 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket._origin.id)))
         return result
-        
+
     @api.model
     def create_action(self, action_ref, title, search_view_ref):
         action = self.env["ir.actions.actions"]._for_xml_id(action_ref)
@@ -474,7 +483,7 @@ class HelpdeskTicket(models.Model):
         if search_view_ref:
             action['search_view_id'] = self.env.ref(search_view_ref).read()[0]
         action['views'] = [(False, view) for view in action['view_mode'].split(",")]
-        
+
         return {'action': action}
 
     @api.model_create_multi

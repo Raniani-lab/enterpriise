@@ -15,10 +15,10 @@ class Track(models.Model):
         compute='_compute_firebase_enable_push_notifications')
     push_reminder = fields.Boolean('Push Reminder',
         help="Check this if you want to send a push notification reminder to everyone that has wishlisted this track.",
-        compute='_compute_push_reminder_fields', store=True, readonly=False)
+        compute='_compute_push_reminder', store=True, readonly=False)
     push_reminder_delay = fields.Integer('Push Reminder Delay',
         help="How many minutes before the start of the talk do you want to send the reminder?",
-        compute='_compute_push_reminder_fields', store=True, readonly=False)
+        compute='_compute_push_reminder_delay', store=True, readonly=False)
     push_reminder_posts = fields.One2many(
         'social.post', 'event_track_id', string="Push Reminders",
         groups="social.group_social_manager")
@@ -31,16 +31,19 @@ class Track(models.Model):
             track.firebase_enable_push_notifications = website.firebase_enable_push_notifications
 
     @api.depends('event_id', 'firebase_enable_push_notifications')
-    def _compute_push_reminder_fields(self):
+    def _compute_push_reminder(self):
         for track in self:
             if track.firebase_enable_push_notifications and not track.push_reminder:
                 track.push_reminder = True
-                track.push_reminder_delay = 15
             elif not track.firebase_enable_push_notifications or not track.push_reminder:
                 track.push_reminder = False
-                track.push_reminder_delay = 0
 
-            if not track.push_reminder_delay:
+    @api.depends('push_reminder')
+    def _compute_push_reminder_delay(self):
+        for track in self:
+            if track.push_reminder:
+                track.push_reminder_delay = 15
+            else:
                 track.push_reminder_delay = 0
 
     @api.model_create_multi

@@ -23,4 +23,5 @@
     'application': False,
     'installable': True,
     'auto_install': True,
+    'post_init_hook': 'post_init',
 }

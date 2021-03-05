@@ -29,7 +29,7 @@ class AppraisalAskFeedback(models.TransientModel):
 
     appraisal_id = fields.Many2one('hr.appraisal', default=lambda self: self.env.context.get('active_id', None))
     employee_id = fields.Many2one(related='appraisal_id.employee_id', string='Appraisal Employee')
-    subject = fields.Char('Subject', compute='_compute_body', store=True, readonly=False)
+    subject = fields.Char('Subject', compute='_compute_subject', store=True, readonly=False)
     body = fields.Html('Contents', sanitize_style=True, compute='_compute_body', store=True, readonly=False)
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_survey_mail_compose_message_ir_attachments_rel',
@@ -55,9 +55,13 @@ class AppraisalAskFeedback(models.TransientModel):
     deadline = fields.Date(string="Answer Deadline", required=True, default=_get_default_deadline)
 
     @api.depends('template_id')
-    def _compute_body(self):
+    def _compute_subject(self):
         for wizard in self.filtered(lambda w: w.template_id):
             wizard.subject = wizard.template_id.subject
+
+    @api.depends('template_id')
+    def _compute_body(self):
+        for wizard in self.filtered(lambda w: w.template_id):
             wizard.body = wizard.template_id.body_html
 
     def _prepare_survey_anwers(self, partners):

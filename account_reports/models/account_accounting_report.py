@@ -131,7 +131,7 @@ class AccountingReport(models.AbstractModel):
         :return ColumnDetail: A usable column declaration to build the html
         """
         if not formatter:
-            def formatter(v): return v
+            formatter = lambda v: v
         classes = classes or []
         if sortable:
             classes += ['sortable']

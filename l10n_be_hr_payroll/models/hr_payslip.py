@@ -25,54 +25,56 @@ class Payslip(models.Model):
         string='Days Not Granting Representation Fees',
         compute='_compute_work_entry_dependent_benefits')
     has_attachment_salary = fields.Boolean(compute='_compute_has_attachment_salary', store=True)
+    input_line_ids = fields.One2many(
+        compute='_compute_input_line_ids', store=True, readonly=False)
 
-    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
-    def _onchange_employee(self):
-        res = super()._onchange_employee()
+    @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
+    def _compute_input_line_ids(self):
         attachment_types = {
             'attachment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_attachment_salary').id,
             'assignment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_assignment_salary').id,
             'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
         }
         struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-        struct_commission = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_commission')
-        if self.struct_id == struct_warrant:
-            months = relativedelta(date_utils.add(self.date_to, days=1), self.date_from).months
-            if self.employee_id.id in self.env.context.get('commission_real_values', {}):
-                warrant_value = self.env.context['commission_real_values'][self.employee_id.id]
-            else:
-                warrant_value = self.contract_id.commission_on_target * months
-            warrant_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
-            lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id == warrant_type)
-            to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
-            to_add_vals = [(0, 0, {
-                'amount': warrant_value,
-                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant').id
-            })]
-            input_line_vals = to_remove_vals + to_add_vals
-            self.update({'input_line_ids': input_line_vals})
-        if not self.contract_id:
-            lines_to_remove = self.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
-            self.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
-        if self.has_attachment_salary:
-            lines_to_keep = self.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_types.values())
-            input_line_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
+        for slip in self:
+            if not slip.employee_id or not slip.date_from or not slip.date_to:
+                continue
+            if slip.struct_id == struct_warrant:
+                months = relativedelta(date_utils.add(slip.date_to, days=1), slip.date_from).months
+                if slip.employee_id.id in self.env.context.get('commission_real_values', {}):
+                    warrant_value = self.env.context['commission_real_values'][slip.employee_id.id]
+                else:
+                    warrant_value = slip.contract_id.commission_on_target * months
+                warrant_type = self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant')
+                lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id == warrant_type)
+                to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
+                to_add_vals = [(0, 0, {
+                    'amount': warrant_value,
+                    'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_warrant').id
+                })]
+                input_line_vals = to_remove_vals + to_add_vals
+                slip.update({'input_line_ids': input_line_vals})
+            if not slip.contract_id:
+                lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
+                slip.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
+            if slip.has_attachment_salary:
+                lines_to_keep = slip.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_types.values())
+                input_line_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
 
-            valid_attachments = self.contract_id.attachment_salary_ids.filtered(
-                lambda a: a.date_from <= self.date_to and a.date_to >= self.date_from)
+                valid_attachments = slip.contract_id.attachment_salary_ids.filtered(
+                    lambda a: a.date_from <= slip.date_to and a.date_to >= slip.date_from)
 
-            for garnished_type in list(set(valid_attachments.mapped('garnished_type'))):
-                attachments = valid_attachments.filtered(lambda a: a.garnished_type == garnished_type)
-                amount = sum(attachments.mapped('amount'))
-                name = ', '.join(attachments.mapped('name'))
-                input_type_id = attachment_types[garnished_type]
-                input_line_vals.append((0, 0, {
-                    'name': name,
-                    'amount': amount,
-                    'input_type_id': input_type_id,
-                }))
-            self.update({'input_line_ids': input_line_vals})
-        return res
+                for garnished_type in list(set(valid_attachments.mapped('garnished_type'))):
+                    attachments = valid_attachments.filtered(lambda a: a.garnished_type == garnished_type)
+                    amount = sum(attachments.mapped('amount'))
+                    name = ', '.join(attachments.mapped('name'))
+                    input_type_id = attachment_types[garnished_type]
+                    input_line_vals.append((0, 0, {
+                        'name': name,
+                        'amount': amount,
+                        'input_type_id': input_type_id,
+                    }))
+                slip.update({'input_line_ids': input_line_vals})
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid', 'worked_days_line_ids.is_credit_time')
     def _compute_worked_hours(self):
@@ -333,7 +335,6 @@ class Payslip(models.Model):
         year = self.date_to.year
         date_from = date(year, 1, 1)
         date_to = date(year, 12, 31)
-
         # 1. Number of months
         n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
         if n_months < 6:

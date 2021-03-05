@@ -7,7 +7,8 @@ from odoo import api, fields, models, _
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    input_line_ids = fields.One2many(compute='_compute_input_line_ids', store=True, readonly=False,
+    input_line_ids = fields.One2many(
+        compute='_compute_input_line_ids', store=True, readonly=False,
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     expense_sheet_ids = fields.One2many(
         'hr.expense.sheet', 'payslip_id', string='Expenses',
@@ -26,17 +27,19 @@ class HrPayslip(models.Model):
         if not self.input_line_ids.filtered(lambda line: line.input_type_id == expense_type):
             self.expense_sheet_ids.write({'payslip_id': False})
 
-    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
-    def _onchange_employee(self):
-        res = super()._onchange_employee()
-        if self.state == 'draft':
-            self.expense_sheet_ids = self.env['hr.expense.sheet'].search([
-                ('employee_id', '=', self.employee_id.id),
-                ('state', '=', 'approve'),
-                ('payment_mode', '=', 'own_account'),
-                ('refund_in_payslip', '=', True),
-                ('payslip_id', '=', False)])
-        return res
+    @api.depends('state', 'employee_id')
+    def _compute_expense_sheet_ids(self):
+        draft_slips = self.filtered(lambda p: p.employee_id and p.state == 'draft')
+        if not draft_slips:
+            return
+        sheets = self.env['hr.expense.sheet'].search([
+            ('employee_id', 'in', draft_slips.mapped('employee_id').ids),
+            ('state', '=', 'approve'),
+            ('payment_mode', '=', 'own_account'),
+            ('refund_in_payslip', '=', True),
+            ('payslip_id', '=', False)])
+        for slip in self:
+            slip.expense_sheet_ids = sheets.filtered(lambda s: s.employee_id == slip.employee_id)
 
     @api.depends('expense_sheet_ids')
     def _compute_input_line_ids(self):

@@ -7,20 +7,24 @@ from odoo import api, fields, models
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    vehicle_id = fields.Many2one('fleet.vehicle', string='Company Car', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", help="Employee's company car.")
+    vehicle_id = fields.Many2one(
+        'fleet.vehicle', string='Company Car',
+        compute='_compute_vehicle_id', store=True, readonly=False,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="Employee's company car.")
 
-    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
-    def _onchange_employee(self):
-        res = super(HrPayslip, self)._onchange_employee()
-        contract_sudo = self.contract_id.sudo()
-        if contract_sudo.car_id:
-            if contract_sudo.car_id.future_driver_id:
-                tmp_vehicle = self.env['fleet.vehicle'].search(
-                    [('driver_id', '=', contract_sudo.car_id.future_driver_id.id)], limit=1)
-                self.vehicle_id = tmp_vehicle
-            else:
-                self.vehicle_id = contract_sudo.car_id
-        return res
+    @api.depends('contract_id.car_id.future_driver_id')
+    def _compute_vehicle_id(self):
+        for slip in self.filtered(lambda s: s.state not in ['done', 'cancel']):
+            contract_sudo = slip.contract_id.sudo()
+            if contract_sudo.car_id:
+                if contract_sudo.car_id.future_driver_id:
+                    tmp_vehicle = self.env['fleet.vehicle'].search(
+                        [('driver_id', '=', contract_sudo.car_id.future_driver_id.id)], limit=1)
+                    slip.vehicle_id = tmp_vehicle
+                else:
+                    slip.vehicle_id = contract_sudo.car_id
 
     def _get_data_files_to_update(self):
         # Note: file order should be maintained

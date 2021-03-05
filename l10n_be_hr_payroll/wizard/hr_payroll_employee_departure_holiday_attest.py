@@ -161,7 +161,6 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'name': '%s - %s' % (struct_n_id.payslip_name, self.employee_id.display_name),
             'employee_id': self.employee_id.id,
         })
-        termination_payslip_n._onchange_employee()
         if not termination_payslip_n.contract_id:
             termination_payslip_n.contract_id = self.employee_id.contract_id
         termination_payslip_n.struct_id = struct_n_id.id
@@ -211,7 +210,6 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             'name': '%s - %s' % (struct_n1_id.payslip_name, self.employee_id.display_name),
             'employee_id': self.employee_id.id,
         })
-        termination_payslip_n1._onchange_employee()
         if not termination_payslip_n1.contract_id:
             termination_payslip_n1.contract_id = self.employee_id.contract_id
         termination_payslip_n1.struct_id = struct_n1_id.id

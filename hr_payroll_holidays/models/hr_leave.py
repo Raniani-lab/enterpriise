@@ -44,7 +44,7 @@ class HrLeave(models.Model):
                     elif payslip.state == 'verify':
                         waiting_payslips |= payslip
         if draft_payslips:
-            draft_payslips._onchange_employee()
+            draft_payslips._compute_worked_days_line_ids()
         if waiting_payslips:
             waiting_payslips.action_refresh_from_work_entries()
 

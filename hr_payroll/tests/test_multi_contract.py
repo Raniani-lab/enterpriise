@@ -25,7 +25,6 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'contract_id': self.contract_cdd.id,
             'struct_id': self.developer_pay_structure.id,
         })
-        payslip._onchange_employee()
         attendance_line = payslip.worked_days_line_ids[0] 
         self.assertEqual(attendance_line.number_of_hours, 80)
         self.assertEqual(attendance_line.number_of_days, 10)
@@ -42,7 +41,6 @@ class TestPayslipMultiContract(TestPayslipContractBase):
             'contract_id': self.contract_cdi.id,
             'struct_id': self.developer_pay_structure.id,
         })
-        payslip._onchange_employee()
         attendance_line = payslip.worked_days_line_ids[0]
         self.assertEqual(attendance_line.number_of_hours, 77)
         self.assertEqual(attendance_line.number_of_days, 11)

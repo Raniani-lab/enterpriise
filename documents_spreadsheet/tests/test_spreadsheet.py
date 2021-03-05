@@ -86,7 +86,6 @@ class SpreadsheetDocuments(TransactionCase):
                 "mimetype": "application/o-spreadsheet",
             })
         spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
-        # import pdb; pdb.set_trace()
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet2.id, spreadsheet1.id])
 

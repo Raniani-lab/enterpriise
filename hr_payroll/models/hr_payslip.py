@@ -23,58 +23,75 @@ class HrPayslip(models.Model):
     _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _order = 'date_to desc'
 
-    struct_id = fields.Many2one('hr.payroll.structure', string='Structure',
-        readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
+    struct_id = fields.Many2one(
+        'hr.payroll.structure', string='Structure',
+        compute='_compute_struct_id', store=True, readonly=False,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
         help='Defines the rules that have to be applied to this payslip, according '
              'to the contract chosen. If the contract is empty, this field isn\'t '
              'mandatory anymore and all the valid rules of the structures '
              'of the employee\'s contracts will be applied.')
     struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
     wage_type = fields.Selection(related='struct_type_id.wage_type')
-    name = fields.Char(string='Payslip Name', readonly=True, required=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    number = fields.Char(string='Reference', readonly=True, copy=False,
+    name = fields.Char(
+        string='Payslip Name', required=True,
+        compute='_compute_name', store=True, readonly=False,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    number = fields.Char(
+        string='Reference', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', required=True, readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), '|', ('active', '=', True), ('active', '=', False)]")
-    date_from = fields.Date(string='From', readonly=True, required=True,
+    date_from = fields.Date(
+        string='From', readonly=True, required=True,
         default=lambda self: fields.Date.to_string(date.today().replace(day=1)), states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    date_to = fields.Date(string='To', readonly=True, required=True,
+    date_to = fields.Date(
+        string='To', readonly=True, required=True,
         default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()),
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     state = fields.Selection([
         ('draft', 'Draft'),
         ('verify', 'Waiting'),
         ('done', 'Done'),
-        ('cancel', 'Rejected'),
-    ], string='Status', index=True, readonly=True, copy=False, default='draft', tracking=True,
+        ('cancel', 'Rejected')],
+        string='Status', index=True, readonly=True, copy=False,
+        default='draft', tracking=True,
         help="""* When the payslip is created the status is \'Draft\'
                 \n* If the payslip is under verification, the status is \'Waiting\'.
                 \n* If the payslip is confirmed then status is set to \'Done\'.
                 \n* When user cancel payslip the status is \'Rejected\'.""")
     line_ids = fields.One2many(
-        'hr.payslip.line', 'slip_id', compute='_compute_line_ids', store=True,
-        string='Payslip Lines', readonly=True, copy=True,
+        'hr.payslip.line', 'slip_id', string='Payslip Lines',
+        compute='_compute_line_ids', store=True, readonly=True, copy=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    company_id = fields.Many2one('res.company', string='Company', readonly=True, copy=False, required=True,
+    company_id = fields.Many2one(
+        'res.company', string='Company', copy=False, required=True,
+        compute='_compute_company_id', store=True, readonly=False,
         default=lambda self: self.env.company,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    worked_days_line_ids = fields.One2many('hr.payslip.worked_days', 'payslip_id',
-        string='Payslip Worked Days', copy=True, readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    input_line_ids = fields.One2many('hr.payslip.input', 'payslip_id', string='Payslip Inputs',
-        readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    paid = fields.Boolean(string='Made Payment Order ? ', readonly=True, copy=False,
+    worked_days_line_ids = fields.One2many(
+        'hr.payslip.worked_days', 'payslip_id', string='Payslip Worked Days', copy=True,
+        compute='_compute_worked_days_line_ids', store=True, readonly=False,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    input_line_ids = fields.One2many(
+        'hr.payslip.input', 'payslip_id', string='Payslip Inputs',
+        readonly=False, states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    paid = fields.Boolean(
+        string='Made Payment Order ? ', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     note = fields.Text(string='Internal Note', readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    contract_id = fields.Many2one('hr.contract', string='Contract', readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
-    credit_note = fields.Boolean(string='Credit Note', readonly=True,
+    contract_id = fields.Many2one(
+        'hr.contract', string='Contract', domain="[('company_id', '=', company_id)]",
+        compute='_compute_contract_id', store=True, readonly=False,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    credit_note = fields.Boolean(
+        string='Credit Note', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         help="Indicates this payslip has a refund of another")
-    payslip_run_id = fields.Many2one('hr.payslip.run', string='Batch Name', readonly=True,
+    payslip_run_id = fields.Many2one(
+        'hr.payslip.run', string='Batch Name', readonly=True,
         copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
         domain="[('company_id', '=', company_id)]")
     sum_worked_hours = fields.Float(compute='_compute_worked_hours', store=True, help='Total hours of attendance and time off (paid or not)')
@@ -84,7 +101,7 @@ class HrPayslip(models.Model):
     basic_wage = fields.Monetary(compute='_compute_basic_net')
     net_wage = fields.Monetary(compute='_compute_basic_net')
     currency_id = fields.Many2one(related='contract_id.currency_id')
-    warning_message = fields.Char(readonly=True)
+    warning_message = fields.Char(compute='_compute_warning_message', store=True, readonly=False)
     is_regular = fields.Boolean(compute='_compute_is_regular')
     has_negative_net_to_report = fields.Boolean()
     negative_net_to_report_display = fields.Boolean(compute='_compute_negative_net_to_report_display')
@@ -305,8 +322,7 @@ class HrPayslip(models.Model):
         # after the payslip generation
         self.mapped('worked_days_line_ids').unlink()
         self.mapped('line_ids').unlink()
-        for payslip in self:
-            payslip._onchange_employee()
+        self._compute_worked_days_line_ids()
         self.compute_sheet()
 
     def _round_days(self, work_entry_type, days):
@@ -485,47 +501,59 @@ class HrPayslip(models.Model):
                 }
         return result.values()
 
-    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
-    def _onchange_employee(self):
-        if (not self.employee_id) or (not self.date_from) or (not self.date_to):
-            return
+    @api.depends('employee_id')
+    def _compute_company_id(self):
+        for slip in self:
+            slip.company_id = slip.employee_id.company_id
 
-        employee = self.employee_id
-        date_from = self.date_from
-        date_to = self.date_to
+    @api.depends('employee_id', 'date_from', 'date_to')
+    def _compute_contract_id(self):
+        for slip in self:
+            if not slip.employee_id or not slip.date_from or not slip.date_to:
+                continue
+            # Add a default contract if not already defined or invalid
+            if slip.contract_id or slip.employee_id == slip.contract_id.employee_id:
+                continue
+            contracts = slip.employee_id._get_contracts(slip.date_from, slip.date_to)
+            slip.contract_id = contracts[0] if contracts else False
 
-        self.company_id = employee.company_id
-        if not self.contract_id or self.employee_id != self.contract_id.employee_id: # Add a default contract if not already defined
-            contracts = employee._get_contracts(date_from, date_to)
+    @api.depends('contract_id')
+    def _compute_struct_id(self):
+        for slip in self:
+            slip.struct_id = slip.contract_id.structure_type_id.default_struct_id
 
-            if not contracts or not contracts[0].structure_type_id.default_struct_id:
-                self.contract_id = False
-                self.struct_id = False
-                return
-            self.contract_id = contracts[0]
-            self.struct_id = contracts[0].structure_type_id.default_struct_id
+    @api.depends('employee_id', 'struct_id', 'date_from')
+    def _compute_name(self):
+        for slip in self.filtered(lambda p: p.employee_id and p.date_from):
+            lang = slip.employee_id.sudo().address_home_id.lang or self.env.user.lang
+            context = {'lang': lang}
+            payslip_name = slip.struct_id.payslip_name or _('Salary Slip')
+            del context
 
-        lang = employee.sudo().address_home_id.lang or self.env.user.lang
-        context = {'lang': lang}
-        payslip_name = self.struct_id.payslip_name or _('Salary Slip')
-        del context
+            slip.name = '%(payslip_name)s - %(employee_name)s - %(dates)s' % {
+                'payslip_name': payslip_name,
+                'employee_name': slip.employee_id.name,
+                'dates': format_date(self.env, slip.date_from, date_format="MMMM y", lang_code=lang)
+            }
 
-        self.name = '%s - %s - %s' % (
-            payslip_name,
-            self.employee_id.name or '',
-            format_date(self.env, self.date_from, date_format="MMMM y", lang_code=lang)
-        )
+    @api.depends('date_to')
+    def _compute_warning_message(self):
+        for slip in self.filtered(lambda p: p.date_to):
+            if slip.date_to > date_utils.end_of(fields.Date.today(), 'month'):
+                slip.warning_message = _(
+                    "This payslip can be erroneous! Work entries may not be generated for the period from %(start)s to %(end)s.",
+                    start=date_utils.add(date_utils.end_of(fields.Date.today(), 'month'), days=1),
+                    end=slip.date_to,
+                )
+            else:
+                slip.warning_message = False
 
-        if date_to > date_utils.end_of(fields.Date.today(), 'month'):
-            self.warning_message = _(
-                "This payslip can be erroneous! Work entries may not be generated for the period from %(start)s to %(end)s.",
-                start=date_utils.add(date_utils.end_of(fields.Date.today(), 'month'), days=1),
-                end=date_to,
-            )
-        else:
-            self.warning_message = False
-
-        self.worked_days_line_ids = self._get_new_worked_days_lines()
+    @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
+    def _compute_worked_days_line_ids(self):
+        valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
+        valid_slips.worked_days_line_ids.unlink()
+        for slip in valid_slips:
+            slip.write({'worked_days_line_ids': slip._get_new_worked_days_lines()})
 
     def _get_new_worked_days_lines(self):
         if self.struct_id.use_worked_day_lines:
@@ -706,11 +734,13 @@ class HrPayslipWorkedDays(models.Model):
         help="The contract for which apply this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')
 
-    @api.depends('work_entry_type_id', 'payslip_id', 'payslip_id.struct_id')
+    @api.depends(
+        'work_entry_type_id', 'payslip_id', 'payslip_id.struct_id',
+        'payslip_id.employee_id', 'payslip_id.contract_id', 'payslip_id.struct_id', 'payslip_id.date_from', 'payslip_id.date_to')
     def _compute_is_paid(self):
         unpaid = {struct.id: struct.unpaid_work_entry_type_ids.ids for struct in self.mapped('payslip_id.struct_id')}
         for worked_days in self:
-            worked_days.is_paid = worked_days.work_entry_type_id.id not in unpaid[worked_days.payslip_id.struct_id.id] if worked_days.payslip_id.struct_id.id in unpaid else False
+            worked_days.is_paid = (worked_days.work_entry_type_id.id not in unpaid[worked_days.payslip_id.struct_id.id]) if worked_days.payslip_id.struct_id.id in unpaid else False
 
     @api.depends('is_paid', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):

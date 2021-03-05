@@ -295,7 +295,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }])
         work_entries = cls.contract._generate_work_entries(date_from, date_to)
         work_entries.action_validate()
-        payslip._onchange_employee()
         payslip.compute_sheet()
         return payslip
 
@@ -1027,8 +1026,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }])
 
         new_contract._generate_work_entries(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
-
-        payslip._onchange_employee()
+        payslip._compute_worked_days_line_ids()
         payslip.compute_sheet()
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
@@ -3672,7 +3670,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         work_entries = self.contract._generate_work_entries(datetime.date(2020, 3, 1), datetime.date(2020, 3, 31))
         work_entries.action_validate()
-        commission_payslip._onchange_employee()
         commission_payslip.input_line_ids.amount = 8484.0
         commission_payslip.compute_sheet()
         commission_payslip.action_payslip_done()

@@ -137,13 +137,13 @@ class TestExamples(AccountTestInvoicingCommon):
         # Setup the payslip
         payslip_values = dict(payslip_values or {},
                               contract_id=employee.contract_id,
-                              company_id=self.env.company.id)
+                              company_id=self.env.company.id,
+                              name='Test Payslip')
 
         payslip_id = self.Payslip.new(self.Payslip.default_get(self.Payslip.fields_get()))
         payslip_id.update(payslip_values)
 
         payslip_id.employee_id = employee.id
-        payslip_id._onchange_employee()
         values = payslip_id._convert_to_write(payslip_id._cache)
         payslip_id = self.Payslip.create(values)
 

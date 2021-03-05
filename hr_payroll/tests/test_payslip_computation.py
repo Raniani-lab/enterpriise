@@ -34,10 +34,25 @@ class TestPayslipComputation(TestPayslipContractBase):
             'date_from': date(2016, 1, 1),
             'date_to': date(2016, 3, 31)
         })
+        # To avoid having is_paid = False in some tests, as all the records are created on the
+        # same transaction which is quite unlikely supposed to happen in real conditions
+        worked_days = (cls.richard_payslip + cls.richard_payslip_quarter).worked_days_line_ids
+        worked_days._compute_is_paid()
+        worked_days.flush(['is_paid'])
+
+    def _reset_work_entries(self, contract):
+        # Use hr.leave to automatically regenerate work entries for absences
+        self.env['hr.work.entry'].search([('employee_id', '=', contract.employee_id.id)]).unlink()
+        now = datetime(2016, 1, 1, 0, 0, 0)
+        contract.write({
+            'date_generated_from': now,
+            'date_generated_to': now,
+        })
 
     def test_unpaid_amount(self):
         self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 0, places=2, msg="It should be paid the full wage")
 
+        self._reset_work_entries(self.richard_payslip.contract_id)
         self.env['resource.calendar.leaves'].create({
             'name': 'Doctor Appointment',
             'date_from': datetime.strptime('2016-1-11 07:00:00', '%Y-%m-%d %H:%M:%S'),
@@ -49,10 +64,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
 
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
-        work_entries.action_validate()
-
-        # Call _onchange_employee to compute worked_days_line_ids and get the updated unpaid amount
-        self.richard_payslip._onchange_employee()
+        self.richard_payslip._compute_worked_days_line_ids()
         # TBE: In master the Monetary field were not rounded because the currency_id wasn't computed yet.
         # The test was incorrect using the value 238.09, with 238.10 it is ok
         self.assertAlmostEqual(self.richard_payslip._get_unpaid_amount(), 238.10, delta=0.01, msg="It should be paid 238.10 less")
@@ -78,11 +90,11 @@ class TestPayslipComputation(TestPayslipContractBase):
             'time_type': 'leave',
         })
 
+        self._reset_work_entries(self.richard_payslip.contract_id)
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 2, 1))
         work_entries.action_validate()
 
-        # Call _onchange_employee to compute worked_days_line_ids
-        self.richard_payslip._onchange_employee()
+        self.richard_payslip._compute_worked_days_line_ids()
         work_days = self.richard_payslip.worked_days_line_ids
 
         self.assertAlmostEqual(sum(work_days.mapped('amount')), self.contract_cdi.wage - self.richard_payslip._get_unpaid_amount())
@@ -114,10 +126,11 @@ class TestPayslipComputation(TestPayslipContractBase):
                 'time_type': 'leave',
             })
 
+        self._reset_work_entries(self.richard_payslip_quarter.contract_id)
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
         work_entries.action_validate()
 
-        self.richard_payslip_quarter._onchange_employee()
+        self.richard_payslip_quarter._compute_worked_days_line_ids()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
         leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
@@ -143,11 +156,12 @@ class TestPayslipComputation(TestPayslipContractBase):
                 'work_entry_type_id': self.work_entry_type_unpaid.id,
                 'time_type': 'leave',
             })
+        self._reset_work_entries(self.richard_payslip_quarter.contract_id)
 
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
         work_entries.action_validate()
 
-        self.richard_payslip_quarter._onchange_employee()
+        self.richard_payslip_quarter._compute_worked_days_line_ids()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
         leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
@@ -174,10 +188,11 @@ class TestPayslipComputation(TestPayslipContractBase):
                 'time_type': 'leave',
             })
 
+        self._reset_work_entries(self.richard_payslip_quarter.contract_id)
         work_entries = self.richard_emp.contract_ids._generate_work_entries(date(2016, 1, 1), date(2016, 3, 31))
         work_entries.action_validate()
 
-        self.richard_payslip_quarter._onchange_employee()
+        self.richard_payslip_quarter._compute_worked_days_line_ids()
         work_days = self.richard_payslip_quarter.worked_days_line_ids
 
         leave_line = work_days.filtered(lambda l: l.code == self.env.ref('hr_work_entry.work_entry_type_attendance').code)
@@ -186,7 +201,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         extra_attendance_line = work_days.filtered(lambda l: l.code == self.work_entry_type_unpaid.code)
         self.assertAlmostEqual(extra_attendance_line.number_of_days, 2.5, places=2)
 
-    def test_sum_catergory(self):
+    def test_sum_category(self):
         self.richard_payslip.compute_sheet()
         self.richard_payslip.action_payslip_done()
 
@@ -199,7 +214,7 @@ class TestPayslipComputation(TestPayslipContractBase):
             'date_to': date(2016, 1, 31)
         })
         self.richard_payslip2.compute_sheet()
-        self.assertEqual(2800, self.richard_payslip2.line_ids.filtered(lambda x: x.code == 'SUMALW').total)
+        self.assertEqual(3010.0, self.richard_payslip2.line_ids.filtered(lambda x: x.code == 'SUMALW').total)
 
     def test_payslip_generation_with_extra_work(self):
         # /!\ this is in the weekend (Sunday) => no calendar attendance at this time
@@ -218,11 +233,14 @@ class TestPayslipComputation(TestPayslipContractBase):
         })
         work_entry.action_validate()
         payslip_wizard = self.env['hr.payslip.employees'].create({'employee_ids': [(4, self.richard_emp.id)]})
-        payslip_wizard.with_context({
+        batch_id = payslip_wizard.with_context({
             'default_date_start': Date.to_string(start),
             'default_date_end': Date.to_string(end + relativedelta(days=1))
-        }).compute_sheet()
-        payslip = self.env['hr.payslip'].search([('employee_id', '=', self.richard_emp.id)])
+        }).compute_sheet()['res_id']
+        payslip = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.richard_emp.id),
+            ('payslip_run_id', '=', batch_id),
+        ])
         work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.env.ref('hr_work_entry.work_entry_type_attendance'))  # From default calendar.attendance
         extra_work_line = payslip.worked_days_line_ids.filtered(lambda l: l.work_entry_type_id == self.work_entry_type)
 
@@ -259,7 +277,8 @@ class TestPayslipComputation(TestPayslipContractBase):
             'date_from': date(2016, 1, 1),
             'date_to': date(2016, 1, 31)
         })
-        self.assertFalse(payslip.contract_id)
+        self.assertTrue(payslip.contract_id)
+        payslip.contract_id = False
         self.assertEqual(payslip.normal_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.basic_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.net_wage, 0, "It should have a default wage of 0")

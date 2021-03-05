@@ -405,7 +405,6 @@ class HrPayroll(Controller):
             "\t" * offset + "work_entries = self.contract._generate_work_entries(datetime.date(%s, %s, %s), datetime.date(%s, %s, %s))" % (
                 start.year, start.month, start.day, end.year, end.month, end.day),
             "\t" * offset + "work_entries.action_validate()",
-            "\t" * offset + "self.payslip._onchange_employee()",
             "\t" * offset + "self.payslip.compute_sheet()\n",
         ] + [
             "\t" * offset + "self.assertEqual(len(self.payslip.worked_days_line_ids), %s)" % (len(payslip.worked_days_line_ids)),

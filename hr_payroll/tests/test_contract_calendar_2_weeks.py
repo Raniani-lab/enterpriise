@@ -16,7 +16,6 @@ class TestPayslipContractCalendar2Weeks(TestPayslipContractBase):
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
         })
-        payslip._onchange_employee()
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 104, "It should be 104 hours of work this month for this contract")
         self.assertEqual(payslip.worked_days_line_ids.number_of_days, 13, "It should be 13 days of work this month for this contract")
 
@@ -37,7 +36,6 @@ class TestPayslipContractCalendar2Weeks(TestPayslipContractBase):
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
         })
-        payslip._onchange_employee()
         work = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'WORK100')
         leave = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'LEAVETEST100')
         self.assertEqual(work.number_of_hours, 88, "It should be 88 hours of work this month for this contract")
@@ -62,7 +60,6 @@ class TestPayslipContractCalendar2Weeks(TestPayslipContractBase):
             'date_from': datetime.strptime('2015-11-01', '%Y-%m-%d'),
             'date_to': datetime.strptime('2015-11-30', '%Y-%m-%d'),
         })
-        payslip._onchange_employee()
         work = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'WORK100')
         leave = payslip.worked_days_line_ids.filtered(lambda line: line.code == 'LEAVETEST100')
         self.assertEqual(work.number_of_hours, 72, "It should be 72 hours of work this month for this contract")

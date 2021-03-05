@@ -79,7 +79,6 @@ class TestStudent(AccountTestInvoicingCommon):
             'date_from': date(2020, 9, 1),
             'date_to': date(2020, 9, 30),
         })
-        payslip._onchange_employee()
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(payslip.worked_days_line_ids.number_of_hours, 54)

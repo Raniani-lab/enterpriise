@@ -3,10 +3,10 @@
 
 from datetime import datetime, date
 
-from odoo.tests import common
+from odoo.tests import common, tagged
 from odoo.addons.test_l10n_be_hr_payroll_account.tests.test_payslip import TestPayslipBase
 
-
+@tagged('thirteen_month')
 class Test13thMonth(TestPayslipBase):
 
     def setUp(self):
@@ -17,6 +17,7 @@ class Test13thMonth(TestPayslipBase):
 
     def test_end_of_year_bonus(self):
         self.payslip.contract_id = self.create_contract(date(2015, 1, 1))
+        self.payslip.struct_id = self.structure
 
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
@@ -38,6 +39,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertEqual(self.payslip._get_paid_amount(), 2500, 'It should be the full December wage')
 
     def test_13th_month_paid_amount_after_july(self):
@@ -45,13 +47,15 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertEqual(self.payslip._get_paid_amount(), 0, 'It should be 0 after the 1st July')
 
-    def test_13th_month_paid_amount_fist_july(self):
+    def test_13th_month_paid_amount_first_july(self):
         contract = self.create_contract(date(2019, 7, 1))
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertEqual(self.payslip._get_paid_amount(), 1250, 'It should be count 6 months')
 
     def test_13th_month_paid_amount_month_start(self):
@@ -59,6 +63,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 7 / 12, msg='It should count 7/12 months')
 
     def test_13th_month_paid_amount_month_middle(self):
@@ -66,6 +71,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 6 / 12, msg='It should count 6/12 months')
 
     def test_13th_month_paid_amount_multiple_contracts(self):
@@ -74,6 +80,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 6 / 12, msg='It should count 6/12 months')
 
     def test_13th_month_paid_amount_multiple_contracts_middle(self):
@@ -82,6 +89,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage, msg='It should count all months')
 
     def test_13th_month_paid_amount_multiple_contracts_weekend(self):
@@ -90,6 +98,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage, msg='It should count all months')
 
     def test_13th_month_paid_amount_multiple_contracts_next_week(self):
@@ -98,11 +107,13 @@ class Test13thMonth(TestPayslipBase):
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 11 / 12, msg='It should count 11/12 months')
 
     def test_unpaid_work_entry(self):
         contract = self.create_contract(date(2015, 1, 24))
         self.payslip.contract_id = contract
+        self.payslip.struct_id = self.structure
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         unpaid_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave')
         work_entry = self.env['hr.work.entry'].create({

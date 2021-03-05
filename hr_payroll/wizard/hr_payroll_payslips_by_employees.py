@@ -94,8 +94,10 @@ class HrPayslipEmployees(models.TransientModel):
 
 
         default_values = Payslip.default_get(Payslip.fields_get())
+        payslips_vals = []
         for contract in contracts:
             values = dict(default_values, **{
+                'name': _('New Payslip'),
                 'employee_id': contract.employee_id.id,
                 'credit_note': payslip_run.credit_note,
                 'payslip_run_id': payslip_run.id,
@@ -104,10 +106,8 @@ class HrPayslipEmployees(models.TransientModel):
                 'contract_id': contract.id,
                 'struct_id': self.structure_id.id or contract.structure_type_id.default_struct_id.id,
             })
-            payslip = self.env['hr.payslip'].new(values)
-            payslip._onchange_employee()
-            values = payslip._convert_to_write(payslip._cache)
-            payslips += Payslip.create(values)
+            payslips_vals.append(values)
+        payslips = Payslip.create(payslips_vals)
         payslips.compute_sheet()
         payslip_run.state = 'verify'
 

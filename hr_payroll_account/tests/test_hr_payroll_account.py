@@ -136,9 +136,6 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
         # YTI Clean that brol
         cls.hr_payslip_john.date_to = str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
 
-        cls.hr_payslip_john._onchange_employee()
-
-
         cls.payslip_run = cls.env['hr.payslip.run'].create({
             'date_start': time.strftime('%Y-%m-01'),
             'date_end': str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10],

@@ -14,10 +14,7 @@ class Document(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         vals_list = self._assign_spreadsheet_default_folder(vals_list)
-        for vals in vals_list:
-            if vals.get('handler') == 'spreadsheet':
-                if 'thumbnail' in vals:
-                    vals['thumbnail'] = image_process(vals['thumbnail'], size=(80, 80), crop='center')
+        vals_list = self._resize_spreadsheet_thumbnails(vals_list)
         documents = super().create(vals_list)
         documents._update_spreadsheet_contributors()
         return documents
@@ -25,6 +22,8 @@ class Document(models.Model):
     def write(self, vals):
         if 'raw' in vals:
             self._update_spreadsheet_contributors()
+        if all(document.handler == 'spreadsheet' for document in self):
+            vals = self._resize_thumbnail_value(vals)
         return super().write(vals)
 
     @api.depends('checksum', 'handler')
@@ -33,6 +32,24 @@ class Document(models.Model):
         # They should be saved independently.
         spreadsheets = self.filtered(lambda d: d.handler == 'spreadsheet')
         super(Document, self - spreadsheets)._compute_thumbnail()
+
+    def _resize_thumbnail_value(self, vals):
+        if 'thumbnail' in vals:
+            return dict(
+                vals,
+                thumbnail=image_process(vals['thumbnail'], size=(750, 750), crop='center'),
+            )
+        return vals
+
+    def _resize_spreadsheet_thumbnails(self, vals_list):
+        return [
+            (
+                self._resize_thumbnail_value(vals)
+                if vals.get('handler') == 'spreadsheet'
+                else vals
+            )
+            for vals in vals_list
+        ]
 
     def _assign_spreadsheet_default_folder(self, vals_list):
         """Make sure spreadsheet values have a `folder_id`. Assign the

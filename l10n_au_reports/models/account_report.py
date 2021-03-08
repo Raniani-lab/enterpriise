@@ -101,7 +101,7 @@ class TaxReport(models.AbstractModel):
             ORDER BY payee.name
         """
 
-        self._cr_execute(options, query, params)
+        self.env.cr.execute(query, params)
         partner_values = self.env.cr.dictfetchall()
         for p in partner_values:
             if p.get('total_gst', 0) > p.get('gross_paid', 0) and raise_warning:

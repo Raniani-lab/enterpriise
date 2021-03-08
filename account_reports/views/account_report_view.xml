@@ -75,6 +75,7 @@
                       <group string="Computation">
                         <field name="formulas"/>
                         <field name="domain"/>
+                        <field name="control_domain"/>
                         <field name="groupby"/>
                         <field name="special_date_changer"/>
                       </group>

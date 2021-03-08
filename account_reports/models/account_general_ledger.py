@@ -193,7 +193,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
         # Fetch the next batch of lines.
         amls_query, amls_params = self._get_query_amls(options, expanded_account, offset=offset, limit=load_more_counter)
-        self._cr_execute(options, amls_query, amls_params)
+        self.env.cr.execute(amls_query, amls_params)
         for aml in self._cr.dictfetchall():
             # Don't show more line than load_more_counter.
             if load_more_counter == 0:
@@ -523,7 +523,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         new_options = self._force_strict_range(options)
         tables, where_clause, where_params = self._query_get(new_options, domain=domain)
         ct_query = self.env['res.currency']._get_query_currency_table(options)
-        query = '''
+        query = f'''
             SELECT
                 account_move_line.id,
                 account_move_line.date,
@@ -548,17 +548,16 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 journal.code                            AS journal_code,
                 journal.name                            AS journal_name,
                 full_rec.name                           AS full_rec_name
-            FROM account_move_line
-            LEFT JOIN account_move account_move_line__move_id ON account_move_line__move_id.id = account_move_line.move_id
-            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
+            FROM {tables}
+            LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN res_company company               ON company.id = account_move_line.company_id
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
-            WHERE %s
+            WHERE {where_clause}
             ORDER BY account_move_line.date, account_move_line.id
-        ''' % (ct_query, where_clause)
+        '''
 
         if offset:
             query += ' OFFSET %s '
@@ -599,7 +598,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         groupby_companies = {}
         groupby_taxes = {}
 
-        self._cr_execute(options_list[0], query, params)
+        self.env.cr.execute(query, params)
         for res in self._cr.dictfetchall():
             # No result to aggregate.
             if res['groupby'] is None:
@@ -630,7 +629,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
             if expanded_account or unfold_all or options['unfolded_lines']:
                 query, params = self._get_query_amls(options, expanded_account)
-                self._cr_execute(options, query, params)
+                self.env.cr.execute(query, params)
                 for res in self._cr.dictfetchall():
                     groupby_accounts[res['account_id']][0].setdefault('lines', [])
                     groupby_accounts[res['account_id']][0]['lines'].append(res)

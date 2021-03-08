@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo.tools.safe_eval import safe_eval
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, ustr
+from odoo.osv.expression import OR, normalize_domain
 
 from datetime import datetime
 import re
@@ -379,3 +380,65 @@ class FormulaSolver:
             formula = inject_in_formula(formula, other_line)
 
         return formula
+
+    def _get_involved_sub_financial_line_domains(self, financial_line):
+        """ Recursively goes through each line's sub lines in order to find their respective domain.
+        :return:    A list of domains.
+        """
+
+        results = self.get_results(financial_line)
+        if 'involved_sub_financial_line_domains' not in results:
+            sub_codes = results.get('sub_codes', [])
+            involved_sub_financial_line_domains = []
+            if not sub_codes:
+                line_domain = ast.literal_eval(ustr(financial_line.domain))
+                involved_sub_financial_line_domains.append(line_domain)
+            for sub_code in sub_codes:
+                sub_line = self.cache_line_by_code[sub_code]
+                for line_id in self._get_involved_sub_financial_line_domains(sub_line):
+                    involved_sub_financial_line_domains.append(line_id)
+            results['involved_sub_financial_line_domains'] = involved_sub_financial_line_domains
+        return results['involved_sub_financial_line_domains']
+
+    def _has_missing_control_domain(self, options, financial_line):
+        return bool(self._get_missing_control_domain(options, financial_line))
+
+    def _has_excess_control_domain(self, options, financial_line):
+        return bool(self._get_excess_control_domain(options, financial_line))
+
+    def _get_missing_control_domain(self, options, financial_line):
+        """ Compares the control domain with all the domains involved in the sub lines.
+        :return:   The domain containing the missing items.
+        """
+
+        involved_domains = self._get_involved_sub_financial_line_domains(financial_line)
+        control_domain = ast.literal_eval(ustr(financial_line.control_domain))
+
+        comparison_domain = OR(involved_domains)
+        missing_domain = control_domain + ['!'] + normalize_domain(comparison_domain)
+        has_missing = bool(self.env['account.move.line'].search(missing_domain, limit=1))
+
+        return missing_domain if has_missing else []
+
+    def _get_excess_control_domain(self, options, financial_line):
+        """ Compares each of the involved domains with the difference between:
+                A- The control domain
+                B- All the remaining domains
+        In order to find potential duplicate journal items.
+        :return:   The domain containing the excess items.
+        """
+
+        involved_domains = self._get_involved_sub_financial_line_domains(financial_line)
+        control_domain = ast.literal_eval(ustr(financial_line.control_domain))
+
+        excess_domains = []
+        for i, domain in enumerate(involved_domains):
+            remaining_domains = OR(involved_domains[:i] + involved_domains[i+1:])
+            comparison_domain = control_domain + ['!'] + normalize_domain(remaining_domains)
+
+            excess_domain = domain + ['!'] + normalize_domain(comparison_domain)
+            has_excess = bool(self.env['account.move.line'].search(excess_domain, limit=1))
+            if has_excess:
+                excess_domains.append(excess_domain)
+
+        return OR(excess_domains) if excess_domains else []

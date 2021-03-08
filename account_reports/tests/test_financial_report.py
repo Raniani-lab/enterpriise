@@ -363,3 +363,39 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Total Receivables',                       1000.0,             1000.0,             50.0,               1000.0,             1000.0,             0.0),
             ],
         )
+
+    def test_financial_report_control_domain(self):
+        def check_missing_exceeding(lines, missing, excess):
+            map_missing = {line['id']: line.get('has_missing') for line in lines}
+            map_excess = {line['id']: line.get('has_excess') for line in lines}
+            for line_id in map_missing:
+                if line_id in missing:
+                    self.assertTrue(map_missing[line_id], line_id)
+                else:
+                    self.assertFalse(map_missing[line_id], line_id)
+            for line_id in map_excess:
+                if line_id in excess:
+                    self.assertTrue(map_excess[line_id], line_id)
+                else:
+                    self.assertFalse(map_excess[line_id], line_id)
+
+        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        options['unfold_all'] = True
+        options.pop('multi_company', None)
+
+        report_line = self.env.ref('account_reports.account_financial_unaffected_earnings0')
+        line_id = self.env['account.financial.html.report']._get_generic_line_id(
+            'account.financial.html.report.line',
+            report_line.id,
+        )
+
+        lines = self.report._get_table(options)[1]
+        check_missing_exceeding(lines, {}, {})
+
+        report_line.control_domain = "[('id', '=', False)]"
+        lines = self.report._get_table(options)[1]
+        check_missing_exceeding(lines, {}, {line_id})
+
+        report_line.control_domain = "[('account_id', '!=', False)]"
+        lines = self.report._get_table(options)[1]
+        check_missing_exceeding(lines, {line_id}, {line_id})

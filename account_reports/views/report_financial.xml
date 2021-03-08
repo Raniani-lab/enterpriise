@@ -321,6 +321,14 @@
     </xpath>
 </template>
 
+<!-- Control domain templates -->
+<template id="line_template_control_domain" inherit_id="account_reports.line_template" primary="True">
+    <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
+        &amp;nbsp;<a t-if="line.get('has_missing')" t-att-data-id="line['id']" action="open_control_domain_missing" class="no_print oe_link_reports"> ⇒ Missing journal items</a>
+        &amp;nbsp;<a t-if="line.get('has_excess')" t-att-data-id="line['id']" action="open_control_domain_excess" class="no_print oe_link_reports"> ⇒ Excess journal items</a>
+    </xpath>
+</template>
+
 <!-- Bank Reconciliation Report Templates -->
 
 <!-- Custom template to add some warnings. -->

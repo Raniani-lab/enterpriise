@@ -25,6 +25,7 @@
             <field name="name">Income</field>
             <field name="code">INC</field>
             <field name="formulas">OPINC + OIN</field>
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'income')]" />
             <field name="parent_id" eval="False"/>
             <field name="financial_report_id" ref="account_financial_report_profitandloss0"/>
             <field name="sequence" eval="1"/>
@@ -78,6 +79,7 @@
             <field name="name">Expenses</field>
             <field name="code">LEX</field>
             <field name="formulas">EXP + DEP</field>
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'expense')]" />
             <field name="parent_id" eval="False"/>
             <field name="sequence" eval="2"/>
             <field name="financial_report_id" ref="account_financial_report_profitandloss0"/>
@@ -122,6 +124,7 @@
             <field name="name">ASSETS</field>
             <field name="code">TA</field>
             <field name="financial_report_id" ref="account_financial_report_balancesheet0"/>
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]" />
             <field name="formulas">CA + FA + PNCA</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0" />
@@ -130,6 +133,10 @@
             <field name="name">Current Assets</field>
             <field name="code">CA</field>
             <field name="parent_id" ref='account_financial_report_total_assets0'/>
+            <field name="control_domain" eval="[
+                '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_liquidity'), ref('account.data_account_type_current_assets'), ref('account.data_account_type_prepayments')]),
+                     ('account_id.user_type_id.type', '=', 'receivable')
+            ]" />
             <field name="formulas">BA + REC + CAS + PRE</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="1" />
@@ -199,6 +206,7 @@
             <field name="code">L</field>
             <field name="financial_report_id" ref="account_financial_report_balancesheet0"/>
             <field name="groupby">account_id</field>
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'liability')]" />
             <field name="formulas">CL + NL</field>
             <field name="sequence" eval="2"/>
             <field name="green_on_positive" eval="False"/>
@@ -208,6 +216,10 @@
             <field name="name">Current Liabilities</field>
             <field name="code">CL</field>
             <field name="parent_id" ref='account_financial_report_liabilities_view0'/>
+            <field name="control_domain" eval="[
+                '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')]),
+                     ('account_id.user_type_id.type', '=', 'payable'),
+            ]" />
             <field name="formulas">CL1 + CL2</field>
             <field name="sequence" eval="1"/>
             <field name="green_on_positive" eval="False"/>
@@ -264,7 +276,6 @@
         <record id="account_financial_unaffected_earnings0" model="account.financial.html.report.line">
             <field name="name">Unallocated Earnings</field>
             <field name="code">UNAFFECTED_EARNINGS</field>
-            <field name="domain">[]</field>
             <field name="formulas">CURR_YEAR_EARNINGS + PREV_YEAR_EARNINGS</field>
             <field name="sequence" eval="1"/>
             <field name="special_date_changer">normal</field>
@@ -340,6 +351,7 @@
             <field name="code">OS</field>
             <field name="financial_report_id" ref="account_financial_report_balancesheet0"/>
             <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'off_balance')]"/>
             <field name="groupby">account_id</field>
             <field name="formulas">-sum</field>
             <field name="sequence" eval="5"/>

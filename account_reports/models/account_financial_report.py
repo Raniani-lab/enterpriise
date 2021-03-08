@@ -182,6 +182,12 @@ class ReportAccountFinancialReport(models.Model):
         ctx['model'] = self._name
         return ctx
 
+    def _get_templates(self):
+        # Update the report_financial templates to include the buttons for the missing / excess journal items.
+        templates = super()._get_templates()
+        templates['line_template'] = 'account_reports.line_template_control_domain'
+        return templates
+
     # -------------------------------------------------------------------------
     # HELPERS
     # -------------------------------------------------------------------------
@@ -677,6 +683,19 @@ class ReportAccountFinancialReport(models.Model):
             'action_id': financial_line.action_id.id,
         }
 
+        # If a financial line has a control domain, a check is made to detect any potential discrepancy
+        if financial_line.control_domain:
+            if not financial_line._check_control_domain(options, groupby_keys, results):
+                # If a discrenpancy is found, a check is made to see if the current line is
+                # missing items or has items appearing more than once.
+                has_missing = solver._has_missing_control_domain(options, financial_line)
+                has_excess = solver._has_excess_control_domain(options, financial_line)
+                financial_report_line['has_missing'] = has_missing
+                financial_report_line['has_excess'] = has_excess
+                # In either case, the line is colored in red.
+                if has_missing or has_excess:
+                    financial_report_line['class'] += ' alert alert-danger'
+
         # Custom caret_options for tax report.
         if self.tax_report and financial_line.domain and not financial_line.action_id:
             financial_report_line['caret_options'] = 'tax.report.line'
@@ -846,6 +865,60 @@ class ReportAccountFinancialReport(models.Model):
             name += ' ' + _('(copy)')
         return name
 
+    def _prepare_control_domain_action(self, options, params):
+        """ Prepare the html report line, the solver and the action for the control domain buttons.
+        :return:    The report line, the solver and the action.
+        """
+
+        active_id = self._get_model_info_from_id(params.get('id'))
+        line = self.env['account.financial.html.report.line'].browse(active_id[-1])
+
+        options_list = self._get_options_periods_list(options)
+        solver = FormulaSolver(options_list, self)
+        solver.fetch_lines(line)
+
+        action = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move.line',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'target': 'current',
+            'views': [[self.env.ref('account.view_move_line_tree').id, 'list']],
+            'domain': self._get_options_domain(options),
+            'context': {
+                **self._set_context(options),
+                'group_by': 'account_id',
+            },
+        }
+
+        return line, solver, action
+
+    def open_control_domain_missing(self, options, params=None):
+        """ Action when clicking the link on the report line that is shown
+        when it fails the control domain check because of missing journal items.
+        :return:    A tree view with the missing items.
+        """
+        self.ensure_one()
+
+        line, solver, action = self._prepare_control_domain_action(options, params)
+        action['domain'] += solver._get_missing_control_domain(options, line)
+        action['name'] = _('Missing Journal Items')
+
+        return action
+
+    def open_control_domain_excess(self, options, params=None):
+        """ Action when clicking the link on the report line that is shown
+        when it fails the control domain check because of excess journal items.
+        :return:    A tree view with the excess items.
+        """
+        self.ensure_one()
+
+        line, solver, action = self._prepare_control_domain_action(options, params)
+        action['domain'] += solver._get_excess_control_domain(options, line)
+        action['name'] = _('Excess Journal Items')
+
+        return action
+
 
 class AccountFinancialReportLine(models.Model):
     _name = "account.financial.html.report.line"
@@ -862,6 +935,7 @@ class AccountFinancialReportLine(models.Model):
     sequence = fields.Integer()
 
     domain = fields.Char(default=None)
+    control_domain = fields.Char(default=None, help='Specify a control domain that will raise a warning if the report line is not computed correctly.')
     formulas = fields.Char()
     groupby = fields.Char("Group by")
     figure_type = fields.Selection([('float', 'Float'), ('percents', 'Percents'), ('no_unit', 'No Unit')],
@@ -1031,7 +1105,7 @@ class AccountFinancialReportLine(models.Model):
 
         results = {}
 
-        financial_report._cr_execute(options_list[0], ' UNION ALL '.join(queries), params)
+        financial_report.env.cr.execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]
@@ -1052,6 +1126,75 @@ class AccountFinancialReportLine(models.Model):
             sorted_values = [(v, v) for v in sorted(list(results.keys()))]
 
         return [(groupby_key, display_name, results[groupby_key]) for groupby_key, display_name in sorted_values]
+
+    def _compute_control_domain(self, options_list):
+        """ Run an SQL query to fetch the results from the control domain.
+        :return:    A dictionary with he total for each period.
+        """
+
+        self.ensure_one()
+        params = []
+        queries = []
+
+        financial_report = self._get_financial_report()
+        groupby_list = financial_report._get_options_groupby_fields(options_list[0])
+        groupby_clause = ','.join('account_move_line.%s' % gb for gb in groupby_list)
+
+        ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
+
+        # Prepare a query by period as the date is different for each comparison.
+
+        for i, options in enumerate(options_list):
+            new_options = self._get_options_financial_line(options)
+            control_domain = self.control_domain and ast.literal_eval(ustr(self.control_domain)) or []
+
+            tables, where_clause, where_params = financial_report._query_get(new_options, domain=control_domain)
+
+            queries.append(f'''
+                SELECT
+                    {groupby_clause and f'{groupby_clause},'} %s AS period_index,
+                    COALESCE(SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)), 0.0) AS balance
+                FROM {tables}
+                JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                {groupby_clause and f'GROUP BY {groupby_clause}'}
+            ''')
+            params.append(i)
+            params += where_params
+
+        # Fetch the results.
+
+        results = {}
+        financial_report._cr.execute(' UNION ALL '.join(queries), params)
+
+        for res in self._cr.dictfetchall():
+            # Build the key and save the balance
+            key = [res['period_index']]
+            for gb in groupby_list:
+                key.append(res[gb])
+            key = tuple(key)
+
+            results[key] = res['balance']
+
+        return results
+
+    def _check_control_domain(self, options, groupby_keys, results):
+        """ Compare values from the solver with those from the control domain.
+        :return:    False if values do not match.
+        """
+
+        options_list = self.env['account.report']._get_options_periods_list(options)
+        results_control = self._compute_control_domain(options_list)
+        company_round = self.env.company.currency_id.round
+
+        # Values are compared in absolute terms since they are coming from different sources :
+        # - Values in 'results' come from the Solver. Their sign is formatted based on how it should be displayed.
+        # - Values in 'results_control' are raw.
+        # The sign does not matter in this case, just that the (absolute) values are the same to pass the test.
+        return all(
+            abs(company_round(results_control[key])) == abs(company_round(results[key]))
+            for key in results_control
+        )
 
     def _compute_sum(self, options_list):
         ''' Compute the values to be used inside the formula for the current line.
@@ -1122,7 +1265,7 @@ class AccountFinancialReportLine(models.Model):
             'count_rows': {},
         }
 
-        financial_report._cr_execute(options_list[0], ' UNION ALL '.join(queries), params)
+        financial_report.env.cr.execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]
@@ -1213,4 +1356,5 @@ class AccountFinancialReportLine(models.Model):
             'target': 'current',
             'views': [[self.env.ref('account.view_move_line_tree').id, 'list']],
             'domain': domain,
+            'context': {**financial_report._set_context(options)},
         }

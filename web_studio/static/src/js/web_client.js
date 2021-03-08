@@ -219,6 +219,8 @@ WebClient.include({
                action.xml_id &&
                action.type === 'ir.actions.act_window' &&
                action.res_model &&
+               // we don't want to edit qweb Report as it is a special case of qweb report view
+               action.view_mode !== 'qweb' &&
                // we don't want to edit Settings as it is a special case of form view
                // this is a heuristic to determine if the action is Settings
                (action.res_model.indexOf('settings') === -1 || action.res_model.indexOf('x_') === 0) &&

@@ -122,9 +122,9 @@ class WebsiteCalendar(http.Controller):
                 'email': email,
             })
 
-        description = (_('Country: %s') + '\n' +
-                       _('Mobile: %s') + '\n' +
-                       _('Email: %s') + '\n') % (country_name, phone, email)
+        description = (_('Country: %s', country_name) + '\n' +
+                      _('Mobile: %s', phone) + '\n' +
+                      _('Email: %s', email) + '\n')
         for question in appointment_type.question_ids:
             key = 'question_' + str(question.id)
             if question.question_type == 'checkbox':
@@ -144,7 +144,7 @@ class WebsiteCalendar(http.Controller):
         # Because we only want to notify the author in the context of Online Appointments
         # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
         event = request.env['calendar.event'].with_context(mail_notify_author=True).sudo().create({
-            'name': _('%s with %s') % (appointment_type.name, name),
+            'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master
             # we override here start_date(time) value because they are not properly

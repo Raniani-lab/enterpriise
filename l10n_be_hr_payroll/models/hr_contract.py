@@ -247,53 +247,51 @@ class HrContract(models.Model):
         return super(HrContract, self).update_state()
 
     def _get_contract_credit_time_values(self, date_start, date_stop):
-        self.ensure_one()
         contract_vals = []
-        if not self.time_credit or not self.time_credit_type_id:
-            return contract_vals
+        for contract in self:
+            if not contract.time_credit or not contract.time_credit_type_id:
+                continue
 
-        employee = self.employee_id
-        resource = employee.resource_id
-        calendar = self.resource_calendar_id
-        standard_calendar = self.standard_calendar_id
+            employee = contract.employee_id
+            resource = employee.resource_id
+            calendar = contract.resource_calendar_id
+            standard_calendar = contract.standard_calendar_id
 
-        # YTI TODO master: The domain is hacky, but we can't modify the method signature
-        # Add an argument compute_leaves=True on the method
-        standard_attendances = standard_calendar._work_intervals_batch(
-            pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-            pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resources=resource,
-            domain=[('resource_id', '=', -1)])[resource.id]
+            # YTI TODO master: The domain is hacky, but we can't modify the method signature
+            # Add an argument compute_leaves=True on the method
+            standard_attendances = standard_calendar._work_intervals_batch(
+                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+                resources=resource,
+                domain=[('resource_id', '=', -1)])[resource.id]
 
+            # YTI TODO master: The domain is hacky, but we can't modify the method signature
+            # Add an argument compute_leaves=True on the method
+            attendances = calendar._work_intervals_batch(
+                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+                resources=resource,
+                domain=[('resource_id', '=', -1)]
+            )[resource.id]
 
-        # YTI TODO master: The domain is hacky, but we can't modify the method signature
-        # Add an argument compute_leaves=True on the method
-        attendances = calendar._work_intervals_batch(
-            pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-            pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-            resources=resource,
-            domain=[('resource_id', '=', -1)]
-        )[resource.id]
+            credit_time_intervals = standard_attendances - attendances
 
-        credit_time_intervals = standard_attendances - attendances
-
-        for interval in credit_time_intervals:
-            work_entry_type_id = self.time_credit_type_id
-            contract_vals += [{
-                'name': "%s: %s" % (work_entry_type_id.name, employee.name),
-                'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
-                'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
-                'work_entry_type_id': work_entry_type_id.id,
-                'is_credit_time': True,
-                'employee_id': employee.id,
-                'contract_id': self.id,
-                'company_id': self.company_id.id,
-                'state': 'draft',
-            }]
+            for interval in credit_time_intervals:
+                work_entry_type_id = contract.time_credit_type_id
+                contract_vals += [{
+                    'name': "%s: %s" % (work_entry_type_id.name, employee.name),
+                    'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
+                    'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
+                    'work_entry_type_id': work_entry_type_id.id,
+                    'is_credit_time': True,
+                    'employee_id': employee.id,
+                    'contract_id': contract.id,
+                    'company_id': contract.company_id.id,
+                    'state': 'draft',
+                }]
         return contract_vals
 
     def _get_contract_work_entries_values(self, date_start, date_stop):
-        self.ensure_one()
         contract_vals = super()._get_contract_work_entries_values(date_start, date_stop)
         contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
         return contract_vals

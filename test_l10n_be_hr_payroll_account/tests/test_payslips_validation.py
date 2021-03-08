@@ -283,6 +283,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     @classmethod
     def _generate_payslip(cls, date_from, date_to):
+        work_entries = cls.contract._generate_work_entries(date_from, date_to)
         payslip = cls.env['hr.payslip'].create([{
             'name': "Test Payslip",
             'employee_id': cls.employee.id,
@@ -293,7 +294,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': date_from,
             'date_to': date_to,
         }])
-        work_entries = cls.contract._generate_work_entries(date_from, date_to)
         work_entries.action_validate()
         payslip.compute_sheet()
         return payslip

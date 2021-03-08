@@ -363,8 +363,9 @@ class HrContract(models.Model):
             return result
         # The salary is not guaranteed after 30 calendar days of sick leave (it means from the 31th
         # day of sick leave)
-        sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
-        if result == sick_work_entry_type:
+        # LEAVE110 = classic sick leave
+        if result.code == "LEAVE110":
+            sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
             partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
             long_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick')
             sick_work_entry_types = sick_work_entry_type + partial_sick_work_entry_type + long_sick_work_entry_type

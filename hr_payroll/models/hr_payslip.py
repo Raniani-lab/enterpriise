@@ -511,7 +511,7 @@ class HrPayslip(models.Model):
 
     @api.depends('contract_id')
     def _compute_struct_id(self):
-        for slip in self:
+        for slip in self.filtered(lambda p: not p.struct_id):
             slip.struct_id = slip.contract_id.structure_type_id.default_struct_id
 
     @api.depends('employee_id', 'struct_id', 'date_from')

@@ -307,9 +307,6 @@ class HrContract(models.Model):
         :param date_to: The end date
         :returns: a dictionary {(half/full, work_entry_id_1): hours_1, (half/full, work_entry_id_2): hours_2}
         """
-
-        generated_date_max = min(fields.Date.to_date(date_to), date_utils.end_of(fields.Date.today(), 'month'))
-        self._generate_work_entries(date_from, generated_date_max)
         date_from = datetime.combine(date_from, datetime.min.time())
         date_to = datetime.combine(date_to, datetime.max.time())
         work_data = defaultdict(lambda: list([0, 0]))  # [days, hours]

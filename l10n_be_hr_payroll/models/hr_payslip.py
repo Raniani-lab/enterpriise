@@ -214,6 +214,8 @@ class Payslip(models.Model):
         complete_payslips = payslips.filtered(
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
         total_amount = 0
+        if not complete_payslips:
+            return total_amount
         for code in ['COM', 'COMMISSION']:
             total_amount += sum(p._get_salary_line_total(code) for p in complete_payslips)
         first_contract_date = self.employee_id.first_contract_date

@@ -299,7 +299,7 @@ class AEATAccountFinancialReport(models.Model):
         for line in report_lines:
             matcher = casilla_pattern.match(line['name'])
             if matcher:
-                rslt[matcher.group('casilla')] = line['columns'][0]['no_format_name'] # Element [0] is the current period, in case we are comparing
+                rslt[matcher.group('casilla')] = line['columns'][0]['no_format'] # Element [0] is the current period, in case we are comparing
         return rslt
 
     def _retrieve_report_line(self, options, xmlid):
@@ -308,7 +308,7 @@ class AEATAccountFinancialReport(models.Model):
         """
         line_id = self.env.ref(xmlid).id
         line_data = self._get_lines(options, line_id=line_id)[0]
-        return line_data['columns'][0]['no_format_name']
+        return line_data['columns'][0]['no_format']
 
     def get_bic_and_iban(self, res_partner_bank):
         """ Convenience method returning (bic,iban) of the given account if
@@ -420,7 +420,8 @@ class AEATAccountFinancialReport(models.Model):
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         rslt = self._generate_111_115_common_header(options, current_company, period, year)
-        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
+        report_lines = self._get_table(options)[1]
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
 
         # Wizard with manually-entered data
         boe_wizard = self._retrieve_boe_manual_wizard(options)
@@ -476,7 +477,8 @@ class AEATAccountFinancialReport(models.Model):
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         rslt = self._generate_111_115_common_header(options, current_company, period, year)
-        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
+        report_lines = self._get_table(options)[1]
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
 
         # Wizard with manually-entered data
         boe_wizard = self._retrieve_boe_manual_wizard(options)
@@ -505,7 +507,9 @@ class AEATAccountFinancialReport(models.Model):
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
-        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
+        report_lines = self._get_table(options)[1]
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
+
         # Header
         rslt = self._boe_format_string('<T3030' + year + period + '0000>')
         rslt += self._boe_format_string('<AUX>')
@@ -668,7 +672,6 @@ class AEATAccountFinancialReport(models.Model):
         self = self.with_context(self._set_context(boe_report_options))
 
         rslt = self._mod347_write_type2_header_record(current_company, boe_wizard, boe_report_options)
-
         seguros_required_b = self._mod347_get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'seguros')
         rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_insurance_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params, insurance=True), required_ids_set=seguros_required_b)
 
@@ -682,12 +685,14 @@ class AEATAccountFinancialReport(models.Model):
 
     def _mod347_build_boe_report_options(self, options, year):
         boe_report_options = options.copy()
-        boe_report_options['date'] = {'filter': 'this_quarter', 'string': 'Q4 '+year, 'date_from': year+'-10-01', 'date_to': year+'-12-31'}
+        boe_report_options['date'] = {'filter': 'this_quarter', 'string': 'Q4 '+year, 'date_from': year+'-10-01', 'date_to': year+'-12-31', 'mode': 'range'}
         boe_report_options['comparison'] = {'date_to': year+'-09-30',
-                                 'periods': [{'date_to': year+'-09-30', 'date_from': year+'-07-01', 'string': 'Q3 '+year},
-                                             {'date_to': year+'-06-30', 'date_from': year+'-04-01', 'string': 'Q2 '+year},
-                                             {'date_to': year+'-03-31', 'date_from': year+'-01-01', 'string': 'Q1 '+year}],
-                                 'number_period': 3, 'string': 'Q3 '+year, 'filter': 'previous_period', 'date_from': year+'-07-01'}
+                                 'periods': [{'date_to': year+'-09-30', 'date_from': year+'-07-01', 'string': 'Q3 '+year, 'mode': 'range'},
+                                             {'date_to': year+'-06-30', 'date_from': year+'-04-01', 'string': 'Q2 '+year, 'mode': 'range'},
+                                             {'date_to': year+'-03-31', 'date_from': year+'-01-01', 'string': 'Q1 '+year, 'mode': 'range'}],
+                                 'number_period': 3, 'string': 'Q3 '+year, 'filter': 'previous_period', 'date_from': year+'-07-01'
+                                 }
+        boe_report_options['sorted_groupby_keys'] = [(i,) for i in range(0, 4)]
         return boe_report_options
 
     def _mod347_get_required_partner_ids_for_boe(self, mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class):
@@ -722,10 +727,10 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13)
 
         declarados_count_line_data = self._get_lines(boe_report_options, line_id=self.env.ref('l10n_es_reports.mod_347_statistics_operations_count').id)[0]
-        rslt += self._boe_format_number(sum(i['no_format_name'] for i in declarados_count_line_data['columns']), length=9)
+        rslt += self._boe_format_number(sum(i['no_format'] for i in declarados_count_line_data['columns']), length=9)
 
         declarados_total_line_data = self._get_lines(boe_report_options, line_id=self.env.ref('l10n_es_reports.mod_347_operations_title').id)[-1] #Index -1 to get the line containing the total
-        declarados_total = sum(i['no_format_name'] for i in declarados_total_line_data['columns'])
+        declarados_total = sum(i['no_format'] for i in declarados_total_line_data['columns'])
         rslt += self._boe_format_number(declarados_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
         real_estates_data = self._mod347_get_real_estates_data(boe_report_options, current_company.currency_id)
@@ -773,7 +778,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(operation_key, length=1)
 
         # Total amount of operations over the year
-        year_operations_sum = currency_id.round(sum(i['no_format_name'] for i in report_data['line_data'].get('columns', [])))
+        year_operations_sum = currency_id.round(sum(i['no_format'] for i in report_data['line_data'].get('columns', [])))
         rslt += self._boe_format_number(year_operations_sum, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
         rslt += self._boe_format_string(insurance and 'X' or ' ')
@@ -827,7 +832,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(year, length=4)
 
         for trimester in range(1, 4):
-            trimester_total = report_data['line_data'].get('columns', [{} for i in range(1,4)])[-trimester].get('no_format_name',0)
+            trimester_total = report_data['line_data'].get('columns', [{} for i in range(1, 4)])[-trimester].get('no_format', 0)
             rslt += self._boe_format_number(trimester_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
             rslt += self._boe_format_number(real_estates_vat_by_trimester[trimester], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
@@ -927,7 +932,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(self._extract_tin(line_partner), length=17)
         rslt += self._boe_format_string(line_partner.name, length=40)
         rslt += self._boe_format_string(key, length=1)
-        rslt += self._boe_format_number(report_data['line_data']['columns'][0]['no_format_name'], length=13, decimal_places=2, in_currency=True)
+        rslt += self._boe_format_number(report_data['line_data']['columns'][0]['no_format'], length=13, decimal_places=2, in_currency=True)
         rslt += self._boe_format_string(' ' * 354)
 
         return rslt
@@ -955,7 +960,7 @@ class AEATAccountFinancialReport(models.Model):
             line_options['date']['date_to'] =  datetime.strftime(line_date_to, '%Y-%m-%d')
 
             invoice_line_data = self._get_subline_data(line_options, invoice_report_line_xml_id, line_partner.id)
-            previous_report_amount = invoice_line_data['columns'][0]['no_format_name']
+            previous_report_amount = invoice_line_data['columns'][0]['no_format']
 
             # Now, we can report the record !
             rslt += self._boe_format_string('2349')

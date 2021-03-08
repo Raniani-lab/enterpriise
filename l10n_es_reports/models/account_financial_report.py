@@ -61,6 +61,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
             fy_options['date'].update({
                 'date_from': fields.Date.to_string(from_fy_dates['date_from']),
                 'date_to': fields.Date.to_string(from_fy_dates['date_to']),
+                'mode': 'range',
             })
             fy_results = super()._compute_amls_results([fy_options], sign=1)
 

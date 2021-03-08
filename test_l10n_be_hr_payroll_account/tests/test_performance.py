@@ -168,7 +168,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
         # Work entry generation
-        with self.assertQueryCount(admin=7923):
+        with self.assertQueryCount(admin=7824):
+            # Note 4408 requests are related to the db insertions
+            # i.e. self.env['hr.work.entry'].create(vals_list) and thus
+            # are not avoidable.
             self.employees.generate_work_entries(self.date_from, self.date_to)
 
         structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')

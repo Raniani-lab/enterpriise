@@ -92,7 +92,7 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
 
     def _get_valid_payslips(self):
         return self.env['hr.payslip'].search([
-            ('state', '=', 'paid'),
+            ('state', 'in', ['paid', 'done']),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', self.date_start),
             ('date_to', '<=', self.date_end)])

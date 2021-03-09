@@ -102,4 +102,12 @@
             <field name="report_file">l10n_be_hr_payroll.report_social_balance</field>
         </record>
 
+        <record id="action_report_social_security_certificate" model="ir.actions.report">
+            <field name="name">Social Security Certificate</field>
+            <field name="model">l10n.be.social.security.certificate</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_be_hr_payroll.report_social_security_certificate</field>
+            <field name="report_file">l10n_be_hr_payroll.report_social_security_certificate</field>
+        </record>
+
 </odoo>

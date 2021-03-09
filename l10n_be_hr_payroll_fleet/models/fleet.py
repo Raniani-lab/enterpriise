@@ -77,12 +77,13 @@ class FleetVehicle(models.Model):
         # Reference: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/companycar.html
         if not self._from_be() or self.vehicle_type == 'bike':
             return 0
-        fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient')
-        co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min')
+        date = self.env.context.get('co2_fee_date', fields.Date.today())
+        fuel_coefficient = self.env['hr.rule.parameter']._get_parameter_from_code('fuel_coefficient', date)
+        co2_fee_min = self.env['hr.rule.parameter']._get_parameter_from_code('co2_fee_min', date)
         co2_fee = co2_fee_min
         if fuel_type and fuel_type in ['gasoline', 'diesel', 'lpg']:
-            health_indice = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice')
-            health_indice_reference = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice_reference')
+            health_indice = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice', date)
+            health_indice_reference = self.env['hr.rule.parameter']._get_parameter_from_code('health_indice_reference', date)
             co2_fee = ((co2 * 9.0) - fuel_coefficient.get(fuel_type)) * health_indice / health_indice_reference / 12.0
         return max(co2_fee, co2_fee_min)
 

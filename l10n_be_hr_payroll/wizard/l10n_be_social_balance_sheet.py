@@ -6,13 +6,19 @@ import collections
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
 class L10nBeSocialBalanceSheet(models.TransientModel):
     _name = 'l10n.be.social.balance.sheet'
     _description = 'Belgium: Social Balance Sheet'
+
+    @api.model
+    def default_get(self, field_list=None):
+        if self.env.company.country_id.code != "BE":
+            raise UserError(_('You must be logged in a Belgian company to use this feature'))
+        return super().default_get(field_list)
 
     # Source: https://www.nbb.be/fr/centrale-des-bilans/etablir/modeles-des-comptes-annuels/bilan-social
     # Introduction: https://www.nbb.be/doc/ba/socialbalance/avis_cnc_2009_12.pdf

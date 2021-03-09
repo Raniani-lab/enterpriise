@@ -35,37 +35,38 @@ class TestReports(TestAccountReportsCommon):
         )
 
     def _test_txt_file(self, filename):
-        out_txt = self.vat_book.get_txt(self.options).decode('ISO-8859-1')
+        filetype = 1 if 'IVA' in filename else 0
+        out_txt = self.vat_book._get_txt_files(self.options)[filetype].decode('ISO-8859-1')
         res_file = codecs.open(get_module_resource('l10n_ar_reports', 'tests', filename), 'r', encoding='ISO-8859-1').read()
 
-        # The example files where generate from 2020-05-01 to 2020-05-31, we need to update this files dates to ensure
+        # The example files where generate on 2021-03-01, we need to update this files dates to ensure
         # that will match the date where this test is running
         today = fields.Date.today()
-        # Replace last date of month with last date of the last date of the next month
-        res_file = res_file.replace('20200630', (fields.Date.end_of(date_utils.add(today, months=1), 'month')).strftime('%Y%m%d'))
-        # change 20200514 for today's date to avoid mismatch date when creating the credit notes
-        res_file = res_file.replace('20200514', today.strftime('%Y%m%d'))
-        # change all 202005xx dates to the current month
-        res_file = res_file.replace('202005', today.strftime('%Y%m'))
+        # change all 202103xx dates to the current month
+        res_file = res_file.replace('202103', today.strftime('%Y%m'))
 
         self.assertEqual(out_txt, res_file)
 
-    def test_01_sale_vat_book_aliquots(self):
-        self.vat_book.with_context({'journal_type': 'sale'}).print_aliquots(self.options)
-        self._test_txt_file('Aliquots_sale_2020-05-31.txt')
+    def test_01_sale_vat_book_vouchers(self):
+        self.options.update({'journal_type': 'sale', 'txt_type': 'sale'})
+        self._test_txt_file('Ventas.txt')
 
-    def test_02_sale_vat_book_vouchers(self):
-        self.vat_book.with_context({'journal_type': 'sale'}).print_vouchers(self.options)
-        self._test_txt_file('Vouchers_sale_2020-05-31.txt')
+    def test_02_sale_vat_book_aliquots(self):
+        self.options.update({'journal_type': 'sale', 'txt_type': 'sale'})
+        self._test_txt_file('IVA_Ventas.txt')
 
-    def test_03_purchase_vat_book_aliquots(self):
-        self.vat_book.with_context({'journal_type': 'purchase'}).print_aliquots(self.options)
-        self._test_txt_file('Aliquots_purchase_2020-05-31.txt')
+    def test_03_purchase_vat_book_purchases_voucher(self):
+        self.options.update({'journal_type': 'purchase', 'txt_type': 'purchases'})
+        self._test_txt_file('Compras.txt')
 
-    def test_04_purchase_vat_book_import_aliquots(self):
-        self.vat_book.with_context({'journal_type': 'purchase'}).print_aliquots_import(self.options)
-        self._test_txt_file('Import_Aliquots_purchase_2020-05-31.txt')
+    def test_04_purchase_vat_book_purchases_aliquots(self):
+        self.options.update({'journal_type': 'purchase', 'txt_type': 'purchases'})
+        self._test_txt_file('IVA_Compras.txt')
 
-    def test_05_purchase_vat_book_vouchers(self):
-        self.vat_book.with_context({'journal_type': 'purchase'}).print_vouchers(self.options)
-        self._test_txt_file('Vouchers_purchase_2020-05-31.txt')
+    def test_05_purchase_vat_book_goods_import_voucher(self):
+        self.options.update({'journal_type': 'purchase', 'txt_type': 'goods_import'})
+        self._test_txt_file('Importaciones_de_Bienes.txt')
+
+    def test_06_purchase_vat_book_goods_import_aliquots(self):
+        self.options.update({'journal_type': 'purchase', 'txt_type': 'goods_import'})
+        self._test_txt_file('IVA_Importaciones_de_Bienes.txt')

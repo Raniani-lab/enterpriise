@@ -5,6 +5,8 @@ from collections import OrderedDict
 from odoo.tools.misc import format_date
 import re
 import json
+import zipfile
+import io
 
 
 class L10nARVatBook(models.AbstractModel):
@@ -137,78 +139,60 @@ class L10nARVatBook(models.AbstractModel):
 
     def get_report_filename(self, options):
         """ Return the name that will be used for the file when downloading pdf, xlsx, txt_file, etc """
-        res = super().get_report_filename(options)
-        journal_type = options.get('journal_type', '')
-
-        # set filename for txt file
-        txt_file = options.get('txt_type')
-        if txt_file:
-            filenames = {'import_aliquots': _('Importation_Aliquots'), 'aliquots': _('Aliquots'),
-                         'vouchers': _('Vouchers')}
-            filename = filenames.get(txt_file)
-            if filename:
-                return filename + '_%s_%s' % (journal_type, options.get('date', {}).get('date_to'))
-
-        # set filename for regular vat book
-        filenames = {'sale': _('Sales VAT book'), 'purchase': _('Purchases VAT book')}
-        filename = filenames.get(journal_type, _('VAT book'))
-        if filename:
-            return filename
-
-        return res
+        journal_type = options.get('journal_type')
+        filename = {'sale': 'Libro_IVA_Ventas', 'purchase': 'Libro_IVA_Compras'}.get(journal_type, 'Libro_IVA')
+        return "%s_%s" % (filename, options['date']['date_to'])
 
     def _get_reports_buttons(self):
         """ Add buttons to print the txt files used for AFIP to report the vat books """
         buttons = super(L10nARVatBook, self)._get_reports_buttons()
-        buttons += [{'name': _('Vouchers (TXT)'), 'sequence': 3, 'action': 'print_vouchers', 'file_export_type': _('VOUCHER TXT')}]
-        buttons += [{'name': _('Aliquots (TXT)'), 'sequence': 4, 'action': 'print_aliquots', 'file_export_type': _('ALIQUOTS TXT')}]
-        if self.env.context.get('journal_type') == 'purchase':
-            buttons += [{'name': _('Importation Aliquots (TXT)'), 'sequence': 5, 'action': 'print_aliquots_import', 'file_export_type': _('IMPORTATION ALIQUOTS TXT')}]
+        buttons += [{'name': _('VAT Book (ZIP)'), 'sequence': 3, 'action': 'export_vat_book_files', 'file_export_type': _('ZIP')}]
         return buttons
 
-    def _l10n_ar_print_txt_file(self, options):
-        """ Print the txt file depending on the options given """
-        journal_type = self.env.context.get('journal_type', 'sale')
-        options.update({'journal_type': journal_type})
+    def export_vat_book_files(self, options):
+        """ Button that lets us export the VAT book zip which contains the files that we upload to AFIP for Purchase VAT Book """
+        options.update({'journal_type': self.env.context.get('journal_type', 'sale')})
         return {
             'type': 'ir_actions_account_report_download',
-            'data': {'model': self.env.context.get('model'), 'options': json.dumps(options), 'output_format': 'txt',
-                     'financial_id': self.env.context.get('id')}}
+            'data': {'model': self.env.context.get('model'),
+                     'options': json.dumps(options),
+                     'output_format': 'zip',
+                     'financial_id': self.env.context.get('id')
+                     }
+        }
 
-    def print_aliquots(self, options):
-        """ Button that lets us print the Aliquotes TXT file that we upload to AFIP for both purchase/sale book"""
-        options.update({'txt_type': 'aliquots'})
-        return self._l10n_ar_print_txt_file(options)
-
-    def print_aliquots_import(self, options):
-        """ Button that lets us print the Importation Aliquotes TXT file that we upload to AFIP for Purchase VAT Book """
-        options.update({'txt_type': 'import_aliquots'})
-        return self._l10n_ar_print_txt_file(options)
-
-    def print_vouchers(self, options):
-        """ Button that lets us print Vouchers TXT file that we upload to AFIP to report Sale/Purchase VAT Book """
-        options.update({'txt_type': 'vouchers'})
-        return self._l10n_ar_print_txt_file(options)
-
-    def get_txt(self, options):
+    def _get_txt_files(self, options):
         """ Compute the date to be printed in the txt files"""
-        # We always compute the aliquots because we use it for the vouchers files
-        txt_type = options.get('txt_type')
         lines = []
         aliquots = self._get_REGINFO_CV_ALICUOTAS(options)
         for k, v in aliquots.items():
             lines += v
-        res = '\r\n'.join(lines)
+        aliquots_data = '\r\n'.join(lines).encode('ISO-8859-1')
+        vouchers_data = '\r\n'.join(self._get_REGINFO_CV_CBTE(options, aliquots)).encode('ISO-8859-1')
+        return vouchers_data, aliquots_data
 
-        if txt_type == 'vouchers':
-            if options.get('journal_type') == 'purchase':
-                new_options = options.copy()
-                new_options['txt_type'] = 'import_aliquots'
-                impo_aliquots = self._get_REGINFO_CV_ALICUOTAS(new_options)
-                aliquots.update(impo_aliquots)
-
-            res = self._get_REGINFO_CV_CBTE(options, aliquots)
-        return res.encode('ISO-8859-1')
+    def get_zip(self, options):
+        txt_types = ['purchases', 'goods_import', 'used_goods'] if options.get('journal_type') == 'purchase' else ['sale']
+        filenames = {
+            'purchases': 'Compras',
+            'purchases_aliquots': 'IVA_Compras',
+            'goods_import': 'Importaciones_de_Bienes',
+            'goods_import_aliquots': 'IVA_Importaciones_de_Bienes',
+            'used_goods': 'Compras_Bienes_Usados',
+            'used_goods_aliquots': 'IVA_Compras_Bienes_Usados',
+            'sale': 'Ventas',
+            'sale_aliquots': 'IVA_Ventas'
+        }
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+            for txt_type in txt_types:
+                options.update({'txt_type': txt_type})
+                vouchers_data, aliquots_data = self._get_txt_files(options)
+                if vouchers_data:
+                    zf.writestr(filenames.get(txt_type) + '.txt', vouchers_data)
+                if aliquots_data:
+                    zf.writestr(filenames.get('%s_aliquots' % txt_type) + '.txt', aliquots_data)
+        return stream.getvalue()
 
     @api.model
     def _get_lines_domain(self, options):
@@ -269,15 +253,19 @@ class L10nARVatBook(models.AbstractModel):
                               ' Please remove Include unposted entries filter and try again'))
 
         domain = [('l10n_latam_document_type_id.code', '!=', False)] + self._get_lines_domain(options)
-        if options.get('txt_type') != 'vouchers':
-            impo = options.get('txt_type') == 'import_aliquots'
-            domain += [('l10n_latam_document_type_id.code', '=' if impo else '!=', 66)]
+        txt_type = options.get('txt_type')
+        if txt_type == 'purchases':
+            domain += [('l10n_latam_document_type_id.code', 'not in', ['66', '30', '32'])]
+        elif txt_type == 'goods_import':
+            domain += [('l10n_latam_document_type_id.code', '=', '66')]
+        elif txt_type == 'used_goods':
+            domain += [('l10n_latam_document_type_id.code', 'in', ['30', '32'])]
         return self.env['account.move'].search(domain, order='invoice_date asc, name asc, id asc')
 
     def _get_tax_row(self, invoice, base, code, tax_amount, options):
         inv = invoice
         journal_type = options.get('journal_type')
-        impo = options.get('txt_type') == 'import_aliquots'
+        impo = options.get('txt_type') == 'goods_import'
 
         invoice_number, pos_number = self._get_pos_and_invoice_invoice_number(inv)
         doc_code, doc_number = self._get_partner_document_code_and_number(inv.commercial_partner_id)
@@ -440,7 +428,7 @@ class L10nARVatBook(models.AbstractModel):
                     self._format_amount(0),
                 ]
             res.append(''.join(row))
-        return '\r\n'.join(res)
+        return res
 
     def _get_REGINFO_CV_ALICUOTAS(self, options):
         """ We return a dict to calculate the number of aliquots when we make the vouchers """

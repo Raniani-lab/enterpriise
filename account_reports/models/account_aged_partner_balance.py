@@ -144,6 +144,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             WHERE account.internal_type = %(account_type)s
             GROUP BY account_move_line.id, partner.id, trust_property.id, journal.id, move.id, account.id,
                      period_table.period_index, currency_table.rate, currency_table.precision
+            HAVING ROUND(account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0), currency_table.precision) != 0
         """).format(
             move_line_fields=self._get_move_line_fields('account_move_line'),
             currency_table=self.env['res.currency']._get_query_currency_table(options),

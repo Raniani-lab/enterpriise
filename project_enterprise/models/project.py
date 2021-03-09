@@ -5,7 +5,6 @@ from pytz import utc
 from collections import defaultdict
 
 from odoo import api, fields, models
-from odoo.tools.misc import format_date
 from odoo.exceptions import UserError
 from datetime import timedelta
 
@@ -128,8 +127,9 @@ class Task(models.Model):
         resources = self.env['res.users'].browse(user_ids).mapped('resource_ids').filtered(lambda r: r.company_id.id == self.env.company.id)
         # we reverse sort the resources by date to keep the first one created in the dictionary
         # to anticipate the case of a resource added later for the same employee and company
-        user_resource_mapping = {resource.user_id.id : resource.id for resource in resources.sorted('create_date', True)}
+        user_resource_mapping = {resource.user_id.id: resource.id for resource in resources.sorted('create_date', True)}
         leaves_mapping = resources._get_unavailable_intervals(start_datetime, end_datetime)
+        company_leaves = self.env.company.resource_calendar_id._unavailable_intervals(start_datetime.replace(tzinfo=utc), end_datetime.replace(tzinfo=utc))
 
         # function to recursively replace subrows with the ones returned by func
         def traverse(func, row):
@@ -146,14 +146,17 @@ class Task(models.Model):
         def inject_unavailability(row):
             new_row = dict(row)
             user_id = row.get('user_id')
+            calendar = company_leaves
             if user_id:
                 resource_id = user_resource_mapping.get(user_id)
                 if resource_id:
-                    # remove intervals smaller than a cell, as they will cause half a cell to turn grey
-                    # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
-                    # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
-                    notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, leaves_mapping[resource_id])
-                    new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
+                    calendar = leaves_mapping[resource_id]
+
+            # remove intervals smaller than a cell, as they will cause half a cell to turn grey
+            # ie: when looking at a week, a employee start everyday at 8, so there is a unavailability
+            # like: 2019-05-22 20:00 -> 2019-05-23 08:00 which will make the first half of the 23's cell grey
+            notable_intervals = filter(lambda interval: interval[1] - interval[0] >= cell_dt, calendar)
+            new_row['unavailabilities'] = [{'start': interval[0], 'stop': interval[1]} for interval in notable_intervals]
             return new_row
 
         return [traverse(inject_unavailability, row) for row in rows]

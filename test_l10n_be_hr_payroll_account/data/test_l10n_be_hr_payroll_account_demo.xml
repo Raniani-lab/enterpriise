@@ -71,22 +71,6 @@
         <field name="payslip_run_id" ref="hr_payslip_batch"/>
         <field name="company_id" ref="base.main_company"/>
     </record>
-    <record id="hr_line_admin1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">20</field>
-        <field name="number_of_hours">160</field>
-        <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
-        <field name="payslip_id" ref="hr_payslip_admin"/>
-    </record>
-    <record id="hr_line_admin2" model="hr.payslip.worked_days">
-        <field name="name">Sick leave</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_long_leave"/>
-        <field name="number_of_days">2</field>
-        <field name="number_of_hours">16</field>
-        <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
-        <field name="payslip_id" ref="hr_payslip_admin"/>
-    </record>
 
     <!-- Payslip Demo  -->
     <record id="hr_payslip_demo" model="hr.payslip">
@@ -99,30 +83,6 @@
         <field name="number">SLIP602</field>
         <field name="payslip_run_id" ref="hr_payslip_batch"/>
         <field name="company_id" ref="base.main_company"/>
-    </record>
-    <record id="hr_line_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">18</field>
-        <field name="number_of_hours">144</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo"/>
-    </record>
-    <record id="hr_line_demo2" model="hr.payslip.worked_days">
-        <field name="name">Extra work</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_home_working"/>
-        <field name="number_of_days">1.5</field>
-        <field name="number_of_hours">12</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo"/>
-    </record>
-    <record id="hr_line_demo3" model="hr.payslip.worked_days">
-        <field name="name">Paid Time Off</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
-        <field name="number_of_days">4</field>
-        <field name="number_of_hours">32</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo"/>
     </record>
 
     <!-- ++++++++++++++ May ++++++++++++++ -->
@@ -147,14 +107,6 @@
         <field name="payslip_run_id" ref="hr_payslip_batch_may"/>
         <field name="company_id" ref="base.main_company"/>
     </record>
-    <record id="hr_line_admin1_may" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">175</field>
-        <field name="contract_id" ref="hr_payroll.hr_contract_admin"/>
-        <field name="payslip_id" ref="hr_payslip_admin_may"/>
-    </record>
 
     <!-- Payslip Demo  -->
     <record id="hr_payslip_demo_may" model="hr.payslip">
@@ -167,30 +119,6 @@
         <field name="number">SLIP502</field>
         <field name="payslip_run_id" ref="hr_payslip_batch_may"/>
         <field name="company_id" ref="base.main_company"/>
-    </record>
-    <record id="hr_line_demo1_may" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">20</field>
-        <field name="number_of_hours">16</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo_may"/>
-    </record>
-    <record id="hr_line_demo2_may" model="hr.payslip.worked_days">
-        <field name="name">Extra work</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_home_working"/>
-        <field name="number_of_days">0.5</field>
-        <field name="number_of_hours">4</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo_may"/>
-    </record>
-    <record id="hr_line_demo3_may" model="hr.payslip.worked_days">
-        <field name="name">Sick Time Off</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_long_leave"/>
-        <field name="number_of_days">1</field>
-        <field name="number_of_hours">8</field>
-        <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
-        <field name="payslip_id" ref="hr_payslip_demo_may"/>
     </record>
 
     <!-- Work Entries for Laurie -->
@@ -219,24 +147,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_january_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">18</field>
-        <field name="number_of_hours">144</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
-    </record>
-
-    <record id="hr_line_lap_january_demo2" model="hr.payslip.worked_days">
-        <field name="name">Legal leave</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
-        <field name="number_of_days">4</field>
-        <field name="number_of_hours">32</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
 
@@ -250,15 +160,6 @@
         <field name="number">SLIP662</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_february_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_february"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
@@ -276,15 +177,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_march_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_march"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
 
@@ -298,15 +190,6 @@
         <field name="number">SLIP664</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_april_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_april"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
@@ -324,15 +207,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_may_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_may"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
 
@@ -346,15 +220,6 @@
         <field name="number">SLIP666</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_june_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_june"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
@@ -372,15 +237,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_july_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_july"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
 
@@ -394,24 +250,6 @@
         <field name="number">SLIP668</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_august_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">0</field>
-        <field name="number_of_hours">0</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
-    </record>
-
-    <record id="hr_line_lap_august_demo2" model="hr.payslip.worked_days">
-        <field name="name">Legal leave</field>
-        <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_leave"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
@@ -429,15 +267,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_september_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_september"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
 
@@ -451,15 +280,6 @@
         <field name="number">SLIP670</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_october_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_october"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
@@ -477,15 +297,6 @@
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
     </record>
 
-    <record id="hr_line_lap_november_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_november"/>
-    </record>
-
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
     <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
 
@@ -499,15 +310,6 @@
         <field name="number">SLIP672</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
-    </record>
-
-    <record id="hr_line_lap_december_demo1" model="hr.payslip.worked_days">
-        <field name="name">Normal working days</field>
-        <field name="work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance"/>
-        <field name="number_of_days">22</field>
-        <field name="number_of_hours">176</field>
-        <field name="contract_id" ref="l10n_be_hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
-        <field name="payslip_id" ref="hr_payslip_demo_lap_december"/>
     </record>
 
     <function model="hr.payslip" name="action_refresh_from_work_entries" eval="[[ref('hr_payslip_demo_lap_december')]]"/>

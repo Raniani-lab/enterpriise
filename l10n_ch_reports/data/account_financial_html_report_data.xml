@@ -4,14 +4,14 @@
    <!-- BS REPORT  -->
 
     <record id="account_financial_report_l10n_ch_bilan" model="account.financial.html.report">
-        <field name="name">Bilan</field>
+        <field name="name">Balance Sheet</field>
         <field name="date_range" eval="False"/>
         <field name="parent_id" ref="l10n_ch.account_reports_ch_statements_menu"/>
         <field name="country_id" ref="base.ch"/>
     </record>
 
     <record id="account_financial_report_line_ch_1" model="account.financial.html.report.line">
-        <field name="name">ACTIF</field>
+        <field name="name">ASSETS</field>
         <field name="code">CH_1</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="1"/>
@@ -21,7 +21,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_10" model="account.financial.html.report.line">
-        <field name="name">ACTIF CIRCULANT</field>
+        <field name="name">Current Assets</field>
         <field name="code">CH_10</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="1"/>
@@ -31,7 +31,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_100" model="account.financial.html.report.line">
-        <field name="name">Trésorerie</field>
+        <field name="name">Cash</field>
         <field name="code">CH_100</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -42,7 +42,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_106" model="account.financial.html.report.line">
-        <field name="name">Actifs à court terme cotés en bourse </field>
+        <field name="name">Short-term assets with stock exchange price</field>
         <field name="code">CH_106</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -53,7 +53,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_110" model="account.financial.html.report.line">
-        <field name="name">Créances résultant de livraisons et prestations </field>
+        <field name="name">Accounts receivable from goods and services</field>
         <field name="code">CH_110</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -64,7 +64,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_114" model="account.financial.html.report.line">
-        <field name="name">Autres créances à court terme </field>
+        <field name="name">Other short-term receivables</field>
         <field name="code">CH_114</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
@@ -75,7 +75,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_120" model="account.financial.html.report.line">
-        <field name="name">Stocks et prestations non facturées </field>
+        <field name="name">Inventories</field>
         <field name="code">CH_120</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="5"/>
@@ -86,7 +86,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_130" model="account.financial.html.report.line">
-        <field name="name">Actifs de régularisation (transitoires) </field>
+        <field name="name">Accrued revenue and deferred expense</field>
         <field name="code">CH_130</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="6"/>
@@ -97,7 +97,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_14" model="account.financial.html.report.line">
-        <field name="name">ACTIF IMMOBILISE</field>
+        <field name="name">CAPITAL ASSETS</field>
         <field name="code">CH_14</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="2"/>
@@ -107,7 +107,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_140" model="account.financial.html.report.line">
-        <field name="name">Immobilisations financières </field>
+        <field name="name">Financial assets</field>
         <field name="code">CH_140</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -118,7 +118,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_148" model="account.financial.html.report.line">
-        <field name="name">Participations </field>
+        <field name="name">Participations</field>
         <field name="code">CH_148</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -129,7 +129,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_150" model="account.financial.html.report.line">
-        <field name="name">Immobilisations corporelles meubles </field>
+        <field name="name">Movable tangible assets</field>
         <field name="code">CH_150</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -140,7 +140,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_160" model="account.financial.html.report.line">
-        <field name="name">Immobilisations corporelles immeubles </field>
+        <field name="name">Immovable tangible assets</field>
         <field name="code">CH_160</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
@@ -151,7 +151,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_170" model="account.financial.html.report.line">
-        <field name="name">Immobilisations incorporelles </field>
+        <field name="name">Intangible assets</field>
         <field name="code">CH_170</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="5"/>
@@ -162,7 +162,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_180" model="account.financial.html.report.line">
-        <field name="name">Capital non versé : capital social - capital de fondation"</field>
+        <field name="name">Non-paid-in share, corporate or foundation capital</field>
         <field name="code">CH_180</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="6"/>
@@ -173,7 +173,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_2" model="account.financial.html.report.line">
-        <field name="name">PASSIF</field>
+        <field name="name">LIABILITIES AND EQUITY</field>
         <field name="code">CH_2</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="2"/>
@@ -183,7 +183,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_20" model="account.financial.html.report.line">
-        <field name="name">DETTE A COURT TERME</field>
+        <field name="name">Current Liabilities</field>
         <field name="code">CH_20</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="1"/>
@@ -193,7 +193,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_200" model="account.financial.html.report.line">
-        <field name="name">Dettes à court terme résultant d’achats et de prestations de services </field>
+        <field name="name">Accounts payable from goods and services</field>
         <field name="code">CH_200</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -204,7 +204,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_210" model="account.financial.html.report.line">
-        <field name="name">Dettes à court terme rémunérés </field>
+        <field name="name">Current interest-bearing liabilities</field>
         <field name="code">CH_210</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -215,7 +215,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_220" model="account.financial.html.report.line">
-        <field name="name">Autres dettes à court terme </field>
+        <field name="name">Other current liabilities</field>
         <field name="code">CH_220</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -226,7 +226,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_230" model="account.financial.html.report.line">
-        <field name="name">Passifs de régularisation (transitoires) et provisions à court terme </field>
+        <field name="name">Deferred revenue and accrued expense</field>
         <field name="code">CH_230</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
@@ -237,7 +237,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_24" model="account.financial.html.report.line">
-        <field name="name">DETTE A LONG TERME</field>
+        <field name="name">Long-term Liabilities</field>
         <field name="code">CH_24</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="2"/>
@@ -247,7 +247,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_240" model="account.financial.html.report.line">
-        <field name="name">Dettes à long terme rémunérées </field>
+        <field name="name">Long-term interest-bearing liabilities</field>
         <field name="code">CH_240</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -258,7 +258,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_250" model="account.financial.html.report.line">
-        <field name="name">Autres dettes à long terme </field>
+        <field name="name">Other long-term liabilities</field>
         <field name="code">CH_250</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -269,7 +269,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_260" model="account.financial.html.report.line">
-        <field name="name">Provisions à long termes et provisions légales </field>
+        <field name="name">Provisions</field>
         <field name="code">CH_260</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -280,7 +280,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_28" model="account.financial.html.report.line">
-        <field name="name">CAPITAUX PROPRES</field>
+        <field name="name">Equity</field>
         <field name="code">CH_28</field>
         <field name="level" eval="1"/>
         <field name="sequence" eval="3"/>
@@ -290,7 +290,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_280" model="account.financial.html.report.line">
-        <field name="name">Capital social ou capital de fondation </field>
+        <field name="name">Share, corporate or foundation capital</field>
         <field name="code">CH_280</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -301,7 +301,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_290" model="account.financial.html.report.line">
-        <field name="name">Réserves / bénéfices et pertes reportés </field>
+        <field name="name">Legal capital reserves</field>
         <field name="code">CH_290</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -313,7 +313,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_299" model="account.financial.html.report.line">
-        <field name="name">Résultat de l'exercice</field>
+        <field name="name">Annual profit or annual loss</field>
         <field name="code">CH_299</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -327,13 +327,13 @@
    <!-- P&L REPORT  -->
 
     <record id="account_financial_report_l10n_ch_cdr" model="account.financial.html.report">
-        <field name="name">Compte de résultat</field>
+        <field name="name">Profit And Loss</field>
         <field name="parent_id" ref="l10n_ch.account_reports_ch_statements_menu"/>
         <field name="country_id" ref="base.ch"/>
     </record>
 
     <record id="account_financial_report_line_ch_3" model="account.financial.html.report.line">
-        <field name="name">= Produits nets des ventes et prestations de service</field>
+        <field name="name">Operating revenue from goods and services</field>
         <field name="code">CH_3</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="1"/>
@@ -344,7 +344,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_30" model="account.financial.html.report.line">
-        <field name="name">Chiffre d'affaires</field>
+        <field name="name">Net sales from goods and services</field>
         <field name="code">CH_30</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -355,7 +355,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_39" model="account.financial.html.report.line">
-        <field name="name">+/- Variation des stocks</field>
+        <field name="name">Changes in inventories of unfinished and finished products and in non-invoiced services</field>
         <field name="code">CH_39</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -366,7 +366,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_ebitda" model="account.financial.html.report.line">
-        <field name="name">= Résultat d'exploitation avant intérêts, impôts et amortissements (EBITDA) </field>
+        <field name="name">Earnings before interest, tax and depreciation and amortisation (EBITDA)</field>
         <field name="code">CH_EBITDA</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="2"/>
@@ -377,7 +377,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_4" model="account.financial.html.report.line">
-        <field name="name">- Charges de marchandises et de matériel</field>
+        <field name="name">Expenses for materials, goods and services</field>
         <field name="code">CH_4</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -388,7 +388,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_5" model="account.financial.html.report.line">
-        <field name="name">- Charges de personnel</field>
+        <field name="name">Staff cost</field>
         <field name="code">CH_5</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -399,7 +399,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_60" model="account.financial.html.report.line">
-        <field name="name">- Autres charges d‘exploitation </field>
+        <field name="name">Other operating expenses (without depreciation and financial result)</field>
         <field name="code">CH_60</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
@@ -410,7 +410,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_ebit" model="account.financial.html.report.line">
-        <field name="name">= Résultat d'exploitation avant intérêts et impôts (EBIT) </field>
+        <field name="name">Earnings before interest and taxes (EBIT)</field>
         <field name="code">CH_EBIT</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="3"/>
@@ -421,7 +421,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_68" model="account.financial.html.report.line">
-        <field name="name">- Amortissements et ajustements de valeur des postes sur immobilisations corporelles </field>
+        <field name="name">Depreciation and valuation adjustments on capital asset items</field>
         <field name="code">CH_68</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -433,7 +433,7 @@
 
 
     <record id="account_financial_report_line_ch_ebt" model="account.financial.html.report.line">
-        <field name="name">= Résultat d'exploitation avant impôts (EBT) </field>
+        <field name="name">Earnings before taxes (EBT)</field>
         <field name="code">CH_EBT</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="4"/>
@@ -444,7 +444,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_69" model="account.financial.html.report.line">
-        <field name="name">+/- Résultat financier </field>
+        <field name="name">Financial Result</field>
         <field name="code">CH_69</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -455,7 +455,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_rai" model="account.financial.html.report.line">
-        <field name="name">= Résultat de l'exercice avant impôts</field>
+        <field name="name">Annual (net) profit or loss before taxes</field>
         <field name="code">CH_RAI</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="5"/>
@@ -466,7 +466,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_7" model="account.financial.html.report.line">
-        <field name="name">+/- Résultat des activités annexes d'exploitation</field>
+        <field name="name">Profit and loss from non-core business</field>
         <field name="code">CH_7</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
@@ -477,7 +477,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_80" model="account.financial.html.report.line">
-        <field name="name">+/- Résultat hors-exploitation </field>
+        <field name="name">Non-operational result</field>
         <field name="code">CH_80</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
@@ -488,7 +488,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_85" model="account.financial.html.report.line">
-        <field name="name">+/- Résultat extraordinaires</field>
+        <field name="name">Extraordinary, non-recurring or prior-period result</field>
         <field name="code">CH_85</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -499,7 +499,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_89" model="account.financial.html.report.line">
-        <field name="name">- Impôts directs </field>
+        <field name="name">Direct Taxes</field>
         <field name="code">CH_89</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="98"/>
@@ -511,7 +511,7 @@
     </record>
 
     <record id="account_financial_report_line_ch_R" model="account.financial.html.report.line">
-        <field name="name">= Bénéfice / Perte : </field>
+        <field name="name">Annual (net) profit or loss</field>
         <field name="code">CH_R</field>
         <field name="level" eval="0"/>
         <field name="sequence" eval="99"/>

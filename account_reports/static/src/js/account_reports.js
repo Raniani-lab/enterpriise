@@ -390,7 +390,7 @@ var accountReportsWidget = AbstractAction.extend({
         this.$('.o_account_searchable_line').each(function(index, el) {
             var $accountReportLineFoldable = $(el);
             var line_id = $accountReportLineFoldable.find('.o_account_report_line').data('id');
-            var $childs = self.$('tr[data-parent-id="'+line_id+'"]');
+            var $childs = self.$('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
             var lineText = $accountReportLineFoldable.find('.account_report_line_name')
                 // Only the direct text node, not text situated in other child nodes
                 .contents().get(0).nodeValue
@@ -869,7 +869,7 @@ var accountReportsWidget = AbstractAction.extend({
         line.find('.o_account_reports_caret_icon .fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
         line.toggleClass('folded');
         $(line).parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
-        var $lines_to_hide = this.$el.find('tr[data-parent-id="'+line_id+'"]');
+        var $lines_to_hide = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         var index = self.report_options.unfolded_lines.indexOf(line_id);
         if (index > -1) {
             self.report_options.unfolded_lines.splice(index, 1);
@@ -892,7 +892,7 @@ var accountReportsWidget = AbstractAction.extend({
         var line_id = line.data('id');
         line.toggleClass('folded');
         self.report_options.unfolded_lines.push(line_id);
-        var $lines_in_dom = this.$el.find('tr[data-parent-id="'+line_id+'"]');
+        var $lines_in_dom = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         if ($lines_in_dom.length > 0) {
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
             $lines_in_dom.show();

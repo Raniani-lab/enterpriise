@@ -133,7 +133,7 @@ class AccountMove(models.Model):
         return iap_tools.iap_jsonrpc(PARTNER_AUTOCOMPLETE_ENDPOINT + local_endpoint, params=params)
 
     def _ocr_create_invoice_from_attachment(self, attachment):
-        invoice = self.env['account.move'].with_context(default_move_type='in_invoice').create({})
+        invoice = self.env['account.move'].create({})
         invoice.message_main_attachment_id = attachment
         invoice.retry_ocr()
         return invoice

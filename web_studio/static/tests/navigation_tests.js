@@ -336,7 +336,7 @@ QUnit.module('Studio Navigation', {
         actionManager.destroy();
     });
 
-    QUnit.skip('keep action context when leaving Studio', async function (assert) {
+    QUnit.test('keep action context when leaving Studio', async function (assert) {
         assert.expect(2);
 
         this.actions[0].context = "{'active_id': 1}";
@@ -353,7 +353,7 @@ QUnit.module('Studio Navigation', {
                 } else if (route === '/web/action/load') {
                     nbLoadAction++;
                     if (nbLoadAction === 2) {
-                        assert.deepEqual(args.kwargs.additional_context, {
+                        assert.deepEqual(args.additional_context, {
                             active_id: 1,
                         }, "the context should be correctly passed when leaving Studio");
                     }

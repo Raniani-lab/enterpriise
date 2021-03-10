@@ -187,7 +187,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         } for i in range(self.EMPLOYEES_COUNT)]
 
         # Payslip Creation
-        with self.assertQueryCount(admin=1113):
+        with self.assertQueryCount(admin=1314):
             payslips = self.env['hr.payslip'].create(payslips_values)
 
         # Payslip Computation

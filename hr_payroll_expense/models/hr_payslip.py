@@ -7,13 +7,10 @@ from odoo import api, fields, models, _
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    input_line_ids = fields.One2many(
-        compute='_compute_input_line_ids', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     expense_sheet_ids = fields.One2many(
-        'hr.expense.sheet', 'payslip_id', string='Expenses',
+        'hr.expense.sheet', 'payslip_id', string='Expenses', readonly=False,
         help="Expenses to reimburse to employee.",
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     expenses_count = fields.Integer(compute='_compute_expenses_count')
 
     @api.depends('expense_sheet_ids.expense_line_ids', 'expense_sheet_ids.payslip_id')
@@ -27,30 +24,37 @@ class HrPayslip(models.Model):
         if not self.input_line_ids.filtered(lambda line: line.input_type_id == expense_type):
             self.expense_sheet_ids.write({'payslip_id': False})
 
-    @api.depends('state', 'employee_id')
-    def _compute_expense_sheet_ids(self):
-        draft_slips = self.filtered(lambda p: p.employee_id and p.state == 'draft')
+    @api.model_create_multi
+    def create(self, vals_list):
+        payslips = super().create(vals_list)
+        draft_slips = payslips.filtered(lambda p: p.employee_id and p.state == 'draft')
         if not draft_slips:
-            return
+            return payslips
         sheets = self.env['hr.expense.sheet'].search([
             ('employee_id', 'in', draft_slips.mapped('employee_id').ids),
             ('state', '=', 'approve'),
             ('payment_mode', '=', 'own_account'),
             ('refund_in_payslip', '=', True),
             ('payslip_id', '=', False)])
-        for slip in self:
-            slip.expense_sheet_ids = sheets.filtered(lambda s: s.employee_id == slip.employee_id)
+        for slip in draft_slips:
+            payslip_sheets = sheets.filtered(lambda s: s.employee_id == slip.employee_id)
+            slip.expense_sheet_ids = [(5, 0, 0)] + [(4, s.id, False) for s in payslip_sheets]
+        return payslips
 
-    @api.depends('expense_sheet_ids')
-    def _compute_input_line_ids(self):
+    def write(self, vals):
+        res = super().write(vals)
+        if 'expense_sheet_ids' in vals:
+            self._compute_expense_input_line_ids()
+        return res
+
+    def _compute_expense_input_line_ids(self):
         expense_type = self.env.ref('hr_payroll_expense.expense_other_input', raise_if_not_found=False)
         for payslip in self:
             total = sum(payslip.expense_sheet_ids.mapped('total_amount'))
             if not total or not expense_type:
-                payslip.input_line_ids = payslip.input_line_ids
                 continue
-            lines_to_keep = payslip.input_line_ids.filtered(lambda x: x.input_type_id != expense_type)
-            input_lines_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
+            lines_to_remove = payslip.input_line_ids.filtered(lambda x: x.input_type_id == expense_type)
+            input_lines_vals = [(2, line.id, False) for line in lines_to_remove]
             input_lines_vals.append((0, 0, {
                 'amount': total,
                 'input_type_id': expense_type.id

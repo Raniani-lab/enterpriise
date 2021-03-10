@@ -519,7 +519,7 @@ class Payslip(models.Model):
         result = sum(abs(p._get_salary_line_total('COM')) for p in commissions_payslips)
 
         remaining_payslips = self - commissions_payslips
-        return result + sum(abs(p._get_salary_line_total('GROSS')) for p in remaining_payslips)
+        return result + sum(p._get_salary_line_total('GROSS') for p in remaining_payslips)
 
     def _get_pdf_reports(self):
         res = super()._get_pdf_reports()

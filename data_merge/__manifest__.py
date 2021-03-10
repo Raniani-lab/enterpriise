@@ -3,7 +3,7 @@
 
 {
     'name': 'Data Cleaning (merge)',
-    'version': '1.2',
+    'version': '1.3',
     'category': 'Productivity/Data Cleaning',
     'summary': 'Find duplicate records and merge them',
     'description': """Find duplicate records and merge them""",
@@ -14,9 +14,11 @@
         'views/data_merge_model_views.xml',
         'views/data_merge_record_views.xml',
         'views/data_merge_views.xml',
+        'views/ir_model_views.xml',
         'data/mail_templates.xml',
         'data/data_merge_cron.xml',
         'data/data_merge_data.xml',
+        'data/ir_model_data.xml',
     ],
     'auto_install': True,
     'installable': True,

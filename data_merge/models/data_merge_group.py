@@ -162,9 +162,16 @@ class DataMergeGroup(models.Model):
         if res.get('post_merge'):
             self._post_merge(master_record, to_merge)
 
+        is_merge_action = master_record.model_id.is_contextual_merge_action
         (master_record + to_merge).unlink()
 
-        return {'records_merged': res['records_merged'] if res.get('records_merged') else to_merge_count}
+        return {
+            'records_merged': res['records_merged'] if res.get('records_merged') else to_merge_count,
+            # Used to get back to the functional model if deduplicate was
+            # called from contextual action menu - instead of staying on
+            # the deduplicate view.
+            'back_to_model': is_merge_action
+        }
 
     def _log_merge(self, master_record, merged_records, chatter_data):
         """

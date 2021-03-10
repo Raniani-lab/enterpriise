@@ -2,15 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'UTM Deduplication',
+    'name': 'Project Merge action',
     'version': '1.0',
     'category': 'Productivity/Data Cleaning',
-    'summary': 'Find duplicate records and merge them',
-    'description': """Find duplicate records and merge them""",
+    'summary': 'Add Merge action in contextual menu of project task and tag models.',
+    'description': """Add Merge action in contextual menu of project task and tag models.""",
     'website': '',
-    'depends': ['data_merge', 'utm'],
+    'depends': ['data_merge', 'project'],
     'data': [
-        'data/data_merge_data.xml',
         'data/ir_model_data.xml',
     ],
     'auto_install': True,

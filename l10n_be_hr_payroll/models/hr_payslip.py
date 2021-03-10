@@ -711,17 +711,20 @@ def compute_ip_deduction(payslip, categories, worked_days, inputs):
 def compute_employment_bonus_employees(payslip, categories, worked_days, inputs):
     bonus_basic_amount = payslip.rule_parameter('work_bonus_basic_amount')
     wage_lower_bound = payslip.rule_parameter('work_bonus_reference_wage_low')
-
-    if not payslip.dict.worked_days_line_ids:
+    if not payslip.dict.worked_days_line_ids and not payslip.env.context.get('salary_simulation'):
         return 0
 
     # S = (W / H) * U
     # W = salaire brut
     # H = le nombre d'heures de travail déclarées avec un code prestations 1, 3, 4, 5 et 20;
     # U = le nombre maximum d'heures de prestations pour le mois concerné dans le régime de travail concerné
-    worked_days = payslip.dict.worked_days_line_ids.filtered(lambda wd: wd.code not in ['LEAVE300', 'LEAVE301'])
-    paid_hours = sum(worked_days.filtered(lambda wd: wd.amount).mapped('number_of_hours'))  # H
-    total_hours = sum(worked_days.mapped('number_of_hours'))  # U
+    if payslip.env.context.get('salary_simulation'):
+        paid_hours = 1
+        total_hours = 1
+    else:
+        worked_days = payslip.dict.worked_days_line_ids.filtered(lambda wd: wd.code not in ['LEAVE300', 'LEAVE301'])
+        paid_hours = sum(worked_days.filtered(lambda wd: wd.amount).mapped('number_of_hours'))  # H
+        total_hours = sum(worked_days.mapped('number_of_hours'))  # U
 
     # 1. - Détermination du salaire mensuel de référence (S)
     salary = categories.BRUT * total_hours / paid_hours  # S = (W/H) x U

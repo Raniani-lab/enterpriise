@@ -491,6 +491,11 @@ class AccountMove(models.Model):
         # We add FCE Is cancellation value only for refund documents
         if self._is_mipyme_fce_refund():
             optionals.append({'Id': 22, 'Valor': self.l10n_ar_afip_fce_is_cancellation and 'S' or 'N'})
+
+        transmission_type = self.env['ir.config_parameter'].sudo().get_param(
+            'l10n_ar_edi.fce_transmission', '')
+        if self._is_mipyme_fce() and transmission_type:
+            optionals.append({'Id': 27, 'Valor': transmission_type})
         return optionals
 
     def _get_partner_code_id(self, partner):

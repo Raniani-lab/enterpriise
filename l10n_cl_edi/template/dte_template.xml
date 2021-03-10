@@ -153,7 +153,7 @@
             <t t-foreach="move.l10n_cl_reference_ids" t-as="reference_id">
             <Referencia>
                 <NroLinRef t-esc="reference_number"/>
-                <TpoDocRef t-esc="reference_id.l10n_cl_reference_doc_type_selection"/>
+                <TpoDocRef t-esc="reference_id.l10n_cl_reference_doc_type_id.code"/>
                 <FolioRef t-esc="reference_id.origin_doc_number"/>
                 <FchRef t-esc="reference_id.date"/>
                 <CodRef t-esc="reference_id.reference_doc_code"/>

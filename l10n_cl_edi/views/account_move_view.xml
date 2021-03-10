@@ -38,15 +38,16 @@
                         <form>
                             <group>
                                 <field name="origin_doc_number" required="True"/>
-                                <field name="l10n_cl_reference_doc_type_selection" required="True"/>
-                                <field name="reference_doc_code" attrs="{'invisible': [('l10n_cl_reference_doc_type_selection', 'not in', ['39','33','34','71','38','61','56','29','30','32','40','43','45','46','55','60','901','914','911','904','905','906','907','35','41','70','110','111','112','50','52'])]}"/>
+                                <field name="l10n_cl_reference_doc_type_id" attrs="{'required': [('parent.move_type', 'in', ['out_invoice', 'out_refund'])]}"/>
+                                <field name="l10n_cl_reference_doc_internal_type" invisible="True"/>
+                                <field name="reference_doc_code" attrs="{'invisible': [('l10n_cl_reference_doc_internal_type', '!=', False)]}"/>
                                 <field name="reason"/>
                                 <field name="date"/>
                             </group>
                         </form>
                         <tree>
                             <field name="origin_doc_number" required="True"/>
-                            <field name="l10n_cl_reference_doc_type_selection" required="True" />
+                            <field name="l10n_cl_reference_doc_type_id" attrs="{'required': [('parent.move_type', 'in', ['out_invoice', 'out_refund'])]}"/>
                             <field name="reference_doc_code"/>
                             <field name="reason"/>
                             <field name="date"/>

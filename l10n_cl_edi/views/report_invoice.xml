@@ -30,7 +30,7 @@
                 <t t-foreach="o.l10n_cl_reference_ids" t-as="refs">
                     <tr>
                         <td class="text-left" name="td_reference_origin"><span t-field="refs.origin_doc_number"/></td>
-                        <td class="text-left" name="td_reference_doc_type"><span t-field="refs.l10n_cl_reference_doc_type_selection"/></td>
+                        <td class="text-left" name="td_reference_doc_type"><span t-field="refs.l10n_cl_reference_doc_type_id.code"/></td>
                         <td class="text-left" name="td_reference_code"><span t-field="refs.reference_doc_code"/></td>
                         <td class="text-left" name="td_reference_reason"><span t-field="refs.reason"/></td>
                         <td class="text-left" name="td_reference_date"><span t-field="refs.date"/></td>

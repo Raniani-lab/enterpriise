@@ -27,12 +27,12 @@
                     <Contacto>+562 0000 0000</Contacto>
                     <CorreoRecep>partner@sii.cl</CorreoRecep>
                     <DirRecep>Puerto Test 102</DirRecep>
-            <CmnaRecep>Pudahuel</CmnaRecep>
+                    <CmnaRecep>Pudahuel</CmnaRecep>
                 </Receptor>
                 <Totales>
                     <MntNeto>885779</MntNeto>
                     <TasaIVA>19.00</TasaIVA>
-            <IVA>168298</IVA>
+                    <IVA>168298</IVA>
                     <MntTotal>1054077</MntTotal>
                 </Totales>
             </Encabezado>

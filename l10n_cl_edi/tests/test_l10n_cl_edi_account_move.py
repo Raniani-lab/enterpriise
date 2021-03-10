@@ -107,13 +107,13 @@ class TestL10nClDte(TestL10nClEdiCommon):
         invoice.write({
             'l10n_cl_reference_ids': [(0, 0, {
                 'origin_doc_number': 'PO00273',
-                'l10n_cl_reference_doc_type_selection': '801',
+                'l10n_cl_reference_doc_type_id': self.env.ref('l10n_cl.dc_odc').id,
                 'reason': 'Test',
                 'move_id': invoice.id,
                 'date': '2019-10-18'
             }), (0, 0, {
                 'origin_doc_number': '996327',
-                'l10n_cl_reference_doc_type_selection': '52',
+                'l10n_cl_reference_doc_type_id': self.env.ref('l10n_cl.dc_gd_dte').id,
                 'reason': 'Test',
                 'move_id': invoice.id,
                 'date': '2019-10-18'
@@ -442,7 +442,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             'l10n_cl_reference_ids': [[0, 0, {
                 'move_id': invoice.id,
                 'origin_doc_number': 1961,
-                'l10n_cl_reference_doc_type_selection': '61',
+                'l10n_cl_reference_doc_type_id': self.env.ref('l10n_cl.dc_nc_f_dte').id,
                 'reference_doc_code': '1',
                 'reason': 'Anulación NC por aceptación con reparo (N/C 001961)',
                 'date': invoice.invoice_date, }, ], ]

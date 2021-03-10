@@ -74,6 +74,13 @@
         <FchRef>2020-06-18</FchRef>
         <RazonRef>Test</RazonRef>
     </Referencia>
+    <Referencia>
+        <NroLinRef>2</NroLinRef>
+        <TpoDocRef>HHA</TpoDocRef>
+        <FolioRef>A349010</FolioRef>
+        <FchRef>2020-06-18</FchRef>
+        <RazonRef>Test Hoja de horas hombre</RazonRef>
+    </Referencia>
 <TED version="1.0">
 <DD>
     <RE>76086428-5</RE>

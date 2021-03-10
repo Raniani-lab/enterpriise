@@ -335,23 +335,12 @@ class FetchmailServer(models.Model):
                     for tax in invoice_line.get('taxes', []):
                         invoice_line_form.tax_ids.add(tax)
             for reference_line in self._get_invoice_references(dte_xml):
-                if not self._is_valid_reference_doc_type(
-                        reference_line.get('l10n_cl_reference_doc_type_selection')):
-                    msgs.append(_('There is an unidentified reference in this invoice:<br/>'
-                                  '<li>Origin: %(origin_doc_number)s<li/>'
-                                  '<li>Reference Code: %(reference_doc_code)s<li/>'
-                                  '<li>Doc Type: %(l10n_cl_reference_doc_type_selection)s<li/>'
-                                  '<li>Reason: %(reason)s<li/>'
-                                  '<li>Date:%(date)s') % reference_line)
-                    continue
                 with invoice_form.l10n_cl_reference_ids.new() as reference_line_form:
                     reference_line_form.origin_doc_number = reference_line['origin_doc_number']
                     reference_line_form.reference_doc_code = reference_line['reference_doc_code']
-                    reference_line_form.l10n_cl_reference_doc_type_selection = reference_line[
-                        'l10n_cl_reference_doc_type_selection']
+                    reference_line_form.l10n_cl_reference_doc_type_id = reference_line['l10n_cl_reference_doc_type_id']
                     reference_line_form.reason = reference_line['reason']
                     reference_line_form.date = reference_line['date']
-
         return invoice_form, msgs
 
     def _is_dte_email(self, attachment_content):
@@ -586,20 +575,19 @@ class FetchmailServer(models.Model):
             invoice_lines.append(values)
         return invoice_lines
 
-    def _is_valid_reference_doc_type(self, reference_doc_type):
-        reference_codes = [item[0] for item in self.env['l10n_cl.account.invoice.reference']._fields[
-            'l10n_cl_reference_doc_type_selection'].selection]
-        return reference_doc_type in reference_codes
-
     def _get_invoice_references(self, dte_xml):
         invoice_reference_ids = []
         for reference in dte_xml.findall('.//ns0:Referencia', namespaces=XML_NAMESPACES):
-            invoice_reference_ids.append({
+            new_reference = {
+                'reference_doc_type': reference.findtext('.//ns0:TpoDocRef', namespaces=XML_NAMESPACES),
                 'origin_doc_number': reference.findtext('.//ns0:FolioRef', namespaces=XML_NAMESPACES),
                 'reference_doc_code': reference.findtext('.//ns0:CodRef', namespaces=XML_NAMESPACES),
-                'l10n_cl_reference_doc_type_selection': reference.findtext('.//ns0:TpoDocRef',
-                                                                           namespaces=XML_NAMESPACES),
                 'reason': reference.findtext('.//ns0:RazonRef', namespaces=XML_NAMESPACES),
                 'date': reference.findtext('.//ns0:FchRef', namespaces=XML_NAMESPACES),
-            })
+            }
+            new_reference['l10n_cl_reference_doc_type_id'] = self.env['l10n_latam.document.type'].search(
+                [('code', '=', new_reference['reference_doc_type'])], limit=1)
+            if not new_reference['l10n_cl_reference_doc_type_id']:
+                new_reference['reason'] = '%s: %s' % (new_reference['reference_doc_type'], new_reference['reason'])
+            invoice_reference_ids.append(new_reference)
         return invoice_reference_ids

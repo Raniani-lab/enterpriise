@@ -199,11 +199,12 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         self.assertEqual(move.currency_id.name, 'CLP')
         self.assertEqual(move.amount_total, 295286)
         self.assertEqual(move.amount_tax, 0)
-        self.assertEqual(len(move.l10n_cl_reference_ids), 1)
-        self.assertEqual(move.l10n_cl_reference_ids.origin_doc_number, '996327')
-        self.assertFalse(move.l10n_cl_reference_ids.reference_doc_code)
-        self.assertEqual(move.l10n_cl_reference_ids.l10n_cl_reference_doc_type_selection, '52')
-        self.assertEqual(move.l10n_cl_reference_ids.reason, 'Test')
+        self.assertEqual(len(move.l10n_cl_reference_ids), 2)
+        self.assertEqual(move.l10n_cl_reference_ids.mapped('origin_doc_number'), ['996327', 'A349010'])
+        self.assertIn(
+            '52', ' '.join(move.l10n_cl_reference_ids.l10n_cl_reference_doc_type_id.mapped('code')),
+            'The reference code 52 is not present.')
+        self.assertEqual(move.l10n_cl_reference_ids.mapped('reason'), ['Test', 'HHA: Test Hoja de horas hombre'])
 
     def test_create_invoice_33_with_holding_taxes_from_attachment(self):
         """Include Invoice Reference"""

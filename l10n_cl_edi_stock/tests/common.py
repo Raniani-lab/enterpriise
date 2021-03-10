@@ -106,7 +106,7 @@ class TestL10nClEdiStockCommon(TestStockCommon):
             'taxes_id': [],
         })
 
-        l10n_latam_document_type_52 = cls.env.ref('l10n_cl_edi_stock.dc_gd_dte')
+        l10n_latam_document_type_52 = cls.env.ref('l10n_cl.dc_gd_dte')
         l10n_latam_document_type_52.write({'active': True})
 
         caf_file_template = misc.file_open('l10n_cl_edi_stock/tests/template/caf_file_template.xml').read()

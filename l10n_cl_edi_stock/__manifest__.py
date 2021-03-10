@@ -24,7 +24,6 @@
         'stock_account',
         ],
     'data': [
-        'data/l10n_latam.document.type.csv',
         'template/dte_template.xml',
         'template/dd_template.xml',
         'data/mail_template_data.xml',

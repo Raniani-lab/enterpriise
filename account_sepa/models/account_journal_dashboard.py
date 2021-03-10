@@ -11,6 +11,7 @@ class account_journal(models.Model):
             ('payment_method_id.code', '=', 'sepa_ct'),
             ('state', '=', 'posted'),
             ('is_move_sent','=', False),
+            ('is_matched', '=', False),
         ]
         return dict(
             super(account_journal, self).get_journal_dashboard_datas(),

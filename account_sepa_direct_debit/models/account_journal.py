@@ -22,6 +22,7 @@ class AccountJournal(models.Model):
             ('payment_method_code','=','sdd'),
             ('state', '=', 'posted'),
             ('is_move_sent', '=', False),
+            ('is_matched', '=', False),
             ('journal_id', '=', self.id),
         ]
         rslt['sdd_payments_to_send_number'] = self.env['account.payment'].search_count(domain)

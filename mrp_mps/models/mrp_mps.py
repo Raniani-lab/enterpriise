@@ -119,8 +119,9 @@ class MrpProductionSchedule(models.Model):
             # Check for kit. If a kit and its component are both in the MPS we want to skip the
             # the kit procurement but instead only refill the components not in MPS
             bom = self.env['mrp.bom']._bom_find(
-                product=production_schedule.product_id, company_id=production_schedule.company_id.id,
-                bom_type='phantom')
+                production_schedule.product_id,
+                company_id=production_schedule.company_id.id,
+                bom_type='phantom')[production_schedule.product_id]
             product_ratio = []
             if bom:
                 dummy, bom_lines = bom.explode(production_schedule.product_id, 1)
@@ -691,22 +692,7 @@ class MrpProductionSchedule(models.Model):
         indirect demand and on lowest leaves the schedules that are the most
         influenced by the others.
         """
-        boms = self.env['mrp.bom'].search([
-            '|',
-            ('product_id', 'in', self.mapped('product_id').ids),
-            '&',
-            ('product_id', '=', False),
-            ('product_tmpl_id', 'in', self.mapped('product_id.product_tmpl_id').ids)
-        ])
-        bom_lines_by_product = defaultdict(lambda: self.env['mrp.bom'])
-        bom_lines_by_product_tmpl = defaultdict(lambda: self.env['mrp.bom'])
-        for bom in boms:
-            if bom.product_id:
-                if bom.product_id not in bom_lines_by_product:
-                    bom_lines_by_product[bom.product_id] = bom
-            else:
-                if bom.product_tmpl_id not in bom_lines_by_product_tmpl:
-                    bom_lines_by_product_tmpl[bom.product_tmpl_id] = bom
+        bom_by_product = self.env['mrp.bom']._bom_find(self.product_id)
 
         Node = namedtuple('Node', ['product', 'ratio', 'children'])
         indirect_demand_trees = {}
@@ -718,10 +704,10 @@ class MrpProductionSchedule(models.Model):
                 return Node(product_tree.product, ratio, product_tree.children)
 
             product_tree = Node(product, ratio, [])
-            product_boms = (bom_lines_by_product[product] | bom_lines_by_product_tmpl[product.product_tmpl_id]).sorted('sequence')[:1]
-            if not product_boms:
-                product_boms = self.env['mrp.bom']._bom_find(product=product) or self.env['mrp.bom']
-            for line in product_boms.bom_line_ids:
+            product_bom = bom_by_product[product]
+            if product not in bom_by_product and not product_bom:
+                product_bom = self.env['mrp.bom']._bom_find(product)[product]
+            for line in product_bom.bom_line_ids:
                 line_qty = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_id)
                 bom_qty = line.bom_id.product_uom_id._compute_quantity(line.bom_id.product_qty, line.bom_id.product_tmpl_id.uom_id)
                 ratio = line_qty / bom_qty

@@ -21,7 +21,7 @@
         <t t-call="web.conditional_assets_tests"/>
         <t t-call-assets="project_timesheet_synchro.assets_timesheet_app"/>
 
-        <script type="text/javascript" id="loading-script" t-raw="init">
+        <script type="text/javascript" id="loading-script">
             odoo.define('web.web_client', function (require) {
                 var WebClient = require('web.WebClient');
                 var web_client = new WebClient();

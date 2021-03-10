@@ -28,7 +28,7 @@
                     <div class="row">
                         <div class="col my-3 o_not_editable">
                             <t t-if="event.appointment_type_id">
-                                <div t-raw="event.appointment_type_id.message_confirmation" class="mb-2"/>
+                                <div t-out="event.appointment_type_id.message_confirmation" class="mb-2"/>
                             </t>
                             <div class="col-lg-6 row">
                                 <div class="col-4">

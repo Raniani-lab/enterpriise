@@ -116,7 +116,7 @@
                                 <center class="o-tw-tweet" t-att-data-tweet-id="tw.id">
                                     <div>
                                         <button class="btn o-tw-tweet-delete hidden-xs" groups="base.group_user" title="Delete this tweet"><i class="fa fa-trash text-primary" /></button>
-                                        <span t-raw="tw.tweet_html" />
+                                        <span t-out="tw.tweet_html" />
                                     </div>
                                 </center>
                             </t>

@@ -135,13 +135,19 @@ class IntrastatReport(models.AbstractModel):
                 comp_transport.code AS company_transport,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS trans_code,
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
-                prod.weight * inv_line.quantity * (
-                    CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
-                    THEN 1 ELSE inv_line_uom.factor END
+                ROUND(
+                    prod.weight * inv_line.quantity / (
+                        CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
+                        THEN inv_line_uom.factor ELSE 1 END
+                    ) * (
+                        CASE WHEN prod_uom.uom_type <> 'reference'
+                        THEN prod_uom.factor ELSE 1 END
+                    ),
+                    SCALE(ref_weight_uom.rounding)
                 ) AS weight,
-                inv_line.quantity * (
+                inv_line.quantity / (
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
-                    THEN 1 ELSE inv_line_uom.factor END
+                    THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
                 inv_line.price_subtotal AS value,
                 CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL
@@ -174,6 +180,7 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN account_intrastat_code comp_transport ON company.intrastat_transport_mode_id = comp_transport.id
                 LEFT JOIN res_country product_country ON product_country.id = inv_line.intrastat_product_origin_country_id
                 LEFT JOIN res_country partner_country ON partner.country_id = partner_country.id AND partner_country.intrastat IS TRUE
+                LEFT JOIN uom_uom ref_weight_uom on ref_weight_uom.category_id = %(weight_category_id)s and ref_weight_uom.uom_type = 'reference'
                 '''
         where = '''
                 inv.state = 'posted'
@@ -197,6 +204,7 @@ class IntrastatReport(models.AbstractModel):
             'date_from': date_from,
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),
+            'weight_category_id': self.env['ir.model.data'].xmlid_to_res_id('uom.product_uom_categ_kgm'),
         }
         if with_vat:
             where += ' AND partner.vat IS NOT NULL '

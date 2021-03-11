@@ -222,8 +222,12 @@ class Task(models.Model):
             Create SO confirmed with time and material.
         """
         super().action_fsm_validate()
-        for task in self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material)):
-            if not task.sale_line_id and not task.timesheet_ids: # Prevent creating a SO if there are no products and no timesheets
+        billable_tasks = self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material))
+        timesheets_read_group = self.env['account.analytic.line'].sudo().read_group([('task_id', 'in', billable_tasks.ids), ('project_id', '!=', False)], ['task_id', 'id'], ['task_id'])
+        timesheet_count_by_task_dict = {timesheet['task_id'][0]: timesheet['task_id_count'] for timesheet in timesheets_read_group}
+        for task in billable_tasks:
+            timesheet_count = timesheet_count_by_task_dict.get(task.id)
+            if not task.sale_order_id and not timesheet_count:  # Prevent creating/confirming a SO if there are no products and timesheets
                 continue
             task._fsm_ensure_sale_order()
             task._fsm_create_sale_order_line()

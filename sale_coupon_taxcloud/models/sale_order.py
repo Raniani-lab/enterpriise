@@ -38,10 +38,16 @@ class SaleOrder(models.Model):
            lines it originated from, these cannot be invoiced separately as it be
            incoherent with what was computed on the order.
         """
+        deposit_product = self.env['product.product'].browse(int(
+            self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
+        )).exists()
+
         def not_totally_invoiceable(order):
-            totally_invoiceable_lines = order.order_line.filtered(
-                lambda l: l.qty_to_invoice == l.product_uom_qty)
-            return totally_invoiceable_lines < order.order_line
+            return any(
+                line.qty_to_invoice != line.product_uom_qty
+                and line.product_id != deposit_product
+                for line in order.order_line
+            )
 
         taxcloud_orders = self.filtered('fiscal_position_id.is_taxcloud')
         taxcloud_coupon_orders = taxcloud_orders.filtered('order_line.coupon_program_id')

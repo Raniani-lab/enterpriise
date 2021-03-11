@@ -192,6 +192,12 @@
                     </group>
                 </page>
             </page>
+            <xpath expr="//sheet" position="before">
+                <div role="alert" class="alert alert-danger text-center" attrs="{'invisible': [('l10n_be_is_below_scale', '=', False)]}">
+                    <field name="l10n_be_is_below_scale_warning"/>
+                    <field name="l10n_be_is_below_scale" invisible="1"/>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

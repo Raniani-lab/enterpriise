@@ -14,3 +14,4 @@ from . import hr_payslip_worked_days
 from . import hr_leave_allocation
 from . import hr_leave
 from . import hr_departure_reason
+from . import hr_job

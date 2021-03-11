@@ -1517,7 +1517,7 @@
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
         <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
         <field name="time_credit" eval="True"/>
-        <field name="work_time_rate">80</field>
+        <field name="work_time_rate">0.80</field>
     </record>
 
     <record id="hr_contract_niv" model="hr.contract">
@@ -1541,7 +1541,7 @@
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
         <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
         <field name="time_credit" eval="True"/>
-        <field name="work_time_rate">80</field>
+        <field name="work_time_rate">0.80</field>
     </record>
 
     <record id="hr_contract_jth" model="hr.contract">

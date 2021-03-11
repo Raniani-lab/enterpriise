@@ -32,6 +32,13 @@ class HrContract(models.Model):
         for contract in self:
             contract.final_yearly_costs_fte = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.time_credit_full_time_wage
 
+    @api.depends(
+        'wage_with_holidays', 'wage_on_signature', 'state',
+        'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',
+        'work_time_rate', 'time_credit', 'resource_calendar_id.work_time_rate')
+    def _compute_l10n_be_is_below_scale(self):
+        super()._compute_l10n_be_is_below_scale()
+
     def _get_salary_costs_factor(self):
         res = super()._get_salary_costs_factor()
         if self.structure_type_id == self.env.ref('hr_contract.structure_type_employee_cp200'):

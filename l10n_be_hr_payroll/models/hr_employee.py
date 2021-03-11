@@ -77,6 +77,7 @@ class HrEmployee(models.Model):
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
+    l10n_be_scale_seniority = fields.Integer(string="Seniority at Hiring", groups="hr.group_hr_user", tracking=True)
 
     def _compute_spouse_fiscal_status_explanation(self):
         low_income_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('spouse_low_income_threshold')

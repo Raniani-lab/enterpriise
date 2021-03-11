@@ -300,4 +300,13 @@
         <field name="value">civil_engineer</field>
         <field name="personal_info_id" ref="hr_contract_salary.hr_contract_salary_personal_info_certificate"/>
     </record>
+
+    <record id="hr_contract_salary_personal_info_seniority" model="hr.contract.salary.personal.info">
+        <field name="name">Seniority at Hiring</field>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.employee'), ('name', '=', 'l10n_be_scale_seniority')])"/>
+        <field name="display_type">integer</field>
+        <field name="applies_on">employee</field>
+        <field name="info_type_id" ref="hr_contract_salary.hr_contract_salary_personal_info_type_certificate"/>
+    </record>
+
 </odoo>

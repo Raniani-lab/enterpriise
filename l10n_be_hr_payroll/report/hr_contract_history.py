@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from collections import defaultdict
+
 
 class ContractHistory(models.Model):
     _inherit = 'hr.contract.history'
@@ -18,6 +19,27 @@ class ContractHistory(models.Model):
         help='Should be between 0 and 100 %')
     attachment_salary_ids = fields.One2many('l10n_be.attachment.salary', 'contract_id', readonly=True)
     wage_type = fields.Selection(related='structure_type_id.wage_type', readonly=True)
+    l10n_be_is_below_scale = fields.Boolean(
+        string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
+    l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+
+    @api.depends('contract_id')
+    def _compute_l10n_be_is_below_scale(self):
+        for history in self:
+            history.l10n_be_is_below_scale = history.contract_id.l10n_be_is_below_scale
+            history.l10n_be_is_below_scale_warning = history.contract_id.l10n_be_is_below_scale_warning
+
+    @api.model
+    def _search_l10n_be_is_below_scale(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+        below_histories = self.env['hr.contract.history'].search(
+            [('state', 'in', ['draft', 'open'])]
+        ).filtered(lambda h: h.company_id.country_id.code == 'BE' and h.contract_id.l10n_be_is_below_scale)
+
+        if operator == '!=':
+            value = not value
+        return [('id', 'in' if value else 'not in', below_histories.ids)]
 
     @api.depends('contract_ids')
     def _compute_reference_data(self):
@@ -43,4 +65,3 @@ class ContractHistory(models.Model):
         action = self.env['ir.actions.actions']._for_xml_id('l10n_be_hr_payroll.exit_credit_time_wizard_action')
         action['context'] = {'active_id': self.contract_id.id}
         return action
-

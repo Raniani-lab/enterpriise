@@ -107,6 +107,66 @@ class HrContract(models.Model):
     insurance_amount = fields.Float(compute='_compute_insurance_amount', string="Insurance Amount", groups="hr_contract.group_hr_contract_manager", tracking=True)
     insured_relative_adults_total = fields.Integer(compute='_compute_insured_relative_adults_total', groups="hr_contract.group_hr_contract_manager")
 
+    l10n_be_is_below_scale = fields.Boolean(
+        string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
+    l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+
+    @api.depends(
+        'wage', 'state', 'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',
+        'work_time_rate', 'time_credit', 'resource_calendar_id.work_time_rate')
+    def _compute_l10n_be_is_below_scale(self):
+        # Source: https://emploi.belgique.be/fr/themes/remuneration/salaires-minimums-par-sous-commission-paritaire/banque-de-donnees-salaires
+        open_contracts = self.filtered(lambda c: c.state in ['draft', 'open'] and c.company_id.country_id.code == 'BE')
+        (self - open_contracts).write({
+            'l10n_be_is_below_scale_warning': False,
+            'l10n_be_is_below_scale': False
+        })
+        category_mapping = {
+            'A': 0,
+            'B': 1,
+            'C': 2,
+            'D': 3,
+        }
+        for contract in open_contracts:
+            company_seniority = relativedelta(fields.Date.today(), contract.first_contract_date).years
+            if not company_seniority:
+                scales = self.env['hr.rule.parameter']._get_parameter_from_code('cp200_salary_scale_first_year', raise_if_not_found=False)
+            else:
+                scales = self.env['hr.rule.parameter']._get_parameter_from_code('cp200_salary_scale', raise_if_not_found=False)
+            if not scales:
+                # No existing scale (eg: contracts before 2021)
+                contract.l10n_be_is_below_scale = False
+                contract.l10n_be_is_below_scale_warning = False
+                continue
+            anterior_seniority = contract.employee_id.l10n_be_scale_seniority
+            seniority = anterior_seniority + company_seniority
+            category_index = category_mapping.get(contract.job_id.l10n_be_scale_category, 2)
+            seniority_scale = scales.get(seniority, scales[26])
+            min_wage = seniority_scale[category_index]
+            if contract.time_credit:
+                min_wage = min_wage * contract.work_time_rate
+            else:
+                min_wage = min_wage * contract.resource_calendar_id.work_time_rate / 100
+            if contract._get_contract_wage() < min_wage:
+                contract.l10n_be_is_below_scale = True
+                contract.l10n_be_is_below_scale_warning = _("The wage is under the minimum scale of %s€ for a seniority of %s years.", min_wage, seniority)
+            else:
+                contract.l10n_be_is_below_scale = False
+                contract.l10n_be_is_below_scale_warning = False
+
+    @api.model
+    def _search_l10n_be_is_below_scale(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+        below_contracts = self.env['hr.contract'].search(
+            [('state', 'in', ['draft', 'open'])]
+        ).filtered(lambda c: c.company_id.country_id.code == 'BE' and c.l10n_be_is_below_scale)
+
+        if operator == '!=':
+            value = not value
+        return [('id', 'in' if value else 'not in', below_contracts.ids)]
+
+
     @api.depends('has_hospital_insurance', 'insured_relative_adults', 'insured_relative_spouse')
     def _compute_insured_relative_adults_total(self):
         for contract in self:

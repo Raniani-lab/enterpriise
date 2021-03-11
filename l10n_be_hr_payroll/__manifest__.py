@@ -47,6 +47,7 @@ Belgian Payroll Rules.
         'views/assets.xml',
         'views/273S_xml_export_template.xml',
         'views/withholding_tax_xml_export_template.xml',
+        'views/hr_job_views.xml',
         'data/res_partner_data.xml',
         'data/contract_type_data.xml',
         'data/ir_default_data.xml',

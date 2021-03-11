@@ -401,6 +401,11 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text Civil Engineering, Applied Mathematics',
         },
         {
+            content: "Set Seniority at Hiring",
+            trigger: 'input[name="l10n_be_scale_seniority"]',
+            run: 'text 1',
+        },
+        {
             content: "Bank Account",
             trigger: 'input[name="acc_number"]',
             run: 'text BE10 3631 0709 4104',
@@ -1098,6 +1103,11 @@ Tour.register('hr_contract_salary_tour_2', {
             content: "School Level",
             trigger: 'input[name="study_field"]',
             run: 'text Civil Engineering, Applied Mathematics',
+        },
+        {
+            content: "Set Seniority at Hiring",
+            trigger: 'input[name="l10n_be_scale_seniority"]',
+            run: 'text 1',
         },
         {
             content: "Bank Account",

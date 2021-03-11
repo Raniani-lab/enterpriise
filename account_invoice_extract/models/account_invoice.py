@@ -6,6 +6,7 @@ from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
 from odoo.tools.misc import clean_context
 import logging
+import math
 import re
 import json
 import string
@@ -753,8 +754,8 @@ class AccountMove(models.Model):
             context_create_date = str(fields.Date.context_today(self, self.create_date))
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
                 move_form.invoice_date = date_ocr
-                if move_form.date <= self.company_id._get_user_fiscal_lock_date():
-                    move_form.date = self.company_id._get_user_fiscal_lock_date() + timedelta(days=1)
+                if self.company_id.tax_lock_date and move_form.date and move_form.date <= self.company_id.tax_lock_date:
+                    move_form.date = self.company_id.tax_lock_date + timedelta(days=1)
                     self.add_warning(WARNING_DATE_PRIOR_OF_LOCK_DATE)
             if due_date_ocr and (not due_date_move_form or due_date_move_form == context_create_date):
                 move_form.invoice_date_due = due_date_ocr
@@ -811,7 +812,7 @@ class AccountMove(models.Model):
 
     def add_warning(self, warning_code):
         if self.extract_status_code <= WARNING_BASE_VALUE:
-            self.extract_status_code += WARNING_BASE_VALUE
+            self.extract_status_code = WARNING_BASE_VALUE
         self.extract_status_code += warning_code
 
     def get_warnings(self):
@@ -823,7 +824,7 @@ class AccountMove(models.Model):
 
             # revert the string so that the first character will correspond to the first bit
             codes = codes[::-1]
-
-            warnings.add(WARNING_DUPLICATE_VENDOR_REFERENCE)
-            warnings.add(WARNING_DATE_PRIOR_OF_LOCK_DATE)
+            for warning_code in WARNING_MESSAGES:
+                if codes[int(math.log2(warning_code))] == '1':
+                    warnings.add(warning_code)
         return warnings

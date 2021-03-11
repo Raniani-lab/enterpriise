@@ -8,11 +8,56 @@ const { _lt } = require('web.core');
 const AbstractWebClient = require('web.AbstractWebClient');
 const Timer = require('timer.Timer');
 
+const TimesheetUomDisplayTimer = TimesheetUom.FieldTimesheetTime.extend({
+    /**
+     * Refresh the Widget content so that it shows the timer elapsed time.
+     *
+     * @private
+     */
+    _refreshTime() {
+        if (this.$el.children().length) {
+            this.$el.contents()[1].replaceWith(this.time.toString());
+        } else {
+            this.$el.text(this.time.toString());
+        }
+    },
+    /**
+     * Display the timer elapsed time.
+     *
+     * @private
+     */
+    _startTimeCounter() {
+        // Check if the timer_start exists and it's not false
+        // In other word, when user clicks on play button, this button
+        if (this.recordData.timer_start && !this.recordData.timer_pause && !this.rendererIsSample) {
+            this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
+            if (this.time) {
+                this.$el.addClass('font-weight-bold text-danger');
+                this._refreshTime();
+                this.timer = setInterval(() => {
+                    this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
+                    this._refreshTime();
+                }, 1000);
+            } else {
+                clearTimeout(this.timer);
+                this.$el.removeClass('font-weight-bold text-danger');
+            }
+        }
+    },
+    /**
+     * @override
+     */
+    async _render() {
+        await this._super.apply(this, arguments);
+        this._startTimeCounter();
+    },
+});
+
 /**
  * Extend float time widget to add the using of a timer for duration
  * (unit_amount) field.
  */
-const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
+const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
     init: function () {
         this._super.apply(this, arguments);
         this.isTimerRunning = this.record.data.is_timer_running;
@@ -60,13 +105,6 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
             button.on('click', this._onToggleButton.bind(this));
             this.$el.prepend(button);
         }
-        // Check if the timer_start exists and it's not false
-        // In other word, when user clicks on play button, this button
-        // launches the "action_timer_start".
-        if (this.recordData.timer_start && !this.recordData.timer_pause && !this.rendererIsSample) {
-            this.time = Timer.createTimer(this.recordData.unit_amount, this.recordData.timer_start, this.serverTime);
-            this._startTimeCounter();
-        }
     },
 
     _onToggleButton: async function (event) {
@@ -102,23 +140,6 @@ const FieldTimesheetTimeTimer = TimesheetUom.FieldTimesheetTime.extend({
         clearTimeout(this.timer);
         this._super.apply(this, arguments);
     },
-    _startTimeCounter: function () {
-        if (this.time) {
-            this.timer = setInterval(() => {
-                this.time.addSecond();
-                if (this.$el.children().length) {
-                    this.$el.contents()[1].replaceWith(this.time.toString());
-                } else {
-                    this.$el.text(this.time.toString());
-                }
-                this.$el.addClass('font-weight-bold text-danger');
-            }, 1000);
-        } else {
-            clearTimeout(this.timer);
-            this.$el.removeClass('font-weight-bold text-danger');
-        }
-    },
-
 });
 
 AbstractWebClient.include({
@@ -176,7 +197,7 @@ AbstractWebClient.include({
  * Extend Time widget to add the +/- button for duration
  * (duration_unit_amount) field.
  */
-const FieldTimesheetHours = TimesheetUom.FieldTimesheetTime.extend({
+const FieldTimesheetHours = TimesheetUomDisplayTimer.extend({
     /**
      * @override
      */

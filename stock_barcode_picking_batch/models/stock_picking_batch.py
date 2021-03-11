@@ -13,17 +13,13 @@ class StockPickingBatch(models.Model):
 
     def action_client_action(self):
         """ Open the mobile view specialized in handling barcodes on mobile devices.
+
+        :return: the action used to select pickings for the new batch picking
+        :rtype: dict
         """
         self.ensure_one()
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'stock_barcode_picking_batch_client_action',
-            'target': 'fullscreen',
-            'params': {
-                'model': 'stock.picking.batch',
-                'picking_batch_id': self.id,
-            }
-        }
+        action = self.env['ir.actions.actions']._for_xml_id('stock_barcode_picking_batch.stock_barcode_picking_batch_client_action')
+        return dict(action, context={'active_id': self.id}, target='fullscreen')
 
     def action_open_batch_picking(self):
         """ Method to open the form view of the current record from a button on the kanban view.
@@ -39,18 +35,35 @@ class StockPickingBatch(models.Model):
             'res_id': self.id,
         }
 
+    def action_add_pickings_and_confirm(self, vals):
+        self.ensure_one()
+        self.write(vals)
+        self.action_confirm()
+        return self._get_stock_barcode_data()
+
     @api.model
     def open_new_batch_picking(self):
         """ Creates a new batch picking and opens client action to select its pickings.
 
-        :return: the action used to select pickings for the new batch picking
-        :rtype: dict
+        :return: see `action_client_action`
         """
-        picking_batch = self.env['stock.picking.batch'].create({})
-        action = self.env['ir.actions.client']._for_xml_id('stock_barcode_picking_batch.stock_barcode_picking_batch_create_client_action')
-        action = dict(action, target='fullscreen', context={'active_id': picking_batch.id})
-        action = {'action': action}
-        return action
+        new_picking_batch = self.env['stock.picking.batch'].create({})
+        action = new_picking_batch.action_client_action()
+        return {'action': action}
+
+    def action_cancel_from_barcode(self):
+        self.ensure_one()
+        view = self.env.ref('stock_barcode.stock_barcode_cancel_operation_view')
+        return {
+            'name': _('Cancel this batch transfer ?'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'stock_barcode.cancel.operation',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'context': dict(self.env.context, default_batch_id=self.id),
+        }
 
     @api.model
     def action_get_new_batch_status(self, picking_batch_id):
@@ -87,71 +100,31 @@ class StockPickingBatch(models.Model):
         picking_batch = self.env['stock.picking.batch'].browse(picking_batch_id)
         return picking_batch.action_confirm()
 
-    def _define_picking_colors(self):
-        """ Defines a color hue for each picking. These values will be used to
-        color picking batch lines in barcode app.
-
-        :return: a dict where the picking id is the key and the color is the value.
-        :rtype: dict
-        """
-        count = 0
-        colors = {}
-        if self.picking_ids:
-            # The hue goes from 0 to 360 as it works this way in CSS.
-            hue_shift = 360 / len(self.picking_ids)
-            for picking in self.picking_ids:
-                colors[picking.id] = count * hue_shift
-                count += 1
-        return colors
-
-    def get_barcode_view_state(self):
-        """ Return the initial state of the barcode view as a dict.
-        """
-        picking_colors = self._define_picking_colors()
-        fields_to_read = self._get_fields_to_read()
-        batch_pickings = self.read(fields_to_read)
-        source_location_list, destination_location_list = self.picking_ids._get_locations()
-        for batch_picking in batch_pickings:
-            pickings = self.env['stock.picking'].browse(batch_picking.pop('picking_ids'))
-            batch_picking['picking_ids'] = pickings.get_barcode_view_state()
-            if batch_picking['picking_ids']:
-                batch_picking['location_id'] = batch_picking['picking_ids'][0]['location_id']
-                batch_picking['location_dest_id'] = batch_picking['picking_ids'][0]['location_dest_id']
-
-            # Get the move lines from the pickings...
-            batch_picking['move_line_ids'] = []
-            for picking in batch_picking['picking_ids']:
-                for move_line in picking['move_line_ids']:
-                    # Writes manually used picking fields instead of put
-                    # directly picking dict to avoid circular reference.
-                    move_line['picking_id'] = {
-                        'id': picking['id'],
-                        'name': picking['name'],
-                    }
-                    move_line['color_hue'] = picking_colors[picking['id']]
-                    batch_picking['move_line_ids'].append(move_line)
-
-            batch_picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
-            batch_picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
-            batch_picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
-            if batch_picking['group_tracking_lot']:
-                batch_picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
-            batch_picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
-            batch_picking['group_uom'] = self.env.user.has_group('uom.group_uom')
-            if batch_picking['picking_type_id']:
-                batch_picking['use_create_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_create_lots
-                batch_picking['use_existing_lots'] = self.env['stock.picking.type'].browse(batch_picking['picking_type_id'][0]).use_existing_lots
-            batch_picking['source_location_list'] = source_location_list
-            batch_picking['destination_location_list'] = destination_location_list
-        return batch_pickings
+    def _get_stock_barcode_data(self):
+        picking_data = self.picking_ids._get_stock_barcode_data()
+        picking_data['records'].update({
+            self._name: self.read(self._get_fields_stock_barcode(), load=False)
+        })
+        # Add picking_id sorted by name to be consistent with the older version.
+        for batch in picking_data['records'][self._name]:
+            batch['picking_ids'] = self.browse(batch['id']).picking_ids.sorted(key=lambda p: (p.name, p.id)).ids
+        # Add some data for new batch.
+        if not self.picking_ids:
+            allowed_picking_ids = self.allowed_picking_ids.filtered(lambda p: p.state == 'assigned')
+            user_ids = allowed_picking_ids.user_id
+            picking_data['allowed_pickings'] = allowed_picking_ids.read(['name', 'picking_type_id', 'state', 'user_id'], False)
+            picking_data['records']['res.users'] = user_ids.read(['name'], False)
+            if not self.picking_type_id:
+                picking_types = allowed_picking_ids.picking_type_id
+                picking_data['picking_types'] = picking_types.read(['name'], False)
+        return picking_data
 
     @api.model
-    def _get_fields_to_read(self):
+    def _get_fields_stock_barcode(self):
         return [
             'company_id',
             'move_line_ids',
             'name',
-            'picking_ids',
             'picking_type_id',
             'picking_type_code',
             'state',

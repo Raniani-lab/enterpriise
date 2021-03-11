@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, models
 
 
 class QuantPackage(models.Model):
     _inherit = 'stock.quant.package'
+    _barcode_field = 'name'
 
     @api.model
-    def get_usable_packages_by_barcode(self):
+    def _get_fields_stock_barcode(self):
+        return ['name', 'location_id', 'quant_ids']
+
+    @api.model
+    def _get_usable_packages(self):
         usable_packages_domain = [
             '|',
             ('package_use', '=', 'reusable'),
             ('location_id', '=', False),
         ]
-        packages = self.env['stock.quant.package'].search_read(
-            usable_packages_domain,
-            ['name', 'location_id'])
-        packagesByBarcode = {package['name']: package for package in packages}
-        return packagesByBarcode
+        return self.env['stock.quant.package'].search(usable_packages_domain)

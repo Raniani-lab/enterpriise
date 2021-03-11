@@ -17,3 +17,6 @@ class StockMoveLine(models.Model):
             ]
 
     picking_id = fields.Many2one(domain=lambda self: self._domain_picking_id())
+
+    def _get_fields_stock_barcode(self):
+        return super()._get_fields_stock_barcode() + ['picking_id']

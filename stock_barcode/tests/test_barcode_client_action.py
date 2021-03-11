@@ -12,9 +12,14 @@ def clean_access_rights(env):
     grp_lot = env.ref('stock.group_production_lot')
     grp_multi_loc = env.ref('stock.group_stock_multi_locations')
     grp_pack = env.ref('stock.group_tracking_lot')
+    grp_uom = env.ref('uom.group_uom')
     env.user.write({'groups_id': [(3, grp_lot.id)]})
     env.user.write({'groups_id': [(3, grp_multi_loc.id)]})
     env.user.write({'groups_id': [(3, grp_pack.id)]})
+    # Explicitly remove the UoM group.
+    group_user = env.ref('base.group_user')
+    group_user.write({'implied_ids': [(3, grp_uom.id)]})
+    env.user.write({'groups_id': [(3, grp_uom.id)]})
 
 
 @tagged('-at_install', 'post_install')
@@ -22,13 +27,11 @@ class TestBarcodeClientAction(HttpCase):
     def setUp(self):
         super(TestBarcodeClientAction, self).setUp()
         self.uid = self.env.ref('base.user_admin').id
-        global CALL_COUNT
-        CALL_COUNT = 0
         self.supplier_location = self.env.ref('stock.stock_location_suppliers')
         self.stock_location = self.env.ref('stock.stock_location_stock')
         self.stock_location.write({
             'barcode': 'LOC-01-00-00',
-            })
+        })
         self.customer_location = self.env.ref('stock.stock_location_customers')
         self.pack_location = self.env.ref('stock.location_pack_zone')
         self.shelf1 = self.env["stock.location"].create({
@@ -89,18 +92,18 @@ class TestBarcodeClientAction(HttpCase):
         self.package = self.env['stock.quant.package'].create({
             'name': 'P00001',
         })
-        self.owner= self.env['res.partner'].create({
+        self.owner = self.env['res.partner'].create({
             'name': 'Azure Interior',
         })
-
+        self.call_count = 0
 
     def tearDown(self):
-        global CALL_COUNT
-        CALL_COUNT = 0
+        self.call_count = 0
         super(TestBarcodeClientAction, self).tearDown()
 
     def _get_client_action_url(self, picking_id):
-        return '/web#model=stock.picking&picking_id=%s&action=stock_barcode_picking_client_action' % picking_id
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
+        return '/web#action=%s&active_id=%s' % (action['id'], picking_id)
 
 
 @tagged('post_install', '-at_install')
@@ -130,12 +133,13 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         shelf2 = self.shelf2
         shelf3 = self.shelf3
         assertEqual = self.assertEqual
+        self1 = self
+
         def picking_write_mock(self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
+            self1.call_count += 1
             cmd = vals['move_line_ids'][0]
             write_vals = cmd[2]
-            if CALL_COUNT == 1:
+            if self1.call_count == 1:
                 assertEqual(cmd[0], 0)
                 assertEqual(cmd[1], 0)
                 assertEqual(write_vals['product_id'], product1.id)
@@ -143,7 +147,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
                 assertEqual(write_vals['location_id'], shelf1.id)
                 assertEqual(write_vals['location_dest_id'], shelf2.id)
                 assertEqual(write_vals['qty_done'], 2)
-            elif CALL_COUNT == 2:
+            elif self1.call_count == 2:
                 assertEqual(cmd[0], 0)
                 assertEqual(cmd[1], 0)
                 assertEqual(write_vals['product_id'], product2.id)
@@ -151,7 +155,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
                 assertEqual(write_vals['location_id'], shelf1.id)
                 assertEqual(write_vals['location_dest_id'], shelf3.id)
                 assertEqual(write_vals['qty_done'], 1)
-            elif CALL_COUNT == 3:
+            elif self1.call_count == 3:
                 assertEqual(cmd[0], 0)
                 assertEqual(cmd[1], 0)
                 assertEqual(write_vals['product_id'], product2.id)
@@ -163,7 +167,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_internal_picking_from_scratch_1', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 3)
+            self.assertEqual(self.call_count, 3)
 
         self.assertEqual(len(internal_picking.move_line_ids), 3)
 
@@ -189,13 +193,24 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.assertEqual(len(internal_picking.move_line_ids), 4)
         prod1_ml = internal_picking.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product1.id)
+        prod2_ml = internal_picking.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product2.id)
         self.assertEqual(prod1_ml[0].qty_done, 2)
+        self.assertEqual(prod1_ml[0].location_id, self.shelf1)
+        self.assertEqual(prod1_ml[0].location_dest_id, self.shelf2)
         self.assertEqual(prod1_ml[1].qty_done, 1)
+        self.assertEqual(prod1_ml[1].location_id, self.shelf1)
+        self.assertEqual(prod1_ml[1].location_dest_id, self.shelf3)
+        self.assertEqual(prod2_ml[0].qty_done, 1)
+        self.assertEqual(prod2_ml[0].location_id, self.shelf1)
+        self.assertEqual(prod2_ml[0].location_dest_id, self.shelf3)
+        self.assertEqual(prod2_ml[1].qty_done, 1)
+        self.assertEqual(prod2_ml[1].location_id, self.shelf1)
+        self.assertEqual(prod2_ml[1].location_dest_id, self.shelf2)
 
     def test_internal_picking_reserved_1(self):
         """ Open a reserved internal picking
           - move 1 `self.product1` and 1 `self.product2` from shelf1 to shelf2
-          - move 1`self.product1` from shelf3 to shelf4.
+          - move 1 `self.product1` from shelf3 to shelf4.
         Before doing the reservation, move 1 `self.product1` from shelf3 to shelf2
         """
         clean_access_rights(self.env)
@@ -242,17 +257,16 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         # Mock the calls to write and run the phantomjs script.
         product1 = self.product1
-        product2 = self.product2
-        shelf1 = self.shelf1
         shelf2 = self.shelf2
         shelf3 = self.shelf3
         assertEqual = self.assertEqual
-        def picking_write_mock (self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
+        self1 = self
+
+        def picking_write_mock(self, vals):
+            self1.call_count += 1
             cmd = vals['move_line_ids'][0]
             write_vals = cmd[2]
-            if CALL_COUNT == 1:
+            if self1.call_count == 1:
                 assertEqual(cmd[0], 0)
                 assertEqual(cmd[1], 0)
                 assertEqual(write_vals['product_id'], product1.id)
@@ -264,7 +278,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_internal_picking_reserved_1', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 2)
+            self.assertEqual(self.call_count, 2)
 
     def test_internal_picking_change_location(self):
         """ Changes the locations directly with the location list displayed in the header.
@@ -381,7 +395,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(move_lines[1].lot_name, 'lot1')
 
     def test_receipt_from_scratch_with_lots_4(self):
-        """ With picking type options "use_create_lots" and "use existing lots" disabled, scan a tracked product 3 times and checks the tracked product quantity was rightly increased without the need to enter serial/lot number.
+        """ With picking type options "use_create_lots" and "use existing lots" disabled,
+        scan a tracked product 3 times and checks the tracked product quantity was rightly
+        increased without the need to enter serial/lot number.
         """
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
@@ -482,19 +498,19 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         ml1 = move1.move_line_ids
         ml2 = move2.move_line_ids
         shelf1 = self.shelf1
+        self1 = self
 
         def picking_write_mock(self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
-            if CALL_COUNT == 1:
+            self1.call_count += 1
+            if self1.call_count == 1:
                 assertEqual(len(vals['move_line_ids']), 2)
-                assertEqual(vals['move_line_ids'][0][:2], [1, ml1.id])
-                assertEqual(vals['move_line_ids'][1][:2], [1, ml2.id])
+                assertEqual(vals['move_line_ids'][0][:2], [1, ml2.id])
+                assertEqual(vals['move_line_ids'][1][:2], [1, ml1.id])
             return picking_write_orig(self, vals)
 
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_receipt_reserved_1', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 1)
+            self.assertEqual(self.call_count, 1)
             self.assertEqual(receipt_picking.move_line_ids[0].location_dest_id.id, shelf1.id)
             self.assertEqual(receipt_picking.move_line_ids[1].location_dest_id.id, shelf1.id)
 
@@ -538,23 +554,23 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         product1, product2 = self.product1, self.product2
         assertEqual = self.assertEqual
         locations = [self.shelf1, self.shelf2, self.shelf3, self.shelf4]
+        self1 = self
 
         def picking_write_mock(self, vals):
-            global CALL_COUNT
             assertEqual(len(vals['move_line_ids']), 2)
             vml1 = vals['move_line_ids'][0][2]
             vml2 = vals['move_line_ids'][1][2]
             assertEqual(vml1['product_id'], product2.id)
             assertEqual(vml2['product_id'], product1.id)
-            assertEqual(vml1['location_dest_id'], locations[CALL_COUNT].id)
-            assertEqual(vml2['location_dest_id'], locations[CALL_COUNT].id)
-            CALL_COUNT += 1
+            assertEqual(vml1['location_dest_id'], locations[self1.call_count].id)
+            assertEqual(vml2['location_dest_id'], locations[self1.call_count].id)
+            self1.call_count += 1
             return picking_write_orig(self, vals)
 
         self.assertEqual(len(receipt_picking.move_line_ids), 2)
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_receipt_reserved_2', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 4)
+            self.assertEqual(self.call_count, 4)
             self.assertEqual(len(receipt_picking.move_line_ids), 10)
             self.assertEqual(sum(receipt_picking.move_line_ids.mapped('qty_done')), 8)
 
@@ -656,7 +672,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
         url = self._get_client_action_url(delivery_picking.id)
 
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_delivery_reserved_1_1',
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -665,7 +681,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 4,
             'picking_id': delivery_picking.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_delivery_reserved_1_2',
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -681,18 +697,15 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
 
+        self1 = self
+
         # Mock the calls to write and run the phantomjs script.
-        product1 = self.product1
-        product2 = self.product2
-        stock_location = self.stock_location
-        assertEqual = self.assertEqual
-        def picking_write_mock (self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
+        def picking_write_mock(self, vals):
+            self1.call_count += 1
             return picking_write_orig(self, vals)
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_delivery_reserved_1', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 1)
+            self.assertEqual(self.call_count, 1)
 
     def test_delivery_reserved_2(self):
         clean_access_rights(self.env)
@@ -738,14 +751,15 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery_picking.action_assign()
         self.assertEqual(len(delivery_picking.move_lines), 2)
 
+        self1 = self
+
         def picking_write_mock(self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
+            self1.call_count += 1
             return picking_write_orig(self, vals)
 
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_delivery_reserved_2', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 0)
+            self.assertEqual(self.call_count, 0)
 
     def test_delivery_reserved_3(self):
         clean_access_rights(self.env)
@@ -772,14 +786,15 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery_picking.action_confirm()
         delivery_picking.action_assign()
 
+        self1 = self
+
         def picking_write_mock(self, vals):
-            global CALL_COUNT
-            CALL_COUNT += 1
+            self1.call_count += 1
             return picking_write_orig(self, vals)
 
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_delivery_reserved_3', login='admin', timeout=180)
-            self.assertEqual(CALL_COUNT, 0)
+            self.assertEqual(self.call_count, 0)
 
     def test_delivery_from_scratch_1(self):
         """ Scan unreserved lots on a delivery order.
@@ -788,12 +803,12 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         grp_lot = self.env.ref('stock.group_production_lot')
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
 
-        # Add lot1 et lot2 sur productlot1
+        # Adds lot1 and lot2 for productlot1
         lotObj = self.env['stock.production.lot']
-        lot1 = lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
-        lot2 = lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
 
-        # empty picking
+        # Creates an empty picking.
         delivery_picking = self.env['stock.picking'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -821,7 +836,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         })
         url = self._get_client_action_url(delivery_picking.id)
 
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_delivery_reserved_lots_1',
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -922,7 +937,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         clean_access_rights(self.env)
         grp_lot = self.env.ref('stock.group_production_lot')
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
-        #self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
 
         # Add 4 serial numbers productserial1
         snObj = self.env['stock.production.lot']
@@ -943,7 +957,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'picking_type_id': self.picking_type_out.id,
         })
 
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_delivery_reserved_lots_1',
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -1028,7 +1042,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         url = self._get_client_action_url(receipts_picking.id)
 
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_delivery_reserved_lots_1',
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
@@ -1038,10 +1052,10 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'picking_id': receipts_picking.id,
         })
 
-        # Add lot1 et lot2 sur productlot1
+        # Creates lot1 and lot2 for productlot1.
         lotObj = self.env['stock.production.lot']
-        lot1 = lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
-        lot2 = lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lotObj.create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
+        lotObj.create({'name': 'lot2', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
 
         receipts_picking.action_confirm()
         receipts_picking.action_assign()
@@ -1060,16 +1074,10 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[2].location_dest_id.name, 'Section 1')
 
     def test_pack_multiple_scan(self):
-        """ Simulate a picking where a package is scanned two times.
-        scan the receipt picking type barcode
-        scan two products
-        scan put in pack
-        scan validate
-        scan the delivery picking type
-        scan the pack
-        scan the pack again, check the warning
-        validate
-        check that the package is in customer location"""
+        """ Make a reception of two products, put them in pack and validate.
+        Then make a delivery, scan the package two times (check the warning) and validate.
+        Finally, check that the package is in the customer location.
+        """
         clean_access_rights(self.env)
         grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
@@ -1140,11 +1148,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_pack_common_content_scan', login='admin', timeout=180)
 
     def test_pack_multiple_location(self):
-        """ Simulate a picking where a package is scanned two times.
-        The client action should trigger a warning
-        Make a reception a two products
-        put in pack
-        make a delivery of this pack"""
+        """ Create a package in Shelf 1 and makes an internal transfer to move it to Shelf 2.
+        """
         clean_access_rights(self.env)
         grp_pack = self.env.ref('stock.group_tracking_lot')
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
@@ -1230,7 +1235,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         all these products and then hitting put in pack should move them all in the new pack.
         """
         clean_access_rights(self.env)
-        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+        # self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
         grp_pack = self.env.ref('stock.group_tracking_lot')
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
@@ -1241,14 +1246,12 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env['stock.quant']._update_available_quantity(self.product1, self.shelf2, 1)
         self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 1)
 
-        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
-
         internal_picking = self.env['stock.picking'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_multiple_pages',
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
@@ -1257,7 +1260,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 2,
             'picking_id': internal_picking.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_multiple_pages',
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
@@ -1395,7 +1398,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_different_location',
             'location_id': self.shelf1.id,
             'location_dest_id': self.shelf2.id,
@@ -1404,7 +1407,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 1,
             'picking_id': internal_picking.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_different_location2',
             'location_id': self.shelf3.id,
             'location_dest_id': self.shelf2.id,
@@ -1439,7 +1442,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_before_dest',
             'location_id': self.shelf1.id,
             'location_dest_id': self.shelf2.id,
@@ -1448,7 +1451,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 1,
             'picking_id': internal_picking.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_before_dest',
             'location_id': self.shelf3.id,
             'location_dest_id': self.shelf4.id,
@@ -1532,7 +1535,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.picking_type_out.show_entire_packs = True
 
-        package_level1 = self.env['stock.package_level'].create({
+        self.env['stock.package_level'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'package_id': pack1.id,
@@ -1589,7 +1592,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(inventory_moves.mapped('state'), ['done', 'done'])
 
         quants = self.env['stock.quant'].search([('product_id', 'in', [self.product1.id, self.product2.id]),
-                                                  ('location_id.usage', '=', 'internal')])
+                                                 ('location_id.usage', '=', 'internal')])
         self.assertEqual(quants.mapped('quantity'), [2.0, 2.0])
         self.assertEqual(quants.mapped('inventory_quantity'), [0, 0])
         self.assertEqual(quants.mapped('inventory_diff_quantity'), [0, 0])

@@ -94,11 +94,11 @@
     </record>
 
     <record id="open_picking" model="ir.actions.act_window">
-        <field name="name">Open a picking</field>
+        <field name="name">Open picking form</field>
         <field name="res_model">stock.picking</field>
         <field name="view_mode">form</field>
         <field name="context">{
-                'res_id': active_id,
+            'res_id': active_id,
         }
         </field>
     </record>
@@ -111,12 +111,12 @@
 
             <!-- Use the form view -->
             <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
-                <button style="padding: 0px 10px;" class="btn btn-link fa fa-desktop" title="Open picking" name="open_picking" type="object"/>
+                <button style="padding: 0px 10px;" class="btn btn-link fa fa-desktop" title="Open picking" name="action_open_picking" type="object"/>
             </xpath>
 
             <!-- Use mobile view-->
             <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="replace">
-                <button style="padding: 0px 0px;" class="btn btn-link o_kanban_record_title" name="open_picking_client_action"
+                <button style="padding: 0px 0px;" class="btn btn-link o_kanban_record_title" name="action_open_picking_client_action"
                   type="object">
                   <span><t t-esc="record.name.value"/></span>
                 </button>

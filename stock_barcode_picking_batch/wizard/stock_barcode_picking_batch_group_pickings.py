@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class StockBarcodePickingBatchGroupPickings(models.TransientModel):
@@ -19,4 +19,4 @@ class StockBarcodePickingBatchGroupPickings(models.TransientModel):
         return new_batch.action_client_action()
 
     def action_open_picking(self):
-        return self.picking_id.open_picking_client_action()
+        return self.picking_id.action_open_picking_client_action()

@@ -15,10 +15,10 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'stock_barcode_quality_control/static/src/js/**/*',
+            'stock_barcode_quality_control/static/src/**/*.js',
         ],
         'web.assets_qweb': [
-            'stock_barcode_quality_control/static/src/xml/**/*',
+            'stock_barcode_quality_control/static/src/**/*.xml',
         ],
     }
 }

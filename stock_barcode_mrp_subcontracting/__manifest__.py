@@ -15,10 +15,13 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'stock_barcode_mrp_subcontracting/static/src/js/**/*',
+            'stock_barcode_mrp_subcontracting/static/src/**/*.js',
         ],
         'web.assets_qweb': [
-            'stock_barcode_mrp_subcontracting/static/src/xml/**/*',
+            'stock_barcode_mrp_subcontracting/static/src/**/*.xml',
+        ],
+        'web.assets_tests': [
+            'stock_barcode_mrp_subcontracting/static/tests/tours/**/*.js',
         ],
     }
 }

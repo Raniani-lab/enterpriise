@@ -21,6 +21,22 @@
     overflow: auto;
     @include size(100%);
 
+    .o_stock_mobile_barcode_container{
+        position:  relative;
+        display: inline-block;
+        .o_stock_mobile_barcode{
+            width: 100%;
+            bottom: 0px;
+            position: absolute;
+            opacity: 0.75;
+            font-size: 12px;
+            .o_mobile_barcode_camera{
+                margin: 5px;
+                font-size: 2.2em;
+            }
+        }
+    }
+
     .o_stock_barcode_menu {
         line-height: 1.9;
     }

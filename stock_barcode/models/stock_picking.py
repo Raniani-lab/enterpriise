@@ -1,96 +1,120 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare, float_round
-
-import json
-
-
-class StockMoveLine(models.Model):
-    _name= 'stock.move.line'
-    _inherit = ['stock.move.line', 'barcodes.barcode_events_mixin']
-
-    product_barcode = fields.Char(related='product_id.barcode')
-    location_processed = fields.Boolean()
-    dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
-
-    def _compute_dummy_id(self):
-        self.dummy_id = ''
-
-    def _inverse_dummy_id(self):
-        pass
+from odoo.tools.float_utils import float_compare
 
 
 class StockPicking(models.Model):
     _name = 'stock.picking'
     _inherit = ['stock.picking', 'barcodes.barcode_events_mixin']
+    _barcode_field = 'name'
 
-    def get_barcode_view_state(self):
-        """ Return the initial state of the barcode view as a dict.
+    def action_cancel_from_barcode(self):
+        self.ensure_one()
+        view = self.env.ref('stock_barcode.stock_barcode_cancel_operation_view')
+        return {
+            'name': _('Cancel this operation ?'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'stock_barcode.cancel.operation',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'context': dict(self.env.context, default_picking_id=self.id),
+        }
+
+    @api.model
+    def action_open_new_picking(self):
+        """ Creates a new picking of the current picking type and open it.
+
+        :return: the action used to open the picking, or false
+        :rtype: dict
         """
-        picking_fields_to_read = self._get_picking_fields_to_read()
-        move_line_ids_fields_to_read = self._get_move_line_ids_fields_to_read()
-        pickings = self.read(picking_fields_to_read)
-        source_location_list, destination_location_list = self._get_locations()
-        for picking in pickings:
-            picking['move_line_ids'] = self.env['stock.move.line'].browse(picking.pop('move_line_ids')).with_context(display_default_code=False).read(move_line_ids_fields_to_read)
+        context = self.env.context
+        if context.get('active_model') == 'stock.picking.type':
+            picking_type = self.env['stock.picking.type'].browse(context.get('active_id'))
+            if picking_type.exists():
+                new_picking = self._create_new_picking(picking_type)
+                return new_picking._get_client_action()['action']
+        return False
 
-            # Prefetch data
-            product_ids = tuple(set([move_line_id['product_id'][0] for move_line_id in picking['move_line_ids']]))
-            tracking_and_barcode_per_product_id = self.env['product.product'].browse(product_ids)._get_fields_per_product_id()
-
-            for move_line_id in picking['move_line_ids']:
-                id = move_line_id.pop('product_id')[0]
-                move_line_id['product_id'] = {"id": id, **tracking_and_barcode_per_product_id[id]}
-                id, name = move_line_id.pop('location_id')
-                move_line_id['location_id'] = {"id": id, "display_name": name}
-                id, name = move_line_id.pop('location_dest_id')
-                move_line_id['location_dest_id'] = {"id": id, "display_name": name}
-            id, name = picking.pop('location_id')
-            picking['location_id'] = self.env['stock.location'].with_context(active_test=False).search_read(
-                [('id', '=', id)], ['parent_path']
-            )[0]
-            picking['location_id'].update({'display_name': name})
-            id, name = picking.pop('location_dest_id')
-            picking['location_dest_id'] = self.env['stock.location'].with_context(active_test=False).search_read(
-                [('id', '=', id)], ['parent_path']
-            )[0]
-            picking['location_dest_id'].update({'display_name': name})
-            picking['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
-            picking['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
-            picking['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
-            if picking['group_tracking_lot']:
-                picking['usable_packages'] = self.env['stock.quant.package'].get_usable_packages_by_barcode()
-            picking['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
-            picking['group_uom'] = self.env.user.has_group('uom.group_uom')
-            picking['use_create_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_create_lots
-            picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
-            picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs
-            picking['actionReportDeliverySlipId'] = self.env.ref('stock.action_report_delivery').id
-            picking['actionReportBarcodesZplId'] = self.env.ref('stock.action_label_transfer_template_zpl').id
-            picking['actionReportBarcodesPdfId'] = self.env.ref('stock.action_label_transfer_template_pdf').id
-            picking['actionReturn'] = self.env.ref('stock.act_stock_return_picking').id
-            if self.env.company.nomenclature_id:
-                picking['nomenclature_id'] = [self.env.company.nomenclature_id.id]
-            picking['source_location_list'] = source_location_list
-            picking['destination_location_list'] = destination_location_list
-        return pickings
-
-    def _get_locations(self):
-        """Used by the client action to get the picking locations.
-
-        :return: childs of source location and childs of destination location
-        :rtype: tuple
+    def action_open_picking(self):
+        """ method to open the form view of the current record
+        from a button on the kanban view
         """
-        fields = ['id', 'display_name']
-        source_locations = self.env['stock.location'].search_read(
-            [('id', 'child_of', self.location_id.ids)], fields,
-        )
-        destination_locations = self.env['stock.location'].search_read(
-            [('id', 'child_of', self.location_dest_id.ids)], fields,
-        )
-        return (source_locations, destination_locations)
+        self.ensure_one()
+        view_id = self.env.ref('stock.view_picking_form').id
+        return {
+            'name': _('Open picking form'),
+            'res_model': 'stock.picking',
+            'view_mode': 'form',
+            'view_id': view_id,
+            'type': 'ir.actions.act_window',
+            'res_id': self.id,
+        }
+
+    def action_open_picking_client_action(self):
+        """ method to open the form view of the current record
+        from a button on the kanban view
+        """
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
+        action = dict(action, target='fullscreen')
+        action['context'] = {'active_id': self.id}
+        action['res_id'] = self.id
+        return action
+
+    def action_print_barcode_pdf(self):
+        return self.env.ref('stock.action_label_transfer_template_pdf').report_action(self)
+
+    def action_print_barcode_zpl(self):
+        return self.env.ref('stock.action_label_transfer_template_zpl').report_action(self)
+
+    def action_print_delivery_slip(self):
+        return self.env.ref('stock.action_report_picking').report_action(self)
+
+    def _get_stock_barcode_data(self):
+        # Avoid to get the products full name because code and name are separate in the barcode app.
+        self = self.with_context(display_default_code=False)
+        move_lines = self.move_line_ids
+        lots = move_lines.lot_id
+        owners = move_lines.owner_id
+        # Fetch all implied products in `self` and adds last used products to avoid additional rpc.
+        products = move_lines.product_id
+        packagings = products.packaging_ids
+
+        uoms = products.uom_id
+        # If UoM setting is active, fetch all UoM's data.
+        if self.env.user.has_group('uom.group_uom'):
+            uoms = self.env['uom.uom'].search([])
+
+        # Fetch `stock.quant.package` if group_tracking_lot.
+        packages = self.env['stock.quant.package']
+        if self.env.user.has_group('stock.group_tracking_lot'):
+            packages |= move_lines.package_id | move_lines.result_package_id
+            packages |= self.env['stock.quant.package']._get_usable_packages()
+
+        # Fetch `stock.location`
+        source_locations = self.env['stock.location'].search([('id', 'child_of', self.location_id.ids)])
+        destination_locations = self.env['stock.location'].search([('id', 'child_of', self.location_dest_id.ids)])
+        locations = move_lines.location_id | move_lines.location_dest_id | source_locations | destination_locations
+        data = {
+            "records": {
+                "stock.picking": self.read(self._get_fields_stock_barcode(), load=False),
+                "stock.move.line": move_lines.read(move_lines._get_fields_stock_barcode(), load=False),
+                "product.product": products.read(products._get_fields_stock_barcode(), load=False),
+                "product.packaging": packagings.read(packagings._get_fields_stock_barcode(), load=False),
+                "res.partner": owners.read(owners._get_fields_stock_barcode(), load=False),
+                "stock.location": locations.read(locations._get_fields_stock_barcode(), load=False),
+                "stock.quant.package": packages.read(packages._get_fields_stock_barcode(), load=False),
+                "stock.production.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
+                "uom.uom": uoms.read(uoms._get_fields_stock_barcode(), load=False),
+            },
+            "nomenclature_id": [self.env.company.nomenclature_id.id],
+            "source_location_ids": source_locations.ids,
+            "destination_locations_ids": destination_locations.ids,
+        }
+        return data
 
     def get_po_to_split_from_barcode(self, barcode):
         """ Returns the lot wizard's action for the move line matching
@@ -106,7 +130,8 @@ class StockPicking(models.Model):
             ('result_package_id', '=', False),
         ])
 
-        action_ctx = dict(self.env.context,
+        action_ctx = dict(
+            self.env.context,
             default_picking_id=self.id,
             serial=self.product_id.tracking == 'serial',
             default_product_id=product_id.id,
@@ -261,21 +286,16 @@ class StockPicking(models.Model):
             'immediate_transfer': True,
         })
 
-    @api.model
-    def _get_client_action(self, picking_id):
+    def _get_client_action(self):
+        self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
-        params = {
-            'model': 'stock.picking',
-            'picking_id': picking_id,
-        }
-        action = dict(action, target='fullscreen', params=params)
-        action['context'] = {'active_id': picking_id}
-        action = {'action': action}
-        return action
+        action = dict(action, target='fullscreen')
+        action['context'] = {'active_id': self.id}
+        return {'action': action}
 
-    def _get_picking_fields_to_read(self):
+    def _get_fields_stock_barcode(self):
         """ List of fields on the stock.picking object that are needed by the
-        client action. The purpose of this function is to be overriden in order
+        client action. The purpose of this function is to be overridden in order
         to inject new fields to the client action.
         """
         return [
@@ -289,30 +309,11 @@ class StockPicking(models.Model):
             'company_id',
             'immediate_transfer',
             'note',
+            'picking_type_entire_packs',
+            'use_create_lots',
+            'use_existing_lots',
         ]
 
-    @api.model
-    def _get_move_line_ids_fields_to_read(self):
-        """ read() on picking.move_line_ids only returns the id and the display
-        name however a lot more data from stock.move.line are used by the client
-        action.
-        """
-        return [
-            'product_id',
-            'location_id',
-            'location_dest_id',
-            'qty_done',
-            'display_name',
-            'product_uom_qty',
-            'product_uom_id',
-            'product_barcode',
-            'owner_id',
-            'lot_id',
-            'lot_name',
-            'package_id',
-            'result_package_id',
-            'dummy_id',
-        ]
     def on_barcode_scanned(self, barcode):
         if not self.env.company.nomenclature_id:
             # Logic for products
@@ -323,7 +324,7 @@ class StockPicking(models.Model):
 
             product_packaging = self.env['product.packaging'].search([('barcode', '=', barcode)], limit=1)
             if product_packaging:
-                if self._check_product(product_packaging.product_id,product_packaging.qty):
+                if self._check_product(product_packaging.product_id, product_packaging.qty):
                     return
 
             # Logic for packages in source location
@@ -334,7 +335,7 @@ class StockPicking(models.Model):
                         return
 
             # Logic for packages in destination location
-            package = self.env['stock.quant.package'].search([('name', '=', barcode), '|', ('location_id', '=', False), ('location_id','child_of', self.location_dest_id.id)], limit=1)
+            package = self.env['stock.quant.package'].search([('name', '=', barcode), '|', ('location_id', '=', False), ('location_id', 'child_of', self.location_dest_id.id)], limit=1)
             if package:
                 if self._check_destination_package(package):
                     return
@@ -350,7 +351,7 @@ class StockPicking(models.Model):
                 if parsed_result['type'] == 'weight':
                     product_barcode = parsed_result['base_code']
                     qty = parsed_result['value']
-                else: #product
+                else:  # product
                     product_barcode = parsed_result['code']
                     qty = 1.0
                 product = self.env['product.product'].search(['|', ('barcode', '=', product_barcode), ('default_code', '=', product_barcode)], limit=1)
@@ -364,7 +365,7 @@ class StockPicking(models.Model):
                     if package_source:
                         if self._check_source_package(package_source):
                             return
-                package = self.env['stock.quant.package'].search([('name', '=', parsed_result['code']), '|', ('location_id', '=', False), ('location_id','child_of', self.location_dest_id.id)], limit=1)
+                package = self.env['stock.quant.package'].search([('name', '=', parsed_result['code']), '|', ('location_id', '=', False), ('location_id', 'child_of', self.location_dest_id.id)], limit=1)
                 if package:
                     if self._check_destination_package(package):
                         return
@@ -377,7 +378,7 @@ class StockPicking(models.Model):
 
             product_packaging = self.env['product.packaging'].search([('barcode', '=', parsed_result['code'])], limit=1)
             if product_packaging:
-                if self._check_product(product_packaging.product_id,product_packaging.qty):
+                if self._check_product(product_packaging.product_id, product_packaging.qty):
                     return
 
         return {'warning': {
@@ -411,61 +412,6 @@ class StockPicking(models.Model):
             'title': _("No product found for barcode %s", barcode),
             'message': _("Scan a product to filter the transfers."),
         }}
-
-    @api.model
-    def open_new_picking(self):
-        """ Creates a new picking of the current picking type and open it.
-
-        :return: the action used to open the picking, or false
-        :rtype: dict
-        """
-        context = self.env.context
-        if context.get('active_model') == 'stock.picking.type':
-            picking_type = self.env['stock.picking.type'].browse(context.get('active_id'))
-            if picking_type.exists():
-                new_picking = self._create_new_picking(picking_type)
-                return self._get_client_action(new_picking.id)['action']
-        return False
-
-    def open_picking(self):
-        """ method to open the form view of the current record
-        from a button on the kanban view
-        """
-        self.ensure_one()
-        view_id = self.env.ref('stock.view_picking_form').id
-        return {
-            'name': _('Open picking form'),
-            'res_model': 'stock.picking',
-            'view_mode': 'form',
-            'view_id': view_id,
-            'type': 'ir.actions.act_window',
-            'res_id': self.id,
-        }
-
-    def open_picking_client_action(self):
-        """ method to open the form view of the current record
-        from a button on the kanban view
-        """
-        self.ensure_one()
-        use_form_handler = self.env['ir.config_parameter'].sudo().get_param('stock_barcode.use_form_handler')
-        if use_form_handler:
-            view_id = self.env.ref('stock.view_picking_form').id
-            return {
-                'name': _('Open picking form'),
-                'res_model': 'stock.picking',
-                'view_mode': 'form',
-                'view_id': view_id,
-                'type': 'ir.actions.act_window',
-                'res_id': self.id,
-            }
-        else:
-            action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
-            params = {
-                'model': 'stock.picking',
-                'picking_id': self.id,
-                'nomenclature_id': [self.env.company.nomenclature_id.id],
-            }
-            return dict(action, target='fullscreen', params=params)
 
 
 class StockPickingType(models.Model):

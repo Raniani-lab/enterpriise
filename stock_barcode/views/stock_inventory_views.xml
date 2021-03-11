@@ -42,7 +42,8 @@
                             attrs="{'readonly': [('id', '!=', False)]}"/>
                     </div>
                 </div>
-                <div class="row" groups="stock.group_production_lot">
+                <div class="row" groups="stock.group_production_lot"
+                    attrs="{'invisible': ['&amp;', ('id', '!=', False), ('lot_id', '=', False)]}">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" attrs="{'invisible': ['|',('tracking', '=','none'), ('product_id','=', False)]}">
                         <i class="fa fa-fw fa-lg fa-barcode mr-3" title="Serial/Lot Number"/>
                         <field name="lot_id"
@@ -53,7 +54,8 @@
                             placeholder="Serial/Lot Number"/>
                     </div>
                 </div>
-                <div class="row" groups="stock.group_tracking_lot">
+                <div class="row" groups="stock.group_tracking_lot"
+                    attrs="{'invisible': ['&amp;', ('id', '!=', False), ('package_id', '=', False)]}">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-archive mr-3" title="Package"/>
                         <field name="package_id" placeholder="Package"

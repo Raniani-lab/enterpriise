@@ -3,7 +3,7 @@
 
 from odoo import http
 from odoo.http import request
-from odoo.addons.stock_barcode.controllers.main import StockBarcodeController
+from odoo.addons.stock_barcode.controllers.stock_barcode import StockBarcodeController
 
 
 class StockBarcodePickingBatchController(StockBarcodeController):

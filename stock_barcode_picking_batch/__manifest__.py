@@ -14,6 +14,7 @@
         'views/stock_barcode_picking_batch.xml',
         'views/stock_move_line_views.xml',
         'views/stock_quant_package_views.xml',
+        'wizard/stock_barcode_cancel_operation.xml',
         'wizard/stock_barcode_picking_batch_group_pickings.xml',
         'data/data.xml',
     ],
@@ -24,18 +25,14 @@
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'stock_barcode_picking_batch/static/src/js/stock_barcode_picking_batch.js',
-            'stock_barcode_picking_batch/static/src/js/client_action/lines_widget.js',
-            'stock_barcode_picking_batch/static/src/js/client_action/picking_batch_client_action.js',
-            'stock_barcode_picking_batch/static/src/js/client_action/picking_batch_create_client_action.js',
-            'stock_barcode_picking_batch/static/src/js/client_action/settings_widget.js',
-            'stock_barcode_picking_batch/static/src/js/client_action/stock_barcode_picking_batch_kanban_record.js',
-            'stock_barcode_picking_batch/static/src/js/tours/tour_helper_stock_barcode_picking_batch.js',
-            'stock_barcode_picking_batch/static/src/js/tours/tour_test_barcode_batch_flows.js',
-            'stock_barcode_picking_batch/static/src/scss/client_action.scss',
+            'stock_barcode_picking_batch/static/src/**/*.js',
+            'stock_barcode_picking_batch/static/src/**/*.scss',
+        ],
+        'web.assets_tests': [
+            'stock_barcode_picking_batch/static/tests/tours/**/*.js',
         ],
         'web.assets_qweb': [
-            'stock_barcode_picking_batch/static/src/xml/**/*',
+            'stock_barcode_picking_batch/static/src/**/*.xml',
         ],
     },
     'license': 'OEEL-1',

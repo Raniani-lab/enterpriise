@@ -1,10 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from unittest.mock import patch
-
-import odoo
-from odoo.tests import HttpCase, tagged
+from odoo.tests import tagged
 from odoo.tests.common import Form
 from odoo.addons.stock_barcode.tests.test_barcode_client_action import clean_access_rights, TestBarcodeClientAction
 
@@ -180,9 +177,10 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.picking_delivery_package.name = 'picking_delivery_package'
 
     def _get_batch_client_action_url(self, batch_id):
-        return '/web#model=stock.picking.batch&picking_batch_id=%s&action=stock_barcode_picking_batch_client_action' % batch_id
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode_picking_batch.stock_barcode_picking_batch_client_action")
+        return '/web#action=%s&active_id=%s' % (action['id'], batch_id)
 
-    def test_batch_receipt(self):
+    def test_barcode_batch_receipt_1(self):
         """ Create a batch picking with 2 receipts, then open the batch in
         barcode app and scan each product, SN or LN one by one.
         """
@@ -200,12 +198,11 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.assertEqual(len(batch_receipt.move_ids), 4)
         self.assertEqual(len(batch_receipt.move_line_ids), 5)
 
-        batch_write = odoo.addons.stock_picking_batch.models.stock_picking_batch.StockPickingBatch.write
         url = self._get_batch_client_action_url(batch_receipt.id)
         self.start_tour(url, 'test_barcode_batch_receipt_1', login='admin', timeout=180)
 
-    def test_batch_delivery(self):
-        """ Create a batch picking with 2 delivries (split into 3 locations),
+    def test_barcode_batch_delivery_1(self):
+        """ Create a batch picking with 2 deliveries (split into 3 locations),
         then open the batch in barcode app and scan each product.
         Change the location when all products of the page has been scanned.
         """
@@ -281,7 +278,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_multiple_pages',
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
@@ -295,7 +292,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_from_multiple_pages',
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
@@ -347,7 +344,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move1 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_before_dest',
             'location_id': self.shelf1.id,
             'location_dest_id': self.shelf2.id,
@@ -361,7 +358,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
         })
-        move2 = self.env['stock.move'].create({
+        self.env['stock.move'].create({
             'name': 'test_put_in_pack_before_dest',
             'location_id': self.shelf3.id,
             'location_dest_id': self.shelf4.id,
@@ -395,7 +392,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         """ Create two deliveries with a line from two different locations each.
         Then, group them in a batch and process the batch in barcode.
         Put first picking line in a package and the second one in another package,
-        then change the lcoation page and scan the suggested packaged for each picking lines.
+        then change the location page and scan the suggested packaged for each picking lines.
         """
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')

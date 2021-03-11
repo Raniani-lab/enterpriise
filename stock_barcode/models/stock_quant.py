@@ -14,82 +14,6 @@ class StockQuant(models.Model):
     def _inverse_dummy_id(self):
         pass
 
-    def action_client_action(self):
-        """ Open the mobile view specialized in handling barcodes on mobile devices.
-        """
-        # self.ensure_one()
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'stock_barcode_inventory_client_action',
-            'target': 'fullscreen',
-            'params': {
-                'model': 'stock.quant',
-            }
-        }
-
-    def get_barcode_view_state(self):
-        """ Return the initial state of the barcode view as a dict.
-        """
-
-        inventory = {}
-
-        # FIXME: improve handling of abstract_client_action values no longer applicable for inventory
-        inventory['id'] = False
-        inventory['name'] = ''
-
-        location_ids = self.env['stock.location']
-        company_id = self.env.context.get('company_id') or self.env.company.id
-        if self.env.user.has_group('stock.group_stock_multi_locations'):
-            # now that we can't choose inventory adjustment locations, assume we can do all locations
-            location_ids = self.env['stock.location'].search([('usage', 'in', ['internal', 'transit']), ('company_id', '=', company_id)], order='id')
-        else:
-            location_ids = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
-
-        quants = self.env['stock.quant'].search([('user_id', '=', self.env.user.id), ('location_id', 'in', location_ids.ids), ('inventory_date', '<=', fields.Date.today())])
-
-        inventory['line_ids'] = quants.read([
-            'product_id',
-            'location_id',
-            'inventory_quantity',
-            'quantity',
-            'product_uom_id',
-            'lot_id',
-            'package_id',
-            'owner_id',
-            'inventory_diff_quantity',
-            'dummy_id',
-        ])
-
-        inventory['location_ids'] = location_ids.read([
-            'id',
-            'display_name',
-            'parent_path',
-        ])
-
-        # Prefetch data
-        product_ids = list(set([line_id["product_id"][0] for line_id in inventory['line_ids']]))
-
-        parent_path_per_location_id = {}
-        for location_id in location_ids:
-            parent_path_per_location_id[location_id.id] = {'parent_path': location_id.parent_path}
-        tracking_and_barcode_per_product_id = self.env['product.product'].browse(product_ids)._get_fields_per_product_id()
-
-        for line_id in inventory['line_ids']:
-            product_id, name = line_id.pop('product_id')
-            line_id['product_id'] = {"id": product_id, "display_name": name, **tracking_and_barcode_per_product_id[product_id]}
-            location_id, name = line_id.pop('location_id')
-            line_id['location_id'] = {"id": location_id, "display_name": name, **parent_path_per_location_id[location_id]}
-        inventory['group_stock_multi_locations'] = self.env.user.has_group('stock.group_stock_multi_locations')
-        inventory['group_tracking_owner'] = self.env.user.has_group('stock.group_tracking_owner')
-        inventory['group_tracking_lot'] = self.env.user.has_group('stock.group_tracking_lot')
-        inventory['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
-        inventory['group_uom'] = self.env.user.has_group('uom.group_uom')
-        inventory['company_id'] = (self.env.company.id, self.env.company.name)
-        inventory['actionReportInventory'] = self.env.ref('stock.action_report_inventory').id
-        if self.env.company.nomenclature_id:
-            inventory['nomenclature_id'] = [self.env.company.nomenclature_id.id]
-        return [inventory]
-
     @api.model
     def barcode_write(self, vals):
         """ Specially made to handle barcode app saving. Avoids overriding write method because pickings in barcode
@@ -98,9 +22,24 @@ class StockQuant(models.Model):
         [0, 0, {write_values}], ...]} where [1, quant_id...] updates an existing quant or {[0, 0, ...]}
         when creating a new quant."""
         Quant = self.env['stock.quant'].with_context(inventory_mode=True)
+
+        # TODO batch
+
+        for val in vals:
+            if val[0] in (0, 1) and not val[2].get('lot_id') and val[2].get('lot_name'):
+                quant_db = val[0] == 1 and Quant.browse(val[1]) or False
+                val[2]['lot_id'] = self.env['stock.production.lot'].create({
+                    'name': val[2].pop('lot_name'),
+                    'product_id': val[2].get('product_id', quant_db and quant_db.product_id.id or False),
+                    'company_id': self.env['stock.location'].browse(val[2].get('location_id') or quant_db.location_id.id).company_id.id
+                }).id
+
+        quant_ids = []
         for val in vals:
             if val[0] == 1:
-                Quant.browse(val[1]).write(val[2])
+                quant_id = val[1]
+                Quant.browse(quant_id).write(val[2])
+                quant_ids.append(quant_id)
             elif val[0] == 0:
                 quant = Quant.create(val[2])
                 # in case an existing quant is written on instead (happens when scanning a product
@@ -112,15 +51,82 @@ class StockQuant(models.Model):
                 # assign a user if one isn't assigned to avoid line disappearing when page left and returned to
                 if not quant.user_id and user_id:
                     quant.write({'user_id': user_id})
+                quant_ids.append(quant.id)
+        return self.browse(quant_ids)._get_stock_barcode_data()
 
-
-    @api.model
-    def action_validate(self, line_ids):
-        ids = [line['id'] for line in line_ids[0]]
-        quants = self.env['stock.quant'].with_context(inventory_mode=True).search([('id', 'in', ids)])
+    def action_validate(self):
+        quants = self.with_context(inventory_mode=True)
         quants._compute_inventory_diff_quantity()
-        quants.action_apply_inventory()
+        res = quants.action_apply_inventory()
+        if res:
+            return res
         return True
+
+    def action_client_action(self):
+        """ Open the mobile view specialized in handling barcodes on mobile devices.
+        """
+        action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_barcode_inventory_client_action')
+        return dict(action, target='fullscreen')
+
+    def _get_stock_barcode_data(self):
+        locations = self.env['stock.location']
+        company_id = self.env.company.id
+        if not self:
+            # When we open the inventory adjustment.
+            if self.env.user.has_group('stock.group_stock_multi_locations'):
+                locations = self.env['stock.location'].search([('usage', 'in', ['internal', 'transit']), ('company_id', '=', company_id)], order='id')
+            else:
+                locations = self.env['stock.warehouse'].search([('company_id', '=', company_id)], limit=1).lot_stock_id
+
+            quants = self.env['stock.quant'].search([('user_id', '=?', self.env.user.id), ('location_id', 'in', locations.ids), ('inventory_date', '<=', fields.Date.today())])
+        else:
+            # After quants were saved from `stock_barcode`.
+            quants = self
+
+        data = quants.get_stock_barcode_data_records()
+        if locations:
+            data["records"]["stock.location"] = locations.read(locations._get_fields_stock_barcode(), load=False)
+        return data
+
+    def get_stock_barcode_data_records(self):
+        products = self.product_id
+        companies = self.company_id or self.env.company
+        lots = self.lot_id
+        owners = self.owner_id
+        packages = self.package_id
+        uoms = products.uom_id
+        # If UoM setting is active, fetch all UoM's data.
+        if self.env.user.has_group('uom.group_uom'):
+            uoms = self.env['uom.uom'].search([])
+
+        data = {
+            "records": {
+                "stock.quant": self.read(self._get_fields_stock_barcode(), load=False),
+                "product.product": products.read(products._get_fields_stock_barcode(), load=False),
+                "stock.quant.package": packages.read(packages._get_fields_stock_barcode(), load=False),
+                "res.company": companies.read(['name']),
+                "res.partner": owners.read(owners._get_fields_stock_barcode(), load=False),
+                "stock.production.lot": lots.read(lots._get_fields_stock_barcode(), load=False),
+                "uom.uom": uoms.read(uoms._get_fields_stock_barcode(), load=False),
+            },
+            "nomenclature_id": [self.env.company.nomenclature_id.id],
+            "user_id": self.env.user.id,
+        }
+        return data
+
+    def _get_fields_stock_barcode(self):
+        return [
+            'product_id',
+            'location_id',
+            'inventory_quantity',
+            'quantity',
+            'product_uom_id',
+            'lot_id',
+            'package_id',
+            'owner_id',
+            'inventory_diff_quantity',
+            'dummy_id',
+        ]
 
     def _get_inventory_fields_write(self):
         return ['dummy_id'] + super()._get_inventory_fields_write()

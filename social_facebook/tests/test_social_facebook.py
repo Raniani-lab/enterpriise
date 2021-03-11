@@ -7,6 +7,7 @@ import requests
 from unittest.mock import patch
 
 from odoo.addons.social_facebook.models.social_post import SocialPostFacebook
+from odoo.addons.social_facebook.models.social_stream import SocialStreamFacebook
 from odoo.addons.social_facebook.tests.common import SocialFacebookCommon
 
 
@@ -40,12 +41,13 @@ class SocialFacebookCase(SocialFacebookCommon):
         return cls.env.ref('social_facebook.social_media_facebook')
 
     def test_format_facebook_message(self):
-        social_stream = self.env['social.stream'].create({
-            'media_id': self.social_account.media_id.id,
-            'account_id': self.social_account.id,
-            'stream_type_id': self.env.ref('social_facebook.stream_type_page_posts').id,
+        with patch.object(SocialStreamFacebook, '_fetch_stream_data', lambda *args, **kwargs: None):
+            social_stream = self.env['social.stream'].create({
+                'media_id': self.social_account.media_id.id,
+                'account_id': self.social_account.id,
+                'stream_type_id': self.env.ref('social_facebook.stream_type_page_posts').id,
 
-        })
+            })
         message = "Hi, Social is so cool :) Thanks Odoo"
         tags = [{
             'id': 1337,

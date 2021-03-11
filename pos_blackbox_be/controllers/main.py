@@ -4,6 +4,8 @@
 import hashlib
 import os
 
+from markupsafe import Markup
+
 from odoo import http
 from odoo.http import request
 
@@ -39,13 +41,14 @@ class GovCertificationController(http.Controller):
 
             with open(absolute_file_path, 'rb') as f:
                 content = f.read()
+                content_hash = hashlib.sha1(content).hexdigest()
                 data['files'].append({
                     'name': relative_file_path,
                     'size_in_bytes': size_in_bytes,
-                    'contents': content,
-                    'hash': hashlib.sha1(content).hexdigest()
+                    'contents': Markup(content.decode()),
+                    'hash': content_hash
                 })
-                main_hash += hashlib.sha1(content).hexdigest()
+                main_hash += content_hash
 
         data['main_hash'] = hashlib.sha1(main_hash.encode('utf-8')).hexdigest()
 

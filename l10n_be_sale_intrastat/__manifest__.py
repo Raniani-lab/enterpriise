@@ -8,6 +8,7 @@
         Bridge module between sale_intrastat and l10n_be_intrastat.
     """,
     'depends': ['sale_intrastat', 'l10n_be_intrastat'],
-    'auto_install': True,
+    'installable': False,
+    'auto_install': False,
     'license': 'OEEL-1',
 }

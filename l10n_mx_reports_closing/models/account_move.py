@@ -30,19 +30,3 @@ class AccountMove(models.Model):
         existing_closing_move = self._get_closing_move(self.date)
         existing_closing_move.write({'l10n_mx_closing_move': False})
         self.l10n_mx_closing_move = True
-
-
-class AccountMoveLine(models.Model):
-    _inherit = "account.move.line"
-
-    @api.model
-    def _query_get(self, domain=None):
-        """Avoid that the model l10n_mx.trial.report consider the closing moves
-        """
-        if self._context.get('model') not in ('l10n_mx.trial.report', 'account.financial.html.report'):
-            return super(AccountMoveLine, self)._query_get(domain=domain)
-        closing_moves = self.env['account.move']._get_closing_move(fields.Date.from_string(self._context.get('date_to')))
-        if domain is None:
-            domain = []
-        domain.append(('move_id', 'not in', closing_moves.ids))
-        return super(AccountMoveLine, self)._query_get(domain=domain)

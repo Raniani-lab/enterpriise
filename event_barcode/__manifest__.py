@@ -13,14 +13,19 @@ the registration is confirmed.
     'category': 'Marketing/Events',
     'depends': ['barcodes', 'event'],
     'data': [
-        'views/assets.xml',
         'views/event_event_views.xml',
         'views/event_registration_views.xml',
         'views/event_report_templates.xml',
         'views/res_config_settings_views.xml',
     ],
-    'qweb': [
-        "static/src/xml/event_barcode.xml",
-    ],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'event_barcode/static/src/js/event_barcode.js',
+            'event_barcode/static/src/scss/event_barcode.scss',
+        ],
+        'web.assets_qweb': [
+            'event_barcode/static/src/xml/**/*',
+        ],
+    }
 }

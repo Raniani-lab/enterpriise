@@ -17,11 +17,15 @@
         'views/hr_leave_views.xml',
         'views/hr_payslip_run_views.xml',
         'views/hr_payslip_views.xml',
-        'views/assets.xml',
         'data/mail_activity_data.xml',
     ],
-    'qweb': [
-        'static/src/xml/templates.xml',
-    ],
     'auto_install': True,
+    'assets': {
+        'web.assets_backend': [
+            'hr_payroll_holidays/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'hr_payroll_holidays/static/src/xml/**/*',
+        ],
+    }
 }

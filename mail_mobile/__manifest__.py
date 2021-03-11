@@ -22,10 +22,14 @@ This module modifies the mail addon to provide:
     ],
     'data': [
         'data/mail_mobile_data.xml',
-        'views/ocn_assets.xml',
         'views/res_config_settings_views.xml',
     ],
     'installable': True,
     'auto_install': ['web_mobile', 'mail_enterprise'],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'mail_mobile/static/**/*',
+        ],
+    }
 }

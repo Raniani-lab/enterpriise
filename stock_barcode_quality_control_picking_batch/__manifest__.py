@@ -11,11 +11,13 @@
         'quality_control_picking_batch',
         'stock_barcode_quality_control',
     ],
-    'data': [
-        'views/stock_barcode_templates.xml'
-    ],
     'application': False,
     'auto_install': True,
     'category': 'Hidden',
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'stock_barcode_quality_control_picking_batch/static/**/*',
+        ],
+    }
 }

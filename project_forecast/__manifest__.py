@@ -17,10 +17,18 @@
         'views/project_forecast_views.xml',
         'views/project_views.xml',
         'views/res_config_settings_views.xml',
-        'views/assets.xml',
         'security/project_forecast_security.xml',
     ],
     'application': False,
     'license': 'OEEL-1',
     'post_init_hook': 'post_init',
+    'assets': {
+        'web.assets_backend': [
+            'project_forecast/static/src/js/forecast_gantt.js',
+            'project_forecast/static/src/scss/planning_view.scss',
+        ],
+        'web.assets_frontend': [
+            'project_forecast/static/src/js/forecast_calendar_front.js',
+        ],
+    }
 }

@@ -8,11 +8,17 @@
     'version': '1.0',
     'description': """ """,
     'depends': ['pos_hr', 'web_mobile'],
-    'data': ['views/pos_barcode_mobile_template.xml'],
-    'qweb': [
-        'static/src/xml/pos_barcode_mobile.xml',
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'point_of_sale.assets': [
+            'pos_hr_mobile/static/src/js/LoginScreenMobile.js',
+            'pos_hr_mobile/static/src/scss/barcode_mobile.scss',
+            'barcodes_mobile/static/src/scss/barcode_mobile.scss',
+        ],
+        'web.assets_qweb': [
+            'pos_hr_mobile/static/src/xml/**/*',
+        ],
+    }
 }

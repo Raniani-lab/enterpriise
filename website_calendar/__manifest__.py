@@ -18,7 +18,6 @@ Allow clients to Schedule Appointments through your Website
     'data': [
         'data/calendar_data.xml',
         'data/website_data.xml',
-        'views/assets.xml',
         'views/calendar_event_views.xml',
         'views/calendar_appointment_question_views.xml',
         'views/calendar_appointment_type_views.xml',
@@ -37,4 +36,20 @@ Allow clients to Schedule Appointments through your Website
     'application': True,
     'auto_install': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_frontend': [
+            'website_calendar/static/src/scss/website_calendar.scss',
+            'website_calendar/static/src/js/website_calendar.js',
+        ],
+        'web.assets_backend': [
+            'website_calendar/static/src/js/appointment_employee_url.js',
+            'website_calendar/static/src/scss/appointment_employee_url.scss',
+        ],
+        'website.assets_editor': [
+            'website_calendar/static/src/js/website_calendar.editor.js',
+        ],
+        'web.qunit_suite_tests': [
+            'website_calendar/static/tests/**/*',
+        ],
+    }
 }

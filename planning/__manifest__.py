@@ -17,7 +17,6 @@
         'data/digest_data.xml',
         'wizard/planning_send_views.xml',
         'wizard/slot_planning_select_send_views.xml',
-        'views/assets.xml',
         'views/hr_views.xml',
         'views/planning_template_views.xml',
         'views/planning_views.xml',
@@ -32,7 +31,27 @@
     ],
     'application': True,
     'license': 'OEEL-1',
-    'qweb': [
-        'static/src/xml/planning_gantt.xml',
-    ]
+    'assets': {
+        'web.assets_backend': [
+            'planning/static/src/js/planning_gantt_controller.js',
+            'planning/static/src/js/planning_gantt_row.js',
+            'planning/static/src/js/planning_gantt_renderer.js',
+            'planning/static/src/js/planning_gantt_model.js',
+            'planning/static/src/js/planning_gantt_view.js',
+            'planning/static/src/js/planning_calendar.js',
+            'planning/static/src/scss/planning_gantt.scss',
+            'planning/static/src/js/tours/planning.js',
+        ],
+        'web.assets_frontend': [
+            'planning/static/src/scss/planning_calendar_report.scss',
+            'web/static/src/scss/form_view.scss',
+            'planning/static/src/js/planning_calendar_front.js',
+        ],
+        'web.qunit_suite_tests': [
+            'planning/static/tests/**/*',
+        ],
+        'web.assets_qweb': [
+            'planning/static/src/xml/**/*',
+        ],
+    }
 }

@@ -15,7 +15,6 @@
         'website_event',
     ],
     'data': [
-        'views/assets.xml',
         'views/event_event_views.xml',
         'views/event_twitter_wall_templates.xml',
     ],
@@ -25,4 +24,9 @@
     'application': False,
     'installable': True,
     'auto_install': True,
+    'assets': {
+        'web.assets_frontend': [
+            'website_event_twitter_wall/static/**/*',
+        ],
+    }
 }

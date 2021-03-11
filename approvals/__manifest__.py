@@ -25,7 +25,6 @@ creates next activities for the related approvers.
         'data/approval_category_data.xml',
         'data/mail_activity_data.xml',
 
-        'views/approval_template.xml',
         'views/approval_category_views.xml',
         'views/approval_product_line_views.xml',
         'views/approval_request_views.xml',
@@ -34,13 +33,35 @@ creates next activities for the related approvers.
     'demo':[
         'data/approval_demo.xml',
     ],
-    'qweb': [
-        'static/src/bugfix/bugfix.xml',
-        'static/src/components/activity/activity.xml',
-        'static/src/components/approval/approval.xml',
-        'static/src/xml/*.xml'
-    ],
     'application': True,
     'installable': True,
     'auto_install': False,
+    'assets': {
+        'web.assets_backend': [
+            'approvals/static/src/bugfix/bugfix.js',
+            'approvals/static/src/components/activity/activity.js',
+            'approvals/static/src/components/approval/approval.js',
+            'approvals/static/src/models/activity/activity.js',
+            'approvals/static/src/models/approval/approval.js',
+            'approvals/static/src/widgets/form_renderer/form_renderer.js',
+            'approvals/static/src/bugfix/bugfix.scss',
+            'approvals/static/src/components/approval/approval.scss',
+        ],
+        'web.assets_tests': [
+            'approvals/static/tests/tours/**/*',
+        ],
+        'web.tests_assets': [
+            'approvals/static/tests/helpers/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'approvals/static/src/bugfix/bugfix_tests.js',
+            'approvals/static/src/components/activity/activity_tests.js',
+        ],
+        'web.assets_qweb': [
+            'approvals/static/src/bugfix/bugfix.xml',
+            'approvals/static/src/components/activity/activity.xml',
+            'approvals/static/src/components/approval/approval.xml',
+            'approvals/static/src/xml/*.xml',
+        ],
+    }
 }

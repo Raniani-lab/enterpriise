@@ -8,9 +8,15 @@
     'version': '1.0',
     'description': """ """,
     'depends': ['hr_attendance', 'barcodes_mobile'],
-    'qweb': ['static/src/xml/attendance_barcode_mobile.xml'],
-    'data': ['views/attendance_barcode_mobile_template.xml'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'hr_attendance_mobile/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'hr_attendance_mobile/static/src/xml/**/*',
+        ],
+    }
 }

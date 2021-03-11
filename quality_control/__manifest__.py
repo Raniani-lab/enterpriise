@@ -20,7 +20,6 @@ Quality Control
 """,
     'data': [
         'data/quality_control_data.xml',
-        'views/quality_templates.xml',
         'views/quality_views.xml',
         'views/stock_picking_views.xml',
     ],
@@ -29,4 +28,9 @@ Quality Control
     ],
     'application': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'quality_control/static/src/**/*',
+        ],
+    }
 }

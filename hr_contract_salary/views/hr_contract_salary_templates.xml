@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Salary Package">
-        <xpath expr="//link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/hr_contract_salary/static/src/scss/hr_contract_salary.scss"/>
-        </xpath>
-        <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/hr_contract_salary/static/src/js/hr_contract_salary.js"></script>
-        </xpath>
-    </template>
-
     <template id="salary_package" name="My Contract">
         <t t-call="portal.frontend_layout">
             <div id="wrap">

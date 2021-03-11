@@ -20,18 +20,23 @@ and get rewards.
         'views/pos_loyalty_views.xml',
         'views/pos_config_views.xml',
         'security/ir.model.access.csv',
-        'views/pos_loyalty_templates.xml',
-    ],
-    'qweb': [
-        'static/src/xml/OrderReceipt.xml',
-        'static/src/xml/RewardButton.xml',
-        'static/src/xml/PointsCounter.xml',
-        'static/src/xml/Loyalty.xml',
-    ],
+        ],
     'demo': [
         'data/pos_loyalty_demo.xml',
     ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'point_of_sale.assets': [
+            'pos_loyalty/static/src/css/pos.css',
+            'pos_loyalty/static/src/js/Loyalty.js',
+            'pos_loyalty/static/src/js/RewardButton.js',
+            'pos_loyalty/static/src/js/PointsCounter.js',
+            'pos_loyalty/static/src/js/ClientDetailsEdit.js',
+        ],
+        'web.assets_qweb': [
+            'pos_loyalty/static/src/xml/**/*',
+        ],
+    }
 }

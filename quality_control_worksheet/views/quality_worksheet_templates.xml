@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="assets_backend" name="quality assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/quality_control_worksheet/static/src/js/quality_worksheet_validation.js"></script>
-            <script type="text/javascript" src="/quality_control_worksheet/static/src/js/quality_domain_fields.js"></script>
-        </xpath>
-    </template>
-</odoo>

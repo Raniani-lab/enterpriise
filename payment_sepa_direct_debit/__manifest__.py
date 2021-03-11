@@ -8,7 +8,6 @@
     'description': """Sepa Direct Debit Payment Acquirer""",
     'depends': ['account_sepa_direct_debit', 'payment', 'sms'],
     'data': [
-        'views/assets.xml',
         'views/payment_views.xml',
         'views/payment_sepa_direct_debit_templates.xml',
         'data/mail_template_data.xml',
@@ -17,4 +16,11 @@
     'installable': True,
     'post_init_hook': 'create_missing_journals',
     'uninstall_hook': 'uninstall_hook',
+    'assets': {
+        'web.assets_frontend': [
+            'payment_sepa_direct_debit/static/src/scss/payment_form.scss',
+            'payment_sepa_direct_debit/static/src/js/payment_form.js',
+            'payment_sepa_direct_debit/static/src/js/signature_form.js',
+        ],
+    }
 }

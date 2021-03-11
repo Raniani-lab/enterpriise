@@ -13,11 +13,15 @@ Allows using IoT devices, such as scales and printers, for delivery operations.
         'wizard/choose_delivery_package_views.xml',
         'views/iot_views.xml',
         'views/stock_picking_views.xml',
-        'views/assets.xml',
-    ],
-    'qweb': [
-        'static/src/xml/iot_widgets_templates.xml',
-    ],
+        ],
     'license': 'OEEL-1',
     'auto_install': True,
+    'assets': {
+        'web.assets_backend': [
+            'delivery_iot/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'delivery_iot/static/src/xml/**/*',
+        ],
+    }
 }

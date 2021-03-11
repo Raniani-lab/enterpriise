@@ -12,7 +12,6 @@ Accounting Reports
     'data': [
         'security/ir.model.access.csv',
         'data/account_financial_report_data.xml',
-        'views/assets.xml',
         'views/account_report_view.xml',
         'views/report_financial.xml',
         'views/search_template_view.xml',
@@ -25,11 +24,34 @@ Accounting Reports
         'views/account_activity.xml',
         'views/account_sales_report_view.xml',
     ],
-    'qweb': [
-        'static/src/xml/account_report_template.xml',
-    ],
     'auto_install': True,
     'installable': True,
     'license': 'OEEL-1',
     'post_init_hook': 'set_periodicity_journal_on_companies',
+    'assets': {
+        'account_reports.assets_financial_report': [
+            ('include', 'web._assets_helpers'),
+            'web/static/lib/bootstrap/scss/_variables.scss',
+            ('include', 'web._assets_bootstrap'),
+            'web/static/src/scss/fonts.scss',
+            'account_reports/static/src/scss/account_financial_report.scss',
+            'account_reports/static/src/scss/account_report_print.scss',
+        ],
+        'web.assets_backend': [
+            'account_reports/static/src/js/mail_activity.js',
+            'account_reports/static/src/js/account_reports.js',
+            'account_reports/static/src/js/action_manager_account_report_dl.js',
+            'account_reports/static/src/scss/account_financial_report.scss',
+        ],
+        'web.qunit_suite_tests': [
+            'account_reports/static/tests/action_manager_account_report_dl_tests.js',
+            'account_reports/static/tests/account_reports_tests.js',
+        ],
+        'web.assets_tests': [
+            'account_reports/static/tests/tours/**/*',
+        ],
+        'web.assets_qweb': [
+            'account_reports/static/src/xml/**/*',
+        ],
+    }
 }

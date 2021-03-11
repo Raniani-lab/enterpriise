@@ -8,11 +8,15 @@
     'description': 'Spreadsheet CRM templates',
     'depends': ['documents_spreadsheet', 'crm'],
     'data': [
-        'views/assets.xml',
         'data/documents_data.xml',
     ],
     'application': False,
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_tests': [
+            'documents_spreadsheet_crm/static/**/*',
+        ],
+    }
 }

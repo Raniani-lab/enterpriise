@@ -20,4 +20,9 @@ Generate tickets in Helpdesk app from a form published on your website. This for
     ],
     'post_init_hook': 'post_install_hook_ensure_team_forms',
     'license': 'OEEL-1',
+    'assets': {
+        'website.assets_editor': [
+            'website_helpdesk_form/static/src/**/*',
+        ],
+    }
 }

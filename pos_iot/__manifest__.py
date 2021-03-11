@@ -14,16 +14,34 @@ Supported devices include payment terminals, receipt printers, scales and custom
 """,
     'data': [
         'views/pos_config_views.xml',
-        'views/point_of_sale_assets.xml',
         'views/res_config_setting_views.xml',
         'views/pos_payment_method_views.xml',
     ],
     'depends': ['point_of_sale', 'iot'],
-    'qweb': [
-        'static/src/xml/IoTErrorPopup.xml',
-        'static/src/xml/ScaleScreen.xml',
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'point_of_sale.assets': [
+            'pos_iot/static/src/js/barcode_reader.js',
+            'pos_iot/static/src/js/ClientScreenButton.js',
+            'pos_iot/static/src/js/customer_display.js',
+            'pos_iot/static/src/js/DebugWidget.js',
+            'pos_iot/static/src/js/devices.js',
+            'pos_iot/static/src/js/iot_longpolling.js',
+            'pos_iot/static/src/js/IoTErrorPopup.js',
+            'pos_iot/static/src/js/models.js',
+            'pos_iot/static/src/js/payment.js',
+            'pos_iot/static/src/js/printers.js',
+            'pos_iot/static/src/js/ProductScreen.js',
+            'pos_iot/static/src/js/ScaleScreen.js',
+            'pos_iot/static/src/css/pos.css',
+        ],
+        'web.assets_tests': [
+            'pos_iot/static/tests/**/*',
+        ],
+        'web.assets_qweb': [
+            'pos_iot/static/src/xml/**/*',
+        ],
+    }
 }

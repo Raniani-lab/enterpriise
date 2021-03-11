@@ -32,11 +32,15 @@
         'report/rental_order_report_templates.xml',
         'report/rental_report_views.xml',
         'report/rental_schedule_views.xml',
-        'views/assets.xml',
-    ],
+        ],
     'demo': [
         'data/rental_demo.xml',
     ],
     'application': True,
     'pre_init_hook': '_pre_init_rental',
+    'assets': {
+        'web.assets_backend': [
+            'sale_renting/static/src/**/*',
+        ],
+    }
 }

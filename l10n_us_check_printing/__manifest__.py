@@ -34,4 +34,9 @@ You can choose between:
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.report_assets_common': [
+            'l10n_us_check_printing/static/**/*',
+        ],
+    }
 }

@@ -15,7 +15,6 @@ a periodic and automatic synchronization of their bank statements.
     'depends': ['account_accountant'],
 
     'data': [
-        'views/account_asset.xml',
         'data/config_parameter.xml',
         'security/ir.model.access.csv',
         'security/account_online_sync_security.xml',
@@ -24,4 +23,9 @@ a periodic and automatic synchronization of their bank statements.
     ],
     'license': 'OEEL-1',
     'auto_install': True,
+    'assets': {
+        'web.assets_backend': [
+            'account_online_synchronization/static/**/*',
+        ],
+    }
 }

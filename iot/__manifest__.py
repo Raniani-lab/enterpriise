@@ -15,7 +15,6 @@ This module provides management of your IoT Boxes inside Odoo.
         'wizard/add_iot_box_views.xml',
         'security/ir.model.access.csv',
         'security/iot_security.xml',
-        'views/assets.xml',
         'views/iot_views.xml',
     ],
     'demo': [
@@ -25,4 +24,9 @@ This module provides management of your IoT Boxes inside Odoo.
     'application': True,
     'auto_install': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'iot/static/src/**/*',
+        ],
+    }
 }

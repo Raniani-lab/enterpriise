@@ -17,8 +17,20 @@ Extension to send follow-up documents by post
         'views/assets.xml',
         'wizard/followup_send_views.xml',
     ],
-    'qweb': ['static/src/xml/account_followup_template.xml'],
     'demo': ['data/account_followup_demo.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'snailmail_account_followup/static/src/js/**/*',
+        ],
+        'snailmail_account_followup.followup_report_assets_snailmail': [
+            ('include', 'web._assets_helpers'),
+            'web/static/lib/bootstrap/scss/_variables.scss',
+            'snailmail_account_followup/static/src/scss/snailmail_account_followup_asset.scss',
+        ],
+        'web.assets_qweb': [
+            'snailmail_account_followup/static/src/xml/**/*',
+        ],
+    }
 }

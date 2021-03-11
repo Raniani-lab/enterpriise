@@ -34,7 +34,6 @@
         'views/report_payslip_templates.xml',
         'views/hr_work_entry_views.xml',
         'views/resource_views.xml',
-        'views/hr_payslip_template.xml',
         'views/hr_rule_parameter_views.xml',
         'views/hr_payroll_report_views.xml',
         'views/hr_work_entry_report_views.xml',
@@ -42,7 +41,12 @@
         'report/hr_contract_history_report_views.xml'
     ],
     'demo': ['data/hr_payroll_demo.xml'],
-    'qweb': [
-        "static/src/xml/payslip_tree_views.xml",
-    ],
+    'assets': {
+        'web.assets_backend': [
+            'hr_payroll/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'hr_payroll/static/src/xml/**/*',
+        ],
+    }
 }

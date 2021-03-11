@@ -1,7 +1,0 @@
-<odoo>
-    <template id="assets_backend" name="worksheet_assets" inherit_id="web.assets_backend">
-        <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/worksheet/static/src/js/open_studio_button_widget.js"></script>
-        </xpath>
-    </template>
-</odoo>

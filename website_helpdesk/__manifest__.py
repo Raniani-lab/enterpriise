@@ -17,4 +17,9 @@
         'views/helpdesk_templates.xml',
     ],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_frontend': [
+            'website_helpdesk/static/**/*',
+        ],
+    }
 }

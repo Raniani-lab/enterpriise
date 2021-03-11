@@ -46,17 +46,27 @@ Features:
         'data/ir_cron_data.xml',
         'views/helpdesk_views.xml',
         'views/helpdesk_team_views.xml',
-        'views/assets.xml',
         'views/digest_views.xml',
         'views/helpdesk_portal_templates.xml',
         'views/res_partner_views.xml',
         'views/mail_activity_views.xml',
         'report/helpdesk_sla_report_analysis_views.xml',
     ],
-    'qweb': [
-        "static/src/xml/helpdesk_team_templates.xml",
-    ],
     'demo': ['data/helpdesk_demo.xml'],
     'application': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'helpdesk/static/src/scss/helpdesk.scss',
+            'helpdesk/static/src/css/portal_helpdesk.css',
+            'helpdesk/static/src/js/helpdesk_dashboard.js',
+            'helpdesk/static/src/js/tours/helpdesk.js',
+        ],
+        'web.qunit_suite_tests': [
+            'helpdesk/static/tests/**/*',
+        ],
+        'web.assets_qweb': [
+            'helpdesk/static/src/xml/**/*',
+        ],
+    }
 }

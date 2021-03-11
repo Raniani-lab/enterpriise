@@ -27,13 +27,19 @@ Allows use of stock application to manage rentals inventory
         'report/rental_order_report_templates.xml',
         'views/res_config_settings_views.xml',
         'views/sale_views.xml',
-        'views/assets.xml',
         'views/product_views.xml',
     ],
     'demo': [
         'data/rental_stock_demo.xml',
     ],
-    'qweb': ['static/src/xml/qty_at_date_rental.xml'],
     'auto_install': True,
-    'post_init_hook': '_ensure_rental_stock_moves_consistency'
+    'post_init_hook': '_ensure_rental_stock_moves_consistency',
+    'assets': {
+        'web.assets_backend': [
+            'sale_stock_renting/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'sale_stock_renting/static/src/xml/**/*',
+        ],
+    }
 }

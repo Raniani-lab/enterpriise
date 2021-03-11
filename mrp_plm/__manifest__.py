@@ -24,15 +24,21 @@ Product Life Management
         'data/mrp_data.xml',
         'views/mrp_bom_views.xml',
         'views/mrp_document_views.xml',
-        'views/mrp_eco_templates.xml',
         'views/mrp_eco_views.xml',
         'views/product_views.xml',
         'report/mrp_report_bom_structure.xml',
     ],
-    'qweb': [
-        'static/src/xml/mrp_plm_templates.xml'
-    ],
     'demo': [],
     'application': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'mrp_plm/static/src/js/mrp_plm.js',
+            'mrp_plm/static/src/js/mrp_bom_report.js',
+            'mrp_plm/static/src/scss/mrp_plm_dashboard.scss',
+        ],
+        'web.assets_qweb': [
+            'mrp_plm/static/src/xml/**/*',
+        ],
+    }
 }

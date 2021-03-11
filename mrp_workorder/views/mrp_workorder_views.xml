@@ -359,26 +359,6 @@
     </record>
 
 
-    <template id="quality_check_view_form_css" name="quality.check.view.form.css" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/empty_screen.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/tablet_view.scss"/>
-            <script type="text/javascript" src="/mrp_workorder/static/src/js/mrp_workorder.js"></script>
-            <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_no_reload.js"></script>
-            <script type="text/javascript" src="/mrp_workorder/static/src/js/viewer_common.js"></script>
-            <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_widget.js"></script>
-            <script type="text/javascript" src="/mrp_workorder/static/src/js/embed_viewer_widget.js"></script>
-        </xpath>
-    </template>
-
-    <template id="qunit_suite" inherit_id="web.qunit_suite_tests">
-        <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/mrp_workorder/static/tests/pdf_viewer_widget_tests.js"/>
-            <script type="text/javascript" src="/mrp_workorder/static/tests/embed_viewer_widget_tests.js"/>
-            <script type="text/javascript" src="/mrp_workorder/static/tests/work_order_navigation_test.js"/>
-        </xpath>
-    </template>
-
     <record id="mrp_workorder_view_kanban_inherit_quality" model="ir.ui.view">
         <field name="name">mrp.workorder.view.kanban.inherit.quality</field>
         <field name="model">mrp.workorder</field>

@@ -15,8 +15,12 @@
         'views/hr_expense_views.xml',
         'views/res_config_settings_views.xml',
         'data/update_status_cron.xml',
-        'views/assets.xml',
-    ],
+        ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'hr_expense_extract/static/src/**/*',
+        ],
+    }
 }

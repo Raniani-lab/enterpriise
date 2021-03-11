@@ -20,9 +20,14 @@
         'data/data_cleaning_data.xml',
         'data/data_cleaning_cron.xml',
     ],
-    'qweb': [
-        'static/src/xml/data_cleaning.xml'
-    ],
     'installable': True,
     'application': True,
+    'assets': {
+        'web.assets_backend': [
+            'data_cleaning/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'data_cleaning/static/src/xml/**/*',
+        ],
+    }
 }

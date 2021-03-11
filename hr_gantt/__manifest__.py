@@ -8,8 +8,17 @@
     'version': '1.0',
     'description': """ """,
     'depends': ['hr', 'web_gantt'],
-    'data': ['views/assets.xml'],
-    'qweb': ['static/src/xml/hr_gantt.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'hr_gantt/static/src/js/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'hr_gantt/static/tests/**/*',
+        ],
+        'web.assets_qweb': [
+            'hr_gantt/static/src/xml/**/*',
+        ],
+    }
 }

@@ -10,14 +10,10 @@
     'description': """Manage your social media and website visitors""",
     'website': 'https://www.odoo.com/page/social-marketing',
     'depends': ['web', 'mail', 'iap', 'link_tracker'],
-    'qweb': [
-        'static/src/xml/social_templates.xml',
-    ],
     'data': [
         'security/social_security.xml',
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',
-        'views/assets.xml',
         'views/social_menu_views.xml',
         'views/social_account_views.xml',
         'views/social_live_post_views.xml',
@@ -34,4 +30,26 @@
     ],
     'application': True,
     'installable': True,
+    'assets': {
+        'web.assets_backend': [
+            'social/static/src/js/social_post_formatter_mixin.js',
+            'social/static/src/js/kanban_social_field_stream_post.js',
+            'social/static/src/js/social_post_preview_field.js',
+            'social/static/src/js/add_stream_modal.js',
+            'social/static/src/js/post_kanban_images_carousel.js',
+            'social/static/src/js/post_kanban_controller.js',
+            'social/static/src/js/post_kanban_view.js',
+            'social/static/src/js/stream_post_comment_delete.js',
+            'social/static/src/js/stream_post_comments.js',
+            'social/static/src/js/stream_post_kanban_model.js',
+            'social/static/src/js/stream_post_kanban_renderer.js',
+            'social/static/src/js/stream_post_kanban_controller.js',
+            'social/static/src/js/stream_post_kanban_view.js',
+            'social/static/src/js/tours/social.js',
+            'social/static/src/scss/social.scss',
+        ],
+        'web.assets_qweb': [
+            'social/static/src/xml/**/*',
+        ],
+    }
 }

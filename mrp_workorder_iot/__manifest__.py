@@ -14,9 +14,13 @@
 """,
     "data": [
         'security/ir.model.access.csv',
-        'views/assets.xml',
         'views/mrp_workorder_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'mrp_workorder_iot/static/**/*',
+        ],
+    }
 }

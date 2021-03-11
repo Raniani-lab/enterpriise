@@ -14,8 +14,12 @@ Create customizable worksheet
     'data': [
         'security/ir.model.access.csv',
         'security/worksheet_security.xml',
-        'views/assets.xml',
         'views/worksheet_template_view.xml',
     ],
     'demo': [],
+    'assets': {
+        'web.assets_backend': [
+            'worksheet/static/**/*',
+        ],
+    }
 }

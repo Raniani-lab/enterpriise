@@ -15,7 +15,6 @@
         'social_push_notifications',
     ],
     'data': [
-        'views/assets.xml',
         'views/event_event_views.xml',
         'views/social_post_views.xml',
         'views/event_templates_registration.xml'
@@ -25,4 +24,9 @@
     'application': False,
     'installable': True,
     'auto_install': True,
+    'assets': {
+        'web.assets_frontend': [
+            'website_event_social/static/**/*',
+        ],
+    }
 }

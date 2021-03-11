@@ -13,9 +13,12 @@
     ],
     'data': [
         'views/hr_payroll_menu.xml',
-        'views/hr_work_entry_template.xml',
         'views/hr_work_entry_views.xml',
     ],
     'auto_install': True,
-
+    'assets': {
+        'web.assets_backend': [
+            'hr_work_entry_contract_enterprise/static/**/*',
+        ],
+    }
 }

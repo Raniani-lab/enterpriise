@@ -16,13 +16,28 @@ If you use the external timesheet application, this module alows you to synchron
     'depends': ['hr_timesheet'],
     'data': [
         'views/templates.xml',
-        'views/assets.xml',
         'views/timesheet_views.xml',
-    ],
-    'qweb': [
-        'static/src/xml/timesheet_app_backend_template.xml',
     ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.qunit_suite_tests': [
+            'project_timesheet_synchro/static/src/js/project_timesheet.js',
+            'project_timesheet_synchro/static/tests/timesheet_app_tests.js',
+        ],
+        'web.assets_tests': [
+            'project_timesheet_synchro/static/tests/tours/**/*',
+        ],
+        'web.assets_backend': [
+            'project_timesheet_synchro/static/src/js/timesheet_app_backend.js',
+            'project_timesheet_synchro/static/src/scss/project_timesheet_backend.scss',
+        ],
+        'project_timesheet_synchro.assets_timesheet_app': [
+            'project_timesheet_synchro/static/src/css/**/*',
+        ],
+        'web.assets_qweb': [
+            'project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml',
+        ],
+    }
 }

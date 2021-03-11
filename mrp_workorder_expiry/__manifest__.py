@@ -17,4 +17,9 @@ Technical module.
     'installable': True,
     'auto_install': True,
     'application': False,
+    'assets': {
+        'web.assets_backend': [
+            'mrp_workorder_expiry/static/**/*',
+        ],
+    }
 }

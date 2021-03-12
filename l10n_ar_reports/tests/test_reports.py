@@ -42,6 +42,8 @@ class TestReports(TestAccountReportsCommon):
         # The example files where generate on 2021-03-01, we need to update this files dates to ensure
         # that will match the date where this test is running
         today = fields.Date.today()
+        # Replace last date of month with last date of the last date of the next month
+        res_file = res_file.replace('20210430', (fields.Date.end_of(date_utils.add(today, months=1), 'month')).strftime('%Y%m%d'))
         # change all 202103xx dates to the current month
         res_file = res_file.replace('202103', today.strftime('%Y%m'))
 

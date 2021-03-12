@@ -5,6 +5,7 @@ const components = {
     Activity: require('mail/static/src/components/activity/activity.js'),
 };
 
+const { insert } = require('mail/static/src/model/model_field_command.js');
 const {
     afterEach,
     beforeEach,
@@ -59,16 +60,16 @@ QUnit.test('activity with phone number rendering', async function (assert) {
     };
     document.addEventListener('voip_activity_call', onVoipActivityCall);
     const activity = this.env.models['mail.activity'].create({
-        assignee: [['insert', {
+        assignee: insert({
             id: this.env.messaging.currentPartner.id,
-        }]],
+        }),
         canWrite: true,
         id: 100,
         phone: '+32470123456',
-        type: [['insert', {
+        type: insert({
             displayName: 'Phone',
             id: 1,
-        }]],
+        }),
     });
     await this.createActivityComponent(activity);
 

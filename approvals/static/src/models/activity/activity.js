@@ -6,6 +6,7 @@ const {
     registerFieldPatchModel,
 } = require('mail/static/src/model/model_core.js');
 const { one2one } = require('mail/static/src/model/model_field.js');
+const { insert, unlinkAll } = require('mail/static/src/model/model_field_command.js');
 
 registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/activity.js', {
     //----------------------------------------------------------------------
@@ -19,10 +20,10 @@ registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/a
         const data2 = this._super(data);
         if ('approver_id' in data && 'approver_status' in data) {
             if (!data.approver_id) {
-                data2.approval = [['unlink-all']];
+                data2.approval = unlinkAll();
             } else {
                 data2.approval = [
-                    ['insert', { id: data.approver_id, status: data.approver_status }],
+                    insert({ id: data.approver_id, status: data.approver_status }),
                 ];
             }
         }

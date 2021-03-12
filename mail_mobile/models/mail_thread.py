@@ -32,7 +32,7 @@ class MailThread(models.AbstractModel):
         and every direct message. We have to take into account the risk of
         duplicated notifications in case of a mention in a channel of `chat` type.
         """
-
+        msg_vals = dict(msg_vals or {})
         icp_sudo = self.env['ir.config_parameter'].sudo()
         # Avoid to send notification if this feature is disabled or if no user use the mobile app.
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):

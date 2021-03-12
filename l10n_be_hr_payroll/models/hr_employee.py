@@ -49,6 +49,7 @@ class HrEmployee(models.Model):
         ('low_pension', 'With Low Pensions'),
         ('high_pension', 'With High Pensions')
     ], string='Tax status for spouse', groups="hr.group_hr_user", default='without_income', required=False)
+    spouse_fiscal_status_explanation = fields.Char(compute='_compute_spouse_fiscal_status_explanation')
     disabled = fields.Boolean(string="Disabled", help="If the employee is declared disabled by law", groups="hr.group_hr_user")
     disabled_spouse_bool = fields.Boolean(string='Disabled Spouse', help='if recipient spouse is declared disabled by law', groups="hr.group_hr_user")
     disabled_children_bool = fields.Boolean(string='Disabled Children', help='if recipient children is/are declared disabled by law', groups="hr.group_hr_user")
@@ -76,6 +77,16 @@ class HrEmployee(models.Model):
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
+
+    def _compute_spouse_fiscal_status_explanation(self):
+        low_income_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('spouse_low_income_threshold')
+        other_income_threshold = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('spouse_other_income_threshold')
+        for employee in self:
+            employee.spouse_fiscal_status_explanation = _("""- Without Income: The spouse of the income recipient has no professional income.\n
+- High income: The spouse of the recipient of the income has professional income, other than pensions, annuities or similar income, which exceeds %s€ net per month.\n
+- Low Income: The spouse of the recipient of the income has professional income, other than pensions, annuities or similar income, which does not exceed %s€ net per month.\n
+- Low Pensions: The spouse of the beneficiary of the income has professional income which consists exclusively of pensions, annuities or similar income and which does not exceed %s€ net per month.\n
+- High Pensions: The spouse of the beneficiary of the income has professional income which consists exclusively of pensions, annuities or similar income and which exceeds %s€ net per month.""", low_income_threshold, low_income_threshold, other_income_threshold, other_income_threshold)
 
     @api.depends('identification_id')
     def _compute_niss(self):

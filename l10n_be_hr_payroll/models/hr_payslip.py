@@ -626,9 +626,9 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
                 withholding_tax_amount -= payslip.rule_parameter('dependent_senior_deduction') * employee.dependent_seniors
             if employee.other_dependent_people and employee.dependent_juniors:
                 withholding_tax_amount -= payslip.rule_parameter('disabled_dependent_deduction') * employee.dependent_juniors
-            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_income':
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'low_income':
                 withholding_tax_amount -= payslip.rule_parameter('spouse_low_income_deduction')
-            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status =='low_pension':
+            if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'low_pension':
                 withholding_tax_amount -= payslip.rule_parameter('spouse_other_income_deduction')
         if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income':
             if employee.disabled:

@@ -8,6 +8,7 @@ class User(models.Model):
     _inherit = ['res.users']
 
     spouse_fiscal_status = fields.Selection(related='employee_ids.spouse_fiscal_status', readonly=False)
+    spouse_fiscal_status_explanation = fields.Char(related='employee_ids.spouse_fiscal_status_explanation')
     disabled = fields.Boolean(related='employee_ids.disabled', readonly=False)
     disabled_spouse_bool = fields.Boolean(related='employee_ids.disabled_spouse_bool', readonly=False)
     disabled_children_bool = fields.Boolean(related='employee_ids.disabled_children_bool', readonly=False)
@@ -28,6 +29,9 @@ class User(models.Model):
             on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
         """
         l10n_be_payroll_readable_fields = [
+            'spouse_fiscal_status_explanation',
+        ]
+        l10n_be_payroll_writable_fields = [
             'spouse_fiscal_status',
             'disabled',
             'disabled_spouse_bool',
@@ -45,6 +49,6 @@ class User(models.Model):
         ]
         init_res = super(User, self).__init__(pool, cr)
         # duplicate list to avoid modifying the original reference
-        type(self).SELF_READABLE_FIELDS = type(self).SELF_READABLE_FIELDS + l10n_be_payroll_readable_fields
-        type(self).SELF_WRITEABLE_FIELDS = type(self).SELF_WRITEABLE_FIELDS + l10n_be_payroll_readable_fields
+        type(self).SELF_READABLE_FIELDS = type(self).SELF_READABLE_FIELDS + l10n_be_payroll_readable_fields + l10n_be_payroll_writable_fields
+        type(self).SELF_WRITEABLE_FIELDS = type(self).SELF_WRITEABLE_FIELDS + l10n_be_payroll_writable_fields
         return init_res

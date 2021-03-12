@@ -257,6 +257,17 @@
             <field name="date_from" eval="datetime(2020, 1, 1).date()"/><!-- Stay the same in 2021 -->
         </record>
 
+        <record id="rule_parameter_prp_spouse_low_income_threshold" model="hr.rule.parameter">
+            <field name="name">Spouse with low income threshold</field>
+            <field name="code">spouse_low_income_threshold</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_prp_spouse_low_income_threshold_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">235</field>
+            <field name="rule_parameter_id" ref="rule_parameter_prp_spouse_low_income_threshold"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
         <record id="rule_parameter_prp_spouse_low_income_deduction" model="hr.rule.parameter">
             <field name="name">Spouse with low income deduction</field>
             <field name="code">spouse_low_income_deduction</field>
@@ -280,6 +291,17 @@
         <record id="rule_parameter_value_prp_spouse_low_income_deduction_2021" model="hr.rule.parameter.value">
             <field name="parameter_value">117.5</field>
             <field name="rule_parameter_id" ref="rule_parameter_prp_spouse_low_income_deduction"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_prp_spouse_other_income_threshold" model="hr.rule.parameter">
+            <field name="name">Spouse with other income threshold</field>
+            <field name="code">spouse_other_income_threshold</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_prp_spouse_other_income_threshold_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">469</field>
+            <field name="rule_parameter_id" ref="rule_parameter_prp_spouse_other_income_threshold"/>
             <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
         </record>
 

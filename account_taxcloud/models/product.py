@@ -53,6 +53,16 @@ class ResCompany(models.Model):
         for company in self:
             company.is_taxcloud_configured = company.taxcloud_api_id and company.taxcloud_api_key
 
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("""
+            UPDATE res_company
+            SET taxcloud_api_id = NULL, taxcloud_api_key = NULL
+        """)
+
+
 class ProductCategory(models.Model):
     _inherit = "product.category"
 

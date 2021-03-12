@@ -27,3 +27,9 @@ class ResCompany(models.Model):
 
     def _get_l10n_co_edi_template_code_description(self):
         return dict(TEMPLATE_CODE).get(self.l10n_co_edi_template_code)
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("UPDATE res_company SET l10n_co_edi_test_mode = true")

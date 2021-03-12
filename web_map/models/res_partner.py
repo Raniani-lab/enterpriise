@@ -49,3 +49,12 @@ class ResPartner(models.Model):
             if record.country_id:
                 record.contact_address_complete += record.country_id.name
             record.contact_address_complete = record.contact_address_complete.strip().strip(',')
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("""
+            DELETE FROM ir_config_parameter
+            WHERE key = 'web_map.token_map_box'
+        """)

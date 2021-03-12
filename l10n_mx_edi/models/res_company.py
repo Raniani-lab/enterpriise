@@ -193,3 +193,9 @@ class ResCompany(models.Model):
             node = etree.Element('{http://www.w3.org/2001/XMLSchema}import', xsd)
             content.insert(0, node)
         return content
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("UPDATE res_company SET l10n_mx_edi_pac_test_env = true")

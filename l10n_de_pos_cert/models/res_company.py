@@ -203,3 +203,14 @@ class ResCompany(models.Model):
             'l10n_de_fiskaly_api_key': response['api_key'],
             'l10n_de_fiskaly_api_secret': response['api_secret'],
         })
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("""
+            UPDATE res_company
+            SET l10n_de_fiskaly_api_key = NULL,
+                l10n_de_fiskaly_api_secret = NULL,
+                l10n_de_fiskaly_organization_id = NULL
+        """)

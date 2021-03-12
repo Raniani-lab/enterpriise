@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import os
 
-from odoo.tests.common import tagged
+from odoo.tests.common import tagged, TransactionCase
 from .common import TestAccountTaxcloudCommon
 
 
@@ -52,3 +52,15 @@ class TestAccountTaxcloud(TestAccountTaxcloudCommon):
                 1,
                 "Taxcloud should have generated a unique tax rate for the line.",
             )
+
+
+class TestAccountTaxcloudNeutralize(TransactionCase):
+    def test_account_taxcloud_neutralize(self):
+        company = self.env['res.company'].create({
+            'name': 'Test Company',
+            'taxcloud_api_id': 'Fake Taxcloud API for tests',
+            'currency_id': self.ref('base.USD')
+        })
+
+        self.env['res.company']._neutralize()
+        self.assertFalse(company.taxcloud_api_id)

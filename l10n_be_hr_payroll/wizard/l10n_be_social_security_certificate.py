@@ -91,9 +91,9 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
         meal_voucher_employee = sum(p._get_salary_line_total('MEAL_V_EMP') for p in monthly_slips + student_slips)
         net_third_party = sum(p._get_salary_line_total('IMPULSION25') + p._get_salary_line_total('IMPULSION12') for p in monthly_slips)
         salary_assignment = sum(p._get_salary_line_total('ASSIG_SALARY') for p in all_payslips)
-        salary_advance = 0  # YTI TODO: Implement salary advance
+        salary_advance = sum(p._get_salary_line_total('ADVANCE') for p in monthly_slips)
         net = sum(p._get_salary_line_quantity('NET') for p in all_payslips)
-        total_net = net
+        total_net = net + salary_advance
         # YTI TODO: Pliz
         emp_onss = 0
         emp_termination_onss = 0

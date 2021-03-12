@@ -248,7 +248,7 @@
                               <td></td>
                             </tr>                      
                             <tr>
-                              <th>Salary Advance</th>  <!-- YTI TODO: Implement Salary Advance -->
+                              <th>Salary Advance</th>
                               <td><t t-esc="round(data['salary_advance'], 2)"/></td>
                               <td><t t-esc="round(data['salary_advance'], 2)"/></td>
                               <td></td>

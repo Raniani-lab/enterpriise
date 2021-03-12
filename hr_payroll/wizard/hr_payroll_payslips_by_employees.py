@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from collections import defaultdict
 from datetime import datetime, date, time
+from dateutil.relativedelta import relativedelta
 import pytz
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
+from odoo.tools import format_date
 
 
 class HrPayslipEmployees(models.TransientModel):
@@ -54,8 +57,15 @@ class HrPayslipEmployees(models.TransientModel):
         if not self.env.context.get('active_id'):
             from_date = fields.Date.to_date(self.env.context.get('default_date_start'))
             end_date = fields.Date.to_date(self.env.context.get('default_date_end'))
+            today = fields.date.today()
+            first_day = today + relativedelta(day=1)
+            last_day = today + relativedelta(day=31)
+            if from_date == first_day and end_date == last_day:
+                batch_name = from_date.strftime('%B %Y')
+            else:
+                batch_name = _('From %s to %s', format_date(self.env, from_date), format_date(self.env, end_date))
             payslip_run = self.env['hr.payslip.run'].create({
-                'name': from_date.strftime('%B %Y'),
+                'name': batch_name,
                 'date_start': from_date,
                 'date_end': end_date,
             })

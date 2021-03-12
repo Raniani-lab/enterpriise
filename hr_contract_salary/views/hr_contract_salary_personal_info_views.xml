@@ -12,6 +12,7 @@
         <field name="model">hr.contract.salary.personal.info</field>
         <field name="arch" type="xml">
             <tree string="Salary Package Personal Info">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="res_field_id"/>
                 <field name="field" invisible="1"/>
@@ -49,6 +50,7 @@
                             <field name="dropdown_selection" attrs="{'invisible': [('display_type', '!=', 'dropdown')]}"/>
                             <field name="value_ids" attrs="{'invisible': [('display_type', 'not in', ['dropdown', 'radio'])]}">
                                 <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="value"/>
                                 </tree>

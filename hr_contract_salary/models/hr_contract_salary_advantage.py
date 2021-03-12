@@ -103,8 +103,10 @@ class HrContractSalaryAdvantageType(models.Model):
 class HrContractSalaryAdvantageValue(models.Model):
     _name = 'hr.contract.salary.advantage.value'
     _description = 'Contract Advantage Value'
+    _order = 'sequence'
 
     name = fields.Char(translate=True)
+    sequence = fields.Integer(default=100)
     advantage_id = fields.Many2one('hr.contract.salary.advantage')
     value = fields.Char(required=True)
     color = fields.Selection(selection=[

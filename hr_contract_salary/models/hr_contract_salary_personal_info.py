@@ -10,8 +10,10 @@ MODELS_MAPPED = {'employee': 'hr.employee', 'address': 'res.partner', 'bank_acco
 class HrContractSalaryPersonalInfo(models.Model):
     _name = 'hr.contract.salary.personal.info'
     _description = 'Salary Package Personal Info'
+    _order = 'sequence'
 
     name = fields.Char(translate=True, required=True)
+    sequence = fields.Integer(default=100)
     res_field_id = fields.Many2one(
         'ir.model.fields', string="Related Field",
         domain="[('model', '=', res_model), ('ttype', 'not in', ('one2many', 'many2one', 'many2many'))]", required=True, ondelete='cascade',
@@ -97,10 +99,10 @@ class HrContractSalaryPersonalInfoType(models.Model):
 class HrContractSalaryPersonalInfoValue(models.Model):
     _name = 'hr.contract.salary.personal.info.value'
     _description = 'Salary Package Personal Info Value'
+    _order = 'sequence'
 
     name = fields.Char(required=True, translate=True)
+    sequence = fields.Integer(default=100)
     personal_info_id = fields.Many2one('hr.contract.salary.personal.info')
     value = fields.Char(required=True)
     hide_children = fields.Boolean(help="Hide children personal info when checked.")
-    # YTI TODO MASTER: Add a sequence field, and order on it
-

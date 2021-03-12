@@ -67,6 +67,7 @@
                             <field name="display_type"/>
                             <field name="value_ids" attrs="{'invisible': [('display_type', 'not in', ['dropdown', 'radio'])]}">
                                 <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="value"/>
                                     <field name="color"/>

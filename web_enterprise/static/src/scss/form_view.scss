@@ -383,9 +383,5 @@
         font-size: $o-label-font-size-factor * $o-font-size-base-touch;
         font-weight: normal;
         color: $o-brand-secondary;
-
-        &.o_form_label_empty {
-            display: none;
-        }
     }
 }

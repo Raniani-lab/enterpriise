@@ -788,6 +788,7 @@ class AccountMove(models.Model):
                 vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
                 for i, line_val in enumerate(vals_invoice_lines):
                     with move_form.invoice_line_ids.new() as line:
+                        line.tax_ids.clear()
                         line.name = line_val['name']
                         line.price_unit = line_val['price_unit']
                         line.quantity = line_val['quantity']
@@ -796,7 +797,6 @@ class AccountMove(models.Model):
                             raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
 
                     with move_form.invoice_line_ids.edit(i) as line:
-                        line.tax_ids.clear()
                         for taxes_record in line_val['tax_ids']:
                             if taxes_record.price_include:
                                 line.price_unit *= 1 + taxes_record.amount/100

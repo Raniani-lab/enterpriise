@@ -673,27 +673,28 @@ class AccountEdiFormat(models.Model):
             }
 
     def _l10n_mx_edi_get_sw_credentials(self, move):
+        if not move.company_id.l10n_mx_edi_pac_username or not move.company_id.l10n_mx_edi_pac_password:
+            return {
+                'errors': [_("The username and/or password are missing.")]
+            }
+
+        credentials = {
+            'username': move.company_id.l10n_mx_edi_pac_username,
+            'password': move.company_id.l10n_mx_edi_pac_password,
+        }
+
         if move.company_id.l10n_mx_edi_pac_test_env:
-            credentials = {
-                'username': 'demo',
-                'password': '123456789',
+            credentials.update({
                 'login_url': 'https://services.test.sw.com.mx/security/authenticate',
                 'sign_url': 'https://services.test.sw.com.mx/cfdi33/stamp/v3/b64',
                 'cancel_url': 'https://services.test.sw.com.mx/cfdi33/cancel/csd',
-            }
+            })
         else:
-            if not move.company_id.l10n_mx_edi_pac_username or not move.company_id.l10n_mx_edi_pac_password:
-                return {
-                    'errors': [_("The username and/or password are missing.")]
-                }
-
-            credentials = {
-                'username': move.company_id.l10n_mx_edi_pac_username,
-                'password': move.company_id.l10n_mx_edi_pac_password,
+            credentials.update({
                 'login_url': 'https://services.sw.com.mx/security/authenticate',
                 'sign_url': 'https://services.sw.com.mx/cfdi33/stamp/v3/b64',
                 'cancel_url': 'https://services.sw.com.mx/cfdi33/cancel/csd',
-            }
+            })
 
         # Retrieve a valid token.
         credentials.update(self._l10n_mx_edi_get_sw_token(credentials))

@@ -214,7 +214,7 @@ class HrContractSalary(main.HrContractSalary):
         for field_to_copy in fields_to_copy:
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
-        res['has_hospital_insurance'] = advantages['has_hospital_insurance_radio'] == 1
+        res['has_hospital_insurance'] = advantages['has_hospital_insurance_radio'] == 1 if 'has_hospital_insurance_radio' in advantages else False
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):

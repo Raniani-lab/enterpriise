@@ -138,7 +138,7 @@ class RentalOrderLine(models.Model):
         sale_lines = self - rental_lines
         for line in sale_lines:
             line.rental_updatable = line.product_updatable
-        rental_lines.write({'rental_updatable': True})
+        rental_lines.rental_updatable = True
         # for line in rental_lines:
         #     if line.state == 'cancel' or (line.state in ['sale', 'done'] and (line.qty_invoiced > 0 or line.qty_delivered > 0)):
         #         line.rental_updatable = False

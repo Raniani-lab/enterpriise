@@ -15,6 +15,13 @@
                 <field name="sim_card" attrs="{'invisible': [('mobile', '=', 0)]}"/>
                 <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
             </field>
+            <xpath expr="//label[@for='final_yearly_costs']" position="before">
+                <label for="final_yearly_costs_fte"/>
+                <div class="o_row">
+                    <field name="final_yearly_costs_fte" nolabel="1"/>
+                    <span>/ year</span>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -71,8 +71,9 @@ class HrContract(models.Model):
     ip_value = fields.Float(compute='_compute_ip_value')
     time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
     work_time_rate = fields.Float(string='Work time rate', readonly=False, help='Work time rate versus full time working schedule.')
-    time_credit_full_time_wage = fields.Monetary('Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
-                                                 store=True, readonly=False, default=0)
+    time_credit_full_time_wage = fields.Monetary(
+        'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
+        store=True, readonly=False)
     standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
     time_credit_type_id = fields.Many2one('hr.work.entry.type', string='Part Time Work Entry Type',
                                               help="The work entry type used when generating work entries to fit full time working schedule.")

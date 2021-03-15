@@ -42,13 +42,15 @@ class HrContract(models.Model):
     wage_on_signature = fields.Monetary(string="Wage on Payroll", help="Wage on contract signature", tracking=True)
 
     # Employer costs fields
-    final_yearly_costs = fields.Monetary(compute='_compute_final_yearly_costs',
+    final_yearly_costs = fields.Monetary(
+        compute='_compute_final_yearly_costs',
         readonly=False, store=True,
-        string="Yearly Cost (FTE)",
+        string="Yearly Cost (Real)",
         tracking=True,
-        help="Total yearly cost of the employee for the employer for a full time equivalent.")
-    monthly_yearly_costs = fields.Monetary(compute='_compute_monthly_yearly_costs', string='Monthly Cost (FTE)', readonly=True,
-        help="Total monthly cost of the employee for the employer for a full time equivalent.")
+        help="Total real yearly cost of the employee for the employer.")
+    monthly_yearly_costs = fields.Monetary(
+        compute='_compute_monthly_yearly_costs', string='Monthly Cost (Real)', readonly=True,
+        help="Total real monthly cost of the employee for the employer.")
 
     def _get_contract_wage_field(self):
         self.ensure_one()
@@ -70,14 +72,10 @@ class HrContract(models.Model):
             else:
                 contract.wage_with_holidays = contract.wage
 
-    def _get_wage_with_holidays_yearly_cost(self):
-        self.ensure_one()
-        return self._get_salary_costs_factor() * self.wage_with_holidays
-
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract.holidays:
-                yearly_cost = contract._get_advantages_costs() + contract._get_wage_with_holidays_yearly_cost()
+                yearly_cost = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage_with_holidays
                 # YTI TODO: The number of working days per year could be a setting on the company
                 contract.final_yearly_costs = yearly_cost / (1.0 - contract.holidays / 231.0)
                 contract.wage = contract._get_gross_from_employer_costs(contract.final_yearly_costs)
@@ -94,16 +92,18 @@ class HrContract(models.Model):
 
     def _get_advantage_fields(self):
         types = ('float', 'integer', 'monetary', 'boolean')
-        fields = set(field.name for field in self._fields.values() if field.type in types)
-        return tuple(fields - self._advantage_black_list())
+        nonstored_whitelist = self._advantage_white_list()
+        advantage_fields = set(
+            field.name for field in self._fields.values() if field.type in types and (field.store or not field.store and field.name in nonstored_whitelist))
+        return tuple(advantage_fields - self._advantage_black_list())
 
     @api.model
     def _advantage_black_list(self):
-        return set(MAGIC_COLUMNS + ["wage_with_holidays"])
+        return set(MAGIC_COLUMNS + ['wage_with_holidays', 'wage_on_signature'])
 
-    def _get_final_yearly_costs_wage(self):
-        self.ensure_one()
-        return self.wage
+    @api.model
+    def _advantage_white_list(self):
+        return []
 
     @api.depends(lambda self: (
         'wage',
@@ -112,7 +112,7 @@ class HrContract(models.Model):
         *self._get_advantage_fields()))
     def _compute_final_yearly_costs(self):
         for contract in self:
-            contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract._get_final_yearly_costs_wage()
+            contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage
 
     @api.onchange("wage_with_holidays")
     def _onchange_wage_with_holidays(self):
@@ -120,7 +120,7 @@ class HrContract(models.Model):
 
     @api.onchange('final_yearly_costs')
     def _onchange_final_yearly_costs(self):
-        self.wage_with_holidays = self._get_gross_from_employer_costs(self.final_yearly_costs)
+        self.wage = self._get_gross_from_employer_costs(self.final_yearly_costs)
 
     @api.depends('final_yearly_costs')
     def _compute_monthly_yearly_costs(self):

@@ -10,7 +10,6 @@ EMPLOYER_ONSS = 0.2714
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    wage = fields.Monetary(compute='_compute_wage', store=True, readonly=False)
     double_holiday_wage = fields.Monetary(compute='_compute_double_holiday_wage')
     id_card = fields.Binary(related='employee_id.id_card', groups="hr_contract.group_hr_contract_manager")
     driving_license = fields.Binary(related='employee_id.driving_license', groups="hr_contract.group_hr_contract_manager")
@@ -21,54 +20,17 @@ class HrContract(models.Model):
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
                                        default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
-
-    def _get_gross_from_employer_costs(self, yearly_cost):
-        self.ensure_one()
-        return super()._get_gross_from_employer_costs(yearly_cost) * self._get_work_time_rate()
-
-    def _get_wage_with_holidays_yearly_cost(self):
-        self.ensure_one()
-        work_time_rate = self._get_work_time_rate()
-        if self.time_credit and work_time_rate != 0:
-            return self._get_salary_costs_factor() * self.wage_with_holidays / work_time_rate
-        else:
-            return super(HrContract, self)._get_wage_with_holidays_yearly_cost()
-
-    def _get_final_yearly_costs_wage(self):
-        if self.time_credit:
-            return self.time_credit_full_time_wage
-        return super()._get_final_yearly_costs_wage()
+    final_yearly_costs_fte = fields.Monetary(
+        compute='_compute_final_yearly_costs_fte',
+        string="Yearly Cost (FTE)",
+        help="Total yearly cost of the employee for the employer for a full time equivalent.")
 
     @api.depends(lambda self: (
-        'wage',
-        'structure_type_id.salary_advantage_ids.res_field_id',
-        'structure_type_id.salary_advantage_ids.impacts_net_salary',
         'time_credit_full_time_wage',
         *self._get_advantage_fields()))
-    def _compute_final_yearly_costs(self):
-        super(HrContract, self)._compute_final_yearly_costs()
-
-    @api.depends('wage_with_holidays', 'time_credit', 'work_time_rate')
-    def _compute_time_credit_full_time_wage(self):
+    def _compute_final_yearly_costs_fte(self):
         for contract in self:
-            work_time_rate = contract._get_work_time_rate()
-            if contract.time_credit and work_time_rate != 0:
-                contract.time_credit_full_time_wage = contract.wage_with_holidays / work_time_rate
-            elif contract.time_credit and not work_time_rate:
-                contract.time_credit_full_time_wage = contract._get_contract_wage()
-            else:
-                contract.time_credit_full_time_wage = contract.wage_with_holidays
-
-    @api.depends('time_credit', 'work_time_rate', 'wage_on_signature')
-    def _compute_wage(self):
-        for contract in self:
-            work_time_rate = contract._get_work_time_rate()
-            if contract.time_credit and contract.work_time_rate:
-                contract.wage_with_holidays = contract._get_contract_wage() * work_time_rate
-            elif contract.time_credit and not contract.work_time_rate:
-                contract.wage_with_holidays = 0
-            elif not contract.time_credit:
-                contract.wage_with_holidays = contract._get_contract_wage()
+            contract.final_yearly_costs_fte = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.time_credit_full_time_wage
 
     def _get_salary_costs_factor(self):
         res = super()._get_salary_costs_factor()
@@ -86,6 +48,18 @@ class HrContract(models.Model):
         vehicle_contracts = cars.with_context(active_test=False).mapped('log_contracts').filtered(
             lambda contract: not contract.active)
         return res + [cars, vehicle_contracts]
+
+    @api.model
+    def _advantage_black_list(self):
+        return super()._advantage_black_list() | set(['time_credit_full_time_wage'])
+
+    @api.model
+    def _advantage_white_list(self):
+        return super()._advantage_white_list() + [
+            'private_car_reimbursed_amount',
+            'yearly_commission_cost',
+            'meal_voucher_average_monthly_amount',
+        ]
 
     def _get_advantage_values_company_car_total_depreciated_cost(self, contract, advantages):
         has_car = advantages['fold_company_car_total_depreciated_cost']

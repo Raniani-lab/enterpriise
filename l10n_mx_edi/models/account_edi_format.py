@@ -157,7 +157,6 @@ class AccountEdiFormat(models.Model):
             'certificate_number': certificate.serial_number,
             'certificate_key': certificate.sudo().get_data()[0],
             'record': move,
-            'cfdi_date': move.l10n_mx_edi_post_time.strftime('%Y-%m-%dT%H:%M:%S'),
             'supplier': supplier,
             'customer': customer,
             'customer_rfc': customer_rfc,
@@ -229,6 +228,10 @@ class AccountEdiFormat(models.Model):
         :param invoice:
         :return:
         '''
+        cfdi_date = datetime.combine(
+            fields.Datetime.from_string(invoice.invoice_date),
+            invoice.l10n_mx_edi_post_time.time(),
+        ).strftime('%Y-%m-%dT%H:%M:%S')
 
         cfdi_values = {
             **self._l10n_mx_edi_get_common_cfdi_values(invoice),
@@ -236,6 +239,7 @@ class AccountEdiFormat(models.Model):
             'currency_name': invoice.currency_id.name,
             'payment_method_code': (invoice.l10n_mx_edi_payment_method_id.code or '').replace('NA', '99'),
             'payment_policy': invoice.l10n_mx_edi_payment_policy,
+            'cfdi_date': cfdi_date,
         }
 
         # ==== Invoice Values ====
@@ -404,6 +408,7 @@ class AccountEdiFormat(models.Model):
             'payment_account_ord': is_payment_code_emitter_ok and payment_account_ord,
             'receiver_vat_ord': is_payment_code_receiver_ok and move.journal_id.bank_account_id.bank_id.l10n_mx_edi_vat,
             'payment_account_receiver': is_payment_code_receiver_ok and payment_account_receiver,
+            'cfdi_date': move.l10n_mx_edi_post_time.strftime('%Y-%m-%dT%H:%M:%S'),
         }
 
         cfdi_payment_datetime = datetime.combine(fields.Datetime.from_string(move.date), datetime.strptime('12:00:00', '%H:%M:%S').time())

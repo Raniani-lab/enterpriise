@@ -10,6 +10,7 @@ This module overrides community website features and introduces enterprise look 
     'depends': ['website'],
     'data': [
         'data/website_data.xml',
+        'views/snippets/snippets.xml',
         'views/website_enterprise_templates.xml',
     ],
     'installable': True,

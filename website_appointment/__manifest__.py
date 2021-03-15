@@ -23,9 +23,11 @@ Allow clients to Schedule Appointments through your Website
         'views/appointment_templates_registration.xml',
         'views/appointment_templates_validation.xml',
         'views/website_pages_views.xml',
+        'views/snippets/s_online_appointment.xml',
+        'views/snippets/s_searchbar.xml',
+        'views/snippets/snippets.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',
-        'views/snippets.xml',
     ],
     'demo': [
         'data/appointment_demo.xml',
@@ -45,6 +47,9 @@ Allow clients to Schedule Appointments through your Website
         ],
         'website.assets_editor': [
             'website_appointment/static/src/js/systray_items/*.js',
+        ],
+        'website.assets_wysiwyg': [
+            'website_appointment/static/src/snippets/s_online_appointment/options.js',
         ],
     }
 }

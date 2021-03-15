@@ -166,6 +166,16 @@ class ConsolidationAccount(models.Model):
          "A consolidation account with the same code already exists in this consolidation."),
     ]
 
+    def write(self, vals):
+        for account in self:
+            active_companies = self.env.companies
+            if vals.get('account_ids') and vals['account_ids'][0][0] == 6 and account.company_ids - active_companies:
+                next_accounts = self.env['account.account'].browse(vals['account_ids'][0][2])
+                add_accounts = [(4, account.id) for account in next_accounts - account.account_ids]
+                remove_accounts = [(3, account.id) for account in account.account_ids - next_accounts]
+                vals['account_ids'][:1] = add_accounts + remove_accounts
+        return super(ConsolidationAccount, self).write(vals)
+
     # COMPUTEDS
 
     @api.depends('group_id', 'name')

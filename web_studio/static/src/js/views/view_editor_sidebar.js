@@ -51,6 +51,15 @@ var OPTIONS_BY_WIDGET = {
         { name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked' },
         {name: 'color_field', type: 'boolean', string: _lt("Use colors"), leaveEmpty: 'unchecked'},
     ],
+    many2many_tags_avatar: [
+        { name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked' },
+    ],
+    many2many_avatar_user: [
+        { name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked' },
+    ],
+    many2many_avatar_employee: [
+        { name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked' },
+    ],
     radio: [
         {name: 'horizontal', type: 'boolean', string: _lt("Display horizontally")},
     ],

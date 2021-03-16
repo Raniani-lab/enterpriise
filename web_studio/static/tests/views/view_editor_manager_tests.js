@@ -5763,6 +5763,106 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
+        assert.expect(3);
+
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'product',
+            arch: `
+            <form>
+                <sheet>
+                    <field name="m2m" widget="many2many_tags_avatar"/>
+                </sheet>
+            </form>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
+                        'no_create options should send with true value');
+                    return Promise.resolve({
+                        fields_views: { form: fieldsView },
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+            "should have no_create option for many2many_tags_avatar widget");
+        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+            'by default the no_create option should be false');
+
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
+
+        vem.destroy();
+    });
+
+    QUnit.test('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
+        assert.expect(6);
+
+        this.data.product.fields.m2m_users = {
+            string: "M2M Users",
+            type: 'many2many',
+            relation: "res.users",
+        };
+        this.data.product.fields.m2m_employees = {
+            string: "M2M Employees",
+            type: 'many2many',
+            relation: "hr.employee.public",
+        };
+
+        let fieldsView;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'product',
+            arch: `
+            <form>
+                <sheet>
+                    <field name="m2m_users" widget="many2many_avatar_user"/>
+                    <field name="m2m_employees" widget="many2many_avatar_employee"/>
+                </sheet>
+            </form>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
+                        'no_create options should send with true value');
+                    return Promise.resolve({
+                        fields_views: { form: fieldsView },
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        // check many2many_avatar_user
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+            "should have no_create option for many2many_avatar_user");
+        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+            'by default the no_create option should be false');
+
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
+
+        // check many2many_avatar_employee
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_employees"]'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar #option_no_create',
+            "should have no_create option for many2many_avatar_user");
+        assert.notOk(vem.$('.o_web_studio_sidebar #option_no_create').is(':checked'),
+            'by default the no_create option should be false');
+
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
+
+        vem.destroy();
+    });
+
     QUnit.test('display one2many without inline views', async function (assert) {
         assert.expect(1);
 

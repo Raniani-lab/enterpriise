@@ -1,8 +1,6 @@
 .o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
     $helpdesk-record-width: 420px;
 
-    padding-top: 180px;
-    overflow: auto;
     .o_kanban_group {
         width: $helpdesk-record-width + 2*$o-kanban-group-padding;
     }
@@ -15,14 +13,15 @@
 .o_helpdesk_dashboard {
     $sale-table-spacing: 10px;
 
-    position: fixed;
+    @include media-breakpoint-up(md) {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
     border: 8px solid #f9f9f9;
     border-bottom: 1px solid #CED4DA;
     background-color: $o-view-background-color;
-    z-index: 10;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
 
     .o_welcome_message {
         width: 100%;

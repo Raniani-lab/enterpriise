@@ -5771,6 +5771,12 @@
                         this.addBordersToMerge(cmd.sheetId, cmd.zone);
                     }
                     break;
+                case "DUPLICATE_SHEET":
+                    const borders = this.borders[cmd.sheetIdFrom];
+                    if (borders) {
+                        this.history.update("borders", cmd.sheetIdTo, JSON.parse(JSON.stringify(borders)));
+                    }
+                    break;
                 case "SET_BORDER":
                     this.setBorder(cmd.sheetId, cmd.col, cmd.row, cmd.border);
                     break;
@@ -6395,13 +6401,15 @@
         "^": 30,
         "*": 20,
         "/": 20,
+        "+": 15,
+        "-": 15,
+        "&": 13,
         ">": 10,
         "<>": 10,
         ">=": 10,
         "<": 10,
         "<=": 10,
         "=": 10,
-        "-": 7,
     };
     const FUNCTION_BP = 6;
     function bindingPower(token) {
@@ -6493,7 +6501,7 @@
                     return {
                         type: "UNARY_OPERATION",
                         value: current.value,
-                        right: parseExpression(tokens, 15),
+                        right: parseExpression(tokens, OP_PRIORITY[current.value]),
                     };
                 }
                 throw new Error(_lt("nope")); //todo: provide explicit error
@@ -7401,13 +7409,13 @@
             let newDependencies = (_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((x, i) => {
                 return {
                     stringDependency: this.getters.getRangeString(x, sheetId),
-                    stringPosition: `${FORMULA_REF_IDENTIFIER}${i}${FORMULA_REF_IDENTIFIER}`,
+                    stringPosition: `\\${FORMULA_REF_IDENTIFIER}${i}\\${FORMULA_REF_IDENTIFIER}`,
                 };
             });
             let newContent = ((_b = cell.formula) === null || _b === void 0 ? void 0 : _b.text) || "";
             if (newDependencies) {
                 for (let d of newDependencies) {
-                    newContent = newContent.replace(d.stringPosition, d.stringDependency);
+                    newContent = newContent.replace(new RegExp(d.stringPosition, "g"), d.stringDependency);
                 }
             }
             return newContent;
@@ -7621,7 +7629,7 @@
                             },
                             dependencies: ranges,
                         };
-                        if (!after.formula) {
+                        if (!format && !after.formula) {
                             format = this.computeFormulaFormat(cell);
                         }
                     }
@@ -7649,7 +7657,7 @@
                         content: afterContent,
                         value: parseNumber(afterContent),
                     };
-                    if (afterContent.includes("%")) {
+                    if (!format && afterContent.includes("%")) {
                         format = afterContent.includes(".") ? "0.00%" : "0%";
                     }
                 }
@@ -9367,11 +9375,29 @@
             const newSheet = JSON.parse(JSON.stringify(sheet));
             newSheet.id = toId;
             newSheet.name = toName;
+            for (let col = 0; col <= newSheet.cols.length; col++) {
+                for (let row = 0; row <= newSheet.rows.length; row++) {
+                    if (newSheet.rows[row]) {
+                        newSheet.rows[row].cells[col] = undefined;
+                    }
+                }
+            }
             const visibleSheets = this.visibleSheets.slice();
             const currentIndex = visibleSheets.findIndex((id) => id === fromId);
             visibleSheets.splice(currentIndex + 1, 0, newSheet.id);
             this.history.update("visibleSheets", visibleSheets);
             this.history.update("sheets", Object.assign({}, this.sheets, { [newSheet.id]: newSheet }));
+            for (const cell of Object.values(this.getters.getCells(fromId))) {
+                const { col, row } = this.getCellPosition(cell.id);
+                this.dispatch("UPDATE_CELL", {
+                    sheetId: newSheet.id,
+                    col,
+                    row,
+                    content: this.getters.getCellText(cell, fromId, true),
+                    format: cell.format,
+                    style: cell.style,
+                });
+            }
             const sheetIds = Object.assign({}, this.sheetIds);
             sheetIds[newSheet.name] = newSheet.id;
             this.history.update("sheetIds", sheetIds);
@@ -18093,11 +18119,8 @@
   </div>`;
     const CSS$8 = css$9 /* scss */ `
   .o-autocomplete-dropdown {
-    width: 300px;
-    margin: 4px;
+    pointer-events: auto;
     background-color: #fff;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-
     & > div:hover {
       background-color: #f2f2f2;
     }
@@ -18327,7 +18350,10 @@
     // -----------------------------------------------------------------------------
     const TEMPLATE$a = xml$b /* xml */ `
   <div class="o-formula-assistant-container"
-       t-att-class="{'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind}">
+       t-att-class="{
+         'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind,
+         'o-formula-assistant-event-auto': !assistantState.allowCellSelectionBehind
+         }">
     <t t-set="context" t-value="getContext()"/>
     <div class="o-formula-assistant" t-if="context.functionName" t-on-mousemove="onMouseMove"
          t-att-class="{'o-formula-assistant-transparency': assistantState.allowCellSelectionBehind}">
@@ -18376,11 +18402,8 @@
 `;
     const CSS$9 = css$a /* scss */ `
   .o-formula-assistant {
-    width: 300px;
-    background-color: #fff;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    margin: 4px;
     white-space: normal;
+    background-color: #fff;
     .o-formula-assistant-head {
       background-color: #f2f2f2;
       padding: 10px;
@@ -18413,11 +18436,13 @@
     }
   }
   .o-formula-assistant-container {
-    position: absolute;
     user-select: none;
   }
   .o-formula-assistant-event-none {
     pointer-events: none;
+  }
+  .o-formula-assistant-event-auto {
+    pointer-events: auto;
   }
   .o-formula-assistant-transparency {
     opacity: 0.3;
@@ -18456,6 +18481,7 @@
     const { useRef: useRef$1, useState: useState$9 } = owl.hooks;
     const { xml: xml$c, css: css$b } = owl.tags;
     const functions$5 = functionRegistry.content;
+    const ASSISTANT_WIDTH = 300;
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
     const StringColor = "#f6cd61";
@@ -18489,20 +18515,24 @@
 
       t-on-click.stop="onClick"
     />
-    <TextValueProvider
-        t-if="autoCompleteState.showProvider and props.focus"
-        t-ref="o_autocomplete_provider"
-        search="autoCompleteState.search"
-        provider="autoCompleteState.provider"
-        t-on-completed="onCompleted"
-    />
-    <FunctionDescriptionProvider
-        t-if="functionDescriptionState.showDescription and props.focus"
-        t-ref="o_function_description_provider"
-        functionName = "functionDescriptionState.functionName"
-        functionDescription = "functionDescriptionState.functionDescription"
-        argToFocus = "functionDescriptionState.argToFocus"
-    />
+
+    <div t-if="props.focus and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
+      class="o-composer-assistant" t-att-style="assistantStyle">
+      <TextValueProvider
+          t-if="autoCompleteState.showProvider"
+          t-ref="o_autocomplete_provider"
+          search="autoCompleteState.search"
+          provider="autoCompleteState.provider"
+          t-on-completed="onCompleted"
+      />
+      <FunctionDescriptionProvider
+          t-if="functionDescriptionState.showDescription"
+          t-ref="o_function_description_provider"
+          functionName = "functionDescriptionState.functionName"
+          functionDescription = "functionDescriptionState.functionDescription"
+          argToFocus = "functionDescriptionState.argToFocus"
+      />
+    </div>
 </div>
   `;
     const CSS$a = css$b /* scss */ `
@@ -18512,6 +18542,7 @@
     border: 0;
     z-index: 5;
     flex-grow: 1;
+    max-height: inherit;
     .o-composer {
       caret-color: black;
       padding-left: 2px;
@@ -18520,6 +18551,12 @@
       &:focus {
         outline: none;
       }
+    }
+    .o-composer-assistant {
+      position: absolute;
+      margin: 4px;
+      box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+      pointer-events: none;
     }
   }
 `;
@@ -18556,6 +18593,26 @@
                 Tab: (ev) => this.processTabKey(ev),
             };
             this.contentHelper = new ContentEditableHelper(this.composerRef.el);
+        }
+        get assistantStyle() {
+            if (this.props.delimitation && this.props.rect) {
+                const [cellX, cellY, , cellHeight] = this.props.rect;
+                const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
+                let assistantStyle = "";
+                if (cellY > remainingHeight) {
+                    // render top
+                    assistantStyle += `
+          top: -8px;
+          transform: translate(0, -100%);
+        `;
+                }
+                if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
+                    // render left
+                    assistantStyle += `right:0px;`;
+                }
+                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
+            }
+            return "";
         }
         mounted() {
             DEBUG.composer = this;
@@ -18871,17 +18928,18 @@
     };
 
     const { Component: Component$c } = owl__namespace;
+    const { useState: useState$a } = owl.hooks;
     const { xml: xml$d, css: css$c } = owl.tags;
     const SCROLLBAR_WIDTH$1 = 14;
     const SCROLLBAR_HIGHT = 15;
     const TEMPLATE$c = xml$d /* xml */ `
   <div class="o-grid-composer" t-att-style="containerStyle">
     <Composer
-      focus="props.focus"
-      inputStyle="composerStyle"
-      t-on-keydown="onKeydown"
-      t-on-content-width-changed="onWidthChanged"
-      t-on-content-height-changed="onHeigthChanged"
+      focus = "props.focus"
+      inputStyle = "composerStyle"
+      rect = "composerState.rect"
+      delimitation = "composerState.delimitation"
+      t-on-keydown = "onKeydown"
     />
   </div>
 `;
@@ -18891,7 +18949,6 @@
     box-sizing: border-box;
     position: absolute;
     border: ${COMPOSER_BORDER_WIDTH}px solid #3266ca;
-    white-space: nowrap;
   }
 `;
     /**
@@ -18902,6 +18959,10 @@
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
+            this.composerState = useState$a({
+                rect: null,
+                delimitation: null,
+            });
             const [col, row] = this.getters.getPosition();
             this.zone = this.getters.expandZone(this.getters.getActiveSheetId(), {
                 left: col,
@@ -18914,47 +18975,57 @@
         get containerStyle() {
             const isFormula = this.getters.getCurrentContent().startsWith("=");
             const style = this.getters.getCurrentStyle();
-            const fillColor = isFormula ? "#ffffff" : style.fillColor || "#ffffff";
-            const textColor = style.textColor;
-            const [x, y, width, height] = this.rect;
-            const weight = `font-weight:${style.bold ? "bold" : 500};`;
-            const italic = style.italic ? `font-style: italic;` : ``;
-            const strikethrough = style.strikethrough ? `text-decoration:line-through;` : ``;
-            let composerStyle = `left: ${x - 1}px;
-        top:${y}px;
-        height:${height + 1}px;
-        width:${width}px;
-        font-size:${fontSizeMap[style.fontSize || 10]}px;
-        ${weight}${italic}${strikethrough}`;
-            composerStyle = composerStyle + `background: ${fillColor};`;
-            if (textColor && !isFormula) {
-                composerStyle = composerStyle + `color: ${textColor}`;
+            // position style
+            const [left, top, width, height] = this.rect;
+            // color style
+            const background = (!isFormula && style.fillColor) || "#ffffff";
+            const color = (!isFormula && style.textColor) || "#000000";
+            // font style
+            const fontSize = (!isFormula && style.fontSize) || 10;
+            const fontWeight = !isFormula && style.bold ? "bold" : 500;
+            const fontStyle = !isFormula && style.italic ? "italic" : "normal";
+            const textDecoration = !isFormula && style.strikethrough ? "line-through" : "none";
+            // align style
+            let textAlign = "left";
+            if (!isFormula) {
+                const cell = this.getters.getActiveCell() || { type: "text" };
+                textAlign = style.align || cell.type === "number" ? "right" : "left";
             }
-            return composerStyle;
+            return `
+      left: ${left - 1}px;
+      top: ${top}px;
+      min-width: ${width + 2}px;
+      min-height: ${height + 1}px;
+
+      background: ${background};
+      color: ${color};
+
+      font-size: ${fontSizeMap[fontSize]}px;
+      font-weight: ${fontWeight};
+      font-style: ${fontStyle};
+      text-decoration: ${textDecoration};
+
+      text-align: ${textAlign};
+    `;
         }
         get composerStyle() {
-            const style = this.getters.getCurrentStyle();
-            const cell = this.getters.getActiveCell() || { type: "text" };
-            const height = this.rect[3] - COMPOSER_BORDER_WIDTH * 2 + 1;
-            const align = "align" in style ? style.align : cell.type === "number" ? "right" : "left";
-            return `text-align:${align};
-        height: ${height}px;
-        line-height:${height}px;`;
+            return `
+      line-height:${DEFAULT_CELL_HEIGHT}px;
+      max-height: inherit;
+      overflow: hidden;
+    `;
         }
         mounted() {
             const el = this.el;
-            const width = Math.max(el.scrollWidth, this.rect[2]);
-            this.resizeWidth(width, 0);
-            const height = Math.max(el.scrollHeight, this.rect[3]);
-            this.resizeHeigth(height);
-        }
-        onWidthChanged(ev) {
-            const paddingWidth = this.props.focus ? 40 : 0;
-            this.resizeWidth(ev.detail.newWidth + paddingWidth, 10);
-        }
-        onHeigthChanged(ev) {
-            const paddingHeight = this.props.focus ? 2 : 0;
-            this.resizeHeigth(ev.detail.newHeight + paddingHeight);
+            const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
+            el.style.maxHeight = (maxHeight + "px");
+            const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH$1;
+            el.style.maxWidth = (maxWidth + "px");
+            this.composerState.rect = [this.rect[0], this.rect[1], el.clientWidth, el.clientHeight];
+            this.composerState.delimitation = {
+                width: el.parentElement.clientWidth,
+                height: el.parentElement.clientHeight,
+            };
         }
         onKeydown(ev) {
             // In selecting mode, arrows should not move the cursor but it should
@@ -18963,35 +19034,12 @@
                 ev.preventDefault();
             }
         }
-        resizeWidth(width, step) {
-            const el = this.el;
-            const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH$1;
-            let newWidth = Math.max(width + step, this.rect[2] + 0.5);
-            if (newWidth > maxWidth) {
-                el.style.whiteSpace = "normal";
-                newWidth = maxWidth;
-            }
-            else {
-                el.style.whiteSpace = "none";
-            }
-            el.style.width = (newWidth + "px");
-        }
-        resizeHeigth(height) {
-            const el = this.el;
-            const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
-            let newHeight = Math.max(height + 1, this.rect[3]);
-            if (newHeight > maxHeight) {
-                el.style.overflow = "hidden";
-                newHeight = maxHeight;
-            }
-            el.style.height = (newHeight + "px");
-        }
     }
     GridComposer.template = TEMPLATE$c;
     GridComposer.style = CSS$b;
     GridComposer.components = { Composer };
 
-    const { useState: useState$a } = owl__namespace;
+    const { useState: useState$b } = owl__namespace;
     const { xml: xml$e, css: css$d } = owl.tags;
     const { useRef: useRef$2 } = owl.hooks;
     const TEMPLATE$d = xml$e /* xml */ `
@@ -19034,7 +19082,7 @@
     class ChartFigure extends owl.Component {
         constructor() {
             super(...arguments);
-            this.menuState = useState$a({ isOpen: false, position: null, menuItems: [] });
+            this.menuState = useState$b({ isOpen: false, position: null, menuItems: [] });
             this.canvas = useRef$2("graphContainer");
         }
         mounted() {
@@ -19111,7 +19159,7 @@
     ChartFigure.components = { Menu };
 
     const { xml: xml$f, css: css$e } = owl.tags;
-    const { useState: useState$b } = owl__namespace;
+    const { useState: useState$c } = owl__namespace;
     const TEMPLATE$e = xml$f /* xml */ `<div>
     <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div class="o-figure-wrapper"
@@ -19227,7 +19275,7 @@
         constructor() {
             super(...arguments);
             this.figureRegistry = figureRegistry;
-            this.dnd = useState$b({
+            this.dnd = useState$c({
                 figureId: "",
                 x: 0,
                 y: 0,
@@ -19388,7 +19436,7 @@
 
     const { Component: Component$d } = owl__namespace;
     const { xml: xml$g, css: css$f } = owl.tags;
-    const { useState: useState$c } = owl.hooks;
+    const { useState: useState$d } = owl.hooks;
     // -----------------------------------------------------------------------------
     // Resizer component
     // -----------------------------------------------------------------------------
@@ -19402,7 +19450,7 @@
             this.lastElement = null;
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.state = useState$c({
+            this.state = useState$d({
                 isActive: false,
                 isResizing: false,
                 activeElement: 0,
@@ -19784,7 +19832,7 @@
      * - a horizontal resizer (to resize columns)
      * - a vertical resizer (same, for rows)
      */
-    const { Component: Component$e, useState: useState$d } = owl__namespace;
+    const { Component: Component$e, useState: useState$e } = owl__namespace;
     const { xml: xml$h, css: css$g } = owl.tags;
     const { useRef: useRef$3, onMounted, onWillUnmount } = owl.hooks;
     const registries = {
@@ -19804,7 +19852,7 @@
         let lastMoved = 0;
         let tooltipCol, tooltipRow;
         const canvasRef = useRef$3("canvas");
-        const tooltip = useState$d({ isOpen: false, text: "", style: "" });
+        const tooltip = useState$e({ isOpen: false, text: "", style: "" });
         let interval;
         function updateMousePosition(e) {
             x = e.offsetX;
@@ -19991,7 +20039,7 @@
     class Grid extends Component$e {
         constructor() {
             super(...arguments);
-            this.menuState = useState$d({
+            this.menuState = useState$e({
                 isOpen: false,
                 position: null,
                 menuItems: [],
@@ -20332,7 +20380,7 @@
 
     const { Component: Component$f } = owl__namespace;
     const { xml: xml$i, css: css$h } = owl.tags;
-    const { useState: useState$e } = owl.hooks;
+    const { useState: useState$f } = owl.hooks;
     const TEMPLATE$g = xml$i /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
@@ -20440,7 +20488,7 @@
     class SidePanel extends Component$f {
         constructor() {
             super(...arguments);
-            this.state = useState$e({
+            this.state = useState$f({
                 panel: sidePanelRegistry.get(this.props.component),
             });
         }
@@ -20456,7 +20504,7 @@
     SidePanel.template = TEMPLATE$g;
     SidePanel.style = CSS$f;
 
-    const { Component: Component$g, useState: useState$f, hooks: hooks$2 } = owl__namespace;
+    const { Component: Component$g, useState: useState$g, hooks: hooks$2 } = owl__namespace;
     const { xml: xml$j, css: css$i } = owl.tags;
     const { useExternalListener: useExternalListener$3, useRef: useRef$4 } = hooks$2;
     const FORMATS = [
@@ -20480,7 +20528,7 @@
             this.dispatch = this.env.dispatch;
             this.getters = this.env.getters;
             this.style = {};
-            this.state = useState$f({
+            this.state = useState$g({
                 menuState: { isOpen: false, position: null, menuItems: [] },
                 activeTool: "",
             });
@@ -20938,7 +20986,7 @@
   `;
     TopBar.components = { ColorPicker, Menu, Composer };
 
-    const { Component: Component$h, useState: useState$g } = owl__namespace;
+    const { Component: Component$h, useState: useState$h } = owl__namespace;
     const { useRef: useRef$5, useExternalListener: useExternalListener$4 } = owl.hooks;
     const { xml: xml$k, css: css$j } = owl.tags;
     const { useSubEnv } = owl.hooks;
@@ -21003,8 +21051,8 @@
                 evalContext: { env: this.env },
             });
             this.grid = useRef$5("grid");
-            this.sidePanel = useState$g({ isOpen: false, panelProps: {} });
-            this.composer = useState$g({
+            this.sidePanel = useState$h({ isOpen: false, panelProps: {} });
+            this.composer = useState$h({
                 topBar: false,
                 grid: false,
             });
@@ -21218,8 +21266,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-02-10T07:57:10.942Z';
-    exports.__info__.hash = 'cbc83d2';
+    exports.__info__.date = '2021-03-17T16:36:49.318Z';
+    exports.__info__.hash = '27af155';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

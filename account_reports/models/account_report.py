@@ -795,10 +795,17 @@ class AccountReport(models.AbstractModel):
                 options['unfold_all'] = False
                 action_read.update({'params': {'options': options, 'ignore_session': 'read'}})
         if params.get('id'):
-            # Add the id of the account.financial.html.report.line in the action's context
+            # Add the id of the calling object in the action's context
+
+            if isinstance(params['id'], int):
+                # id of the report line might directly be the id of the model we want.
+                model_id = params['id']
+            else:
+                # It can also be a generic account.report id, as defined by _get_generic_line_id
+                model_id = self._get_model_info_from_id(params['id'])[1]
+
             context = action_read.get('context') and ast.literal_eval(action_read['context']) or {}
-            model_info = self._get_model_info_from_id(params['id'])
-            context.setdefault('active_id', model_info[1])
+            context.setdefault('active_id', model_id)
             action_read['context'] = context
         return action_read
 

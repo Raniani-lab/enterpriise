@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, exceptions, fields, models, _
+from odoo import api, fields, models, tools, _
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
@@ -11,7 +11,7 @@ import re
 import json
 import string
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -706,6 +706,7 @@ class AccountMove(models.Model):
             self_ctx = self_ctx.with_company(self.company_id.id)
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx._get_default_journal().id)
         with Form(self_ctx) as move_form:
+            move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
             if not move_form.partner_id:
                 if vat_number_ocr:
                     partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)

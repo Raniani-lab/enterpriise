@@ -13,13 +13,6 @@
 .o_helpdesk_dashboard {
     $sale-table-spacing: 10px;
 
-    @include media-breakpoint-up(md) {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-
-    border: 8px solid #f9f9f9;
     border-bottom: 1px solid #CED4DA;
     background-color: $o-view-background-color;
 
@@ -158,5 +151,17 @@
                 }
             }
         }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
+        padding-top: 185px;
+    }
+    .o_helpdesk_dashboard {
+        position: fixed;
+        border: 8px solid #f9f9f9;
+        z-index: 10;
+        width: 100%;
     }
 }

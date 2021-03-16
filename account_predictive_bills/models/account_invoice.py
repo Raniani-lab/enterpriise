@@ -14,33 +14,34 @@ class AccountMove(models.Model):
     @api.onchange('line_ids', 'invoice_payment_term_id', 'invoice_date_due', 'invoice_cash_rounding_id', 'invoice_vendor_bill_id')
     def _onchange_recompute_dynamic_lines(self):
         # OVERRIDE
-        to_predict_lines = self.invoice_line_ids.filtered(lambda line: line.predict_from_name)
-        to_predict_lines.predict_from_name = False
-        for line in to_predict_lines:
-            # Predict product.
-            if not line.product_id:
-                predicted_product_id = line._predict_product(line.name)
-                if predicted_product_id and predicted_product_id != line.product_id.id:
-                    line.product_id = predicted_product_id
-                    line._onchange_product_id()
-                    line.recompute_tax_line = True
+        if not self._context.get('account_predictive_bills_disable_prediction'): # This context key is used in tests
+            to_predict_lines = self.invoice_line_ids.filtered(lambda line: line.predict_from_name)
+            to_predict_lines.predict_from_name = False
+            for line in to_predict_lines:
+                # Predict product.
+                if not line.product_id:
+                    predicted_product_id = line._predict_product(line.name)
+                    if predicted_product_id and predicted_product_id != line.product_id.id:
+                        line.product_id = predicted_product_id
+                        line._onchange_product_id()
+                        line.recompute_tax_line = True
 
-            # Product may or may not have been set above, if it has been set, account and taxes are set too
-            if not line.product_id:
-                # Predict account.
-                predicted_account_id = line._predict_account(line.name, line.partner_id)
-                if predicted_account_id and predicted_account_id != line.account_id.id:
-                    line.account_id = predicted_account_id
-                    line._onchange_account_id()
-                    line.recompute_tax_line = True
+                # Product may or may not have been set above, if it has been set, account and taxes are set too
+                if not line.product_id:
+                    # Predict account.
+                    predicted_account_id = line._predict_account(line.name, line.partner_id)
+                    if predicted_account_id and predicted_account_id != line.account_id.id:
+                        line.account_id = predicted_account_id
+                        line._onchange_account_id()
+                        line.recompute_tax_line = True
 
-                # Predict taxes
-                predicted_tax_ids = line._predict_taxes(line.name)
-                if predicted_tax_ids == [None]:
-                    predicted_tax_ids = []
-                if predicted_tax_ids is not False and set(predicted_tax_ids) != set(line.tax_ids.ids):
-                    line.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
-                    line.recompute_tax_line = True
+                    # Predict taxes
+                    predicted_tax_ids = line._predict_taxes(line.name)
+                    if predicted_tax_ids == [None]:
+                        predicted_tax_ids = []
+                    if predicted_tax_ids is not False and set(predicted_tax_ids) != set(line.tax_ids.ids):
+                        line.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
+                        line.recompute_tax_line = True
 
         return super(AccountMove, self)._onchange_recompute_dynamic_lines()
 

@@ -120,6 +120,7 @@
             <search>
                 <field name="message" string="Post Message"/>
                 <field name="create_uid" string="Published By"/>
+                <field name="utm_campaign_id" string="Campaign"/>
                 <filter name="filter_my_posts" string="My Posts" domain="[('create_uid','=',uid)]"/>
                 <searchpanel>
                     <field name="state" icon="fa-tasks" enable_counters="1"/>

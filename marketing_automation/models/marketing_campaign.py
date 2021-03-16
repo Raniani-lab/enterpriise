@@ -128,6 +128,12 @@ class MarketingCampaign(models.Model):
 
         return new_compaign
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals.update({'is_auto_campaign': True})
+        return super(MarketingCampaign, self).create(vals_list)
+
     @api.onchange('model_id')
     def _onchange_model_id(self):
         if any(campaign.marketing_activity_ids for campaign in self):

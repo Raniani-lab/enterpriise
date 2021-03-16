@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from odoo.osv import expression
 
 
 class UtmCampaign(models.Model):
@@ -27,8 +28,9 @@ class UtmCampaign(models.Model):
             campaign.social_engagement = campaigns_engagement[campaign.id]
 
     def _compute_social_posts_count(self):
+        domain = expression.AND([self._get_social_posts_domain(), [('utm_campaign_id', 'in', self.ids)]])
         post_data = self.env['social.post'].read_group(
-            self._get_campaign_social_posts_domain(),
+            domain,
             ['utm_campaign_id'], ['utm_campaign_id']
         )
 
@@ -48,16 +50,17 @@ class UtmCampaign(models.Model):
 
     def action_redirect_to_social_media_posts(self):
         action = self.env["ir.actions.actions"]._for_xml_id("social.action_social_post")
-        action['domain'] = self._get_campaign_social_posts_domain()
+        action['domain'] = self._get_social_posts_domain()
         action['context'] = {
             "searchpanel_default_state": "posted",
+            "search_default_utm_campaign_id": self.id,
             "default_utm_campaign_id": self.id
         }
         return action
 
-    def _get_campaign_social_posts_domain(self):
+    def _get_social_posts_domain(self):
         """This method will need to be overriden in social_push_notifications to filter out posts who only are push notifications"""
-        return [('utm_campaign_id', 'in', self.ids)]
+        return []
 
     def _get_social_media_accounts_domain(self):
         """This method will need to be overriden in social_push_notifications to filter out push_notifications medium"""

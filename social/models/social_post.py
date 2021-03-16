@@ -65,7 +65,7 @@ class SocialPost(models.Model):
     calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True, readonly=False,
         help="Technical field for the calendar view.")
     #UTM
-    utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_website', '=', False)]", string="UTM Campaign")
+    utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_auto_campaign', '=', False)]", string="UTM Campaign")
     utm_source_id = fields.Many2one('utm.source', string="UTM Source", readonly=True, required=True)
     # Statistics
     stream_posts_count = fields.Integer("Feed Posts Count", compute='_compute_stream_posts_count',

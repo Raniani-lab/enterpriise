@@ -39,7 +39,7 @@ class TestLeadConvertToTicket(crm_common.TestCrmCommon):
         self.assertEqual(ticket.email, lead.email_from if lead.email_from else partner.email)
         self.assertIn(partner, ticket.message_partner_ids)
         self.assertEqual(ticket.partner_email, lead.email_from if lead.email_from else partner.email)
-        self.assertEqual(ticket.partner_phone, lead.phone if lead.phone else partner.phone or partner.mobile)
+        self.assertEqual(ticket.partner_phone, lead.phone if lead.phone else partner.phone or lead.mobile or partner.mobile)
         self.assertEqual(ticket.partner_name, partner.name)
         self.assertEqual(ticket.ticket_type_id, ticket_type)
         self.assertFalse(ticket.user_id)

@@ -49,8 +49,8 @@ class CrmLeadConvert2Ticket(models.TransientModel):
             vals["partner_name"] = lead.contact_name
         if lead.phone:  # lead phone is always sync with partner phone
             vals["partner_phone"] = lead.phone
-        else:
-            vals["partner_phone"] = lead.mobile or partner.mobile
+        else:  # if partner is not on lead -> take partner phone first
+            vals["partner_phone"] = partner.phone or lead.mobile or partner.mobile
         if lead.email_from:
             vals['email'] = lead.email_from
 

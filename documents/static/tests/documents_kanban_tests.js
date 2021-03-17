@@ -2175,10 +2175,17 @@ QUnit.module('documents_kanban_tests.js', {
             mockRPC: function (route) {
                 if (route === '/mail/read_followers') {
                     return Promise.resolve({
-                        followers: [
-                            {id: 301, display_name: 'Follower 1'},
-                            {id: 302, display_name: 'Follower 2'},
-                        ],
+                        followers: [{
+                            email: 'raoul@grosbedon.fr',
+                            id: 301,
+                            name: 'Raoul Grosbedon',
+                            partner_id: 31,
+                        }, {
+                            email: 'raoulette@grosbedon.fr',
+                            id: 302,
+                            name: 'Raoulette Grosbedon',
+                            partner_id: 32,
+                        }],
                         subtypes: [],
                     });
                 }

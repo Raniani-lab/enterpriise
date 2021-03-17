@@ -118,7 +118,6 @@ class GithubController(http.Controller):
             subtype_xmlid="mail.mt_comment",  # correct?
             author_id=partner.id,
             email_from=partner_email,
-            channel_ids=channels.ids
         )
 
         return 'OK'

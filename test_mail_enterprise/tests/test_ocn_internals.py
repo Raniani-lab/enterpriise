@@ -60,12 +60,6 @@ class TestPushNotification(MailCommon):
             'email_send': False,
             'name': 'Channel',
         })
-        cls.group_channel.message_subscribe(
-            partner_ids=[
-                cls.user_email.partner_id.id,
-                cls.user_inbox.partner_id.id,
-            ]
-        )
 
     @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
     def test_push_notifications(self, jsonrpc):
@@ -150,18 +144,6 @@ class TestPushNotification(MailCommon):
         # Reset the mock counter
         jsonrpc.reset_mock()
 
-        # Test Channel Message
-        self.group_channel.with_user(self.user_email).message_post(
-            body="Test", message_type='comment', subtype_xmlid='mail.mt_comment')
-        self.assertEqual(
-            jsonrpc.call_args[1]['params']['data']['android_channel_id'],
-            'ChannelMessage',
-            'The type of Android channel must be ChannelMessage'
-        )
-
-        # Reset the mock counter
-        jsonrpc.reset_mock()
-
         # Test Following Message
         self.record_simple.with_user(self.user_email).message_post(
             body="Test", message_type='comment', subtype_xmlid="mail.mt_comment"
@@ -170,6 +152,19 @@ class TestPushNotification(MailCommon):
             jsonrpc.call_args[1]['params']['data']['android_channel_id'],
             'Following',
             'The type of Android channel must be Following'
+        )
+
+        # Reset the mock counter
+        jsonrpc.reset_mock()
+
+        # Test Channel Message
+        self.group_channel.with_user(self.user_email).message_post(
+            body="Test", partner_ids=self.user_inbox.partner_id.ids,
+            message_type='comment', subtype_xmlid='mail.mt_comment')
+        self.assertEqual(
+            jsonrpc.call_args[1]['params']['data']['android_channel_id'],
+            'ChannelMessage',
+            'The type of Android channel must be ChannelMessage'
         )
 
         # Reset the mock counter

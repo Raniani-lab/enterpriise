@@ -89,17 +89,14 @@ FieldMany2One.include({
         return searchCreatePopupOptions;
     },
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
     /**
-     * We always open Many2One search dialog for select/update field value on click of Many2One element
+     * We always open Many2One search dialog for select/update field value
+     * instead of autocomplete
      *
-     * @override
      * @private
+     * @override
      */
-    _onInputClick() {
+    _toggleAutoComplete: function () {
         this._searchCreatePopup("search");
     },
 });

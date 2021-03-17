@@ -227,6 +227,46 @@ QUnit.module('web_enterprise', {
         form.destroy();
     });
 
+    QUnit.test(`Quick Edition: quick edit many2one`, async function (assert) {
+        assert.expect(1);
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="trululu" />
+                        </group>
+                    </sheet>
+                </form>
+            `,
+            archs: {
+                'partner,false,kanban': `
+                    <kanban>
+                        <templates><t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <field name="display_name"/>
+                            </div>
+                        </t></templates>
+                    </kanban>
+                `,
+                'partner,false,search': '<search></search>',
+            },
+            res_id: 2,
+        });
+
+        await testUtils.dom.click(form.$('.o_form_label'));
+        await testUtils.nextTick(); // wait for quick edit
+
+        const $modal = $('.o_modal_full .modal-lg');
+        assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
+
+        form.destroy();
+    });
+
 });
 
 });

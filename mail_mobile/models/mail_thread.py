@@ -37,8 +37,8 @@ class MailThread(models.AbstractModel):
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
             return
 
-        notif_pids = [r['id'] for r in rdata['partners'] if r['active']]
-        no_inbox_pids = [r['id'] for r in rdata['partners'] if r['active'] and r['notif'] != 'inbox']
+        notif_pids = [r['id'] for r in rdata if r['active']]
+        no_inbox_pids = [r['id'] for r in rdata if r['active'] and r['notif'] != 'inbox']
 
         if not notif_pids:
             return

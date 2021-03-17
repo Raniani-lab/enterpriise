@@ -18,8 +18,8 @@ class MailChannel(models.Model):
         if chat_channels:
             # modify rdata only for calling super. Do not deep copy as we only
             # add data into list but we do not modify item content
-            channel_rdata = {'partners': rdata['partners'].copy()}
-            channel_rdata['partners'] += [
+            channel_rdata = rdata.copy()
+            channel_rdata += [
                 {'id': partner.id,
                  'share': partner.partner_share,
                  'active': partner.active,

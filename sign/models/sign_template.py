@@ -225,7 +225,7 @@ class SignItem(models.Model):
     type_id = fields.Many2one('sign.item.type', string="Type", required=True, ondelete='cascade')
 
     required = fields.Boolean(default=True)
-    responsible_id = fields.Many2one("sign.item.role", string="Responsible")
+    responsible_id = fields.Many2one("sign.item.role", string="Responsible", ondelete="restrict")
 
     option_ids = fields.Many2many("sign.item.option", string="Selection options")
 

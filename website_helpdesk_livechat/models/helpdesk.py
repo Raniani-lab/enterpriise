@@ -2,7 +2,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
+
 from odoo import api, fields, models, _
+from odoo.tools import html_escape
 
 
 class HelpdeskTeam(models.Model):
@@ -50,7 +52,9 @@ class MailChannel(models.Model):
                     if self.public == 'private':
                         msg += _(" This channel is private. People must be invited to join it.")
                 else:
-                    msg = _("You are in a private conversation with <b>@%s</b>.", channel_partners.partner_id.name)
+                    msg = _("You are in a private conversation with <b>%s</b>.",
+                            html_escape(channel_partners.partner_id.name)
+                           )
                 msg += _("""<br><br>
                     You can create a new ticket by typing <b>/helpdesk "ticket title"</b>.<br>
                     You can search ticket by typing <b>/helpdesk_search "Keywords1 Keywords2 etc"</b><br>
@@ -70,7 +74,7 @@ class MailChannel(models.Model):
                     'partner_id': channel_partners.partner_id.id,
                     'team_id': team_id,
                 })
-                link_ticket = '<a href="#" data-oe-id='+str(helpdesk_ticket.id)+' data-oe-model="helpdesk.ticket">'+helpdesk_ticket.name+'</a>'
+                link_ticket = '<a href="#" data-oe-id="%d" data-oe-model="helpdesk.ticket">%s</a>' % (helpdesk_ticket.id, html_escape(helpdesk_ticket.name))
                 msg = _("Created a new ticket and request: %s", link_ticket)
         return self._send_transient_message(partner, msg)
 

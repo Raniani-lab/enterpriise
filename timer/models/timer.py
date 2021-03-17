@@ -58,8 +58,9 @@ class TimerTimer(models.Model):
         self.write({'timer_pause': fields.Datetime.now()})
 
     def action_timer_resume(self):
-        new_start = self.timer_start + (fields.Datetime.now() - self.timer_pause)
-        self.write({'timer_start': new_start, 'timer_pause': False})
+        if self.timer_start and self.timer_pause:
+            new_start = self.timer_start + (fields.Datetime.now() - self.timer_pause)
+            self.write({'timer_start': new_start, 'timer_pause': False})
 
     @api.model
     def get_server_time(self):

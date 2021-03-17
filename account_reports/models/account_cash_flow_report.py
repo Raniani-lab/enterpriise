@@ -163,36 +163,38 @@ class AccountCashFlowReport(models.AbstractModel):
             SELECT
                 credit_line.account_id,
                 account.code,
-                account.name,
+                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
                 account.internal_type,
                 SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
             FROM account_move_line credit_line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = credit_line.company_id
             LEFT JOIN account_partial_reconcile partial ON partial.credit_move_id = credit_line.id
             JOIN account_account account ON account.id = credit_line.account_id
+            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE credit_line.move_id IN %s AND credit_line.account_id NOT IN %s
             AND partial.max_date BETWEEN %s AND %s
-            GROUP BY credit_line.company_id, credit_line.account_id, account.code, account.name, account.internal_type
+            GROUP BY credit_line.company_id, credit_line.account_id, account.code, account_name, account.internal_type
             
             UNION ALL
             
             SELECT
                 debit_line.account_id,
                 account.code,
-                account.name,
+                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
                 account.internal_type,
                 -SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
             FROM account_move_line debit_line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = debit_line.company_id
             LEFT JOIN account_partial_reconcile partial ON partial.debit_move_id = debit_line.id
             JOIN account_account account ON account.id = debit_line.account_id
+            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE debit_line.move_id IN %s AND debit_line.account_id NOT IN %s
             AND partial.max_date BETWEEN %s AND %s
-            GROUP BY debit_line.company_id, debit_line.account_id, account.code, account.name, account.internal_type
+            GROUP BY debit_line.company_id, debit_line.account_id, account.code, account_name, account.internal_type
         '''
         self._cr.execute(query, [
-            payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
-            payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
+            self.env.user.lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
+            self.env.user.lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
         ])
 
         for account_id, account_code, account_name, account_internal_type, reconciled_amount in self._cr.fetchall():
@@ -205,16 +207,17 @@ class AccountCashFlowReport(models.AbstractModel):
             SELECT
                 line.account_id,
                 account.code,
-                account.name,
+                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
                 account.internal_type,
                 SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
             FROM account_move_line line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
             JOIN account_account account ON account.id = line.account_id
+            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE line.move_id IN %s AND line.account_id NOT IN %s
-            GROUP BY line.account_id, account.code, account.name, account.internal_type
+            GROUP BY line.account_id, account.code, account_name, account.internal_type
         '''
-        self._cr.execute(query, [payment_move_ids, payment_account_ids])
+        self._cr.execute(query, [self.env.user.lang, payment_move_ids, payment_account_ids])
 
         for account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
             reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_internal_type, 0.0, 0.0])
@@ -312,16 +315,17 @@ class AccountCashFlowReport(models.AbstractModel):
                 line.move_id,
                 line.account_id,
                 account.code,
-                account.name,
+                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
                 account.internal_type,
                 SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
             FROM account_move_line line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
             JOIN account_account account ON account.id = line.account_id
+            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE line.move_id IN %s
-            GROUP BY line.move_id, line.account_id, account.code, account.name, account.internal_type
+            GROUP BY line.move_id, line.account_id, account.code, account_name, account.internal_type
         '''
-        self._cr.execute(query, [tuple(reconciled_percentage_per_move.keys())])
+        self._cr.execute(query, [self.env.user.lang, tuple(reconciled_percentage_per_move.keys())])
 
         for move_id, account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
             # Compute the total reconciled for the whole move.
@@ -381,15 +385,16 @@ class AccountCashFlowReport(models.AbstractModel):
             SELECT
                 account_move_line.account_id,
                 account.code AS account_code,
-                account.name AS account_name,
+                COALESCE(NULLIF(ir_translation.value, ''), account.name) AS account_name,
                 SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision))
             FROM ''' + tables + '''
             JOIN account_account account ON account.id = account_move_line.account_id
+            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = account_move_line.company_id
             WHERE ''' + where_clause + '''
-            GROUP BY account_move_line.account_id, account.code, account.name
+            GROUP BY account_move_line.account_id, account.code, account_name
         '''
-        self._cr.execute(query, where_params)
+        self._cr.execute(query, [self.env.user.lang] + where_params)
         return self._cr.fetchall()
 
     # -------------------------------------------------------------------------

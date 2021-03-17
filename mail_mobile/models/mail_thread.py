@@ -32,60 +32,81 @@ class MailThread(models.AbstractModel):
         and every direct message. We have to take into account the risk of
         duplicated notifications in case of a mention in a channel of `chat` type.
         """
-        msg_vals = dict(msg_vals or {})
         icp_sudo = self.env['ir.config_parameter'].sudo()
         # Avoid to send notification if this feature is disabled or if no user use the mobile app.
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
             return
 
-        notif_pids = []
-        no_inbox_pids = []
-        for r in rdata['partners']:
-            if r['active']:
-                notif_pids.append(r['id'])
-                if r['notif'] != 'inbox':
-                    no_inbox_pids.append(r['id'])
+        notif_pids = [r['id'] for r in rdata['partners'] if r['active']]
+        no_inbox_pids = [r['id'] for r in rdata['partners'] if r['active'] and r['notif'] != 'inbox']
 
         if not notif_pids:
             return
 
-        msg_sudo = message.sudo()  # why sudo?
+        msg_vals = dict(msg_vals or {})
+        msg_sudo = message.sudo()
         msg_type = msg_vals.get('message_type') or msg_sudo.message_type
-        author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else message.author_id.ids
+        author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else msg_sudo.author_id.ids
 
+        # never send to author and to people outside of odoo (email), except comments
         if msg_type == 'comment':
             pids = set(notif_pids) - set(author_id)
-            self._send_notification_to_partners(pids, message, msg_vals)
+            self._notify_by_ocn_send(message, list(pids), msg_vals=msg_vals)
         elif msg_type in ('notification', 'user_notification', 'email'):
-            # Send notification to partners except for the author and those who
-            # doesn't want to handle notifications in Odoo.
             pids = (set(notif_pids) - set(author_id) - set(no_inbox_pids))
-            self._send_notification_to_partners(pids, message, msg_vals)
+            self._notify_by_ocn_send(message, list(pids), msg_vals=msg_vals)
 
-    @api.model
-    def _send_notification_to_partners(self, pids, message, msg_vals):
+    def _notify_by_ocn_send(self, message, partner_ids, msg_vals=False):
         """
         Send the notification to a list of partners
-        :param pids: list of partners
         :param message: current mail.message record
+        :param partner_ids: list of partner IDs
         :param msg_vals: dict values for current notification
         """
-        if pids:
-            receiver_ids = self.env['res.partner'].sudo().search([
-                ('id', 'in', list(pids)),
-                ('ocn_token', '!=', False)
-            ])
-            if receiver_ids:
-                endpoint = self.env['res.config.settings']._get_endpoint()
-                chunks = self._ocn_prepare_payload(receiver_ids, message, msg_vals)
-                for chunk in chunks:
-                    try:
-                        iap_tools.iap_jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
-                    except Exception as e:
-                        _logger.error('An error occured while contacting the ocn server: %s', e)
+        if not partner_ids:
+            return
+        receiver_ids = self.env['res.partner'].sudo().search([
+            ('id', 'in', partner_ids),
+            ('ocn_token', '!=', False)
+        ])
+        if receiver_ids:
+            endpoint = self.env['res.config.settings']._get_endpoint()
+            payload = self._notify_by_ocn_send_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
 
-    @api.model
-    def _ocn_prepare_payload(self, receiver_ids, message, msg_vals):
+            # prepare chunks
+            chunks = []
+            at_mention_ocn_token_list = []
+            identities_ocn_token_list = []
+            at_mention_analyser_id_list = self._at_mention_analyser(msg_vals.get('body') if msg_vals else message.body)
+            for receiver_id in receiver_ids:
+                if receiver_id.id in at_mention_analyser_id_list:
+                    at_mention_ocn_token_list.append(receiver_id.ocn_token)
+                else:
+                    identities_ocn_token_list.append(receiver_id.ocn_token)
+
+            # first chunk
+            if identities_ocn_token_list:
+                chunks.append({
+                    'ocn_tokens': identities_ocn_token_list,
+                    'data': payload,
+                })
+
+            # second chunk for mentions with specific channel
+            if at_mention_ocn_token_list:
+                new_payload = copy.copy(payload)
+                new_payload['android_channel_id'] = 'AtMention'
+                chunks.append({
+                    'ocn_tokens': at_mention_ocn_token_list,
+                    'data': new_payload,
+                })
+
+            for chunk in chunks:
+                try:
+                    iap_tools.iap_jsonrpc(endpoint + '/iap/ocn/send', params=chunk)
+                except Exception as e:
+                    _logger.error('An error occured while contacting the ocn server: %s', e)
+
+    def _notify_by_ocn_send_prepare_payload(self, message, receiver_ids, msg_vals=False):
         """Returns dictionary containing message information for mobile device.
         This info will be delivered to mobile device via Google Firebase Cloud
         Messaging (FCM). And it is having limit of 4000 bytes (4kb)
@@ -103,7 +124,6 @@ class MailThread(models.AbstractModel):
             "res_id": res_id,
             "db_id": self.env['res.config.settings']._get_ocn_uuid()
         }
-        generate_tracking_message = True
 
         if not payload['model']:
             result = self._extract_model_and_id(msg_vals)
@@ -111,62 +131,21 @@ class MailThread(models.AbstractModel):
                 payload['model'] = result['model']
                 payload['res_id'] = result['res_id']
 
-        if model == 'mail.channel':
-            payload['action'] = 'mail.action_discuss'
-            if self.channel_type == 'chat':
-                payload['subject'] = author_name
-                payload['type'] = 'chat'
-                payload['android_channel_id'] = 'DirectMessage'
-                generate_tracking_message = False
-            elif self.channel_type == 'channel':
-                payload['subject'] = "#%s - %s" % (record_name, author_name)
-                payload['android_channel_id'] = 'ChannelMessage'
-                generate_tracking_message = False
-            else:
-                payload['subject'] = "#%s" % (record_name)
-        else:
-            payload['subject'] = record_name or subject
-            payload['android_channel_id'] = 'Following'
+        payload['subject'] = record_name or subject
+        payload['android_channel_id'] = 'Following'
 
         # Check payload limit of 4000 bytes (4kb) and if remain space add the body
         payload_length = len(str(payload).encode('utf-8'))
         body = msg_vals.get('body') if msg_vals else message.body
         # FIXME: when msg_type is 'user_notification', the type value of msg_vals.get('body') is bytes
-        if type(body) == bytes:
+        if isinstance(body, bytes):
             body = body.decode("utf-8")
         if payload_length < 4000:
             payload_body = html2plaintext(body)
-            if generate_tracking_message:
-                payload_body += self._generate_tracking_message(message)
+            payload_body += self._generate_tracking_message(message)
             payload['body'] = payload_body[:4000 - payload_length]
 
-        chunks = []
-        at_mention_ocn_token_list = []
-        identities_ocn_token_list = []
-        at_mention_analyser_id_list = self._at_mention_analyser(body)
-        for receiver_id in receiver_ids:
-            if receiver_id.id in at_mention_analyser_id_list:
-                at_mention_ocn_token_list.append(receiver_id.ocn_token)
-            else:
-                identities_ocn_token_list.append(receiver_id.ocn_token)
-
-        # first chunk
-        if identities_ocn_token_list:
-            chunks.append({
-                'ocn_tokens': identities_ocn_token_list,
-                'data': payload,
-            })
-
-        # second chunk for mentions with specific channel
-        if at_mention_ocn_token_list:
-            new_payload = copy.copy(payload)
-            new_payload['android_channel_id'] = 'AtMention'
-            chunks.append({
-                'ocn_tokens': at_mention_ocn_token_list,
-                'data': new_payload,
-            })
-
-        return chunks
+        return payload
 
     @api.model
     def _extract_model_and_id(self, msg_vals):

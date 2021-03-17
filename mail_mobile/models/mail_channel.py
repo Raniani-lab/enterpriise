@@ -14,31 +14,37 @@ class MailChannel(models.Model):
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
             return
 
-        notif_pids = []
-        no_inbox_pids = []
-        for r in rdata['partners']:
-            if r['active']:
-                notif_pids.append(r['id'])
-                if r['notif'] != 'inbox':
-                    no_inbox_pids.append(r['id'])
-
         chat_channels = self.filtered(lambda channel: channel.channel_type == 'chat')
-        if not notif_pids and not chat_channels:
-            return
+        if chat_channels:
+            # modify rdata only for calling super. Do not deep copy as we only
+            # add data into list but we do not modify item content
+            channel_rdata = {'partners': rdata['partners'].copy()}
+            channel_rdata['partners'] += [
+                {'id': partner.id,
+                 'share': partner.partner_share,
+                 'active': partner.active,
+                 'notif': 'ocn',
+                 'type': 'customer',
+                 'groups': [],
+                }
+                for partner in chat_channels.mapped("channel_partner_ids")
+            ]
+        else:
+            channel_rdata = rdata
 
-        msg_sudo = message.sudo()  # why sudo?
-        msg_type = msg_vals.get('message_type') or msg_sudo.message_type
-        author_id = [msg_vals.get('author_id')] if 'author_id' in msg_vals else message.author_id.ids
+        return super(MailChannel, self)._notify_record_by_ocn(message, channel_rdata, msg_vals=msg_vals, **kwargs)
 
-        if msg_type == 'comment':
-            if chat_channels:
-                channel_partner_ids = chat_channels.mapped("channel_partner_ids").ids
-            else:
-                channel_partner_ids = []
-            pids = (set(notif_pids) | set(channel_partner_ids)) - set(author_id)
-            self._send_notification_to_partners(pids, message, msg_vals)
-        elif msg_type in ('notification', 'user_notification', 'email'):
-            # Send notification to partners except for the author and those who
-            # do not want to handle notifications in Odoo.
-            pids = (set(notif_pids) - set(author_id) - set(no_inbox_pids))
-            self._send_notification_to_partners(pids, message, msg_vals)
+    def _notify_by_ocn_send_prepare_payload(self, message, receiver_ids, msg_vals=False):
+        payload = super(MailChannel, self)._notify_by_ocn_send_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
+        payload['action'] = 'mail.action_discuss'
+        record_name = msg_vals.get('record_name') if msg_vals else message.record_name
+        if self.channel_type == 'chat':
+            payload['subject'] = payload['author_name']
+            payload['type'] = 'chat'
+            payload['android_channel_id'] = 'DirectMessage'
+        elif self.channel_type == 'channel':
+            payload['subject'] = "#%s - %s" % (record_name, payload['author_name'])
+            payload['android_channel_id'] = 'ChannelMessage'
+        else:
+            payload['subject'] = "#%s" % (record_name)
+        return payload

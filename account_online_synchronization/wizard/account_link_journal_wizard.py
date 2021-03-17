@@ -30,9 +30,11 @@ class AccountLinkJournalLine(models.TransientModel):
         if self.journal_id:
             self.journal_statements_creation = self.journal_id.bank_statement_creation_groupby
             self.action = 'link'
+            self.currency_id = self.journal_id.currency_id.id
         else:
             self.journal_statements_creation = 'month'
             self.action = 'create'
+            self.currency_id = self.env.company.currency_id.id
 
 
 class AccountLinkJournal(models.TransientModel):
@@ -61,6 +63,10 @@ class AccountLinkJournal(models.TransientModel):
             vals['type'] = 'bank'
             vals['bank_statement_creation_groupby'] = account.journal_statements_creation
         else:
+            # Remove currency from the dict if it has not changed as it might trigger an error if there are entries
+            # with another currency in this journal.
+            if account.journal_id.currency_id.id == vals['currency_id']:
+                vals.pop('currency_id', None)
             vals['bank_statement_creation_groupby'] = account.journal_id.bank_statement_creation_groupby or account.journal_statements_creation
         return vals
 

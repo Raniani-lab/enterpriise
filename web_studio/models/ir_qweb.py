@@ -18,8 +18,8 @@ class IrQWeb(models.AbstractModel, QWeb):
     """
     _inherit = 'ir.qweb'
 
-    def get_template(self, template, options):
-        element, document = super(IrQWeb, self).get_template(template, options)
+    def _get_template(self, template, options):
+        element, document, ref = super(IrQWeb, self)._get_template(template, options)
         if options.get('full_branding'):
             view_id = self.env['ir.ui.view']._view_obj(template).id
             if not view_id:
@@ -30,7 +30,7 @@ class IrQWeb(models.AbstractModel, QWeb):
             for node in element.iter(tag=etree.Element):
                 node.set('data-oe-id', str(view_id))
                 node.set('data-oe-xpath', root.getpath(node)[basepath:])
-        return (element, document)
+        return (element, document, ref)
 
     def _get_template_cache_keys(self):
         keys = super(IrQWeb, self)._get_template_cache_keys()
@@ -46,23 +46,14 @@ class IrQWeb(models.AbstractModel, QWeb):
     def _is_static_node(self, el, options):
         return not options.get('full_branding') and super(IrQWeb, self)._is_static_node(el, options)
 
-    def _compile_all_attributes(self, el, options, attr_already_created=False):
-        body = []
+    def _compile_all_attributes(self, el, options, indent, attr_already_created=False):
+        code = []
         if options.get('full_branding'):
             attr_already_created = True
 
-            body = [
-                # t_attrs = OrderedDict()
-                ast.Assign(
-                    targets=[ast.Name(id='t_attrs', ctx=ast.Store())],
-                    value=ast.Call(
-                        func=ast.Name(id='OrderedDict', ctx=ast.Load()),
-                        args=[],
-                        keywords=[], starargs=None, kwargs=None
-                    )
-                ),
-            ] + ast.parse(dedent("""
-                t_attrs['data-oe-context'] = values['json'].dumps({
+            code = [self._indent(dedent("""
+                attrs = {}
+                attrs['data-oe-context'] = values['json'].dumps({
                     key: type(values[key]).__name__
                     for key in values.keys()
                     if  key
@@ -72,6 +63,6 @@ class IrQWeb(models.AbstractModel, QWeb):
                         and ('_' not in key or key.rsplit('_', 1)[0] not in values or key.rsplit('_', 1)[1] not in ['even', 'first', 'index', 'last', 'odd', 'parity', 'size', 'value'])
                         and (type(values[key]).__name__ not in ['LocalProxy', 'function', 'method', 'Environment', 'module', 'type'])
                 })
-                """)).body
+                """).strip(), indent)]
 
-        return body + super(IrQWeb, self)._compile_all_attributes(el, options, attr_already_created=attr_already_created)
+        return code + super(IrQWeb, self)._compile_all_attributes(el, options, indent, attr_already_created=attr_already_created)

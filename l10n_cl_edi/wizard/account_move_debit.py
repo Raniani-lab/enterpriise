@@ -79,7 +79,7 @@ class AccountDebitNote(models.TransientModel):
                     'exclude_from_invoice_tab': line.move_id.is_invoice() and (line.account_id.user_type_id.type in [
                         'receivable', 'payable'] or self._is_tax(line.account_id)),
                     'tax_ids': [[6, 0, line.tax_ids.ids]],
-                    'tag_ids': [[6, 0, line.tag_ids.ids]], }, ])
+                    'tax_tag_ids': [[6, 0, line.tax_tag_ids.ids]], }, ])
         elif self.l10n_cl_edi_reference_doc_code == '2':
             default_values['line_ids'] = [[5, 0], [0, 0, {
                 'account_id': move.journal_id.default_account_id.id,

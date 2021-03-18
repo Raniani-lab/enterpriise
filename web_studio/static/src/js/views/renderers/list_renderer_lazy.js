@@ -1,4 +1,4 @@
-odoo.define('web_studio.ListRenderer', function (require) {
+odoo.define('web_studio.ListRendererLazy', function (require) {
 "use_strict";
 
 const ListRenderer = require('web.ListRenderer');

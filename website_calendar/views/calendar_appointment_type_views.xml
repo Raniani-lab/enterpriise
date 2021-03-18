@@ -161,18 +161,6 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_answer_view_form" model="ir.ui.view">
-        <field name="name">calendar.appointment.answer.form</field>
-        <field name="model">calendar.appointment.answer</field>
-        <field name="arch" type="xml">
-            <form string="Answer">
-                <group>
-                    <field name="name"/>
-                </group>
-            </form>
-        </field>
-    </record>
-
     <record id="calendar_appointment_type_action" model="ir.actions.act_window">
         <field name="name">Online Appointments</field>
         <field name="type">ir.actions.act_window</field>
@@ -187,25 +175,5 @@
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="calendar_appointment_type_menu_action"
-        parent="calendar.mail_menu_calendar"
-        name="Calendar"
-        sequence="3"
-        action="calendar.action_calendar_event"
-        groups="base.group_user"/>
-
-    <menuitem
-        id="appointment_type_menu"
-        parent="calendar.mail_menu_calendar"
-        action="calendar_appointment_type_action"
-        sequence="10"/>
-
-    <menuitem
-        id="website_appointment_type_menu"
-        parent="website.menu_website_global_configuration"
-        action="calendar_appointment_type_action"
-        sequence="200"/>
 
 </odoo>

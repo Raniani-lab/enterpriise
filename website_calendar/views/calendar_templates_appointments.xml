@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pages -->
+    <template id="index" name="Website Appointment: Appointment Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_website_calendar">
+                <div class="oe_structure container mb128 o_website_calendar_appointment">
+                    <ul class="wizard mt32 float-right">
+                        <li class="text-primary">Appointment<span class="chevron"></span></li>
+                        <li class="text-muted">Time<span class="chevron"></span></li>
+                        <li class="text-muted">Confirmation<span class="chevron"></span></li>
+                    </ul>
+                    <h1 class="o_page_header mt32">
+                        Schedule an Appointment
+                    </h1>
+                    <div t-if="message=='cancel'" class="alert alert-danger mt16" role="alert">
+                        <p>
+                            <strong>Appointment canceled!</strong>
+                            You can schedule another appointment from here.
+                        </p>
+                    </div>
+                    <form class="o_website_appoinment_form w-md-50" t-attf-action="/calendar/#{ slug(appointment_type) }/appointment" type="post">
+                      <div id="appointment" class="form-group row">
+                        <label for="calendarType" class="col-md-3 col-form-label">Appointment</label>
+                        <div class="col-md-9">
+                          <select class="form-control" id="calendarType" t-att-disabled="len(suggested_appointment_types)==1 and '1' or None">
+                            <t t-foreach="suggested_appointment_types" t-as="cal">
+                                <option t-att-value="cal.id" t-att-selected="cal.id == appointment_type.id and 'selected'">
+                                    <t t-esc="cal.name"/>
+                                </option>
+                            </t>
+                          </select>
+                        </div>
+                      </div>
+                      <t t-call="website_calendar.employee_select"/>
+                      <div class="form-group row">
+                        <div class="offset-md-8 col-md-4">
+                            <button type="submit" class="btn btn-primary">View Availabilities <span class="fa fa-arrow-right"/></button>
+                        </div>
+                      </div>
+                    </form>
+                    <div t-raw="appointment_type.message_intro" class="o_calendar_intro mb32"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="employee_select" name="Website Appointment: Appointment Calendars">
+      <div name="employee_select" t-att-class="'form-group ' + (appointment_type.assignation_method!='chosen' and 'o_hidden' or '')">
+        <label for="selectEmployee" class="col-md-4 col-form-label">With:</label>
+        <div class="col-md-7">
+          <!-- do not add the disabled tag or it won't be submitted with the form -->
+          <select class="form-control" name="employee_id" id="selectEmployee">
+            <t t-foreach="suggested_employees" t-as="emp">
+                <option t-att-value="emp[0]" t-att-selected="emp[0] == selected_employee_id and 'selected'">
+                    <t t-esc="emp[1]"/>
+                </option>
+            </t>
+          </select>
+        </div>
+      </div>
+    </template>
+
+    <template id="appointment_select_timezone" inherit_id="website_calendar.index" active="False" customize_show="True" name="Website Appointment: Timezone Selection">
+        <xpath expr="//div[@id='appointment']" position="after">
+          <div class="form-group row">
+            <label for="calendarTimezone" class="col-md-3 col-form-label">Time zone:</label>
+            <div class="col-md-9">
+              <select class="form-control" name="timezone">
+                <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="timezone">
+                    <option t-att-value="timezone[0]" t-esc="timezone[1]" t-att-selected="(timezone[1] == request.session.timezone) and 1 or None"/>
+                </t>
+              </select>
+            </div>
+          </div>
+        </xpath>
+    </template>
+
+    <template id="appointment_calendar" name="Website Appointment: Appointment Calendars">
+        <div class="row">
+            <div t-foreach="slots" t-as="month" class="col-lg-6">
+                <h3 t-esc="month['month']"/>
+                <table class="table">
+                    <tr class="active">
+                        <th class="text-center">Mon</th>
+                        <th class="text-center">Tue</th>
+                        <th class="text-center">Wed</th>
+                        <th class="text-center">Thu</th>
+                        <th class="text-center">Fri</th>
+                        <th class="text-center">Sat</th>
+                        <th class="text-center">Sun</th>
+                    </tr>
+                    <tr t-foreach="month['weeks']" t-as="weeks" class="o_calendar_days">
+                        <t t-foreach="weeks" t-as="day">
+                            <td t-attf-class="text-center#{day['slots'] and ' o_day dropdown' or ''} #{day['weekend_cls']} #{day['today_cls']}" t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                <t t-if="day['slots']">
+                                    <div class="dropdown-toggle o_slots_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <strong>
+                                        <span t-esc="day['day'].day"/>
+                                      </strong>
+                                    </div>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-foreach="day['slots']" t-as="slot">
+                                            <a t-if='slot' role="menuitem" class="dropdown-item" t-attf-href="/calendar/#{appointment_type.id}/info?employee_id=#{slot['employee_id']}&amp;date_time=#{slot['datetime']}" t-esc="slot['hours']"/>
+                                        </t>
+                                    </div>
+                                </t>
+                                <t t-if="not day['slots']">
+                                    <div t-esc="day['day'].day" t-att-class="day['mute_cls']"/>
+                                </t>
+                            </td>
+                        </t>
+                    </tr>
+                    <!--to fix bootstrap md height add empty tr so now each month has 6 weeks row -->
+                    <tr t-if="len(month['weeks']) == 5" class="o_calendar_days"/>
+                </table>
+            </div>
+        </div>
+        <p>
+            Time displayed in <strong t-esc="timezone"/> timezone
+        </p>
+    </template>
+
+    <template id="appointment" name="Website Appointment: Schedule Appointment" track="1">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_website_calendar">
+                <div class="oe_structure container mb128">
+                    <ul class="wizard mt32 float-right">
+                        <li><a t-attf-href="/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
+                        <li class="text-primary">Time<span class="chevron"></span></li>
+                        <li class="text-muted">Confirmation<span class="chevron"></span></li>
+                    </ul>
+                    <h1 class="o_page_header mt32">Appointment Time</h1>
+                    <div t-if="failed=='employee'" class="alert alert-danger mt16" role="alert">
+                        <p>
+                            <strong>Appointment failed!</strong>
+                            The selected timeslot is not available anymore.
+                            Someone has booked the same time slot a few
+                            seconds before you.
+                        </p><p>
+                            Please, select another date.
+                        </p>
+                    </div>
+                    <div t-if="failed=='partner'" class="alert alert-danger mt16" role="alert">
+                        <p>
+                            <strong>Appointment failed!</strong>
+                            The selected timeslot is not available.
+                            It appears you already have another meeting with us at that date.
+                        </p><p>
+                            Please, select another date.
+                        </p>
+                    </div>
+                    <div class="mb8">
+                        <t t-call="website.publish_management">
+                          <t t-set="object" t-value="appointment_type"/>
+                          <t t-set="publish_edit" t-value="True"/>
+                          <t t-set="action" t-value="'website_calendar.calendar_appointment_type_action'"/>
+                        </t>
+                    </div>
+                    <div class="clearfix"/>
+                    <t t-call="website_calendar.appointment_calendar"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="setup" name="Website Appointment: Configure You Appointments">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_website_calendar">
+                <div class="oe_structure container mb128">
+                    <h1 class="o_page_header">No appointments available!</h1>
+                    <p groups="base.group_user">
+                        In order to configure your first appointment, go
+                        to the "Calendar" application in Odoo and create
+                        an online appointment.
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

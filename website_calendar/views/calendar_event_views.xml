@@ -76,18 +76,4 @@
         </field>
     </record>
 
-    <menuitem
-        id="menu_schedule_report"
-        parent="calendar.mail_menu_calendar"
-        name="Reporting"
-        sequence="15"/>
-    <menuitem
-        id="menu_schedule_report_all"
-        parent="website_calendar.menu_schedule_report"
-        action="calendar_event_action_reporting"/>
-    <menuitem
-        id="menu_schedule_report_online"
-        parent="website_calendar.menu_schedule_report"
-        action="website_calendar_report"/>
-
 </odoo>

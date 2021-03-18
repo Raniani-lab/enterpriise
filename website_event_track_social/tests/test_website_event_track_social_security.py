@@ -31,7 +31,7 @@ class TestTrackPushSecurity(TestEventCommon):
         push_reminder = self.env['social.post'].sudo().search([('event_track_id', '=', track_1.id)])
         self.assertEqual(1, len(push_reminder))
         self.assertEqual(
-            "Your wishlisted track 'Track' will start in 10 minutes!",
+            "Your favorite track 'Track' will start in 10 minutes!",
             push_reminder.message)
 
         # event modifications should be correctly reflected to the push notification even without
@@ -40,5 +40,5 @@ class TestTrackPushSecurity(TestEventCommon):
         track_1.flush(['name', 'date'])
         push_reminder = self.env['social.post'].sudo().search([('event_track_id', '=', track_1.id)])
         self.assertEqual(
-            "Your wishlisted track 'New Name' will start in 10 minutes!",
+            "Your favorite track 'New Name' will start in 10 minutes!",
             push_reminder.message)

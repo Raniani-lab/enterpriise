@@ -14,7 +14,7 @@ class Track(models.Model):
     firebase_enable_push_notifications = fields.Boolean('Enable Web Push Notifications',
         compute='_compute_firebase_enable_push_notifications')
     push_reminder = fields.Boolean('Push Reminder',
-        help="Check this if you want to send a push notification reminder to everyone that has wishlisted this track.",
+        help="Check this if you want to send a push notification reminder to everyone that has favorited this track.",
         compute='_compute_push_reminder', store=True, readonly=False)
     push_reminder_delay = fields.Integer('Push Reminder Delay',
         help="How many minutes before the start of the talk do you want to send the reminder?",
@@ -83,14 +83,14 @@ class Track(models.Model):
         for the event tracks in self.
 
         This allows users to setup scheduled social.post that send a push notification
-        on the correct website to all users that have wishlisted the talk.
+        on the correct website to all users that have favorited the talk.
 
-        Attendees will receive something like "Your wishlisted 'OXP Keynote' will start
+        Attendees will receive something like "Your favorited 'OXP Keynote' track will start
         in 5 minutes! When clicking on the notification, they are redirected to the track.
 
         The domain we build to find matching website.visitors can differ:
-        - If it's a track that is 'default wishlisted', we send the push to all attendees
-        - Otherwise, we only send the push to attendees that have wishlisted the track. """
+        - If it's a track that is 'default favorited', we send the push to all attendees
+        - Otherwise, we only send the push to attendees that have favorited the track. """
 
         push_social_accounts = self.env['social.account'].sudo().search([
             ('media_id', '=', self.env.ref('social_push_notifications.social_media_push_notifications').id)
@@ -119,7 +119,7 @@ class Track(models.Model):
             base_url = track.event_id.get_base_url()
             post_values = {
                 'message': _(
-                    "Your wishlisted track '%s' will start in %s minutes!",
+                    "Your favorite track '%s' will start in %s minutes!",
                 ) % (track.name, track.push_reminder_delay),
                 'push_notification_title': _('Your track is about to start!'),
                 'push_notification_target_url': url_join(base_url, track.website_url),

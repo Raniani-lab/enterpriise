@@ -14,6 +14,8 @@ class MrpEcoType(models.Model):
     _description = 'ECO Type'
     _inherit = ['mail.alias.mixin', 'mail.thread']
 
+    _order = "sequence, id"
+
     name = fields.Char('Name', required=True, translate=True)
     sequence = fields.Integer('Sequence')
     nb_ecos = fields.Integer('ECOs', compute='_compute_nb')

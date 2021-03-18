@@ -5,7 +5,8 @@
         <field name="model">calendar.appointment.slot</field>
         <field name="arch" type="xml">
             <form>
-                <group>
+                <field name="slot_type" invisible="1"/>
+                <group attrs="{'invisible': [('slot_type', '=', 'unique')]}">
                     <group>
                         <field name="appointment_type_id"/>
                         <field name="weekday"/>
@@ -13,6 +14,16 @@
                     <group>
                         <field name="start_hour" widget="float_time"/>
                         <field name="end_hour" widget="float_time"/>
+                    </group>
+                </group>
+                <group attrs="{'invisible': [('slot_type', '=', 'recurring')]}">
+                    <group>
+                        <field name="start_datetime"/>
+                        <field name="end_datetime"/>
+                    </group>
+                    <group>
+                        <field name="allday"/>
+                        <field name="duration" widget="float_time"/>
                     </group>
                 </group>
             </form>

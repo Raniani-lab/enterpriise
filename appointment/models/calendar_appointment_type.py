@@ -11,9 +11,11 @@ from babel.dates import format_datetime
 from werkzeug.urls import url_join
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 from odoo.tools.misc import get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.http_routing.models.ir_http import slug
+from odoo.osv.expression import AND
 
 
 class CalendarAppointmentType(models.Model):
@@ -22,8 +24,32 @@ class CalendarAppointmentType(models.Model):
     _inherit = ['mail.thread']
     _order = "sequence, id"
 
+    @api.model
+    def default_get(self, default_fields):
+        result = super().default_get(default_fields)
+        if 'category' not in default_fields or result.get('category') in ['custom', 'work_hours']:
+            if not self.env.user.employee_id:
+                raise ValueError(_("An employee should be set on the actual user to create the appointment type"))
+            if not result.get('name'):
+                result['name'] = _("Meeting with %s", self.env.user.name)
+            if not result.get('employee_ids'):
+                result['employee_ids'] = self.env.user.employee_id.ids
+        return result
+
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Type', required=True, translate=True)
+    category = fields.Selection([
+        ('website', 'Website'),
+        ('custom', 'Custom'),
+        ('work_hours', 'Work Hours')
+        ], string="Category", default="website",
+        help="""Used to define this appointment type's category.
+        Can be one of:
+            - Website: the default category, the people can access and shedule the appointment with employees from the website
+            - Custom: the employee will create and share to an user a custom appointment type with hand-picked time slots
+            - Work Hours: a special type of appointment type that is used by one employee and which takes the working hours of this
+                employee as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots
+                based on its working hours and availabilities""")
     min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
     max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
     min_cancellation_hours = fields.Float('Cancel Before (hours)', required=True, default=1.0)
@@ -55,6 +81,18 @@ class CalendarAppointmentType(models.Model):
         mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
         for appointment_type in self:
             appointment_type.appointment_count = mapped_data.get(appointment_type.id, 0)
+
+    @api.constrains('category', 'employee_ids')
+    def _check_employee_configuration(self):
+        for appointment_type in self:
+            if appointment_type.category != 'website' and len(appointment_type.employee_ids) != 1:
+                raise ValidationError(_("This category of appointment type should only have one employee but got %s employees", len(appointment_type.employee_ids)))
+            if appointment_type.category == 'work_hours':
+                appointment_domain = [('category', '=', 'work_hours'), ('employee_ids', 'in', appointment_type.employee_ids.ids)]
+                if appointment_type.ids:
+                    appointment_domain = AND([appointment_domain, [('id', 'not in', appointment_type.ids)]])
+                if self.search_count(appointment_domain) > 0:
+                    raise ValidationError(_("Only one work hours appointment type is allowed for a specific employee."))
 
     @api.model
     def create(self, values):
@@ -152,16 +190,46 @@ class CalendarAppointmentType(models.Model):
         requested_tz = pytz.timezone(timezone)
 
         slots = []
-        for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
-            if slot.end_hour > first_day.hour + first_day.minute / 60.0:
-                append_slot(first_day.date(), slot)
-        slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
-        for day in rrule.rrule(rrule.DAILY,
-                               dtstart=first_day.date() + timedelta(days=1),
-                               until=last_day.date(),
-                               byweekday=slot_weekday):
-            for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
-                append_slot(day, slot)
+        # We use only the recurring slot if it's not a custom appointment type.
+        if self.category != 'custom':
+            # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules
+            for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
+                if slot.end_hour > first_day.hour + first_day.minute / 60.0:
+                    append_slot(first_day.date(), slot)
+            slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
+            for day in rrule.rrule(rrule.DAILY,
+                                dtstart=first_day.date() + timedelta(days=1),
+                                until=last_day.date(),
+                                byweekday=slot_weekday):
+                for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
+                    append_slot(day, slot)
+        else:
+            # Custom appointment type, we use "unique" slots here that have a defined start/end datetime
+            unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique' and slot.end_datetime > datetime.utcnow())
+
+            employee = self.employee_ids[0] # There is only 1 employee in this case
+            for slot in unique_slots:
+                start = slot.start_datetime.astimezone(tz=None)
+                end = slot.end_datetime.astimezone(tz=None)
+                startUTC = start.astimezone(pytz.UTC).replace(tzinfo=None)
+                endUTC = end.astimezone(pytz.UTC).replace(tzinfo=None)
+                if employee.sudo().user_partner_id.calendar_verify_availability(startUTC, endUTC):
+                    slots.append({
+                        self.appointment_tz: (
+                            start.astimezone(appt_tz),
+                            end.astimezone(appt_tz),
+                        ),
+                        timezone: (
+                            start.astimezone(requested_tz),
+                            end.astimezone(requested_tz),
+                        ),
+                        'UTC': (
+                            startUTC,
+                            endUTC,
+                        ),
+                        'slot': slot,
+                        'employee_id': employee,
+                    })
         return slots
 
     def _slots_available(self, slots, first_day, last_day, employee=None):
@@ -252,7 +320,10 @@ class CalendarAppointmentType(models.Model):
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
         first_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(hours=self.min_schedule_hours))
-        last_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(days=self.max_schedule_days))
+        appointment_duration_days = self.max_schedule_days
+        if self.category == 'custom':
+            appointment_duration_days = (self.slot_ids[-1].end_datetime - datetime.utcnow()).days
+        last_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)
         slots = self._slots_generate(first_day.astimezone(appt_tz), last_day.astimezone(appt_tz), timezone)
@@ -280,12 +351,24 @@ class CalendarAppointmentType(models.Model):
                         # slots are ordered, so check all unprocessed slots from until > day
                         while slots and (slots[0][timezone][0].date() <= day):
                             if (slots[0][timezone][0].date() == day) and ('employee_id' in slots[0]):
-                                today_slots.append({
-                                    'employee_id': slots[0]['employee_id'].id,
-                                    'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
-                                    'hours': slots[0][timezone][0].strftime('%H:%M')
-                                })
+                                if slots[0]['slot'].allday:
+                                    today_slots.append({
+                                        'employee_id': slots[0]['employee_id'].id,
+                                        'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                        'hours': _("All day"),
+                                        'duration': 24,
+                                    })
+                                else:
+                                    start_hour = slots[0][timezone][0].strftime('%H:%M')
+                                    end_hour = slots[0][timezone][1].strftime('%H:%M')
+                                    today_slots.append({
+                                        'employee_id': slots[0]['employee_id'].id,
+                                        'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                        'hours': "%s - %s" % (start_hour, end_hour) if self.category == 'custom' else start_hour,
+                                        'duration': str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600),
+                                    })
                             slots.pop(0)
+                    today_slots = sorted(today_slots, key=lambda d: d['hours'])
                     dates[week_index][day_index] = {
                         'day': day,
                         'slots': today_slots,

@@ -10,7 +10,10 @@ class CalendarAppointmentShare(models.TransientModel):
     _name = 'calendar.appointment.share'
     _description = 'Calendar Appointment Share Wizard'
 
-    appointment_type_ids = fields.Many2many('calendar.appointment.type', string='Appointments')
+    def _domain_appointment_type_ids(self):
+        return [('category', '=', 'website')]
+
+    appointment_type_ids = fields.Many2many('calendar.appointment.type', domain=_domain_appointment_type_ids, string='Appointments')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count')
     suggested_employee_ids = fields.Many2many('hr.employee', related='appointment_type_ids.employee_ids', string='Possible employees',
         help="Get the employees link to the appointment type selected to apply a domain on the employees that can be selected")

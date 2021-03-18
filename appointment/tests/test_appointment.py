@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime
+
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from odoo.tests import common, tagged
+from odoo import fields
+from odoo.exceptions import ValidationError
+from odoo.tests import common, tagged, users
 from odoo.tests.common import new_test_user
 
 
@@ -39,11 +42,18 @@ class AppointmentTest(common.HttpCase):
         self.second_user_in_australia = self.env['res.users'].create({'name': 'Australian guy', 'login': 'australian'})
         self.second_user_in_australia.write({'tz': 'Australia/West'})
 
-        self.employee = self.env['hr.employee'].create({
+        self.employee_in_brussel = self.env['hr.employee'].create({
             'name': 'Grace Slick',
             'user_id': self.first_user_in_brussel.id,
             'company_id': self.company.id,
             'resource_calendar_id': self.resource_calendar.id
+        })
+
+        self.employee_in_australia = self.env['hr.employee'].create({
+            'name': 'Chris Fisher',
+            'user_id': self.second_user_in_australia.id,
+            'company_id': self.company.id,
+            'resource_calendar_id': self.resource_calendar.id,
         })
 
         self.appointment_in_brussel = self.env['calendar.appointment.type'].create({
@@ -53,7 +63,7 @@ class AppointmentTest(common.HttpCase):
             'max_schedule_days': 15,
             'min_cancellation_hours': 1,
             'appointment_tz': 'Europe/Brussels',
-            'employee_ids': [(4, self.employee.id, False)],
+            'employee_ids': [(4, self.employee_in_brussel.id, False)],
             'slot_ids': [(0, False, {'weekday': '1', 'start_hour': 9, 'end_hour': 10})]  # Yes, monday has either 0 or 1 as weekday number depending on the object it's in
         })
 
@@ -91,7 +101,7 @@ class AppointmentTest(common.HttpCase):
                         already_checked.add(day['day'])
                         self.assertEqual(len(day['slots']), 1, 'Each monday should have only one slot')
                         slot = day['slots'][0]
-                        self.assertEqual(slot['employee_id'], self.employee.id, 'The right employee should be available on each slot')
+                        self.assertEqual(slot['employee_id'], self.employee_in_brussel.id, 'The right employee should be available on each slot')
                         self.assertEqual(slot['hours'], '09:00', 'Slots hours has to be 09:00')  # We asked to display the slots as Europe/Brussels
 
         # Ensuring that we've gone through the *crucial* asserts at least once
@@ -140,3 +150,89 @@ class AppointmentTest(common.HttpCase):
         self.assertEqual(res.status_code, 200, "Response should = OK")
         event.attendee_ids[0].invalidate_cache()
         self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
+
+    def test_generate_recurring_slots(self):
+        slots = self.appointment_in_brussel._get_appointment_slots(self.env.user.tz)
+        now = datetime.now()
+        for week in slots[0]['weeks']:
+            for day in week:
+                if day['day'] > now.date() and\
+                    day['day'] < (now + relativedelta(days=self.appointment_in_brussel.max_schedule_days)).date() and\
+                    day['day'].isoweekday() == 1:
+
+                    self.assertEqual(len(day['slots']), 1, "There should be 1 slot each monday")
+                else:
+                    self.assertEqual(len(day['slots']), 0, "There should be no slot in the past")
+
+    @users('admin')
+    def test_generate_unique_slots(self):
+        now = datetime.now()
+        unique_slots = [{
+            'start': (now + timedelta(hours=1)).replace(microsecond=0).isoformat(' '),
+            'end': (now + timedelta(hours=2)).replace(microsecond=0).isoformat(' '),
+            'allday': False,
+        }, {
+            'start': (now + timedelta(days=2)).replace(microsecond=0).isoformat(' '),
+            'end': (now + timedelta(days=3)).replace(microsecond=0).isoformat(' '),
+            'allday': True,
+        }]
+        custom_appointment_type = self.env['calendar.appointment.type'].create({
+            'category': 'custom',
+            'slot_ids': [(0, 0, {
+                'start_datetime': fields.Datetime.from_string(slot.get('start')),
+                'end_datetime': fields.Datetime.from_string(slot.get('end')),
+                'allday': slot.get('allday'),
+                'slot_type': 'unique',
+            }) for slot in unique_slots],
+        })
+        self.assertEqual(custom_appointment_type.category, 'custom', "It should be a custom appointment type")
+        self.assertEqual(len(custom_appointment_type.slot_ids), 2, "Two slots should have been assigned to the appointment type")
+
+        slots = custom_appointment_type._get_appointment_slots(self.env.user.tz)
+        for week in slots[0]['weeks']:
+            for day in week:
+                if (now + timedelta(hours=1)).date() == day['day']:
+                    self.assertEqual(len(day['slots']), 1, "There should be 1 slot for this date")
+                elif (now + timedelta(days=2)).date() == day['day']:
+                    if (now + timedelta(days=2)).date().month != now.month:
+                        s = next(d['slots'] for d in slots[1]['weeks'][0] if d["day"] == day['day'])
+                    else:
+                        s = day['slots']
+                    self.assertEqual(len(s), 1, "There should be 1 all day slot for this date")
+                    self.assertEqual(s[0]['hours'], 'All day')
+                else:
+                    self.assertEqual(len(day['slots']), 0, "There should be no slot for this date")
+
+    @users('admin')
+    def test_create_custom_appointment_without_employee(self):
+        # No Validation Error, the actual employee should be set by default
+        self.env['calendar.appointment.type'].create({
+            'name': 'Custom without employee',
+            'category': 'custom',
+        })
+
+    @users('admin')
+    def test_create_custom_appointment_multiple_employees(self):
+        with self.assertRaises(ValidationError):
+            self.env['calendar.appointment.type'].create({
+                'name': 'Custom without employee',
+                'category': 'custom',
+                'employee_ids': [self.employee_in_brussel.id, self.employee_in_australia.id]
+            })
+
+    @users('admin')
+    def test_create_work_hours_appointment_without_employee(self):
+        # No Validation Error, the actual employee should be set by default
+        self.env['calendar.appointment.type'].create({
+            'name': 'Work hours without employee',
+            'category': 'work_hours',
+        })
+
+    @users('admin')
+    def test_create_work_hours_appointment_multiple_employees(self):
+        with self.assertRaises(ValidationError):
+            self.env['calendar.appointment.type'].create({
+                'name': 'Work hours without employee',
+                'category': 'work_hours',
+                'employee_ids': [self.employee_in_brussel.id, self.employee_in_australia.id]
+            })

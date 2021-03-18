@@ -45,9 +45,16 @@
         ],
         'web.assets_backend': [
             'appointment/static/src/scss/calendar_appointment_type_views.scss',
+            'appointment/static/src/scss/web_calendar.scss',
+            'appointment/static/src/js/calendar_controller.js',
+            'appointment/static/src/js/calendar_model.js',
+            'appointment/static/src/js/calendar_renderer.js',
         ],
         'web.assets_qweb': [
             'appointment/static/src/xml/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'appointment/static/tests/*',
         ],
     }
 }

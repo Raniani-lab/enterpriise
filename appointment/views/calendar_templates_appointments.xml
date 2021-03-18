@@ -111,7 +111,7 @@
                             <t t-call="appointment.employee_select"/>
                         </form>
                     </div>
-                    <div class="d-lg-flex col pl-0 mb-2 o_not_editable">
+                    <div t-if="appointment_type.category != 'custom'" class="d-lg-flex col pl-0 mb-2 o_not_editable">
                         <div class="col-md-6 pl-0">
                             <strong class="mr-2">Duration:</strong>
                             <span t-out="appointment_type.appointment_duration" t-options="{'widget': 'float_time'}"/>

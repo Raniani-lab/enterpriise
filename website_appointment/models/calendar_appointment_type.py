@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import api, models
 from odoo.addons.http_routing.models.ir_http import slug
 
 
@@ -13,6 +13,13 @@ class CalendarAppointmentType(models.Model):
         'website.published.mixin',
         'website.cover_properties.mixin',
     ]
+
+    @api.model
+    def default_get(self, default_fields):
+        result = super().default_get(default_fields)
+        if 'category' not in default_fields or result.get('category') in ['custom', 'work_hours']:
+            result['is_published'] = True
+        return result
 
     def _default_cover_properties(self):
         res = super()._default_cover_properties()

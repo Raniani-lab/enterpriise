@@ -97,7 +97,7 @@ class Appointment(http.Controller):
         return request.redirect('/calendar/%s?%s' % (slug(appointment_type), keep_query('*')))
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_form(self, appointment_type, employee_id, date_time, **kwargs):
+    def calendar_appointment_form(self, appointment_type, employee_id, date_time, duration, **kwargs):
         """
         Render the form to get information about the user for the appointment
 
@@ -117,11 +117,12 @@ class Appointment(http.Controller):
             'datetime': date_time,
             'datetime_locale': day_name + ' ' + date_formated,
             'datetime_str': date_time,
+            'duration_str': duration,
             'employee_id': employee_id,
         })
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, methods=["POST"])
-    def calendar_appointment_submit(self, appointment_type, datetime_str, employee_id, name, phone, email, **kwargs):
+    def calendar_appointment_submit(self, appointment_type, datetime_str, duration_str, employee_id, name, phone, email, **kwargs):
         """
         Create the event for the appointment and redirect on the validation page with a summary of the appointment.
 
@@ -135,7 +136,8 @@ class Appointment(http.Controller):
         timezone = request.session['timezone'] or appointment_type.appointment_tz
         tz_session = pytz.timezone(timezone)
         date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc)
-        date_end = date_start + relativedelta(hours=appointment_type.appointment_duration)
+        duration = float(duration_str)
+        date_end = date_start + relativedelta(hours=duration)
 
         # check availability of the employee again (in case someone else booked while the client was entering the form)
         employee = request.env['hr.employee'].sudo().browse(int(employee_id)).exists()
@@ -143,7 +145,7 @@ class Appointment(http.Controller):
             raise NotFound()
         if employee.user_id and employee.user_id.partner_id:
             if not employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/calendar/%s/appointment?state=failed-employee' % appointment_type.id)
+                return request.redirect('/calendar/%s/appointment?state=failed-employee' % slug(appointment_type))
 
         Partner = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
@@ -203,7 +205,7 @@ class Appointment(http.Controller):
             'start_date': date_start.strftime(dtf),
             'stop': date_end.strftime(dtf),
             'allday': False,
-            'duration': appointment_type.appointment_duration,
+            'duration': duration,
             'description': description,
             'alarm_ids': alarm_ids,
             'location': appointment_type.location,
@@ -337,7 +339,7 @@ class Appointment(http.Controller):
     #----------------------------------------------------------
 
     def _appointments_base_domain(self, filter_appointment_type_ids):
-        domain = []
+        domain = [('category', '=', 'website')]
 
         if filter_appointment_type_ids:
             domain = expression.AND([domain, [('id', 'in', json.loads(filter_appointment_type_ids))]])

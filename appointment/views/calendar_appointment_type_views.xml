@@ -8,6 +8,7 @@
             <search string="Appointment Type">
                 <field name="name"/>
                 <field name="employee_ids"/>
+                <field name="category"/>
                 <filter string="My Appointments" name="my_appointments" domain="[('employee_ids.user_id', 'in', [uid])]"/>
                 <separator/>
             </search>
@@ -74,6 +75,21 @@
         </field>
     </record>
 
+    <record id="calendar_appointment_type_view_tree_invitation" model="ir.ui.view">
+        <field name="name">calendar.appointment.type.tree.invitation</field>
+        <field name="model">calendar.appointment.type</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <tree string="Appointment Invitations" multi_edit="1" sample="1">
+                <field name="sequence" widget="handle"/>
+                <field name="name" readonly="1"/>
+                <field name="appointment_tz"/>
+                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="category" groups="base.group_no_one"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="calendar_appointment_type_view_form" model="ir.ui.view">
         <field name="name">calendar.appointment.type.form</field>
         <field name="model">calendar.appointment.type</field>
@@ -102,8 +118,8 @@
                         <page string="Scheduling" name="schedule_availability">
                             <group>
                                 <group name="left_details">
-                                    <label for="appointment_duration"/>
-                                    <div>
+                                    <label for="appointment_duration" attrs="{'invisible': [('category', '=', 'custom')]}"/>
+                                    <div attrs="{'invisible': [('category', '=', 'custom')]}">
                                           <field name="appointment_duration" class="oe_inline" widget="float_time"/><span> hours</span>
                                     </div>
                                     <label for="min_schedule_hours" string="Schedule Appointment"/>
@@ -111,7 +127,7 @@
                                         <div>
                                           <span>at least </span><field name="min_schedule_hours" class="oe_inline" widget="float_time"/><span> hours before</span>
                                         </div>
-                                        <div>
+                                        <div attrs="{'invisible': [('category', '=', 'custom')]}">
                                           <span>and not after </span><field name="max_schedule_days" class="oe_inline"/><span> days</span>
                                         </div>
                                     </div>
@@ -126,12 +142,12 @@
                                     <field name="appointment_tz"/>
                                     <field name="reminder_ids" widget="many2many_tags"/>
                                     <field name="location"/>
-                                    <field name="assign_method"/>
+                                    <field name="assign_method" attrs="{'invisible': [('category', '!=', 'website')]}"/>
                                     <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 </group>
                             </group>
                             <separator string="Available Employees"/>
-                            <field name="employee_ids">
+                            <field name="employee_ids" attrs="{'readonly': [('category', '!=', 'website')]}">
                                 <tree string="Employees" delete="1">
                                     <field name="name"/>
                                     <field name="resource_calendar_id"/>
@@ -139,11 +155,19 @@
                             </field>
                         </page>
                         <page string="Availability" name="slots">
+                            <field name="category" invisible="1"/>
                             <field name="slot_ids">
                                 <tree editable="bottom" class="o_appointment_slots_list">
-                                    <field name="weekday" string="Every"/>
-                                    <field name="start_hour" string="From" widget="float_time"/>
-                                    <field name="end_hour" string="To" widget="float_time"/>
+                                    <field name="weekday" string="Every"
+                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                    <field name="start_hour" string="From" widget="float_time"
+                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                    <button name="durationArrow" class="fa fa-long-arrow-right text-center" title="Until (max)"
+                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                    <field name="end_hour" string="To" widget="float_time"
+                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                    <field name="start_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
+                                    <field name="end_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
                                 </tree>
                             </field>
                         </page>
@@ -191,6 +215,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">calendar.appointment.type</field>
         <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('category', '=', 'website')]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create an Appointment Type
@@ -200,4 +225,17 @@
         </field>
     </record>
 
+    <record id="calendar_appointment_type_action_custom_and_work_hours" model="ir.actions.act_window">
+        <field name="name">Appointment Invitations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">calendar.appointment.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="calendar_appointment_type_view_tree_invitation"/>
+        <field name="domain">[('category', '!=', 'website')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No custom appointment type has been created !
+            </p>
+        </field>
+    </record>
 </odoo>

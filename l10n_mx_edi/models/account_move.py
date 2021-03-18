@@ -475,8 +475,6 @@ class AccountMove(models.Model):
 
     def button_draft(self):
         # OVERRIDE
-        res = super().button_draft()
-
         for move in self:
             if move.l10n_mx_edi_cfdi_uuid:
                 move.l10n_mx_edi_origin = move._l10n_mx_edi_write_cfdi_origin('04', [move.l10n_mx_edi_cfdi_uuid])
@@ -485,7 +483,7 @@ class AccountMove(models.Model):
             elif move.statement_line_id:
                 move.statement_line_id.l10n_mx_edi_force_generate_cfdi = False
 
-        return res
+        return super().button_draft()
 
     def _reverse_moves(self, default_values_list, cancel=False):
         # OVERRIDE

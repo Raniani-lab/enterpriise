@@ -37,3 +37,16 @@ class CalendarEvent(models.Model):
     def _generate_access_token(self):
         for event in self:
             event.access_token = self._default_access_token()
+
+    def action_cancel_meeting(self, partner_ids):
+        """ In case there are more than two attendees (responsible + another attendee),
+            we do not want to archive the calendar.event.
+            We'll just remove the attendee that made the cancellation request
+        """
+        self.ensure_one()
+        attendees = self.env['calendar.attendee'].search([('event_id', '=', self.id), ('partner_id', 'in', partner_ids)])
+        if attendees:
+            if len(self.attendee_ids - attendees) >= 2:
+                self.partner_ids -= attendees.partner_id
+            else:
+                self.action_archive()

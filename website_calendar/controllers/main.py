@@ -214,10 +214,10 @@ class WebsiteCalendar(http.Controller):
             'user_id': employee.user_id.id,
         })
         event.attendee_ids.write({'state': 'accepted'})
-        return request.redirect('/calendar/view/%s?%s' % (event.access_token, keep_query('*', state='new')))
+        return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
 
     @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
-    def calendar_appointment_view(self, access_token, state=False, **kwargs):
+    def calendar_appointment_view(self, access_token, partner_id, state=False, **kwargs):
         """
         Render the validation of an appointment and display a summary of it
 
@@ -267,13 +267,14 @@ class WebsiteCalendar(http.Controller):
             'datetime_start': date_start,
             'google_url': google_url,
             'state': state,
+            'partner_id': partner_id
         })
 
     @http.route([
         '/calendar/cancel/<string:access_token>',
         '/calendar/<string:access_token>/cancel'
     ], type='http', auth="public", website=True)
-    def calendar_appointment_cancel(self, access_token, **kwargs):
+    def calendar_appointment_cancel(self, access_token, partner_id, **kwargs):
         """
             Route to cancel an appointment event, this route is linked to a button in the validation page
         """
@@ -283,7 +284,7 @@ class WebsiteCalendar(http.Controller):
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?state=no-cancel')
-        event.with_context(archive_on_error=True).unlink()
+        event.sudo().action_cancel_meeting([int(partner_id)])
         return request.redirect('/calendar/%s/appointment?state=cancel' % slug(appointment_type))
 
     @http.route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)

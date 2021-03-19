@@ -5,12 +5,14 @@
         <field name="name">calendar.appointment.type.search</field>
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
-            <search string="Appointment Type">
+            <search string="Appointment Types">
                 <field name="name"/>
+                <field name="location"/>
                 <field name="employee_ids"/>
                 <field name="category"/>
                 <filter string="My Appointments" name="my_appointments" domain="[('employee_ids.user_id', 'in', [uid])]"/>
                 <separator/>
+                <filter name="filter_active" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>
     </record>
@@ -98,8 +100,10 @@
                 <header>
                     <button name="action_share" string="Share" type="object" class="btn btn-primary"/>
                 </header>
-                
                 <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="object"
                             name="action_calendar_meetings"

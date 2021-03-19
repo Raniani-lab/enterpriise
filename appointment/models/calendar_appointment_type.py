@@ -38,6 +38,7 @@ class CalendarAppointmentType(models.Model):
 
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Type', required=True, translate=True)
+    active = fields.Boolean(default=True)
     category = fields.Selection([
         ('website', 'Website'),
         ('custom', 'Custom'),

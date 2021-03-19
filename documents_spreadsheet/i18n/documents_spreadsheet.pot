@@ -505,7 +505,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "Copy of ${sheet}"
+msgid "Copy of %s"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1246,7 +1246,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Function [[FUNCTION_NAME]] parameter 2 value is ${_position}. It should be "
+"Function [[FUNCTION_NAME]] parameter 2 value is %s. It should be "
 "greater than or equal to 1."
 msgstr ""
 
@@ -2199,7 +2199,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/js/components/filter_editor_side_panel.js:0
 #, python-format
-msgid "New ${this.state.type} filter"
+msgid "New %s filter"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2318,8 +2318,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/js/o-spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid ""
-"Not implemented operator ${rule.operator} for kind of conditional "
-"formatting:  ${rule.type}"
+"Not implemented operator %s for kind of conditional formatting:  %s"
 msgstr ""
 
 #. module: documents_spreadsheet

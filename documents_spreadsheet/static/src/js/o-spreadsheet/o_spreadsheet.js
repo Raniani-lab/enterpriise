@@ -5476,7 +5476,7 @@
         compute: function (text, position, length, newText) {
             const _position = toNumber(position);
             if (_position < 1) {
-                throw new Error(_lt(`Function [[FUNCTION_NAME]] parameter 2 value is ${_position}. It should be greater than or equal to 1.`));
+                throw new Error(_lt("Function [[FUNCTION_NAME]] parameter 2 value is %s. It should be greater than or equal to 1.", toString(_position)));
             }
             const _text = toString(text);
             const _length = toNumber(length);
@@ -10736,8 +10736,8 @@
     function getDuplicateSheetName(env, sheet) {
         let i = 1;
         const names = env.getters.getSheets().map((s) => s.name);
-        const baseName = env._t(`Copy of ${sheet}`);
-        let name = baseName;
+        const baseName = _lt("Copy of %s", sheet);
+        let name = baseName.toString();
         while (names.includes(name)) {
             name = `${baseName} (${i})`;
             i++;
@@ -14375,7 +14375,7 @@
                             }
                             return cell && value == rule.values[0];
                         default:
-                            console.warn(_lt(`Not implemented operator ${rule.operator} for kind of conditional formatting:  ${rule.type}`));
+                            console.warn(_lt("Not implemented operator %s for kind of conditional formatting:  %s", rule.operator, rule.type));
                     }
                     return false;
                 },
@@ -21266,8 +21266,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-03-17T16:36:49.318Z';
-    exports.__info__.hash = '27af155';
+    exports.__info__.date = '2021-03-19T10:13:10.949Z';
+    exports.__info__.hash = 'e735e3e';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

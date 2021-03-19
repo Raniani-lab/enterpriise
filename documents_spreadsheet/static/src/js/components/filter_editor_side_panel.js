@@ -66,7 +66,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
          * Retrieve the placeholder of the label
          */
         get placeholder() {
-            return _t(`New ${this.state.type} filter`);
+            return _.str.sprintf(_t("New %s filter"), this.state.type);
         }
 
         get missingLabel() {

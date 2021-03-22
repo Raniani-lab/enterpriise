@@ -44,7 +44,7 @@ class TestAccountBankStatementImportCSV(AccountTestInvoicingCommon):
             'advanced': False,
         }
         import_wizard_fields = ['date', False, 'payment_ref', 'amount', 'balance']
-        import_wizard.with_context(journal_id=bank_journal.id).do(import_wizard_fields, [], import_wizard_options, dryrun=False)
+        import_wizard.with_context(journal_id=bank_journal.id).execute_import(import_wizard_fields, [], import_wizard_options, dryrun=False)
 
         # Check the imported bank statement
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])

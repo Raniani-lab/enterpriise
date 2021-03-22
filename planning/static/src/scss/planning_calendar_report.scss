@@ -29,6 +29,17 @@
     .fc-day-grid-event .fc-content {
         white-space: normal;
     }
+    @include media-breakpoint-up(sm) {
+        .fc-day-grid-event .fc-content {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    .fc-more-cell {
+        color: #3aadaa;
+        vertical-align: middle;
+    }
 
     .o_planning_toast {
         position: absolute;

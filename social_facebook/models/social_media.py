@@ -36,11 +36,10 @@ class SocialMediaFacebook(models.Model):
             return self._add_facebook_accounts_from_iap()
 
     def _add_facebook_accounts_from_configuration(self, facebook_app_id):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         base_facebook_url = 'https://www.facebook.com/v3.3/dialog/oauth?%s'
         params = {
             'client_id': facebook_app_id,
-            'redirect_uri': url_join(base_url, "social_facebook/callback"),
+            'redirect_uri': url_join(self.get_base_url(), "social_facebook/callback"),
             'response_type': 'token',
             'scope': 'manage_pages,publish_pages,read_insights'
         }
@@ -52,14 +51,13 @@ class SocialMediaFacebook(models.Model):
         }
 
     def _add_facebook_accounts_from_iap(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         social_iap_endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'social.social_iap_endpoint',
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
         iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/facebook/1/add_accounts'), params={
-            'returning_url': url_join(base_url, 'social_facebook/callback'),
+            'returning_url': url_join(self.get_base_url(), 'social_facebook/callback'),
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
         }).text
 

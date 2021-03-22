@@ -43,7 +43,7 @@ class WebsiteTwitterWall(models.Model):
         super(WebsiteTwitterWall, self)._compute_website_url()
         for wall in self:
             if wall.id:
-                wall.website_url = "%s/twitter_wall/view/%s" % (self.env['ir.config_parameter'].sudo().get_param('web.base.url'), slug(wall))
+                wall.website_url = "%s/twitter_wall/view/%s" % (wall.get_base_url(), slug(wall))
 
     def toggle_live_mode(self):
         self.env['website.twitter.wall'].clear_caches()
@@ -146,8 +146,7 @@ class WebsiteTwitterWall(models.Model):
     @api.depends('name')
     def _website_url(self, name, arg):
         res = super(WebsiteTwitterWall, self)._website_url(name, arg)
-        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
-        res.update({(wall.id, '%s/twitter_wall/view/%s' % (base_url, slug(wall))) for wall in self})
+        res.update({(wall.id, '%s/twitter_wall/view/%s' % (wall.get_base_url(), slug(wall))) for wall in self})
         return res
 
     def open_tweets(self):

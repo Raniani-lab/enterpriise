@@ -31,9 +31,9 @@ class GithubRepository(models.Model):
     def _compute_url_token(self):
         db_secret = self.env['ir.config_parameter'].sudo().get_param('database.secret')
         db_uuid = self.env['ir.config_parameter'].sudo().get_param('database.uuid')
-        baseurl = self.env['ir.config_parameter'].get_param('web.base.url')
 
         for repository in self:
+            baseurl = repository.get_base_url()
             repository.url_token = baseurl + "/mail_github/payload/" + github_tokenize(db_secret, db_uuid)
 
     @api.model_create_multi

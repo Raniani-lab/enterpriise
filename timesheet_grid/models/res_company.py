@@ -174,7 +174,7 @@ class Company(models.Model):
             :param template_xmlid : xml id of the reminder mail template
         """
         action_url = '%s/web#menu_id=%s&action=%s' % (
-            self.env['ir.config_parameter'].sudo().get_param('web.base.url'),
+            self.get_base_url(),
             self.env.ref('hr_timesheet.timesheet_menu_root').id,
             self.env.ref(action_xmlid).id,
         )

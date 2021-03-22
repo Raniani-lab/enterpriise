@@ -81,8 +81,7 @@ class GenerateSimulationLink(models.TransientModel):
     @api.depends(lambda self: [key for key in self._fields.keys()])
     def _compute_url(self):
         for wizard in self:
-            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            url = base_url + '/salary_package/simulation/contract/%s?' % (wizard.contract_id.id)
+            url = wizard.contract_id.get_base_url() + '/salary_package/simulation/contract/%s?' % (wizard.contract_id.id)
             params = {}
             for trigger in self._get_url_triggers():
                 if wizard[trigger]:

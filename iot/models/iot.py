@@ -22,17 +22,11 @@ class IotBox(models.Model):
     company_id = fields.Many2one('res.company', 'Company')
 
     def _compute_ip_url(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-
-        if base_url[:5] == 'https':
-            url = 'https://%s'
-        else:
-            url = 'http://%s:8069'
-
         for box in self:
             if not box.ip:
                 box.ip_url = False
             else:
+                url = 'https://%s' if box.get_base_url()[:5] == 'https' else 'http://%s:8069'
                 box.ip_url = url % box.ip
 
     def _compute_device_count(self):

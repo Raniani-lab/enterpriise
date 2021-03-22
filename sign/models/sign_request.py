@@ -291,7 +291,6 @@ class SignRequest(models.Model):
 
     def send_follower_accesses(self, followers, subject=None, message=None):
         self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         tpl = self.env.ref('sign.sign_template_mail_follower')
         for follower in followers:
             if not follower.email:
@@ -301,7 +300,7 @@ class SignRequest(models.Model):
             tpl_follower = tpl.with_context(lang=get_lang(self.env, lang_code=follower.lang).code)
             body = tpl_follower._render({
                 'record': self,
-                'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, self.access_token)),
+                'link': url_join(self.get_base_url(), 'sign/document/%s/%s' % (self.id, self.access_token)),
                 'subject': subject,
                 'body': message,
             }, engine='ir.qweb', minimal_qcontext=True)
@@ -325,7 +324,7 @@ class SignRequest(models.Model):
         if not self.completed_document:
             self.generate_completed_document()
 
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         attachment = self.env['ir.attachment'].create({
             'name': "%s.pdf" % self.reference if self.reference.split('.')[-1] != 'pdf' else self.reference,
             'datas': self.completed_document,
@@ -645,7 +644,7 @@ class SignRequestItem(models.Model):
         self.mapped('sign_request_id')._check_after_compute()
 
     def send_signature_accesses(self, subject=None, message=None):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self[0].get_base_url()
         tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
             if not signer.partner_id or not signer.partner_id.email:

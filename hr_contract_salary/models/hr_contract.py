@@ -217,7 +217,6 @@ class HrContract(models.Model):
                 template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
             except ValueError:
                 template_id = False
-            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             path = '/salary_package/contract/' + str(self.id)
             ctx = {
                 'default_model': 'hr.contract',
@@ -225,7 +224,7 @@ class HrContract(models.Model):
                 'default_use_template': bool(template_id),
                 'default_template_id': template_id,
                 'default_composition_mode': 'comment',
-                'salary_package_url': base_url + path,
+                'salary_package_url': self.get_base_url() + path,
                 'custom_layout': 'mail.mail_notification_light'
             }
             return {

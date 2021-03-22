@@ -331,7 +331,7 @@ class SaleSubscription(models.Model):
         if not config['test_enable']:
             self = self.with_context(commit_assetsbundle=True)
 
-        base_url = self.env['ir.config_parameter'].sudo().get_param('report.url') or self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.env['ir.config_parameter'].sudo().get_param('report.url') or self.get_base_url()
         rcontext = {
             'mode': 'print',
             'base_url': base_url,

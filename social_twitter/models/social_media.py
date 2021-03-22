@@ -45,12 +45,11 @@ class SocialMediaTwitter(models.Model):
             return self._add_twitter_accounts_from_iap()
 
     def _add_twitter_accounts_from_configuration(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         twitter_oauth_url = url_join(self._TWITTER_ENDPOINT, "oauth/request_token")
 
         headers = self._get_twitter_oauth_header(
             twitter_oauth_url,
-            headers={'oauth_callback': url_join(base_url, "social_twitter/callback")}
+            headers={'oauth_callback': url_join(self.get_base_url(), "social_twitter/callback")}
         )
         response = requests.post(twitter_oauth_url, headers=headers)
         if response.status_code != 200:
@@ -71,14 +70,13 @@ class SocialMediaTwitter(models.Model):
         }
 
     def _add_twitter_accounts_from_iap(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         social_iap_endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'social.social_iap_endpoint',
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
         iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/twitter/1/add_accounts'), params={
-            'returning_url': url_join(base_url, 'social_twitter/callback'),
+            'returning_url': url_join(self.get_base_url(), 'social_twitter/callback'),
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
         }).text
 
@@ -104,9 +102,8 @@ class SocialMediaTwitter(models.Model):
             document_root = XmlElementTree.fromstring(response.text)
             error_node = document_root.find('error')
             if error_node is not None and error_node.get('code') == '415':
-                base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
                 return _('You need to add the following callback URL to your twitter application settings: %s',
-                         url_join(base_url, "social_twitter/callback"))
+                         url_join(self.get_base_url(), "social_twitter/callback"))
         except XmlElementTree.ParseError:
             pass
 

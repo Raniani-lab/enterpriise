@@ -430,7 +430,7 @@ class ShareRoute(http.Controller):
                     return request.not_found()
 
             options = {
-                'base_url': http.request.env["ir.config_parameter"].sudo().get_param("web.base.url"),
+                'base_url': share.get_base_url(),
                 'token': str(token),
                 'upload': share.action == 'downloadupload',
                 'share_id': str(share.id),

@@ -20,8 +20,7 @@ class SignTemplateShare(models.TransientModel):
             else:
                 if not template.share_link:
                     template.share_link = str(uuid.uuid4())
-                base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-                res['url'] = "%s/sign/%s" % (base_url, template.share_link)
+                res['url'] = "%s/sign/%s" % (template.get_base_url(), template.share_link)
         return res
 
     template_id = fields.Many2one(

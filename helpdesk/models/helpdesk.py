@@ -104,10 +104,9 @@ class HelpdeskTeam(models.Model):
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for team in self:
             if team.name and team.portal_show_rating and team.id:
-                team.portal_rating_url = '%s/helpdesk/rating/%s' % (base_url, slug(team))
+                team.portal_rating_url = '%s/helpdesk/rating/%s' % (team.get_base_url(), slug(team))
             else:
                 team.portal_rating_url = False
 

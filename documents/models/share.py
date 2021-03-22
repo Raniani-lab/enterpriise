@@ -170,9 +170,8 @@ class DocumentShare(models.Model):
 
     @api.onchange('access_token')
     def _compute_full_url(self):
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         for record in self:
-            record.full_url = "%s/document/share/%s/%s" % (base_url, record.id, record.access_token)
+            record.full_url = "%s/document/share/%s/%s" % (record.get_base_url(), record.id, record.access_token)
 
     def _alias_get_creation_values(self):
         values = super(DocumentShare, self)._alias_get_creation_values()

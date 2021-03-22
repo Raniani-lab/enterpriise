@@ -51,8 +51,8 @@ class HelpdeskTeam(models.Model):
 
                 team.write({'website_form_view_id': form_template.id})
 
-    @api.depends('name', 'use_website_helpdesk_form')
+    @api.depends('name', 'use_website_helpdesk_form', 'company_id')
     def _compute_form_url(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         for team in self:
+            base_url = team.get_base_url()
             team.feature_form_url = (team.use_website_helpdesk_form and team.name and team.id) and (base_url + '/helpdesk/' + slug(team)) or False

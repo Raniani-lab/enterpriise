@@ -180,7 +180,7 @@ class DeliverCarrier(models.Model):
         json is to replace the static file request by an API request if easypost
         implements a way to do it.
         """
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         response_package = requests.get(url_join(base_url, '/delivery_easypost/static/data/package_types_by_carriers.json'))
         response_service = requests.get(url_join(base_url, '/delivery_easypost/static/data/services_by_carriers.json'))
         packages = response_package.json()

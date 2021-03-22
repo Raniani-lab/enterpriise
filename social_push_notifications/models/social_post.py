@@ -47,7 +47,7 @@ class SocialPostPushNotifications(models.Model):
                 'icon': icon,
                 'icon_url': icon_url,
                 'message': post.message,
-                'host_name': self.env['ir.config_parameter'].sudo().get_param('web.base.url') or 'https://myapp.com'
+                'host_name': post.get_base_url() or 'https://myapp.com'
             })
 
     @api.depends('account_ids.media_id.media_type')

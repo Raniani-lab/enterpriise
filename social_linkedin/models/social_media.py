@@ -61,9 +61,7 @@ class SocialMediaLinkedin(models.Model):
         }
 
     def _add_linkedin_accounts_from_iap(self):
-        o_redirect_uri = url_join(
-            self.env['ir.config_parameter'].sudo().get_param('web.base.url'),
-            'social_linkedin/callback')
+        o_redirect_uri = url_join(self.get_base_url(), 'social_linkedin/callback')
 
         social_iap_endpoint = self.env['ir.config_parameter'].sudo().get_param(
             'social.social_iap_endpoint',
@@ -89,6 +87,4 @@ class SocialMediaLinkedin(models.Model):
         }
 
     def _get_linkedin_redirect_uri(self):
-        return url_join(
-            self.env['ir.config_parameter'].sudo().get_param('web.base.url'),
-            'social_linkedin/callback')
+        return url_join(self.get_base_url(), 'social_linkedin/callback')

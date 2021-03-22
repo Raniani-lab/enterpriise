@@ -1,6 +1,7 @@
 odoo.define('web_enterprise.form_tests', function (require) {
 "use strict";
 
+var FormController = require('web.FormController');
 var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
 
@@ -28,7 +29,14 @@ QUnit.module('web_enterprise', {
                 }],
             },
         };
-    }
+
+        testUtils.mock.patch(FormController, {
+            'multiClickTime': 0,
+        });
+    },
+    afterEach: function () {
+        testUtils.mock.unpatch(FormController);
+    },
 }, function () {
 
     QUnit.module('Mobile FormView');

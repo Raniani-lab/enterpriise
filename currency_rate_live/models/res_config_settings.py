@@ -289,7 +289,7 @@ class ResCompany(models.Model):
         yesterday = (date_mx - datetime.timedelta(days=1)).strftime(BANXICO_DATE_FORMAT)
         for index, currency in foreigns.items():
             if not series.get(index, False):
-                return False
+                continue
             if currency not in available_currency_names:
                 continue
 
@@ -298,7 +298,7 @@ class ResCompany(models.Model):
                 try:
                     foreign_mxn_rate = float(serie[rate])
                 except (ValueError, TypeError):
-                    return False
+                    continue
                 foreign_rate_date = datetime.datetime.strptime(rate, BANXICO_DATE_FORMAT).strftime(DEFAULT_SERVER_DATE_FORMAT)
                 rslt[currency] = (1.0/foreign_mxn_rate, foreign_rate_date)
         return rslt

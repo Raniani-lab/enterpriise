@@ -6,6 +6,7 @@ const ListRenderer = require('web.ListRenderer');
 const ListView = require('web.ListView');
 const RamStorage = require('web.RamStorage');
 const testUtils = require('web.test_utils');
+const { unblockUI } = require('web.framework');
 const { patch, unpatch, UnknownPatchError } = require('web.utils');
 const PromoteStudioDialog = require('web_enterprise.PromoteStudioDialog');
 
@@ -49,6 +50,7 @@ QUnit.module('web_enterprise', {
         testUtils.mock.patch(PromoteStudioDialog, {
             _reloadPage: function () {
                 assert.step('window_reload');
+                unblockUI(); // the UI is normally unblocked by the reload
             }
         });
 
@@ -119,6 +121,7 @@ QUnit.module('web_enterprise', {
         testUtils.mock.patch(PromoteStudioDialog, {
             _reloadPage: function () {
                 assert.step('window_reload');
+                unblockUI(); // the UI is normally unblocked by the reload
             }
         });
 

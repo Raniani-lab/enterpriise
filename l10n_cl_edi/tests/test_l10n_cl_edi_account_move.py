@@ -466,6 +466,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
         foreign_partner = self.env['res.partner'].create({
             'name': 'Mitchell Admin',
             'country_id': self.env.ref('base.us').id,
+            'city': 'Scranton',
             'state_id': self.env.ref('base.state_us_39').id,
             'street': '215 Vine St',
             'phone': '+1 555-555-5555',

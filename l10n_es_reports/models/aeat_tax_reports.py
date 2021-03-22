@@ -945,6 +945,10 @@ class AEATAccountFinancialReport(models.Model):
         rslt = self._boe_format_string('')
         for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
             original_invoice = refund_invoice.reversed_entry_id
+            if not original_invoice:
+                raise UserError(_('Refund Invoice %s was created without a link to the original invoice that was credited, '
+                                  'while we need that information for this report. ') % (refund_invoice.display_name,))
+
             invoice_period, invoice_year = self._retrieve_period_and_year(original_invoice.date, trimester=report_period[-1] == 'T')
             group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)
 

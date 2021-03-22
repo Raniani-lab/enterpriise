@@ -547,19 +547,34 @@ _get_other_ref = partial(_generic_get,
 _get_additional_entry_info = partial(_generic_get,
     xpath='ns:AddtlNtryInf/text()')
 
-def _get_signed_amount(*nodes, namespaces, company_currency=None):
+def _get_signed_amount(*nodes, namespaces, journal_currency=None):
+    # journal_currency is not necessarily journal.currency_id, because currency_id is not required
+    # In such a case, journal_currency can be defined with journal.company_id.currency_id
+    # (Therefore, journal_currency will never be empty)
+    res_amount = None
+    res_amount_currency = None
+    res_rate = None
+    res_rate_currency = None
     for i, dummy in enumerate(_amount_getters):
         amount = _amount_getters[i](*nodes, namespaces=namespaces)
         amount_currency = _amount_currency_getters[i](*nodes, namespaces=namespaces)
         rate = _rate_getters[i](*nodes, namespaces=namespaces)
         rate_currency = _rate_currency_getters[i](*nodes, namespaces=namespaces)
-        if amount and (not company_currency or company_currency.name == amount_currency or company_currency.name == rate_currency):
-            break
 
-    amount = float(amount)
-    rate = float(rate) if amount_currency != rate_currency and rate else 1.0
+        if amount:
+            res_amount = amount
+            res_amount_currency = amount_currency
+            res_rate = rate
+            res_rate_currency = rate_currency
+
+            if not journal_currency or journal_currency.name == amount_currency or journal_currency.name == rate_currency:
+                # Best solution; we search no further
+                break
+
+    res_amount = float(res_amount)
+    res_rate = float(res_rate) if res_amount_currency != res_rate_currency and res_rate else 1.0
     sign = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
-    return amount * rate if sign == 'CRDT' else -amount * rate
+    return res_amount * res_rate if sign == 'CRDT' else -res_amount * res_rate
 
 def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)
@@ -661,6 +676,8 @@ class AccountBankStatementImport(models.TransientModel):
         unique_import_set = set([])
         currency = account_no = False
         has_multi_currency = self.env.user.user_has_groups('base.group_multi_currency')
+        journal = self.env['account.journal'].browse(self.env.context.get('journal_id'))
+        journal_currency = journal.currency_id or journal.company_id.currency_id
         for statement in root[0].findall('ns:Stmt', ns):
             statement_vals = {}
             statement_vals['name'] = statement.xpath('ns:Id/text()', namespaces=ns)[0]
@@ -685,7 +702,7 @@ class AccountBankStatementImport(models.TransientModel):
                     entry_vals = {
                         'sequence': sequence,
                         'date': date,
-                        'amount': _get_signed_amount(entry_details, entry, namespaces=ns, company_currency=self.env.user.company_id.currency_id),
+                        'amount': _get_signed_amount(entry_details, entry, namespaces=ns, journal_currency=journal_currency),
                         'payment_ref': _get_transaction_name(entry_details, namespaces=ns),
                         'partner_name': partner_name,
                         'account_number': _get_account_number(entry_details, placeholder=counter_party, namespaces=ns),

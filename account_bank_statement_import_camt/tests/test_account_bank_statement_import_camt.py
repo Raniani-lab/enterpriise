@@ -76,6 +76,32 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         ])
 
     def test_minimal_camt_file_import(self):
+        """
+        This basic test aims at importing a file with amounts expressed in USD
+        while the company's currency is USD too and the journal has not any currency
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal.xml', usd_currency)
+
+    def test_minimal_and_multicurrency_camt_file_import(self):
+        """
+        This test aims at importing a file with amounts expressed in EUR and USD.
+        The company's currency is USD.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency.xml', usd_currency)
+
+    def test_journal_with_other_currency(self):
+        """
+        This test aims at importing a file with amounts expressed in EUR into a journal
+        that also uses EUR while the company's currency is USD.
+        """
+        self.assertEqual(self.env.company.currency_id.id, self.env.ref('base.USD').id)
+        self._test_minimal_camt_file_import('camt_053_minimal_EUR.xml', self.env.ref('base.EUR'))
+
+    def _test_minimal_camt_file_import(self, camt_file_name, currency):
         # Create a bank account and journal corresponding to the CAMT
         # file (same currency and account number)
         bank_journal = self.env['account.journal'].create({
@@ -83,14 +109,14 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             'code': 'BNK68',
             'type': 'bank',
             'bank_acc_number': '112233',
-            'currency_id': self.env.ref('base.USD').id,
+            'currency_id': currency.id,
         })
 
         # Use an import wizard to process the file
         camt_file_path = get_module_resource(
             'account_bank_statement_import_camt',
             'test_camt_file',
-            'camt_053_minimal.xml',
+            camt_file_name,
         )
         camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
 

@@ -56,7 +56,7 @@ class AccountCashFlowReport(models.AbstractModel):
     def _get_filter_journals(self):
         # OVERRIDE to filter only bank / cash journals.
         return self.env['account.journal'].search([
-            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id]),
+            ('company_id', 'in', self.env.companies.ids),
             ('type', 'in', ('bank', 'cash'))
         ], order='company_id, name')
 

@@ -13,7 +13,7 @@ class GenericTaxReport(models.AbstractModel):
         """
         eval_dict = super(GenericTaxReport, self)._get_total_line_eval_dict(period_balances_by_code, period_date_from, period_date_to, options)
 
-        if self.env.company.country_id.code == 'SG':
+        if self.env.company.account_fiscal_country_id.code == 'SG':
             net_profit_query = """select coalesce(-sum(balance), 0)
                                   from account_move_line aml
                                   join account_account account

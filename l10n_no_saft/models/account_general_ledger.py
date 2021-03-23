@@ -15,7 +15,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
     def _prepare_header_data(self, options):
         res = super()._prepare_header_data(options)
-        if self.env.company.country_id.code == 'NO':
+        if self.env.company.account_fiscal_country_id.code == 'NO':
             res.update({
                 'file_version': '1.10',
                 'accounting_basis': 'A',
@@ -29,6 +29,6 @@ class AccountGeneralLedger(models.AbstractModel):
         return res
 
     def _get_xsd_file(self):
-        if self.env.company.country_id.code == 'NO':
+        if self.env.company.account_fiscal_country_id.code == 'NO':
             return 'Norwegian_SAF-T_Financial_Schema_v_1.10.xsd'
         return super()._get_xsd_file()

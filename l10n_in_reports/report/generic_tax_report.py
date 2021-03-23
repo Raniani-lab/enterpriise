@@ -8,6 +8,6 @@ class generic_tax_report(models.AbstractModel):
 
     @property
     def filter_journals(self):
-        if self.env.company.country_id.code == 'IN':
+        if self.env.company.account_fiscal_country_id.code == 'IN':
             return True
         return super().filter_journals

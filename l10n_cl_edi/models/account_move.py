@@ -83,7 +83,7 @@ class AccountMove(models.Model):
                                             states={'draft': [('readonly', False)]}, string='Reference Records')
 
     def button_cancel(self):
-        for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):
+        for record in self.filtered(lambda x: x.company_id.account_fiscal_country_id.code == "CL"):
             # The move cannot be modified once the DTE has been accepted by the SII
             if record.l10n_cl_dte_status == 'accepted':
                 raise UserError(_('This %s is accepted by SII. It cannot be cancelled. '
@@ -92,7 +92,7 @@ class AccountMove(models.Model):
         return super().button_cancel()
 
     def button_draft(self):
-        for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):
+        for record in self.filtered(lambda x: x.company_id.account_fiscal_country_id.code == "CL"):
             # The move cannot be modified once the DTE has been accepted by the SII
             if record.l10n_cl_dte_status == 'accepted':
                 raise UserError(_('This %s is accepted by SII. It cannot be set to draft state. '
@@ -104,7 +104,7 @@ class AccountMove(models.Model):
         res = super(AccountMove, self)._post(soft=soft)
         # Avoid to post a vendor bill with a inactive currency created from the incoming mail
         for move in self.filtered(
-                lambda x: x.company_id.country_id.code == "CL" and
+                lambda x: x.company_id.account_fiscal_country_id.code == "CL" and
                           x.company_id.l10n_cl_dte_service_provider in ['SII', 'SIITEST'] and
                           x.journal_id.l10n_latam_use_documents):
             # check if we have the currency active, in order to receive vendor bills correctly.
@@ -135,7 +135,7 @@ class AccountMove(models.Model):
         return res
 
     def action_reverse(self):
-        for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):
+        for record in self.filtered(lambda x: x.company_id.account_fiscal_country_id.code == "CL"):
             if record.l10n_cl_dte_status == 'rejected':
                 raise UserError(_('This %s is rejected by SII. Instead of creating a reverse, you should set it to '
                                   'draft state, correct it and post it again.') %

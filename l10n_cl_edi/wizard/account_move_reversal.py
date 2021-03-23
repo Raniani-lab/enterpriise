@@ -33,7 +33,7 @@ class AccountMoveReversal(models.TransientModel):
 
     def _prepare_default_reversal(self, move):
         res = super()._prepare_default_reversal(move)
-        if move.company_id.country_id.code != "CL":
+        if move.company_id.account_fiscal_country_id.code != "CL":
             return res
         res.update({
             'move_type': self._get_reverse_move_type(move.move_type),

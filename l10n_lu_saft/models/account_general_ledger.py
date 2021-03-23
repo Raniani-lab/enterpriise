@@ -17,7 +17,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
     def _prepare_header_data(self, options):
         res = super()._prepare_header_data(options)
-        if self.env.company.country_id.code == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             res.update({
                 'file_version': '2.01',
                 'accounting_basis': 'Invoice Accounting',
@@ -26,7 +26,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
     def _get_updated_select_clause(self, select_clause):
         select_clause = super()._get_updated_select_clause(select_clause)
-        if self.env.company.country_id.code == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             select_clause += ''',
                 account_move_line.product_id,
                 account_move_line.quantity,
@@ -50,7 +50,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
     def _get_updated_from_clause(self, from_clause):
         from_clause = super()._get_updated_from_clause(from_clause)
-        if self.env.company.country_id.code == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             from_clause += '''
                 LEFT JOIN uom_uom uom                             ON uom.id = account_move_line.product_uom_id
                 LEFT JOIN product_product product                 ON product.id =account_move_line.product_id
@@ -119,7 +119,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 tax_information_totals[move_id].append(tax_line_dict)
             return
 
-        if self.env.company.country_id.code == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             move_data = res['move_data']
             all_tax_data = res['all_tax_data']
 
@@ -202,6 +202,6 @@ class AccountGeneralLedger(models.AbstractModel):
         return res
 
     def _get_xsd_file(self):
-        if self.env.company.country_id.code == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             return 'FAIA_v_2_01_reduced_version_A.xsd'
         return super()._get_xsd_file()

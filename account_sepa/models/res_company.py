@@ -51,11 +51,11 @@ class ResCompany(models.Model):
     def _compute_sepa_pain_version(self):
         """ Set default value for the field sepa_pain_version"""
         for company in self:
-            if company.country_id.code == 'DE':
+            if company.account_fiscal_country_id.code == 'DE':
                 company.sepa_pain_version = 'pain.001.003.03'
-            elif company.country_id.code == 'CH':
+            elif company.account_fiscal_country_id.code == 'CH':
                 company.sepa_pain_version = 'pain.001.001.03.ch.02'
-            elif company.country_id.code == 'SE':
+            elif company.account_fiscal_country_id.code == 'SE':
                 company.sepa_pain_version = 'pain.001.001.03.se'
             else:
                 company.sepa_pain_version = 'pain.001.001.03'

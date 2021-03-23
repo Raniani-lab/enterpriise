@@ -31,7 +31,7 @@ class AccountBatchPayment(models.Model):
     @api.depends('payment_ids', 'journal_id')
     def _compute_sct_generic(self):
         for record in self:
-            record.sct_generic = bool(record._get_sct_genericity_warnings()) or any(payment.company_id.country_id.code == 'CH' for payment in record.payment_ids)
+            record.sct_generic = bool(record._get_sct_genericity_warnings()) or any(payment.company_id.account_fiscal_country_id.code == 'CH' for payment in record.payment_ids)
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()
@@ -51,7 +51,7 @@ class AccountBatchPayment(models.Model):
         no_eur_payments = self.env['account.payment']
 
         for payment in self.mapped('payment_ids'):
-            if payment.company_id.country_id.code in ['CH', 'SE']:
+            if payment.company_id.account_fiscal_country_id.code in ['CH', 'SE']:
                 #we need swiss/sweden payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
                 continue
             if payment.partner_bank_id.acc_type != 'iban':

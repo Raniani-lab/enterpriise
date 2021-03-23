@@ -81,7 +81,7 @@ class AccountMove(models.Model):
     @api.depends('invoice_date_due', 'date')
     def _compute_l10n_co_edi_is_direct_payment(self):
         for rec in self:
-            rec.l10n_co_edi_is_direct_payment = (rec.date == rec.invoice_date_due) and rec.company_id.country_id.code == 'CO'
+            rec.l10n_co_edi_is_direct_payment = (rec.date == rec.invoice_date_due) and rec.company_id.account_fiscal_country_id.code == 'CO'
 
     @api.onchange('move_type', 'reversed_entry_id', 'l10n_co_edi_invoice_status', 'l10n_co_edi_cufe_cude_ref')
     def _onchange_type(self):
@@ -480,7 +480,7 @@ class AccountMove(models.Model):
 
     def _l10n_co_edi_is_l10n_co_edi_required(self):
         self.ensure_one()
-        return self.move_type in ('out_invoice', 'out_refund') and self.company_id.country_id.code == "CO"
+        return self.move_type in ('out_invoice', 'out_refund') and self.company_id.account_fiscal_country_id.code == "CO"
 
     def _post(self, soft=True):
         # OVERRIDE to generate the e-invoice for the Colombian Localization.

@@ -585,7 +585,7 @@ class WinbooksImportWizard(models.TransientModel):
                     tag_id = self.env['account.account.tag'].search([('name', '=', tag_name), ('applicability', '=', 'taxes')])
                     tags_cache[tag_name] = tag_id
                 if not tag_id:
-                    tag_id = self.env['account.account.tag'].create({'name': tag_name, 'applicability': 'taxes', 'country_id': self.env.company.country_id.id})
+                    tag_id = self.env['account.account.tag'].create({'name': tag_name, 'applicability': 'taxes', 'country_id': self.env.company.account_fiscal_country_id.id})
                 tag_ids += tag_id
             return [(4, id, 0) for id in tag_ids.ids]
 

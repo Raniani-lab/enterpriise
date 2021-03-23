@@ -30,7 +30,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
         # also in l10n_nl_intrastat/l10n_nl_report_intrastat.py
         company_id = self.env.company
 
-        country_ids = (self.env.ref('base.europe').country_ids - company_id.country_id).ids
+        country_ids = (self.env.ref('base.europe').country_ids - company_id.account_fiscal_country_id).ids
 
         query = """
             SELECT l.partner_id, p.name, p.vat, c.code,

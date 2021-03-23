@@ -11,7 +11,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
-        if self.env.company.country_id.code == 'SE':
+        if self.env.company.account_fiscal_country_id.code == 'SE':
             buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 

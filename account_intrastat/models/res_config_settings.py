@@ -8,4 +8,4 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     company_country_id = fields.Many2one('res.country', string="Company country", readonly=True,
-        related='company_id.country_id')
+        related='company_id.account_fiscal_country_id')

@@ -543,3 +543,39 @@ class HrContract(models.Model):
         if contract.state == 'open':
             contract._trigger_l10n_be_next_activities()
         return contract
+
+    def _get_occupation_dates(self):
+        # Takes several contracts and returns all the contracts under the same occupation (i.e. the same
+        # work rate + the date_from and date_to)
+        result = []
+        done_contracts = self.env['hr.contract']
+
+        for contract in self:
+            if contract in done_contracts:
+                continue
+            contracts = contract  # hr.contract(38,)
+            date_from = contract.date_start
+            date_to = contract.date_end
+            history = self.env['hr.contract.history'].search([('employee_id', '=', contract.employee_id.id)], limit=1)
+            all_contracts = history.contract_ids.filtered(
+                lambda c: c.state in ['open', 'close'] and c != contract) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
+            before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
+            after_contracts = history.contract_ids.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
+            work_time_rate = contract.resource_calendar_id.work_time_rate
+
+            for before_contract in before_contracts:
+                if before_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                    date_from = before_contract.date_start
+                    contracts |= before_contract
+                else:
+                    break
+
+            for after_contract in after_contracts:
+                if after_contract.resource_calendar_id.work_time_rate == work_time_rate:
+                    date_to = after_contract.date_end
+                    contracts |= after_contract
+                else:
+                    break
+            result.append((contracts, date_from, date_to))
+            done_contracts |= contracts
+        return result

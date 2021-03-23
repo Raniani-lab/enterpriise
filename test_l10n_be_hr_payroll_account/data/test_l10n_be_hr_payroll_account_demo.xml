@@ -708,6 +708,18 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
+    <record id="res_partner_admin_private_address_be" model="res.partner">
+        <field name="name">Mitchell Admin</field>
+        <field name="street">215 Vine St</field>
+        <field name="city">Scranton</field>
+        <field name="zip">18503</field>
+        <field name="country_id" ref="base.us"/>
+        <field name='state_id' ref="base.state_us_39"/>
+        <field name="phone">+1 555-555-5555</field>
+        <field name="email">admin@yourcompany.example.com</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="employee_admin" model="hr.employee">
         <field name="name" eval="obj(ref('base.partner_admin')).name" model="res.partner"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -722,8 +734,8 @@
         <field name="department_id" ref="hr_department_1"/>
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
-        <field name="address_id" ref="base.partner_admin"/>
-        <field name="address_home_id" ref="hr.res_partner_admin_private_address"/>
+        <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
+        <field name="address_home_id" ref="res_partner_admin_private_address_be"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
         <field name="gender">male</field>
     </record>
@@ -1380,7 +1392,7 @@
 
     <record id="hr_contract_admin" model="hr.contract">
         <field name="name">Mitchell Admin Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-1-1'"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_admin"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_admin').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_admin').department_id.id"/>
@@ -1400,7 +1412,7 @@
 
     <record id="hr_contract_al" model="hr.contract">
         <field name="name">Marian Weaver Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-1-1'"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_al"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_al').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_al').department_id.id"/>
@@ -1420,7 +1432,7 @@
 
     <record id="hr_contract_mit" model="hr.contract">
         <field name="name">Bernice Jensen Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-3-1'"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_mit"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_mit').job_id.id"/>
         <field name="department_id" model="hr.department" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_mit').department_id.id"/>
@@ -1440,7 +1452,7 @@
 
     <record id="hr_contract_stw" model="hr.contract">
         <field name="name">Jack Mccoy Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-2-1'"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="date_end" eval="time.strftime('%Y')+'-12-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_stw"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_stw').job_id.id"/>
@@ -1461,7 +1473,7 @@
 
     <record id="hr_contract_qdp" model="hr.contract">
         <field name="name">Marc Demo Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-3-1'"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_qdp"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_qdp').job_id.id"/>
@@ -1522,7 +1534,7 @@
 
     <record id="hr_contract_niv" model="hr.contract">
         <field name="name">Ramona Franklin Contract</field>
-        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_end" eval="time.strftime('%Y')+'-12-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_niv"/>
@@ -1546,7 +1558,7 @@
 
     <record id="hr_contract_jth" model="hr.contract">
         <field name="name">Manuel Shelton Contract</field>
-        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_end" eval="time.strftime('%Y')+'-12-1'"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_jth"/>
@@ -1567,7 +1579,7 @@
 
     <record id="hr_contract_chs" model="hr.contract">
         <field name="name">Mario Lambert Contract</field>
-        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_chs"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_chs').job_id.id"/>
@@ -1587,7 +1599,7 @@
 
     <record id="hr_contract_jve" model="hr.contract">
         <field name="name">Michael Lambert Contract</field>
-        <field name="date_start" eval="DateTime.today() + relativedelta(years=-2)"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="employee_id" ref="test_l10n_be_hr_payroll_account.employee_jve"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_id" model="hr.job" eval="obj().env.ref('test_l10n_be_hr_payroll_account.employee_jve').job_id.id"/>
@@ -1753,6 +1765,7 @@
         <field name="code">PHC1</field>
         <field name="color">3</field>
         <field name="is_leave">True</field>
+        <field name="dmfa_code">1</field>
     </record>
 
     <record id="holiday_status_phc" model="hr.leave.type">
@@ -2108,6 +2121,7 @@
         <field name="country_id" ref="base.be"/>
         <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
         <field name="identification_id">90-09-05-874-51</field>
+        <field name="ssnid">91111111192</field>
         <field name="bank_account_id" ref="res_partner_bank_account_joseph_noluck"/>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jon-image.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>

@@ -40,6 +40,23 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <menuitem
+        id="menu_l10n_be_hr_payroll_configuration"
+        name="Belgium"
+        parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
+        sequence="500"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+
+    <menuitem
+        id="menu_l10n_be_dmfa_location_unit"
+        name="DMFA: Work Locations"
+        parent="menu_l10n_be_hr_payroll_configuration"
+        sequence="80"
+        action="l10n_be_hr_payroll_action_work_address_codes"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+
     <record id="l10n_be_dmfa_location_unit_view_tree" model="ir.ui.view">
         <field name="name">l10n_be.dmfa.location.unit</field>
         <field name="model">l10n_be.dmfa.location.unit</field>

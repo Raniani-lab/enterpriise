@@ -13,7 +13,7 @@
                     type="action"
                     class="oe_stat_button"
                     icon="fa-microphone"
-                    context="{'default_date': date_begin, 'initialDate': track_gantt_initial_date, 'default_scale': track_gantt_scale}">
+                    context="{'initialDate': track_gantt_initial_date, 'default_scale': track_gantt_scale}">
                     <field name="track_count" string="Tracks" widget="statinfo"/>
                 </button>
             </xpath>

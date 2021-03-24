@@ -176,6 +176,16 @@ class AccountMove(models.Model):
             res.append((20, self._ocr_update_invoice_from_attachment))
         return res
 
+    def get_user_infos(self):
+        user_infos = {
+            'user_company_VAT': self.company_id.vat,
+            'user_company_name': self.company_id.name,
+            'user_company_country_code': self.company_id.country_id.code,
+            'user_lang': self.env.user.lang,
+            'user_email': self.env.user.email,
+        }
+        return user_infos
+
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
         self.ensure_one()
@@ -184,13 +194,7 @@ class AccountMove(models.Model):
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.move_type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
-            user_infos = {
-                'user_company_VAT': self.company_id.vat,
-                'user_company_name': self.company_id.name,
-                'user_company_country_code': self.company_id.country_id.code,
-                'user_lang': self.env.user.lang,
-                'user_email': self.env.user.email,
-            }
+            user_infos = self.get_user_infos()
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
             baseurl = self.env['ir.config_parameter'].get_param('web.base.url')

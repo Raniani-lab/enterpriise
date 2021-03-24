@@ -15,7 +15,7 @@
                             <label for="l10n_pe_edi_provider"/>
                             <div class="text-muted">
                                 Operator that will sign your invoices (by default IAP, Odoo take care of this
-                                process and give you for free the first 1000 declarations per month) as part of
+                                process and give you for free the first 1000 declarations) as part of
                                 the enterprise licence.<br/>
                                 <!--TODO: (problem that the action would not exist <button string="-> Buy more credits" type="object"
                                         attrs="{'invisible': [('l10n_pe_edi_provider', '!=', 'iap')]}" name="buy_credits"

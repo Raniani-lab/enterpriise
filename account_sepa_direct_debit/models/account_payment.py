@@ -208,3 +208,13 @@ class AccountPayment(models.Model):
             else:
                 rslt[payment.journal_id] = payment
         return rslt
+
+    @api.depends('is_internal_transfer')
+    def _compute_payment_method_fields(self):
+        return super(AccountPayment, self)._compute_payment_method_fields()
+
+    def _get_payment_method_codes_to_exclude(self):
+        res = super(AccountPayment, self)._get_payment_method_codes_to_exclude()
+        if self.is_internal_transfer:
+            res.append('sdd')
+        return res

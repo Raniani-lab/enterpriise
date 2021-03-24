@@ -25,7 +25,10 @@ class AccountBatchPayment(models.Model):
             if batch.payment_method_id.code != 'sdd':
                 batch.sdd_scheme = False
             else:
-                batch.sdd_scheme = batch.sdd_scheme or 'CORE'
+                if batch.sdd_scheme:
+                    batch.sdd_scheme = batch.sdd_scheme
+                else:
+                    batch.sdd_scheme = batch.payment_ids and batch.payment_ids[0].sdd_mandate_scheme or 'CORE'
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()

@@ -18,14 +18,20 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='ref']" position="after">
+                <xpath expr="//field[@name='payment_method_id']" position="after">
                     <field name="sdd_mandate_id"
                            string="Originating SEPA mandate"
                            attrs="{'invisible':[('sdd_mandate_id', '=', False)]}"/>
+                    
                 </xpath>
-                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <xpath expr="//header" position="after">
                     <field name="sdd_mandate_usable" invisible="1"/>
-                    <span class="alert alert-info" attrs="{'invisible': ['|', '|', ('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), ('state', '!=', 'draft')]}" role="status">Direct Debit collecting method available</span>
+                    <div class="alert alert-info text-center"
+                         attrs="{'invisible': ['|', '|', ('sdd_mandate_usable', '=', False), ('payment_type', '!=', 'inbound'), ('state', '!=', 'draft'),]}"
+                         role="status">Good news! A valid Sepa Mandate is available.</div>
+                    <div class="alert alert-warning text-center"
+                         attrs="{'invisible': ['|', '|', ('payment_method_code', '!=', 'sdd'), ('state', '!=', 'draft'), ('sdd_mandate_usable', '!=', False)]}"
+                         role="alert">Oops! No valid SEPA mandate for this customer. <a type="action" name="%(account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act)d">Create it.</a></div>
                 </xpath>
             </field>
         </record>
@@ -52,8 +58,8 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='state']" position="after">
-                    <field name="sdd_mandate_scheme" optional="show"/>
+                <xpath expr="//field[@name='payment_method_id']" position="after">
+                    <field name="sdd_mandate_scheme" optional="hide"/>
                 </xpath>
             </field>
         </record>

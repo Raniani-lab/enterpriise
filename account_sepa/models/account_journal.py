@@ -393,7 +393,7 @@ class AccountJournal(models.Model):
         """ Local instrument node is used to indicate the use of some regional
         variant, such as in Switzerland.
         """
-        partner_bank_ids = self.env['res.partner'].sudo().browse(payment['partner_id']).bank_ids
+        partner_bank_ids = self.env['res.partner'].sudo().browse(payment['partner_id']).bank_ids.filtered(lambda r: r.company_id.id in (False, self.company_id.id))
         if partner_bank_ids and partner_bank_ids[0].acc_type == 'postal' and self._has_isr_ref(payment['ref']):
             return 'CH01'
         return None

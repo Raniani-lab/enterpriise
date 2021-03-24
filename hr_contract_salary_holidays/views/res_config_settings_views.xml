@@ -21,7 +21,8 @@
                             <div class="mt16">
                                 <label for="hr_contract_timeoff_auto_allocation_type_id" />
                                 <field name="hr_contract_timeoff_auto_allocation_type_id" 
-                                        domain="[('valid', '=', True)]"/>
+                                        domain="[('valid', '=', True)]"
+                                        attrs="{'required': [('hr_contract_timeoff_auto_allocation', '=', True)]}"/>
                             </div>
                         </div>
                     </div>

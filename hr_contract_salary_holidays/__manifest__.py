@@ -12,6 +12,7 @@
     'description': """
     """,
     'data': [
+        'views/hr_contract_views.xml',
         'views/res_config_settings_views.xml',
         'data/hr_holidays_data.xml',
     ],

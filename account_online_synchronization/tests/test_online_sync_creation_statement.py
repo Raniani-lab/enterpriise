@@ -334,7 +334,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
             ]
         )
 
-        # Post first statement and then try adding new transaction to it, it should be reset to draft
+        # Post first statement and then try adding new transaction to it, new transactions should be posted inside previous statement
         self.confirm_bank_statement(created_bnk_stmt[0])
         created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc', limit=1)
         self.assertEqual(created_bnk_stmt.state, 'confirm', 'Statement should be posted')
@@ -350,7 +350,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
                     'balance_start': 0.0,
                     'balance_end_real': 40.0,
                     'date': fields.Date.from_string('2016-01-10'),
-                    'state': 'open',
+                    'state': 'posted',
                     'line_ids': [
                         {'amount': 10.0},
                         {'amount': 10.0},

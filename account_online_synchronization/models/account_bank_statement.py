@@ -91,7 +91,7 @@ class AccountBankStatement(models.Model):
                 line_to_reconcile += op_stmt.mapped('line_ids')
 
             transactions_in_statements = []
-            statement_to_reset_to_draft = self.env['account.bank.statement']
+            statement_to_recompute = self.env['account.bank.statement']
             transactions_to_create = {}
 
             for transaction in sorted_transactions:
@@ -132,7 +132,7 @@ class AccountBankStatement(models.Model):
                 if stmt:
                     line['statement_id'] = stmt[0].id
                     transactions_in_statements.append(line)
-                    statement_to_reset_to_draft += stmt[0]
+                    statement_to_recompute += stmt[0]
                 else:
                     if not transactions_to_create.get(key):
                         transactions_to_create[key] = []
@@ -140,17 +140,23 @@ class AccountBankStatement(models.Model):
 
             # Create the lines that should be inside an existing bank statement and reset those stmt in draft
             if transactions_in_statements:
-                for st in statement_to_reset_to_draft:
-                    if st.state != 'open':
-                        st.message_post(body=_('Statement has been reset to draft because some transactions from online synchronization were added to it.'))
-                statement_to_reset_to_draft.write({'state': 'open'})
+                statement_to_recompute.write({'state': 'open'})
                 line_to_reconcile += self.env['account.bank.statement.line'].create(transactions_in_statements)
                 # Recompute the balance_end_real of the first statement where we added line
                 # because adding line don't trigger a recompute and balance_end_real is not updated.
                 # We only trigger the recompute on the first element of the list as it is the one
                 # the most in the past and this will trigger the recompute of all the statements
                 # that are next.
-                statement_to_reset_to_draft[0]._compute_ending_balance()
+                statement_to_recompute[0]._compute_ending_balance()
+                # Since the balance end real of the latest statement is not recomputed, we will
+                # have a problem as balance_end_real and computed balance won't be the same and therefore
+                # we will have an error while trying to post the entries. To prevent that error,
+                # we force the balance_end_real of the latest statement to be the same as the computed
+                # balance. Balance_end_real will be changed at the end of this method to match
+                # the real balance of the account anyway so this is no big deal.
+                statement_to_recompute[-1].balance_end_real = statement_to_recompute[-1].balance_end
+                # Post the statement back
+                statement_to_recompute.button_post()
 
             # Create lines inside new bank statements
             created_stmts = self.env['account.bank.statement']

@@ -155,7 +155,7 @@
             <field name="name">Receivables</field>
             <field name="code">REC</field>
             <field name="parent_id" ref='account_financial_report_current_assets_view0'/>
-            <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable')]" />
+            <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable'), ('account_id.exclude_from_aged_reports', '=', False)]" />
             <field name="groupby">account_id</field>
             <field name="formulas">sum</field>
             <field name="sequence" eval="2"/>
@@ -165,7 +165,7 @@
             <field name="name">Current Assets</field>
             <field name="code">CAS</field>
             <field name="parent_id" ref='account_financial_report_current_assets_view0'/>
-            <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets'))]" />
+            <field name="domain" eval="['|', ('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), '&amp;', ('account_id.user_type_id.type', '=', 'receivable'), ('account_id.exclude_from_aged_reports', '=', True)]" />
             <field name="groupby">account_id</field>
             <field name="formulas">sum</field>
             <field name="sequence" eval="3"/>
@@ -229,7 +229,7 @@
             <field name="name">Current Liabilities</field>
             <field name="code">CL1</field>
             <field name="parent_id" ref='account_financial_report_current_liabilities0'/>
-            <field name="domain" eval="[('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')])]"/>
+            <field name="domain" eval="['|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')]), '&amp;', ('account_id.user_type_id.type', '=', 'payable'), ('account_id.exclude_from_aged_reports', '=', True)]"/>
             <field name="groupby">account_id</field>
             <field name="formulas">-sum</field>
             <field name="sequence" eval="1"/>
@@ -240,7 +240,7 @@
             <field name="name">Payables</field>
             <field name="code">CL2</field>
             <field name="parent_id" ref='account_financial_report_current_liabilities0'/>
-            <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable')]"/>
+            <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable'), ('account_id.exclude_from_aged_reports', '=', False)]"/>
             <field name="groupby">account_id</field>
             <field name="formulas">-sum</field>
             <field name="sequence" eval="2"/>

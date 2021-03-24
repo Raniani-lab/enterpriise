@@ -4,6 +4,7 @@
 from . import res_partner
 from . import res_company
 from . import account
+from . import account_account
 from . import account_report
 from . import account_accounting_report
 from . import account_bank_reconciliation_report

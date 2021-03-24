@@ -24,6 +24,7 @@ Accounting Reports
         'wizard/fiscal_year.xml',
         'views/account_activity.xml',
         'views/account_sales_report_view.xml',
+        'views/account_account_views.xml',
     ],
     'auto_install': True,
     'installable': True,

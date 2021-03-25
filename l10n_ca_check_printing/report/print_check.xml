@@ -13,7 +13,7 @@
 
 <template id="ckca_check">
     <div class="ckca_check">
-        <div class="sequence_number" t-if="page['sequence_number']" t-esc="page['sequence_number']" />
+        <div class="sequence_number" t-if="page['sequence_number'] and page['manual_sequencing']" t-esc="page['sequence_number']" />
         <div class="ckca_date_label" t-if="page['date_label']">Date:</div>
         <div class="ckca_date" t-esc="page['payment_date_canada']"/>
         <div class="ckca_date_format">YYYY-MM-DD</div>

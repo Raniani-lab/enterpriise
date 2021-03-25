@@ -208,8 +208,8 @@ const FSMProductQty = FieldInteger.extend({
                 this.exitEditMode = true;
                 this._renderReadonly();
             }
-        } catch ({ message }) {
-            this.do_warn(false, _t(message));
+        } catch (err) {
+            this.do_warn(false, _t("The set quantity is invalid"));
             this.setInvalidClass();
         }
     },

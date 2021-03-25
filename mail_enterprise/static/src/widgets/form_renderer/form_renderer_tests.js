@@ -270,10 +270,11 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         },
         message: "should wait until partner 11 thread scrolled to bottom after doing it manually",
         predicate: ({ scrollTop, threadViewer }) => {
-            // Ideally should also ensure proper scrollTop is received here (task-2382735)
+            const messageList = document.querySelector('.o_Chatter_scrollPanel');
             return (
                 threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === 11
+                threadViewer.thread.id === 11 &&
+                scrollTop === messageList.scrollHeight - messageList.clientHeight
             );
         },
     });

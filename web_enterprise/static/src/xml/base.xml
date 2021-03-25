@@ -5,7 +5,7 @@
 
 <t t-name="DatabaseExpirationPanel" owl="1">
     <div role="alert"
-        class="database_expiration_panel alert"
+        class="database_expiration_panel alert o-hidden-ios"
         t-attf-class="alert-{{state.alertType}}"
         >
         <!-- t-translation="off" should be on next a element below -->

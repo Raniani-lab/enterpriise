@@ -67,6 +67,14 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         # Check if the configuration is the one expected
         self.assertTrue(self.project_employee_rate.is_fsm)
         self.assertTrue(self.project_employee_rate.allow_material)
-        self.assertEqual(self.project_employee_rate.pricing_type, 'task_rate')
+        self.assertEqual(self.project_employee_rate.pricing_type, 'employee_rate')
         self.assertFalse(self.project_employee_rate.sale_order_id)
         self.assertFalse(self.project_employee_rate.sale_line_id)
+
+        # 3) Convert a project with pricing_type="project_rate"
+        self.project_project_rate.write({'is_fsm': True})
+        self.assertTrue(self.project_project_rate.is_fsm)
+        self.assertTrue(self.project_project_rate.allow_material)
+        self.assertEqual(self.project_project_rate.pricing_type, 'task_rate')
+        self.assertFalse(self.project_project_rate.sale_order_id)
+        self.assertFalse(self.project_project_rate.sale_line_id)

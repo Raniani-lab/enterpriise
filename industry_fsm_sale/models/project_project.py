@@ -16,7 +16,7 @@ class Project(models.Model):
 
     _sql_constraints = [
         ('material_imply_billable', "CHECK((allow_material = 't' AND allow_billable = 't') OR (allow_material = 'f'))", 'The material can be allowed only when the task can be billed.'),
-        ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate.'),
+        ('fsm_imply_task_rate', "CHECK((is_fsm = 't' AND sale_line_id IS NULL) OR (is_fsm = 'f'))", 'An FSM project must be billed at task rate or employee rate.'),
         ('timesheet_product_required_if_billable_and_timesheets_and_fsm_projects', """
             CHECK(
                 (allow_billable = 't' AND allow_timesheets = 't' AND is_fsm = 't' AND timesheet_product_id IS NOT NULL)
@@ -67,9 +67,13 @@ class Project(models.Model):
                 fnames.add('allow_material')
         return super().flush(fnames, records)
 
-    @api.depends('is_fsm')
+    @api.depends('is_fsm', 'sale_line_employee_ids.employee_id')
     def _compute_pricing_type(self):
-        self.filtered('is_fsm').update({'pricing_type': 'task_rate'})
+        for fsm_project in self.filtered('is_fsm'):
+            if fsm_project.sale_line_employee_ids:
+                fsm_project.update({'pricing_type': 'employee_rate'})
+            else:
+                fsm_project.update({'pricing_type': 'task_rate'})
 
     @api.depends('is_fsm')
     def _compute_sale_order_id(self):

@@ -6,9 +6,9 @@ from datetime import date, datetime
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
-    def _get_reports_buttons(self):
-        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons()
-        if self.env.company.country_id.code == 'DE':
+    def _get_reports_buttons(self, options):
+        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
+        if self._get_report_country_code(options) == 'DE':
             buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 

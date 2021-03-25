@@ -7,6 +7,7 @@
         <field name="unfold_all_filter" eval="True"/>
         <field name="show_journal_filter" eval="False"/>
         <field name="parent_id" ref="spanish_reports_menu"/>
+        <field name="country_id" ref="base.es"/>
     </record>
 
     <record id="es_profit_and_loss_line_sum_a" model="account.financial.html.report.line">

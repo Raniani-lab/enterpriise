@@ -303,7 +303,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'tag_ids': [(0, 0, {
                 'name': 'the_tag',
                 'applicability': 'taxes',
-                'country_id': self.env.ref('base.us').id,
+                'country_id': tax.country_id.id,
             })]
         })
         reconciliation_model = self.env['account.reconcile.model'].create({

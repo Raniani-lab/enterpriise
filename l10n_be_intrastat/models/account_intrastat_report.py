@@ -10,9 +10,9 @@ from datetime import datetime, timedelta
 class IntrastatReport(models.AbstractModel):
     _inherit = 'account.intrastat.report'
 
-    def _get_reports_buttons(self):
-        res = super(IntrastatReport, self)._get_reports_buttons()
-        if self.env.company.country_id.code == "BE":
+    def _get_reports_buttons(self, options):
+        res = super(IntrastatReport, self)._get_reports_buttons(options)
+        if self._get_report_country_code(options) == "BE":
             res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 

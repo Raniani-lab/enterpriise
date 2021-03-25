@@ -195,5 +195,5 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             payslips.compute_sheet()
 
         # Payslip Validation
-        with self.assertQueryCount(admin=344):
+        with self.assertQueryCount(admin=352):
             payslips.action_payslip_done()

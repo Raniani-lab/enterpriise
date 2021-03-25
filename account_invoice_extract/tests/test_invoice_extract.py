@@ -344,7 +344,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_no_overwrite_client_values(self):
         # test that we are not overwriting the values entered by the client
-        partner = self.env['res.partner'].create({'name': 'Blabla', 'vat': 'BE0123456789'})
+        partner = self.env['res.partner'].create({'name': 'Blabla', 'vat': 'BE0477472701'})
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'extract_state': 'waiting_extraction',

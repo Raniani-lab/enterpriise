@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields
+from odoo import models, api, fields, Command
 from odoo.tools import safe_eval
 from odoo.tools.translate import _
 from odoo.exceptions import UserError, RedirectWarning
@@ -23,11 +23,12 @@ class generic_tax_report(models.AbstractModel):
 
     def _init_filter_tax_report(self, options, previous_options=None):
         options['available_tax_reports'] = []
-        available_reports = self.env.company.get_available_tax_reports()
+        companies = self.env.companies if options.get('multi_company') else self.env.company
+        available_reports = companies.get_available_tax_reports()
         for report in available_reports:
             options['available_tax_reports'].append({
                 'id': report.id,
-                'name': report.name,
+                'name': "%s (%s)" % (report.name, report.country_id.code.upper()),
             })
         # The computation of lines groupped by account require calling `compute_all` with the
         # param handle_price_include set to False. This is not compatible with taxes of type group
@@ -39,19 +40,40 @@ class generic_tax_report(models.AbstractModel):
 
         options['tax_report'] = (previous_options or {}).get('tax_report')
 
-        generic_reports_with_groupby = {'account_tax', 'tax_account'}
-
-        if options['tax_report'] not in {0, *generic_reports_with_groupby} and options['tax_report'] not in available_reports.ids:
+        if not self._is_generic_report(options) and options['tax_report'] not in available_reports.ids:
             # Replace the report in options by the default report if it is not the generic report
             # (always available for all companies) and the report in options is not available for this company
-            options['tax_report'] = available_reports and available_reports[0].id or 0
+            options['tax_report'] = available_reports and available_reports[0].id or 'generic'
 
-        if options['tax_report'] in generic_reports_with_groupby:
-            options['group_by'] = options['tax_report']
-        else:
-            options['group_by'] = False
+        # tax_report is now set, so we'll be able to know which country we're loading the report from.
+        super()._init_filter_fiscal_position(options, previous_options)
 
     @api.model
+    def _is_generic_report(self, options):
+        return isinstance(options['tax_report'], str) and options['tax_report'].startswith('generic')
+
+    @api.model
+    def _is_grouped_report(self, options):
+        return isinstance(options['tax_report'], str) and options['tax_report'].startswith('generic_grouped')
+
+
+    def _init_filter_fiscal_position(self, options, previous_options=None):
+        # Overridden as the computation of this filter depends on the tax_report option (as it needs the country).
+        # So we compute it at the end of _init_filter_tax_report to ensure the dependency is met.
+        pass
+
+    def _get_country_for_fiscal_position_filter(self, options):
+        multicompany_enabled = self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company')
+
+        if not self._is_generic_report(options):
+            tax_report_id = int(options['tax_report'])
+            return self.env['account.tax.report'].browse(tax_report_id).country_id
+
+        elif multicompany_enabled and len(self.env.companies) > 1:
+            return None
+
+        return self.env.company.account_fiscal_country_id
+
     def _get_options(self, previous_options=None):
         rslt = super(generic_tax_report, self)._get_options(previous_options)
         rslt['date']['strict_range'] = True
@@ -68,13 +90,13 @@ class generic_tax_report(models.AbstractModel):
 
         return rslt
 
-    def _get_reports_buttons(self):
-        res = super(generic_tax_report, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        res = super(generic_tax_report, self)._get_reports_buttons(options)
         if self.env.user.has_group('account.group_account_user'):
-            res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_tva_entries', 'sequence': 8})
+            res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_vat_entries', 'sequence': 8})
         return res
 
-    def _compute_vat_closing_entry(self, options, raise_on_empty):
+    def _compute_vat_closing_entry(self, options):
         """Compute the VAT closing entry.
 
         This method returns the one2many commands to balance the tax accounts for the selected period, and
@@ -114,11 +136,6 @@ class generic_tax_report(models.AbstractModel):
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.dictfetchall()
-        if not len(results):
-            if raise_on_empty:
-                raise UserError(_("Nothing to process"))
-            else:
-                return [], {}
 
         tax_group_ids = [r['tax_group_id'] for r in results]
         tax_groups = {}
@@ -155,6 +172,32 @@ class generic_tax_report(models.AbstractModel):
                     tax_group_subtotal[key] += total
                 else:
                     tax_group_subtotal[key] = total
+
+        # If the tax report is completely empty, we add two 0-valued lines, using the first in in and out
+        # account id we find on the taxes.
+        if len(move_vals_lines) == 0:
+            tax_out_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'sale')], limit=1)\
+                .invoice_repartition_line_ids.account_id
+            tax_in_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'purchase')], limit=1)\
+                .invoice_repartition_line_ids.account_id
+
+            if tax_out_account_id and tax_in_account_id:
+                move_vals_lines = [
+                    Command.create({
+                        'name': _('Tax Received Adjustment'),
+                        'debit': 0,
+                        'credit': 0.0,
+                        'account_id': tax_out_account_id.id
+                    }),
+
+                    Command.create({
+                        'name': _('Tax Paid Adjustment'),
+                        'debit': 0.0,
+                        'credit': 0,
+                        'account_id': tax_in_account_id.id
+                    })
+                ]
+
         return move_vals_lines, tax_group_subtotal
 
     def _add_tax_group_closing_items(self, tax_group_subtotal, end_date):
@@ -209,21 +252,25 @@ class generic_tax_report(models.AbstractModel):
                 }))
         return line_ids_vals
 
-    def _find_create_move(self, date_from, date_to, company_id):
-        move = self.env['account.move'].search([('tax_closing_end_date', '>=', date_from), ('tax_closing_end_date', '<=', date_to)], limit=1, order='date desc')
-        if len(move):
-            return move
-        else:
-            return company_id._create_edit_tax_reminder(date_to, create_when_empty=True)
+    def _generate_tax_closing_entries(self, options, closing_moves=False):
+        """Generates and/or updates VAT closing entries.
 
-    def _generate_tax_closing_entry(self, options, move=False, raise_on_empty=False):
-        """Generate the VAT closing entry.
-
-        This method is used to automatically post a move for the VAT declaration by doing the following:
-        - Search on all taxes line in the given period, group them by tax_group (each tax group might have its own
+        This method does computes the content of the tax closing in the following way:
+        - Search on all taxe lines in the given period, group them by tax_group (each tax group might have its own
         tax receivable/payable account).
         - Create a move line that balances each tax account and add the difference in the correct receivable/payable
-        account. Also takes into account amount already paid via advance tax payment account.
+        account. Also take into account amounts already paid via advance tax payment account.
+
+        The tax closing is done so that an individual move is created per available VAT number: so, one for each
+        foreign vat fiscal position (each with fiscal_position_id set to this fiscal position), and one for the domestic
+        position (with fiscal_position_id = None). The moves created by this function hence depends on the content of the
+        options dictionnary, and what fiscal positions are accepted by it.
+
+        :param options: the tax report options dict to use to make the closing.
+        :param closing_moves: If provided, closing moves to update the content from.
+                              They need to be compatible with the provided options (if they have a fiscal_position_id, for example).
+
+        :return: The closing moves.
         """
         on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
         on_empty_action = self.env.ref('account_accountant.action_tax_group')
@@ -234,67 +281,81 @@ class generic_tax_report(models.AbstractModel):
             raise UserError(_("You can only post tax entries for one company at a time"))
 
         company = self.env.company
-        if raise_on_empty and not self.env['account.tax.group']._any_is_configured(company):
+        if not self.env['account.tax.group']._any_is_configured(company):
             raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
         end_date = fields.Date.from_string(options.get('date').get('date_to'))
-        if not move:
-            move = self._find_create_move(start_date, end_date, company)
-        if move.state == 'posted':
-            return move
+        if not closing_moves:
+            include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, options)
+            closing_moves = company._get_and_update_tax_closing_moves(end_date, fiscal_positions=fiscal_positions, include_domestic=include_domestic)
+
         if company.tax_lock_date and company.tax_lock_date >= end_date:
             raise UserError(_("This period is already closed"))
 
-        # get tax entries by tax_group for the period defined in options
-        line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(options, raise_on_empty=raise_on_empty)
+        for move in closing_moves.filtered(lambda x: x.state == 'draft'):
+            # get tax entries by tax_group for the period defined in options
+            move_options = {**options, 'fiscal_position': move.fiscal_position_id.id if move.fiscal_position_id else 'domestic'}
+            line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(move_options)
 
-        # If the tax report is completely empty, we are adding two lines with 0 as values, using the first in in and out
-        # account id we find in the tax templates.
-        if len(line_ids_vals) == 0:
-            tax_out_account_id = self.env['account.tax.template'].search([('type_tax_use', '=', 'sale')], limit=1)\
-                .invoice_repartition_line_ids.account_id
-            tax_in_account_id = self.env['account.tax.template'].search([('type_tax_use', '=', 'purchase')], limit=1)\
-                .invoice_repartition_line_ids.account_id
-
-            if tax_out_account_id and tax_in_account_id:
-                line_ids_vals = [(0, 0, {'name': _('Tax Received Adjustment'),
-                                         'debit': 0, 'credit': 0.0,
-                                         'account_id': tax_out_account_id.id}),
-                                 (0, 0, {'name': _('Tax Paid Adjustment'),
-                                         'debit': 0.0, 'credit': 0,
-                                         'account_id': tax_in_account_id.id})]
-
-        else:
             line_ids_vals += self._add_tax_group_closing_items(tax_group_subtotal, end_date)
-        if move.line_ids:
-            line_ids_vals += [(2, aml.id) for aml in move.line_ids]
-        # create new move
-        move_vals = {}
-        if len(line_ids_vals):
-            move_vals['line_ids'] = line_ids_vals
-        else:
-            if raise_on_empty:
+
+            if move.line_ids:
+                line_ids_vals += [(2, aml.id) for aml in move.line_ids]
+
+            move_vals = {}
+            if line_ids_vals:
+                move_vals['line_ids'] = line_ids_vals
+            else:
                 raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
-        move_vals['tax_report_control_error'] = bool(options.get('tax_report_control_error'))
-        if options.get('tax_report_control_error'):
-            move.message_post(body=options.get('tax_report_control_error'))
-        move.write(move_vals)
-        return move
+
+            move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
+            if move_options.get('tax_report_control_error'):
+                move.message_post(body=move_options.get('tax_report_control_error'))
+
+            move.write(move_vals)
+
+        return closing_moves
+
+    def _get_fpos_info_for_tax_closing(self, company, options):
+        """ Returns the fiscal positions information to use to generate the tax closing
+        for this company, with the provided options.
+
+        :return: (include_domestic, fiscal_positions), where fiscal positions is a recordset
+                 and include_domestic is a boolean telling whehter or not the domestic closing
+                 (i.e. the one without any fiscal position) must also be performed
+        """
+        if options['fiscal_position'] == 'domestic':
+            fpos_ids = []
+        elif options['fiscal_position'] == 'all':
+            fpos_ids = [opt['id'] for opt in options['available_vat_fiscal_positions']]
+        else:
+            fpos_ids = [options['fiscal_position']]
+
+        fiscal_positions = self.env['account.fiscal.position'].browse(fpos_ids)
+
+        if options['fiscal_position'] == 'all':
+            fiscal_country = company.account_fiscal_country_id
+            include_domestic = not fiscal_positions or fiscal_country == fiscal_positions[0].country_id
+        else:
+            include_domestic = options['fiscal_position'] == 'domestic'
+
+        return include_domestic, fiscal_positions
+
 
     def _get_columns_name(self, options):
         columns_header = [{'style': 'width: 100%'}]
 
-        if options.get('tax_report') and not options.get('group_by'):
-            columns_header.append({'name': '%s \n %s' % (_('Balance'), self.format_date(options)), 'class': 'number', 'style': 'white-space: pre;'})
-            if options.get('comparison') and options['comparison'].get('periods'):
-                for p in options['comparison']['periods']:
-                    columns_header += [{'name': '%s \n %s' % (_('Balance'), p.get('string')), 'class': 'number', 'style': 'white-space: pre;'}]
-        else:
+        if self._is_generic_layout(options):
             columns_header += [{'name': '%s \n %s' % (_('NET'), self.format_date(options)), 'class': 'number'}, {'name': _('TAX'), 'class': 'number'}]
             if options.get('comparison') and options['comparison'].get('periods'):
                 for p in options['comparison']['periods']:
                     columns_header += [{'name': '%s \n %s' % (_('NET'), p.get('string')), 'class': 'number'}, {'name': _('TAX'), 'class': 'number'}]
+        else:
+            columns_header.append({'name': '%s \n %s' % (_('Balance'), self.format_date(options)), 'class': 'number', 'style': 'white-space: pre;'})
+            if options.get('comparison') and options['comparison'].get('periods'):
+                for p in options['comparison']['periods']:
+                    columns_header += [{'name': '%s \n %s' % (_('Balance'), p.get('string')), 'class': 'number', 'style': 'white-space: pre;'}]
 
         return columns_header
 
@@ -385,10 +446,10 @@ class generic_tax_report(models.AbstractModel):
 
     def _compute_from_amls(self, options, dict_to_fill, period_number):
         """Fill dict_to_fill with the data needed to generate the report."""
-        if options.get('tax_report') and not options.get('group_by'):
-            self._compute_from_amls_grids(options, dict_to_fill, period_number)
-        else:
+        if self._is_generic_layout(options):
             self._compute_from_amls_taxes(options, dict_to_fill, period_number)
+        else:
+            self._compute_from_amls_grids(options, dict_to_fill, period_number)
 
     def _compute_from_amls_grids(self, options, dict_to_fill, period_number):
         """Fill dict_to_fill with the data needed to generate the report.
@@ -435,9 +496,9 @@ class generic_tax_report(models.AbstractModel):
 
         Used when the report is set to group its line by tax.
         """
-        group_by_account = options.get('group_by')
+        is_grouped = self._is_grouped_report(options)
 
-        sql = self._sql_cash_based_taxes(group_by_account)
+        sql = self._sql_cash_based_taxes(is_grouped)
         tables, where_clause, where_params = self._query_get(options)
         query = sql.format(tables=tables, where_clause=where_clause)
         self.env.cr.execute(query, where_params + where_params)
@@ -448,7 +509,7 @@ class generic_tax_report(models.AbstractModel):
                 dict_to_fill[tax_id][account_id]['show'] = True
 
         # Tax base amount.
-        sql = self._sql_net_amt_regular_taxes(group_by_account)
+        sql = self._sql_net_amt_regular_taxes(is_grouped)
         query = sql.format(tables=tables, where_clause=where_clause)
         self.env.cr.execute(query, where_params + where_params)
         for tax_id, account_id, balance in self.env.cr.fetchall():
@@ -456,7 +517,7 @@ class generic_tax_report(models.AbstractModel):
                 dict_to_fill[tax_id][account_id]['periods'][period_number]['net'] += balance
                 dict_to_fill[tax_id][account_id]['show'] = True
 
-        sql = self._sql_tax_amt_regular_taxes(group_by_account)
+        sql = self._sql_tax_amt_regular_taxes(is_grouped)
         query = sql.format(tables=tables, where_clause=where_clause)
         self.env.cr.execute(query, where_params)
         for tax_line_id, account_id, balance in self.env.cr.fetchall():
@@ -470,9 +531,17 @@ class generic_tax_report(models.AbstractModel):
     @api.model
     def _get_lines(self, options, line_id=None):
         data = self._compute_tax_report_data(options)
-        if options.get('tax_report') and not options.get('group_by'):
-            return self._get_lines_by_grid(options, line_id, data)
-        return self._get_lines_by_tax(options, line_id, data)
+        if self._is_generic_layout(options):
+            return self._get_lines_by_tax(options, line_id, data)
+
+        return self._get_lines_by_grid(options, line_id, data)
+
+    @api.model
+    def _is_generic_layout(self, options):
+        """ Returns true if the provided options correspond to one of the generic variants of the tax report,
+        not a localized one.
+        """
+        return not isinstance(options['tax_report'], int)
 
     def _get_lines_by_grid(self, options, line_id, grids):
         # Fetch the report layout to use
@@ -689,14 +758,15 @@ class generic_tax_report(models.AbstractModel):
             return format % params
 
         def get_vals_from_tax_and_add(tax, *total_lines):
+            is_grouped = self._is_grouped_report(options)
             net_vals = [period['net'] * sign for period in tax['periods']]
             tax_vals = [
                 sum(vals['amount'] for vals in tax['obj'].compute_all(period['net'], handle_price_include=False)['taxes']) * sign
-                if group_by else
+                if is_grouped else
                 (period['tax'] * sign)
                 for period in tax['periods']
             ]
-            if group_by and tax['obj'].amount_type == 'group':
+            if is_grouped and tax['obj'].amount_type == 'group':
                 raise UserError(_('Tax report groupped by account is not available for taxes of type Group'))
             all_vals = list(chain.from_iterable(zip(net_vals, tax_vals)))
             show = any(bool(n) for n in all_vals)
@@ -709,7 +779,6 @@ class generic_tax_report(models.AbstractModel):
 
             return all_vals, show
 
-        group_by = options.get('group_by')
         lines = []
         types = ['sale', 'purchase']
         accounts = self.env['account.account']
@@ -738,7 +807,7 @@ class generic_tax_report(models.AbstractModel):
                             tax['periods'][i]['tax'] += period_vals['tax']
                 account = self.env['account.account'].browse(account_id)
                 accounts += account
-                if group_by == 'tax_account':
+                if options['tax_report'] == 'generic_grouped_tax_account':
                     groups[tax['obj'].type_tax_use][tax['obj']][account] = tax
                 else:
                     groups[tax['obj'].type_tax_use][account][tax['obj']] = tax
@@ -810,18 +879,18 @@ class generic_tax_report(models.AbstractModel):
         objects if the options required the use of a tax report template (account.tax.report) ;
         else, it yields account.tax records.
         """
-        if options.get('tax_report') and not options.get('group_by'):
-            for line in self.env['account.tax.report'].browse(options['tax_report']).line_ids:
-                yield line
-        else:
+        if self._is_generic_layout(options):
             company_term = self.env.companies.ids if options.get('multi_company') else self.env.company.ids
             for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', 'in', company_term)]):
                 yield tax
+        else:
+            for line in self.env['account.tax.report'].browse(options['tax_report']).line_ids:
+                yield line
 
     @api.model
     def _compute_tax_report_data(self, options):
         rslt = {}
-        empty_data_dict = {'balance': 0} if options.get('tax_report') and not options.get('group_by') else {'net': 0, 'tax': 0}
+        empty_data_dict = {'net': 0, 'tax': 0} if self._is_generic_layout(options) else {'balance': 0}
         for record in self._get_tax_report_data_prefill_record(options):
             rslt[record.id] = defaultdict(lambda record=record: {
                 'obj': record,

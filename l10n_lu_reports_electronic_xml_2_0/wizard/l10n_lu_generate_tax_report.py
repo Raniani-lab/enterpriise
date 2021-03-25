@@ -38,6 +38,10 @@ class L10nLuGenerateTaxReport(models.TransientModel):
             rec['period'] = 'A'
         return rec
 
+    def _get_export_vat(self):
+        options = self.env.context['tax_report_options']
+        return self.env['account.report'].get_vat_for_export(options)
+
     def open_repartition_model(self):
         """
         Opens the l10n_lu.yearly.tax.report.manual for the current company and year.

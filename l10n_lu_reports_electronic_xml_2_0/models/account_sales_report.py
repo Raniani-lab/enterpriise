@@ -11,9 +11,9 @@ from odoo.tools.float_utils import float_compare
 class ECSalesReport(models.AbstractModel):
     _inherit = "account.sales.report"
 
-    def _get_reports_buttons(self):
-        res = super()._get_reports_buttons()
-        if self.env.company.country_id.code == 'LU':
+    def _get_reports_buttons(self, options):
+        res = super()._get_reports_buttons(options)
+        if self._get_report_country_code(options) == 'LU':
             for re in res:
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving and allow export of the XML declaration from the wizard

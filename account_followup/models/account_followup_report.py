@@ -168,7 +168,7 @@ class AccountFollowupReport(models.AbstractModel):
     @api.model
     def _get_default_summary(self, options):
         return self._build_followup_summary_with_field('description', options)
-    
+
     @api.model
     def _get_default_email_subject(self, options):
         return self._build_followup_summary_with_field('email_subject', options)
@@ -192,7 +192,7 @@ class AccountFollowupReport(models.AbstractModel):
                                          'date': format_date(self.env, fields.Date.today(), lang_code=partner.lang),
                                          'user_signature': html2plaintext(self.env.user.signature or ''),
                                          'company_name': self.env.company.name,
-                                         'amount_due': formatLang(self.env, partner.total_due, currency_obj=self.env.company.currency_id), 
+                                         'amount_due': formatLang(self.env, partner.total_due, currency_obj=self.env.company.currency_id),
                                         }
                 except ValueError as exception:
                     message = _("An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s") \
@@ -247,7 +247,7 @@ class AccountFollowupReport(models.AbstractModel):
         """
         return _('Followup Report')
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """
         Override
         Return an empty list because this report doesn't contain any buttons

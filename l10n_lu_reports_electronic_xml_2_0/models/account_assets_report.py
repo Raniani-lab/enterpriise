@@ -9,9 +9,9 @@ from odoo.tools.float_utils import float_round
 class AssetsReport(models.AbstractModel):
     _inherit = 'account.assets.report'
 
-    def _get_reports_buttons(self):
-        res = super()._get_reports_buttons()
-        if self._is_lu_electronic_report():
+    def _get_reports_buttons(self, options):
+        res = super()._get_reports_buttons(options)
+        if self._is_lu_electronic_report(options):
             for re in res:
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving
@@ -21,10 +21,10 @@ class AssetsReport(models.AbstractModel):
                     del re['file_export_type']
         return res
 
-    def _is_lu_electronic_report(self):
-        if self.env.company.country_id.code == 'LU':
+    def _is_lu_electronic_report(self, options):
+        if self._get_report_country_code(options) == 'LU':
             return True
-        return super()._is_lu_electronic_report()
+        return super()._is_lu_electronic_report(options)
 
     def _get_lu_xml_2_0_report_values(self, options):
         """

@@ -6,6 +6,7 @@
         <field name="unfold_all_filter" eval="True"/>
         <field name="date_range" eval="False" />
         <field name='parent_id' ref='l10n_fi.account_reports_fi_statements_menu'/>
+        <field name="country_id" ref="base.fi"/>
     </record>
 
     <record id="account_financial_report_l10n_fi_bs_line_1" model="account.financial.html.report.line">

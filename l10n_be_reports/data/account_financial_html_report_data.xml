@@ -10,6 +10,7 @@
             <field name="date_range" eval="False" />
             <field name='parent_id' ref='l10n_be.account_reports_be_statements_menu'/>
             <field name="show_journal_filter" eval="True"/>
+            <field name="country_id" ref="base.be"/>
         </record>
 
         <record id="account_financial_report_be_actif_title0" model="account.financial.html.report.line">
@@ -924,6 +925,7 @@
             <field name="unfold_all_filter" eval="True"/>
             <field name='parent_id' ref='l10n_be.account_reports_be_statements_menu'/>
             <field name="show_journal_filter" eval="True"/>
+            <field name="country_id" ref="base.be"/>
         </record>
 
         <record id="action_account_report_bepnl" model="ir.actions.client">

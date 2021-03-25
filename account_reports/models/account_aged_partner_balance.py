@@ -221,7 +221,6 @@ class ReportAccountAgedReceivable(models.Model):
     _inherit = "account.aged.partner"
     _auto = False
 
-    @api.model
     def _get_options(self, previous_options=None):
         # OVERRIDE
         options = super(ReportAccountAgedReceivable, self)._get_options(previous_options=previous_options)
@@ -246,7 +245,6 @@ class ReportAccountAgedPayable(models.Model):
     _inherit = "account.aged.partner"
     _auto = False
 
-    @api.model
     def _get_options(self, previous_options=None):
         # OVERRIDE
         options = super(ReportAccountAgedPayable, self)._get_options(previous_options=previous_options)

@@ -11,6 +11,7 @@
             <field name="unfold_all_filter" eval="True"/>
             <field name="show_journal_filter" eval="True"/>
             <field name="generated_menu_id" ref="menu_mod_303_report"/>
+            <field name="country_id" ref="base.es"/>
         </record>
 
         <record id="mod_303_title_1" model="account.financial.html.report.line">

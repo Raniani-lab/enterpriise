@@ -55,8 +55,8 @@ class MulticurrencyRevaluationReport(models.Model):
         templates['main_template'] = 'account_reports.template_multicurrency_report'
         return templates
 
-    def _get_reports_buttons(self):
-        r = super()._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        r = super()._get_reports_buttons(options)
         r.append({'name': _('Adjustment Entry'), 'action': 'view_revaluation_wizard'})
         return r
 

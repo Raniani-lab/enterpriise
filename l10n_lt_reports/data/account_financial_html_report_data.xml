@@ -8,6 +8,7 @@
         <field name="unfold_all_filter" eval="True"/>
         <field name="show_journal_filter" eval="True"/>
         <field name="parent_id" ref="l10n_lt.account_reports_lt_statements_menu"/>
+        <field name="country_id" ref="base.lt"/>
     </record>
 
     <record id="account_financial_html_report_line_pnl_lt_1" model="account.financial.html.report.line">
@@ -182,6 +183,7 @@
         <field name="analytic" eval="True"/>
         <field name="unfold_all_filter" eval="True"/>
         <field name="parent_id" ref="l10n_lt.account_reports_lt_statements_menu"/>
+        <field name="country_id" ref="base.lt"/>
     </record>
 
     <record id="account_financial_html_report_line_bs_lt_credit" model="account.financial.html.report.line">

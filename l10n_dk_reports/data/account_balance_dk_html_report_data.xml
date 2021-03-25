@@ -7,6 +7,7 @@
         <field name="show_journal_filter" eval="True"/>
         <field name="analytic" eval="True"/>
         <field name="parent_id" ref="l10n_dk.account_reports_dk_statements_menu"/>
+        <field name="country_id" ref="base.dk"/>
     </record>
 
     <record id="account_balance_report_l10n_dk_aktiver" model="account.financial.html.report.line">

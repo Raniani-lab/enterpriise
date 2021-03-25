@@ -362,8 +362,8 @@ class MxReportPartnerLedger(models.AbstractModel):
     def _get_report_name(self):
         return _('DIOT')
 
-    def _get_reports_buttons(self):
-        buttons = super(MxReportPartnerLedger, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(MxReportPartnerLedger, self)._get_reports_buttons(options)
         buttons += [{'name': _('Print DIOT (TXT)'), 'sequence': 3, 'action': 'print_txt', 'file_export_type': _('DIOT')}]
         buttons += [{'name': _('Print DPIVA (TXT)'), 'sequence': 4, 'action': 'print_dpiva_txt', 'file_export_type': _('DPIVA')}]
         return buttons

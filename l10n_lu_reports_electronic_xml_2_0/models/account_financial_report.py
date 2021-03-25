@@ -10,9 +10,9 @@ from odoo.exceptions import UserError
 class ReportAccountFinancialReport(models.Model):
     _inherit = "account.financial.html.report"
 
-    def _get_reports_buttons(self):
-        res = super()._get_reports_buttons()
-        if self._is_lu_electronic_report() and self.env.company.country_id.code == 'LU':
+    def _get_reports_buttons(self, options):
+        res = super()._get_reports_buttons(options)
+        if self._is_lu_electronic_report(options) and self._get_report_country_code(options) == 'LU':
             for re in res:
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving

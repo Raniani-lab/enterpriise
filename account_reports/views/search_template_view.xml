@@ -276,6 +276,34 @@
             </t>
         </div>
     </template>
+
+    <template id="search_template_fiscal_position_choser">
+        <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-book"/>
+            Fiscal Position:
+            <t t-if="options['fiscal_position'] == 'domestic'">
+                Domestic
+            </t>
+            <t t-elif="options['fiscal_position'] == 'all'">
+                Everything
+            </t>
+            <t t-else="">
+                <t t-set="selected_fiscal_position" t-value="[opt for opt in options['available_vat_fiscal_positions'] if opt['id'] == options['fiscal_position']][0]"/>
+                <t t-esc="selected_fiscal_position['name']"/>
+            </t>
+        </button>
+        <div class="dropdown-menu o_filter_menu" role="menu">
+            <a t-if="options['allow_domestic']" role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" data-filter="fiscal_position" data-id="'domestic'" groups="account.group_account_readonly">Domestic</a>
+            <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" data-filter="fiscal_position" data-id="all" groups="account.group_account_readonly">All</a>
+            <div role="separator" class="dropdown-divider"/>
+            <t t-foreach="options['available_vat_fiscal_positions']" t-as="fiscal_position">
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="fiscal_position['name']" t-att-data-id="fiscal_position['id']" data-filter="fiscal_position">
+                    <t t-esc="fiscal_position['name']"/>
+                </a>
+            </t>
+        </div>
+    </template>
+
     <template id="search_template">
         <div class="btn-group o_dropdown o_account_reports_filter_date" t-if="options.get('date') != None">
             <t t-call="account_reports.search_template_date_filter"/>
@@ -311,6 +339,9 @@
                 t-if="options.get('ec_sale_code') != None">
             <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
+        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position" t-if="len(options['available_vat_fiscal_positions']) > 1">
+            <t t-call="account_reports.search_template_fiscal_position_choser"/>
+        </div>
     </template>
 
     <template id="search_template_generic_tax_report" inherit_id="account_reports.search_template" primary="True">
@@ -324,7 +355,7 @@
             <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-book"/>
                 Tax Report:
-                <t t-if="options['tax_report']">
+                <t t-if="isinstance(options['tax_report'], int)">
                     <t t-set="selected_report" t-value="[opt for opt in options['available_tax_reports'] if opt['id'] == options['tax_report']][0]"/>
                     <t t-esc="selected_report['name']"/>
                 </t>
@@ -333,9 +364,11 @@
                 </t>
             </button>
             <div class="dropdown-menu o_filter_menu" role="menu">
-                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" data-id="0" groups="account.group_account_readonly">Global Summary</a>
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" title="Global Summary" data-filter="tax_report" data-id="generic" groups="account.group_account_readonly">Global Summary</a>
+
+                <div t-if="options['available_tax_reports']" role="separator" class="dropdown-divider"/>
                 <t t-foreach="options['available_tax_reports']" t-as="report">
-                    <a tole="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
+                    <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
                         <t t-esc="report['name']"/>
                     </a>
                 </t>

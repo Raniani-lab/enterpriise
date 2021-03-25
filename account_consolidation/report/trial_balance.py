@@ -137,7 +137,7 @@ class AccountConsolidationTrialBalanceReport(models.AbstractModel):
     def _get_report_name(self):
         return _("Trial Balance")
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         ap_is_closed = False
         ap_id = self._get_selected_period_id()
         if ap_id:

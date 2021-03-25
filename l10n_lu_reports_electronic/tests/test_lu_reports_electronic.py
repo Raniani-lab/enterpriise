@@ -13,7 +13,10 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
     def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.company_data['company'].ecdf_prefix = '1234AB'
+        cls.company_data['company'].write({
+            'ecdf_prefix': '1234AB',
+            'vat': 'LU12345613',
+        })
 
         cls.out_invoice = cls.env['account.move'].create({
             'move_type': 'out_invoice',

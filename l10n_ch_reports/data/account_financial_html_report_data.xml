@@ -7,6 +7,7 @@
         <field name="name">Bilan</field>
         <field name="date_range" eval="False"/>
         <field name="parent_id" ref="l10n_ch.account_reports_ch_statements_menu"/>
+        <field name="country_id" ref="base.ch"/>
     </record>
 
     <record id="account_financial_report_line_ch_1" model="account.financial.html.report.line">
@@ -328,6 +329,7 @@
     <record id="account_financial_report_l10n_ch_cdr" model="account.financial.html.report">
         <field name="name">Compte de résultat</field>
         <field name="parent_id" ref="l10n_ch.account_reports_ch_statements_menu"/>
+        <field name="country_id" ref="base.ch"/>
     </record>
 
     <record id="account_financial_report_line_ch_3" model="account.financial.html.report.line">

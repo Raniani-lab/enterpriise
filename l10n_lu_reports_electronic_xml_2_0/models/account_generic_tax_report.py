@@ -8,9 +8,9 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     filter_journals = True
 
-    def _get_reports_buttons(self):
-        res = super()._get_reports_buttons()
-        if self._is_lu_electronic_report():
+    def _get_reports_buttons(self, options):
+        res = super()._get_reports_buttons(options)
+        if self._is_lu_electronic_report(options):
             for re in res:
                 if re.get('action') == 'print_xml':
                     # deactivate xml export & saving

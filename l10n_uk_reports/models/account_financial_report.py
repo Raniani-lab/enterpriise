@@ -5,11 +5,11 @@ import requests
 class TaxFinancialReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """
             Add Buttons to Tax Report
         """
-        rslt = super(TaxFinancialReport, self)._get_reports_buttons()
+        rslt = super(TaxFinancialReport, self)._get_reports_buttons(options)
         if self.env.company.country_id.code == "GB":
             # If token, but no refresh_token, check if you got the refresh_token on the server first
             # That way, you can see immediately if your login was successful after logging in

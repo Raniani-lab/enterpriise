@@ -33,7 +33,6 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
                    {'name': _('Disallowed Amount'), 'class': 'number'}]
         return columns
 
-    @api.model
     def _get_options(self, previous_options=None):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates

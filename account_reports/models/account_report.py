@@ -14,6 +14,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
+from odoo.exceptions import RedirectWarning
 from odoo.tools import config, date_utils, get_lang
 from odoo.osv import expression
 from babel.dates import get_quarter_names
@@ -59,6 +60,7 @@ class AccountReport(models.AbstractModel):
     filter_unfold_all = None
     filter_hierarchy = None
     filter_partner = None
+    filter_fiscal_position = None
     order_selected_column = None
 
     ####################################################
@@ -82,7 +84,6 @@ class AccountReport(models.AbstractModel):
                 ret += journal_group
         return ret
 
-    @api.model
     def _init_filter_journals(self, options, previous_options=None):
         if self.filter_journals is None:
             return
@@ -267,7 +268,6 @@ class AccountReport(models.AbstractModel):
             date_from, date_to = date_utils.get_month(date_to)
         return self._get_dates_period(options, date_from, date_to, mode, period_type=period_type, strict_range=strict_range)
 
-    @api.model
     def _init_filter_date(self, options, previous_options=None):
         if self.filter_date is None:
             return
@@ -305,7 +305,6 @@ class AccountReport(models.AbstractModel):
             options['date'] = self._get_dates_previous_period(options, options['date'])
         options['date']['filter'] = options_filter
 
-    @api.model
     def _init_filter_comparison(self, options, previous_options=None):
         if self.filter_comparison is None or not options.get('date'):
             return
@@ -383,7 +382,6 @@ class AccountReport(models.AbstractModel):
     # OPTIONS: analytic
     ####################################################
 
-    @api.model
     def _init_filter_analytic(self, options, previous_options=None):
         if not self.filter_analytic:
             return
@@ -420,7 +418,6 @@ class AccountReport(models.AbstractModel):
     # OPTIONS: partners
     ####################################################
 
-    @api.model
     def _init_filter_partner(self, options, previous_options=None):
         if not self.filter_partner:
             return
@@ -470,7 +467,6 @@ class AccountReport(models.AbstractModel):
     # OPTIONS: hierarchy
     ####################################################
 
-    @api.model
     def _init_filter_hierarchy(self, options, previous_options=None):
         # Only propose the option if there are groups
         if self.filter_hierarchy is not None and self.env['account.group'].search([('company_id', 'in', self.env.companies.ids)], limit=1):
@@ -581,10 +577,67 @@ class AccountReport(models.AbstractModel):
         return new_lines
 
     ####################################################
+    # OPTIONS: fiscal position (multi vat)
+    ####################################################
+
+    def _init_filter_fiscal_position(self, options, previous_options=None):
+        country = self._get_country_for_fiscal_position_filter(options)
+        if country:
+            vat_fiscal_positions = self.env['account.fiscal.position'].search([
+                ('country_id', '=', country.id),
+                ('foreign_vat', '!=', False),
+                ('company_id', 'in', self.env.company.ids),
+            ])
+
+            options['available_vat_fiscal_positions'] = [{
+                'id': fiscal_pos.id,
+                'name': fiscal_pos.name,
+            } for fiscal_pos in vat_fiscal_positions]
+
+            options['allow_domestic'] = self.env.company.account_fiscal_country_id == country
+
+            accepted_prev_vals = {'all', *vat_fiscal_positions.ids}
+            if options['allow_domestic']:
+                accepted_prev_vals.add('domestic')
+
+            if previous_options and previous_options.get('fiscal_position') in accepted_prev_vals:
+                # Legit value from previous options; keep it
+                options['fiscal_position'] = previous_options['fiscal_position']
+            elif len(vat_fiscal_positions) == 1 and not options['allow_domestic']:
+                # Only one foreign fiscal position: always select it, menu will be hidden
+                options['fiscal_position'] = vat_fiscal_positions.id
+            else:
+                # Multiple possible values; by default, show the values of the company's area (if allowed), or everything
+                options['fiscal_position'] = options['allow_domestic'] and 'domestic' or 'all'
+        else:
+            options['available_vat_fiscal_positions'] = []
+            options['allow_domestic'] = False
+            options['fiscal_position'] = 'all'
+
+    def _get_country_for_fiscal_position_filter(self, options):
+        """ Gets the country to use to fetch the available foreign VAT fiscal positions for the
+        fiscal_position option. By default, this function returns None, meaning that no fiscal position
+        will ever be available, and the fiscal_position option is disabled. Subclasses need to override
+        it to change that.
+        """
+        return None
+
+    def _get_options_fiscal_position_domain(self, options):
+        fiscal_position_opt = options.get('fiscal_position')
+
+        if fiscal_position_opt == 'domestic':
+            return [('move_id.fiscal_position_id', 'not in', [fpos_opt['id'] for fpos_opt in options['available_vat_fiscal_positions']])]
+
+        if fiscal_position_opt == 'all':
+            return []
+
+        # Else it's a fiscal position id
+        return [('move_id.fiscal_position_id', '=', fiscal_position_opt)]
+
+    ####################################################
     # OPTIONS: CORE
     ####################################################
 
-    @api.model
     def _get_options(self, previous_options=None):
         # Create default options.
         options = {
@@ -625,6 +678,7 @@ class AccountReport(models.AbstractModel):
                         options[options_key] = previous_options[options_key]
                     else:
                         options[options_key] = filter_opt
+
         return options
 
     @api.model
@@ -642,6 +696,7 @@ class AccountReport(models.AbstractModel):
         domain += self._get_options_analytic_domain(options)
         domain += self._get_options_partner_domain(options)
         domain += self._get_options_all_entries_domain(options)
+        domain += self._get_options_fiscal_position_domain(options)
         return domain
 
     ####################################################
@@ -972,16 +1027,19 @@ class AccountReport(models.AbstractModel):
         action['context'] = {}
         return action
 
-    def periodic_tva_entries(self, options):
+    def periodic_vat_entries(self, options):
         # Return action to open form view of newly entry created
         ctx = self._set_context(options)
         ctx['strict_range'] = True
         self = self.with_context(ctx)
-        move = self.env['account.generic.tax.report']._generate_tax_closing_entry(options)
+        moves = self.env['account.generic.tax.report']._generate_tax_closing_entries(options)
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
         action = clean_action(action, env=self.env)
-        action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
-        action['res_id'] = move.id
+        if len(moves) == 1:
+            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+            action['res_id'] = moves.id
+        else:
+            action['domain'] = [('id', 'in', moves.ids)]
         return action
 
     def _get_vat_report_attachments(self, options):
@@ -1179,7 +1237,7 @@ class AccountReport(models.AbstractModel):
                 'context': self.env.context,
                 'report_manager_id': report_manager.id,
                 'footnotes': [{'id': f.id, 'line': f.line, 'text': f.text} for f in report_manager.footnotes_ids],
-                'buttons': self._get_reports_buttons_in_sequence(),
+                'buttons': self._get_reports_buttons_in_sequence(options),
                 'main_html': self.get_html(options),
                 'searchview_html': self.env['ir.ui.view']._render_template(self._get_templates().get('search_template', 'account_report.search_template'), values=searchview_dict),
                 }
@@ -1258,10 +1316,10 @@ class AccountReport(models.AbstractModel):
         html = self.env['ir.ui.view']._render_template(template, values=dict(rcontext))
         return html
 
-    def _get_reports_buttons_in_sequence(self):
-        return sorted(self._get_reports_buttons(), key=lambda x: x.get('sequence', 9))
+    def _get_reports_buttons_in_sequence(self, options):
+        return sorted(self._get_reports_buttons(options), key=lambda x: x.get('sequence', 9))
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         return [
             {'name': _('Print Preview'), 'sequence': 1, 'action': 'print_pdf', 'file_export_type': _('PDF')},
             {'name': _('Export (XLSX)'), 'sequence': 2, 'action': 'print_xlsx', 'file_export_type': _('XLSX')},
@@ -1274,10 +1332,10 @@ class AccountReport(models.AbstractModel):
         the context, containing the current options selected on this report
         (which must hence be taken into account when exporting it to a file).
         """
-        new_wizard = self.env['account_reports.export.wizard'].create({'report_model': self._name,'report_id': self.id})
-        view_id = self.env.ref('account_reports.view_report_export_wizard').id
         new_context = self.env.context.copy()
         new_context['account_report_generation_options'] = options
+        new_wizard = self.with_context(new_context).env['account_reports.export.wizard'].create({'report_model': self._name, 'report_id': self.id})
+        view_id = self.env.ref('account_reports.view_report_export_wizard').id
         return {
             'type': 'ir.actions.act_window',
             'name': _('Export'),
@@ -1598,6 +1656,34 @@ class AccountReport(models.AbstractModel):
 
     def get_txt(self, options):
         return False
+
+    @api.model
+    def get_vat_for_export(self, options):
+        """ Returns the VAT number to use when exporting this report with the provided
+        options. If a single fiscal_position option is set, its VAT number will be
+        used; else the current company's will be, raising an error if its empty.
+        """
+        if options['fiscal_position'] in {'all', 'domestic'}:
+            company = self.env.company
+            if not company.vat:
+                action = self.env.ref('base.action_res_company_form')
+                raise RedirectWarning(_('No VAT number associated with your company. Please define one.'), action.id, _("Company Settings"))
+            return company.vat
+        else:
+            fiscal_position = self.env['account.fiscal.position'].browse(options['fiscal_position'])
+            return fiscal_position.foreign_vat
+
+    def _get_report_country_code(self, options):
+        """ Gets the country this report is for, or None if it's generic.
+        This function is to be overridden by the different report subtypes if needed.
+        By default, it will consider the fiscal_position option (if available) and return
+        its country it it's set.
+
+        :return: The code of this report's country.
+        """
+        fp_country = self._get_country_for_fiscal_position_filter(options)
+        return fp_country and fp_country.code or None
+
 
     ####################################################
     # HOOKS

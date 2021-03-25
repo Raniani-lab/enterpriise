@@ -25,6 +25,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
         })
 
         cls.company_data['company'].country_id = test_country
+        cls.company_data['company'].chart_template_id.country_id = test_country # So that we can easily instantiate test tax templates within this country
 
         # Create some tax report
         tax_report = cls.env['account.tax.report'].create({
@@ -32,10 +33,10 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'country_id': test_country.id,
         })
 
-        cls.pos_tax_report_line_invoice_base = cls._create_tax_report_line(cls, name="Invoice Base", report=tax_report, tag_name='pos_invoice_base', sequence=0)
-        cls.pos_tax_report_line_invoice_tax = cls._create_tax_report_line(cls, name="Invoice Tax", report=tax_report, tag_name='pos_invoice_tax', sequence=1)
-        cls.pos_tax_report_line_refund_base = cls._create_tax_report_line(cls, name="Refund Base", report=tax_report, tag_name='pos_refund_base', sequence=2)
-        cls.pos_tax_report_line_refund_tax = cls._create_tax_report_line(cls, name="Refund Tax", report=tax_report, tag_name='pos_refund_tax', sequence=3)
+        cls.pos_tax_report_line_invoice_base = cls._create_tax_report_line("Invoice Base", tax_report, tag_name='pos_invoice_base', sequence=0)
+        cls.pos_tax_report_line_invoice_tax = cls._create_tax_report_line("Invoice Tax", tax_report, tag_name='pos_invoice_tax', sequence=1)
+        cls.pos_tax_report_line_refund_base = cls._create_tax_report_line("Refund Base", tax_report, tag_name='pos_refund_base', sequence=2)
+        cls.pos_tax_report_line_refund_tax = cls._create_tax_report_line("Refund Tax", tax_report, tag_name='pos_refund_tax', sequence=3)
 
         # Create a tax using the created report
         tax_template = cls.env['account.tax.template'].create({

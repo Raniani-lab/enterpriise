@@ -5,6 +5,7 @@
         <field name="date_range" eval="True" />
         <field name="tax_report" eval="False"/>
         <field name='parent_id' ref='l10n_at.menu_finance_austria'/>
+        <field name="country_id" ref="base.at"/>
     </record>
 
     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_root" model="account.financial.html.report.line">

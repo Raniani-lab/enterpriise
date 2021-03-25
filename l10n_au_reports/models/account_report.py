@@ -28,6 +28,9 @@ class TaxReport(models.AbstractModel):
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_cash_basis = True
 
+    def _get_country_for_fiscal_position_filter(self, options):
+        return self.env.ref('base.au')
+
     def _get_report_name(self):
         return _('Taxable Payments Annual Reports (TPAR)')
 
@@ -127,13 +130,13 @@ class TaxReport(models.AbstractModel):
 
         return lines
 
-    def _get_reports_buttons(self):
-        buttons = super(TaxReport, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(TaxReport, self)._get_reports_buttons(options)
         return buttons + [{'name': _('Export (TPAR)'), 'sequence': 3, 'action': 'print_txt', 'file_export_type': _('TPAR')}]
 
     def get_txt(self, options):
         sender_data = {
-            'vat': self.env.company.vat,
+            'vat': self.get_vat_for_export(options),
             'name': self.env.company.name,
             'commercial_partner_name': self.env.company.name,
             'street': self.env.company.street,

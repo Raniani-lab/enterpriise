@@ -10,17 +10,9 @@ from odoo.exceptions import UserError
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
 
-    @api.model
-    def _get_report_country_code(self):
-        if self.env.company.country_id.code == 'LU':
-            return 'LU'
-        
-        return super(ECSalesReport, self)._get_report_country_code()
-
-
-    def _get_ec_sale_code_options_data(self):
-        if self._get_report_country_code() != 'LU':
-            return super(ECSalesReport, self)._get_ec_sale_code_options_data()
+    def _get_ec_sale_code_options_data(self, options):
+        if self._get_report_country_code(options) != 'LU':
+            return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)
 
         return {
             'goods': {
@@ -38,17 +30,17 @@ class ECSalesReport(models.AbstractModel):
         }
 
     @api.model
-    def _get_reports_buttons(self):
-        if self._get_report_country_code() != 'LU':
-            return super(ECSalesReport, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        if self._get_report_country_code(options) != 'LU':
+            return super(ECSalesReport, self)._get_reports_buttons(options)
 
-        return super(ECSalesReport, self)._get_reports_buttons() + [
+        return super(ECSalesReport, self)._get_reports_buttons(options) + [
             {'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}
         ]
 
     @api.model
     def _get_columns_name(self, options):
-        if self._get_report_country_code() != 'LU':
+        if self._get_report_country_code(options) != 'LU':
             return super(ECSalesReport, self)._get_columns_name(options)
 
         return [
@@ -61,7 +53,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _process_query_result(self, options, query_result):
-        if self._get_report_country_code() != 'LU':
+        if self._get_report_country_code(options) != 'LU':
             return super(ECSalesReport, self)._process_query_result(options, query_result)
 
         lines = super(ECSalesReport, self)._process_query_result(options, query_result)
@@ -95,7 +87,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def get_report_filename(self, options):
-        if self._get_report_country_code() != 'LU':
+        if self._get_report_country_code(options) != 'LU':
             return super().get_report_filename(options)
 
         ''' 000000         X            20200101 T                      120030  01
@@ -136,7 +128,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def get_xml(self, options):
-        if self._get_report_country_code() != 'LU':
+        if self._get_report_country_code(options) != 'LU':
             return super().get_xml(options)
         # Check
         company = self.env.company

@@ -8,7 +8,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _get_columns_name(self, options):
-        if self._get_report_country_code():
+        if self._get_report_country_code(options):
             return super(ECSalesReport, self)._get_columns_name(options)
 
         return [
@@ -20,7 +20,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _process_query_result(self, options, query_result):
-        if self._get_report_country_code():
+        if self._get_report_country_code(options):
             return super(ECSalesReport, self)._process_query_result(options, query_result)
 
         total_value = query_result and query_result[0]['total_value'] or 0
@@ -53,7 +53,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, options):
-        if self._get_report_country_code():
+        if self._get_report_country_code(options):
             return super(ECSalesReport, self)._prepare_query(options)
 
         tables, where_clause, where_params = self._query_get(options, [(

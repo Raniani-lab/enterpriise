@@ -9,6 +9,7 @@
         <field name="unfold_all_filter" eval="True"/>
         <field name="show_journal_filter" eval="True"/>
         <field name='parent_id' ref='l10n_de.account_reports_de_statements_menu'/>
+        <field name="country_id" ref="base.de"/>
     </record>
 
     <!-- Total -->

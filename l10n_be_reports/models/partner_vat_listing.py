@@ -108,8 +108,8 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
     def _get_columns_name(self, options):
         return [{}, {'name': _('VAT Number')}, {'name': _('Turnover'), 'class': 'number'}, {'name': _('VAT Amount'), 'class': 'number'}]
 
-    def _get_reports_buttons(self):
-        buttons = super(ReportL10nBePartnerVatListing, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(ReportL10nBePartnerVatListing, self)._get_reports_buttons(options)
         buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 

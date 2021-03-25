@@ -8,8 +8,8 @@ from odoo import fields, models, tools
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = "account.generic.tax.report"
 
-    def _is_lu_electronic_report(self):
-        return self.env.company.country_id.code == 'LU'
+    def _is_lu_electronic_report(self, options):
+        return self._get_report_country_code(options) == 'LU'
 
     def _get_lu_electronic_report_values(self, options):
         lu_template_values = super()._get_lu_electronic_report_values(options)
@@ -62,7 +62,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         return lu_template_values
 
     def get_xml(self, options):
-        if not self._is_lu_electronic_report():
+        if not self._is_lu_electronic_report(options):
             return super().get_xml(options)
 
         self._lu_validate_ecdf_prefix()

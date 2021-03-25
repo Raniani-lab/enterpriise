@@ -7,6 +7,7 @@
         <field name='parent_id' ref='l10n_in.account_reports_in_statements_menu'/>
         <field name="tax_report" eval="1"/>
         <field name="show_journal_filter" eval="1"/>
+        <field name="country_id" ref="base.in"/>
     </record>
 
     <record id="total_output_liability_l10n_in_line_0" model="account.financial.html.report.line">
@@ -214,10 +215,10 @@
         <field name="code">TAXPAYSGST</field>
         <field name="show_domain">never</field>
         <field name="formulas">(
-            (TAXOLITCSGST &lt; 0 and TAXOLITCCGST &lt; 0 and TAXOLITCIGST &gt; 0 and (TAXOLITCSGST+(TAXOLITCCGST+TAXOLITCIGST &lt; 0) and TAXOLITCSGST or TAXOLITCSGST+TAXOLITCIGST)) or 
-            (TAXOLITCSGST &gt; 0 and TAXOLITCSGST+(TAXOLITCCGST+(TAXOLITCIGST &lt; 0 and TAXOLITCIGST) &lt; 0 and TAXOLITCCGST+TAXOLITCIGST) &lt; 0 and 0) or 
-            (TAXOLITCSGST &gt; 0 and TAXOLITCCGST+(TAXOLITCIGST &lt; 0 and TAXOLITCIGST) &gt; 0 and TAXOLITCSGST) or 
-            (TAXOLITCSGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCSGST+TAXOLITCCGST &gt; - TAXOLITCIGST) and TAXOLITCSGST+TAXOLITCCGST+TAXOLITCIGST) or 
+            (TAXOLITCSGST &lt; 0 and TAXOLITCCGST &lt; 0 and TAXOLITCIGST &gt; 0 and (TAXOLITCSGST+(TAXOLITCCGST+TAXOLITCIGST &lt; 0) and TAXOLITCSGST or TAXOLITCSGST+TAXOLITCIGST)) or
+            (TAXOLITCSGST &gt; 0 and TAXOLITCSGST+(TAXOLITCCGST+(TAXOLITCIGST &lt; 0 and TAXOLITCIGST) &lt; 0 and TAXOLITCCGST+TAXOLITCIGST) &lt; 0 and 0) or
+            (TAXOLITCSGST &gt; 0 and TAXOLITCCGST+(TAXOLITCIGST &lt; 0 and TAXOLITCIGST) &gt; 0 and TAXOLITCSGST) or
+            (TAXOLITCSGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCSGST+TAXOLITCCGST &gt; - TAXOLITCIGST) and TAXOLITCSGST+TAXOLITCCGST+TAXOLITCIGST) or
             (TAXOLITCSGST &gt; 0 and TAXOLITCIGST in [0,] and TAXOLITCSGST)
             )</field>
         <field name="show_domain">foldable</field>
@@ -231,9 +232,9 @@
         <field name="code">TAXPAYCGST</field>
         <field name="show_domain">never</field>
         <field name="formulas">(
-            (TAXOLITCCGST &lt; 0 and TAXOLITCIGST &gt; 0 and (TAXOLITCCGST+TAXOLITCIGST &lt; 0 and 0 or TAXOLITCCGST+TAXOLITCIGST)) or 
-            (TAXOLITCCGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCCGST+TAXOLITCIGST &gt; 0 and 0)) or 
-            (TAXOLITCCGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCCGST &gt; - TAXOLITCIGST) and TAXOLITCCGST+TAXOLITCIGST) or 
+            (TAXOLITCCGST &lt; 0 and TAXOLITCIGST &gt; 0 and (TAXOLITCCGST+TAXOLITCIGST &lt; 0 and 0 or TAXOLITCCGST+TAXOLITCIGST)) or
+            (TAXOLITCCGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCCGST+TAXOLITCIGST &gt; 0 and 0)) or
+            (TAXOLITCCGST &gt; 0 and TAXOLITCIGST &lt; 0 and (TAXOLITCCGST &gt; - TAXOLITCIGST) and TAXOLITCCGST+TAXOLITCIGST) or
             (TAXOLITCCGST &gt; 0 and (TAXOLITCIGST in [0,] or TAXOLITCIGST &gt; 0) and TAXOLITCCGST))</field>
         <field name="show_domain">foldable</field>
         <field name="special_date_changer">strict_range</field>
@@ -246,11 +247,11 @@
         <field name="code">TAXPAYIGST</field>
         <field name="show_domain">never</field>
         <field name="formulas">(
-            (TAXOLITCIGST &lt; 0 and (TAXOLITCCGST in [0,] and TAXOLITCSGST in [0,] and TAXOLITCIGST)) or 
-            (TAXOLITCIGST &lt; 0 and TAXOLITCSGST &gt; 0 and (TAXOLITCCGST &lt; 0 or TAXOLITCCGST in [0,]) and (((- TAXOLITCIGST) &gt; TAXOLITCSGST) and TAXOLITCIGST+TAXOLITCSGST)) or 
-            (TAXOLITCIGST &lt; 0 and TAXOLITCCGST &gt; 0 and (TAXOLITCSGST &lt; 0 or TAXOLITCSGST in [0,]) and (((- TAXOLITCIGST) &gt; TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST)) or 
-            (TAXOLITCIGST &lt; 0 and TAXOLITCCGST &gt; 0 and TAXOLITCSGST &gt; 0 and (((- TAXOLITCIGST) &gt; TAXOLITCSGST+TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST+TAXOLITCSGST)) or 
-            (TAXOLITCIGST &gt; 0 and TAXOLITCCGST &lt; 0 and TAXOLITCSGST &lt; 0 and (((TAXOLITCIGST) &lt; TAXOLITCSGST+TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST+TAXOLITCSGST)) or 
+            (TAXOLITCIGST &lt; 0 and (TAXOLITCCGST in [0,] and TAXOLITCSGST in [0,] and TAXOLITCIGST)) or
+            (TAXOLITCIGST &lt; 0 and TAXOLITCSGST &gt; 0 and (TAXOLITCCGST &lt; 0 or TAXOLITCCGST in [0,]) and (((- TAXOLITCIGST) &gt; TAXOLITCSGST) and TAXOLITCIGST+TAXOLITCSGST)) or
+            (TAXOLITCIGST &lt; 0 and TAXOLITCCGST &gt; 0 and (TAXOLITCSGST &lt; 0 or TAXOLITCSGST in [0,]) and (((- TAXOLITCIGST) &gt; TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST)) or
+            (TAXOLITCIGST &lt; 0 and TAXOLITCCGST &gt; 0 and TAXOLITCSGST &gt; 0 and (((- TAXOLITCIGST) &gt; TAXOLITCSGST+TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST+TAXOLITCSGST)) or
+            (TAXOLITCIGST &gt; 0 and TAXOLITCCGST &lt; 0 and TAXOLITCSGST &lt; 0 and (((TAXOLITCIGST) &lt; TAXOLITCSGST+TAXOLITCCGST) and TAXOLITCIGST+TAXOLITCCGST+TAXOLITCSGST)) or
             (TAXOLITCIGST &gt; 0 and (TAXOLITCCGST &gt;0 or TAXOLITCCGST in [0,]) and (TAXOLITCSGST &gt; 0 or TAXOLITCSGST in [0,]) and TAXOLITCIGST)
             )</field>
         <field name="show_domain">foldable</field>
@@ -270,5 +271,5 @@
     </record>
 
     <menuitem id="menu_l10n_in_report_account" name="GSTR-1 Sales Return" action="action_l10n_in_report_account" parent="l10n_in.account_reports_in_statements_menu" sequence="1"/>
-    
+
 </odoo>

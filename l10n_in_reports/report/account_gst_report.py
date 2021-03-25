@@ -18,6 +18,9 @@ class L10nInReportAccount(models.AbstractModel):
     filter_partner = True
     filter_journals = True
 
+    def _get_country_for_fiscal_position_filter(self, options):
+        return self.env.ref('base.in')
+
     def _get_options(self, previous_options=None):
         options = super(L10nInReportAccount, self)._get_options(previous_options)
         options['gst_return_type'] = 'gstr1'
@@ -32,7 +35,7 @@ class L10nInReportAccount(models.AbstractModel):
             ctx['gst_section'] = options['gst_section']
         return ctx
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         return [
             {'name': _('Print Preview'), 'action': 'print_pdf'},
             {'name': _('Export (CSV)'), 'action': 'print_csv'}]

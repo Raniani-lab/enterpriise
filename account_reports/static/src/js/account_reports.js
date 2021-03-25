@@ -262,6 +262,7 @@ var accountReportsWidget = AbstractAction.extend({
             .then(function(result){
                 self.parse_reports_informations(result);
                 self.render();
+                self.renderButtons();
                 return self.update_cp();
             });
     },

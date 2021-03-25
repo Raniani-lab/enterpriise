@@ -77,12 +77,15 @@ class ReportAccountFinancialReport(models.Model):
     tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that have the boolean field 'tax_exigible' set to False")
     applicable_filters_ids = fields.Many2many('ir.filters', domain="[('model_id', '=', 'account.move.line')]",
                                               help='Filters that can be used to filter and group lines in this report. This uses saved filters on journal items.')
+    country_id = fields.Many2one(string="Country", comodel_name='res.country', help="The country this report is intended to.")
 
     # -------------------------------------------------------------------------
     # OPTIONS: ir_filters
     # -------------------------------------------------------------------------
 
-    @api.model
+    def _get_country_for_fiscal_position_filter(self, options):
+        return self.tax_report and self.country_id or None
+
     def _init_filter_ir_filters(self, options, previous_options=None):
         ''' Initialize the ir_filters filter that is used to bring additional filters on the whole report.
         E.g. Create an ir.filter like [('partner_id', '=', 3)] and add it to the financial report.
@@ -161,7 +164,6 @@ class ReportAccountFinancialReport(models.Model):
     # OPTIONS
     # -------------------------------------------------------------------------
 
-    @api.model
     def _get_options(self, previous_options=None):
         # OVERRIDE
         options = super(ReportAccountFinancialReport, self)._get_options(previous_options)
@@ -285,6 +287,13 @@ class ReportAccountFinancialReport(models.Model):
         '''
         return not self._context.get('print_mode') and self.user_has_groups('base.group_no_one') \
                and (not options.get('comparison') or not options['comparison'].get('periods'))
+
+    def _get_report_country_code(self, options):
+        # Overridden in order to also take the financial report's country_id into account.
+        # Indeed, _get_country_for_fiscal_position_filter will not return it if the report
+        # doesn't have tax_report = True.
+        fp_country = self._get_country_for_fiscal_position_filter(options)
+        return fp_country and fp_country.code or self.country_id.code or None
 
     # -------------------------------------------------------------------------
     # COLUMNS / LINES

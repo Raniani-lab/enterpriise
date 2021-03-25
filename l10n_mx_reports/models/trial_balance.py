@@ -38,9 +38,9 @@ class MxReportAccountTrial(models.AbstractModel):
 
     filter_hierarchy = None
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """Create the buttons to be used to download the required files"""
-        buttons = super(MxReportAccountTrial, self)._get_reports_buttons()
+        buttons = super(MxReportAccountTrial, self)._get_reports_buttons(options)
         buttons += [{'name': _('Export For SAT (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('SAT XML')}]
         return buttons
 

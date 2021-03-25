@@ -9,14 +9,14 @@ DOCTYPE = '<!DOCTYPE eSKDUpload PUBLIC "-//Skatteverket, Sweden//DTD Skatteverke
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
-    def _get_reports_buttons(self):
-        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
         if self.env.company.country_id.code == 'SE':
             buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def get_xml(self, options):
-        if self.env.company.country_id.code != 'SE':
+        if self._get_report_country_code(options) != 'SE':
             return super(AccountGenericTaxReport, self).get_xml(options)
         ctx = self._set_context(options)
         report_lines = self.with_context(ctx)._get_lines(options)

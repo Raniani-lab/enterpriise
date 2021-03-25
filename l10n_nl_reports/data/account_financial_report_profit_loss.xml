@@ -6,6 +6,7 @@
             <field name="analytic" eval="True"/>
             <field name="unfold_all_filter" eval="True"/>
             <field name='parent_id' ref="l10n_nl.account_reports_nl_statements_menu"/>
+            <field name="country_id" ref="base.nl"/>
         </record>
 
         <record id="account_financial_report_pnl_1" model="account.financial.html.report.line">
@@ -56,7 +57,7 @@
             <field name="sequence" eval="2"/>
             <field name="level" eval="3" />
         </record>
-        
+
         <record id="account_financial_report_pnl_1_1_2" model="account.financial.html.report.line">
             <field name="name">Kostprijs van de omzet</field>
             <field name="code">NL_SCOST</field>

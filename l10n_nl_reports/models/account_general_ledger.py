@@ -17,8 +17,8 @@ from itertools import groupby
 class ReportAccountGeneralLedger(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
-    def _get_reports_buttons(self):
-        buttons = super(ReportAccountGeneralLedger, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(ReportAccountGeneralLedger, self)._get_reports_buttons(options)
         buttons.append({'name': _('EXPORT (XAF)'), 'sequence': 3, 'action': 'l10n_nl_print_xaf', 'file_export_type': _('XAF')})
         return buttons
 

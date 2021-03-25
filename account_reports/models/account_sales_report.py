@@ -34,15 +34,13 @@ class ECSalesReport(models.AbstractModel):
         templates['main_template'] = 'account_reports.account_reports_sales_report_main_template'
         return templates
 
-    @api.model
-    def _get_report_country_code(self):
-        # this method is to be overriden by country specific method
-        return None
+    def _get_report_country_code(self, options):
+        # Overridden in order to use the fiscal country of the current company
+        return self.env.company.account_fiscal_country_id.code or None
 
-    @api.model
     def _get_options(self, previous_options=None):
         options = super(ECSalesReport, self)._get_options(previous_options)
-        if self._get_report_country_code():
+        if self._get_report_country_code(options):
             options.pop('journals', None)
             options['country_specific_report_label'] = self.env.company.country_id.display_name
         else:
@@ -62,7 +60,7 @@ class ECSalesReport(models.AbstractModel):
         # this method must be overriden by country specific method
         return []
 
-    def _get_ec_sale_code_options_data(self):
+    def _get_ec_sale_code_options_data(self, options):
         # this method must be overriden by country specific method
         # it defines wich tax report line ids are linked to goods, triangular & services
         # and it defines country specific names
@@ -72,15 +70,15 @@ class ECSalesReport(models.AbstractModel):
             'services': {'name': _('Services'), 'tax_report_line_ids': ()},
         }
 
-    @api.model
     def _init_filter_ec_sale_code(self, options, previous_options=None):
         # If the country changes, previous_options['ec_sale_code'] might exist but with wrong names/data.
         # We must recreate the dict, and apply "selected" state if previous ones existing.
-        ec_sale_code_options_data = self._get_ec_sale_code_options_data()
+        ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
         options['ec_sale_code'] = []
         for id in ('goods', 'triangular', 'services'):
             ec_sale_code_options_data[id].update({'id': id, 'selected': False})
             options['ec_sale_code'].append(ec_sale_code_options_data[id])
+
         if previous_options and previous_options.get('ec_sale_code'):
             for i in range(0, 3):
                 options['ec_sale_code'][i]['selected'] = previous_options['ec_sale_code'][i]['selected']

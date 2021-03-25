@@ -5,26 +5,26 @@
             <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-book"/>
                 Tax Report:
-                <t t-if="options['group_by'] == 'tax_account'">
+                <t t-if="options['tax_report'] == 'generic_grouped_tax_account'">
                     Group by: Tax > Account
                 </t>
-                <t t-elif="options['group_by'] == 'account_tax'">
+                <t t-elif="options['tax_report'] == 'generic_grouped_account_tax'">
                     Group by: Account > Tax
                 </t>
-                <t t-elif="options['tax_report']">
+                <t t-elif="options['tax_report'] == 'generic'">
+                    Global Summary
+                </t>
+                <t t-else="">
                     <t t-set="selected_report" t-value="[opt for opt in options['available_tax_reports'] if opt['id'] == options['tax_report']][0]"/>
                     <t t-esc="selected_report['name']"/>
                 </t>
-                <t t-else="">
-                    Global Summary
-                </t>
             </button>
         </xpath>
-        <xpath expr="//div[@role='menu']/a[@data-id='0']" position="after">
+        <xpath expr="//div[@role='menu']/a[@data-id='generic']" position="after">
             <a role="menuitem"
                class="dropdown-item js_account_reports_one_choice_filter"
                data-filter="tax_report"
-               data-id="account_tax"
+               data-id="generic_grouped_account_tax"
                t-if="options['by_account_available']"
                groups="account.group_account_readonly"
             >
@@ -33,7 +33,7 @@
             <a role="menuitem"
                class="dropdown-item js_account_reports_one_choice_filter"
                data-filter="tax_report"
-               data-id="tax_account"
+               data-id="generic_grouped_tax_account"
                t-if="options['by_account_available']"
                groups="account.group_account_readonly"
             >

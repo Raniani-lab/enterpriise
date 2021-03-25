@@ -18,7 +18,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         cls.company_data_2['company'].currency_id = cls.currency_data['currency']
         cls.company_data_2['currency'] = cls.currency_data['currency']
 
-    def _init_options(self, report, date_from, date_to):
+    def _init_options(self, report, date_from, date_to, default_options=None):
         ''' Create new options at a certain date.
         :param report:          The report.
         :param filter:          One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
@@ -26,12 +26,18 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         :param date_to:         A datetime object.
         :return:                The newly created options.
         '''
-        return report._get_options({'date': {
-            'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'filter': 'custom',
-            'mode': report.filter_date.get('mode', 'range'),
-        }})
+        if not default_options:
+            default_options = {}
+
+        return report._get_options({
+            'date': {
+                'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'filter': 'custom',
+                'mode': report.filter_date.get('mode', 'range'),
+            },
+            **default_options,
+        })
 
     def _update_comparison_filter(self, options, report, comparison_type, number_period, date_from=None, date_to=None):
         ''' Modify the existing options to set a new filter_comparison.
@@ -162,7 +168,8 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         if errors:
             self.fail('\n'.join(errors))
 
-    def _create_tax_report_line(self, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
+    @classmethod
+    def _create_tax_report_line(cls, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
         """ Creates a tax report line
         """
         create_vals = {
@@ -180,4 +187,4 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         if formula:
             create_vals['formula'] = formula
 
-        return self.env['account.tax.report.line'].create(create_vals)
+        return cls.env['account.tax.report.line'].create(create_vals)

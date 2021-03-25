@@ -77,7 +77,6 @@ class AEATAccountFinancialReport(models.Model):
 
     l10n_es_reports_modelo_number = fields.Char(string="Spanish Modelo Number", help="The modelo number of this report. Non-Spanish (or non-modelo) reports must leave this field to None.")
 
-    @api.model
     def _get_options(self, previous_options=None):
         """ Overridden in order to add the 'financial_report_line_values' attribute
         to the context before calling super() in case some AEAT wizard was used
@@ -115,10 +114,10 @@ class AEATAccountFinancialReport(models.Model):
             ctx['l10n_es_reports_boe_conversion_date'] = options['date']['date_to']
         return ctx
 
-    def _get_reports_buttons(self):
+    def _get_reports_buttons(self, options):
         """ Overridden to add the BOE export button to mod reports.
         """
-        rslt = super(AEATAccountFinancialReport, self)._get_reports_buttons()
+        rslt = super(AEATAccountFinancialReport, self)._get_reports_buttons(options)
         if self.l10n_es_reports_modelo_number:
             rslt.append({'name': _('Export (BOE)'), 'sequence': 0, 'action': 'print_boe', 'file_export_type': _('BOE')})
         return rslt

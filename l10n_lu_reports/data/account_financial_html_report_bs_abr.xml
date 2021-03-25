@@ -7,6 +7,7 @@
         <field name="date_range" eval="False" />
         <field name='parent_id' ref='l10n_lu.account_reports_lu_statements_menu'/>
         <field name="show_journal_filter" eval="True"/>
+        <field name="country_id" ref="base.lu"/>
     </record>
 
     <record id="account_financial_report_l10n_lu_bs_abr_line_1" model="account.financial.html.report.line">
@@ -124,17 +125,17 @@
         <field name="sequence" eval="1"/>
         <field name="domain" eval="
             [
-                '|', '|', '|', '|', '|', '|', '|', '|', 
-                ('account_id.code', '=like', '4011%'), 
-                ('account_id.code', '=like', '4012%'), 
-                ('account_id.code', '=like', '4013%'), 
-                ('account_id.code', '=like', '4014%'), 
-                ('account_id.code', '=like', '4019%'), 
-                ('account_id.code', '=like', '4111%'), 
-                ('account_id.code', '=like', '4121%'), 
-                ('account_id.code', '=like', '421%'), 
+                '|', '|', '|', '|', '|', '|', '|', '|',
+                ('account_id.code', '=like', '4011%'),
+                ('account_id.code', '=like', '4012%'),
+                ('account_id.code', '=like', '4013%'),
+                ('account_id.code', '=like', '4014%'),
+                ('account_id.code', '=like', '4019%'),
+                ('account_id.code', '=like', '4111%'),
+                ('account_id.code', '=like', '4121%'),
+                ('account_id.code', '=like', '421%'),
                 ('account_id.code', '=like', '44113%')
-            ]" 
+            ]"
         />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
@@ -147,14 +148,14 @@
         <field name="sequence" eval="2"/>
         <field name="domain" eval="
             [
-                '|', '|', '|', '|', '|', 
-                ('account_id.code', '=like', '4021%'), 
-                ('account_id.code', '=like', '4029%'), 
-                ('account_id.code', '=like', '4112%'), 
-                ('account_id.code', '=like', '4122%'), 
-                ('account_id.code', '=like', '422%'), 
+                '|', '|', '|', '|', '|',
+                ('account_id.code', '=like', '4021%'),
+                ('account_id.code', '=like', '4029%'),
+                ('account_id.code', '=like', '4112%'),
+                ('account_id.code', '=like', '4122%'),
+                ('account_id.code', '=like', '422%'),
                 ('account_id.code', '=like', '44123%')
-            ]" 
+            ]"
         />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
@@ -177,14 +178,14 @@
         <field name="sequence" eval="4"/>
         <field name="domain" eval="
             [
-                '|', '|', '|', '|', '&amp;', 
-                ('account_id.code', '=like', '5130%'), 
-                ('balance', '>=', '0.00'), 
-                ('account_id.code', '=like', '5131%'), 
-                ('account_id.code', '=like', '516%'), 
-                ('account_id.code', '=like', '5171%'), 
+                '|', '|', '|', '|', '&amp;',
+                ('account_id.code', '=like', '5130%'),
+                ('balance', '>=', '0.00'),
+                ('account_id.code', '=like', '5131%'),
+                ('account_id.code', '=like', '516%'),
+                ('account_id.code', '=like', '5171%'),
                 ('account_id.code', '=like', '518%')
-            ]" 
+            ]"
         />
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
@@ -330,26 +331,26 @@
         <field name="sequence" eval="1"/>
         <field name="domain" eval="
             [
-                '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '&amp;', 
-                ('account_id.code', '=like', '5130%'), 
-                ('balance', '&lt;', '0.00'), 
-                ('account_id.code', '=like', '1911%'), 
-                ('account_id.code', '=like', '1921%'), 
-                ('account_id.code', '=like', '1931%'), 
-                ('account_id.code', '=like', '1941%'), 
-                ('account_id.code', '=like', '431%'), 
-                '&amp;', 
-                ('account_id.code', '=like', '4411%'), 
-                ('account_id.code', 'not like', '44113%'), 
-                ('account_id.code', '=like', '4421%'), 
-                ('account_id.code', '=like', '4511%'), 
-                ('account_id.code', '=like', '4521%'), 
-                ('account_id.code', '=like', '46%'), 
-                ('account_id.code', '=like', '471%'), 
-                ('account_id.code', '=like', '5132%'), 
-                ('account_id.code', '=like', '5172%'), 
+                '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '&amp;',
+                ('account_id.code', '=like', '5130%'),
+                ('balance', '&lt;', '0.00'),
+                ('account_id.code', '=like', '1911%'),
+                ('account_id.code', '=like', '1921%'),
+                ('account_id.code', '=like', '1931%'),
+                ('account_id.code', '=like', '1941%'),
+                ('account_id.code', '=like', '431%'),
+                '&amp;',
+                ('account_id.code', '=like', '4411%'),
+                ('account_id.code', 'not like', '44113%'),
+                ('account_id.code', '=like', '4421%'),
+                ('account_id.code', '=like', '4511%'),
+                ('account_id.code', '=like', '4521%'),
+                ('account_id.code', '=like', '46%'),
+                ('account_id.code', '=like', '471%'),
+                ('account_id.code', '=like', '5132%'),
+                ('account_id.code', '=like', '5172%'),
                 ('account_id.code', '=like', '4015%')
-            ]" 
+            ]"
         />
         <field name="groupby">account_id</field>
         <field name="formulas">-sum</field>

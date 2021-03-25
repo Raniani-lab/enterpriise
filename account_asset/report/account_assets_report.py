@@ -61,7 +61,6 @@ class assets_report(models.AbstractModel):
             ],
         ]
 
-    @api.model
     def _init_filter_hierarchy(self, options, previous_options=None):
         # overwrite because we don't depend on account.group
         if self.filter_hierarchy is not None:

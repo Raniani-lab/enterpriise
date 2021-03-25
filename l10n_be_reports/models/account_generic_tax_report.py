@@ -6,9 +6,9 @@ import re
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
-    def _get_reports_buttons(self):
-        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons()
-        if self.env.company.country_id.code == 'BE':
+    def _get_reports_buttons(self, options):
+        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
+        if self._get_report_country_code(options) == 'BE':
             buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'l10n_be_print_xml', 'file_export_type': _('XML')}]
         return buttons
 
@@ -33,11 +33,10 @@ class AccountGenericTaxReport(models.AbstractModel):
         # Check
         if self.env.company.country_id.code != 'BE':
             return super(AccountGenericTaxReport, self).get_xml(options)
-        company = self.env.company
-        if not company.partner_id.vat:
-            raise UserError(_('No VAT number associated with your company.'))
-        vat_no, country_from_vat = self._check_vat_number(company.partner_id.vat)
 
+        vat_no, country_from_vat = self._check_vat_number(self.get_vat_for_export(options))
+
+        company = self.env.company
         default_address = company.partner_id.address_get()
         address = self.env['res.partner'].browse(default_address.get("default")) or company.partner_id
         if not address.email:

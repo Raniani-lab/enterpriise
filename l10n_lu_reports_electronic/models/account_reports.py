@@ -12,16 +12,16 @@ from odoo.exceptions import UserError
 class AccountReport(models.AbstractModel):
     _inherit = 'account.report'
 
-    def _get_reports_buttons(self):
-        res = super()._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        res = super()._get_reports_buttons(options)
         # disable XML export for users belonging to companies other than Luxembourg country
-        if not self._is_lu_electronic_report() or self.env.company.country_id.code != 'LU':
+        if not self._is_lu_electronic_report(options) or self._get_report_country_code(options) != 'LU':
             return res
         res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 
     def get_report_filename(self, options):
-        if not self._is_lu_electronic_report():
+        if not self._is_lu_electronic_report(options):
             return super().get_report_filename(options)
         # we can't determine milliseconds using fields.Datetime, hence used python's `datetime`
         now_datetime = datetime.now()
@@ -36,12 +36,12 @@ class AccountReport(models.AbstractModel):
         return filename
 
     # TO BE OVERWRITTEN
-    def _is_lu_electronic_report(self):
+    def _is_lu_electronic_report(self, options):
         return False
 
     def _get_lu_electronic_report_values(self, options):
         company = self.env.company
-        vat = company.vat
+        vat = self.get_vat_for_export(options)
         if vat and vat.startswith("LU"): # Remove LU prefix in the XML
             vat = vat[2:]
         return {

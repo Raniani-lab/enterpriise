@@ -12,16 +12,9 @@ from odoo import models, fields, api, _
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
 
-    @api.model
-    def _get_report_country_code(self):
-        if self.env.company.country_id.code == 'DE':
-            return 'DE'
-        
-        return super(ECSalesReport, self)._get_report_country_code()
-
-    def _get_ec_sale_code_options_data(self):
-        if self._get_report_country_code() != 'DE':
-            return super(ECSalesReport, self)._get_ec_sale_code_options_data()
+    def _get_ec_sale_code_options_data(self, options):
+        if self._get_report_country_code(options) != 'DE':
+            return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)
 
         return {
             'goods': {
@@ -40,7 +33,7 @@ class ECSalesReport(models.AbstractModel):
 
     @api.model
     def _get_columns_name(self, options):
-        if self._get_report_country_code() != 'DE':
+        if self._get_report_country_code(options) != 'DE':
             return super(ECSalesReport, self)._get_columns_name(options)
 
         return [
@@ -52,11 +45,11 @@ class ECSalesReport(models.AbstractModel):
         ]
 
     @api.model
-    def _get_reports_buttons(self):
-        if self._get_report_country_code() != 'DE':
-            return super(ECSalesReport, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        if self._get_report_country_code(options) != 'DE':
+            return super(ECSalesReport, self)._get_reports_buttons(options)
 
-        return super(ECSalesReport, self)._get_reports_buttons() + [
+        return super(ECSalesReport, self)._get_reports_buttons(options) + [
             {'name': _('Export (CSV)'), 'sequence': 3, 'action': 'print_de_csvs_zip', 'file_export_type': _('ZIP')}
         ]
 

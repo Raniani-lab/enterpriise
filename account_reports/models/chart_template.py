@@ -17,6 +17,5 @@ class AccountChartTemplate(models.Model):
 
         company.account_tax_periodicity_reminder_day = 7
         # create the recurring entry
-        company.with_company(company)._create_edit_tax_reminder(fields.Date.today())
-        company.account_tax_original_periodicity_reminder_day = company.account_tax_periodicity_reminder_day
+        company.with_company(company)._get_and_update_tax_closing_moves(fields.Date.today(), include_domestic=True)
         return res

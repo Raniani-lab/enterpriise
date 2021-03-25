@@ -18,6 +18,9 @@ class L10nARVatBook(models.AbstractModel):
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_all_entries = False
 
+    def _get_country_for_fiscal_position_filter(self, options):
+        return self.env.ref('base.ar')
+
     def print_pdf(self, options):
         options.update({
             'journal_type': self.env.context.get('journal_type')

@@ -46,6 +46,7 @@ class GermanySalesReportTest(AccountSalesReportCommon):
         ])
         report = self.env['account.sales.report']
         options = report._get_options(None)
+        self.assertEqual(report._get_report_country_code(options), 'DE', "The country chosen for EC Sales list should be Germany")
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,

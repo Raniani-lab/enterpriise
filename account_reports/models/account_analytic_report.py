@@ -28,7 +28,6 @@ class analytic_report(models.AbstractModel):
     def _get_report_name(self):
         return _('Analytic Report')
 
-    @api.model
     def _init_filter_hierarchy(self, options, previous_options=None):
         # Override because we don't depend on account.group
         if previous_options and 'hierarchy' in previous_options:

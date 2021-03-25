@@ -77,7 +77,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             'street': 'Rue du Jacobet, 9',
             'zip': '7100',
             'city': 'La Louvière',
-            'vat': 'BE0475646468',
+            'vat': 'BE0475646428',
             'is_company': True,
             'category_id': [(4, cls.env.ref('l10n_be_reports.res_partner_tag_281_50').id)]
         })
@@ -87,7 +87,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             'zip': '7100',
             'city': 'La Louvière',
             'nature': '2',
-            'vat': '0475646468',
+            'vat': '0475646428',
             'remunerations': {'commissions': 1000.0},
             'paid_amount': 826.45,
             'total_amount': 1000.0,

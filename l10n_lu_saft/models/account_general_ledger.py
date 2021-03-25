@@ -9,9 +9,9 @@ from odoo.exceptions import UserError
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
-    def _get_reports_buttons(self):
-        buttons = super()._get_reports_buttons()
-        if self.env.company.country_id.code == 'LU':
+    def _get_reports_buttons(self, options):
+        buttons = super()._get_reports_buttons(options)
+        if self._get_report_country_code(options) == 'LU':
             buttons.append({'name': _('Export SAF-T (Luxembourg)'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
         return buttons
 

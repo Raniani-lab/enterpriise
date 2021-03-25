@@ -90,8 +90,8 @@ class AccountMoveL10NDe(models.Model):
 class DatevExportCSV(models.AbstractModel):
     _inherit = 'account.general.ledger'
 
-    def _get_reports_buttons(self):
-        buttons = super(DatevExportCSV, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(DatevExportCSV, self)._get_reports_buttons(options)
         buttons += [{'name': _('Export Datev (zip)'), 'sequence': 3, 'action': 'print_zip', 'file_export_type': _('Datev zip')}]
         return buttons
 
@@ -376,8 +376,8 @@ class DatevExportCSV(models.AbstractModel):
 class report_account_coa(models.AbstractModel):
     _inherit = "account.coa.report"
 
-    def _get_reports_buttons(self):
-        buttons = super(report_account_coa, self)._get_reports_buttons()
+    def _get_reports_buttons(self, options):
+        buttons = super(report_account_coa, self)._get_reports_buttons(options)
         # It doesn't make sense to print the DATEV on anything else than the
         # proper general ledger
         return [b for b in buttons if b.get('action') != 'print_zip']

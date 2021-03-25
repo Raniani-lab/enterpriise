@@ -7,6 +7,7 @@
         <field name="show_journal_filter" eval="True"/>
         <field name="analytic" eval="True"/>
         <field name="parent_id" ref="l10n_dk.account_reports_dk_statements_menu"/>
+        <field name="country_id" ref="base.dk"/>
     </record>
 
     <record id="account_income_statement_report_l10n_dk_Årets_resultat" model="account.financial.html.report.line">
@@ -98,7 +99,7 @@
         <field name="formulas">sum</field>
         <field name="groupby">account_id</field>
     </record>
-     
+
     <record id="account_income_statement_report_l10n_dk_Administrationsomkostninger" model="account.financial.html.report.line">
         <field name="name">Administrationsomkostninger</field>
         <field name="parent_id" ref="account_income_statement_report_l10n_dk_Årets_resultat"/>

@@ -8,7 +8,6 @@ from itertools import accumulate
 class AccountDisallowedExpensesReport(models.AbstractModel):
     _inherit = 'account.disallowed.expenses.report'
 
-    @api.model
     def _get_options(self, previous_options=None):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates

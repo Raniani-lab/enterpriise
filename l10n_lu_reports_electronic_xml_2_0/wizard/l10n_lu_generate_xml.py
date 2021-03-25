@@ -52,7 +52,7 @@ class L10nLuGenerateXML(models.TransientModel):
             raise ValidationError(_("The accouning firm's Matr. Number still hasn't been defined! "
                                     "Either uncheck 'Declarations and Filings done by the Accounting Firm' "
                                     "or add the accounting firm's information in the company's information."))
-        vat = company.l10n_lu_agent_vat if self.by_fidu else company.vat
+        vat = company.l10n_lu_agent_vat if self.by_fidu else self._get_export_vat()
         if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
             vat = vat[2:]
         language = self.env.context.get('lang', '').split('_')[0].upper()
@@ -68,7 +68,7 @@ class L10nLuGenerateXML(models.TransientModel):
             'agent_rcs_number': (company.l10n_lu_agent_rcs_number if self.by_fidu else company.company_registry) or "NE",
             'declarations': []
         }
-        vat = company.vat
+        vat = self._get_export_vat()
         if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
             vat = vat[2:]
         # The Matr. Number is required
@@ -90,6 +90,10 @@ class L10nLuGenerateXML(models.TransientModel):
             'url': "web/content/?model=" + self._name + "&id=" + str(self.id) + "&filename_field=filename&field=report_data&download=true&filename=" + self.filename,
             'target': 'self',
         }
+
+    def _get_export_vat(self):
+        # To be overridden for reports that need to allow foreign VAT fiscal positions
+        return self.env.company.vat
 
     def _save_xml_report(self, declarations_data, lu_template_values, filename):
         lu_template_values['declarations'] = declarations_data['declarations']

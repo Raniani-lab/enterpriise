@@ -16,7 +16,7 @@ class ReportAccountFinancialReport(models.Model):
             self.env.ref("l10n_lu_reports.account_financial_report_l10n_lu_pl_abr").id : 'CA_COMPPABR'
         }
 
-    def _is_lu_electronic_report(self):
+    def _is_lu_electronic_report(self, options):
         return self.id in self._get_lu_reports().keys()
 
     def _get_lu_electronic_report_values(self, options):
@@ -90,7 +90,7 @@ class ReportAccountFinancialReport(models.Model):
         return lu_template_values
 
     def get_xml(self, options):
-        if not self._is_lu_electronic_report():
+        if not self._is_lu_electronic_report(options):
             return super().get_xml(options)
 
         self._lu_validate_ecdf_prefix()

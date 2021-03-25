@@ -41,6 +41,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
         ])
         report = self.env['account.sales.report']
         options = report._get_options(None)
+        self.assertEqual(report._get_report_country_code(options), 'BE', "The country chosen for EC Sales list should be Belgium")
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -54,7 +55,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S (44)',   '700.00 €'),
             ],
         )
-        
+
         expected_xml = '''
         <ns2:IntraConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/IntraConsignment" IntraListingsNbr="1">
             <ns2:IntraListing SequenceNumber="1" ClientsNbr="5" DeclarantReference="___ignore___" AmountSum="3000.00">

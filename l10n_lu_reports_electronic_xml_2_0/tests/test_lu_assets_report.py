@@ -14,8 +14,11 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
     def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.company_data['company'].ecdf_prefix = '1234AB'
-        cls.company_data['company'].matr_number = '1111111111111'
+        cls.company_data['company'].write({
+            'ecdf_prefix': '1234AB',
+            'matr_number': '1111111111111',
+            'vat': 'LU12345613',
+        })
 
         cls.tax_17 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '17-P-G')])
         cls.tax_3 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '3-P-G')])

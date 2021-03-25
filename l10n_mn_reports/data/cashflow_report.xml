@@ -3,6 +3,7 @@
     <record id="account_report_cashflow" model="account.financial.html.report">
         <field name="name">Statement of cash flows</field>
         <field name='parent_id' ref='l10n_mn.account_reports_mn_statements_menu'/>
+        <field name="country_id" ref="base.mn"/>
     </record>
     <record id="report_cashflow_net" model="account.financial.html.report.line">
         <field name="code">MNCF_NET</field>

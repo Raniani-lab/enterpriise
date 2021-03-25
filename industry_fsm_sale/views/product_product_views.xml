@@ -48,6 +48,10 @@
         <field name="mode">primary</field>
         <field name="inherit_id" ref="product.product_search_form_view"/>
         <field name="arch" type="xml">
+            <filter name="services" position="before">
+                <filter string="Added Products" name="fsm_quantity" domain="[('fsm_quantity', '>', 0)]"/>
+                <separator/>
+            </filter>
             <search position="inside">
                 <searchpanel>
                     <field name="categ_id" icon="fa-th-list" string="Product Category" enable_counters="1"/>

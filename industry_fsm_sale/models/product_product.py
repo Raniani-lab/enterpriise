@@ -8,7 +8,7 @@ from odoo import api, fields, models
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    fsm_quantity = fields.Integer('Material Quantity', compute="_compute_fsm_quantity", inverse="_inverse_fsm_quantity")
+    fsm_quantity = fields.Integer('Material Quantity', compute="_compute_fsm_quantity", inverse="_inverse_fsm_quantity", search="_search_fsm_quantity")
 
     @api.depends_context('fsm_task_id')
     def _compute_fsm_quantity(self):
@@ -33,7 +33,7 @@ class ProductProduct(models.Model):
         task = self._get_contextual_fsm_task()
         if task:
             for product in self:
-                sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), ('task_id', '=', task.id), '|', '|', ('qty_delivered', '=', 0.0), ('qty_delivered_method', '=', 'manual'), ('state', 'not in', ['sale', 'done'])], limit=1)
+                sale_line = self.env['sale.order.line'].search([('order_id', '=', task.sale_order_id.id), ('product_id', '=', product.id), ('task_id', '=', task.id), '|', '|', ('qty_delivered', '=', 0.0), ('qty_delivered_method', '=', 'manual'), ('state', '!=', 'done')], limit=1)
                 if sale_line:  # existing line: change ordered qty (and delivered, if delivered method)
                     vals = {
                         'product_uom_qty': product.fsm_quantity
@@ -59,6 +59,33 @@ class ProductProduct(models.Model):
                     sale_line = self.env['sale.order.line'].create(vals)
 
     @api.model
+    def _search_fsm_quantity(self, operator, value):
+        if not (isinstance(value, int) or (isinstance(value, bool) and value is False)):
+            raise ValueError('Invalid value: %s' % (value))
+        if operator not in ('=', '!=', '<=', '<', '>', '>=') or (operator == '!=' and value is False):
+            raise ValueError('Invalid operator: %s' % (operator))
+
+        task = self._get_contextual_fsm_task()
+        if not task:
+            return []
+        op = 'inselect'
+        if value is False:
+            value = 0
+            operator = '>='
+            op = 'not inselect'
+        query = """
+            SELECT sol.product_id
+              FROM sale_order_line sol
+         LEFT JOIN sale_order so
+                ON sol.order_id = so.id
+         LEFT JOIN project_task task
+                ON so.id = task.sale_order_id
+             WHERE task.id = %s
+               AND sol.product_uom_qty {} %s
+        """.format(operator)
+        return [('id', op, (query, (task.id, value)))]
+
+    @api.model
     def _get_contextual_fsm_task(self):
         task_id = self.env.context.get('fsm_task_id')
         if task_id:
@@ -71,8 +98,9 @@ class ProductProduct(models.Model):
         if not task or quantity and quantity < 0 or not self.user_has_groups('project.group_project_user'):
             return
         self = self.sudo()
-        # don't add material on confirmed/locked SO to avoid inconsistence with the stock picking
-        if task.fsm_done or task.sale_order_id.state == 'done':
+
+        # don't add material on locked SO
+        if task.sale_order_id.state == 'done':
             return False
         # ensure that the task is linked to a sale order
         task._fsm_ensure_sale_order()

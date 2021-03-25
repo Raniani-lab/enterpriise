@@ -39,6 +39,7 @@ const FSMProductQty = FieldInteger.extend({
     start: function () {
         this.$buttons = this.$('button');
         this.$fsmQuantityElement = this.$('span[name="fsm_quantity"]');
+        this.$el.on('click', (e) => this._onWidgetClick(e));
         this._super.apply(this, arguments);
     },
 
@@ -58,6 +59,17 @@ const FSMProductQty = FieldInteger.extend({
     removeInvalidClass: function () {
         this.$fsmQuantityElement.removeClass('o_field_invalid');
         this.$fsmQuantityElement.removeAttr('aria-invalid');
+    },
+
+    /**
+     * Stop propagation to the widget parent.
+     *
+     * This method is useful when the fsm_remove_quantity button is disabled because it allows to prevent the click on kanban record.
+     *
+     * @param {MouseEvent} event
+     */
+    _onWidgetClick: function (event) {
+        event.stopImmediatePropagation();
     },
 
     /**
@@ -209,7 +221,10 @@ const FSMProductQty = FieldInteger.extend({
                 this._renderReadonly();
             }
         } catch (err) {
-            this.do_warn(false, _t("The set quantity is invalid"));
+            // incase of UserError do not display the warning
+            if (err.message.data.name !== 'odoo.exceptions.UserError') {
+                this.do_warn(false, _t("The set quantity is invalid"));
+            }
             this.setInvalidClass();
         }
     },
@@ -294,7 +309,8 @@ const FSMProductQty = FieldInteger.extend({
             .toggleClass('btn-light text-muted', this.value === 0);
         this.$buttons
             .filter('button[name="fsm_remove_quantity"]')
-            .toggleClass('btn-light text-muted', this.value === 0 || this.muteRemoveQuantityButton);
+            .toggleClass('btn-light text-muted', this.value === 0 || this.muteRemoveQuantityButton)
+            .attr('disabled', this.value === 0 || this.muteRemoveQuantityButton);
     },
 
     /**
@@ -323,6 +339,10 @@ const FSMProductQty = FieldInteger.extend({
             .text(this.value);
         this._isDirty = false;
     },
+    destroy: function () {
+        this.$el.off('click');
+        this._super.apply(this, arguments);
+    }
 });
 
 field_registry.add('fsm_product_quantity', FSMProductQty);

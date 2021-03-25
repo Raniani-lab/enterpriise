@@ -32,12 +32,12 @@ class Project(models.Model):
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
         if 'allow_quotations' in fields_list and 'allow_quotations' not in defaults and defaults.get('is_fsm'):
-            defaults['allow_quotations'] = self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task')
+            defaults['allow_quotations'] = self.env.user.has_group('industry_fsm.group_fsm_quotation_from_task')
         return defaults
 
     @api.depends('is_fsm')
     def _compute_allow_quotations(self):
-        if not self.env.user.has_group('industry_fsm_sale.group_fsm_quotation_from_task'):
+        if not self.env.user.has_group('industry_fsm.group_fsm_quotation_from_task'):
             self.allow_quotations = False
         else:
             for project in self:

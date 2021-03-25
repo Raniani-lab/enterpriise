@@ -45,11 +45,12 @@
                 ]" groups="industry_fsm.group_fsm_manager"/>
                 <filter string="To Do" name="todo" domain="[('fsm_done', '=', False), ('user_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)]"/>
                 <separator />
-                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter name="planned_today" string="Planned for Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
                     ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
                 <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Responsible" name="groupby_user" context="{'group_by':'user_id'}"/>
                     <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
@@ -130,9 +131,6 @@
                     <span name="date" title="Start Date" t-attf-class="#{deadline_class || ''}"><t t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format(date_format)"/></span>
                 </t>
             </div>
-            <xpath expr="//t[@name='planned_hours']" position='attributes'>
-                <attribute name="t-if">!record.is_fsm.raw_value and record.planned_hours.raw_value &gt; 0 and record.allow_timesheets.raw_value</attribute>
-            </xpath>
         </field>
     </record>
 

@@ -21,5 +21,11 @@
         <record id="base.default_user" model="res.users">
             <field name="groups_id" eval="[(4, ref('industry_fsm.group_fsm_manager'))]"/>
         </record>
+
+        <record id="group_fsm_quotation_from_task" model="res.groups">
+            <field name="name">Create new quotations directly from the tasks</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
     </data>
 </odoo>

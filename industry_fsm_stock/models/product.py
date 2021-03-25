@@ -4,6 +4,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class ProductProduct(models.Model):
@@ -54,6 +55,12 @@ class ProductProduct(models.Model):
             delivered_qty = sum(sale_product.mapped('qty_delivered'))
             asked_qty = sum(sale_product.mapped('product_uom_qty'))
             product.quantity_decreasable = delivered_qty != asked_qty
+
+    def write(self, vals):
+        new_fsm_quantity = vals.get('fsm_quantity')
+        if new_fsm_quantity and any(not product.quantity_decreasable and product.fsm_quantity > new_fsm_quantity for product in self):
+            raise UserError(_('You can no longer decrease the delivered quantity of a product once the task is marked as done. Please, create a return in your Inventory instead.'))
+        return super().write(vals)
 
     def action_assign_serial(self):
         """ Opens a wizard to assign SN's name on each move lines.

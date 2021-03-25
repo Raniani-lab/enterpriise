@@ -127,7 +127,7 @@ class AccountEdiFormat(models.Model):
 
         cdr_tree = etree.fromstring(cdr_str)
         code_element = cdr_tree.find('.//{*}Fault/{*}faultstring')
-        message_element = cdr_tree.find('.//{*}message')
+        message_element = cdr_tree.find('.//{*}message') or cdr_tree.find('.//{*}faultcode')
         if code_element is not None:
             code = code_element.text
             message = message_element.text
@@ -365,7 +365,7 @@ class AccountEdiFormat(models.Model):
             })
         else:
             res.update({
-                'wsdl': 'https://e-factura.sunat.gob.pe/ol-ti-itcpfegem/billService?wsdl',
+                'wsdl': self._get_sunat_wsdl(),
                 'token': UsernameToken(company.l10n_pe_edi_provider_username, company.l10n_pe_edi_provider_password),
             })
         return res
@@ -749,3 +749,63 @@ class AccountEdiFormat(models.Model):
             res.update(self._l10n_pe_edi_cancel_invoice_edi_step_1(invoices))
 
         return res
+
+    def _get_sunat_wsdl(self):
+        """This method will handle the SUNAT WSDL, in production we have an error while using zeep because of one
+        definition that has no binding, so, we just store the XML of the service and remove the unvalid data.
+        Reported https://github.com/mvantellingen/python-zeep/issues/924
+        """
+        return io.BytesIO(b'''
+            <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap11="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp200409="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsp200607="http://www.w3.org/2006/07/ws-policy" xmlns:ns0="http://service.gem.factura.comppago.registro.servicio.sunat.gob.pe/" xmlns:ns1="http://service.sunat.gob.pe" xmlns:ns2="http://www.datapower.com/extensions/http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://service.gem.factura.comppago.registro.servicio.sunat.gob.pe/">
+            <wsdl:import location="https://e-factura.sunat.gob.pe/ol-ti-itcpfegem/billService?ns1.wsdl" namespace="http://service.sunat.gob.pe"/>
+            <wsdl:binding name="BillServicePortBinding" type="ns1:billService">
+                <soap11:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+                <wsdl:operation name="getStatus">
+                <soap11:operation soapAction="urn:getStatus" style="document"/>
+                <wsdl:input name="getStatusRequest">
+                    <soap11:body use="literal"/>
+                </wsdl:input>
+                <wsdl:output name="getStatusResponse">
+                    <soap11:body use="literal"/>
+                </wsdl:output>
+                </wsdl:operation>
+                <wsdl:operation name="sendBill">
+                <soap11:operation soapAction="urn:sendBill" style="document"/>
+                <wsdl:input name="sendBillRequest">
+                    <soap11:body use="literal"/>
+                </wsdl:input>
+                <wsdl:output name="sendBillResponse">
+                    <soap11:body use="literal"/>
+                </wsdl:output>
+                </wsdl:operation>
+                <wsdl:operation name="sendPack">
+                <soap11:operation soapAction="urn:sendPack" style="document"/>
+                <wsdl:input name="sendPackRequest">
+                    <soap11:body use="literal"/>
+                </wsdl:input>
+                <wsdl:output name="sendPackResponse">
+                    <soap11:body use="literal"/>
+                </wsdl:output>
+                </wsdl:operation>
+                <wsdl:operation name="sendSummary">
+                <soap11:operation soapAction="urn:sendSummary" style="document"/>
+                <wsdl:input name="sendSummaryRequest">
+                    <soap11:body use="literal"/>
+                </wsdl:input>
+                <wsdl:output name="sendSummaryResponse">
+                    <soap11:body use="literal"/>
+                </wsdl:output>
+                </wsdl:operation>
+            </wsdl:binding>
+            <wsdl:service name="billService">
+                <wsdl:port name="BillServicePort" binding="ns0:BillServicePortBinding">
+                <soap11:address location="https://e-factura.sunat.gob.pe:443/ol-ti-itcpfegem/billService"/>
+                </wsdl:port>
+                <wsdl:port name="BillServicePort.0" binding="ns2:BillServicePortBinding">
+                <soap12:address location="https://e-factura.sunat.gob.pe:443/ol-ti-itcpfegem/billService"/>
+                </wsdl:port>
+                <wsdl:port name="BillServicePort.3" binding="ns0:BillServicePortBinding">
+                <soap11:address location="https://e-factura.sunat.gob.pe:443/ol-ti-itcpfegem/billService"/>
+                </wsdl:port>
+            </wsdl:service>
+            </wsdl:definitions>''')

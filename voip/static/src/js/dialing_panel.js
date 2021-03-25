@@ -66,6 +66,7 @@ const DialingPanel = Widget.extend({
         this._isFolded = false;
         this._isFoldedBeforeCall = false;
         this._isInCall = false;
+        this._isMobileDevice = config.device.isMobileDevice;
         this._isPostpone = false;
         this._isShow = false;
         this._isWebRTCSupport = window.RTCPeerConnection && window.MediaStream && navigator.mediaDevices;

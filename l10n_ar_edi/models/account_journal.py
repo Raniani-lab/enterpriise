@@ -53,6 +53,14 @@ class AccountJournal(models.Model):
         :return: integer with the last number register in AFIP for the given document type in this journals AFIP POS
         """
         self.ensure_one()
+
+        # do not access to AFIP web service in test mode
+        # Note:
+        # test mode is enabled only when self.registry.enter_test_mode(cr) is explicitely called.
+        # this is the case for upgrade tests for example, but not for l10n_ar_edi tests.
+        if self.env.registry.in_test_mode():
+            return 0
+
         pos_number = self.l10n_ar_afip_pos_number
         afip_ws = self.l10n_ar_afip_ws
         connection = self.company_id._l10n_ar_get_connection(afip_ws)

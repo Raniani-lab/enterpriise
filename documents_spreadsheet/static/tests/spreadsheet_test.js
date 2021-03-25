@@ -812,7 +812,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     });
 
     test("Verify presence of pivots in top menu bar in a spreadsheet with a pivot", async function (assert) {
-        assert.expect(5);
+        assert.expect(7);
         const { actionManager, model, env } = await createSpreadsheetFromPivot({
             model: "partner",
             data: this.data,
@@ -845,11 +845,13 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "pivots");
         const children = topbarMenuRegistry.getChildren(root, env);
-        assert.equal(children.length, 3, "There should be 3 children (2 pivots and 'Refresh pivot values') in the menu");
+        assert.equal(children.length, 5, "There should be 5 children in the menu");
         assert.equal(children[0].name, "View partner (#1)");
         assert.equal(children[1].name, "View partner (#2)");
-        // bottom child
+        // bottom children
         assert.equal(children[2].name, "Refresh pivot values");
+        assert.equal(children[3].name, "re-Insert Pivot");
+        assert.equal(children[4].name, "Insert pivot cell");
         actionManager.destroy();
     });
 

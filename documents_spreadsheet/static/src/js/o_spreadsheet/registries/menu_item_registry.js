@@ -49,29 +49,28 @@ topbarMenuRegistry.add("pivots", {
             },
             separator: index === env.getters.getPivots().length - 1,
         })))
-        children.push(
+        return children.concat([
             createFullMenuItem(`refresh_pivot`, {
                 name: _t("Refresh pivot values"),
                 sequence: env.getters.getPivots().length + 1,
                 action: (env) => env.dispatch("REFRESH_PIVOT"),
                 separator: true,
-            })
-        );
-        return children;
+            }),
+            createFullMenuItem(`reinsert_pivot`, {
+                name: _t("re-Insert Pivot"),
+                sequence: 60,
+                children: REINSERT_PIVOT_CHILDREN,
+                isVisible: (env) => env.getters.getPivots().length,
+            }),
+            createFullMenuItem(`insert_pivot_cell`, {
+                name: _t("Insert pivot cell"),
+                sequence: 70,
+                children: INSERT_PIVOT_CELL_CHILDREN,
+                isVisible: (env) => env.getters.getPivots().length,
+            }),
+        ]);
     },
     isVisible: (env) => env.getters.getPivots().length,
-});
-topbarMenuRegistry.addChild("reinsert_pivot", ["insert"], {
-    name: _t("re-Insert Pivot"),
-    sequence: 60,
-    children: REINSERT_PIVOT_CHILDREN,
-    isVisible: (env) => env.getters.getPivots().length,
-});
-topbarMenuRegistry.addChild("insert_pivot_cell", ["insert"], {
-    name: _t("Insert pivot cell"),
-        sequence: 70,
-        children: INSERT_PIVOT_CELL_CHILDREN,
-        isVisible: (env) => env.getters.getPivots().length,
 });
 
 cellMenuRegistry.add("reinsert_pivot", {

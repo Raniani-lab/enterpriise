@@ -102,4 +102,8 @@
             }
         }
     }
+
+    .o_rtl .o_control_panel .o_back_button:before {
+        transform: rotate(180deg);
+    }
 }

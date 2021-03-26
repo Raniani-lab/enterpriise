@@ -13,6 +13,7 @@ class account_journal(models.Model):
                 ('statement_id.journal_id', 'in', self.ids),
                 ('is_reconciled', '=', False),
                 ('date', '>', lock_date),
+                ('state', '=', 'posted'),
             ], limit=limit)
             return {
                 'type': 'ir.actions.client',

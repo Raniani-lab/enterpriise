@@ -297,7 +297,7 @@
 
     <record id="l10n_be_insured_children" model="hr.contract.salary.advantage">
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_children')])"/>
-        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_children')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="False"/>
         <field name="sequence">42</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
@@ -307,7 +307,7 @@
 
     <record id="l10n_be_insured_adults" model="hr.contract.salary.advantage">
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_adults')])"/>
-        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'insured_relative_adults')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="False"/>
         <field name="sequence">43</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>

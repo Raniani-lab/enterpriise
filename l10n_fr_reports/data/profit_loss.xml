@@ -10,6 +10,7 @@
     <field name="level" eval="1"/>
     <field name="sequence" eval="2"/>
     <field name="financial_report_id" ref="account_financial_report_l10n_fr_cdr"/>
+    <field name="parent_id" eval="False"/>
     <field name="code">I</field>
     <field name="formulas">i_1 + i_2 + i_3 + i_4 + i_5 + i_6 + i_7</field>
   </record>

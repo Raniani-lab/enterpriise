@@ -32,23 +32,6 @@ class WebsiteSale(main.WebsiteSale):
             })
         return request.redirect("/shop/payment")
 
-    @http.route()
-    def payment(self, **post):
-        res = super(WebsiteSale, self).payment(**post)
-        order = request.website.sale_get_order()
-        if 'acquirers' not in res.qcontext:
-            return res
-
-        if not order.carrier_id.delivery_type == 'ups' or not order.carrier_id.ups_cod:
-            res.qcontext['acquirers'] = [
-                acquirer for acquirer in res.qcontext['acquirers'] if acquirer != request.env.ref('website_delivery_ups.payment_acquirer_ups_cod')
-            ]
-        else:
-            res.qcontext['acquirers'] = [
-                acquirer for acquirer in res.qcontext['acquirers'] if acquirer == request.env.ref('website_delivery_ups.payment_acquirer_ups_cod')
-            ]
-        return res
-
 
 class CustomerPortal(portal.CustomerPortal):
 

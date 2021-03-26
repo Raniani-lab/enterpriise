@@ -72,7 +72,7 @@ class SaleOrder(models.Model):
             'analytic_account_id': self.analytic_account_id.id,
             'recurring_next_date': recurring_next_date,
             'recurring_invoice_day': recurring_invoice_day,
-            'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode == 'success_payment' else False,
+            'payment_token_id': self.transaction_ids._get_last().token_id.id if template.payment_mode == 'success_payment' else False,
             'campaign_id': self.campaign_id.id,
             'medium_id': self.medium_id.id,
             'source_id': self.source_id.id,
@@ -167,10 +167,6 @@ class SaleOrder(models.Model):
         self.update_existing_subscriptions()
         self.create_subscriptions()
         return res
-
-    def _get_payment_type(self, tokenize=False):
-        contains_subscription = any(line.product_id.recurring_invoice for line in self.sudo().order_line)
-        return super()._get_payment_type(tokenize=contains_subscription or tokenize)
 
 
 class SaleOrderLine(models.Model):

@@ -4,31 +4,69 @@
 from odoo import api, fields, models
 
 
-class PaymentToken(models.Model):
-    _name = 'payment.token'
-    _inherit = 'payment.token'
+class PaymentAcquirer(models.Model):
 
-    def get_linked_records(self):
-        res = super(PaymentToken, self).get_linked_records()
+    _inherit = 'payment.acquirer'
 
-        for token in self:
-            subscriptions = self.env['sale.subscription'].search([('payment_token_id', '=', token.id)])
-            for sub in subscriptions:
-                res[token.id].append({
-                    'description': subscriptions._description,
-                    'id': sub.id,
-                    'name': sub.name,
-                    'url': '/my/subscription/' + str(sub.id) + '/' + str(sub.uuid)})
+    @api.model
+    def _is_tokenization_required(self, sale_order_id=None, **kwargs):
+        """ Override of payment to return whether a subscription product is included in the order.
 
-        return res
+        :param int sale_order_id: The sale order to be paid, if any, as a `sale.order` id
+        :return: Whether a subscription product is include in the sale order
+        :rtype: bool
+        """
+        if sale_order_id:
+            sale_order = self.env['sale.order'].browse(sale_order_id).exists()
+            return any(product.recurring_invoice for product in sale_order.order_line.product_id)
+        return super()._is_tokenization_required(sale_order_id=sale_order_id, **kwargs)
 
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
-    renewal_allowed = fields.Boolean(compute="_compute_renewal_allowed", store=False, help="Technical field used to control the renewal flow based on the transaction's state.")
+    renewal_allowed = fields.Boolean(
+        help="Technical field used to control the renewal flow based on the transaction state",
+        compute='_compute_renewal_allowed', store=False)
 
     @api.depends('state')
     def _compute_renewal_allowed(self):
         for tx in self:
-            tx.renewal_allowed = tx.state in ['done', 'authorized']
+            tx.renewal_allowed = tx.state in ('done', 'authorized')
+
+
+class PaymentToken(models.Model):
+    _name = 'payment.token'
+    _inherit = 'payment.token'
+
+    def _handle_deactivation_request(self):
+        """ Override of payment to void the token on linked subscriptions.
+
+        Note: self.ensure_one()
+
+        :return: None
+        """
+        super()._handle_deactivation_request()  # Called first in case an UserError is raised
+        linked_subscriptions = self.env['sale.subscription'].search(
+            [('payment_token_id', '=', self.id)]
+        )
+        linked_subscriptions.payment_token_id = False
+
+    def get_linked_records_info(self):
+        """ Override of payment to add information about subscriptions linked to the current token.
+
+        Note: self.ensure_one()
+
+        :return: The list of information about linked subscriptions
+        :rtype: list
+        """
+        res = super().get_linked_records_info()
+        subscriptions = self.env['sale.subscription'].search([('payment_token_id', '=', self.id)])
+        for sub in subscriptions:
+            res.append({
+                'description': subscriptions._description,
+                'id': sub.id,
+                'name': sub.name,
+                'url': f'/my/subscription/{sub.id}/{sub.uuid}'
+            })
+        return res

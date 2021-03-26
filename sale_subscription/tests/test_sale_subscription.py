@@ -52,10 +52,10 @@ class TestSubscription(TestSubscriptionCommon):
         values = {
             'amount': invoice.amount_total,
             'acquirer_id': self.acquirer.id,
-            'type': 'server2server',
+            'operation': 'offline',
             'currency_id': invoice.currency_id.id,
             'reference': reference,
-            'payment_token_id': payment_method.id,
+            'token_id': payment_method.id,
             'partner_id': invoice.partner_id.id,
             'partner_country_id': invoice.partner_id.country_id.id,
             'invoice_ids': [(6, 0, [invoice.id])],
@@ -134,7 +134,7 @@ class TestSubscription(TestSubscriptionCommon):
              'provider': 'transfer',
              'company_id': self.company.id,
              'state': 'test',
-             'view_template_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
+             'redirect_form_view_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
 
         self.payment_method = self.env['payment.token'].create(
             {'name': 'Jimmy McNulty',

@@ -27,9 +27,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                 session: {
                     expiration_date: '2019-11-09',
                     expiration_reason: '',
-                    module_list: ['mail'],
                     warning: 'admin',
                 },
+                messaging: true,
             });
             Parent.template = xml`<ExpirationPanel t-on-hide-expiration-panel="_onHideExpirationPanel"/>`;
 
@@ -69,9 +69,10 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-24',
                         expiration_reason: 'demo',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
+
                 },
                 async function (route) {
                     if (route === "/web/dataset/call_kw/res.users/search_count") {
@@ -125,9 +126,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-15',
                         expiration_reason: 'trial',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args) {
                     if (route === "/web/dataset/call_kw/ir.config_parameter/get_param") {
@@ -281,9 +282,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-15',
                         expiration_reason: 'trial',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args, options) {
                     assert.step(args.method);
@@ -394,9 +395,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-08',
                         expiration_reason: 'trial',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args, options) {
                     if (args.method === 'get_param') {
@@ -465,9 +466,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-20',
                         expiration_reason: 'renewal',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args, options) {
                     if (args.method === 'get_param') {
@@ -536,9 +537,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-20',
                         expiration_reason: 'renewal',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args, options) {
                     if (args.method === 'get_param') {
@@ -592,9 +593,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-20',
                         expiration_reason: 'renewal',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args, options) {
                     if (args.method === 'get_param') {
@@ -642,9 +643,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                     session: {
                         expiration_date: '2019-10-20',
                         expiration_reason: 'upsell',
-                        module_list: ['mail'],
                         warning: 'admin',
                     },
+                    messaging: true,
                 },
                 async function (route, args) {
                     if (args.method === 'get_param') {
@@ -687,9 +688,9 @@ odoo.define("web_enterprise.expiration_panel_tests", function (require) {
                 session: {
                     expiration_date: '2019-11-08',
                     expiration_reason: '',
-                    module_list: ['mail'],
                     warning: 'user',
                 },
+                messaging: true,
             });
             Parent.template = xml`<ExpirationPanel/>`;
 

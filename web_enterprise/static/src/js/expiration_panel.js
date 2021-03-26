@@ -37,7 +37,7 @@ odoo.define("web_enterprise.ExpirationPanel", function (require) {
 
             // Check if mail (discuss) is installed
             // (this is a way to check that there is an app different from Apps or Settings installed)
-            this.mailInstalled = this.env.session.module_list.some(m => m === "mail");
+            this.mailInstalled = 'messaging' in this.env;
 
             // Type of logged-in accounts addressed by message
             this.warning = this.env.session.warning;

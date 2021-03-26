@@ -124,6 +124,10 @@ class HrContract(models.Model):
                 ('contract_id', 'in', self.filtered(lambda c: c.state != 'cancel').ids),
                 ('state', 'in', ['draft', 'verify']),
             ]).action_payslip_cancel()
+        if vals.get('state', False) in ['open', 'close']:
+            employees = self.mapped('employee_id')
+            trigger = 'contract_start' if vals.get('state') == 'open' else 'contract_end'
+            employees._launch_plans_from_trigger(trigger=trigger)
         res = super().write(vals)
         dependendant_fields = self._get_fields_that_recompute_payslip()
         if any(key in dependendant_fields for key in vals.keys()):

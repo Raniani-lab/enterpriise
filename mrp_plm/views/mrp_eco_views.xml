@@ -424,7 +424,7 @@
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
-                            <field name="type_id" widget="selection" attrs="{'readonly': [('state', '!=', 'confirmed')]}"/>
+                            <field name="type_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'confirmed')]}"/>
                             <field name="type" widget="radio" attrs="{'readonly': [('state', '!=', 'confirmed')]}"/>
                             <field name="product_tmpl_id" domain="[('type', 'in', ['consu', 'product'])]" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', '=', 'routing')], 'required': [('type', 'in', ('bom', 'both', 'product'))]}"/>
                             <field name="bom_id" context="{'default_product_tmpl_id': product_tmpl_id}" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('routing', 'product'))], 'required': [('type', 'in', ('bom', 'both'))]}"/>

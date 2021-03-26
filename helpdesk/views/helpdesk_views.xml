@@ -197,7 +197,7 @@
                             <separator colspan="2" string="Apply on"/>
                             <field name="team_id" domain="[('use_sla', '=', True)]"/>
                             <field name="priority" widget="priority"/>
-                            <field name="ticket_type_id" widget="selection"/>
+                            <field name="ticket_type_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="partner_ids" widget="many2many_tags"/>
 

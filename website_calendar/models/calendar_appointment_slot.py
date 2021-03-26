@@ -9,7 +9,7 @@ class CalendarAppointmentSlot(models.Model):
     _name = "calendar.appointment.slot"
     _description = "Online Appointment : Time Slot"
     _rec_name = "weekday"
-    _order = "weekday, hour"
+    _order = "weekday, start_hour"
 
     appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete='cascade')
     weekday = fields.Selection([
@@ -21,25 +21,25 @@ class CalendarAppointmentSlot(models.Model):
         ('6', 'Saturday'),
         ('7', 'Sunday'),
     ], string='Week Day', required=True, default='1')
-    hour = fields.Float('Starting Hour', required=True, default=8.0)
+    start_hour = fields.Float('Starting Hour', required=True, default=8.0)
     end_hour = fields.Float('Ending Hour', required=True, default=17.0)
 
-    @api.constrains('hour')
+    @api.constrains('start_hour')
     def check_hour(self):
-        if any(slot.hour < 0.00 or slot.hour >= 24.00 for slot in self):
+        if any(slot.start_hour < 0.00 or slot.start_hour >= 24.00 for slot in self):
             raise ValidationError(_("Please enter a valid hour between 0:00 and 24:00 for your slots."))
 
-    @api.constrains('hour', 'end_hour')
+    @api.constrains('start_hour', 'end_hour')
     def check_delta_hours(self):
-        if any(self.filtered(lambda slot: slot.hour >= slot.end_hour)):
+        if any(self.filtered(lambda slot: slot.start_hour >= slot.end_hour)):
             raise ValidationError(_(
-                "At least one slot duration from start to end is invalid: a slot should end after start"
+                "Atleast one slot duration from start to end is invalid: a slot should end after start"
             ))
-        if not any(self.filtered(lambda slot: slot.end_hour >= slot.hour + slot.appointment_type_id.appointment_duration)):
+        if not any(self.filtered(lambda slot: slot.end_hour >= slot.start_hour + slot.appointment_type_id.appointment_duration)):
             raise ValidationError(_(
-                "At least one slot duration is not enough to create a slot with the duration set in the appointment type"
+                "Atleast one slot duration is not enough to create a slot with the duration set in the appointment type"
             ))
 
     def name_get(self):
         weekdays = dict(self._fields['weekday'].selection)
-        return self.mapped(lambda slot: (slot.id, "%s, %02d:%02d" % (weekdays.get(slot.weekday), int(slot.hour), int(round((slot.hour % 1) * 60)))))
+        return self.mapped(lambda slot: (slot.id, "%s, %02d:%02d" % (weekdays.get(slot.weekday), int(slot.start_hour), int(round((slot.start_hour % 1) * 60)))))

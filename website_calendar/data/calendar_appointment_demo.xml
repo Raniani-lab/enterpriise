@@ -20,28 +20,28 @@
     <record id="calendar_appointment_slot_1" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_0"/>
         <field name="weekday">5</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
     <record id="calendar_appointment_slot_2" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_0"/>
         <field name="weekday">3</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
     <record id="calendar_appointment_slot_3" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_0"/>
         <field name="weekday">1</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">14</field>
     </record>
 
     <record id="calendar_appointment_slot_4" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_0"/>
         <field name="weekday">1</field>
-        <field name="hour">15.5</field>
+        <field name="start_hour">15.5</field>
         <field name="end_hour">16.5</field>
     </record>
 
@@ -59,28 +59,28 @@
     <record id="calendar_appointment_1_slot_1" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_1"/>
         <field name="weekday">5</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
     <record id="calendar_appointment_1_slot_2" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_1"/>
         <field name="weekday">3</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
     <record id="calendar_appointment_1_slot_3" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_1"/>
         <field name="weekday">1</field>
-        <field name="hour">9</field>
+        <field name="start_hour">9</field>
         <field name="end_hour">14</field>
     </record>
 
     <record id="calendar_appointment_1_slot_4" model="calendar.appointment.slot">
         <field name="appointment_type_id" ref="calendar_appointment_1"/>
         <field name="weekday">1</field>
-        <field name="hour">15.5</field>
+        <field name="start_hour">15.5</field>
         <field name="end_hour">16.5</field>
     </record>
 

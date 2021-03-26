@@ -132,9 +132,9 @@ class CalendarAppointmentType(models.Model):
                       ... ]
         """
         def append_slot(day, slot):
-            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))))
+            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))))
             local_end = appt_tz.localize(
-                datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
+                datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
 
             while local_start.hour <= slot.end_hour - self.appointment_duration:
                 slots.append({

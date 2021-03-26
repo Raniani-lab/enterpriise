@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from datetime import timedelta
 from random import randint
 
 from odoo import api, fields, models, tools, _
+from odoo.addons.iap.tools import iap_tools
 from odoo.osv import expression
 from odoo.exceptions import AccessError
 
@@ -250,7 +250,8 @@ class HelpdeskTicket(models.Model):
         readonly=False, tracking=True,
         domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
-    partner_ticket_count = fields.Integer('Number of closed tickets from the same partner', compute='_compute_partner_ticket_count')
+    partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
+    partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
     is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
     # Used to submit tickets from a contact form
@@ -407,15 +408,27 @@ class HelpdeskTicket(models.Model):
             if ticket.partner_id:
                 ticket.partner_phone = ticket.partner_id.phone
 
-    @api.depends('partner_id')
+    @api.depends('partner_id', 'partner_email', 'partner_phone')
     def _compute_partner_ticket_count(self):
-        data = self.env['helpdesk.ticket'].read_group([
-            ('partner_id', 'in', self.mapped('partner_id').ids),
-            ('stage_id.is_close', '=', False)
-        ], ['partner_id'], ['partner_id'], lazy=False)
-        ticket_per_partner_map = dict((item['partner_id'][0], item['__count']) for item in data)
+
+        def _get_email_to_search(email):
+            domain = tools.email_domain_extract(email)
+            return ("@" + domain) if domain not in iap_tools._MAIL_DOMAIN_BLACKLIST else email
+
         for ticket in self:
-            ticket.partner_ticket_count = ticket_per_partner_map.get(ticket.partner_id.id, 0)
+            domain = []
+            partner_ticket = ticket
+            if ticket.partner_email:
+                email_search = _get_email_to_search(ticket.partner_email)
+                domain = expression.OR([domain, [('partner_email', 'ilike', email_search)]])
+            if ticket.partner_phone:
+                domain = expression.OR([domain, [('partner_phone', 'ilike', ticket.partner_phone)]])
+            if ticket.partner_id:
+                domain = expression.OR([domain, [("partner_id", "child_of", ticket.partner_id.commercial_partner_id.id)]])
+            if domain:
+                partner_ticket = self.search(domain)
+            ticket.partner_ticket_ids = partner_ticket
+            ticket.partner_ticket_count = len(partner_ticket) - 1
 
     @api.depends('assign_date')
     def _compute_assign_hours(self):
@@ -584,6 +597,8 @@ class HelpdeskTicket(models.Model):
         # update last stage date when changing stage
         if 'stage_id' in vals:
             vals['date_last_stage_update'] = now
+            if 'kanban_state' not in vals:
+                vals['kanban_state'] = 'normal'
 
         res = super(HelpdeskTicket, self - assigned_tickets - closed_tickets).write(vals)
         res &= super(HelpdeskTicket, assigned_tickets - closed_tickets).write(dict(vals, **{
@@ -764,19 +779,19 @@ class HelpdeskTicket(models.Model):
         self.ensure_one()
         self.user_id = self.env.user
 
-    def open_customer_tickets(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Customer Tickets'),
-            'res_model': 'helpdesk.ticket',
-            'view_mode': 'kanban,tree,form,pivot,graph',
-            'context': {'search_default_is_open': True, 'search_default_partner_id': self.partner_id.id}
-        }
-
     def action_get_attachment_tree_view(self):
         attachment_action = self.env.ref('base.action_attachment')
         action = attachment_action.read()[0]
         action['domain'] = str(['&', ('res_model', '=', self._name), ('res_id', 'in', self.ids)])
+        return action
+
+    def action_open_helpdesk_ticket(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")
+        action.update({
+            'domain': [('id', '!=', self.id), ('id', 'in', self.partner_ticket_ids.ids)],
+            'context': {'create': False},
+        })
         return action
 
     # ------------------------------------------------------------

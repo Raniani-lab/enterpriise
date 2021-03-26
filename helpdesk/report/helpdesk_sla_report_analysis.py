@@ -31,7 +31,7 @@ class HelpdeskSLAReport(models.Model):
     sla_reached_datetime = fields.Datetime("SLA Reached Date", group_operator='min', readonly=True)
     sla_status = fields.Selection([('failed', 'Failed'), ('reached', 'Reached'), ('ongoing', 'Ongoing')], string="Status", readonly=True)
     sla_status_failed = fields.Boolean("SLA Status Failed", group_operator='bool_or', readonly=True)
-    sla_exceeded_days = fields.Integer("Day to reach SLA", group_operator='avg', readonly=True, help="Day to reach the stage of the SLA, without taking the working calendar into account")
+    sla_exceeded_days = fields.Integer("Days to Reach SLA", group_operator='avg', readonly=True, help="Day to reach the stage of the SLA, without taking the working calendar into account")
 
     team_id = fields.Many2one('helpdesk.team', string='Team', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)

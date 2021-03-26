@@ -479,7 +479,6 @@
                                 </div>
                                 <div t-if="record.sla_deadline.raw_value">
                                     <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red" t-value="'oe_kanban_text_red'"/>
-                                    <span class="fa fa-clock-o" title="Deadline" role="img" aria-label="Deadline"/>
                                     <span t-attf-class="{{red}}">
                                         <field name="sla_deadline" widget="remaining_days"/>
                                     </span>
@@ -487,9 +486,9 @@
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
                                         <field name="priority" widget="priority"/>
+                                        <field name="activity_ids" widget="kanban_activity"/>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <field name="activity_ids" widget="kanban_activity"/>
                                         <field name="kanban_state" widget="state_selection" groups="base.group_user"/>
                                         <field name="user_id" widget="many2one_avatar_user"/>
                                     </div>
@@ -519,11 +518,13 @@
                     <field name="legend_blocked" invisible="1"/>
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
-                    <field name="partner_ticket_count" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_get_attachment_tree_view" class="oe_stat_button" icon="fa-book"
                             type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
                             <field name="attachment_number" widget="statinfo" string="Documents"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': ['|', ('partner_id', '=', False), ('partner_ticket_count', '=', 0)]}">
+                            <field name="partner_ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
@@ -568,7 +569,7 @@
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">list,kanban,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
-        <field name="context">{'search_default_my_ticket': True, 'search_default_is_open': True}</field>
+        <field name="context">{'search_default_my_ticket': True, 'search_default_is_open': True, 'default_user_id': uid}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!

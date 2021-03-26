@@ -133,7 +133,7 @@ class TestHelpdeskFlow(HelpdeskCommon):
             'team_id': self.test_team.id,
             'partner_id': partner.id,
         })
-        self.assertTrue(ticket1.partner_ticket_count == 2, "Incorrect number of tickets from the same partner.")
+        self.assertTrue(ticket1.partner_ticket_count == 1, "Incorrect number of tickets from the same partner.")
 
     def test_team_assignation_randomly(self):
         # we put the helpdesk user and manager in the test_team's members

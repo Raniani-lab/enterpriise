@@ -42,8 +42,10 @@ html {
             -webkit-overflow-scrolling: touch;
           }
           @include media-breakpoint-down(sm) {
-            overflow: visible;
             height: auto;
+            & > div {
+              overflow: auto visible;
+            }
           }
         }
       }

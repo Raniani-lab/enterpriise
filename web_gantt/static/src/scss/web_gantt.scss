@@ -71,7 +71,6 @@ $gantt-unavailability-bg: $gray-200;
     box-shadow: 0 5px 20px -15px rgba(black, .3);
     user-select: none;
     @include media-breakpoint-down(sm) {
-        overflow-x: auto;
         .o_gantt_view_container {
             width: max-content;
         }

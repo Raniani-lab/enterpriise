@@ -578,7 +578,9 @@ class SaleSubscription(models.Model):
         partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
         fpos = self.env['account.fiscal.position'].with_company(company).get_fiscal_position(self.partner_id.id, partner_shipping_id)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
-        if self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.company_id.invoice_terms:
+        if self.description:
+            narration += '\n' + self.description
+        elif self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.company_id.invoice_terms:
             narration += '\n' + self.company_id.invoice_terms
         res = {
             'move_type': 'out_invoice',

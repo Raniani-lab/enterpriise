@@ -84,7 +84,7 @@ class AccountMove(models.Model):
     def _compute_error_message(self):
         for record in self:
             if record.extract_status_code not in (SUCCESS, NOT_READY):
-                warnings = self.get_warnings()
+                warnings = record.get_warnings()
                 if warnings:
                     warnings_messages = []
                     if WARNING_DUPLICATE_VENDOR_REFERENCE in warnings:

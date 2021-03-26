@@ -1,8 +1,8 @@
 odoo.define('approvals/static/src/models/approval/approval.js', function (require) {
 'use strict';
 
-const { registerNewModel } = require('mail/static/src/model/model_core.js');
-const { attr, one2one } = require('mail/static/src/model/model_field.js');
+const { registerNewModel } = require('@mail/model/model_core');
+const { attr, one2one } = require('@mail/model/model_field');
 
 function factory(dependencies) {
 

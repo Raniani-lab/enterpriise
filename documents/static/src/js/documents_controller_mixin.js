@@ -6,7 +6,7 @@ const DocumentViewer = require('documents.DocumentViewer');
 const { computeMultiSelection } = require('documents.utils');
 
 const components = {
-    ChatterContainer: require('mail/static/src/components/chatter_container/chatter_container.js'),
+    ChatterContainer: require('@mail/components/chatter_container/chatter_container')[Symbol.for("default")],
 };
 
 const { _t, qweb } = require('web.core');
@@ -575,7 +575,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 default_folder_id: this.searchModel.get('selectedFolderId'),
                 default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
             },
-            fullscreen: config.device.isMobile, 
+            fullscreen: config.device.isMobile,
             on_close: async () => await this.reload()
         });
     },

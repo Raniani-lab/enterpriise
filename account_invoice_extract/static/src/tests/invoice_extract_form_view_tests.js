@@ -7,7 +7,7 @@ const {
     beforeEach,
     nextAnimationFrame,
     start,
-} = require('mail/static/src/utils/test_utils.js');
+} = require('@mail/utils/test_utils');
 
 const FormRenderer = require('account_invoice_extract.FormRenderer');
 const FormView = require('account_invoice_extract.FormView');

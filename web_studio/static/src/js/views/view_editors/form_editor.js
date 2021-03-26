@@ -12,7 +12,7 @@ var pyUtils = require('web.py_utils');
 var _t = core._t;
 
 const components = {
-    ChatterContainer: require('mail/static/src/components/chatter_container/chatter_container.js'),
+    ChatterContainer: require('@mail/components/chatter_container/chatter_container')[Symbol.for("default")],
 };
 const { ComponentWrapper } = require('web.OwlCompatibility');
 
@@ -177,7 +177,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         });
         return $button;
     },
-    
+
     /**
      * @override
      * @private

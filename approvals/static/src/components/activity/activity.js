@@ -2,7 +2,7 @@ odoo.define('approvals/static/src/components/activity/activity.js', function (re
 'use strict';
 
 const components = {
-    Activity: require('mail/static/src/components/activity/activity.js'),
+    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
     Approval: require('approvals/static/src/components/approval/approval.js'),
 };
 

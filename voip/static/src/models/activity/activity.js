@@ -5,8 +5,8 @@ const {
     registerClassPatchModel,
     registerFieldPatchModel,
     registerInstancePatchModel,
-} = require('mail/static/src/model/model_core.js');
-const { attr } = require('mail/static/src/model/model_field.js');
+} = require('@mail/model/model_core');
+const { attr } = require('@mail/model/model_field');
 
 registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
     //----------------------------------------------------------------------

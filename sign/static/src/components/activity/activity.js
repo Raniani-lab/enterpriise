@@ -2,7 +2,7 @@ odoo.define('sign/static/src/components/activity/activity.js', function (require
 'use strict';
 
 const components = {
-    Activity: require('mail/static/src/components/activity/activity.js'),
+    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
     SignRequest: require('sign/static/src/components/sign_request/sign_request.js'),
 };
 

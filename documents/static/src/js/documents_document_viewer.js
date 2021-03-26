@@ -2,7 +2,7 @@ odoo.define('documents.DocumentViewer', function (require) {
 'use strict';
 
 const PdfManager = require('documents.component.PdfManager');
-const DocumentViewer = require('mail.DocumentViewer');
+const DocumentViewer = require('@mail/js/document_viewer')[Symbol.for("default")];
 const { _t } = require('web.core');
 const { ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
 

@@ -1,7 +1,7 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
-const { afterEach, beforeEach } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach } = require('@mail/utils/test_utils');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');

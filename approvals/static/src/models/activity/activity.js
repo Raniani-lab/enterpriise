@@ -4,9 +4,9 @@ odoo.define('approvals/static/src/models/activity/activity.js', function (requir
 const {
     registerClassPatchModel,
     registerFieldPatchModel,
-} = require('mail/static/src/model/model_core.js');
-const { one2one } = require('mail/static/src/model/model_field.js');
-const { insert, unlinkAll } = require('mail/static/src/model/model_field_command.js');
+} = require('@mail/model/model_core');
+const { one2one } = require('@mail/model/model_field');
+const { insert, unlinkAll } = require('@mail/model/model_field_command');
 
 registerClassPatchModel('mail.activity', 'approvals/static/src/models/activity/activity.js', {
     //----------------------------------------------------------------------

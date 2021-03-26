@@ -1,6 +1,6 @@
 odoo.define('mail_enterprise/static/src/components/messaging_menu/messaging_menu.js', function (require) {
 
-const MessagingMenu = require('mail/static/src/components/messaging_menu/messaging_menu.js');
+const MessagingMenu = require('@mail/components/messaging_menu/messaging_menu')[Symbol.for("default")];
 
 const { useBackButton } = require('web_mobile.hooks');
 const { patch } = require('web.utils');

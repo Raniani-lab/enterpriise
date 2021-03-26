@@ -2,7 +2,7 @@ odoo.define('mail_enterprise/static/src/components/attachment/attachment_tests.j
 'use strict';
 
 const components = {
-    Attachment: require('mail/static/src/components/attachment/attachment.js'),
+    Attachment: require('@mail/components/attachment/attachment')[Symbol.for("default")],
 };
 const {
     afterEach,
@@ -10,7 +10,7 @@ const {
     beforeEach,
     createRootComponent,
     start,
-} = require('mail/static/src/utils/test_utils.js');
+} = require('@mail/utils/test_utils');
 
 const { mock } = require('web.test_utils');
 

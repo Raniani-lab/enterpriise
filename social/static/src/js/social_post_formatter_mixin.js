@@ -1,7 +1,7 @@
 odoo.define('social.post_formatter_mixin', function (require) {
 "use strict";
 
-var SocialEmojisMixin = require('mail.emoji_mixin');
+var SocialEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
 
 return {
     /**

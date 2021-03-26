@@ -3,7 +3,7 @@ odoo.define('web_studio.navigation_tests', function (require) {
 
 var bus = require('web_studio.bus');
 var testUtils = require('web.test_utils');
-const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
 
 QUnit.module('web_studio', {}, function () {
 QUnit.module('Studio Navigation', {

@@ -1,7 +1,7 @@
 odoo.define('documents.systray.ActivityMenu', function (require) {
 "use strict";
 
-var ActivityMenu = require('mail.systray.ActivityMenu');
+var ActivityMenu = require('@mail/js/systray/systray_activity_menu')[Symbol.for("default")];
 
 const session = require('web.session');
 

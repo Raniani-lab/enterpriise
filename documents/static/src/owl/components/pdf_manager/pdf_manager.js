@@ -4,7 +4,7 @@ odoo.define('documents.component.PdfManager', function (require) {
 const PdfGroupName = require('documents.component.PdfGroupName');
 const PdfPage = require('documents.component.PdfPage');
 const { computeMultiSelection } = require('documents.utils');
-const { isEventHandled, markEventHandled } = require('mail/static/src/utils/utils.js');
+const { isEventHandled, markEventHandled } = require('@mail/utils/utils');
 
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');

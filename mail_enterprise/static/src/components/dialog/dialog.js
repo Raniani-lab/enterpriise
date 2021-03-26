@@ -1,6 +1,6 @@
 odoo.define('mail_enterprise/static/src/components/dialog/dialog.js', function (require) {
 
-const Dialog = require('mail/static/src/components/dialog/dialog.js');
+const Dialog = require('@mail/components/dialog/dialog')[Symbol.for("default")];
 const { useBackButton } = require('web_mobile.hooks');
 const { patch } = require('web.utils');
 

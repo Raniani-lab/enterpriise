@@ -1,7 +1,7 @@
 odoo.define('web_studio.testUtils', function (require) {
 "use strict";
 
-const { start } = require('mail/static/src/utils/test_utils.js');
+const { start } = require('@mail/utils/test_utils');
 
 var dom = require('web.dom');
 var QWeb = require('web.QWeb');

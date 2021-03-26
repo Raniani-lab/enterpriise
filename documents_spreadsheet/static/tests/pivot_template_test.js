@@ -7,7 +7,7 @@ odoo.define("documents_spreadsheet.spreadsheet_template_tests", function (requir
     const DocumentsKanbanView = require("documents_spreadsheet.KanbanView");
     const DocumentsListView = require("documents_spreadsheet.ListView");
     const TemplateListView = require("documents_spreadsheet.TemplateListView");
-    const { afterEach, beforeEach } = require('mail/static/src/utils/test_utils.js');
+    const { afterEach, beforeEach } = require('@mail/utils/test_utils');
 
     const { nextTick, dom, fields, createActionManager, createView } = testUtils;
     const { createDocumentsView } = require("documents.test_utils");

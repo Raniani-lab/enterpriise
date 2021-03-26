@@ -8,7 +8,7 @@ var FormRenderer = require('web.FormRenderer');
 var AttachmentViewer = require('mail_enterprise.AttachmentViewer');
 
 // ensure `.include()` on `mail` is applied before `mail_enterprise`
-require('mail/static/src/widgets/form_renderer/form_renderer.js');
+require('@mail/widgets/form_renderer/form_renderer');
 
 /**
  * Display attachment preview on side of form view for large screen devices.

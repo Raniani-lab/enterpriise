@@ -2,7 +2,7 @@ odoo.define('approvals/static/src/components/activity/activity_tests.js', functi
 'use strict';
 
 const components = {
-    Activity: require('mail/static/src/components/activity/activity.js'),
+    Activity: require('@mail/components/activity/activity')[Symbol.for("default")],
 };
 
 const {
@@ -10,7 +10,7 @@ const {
     beforeEach,
     createRootComponent,
     start,
-} = require('mail/static/src/utils/test_utils.js');
+} = require('@mail/utils/test_utils');
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {

@@ -4,9 +4,9 @@ var BasicFields = require('web.basic_fields');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
-var emojis = require('mail.emojis');
+var emojis = require('@mail/js/emojis')[Symbol.for("default")];
 var PostKanbanImagesCarousel = require('social.social_post_kanban_images_carousel');
-var MailEmojisMixin = require('mail.emoji_mixin');
+var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
 var SocialStreamPostFormatterMixin = require('social.post_formatter_mixin');
 var time = require('web.time');
 

@@ -2,7 +2,7 @@ odoo.define('approvals/static/src/widgets/form_renderer/form_renderer.js', funct
 "use strict";
 
 // ensure `.include()` on `mail` is applied before `approvals`
-require('mail/static/src/widgets/form_renderer/form_renderer.js');
+require('@mail/widgets/form_renderer/form_renderer');
 
 const FormRenderer = require('web.FormRenderer');
 

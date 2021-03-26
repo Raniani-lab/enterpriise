@@ -11,7 +11,7 @@ const {
     afterEach,
     afterNextRender,
     beforeEach,
-} = require('mail/static/src/utils/test_utils.js');
+} = require('@mail/utils/test_utils');
 
 const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
@@ -2147,7 +2147,7 @@ QUnit.module('documents_kanban_tests.js', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await afterNextRender(() => 
+        await afterNextRender(() =>
             testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'))
         );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
@@ -2446,7 +2446,7 @@ QUnit.module('documents_kanban_tests.js', {
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await afterNextRender(() => 
+        await afterNextRender(() =>
             testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'))
         );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
@@ -2457,7 +2457,7 @@ QUnit.module('documents_kanban_tests.js', {
             "Message on 'yop'", "should display the correct message");
 
         // select another record
-        await afterNextRender(() => 
+        await afterNextRender(() =>
             testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'))
         );
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',

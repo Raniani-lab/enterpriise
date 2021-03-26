@@ -1,7 +1,7 @@
 odoo.define('voip.tests_panel', function (require) {
 "use strict";
 
-const { afterEach, beforeEach, start } = require('mail/static/src/utils/test_utils.js');
+const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
 
 const mobile = require('web_mobile.core');
 const DialingPanel = require('voip.DialingPanel');

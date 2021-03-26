@@ -3,7 +3,7 @@ odoo.define('social.form_field_post_preview', function (require) {
 
 var FieldHtml = require('web_editor.field.html');
 var fieldRegistry = require('web.field_registry');
-var MailEmojisMixin = require('mail.emoji_mixin');
+var MailEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
 var SocialPostFormatterMixin = require('social.post_formatter_mixin');
 
 /**

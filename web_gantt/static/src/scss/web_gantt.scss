@@ -77,13 +77,6 @@ $gantt-unavailability-bg: $gray-200;
         }
     }
 
-    @include media-breakpoint-down(sm) {
-        overflow-x: auto;
-        .o_gantt_view_container {
-            width: max-content;
-        }
-    }
-
     #o_gantt_containment {
         @include o-position-absolute(0, 0, 1px, percentage(2 / $grid-columns));
     }

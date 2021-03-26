@@ -50,7 +50,7 @@ class Task(models.Model):
             raise UserError(_('You cannot delete a task containing plannings. You can either delete all the task\'s plannings and then delete the task or simply deactivate the task.'))
 
     def action_get_project_forecast_by_user(self):
-        allowed_task_ids = self.ids + self._get_all_subtasks().ids
+        allowed_task_ids = (self | self._get_all_subtasks() | self.depend_on_ids).ids
         action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.project_forecast_action_schedule_by_employee")
         first_slot = self.env['planning.slot'].search([('end_datetime', '>=', datetime.datetime.now()), ('task_id', 'in', allowed_task_ids)], limit=1, order="end_datetime asc")
         action_context = {

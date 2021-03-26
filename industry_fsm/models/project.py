@@ -27,6 +27,8 @@ class Project(models.Model):
         defaults = super().default_get(fields_list)
         if 'allow_subtasks' in fields_list:
             defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
+        if 'allow_task_dependencies' in fields_list:
+            defaults['allow_task_dependencies'] = defaults.get('allow_task_dependencies', False) and not defaults.get('is_fsm')
         return defaults
 
 

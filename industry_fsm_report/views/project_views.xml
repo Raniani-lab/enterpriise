@@ -108,19 +108,17 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='rating_settings']/.." position="before">
-                <div class="row mt16 o_settings_container">
-                    <div class="col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="allow_worksheets"/>
+            <xpath expr="//div[@id='rating_settings']" position="before">
+                <div class="col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_worksheets"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_worksheets"/>
+                        <div class="text-muted" id="allow_billable_setting">
+                            Create and fill custom reports on tasks
                         </div>
-                        <div class="o_setting_right_pane">
-                            <label for="allow_worksheets"/>
-                            <div class="text-muted" id="allow_billable_setting">
-                                Create and fill custom reports on tasks
-                            </div>
-                            <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
-                        </div>
+                        <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
                     </div>
                 </div>
             </xpath>

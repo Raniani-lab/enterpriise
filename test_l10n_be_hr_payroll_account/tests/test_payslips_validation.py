@@ -174,6 +174,43 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'attendance_ids': [(5, 0, 0)],
         }])
 
+        cls.resource_calendar_19_part_time_sick = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 19 Hours/Week Part Time Sick PM",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': False,
+            'hours_per_week': 19.0,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [(0, 0, {
+                'name': "Attendance",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 9.0, 12.8, "morning"),
+                ("1", 9.0, 12.8, "morning"),
+                ("2", 9.0, 12.8, "morning"),
+                ("3", 9.0, 12.8, "morning"),
+                ("4", 9.0, 12.8, "morning"),
+            ]] + [(0, 0, {
+                'name': "Sick Time Off",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick').id
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 13.8, 17.6, "afternoon"),
+                ("1", 13.8, 17.6, "afternoon"),
+                ("2", 13.8, 17.6, "afternoon"),
+                ("3", 13.8, 17.6, "afternoon"),
+                ("4", 13.8, 17.6, "afternoon"),
+            ]],
+        }])
+
         cls.employee = cls.env['hr.employee'].create([{
             'name': "Test Employee",
             'address_home_id': cls.address_home.id,
@@ -4617,3 +4654,54 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 2736.64,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
+
+
+    def test_work_incapacity_due_to_illness(self):
+        self.contract.write({
+            'wage_on_signature': 1774.3,
+            'wage': 1774.3,
+            'resource_calendar_id': self.resource_calendar_19_part_time_sick.id,
+            'date_start': datetime.date(2021, 3, 27),
+            'date_end': datetime.date(2021, 4, 30),
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 3, 1), datetime.date(2021, 3, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 3)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 3.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE214'), 3.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('OUT'), 10.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 11.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE214'), 11.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('OUT'), 76.0, places=2)
+
+        payslip_results = {
+            'BASIC': 0.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 9.0,
+            'ONSS': -1.18,
+            'ONSSTOTAL': 1.18,
+            'ATN.CAR': 150.53,
+            'GROSS': 158.36,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'ATN.CAR.2': -150.53,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -3.27,
+            'REP.FEES': 0.0,
+            'NET': -4.45,
+            'REMUNERATION': 0.0,
+            'ONSSEMPLOYER': 2.44,
+        }
+        self._validate_payslip(payslip, payslip_results)

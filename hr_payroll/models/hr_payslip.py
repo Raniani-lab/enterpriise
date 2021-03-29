@@ -376,13 +376,13 @@ class HrPayslip(models.Model):
             if self.date_from < contract.date_start:
                 start = fields.Datetime.to_datetime(self.date_from)
                 stop = fields.Datetime.to_datetime(contract.date_start) + relativedelta(days=-1, hour=23, minute=59)
-                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False)
+                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False, domain=['|', ('work_entry_type_id', '=', False), ('work_entry_type_id.is_leave', '=', False)])
                 out_days += out_time['days']
                 out_hours += out_time['hours']
             if contract.date_end and contract.date_end < self.date_to:
                 start = fields.Datetime.to_datetime(contract.date_end) + relativedelta(days=1)
                 stop = fields.Datetime.to_datetime(self.date_to) + relativedelta(hour=23, minute=59)
-                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False)
+                out_time = reference_calendar.get_work_duration_data(start, stop, compute_leaves=False, domain=['|', ('work_entry_type_id', '=', False), ('work_entry_type_id.is_leave', '=', False)])
                 out_days += out_time['days']
                 out_hours += out_time['hours']
 

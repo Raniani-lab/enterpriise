@@ -13,10 +13,11 @@ class ResourceCalendar(models.Model):
     is_fulltime = fields.Boolean(compute='_compute_is_fulltime', string="Is Full Time")
     work_time_rate = fields.Float(string='Work Time Rate', compute='_compute_work_time_rate', help='Work time rate versus full time working schedule, should be between 0 and 100 %.')
 
-    @api.depends('attendance_ids.hour_from', 'attendance_ids.hour_to')
+    @api.depends('attendance_ids.hour_from', 'attendance_ids.hour_to', 'attendance_ids.work_entry_type_id.is_leave')
     def _compute_hours_per_week(self):
         for calendar in self:
-            sum_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids)
+            sum_hours = sum(
+                (attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if not attendance.work_entry_type_id.is_leave)
             calendar.hours_per_week = sum_hours / 2 if calendar.two_weeks_calendar else sum_hours
 
     def _compute_is_fulltime(self):
@@ -29,10 +30,7 @@ class ResourceCalendar(models.Model):
             if not calendar.hours_per_week:
                 calendar.work_time_rate = calendar.hours_per_week
             else:
-                total_absence_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if attendance.work_entry_type_id.is_leave)
-                if calendar.two_weeks_calendar:
-                    total_absence_hours = total_absence_hours / 2
                 if calendar.full_time_required_hours:
-                    calendar.work_time_rate = (calendar.hours_per_week - total_absence_hours) / calendar.full_time_required_hours * 100
+                    calendar.work_time_rate = calendar.hours_per_week / calendar.full_time_required_hours * 100
                 else:
-                    calendar.work_time_rate = (calendar.hours_per_week - total_absence_hours) / calendar.hours_per_week * 100
+                    calendar.work_time_rate = calendar.hours_per_week / calendar.hours_per_week * 100

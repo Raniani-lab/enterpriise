@@ -1,40 +1,36 @@
-odoo.define('web_mobile.PivotRenderer', async function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const config = require('web.config');
+import config from 'web.config';
+import PivotRenderer from '@web/js/views/pivot/pivot_renderer';
+import { PivotGroupByMenu } from '@web/js/views/pivot/pivot_renderer';
+import { patch } from 'web.utils';
 
-    if (!config.device.isMobile) {
-        return;
-    }
-
-    const PivotRenderer = require('web.PivotRenderer');
-    const { patch } = require('web.utils');
-
-
+if (config.device.isMobile) {
     patch(PivotRenderer.prototype, "pivot_mobile", {
         /**
          * Do not compute the tooltip on mobile
-         * @override 
+         * @override
          */
         _updateTooltip() { },
 
         /**
-         * @override 
+         * @override
          */
         _getPadding(cell) {
             return 5 + cell.indent * 5;
         },
+    });
 
+    patch(PivotGroupByMenu.prototype, "pivot_mobile", {
         /**
-         * @override 
+         * @override
          */
-        _onClickMenuGroupBy(field, interval, ev) {
-            if (!ev.currentTarget.classList.contains('o_pivot_field_selection')){
+        _onClickMenuGroupBy(fieldName, interval, ev) {
+            if (!ev.currentTarget.classList.contains('o_pivot_field_selection')) {
                 this._super(...arguments);
             } else {
                 ev.stopPropagation();
             }
         },
-
     });
-});
+}

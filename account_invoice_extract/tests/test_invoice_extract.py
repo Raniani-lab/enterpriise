@@ -170,7 +170,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         existing_partner = self.env['res.partner'].create({'name': 'Existing partner', 'vat': 'BE0477472701'})
         extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {'name': 'A new partner', 'vat': 'BE0123456789'}):
+        with self.mock_iap_extract(extract_response, {'name': 'A new partner', 'vat': 'BE0477472701'}):
             invoice._check_status()
 
         self.assertEqual(invoice.partner_id, existing_partner)
@@ -183,7 +183,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.env['res.partner'].create({'name': 'Another supplier'})
         extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {'name': 'A new partner', 'vat': 'BE0123456789'}):
+        with self.mock_iap_extract(extract_response, {'name': 'A new partner', 'vat': 'BE0477472701'}):
             invoice._check_status()
 
         self.assertEqual(invoice.partner_id, existing_partner)

@@ -174,7 +174,7 @@ class HrPayslipWorkedDays(models.Model):
                     else:
                         # Classic case : Only 1 WORK100 line
                         ratio = (out_ratio - 3 / (13 * hours_per_week) * number_of_hours) if hours_per_week else 0
-                        worked_day_amount = wage * ratio
+                        worked_day_amount = max(wage * ratio, 0)
                 else:
                     number_of_hours = be_wd.number_of_hours
                     ratio = 3 / (13 * hours_per_week) * number_of_hours if hours_per_week else 0

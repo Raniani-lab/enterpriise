@@ -978,7 +978,8 @@ class SaleSubscription(models.Model):
                                     msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
                                     # success_payment
-                                    new_invoice._post(False)
+                                    if new_invoice.state != 'posted':
+                                        new_invoice._post(False)
                                     subscription.send_success_mail(tx, new_invoice)
                                     if auto_commit:
                                         cr.commit()
@@ -1102,7 +1103,8 @@ class SaleSubscription(models.Model):
 
     def validate_and_send_invoice(self, invoice):
         self.ensure_one()
-        invoice._post(False)
+        if invoice.state != 'posted':
+            invoice._post(False)
         email_context = self.env.context.copy()
         email_context.update({
             'total_amount': invoice.amount_total,

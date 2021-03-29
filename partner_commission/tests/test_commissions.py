@@ -98,7 +98,8 @@ class TestCommissions(TestCommissionsSetup):
             'amount': 10,
         })
         payment = payment_register._create_payments()
-        payment.action_post()
+        if payment.state != 'posted':
+            payment.action_post()
 
         self.assertEqual(inv.payment_state, 'partial')
         self.assertEqual(inv.amount_residual - inv.amount_tax, 10, 'Remaining untaxed amount to be paid: 10')

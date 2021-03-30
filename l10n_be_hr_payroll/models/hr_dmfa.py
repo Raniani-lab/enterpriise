@@ -287,8 +287,12 @@ class DMFAOccupation(DMFANode):
         self.date_stop = date_to
 
         # YTI TODO: Add a time credit + a contractual part time demo to check this
+        # See: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/fill_in_dmfa/dmfa_fillinrules/workerrecord_occupationrecords/occupationrecord.html
         if contract.time_credit or contract.resource_calendar_id.work_time_rate < 100:
-            hours_per_week = contract.resource_calendar_id.hours_per_week
+            if contract.time_credit:
+                hours_per_week = contract.standard_calendar_id.hours_per_week
+            else:
+                hours_per_week = contract.company_id.resource_calendar_id.hours_per_week
             self.ref_mean_working_hours = ('%.2f' % hours_per_week).replace('.', '').zfill(4)
         else:
             self.ref_mean_working_hours = -1

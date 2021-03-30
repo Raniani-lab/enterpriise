@@ -227,7 +227,7 @@ class IrasAuditFile(models.AbstractModel):
                         'Name': move_line_id.partner_id.name if move_line_id.partner_id else False,
                         'TransactionID': move_line_id.move_id.name,
                         'SourceDocumentID': move_line_id.move_id.invoice_origin if move_line_id.move_id else False,
-                        'SourceType': move_line_id.account_id.user_type_id.name,
+                        'SourceType': move_line_id.account_id.user_type_id.name[:20],
                         'Debit': float_repr(move_line_id.debit, IRAS_DIGITS),
                         'Credit': float_repr(move_line_id.credit, IRAS_DIGITS),
                         'Balance': float_repr(balance, IRAS_DIGITS)

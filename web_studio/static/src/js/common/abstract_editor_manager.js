@@ -449,6 +449,10 @@ var AbstractEditorManager = Widget.extend({
             if (ev.data.on_success) {
                 ev.data.on_success();
             }
+        }, function () {
+            if (ev.data.on_fail) {
+                ev.data.on_fail();
+            }
         });
     },
     /**

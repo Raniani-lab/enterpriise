@@ -54,6 +54,7 @@ return AceEditor.extend({
                     view.arch = new_arch;
                     resolve();
                 },
+                on_fail: reject,
             });
         });
     },

@@ -262,3 +262,9 @@ class AccountMove(models.Model):
             if cancel_reason_needed:
                 return self.env.ref('l10n_pe_edi.action_l10n_pe_edi_cancel').sudo().read()[0]
         return super().button_cancel_posted_moves()
+
+    def _get_name_invoice_report(self):
+        self.ensure_one()
+        if self.l10n_latam_use_documents and self.company_id.country_id.code == 'PE':
+            return 'l10n_pe_edi.report_invoice_document'
+        return super()._get_name_invoice_report()

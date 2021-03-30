@@ -12,7 +12,7 @@ var SepaNameAndSignature = NameAndSignature.extend({
     template: 'payment_sepa_direct_debit.sign_name_and_signature',
     xmlDependencies: [
         '/web/static/src/xml/name_and_signature.xml',
-        '/payment_sepa_direct_debit/static/src/xml/sepa_signature.xml'
+        '/payment_sepa_direct_debit/static/src/xml/signature_form.xml'
     ],
     /**
      * @override
@@ -39,7 +39,7 @@ var SepaSignatureForm = SignatureForm.extend({
     template: 'payment_sepa_direct_debit.signature_form',
     xmlDependencies: [
         '/web/static/src/xml/name_and_signature.xml',
-        '/payment_sepa_direct_debit/static/src/xml/sepa_signature.xml'
+        '/payment_sepa_direct_debit/static/src/xml/signature_form.xml'
     ],
     /**
      * 

@@ -15,7 +15,6 @@ from odoo.osv import expression
 from odoo.tools import format_date, float_compare
 from odoo.tools.float_utils import float_is_zero
 
-
 _logger = logging.getLogger(__name__)
 
 INTERVAL_FACTOR = {
@@ -805,62 +804,121 @@ class SaleSubscription(models.Model):
     def _compute_options(self):
         pass
 
-    # online payments
-    def _do_payment(self, payment_token, invoice, two_steps_sec=True):
+    def _do_payment(self, payment_token, invoice):
         tx_obj = self.env['payment.transaction']
         results = []
 
-        off_session = self.env.context.get('off_session', True)
-        for rec in self:
-            reference = "SUB%s-%s" % (rec.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S'))
+        for subscription in self:
+            reference = tx_obj._compute_reference(
+                payment_token.acquirer_id.provider, prefix=subscription.code
+            )   # There is no sub_id field to rely on
             values = {
-                'amount': invoice.amount_total,
                 'acquirer_id': payment_token.acquirer_id.id,
-                'type': 'server2server',
-                'currency_id': invoice.currency_id.id,
                 'reference': reference,
-                'payment_token_id': payment_token.id,
-                'partner_id': rec.partner_id.id,
-                'partner_country_id': rec.partner_id.country_id.id,
+                'amount': invoice.amount_total,
+                'currency_id': invoice.currency_id.id,
+                'partner_id': subscription.partner_id.id,
+                'token_id': payment_token.id,
+                'operation': 'offline',
                 'invoice_ids': [(6, 0, [invoice.id])],
-                'callback_model_id': self.env['ir.model'].sudo().search([('model', '=', rec._name)], limit=1).id,
-                'callback_res_id': rec.id,
-                'callback_method': 'reconcile_pending_transaction' if off_session else '_reconcile_and_send_mail',
-                'return_url': '/my/subscription/%s/%s' % (self.id, self.uuid),
+                'callback_model_id': self.env['ir.model']._get_id(subscription._name),
+                'callback_res_id': subscription.id,
+                'callback_method': 'reconcile_pending_transaction',
             }
             tx = tx_obj.create(values)
-
-            baseurl = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            payment_secure = {
-                '3d_secure': two_steps_sec,
-                'accept_url': baseurl + '/my/subscription/%s/payment/%s/accept/' % (rec.uuid, tx.id),
-                'decline_url': baseurl + '/my/subscription/%s/payment/%s/decline/' % (rec.uuid, tx.id),
-                'exception_url': baseurl + '/my/subscription/%s/payment/%s/exception/' % (rec.uuid, tx.id),
-            }
-            tx.with_context(off_session=off_session).s2s_do_transaction(**payment_secure)
+            tx._send_payment_request()
             results.append(tx)
         return results
 
-    def reconcile_pending_transaction(self, tx, invoice=False):
+    def _reconcile_and_assign_token(self, tx):
+        """ Callback method to make the reconciliation and assign the payment token.
+
+        Note: self.ensure_one()
+
+        :param recordset tx: The transaction that created the token, and that must be reconciled,
+                             as a `payment.transaction` record
+        :return: Whether the conditions were met to execute the callback
+        :rtype: bool
+        """
         self.ensure_one()
-        if not invoice:
-            invoice = tx.invoice_ids and tx.invoice_ids[0]
-        if tx.state in ['done', 'authorized']:
-            invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
+
+        if tx.renewal_allowed:
+            self._assign_token(tx)
+            self._reconcile_and_send_mail(tx)
+            return True
+        return False
+
+    def _assign_token(self, tx):
+        """ Callback method to assign a token after the validation of a transaction.
+
+        Note: self.ensure_one()
+
+        :param recordset tx: The validated transaction, as a `payment.transaction` record
+        :return: Whether the conditions were met to execute the callback
+        :rtype: bool
+        """
+        self.ensure_one()
+
+        if tx.renewal_allowed:
+            self.payment_token_id = tx.token_id.id
+            return True
+        return False
+
+    def _reconcile_and_send_mail(self, tx):
+        """ Callback method to make the reconciliation and send a confirmation email.
+
+        Note: self.ensure_one()
+
+        :param recordset tx: The transaction to reconcile, as a `payment.transaction` record
+        :return: None
+        """
+        self.ensure_one()
+
+        if self.reconcile_pending_transaction(tx):
+            invoice = tx.invoice_ids[0]
+            self.send_success_mail(tx, invoice)
+            msg_body = _(
+                "Manual payment succeeded. Payment reference: <a href=# data-oe-model=%(tx_model)s "
+                "data-oe-id=%(tx_id)s>%(tx_ref)s</a>; Amount: %(amount)s. Invoice "
+                "<a href=# data-oe-model=%(inv_model)s data-oe-id=%(inv_id)s>View Invoice</a>.",
+                tx_model=tx._name, tx_id=tx.id, tx_ref=tx.reference, amount=tx.amount,
+                inv_model=invoice._name, inv_id=invoice.id
+            )
+            self.message_post(body=msg_body)
+            return True
+        return False
+
+    def reconcile_pending_transaction(self, tx):
+        """ Callback method to make the reconciliation.
+
+        Note: self.ensure_one()
+
+        :param recordset tx: The transaction to reconcile, as a `payment.transaction` record
+        :return: Whether the transaction was successfully reconciled
+        :rtype: bool
+        """
+        self.ensure_one()
+
+        success = False
+        invoice = tx.invoice_ids[0]
+        if tx.state == 'pending':
+            # A pending status is not enough to tell that the transaction is unsuccessful. It could
+            # indicate that the customer had to go through a 3DS authentication. So we keep the
+            # invoice for post-processing. This might cause a lot of draft invoices to stay alive
+            # but this can't be helped since the invoice must survive until the transaction is
+            # eventually confirmed.
+            pass
+        elif not tx.renewal_allowed:  # Unconfirmed transaction
+            invoice.unlink()
+        else:
+            invoice.write({
+                'ref': tx.reference,
+                'payment_reference': tx.reference
+            })
             self.increment_period(renew=self.to_renew)
             self.set_open()
-        else:
-            invoice.button_cancel()
-            invoice.unlink()
-
-    def _reconcile_and_send_mail(self, tx, invoice=False):
-        if not invoice:
-            invoice = tx.invoice_ids and tx.invoice_ids[0]
-        self.reconcile_pending_transaction(tx, invoice=invoice)
-        self.send_success_mail(tx, invoice)
-        msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, invoice.id)
-        self.message_post(body=msg_body)
-        return True
+            success = True
+        return success
 
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)
@@ -910,7 +968,7 @@ class SaleSubscription(models.Model):
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},
                                     subtype_id=self.env.ref('mail.mt_note').id)
-                                tx = subscription._do_payment(payment_token, new_invoice, two_steps_sec=False)[0]
+                                tx = subscription._do_payment(payment_token, new_invoice)[0]
                                 # commit change as soon as we try the payment so we have a trace somewhere
                                 if auto_commit:
                                     cr.commit()

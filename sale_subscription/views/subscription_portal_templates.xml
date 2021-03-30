@@ -5,7 +5,7 @@
     <template id="subscription" name="Subscription">
         <t t-set="o_portal_fullwidth_alert" groups="sale_subscription.group_sale_subscription_view">
             <t t-call="portal.portal_back_in_edit_mode">
-                <t t-set="backend_url" t-value="'/web#model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % (account._name, account.id, action)" t-ignore="true"/>
+                <t t-set="backend_url" t-value="'/web#model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % (account._name, account.id, action.id)" t-ignore="true"/>
             </t>
         </t>
 
@@ -24,15 +24,36 @@
                                 <div><strong>Next Invoice: <span t-field="account.recurring_next_date"/></strong></div>
                                 <div><strong>Amount: <span t-field="account.recurring_total_incl" t-options='{"widget": "monetary","display_currency": account.pricelist_id.currency_id}'/></strong></div>
                                 <a t-if="account.stage_category == 'progress' and not account.to_renew and account.template_id and display_change_plan" role="button" class="mt8 btn btn-primary" t-att-href="'/my/subscription/'+str(account.id)+'/change'+'?uuid='+str(account.uuid)">Change plan</a>
-                                <div t-if="account.payment_token_id">
-                                    Payment method: <t t-if="account.payment_token_id.name"
-                                                       t-esc="account.payment_token_id.short_name"/>
-                                                    <t t-else="">Unknown token</t>
+                                <div t-if="account.payment_token_id">Payment method:
+                                    <t t-if="account.payment_token_id.name" t-esc="account.payment_token_id.name"/>
+                                    <t t-else="">Unknown token</t>
                                 </div>
-                                <a t-if="not account.to_renew and account.stage_category == 'progress' and (acquirers or part_pms)" role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#payment_managing" href="#">
-                                    <t t-if="account.payment_token_id">Change Payment Method</t>
-                                    <t t-else="0">Set Payment Method</t>
-                                </a>
+                                <t t-if="not account.to_renew and account.stage_category == 'progress'">
+                                    <!-- User is logged in under the partner set on the subscription -->
+                                    <t t-if="user.partner_id == account.partner_id">
+                                        <a t-if="acquirers or tokens" role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#payment_managing" href="#">
+                                            <t t-if="account.payment_token_id">Manage Payment Method</t>
+                                            <t t-else="">Set Payment Method</t>
+                                        </a>
+                                    </t>
+                                    <!-- User is logged in under a partner different than that set on the subscription -->
+                                    <button t-elif="not user._is_public() and user.partner_id != account.partner_id"
+                                            title="Managing payment methods requires to be logged in under the customer account."
+                                            href="#"
+                                            disabled="true"
+                                            role="button"
+                                            class="mt8 btn btn-secondary">
+                                        Manage Payment Methods
+                                    </button>
+                                    <!-- User is logged out -->
+                                    <a t-elif="acquirers or tokens"
+                                       title="You must be logged in to manage your payment methods."
+                                       t-attf-href="/web/login?redirect=/my/subscription/{{account.id}}/{{account.uuid}}"
+                                       role="button"
+                                       class="mt-8 btn btn-secondary">
+                                        Manage Payment Methods
+                                    </a>
+                                </t>
                             </li>
                             <li t-if="display_close" class="list-group-item flex-grow-1">
                                 <a role="button" data-toggle="modal" data-target="#wc-modal-close" href="#">Close Subscription</a>
@@ -215,19 +236,12 @@
                                         <t t-if="missing_periods == 1">If you wish to reopen it, you can pay your invoice for the current invoicing period.</t>
                                         <t t-if="missing_periods &gt; 1">If you wish to reopen it, the <t t-esc="missing_periods"/> missing payments (from <span t-field="account.recurring_next_date"/> to this day) will be automatically processed.</t>
                                     </p>
-                                    <div class="clearfix" t-if="(acquirers or part_pms) and account.recurring_total_incl> 0">
-                                        <h5 class="mb-1">Pay With</h5>
+                                    <div class="clearfix" t-if="(acquirers or tokens) and account.recurring_total_incl> 0">
+                                        <h5 class="mb-1">Pay Recurrently With</h5>
                                         <hr class="my-0"/>
-                                        <t t-call="payment.payment_tokens_list">
-                                            <t t-set="partner_id" t-value="account.partner_id.id"/>
-                                            <t t-set="s2s_acquirers" t-value="acquirers"/>
-                                            <t t-set="show_submit" t-value="True"/>
-                                            <t t-set="form_action" t-value="'/my/subscription/payment/' + str(account.id) + '/' + str(account.uuid)"/>
-                                            <t t-set="pms" t-value="part_pms"/>
-                                            <t t-set="icon_class" t-value="'fa-lock'"/>
-                                            <t t-set="submit_txt">Pay Subscription</t>
-                                            <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
-                                            <t t-set="mode" t-value="'payment'"/>
+                                        <t t-call="payment.checkout">
+                                            <t t-set="landing_route"
+                                               t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
                                         </t>
                                     </div>
                                 </div>
@@ -244,17 +258,13 @@
                                         <main class="modal-body">
                                             <!-- ======  Manage Payment methods ====== -->
                                             <div id="payment_method" class="text-left">
-                                                <t t-call="payment.payment_tokens_list">
-                                                    <t t-set="form_action" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '/set_pm'"/>
-                                                    <t t-set="return_url" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
-                                                    <t t-set="pms" t-value="part_pms"/>
-                                                    <t t-set="icon_class" t-value="'fa-lock'"/>
-                                                    <t t-set="submit_txt">Change</t>
-                                                    <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
-                                                    <t t-set="mode" t-value="'payment'"/>
-                                                    <t t-set="s2s_acquirers" t-value="acquirers"/>
-                                                    <t t-set="verify_validity" t-value="True"/>
-                                                    <t t-set="show_manage_btn" t-value="request.env['payment.acquirer'].search([('state', 'in', ['enabled', 'test']), ('registration_view_template_id', '!=', False)])"/>
+                                                <t t-call="payment.manage">
+                                                    <t t-set="assign_token_route"
+                                                       t-value="'/my/subscription/assign_token/' + str(account.id)"/>
+                                                    <t t-set="validation_route"
+                                                       t-value="'/my/subscription/validation/' + str(account.id) + '/' + str(account.uuid)"/>
+                                                    <t t-set="landing_route"
+                                                       t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '?message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
                                                 </t>
                                             </div>
                                         </main>

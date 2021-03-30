@@ -315,7 +315,7 @@ class DMFAOccupation(DMFANode):
         self.occupation_informations = self._prepare_occupation_informations()
         work_address = contract.employee_id.address_id
         location_unit = self.env['l10n_be.dmfa.location.unit'].search([('partner_id', '=', work_address.id)])
-        self.work_place = format_amount(location_unit.code, width=10, hundredth=False)
+        self.work_place = format_amount(location_unit._get_code(), width=10, hundredth=False)
 
     def _prepare_services(self):
         services_by_dmfa_code = defaultdict(lambda: self.env['hr.payslip.worked_days'])
@@ -664,6 +664,10 @@ class HrDMFALocationUnit(models.Model):
     code = fields.Integer(required=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', string="Working Address", required=True)
+
+    def _get_code(self):
+        self.ensure_one()
+        return self.code
 
     _sql_constraints = [
         ('_unique', 'unique (company_id, partner_id)', "A DMFA location cannot be set more than once for the same company and partner."),

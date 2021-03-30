@@ -23,7 +23,7 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
 
             Test Case:
             =========
-            Remove the timesheeet product in the billable fsm project and check if an exception is raise.
+            Remove the timesheet product in the billable fsm project and check if an exception is raise.
         """
         with mute_logger('odoo.sql_db'):
             with self.assertRaises(IntegrityError):

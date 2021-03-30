@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from odoo import Command
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
 
 
@@ -9,6 +10,16 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
     @classmethod
     def setUpClass(cls):
         super(TestFsmFlowSaleCommon, cls).setUpClass()
+
+        cls.employee_user2 = cls.env['hr.employee'].create({
+            'name': 'Employee User 2',
+            'timesheet_cost': 15,
+        })
+
+        cls.employee_user3 = cls.env['hr.employee'].create({
+            'name': 'Employee User 2',
+            'timesheet_cost': 15,
+        })
 
         cls.project_user = cls.env['res.users'].create({
             'name': 'Armande Project_user',
@@ -26,6 +37,26 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
         })
 
         cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
+
+        cls.fsm_project_employee_rate = cls.fsm_project.copy({
+            'partner_id': cls.partner_1.id,
+            'timesheet_product_id': cls.product_order_timesheet2.id,
+            'analytic_account_id': cls.analytic_account_sale.id,
+            'sale_line_employee_ids': [
+                Command.create({
+                    'employee_id': cls.employee_user.id,
+                    'timesheet_product_id': cls.product_order_timesheet1.id,
+                }),
+                Command.create({
+                    'employee_id': cls.employee_user2.id,
+                    'timesheet_product_id': cls.product_delivery_timesheet1.id,
+                }),
+                Command.create({
+                    'employee_id': cls.employee_user3.id,
+                    'timesheet_product_id': cls.product_delivery_timesheet2.id,
+                })
+            ]
+        })
 
         cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',

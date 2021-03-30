@@ -221,7 +221,7 @@ class AccountReconciliation(models.AbstractModel):
         if not bank_statement_line_ids:
             return {}
 
-        domain = [['id', 'in', tuple(bank_statement_line_ids)], ('is_reconciled', '=', False)] + srch_domain
+        domain = [['id', 'in', tuple(bank_statement_line_ids)], '|', ('is_reconciled', '=', False), ('move_id.to_check', '=', True)] + srch_domain
         bank_statement_lines = self.env['account.bank.statement.line'].search(domain)
         bank_statements = bank_statement_lines.mapped('statement_id')
 

@@ -11,7 +11,7 @@ class HrPayrollIndex(models.TransientModel):
     _description = 'Index contracts'
 
     percentage = fields.Float("Percentage")
-    description = fields.Char("Description", default=lambda self: _("Wage indexed on %s", format_date(self.env, fields.Date.today())),
+    description = fields.Char("Description", compute='_compute_description', store=True, readonly=False,
         help="Will be used as the message specifying why the wage on the contract has been modified")
     contract_ids = fields.Many2many(
         'hr.contract', string="Contracts",
@@ -24,6 +24,11 @@ class HrPayrollIndex(models.TransientModel):
         for index in self:
             contracts = index.contract_ids
             index.display_warning = any(contract.state != 'open' for contract in contracts)
+
+    @api.depends('percentage')
+    def _compute_description(self):
+        for record in self:
+            record.description = _('Wage indexed by %.2f%% on %s', self.percentage * 100, format_date(self.env, fields.Date.today()))
 
     @api.model
     def _index_wage(self, contract):

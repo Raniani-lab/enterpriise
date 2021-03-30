@@ -9,7 +9,7 @@
                     <field name="display_warning" invisible="1"/>
                     <span role="status" class="alert alert-warning" attrs="{'invisible': [('display_warning', '=', False)]}">You have selected contracts that are not running, this wizard can only index running contracts.</span>
                     <group colspan="4">
-                        <field name="percentage"/>
+                        <field name="percentage" widget="percentage"/>
                         <field name="description"/>
                         <field name="contract_ids" invisible="1"/>
                     </group>

@@ -4,13 +4,14 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import UserError, ValidationError
 
-from psycopg2 import ProgrammingError
+from psycopg2 import ProgrammingError, errorcodes
 
 from dateutil.relativedelta import relativedelta
 
 import ast
 import timeit
 import logging
+import re
 
 from odoo.osv.expression import get_unaccent_wrapper
 
@@ -157,50 +158,34 @@ class DataMergeModel(models.Model):
 
         :param bool batch_commits: If set, will automatically commit every X records
         """
-
-        # YTI CLEAN: Use add_join from the Query object maybe ?
-        def field_join(field_id, table, res_model_name, env):
-            join, join_data = '', ()
-
-            # Related non-stored field
-            if rule.field_id.related and not rule.field_id.store:
-                IrField = self.env['ir.model.fields']._get(res_model_name, field_id.related.split('.')[0])
-                rel_table = IrField.relation.replace('.', '_')
-                join_data = (rel_table, IrField.relation_field, table, env[IrField.relation]._rec_name)
-            # Many2one
-            elif rule.field_id.relation:
-                rel_table = field_id.relation.replace('.', '_')
-                join_data = (table, field_id.name, rel_table, env[field_id.relation]._rec_name)
-
-            if join_data:
-                rel_where = '%s."%s" = %s.id' % (join_data[0], join_data[1], join_data[2])
-                join = """JOIN %s ON %s""" % (rel_table, rel_where)
-                field_name = '%s."%s"' % (join_data[2], join_data[3])
-            else:
-                field_name = '%s."%s"' % (table, field_id.name)
-
-            return (field_name, join)
-
         unaccent = get_unaccent_wrapper(self.env.cr)
         self.flush()
         for dm_model in self:
             t1 = timeit.default_timer()
             ids = []
-            for rule in dm_model.rule_ids:
-                table = self.env[dm_model.res_model_name]._table
+            res_model = self.env[dm_model.res_model_name]
+            table = res_model._table
 
-                field_name, join = field_join(rule.field_id, table, dm_model.res_model_name, self.env)
+            for rule in dm_model.rule_ids:
+                domain = ast.literal_eval(dm_model.domain or '[]')
+                query = res_model._where_calc(domain)
+                field_name = res_model._inherits_join_calc(table, rule.field_id.name, query)
+                if rule.field_id.relation:
+                    related_model = self.env[rule.field_id.relation]
+                    lhs_alias, lhs_column = re.findall(r'"([^"]+)"', field_name)
+                    rhs_alias = query.join(lhs_alias, lhs_column, related_model._table, 'id', lhs_column)
+                    field_name = related_model._inherits_join_calc(rhs_alias, related_model._rec_name, query)
 
                 if rule.match_mode == 'accent':
                     field_name = unaccent(field_name)
 
-                domain = ast.literal_eval(dm_model.domain or '[]')
-                tables, where_clause, where_clause_params = self.env[dm_model.res_model_name]._where_calc(domain).get_sql()
-                where_clause = where_clause and ('AND %s' % where_clause) or ''
-
                 group_by = ''
-                if 'company_id' in self.env[dm_model.res_model_name]._fields and not dm_model.mix_by_company:
-                    group_by = ', %s.company_id' % table
+                company_field = res_model._fields.get('company_id')
+                if company_field and not dm_model.mix_by_company:
+                    group_by = ', %s' % res_model._inherits_join_calc(table, 'company_id', query)
+
+                tables, where_clause, where_clause_params = query.get_sql()
+                where_clause = where_clause and ('AND %s' % where_clause) or ''
 
                 # Get all the rows matching the rule defined
                 # (e.g. exact match of the name) having at least 2 records
@@ -213,24 +198,22 @@ class DataMergeModel(models.Model):
                             %(model_table)s.id order by %(model_table)s.id asc
                         )
                     FROM %(tables)s
-                        %(join)s
                         WHERE length(%(field)s) > 0 %(where_clause)s
                     GROUP BY group_field_name %(group_by)s
                         HAVING COUNT(%(field)s) > 1""" % {
                             'field': field_name,
                             'model_table': table,
                             'tables': tables,
-                            'join': join,
                             'where_clause': where_clause,
                             'group_by': group_by,
                         }
 
                 try:
                     self._cr.execute(query, where_clause_params)
-                except ProgrammingError:
-                    # YTI TODO: Explain why this is valid to suppose that the extentions
-                    # are missing
-                    raise UserError('Missing required PostgreSQL extension: unaccent')
+                except ProgrammingError as e:
+                    if e.pgcode == errorcodes.UNDEFINED_FUNCTION:
+                        raise UserError('Missing required PostgreSQL extension: unaccent')
+                    raise
 
                 rows = self._cr.fetchall()
                 ids = ids + [row[1] for row in rows]

@@ -38,7 +38,7 @@ tour.register('sign_tour', {
 }, {
     trigger: '.modal-dialog button[name="sign_directly_without_mail"]',
     content: _t("Ok, let’s sign the document now."),
-    position: "bottom",
+    position: "left",
 }, {
     trigger: 'iframe .o_sign_sign_item_navigator',
     content: _t("Go to the first area you have to fill in."),

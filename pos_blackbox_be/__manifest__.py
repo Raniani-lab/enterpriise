@@ -37,11 +37,12 @@ No modified version is certified and supported by Odoo SA.
     'demo': [
         'data/pos_blackbox_be_demo.xml',
     ],
-    'qweb': [
-        'static/src/xml/WorkInButton.xml',
-        'static/src/xml/OrderReceipt.xml'
-    ],
     'installable': False,
     'auto_install': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_qweb': [
+            'pos_blackbox_be/static/src/xml/**/*',
+        ],
+    }
 }

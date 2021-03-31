@@ -63,4 +63,12 @@ This module allows the creation of the EDI documents and the communication with 
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.report_assets_pdf': [
+            'l10n_mx_edi/static/src/scss/**/*',
+        ],
+        'web.report_assets_common': [
+            'l10n_mx_edi/static/src/scss/**/*',
+        ],
+    }
 }

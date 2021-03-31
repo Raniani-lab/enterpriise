@@ -16,4 +16,9 @@ Use receipt printers connected to an IoT Box to print orders in the kitchen or a
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'point_of_sale.assets': [
+            'pos_restaurant_iot/static/**/*',
+        ],
+    }
 }

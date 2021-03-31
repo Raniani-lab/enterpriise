@@ -10,13 +10,15 @@
         This bridge module is auto-installed when the modules stock_barcode and mrp_subcontracting are installed.
     """,
     'depends': ['stock_barcode', 'mrp_subcontracting'],
-    'data': [
-        'views/stock_barcode_templates.xml',
-    ],
-    'qweb': [
-        "static/src/xml/qweb_templates.xml",
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'stock_barcode_mrp_subcontracting/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'stock_barcode_mrp_subcontracting/static/src/xml/**/*',
+        ],
+    }
 }

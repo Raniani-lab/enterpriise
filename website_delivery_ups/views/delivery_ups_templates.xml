@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="assets_common" inherit_id="web.assets_common" name="UPS bill my account common assets">
-        <xpath expr='.' position="inside">
-            <script src="/website_delivery_ups/static/src/js/delivery_ups.js"></script>
-        </xpath>
-    </template>
-
     <template id="ups_bill_my_account_dialog" name="UPS Bill My Account Dialog">
         <div role="dialog" class="modal fade" id="ups_bill_my_account_service">
             <div class="modal-dialog">

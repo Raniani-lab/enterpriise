@@ -14,4 +14,9 @@ This module overrides community website features and introduces enterprise look 
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_frontend': [
+            'website_enterprise/static/src/**/*',
+        ],
+    }
 }

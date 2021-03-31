@@ -9,10 +9,12 @@
     'description': """Get demo data for the social module.
     This module creates a social 'sandbox' where you can play around with the social app without publishing anything on actual social media.""",
     'depends': ['social', 'social_facebook', 'social_twitter', 'social_linkedin', 'product'],
-    'data': [
-        'views/assets.xml'
-    ],
     'demo': [
         'data/social_demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'social_demo/static/**/*',
+        ],
+    }
 }

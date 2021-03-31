@@ -8,8 +8,17 @@
     """,
     'category': 'Hidden',
     'depends': ['web'],
-    'data': ['views/assets.xml'],
-    'qweb': ['static/src/xml/web_cohort.xml'],
+    'assets': {
+        'web.assets_qweb': [
+            'web_cohort/static/src/xml/**/*',
+        ],
+        'web.assets_backend': [
+            'web_cohort/static/src/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'web_cohort/static/tests/**/*',
+        ],
+    },
     'auto_install': True,
     'license': 'OEEL-1',
 }

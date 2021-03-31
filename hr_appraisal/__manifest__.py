@@ -41,7 +41,6 @@ Key Features
         'views/hr_employee_views.xml',
         'views/hr_employee_public_views.xml',
         'views/hr_job_views.xml',
-        'views/assets_templates.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_template_data.xml',
         'wizard/hr_departure_wizard_views.xml',
@@ -53,4 +52,9 @@ Key Features
     'application': True,
     'license': 'OEEL-1',
     'post_init_hook': '_generate_assessment_note_ids',
+    'assets': {
+        'web.assets_backend': [
+            'hr_appraisal/static/src/**/*',
+        ],
+    }
 }

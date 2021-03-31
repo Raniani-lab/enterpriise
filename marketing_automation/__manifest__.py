@@ -11,7 +11,6 @@
     'data': [
         'security/marketing_automation_security.xml',
         'security/ir.model.access.csv',
-        'views/assets.xml',
         'views/ir_actions_views.xml',
         'views/ir_model_views.xml',
         'views/marketing_automation_menus.xml',
@@ -31,4 +30,19 @@
     'application': True,
     'license': 'OEEL-1',
     'uninstall_hook': 'uninstall_hook',
+    'assets': {
+        'web._assets_primary_variables': [
+            'marketing_automation/static/src/scss/variables.scss',
+        ],
+        'web.assets_backend': [
+            'marketing_automation/static/src/js/marketing_automation_graph.js',
+            'marketing_automation/static/src/js/marketing_automation_one2many.js',
+            'marketing_automation/static/src/js/marketing_campaign_view.js',
+            'marketing_automation/static/src/js/marketing_campaign_controller.js',
+            'marketing_automation/static/src/scss/marketing_automation.scss',
+        ],
+        'web.qunit_suite_tests': [
+            'marketing_automation/static/tests/**/*',
+        ],
+    }
 }

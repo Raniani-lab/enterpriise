@@ -26,7 +26,6 @@ Adds the following options:
         'data/mail_template_data.xml',
         'security/fsm_security.xml',
         'security/ir.model.access.csv',
-        'views/assets.xml',
         'views/res_config_settings_views.xml',
         'report/project_report_views.xml',
         'views/hr_timesheet_views.xml',
@@ -36,4 +35,9 @@ Adds the following options:
     'application': True,
     'demo': ['data/fsm_demo.xml'],
     'post_init_hook': 'create_field_service_project',
+    'assets': {
+        'web.assets_backend': [
+            'industry_fsm/static/src/**/*',
+        ],
+    }
 }

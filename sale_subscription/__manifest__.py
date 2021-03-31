@@ -38,7 +38,6 @@ Features:
         'views/res_partner_views.xml',
         'views/sale_subscription_views.xml',
         'views/account_analytic_account_views.xml',
-        'views/assets.xml',
         'views/subscription_portal_templates.xml',
         'views/mail_activity_views.xml',
         'data/mail_template_data.xml',
@@ -51,4 +50,13 @@ Features:
     ],
     'application': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'sale_subscription/static/src/js/tours/sale_subscription.js',
+            'sale_subscription/static/src/scss/sale_subscription_backend.scss',
+        ],
+        'web.assets_frontend': [
+            'sale_subscription/static/src/js/portal_subscription.js',
+        ],
+    }
 }

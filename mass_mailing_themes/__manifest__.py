@@ -15,11 +15,14 @@ Design gorgeous mails
         'mass_mailing',
     ],
     'data': [
-        'assets.xml',
         'views/mass_mailing_themes_templates.xml'
     ],
-    'qweb': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'mass_mailing.assets_mail_themes': [
+            'mass_mailing_themes/static/src/scss/**/*',
+        ],
+    }
 }

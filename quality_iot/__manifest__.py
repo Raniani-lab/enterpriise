@@ -11,9 +11,13 @@ This module provides the link between quality steps and IoT devices.
 """,
     'depends': ['iot', 'quality'],
     'data': [
-        'views/assets.xml',
         'views/iot_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'quality_iot/static/**/*',
+        ],
+    }
 }

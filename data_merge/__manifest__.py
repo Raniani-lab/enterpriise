@@ -10,7 +10,6 @@
     'depends': ['mail', 'data_cleaning'],
     'data': [
         'security/ir.model.access.csv',
-        'views/assets.xml',
         'views/data_merge_rule_views.xml',
         'views/data_merge_model_views.xml',
         'views/data_merge_record_views.xml',
@@ -19,11 +18,17 @@
         'data/data_merge_cron.xml',
         'data/data_merge_data.xml',
     ],
-    'qweb': [
-        'static/src/xml/data_merge_list_views.xml',
-    ],
     'auto_install': True,
     'installable': True,
     'application': False,
     'post_init_hook': 'post_init',
+    'assets': {
+        'web.assets_backend': [
+            'data_merge/static/src/scss/data_merge.scss',
+            'data_merge/static/src/js/data_merge_list_view.js',
+        ],
+        'web.assets_qweb': [
+            'data_merge/static/src/xml/**/*',
+        ],
+    }
 }

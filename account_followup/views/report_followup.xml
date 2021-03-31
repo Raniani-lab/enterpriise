@@ -194,13 +194,6 @@
             </xpath>
         </template>
 
-        <template id="assets_followup_report">
-            <t t-call="web._assets_helpers"/>
-            <t t-call="web._assets_bootstrap"/>
-            <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/fonts.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/account_followup/static/src/scss/account_followup_letter.scss" />
-        </template>
-
         <template id="followup_search_template">
             <div class="btn-group o_dropdown o_account_followup-filter">
                 <a type="button" class="dropdown-toggle" data-toggle="dropdown">

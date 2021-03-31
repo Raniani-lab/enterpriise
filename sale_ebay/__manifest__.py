@@ -54,7 +54,6 @@ Key Features
   ],
   'js': ['static/src/js/*.js'],
   'css': ['static/src/css/*.css'],
-  'qweb': ['static/src/xml/*.xml'],
   'license': 'OEEL-1',
   'uninstall_hook': 'uninstall_hook',
 }

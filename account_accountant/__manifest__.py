@@ -20,7 +20,6 @@ It assigns manager and user access rights to the Administrator for the accountin
         'data/digest_data.xml',
         'security/ir.model.access.csv',
         'security/account_accountant_security.xml',
-        'views/account_accountant_templates.xml',
         'views/account_account_views.xml',
         'views/account_bank_statement_views.xml',
         'views/account_fiscal_year_view.xml',
@@ -34,9 +33,6 @@ It assigns manager and user access rights to the Administrator for the accountin
         'wizard/account_change_lock_date.xml',
         'wizard/reconcile_model_wizard.xml',
     ],
-    'qweb': [
-        "static/src/xml/account_reconciliation.xml",
-    ],
     'demo': ['data/account_accountant_demo.xml'],
     'test': [],
     'installable': True,
@@ -45,4 +41,24 @@ It assigns manager and user access rights to the Administrator for the accountin
     'post_init_hook': '_account_accountant_post_init',
     'uninstall_hook': "uninstall_hook",
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'account_accountant/static/src/scss/move_line_list_view.scss',
+            'account_accountant/static/src/js/move_line_list_view.js',
+            'account_accountant/static/src/js/tours/account_accountant.js',
+            'account_accountant/static/src/js/reconciliation/reconciliation_action.js',
+            'account_accountant/static/src/js/reconciliation/reconciliation_model.js',
+            'account_accountant/static/src/js/reconciliation/reconciliation_renderer.js',
+        ],
+        'web.assets_tests': [
+            'account_accountant/static/tests/tours/**/*',
+        ],
+        'web.qunit_suite_tests': [
+            'account_accountant/static/tests/reconciliation_tests.js',
+            'account_accountant/static/tests/move_line_list_tests.js',
+        ],
+        'web.assets_qweb': [
+            'account_accountant/static/src/xml/**/*',
+        ],
+    }
 }

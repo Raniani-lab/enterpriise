@@ -1,48 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="assets_common" inherit_id="web.assets_common">
-        <xpath expr="script[last()]" position="after">
-            <script type="text/javascript" src="/sign/static/src/js/sign_common.js"></script>
-        </xpath>
-        <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_common.scss"/>
-        </xpath>
-    </template>
-
-    <template id="assets_backend" inherit_id="web.assets_backend">
-        <xpath expr="script[last()]" position="after">
-            <script type="text/javascript" src="/sign/static/src/js/sign_backend.js"></script>
-            <script type="text/javascript" src="/sign/static/src/js/tours/sign.js"></script>
-            <script type="text/javascript" src="/sign/static/src/js/activity.js"></script>
-            <script type="text/javascript" src="/sign/static/src/components/activity/activity.js"/>
-            <script type="text/javascript" src="/sign/static/src/components/sign_request/sign_request.js"/>
-        </xpath>
-        <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_backend.scss"/>
-        </xpath>
-        <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/css" href="/sign/static/src/css/iframe.css"/>
-        </xpath>
-    </template>
-
-    <template id="assets_frontend" inherit_id="web.assets_frontend">
-        <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_frontend.scss"/>
-        </xpath>
-    </template>
-
-    <template id="assets_tests" name="Sign Assets Tests" inherit_id="web.assets_tests">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/sign/static/tests/tours/sign_widgets_tour.js"></script>
-        </xpath>
-    </template>
-
-    <template id="qunit_suite" name="sign_tests" inherit_id="web.qunit_suite_tests">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/sign/static/tests/document_backend_tests.js"></script>
-        </xpath>
-    </template>
-
     <template id="sign._doc_sign" name="Document Sign">
         <div t-if="current_request_item and current_request_item.state == 'sent' and hasItems" class="o_sign_validate_banner">
             <button type="button" class="btn btn-primary o_validate_button">Validate &amp; Send Completed Document</button>

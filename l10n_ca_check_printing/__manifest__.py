@@ -30,4 +30,9 @@ Supported formats
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.report_assets_common': [
+            'l10n_ca_check_printing/static/**/*',
+        ],
+    }
 }

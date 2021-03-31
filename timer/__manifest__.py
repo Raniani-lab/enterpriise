@@ -18,10 +18,14 @@ It adds a timer to a view for time recording purpose
     'data': [
         'security/timer_security.xml',
         'security/ir.model.access.csv',
-        'views/assets.xml',
-    ],
+        ],
     'demo': [],
     'installable': True,
     'application': False,
     'auto_install': False,
+    'assets': {
+        'web.assets_backend': [
+            'timer/static/src/**/*',
+        ],
+    }
 }

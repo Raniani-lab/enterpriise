@@ -14,7 +14,6 @@
         'security/quality_control_security.xml',
         'security/ir.model.access.csv',
         'data/quality_control_data.xml',
-        'views/quality_worksheet_templates.xml',
         'views/quality_views.xml',
         'views/worksheet_template_views.xml',
         'report/worksheet_custom_reports.xml',
@@ -25,4 +24,9 @@
     ],
     'auto_install': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'quality_control_worksheet/static/**/*',
+        ],
+    }
 }

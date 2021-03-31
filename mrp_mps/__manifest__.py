@@ -26,7 +26,6 @@ procure.
     'data': [
         'security/ir.model.access.csv',
         'security/mrp_mps_security.xml',
-        'views/mrp_mps_templates.xml',
         'views/mrp_mps_views.xml',
         'views/mrp_mps_menu_views.xml',
         'views/res_config_settings_views.xml',
@@ -35,9 +34,15 @@ procure.
     'demo': [
         'data/mps_demo.xml',
     ],
-    'qweb': [
-        "static/src/xml/qweb_templates.xml",
-    ],
     'application': False,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'mrp_mps/static/src/js/client_action.js',
+            'mrp_mps/static/src/scss/client_action.scss',
+        ],
+        'web.assets_qweb': [
+            'mrp_mps/static/src/xml/**/*',
+        ],
+    }
 }

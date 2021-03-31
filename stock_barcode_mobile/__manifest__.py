@@ -8,9 +8,19 @@
     'version': '1.0',
     'description': """ """,
     'depends': ['stock_barcode', 'web_mobile'],
-    'qweb': ['static/src/xml/stock_mobile_barcode.xml'],
-    'data': ['views/stock_barcode_template.xml'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'stock_barcode_mobile/static/src/js/stock_mobile_barcode.js',
+            'stock_barcode_mobile/static/src/scss/stock_mobile_barcode.scss',
+        ],
+        'web.qunit_mobile_suite_tests': [
+            'stock_barcode_mobile/static/src/tests/**/*',
+        ],
+        'web.assets_qweb': [
+            'stock_barcode_mobile/static/src/xml/**/*',
+        ],
+    }
 }

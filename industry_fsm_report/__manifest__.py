@@ -15,7 +15,6 @@ Create Reports for Field Service
         'security/industry_fsm_report_security.xml',
         'security/ir.model.access.csv',
         'views/project_views.xml',
-        'views/assets.xml',
         'views/project_portal_templates.xml',
         'report/worksheet_custom_reports.xml',
         'report/worksheet_custom_report_templates.xml',
@@ -24,4 +23,13 @@ Create Reports for Field Service
     ],
     'demo': ['data/fsm_report_demo.xml'],
     'post_init_hook': 'post_init',
+    'assets': {
+        'web.assets_backend': [
+            'industry_fsm_report/static/**/*',
+        ],
+        'web.assets_frontend': [
+            'industry_fsm/static/src/js/tours/industry_fsm_tour.js',
+            'industry_fsm_report/static/src/js/tours/industry_fsm_report.js',
+        ],
+    }
 }

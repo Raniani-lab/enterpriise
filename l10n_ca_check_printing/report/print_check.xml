@@ -2,15 +2,6 @@
 <odoo>
 <data>
 
-<template id="assets_common" name="l10n_ca_check_printing pdf assets" inherit_id="web.report_assets_common">
-    <xpath expr="." position="inside">
-        <link rel="stylesheet" type="text/scss" href="/l10n_ca_check_printing/static/src/scss/report_check_commons.scss"/>
-        <link rel="stylesheet" type="text/scss" href="/l10n_ca_check_printing/static/src/scss/report_check_bottom.scss"/>
-        <link rel="stylesheet" type="text/scss" href="/l10n_ca_check_printing/static/src/scss/report_check_middle.scss"/>
-        <link rel="stylesheet" type="text/scss" href="/l10n_ca_check_printing/static/src/scss/report_check_top.scss"/>
-    </xpath>
-</template>
-
 <template id="ckca_check">
     <div class="ckca_check">
         <div class="sequence_number" t-if="page['sequence_number'] and page['manual_sequencing']" t-esc="page['sequence_number']" />

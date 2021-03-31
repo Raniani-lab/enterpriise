@@ -17,10 +17,14 @@ Analytic Accounting in MRP
     'data': [
         'views/mrp_account_view.xml',
         'views/cost_structure_report.xml',
-        'views/mrp_account_enterprise_templates.xml'
-    ],
+        ],
     'demo': ['demo/mrp_account_demo.xml'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_common': [
+            'mrp_account_enterprise/static/**/*',
+        ],
+    }
 }

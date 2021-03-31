@@ -15,4 +15,9 @@ This module allows ecommerce users to enter their UPS account number and deliver
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_common': [
+            'website_delivery_ups/static/src/**/*',
+        ],
+    }
 }

@@ -45,7 +45,6 @@ Belgian Payroll Rules.
         'views/hr_dmfa_template.xml',
         'views/hr_dmfa_views.xml',
         'views/hr_departure_reason_views.xml',
-        'views/assets.xml',
         'views/273S_xml_export_template.xml',
         'views/withholding_tax_xml_export_template.xml',
         'views/hr_job_views.xml',
@@ -93,9 +92,13 @@ Belgian Payroll Rules.
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'
     ],
-    'qweb': [
-        'static/src/xml/payslip_batch_tree_view.xml',
-        'static/src/xml/generate_warrant_payslips_form_view.xml',
-    ],
     'auto_install': False,
+    'assets': {
+        'web.assets_backend': [
+            'l10n_be_hr_payroll/static/src/js/**/*',
+        ],
+        'web.assets_qweb': [
+            'l10n_be_hr_payroll/static/src/xml/**/*',
+        ],
+    }
 }

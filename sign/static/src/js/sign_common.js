@@ -1900,9 +1900,8 @@ odoo.define('sign.document_signing', function (require) {
         return session.session_bind(session.origin).then(function () {
             // Manually add 'sign' to module list and load the
             // translations.
-            session.module_list.push('sign');
-            session.module_list.push('web');
-            return session.load_translations().then(function () {
+            const modules = ['sign', 'web'];
+            return session.load_translations(modules).then(function () {
                 var documentPage = new SignableDocument(parent);
                 return documentPage.attachTo($('body')).then(function() {
                     // Geolocation

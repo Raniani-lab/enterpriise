@@ -349,17 +349,17 @@ class ProductTemplate(models.Model):
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_point_action")
-        action['context'] = dict(self.env.context)
-        action['context'].update({
-            'search_default_product_ids': self.product_variant_ids.ids,
-            'default_product_ids': self.product_variant_ids.ids,
-        })
+        action['context'] = dict(self.env.context, default_product_ids=self.product_variant_ids.ids)
+        action['domain'] = [
+            '|', ('product_ids', '=', False), ('product_ids', 'in', self.product_variant_ids.ids)
+        ]
         return action
 
     def action_see_quality_checks(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id, create=False)
+        action['domain'] = [('product_id', 'in', self.product_variant_ids.ids)]
         return action
 
 
@@ -386,16 +386,22 @@ class ProductProduct(models.Model):
                 elif checks_data['quality_state'] == 'pass':
                     product.quality_pass_qty = checks_data['quality_state_count']
             product.quality_control_point_qty = self.env['quality.point'].search_count([
-                ('product_ids', 'in', product.id), ('company_id', '=', self.env.company.id)
+                ('company_id', '=', self.env.company.id),
+                '|', ('product_ids', '=', False), ('product_ids', 'in', product.id),
             ])
 
     def action_see_quality_control_points(self):
         self.ensure_one()
         action = self.product_tmpl_id.action_see_quality_control_points()
+        action['context'].update(default_product_ids=self.ids)
+        action['domain'] = [
+            '|', ('product_ids', '=', False), ('product_ids', 'in', self.ids)
+        ]
         return action
 
     def action_see_quality_checks(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.id, create=False)
+        action['domain'] = [('product_id', '=', self.id)]
         return action

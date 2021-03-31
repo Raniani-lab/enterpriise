@@ -50,3 +50,21 @@ class CalendarEvent(models.Model):
                 self.partner_ids -= attendees.partner_id
             else:
                 self.action_archive()
+
+    def _track_template(self, changes):
+        res = super(CalendarEvent, self)._track_template(changes)
+        if 'start_date' in changes and self.appointment_type_id:
+            booked_template = self.env.ref('website_calendar.appointment_booked_mail_template').sudo()
+            res['start_date'] = (booked_template, {
+                'auto_delete_message': True,
+                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('website_calendar.mt_calendar_event_booked'),
+                'email_layout_xmlid': 'mail.mail_notification_light'
+            })
+        if 'active' in changes and not self.active and self.appointment_type_id and self.start > fields.Datetime.now():
+            canceled_template = self.env.ref('website_calendar.appointment_canceled_mail_template').sudo()
+            res['active'] = (canceled_template, {
+                'auto_delete_message': True,
+                'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('website_calendar.mt_calendar_event_canceled'),
+                'email_layout_xmlid': 'mail.mail_notification_light'
+            })
+        return res

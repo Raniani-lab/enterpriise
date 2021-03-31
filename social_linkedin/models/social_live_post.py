@@ -19,7 +19,10 @@ class SocialLivePostLinkedin(models.Model):
         accounts = self.env['social.account'].search([('media_type', '=', 'linkedin')])
 
         for account in accounts:
-            linkedin_post_ids = self.env['social.live.post'].sudo().search([('account_id', '=', account.id)], order='create_date DESC', limit=1000)
+            linkedin_post_ids = self.env['social.live.post'].sudo().search(
+                [('account_id', '=', account.id), ('linkedin_post_id', '!=', False)],
+                order='create_date DESC', limit=1000
+            )
             if not linkedin_post_ids:
                 continue
 

@@ -29,13 +29,6 @@ QUnit.module('web_enterprise', {
                 }],
             },
         };
-
-        testUtils.mock.patch(FormController, {
-            'multiClickTime': 0,
-        });
-    },
-    afterEach: function () {
-        testUtils.mock.unpatch(FormController);
     },
 }, function () {
 

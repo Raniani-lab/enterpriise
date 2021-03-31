@@ -332,10 +332,10 @@ class TestExamples(AccountTestInvoicingCommon):
             ('ATN.MOB.2', 0),
             ('M.ONSS', -29.7),
             ('MEAL_V_EMP', -20.71),
-            ('REP.FEES', 136.15),
+            ('REP.FEES', 150.0),
             ('IP', 799.72),
             ('IP.DED', -59.98),
-            ('NET', 2462.6),
+            ('NET', 2476.45),
         ])
         address = self.env['res.partner'].create({
             'name': 'Roger',
@@ -539,8 +539,9 @@ class TestExamples(AccountTestInvoicingCommon):
             ('MEAL_V_EMP', -19.62),
             ('ATN.INT.2', -5.0),
             ('ATN.MOB.2', -4.0),
+            ('REP.FEES', 150.0),
             ('IP', 676.54),
-            ('NET', 2590.68),
+            ('NET', 2604.53),
         ])
 
         employee = {

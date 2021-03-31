@@ -4,6 +4,7 @@
 import base64
 import logging
 
+from collections import defaultdict
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
@@ -203,38 +204,38 @@ class HrPayslip(models.Model):
         return self.write({'state': 'draft'})
 
     def _get_pdf_reports(self):
-        self.ensure_one()
-        if not self.struct_id or not self.struct_id.report_id:
-            report = self.env.ref('hr_payroll.action_report_payslip', False)
-        else:
-            report = self.struct_id.report_id
-        return report
+        classic_report = self.env.ref('hr_payroll.action_report_payslip')
+        result = defaultdict(lambda: self.env['hr.payslip'])
+        for payslip in self:
+            if not payslip.struct_id or not payslip.struct_id.report_id:
+                result[classic_report] |= payslip
+            else:
+                result[payslip.struct_id.report_id] |= payslip
+        return result
 
     def _generate_pdf(self):
-        for payslip in self:
-            reports = payslip._get_pdf_reports()
-            for report in reports:
+        mapped_reports = self._get_pdf_reports()
+        attachments_vals_list = []
+        generic_name = _("Payslip")
+        template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
+        for report, payslips in mapped_reports.items():
+            for payslip in payslips:
                 pdf_content, dummy = report.sudo()._render_qweb_pdf(payslip.id)
                 if report.print_report_name:
                     pdf_name = safe_eval(report.print_report_name, {'object': payslip})
                 else:
-                    pdf_name = _("Payslip")
-                # Sudo to allow payroll managers to create document.document without access to the
-                # application
-                self.env['ir.attachment'].sudo().create({
+                    pdf_name = generic_name
+                attachments_vals_list.append({
                     'name': pdf_name,
                     'type': 'binary',
                     'datas': base64.encodebytes(pdf_content),
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })
-            # Send email to employees
-            template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
-            if template:
-                template.send_mail(
-                    payslip.id,
-                    notif_layout='mail.mail_notification_light')
-
+                # Send email to employees
+                if template:
+                    template.send_mail(payslip.id, notif_layout='mail.mail_notification_light')
+        self.env['ir.attachment'].sudo().create(attachments_vals_list)
 
     def action_payslip_done(self):
         if any(slip.state == 'cancel' for slip in self):

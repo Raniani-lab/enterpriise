@@ -502,10 +502,15 @@ class Payslip(models.Model):
 
     def _get_pdf_reports(self):
         res = super()._get_pdf_reports()
-        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'):
-            return res + self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n')
-        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'):
-            return res + self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n1')
+        holiday_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
+        holiday_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+        report_n = self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n')
+        report_n1 = self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n1')
+        for payslip in self:
+            if payslip.struct_id == holiday_n1:
+                res[report_n1] |= payslip
+            elif payslip.struct_id == holiday_n:
+                res[report_n] |= payslip
         return res
 
     def _get_data_files_to_update(self):

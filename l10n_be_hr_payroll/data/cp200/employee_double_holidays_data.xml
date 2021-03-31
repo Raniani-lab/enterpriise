@@ -43,6 +43,8 @@
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = 5.0</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_atn_mobile" model="hr.salary.rule">
@@ -60,6 +62,8 @@ if contract.mobile and contract.internet:
     result = 4.0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_atn_laptop" model="hr.salary.rule">
@@ -72,6 +76,8 @@ if contract.mobile and contract.internet:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = 7.0</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <!-- 85% of monthly gross salary is used to compute social contributions -->
@@ -84,10 +90,6 @@ if contract.mobile and contract.internet:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = categories.BASIC
-if contract.internet:
-    result += result_rules['ATN.INT']['total']
-if contract.mobile:
-    result += result_rules['ATN.MOB']['total']
 result = result / 0.92 * 0.85
         </field>
         <field name="appears_on_payslip" eval="False"/>
@@ -189,6 +191,8 @@ result_qty = result_rules['ATN.INT']['quantity']
 result = -result_rules['ATN.INT']['amount']
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employee_double_holiday_atn_mobile_2" model="hr.salary.rule">
@@ -205,6 +209,8 @@ if contract.mobile:
     result = -result_rules['ATN.MOB']['amount']
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_atn_laptop_2" model="hr.salary.rule">
@@ -220,6 +226,8 @@ result_qty = result_values['ATN.LAP']['quantity']
 result = -result_rules['ATN.LAP']['amount']
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <!-- YTI TODO: Remove me in master -->
+        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_ip" model="hr.salary.rule">

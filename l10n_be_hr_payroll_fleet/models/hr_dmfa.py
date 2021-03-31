@@ -47,14 +47,31 @@ class HrDMFAReport(models.Model):
         )
 
     def _get_vehicles_contribution(self):
-        amount = 0
-        self_sudo = self.sudo()
-        for vehicle in self_sudo.vehicle_ids:
-            # YTI TODO: Avoid counting vehicles over 3 months if only used 1 time ?
-            n_months = min(relativedelta(self_sudo.quarter_end, self_sudo.quarter_start).months, relativedelta(self_sudo.quarter_end, vehicle.first_contract_date).months)
-            amount += vehicle.co2_fee * n_months
-        return amount
+        regular_payslip = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
+        payslips_sudo = self.env['hr.payslip'].sudo().search([
+            ('date_to', '>=', self.quarter_start),
+            ('date_to', '<=', self.quarter_end),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', '=', regular_payslip.id),
+            ('company_id', '=', self.company_id.id),
+        ])
+        return sum(p.vehicle_id.co2_fee for p in payslips_sudo)
 
     def _get_global_contribution(self, payslips):
+        # En DMFA et en DMFAPPL, la cotisation de solidarité sur l’usage personnel d’un véhicule de
+        # société se déclare globalement par catégorie d'employeur dans le bloc 90002 « cotisation
+        # non liée à une personne physique» sous le code travailleur 862.
+        # NB : Il est autorisé de rassembler les données de toute l’entreprise sous une seule
+        # catégorie.
+        # De plus, dans le bloc fonctionnel 90294 « Véhicule de société », la mention des numéros de
+        # plaque des véhicules concernés est obligatoire. Un même numéro d’immatriculation ne peut
+        # être repris qu’une seule fois.
+        # L'avantage perçu par le travailleur pour l'usage d'un véhicule de société doit également
+        # être déclaré  sous  le code rémunération DMFA 10  ou le code rémunération DMFAPPL 770 dans
+        # le bloc fonctionnel 90019 "Rémunération de l'occupation ligne travailleur".
+        # Lorsque la DMFA ou la DMFAPPL  est introduite via le web, le montant global de cette
+        # cotisation doit être mentionné dans les cotisations dues pour l’ensemble de l’entreprise,
+        # les numéros de plaques des véhicules concernés introduits dans l’écran prévu et
+        # l'avantage déclaré avec les rémunérations du travailleur.
         amount = super()._get_global_contribution(payslips)
         return amount + self._get_vehicles_contribution()

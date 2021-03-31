@@ -300,4 +300,13 @@
         <field name="color">5</field>
         <field name="dmfa_code">60</field>
     </record>
+
+    <record id="work_entry_type_partial_incapacity" model="hr.work.entry.type">
+        <field name="name">Partial Incapacity (due to illness)</field>
+        <field name="code">LEAVE281</field>
+        <field name="is_leave" eval="True"/>
+        <field name="leave_right" eval="True"/>
+        <field name="dmfa_code">30</field>
+        <field name="color">4</field>
+    </record>
 </odoo>

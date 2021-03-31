@@ -201,7 +201,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'hour_from': hour_from,
                 'hour_to': hour_to,
                 'day_period': day_period,
-                'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick').id
+                'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_partial_incapacity').id
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 13.8, 17.6, "afternoon"),
                 ("1", 13.8, 17.6, "afternoon"),
@@ -877,8 +877,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 94.62,
-            'NET': 1435.83,
+            'REP.FEES': 150,
+            'NET': 1491.22,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -931,10 +931,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -8.72,
-            'REP.FEES': 28.85,
+            'REP.FEES': 150.0,
             'IP': 285.39,
             'IP.DED': -21.40,
-            'NET': 989.89,
+            'NET': 1111.04,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -990,10 +990,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -11.99,
-            'REP.FEES': 73.85,
+            'REP.FEES': 150,
             'IP': 326.15,
             'IP.DED': -24.46,
-            'NET': 1179.66,
+            'NET': 1255.82,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1111,8 +1111,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -1.09,
-            'REP.FEES': 4.62,
-            'NET': 79.41,
+            'REP.FEES': 150.0,
+            'NET': 224.8,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1323,10 +1323,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -18.53,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150.0,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1874.0,
+            'NET': 1917.26,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1399,10 +1399,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -14.17,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1878.36,
+            'NET': 1921.62,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1466,10 +1466,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -16.35,
-            'REP.FEES': 89.42,
+            'REP.FEES': 150.0,
             'IP': 468.85,
             'IP.DED': -35.16,
-            'NET': 1700.35,
+            'NET': 1760.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1533,10 +1533,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -16.35,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1876.18,
+            'NET': 1919.44,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1626,8 +1626,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 75.0,
-            'NET': 1333.07,
+            'REP.FEES': 150.0,
+            'NET': 1408.07,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1685,8 +1685,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -14.17,
-            'REP.FEES': 75.0,
-            'NET': 1334.16,
+            'REP.FEES': 150.0,
+            'NET': 1409.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1755,8 +1755,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -13.08,
-            'REP.FEES': 69.23,
-            'NET': 1233.3,
+            'REP.FEES': 150.0,
+            'NET': 1314.07,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1818,10 +1818,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -7.63,
-            'REP.FEES': 46.15,
+            'REP.FEES': 150.0,
             'IP': 203.85,
             'IP.DED': -15.29,
-            'NET': 732.33,
+            'NET': 836.17,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -1989,10 +1989,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -20.97,
             'MEAL_V_EMP': -21.8,
-            'REP.FEES': 136.15,
+            'REP.FEES': 150.0,
             'IP': 601.35,
             'IP.DED': -45.1,
-            'NET': 1962.05,
+            'NET': 1975.89,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2056,10 +2056,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -20.26,
             'MEAL_V_EMP': -21.8,
-            'REP.FEES': 136.15,
+            'REP.FEES': 150.0,
             'IP': 585.26,
             'IP.DED': -43.89,
-            'NET': 1927.27,
+            'NET': 1941.12,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2108,10 +2108,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -22.31,
             'MEAL_V_EMP': -22.89,
-            'REP.FEES': 143.08,
+            'REP.FEES': 150.0,
             'IP': 631.92,
             'IP.DED': -47.39,
-            'NET': 2038.46,
+            'NET': 2045.39,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2427,10 +2427,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -16.37,
             'MEAL_V_EMP': -14.17,
-            'REP.FEES': 122.31,
+            'REP.FEES': 150.0,
             'IP': 540.19,
             'IP.DED': -40.51,
-            'NET': 1814.97,
+            'NET': 1842.67,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2746,10 +2746,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -11.99,
-            'REP.FEES': 73.85,
+            'REP.FEES': 150.0,
             'IP': 326.16,
             'IP.DED': -24.46,
-            'NET': 1168.14,
+            'NET': 1244.3,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2891,10 +2891,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -4.36,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1888.17,
+            'NET': 1931.43,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2937,10 +2937,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -10.9,
-            'REP.FEES': 80.77,
+            'REP.FEES': 150.0,
             'IP': 407.69,
             'IP.DED': -30.58,
-            'NET': 1514.60,
+            'NET': 1583.83,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3085,10 +3085,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -10.9,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1881.63,
+            'NET': 1924.89,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3128,10 +3128,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 115.38,
+            'REP.FEES': 150.0,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1885.92,
+            'NET': 1920.53,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3257,10 +3257,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -13.27,
             'MEAL_V_EMP': 0.0,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 530.0,
             'IP.DED': -39.75,
-            'NET': 1892.53,
+            'NET': 1935.79,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3300,10 +3300,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -9.81,
-            'REP.FEES': 37.5,
+            'REP.FEES': 150.0,
             'IP': 254.81,
             'IP.DED': -19.11,
-            'NET': 954.34,
+            'NET': 1066.84,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3350,10 +3350,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -22.89,
-            'REP.FEES': 143.08,
+            'REP.FEES': 150.0,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2109.05,
+            'NET': 2115.97,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3409,10 +3409,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -16.35,
-            'REP.FEES': 101.54,
+            'REP.FEES': 150.0,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2074.05,
+            'NET': 2122.51,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3564,10 +3564,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.INT.2': -5.0,
             'M.ONSS': -33.4,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 883.9,
             'IP.DED': -66.29,
-            'NET': 2593.91,
+            'NET': 2637.18,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3671,10 +3671,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.INT.2': -5.0,
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -15.26,
-            'REP.FEES': 106.73,
+            'REP.FEES': 150,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2100.12,
+            'NET': 2143.39,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4213,8 +4213,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -4.36,
             'CAR.PRIV': 10.0,
-            'REP.FEES': 30.0,
-            'NET': 1833.85,
+            'REP.FEES': 150.0,
+            'NET': 1953.85,
             'REMUNERATION': 2650.0,
             'ONSSEMPLOYER': 721.65,
         }
@@ -4269,8 +4269,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'M.ONSS': -23.66,
             'MEAL_V_EMP': -3.27,
             'CAR.PRIV': 7.69,
-            'REP.FEES': 30.0,
-            'NET': 1832.63,
+            'REP.FEES': 150.0,
+            'NET': 1952.63,
             'REMUNERATION': 2650.0,
             'ONSSEMPLOYER': 721.65,
         }
@@ -4380,7 +4380,36 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 115.38, places=2)
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150, places=2)
+
+    def test_credit_time_representation_fees_prorated(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'date_start': datetime.date(2020, 12, 1),
+            'date_end': datetime.date(2021, 2, 28),
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+            'representation_fees': 400,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE300'), 4, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
+
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 372.15, places=2)
 
     def test_contractual_part_time_representation_fees(self):
         self.contract.write({
@@ -4397,7 +4426,25 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 120.0, places=2)
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+
+    def test_contractual_part_time_representation_fees_prorated(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'representation_fees': 400,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 23)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
+
+        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 375.86, places=2)
 
     def test_employment_bonus_half_days(self):
         self.env['resource.calendar.leaves'].create([{
@@ -4672,15 +4719,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(payslip.line_ids), 23)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 0.0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE281'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 3.0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE214'), 3.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE281'), 3.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('OUT'), 10.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 11.4, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE214'), 11.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE281'), 11.4, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('OUT'), 76.0, places=2)
 
         payslip_results = {

@@ -411,21 +411,35 @@ else:
     days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
     work_time_rate = contract.resource_calendar_id.work_time_rate
 
-    if days_per_week:
-        daily_amount = contract.representation_fees * 3 / 13 / days_per_week
-        result = max(0, contract.representation_fees - daily_amount * payslip.representation_fees_missing_days)
+    threshold = 279.31
+    if days_per_week and contract.representation_fees > threshold:
+        # Only part of the representation costs are pro-rated because certain costs are fully
+        # covered for the company (teleworking costs, mobile phone, internet, etc., namely:
+        # - 144.31 € (Tax, since 2021 - coronavirus)
+        # - 30 € (internet)
+        # - 25 € (phone)
+        # - 80 € (car management fees)
+        # = Total € 279.31
+        # Legally, they are not prorated according to the occupancy fraction.
+        # In summary, those who select amounts of for example 150 € and 250 €, have nothing pro-rated
+        # because the amounts are covered in an irreducible way.
+        # For those who have selected the maximum of 399 €, there is therefore only the share of 
+        # +-120 € of representation expenses which is then subject to prorating.
 
         # Credit time, but with only half days (otherwise it's taken into account)
         if contract.time_credit and work_time_rate and work_time_rate &lt; 100 and days_per_week == 5:
-            total_amount = contract.representation_fees * work_time_rate / 100
+            total_amount = threshold + (contract.representation_fees - threshold) * work_time_rate / 100
         # Contractual part time
         elif not contract.time_credit and work_time_rate &lt; 100:
-            total_amount = contract.representation_fees * work_time_rate / 100
+            total_amount = threshold + (contract.representation_fees - threshold) * work_time_rate / 100
         else:
             total_amount = contract.representation_fees
 
-        daily_amount = total_amount * 3 / 13 / days_per_week
-        result = max(0, total_amount - daily_amount * payslip.representation_fees_missing_days)
+        if total_amount > threshold:
+            daily_amount = (total_amount - threshold) * 3 / 13 / days_per_week
+            result = max(0, total_amount - daily_amount * payslip.representation_fees_missing_days)
+    elif days_per_week:
+            result = contract.representation_fees
     else:
         result = 0
         </field>

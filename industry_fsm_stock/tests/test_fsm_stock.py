@@ -40,30 +40,25 @@ class TestFsmFlowStock(TestFsmFlowSale):
         })
 
         cls.warehouse = cls.env['stock.warehouse'].search([('company_id', '=', cls.env.company.id)], limit=1)
-        inventory = cls.env['stock.inventory'].create({
-            'name': 'Initial inventory',
-            'line_ids': [(0, 0, {
-                'product_id': cls.product_lot.id,
-                'product_uom_id': cls.product_lot.uom_id.id,
-                'product_qty': 4,
-                'prod_lot_id': cls.lot_id1.id,
-                'location_id': cls.warehouse.lot_stock_id.id
-            }), (0, 0, {
-                'product_id': cls.product_lot.id,
-                'product_uom_id': cls.product_lot.uom_id.id,
-                'product_qty': 2,
-                'prod_lot_id': cls.lot_id2.id,
-                'location_id': cls.warehouse.lot_stock_id.id
-            }), (0, 0, {
-                'product_id': cls.product_lot.id,
-                'product_uom_id': cls.product_lot.uom_id.id,
-                'product_qty': 2,
-                'prod_lot_id': cls.lot_id3.id,
-                'location_id': cls.warehouse.lot_stock_id.id
-            })]
+        quants = cls.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': cls.product_lot.id,
+            'inventory_quantity': 4,
+            'lot_id': cls.lot_id1.id,
+            'location_id': cls.warehouse.lot_stock_id.id,
         })
-        inventory.action_start()
-        inventory.action_validate()
+        quants |= cls.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': cls.product_lot.id,
+            'inventory_quantity': 2,
+            'lot_id': cls.lot_id2.id,
+            'location_id': cls.warehouse.lot_stock_id.id,
+        })
+        quants |= cls.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': cls.product_lot.id,
+            'inventory_quantity': 2,
+            'lot_id': cls.lot_id3.id,
+            'location_id': cls.warehouse.lot_stock_id.id,
+        })
+        quants.action_apply_inventory()
 
     def test_fsm_flow(self):
         '''

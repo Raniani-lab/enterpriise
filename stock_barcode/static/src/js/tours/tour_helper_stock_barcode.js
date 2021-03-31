@@ -174,7 +174,7 @@ function assertLineIsHighlighted ($line, expected) {
 }
 
 function assertLineQty($line, qty) {
-    assert($line.find('.qty-done,.product_qty').text(), qty, 'line quantity is wrong');
+    assert($line.find('.qty-done,.inventory_quantity').text(), qty, 'line quantity is wrong');
 }
 
 /**
@@ -206,7 +206,7 @@ function assertFormQuantity(expected) {
 }
 
 function assertInventoryFormQuantity(expected) {
-    var $location = $('.o_field_widget[name="product_qty"]');
+    var $location = $('.o_field_widget[name="inventory_quantity"]');
     assert($location.val(), expected, 'Wrong quantity');
 
 }

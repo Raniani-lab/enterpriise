@@ -50,47 +50,30 @@ class TestRentalCommon(common.SingleTransactionCase):
             'company_id': cls.env.company.id,
         })
 
-        test_inventory = cls.env['stock.inventory'].create({
-            'name': 'Rental Test Inventory',
-        })
-
-        cls.env['stock.inventory.line'].create({
+        quants = cls.env['stock.quant'].create({
             'product_id': cls.product_id.id,
-            'product_uom_id': cls.product_id.uom_id.id,
-            'inventory_id': test_inventory.id,
-            'product_qty': 4.0,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id,
+            'inventory_quantity': 4.0,
+            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
         })
-
-        cls.env['stock.inventory.line'].create({
+        quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
-            'product_uom_id': cls.tracked_product_id.uom_id.id,
-            'inventory_id': test_inventory.id,
-            'product_qty': 1.0,
-            'prod_lot_id': cls.lot_id1.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id,
+            'inventory_quantity': 1.0,
+            'lot_id': cls.lot_id1.id,
+            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
         })
-
-        cls.env['stock.inventory.line'].create({
+        quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
-            'product_uom_id': cls.tracked_product_id.uom_id.id,
-            'inventory_id': test_inventory.id,
-            'product_qty': 1.0,
-            'prod_lot_id': cls.lot_id2.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id,
+            'inventory_quantity': 1.0,
+            'lot_id': cls.lot_id2.id,
+            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
         })
-
-        cls.env['stock.inventory.line'].create({
+        quants |= cls.env['stock.quant'].create({
             'product_id': cls.tracked_product_id.id,
-            'product_uom_id': cls.tracked_product_id.uom_id.id,
-            'inventory_id': test_inventory.id,
-            'product_qty': 1.0,
-            'prod_lot_id': cls.lot_id3.id,
-            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id,
+            'inventory_quantity': 1.0,
+            'lot_id': cls.lot_id3.id,
+            'location_id': cls.env['sale.order']._default_warehouse_id().lot_stock_id.id
         })
-
-        test_inventory._action_start()
-        test_inventory.action_validate()
+        quants.action_apply_inventory()
 
         # Define rental order and lines
 

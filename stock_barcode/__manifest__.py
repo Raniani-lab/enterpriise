@@ -34,7 +34,6 @@ This module enables the barcode scanning feature for the warehouse management sy
             'stock_barcode/static/src/js/forms/picking_barcode_handler.js',
             'stock_barcode/static/src/js/forms/lot_barcode_handler.js',
             'stock_barcode/static/src/js/stock_picking_type.js',
-            'stock_barcode/static/src/js/stock_picking.js',
             'stock_barcode/static/src/js/tours/running_tour_action_helper.js',
             'stock_barcode/static/src/js/tours/tour_helper_stock_barcode.js',
             'stock_barcode/static/src/js/tours/tour_test_barcode_flows.js',

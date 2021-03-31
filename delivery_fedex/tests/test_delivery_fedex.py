@@ -216,13 +216,6 @@ class TestDeliveryFedex(TransactionCase):
                 raise e
 
     def test_04_fedex_international_delivery_from_delivery_order(self):
-
-        inventory = self.env['stock.inventory'].create({
-            'name': '[A1232] iPad Mini',
-            'location_ids': [(4, self.stock_location.id)],
-            'product_ids': [(4, self.iPadMini.id)],
-        })
-
         StockPicking = self.env['stock.picking']
 
         order1_vals = {

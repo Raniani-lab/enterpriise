@@ -26,7 +26,6 @@ class StockReport(models.Model):
     picking_name = fields.Char("Picking Name", readonly=True)
     reference = fields.Char("Reference", readonly=True)
     picking_id = fields.Many2one('stock.picking', 'Transfer Reference', readonly=True)
-    inventory_id = fields.Many2one('stock.inventory', 'Inventory Adjustment', readonly=True)
     state = fields.Selection([
         ('draft', 'New'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Move'),
@@ -66,7 +65,6 @@ class StockReport(models.Model):
             p.id as product_id,
             sm.reference as reference,
             sm.picking_id as picking_id,
-            sm.inventory_id as inventory_id,
             sm.state as state,
             sm.product_qty as product_qty,
             sm.company_id as company_id,
@@ -114,7 +112,6 @@ class StockReport(models.Model):
             sm.id,
             sm.reference,
             sm.picking_id,
-            sm.inventory_id,
             sm.state,
             sm.product_qty,
             sm.company_id,

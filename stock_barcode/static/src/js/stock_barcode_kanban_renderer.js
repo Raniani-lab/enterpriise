@@ -1,7 +1,7 @@
-odoo.define('stock_barcode.InventoryAdjustmentKanbanRenderer', function (require) {
+odoo.define('stock_barcode.BarcodeKanbanRenderer', function (require) {
 "use strict";
 
-var StockBarcodeKanbanRecord = require('stock_barcode.InventoryAdjustmentKanbanRecord');
+var StockBarcodeKanbanRecord = require('stock_barcode.BarcodeKanbanRecord');
 var {bus, qweb} = require('web.core');
 
 var KanbanRenderer = require('web.KanbanRenderer');
@@ -39,7 +39,7 @@ var StockBarcodeListKanbanRenderer = KanbanRenderer.extend({
     _render: function () {
         return this._super(...arguments).then(() => {
             const scanProductTip = qweb.render('scan_product_tip', {
-                display_protip: ['stock.inventory', 'stock.picking'].includes(this.model),
+                display_protip: ['stock.picking'].includes(this.model),
             });
             this.$el.prepend(scanProductTip);
         });

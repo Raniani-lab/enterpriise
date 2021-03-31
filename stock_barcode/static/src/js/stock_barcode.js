@@ -16,7 +16,14 @@ var MainMenu = AbstractAction.extend({
             this.do_action('stock_barcode.stock_picking_type_action_kanban');
         },
         "click .button_inventory": function(){
-            this.do_action('stock_barcode.action_open_barcode_inventory_adjustment_view');
+            this._rpc({
+                'model': 'stock.quant',
+                'method': 'action_client_action',
+                'args': [[]],
+            })
+            .then((result) => {
+                this.do_action(result);
+            });
         },
         "click .o_stock_barcode_menu": function(){
             this.trigger_up('toggle_fullscreen');

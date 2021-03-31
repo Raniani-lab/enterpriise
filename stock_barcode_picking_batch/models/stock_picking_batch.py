@@ -107,10 +107,6 @@ class StockPickingBatch(models.Model):
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
         """
-        if self.env.context.get('company_id'):
-            company = self.env['res.company'].browse(self.env.context['company_id'])
-        else:
-            company = self.env.company
         picking_colors = self._define_picking_colors()
         fields_to_read = self._get_fields_to_read()
         batch_pickings = self.read(fields_to_read)

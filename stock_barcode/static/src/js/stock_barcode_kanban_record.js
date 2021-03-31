@@ -1,4 +1,4 @@
-odoo.define('stock_barcode.InventoryAdjustmentKanbanRecord', function (require) {
+odoo.define('stock_barcode.BarcodeKanbanRecord', function (require) {
 "use strict";
 
 var KanbanRecord = require('web.KanbanRecord');
@@ -9,15 +9,8 @@ var StockBarcodeKanbanRecord = KanbanRecord.extend({
      * @private
      */
     _openRecord: function () {
-        if (this.modelName === 'stock.inventory' && this.$el.parents('.o_stock_barcode_kanban').length) {
-            this._rpc({
-                model: 'stock.inventory',
-                method: 'action_client_action',
-                args: [this.recordData.id],
-            })
-            .then((result) => {
-                this.do_action(result);
-            });
+        if (this.modelName === 'stock.picking' && $('.modal-dialog').length === 0) {
+            this.$('button').first().click();
         } else {
             this._super.apply(this, arguments);
         }
@@ -28,7 +21,7 @@ return StockBarcodeKanbanRecord;
 
 });
 
-odoo.define('stock_barcode.InventoryAdjustmentKanbanController', function (require) {
+odoo.define('stock_barcode.BarcodeKanbanController', function (require) {
 "use strict";
 var KanbanController = require('web.KanbanController');
 
@@ -47,7 +40,7 @@ var StockBarcodeKanbanController = KanbanController.extend({
      * @param {OdooEvent} ev
      */
     _onBarcodeScannedHandler: function (ev) {
-        if (!['stock.inventory', 'stock.picking'].includes(this.modelName)) {
+        if (!['stock.picking'].includes(this.modelName)) {
             return;
         }
         const {barcode} = ev.data;
@@ -76,15 +69,7 @@ var StockBarcodeKanbanController = KanbanController.extend({
      * @override
      */
     _onButtonNew: function (ev) {
-        if (this.modelName === 'stock.inventory') {
-            this._rpc({
-                model: 'stock.inventory',
-                method: 'open_new_inventory',
-            })
-            .then((result) => {
-                this.do_action(result);
-            });
-        } else if (this.modelName === 'stock.picking') {
+        if (this.modelName === 'stock.picking') {
             this._rpc({
                 model: 'stock.picking',
                 method: 'open_new_picking',

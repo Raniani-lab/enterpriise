@@ -10,7 +10,7 @@
                 <span class="o_title navbar-text text-white" t-esc="widget.title"/>
             </nav>
             <nav class="navbar-nav">
-                <button class="nav-link btn o_show_information mr-4"><i class="fa fa-info-circle"/></button>
+                <button t-if="widget.model !== 'stock.quant'" class="nav-link btn o_show_information mr-4"><i class="fa fa-info-circle"/></button>
                 <button class="nav-link btn o_show_settings"><i class="fa fa-bars"/></button>
                 <button class="nav-link btn o_close o_hidden"><i class="fa fa-times"/></button>
             </nav>
@@ -29,9 +29,9 @@
             <button t-if="widget.model == 'stock.picking'" class="btn-lg btn btn-dark text-uppercase o_print_barcodes_pdf">Print Barcodes PDF</button>
             <button t-if="widget.model == 'stock.picking' &amp;&amp; widget.mode == 'done'" class="btn-lg btn btn-dark text-uppercase o_return">Return</button>
             <button t-if="widget.model == 'stock.picking' &amp;&amp; widget.allow_scrap" class="btn-lg btn btn-dark text-uppercase o_scrap">Scrap</button>
-            <button t-if="widget.model == 'stock.inventory'" class="btn-lg btn btn-dark text-uppercase o_print_inventory">Print Inventory</button>
+            <button t-if="widget.model == 'stock.quant'" class="btn-lg btn btn-dark text-uppercase o_print_inventory">Print Inventory</button>
             <button t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="btn-lg btn btn-dark text-uppercase o_validate">Validate</button>
-            <button t-if="widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="btn-lg btn btn-dark text-uppercase o_cancel">Cancel</button>
+            <button t-if="widget.model !== 'stock.quant' &amp;&amp; widget.mode !== 'done' &amp;&amp; widget.mode !== 'cancel'" class="btn-lg btn btn-dark text-uppercase o_cancel">Cancel</button>
         </div>
     </t>
 
@@ -95,7 +95,7 @@
                         </span>
                     </div>
                 </span>
-                <span t-if="model == 'stock.inventory'" class="o_barcode_locations">
+                <span t-if="model == 'stock.quant'" class="o_barcode_locations">
                     <span class="o_barcode_summary_location_src" t-esc="locationName"/>
                 </span>
                 <t t-if="nbPages">
@@ -135,9 +135,9 @@
                                     <span class="qty-done d-inline-block text-left" t-esc="line.qty_done"/>
                                     <span t-if="line.product_uom_qty" t-esc="'/ ' + line.product_uom_qty"/>
                                 </t>
-                                <t t-if="model == 'stock.inventory'">
-                                    <span class="product_qty d-inline-block text-left" t-esc="line.product_qty"/>
-                                    <span t-if="line.theoretical_qty" t-esc="'/ ' + line.theoretical_qty"/>
+                                <t t-if="model == 'stock.quant'">
+                                    <span class="inventory_quantity d-inline-block text-left" t-esc="line.inventory_quantity"/>
+                                    <span t-if="line.quantity" t-esc="'/ ' + line.quantity"/>
                                 </t>
                             </span>
                             <span t-if="groups.group_uom" t-esc="line.product_uom_id[1]"/>
@@ -158,7 +158,7 @@
                         </div>
                         <div t-if="line.product_id.tracking !== 'none' and requireLotNumber">
                             <i class="fa fa-fw fa-barcode"/>
-                            <span class="o_line_lot_name" t-esc="(line.lot_id &amp;&amp; line.lot_id[1]) || (line.prod_lot_id &amp;&amp;line.prod_lot_id[1]) || line.lot_name || ''"/>
+                            <span class="o_line_lot_name" t-esc="(line.lot_id &amp;&amp; line.lot_id[1]) || (line.lot_id &amp;&amp;line.lot_id[1]) || line.lot_name || ''"/>
                         </div>
                     </div>
                     <div t-if="line.partner_id">
@@ -174,7 +174,7 @@
                         t-att-data-reserved="(line.product_uom_qty - line.qty_done)">
                         <t t-esc="'+ ' + (line.product_uom_qty - line.qty_done)"/>
                     </button>
-                    <button t-if="model == 'stock.inventory'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
+                    <button t-if="model == 'stock.quant'" class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4">
                         - 1
                     </button>
                 </div>

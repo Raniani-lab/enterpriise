@@ -30,7 +30,7 @@ return StockBarcodePickingBatch;
 odoo.define('stock_barcode.BatchPickingKanbanController', function (require) {
     "use strict";
 
-const StockBarcodeKanbanController = require('stock_barcode.InventoryAdjustmentKanbanController');
+const StockBarcodeKanbanController = require('stock_barcode.BarcodeKanbanController');
 
 StockBarcodeKanbanController.include({
     // --------------------------------------------------------------------------

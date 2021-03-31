@@ -2504,22 +2504,6 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o-kanban-button-new',
-    },
-    //Check show information.
-    {
-        trigger: '.o_show_information',
-    },
-
-    {
-        trigger: '.o_form_label:contains("Status")',
-    },
-
-    {
-        trigger: '.o_close',
-    },
-
-    {
         trigger: '.o_barcode_message:contains("Scan products")',
     },
 
@@ -2547,7 +2531,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_field_widget[name="product_qty"]',
+        trigger: '.o_field_widget[name="inventory_quantity"]',
         run: function () {
             helper.assertInventoryFormQuantity('2');
         }
@@ -2580,7 +2564,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: "input.o_field_widget[name=product_qty]",
+        trigger: "input.o_field_widget[name=inventory_quantity]",
         run: 'text 2',
     },
 
@@ -2595,7 +2579,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_stock_barcode_kanban',
+        trigger: '.o_stock_barcode_main_menu',
     },
 
     {
@@ -2604,24 +2588,12 @@ tour.register('test_inventory_adjustment', {test: true}, [
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-
-    {
-        trigger: '.breadcrumb-item:contains("Barcode")',
-    },
-
-    {
-        trigger: '.o_stock_barcode_main_menu',
-    },
 ]);
 
-tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
+tour.register('test_inventory_adjustment_multi_location', {test: true}, [
 
     {
         trigger: '.button_inventory',
-    },
-
-    {
-        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2677,23 +2649,22 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.o_add_line',
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
     },
 
     {
-        trigger: '.o_field_widget[name="product_id"]',
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            helper.assertErrorMessage('The inventory adjustment has been validated');
+        },
     },
-
 ]);
 
 tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
 
     {
         trigger: '.button_inventory',
-    },
-
-    {
-        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2796,16 +2767,28 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
             helper.assertLinesCount(6);
         }
     },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification.bg-success'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            helper.assertErrorMessage('The inventory adjustment has been validated');
+        },
+    },
 ]);
 
 tour.register('test_inventory_nomenclature', {test: true}, [
 
     {
         trigger: '.button_inventory',
-    },
-
-    {
-        trigger: '.o-kanban-button-new',
     },
 
     {
@@ -2833,9 +2816,6 @@ tour.register('test_inventory_nomenclature', {test: true}, [
         trigger: '.o_notification.bg-success'
     },
     {
-        trigger: '.breadcrumb-item:contains("Barcode")',
-    },
-    {
         trigger: '.o_stock_barcode_main_menu',
         run: function () {
             helper.assertErrorMessage('The inventory adjustment has been validated');
@@ -2848,9 +2828,6 @@ tour.register('test_inventory_package', {test: true}, [
     {
         trigger: '.button_inventory',
     },
-    {
-        trigger: '.o-kanban-button-new',
-    },
 
     {
         trigger: '.o_barcode_client_action',
@@ -2862,7 +2839,7 @@ tour.register('test_inventory_package', {test: true}, [
     },
 
     {
-        trigger: '[name="product_qty"]',
+        trigger: '[name="inventory_quantity"]',
         run: 'text 21'
     },
 
@@ -2875,18 +2852,10 @@ tour.register('test_inventory_package', {test: true}, [
     },
 
     {
-        trigger: '.o_stock_barcode_kanban',
-    },
-
-    {
         trigger: '.o_notification.bg-success',
         run: function () {
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
-    },
-
-    {
-        trigger: '.breadcrumb-item:contains("Barcode")',
     },
 
     {
@@ -3591,9 +3560,6 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
         trigger: '.button_inventory',
     },
     {
-        trigger: '.o-kanban-button-new',
-    },
-    {
         trigger: '.o_barcode_client_action',
         run: 'scan P00001',
     },
@@ -3615,9 +3581,6 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
 tour.register('test_inventory_using_buttons', {test: true}, [
     {
         trigger: '.button_inventory',
-    },
-    {
-        trigger: '.o-kanban-button-new',
     },
 
     // Scans product 1: must have 1 quantity and buttons +1/-1 must be visible.

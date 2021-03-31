@@ -187,7 +187,7 @@
                     margin-left: 0; // If a style class is applied, reset compensation margin
                 }
 
-                .qty-done, .product_qty {
+                .qty-done, .inventory_quantity {
                     min-width: 20px;
                 }
             }
@@ -261,7 +261,7 @@
                 color: $headings-color;
             }
 
-            .qty-done, .product_qty {
+            .qty-done, .inventory_quantity {
                 font-weight: bold;
 
                 &.o_js_qty_animate {

@@ -150,13 +150,6 @@ class TestDeliveryUPS(TransactionCase):
         self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_03_ups_flow_from_delivery_order(self):
-
-        inventory = self.env['stock.inventory'].create({
-            'name': '[A1232] iPad Mini',
-            'location_ids': [(4, self.stock_location.id)],
-            'product_ids': [(4, self.iPadMini.id)],
-        })
-
         # Set service type = 'UPS Worldwide Expedited', which is available between US to BE
         carrier = self.env.ref('delivery_ups.delivery_carrier_ups_us')
         carrier.write({'ups_default_service_type': '08',

@@ -17,15 +17,11 @@ var InventoryClientAction = ClientAction.extend({
         this.commands['O-BTN.validate'] = this._validate.bind(this);
         this.commands['O-BTN.cancel'] = this._cancel.bind(this);
         this.mode = 'inventory';
-        if (! this.actionParams.id) {
-            this.actionParams.id = action.context.active_id;
-            this.actionParams.model = 'stock.inventory';
-        }
+        this.actionParams.id = false;
+        this.actionParams.model = 'stock.quant';
         this.methods = {
-            cancel: 'action_cancel_draft',
             validate: 'action_validate',
         };
-        this.viewInfo = 'stock_barcode.stock_inventory_barcode2';
     },
 
     willStart: function () {
@@ -54,13 +50,14 @@ var InventoryClientAction = ClientAction.extend({
     _createLineCommand: function (line) {
         return [0, 0, {
             product_id:  line.product_id.id,
-            product_uom_id: line.product_uom_id,
-            product_qty: line.product_qty,
+            inventory_quantity: line.inventory_quantity,
             location_id: line.location_id.id,
-            prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
+            lot_id: line.lot_id && line.lot_id[0],
             package_id: line.package_id && line.package_id[0],
-            partner_id: line.partner_id && line.partner_id[0],
+            owner_id: line.owner_id && line.owner_id[0],
+            user_id: line.user_id,
             dummy_id: line.virtual_id,
+            inventory_date: new Date().toJSON(),
         }];
     },
 
@@ -69,12 +66,11 @@ var InventoryClientAction = ClientAction.extend({
      */
     _getAddLineDefaultValues: function (currentPage) {
         const values = this._super(currentPage);
-        values.default_inventory_id = this.currentState.id;
-        values.default_is_editable = true;
-        values.default_product_qty = 1;
-        values.default_state = this.currentState.state;
-        values.active_id = this.currentState.id;
-        values.active_model = 'stock.inventory';
+        values.default_inventory_quantity = 1;
+        values.active_model = 'stock.quant';
+        values.default_id = false;
+        values.default_user_id = this.actionManager.userContext.uid;
+        values.default_inventory_date = new Date().toJSON();
         return values;
     },
 
@@ -82,13 +78,14 @@ var InventoryClientAction = ClientAction.extend({
      * @override
      */
     _getWriteableFields: function () {
-        return ['product_qty', 'location_id.id', 'prod_lot_id.id', 'partner_id.id'];
+        return ['inventory_quantity'];
     },
 
     /**
      * @override
      */
     _getLinesField: function () {
+        // FIXME: This is now a throwaway placeholder to simplify controller write code
         return 'line_ids';
     },
 
@@ -119,7 +116,7 @@ var InventoryClientAction = ClientAction.extend({
      * @override
      */
     _getQuantityField: function () {
-        return 'product_qty';
+        return 'inventory_quantity';
     },
 
     /**
@@ -128,23 +125,23 @@ var InventoryClientAction = ClientAction.extend({
     _instantiateViewsWidget: function (defaultValues, params) {
         return new ViewsWidget(
             this,
-            'stock.inventory.line',
-            'stock_barcode.stock_inventory_line_barcode',
+            'stock.quant',
+            'stock_barcode.stock_quant_barcode',
             defaultValues,
-            params
+            Object.assign(params || {}, {'context': {'inventory_mode': true}})
         );
     },
 
     _lineIsEmpty: function (line) {
-        return line.virtual_id && !line.product_qty && !line.prod_lot_id;
+        return line.virtual_id && !line.inventory_quantity && !line.lot_id;
     },
 
     _lineIsFromAnotherLot: function (line, lotId) {
-        return lotId && line.prod_lot_id && line.prod_lot_id[0] !== lotId;
+        return lotId && line.lot_id && line.lot_id[0] !== lotId;
     },
 
     _lineIsTrackedAndComplete (line, product) {
-        return product.tracking === 'serial' && line.product_qty > 0;
+        return product.tracking === 'serial' && line.inventory_quantity > 0;
     },
 
     /**
@@ -154,8 +151,8 @@ var InventoryClientAction = ClientAction.extend({
         var lines = this._getLines(this.currentState);
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            if (line.product_qty !== 0 && line.product_id.id === product.id &&
-                line.prod_lot_id && line.prod_lot_id[1] === lot_name) {
+            if (line.inventory_quantity !== 0 && line.product_id.id === product.id &&
+                line.lot_id && line.lot_id[1] === lot_name) {
                 return true;
             }
         }
@@ -168,12 +165,12 @@ var InventoryClientAction = ClientAction.extend({
     _makeNewLine: function (params) {
         let newLine = this._super(...arguments);
         newLine = Object.assign(newLine, {
-            inventory_id: this.currentState.id,
-            partner_id: params.owner_id,
-            product_qty: params.qty_done,
+            owner_id: params.owner_id,
+            inventory_quantity: params.qty_done,
             product_uom_id: params.product.uom_id[0],
-            state: 'confirm',
-            theoretical_qty: 0,
+            quantity: 0,
+            inventory_quantity: params.qty_done,
+            user_id: this.actionManager.userContext.uid,
         });
         return newLine;
     },
@@ -197,25 +194,9 @@ var InventoryClientAction = ClientAction.extend({
     /**
      * @override
      */
-    _cancel: function () {
-        const superCancel = this._super.bind(this);
-        this.mutex.exec(() => {
-            return superCancel().then(() => {
-                this.do_notify(false, _t("The inventory adjustment has been cancelled"));
-                this.trigger_up('exit');
-            });
-        });
-    },
-
-    /**
-     * @override
-     */
     _updateLineCommand: function (line) {
         return [1, line.id, {
-            product_qty : line.product_qty,
-            prod_lot_id: line.prod_lot_id && line.prod_lot_id[0],
-            package_id: line.package_id && line.package_id[0],
-            partner_id: line.partner_id && line.partner_id[0],
+            inventory_quantity : line.inventory_quantity,
         }];
     },
 
@@ -236,11 +217,12 @@ var InventoryClientAction = ClientAction.extend({
         var self = this;
         this.mutex.exec(function () {
             return self._save().then(function () {
+                var active_ids = Object.keys(self.currentState.line_ids).map(k=>self.currentState.line_ids[k].id)
                 return self.do_action(self.currentState.actionReportInventory, {
                     'additional_context': {
-                        'active_id': self.actionParams.id,
-                        'active_ids': [self.actionParams.id],
-                        'active_model': 'stock.inventory',
+                        // 'active_id': self.actionParams.id,
+                        'active_ids': [active_ids],
+                        'active_model': 'stock.quant',
                     }
                 });
             });

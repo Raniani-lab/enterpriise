@@ -410,35 +410,30 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         # Initialize inventory
         # --------------------
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Inventory Product Table',
-            'line_ids': [(0, 0, {
-                'product_id': product_table_sheet.id,
-                'product_uom_id': product_table_sheet.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_sheet.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_table_leg.id,
-                'product_uom_id': product_table_leg.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_leg.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_bolt.id,
-                'product_uom_id': product_bolt.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_bolt.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_screw.id,
-                'product_uom_id': product_screw.uom_id.id,
-                'product_qty': 20,
-                'location_id': self.source_location_id
-            })]
+        quants = self.env['stock.quant'].create({
+            'product_id': product_table_sheet.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_sheet.id,
+            'location_id': self.source_location_id
         })
-        inventory.action_start()
-        inventory.action_validate()
+        quants |= self.env['stock.quant'].create({
+            'product_id': product_table_leg.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_leg.id,
+            'location_id': self.source_location_id
+        })
+        quants |= self.env['stock.quant'].create({
+            'product_id': product_bolt.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_bolt.id,
+            'location_id': self.source_location_id
+        })
+        quants |= self.env['stock.quant'].create({
+            'product_id': product_screw.id,
+            'inventory_quantity': 20,
+            'location_id': self.source_location_id
+        })
+        quants.action_apply_inventory()
 
         # Check Work order created or not
         self.assertEqual(len(production_table.workorder_ids), 1)
@@ -540,30 +535,24 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         # Initialize inventory
         # --------------------
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Inventory Product Table',
-            'line_ids': [(0, 0, {
-                'product_id': product_table_sheet.id,
-                'product_uom_id': product_table_sheet.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_sheet.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_table_leg.id,
-                'product_uom_id': product_table_leg.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_leg.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_bolt.id,
-                'product_uom_id': product_bolt.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_bolt.id,
-                'location_id': self.source_location_id
-            })]
-        })
-        inventory.action_start()
-        inventory.action_validate()
+        self.env['stock.quant'].create({
+            'product_id': product_table_sheet.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_sheet.id,
+            'location_id': self.source_location_id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': product_table_leg.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_leg.id,
+            'location_id': self.source_location_id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': product_bolt.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_bolt.id,
+            'location_id': self.source_location_id
+        }).action_apply_inventory()
 
         # Create work order
         production_table.button_plan()
@@ -692,29 +681,23 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         lot_product_4 = self.env['stock.production.lot'].create({'product_id': self.product_4.id, 'company_id': self.env.company.id})
 
         # refuel stock
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Inventory For Product C',
-            'line_ids': [(0, 0, {
-                'product_id': self.product_2.id,
-                'product_uom_id': self.product_2.uom_id.id,
-                'product_qty': 30,
-                'prod_lot_id': lot_product_2.id,
-                'location_id': self.stock_location_14.id
-            }), (0, 0, {
-                'product_id': self.product_3.id,
-                'product_uom_id': self.product_3.uom_id.id,
-                'product_qty': 60,
-                'location_id': self.stock_location_14.id
-            }), (0, 0, {
-                'product_id': self.product_4.id,
-                'product_uom_id': self.product_4.uom_id.id,
-                'product_qty': 60,
-                'prod_lot_id': lot_product_4.id,
-                'location_id': self.stock_location_14.id
-            })]
-        })
-        inventory.action_start()
-        inventory.action_validate()
+        self.env['stock.quant'].create({
+            'product_id': self.product_2.id,
+            'inventory_quantity': 30,
+            'lot_id': lot_product_2.id,
+            'location_id': self.stock_location_14.id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': self.product_3.id,
+            'inventory_quantity': 60,
+            'location_id': self.stock_location_14.id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': self.product_4.id,
+            'inventory_quantity': 60,
+            'lot_id': lot_product_4.id,
+            'location_id': self.stock_location_14.id
+        }).action_apply_inventory()
 
         # re-assign consume material
         man_order.action_assign()
@@ -840,24 +823,18 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         # Initialize Inventory
         # --------------------
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Inventory Product Table',
-            'line_ids': [(0, 0, {
-                'product_id': product_charger.id,
-                'product_uom_id': product_charger.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_charger.id,
-                'location_id': self.source_location_id
-            }), (0, 0, {
-                'product_id': product_keybord.id,
-                'product_uom_id': product_keybord.uom_id.id,
-                'product_qty': 20,
-                'prod_lot_id': lot_keybord.id,
-                'location_id': self.source_location_id
-            })]
-        })
-        inventory.action_start()
-        inventory.action_validate()
+        self.env['stock.quant'].create({
+            'product_id': product_charger.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_charger.id,
+            'location_id': self.source_location_id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': product_keybord.id,
+            'inventory_quantity': 20,
+            'lot_id': lot_keybord.id,
+            'location_id': self.source_location_id
+        }).action_apply_inventory()
 
         # Check consumed move status
         mo_custom_laptop.action_assign()
@@ -1053,22 +1030,16 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
                 'sequence': 2,
             })]
         })
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Initial inventory',
-            'line_ids': [(0, 0, {
-                'product_id': drawer_drawer.id,
-                'product_uom_id': drawer_drawer.uom_id.id,
-                'product_qty': 50.0,
-                'location_id': self.stock_location_14.id,
-            }), (0, 0, {
-                'product_id': drawer_case.id,
-                'product_uom_id': drawer_case.uom_id.id,
-                'product_qty': 50.0,
-                'location_id': self.stock_location_14.id,
-            })]
-        })
-        inventory.action_start()
-        inventory.action_validate()
+        self.env['stock.quant'].create({
+            'product_id': drawer_drawer.id,
+            'inventory_quantity': 50.0,
+            'location_id': self.stock_location_14.id
+        }).action_apply_inventory()
+        self.env['stock.quant'].create({
+            'product_id': drawer_case.id,
+            'inventory_quantity': 50.0,
+            'location_id': self.stock_location_14.id
+        }).action_apply_inventory()
 
         product = bom.product_tmpl_id.product_variant_id
         product.tracking = 'serial'

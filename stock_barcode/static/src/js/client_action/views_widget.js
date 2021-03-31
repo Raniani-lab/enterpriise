@@ -20,6 +20,9 @@ var ViewsWidget = Widget.extend({
         this.defaultValue = defaultValue;
         this.mode = mode || 'edit';
         this.view_type = view_type || 'form';
+        if (params) {
+            this.context = params.context || {};
+        }
     },
 
 

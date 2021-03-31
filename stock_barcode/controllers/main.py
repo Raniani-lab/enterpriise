@@ -152,6 +152,8 @@ class StockBarcodeController(http.Controller):
     @http.route('/stock_barcode/get_set_barcode_view_state', type='json', auth='user')
     def get_set_barcode_view_state(self, model_name, record_id, mode, write_field=None, write_vals=None):
         if mode != 'read':
+            if not record_id:
+                request.env[model_name].barcode_write(write_vals)
             request.env[model_name].browse(record_id).write({write_field: write_vals})
         return request.env[model_name].browse(record_id).with_context(company_id=self._get_allowed_company_ids()[0]).get_barcode_view_state()
 

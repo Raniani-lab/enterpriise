@@ -66,7 +66,7 @@ var LinesWidget = Widget.extend({
      */
     incrementProduct: function(id_or_virtual_id, qty, model, doNotClearLineHighlight) {
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
-        var incrementClass = (model === 'stock.inventory') ? '.product_qty': '.qty-done';
+        var incrementClass = (model === 'stock.quant') ? '.inventory_quantity': '.qty-done';
         var qtyDone = parseFloat($line.find(incrementClass).text());
         // increment quantity and avoid insignificant digits
         $line.find(incrementClass).text(parseFloat((qtyDone + qty).toPrecision(15)));
@@ -197,7 +197,7 @@ var LinesWidget = Widget.extend({
             }));
         }
 
-        if (this.model != 'stock.inventory') {
+        if (this.model != 'stock.quant') {
             // expects a picking (may fail otherwise)
             return this._sortProductLines(lines);
         } else {
@@ -296,8 +296,6 @@ var LinesWidget = Widget.extend({
          if (this.mode === 'done') {
              if (this.model === 'stock.picking') {
                  this._toggleScanMessage('picking_already_done');
-             } else if (this.model === 'stock.inventory') {
-                 this._toggleScanMessage('inv_already_done');
              }
              return;
          } else if (this.mode === 'cancel') {
@@ -356,7 +354,7 @@ var LinesWidget = Widget.extend({
             $validate.toggleClass('o_hidden');
         }
 
-        if (! this.page.lines.length && this.model !== 'stock.inventory') {
+        if (! this.page.lines.length && this.model !== 'stock.quant') {
             $validate.prop('disabled', true);
         }
 
@@ -415,7 +413,7 @@ var LinesWidget = Widget.extend({
         if (_.indexOf(this._getErrorName(), message) > -1) {
             this.$('.o_barcode_pic > .fa, .o_barcode_icon').toggleClass('d-none');
         }
-        if (this.model != 'stock.inventory') {
+        if (this.model != 'stock.quant') {
             this._highlightNextExpected(message);
         }
     },
@@ -610,11 +608,11 @@ var LinesWidget = Widget.extend({
         const id = $line.data('id');
         const qtyDone = parseFloat($line.find('.qty-done').text());
         const line = this.page.lines.find(l => id === (l.id || l.virtual_id));
-        if (this.model === 'stock.inventory') {
+        if (this.model === 'stock.quant') {
             const hideAddButton = Boolean(
-                (line.product_id.tracking === 'serial' && (!line.prod_lot_id || line.product_qty > 0)) ||
-                (line.product_id.tracking === 'lot' && !line.prod_lot_id));
-            const hideRemoveButton = (line.product_qty < 1);
+                (line.product_id.tracking === 'serial' && (!line.lot_id || line.inventory_quantity > 0)) ||
+                (line.product_id.tracking === 'lot' && !line.lot_id));
+            const hideRemoveButton = (line.inventory_quantity < 1);
             $line.find('.o_add_unit') .toggleClass('d-none', hideAddButton);
             $line.find('.o_remove_unit') .toggleClass('d-none', hideRemoveButton);
         } else {
@@ -676,7 +674,7 @@ var LinesWidget = Widget.extend({
      */
     _applyShiftKeyDown: function () {
         if (! this.istouchSupported) {
-            if (this.model === 'stock.inventory') {
+            if (this.model === 'stock.quant') {
                 const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
                 const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
                 addUnits.find(":first-child").hide();
@@ -700,7 +698,7 @@ var LinesWidget = Widget.extend({
      */
     _applyShiftKeyUp: function () {
         if (! this.istouchSupported) {
-            if (this.model === 'stock.inventory') {
+            if (this.model === 'stock.quant') {
                 const addUnits = this.$el.find('.o_add_unit[shortcutKey]');
                 const removeUnits = this.$el.find('.o_remove_unit[shortcutKey]');
                 addUnits.find(":first-child").show();

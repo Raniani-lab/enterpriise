@@ -740,7 +740,7 @@ class MrpProductionSchedule(models.Model):
                 (location_dest + '.usage', '=', 'internal'),
                 '!',
                     (location_dest, 'child_of', self.mapped('warehouse_id.view_location_id').ids),
-            ('inventory_id', '=', False),
+            ('is_inventory', '=', False),
             ('date', '>=', date_start),
             ('date', '<=', date_stop)
         ]

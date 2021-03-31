@@ -16,6 +16,7 @@ var HeaderWidget = Widget.extend({
         this._super.apply(this, arguments);
         this.title = parent.title;
         this.note = parent.note;
+        this.model = parent.actionParams.model;
     },
 
     //--------------------------------------------------------------------------

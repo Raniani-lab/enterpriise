@@ -65,8 +65,8 @@ var ClientAction = AbstractAction.extend({
         this.pages = [];            // Groups separating the pages.
         this.currentPageIndex = 0;  // The displayed page index related to `this.pages`.
         this.groups = {};
-        this.title = this.actionParams.model === 'stock.inventory' ? // title of
-            _('Inventory ') : ''; // the main navbar
+        this.title = this.actionParams.model === 'stock.quant' ? // title of
+            _('Inventory Adjustment') : ''; // the main navbar
 
         this.mode = undefined;      // supported mode: `receipt`, `internal`, `delivery`, `inventory`
         this.scannedLocation = undefined;
@@ -529,7 +529,7 @@ var ClientAction = AbstractAction.extend({
         if (this.scanned_location && currentPage.location_id !== this.scanned_location.id) {
             var alreadyInPages = _.find(pages, function (page) {
                 return page.location_id === self.scanned_location.id &&
-                    (self.actionParams.model === 'stock.inventory' || page.location_dest_id === self.currentState.location_dest_id.id);
+                    (self.actionParams.model === 'stock.quant' || page.location_dest_id === self.currentState.location_dest_id.id);
             });
             if (! alreadyInPages) {
                 var pageValues = {
@@ -678,7 +678,7 @@ var ClientAction = AbstractAction.extend({
 
             var newPageIndex = _.findIndex(self.pages, function (page) {
                 return page.location_id === (params.new_location_id || currentLocationId) &&
-                    (self.actionParams.model === 'stock.inventory' ||
+                    (self.actionParams.model === 'stock.quant' ||
                     page.location_dest_id === (params.new_location_dest_id || currentLocationDestId));
             }) || 0;
             if (newPageIndex === -1) {
@@ -845,8 +845,8 @@ var ClientAction = AbstractAction.extend({
                     if (params.result_package_id) {
                         line.result_package_id = params.result_package_id;
                     }
-                } else if (this.actionParams.model === 'stock.inventory') {
-                    line.product_qty += params.product.qty || 1;
+                } else if (this.actionParams.model === 'stock.quant') {
+                    line.inventory_quantity += params.product.qty || 1;
                 }
             }
         } else {
@@ -872,9 +872,9 @@ var ClientAction = AbstractAction.extend({
             if (params.lot_name) {
                 line.lot_name = params.lot_name;
             }
-        } else if (this.actionParams.model === 'stock.inventory') {
+        } else if (this.actionParams.model === 'stock.quant') {
             if (params.lot_id) {
-                line.prod_lot_id = [params.lot_id, params.lot_name];
+                line.lot_id = [params.lot_id, params.lot_name];
             }
         }
         return {
@@ -957,7 +957,7 @@ var ClientAction = AbstractAction.extend({
                 model: this.actionParams.model,
                 method: this.methods.validate,
                 context: context || {},
-                args: [[this.currentState.id]],
+                args: this.currentState.id ? [[this.currentState.id]] : [[this.currentState.line_ids]],
             });
         });
     },
@@ -1005,7 +1005,7 @@ var ClientAction = AbstractAction.extend({
                     isLocationAllowed = true;
                 }
                 if (! isLocationAllowed) {
-                    errorMessage = _t('This location is not a child of the selected locations on the inventory adjustment.');
+                    errorMessage = _t('This location is not a valid for this inventory adjustment. You may need to change your current company.');
                     return Promise.reject(errorMessage);
                 }
 
@@ -1068,7 +1068,7 @@ var ClientAction = AbstractAction.extend({
             }
             var res = this._incrementLines({'product': product, 'barcode': barcode});
             if (res.isNewLine) {
-                if (this.actionParams.model === 'stock.inventory') {
+                if (this.actionParams.model === 'stock.quant') {
                     // FIXME sle: add owner_id, prod_lot_id, owner_id, product_uom_id
                     return this._rpc({
                         model: 'product.product',
@@ -1078,7 +1078,7 @@ var ClientAction = AbstractAction.extend({
                             res.lineDescription.location_id.id,
                         ],
                     }).then(function (theoretical_qty) {
-                        res.lineDescription.theoretical_qty = theoretical_qty;
+                        res.lineDescription.quantity = theoretical_qty;
                         linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
                         self.scannedLines.push(res.id || res.virtualId);
                         return Promise.resolve({linesActions: linesActions});
@@ -1175,7 +1175,7 @@ var ClientAction = AbstractAction.extend({
             var expectedNumberOfLines = quants.length;
             var currentNumberOfLines = 0;
 
-            var qtyField = self.actionParams.model === 'stock.inventory' ? "product_qty" : "qty_done";
+            var qtyField = self.actionParams.model === 'stock.quant' ? "inventory_quantity" : "qty_done";
             var currentPage = self.pages[self.currentPageIndex];
             for (var i=0; i < currentPage.lines.length; i++) {
                 var currentLine = currentPage.lines[i];
@@ -1463,7 +1463,7 @@ var ClientAction = AbstractAction.extend({
                     linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
                 }
 
-                if (self.actionParams.model === 'stock.inventory') {
+                if (self.actionParams.model === 'stock.quant') {
                     // TODO deduplicate: this code is almost the same as in _step_product
                     return self._rpc({
                         model: 'product.product',
@@ -1471,10 +1471,10 @@ var ClientAction = AbstractAction.extend({
                         args: [
                             res.lineDescription.product_id.id,
                             res.lineDescription.location_id.id,
-                            res.lineDescription.prod_lot_id[0],
+                            res.lineDescription.lot_id[0],
                         ],
                     }).then(function (theoretical_qty) {
-                        res.lineDescription.theoretical_qty = theoretical_qty;
+                        res.lineDescription.quantity = theoretical_qty;
                         handle_line();
                         return Promise.resolve({linesActions: linesActions});
                     });
@@ -1503,7 +1503,7 @@ var ClientAction = AbstractAction.extend({
         var errorMessage;
 
         // Bypass the step if needed.
-        if (this.mode === 'delivery' || this.actionParams.model === 'stock.inventory') {
+        if (this.mode === 'delivery' || this.actionParams.model === 'stock.quant') {
             this._endBarcodeFlow();
             return this._step_source(barcode, linesActions);
         }
@@ -1833,7 +1833,7 @@ var ClientAction = AbstractAction.extend({
             if (record && record.data.location_id) {
                 var newPageIndex = _.findIndex(self.pages, function (page) {
                     return page.location_id === record.data.location_id.res_id &&
-                           (self.actionParams.model === 'stock.inventory' ||
+                           (self.actionParams.model === 'stock.quant' ||
                             page.location_dest_id === record.data.location_dest_id.res_id);
                 });
                 if (newPageIndex === -1) {

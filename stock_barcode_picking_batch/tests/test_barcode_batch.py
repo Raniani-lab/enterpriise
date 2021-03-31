@@ -55,47 +55,48 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
 
         # Create some quants (for deliveries)
         Quant = self.env['stock.quant']
-        Quant.with_context(inventory_mode=True).create({
+        quants = Quant.with_context(inventory_mode=True).create({
             'product_id': self.product1.id,
             'location_id': self.shelf1.id,
             'inventory_quantity': 2
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product2.id,
             'location_id': self.shelf2.id,
             'inventory_quantity': 1
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product2.id,
             'location_id': self.shelf3.id,
             'inventory_quantity': 1
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product3.id,
             'location_id': self.shelf3.id,
             'inventory_quantity': 2
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product4.id,
             'location_id': self.shelf1.id,
             'inventory_quantity': 1
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product4.id,
             'location_id': self.shelf4.id,
             'inventory_quantity': 1
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product5.id,
             'location_id': self.shelf5.id,
             'package_id': self.package1.id,
             'inventory_quantity': 4,
         })
-        Quant.with_context(inventory_mode=True).create({
+        quants |= Quant.with_context(inventory_mode=True).create({
             'product_id': self.product5.id,
             'location_id': self.shelf5.id,
             'inventory_quantity': 4,
         })
+        quants.action_apply_inventory()
 
         # Create a first receipt for 2 products.
         picking_form = Form(self.env['stock.picking'])
@@ -171,7 +172,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
             'location_id': self.shelf5.id,
             'package_id': self.package2.id,
             'inventory_quantity': 4,
-        })
+        }).action_apply_inventory()
 
         # Changes name of pickings to be able to track them on the tour
         self.picking_delivery_1.name = 'picking_delivery_1'
@@ -212,21 +213,18 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         # Adds two quantities for product tracked by SN.
         sn1 = self.env['stock.production.lot'].create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn2 = self.env['stock.production.lot'].create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
-        inv_line_data = {
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
             'product_id': self.productserial1.id,
-            'product_uom_id': self.uom_unit.id,
-            'product_qty': 1,
+            'inventory_quantity': 1,
+            'lot_id': sn1.id,
             'location_id': self.shelf1.id,
-        }
-        inventory = self.env['stock.inventory'].create({
-            'name': 'Inv. productserial1',
-            'line_ids': [
-                (0, 0, dict(inv_line_data, prod_lot_id=sn1.id)),
-                (0, 0, dict(inv_line_data, prod_lot_id=sn2.id)),
-            ],
-        })
-        inventory.action_start()
-        inventory.action_validate()
+        }).action_apply_inventory()
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.productserial1.id,
+            'inventory_quantity': 1,
+            'lot_id': sn2.id,
+            'location_id': self.shelf1.id,
+        }).action_apply_inventory()
 
         # Creates a delivery for a product tracked by SN, the purpose is to
         # reserve sn1 and scan sn2 instead.

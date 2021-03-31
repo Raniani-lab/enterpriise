@@ -199,13 +199,6 @@ class TestDeliveryUSPS(TransactionCase):
         self.assertEqual(picking.carrier_price, 0.0, "Carrier price has not been properly deleted")
 
     def test_04_usps_flow_from_delivery_order(self):
-
-        inventory = self.env['stock.inventory'].create({
-            'name': '[A1232] iPad Mini',
-            'location_ids': [(4, self.stock_location.id)],
-            'product_ids': [(4, self.iPadMini.id)],
-        })
-
         StockPicking = self.env['stock.picking']
 
         order1_vals = {

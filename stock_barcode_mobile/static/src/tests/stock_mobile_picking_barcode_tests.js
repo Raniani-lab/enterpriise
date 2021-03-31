@@ -17,7 +17,7 @@ QUnit.module('Barcode', {
                 tag: 'stock_barcode_picking_client_action',
                 type: 'ir.actions.client',
                 params: {
-                    model: "stock.inventory",
+                    model: "stock.picking",
                 },
                 context: {},
             },

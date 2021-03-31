@@ -19,16 +19,6 @@
 
     <!-- Actions -->
 
-    <record id="stock_inventory_action_new_inventory" model="ir.actions.act_window">
-        <field name="name">New Inventory</field>
-        <field name="res_model">stock.inventory</field>
-        <field name="view_mode">form</field>
-        <field name="context">{
-            'default_filter': 'partial',
-            'form_view_initial_mode': 'edit',
-        }</field>
-    </record>
-
     <record id="stock_picking_action_form" model="ir.actions.act_window">
         <field name="name">Picking</field>
         <field name="res_model">stock.picking</field>

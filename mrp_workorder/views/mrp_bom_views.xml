@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='workcenter_id']" position="before">
                 <field name="quality_point_count"/>
-                <button name="action_mrp_workorder_show_steps" type="object" icon="fa-list-ul" context="{'default_operation_id': id}"/>
+                <button name="action_mrp_workorder_show_steps" type="object" icon="fa-list-ul"/>
             </xpath>
         </field>
     </record>

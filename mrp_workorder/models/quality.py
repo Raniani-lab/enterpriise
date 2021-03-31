@@ -40,16 +40,11 @@ class MrpRouting(models.Model):
         self.ensure_one()
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id
         action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.action_mrp_workorder_show_steps")
-        # Can pass the default product in the context when coming from the BOM view, but as BOM use
-        # `product.template` and quality points use `product.product`, we need to convert the id.
-        if self.env.context.get('default_product_tmpl_ids') and not self.env.context.get('default_product_ids'):
-            product_templates = self.env['product.template'].search_read(
-                [('id', 'in', self.env.context.get('default_product_tmpl_ids'))],
-                ['product_variant_ids']
-            )
-            product_ids = [pid for template in product_templates for pid in template['product_variant_ids']]
-            self.env.context = dict(self.env.context, default_product_ids=product_ids)
-        ctx = dict(default_picking_type_id=picking_type_id, default_company_id=self.company_id.id)
+        ctx = {
+            'default_company_id': self.company_id.id,
+            'default_operation_id': self.id,
+            'default_picking_type_ids': [picking_type_id],
+        }
         action.update({'context': ctx, 'domain': [('operation_id', '=', self.id)]})
         return action
 
@@ -57,11 +52,19 @@ class MrpRouting(models.Model):
 class QualityPoint(models.Model):
     _inherit = "quality.point"
 
+    def _default_product_ids(self):
+        # Determines a default product from the default operation's BOM.
+        operation_id = self.env.context.get('default_operation_id')
+        if operation_id:
+            bom = self.env['mrp.routing.workcenter'].browse(operation_id).bom_id
+            return bom.product_id.ids if bom.product_id else bom.product_tmpl_id.product_variant_id.ids
+
     is_workorder_step = fields.Boolean(compute='_compute_is_workorder_step')
     operation_id = fields.Many2one(
         'mrp.routing.workcenter', 'Step', check_company=True)
     bom_id = fields.Many2one(related='operation_id.bom_id')
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
+    product_ids = fields.Many2many(default=_default_product_ids)
     test_type_id = fields.Many2one(
         'quality.point.test_type',
         domain="[('allow_registration', '=', operation_id and is_workorder_step)]")

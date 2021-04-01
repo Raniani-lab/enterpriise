@@ -81,6 +81,16 @@ class assets_report(models.AbstractModel):
         """
         return self._get_account_group_with_company(account_code, self.env.company.id, parent_group, group_dict)
 
+    def _with_context_company2code2account(self):
+        if self.env.context.get('company2code2account') is not None:
+            return self
+
+        company2code2account = defaultdict(dict)
+        for account in self.env['account.account'].search([]):
+            company2code2account[account.company_id.id][account.code] = account
+
+        return self.with_context(company2code2account=company2code2account)
+
     def _get_account_group_with_company(self, account_code, company_id, parent_group=None, group_dict=None):
         """ Get the list of parent groups for this account
         return: list containing the main group key, then the name of every group
@@ -93,7 +103,8 @@ class assets_report(models.AbstractModel):
             account_code = '##'
         account_code_short = account_code[:2]
         group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
-        account_id = self.env['account.account'].search([('company_id', '=', company_id), ('code', '=', account_code)])
+        self = self._with_context_company2code2account()
+        account_id = self.env.context['company2code2account'].get(company_id, {}).get(account_code)
         account_string = account_id.display_name if account_id else _("No asset account")
         for k, v in group_dict.items():
             try:
@@ -113,6 +124,7 @@ class assets_report(models.AbstractModel):
         return cache[key]
 
     def _get_lines(self, options, line_id=None):
+        self = self._with_context_company2code2account()
         options['self'] = self
         lines = []
         total = [0] * 9
@@ -266,7 +278,7 @@ class assets_report(models.AbstractModel):
                        asset.acquisition_date as asset_acquisition_date,
                        asset.method as asset_method,
                        (
-                           (SELECT COUNT(*) FROM temp_account_move WHERE asset_id = asset.id AND asset_value_change != 't')
+                           account_move_count.count
                            + COALESCE(asset.depreciation_number_import, 0)
                            - CASE WHEN asset.prorata THEN 1 ELSE 0 END
                        ) as asset_method_number,
@@ -284,12 +296,48 @@ class assets_report(models.AbstractModel):
                        COALESCE(first_move.amount_total, 0.0) as depreciation
                 FROM account_asset as asset
                 LEFT JOIN account_account as account ON asset.account_asset_id = account.id
-                LEFT OUTER JOIN (SELECT MIN(date) as date, asset_id FROM temp_account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) min_date_in ON min_date_in.asset_id = asset.id
-                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM temp_account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) max_date_in ON max_date_in.asset_id = asset.id
-                LEFT OUTER JOIN (SELECT MAX(date) as date, asset_id FROM temp_account_move WHERE date <= %(date_from)s {where_account_move} GROUP BY asset_id) max_date_before ON max_date_before.asset_id = asset.id
-                LEFT OUTER JOIN temp_account_move as first_move ON first_move.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = min_date_in.date ORDER BY m.id ASC LIMIT 1)
-                LEFT OUTER JOIN temp_account_move as last_move ON last_move.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = max_date_in.date ORDER BY m.id DESC LIMIT 1)
-                LEFT OUTER JOIN temp_account_move as move_before ON move_before.id = (SELECT m.id FROM temp_account_move m WHERE m.asset_id = asset.id AND m.date = max_date_before.date ORDER BY m.id DESC LIMIT 1)
+                LEFT JOIN (
+                    SELECT
+                        COUNT(*) as count,
+                        asset_id
+                    FROM temp_account_move
+                    WHERE asset_value_change != 't'
+                    GROUP BY asset_id
+                ) account_move_count ON asset.id = account_move_count.asset_id
+
+                LEFT OUTER JOIN (
+                    SELECT DISTINCT ON (asset_id)
+                        asset_depreciated_value,
+                        asset_remaining_value,
+                        amount_total,
+                        asset_id
+                    FROM temp_account_move m
+                    WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move}
+                    ORDER BY asset_id, date, id DESC
+                ) first_move ON first_move.asset_id = asset.id
+
+                LEFT OUTER JOIN (
+                    SELECT DISTINCT ON (asset_id)
+                        asset_depreciated_value,
+                        asset_remaining_value,
+                        amount_total,
+                        asset_id
+                    FROM temp_account_move m
+                    WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move}
+                    ORDER BY asset_id, date DESC, id DESC
+                ) last_move ON last_move.asset_id = asset.id
+
+                LEFT OUTER JOIN (
+                    SELECT DISTINCT ON (asset_id)
+                        asset_depreciated_value,
+                        asset_remaining_value,
+                        amount_total,
+                        asset_id
+                    FROM temp_account_move m
+                    WHERE date <= %(date_from)s {where_account_move}
+                    ORDER BY asset_id, date DESC, id DESC
+                ) move_before ON last_move.asset_id = asset.id
+
                 WHERE asset.company_id in %(company_ids)s
                 AND asset.acquisition_date <= %(date_to)s
                 AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)

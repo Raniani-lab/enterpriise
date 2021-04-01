@@ -166,7 +166,6 @@ class Payslip(models.Model):
         # If there is a public holiday less than 30 days after the end of the contract
         # this public holiday should be taken into account in the worked days lines
         if self.contract_id.date_end and self.date_from <= self.contract_id.date_end <= self.date_to:
-            after_contract_public_holiday_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_after_contract_public_holiday', raise_if_not_found=False)
             # If the contract is followed by another one (eg. after an appraisal)
             if self.contract_id.employee_id.contract_ids.filtered(lambda c: c.state in ['open', 'close'] and c.date_start > self.contract_id.date_end):
                 return res
@@ -182,12 +181,13 @@ class Payslip(models.Model):
             public_leaves = public_leaves.filtered(
                 lambda l: 0 < (l.date_from.date() - self.contract_id.date_end).days <= (30 if self.employee_id.first_contract_date + relativedelta(months=1) <= self.contract_id.date_end else 15))
             if public_leaves:
-                res.append({
-                    'sequence': after_contract_public_holiday_type.sequence,
-                    'work_entry_type_id': after_contract_public_holiday_type.id,
-                    'number_of_days': len(public_leaves),
-                    'number_of_hours': self.contract_id.resource_calendar_id.hours_per_day * len(public_leaves),
-                })
+                input_type_id = self.env.ref('l10n_be_hr_payroll.cp200_other_input_after_contract_public_holidays').id
+                if input_type_id not in self.input_line_ids.mapped('input_type_id').ids:
+                    self.write({'input_line_ids': [(0, 0, {
+                        'name': 'After Contract Public Holidays',
+                        'amount': 0.0,
+                        'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_after_contract_public_holidays').id,
+                    })]})
         # Handle loss on commissions
         if self._get_last_year_average_variable_revenues():
             we_types_ids = (

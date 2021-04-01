@@ -143,7 +143,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_original_contract.contract_id, self.original_contract)
         self.assertEqual(len(payslip_original_contract.worked_days_line_ids), 2) # One attendance line, One out of contract
         attendance_line = payslip_original_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 369.23, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 415.38, places=2)
         self.assertEqual(attendance_line.number_of_days, 3.0)
         self.assertAlmostEqual(attendance_line.number_of_hours, 22.8, places=2)
         out_of_contract_line = payslip_original_contract.worked_days_line_ids[1]
@@ -274,7 +274,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(payslip_original_contract.contract_id, self.original_contract)
         self.assertEqual(len(payslip_original_contract.worked_days_line_ids), 2) # One attendance line, One out of contract
         attendance_line = payslip_original_contract.worked_days_line_ids[0]
-        self.assertAlmostEqual(attendance_line.amount, 369.23, places=2)
+        self.assertAlmostEqual(attendance_line.amount, 415.38, places=2)
         self.assertEqual(attendance_line.number_of_days, 3.0)
         self.assertAlmostEqual(attendance_line.number_of_hours, 22.8, places=2)
         out_of_contract_line = payslip_original_contract.worked_days_line_ids[1]
@@ -283,17 +283,17 @@ class TestCreditTime(AccountTestInvoicingCommon):
         self.assertEqual(float_compare(out_of_contract_line.number_of_hours, 144.4, 2), 0)
 
         payslip_results = {
-            'BASIC': 369.23,
+            'BASIC': 415.38,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
             'ATN.LAP': 7.0,
-            'SALARY': 385.23,
-            'ONSS': -50.35,
+            'SALARY': 431.38,
+            'ONSS': -56.38,
             'EmpBonus.1': 0.0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 476.02,
-            'IP.PART': -92.31,
-            'GROSS': 383.72,
+            'GROSSIP': 516.14,
+            'IP.PART': -103.85,
+            'GROSS': 412.3,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -305,9 +305,9 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'PUB.TRANS': 24.0,
             'CAR.PRIV': 7.02,
             'REP.FEES': 150.0,
-            'IP': 92.31,
-            'IP.DED': -6.92,
-            'NET': 489.7
+            'IP': 103.85,
+            'IP.DED': -7.79,
+            'NET': 528.96
         }
         error = []
         for code, value in payslip_results.items():

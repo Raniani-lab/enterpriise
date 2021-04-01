@@ -293,9 +293,9 @@ class DMFAOccupation(DMFANode):
                 hours_per_week = contract.standard_calendar_id.hours_per_week
             else:
                 hours_per_week = contract.company_id.resource_calendar_id.hours_per_week
-            self.ref_mean_working_hours = ('%.2f' % hours_per_week).replace('.', '').zfill(4)
         else:
-            self.ref_mean_working_hours = -1
+            hours_per_week = contract.company_id.resource_calendar_id.hours_per_week
+        self.ref_mean_working_hours = ('%.2f' % hours_per_week).replace('.', '').zfill(4)
 
         self.reorganisation_measure = -1
         self.employment_promotion = -1
@@ -461,10 +461,7 @@ class DMFAService(DMFANode):
         total_hours = round(total_hours * 2) / 2  # Round to half days
         self.nbr_days = format_amount(total_hours, width=5)
 
-        if self.contract.time_credit or self.contract.resource_calendar_id.work_time_rate < 100:
-            self.nbr_hours = format_amount(sum(worked_days.mapped('number_of_hours')), width=5)
-        else:
-            self.nbr_hours = -1
+        self.nbr_hours = format_amount(sum(worked_days.mapped('number_of_hours')), width=5)
 
         self.flight_nbr_minutes = -1
 
@@ -558,7 +555,7 @@ class HrDMFAReport(models.Model):
         num_suite = str(self.id).zfill(5)
         now = fields.Date.today()
         # YTI TODO master: Add is_test field, to set R or T accordingly
-        filename = 'FI.DMFA.%s.%s.%s.R.1.1.xml' % (num_expedition, now.strftime('%Y%m%d'), num_suite)
+        filename = 'FI.DMFA.%s.%s.%s.R.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite)
         for dmfa in self:
             dmfa.dmfa_xml_filename = filename
 

@@ -15,6 +15,21 @@ result_name = inputs.COMMISSION.name
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
+    <record id="cp200_employees_salary_after_contract_public_holiday" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">After Contract Public Holidays</field>
+        <field name="code">AFTERPUB</field>
+        <field name="sequence">15</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.AFTERPUB</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = inputs.AFTERPUB.amount
+result_name = inputs.AFTERPUB.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+    </record>
+
     <!-- Salary Rules -->
     <record id="cp200_employees_salary_atn_internet" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_div_impos"/>
@@ -72,6 +87,8 @@ result = 7.0
 result = categories.BASIC
 if inputs.COMMISSION:
     result += result_rules['COMMISSION']['total']
+if inputs.AFTERPUB:
+    result += result_rules['AFTERPUB']['total']
 if contract.internet:
     result += result_rules['ATN.INT']['total']
 if contract.mobile:
@@ -563,7 +580,7 @@ result_name = inputs.CHILD_SUPPORT.name
         <field name="sequence">500</field>
         <field name="condition_select">none</field>
         <field name="amount_python_compute">
-result = categories.BASIC + categories.COMMISSION - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
+result = categories.BASIC + categories.COMMISSION + categories.AFTERPUB - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payslip" eval="False"/>
     </record>

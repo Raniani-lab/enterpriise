@@ -956,44 +956,46 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         payslip = self._generate_payslip(self.date_from, self.date_to)
 
-        self.assertEqual(len(payslip.worked_days_line_ids), 3)
-        self.assertEqual(len(payslip.input_line_ids), 0)
+        # The input is already there
+        payslip.input_line_ids.amount = 60.21
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 1)
         self.assertEqual(len(payslip.line_ids), 25)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 60.21, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1244.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1304.62, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('OUT'), 11.0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE510'), 1.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 11.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('OUT'), 83.6, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE510'), 7.6, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 83.6, places=2)
 
         payslip_results = {
-            'BASIC': 1304.61,
+            'BASIC': 1304.62,
+            'AFTERPUB': 60.21,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 1313.61,
-            'ONSS': -171.69,
-            'EmpBonus.1': 10.77,
+            'SALARY': 1373.83,
+            'ONSS': -179.56,
+            'EmpBonus.1': 0.0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 1293.83,
-            'IP.PART': -326.15,
-            'GROSS': 967.68,
-            'P.P': -4.99,
-            'P.P.DED': 3.57,
+            'GROSSIP': 1335.41,
+            'IP.PART': -326.16,
+            'GROSS': 1009.26,
+            'P.P': -13.42,
+            'P.P.DED': 0,
             'ATN.CAR.2': -141.14,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -11.99,
             'REP.FEES': 150,
-            'IP': 326.15,
+            'IP': 326.16,
             'IP.DED': -24.46,
-            'NET': 1255.82,
+            'NET': 1285.4,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1029,13 +1031,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         payslip = self._generate_payslip(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
 
-        self.assertEqual(len(payslip.worked_days_line_ids), 3)
-        self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
-
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 48.92, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE510'), 1.0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE510'), 7.6, places=2)
+        # After contract public holiday is proposed
+        self.assertEqual(len(payslip.input_line_ids), 1)
 
         new_contract = self.env['hr.contract'].create([{
             'name': "New Contract For Payslip Test",
@@ -1063,16 +1060,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }])
 
         new_contract._generate_work_entries(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
+
+        payslip.input_line_ids.unlink()
         payslip._compute_worked_days_line_ids()
-        payslip.compute_sheet()
 
-        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        # After contract public holiday is not proposed anymore
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 20)
-
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE510'), 0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE510'), 0.0, places=2)
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE510'), 0.0, places=2)
 
     def test_one_day_contract(self):
         self.contract.write({
@@ -1084,9 +1077,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 21)
+        self.assertEqual(len(payslip.line_ids), 20)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 81.54, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 1.0, places=2)
@@ -1096,14 +1089,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('OUT'), 159.6, places=2)
 
         payslip_results = {
-            'BASIC': 81.54,
+            'BASIC': 122.31,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 90.54,
-            'ONSS': -11.83,
-            'EmpBonus.1': 6.18,
+            'SALARY': 131.31,
+            'ONSS': -17.16,
+            'EmpBonus.1': 0.0,
             'ATN.CAR': 141.14,
-            'GROSS': 226.03,
+            'GROSS': 255.29,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -1112,7 +1105,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -1.09,
             'REP.FEES': 150.0,
-            'NET': 224.8,
+            'NET': 254.06,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4716,9 +4709,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 23)
+        self.assertEqual(len(payslip.line_ids), 25)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 245.67, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE281'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
 
@@ -4731,24 +4724,26 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('OUT'), 76.0, places=2)
 
         payslip_results = {
-            'BASIC': 0.0,
+            'BASIC': 245.67,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 9.0,
-            'ONSS': -1.18,
-            'ONSSTOTAL': 1.18,
+            'SALARY': 254.67,
+            'ONSS': -33.29,
+            'EmpBonus': 0,
+            'ONSSTOTAL': 23.04,
             'ATN.CAR': 150.53,
-            'GROSS': 158.36,
+            'GROSS': 320.75,
             'P.P': 0.0,
+            'P.DED': 0,
             'PPTOTAL': 0.0,
             'ATN.CAR.2': -150.53,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -3.27,
-            'REP.FEES': 0.0,
-            'NET': -4.45,
-            'REMUNERATION': 0.0,
-            'ONSSEMPLOYER': 2.44,
+            'REP.FEES': 150.0,
+            'NET': 364.75,
+            'REMUNERATION': 184.25,
+            'ONSSEMPLOYER': 69.12,
         }
         self._validate_payslip(payslip, payslip_results)

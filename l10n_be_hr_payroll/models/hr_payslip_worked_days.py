@@ -49,6 +49,19 @@ class HrPayslipWorkedDays(models.Model):
                 hours_per_week = calendar.hours_per_week
                 wage = payslip._get_contract_wage() if payslip.contract_id else 0
 
+                # We usually deduct the unpaid hours using the hourly formula. This is the fairest
+                # way to deduct 1 day, because we will deduct the same amount in a short month (February)
+                # than in a long month (March)
+                # But in the case of the long month with not enough paid hours, this could lead
+                # to a basic salary = 0, which is in that case unfair. Switch to another method in which
+                # we compute the amount from the paid hours using the hourly formula
+                paid_hours = sum(be_wd.payslip_id.worked_days_line_ids.filtered(
+                    lambda wd: wd.is_paid and wd.work_entry_type_id.code not in ['OUT', 'LEAVE300', 'LEAVE301']
+                ).mapped('number_of_hours'))
+                if paid_hours < hours_per_week and be_wd.work_entry_type_id.code not in ['OUT', 'LEAVE300', 'LEAVE301']:
+                    be_wd.amount = wage * 3 / (13 * hours_per_week) * be_wd.number_of_hours
+                    continue
+
                 # If out of contract, we use the hourly formula to deduct the real wage
                 out_be_wd = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == 'OUT')
                 if out_be_wd:
@@ -116,7 +129,7 @@ class HrPayslipWorkedDays(models.Model):
                     # Case with half days mixed with full days
                     work100_wds = be_wd.payslip_id.worked_days_line_ids.filtered(lambda wd: wd.code == "WORK100")
                     number_of_hours = sum([
-                        wd.number_of_hours * (1 if wd.code != 'LEAVE510' else out_ratio)
+                        wd.number_of_hours
                         for wd in be_wd.payslip_id.worked_days_line_ids
                         if wd.code not in [main_worked_day, 'OUT'] and not wd.is_credit_time])
                     if len(work100_wds) > 1:
@@ -179,8 +192,6 @@ class HrPayslipWorkedDays(models.Model):
                     number_of_hours = be_wd.number_of_hours
                     ratio = 3 / (13 * hours_per_week) * number_of_hours if hours_per_week else 0
                     worked_day_amount = wage * ratio
-                    if be_wd.code == 'LEAVE510':
-                        worked_day_amount *= out_ratio
                     if worked_day_amount > wage:
                         worked_day_amount = wage
                 be_wd.amount = worked_day_amount

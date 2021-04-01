@@ -17,10 +17,10 @@ class AccountTaxReport(models.Model):
                 (_('Not allowed negative amounts'),
                     not all(v >= 0 for v in [v for k, v in amounts.items() if not carried_over[k]])),
                 # Code C
-                ('[55] > 0 if [86] > 0 or [88] > 0',
+                (_('[55] > 0 if [86] > 0 or [88] > 0'),
                     min(0.0, amounts['c55']) if amounts['c86'] > 0 or amounts['c88'] > 0 else False),
                 # Code D
-                ('[56] + [57] > 0 if [87] > 0',
+                (_('[56] + [57] > 0 if [87] > 0'),
                     min(0.0, amounts['c55']) if amounts['c86'] > 0 or amounts['c88'] > 0 else False),
                 # Code O
                 ('[01] * 6% + [02] * 12% + [03] * 21% = [54]',
@@ -41,10 +41,10 @@ class AccountTaxReport(models.Model):
                 ('[49] * 21% >= [64]',
                     min(0.0, amounts['c49'] * 0.21 - amounts['c64']) if min(0.0, amounts['c49'] * 0.21 - amounts['c64']) < -62 else False),
                 # Code AC
-                ('[88] < ([81] + [82] + [83] + [84]) * 100 if [88] > 99.999',
+                (_('[88] < ([81] + [82] + [83] + [84]) * 100 if [88] > 99.999'),
                     max(0.0, amounts['c88'] - (amounts['c81'] + amounts['c82'] + amounts['c83'] + amounts['c84']) * 100) if amounts['c88'] > 99999 else False),
                 # Code AD
-                ('[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 if [88] > 99.999',
-                    max(0.0, amounts['c44'] - (amounts['c00'] + amounts['c01'] + amounts['c02'] + amounts['c03'] + amounts['c45'] + amounts['c46'] + amounts['c47'] + amounts['c48'] + amounts['c49']) * 200) if amounts['c44'] > 99999 else False),
+                (_('[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 if [88] > 99.999'),
+                    max(0.0, amounts['c44'] - (amounts['c00'] + amounts['c01'] + amounts['c02'] + amounts['c03'] + amounts['c45'] + amounts['c46L'] + amounts['c46T'] + amounts['c47'] + amounts['48s44'] + amounts['48s46L'] + amounts['48s46T'] + amounts['c49']) * 200) if amounts['c44'] > 99999 else False),
             ]
         return super(AccountTaxReport, self).get_checks_to_perform(amounts, carried_over)

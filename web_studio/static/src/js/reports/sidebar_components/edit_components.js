@@ -1122,22 +1122,8 @@ var Text = AbstractEditComponent.extend({
     _startWysiwygEditor: async function () {
         var self = this;
         const options = {
-            focus: false,
-            height: 180,
-            toolbar: [
-                // ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['clear', ['clear']],
-            ],
-            prettifyHtml: false,
-            styleWithSpan: false,
             lang: "odoo",
-            disableDragAndDrop: true,
-            recordInfo: {
-                context: this.context,
-            },
+            recordInfo: {context: this.context},
             value: this.directiveFields.text.value,
             resizable: true,
             toolbarTemplate: 'web_studio.Sidebar.web_editor_toolbar',

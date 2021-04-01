@@ -338,6 +338,11 @@ class SignRequest(models.Model):
                     'role_id': signer['role'],
                 })
 
+    @api.model
+    def check_request_edit_during_sign(self, request_id):
+        request_sudo = self.sudo().browse(request_id)
+        return request_sudo.exists() and request_sudo.nb_closed == 0 and self.env.user.has_group('base.group_user')
+
     def send_signature_accesses(self, ignored_partners=None):
         self.ensure_one()
         if not self.request_item_ids.ids or (set(self.request_item_ids.mapped('role_id')) != set(self.template_id.sign_item_ids.mapped('responsible_id'))):
@@ -383,6 +388,7 @@ class SignRequest(models.Model):
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         tpl = self.env.ref('sign.sign_template_mail_completed')
         self.attachment_ids = [Command.link(attachment.id), Command.link(attachment_log.id)]
+        request_edited = any(log.action == "update" for log in self.sign_log_ids)
         for signer in self.request_item_ids:
             if not signer.signer_email:
                 continue
@@ -395,7 +401,8 @@ class SignRequest(models.Model):
                 'body': False,
                 'recipient_name': signer.partner_id.name,
                 'recipient_id': signer.partner_id.id,
-                'signers': signers
+                'signers': signers,
+                'request_edited': request_edited,
             }, engine='ir.qweb', minimal_qcontext=True)
 
             if not self.create_uid.email:
@@ -410,7 +417,7 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': signer.partner_id.email_formatted,
-                 'subject': _('%s has been signed', self.reference),
+                 'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
                  'attachment_ids': self.attachment_ids.ids},
                 force_send=True,
                 lang=signer_lang,
@@ -431,7 +438,8 @@ class SignRequest(models.Model):
                 'subject': '%s signed' % self.reference,
                 'body': self.message_cc if not is_html_empty(self.message_cc) else False,
                 'recipient_name': follower.name,
-                'signers': signers
+                'signers': signers,
+                'request_edited': request_edited,
             }, engine='ir.qweb', minimal_qcontext=True)
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
@@ -440,8 +448,8 @@ class SignRequest(models.Model):
                 {'email_from': self.create_uid.email_formatted,
                  'author_id': self.create_uid.partner_id.id,
                  'email_to': follower.email_formatted,
-                 'attachment_ids': self.attachment_ids.ids,
-                 'subject': _('%s has been signed', self.reference)},
+                 'subject': _('%s has been edited and signed', self.reference) if request_edited else _('%s has been signed', self.reference),
+                 'attachment_ids': self.attachment_ids.ids},
                 lang=follower.lang,
             )
 
@@ -731,7 +739,11 @@ class SignRequestItem(models.Model):
                 lang=signer_lang,
             )
 
-    def sign(self, signature):
+    def sign(self, signature, new_sign_items=None):
+        """ Stores the sign request item values.
+        :param signature: dictionary containing signature values and corresponding ids
+        :param new_sign_items: dictionary containing new items added by the user while signing the document (edit while signing)
+        """
         self.ensure_one()
         if not isinstance(signature, dict):
             self.signature = signature
@@ -739,12 +751,45 @@ class SignRequestItem(models.Model):
             SignItemValue = self.env['sign.request.item.value']
             request = self.sign_request_id
 
-            signerItems = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
-            autorizedIDs = set(signerItems.mapped('id'))
-            requiredIDs = set(signerItems.filtered('required').mapped('id'))
+            signer_items = request.template_id.sign_item_ids.filtered(lambda r: not r.responsible_id or r.responsible_id.id == self.role_id.id)
+            authorised_ids = set(signer_items.mapped('id'))
+            required_ids = set(signer_items.filtered('required').mapped('id'))
 
-            itemIDs = {int(k) for k in signature}
-            if not (itemIDs <= autorizedIDs and requiredIDs <= itemIDs): # Security check
+            signature_ids = {int(k) for k in signature}
+            if not new_sign_items:
+                new_sign_items = {}
+            new_sign_ids = {int(k) for k in new_sign_items.keys()}
+            item_ids = signature_ids - new_sign_ids
+
+            if not (item_ids <= authorised_ids and required_ids <= item_ids and (signature_ids - authorised_ids) == new_sign_ids): # Security check
+                return False
+
+            def check_new_sign_item_types(sign_items):
+                sign_types = map(lambda d: d['type_id'], sign_items.values())
+                allowed_types = [
+                    self.env.ref('sign.sign_item_type_text').id,
+                    self.env.ref('sign.sign_item_type_signature').id,
+                    self.env.ref('sign.sign_item_type_initial').id
+                ]
+                return all(sign_type in allowed_types for sign_type in sign_types)
+
+            # edit request template while signing
+            if new_sign_ids and self.env['sign.request'].check_request_edit_during_sign(request.id) and check_new_sign_item_types(new_sign_items):
+                old_template = request.template_id
+                request.template_id = self.env['sign.template']._copy_edited_template(old_template.id, request.create_uid.id)
+
+                new_items_signature = dict(filter(lambda item: int(item[0]) not in authorised_ids, signature.items()))
+                old_items_signature = dict(filter(lambda item: int(item[0]) in authorised_ids, signature.items()))
+
+                old_items_signature = self._get_existing_items_signature(old_template, old_items_signature)
+                new_items_signature = self._get_new_items_signature(new_items_signature, new_sign_items)
+
+                signature = dict(new_items_signature, **old_items_signature)
+
+                self.env['sign.log']._create_log(request, "update", True, partner_id=self.env.user.partner_id.id)
+                body = _("The signature request was edited by: %s.", self.env.user.partner_id.name)
+                request.message_post(body=body)
+            elif new_sign_ids:
                 return False
 
             user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1).sudo()
@@ -759,6 +804,44 @@ class SignRequestItem(models.Model):
                     self.signature = signature[itemId][signature[itemId].find(',')+1:]
 
         return True
+
+    def _get_existing_items_signature(self, old_template, signature):
+        """ Copies the sign items from the old template and
+            maps the signature dictionary keys to the new ids of the template.
+            Used for the edit while signing feature.
+            :param old_template: sign.template
+            :param signature: dict with keys being the id of the sign.item and value being sign.item.value
+            :returns new_signature: signature dict with the new ORM ids and their values
+        """
+        template = self.sign_request_id.template_id
+        new_signature = {}
+        new_template_sign_items = []
+        for old_sign_item in old_template.sign_item_ids:
+            current_id = old_sign_item.copy().id
+            old_id = str(old_sign_item.id)
+            if old_id in signature:
+                new_signature[str(current_id)] = signature[old_id]
+            new_template_sign_items.append(current_id)
+        template.sign_item_ids = new_template_sign_items
+        return new_signature
+
+    def _get_new_items_signature(self, signature, new_sign_items):
+        """ Creates new sign items and maps the signature dictionary keys
+            to the new ORM-defined ids.
+            Used for the edit while signing feature.
+            :param signature: dictionary with keys being the id of the sign.item and value being sign.item.value
+            :param new_sign_items: dictionary containing new items added by the user while signing the document (quick edit)
+            :returns new_signature: signature dictionary containing the new ORM ids for the new_sign_items and their assigned values
+        """
+        template = self.sign_request_id.template_id
+
+        new_signature = {}
+        for new_sign_item_id, new_sign_item_value in new_sign_items.items():
+            new_sign_item_value['template_id'] = template.id
+            new_sign_item_value['option_ids'] = [(6, False, [int(op) for op in new_sign_item_value.get('option_ids', [])])]
+            created_id = self.env['sign.item'].create(new_sign_item_value).id
+            new_signature[str(created_id)] = signature[new_sign_item_id]
+        return new_signature
 
     def resend_sign_access(self):
         self.ensure_one()

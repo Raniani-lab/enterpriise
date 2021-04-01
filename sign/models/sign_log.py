@@ -45,6 +45,7 @@ class SignLog(models.Model):
             ('save', 'Save'),
             ('sign', 'Signature'),
             ('update_mail', 'Mail Update'),
+            ('update', 'Update')
         ], required=True,
     )
 

@@ -119,4 +119,19 @@
             <br/>
         </div>
     </t>
+    <t t-name="sign.edit_mode_dropdown">
+        <div class="o_edit_mode_dropdown">
+            <i class="fa fa-lg fa-times dropdown_close_icon"/>
+            <div class="o_edit_mode_dropdown_content">
+                <a class="o_edit_mode_dropdown_item dropdown_text" type="7">Text</a>
+                <a class="o_edit_mode_dropdown_item dropdown_initials" type="2">Initials</a>
+                <a class="o_edit_mode_dropdown_item dropdown_signature" type="1">Signature</a>
+            </div>
+        </div>
+    </t>
+    <t t-name="sign.edit_mode_info">
+        <div>
+            <i>Ctrl + Left click to add a field</i>
+        </div>
+    </t>
 </templates>

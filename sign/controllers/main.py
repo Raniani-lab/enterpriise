@@ -269,11 +269,11 @@ class Sign(http.Controller):
         return True
 
     @http.route([
-        '/sign/sign/<int:id>/<token>',
-        '/sign/sign/<int:id>/<token>/<sms_token>'
+        '/sign/sign/<int:sign_request_id>/<token>',
+        '/sign/sign/<int:sign_request_id>/<token>/<sms_token>'
         ], type='json', auth='public')
-    def sign(self, id, token, sms_token=False, signature=None):
-        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
+    def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
+        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if not request_item:
             return False
         if request_item.role_id and request_item.role_id.sms_authentification:
@@ -286,7 +286,7 @@ class Sign(http.Controller):
             if sms_token == request_item.sms_token:
                 request_item.sign_request_id._message_log(body=_('%s validated the signature by SMS with the phone number %s.') % (request_item.partner_id.display_name, request_item.sms_number))
 
-        if not request_item.sign(signature):
+        if not request_item.sign(signature, new_sign_items):
             return False
 
         # mark signature as done in next activity

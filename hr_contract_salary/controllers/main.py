@@ -20,11 +20,11 @@ from datetime import datetime
 class SignContract(Sign):
 
     @http.route([
-        '/sign/sign/<int:id>/<token>',
-        '/sign/sign/<int:id>/<token>/<sms_token>'
+        '/sign/sign/<int:sign_request_id>/<token>',
+        '/sign/sign/<int:sign_request_id>/<token>/<sms_token>'
         ], type='json', auth='public')
-    def sign(self, id, token, sms_token=False, signature=None):
-        result = super(SignContract, self).sign(id, token, sms_token=sms_token, signature=signature)
+    def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
+        result = super(SignContract, self).sign(sign_request_id, token, sms_token=sms_token, signature=signature, new_sign_items=new_sign_items)
         request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
         contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
             ('sign_request_ids', 'in', request_item.sign_request_id.ids)])

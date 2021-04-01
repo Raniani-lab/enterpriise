@@ -5,6 +5,7 @@ odoo.define('sign.PDFIframe', function (require) {
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Widget = require('web.Widget');
+    const SmoothScrollOnDrag = require('web/static/src/js/core/smooth_scroll_on_drag.js');
 
     var _t = core._t;
 
@@ -85,6 +86,9 @@ odoo.define('sign.PDFIframe', function (require) {
             this.attachmentLocation = attachmentLocation;
             this.editMode = editMode;
             this.requestState = parent.requestState;
+            this.templateID = parent.templateID;
+            this.templateItemsInProgress = parent.templateItemsInProgress;
+            this.templateName = parent.templateName;
             for(var dataName in datas) {
                 this._set_data(dataName, datas[dataName]);
             }
@@ -229,7 +233,7 @@ odoo.define('sign.PDFIframe', function (require) {
                     var $signatureItem = self.createSignItem(
                         self.types[parseInt(el.type || el.type_id[0])],
                         !!el.required,
-                        parseInt(el.responsible || el.responsible_id[0]) || 0,
+                        parseInt(el.responsible || el.responsible_id && el.responsible_id[0]) || 0,
                         parseFloat(el.posX),
                         parseFloat(el.posY),
                         parseFloat(el.width),
@@ -239,12 +243,13 @@ odoo.define('sign.PDFIframe', function (require) {
                         el.name,
                         el.responsible_name ? el.responsible_name : '',
                         el.alignment,
+                        false
                     );
                     $signatureItem.data({itemId: el.id, order: i});
                     self.configuration[parseInt(el.page)].push($signatureItem);
                 });
 
-            Promise.all(waitFor).then(function() {
+            Promise.all(waitFor).then(async function() {
                 refresh_interval();
 
                 self.$('.o_sign_sign_item').each(function(i, el) {
@@ -253,6 +258,11 @@ odoo.define('sign.PDFIframe', function (require) {
                 self.updateFontSize();
 
                 self.$('#viewerContainer').css('visibility', 'visible').animate({'opacity': 1}, 1000);
+
+                if(!self.readonlyFields && typeof self.enableSignTemplateEdition === 'function' && !config.device.isMobile) {
+                    await self.enableSignTemplateEdition();
+                }
+
                 self.fullyLoaded.resolve();
 
                 /**
@@ -347,7 +357,7 @@ odoo.define('sign.PDFIframe', function (require) {
             $signItem.css('font-size', size * 0.8);
         },
 
-        createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name, tooltip, alignment) {
+        createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name, tooltip, alignment, isSignItemEditable) {
             // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
             if (value === 0) {
                 value = "0";
@@ -356,13 +366,14 @@ odoo.define('sign.PDFIframe', function (require) {
             var selected_options = option_ids || [];
 
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
-                editMode: this.editMode,
-                readonly: readonly,
+                editMode: isSignItemEditable || this.editMode,
+                readonly: isSignItemEditable || readonly,
                 role: tooltip,
                 type: type.item_type,
                 value: value || "",
                 options: selected_options,
-                placeholder: (name) ? name : type.placeholder
+                placeholder: (name) ? name : type.placeholder,
+                isSignItemEditable: isSignItemEditable
             }));
 
             if (this.readonlyFields) {
@@ -448,6 +459,8 @@ odoo.define('sign.Document', function (require) {
         start: function() {
             this.attachmentLocation = this.$('#o_sign_input_attachment_location').val();
             this.templateName = this.$('#o_sign_input_template_name').val();
+            this.templateID = parseInt(this.$('#o_sign_input_template_id').val());
+            this.templateItemsInProgress = parseInt(this.$('#o_sign_input_template_in_progress_count').val());
             this.requestID = parseInt(this.$('#o_sign_input_sign_request_id').val());
             this.requestToken = this.$('#o_sign_input_sign_request_token').val();
             this.requestState = this.$('#o_sign_input_sign_request_state').val();
@@ -1024,6 +1037,11 @@ odoo.define('sign.document_signing', function (require) {
             }
             this._scrollToSignItemPromise($item).then(function () {
                 const type = self.types[$item.data('type')];
+                if(type.item_type === 'text') {
+                    $item.val = () => {return $item.find('input').val()}
+                    $item.focus = () => $item.find('input').focus()
+                }
+
                 if($item.val() === "" && !$item.data('signature')) {
                     self.setTip(type.tip);
                 }
@@ -1189,7 +1207,8 @@ odoo.define('sign.document_signing', function (require) {
             }
             var route = '/sign/sign/' + this.requestID + '/' + this.requestToken + '/' + input.val();
             var params = {
-                signature: this.signature
+                signature: this.signature,
+                new_sign_items: this.newSignItems
             };
             var self = this;
             $btn.attr('disabled', true);
@@ -1212,7 +1231,7 @@ odoo.define('sign.document_signing', function (require) {
             return ThankYouDialog;
         },
 
-        init: function(parent, requestID, requestToken, signature, signerPhone, RedirectURL, options) {
+        init: function(parent, requestID, requestToken, signature, newSignItems, signerPhone, RedirectURL, options) {
             options = (options || {});
             if (config.device.isMobile) {
                 options.fullscreen = true;
@@ -1230,6 +1249,7 @@ odoo.define('sign.document_signing', function (require) {
             this.requestID = requestID;
             this.requestToken = requestToken;
             this.signature = signature;
+            this.newSignItems = newSignItems;
             this.signerPhone = signerPhone;
             this.RedirectURL = RedirectURL;
             this.sent = $.Deferred();
@@ -1567,7 +1587,7 @@ odoo.define('sign.document_signing', function (require) {
             this._super.apply(this, arguments);
         },
 
-        createSignItem: function(type, required, responsible, posX, posY, width, height, value, options, name) {
+        createSignItem: function(type, required, responsible, posX, posY, width, height, value, options, name, tooltip, alignment, isSignItemEditable) {
             // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
             if (value === 0) {
                 value = "0";
@@ -1733,6 +1753,9 @@ odoo.define('sign.document_signing', function (require) {
             this.refreshSignItems();
             var $toComplete = this.$('.o_sign_sign_item.o_sign_sign_item_required:not(.o_sign_sign_item_pdfview)').filter(function(i, el) {
                 var $elem = $(el);
+                /* in edit mode, the text sign item has a different html structure due to the form and resize/close icons
+                for this reason, we need to check the input field inside the element to check if it has a value */
+                $elem = $elem.data('isEditMode') && $elem.attr('type') === 'text' ? $elem.find('input') : $elem;
                 var unchecked_box = $elem.val() == 'on' && !$elem.is(":checked");
                 return !(($elem.val() && $elem.val().trim()) || $elem.data('signature')) || unchecked_box;
             });
@@ -1900,6 +1923,7 @@ odoo.define('sign.document_signing', function (require) {
 
             function _sign() {
                 var signatureValues = {};
+                var newSignItems = {};
                 for(var page in this.iframeWidget.configuration) {
                     for(var i = 0 ; i < this.iframeWidget.configuration[page].length ; i++) {
                         var $elem = this.iframeWidget.configuration[page][i];
@@ -1907,7 +1931,7 @@ odoo.define('sign.document_signing', function (require) {
                         if(resp > 0 && resp !== this.iframeWidget.role) {
                             continue;
                         }
-                        var value = ($elem.val() && $elem.val().trim())? $elem.val() : false;
+                        let value = ($elem.val() && $elem.val().trim())? $elem.val() : ($elem.find('input').val() || false);
                         if($elem.data('signature')) {
                             value = $elem.data('signature');
                         }
@@ -1931,11 +1955,28 @@ odoo.define('sign.document_signing', function (require) {
                         }
 
                         signatureValues[parseInt($elem.data('item-id'))] = value;
+
+                        if ($elem.data('isEditMode')) {
+                            const id = $elem.data('item-id');
+                            newSignItems[id] = {
+                                'type_id': $elem.data('type'),
+                                'required': $elem.data('required'),
+                                'name': $elem.data('name') || false,
+                                'option_ids': $elem.data('option_ids'),
+                                'responsible_id': resp,
+                                'page': page,
+                                'posX': $elem.data('posx'),
+                                'posY': $elem.data('posy'),
+                                'width': $elem.data('width'),
+                                'height': $elem.data('height'),
+                            };
+                        }
                     }
                 }
                 var route = '/sign/sign/' + this.requestID + '/' + this.accessToken;
                 var params = {
-                    signature: signatureValues
+                    signature: signatureValues,
+                    new_sign_items: newSignItems,
                 };
                 var self = this;
                 session.rpc(route, params).then(function(response) {
@@ -1964,7 +2005,7 @@ odoo.define('sign.document_signing', function (require) {
                         $btn.removeAttr('disabled', true);
                         if (response.sms) {
                             (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues,
-                                self.signerPhone, self.RedirectURL,
+                                newSignItems, self.signerPhone, self.RedirectURL,
                                 {'nextSign': self.name_list.length})).open();
                         }
                         if (response.credit_error) {
@@ -1985,6 +2026,9 @@ odoo.define('sign.document_signing', function (require) {
 
         signDocument: function (e) {
             var self = this;
+            if (self.iframeWidget && self.iframeWidget.signatureItems && Object.keys(self.iframeWidget.signatureItems).length > 0) {
+                return this.signItemDocument();
+            }
             var nameAndSignatureOptions = {
                 fontColor: 'DarkBlue',
                 defaultName: this.signerName

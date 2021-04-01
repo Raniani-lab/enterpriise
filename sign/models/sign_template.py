@@ -135,11 +135,7 @@ class SignTemplate(models.Model):
 
         if duplicate:
             new_attachment = template.attachment_id.copy()
-            r = re.compile(' \(v(\d+)\)$')
-            m = r.search(name)
-            v = str(int(m.group(1))+1) if m else "2"
-            index = m.start() if m else len(name)
-            new_attachment.name = name[:index] + " (v" + v + ")"
+            new_attachment.name = template._get_copy_name(name)
             template = template.copy({
                 'attachment_id': new_attachment.id,
                 'favorited_ids': [(4, self.env.user.id)]
@@ -167,6 +163,28 @@ class SignTemplate(models.Model):
             template.share_link = None
 
         return template.id
+
+    @api.model
+    def _copy_edited_template(self, template_id, sign_request_sender):
+        template = self.sudo().browse(template_id)
+
+        new_attachment = template.attachment_id.copy()
+        new_attachment.name = template._get_copy_name(template.attachment_id.name)
+        template = template.copy({
+            'attachment_id': new_attachment.id,
+            'favorited_ids': [(4, sign_request_sender), (4, self.env.user.id)],
+            'active': False,
+            'sign_item_ids': []
+        })
+        return template.id
+
+    @api.model
+    def _get_copy_name(self, name):
+        regex = re.compile(r' \(v(\d+)\)$')
+        match = regex.search(name)
+        version = str(int(match.group(1)) + 1) if match else "2"
+        index = match.start() if match else len(name)
+        return name[:index] + " (v" + version + ")"
 
     @api.model
     def rotate_pdf(self, template_id=None):
@@ -276,6 +294,7 @@ class SignItemParty(models.Model):
 
     name = fields.Char(required=True, translate=True)
     color = fields.Integer()
+    default = fields.Boolean(required=True, default=False)
 
     sms_authentification = fields.Boolean('SMS Authentication', default=False,)
 

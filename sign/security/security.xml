@@ -161,6 +161,28 @@
             <field name="perm_unlink" eval="False"/>
         </record>
 
+        <record id="ir_rule_sign_role_default_readonly" model="ir.rule">
+            <field name="name">sign.role: group_sign_manager: Read-only default roles</field>
+            <field name="model_id" ref="sign.model_sign_item_role"/>
+            <field name="domain_force">[('default', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('sign.group_sign_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="ir_rule_sign_role_not_default" model="ir.rule">
+            <field name="name">sign.role: group_sign_manager: Full permission to non default roles</field>
+            <field name="model_id" ref="sign.model_sign_item_role"/>
+            <field name="domain_force">[('default', '=', False)]</field>
+            <field name="groups" eval="[(4, ref('sign.group_sign_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
         <!-- Portal Access Rules -->
         <record id="ir_rule_sign_request_portal" model="ir.rule">
             <field name="name">Portal Personal Sign Request</field>

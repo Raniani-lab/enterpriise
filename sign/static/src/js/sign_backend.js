@@ -207,6 +207,127 @@ odoo.define('sign.template', function(require) {
 
     var _t = core._t;
 
+    PDFIframe.include({
+        enableSignTemplateEdition: async function () {
+            const self = this;
+            self._rpc({
+                model: 'sign.request',
+                method: 'check_request_edit_during_sign',
+                args: [self.getParent().requestID],
+            }).then(function(allowEdit) {
+                if (!allowEdit) {
+                    return;
+                }
+                self.$('.page').off('click').on('click', function (e) {
+                    if(e.ctrlKey) {
+                        self.handleControlClick(e)
+                    }
+                })
+            })
+        },
+        handleControlClick: function (e) {
+            const self = this;
+            const editModeDropdown = $(core.qweb.render('sign.edit_mode_dropdown'))
+            const $pageElement = $(e.currentTarget)
+
+            $pageElement.find('.o_edit_mode_dropdown').remove()
+            const targetPage = $pageElement.attr('data-page-number')
+            const $dropdown = $(editModeDropdown).appendTo($pageElement).css({
+                top: e.pageY - $pageElement.offset().top,
+                left: e.pageX - $pageElement.offset().left
+            })
+
+            $dropdown.find('.dropdown_close_icon').on('click', function (e) {
+                $dropdown.remove();
+            })
+
+            $dropdown.find('.o_edit_mode_dropdown_item').on('click', function (e) {
+                function getSignItemSize (type) {
+                    const signatureWidth = 0.15;
+                    const defaultWidth = 0.1;
+                    const defaultHeight = 0.05
+                    return type === 'signature' || type === 'text' ? [signatureWidth, defaultHeight] : [defaultWidth, defaultHeight]
+                }
+                const posX = ($(e.target).offset().left - $pageElement.find('.textLayer').offset().left) / $pageElement.innerWidth();
+                const posY = ($(e.target).offset().top - $pageElement.find('.textLayer').offset().top) / $pageElement.innerHeight();
+                const type = $(e.target).attr('type');
+                const [width, height] = getSignItemSize(self.types[type].item_type);
+                const signItem = self.createSignItem(self.types[type], true, self.role, posX, posY, width, height, '', [], '', '', '', true);
+
+                const defineOrder = (pageElements) => {
+                    return pageElements.length ? pageElements.slice(-1)[0].data('order') + 1 : 1
+                };
+
+                signItem.data({
+                    'data-page-number': targetPage,
+                    posx: posX,
+                    posy: posY,
+                    'isEditMode': true,
+                    itemId: Math.min(...Object.keys(self.signatureItems), 0) - 1,
+                    order: defineOrder(self.configuration[targetPage])
+                });
+                self.signatureItems[signItem.data('item-id')] = signItem.data()
+
+                self.configuration[targetPage].push(signItem);
+                self.updateSignItem(signItem);
+                self.refreshSignItems();
+
+                signItem.prop('field-type', self.types[signItem.data('type')].item_type);
+                signItem.prop('field-name', self.types[signItem.data('type')].name);
+                const smoothScrollOptions = {
+                    scrollBoundaries: {
+                        right: false,
+                        left: false
+                    },
+                    jQueryDraggableOptions: {
+                        containment: "parent",
+                        distance: 0,
+                        handle: ".o_sign_config_handle",
+                        scroll: false,
+                    }
+                };
+                self.signItemsDraggableComponent = new SmoothScrollOnDrag(self, signItem, self.$('#viewerContainer'), smoothScrollOptions);
+                signItem.resizable({
+                    containment: "parent"
+                }).css('position', 'absolute');
+    
+                signItem.off('dragstart resizestart').on('dragstart resizestart', function(e, ui) {
+                    if(!e.ctrlKey) {
+                        self.$('.o_sign_sign_item').removeClass('ui-selected');
+                    }
+                    signItem.addClass('ui-selected');
+                });
+    
+                signItem.off('dragstop').on('dragstop', function(e, ui) {
+                    signItem.data({
+                        posx: Math.round((ui.position.left / signItem.parent().innerWidth())*1000)/1000,
+                        posy: Math.round((ui.position.top / signItem.parent().innerHeight())*1000)/1000,
+                    });
+                    // hack to prevent sign item from registering a click event immediately after drop
+                    ['signature', 'initial'].includes(self.types[type].item_type) && $(e.originalEvent.target).on('click', e => { e.stopImmediatePropagation(); } );
+                });
+    
+                signItem.off('resizestop').on('resizestop', function(e, ui) {
+                    signItem.data({
+                        width: Math.round(ui.size.width / signItem.parent().innerWidth() * 1000) / 1000,
+                        height: Math.round(ui.size.height / signItem.parent().innerHeight() * 1000) / 1000,
+                    });
+
+                    self.updateSignItem(signItem);
+                    signItem.removeClass('ui-selected');
+                    // hack to prevent sign item from registering a click event immediately after drop
+                    ['signature', 'initial'].includes(self.types[type].item_type) && $(e.originalEvent.target).on('click', e => { e.stopImmediatePropagation(); } );
+                });
+
+                signItem.find('.o_sign_config_area .fa-times').on('click', () => {
+                    delete self.signatureItems[signItem.data('item-id')];
+                    self.deleteSignItem(signItem);
+                });
+                $dropdown.remove();
+            })
+        }
+    })
+
     var SignItemCustomPopover = Widget.extend({
         template: 'sign.sign_item_custom_popover',
         events: {
@@ -1547,6 +1668,7 @@ odoo.define('sign.document_signing_backend', function(require) {
     var document_signing = require('sign.document_signing');
 
     var _t = core._t;
+    const qweb = core.qweb;
 
     var NoPubThankYouDialog = document_signing.ThankYouDialog.extend({
         template: "sign.no_pub_thank_you_dialog",
@@ -1581,6 +1703,20 @@ odoo.define('sign.document_signing_backend', function(require) {
         get_document_class: function () {
             return SignableDocument2;
         },
+        async start () {
+            const [_, allowEdit] = await Promise.all([
+                this._super(),
+                this._rpc({
+                    model: 'sign.request',
+                    method: 'check_request_edit_during_sign',
+                    args: [this.documentID],
+                })
+            ])
+            if(allowEdit) {
+                this.$buttons.push($(qweb.render('sign.edit_mode_info'))[0]);
+                this.updateControlPanel({cp_content: {$buttons: this.$buttons}});
+            }
+        }
     });
 
     core.action_registry.add('sign.SignableDocument', SignableDocumentBackend);

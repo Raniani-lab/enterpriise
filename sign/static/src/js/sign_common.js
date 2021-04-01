@@ -384,6 +384,20 @@ odoo.define('sign.PDFIframe', function (require) {
             }
         },
 
+        /**
+         * detach a sign item from the DOM (its page)
+         * @param {jQuery} $signItem the signItem to be detached
+        */
+        detachSignItem: function($signItem) {
+            const pageNo = parseInt($signItem.parent().data('page-number'));
+            $signItem.detach();
+            for(let i = 0 ; i < this.configuration[pageNo].length ; i++) {
+                if(this.configuration[pageNo][i].data('posx') === $signItem.data('posx') && this.configuration[pageNo][i].data('posy') === $signItem.data('posy')) {
+                    this.configuration[pageNo].splice(i, 1);
+                }
+            }
+        },
+
         updateSignItem: function($signatureItem) {
             var posX = $signatureItem.data('posx'), posY = $signatureItem.data('posy');
             var width = $signatureItem.data('width'), height = $signatureItem.data('height');

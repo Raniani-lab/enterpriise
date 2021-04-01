@@ -48,6 +48,7 @@
 
 .o_sign_sign_item .o_placeholder {
     vertical-align: middle;
+    padding-left: 30px;
 }
 
 textarea.o_sign_sign_item {
@@ -295,15 +296,24 @@ textarea.o_sign_sign_item {
     white-space: nowrap;
     font-size: 0.5em;
     text-align: right;
-    padding: 2px 16px 2px 2px; /* 16px right to prevent overflow with resizing handler */
-    margin: 2px;
-
+    margin-right: 2px;
+    padding-right: 2px;
 }
 
-.o_sign_sign_item .o_sign_config_area .fa-arrows {
+.o_sign_config_handle {
     display: block;
     float: left;
-    margin-right: 5px;
+    height: calc(100% - 2px);
+    background-color: rgba(197, 166, 182, 0.9);
+    width: 25px;
+    border: 1px dashed black;
+    text-align: center;
+}
+
+.o_sign_config_handle .fa-arrows {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .o_sign_sign_item .o_sign_config_area .o_sign_item_display {
@@ -327,7 +337,7 @@ textarea.o_sign_sign_item {
 }
 
 .o_sign_item_option {
-    padding: 5px;
+    padding: 5px 5px 5px 30px; /* padding left for sign_config_handle */
     /* font-size: 12pt; */
 }
 

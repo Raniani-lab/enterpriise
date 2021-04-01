@@ -16,6 +16,9 @@ class SignSendRequest(models.TransientModel):
             return res
         template = self.env['sign.template'].browse(res['template_id'])
         res['has_default_template'] = bool(template)
+        invalid_selections = template.sign_item_ids.filtered(lambda item: item.type_id.item_type == 'selection' and not item.option_ids)
+        if invalid_selections:
+            raise UserError(_("One or more selection items have no associated options"))
         if 'filename' in fields:
             res['filename'] = template.display_name
         if 'subject' in fields:

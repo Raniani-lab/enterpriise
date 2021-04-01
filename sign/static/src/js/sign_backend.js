@@ -400,6 +400,21 @@ odoo.define('sign.template', function(require) {
                             return false;
                         });
                     } else {
+                        // In the edit mode, a side bar will be added to the left of the pdfviewer
+                        // "margin-left:14rem" will be added to the pdfviewer to leave space for the sidebar
+                        // So, a "resize" must be triggered for the pdfviewer after its new css is added.
+                        // If not, when a pdf is opened with "page-width" there might be a horizontal scrollbar on the bottom of the pdfviewer
+                        // Unfortunately, it is hard to know when the css will be added.
+                        // So we manually add the css here and trigger the "resize"
+                        // css in iframe.css:
+                        // #outerContainer.o_sign_field_type_toolbar_visible {
+                        //     margin-left: 14rem;
+                        //     width: auto;
+                        // }
+                        self.$('#outerContainer').css('width', 'auto');
+                        self.$('#outerContainer').css('margin-left', '14rem');
+                        self.$iframe.get(0).contentWindow.dispatchEvent(new Event('resize'));
+
                         var rotateText = _t("Rotate Clockwise");
                         var rotateButton = $("<button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' title='" + rotateText + "'/>");
                         rotateButton.insertBefore(self.$('#print'));
@@ -472,28 +487,43 @@ odoo.define('sign.template', function(require) {
                             accept: '*',
                             tolerance: 'touch',
                             drop: function(e, ui) {
-                                if(!ui.helper.hasClass('o_sign_sign_item_to_add')) {
+                                // only existing sign items or sign items created from the left sign item type bar can be dropped
+                                if(!ui.draggable.hasClass('o_sign_sign_item') && !ui.helper.hasClass('o_sign_sign_item_to_add')) {
                                     return true;
                                 }
 
-                                var $parent = $(e.target);
+                                const $parent = $(e.target);
                                 const pageNo = parseInt($parent.data('page-number'));
 
-                                ui.helper.removeClass('o_sign_sign_item_to_add');
-                                var $signatureItem = ui.helper.clone(true).removeClass().addClass('o_sign_sign_item o_sign_sign_item_required');
+                                let $signatureItem;
+                                if (ui.draggable.hasClass('o_sign_sign_item')){
+                                    let pageNoOri = parseInt($(ui.draggable).parent().attr('data-page-number'));
+                                    if (pageNoOri === pageNo){ // if sign_item is dragged to its previous page
+                                        return true;
+                                    }
+                                    $signatureItem = $(ui.draggable);
+                                    self.detachSignItem($signatureItem);
+                                }
+                                else{
+                                    $signatureItem = ui.helper.clone(true).removeClass().addClass('o_sign_sign_item o_sign_sign_item_required');
+                                }
                                 var posX = (ui.offset.left - $parent.find('.textLayer').offset().left) / $parent.innerWidth();
                                 var posY = (ui.offset.top - $parent.find('.textLayer').offset().top) / $parent.innerHeight();
                                 $signatureItem.data({posx: posX, posy: posY});
 
                                 self.configuration[pageNo].push($signatureItem);
                                 self.refreshSignItems();
-                                self.updateSignItem($signatureItem);
                                 self.enableCustom($signatureItem);
 
-                                self.$iframe.trigger('templateChange');
+                                // updateSignItem and trigger('templateChange') are done in "dragstop" for sign_items
+                                // trigger('tempateChange)' twice may cause 'concurrent update' for server
+                                if(!ui.draggable.hasClass('o_sign_sign_item')) {
+                                    self.updateSignItem($signatureItem);
+                                    self.$iframe.trigger('templateChange');
 
-                                if(self.types[$signatureItem.data('type')].item_type === 'initial') {
-                                    (new InitialAllPagesDialog(self, self.parties)).open($signatureItem);
+                                    if (self.types[$signatureItem.data('type')].item_type === 'initial'){
+                                         (new InitialAllPagesDialog(self, self.parties)).open($signatureItem);
+                                    }
                                 }
 
                                 return false;
@@ -557,7 +587,7 @@ odoo.define('sign.template', function(require) {
                 }
             });
 
-            $configArea.find('.fa.fa-arrows').off('mouseup').on('mouseup', function(e) {
+            $configArea.find('.o_sign_config_handle').off('mouseup').on('mouseup', function(e) {
                 if(!e.ctrlKey) {
                     self.$('.o_sign_sign_item').filter(function(i) {
                         return (this !== $signatureItem[0]);
@@ -571,16 +601,20 @@ odoo.define('sign.template', function(require) {
                     left: false
                 },
                 jQueryDraggableOptions: {
-                    containment: "parent",
+                    containment: $('#viewerContainer'),
                     distance: 0,
-                    handle: ".fa-arrows",
+                    handle: ".o_sign_config_handle",
                     scroll: false,
                 }
             };
-            this.signItemsDraggableComponent = new SmoothScrollOnDrag(this, $signatureItem, self.$('#viewerContainer'), smoothScrollOptions);
-            $signatureItem.resizable({
-                containment: "parent"
-            }).css('position', 'absolute');
+            if (!$signatureItem.hasClass("ui-draggable")){
+                this.signItemsDraggableComponent = new SmoothScrollOnDrag(this, $signatureItem, self.$('#viewerContainer'), smoothScrollOptions);
+            }
+            if (!$signatureItem.hasClass("ui-resizable")){
+                    $signatureItem.resizable({
+                    containment: "parent"
+                }).css('position', 'absolute');
+            }
 
             $signatureItem.off('dragstart resizestart').on('dragstart resizestart', function(e, ui) {
                 if(!e.ctrlKey) {
@@ -590,9 +624,10 @@ odoo.define('sign.template', function(require) {
             });
 
             $signatureItem.off('dragstop').on('dragstop', function(e, ui) {
+                const $parent = $(e.target).parent();
                 $signatureItem.data({
-                    posx: Math.round((ui.position.left / $signatureItem.parent().innerWidth())*1000)/1000,
-                    posy: Math.round((ui.position.top / $signatureItem.parent().innerHeight())*1000)/1000,
+                    posx: Math.round((ui.offset.left - $parent.find('.textLayer').offset().left) / $parent.innerWidth()*1000)/1000,
+                    posy: Math.round(((ui.offset.top - $parent.find('.textLayer').offset().top) / $parent.innerHeight())*1000)/1000,
                 });
             });
 
@@ -628,7 +663,7 @@ odoo.define('sign.template', function(require) {
                 }
                 start.call(self, ui.helper);
             });
-            $item.find('.o_sign_config_area .fa.fa-arrows').on('mousedown', function(e) {
+            $item.find('.o_sign_config_area .o_sign_config_handle').on('mousedown', function(e) {
                 if(self.customPopovers[itemId]) {
                     self._closePopover(itemId);
                 }
@@ -647,7 +682,7 @@ odoo.define('sign.template', function(require) {
             $item.on('dragstop resizestop', function(e, ui) {
                 end.call(self);
             });
-            $item.find('.o_sign_config_area .fa.fa-arrows').on('mouseup', function(e) {
+            $item.find('.o_sign_config_area .o_sign_config_handle').on('mouseup', function(e) {
                 end.call(self);
             });
 

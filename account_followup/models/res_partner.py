@@ -179,28 +179,24 @@ class ResPartner(models.Model):
             return {}
 
         sql = """
-            WITH unreconciled_aml AS (
-                SELECT aml.id, aml.partner_id, aml.followup_line_id, aml.date, aml.date_maturity, aml.balance FROM account_move_line aml
-                JOIN account_account account ON account.id = aml.account_id
-                                            AND account.deprecated IS NOT TRUE
-                                            AND account.internal_type = 'receivable'
-                JOIN account_move move ON move.id = aml.move_id
-                                       AND move.state = 'posted'
-                WHERE aml.reconciled IS NOT TRUE
-                AND aml.blocked IS FALSE
-                AND aml.company_id = %(company_id)s
-                {where}
-            )
             SELECT partner.id as partner_id,
-                   current_followup_level.id as followup_level,
-                   CASE WHEN (SELECT SUM(balance) FROM unreconciled_aml ua WHERE ua.partner_id = partner.id GROUP BY partner.id) <= 0 THEN 'no_action_needed'
+                   ful.id as followup_level,
+                   CASE WHEN partner.balance <= 0 THEN 'no_action_needed'
                         WHEN in_need_of_action_aml.id IS NOT NULL AND (prop_date.value_datetime IS NULL OR prop_date.value_datetime::date <= %(current_date)s) THEN 'in_need_of_action'
                         WHEN exceeded_unreconciled_aml.id IS NOT NULL THEN 'with_overdue_invoices'
                         ELSE 'no_action_needed' END as followup_status
+            FROM (
+          SELECT partner.id,
+                 max(current_followup_level.delay) as followup_delay,
+                 SUM(aml.balance) as balance
             FROM res_partner partner
+            JOIN account_move_line aml ON aml.partner_id = partner.id
+            JOIN account_account account ON account.id = aml.account_id
+            JOIN account_move move ON move.id = aml.move_id
             -- Get the followup level
-            LEFT OUTER JOIN account_followup_followup_line current_followup_level ON current_followup_level.id = (
-                SELECT COALESCE(next_ful.id, ful.id) FROM unreconciled_aml aml
+       LEFT JOIN LATERAL (
+                         SELECT COALESCE(next_ful.id, ful.id) as id, COALESCE(next_ful.delay, ful.delay) as delay
+                           FROM account_move_line line
                 LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
                 LEFT OUTER JOIN account_followup_followup_line next_ful ON next_ful.id = (
                     SELECT next_ful.id FROM account_followup_followup_line next_ful
@@ -210,32 +206,44 @@ class ResPartner(models.Model):
                     ORDER BY next_ful.delay ASC
                     LIMIT 1
                 )
-                WHERE aml.partner_id = partner.id
-                  AND aml.balance > 0
-                ORDER BY COALESCE(next_ful.delay, ful.delay, 0) DESC
-                LIMIT 1
-            )
+                          WHERE line.id = aml.id
+                            AND aml.partner_id = partner.id
+                            AND aml.balance > 0
+            ) current_followup_level ON true
+           WHERE account.deprecated IS NOT TRUE
+             AND account.internal_type = 'receivable'
+             AND move.state = 'posted'
+             AND aml.reconciled IS NOT TRUE
+             AND aml.blocked IS FALSE
+             AND aml.company_id = %(company_id)s
+             {where}
+        GROUP BY partner.id
+            ) partner
+            LEFT JOIN account_followup_followup_line ful ON ful.delay = partner.followup_delay AND ful.company_id = %(company_id)s
             -- Get the followup status data
-            LEFT OUTER JOIN account_move_line in_need_of_action_aml ON in_need_of_action_aml.id = (
-                SELECT aml.id FROM unreconciled_aml aml
-                LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
-                WHERE aml.partner_id = partner.id
-                  AND aml.balance > 0
-                  AND COALESCE(ful.delay, -999) < current_followup_level.delay
-                  AND COALESCE(aml.date_maturity, aml.date) + COALESCE(ful.delay, -999) <= %(current_date)s
-                LIMIT 1
-            )
-            LEFT OUTER JOIN account_move_line exceeded_unreconciled_aml ON exceeded_unreconciled_aml.id = (
-                SELECT aml.id FROM unreconciled_aml aml
-                WHERE aml.partner_id = partner.id
-                  AND aml.balance > 0
-                  AND COALESCE(aml.date_maturity, aml.date) <= %(current_date)s
-                LIMIT 1
-            )
+            LEFT OUTER JOIN LATERAL (
+                SELECT line.id
+                  FROM account_move_line line
+             LEFT JOIN account_followup_followup_line ful ON ful.id = line.followup_line_id
+                 WHERE line.partner_id = partner.id
+                   AND line.balance > 0
+                   AND COALESCE(ful.delay, -999) < partner.followup_delay
+                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, -999) <= %(current_date)s
+                 LIMIT 1
+            ) in_need_of_action_aml ON true
+
+            LEFT OUTER JOIN LATERAL (
+                SELECT line.id
+                  FROM account_move_line line
+                 WHERE line.partner_id = partner.id
+                   AND line.balance > 0
+                   AND COALESCE(line.date_maturity, line.date) <= %(current_date)s
+                 LIMIT 1
+            ) exceeded_unreconciled_aml ON true
+
             LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id)
                                                  AND prop_date.name = 'payment_next_action_date'
                                                  AND prop_date.company_id = %(company_id)s
-            WHERE partner.id in (SELECT DISTINCT partner_id FROM unreconciled_aml)
         """.format(
             where="" if all_partners else "AND aml.partner_id in %(partner_ids)s",
         )

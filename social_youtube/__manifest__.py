@@ -19,7 +19,7 @@
     'qweb': [
         "static/src/xml/social_youtube_templates.xml",
     ],
-    'auto_install': True,
+    # 'auto_install': True,  # temporarily disabled until approved by YouTube
     'assets': {
         'web.assets_backend': [
             'social_youtube/static/src/scss/social_youtube.scss',

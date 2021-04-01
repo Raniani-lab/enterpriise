@@ -117,7 +117,7 @@
                     <FctConv t-if="line_amounts['second_currency']['conversion_rate']" t-esc="line_amounts['second_currency']['conversion_rate']"/>
                     <MontoItemOtrMnda t-if="line_amounts['second_currency']['total_amount']" t-esc="line_amounts['second_currency']['total_amount']"/>
                 </OtrMnda>
-            <t t-foreach="line.tax_ids.filtered(lambda x: x.l10n_cl_sii_code in [24, 25, 26, 27])" t-as="tax">
+            <t t-foreach="line.tax_ids.filtered(lambda x: x.tax_group_id.id in [env.ref('l10n_cl.tax_group_retenciones'), env.ref('l10n_cl.tax_group_ila')])" t-as="tax">
                 <CodImpAdic t-esc="tax.l10n_cl_sii_code"/>
             </t>
 

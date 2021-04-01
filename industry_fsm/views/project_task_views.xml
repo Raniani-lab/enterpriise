@@ -107,6 +107,7 @@
         <field name="inherit_id" ref="project.quick_create_task_form"/>
         <field name="arch" type="xml">
             <field name="user_id" position="before">
+                <field name="project_id" invisible="1"/>
                 <field name="is_fsm" invisible="1"/>
                 <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
             </field>

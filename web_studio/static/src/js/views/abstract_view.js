@@ -33,6 +33,7 @@ AbstractView.include({
             options.Component = Renderer;
             Renderer = RendererWrapper;
         }
+        options.viewType = 'viewType' in options ? options.viewType : this.viewType;
         return this._createStudioRenderer(parent, Renderer, options);
     },
 
@@ -88,8 +89,8 @@ AbstractView.include({
                 if (utils.isComponent(Renderer)) {
                     state = Object.assign({}, state, params);
                     const Component = state.Component;
-                    delete state.Component;
-                    return new Renderer(parent, Component, state);
+                    const props = filterUnwantedProps(Component, state);
+                    return new Renderer(parent, Component, props);
                 } else {
                     editor = new Renderer(parent, state, params);
                 }
@@ -102,5 +103,19 @@ AbstractView.include({
         });
     },
 });
+
+function filterUnwantedProps(ComponentType, params) {
+    const props = ComponentType.props;
+    if (!props) {
+        return params;
+    }
+    const newParams = {};
+    Object.entries(params).forEach(([k, v]) => {
+        if (k in props) {
+            newParams[k] = v;
+        }
+    });
+    return newParams;
+}
 
 });

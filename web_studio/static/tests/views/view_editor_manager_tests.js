@@ -6678,6 +6678,74 @@ QUnit.module('ViewEditorManager', {
 
         vem.destroy();
     });
+
+    QUnit.test('open xml editor of graph component view and close it', async function (assert) {
+        assert.expect(5);
+
+        // the XML editor button is only available in debug mode
+        const initialDebugMode = odoo.debug;
+        odoo.debug = true;
+
+        // the XML editor lazy loads its libs and its templates so its start
+        // method is monkey-patched to know when the widget has started
+        const xmlEditorDef = testUtils.makeTestPromise();
+        testUtils.mock.patch(ace, {
+            start: function () {
+                return this._super(...arguments).then(function () {
+                    xmlEditorDef.resolve();
+                });
+            },
+        });
+
+        const arch = '<graph />';
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC(route) {
+                if (route === '/web_editor/get_assets_editor_resources') {
+                    return Promise.resolve({
+                        views: [{
+                            active: true,
+                            arch: arch,
+                            id: 1,
+                            inherit_id: false,
+                            name: "base view",
+                        }, {
+                            active: true,
+                            arch: "<data/>",
+                            id: 42,
+                            inherit_id: 1,
+                            name: "studio view",
+                        }],
+                        scss: [],
+                        js: [],
+                    });
+                }
+                return this._super(...arguments);
+            },
+            viewID: 1,
+            studioViewID: 42,
+        });
+
+        await testUtils.dom.click(vem.$('.o_web_studio_xml_editor'));
+        await xmlEditorDef;
+        await testUtils.owlCompatibilityExtraNextTick();
+
+        assert.containsOnce(vem, '.o_ace_view_editor', "the XML editor should be opened");
+        assert.containsNone(vem, '.o_web_studio_sidebar');
+
+        await testUtils.dom.click(".o_ace_view_editor .o_button_section button[data-action='close']");
+        await testUtils.owlCompatibilityExtraNextTick();
+        assert.containsNone(vem, '.o_ace_view_editor');
+        assert.containsOnce(vem, '.o_web_studio_sidebar');
+        assert.containsOnce(vem, '.o_graph_renderer');
+
+        odoo.debug = initialDebugMode;
+        testUtils.mock.unpatch(ace);
+
+        vem.destroy();
+    });
 });
 });
 

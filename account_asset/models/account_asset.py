@@ -159,10 +159,24 @@ class AccountAsset(models.Model):
                 account = record.original_move_line_ids.account_id
                 record.asset_type = account.asset_type
 
-    @api.depends('original_value', 'salvage_value', 'already_depreciated_amount_import', 'depreciation_move_ids.state')
+    @api.depends('original_value', 'salvage_value', 'already_depreciated_amount_import', 'depreciation_move_ids.state', 'state')
     def _compute_value_residual(self):
         for record in self:
-            record.value_residual = record.original_value - record.salvage_value - record.already_depreciated_amount_import - abs(sum(record.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')))
+            record.value_residual = (
+                record.original_value
+                - record.salvage_value
+                - record.already_depreciated_amount_import
+                - abs(sum(
+                    record.depreciation_move_ids
+                          .filtered(lambda m: m.state == 'posted' and not m.reversal_move_id)
+                          .mapped('amount_total')
+                ))
+            )
+            # When closing the asset, an additional depreciation line is created, exceeding the amount by
+            # record.salvage_value + record.already_depreciated_amount_import. We want it to bring
+            # residual value to 0, so we don't remove those values from the residual value manually.
+            if record.state == 'close' and set(record.depreciation_move_ids.mapped('state')) == {'posted'}:
+                record.value_residual += record.salvage_value + record.already_depreciated_amount_import
 
     @api.depends('value_residual', 'salvage_value', 'children_ids.book_value')
     def _compute_book_value(self):
@@ -587,7 +601,6 @@ class AccountAsset(models.Model):
             if not invoice_line_id:
                 del line_datas[2]
             vals = {
-                'amount_total': current_currency._convert(asset.value_residual, company_currency, asset.company_id, disposal_date),
                 'asset_id': asset.id,
                 'ref': asset.name + ': ' + (_('Disposal') if not invoice_line_id else _('Sale')),
                 'asset_remaining_value': 0,

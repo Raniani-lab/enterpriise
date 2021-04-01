@@ -42,7 +42,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         today = fields.Date.today()
         cls.truck = cls.env['account.asset'].create({
             'account_asset_id': cls.company_data['default_account_expense'].id,
-            'account_depreciation_id': cls.company_data['default_account_expense'].id,
+            'account_depreciation_id': cls.company_data['default_account_assets'].copy().id,
             'account_depreciation_expense_id': cls.company_data['default_account_assets'].id,
             'journal_id': cls.company_data['default_journal_misc'].id,
             'asset_type': 'purchase',
@@ -58,6 +58,24 @@ class TestAccountAsset(TestAccountReportsCommon):
         cls.env['account.move']._autopost_draft_entries()
         cls.assert_counterpart_account_id = cls.company_data['default_account_revenue'].id,
 
+        cls.account_asset_model_fixedassets = cls.env['account.asset'].create({
+            'account_depreciation_id': cls.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': cls.company_data['default_account_expense'].id,
+            'account_asset_id': cls.company_data['default_account_assets'].id,
+            'journal_id': cls.company_data['default_journal_purchase'].id,
+            'name': 'Hardware - 3 Years',
+            'method_number': 3,
+            'method_period': '12',
+            'state': 'model',
+        })
+
+        cls.closing_invoice = cls.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [(0, 0, {'price_unit': -100})]
+        })
+
+        cls.env.company.loss_account_id = cls.company_data['default_account_expense']
+
     def update_form_values(self, asset_form):
         for i in range(len(asset_form.depreciation_move_ids)):
             with asset_form.depreciation_move_ids.edit(i) as line_edit:
@@ -67,38 +85,23 @@ class TestAccountAsset(TestAccountReportsCommon):
     @patch('odoo.fields.Date.context_today', context_today)
     def test_00_account_asset(self, today_mock):
         """Test the lifecycle of an asset"""
-        self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
-
-        account_asset_model_fixedassets_test0 = self.env['account.asset'].create({
-            'account_depreciation_id': self.company_data['default_account_assets'].id,
-            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
-            'account_asset_id': self.company_data['default_account_assets'].id,
-            'journal_id': self.company_data['default_journal_purchase'].id,
-            'name': 'Hardware - 3 Years',
-            'method_number': 3,
-            'method_period': '12',
-            'state': 'model',
-        })
-
-        account_asset_vehicles_test0 = self.env['account.asset'].create({
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
             'salvage_value': 2000.0,
             'state': 'open',
             'method_period': '12',
             'method_number': 5,
             'name': "CEO's Car",
             'original_value': 12000.0,
-            'model_id': account_asset_model_fixedassets_test0.id,
+            'model_id': self.account_asset_model_fixedassets.id,
         })
-
-        CEO_car = account_asset_vehicles_test0
-        # In order to get the fields from the model, I need to trigger the onchange method.
         CEO_car._onchange_model_id()
+        CEO_car.method_number = 5
 
         # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
         CEO_car.validate()
 
         # I check Asset is now in Open state.
-        self.assertEqual(account_asset_vehicles_test0.state, 'open',
+        self.assertEqual(CEO_car.state, 'open',
                          'Asset should be in Open state')
 
         # I compute depreciation lines for asset of CEOs Car.
@@ -113,23 +116,107 @@ class TestAccountAsset(TestAccountReportsCommon):
         # I Check that After creating all the moves of depreciation lines the state "Running".
         CEO_car.depreciation_move_ids.write({'auto_post': False})
         CEO_car.depreciation_move_ids.action_post()
-        self.assertEqual(account_asset_vehicles_test0.state, 'open',
+        self.assertEqual(CEO_car.state, 'open',
                          'State of asset should be runing')
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), [{
+            'amount_total': 2000,
+            'asset_remaining_value': 8000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 6000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 4000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 2000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 0,
+        }])
 
-        closing_invoice = self.env['account.move'].create({
-            'move_type': 'out_invoice',
-            'invoice_line_ids': [(0, 0, {'price_unit': -100})]
-        })
-
+        # Try to close while there are still posted entries.
         with self.assertRaises(UserError, msg="You shouldn't be able to close if there are posted entries in the future"):
-            CEO_car.set_to_close(closing_invoice.invoice_line_ids)
+            CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+
+        # Revert posted entries in order to be able to close
+        CEO_car.depreciation_move_ids._reverse_moves(cancel=True)
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 12000,
+            'value_residual': 10000,
+            'salvage_value': 2000,
+        }])
+        reversed__moves_values = [{
+            'amount_total': 2000,
+            'asset_remaining_value': 10000,
+            'state': 'posted',
+        }] * 5
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), reversed__moves_values + [{
+            'amount_total': 10000,
+            'asset_remaining_value': 0,
+            'state': 'draft',
+        }])
+        self.assertRecordValues(CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft').line_ids, [{
+            'debit': 0,
+            'credit': 10000,
+            'account_id': CEO_car.account_depreciation_id.id,
+        }, {
+            'debit': 10000,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_expense_id.id,
+        }])
+
+        # Close
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 12000,
+            'value_residual': 10000,
+            'salvage_value': 2000,
+        }])
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), [{
+            'amount_total': 12000,
+            'asset_remaining_value': 0,
+            'state': 'draft',
+        }] + reversed__moves_values)
+        closing_move = CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 12000,
+            'account_id': CEO_car.account_asset_id.id,
+        }, {
+            'debit': 0,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_id.id,
+        }, {
+            'debit': 100,
+            'credit': 0,
+            'account_id': self.closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 11900,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_expense_id.id,
+        }])
+        closing_move.action_post()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
 
     def test_01_account_asset(self):
         """ Test if an an asset is created when an invoice is validated with an
         item on an account for generating entries.
         """
-        self.env.context = {**self.env.context, **{'asset_type': 'purchase'}}
-        account_asset_model_sale_test0 = self.env['account.asset'].create({
+        account_asset_model_sale_test0 = self.env['account.asset'].with_context(asset_type='purchase').create({
             'account_depreciation_id': self.company_data['default_account_assets'].id,
             'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
             'journal_id': self.company_data['default_journal_sale'].id,
@@ -184,6 +271,66 @@ class TestAccountAsset(TestAccountReportsCommon):
         installment_date = last_installment_date + relativedelta(months=+int(recognition.method_period))
         self.assertEqual(recognition.depreciation_move_ids.sorted(lambda r: r.id)[1].date, installment_date,
                          'Installment date is incorrect.')
+
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_02_account_asset(self, today_mock):
+        """Test the lifecycle of an asset"""
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+            'acquisition_date': '2010-01-31',
+            'already_depreciated_amount_import': 10000.0,
+            'depreciation_number_import': 5,
+            'first_depreciation_date_import': '2010-01-31',
+        })
+        CEO_car._onchange_model_id()
+
+        CEO_car.validate()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
+        self.assertFalse(CEO_car.depreciation_move_ids)
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
+        closing_move = CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 12000,
+            'account_id': CEO_car.account_asset_id.id,
+        }, {
+            'debit': 0,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_id.id,
+        }, {
+            'debit': 100,
+            'credit': 0,
+            'account_id': self.closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 11900,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_expense_id.id,
+        }])
+        closing_move.action_post()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
 
     @patch('odoo.fields.Date.today', return_value=today())
     @patch('odoo.fields.Date.context_today', context_today)
@@ -271,6 +418,14 @@ class TestAccountAsset(TestAccountReportsCommon):
 
     def test_asset_modify_depreciation(self):
         """Test the modification of depreciation parameters"""
+        values = {
+            'original_value': 10000,
+            'book_value': 5500,
+            'value_residual': 3000,
+            'salvage_value': 2500,
+        }
+        self.assertRecordValues(self.truck, [values])
+
         self.env['asset.modify'].create({
             'asset_id': self.truck.id,
             'name': 'Test reason',
@@ -280,6 +435,8 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         # I check the proper depreciation lines created.
         self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
+        # The values are unchanged
+        self.assertRecordValues(self.truck, [values])
 
     @patch('odoo.fields.Date.today', return_value=today())
     @patch('odoo.fields.Date.context_today', context_today)

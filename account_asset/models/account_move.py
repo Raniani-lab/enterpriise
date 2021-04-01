@@ -51,8 +51,6 @@ class AccountMove(models.Model):
         for move in self:
             # Report the value of this move to the next draft move or create a new one
             if move.asset_id:
-                # Set back the amount in the asset as the depreciation is now void
-                move.asset_id.value_residual += move.amount_total
                 # Recompute the status of the asset for all depreciations posted after the reversed entry
                 for later_posted in move.asset_id.depreciation_move_ids.filtered(lambda m: m.date >= move.date and m.state == 'posted'):
                     later_posted.asset_depreciated_value -= move.amount_total

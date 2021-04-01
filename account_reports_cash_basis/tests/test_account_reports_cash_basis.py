@@ -70,6 +70,7 @@ class TestAccountReports(TestAccountReportsCommon):
         report = self.env['account.general.ledger']
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['cash_basis'] = True
+        report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -92,27 +93,24 @@ class TestAccountReports(TestAccountReportsCommon):
         options['cash_basis'] = False  # Because we are in the same transaction, the table temp_account_move_line still exists
         self.assertLinesValues(
             report._get_lines(options, line_id=line_id),
+            # pylint: disable=C0326
             #   Name                                    Date            Debit           Credit          Balance
-            [   0,                                      1,              4,              5,              6],
+            [   0,                                      1,                    4,             5,             6],
             [
                 # Account.
-                ('121000 Account Receivable',           '',             1610.0,         920.0,          690.0),
-                ('Initial Balance',                     '',             0.0,            0.0,            0.0),
+                ('121000 Account Receivable',           '',              460.00,        460.00,          0.00),
+                ('Initial Balance',                     '',                0.00,          0.00,          0.00),
                 # Account Move Lines.
-                ('MISC/2016/01/0001',                   '01/01/2016',   345.0,          '',             345.0),
-                ('MISC/2016/01/0001',                   '01/01/2016',   805,            '',             1150.0),
-                ('MISC/2016/01/0001',                   '02/01/2016',   69.0,           '',             1219.0),
-                ('MISC/2016/01/0001',                   '02/01/2016',   161.0,          '',             1380.0),
-                ('BNK1/2016/02/0001',                   '02/01/2016',   '',             230.0,          1150.0),
-                ('BNK1/2016/02/0001',                   '02/01/2016',   '',             230.0,          920.0),
-                ('MISC/2016/01/0001',                   '03/01/2016',   34.5,           '',             954.5),
-                ('MISC/2016/01/0001',                   '03/01/2016',   34.5,           '',             989.0),
-                ('MISC/2016/01/0001',                   '03/01/2016',   80.5,           '',             1069.5),
-                ('MISC/2016/01/0001',                   '03/01/2016',   80.5,           '',             1150.0),
-                ('BNK1/2016/03/0001',                   '03/01/2016',   '',             230.0,          920.0),
-                ('BNK1/2016/03/0001',                   '03/01/2016',   '',             230.0,          690.0),
+                ('MISC/2016/01/0001',                   '02/01/2016',     69.00,            '',         69.00),
+                ('MISC/2016/01/0001',                   '02/01/2016',    161.00,            '',        230.00),
+                ('BNK1/2016/02/0001',                   '02/01/2016',        '',        230.00,          0.00),
+                ('MISC/2016/01/0001',                   '03/01/2016',     34.50,            '',         34.50),
+                ('MISC/2016/01/0001',                   '03/01/2016',     34.50,            '',         69.00),
+                ('MISC/2016/01/0001',                   '03/01/2016',     80.50,            '',        149.50),
+                ('MISC/2016/01/0001',                   '03/01/2016',     80.50,            '',        230.00),
+                ('BNK1/2016/03/0001',                   '03/01/2016',        '',        230.00,          0.00),
                 # Account Total.
-                ('Total 121000 Account Receivable',     '',             1610.0,         920.0,          690.0),
+                ('Total 121000 Account Receivable',     '',              460.00,        460.00,          0.00),
             ],
         )
 
@@ -121,6 +119,7 @@ class TestAccountReports(TestAccountReportsCommon):
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')
         options = self._init_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['cash_basis'] = True
+        report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
             report._get_table(options)[1],

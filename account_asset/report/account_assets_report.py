@@ -169,7 +169,7 @@ class assets_report(models.AbstractModel):
                 depreciation_add = depreciation_closing - depreciation_opening
                 asset_closing = asset_opening + asset_add
 
-                if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] < fields.Date.to_date(options['date']['date_to']):
+                if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']):
                     depreciation_minus = depreciation_closing
                     depreciation_closing = 0.0
                     depreciation_opening += depreciation_add

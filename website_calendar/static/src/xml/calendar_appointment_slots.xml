@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <t t-name="website_calendar.slots_list">
+        <h5 class="text-center" t-esc="slotDate"/>
+        <div class="o_slots_list overflow-auto">
+            <t t-foreach="slots" t-as="slot">
+                <a class="btn btn-block btn-outline-primary text-black"
+                    t-attf-href="/calendar/#{appointment_type_id}/info?employee_id=#{slot['employee_id']}&amp;date_time=#{slot['datetime']}#{filter_appointment_type_ids ? '&amp;filter_appointment_type_ids=' + filter_appointment_type_ids : ''}"
+                    t-esc="slot['hours']"/>
+            </t>
+        </div>
+    </t>
+</template>

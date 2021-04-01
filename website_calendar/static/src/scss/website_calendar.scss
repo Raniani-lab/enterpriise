@@ -1,12 +1,95 @@
-.o_calendar_days {
+.o_wcalendar_index_topbar_filters {
+    .dropdown-toggle {
+        border: $border-width solid gray('400');
+        @include o-bg-color(gray('white'), $with-extras: false);
+        @include border-radius($dropdown-border-radius);
+        @include hover-focus {
+            border-color: theme-color('primary');
+            color: theme-color('primary');
+            text-decoration: none;
+        }
+        &:after {
+            margin-left: 1.2em;
+        }
+        .fa {
+            margin-right: .4em;
+            color: theme-color('primary');
+        }
+    }
+    .dropdown-menu {
+        margin-top: $navbar-padding-y;
+        min-width: 12rem;
+    }
+    .dropdown-item  {
+        &.active .badge { // Invert badge display when the item is active
+            background-color: color-yiq(theme-color('primary'));
+            color: theme-color('primary');
+        }
+    }
+}
+
+.o_wcalendar_attendee_form input::placeholder {
+    color: darkgrey;
+}
+
+
+.o_wcalendar_index {
+    .o_half_screen_height {
+        min-height: 200px !important;
+    }
+    .o_wcalendar_appointments_list {
+        header {
+            a {
+                transition: all .25s ease-in-out;
+                @include hover-focus {
+                    transform: scale(1.05);
+                }
+            }
+        }
+        &.opt_appointments_list_cards_bg {
+            @if (color('body') == $o-portal-default-body-bg) {
+                @extend .bg-200;
+            }
+        }
+        .appointments_list_columns {
+            header {
+                height: 200px;
+            }
+        }
+        .o_wcalendar_unpublished {
+            bottom: 0;
+            padding: $card-spacer-y $card-spacer-x;
+        }
+        .card-title {
+            color: $body-color;
+        }
+    }
+}
+
+.o_wcalendar_appointment_selection {
+    select {
+        appearance: none;
+    }
+    select::-ms-expand {
+        display: none;
+    }
+}
+
+.modal-open {
+    > .modal-backdrop {
+        z-index: $zindex-dropdown - 1;
+    }
+}
+
+.o_wcalendar_days {
     font-size: 16px;
     height: 40px;
     .o_weekend {
         background-color: gray('200');
     }
     .o_day{
-        background-color: theme-color('primary');
-        color: o-get-most-contrast(theme-color('primary'), $body-color, #FFF);
+        border: 2px solid theme-color('primary');
+        border-radius: 0.5rem;
         cursor: pointer;
         &.dropdown{
             padding: 0px;
@@ -15,18 +98,38 @@
              padding: 8px;
         }
     }
+    .o_day:hover, .o_slot_selected {
+        color: white;
+        background-color: theme-color('primary');
+    }
     .o_mute_day {
         opacity: 0.5
     }
     .o_today{
         position: relative;
-        &::after {
-            content: "";
-            position: absolute;
-            border-bottom: 20px solid #f0ad4e;
-            border-left: 20px solid transparent;
-            bottom: 0px;
-            right: 0px;
+        div {
+            border-bottom: 3px solid #f0ad4e;
+        }
+    }
+}
+
+.o_wcalendar_month {
+    .table {
+        border-collapse: separate;
+        border-spacing: unset;
+    }
+
+    .table th, .table td {
+        width: 3em;
+    }
+}
+
+.o_website_calendar_appointment {
+    .o_slots_list {
+        max-height: 275px;
+    
+        a:hover {
+            color: white!important;
         }
     }
 }

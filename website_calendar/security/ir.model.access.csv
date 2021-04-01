@@ -8,3 +8,4 @@ access_calendar_appointment_question_manager,calendar.appointment.question.manag
 access_calendar_appointment_question_answer_all,calendar.appointment.answer,model_calendar_appointment_answer,,1,0,0,0
 access_calendar_appointment_question_answer_manager,calendar.appointment.answer.manager,model_calendar_appointment_answer,group_calendar_manager,1,1,1,1
 access_calendar_alarm_all,calendar.alarm.all,calendar.model_calendar_alarm,,1,0,0,0
+access_calendar_appointment_share_user,calendar.appointment.share,model_calendar_appointment_share,base.group_user,1,1,1,0

@@ -1,36 +1,66 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <record id="calendar_appointment_type_view_search" model="ir.ui.view">
+        <field name="name">calendar.appointment.type.search</field>
+        <field name="model">calendar.appointment.type</field>
+        <field name="arch" type="xml">
+            <search string="Appointment Type">
+                <field name="name"/>
+                <field name="employee_ids"/>
+                <filter string="My Appointments" name="my_appointments" domain="[('employee_ids.user_id', 'in', [uid])]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
     <record id="calendar_appointment_type_view_kanban" model="ir.ui.view">
         <field name="name">calendar.appointment.type.kanban</field>
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard" sample="1">
-                <field name="id" invisible="1" />
+            <kanban class="o_kanban_dashboard o_wcalendar_appointment_kanban" sample="1">
+                <field name="is_published"/>
+                <field name="website_url"/>
+                <field name="appointment_tz"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div>
-                            <div class="o_kanban_manage_button_section">
-                                <t t-if="widget.editable"><a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a></t>
+                        <div class="oe_kanban_global_click">
+                            <div class="ribbon ribbon-top-right" attrs="{'invisible': [('is_published', '=', False)]}">
+                                <span>Published</span>
                             </div>
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
-                                    <div class="o_primary"><field name="name" /></div>
-                                    <div class="o_secondary">
-                                        <field name="location" /><br/>
-                                        <field name="appointment_tz" />
+                                    <div class="o_primary col-12 p-0 w-75">
+                                        <field name="name"/>
                                     </div>
                                 </div>
                             </div>
-                            <div class="container o_kanban_card_content">
-                            <div class="col-12">
+                            <div class="container o_kanban_card_content mt-3">
                                 <div class="row">
-                                    <button class="btn btn-primary" name="action_calendar_meetings" type="object"><field name="appointment_count"/> SCHEDULED</button>
+                                    <div class="col-5">
+                                        <button class="btn btn-primary mr-2" name="action_calendar_meetings" type="object">
+                                            <field name="appointment_count"/> SCHEDULED
+                                        </button>
+                                    </div>
+                                    <div class="col-7">
+                                        <span t-if="record.appointment_tz.value" title="Timezone">
+                                            <i class="fa fa-clock-o small mr-2"/><span t-esc="record.appointment_tz.value" class="align-middle"/>
+                                        </span>
+                                    </div>
                                 </div>
+                                <div class="row d-flex o_wcalendar_kanban_boxes">
+                                    <div class="o_wcalendar_kanban_box o_kanban_primary_bottom bottom_block d-flex position-relative justify-content-center px-0">
+                                        <div class="col-6">
+                                            <span>
+                                                <a t-attf-href="#{record.website_url.raw_value}" class="mr-2">Published</a>
+                                                <field name="is_published" widget='boolean_toggle'/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <button attrs="{'invisible': [('is_published', '=', False)]}" class="btn btn-link btn-sm py-0 fa fa-lg fa-link" name="action_share" type="object" title="Share"/>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
                             </div>
                         </div>
                     </t>
@@ -48,7 +78,8 @@
                 <field name="name" readonly="1"/>
                 <field name="location"/>
                 <field name="appointment_tz"/>
-                <field name="employee_ids" widget="many2many_tags"/>
+                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="country_ids" widget="many2many_tags" groups="base.group_no_one" optional="show"/>
             </tree>
         </field>
     </record>
@@ -58,7 +89,11 @@
         <field name="model">calendar.appointment.type</field>
         <field name="arch" type="xml">
             <form string="Appointment Type">
-                <field name="website_url" invisible="1"/>
+                <field name="website_published" invisible="1"/>
+                <header attrs="{'invisible': [('is_published', '=', False)]}">
+                    <button name="action_share" string="Share" type="object" class="btn btn-primary"/>
+                </header>
+                
                 <sheet>
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="object"
@@ -66,6 +101,7 @@
                             icon="fa-calendar">
                             <field string="Appointments" name="appointment_count" widget="statinfo"/>
                         </button>
+                        <field name="website_url" invisible="1"/>
                         <field name="is_published" widget="website_redirect_button"/>
                     </div>
                     <div class="oe_title">
@@ -73,7 +109,7 @@
                         <h1><field name="name" placeholder="e.g. Schedule a demo"/></h1>
                     </div>
                     <notebook>
-                        <page string="Scheduling &amp; Availability" name="schedule_availability">
+                        <page string="Scheduling" name="schedule_availability">
                             <group>
                                 <group name="left_details">
                                     <label for="appointment_duration"/>
@@ -100,24 +136,25 @@
                                     <field name="appointment_tz"/>
                                     <field name="reminder_ids" widget="many2many_tags"/>
                                     <field name="location"/>
-                                    <field name="assignation_method"/>
+                                    <field name="assign_method"/>
                                     <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 </group>
                             </group>
                             <separator string="Available Employees"/>
                             <field name="employee_ids">
-                                <tree string="Employees">
+                                <tree string="Employees" delete="1">
                                     <field name="name"/>
                                     <field name="resource_calendar_id"/>
-                                    <field name="id" widget="appointment_employee_url" string="Individual Appointment Link" context="{'url': parent.website_url}" readonly="1"/>
                                 </tree>
                             </field>
                         </page>
-                        <page string="Slots" name="slots">
+                        <page string="Availability" name="slots">
                             <field name="slot_ids">
-                                <tree editable="bottom">
-                                    <field name="weekday"/>
-                                    <field name="hour" string="Starting Hour (0:00 - 24:00)" widget="float_time"/>
+                                <tree editable="bottom" class="o_wcalendar_slots_list">
+                                    <field name="weekday" string="Every" class="w-100"/>
+                                    <field name="start_hour" string="From" widget="float_time"/>
+                                    <button name="durationArrow" class="fa fa-long-arrow-right text-center" title="Until (max)"/>
+                                    <field name="end_hour" string="To" widget="float_time"/>
                                 </tree>
                             </field>
                         </page>
@@ -152,11 +189,10 @@
                             <field name="message_confirmation"/>
                         </page>
                     </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                    </div>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
@@ -168,10 +204,10 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new appointment type
+                Create an appointment type
             </p><p>
                 Allow your customers to book an appointment on your website
-                by creating appointment types here.
+                by creating appointment types.
             </p>
         </field>
     </record>

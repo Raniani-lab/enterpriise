@@ -3,110 +3,117 @@
     <template id="appointment_form" name="Website Appointment: Your Data">
         <t t-call="website.layout">
             <div id="wrap" class="o_website_calendar">
-                <div class="oe_structure container mb128 o_website_calendar_form">
-                    <ul class="wizard mt32 float-right">
-                        <li><a t-attf-href="/calendar" class="text-success">Appointment</a><span class="chevron"></span></li>
-                        <li><a t-attf-href="/calendar/#{ slug(appointment_type) }/appointment" class="text-success">Time</a><span class="chevron"></span></li>
+                <nav class="navbar navbar-light border-top shadow-sm d-print-none">
+                    <div class="container">
+                        <a t-attf-href="/calendar?#{keep_query('filter_appointment_type_ids')}" class="navbar-brand h4 my-0 mr-4">
+                            <i class="fa fa-long-arrow-left text-primary mr-2"/>All Appointments
+                        </a>
+                    </div>
+                </nav>
+                <div class="oe_structure container o_website_calendar mb64">
+                    <ul class="wizard mt32 float-right d-none d-md-block">
+                        <li class="text-success">Time<span class="chevron"></span></li>
                         <li class="text-primary">Confirmation<span class="chevron"></span></li>
                     </ul>
                     <h2 class="o_page_header mt32">Confirm your details</h2>
-                    <p>
-                        <span t-field="appointment_type.name"/> on <strong t-esc="datetime_locale"/>
-                    </p>
+                    <section class="s_text_block">
+                        <div class="container">
+                            <p>
+                                <span t-field="appointment_type.name"/> on <strong t-esc="datetime_locale"/>
+                            </p>
+                        </div>
+                    </section>
 
-                    <form class="mt32 appointment_submit_form" t-attf-action="/calendar/#{ slug(appointment_type) }/submit" method="POST">
-                      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                      <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
-                      <input type="hidden" name="employee_id" t-att-value="employee_id"/>
-                      <div class="form-group row col-xl-8">
-                        <label for="name" class="col-md-4 col-form-label">Your Name</label>
-                        <div class="col-md-8">
-                          <input type="char" class="form-control" name="name" required="1" t-att-value="'name' in partner_data and partner_data['name']"/>
+                    <div class="oe_structure"/>
+                    <div class="oe_structure container mb64 o_wcalendar_attendee_form">
+                        <div groups="website_calendar.group_calendar_manager" class="alert alert-info rounded-0 o_not_editable" role="status">
+                            <a t-attf-href="/web#id=#{appointment_type.id}&amp;view_type=form&amp;model=#{appointment_type._name}">
+                                <i class="fa fa-pencil mr-2" role="img" aria-label="Edit" title="Create custom questions in backend"/><em>Add Custom Questions</em>
+                            </a>
                         </div>
-                    </div><div class="form-group row col-xl-8">
-                        <label class="col-md-4 col-form-label" for="country_id">Your Country</label>
-                        <div class="col-md-8">
-                          <select name="country_id" class="form-control" required="1" id="country_field">
-                              <t t-if="'country_id' not in partner_data or not partner_data['country_id']">
-                                <option disabled="1" selected="1"> -- select a country -- </option>
-                              </t>
-                              <t t-foreach="countries or []" t-as="country">
-                                  <option t-att-value="country.id" t-att-data-phone-code="country.phone_code and ('+'+str(country.phone_code)+' ') or None" t-att-selected="partner_data.get('country_id') and country.id == partner_data['country_id'][0]"><t t-esc="country.name"/></option>
-                              </t>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group row col-xl-8">
-                        <label for="email" class="col-md-4 col-form-label">Your Email</label>
-                        <div class="col-md-8">
-                          <input type="email" class="form-control" name="email" t-att-value="'email' in partner_data and partner_data['email']" required="1"/>
-                        </div>
-                    </div><div class="form-group row col-xl-8">
-                        <label for="phone" class="col-md-4 col-form-label">Your Phone</label>
-                        <div class="col-md-8">
-                          <input type="tel" class="form-control" name="phone" placeholder="+1 (650) 691-3277" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
-                          <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.alarm_type=='sms')" class="text-muted">
-                              A text message reminder is sent to you before your appointment
-                          </small>
-                        </div>
-                      </div>
-
-                      <t t-foreach="appointment_type.question_ids" t-as="question">
-                          <div class="form-group row col-xl-8" t-if="question.question_type!='text'">
-                            <label t-att-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="question.name"/>
-                            <div class="col-md-8">
-                              <t t-if="question.question_type=='char'">
-                                  <input type="char" class="form-control"
-                                        t-attf-name="question_#{question.id}"
-                                        t-att-required="question.question_required or None"
-                                        t-att-placeholder="question.placeholder"/>
-                              </t>
-                              <t t-if="question.question_type=='select'">
-                                  <select t-attf-name="question_#{question.id}" class="form-control"
-                                        t-att-required="question.question_required or None"
-                                        t-att-placeholder="question.placeholder">
-                                      <t t-foreach="question.answer_ids or []" t-as="answer">
-                                          <option t-att-value="answer.name"><t t-esc="answer.name"/></option>
-                                      </t>
-                                  </select>
-                              </t>
-                              <t t-if="question.question_type=='radio'">
-                                  <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
-                                      <label>
-                                          <input type="radio" t-attf-name="question_#{question.id}"
-                                            t-att-required="question.question_required or None"
-                                            t-att-value="answer.name"/> <t t-esc="answer.name"/>
-                                      </label>
-                                  </div>
-                              </t>
-                              <t t-if="question.question_type=='checkbox'">
-                                  <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
-                                      <label>
-                                          <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
-                                            t-att-value="answer.name"/><t t-esc="answer.name"/>
-                                      </label>
-                                  </div>
-                              </t>
+                        <form class="mt32 appointment_submit_form" t-attf-action="/calendar/#{ slug(appointment_type) }/submit" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
+                            <input type="hidden" name="employee_id" t-att-value="employee_id"/>
+                            <div class="form-group row col-xl-8 mx-auto">
+                                <label for="name" class="col-md-4 col-form-label">Your Name *</label>
+                                <div class="col-md-8">
+                                    <input type="char" class="form-control" name="name" required="1" t-att-value="'name' in partner_data and partner_data['name']"/>
+                                </div>
                             </div>
-                          </div>
-                          <div class="form-group row col-xl-8" t-if="question.question_type=='text'">
-                              <label t-att-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="question.name"/>
-                              <div class="col-md-8">
-                                  <textarea class="form-control" rows="8"
-                                      t-att-required="question.question_required or None"
-                                      t-attf-name="question_#{question.id}"
-                                      t-att-placeholder="question.placeholder"/>
-                              </div>
-                          </div>
-                      </t>
+                            <div class="form-group row col-xl-8 mx-auto">
+                                <label for="email" class="col-md-4 col-form-label">Your Email *</label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" name="email" t-att-value="'email' in partner_data and partner_data['email']" required="1"/>
+                                </div>
+                            </div>
+                            <div class="form-group row col-xl-8 mx-auto">
+                                <label for="phone" class="col-md-4 col-form-label">Your Phone *</label>
+                                <div class="col-md-8">
+                                    <input type="tel" class="form-control" name="phone" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
+                                    <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.alarm_type == 'sms')" class="text-muted">
+                                        A text message reminder is sent to you before your appointment
+                                    </small>
+                                </div>
+                            </div>
 
-                      <div class="form-group row">
-                        <div class="offset-md-2 col-md-10">
-                          <button type="submit" class="btn btn-primary">Confirm Appointment <span class="fa fa-arrow-right"/></button>
-                        </div>
-                      </div>
-                    </form>
+                            <t t-foreach="appointment_type.question_ids" t-as="question">
+                                <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type!='text'">
+                                    <label t-att-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="' '.join([question.name, '*' if question.question_required else ''])"/>
+                                    <div class="col-md-8">
+                                        <t t-if="question.question_type == 'char'">
+                                            <input type="char" class="form-control"
+                                                t-attf-name="question_#{question.id}"
+                                                t-att-required="question.question_required or None"
+                                                t-att-placeholder="question.placeholder"/>
+                                        </t>
+                                        <t t-if="question.question_type == 'select'">
+                                            <select t-attf-name="question_#{question.id}" class="form-control"
+                                                t-att-required="question.question_required or None"
+                                                t-att-placeholder="question.placeholder">
+                                                <t t-foreach="question.answer_ids or []" t-as="answer">
+                                                    <option t-att-value="answer.name"><t t-esc="answer.name"/></option>
+                                                </t>
+                                            </select>
+                                        </t>
+                                        <t t-if="question.question_type == 'radio'">
+                                            <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
+                                                <label>
+                                                    <input type="radio" t-attf-name="question_#{question.id}"
+                                                        t-att-required="question.question_required or None"
+                                                        t-att-value="answer.name" class="mr-1"/> <t t-esc="answer.name"/>
+                                                </label>
+                                            </div>
+                                        </t>
+                                        <t t-if="question.question_type == 'checkbox'">
+                                            <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
+                                                <label>
+                                                    <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
+                                                        t-att-value="answer.name" class="mr-2"/><t t-esc="answer.name"/>
+                                                </label>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type == 'text'">
+                                    <label t-att-for="question_#{question.id}" class="col-md-4 col-form-label" t-esc="question.name"/>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" rows="8"
+                                            t-att-required="question.question_required or None"
+                                            t-attf-name="question_#{question.id}"
+                                            t-att-placeholder="question.placeholder"/>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <div class="form-group row col-xl-8 mx-auto">
+                                <div class="offset-md-4 col-md-8 o_not_editable">
+                                    <button type="submit" class="btn btn-primary">Confirm Appointment <span class="fa fa-arrow-right"/></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="oe_structure"/>
                 </div>
             </div>
         </t>

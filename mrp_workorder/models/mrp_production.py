@@ -18,13 +18,5 @@ class MrpProduction(models.Model):
         return backorders
 
     def _button_mark_done_sanity_checks(self):
-        checks_not_process = self.workorder_ids.check_ids.filtered(lambda c: c.quality_state == 'none' and c.test_type not in ('register_consumed_materials', 'register_byproducts'))
-        if checks_not_process:
-            error_msg = _('Please go in the Operations tab and perform the following work orders and their quality checks:\n')
-            for check in checks_not_process:
-                error_msg += check.workorder_id.workcenter_id.name + ' - ' + check.name
-                if check.title:
-                    error_msg += ' - ' + check.title
-                error_msg += '\n'
-            raise UserError(error_msg)
+        self.workorder_ids._check_remaining_quality_checks()
         return super()._button_mark_done_sanity_checks()

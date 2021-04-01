@@ -369,6 +369,10 @@ class MrpProductionWorkcenterLine(models.Model):
             self._update_component_quantity()
         return res
 
+    def button_finish(self):
+        self._check_remaining_quality_checks()
+        return super().button_finish()
+
     def _compute_check(self):
         for workorder in self:
             todo = False
@@ -577,6 +581,17 @@ class MrpProductionWorkcenterLine(models.Model):
                 'qty_done': move_line_id.product_uom_qty or 1.0
             })
         return vals
+
+    def _check_remaining_quality_checks(self):
+        checks_not_process = self.check_ids.filtered(lambda c: c.quality_state == 'none' and c.test_type not in ('register_consumed_materials', 'register_byproducts'))
+        if checks_not_process:
+            error_msg = _('Please go in the Operations tab and perform the following work orders and their quality checks:\n')
+            for check in checks_not_process:
+                error_msg += check.workorder_id.workcenter_id.name + ' - ' + check.name
+                if check.title:
+                    error_msg += ' - ' + check.title
+                error_msg += '\n'
+            raise UserError(error_msg)
 
     # --------------------------
     # Buttons from quality.check

@@ -18,6 +18,8 @@ Allow clients to Schedule Appointments through your Website
     'data': [
         'data/calendar_data.xml',
         'data/website_data.xml',
+        'data/mail_data.xml',
+        'data/mail_template_data.xml',
         'views/calendar_event_views.xml',
         'views/calendar_appointment_question_views.xml',
         'views/calendar_appointment_type_views.xml',

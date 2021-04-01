@@ -32,4 +32,4 @@ class WebsiteCalendarController(CalendarController):
         request.session['timezone'] = attendee.partner_id.tz
         if not attendee.event_id.access_token:
             attendee.event_id._generate_access_token()
-        return utils.redirect('/calendar/view/' + str(attendee.event_id.access_token))
+        return utils.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))

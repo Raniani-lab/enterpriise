@@ -57,21 +57,28 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         }
     }
 
-    .o_social_preview {
-        font-family: $o-social-font-family-reset;
-        font-size: 1.2rem;
-
-        .o_social_preview_icon_wrapper {
-            @include size(2em);
+    .o_social_preview_wrapper {
+        > .o_readonly {
+            width: 100%;
         }
 
-        .o_social_stream_post_image img {
-            max-height: 120px;
+        .o_social_preview {
+            font-family: $o-social-font-family-reset;
+            font-size: 1.2rem;
 
-            @media (min-height: 800px) {
-                max-height: 200px;
+            .o_social_preview_icon_wrapper {
+                @include size(2em);
+            }
+
+            .o_social_stream_post_image img {
+                max-height: 120px;
+
+                @media (min-height: 800px) {
+                    max-height: 200px;
+                }
             }
         }
+
     }
 }
 

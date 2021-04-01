@@ -27,22 +27,22 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/scss/secondary_variables.scss',
         ],
         'web._assets_backend_helpers': [
-            ('replace', 'web/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
+            ('replace', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
         ],
         'web._assets_common_styles': [
-            ('replace', 'web/static/src/scss/ui_extra.scss', 'web_enterprise/static/src/scss/ui.scss'),
+            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/scss/ui.scss'),
 
             'web_enterprise/static/fonts/fonts.scss',
         ],
         'web.assets_backend': [
-            ('replace', 'web/static/src/scss/webclient_extra.scss', 'web_enterprise/static/src/scss/webclient.scss'),
-            ('replace', 'web/static/src/scss/webclient_layout.scss', 'web_enterprise/static/src/scss/webclient_layout.scss'),
+            ('replace', 'web/static/src/legacy/scss/webclient_extra.scss', 'web_enterprise/static/src/scss/webclient.scss'),
+            ('replace', 'web/static/src/legacy/scss/webclient_layout.scss', 'web_enterprise/static/src/scss/webclient_layout.scss'),
 
-            ('replace', 'web/static/src/scss/dropdown_extra.scss', 'web_enterprise/static/src/scss/fields.scss'),
-            ('replace', 'web/static/src/scss/fields_extra.scss', 'web_enterprise/static/src/scss/form_view.scss'),
-            ('replace', 'web/static/src/scss/form_view_extra.scss', 'web_enterprise/static/src/scss/list_view.scss'),
-            ('replace', 'web/static/src/scss/list_view_extra.scss', 'web_enterprise/static/src/scss/search_view.scss'),
-            ('replace', 'web/static/src/scss/search_view_extra.scss', 'web_enterprise/static/src/scss/dropdown.scss'),
+            ('replace', 'web/static/src/legacy/scss/dropdown_extra.scss', 'web_enterprise/static/src/scss/fields.scss'),
+            ('replace', 'web/static/src/legacy/scss/fields_extra.scss', 'web_enterprise/static/src/scss/form_view.scss'),
+            ('replace', 'web/static/src/legacy/scss/form_view_extra.scss', 'web_enterprise/static/src/scss/list_view.scss'),
+            ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/scss/search_view.scss'),
+            ('replace', 'web/static/src/legacy/scss/search_view_extra.scss', 'web_enterprise/static/src/scss/dropdown.scss'),
 
             'web_enterprise/static/src/scss/base_settings_mobile.scss',
             'web_enterprise/static/src/scss/home_menu.scss',
@@ -62,11 +62,11 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/scss/modal_mobile.scss',
             'web_enterprise/static/src/scss/promote_studio.scss',
             'web_enterprise/static/src/scss/web_calendar_mobile.scss',
-            'web/static/src/scss/navbar_mobile.scss',
+            'web/static/src/legacy/scss/navbar_mobile.scss',
 
-            ('replace', 'web/static/src/js/chrome/web_client.js', 'web_enterprise/static/src/js/web_client.js'),
-            ('replace', 'web/static/src/js/chrome/menu.js', 'web_enterprise/static/src/js/menu.js'),
-            ('replace', 'web/static/src/js/fields/upgrade_fields.js', 'web_enterprise/static/src/js/apps.js'),
+            ('replace', 'web/static/src/legacy/js/chrome/web_client.js', 'web_enterprise/static/src/js/web_client.js'),
+            ('replace', 'web/static/src/legacy/js/chrome/menu.js', 'web_enterprise/static/src/js/menu.js'),
+            ('replace', 'web/static/src/legacy/js/fields/upgrade_fields.js', 'web_enterprise/static/src/js/apps.js'),
 
             'web_enterprise/static/src/js/home_menu_wrapper.js',
             'web_enterprise/static/src/js/home_menu.js',

@@ -64,17 +64,25 @@ class SocialPostPushNotifications(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """ Assign a default push_notification_target_url is none specified and we can extract one from the message """
-        for i in range(len(vals_list)):
-            if not vals_list[i].get('push_notification_target_url'):
-                extracted_url = self._extract_url_from_message(vals_list[i]['message'])
+        for index, values in enumerate(vals_list):
+            if not values.get('push_notification_target_url') and values.get('message'):
+                message = self._prepare_post_content(
+                    values['message'],
+                    'push_notifications',
+                    **{field: values[field] for field in set(self._get_post_message_modifying_fields()) & values.keys()})
+                extracted_url = self._extract_url_from_message(message)
                 if extracted_url:
-                    vals_list[i]['push_notification_target_url'] = extracted_url
+                    vals_list[index]['push_notification_target_url'] = extracted_url
         return super(SocialPostPushNotifications, self).create(vals_list)
 
     def write(self, vals):
         """ Assign a default push_notification_target_url is none specified and we can extract one from the message """
         if not any(post.push_notification_target_url for post in self) and vals.get('message'):
-            extracted_url = self._extract_url_from_message(vals['message'])
+            message = self._prepare_post_content(
+                    vals['message'],
+                    'push_notifications',
+                    **{field: vals[field] for field in set(self._get_post_message_modifying_fields()) & vals.keys()})
+            extracted_url = self._extract_url_from_message(message)
             if extracted_url:
                 vals['push_notification_target_url'] = extracted_url
         return super(SocialPostPushNotifications, self).write(vals)

@@ -71,9 +71,8 @@ class SocialLivePostTwitter(models.Model):
             account = live_post.account_id
             post = live_post.post_id
 
-            message = self._remove_mentions(post.message)
             params = {
-                'status': self.env['mail.render.mixin'].sudo()._shorten_links_text(message, live_post._get_utm_values()),
+                'status': live_post.message,
             }
 
             images_attachments_ids = account._format_attachments_to_images_twitter(post.image_ids)

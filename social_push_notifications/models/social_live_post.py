@@ -58,7 +58,7 @@ class SocialLivePostPushNotifications(models.Model):
 
             account._firebase_send_message({
                 'title': title,
-                'body': self.env['mail.render.mixin'].sudo()._shorten_links_text(post.message, live_post._get_utm_values()),
+                'body': live_post.message,
                 'icon': icon_url,
                 'target_url': target_link
             }, target_visitors)

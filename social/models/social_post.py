@@ -303,6 +303,27 @@ class SocialPost(models.Model):
         return []
 
     @api.model
+    def _prepare_post_content(self, message, media_type, **kw):
+        """ Prepares the post content and can be customized by underlying social implementations.
+        e.g: YouTube will automatically include a link at the end of the message.
+        kwargs are limited to fields actually used by the underlying implementations
+        (e.g: 'youtube_video_id'). """
+
+        if media_type not in [key for (key, val) in self.env['social.media'].fields_get(['media_type'])['media_type']['selection']]:
+            raise ValueError("Unknown media_type %s" % media_type)
+
+        return message or ''
+
+    @api.model
+    def _get_post_message_modifying_fields(self):
+        """ Returns additional fields required by the '_prepare_post_content' to compute the value
+        of the social.live.post's "message" field. Which is a post-processed version of this model's
+        "message" field (i.e shortened links, UTMized, ...).
+        For example, social_youtube requires the 'youtube_video_id' field to be able to correctly
+        prepare the post content. """
+        return []
+
+    @api.model
     def _extract_url_from_message(self, message):
         """ Utility method that extracts an URL (ex: https://www.google.com) from a string message.
         Copied from: https://daringfireball.net/2010/07/improved_regex_for_matching_urls """

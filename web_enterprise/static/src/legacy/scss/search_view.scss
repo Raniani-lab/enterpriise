@@ -1,7 +1,13 @@
 .o_searchview {
     @include media-breakpoint-up(md) {
-        border-bottom: 1px solid $o-brand-secondary;
+        border-bottom: 1px solid $border-color;
+        padding-bottom: 3px;
+
+        &:focus-within {
+            border-bottom-color: $primary;
+        }
     }
+
     @include media-breakpoint-down(sm) {
         margin-right: 5px; // o_switch_view_button_icon alignment
         padding-right: 0;
@@ -12,16 +18,21 @@
             flex-flow: row wrap;
         }
 
-        border: 1px solid $o-brand-secondary;
-        background: $o-brand-lightsecondary;
-        color: $o-brand-secondary;
+        .o_facet_values {
+            border: 1px solid $o-brand-odoo;
+            border-left-width: 0;
+        }
 
         .o_searchview_facet_label {
             background-color: $o-brand-odoo;
         }
 
-        .o_facet_remove:hover {
-            color: darken($o-brand-secondary, 20%);
+        .o_searchview_facet_label, .o_facet_remove {
+            font-size: $small-font-size;
+        }
+
+        .o_facet_remove {
+            @include o-hover-text-color($text-muted, $o-brand-odoo);
         }
     }
 

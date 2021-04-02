@@ -1,5 +1,6 @@
 {
     "name": """Chile - E-Invoicing Delivery Guide""",
+    'icon': '/l10n_cl/static/description/icon.png',
     'version': '1.0.',
     'category': 'Accounting/Localizations/EDI',
     'sequence': 12,

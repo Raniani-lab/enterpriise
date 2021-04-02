@@ -82,6 +82,10 @@
         background-color: white;
         border: none;
 
+        th {
+            font-weight: $font-weight-bold;
+        }
+
         > tr:first-child > th {
             border: none;
         }
@@ -187,7 +191,11 @@
 
     .o_data_row_selected {
         user-select: none; // Prevent text selection when editing
-        background-color: $table-hover-bg !important;
+        > td {
+            border-top-color: $primary;
+            border-bottom: 1px solid $primary;
+            background-color: rgba($primary, .1);
+        }
     }
 
     .o_web_client.o_touch_device .o_content table.o_list_table.table tr > {

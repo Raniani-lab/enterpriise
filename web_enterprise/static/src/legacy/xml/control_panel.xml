@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div t-if="props.actionMenus and props.actionMenus.items and env.view and env.view.type == 'list'"
-                 class="o_cp_bottom o_renderer_selection_banner">
+                 class="o_cp_bottom o_renderer_selection_banner align-items-center ml-n2">
                 <ActionMenus t-props="props.actionMenus" />
             </div>
             <div t-else="" class="o_cp_bottom">

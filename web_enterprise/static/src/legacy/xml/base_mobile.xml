@@ -52,8 +52,8 @@
 
 <t t-extend="ListView.selection">
     <t t-jquery=".o_list_selection_box" t-operation="prepend">
-        <button class="btn o_discard_selection" t-if="isMobile">
-            <i class="fa fa-close"/>
+        <button class="btn btn-link py-0 o_discard_selection" t-if="isMobile">
+            <span class="fa-2x">&#215;</span>
         </button>
     </t>
 </t>

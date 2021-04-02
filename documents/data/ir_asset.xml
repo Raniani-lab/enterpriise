@@ -4,7 +4,7 @@
         <record id="documents.documents_kanban_view_mobile_scss" model="ir.asset">
             <field name="name">Documents kanban view mobile SCSS</field>
             <field name="bundle">web.assets_backend</field>
-            <field name="glob">documents/static/src/scss/documents_kanban_view_mobile.scss</field>
+            <field name="path">documents/static/src/scss/documents_kanban_view_mobile.scss</field>
             <field name="sequence" eval="17"/>
         </record>
     </data>

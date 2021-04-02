@@ -31,7 +31,6 @@ No modified version is certified and supported by Odoo SA.
         'security/pos_blackbox_be_security.xml',
         'security/ir.model.access.csv',
         'views/pos_blackbox_be_views.xml',
-        'views/pos_blackbox_be_assets.xml',
         'data/pos_blackbox_be_data.xml'
     ],
     'demo': [
@@ -43,6 +42,9 @@ No modified version is certified and supported by Odoo SA.
     'assets': {
         'web.assets_qweb': [
             'pos_blackbox_be/static/src/xml/**/*',
+        ],
+        'point_of_sale.assets': [
+            'pos_blackbox_be/static/src/js/**/*',
         ],
     }
 }

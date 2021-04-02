@@ -6,6 +6,7 @@ import json
 from odoo.addons.social_facebook.controllers.main import SocialFacebookController
 from odoo.addons.social_twitter.controllers.main import SocialTwitterController
 from odoo.addons.social_linkedin.controllers.main import SocialLinkedin
+from odoo.addons.social_youtube.controllers.main import SocialYoutubeController
 
 from odoo import http
 from odoo.http import request
@@ -34,3 +35,10 @@ class DemoSocialLinkedInController(SocialLinkedin):
     def add_comment(self, post_id=None, message=None, comment_id=None, is_edit=False, **kwargs):
         """ Returns a fake comment containing the passed 'message' """
         return json.dumps(request.env['social.stream.post']._get_new_linkedin_comment_demo(message))
+
+
+class DemoSocialYoutubeController(SocialYoutubeController):
+    @http.route(['/social_youtube/comment'], type='http', auth='user')
+    def add_comment(self, post_id=None, message=None, comment_id=None, is_edit=False, **kwargs):
+        """ Returns a fake comment containing the passed 'message' """
+        return json.dumps(request.env['social.stream.post']._get_new_comment_demo(message))

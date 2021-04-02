@@ -24,12 +24,12 @@ class SocialPost(models.Model):
         """
         If there are less than 3 social accounts available, select them all by default.
         """
-        all_accounts = self.env['social.account'].search([])
+        all_accounts = self.env['social.account'].search(self._get_default_accounts_domain())
         if len(all_accounts) <= 3:
             return all_accounts
         return False
 
-    message = fields.Text("Message", required=True)
+    message = fields.Text("Message")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('scheduled', 'Scheduled'),
@@ -73,6 +73,12 @@ class SocialPost(models.Model):
     engagement = fields.Integer("Engagement", compute='_compute_post_engagement',
         help="Number of people engagements with the post (Likes, comments...)")
     click_count = fields.Integer('Number of clicks', compute="_compute_click_count")
+
+    @api.constrains('message')
+    def _check_message_not_empty(self):
+        for social_post in self:
+            if not social_post.message:
+                raise UserError(_("The 'message' field is required for post ID %s", social_post.id))
 
     @api.constrains('image_ids')
     def _check_image_ids_mimetype(self):
@@ -233,10 +239,6 @@ class SocialPost(models.Model):
         }
         return action
 
-    def _has_no_accounts(self):
-        self.ensure_one()
-        return not self.account_ids
-
     def _check_post_access(self):
         """
         Raise an error if the user cannot post on a social media
@@ -244,8 +246,11 @@ class SocialPost(models.Model):
         if not self.user_has_groups('social.group_social_manager'):
             raise AccessError(_('You are not allowed to do this operation.'))
 
-        if any(not post.message or post._has_no_accounts() for post in self):
-            raise UserError(_('Please specify a message and at least one account to post into.'))
+        if any(not post.account_ids for post in self):
+            raise UserError(_(
+                'Please specify at least one account to post into (for post ID(s) %s).',
+                ', '.join(self.filtered(lambda p: not p.account_ids).ids)
+            ))
 
     def action_schedule(self):
         self._check_post_access()
@@ -299,7 +304,33 @@ class SocialPost(models.Model):
             'account_id': account.id,
         } for account in self.account_ids]
 
+    def _get_default_accounts_domain(self):
+        """ Can be overridden by underlying social.media implementation to remove default accounts.
+        It's used to filter the default accounts to tick when creating a new social.post. """
+        return []
+
     def _get_stream_post_domain(self):
+        return []
+
+    @api.model
+    def _prepare_post_content(self, message, media_type, **kw):
+        """ Prepares the post content and can be customized by underlying social implementations.
+        e.g: YouTube will automatically include a link at the end of the message.
+        kwargs are limited to fields actually used by the underlying implementations
+        (e.g: 'youtube_video_id'). """
+
+        if media_type not in [key for (key, val) in self.env['social.media'].fields_get(['media_type'])['media_type']['selection']]:
+            raise ValueError("Unknown media_type %s" % media_type)
+
+        return message or ''
+
+    @api.model
+    def _get_post_message_modifying_fields(self):
+        """ Returns additional fields required by the '_prepare_post_content' to compute the value
+        of the social.live.post's "message" field. Which is a post-processed version of this model's
+        "message" field (i.e shortened links, UTMized, ...).
+        For example, social_youtube requires the 'youtube_video_id' field to be able to correctly
+        prepare the post content. """
         return []
 
     @api.model

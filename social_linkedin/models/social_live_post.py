@@ -62,9 +62,14 @@ class SocialLivePostLinkedin(models.Model):
 
     def _post_linkedin(self):
         for live_post in self:
-            message_with_shortened_urls = self.env['mail.render.mixin'].sudo()._shorten_links_text(live_post.post_id.message, live_post._get_utm_values())
+            url_in_message = self.env['social.post']._extract_url_from_message(live_post.message)
 
-            url_in_message = self.env['social.post']._extract_url_from_message(message_with_shortened_urls)
+            share_content = {
+                "shareCommentary": {
+                    "text": live_post.message
+                },
+                "shareMediaCategory": "NONE"
+            }
 
             if live_post.post_id.image_ids:
                 images_urn = [
@@ -72,47 +77,28 @@ class SocialLivePostLinkedin(models.Model):
                     for image_id in live_post.post_id.image_ids
                 ]
 
-                specific_content = {
-                    'com.linkedin.ugc.ShareContent': {
-                        "shareCommentary": {
-                            "text": message_with_shortened_urls
-                        },
-                        'shareMediaCategory': 'IMAGE',
-                        'media': [{
-                            "status": "READY",
-                            "media": image_urn
-                        } for image_urn in images_urn]
-                    }
-                }
-
+                share_content.update({
+                    "shareMediaCategory": "IMAGE",
+                    "media": [{
+                        "status": "READY",
+                        "media": image_urn
+                    } for image_urn in images_urn]
+                })
             elif url_in_message:
-                specific_content = {
-                    'com.linkedin.ugc.ShareContent': {
-                        "shareCommentary": {
-                            "text": message_with_shortened_urls
-                        },
-                        'shareMediaCategory': 'ARTICLE',
-                        'media': [{
-                            "status": "READY",
-                            "originalUrl": url_in_message
-                        }]
-                    }
-                }
-
-            else:
-                specific_content = {
-                    "com.linkedin.ugc.ShareContent": {
-                        "shareCommentary": {
-                            "text": message_with_shortened_urls
-                        },
-                        "shareMediaCategory": "NONE"
-                    }
-                }
+                share_content.update({
+                    "shareMediaCategory": "ARTICLE",
+                    "media": [{
+                        "status": "READY",
+                        "originalUrl": url_in_message
+                    }]
+                })
 
             data = {
                 "author": live_post.account_id.linkedin_account_urn,
                 "lifecycleState": "PUBLISHED",
-                "specificContent": specific_content,
+                "specificContent": {
+                    "com.linkedin.ugc.ShareContent": share_content
+                },
                 "visibility": {
                     "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
                 }

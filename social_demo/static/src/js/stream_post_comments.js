@@ -2,6 +2,8 @@ odoo.define('social_demo.social_post_kanban_comments', function (require) {
 
 var StreamPostFacebookComments = require('social.social_facebook_post_kanban_comments');
 var StreamPostTwitterComments = require('social.StreamPostTwitterComments');
+var StreamPostLinkedinComments = require('social_linkedin.social_linkedin_post_kanban_comments');
+var StreamPostYoutubeComments = require('social.StreamPostYoutubeComments');
 
 /**
  * Return custom author image.
@@ -24,6 +26,18 @@ StreamPostFacebookComments.include({
 });
 
 StreamPostTwitterComments.include({
+    getAuthorPictureSrc: function () {
+        return getDemoAuthorPictureSrc.apply(this, arguments);
+    }
+});
+
+StreamPostLinkedinComments.include({
+    getAuthorPictureSrc: function () {
+        return getDemoAuthorPictureSrc.apply(this, arguments);
+    }
+});
+
+StreamPostYoutubeComments.include({
     getAuthorPictureSrc: function () {
         return getDemoAuthorPictureSrc.apply(this, arguments);
     }

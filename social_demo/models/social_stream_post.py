@@ -24,6 +24,11 @@ class DemoSocialStreamPost(models.Model):
             'comments': self._get_demo_comments()
         }
 
+    def get_youtube_comments(self, next_page_token=False):
+        return {
+            'comments': self._get_demo_comments()
+        }
+
     def get_linkedin_comments(self, comment_urn=None, offset=0, count=20):
         if comment_urn:
             comments = self._get_demo_sub_comments()

@@ -30,11 +30,14 @@ class SocialPostLinkedin(models.Model):
                 post.message and
                 'linkedin' in post.account_ids.media_id.mapped('media_type'))
 
-    @api.depends('message', 'scheduled_date', 'image_ids')
+    @api.depends(lambda self: ['message', 'scheduled_date', 'image_ids'] + self._get_post_message_modifying_fields())
     def _compute_linkedin_preview(self):
         for post in self:
             post.linkedin_preview = self.env.ref('social_linkedin.linkedin_preview')._render({
-                'message': post.message,
+                'message': post._prepare_post_content(
+                    post.message,
+                    'linkedin',
+                    **{field: post[field] for field in post._get_post_message_modifying_fields()}),
                 'published_date': post.scheduled_date if post.scheduled_date else fields.Datetime.now(),
                 'images': [
                     image.datas if not image.id

@@ -62,10 +62,8 @@ class SocialLivePostFacebook(models.Model):
 
         post = self.post_id
 
-        message_with_shortened_urls = self.env['mail.render.mixin'].sudo()._shorten_links_text(post.message, self._get_utm_values())
-
         params = {
-            'message': message_with_shortened_urls,
+            'message': self.message,
             'access_token': account.facebook_access_token
         }
 
@@ -83,7 +81,7 @@ class SocialLivePostFacebook(models.Model):
                     for index, image_attachment in enumerate(images_attachments):
                         params.update({'attached_media[' + str(index) + ']': json.dumps(image_attachment)})
 
-            link_url = self.env['social.post']._extract_url_from_message(message_with_shortened_urls)
+            link_url = self.env['social.post']._extract_url_from_message(self.message)
             # can't combine with images
             if link_url and not post.image_ids:
                 params.update({'link': link_url})

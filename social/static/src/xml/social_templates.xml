@@ -217,7 +217,7 @@
                     t-att-title="originalPost.publishedDate"/>
                 </a>
             </div>
-            <div t-attf-class="o_social_original_post_message_body">
+            <div name="o_social_original_post_message_body" t-attf-class="o_social_original_post_message_body">
                 <div t-if="originalPost.postMessage"
                     t-raw="widget._formatCommentStreamPost(originalPost.postMessage)"
                     class="o_social_original_post_message_text overflow-auto mb-2"/>
@@ -265,7 +265,7 @@
     <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex">
         <t t-foreach="widget.socialMedia" t-as="media">
             <div class="o_social_media card text-center justify-content-center align-items-center mr-3 p-3" t-att-data-media-id="media.id" style="min-width: 90px;">
-                <img width="48" t-attf-src="/web/image/social.media/#{media.id}/image/48x48" />
+                <img width="48" height="48" t-attf-src="/web/image/social.media/#{media.id}/image/48x48" />
                 <h5 t-esc="media.name" class="o_social_media_name mb-0 mt-2" />
             </div>
         </t>

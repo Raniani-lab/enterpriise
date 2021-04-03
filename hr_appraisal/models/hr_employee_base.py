@@ -15,8 +15,7 @@ class HrEmployeeBase(models.AbstractModel):
         return {
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
-            'res_model': 'request.appraisal',
-            'target': 'new',
+            'res_model': 'hr.appraisal',
             'name': 'Appraisal Request',
             'context': self.env.context,
         }

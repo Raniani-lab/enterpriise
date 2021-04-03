@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import fields, api, models
 from odoo.tools import html2plaintext, is_html_empty
 
 
@@ -11,35 +11,41 @@ class HrAppraisalGoal(models.Model):
     _description = "Appraisal Goal"
 
     name = fields.Char(required=True)
-    employee_id = fields.Many2one('hr.employee', string="Owner",
+    employee_id = fields.Many2one('hr.employee', string="Employee",
         default=lambda self: self.env.user.employee_id, required=True)
-    manager_id = fields.Many2one('hr.employee', string="Challenged By", required=True)
+    employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_is_manager')
+    is_implicit_manager = fields.Boolean(compute='_compute_is_manager')
+    manager_id = fields.Many2one('hr.employee', string="Manager", compute="_compute_manager_id", readonly=False, store=True, required=True)
+    manager_user_id = fields.Many2one('res.users', related='manager_id.user_id')
     progression = fields.Selection(selection=[
         ('0', '0 %'),
         ('25', '25 %'),
         ('50', '50 %'),
         ('75', '75 %'),
         ('100', '100 %')
-    ], string="Progression", default="0", required=True)
+    ], string="Progress", default="0", required=True)
     description = fields.Html()
     deadline = fields.Date()
     is_manager = fields.Boolean(compute='_compute_is_manager')
-    text_description = fields.Text(compute="_compute_text_description")
 
+    @api.depends_context('uid')
+    @api.depends('employee_id')
     def _compute_is_manager(self):
-        appraisal_user = self.env.user.has_group('hr_appraisal.group_hr_appraisal_user')
-        self.update({'is_manager': appraisal_user})
+        self.is_manager = self.env.user.has_group('hr_appraisal.group_hr_appraisal_user')
+        for goal in self:
+            if goal.is_manager:
+                goal.is_implicit_manager = False
+                goal.employee_autocomplete_ids = self.env['hr.employee'].search([])
+            else:
+                child_ids = self.env.user.employee_id.child_ids
+                appraisal_child_ids = self.env.user.employee_id.appraisal_child_ids
+                goal.employee_autocomplete_ids = child_ids + appraisal_child_ids + self.env.user.employee_id
+                goal.is_implicit_manager = len(goal.employee_autocomplete_ids) > 1
+
+    @api.depends('employee_id')
+    def _compute_manager_id(self):
+        for goal in self:
+            goal.manager_id = goal.employee_id.parent_id
 
     def action_confirm(self):
         self.write({'progression': '100'})
-
-    def _compute_text_description(self):
-        for rec in self:
-            if not is_html_empty(rec.description):
-                plaintext = html2plaintext(rec.description)
-                if len(plaintext) >= 80:
-                    rec.text_description = plaintext[0:77] + '...'
-                else:
-                    rec.text_description = plaintext
-            else:
-                rec.text_description = ""

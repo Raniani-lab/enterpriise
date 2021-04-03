@@ -17,7 +17,6 @@
          * survey_manager: CRUD 1 1 1 1
           * can CRUD survey / questions / question answers: 1 = 1
           * can CRUD user_input / user_input_line: 1 = 1 (survey), is_appraisal = False (appraisal_survey)
-         * hr_appraisal_manager: CRUD -> implied group survey_manager
           * can CRUD user_input / user_input_line: 1 = 1 dans appraisal_survey
     -->
         <record id="survey.survey_user_input_rule_survey_manager" model="ir.rule">
@@ -44,10 +43,6 @@
         <record id="survey.survey_user_input_line_rule_survey_user_cw" model="ir.rule">
             <field name="name">Survey user input line: officer: create/write/unlink linked to own non private survey only</field>
             <field name="domain_force">['&amp;', ('survey_id.is_appraisal', '=', False), ('user_input_id.survey_id.create_uid', '=', user.id)]</field>
-        </record>
-
-        <record id="hr_appraisal.group_hr_appraisal_manager" model="res.groups">
-            <field name="implied_ids" eval="[(4, ref('survey.group_survey_manager'))]"/>
         </record>
 
         <record id="survey_user_input_rule_appraisal_manager" model="ir.rule">

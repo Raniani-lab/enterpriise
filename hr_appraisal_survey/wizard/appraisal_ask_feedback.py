@@ -6,6 +6,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
+from odoo.tools import html_sanitize, is_html_empty
 
 _logger = logging.getLogger(__name__)
 
@@ -25,12 +26,13 @@ class AppraisalAskFeedback(models.TransientModel):
         result = super(AppraisalAskFeedback, self).default_get(fields)
         appraisal = self.env['hr.appraisal'].browse(result.get('appraisal_id'))
         if 'survey_template_id' in fields and appraisal and not result.get('survey_template_id'):
-            result['survey_template_id'] = appraisal.company_id.appraisal_survey_template_id.id
+            result['survey_template_id'] = appraisal.department_id.appraisal_survey_template_id.id or appraisal.company_id.appraisal_survey_template_id.id
         return result
-
     appraisal_id = fields.Many2one('hr.appraisal', default=lambda self: self.env.context.get('active_id', None))
     employee_id = fields.Many2one(related='appraisal_id.employee_id', string='Appraisal Employee')
     template_id = fields.Many2one(default=lambda self: self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False))
+    user_body = fields.Html('User Contents')
+
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_survey_mail_compose_message_ir_attachments_rel',
         'wizard_id', 'attachment_id', string='Attachments')
@@ -44,15 +46,21 @@ class AppraisalAskFeedback(models.TransientModel):
         default=lambda self: self.env.user.partner_id.id,
         help="Author of the message.",
     )
-    survey_template_id = fields.Many2one('survey.survey')
+    survey_template_id = fields.Many2one('survey.survey', required=True)
     employee_ids = fields.Many2many(
-        'hr.employee', string="Recipients", domain=[('user_id', '!=', False)])
+        'hr.employee', string="Recipients", domain=[('user_id', '!=', False)], required=True)
     deadline = fields.Date(string="Answer Deadline", required=True, default=_get_default_deadline)
 
     # Overrides of mail.composer.mixin
     @api.depends('survey_template_id')  # fake trigger otherwise not computed in new mode
     def _compute_render_model(self):
         self.render_model = 'survey.user_input'
+
+    @api.depends('employee_id')
+    def _compute_subject(self):
+        for wizard in self.filtered('employee_id'):
+            if wizard.template_id:
+                wizard.subject = self._render_template(wizard.template_id.subject, 'hr.appraisal', wizard.appraisal_id.ids, post_process=True)[wizard.appraisal_id.id]
 
     def _prepare_survey_anwers(self, partners):
         answers = self.env['survey.user_input']
@@ -80,16 +88,18 @@ class AppraisalAskFeedback(models.TransientModel):
 
     def _send_mail(self, answer):
         """ Create mail specific for recipient containing notably its access token """
-        ctx = {'employee_name': self.employee_id.name,}
-        subject = self.with_context(**ctx)._render_field('subject', answer.ids, post_process=False)[answer.id]
+        user_body = self.user_body
+        user_body = user_body if not is_html_empty(html_sanitize(user_body, strip_style=True, strip_classes=True)) else False
+        ctx = {
+            'user_body': user_body
+        }
         body = self.with_context(**ctx)._render_field('body', answer.ids, post_process=True)[answer.id]
-        # post the message
         mail_values = {
             'email_from': self.email_from,
             'author_id': self.author_id.id,
             'model': None,
             'res_id': None,
-            'subject': subject,
+            'subject': self.subject,
             'body_html': body,
             'attachment_ids': [(4, att.id) for att in self.attachment_ids],
             'auto_delete': True,
@@ -123,7 +133,7 @@ class AppraisalAskFeedback(models.TransientModel):
         for answer in answers:
             self._send_mail(answer)
 
-        for employee in self.employee_ids.filtered(lambda e: e.user_id):
+        for employee in self.employee_ids.filtered(lambda e: e.user_id.has_group('hr_appraisal.group_hr_appraisal_user')):
             answer = answers.filtered(lambda l: l.partner_id == employee.user_id.partner_id)
             self.appraisal_id.with_context(mail_activity_quick_update=True).activity_schedule(
                 'mail.mail_activity_data_todo', self.deadline,

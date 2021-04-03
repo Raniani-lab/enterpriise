@@ -5,6 +5,7 @@ import logging
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
+from odoo.tools import html_sanitize, is_html_empty
 
 _logger = logging.getLogger(__name__)
 
@@ -21,33 +22,25 @@ class RequestAppraisal(models.TransientModel):
         result = super(RequestAppraisal, self).default_get(fields)
         if not set(fields) & set(['employee_id', 'template_id', 'recipient_ids']):
             return result
-        if self.env.context.get('active_model') in ('hr.employee', 'hr.employee.public'):
-            employee = self.env['hr.employee'].browse(self.env.context['active_id'])
-            manager = employee.parent_id
-            if manager.user_id == self.env.user:
+        if self.env.context.get('default_appraisal_id'):
+            appraisal = self.env['hr.appraisal'].browse(self.env.context['default_appraisal_id'])
+            employee = appraisal.employee_id
+            managers = appraisal.manager_ids
+            if self.env.user.employee_id in managers:
                 template = self.env.ref('hr_appraisal.mail_template_appraisal_request', raise_if_not_found=False)
                 recipients = self._get_recipients(employee)
             elif employee.user_id == self.env.user:
                 template = self.env.ref('hr_appraisal.mail_template_appraisal_request_from_employee', raise_if_not_found=False)
-                recipients = self._get_recipients(manager)
+                recipients = self._get_recipients(managers)
             else:
                 template = self.env.ref('hr_appraisal.mail_template_appraisal_request', raise_if_not_found=False)
-                recipients = self._get_recipients(employee | manager)
+                recipients = self._get_recipients(employee | managers)
 
             result.update({
                 'template_id': template.id,
                 'recipient_ids': recipients.ids,
                 'employee_id': employee.id,
-            })
-        if self.env.context.get('active_model') == 'res.users':
-            user = self.env['res.users'].browse(self.env.context['active_id'])
-            employee = user.employee_id
-            manager = employee.parent_id
-            template = self.env.ref('hr_appraisal.mail_template_appraisal_request_from_employee', raise_if_not_found=False)
-            result.update({
-                'template_id': template and template.id or False,
-                'recipient_ids': self._get_recipients(manager).ids,
-                'employee_id': employee.id,
+                'appraisal_id': appraisal.id,
             })
         return result
 
@@ -65,9 +58,8 @@ class RequestAppraisal(models.TransientModel):
                 partners |= self.env['res.partner'].sudo().find_or_create(name_email)
         return partners
 
-    attachment_ids = fields.Many2many(
-        'ir.attachment', 'hr_appraisal_mail_compose_message_ir_attachments_rel',
-        'wizard_id', 'attachment_id', string='Attachments')
+    appraisal_id = fields.Many2one('hr.appraisal', required=True)
+    user_body = fields.Html('User Contents')
     email_from = fields.Char(
         'From', required=True,
         default=lambda self: self.env.user.email_formatted,
@@ -80,16 +72,26 @@ class RequestAppraisal(models.TransientModel):
     )
     employee_id = fields.Many2one('hr.employee', 'Appraisal Employee')
     recipient_ids = fields.Many2many('res.partner', string='Recipients', required=True)
-    deadline = fields.Date(string="Desired Deadline", required=True)
+
+    @api.depends('employee_id')
+    def _compute_subject(self):
+        for wizard in self.filtered('employee_id'):
+            if wizard.template_id:
+                wizard.subject = self._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
 
     @api.depends('template_id', 'recipient_ids')
     def _compute_body(self):
         for wizard in self:
+            user_body = wizard.user_body
+            user_body = user_body if not is_html_empty(html_sanitize(user_body, strip_style=True, strip_classes=True)) else False
             if wizard.template_id:
                 ctx = {
                     'employee_to_name': ', '.join(wizard.recipient_ids.sorted('name').mapped('name')),
+                    'author_name': wizard.author_id.name,
+                    'author_mail': wizard.author_id.email,
                     'recipient_users': wizard.recipient_ids.mapped('user_ids'),
                     'url': "${ctx['url']}",
+                    'user_body': user_body
                 }
                 wizard.body = self.with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
             elif not wizard.body:
@@ -104,28 +106,21 @@ class RequestAppraisal(models.TransientModel):
         """ Process the wizard content and proceed with sending the related
             email(s), rendering any template patterns on the fly if needed """
         self.ensure_one()
-        appraisal = self.env['hr.appraisal'].create({
-            'employee_id': self.employee_id.id,
-            'date_close': self.deadline,
-        })
+        appraisal = self.appraisal_id
         appraisal.message_subscribe(partner_ids=self.recipient_ids.ids)
-        appraisal.sudo()._onchange_employee_id()
 
-        ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}
+        ctx = {
+            'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
+        }
         context_self = self.with_context(ctx)
         subject = context_self._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
         body = context_self._render_field('body', appraisal.ids, post_process=True)[appraisal.id]
 
-        for user in self.recipient_ids.user_ids or self.env.user:
-            appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
-                'mail.mail_activity_data_todo', fields.Date.today(),
-                summary=_('Appraisal to Confirm and Send'),
-                note=_('Confirm and send appraisal of %s', appraisal.employee_id.name),
-                user_id=user.id)
-
-        appraisal.message_notify(
+        appraisal.message_post(
             subject=subject,
             body=body,
+            message_type='comment',
+            email_from=self.author_id.email,
             email_layout_xmlid='mail.mail_notification_light',
             partner_ids=self.recipient_ids.ids)
 

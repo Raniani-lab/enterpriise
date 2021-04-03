@@ -14,6 +14,7 @@ This module adds an integration with Survey to ask feedbacks to any employee, ba
     """,
     "data": [
         'views/hr_appraisal_views.xml',
+        'views/hr_department_views.xml',
         'views/res_config_settings_views.xml',
         'views/survey_survey_views.xml',
         'views/survey_templates_statistics.xml',

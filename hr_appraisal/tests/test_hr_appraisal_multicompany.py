@@ -18,18 +18,8 @@ class TestHrAppraisal(TransactionCase):
         self.HrAppraisal = self.env['hr.appraisal']
         self.main_company = self.env['res.company'].create({'name': 'main'})
         self.other_company = self.env['res.company'].create({'name': 'other'})
+
         self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_create_in_advance_days", 8)
-        self.env['hr.appraisal.plan'].search([]).unlink()
-        self.env['hr.appraisal.plan'].create({
-            'duration': 12,
-            'event': 'last_appraisal',
-            'company_id': self.main_company.id,
-        })
-        self.env['hr.appraisal.plan'].create({
-            'duration': 12,
-            'event': 'last_appraisal',
-            'company_id': self.other_company.id,
-        })
 
         self.user = new_test_user(self.env, login='My super login', groups='hr_appraisal.group_hr_appraisal_user', 
                                   company_ids=[(6, 0, (self.main_company | self.other_company).ids)], company_id=self.main_company.id)
@@ -53,7 +43,7 @@ class TestHrAppraisal(TransactionCase):
         self.assertEqual(appraisal_count([('employee_id', '=', self.hr_employee.id)]), 0)
         self.assertEqual(appraisal_count([('employee_id', '=', self.hr_employee2.id)]), 0)
 
-        self.env['hr.appraisal.plan']._run_employee_appraisal_plans()
+        self.env['res.company']._run_employee_appraisal_plans()
         self.assertEqual(appraisal_count([('employee_id', '=', self.hr_employee.id)]), 0)
         self.assertEqual(appraisal_count([('employee_id', '=', self.hr_employee2.id)]), 1)
 

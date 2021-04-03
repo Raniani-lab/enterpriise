@@ -1,54 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="mail_template_appraisal_confirm_employee" model="mail.template">
-            <field name="name">Hr Appraisal: Confirm Appraisal to Employee</field>
+        <record id="mail_template_appraisal_confirm" model="mail.template">
+            <field name="name">Hr Appraisal: Confirm Appraisal</field>
             <field name="model_id" ref="hr_appraisal.model_hr_appraisal"/>
             <field name="subject">${object.employee_id.name}: Appraisal Confirmed</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name') or 'employee'},
+                        An appraisal of ${ctx.get('employee_to_name') or 'employee'} has been confirmed.
                         <br/><br/>
-                        An appraisal was requested.
-                        <br/>
                         Please schedule an appraisal date together.
                         <br/><br/>
-                        Thank you!
-                        The HR department
-                        <br/><br/>
                         % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px;">
-                            <a href="${ctx['url']}"
-                                style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                View Appraisal
-                            </a>
-                        </p>
-                        % endif
-                    </p>
-                </div>
-            </field>
-            <field name="auto_delete" eval="True"/>
-        </record>
-
-        <record id="mail_template_appraisal_confirm_manager" model="mail.template">
-            <field name="name">Hr Appraisal: Confirm Appraisal to Manager</field>
-            <field name="model_id" ref="hr_appraisal.model_hr_appraisal"/>
-            <field name="subject">${object.employee_id.name}: Appraisal Confirmed</field>
-            <field name="body_html" type="html">
-                <div style="margin: 0px; padding: 0px;">
-                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name') or 'employee'},
-                        <br/><br/>
-                        An appraisal was requested.
-                        <br/>
-                        Please schedule an appraisal date together.
-                        <br/><br/>
-                        Thank you!
-                        The HR department
-                        <br/><br/>
-                        % if ctx.get('recipient_users'):
-                        <p style="margin: 16px 0px 16px 0px;">
+                        <p style="margin: 16px 0px 16px 0px; text-align: center;">
                             <a href="${ctx['url']}"
                                 style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
                                 View Appraisal
@@ -69,17 +34,25 @@
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         Dear ${ctx.get('employee_to_name') or 'employee'},
-                        <br /><br />
-                        I would like to start an Appraisal for you.
-
+                        <br/>
+                        An appraisal has been requested by ${ctx['author_name']}
+                        <br/>
+                        (${ctx['author_mail']}).
+                        % if ctx.get('user_body'):
+                        <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
+                            ${ctx.get('user_body') | safe}
+                        </div>
+                        % endif
                         % if ctx.get('recipient_users'):
-                        <p style="padding: 16px 0px 16px 0px;">
+                        <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
                             <a href="${ctx['url']}"
-                                style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
                                 View Appraisal
                             </a>
                         </p>
                         % endif
+                        <br/>
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
@@ -94,13 +67,17 @@
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         Dear ${ctx.get('employee_to_name') or 'employee'},
-                        <br /><br />
-                        I wish to request an appraisal.<br />
+                        <br/>
+                        ${ctx['author_name']} (${ctx['author_mail']}) wishes an appraisal.
+                        % if ctx.get('user_body'):
+                        <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
+                            ${ctx.get('user_body') | safe}
+                        </div>
+                        % endif
                         % if ctx.get('recipient_users'):
-                        Here is the link of my appraisal:
-                        <p style="padding: 16px 0px 16px 0px;">
+                        <p style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; text-align: center;">
                             <a href="${ctx['url']}"
-                                style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                style=" margin: auto; background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
                                 View Appraisal
                             </a>
                         </p>

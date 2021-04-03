@@ -50,16 +50,6 @@
         <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_4')]"/>
         <function model="hr.appraisal" name="action_done" eval="[ref('hr_appraisal.hr_appraisal_4')]"/>
 
-        <record id="hr_appraisal_4" model="hr.appraisal">
-            <field name="employee_id" ref="hr.employee_al"/>
-            <field name="state">new</field>
-            <field name="date_close" eval="(DateTime.now() + relativedelta(months=2)).strftime('%Y-%m-%d')"/>
-            <field name="manager_ids" eval="[(4, ref('hr.employee_admin'))]"/>
-            <field name="assessment_note" model="hr.appraisal.note" eval="obj().search([], order='id desc', limit=1)"/>
-        </record>
-        <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_4')]"/>
-        <function model="hr.appraisal" name="action_done" eval="[ref('hr_appraisal.hr_appraisal_4')]"/>
-
         <record id="hr_appraisal_4bis" model="hr.appraisal">
             <field name="employee_id" ref="hr.employee_al"/>
             <field name="state">new</field>
@@ -184,17 +174,6 @@
             <field name="manager_id" ref="hr.employee_admin"/>
             <field name="progression">75</field>
             <field name="deadline" eval="(DateTime.now() + relativedelta(months=1)).strftime('%Y-%m-%d')"/>
-        </record>
-
-        <record id="config_appraisal_plan_employee" model="hr.appraisal.plan">
-            <field name="duration">6</field>
-            <field name="event">last_appraisal</field>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="config_appraisal_plan_manager_arrival" model="hr.appraisal.plan">
-            <field name="duration">6</field>
-            <field name="event">arrival</field>
-            <field name="company_id" ref="base.main_company"/>
         </record>
     </data>
 </odoo>

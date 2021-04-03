@@ -20,15 +20,23 @@
                     <group>
                         <group>
                             <field name="is_manager" invisible="1"/>
-                            <field name="employee_id" attrs="{'readonly': [('is_manager', '=', False)]}"/>
+                            <field name="employee_autocomplete_ids" invisible="1"/>
+                            <field name="is_implicit_manager" invisible="1"/>
+                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}"/>
                             <field name="progression" class="pr-3" widget="selection_badge"/>
-                            <field name="description"/>
                         </group>
                         <group>
                             <field name="manager_id"/>
                             <field name="deadline"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -43,13 +51,11 @@
         <field name="name">hr.appraisal.goal.view.tree</field>
         <field name="model">hr.appraisal.goal</field>
         <field name="arch" type="xml">
-            <tree sample="1">
-                <field name="name"/>
-                <field name="description"/>
+            <tree sample="1" class="o_goal_list">
+                <field name="name" class="font-weight-bold"/>
                 <field name="deadline" widget="remaining_days"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="progression" widget="badge" decoration-success="progression == '100'"/>
-                <button name="action_confirm" title="Mark as Done" type="object" icon="fa-check" attrs="{'invisible': [('progression', '=', '100')]}"/>
                 <field name="employee_id" widget="many2one_avatar_employee"/>
                 <field name="manager_id" widget="many2one_avatar_employee"/>
             </tree>
@@ -63,7 +69,6 @@
             <kanban quick_create="false" class="o_hr_employee_kanban" js_class="appraisal_kanban" sample="1">
                 <field name="description"/>
                 <field name="progression"/>
-                <field name="text_description"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click oe_kanban_content">
@@ -78,23 +83,22 @@
                                     <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
                                 </div>
                             </div>
-                            <div>
-                               <strong class="o_kanban_record_title">
+                            <div class="o_kanban_record_top mb-0">
+                                <div class="o_kanban_record_top_left">
                                     <span><field name="name"/></span>
-                                </strong>
+                                </div>
+                                <t t-if="record.progression.raw_value != 100">
+                                    <div class="o_kanban_top_right mr-2 font-weight-bold">
+                                        <t t-esc="record.progression.raw_value"/> %
+                                    </div>
+                                </t>
                             </div>
-                            <div class="goal_description">
-                                <span><t t-esc="record.text_description.raw_value"/></span>
-                            </div>
-                            <div class="mb-5 mt-5">
-                                <span t-attf-class="o_goal_progression #{record.progression.raw_value === '0' ? 'active' : ''}">0 %</span>
-                                <span t-attf-class="o_goal_progression #{record.progression.raw_value === '25' ? 'active' : ''}">25 %</span>
-                                <span t-attf-class="o_goal_progression #{record.progression.raw_value === '50' ? 'active' : ''}">50 %</span>
-                                <span t-attf-class="o_goal_progression #{record.progression.raw_value === '75' ? 'active' : ''}">75 %</span>
-                                <span t-attf-class="o_goal_progression #{record.progression.raw_value === '100' ? 'active' : ''}">100 %</span>
+                            <div class="o_kanban_record_subtitle" >
+                                <field name="employee_id" />
                             </div>
                             <div class="o_kanban_record_bottom mt-auto d-flex justify-content-between align-items-end">
                                 <div class="oe_kanban_bottom_left">
+                                    <field name="activity_ids" widget="kanban_activity"/>
                                     <field name="deadline" widget="remaining_days"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">

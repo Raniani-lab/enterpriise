@@ -28,27 +28,25 @@ class TestHrAppraisalRequest(TransactionCase):
         self.employee.work_email = 'chouxblanc@donc.com'
 
     def request_appraisal_from(self, record, user):
-        """ An appraisal can be requested from two places
-            - the employee form view (meant for the employee manager)
-            - the employee profile (res.user) (meant for the employee himself)
-        """
+        """ An appraisal can be requested from appraisal form only """
         return self.env['request.appraisal'] \
             .with_user(user) \
-            .with_context(active_model=record._name, active_id=record.id) \
-            .create({'deadline': date.today()})
+            .with_context({'default_appraisal_id': record.id}) \
+            .create({})
 
     def test_manager_simple_request(self):
         """ Manager requests an appraisal for one of his employee """
-        request  = self.request_appraisal_from(self.employee, user=self.manager_user)
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.manager_user)
         self.assertEqual(request.employee_id, self.employee)
         self.assertEqual(request.recipient_ids, self.employee_user.partner_id, "It should be sent to the employee user's partner")
-        self.assertTrue('Dear %s' % self.employee_user.name in request.body)
         request.action_invite()
 
     def test_manager_request_work_email(self):
         """ Send appraisal to work email """
         self.employee.user_id = False
-        request  = self.request_appraisal_from(self.employee, user=self.manager_user)
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.manager_user)
         self.assertEqual(request.recipient_ids.email, self.employee.work_email)
         self.assertEqual(request.recipient_ids.name, self.employee.name)
         request.action_invite()
@@ -57,49 +55,48 @@ class TestHrAppraisalRequest(TransactionCase):
         """ Send appraisal to work email """
         self.employee.user_id = False
         self.employee.address_home_id = False
-        request  = self.request_appraisal_from(self.employee, user=self.manager_user)
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.manager_user)
         self.assertEqual(request.recipient_ids.email, self.employee.work_email)
 
     def test_manager_request_himself(self):
-        """ Send appraisal to only manager if HR asks for himself """
-        # Employee can request an appraisal for himself from employee form
-        request  = self.request_appraisal_from(self.employee, user=self.employee_user)
+        """ Send appraisal to only manager if HR asks for himself
+            Employee sends an appraisal request to it's manager
+            For appraisal manager_ids needs to be explicitly set
+        """
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.employee_user)
         self.assertEqual(request.recipient_ids, self.manager_user.partner_id)
 
     def test_manager_activity(self):
-        """ Activity created for employee """
-        request  = self.request_appraisal_from(self.employee, user=self.manager_user)
+        """ Check that appraisal request mail is posted in chatter"""
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        rest_message_ids = appraisal.message_ids
+        request = self.request_appraisal_from(appraisal, user=self.manager_user)
+        request.body = "My awesome message"
         request.action_invite()
-        appraisal = self.env['hr.appraisal'].search([('employee_id', '=', self.employee.id)])
-        self.assertEqual(appraisal.activity_ids.user_id, self.employee_user, "Should have an activity for the employee")
-
-    def test_manager_activity_no_user(self):
-        """ Activity created for manager if employee doesn't have a user """
-        self.employee.user_id = False
-        self.employee.work_email = "chouxblanc@donc.com"  # Otherwise, finds the partner of the (previous) user
-        request  = self.request_appraisal_from(self.employee, user=self.manager_user)
-        request.action_invite()
-        appraisal = self.env['hr.appraisal'].search([('employee_id', '=', self.employee.id)])
-
-        self.assertEqual(appraisal.activity_ids.user_id, self.manager_user, "Should have an activity for the manager")
+        message_ids = appraisal.message_ids - rest_message_ids
+        self.assertEqual(len(message_ids), 1, "Request mail has not been posted")
+        self.assertEqual(message_ids.email_from, self.manager_user.email, "The mail of a sender wrong")
+        self.assertTrue("<p>My awesome message</p>" in message_ids.body)
 
     def test_employee_simple_request(self):
         """ Employee requests an appraisal from his manager """
-        request  = self.request_appraisal_from(self.employee_user, user=self.employee_user)
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.employee_user)
         self.assertEqual(request.employee_id, self.employee)
         self.assertEqual(request.recipient_ids, self.manager_user.partner_id, "It should be sent to the manager's partner")
-        self.assertTrue('Dear %s' % self.manager_user.name in request.body)
         request.action_invite()
 
     def test_custom_body(self):
         """ Custom body should be sent """
-        request  = self.request_appraisal_from(self.employee_user, user=self.employee_user)
+        appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
+        request = self.request_appraisal_from(appraisal, user=self.employee_user)
         request.body = "My awesome message"
         request.action_invite()
-        appraisal = self.env['hr.appraisal'].search([('employee_id', '=', self.employee.id)])
         notification = self.env['mail.message'].search([
             ('model', '=', appraisal._name),
             ('res_id', '=', appraisal.id),
-            ('message_type', '=', 'user_notification'),
+            ('message_type', '=', 'comment'),
         ])
-        self.assertEqual(notification.body, "<p>My awesome message</p>")
+        self.assertTrue("<p>My awesome message</p>" in notification.body)

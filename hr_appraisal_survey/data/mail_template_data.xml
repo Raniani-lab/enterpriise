@@ -4,13 +4,13 @@
         <record id="mail_template_appraisal_ask_feedback" model="mail.template">
             <field name="name">HR Appraisal: Ask Feedback</field>
             <field name="model_id" ref="model_survey_user_input"/>
-            <field name="subject">Take part in ${ctx.get('employee_name', 'this')} appraisal</field>
+            <field name="subject">Take part in ${object.employee_id.name or 'this'} appraisal</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         Dear ${object.partner_id.name},
                         <br/><br/>
-                        An appraisal feedback was requested.
+                        An appraisal feedback was requested about ${object.appraisal_id.employee_id.name or 'this'}.
                         <br/>
                         Please take time to fill the survey.
                         <br/><br/>
@@ -24,7 +24,12 @@
                             </a>
                         </p>
                         % endif
-                        <div style="margin: 16px 0px 16px 0px;">
+                        % if ctx.get('user_body'):
+                        <div style="background-color:#F8F8F8;">
+                            ${ctx['user_body'] | safe}
+                        </div>
+                        % endif
+                        <div style="margin: 16px 0px 16px 0px; text-align: center;">
                             <a href="${(object.get_start_url()) | safe}"
                                 style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
                                 % if object.survey_id.certification:
@@ -34,9 +39,7 @@
                                 % endif
                             </a>
                         </div>
-                        % if object.deadline:
-                            Please answer the survey before ${format_date(object.deadline)}.<br/><br/>
-                        % endif
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>

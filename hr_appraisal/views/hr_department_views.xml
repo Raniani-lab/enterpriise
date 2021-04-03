@@ -32,4 +32,36 @@
             </data>
         </field>
     </record>
+
+    <record id="hr_department_view_form" model="ir.ui.view">
+        <field name="name">hr.department.view.form</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="custom_appraisal_templates"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <notebook attrs="{'invisible': [('custom_appraisal_templates', '=', False)]}">
+                    <page string="Appraisal Templates">
+                        <group>
+                            <group>
+                                <div class="col-12">
+                                    <h3 class="col-6 pl-0">Employee</h3>
+                                    <field name="employee_feedback_template" nolabel="1"/>
+                                </div>
+                            </group>
+                            <group>
+                                <div class="col-12">
+                                    <h3 class="col-6 pl-0">Manager</h3>
+                                    <field name="manager_feedback_template" nolabel="1"/>
+                                </div>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
 </odoo>

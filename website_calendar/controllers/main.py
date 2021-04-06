@@ -283,7 +283,7 @@ class WebsiteCalendar(http.Controller):
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + relativedelta(hours=event.appointment_type_id.min_cancellation_hours):
-            return request.redirect('/calendar/view/' + access_token + '?state=no-cancel')
+            return request.redirect('/calendar/view/' + access_token + '?state=no-cancel&partner_id=%s' % partner_id)
         event.sudo().action_cancel_meeting([int(partner_id)])
         return request.redirect('/calendar/%s/appointment?state=cancel' % slug(appointment_type))
 

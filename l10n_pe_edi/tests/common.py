@@ -89,7 +89,10 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'unspsc_code_id': cls.env.ref('product_unspsc.unspsc_code_01010101').id,
         })
 
-        cls.partner_a.vat = '20462509236'
+        cls.partner_a.write({
+            'vat': '20462509236',
+            'country_id': cls.env.ref('base.pe').id,
+        })
 
         # Invoice name are tracked by the web-services so this constant tries to get a new unique invoice name at each
         # execution.

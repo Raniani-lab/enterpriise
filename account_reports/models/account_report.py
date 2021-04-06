@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import copy
-import json
-import io
-import logging
-import lxml.html
-import datetime
 import ast
+import copy
+import datetime
+import io
+import json
+import logging
 from collections import defaultdict
 from math import copysign
 
+import lxml.html
+from babel.dates import get_quarter_names
 from dateutil.relativedelta import relativedelta
 
-from odoo.tools.misc import xlsxwriter
 from odoo import models, fields, api, _
-from odoo.exceptions import RedirectWarning
-from odoo.tools import config, date_utils, get_lang
-from odoo.osv import expression
-from babel.dates import get_quarter_names
-from odoo.tools.misc import formatLang, format_date
+from odoo.addons.base.models.qweb import MarkupSafeBytes
 from odoo.addons.web.controllers.main import clean_action
+from odoo.exceptions import RedirectWarning
+from odoo.osv import expression
+from odoo.tools import config, date_utils, get_lang
+from odoo.tools.misc import formatLang, format_date
+from odoo.tools.misc import xlsxwriter
 
 _logger = logging.getLogger(__name__)
 
@@ -1316,7 +1317,7 @@ class AccountReport(models.AbstractModel):
                 html = html.replace(k, v)
             # append footnote as well
             html = html.replace(b'<div class="js_account_report_footnotes"></div>', self.get_html_footnotes(footnotes_to_render))
-        return html
+        return MarkupSafeBytes(html)
 
     def get_html_footnotes(self, footnotes):
         template = self._get_templates().get('footnotes_template', 'account_reports.footnotes_template')

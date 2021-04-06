@@ -13,6 +13,7 @@ class PlanningTemplate(models.Model):
     _description = "Shift Template"
     _order = "sequence"
 
+    active = fields.Boolean('Active', default=True)
     name = fields.Char('Hours', compute="_compute_name")
     sequence = fields.Integer('Sequence', index=True)
     role_id = fields.Many2one('planning.role', string="Role")

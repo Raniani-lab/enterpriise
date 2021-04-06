@@ -28,7 +28,7 @@
         <field name="arch" type="xml">
             <graph string="Timesheet and Planning Analysis" type="bar" sample="1" stacked="False">
                 <field name="entry_date" type="row"/>
-                <field name="number_hours" type="measure"/>
+                <field name="effective_hours" type="measure"/>
             </graph>
         </field>
     </record>

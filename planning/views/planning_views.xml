@@ -350,7 +350,49 @@
         </field>
     </record>
 
-
+    <record id="planning_role_view_kanban" model="ir.ui.view">
+        <field name="name">planning.role.view.kanban</field>
+        <field name="model">planning.role</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard" sample="1">
+                <field name="name"/>
+                <field name="color"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <field name="name" />
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section o_dropdown_kanban">
+                                    <a role="button" class="o_kanban_manage_toggle_button" href="#" title="Dropdown menu">
+                                        <i class="fa fa-ellipsis-v" aria-label="Manage" title="Manage"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div class="o_kanban_card_manage_section" t-if="widget.editable or widget.deletable">
+                                    <div role="menuitem">
+                                        <a t-if="widget.editable" role="menuitem" type="edit">Edit</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a t-if="widget.deletable" role="menuitem" type="delete">Delete</a>
+                                    </div>
+                                </div>
+                                <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                </div>
+                            </div>
+                            <field name="employee_ids" widget="many2many_tags" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
     <!--
         Actions
@@ -452,7 +494,7 @@
     <record id="planning_action_roles" model="ir.actions.act_window">
         <field name="name">Roles</field>
         <field name="res_model">planning.role</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No roles found</p><p>
@@ -464,7 +506,7 @@
     <record id="planning_action_shift_template" model="ir.actions.act_window">
         <field name="name">Shift Templates</field>
         <field name="res_model">planning.slot.template</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="planning_slot_template_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

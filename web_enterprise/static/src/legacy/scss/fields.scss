@@ -6,7 +6,11 @@
 // Required
 .o_required_modifier {
     &.o_input, .o_input {
-        border-bottom: 2px solid $o-main-text-color;
+        border-bottom-width: 2px;
+
+        &:not(:focus-within) {
+            border-bottom-color: inherit;
+        }
     }
 }
 

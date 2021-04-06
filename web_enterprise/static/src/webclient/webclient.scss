@@ -20,6 +20,10 @@ select {
     border: none !important;
     padding: 0;
   }
+
+  &:focus-within {
+    border-bottom-color: $primary;
+  }
 }
 select {
   // FIXME buggy 'padding-left'

@@ -27,6 +27,25 @@ var PlanningGanttController = GanttController.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * @override
+     */
+    _onAddClicked: function (ev) {
+        ev.preventDefault();
+        const { startDate, stopDate } = this.model.get();
+        const today = moment().startOf('date'); // for the context we want the beginning of the day and not the actual hour.
+        if (startDate.isSameOrBefore(today, 'day') && stopDate.isSameOrAfter(today, 'day')) {
+            // get the today date if the interval dates contain the today date.
+            const context = this._getDialogContext(today);
+            for (const k in context) {
+                context[`default_${k}`] = context[k];
+            }
+            this._onCreate(context);
+            return;
+        }
+        this._super(...arguments);
+    },
+
+    /**
      * Opens dialog to add/edit/view a record
      * Override required to execute the reload of the gantt view when an action is performed on a
      * single record.
@@ -112,6 +131,15 @@ var PlanningGanttController = GanttController.extend({
         ev.preventDefault();
         var self = this;
         var state = this.model.get();
+
+        if (!state.records || state.records.length === 0) {
+            this.displayNotification({
+                type: 'danger',
+                message: _t("There are no shifts to send or publish.")
+            });
+            return;
+        }
+
         var additional_context = _.extend({}, this.context, {
            'default_start_datetime': this.model.convertToServerTime(state.startDate),
            'default_end_datetime': this.model.convertToServerTime(state.stopDate),

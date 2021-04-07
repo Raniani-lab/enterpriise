@@ -68,7 +68,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
         QUnit.module("Gantt");
 
         QUnit.test("empty gantt view with sample data: send schedule", async function (assert) {
-            assert.expect(4);
+            assert.expect(3);
 
             this.data.task.records = [];
 
@@ -83,18 +83,15 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 viewOptions: { initialDate },
             });
 
-            testUtils.mock.intercept(gantt, "do_action", function ({ data }) {
-                assert.strictEqual(data.action, "planning.planning_send_action");
-                assert.deepEqual(data.options.additional_context, {
-                    active_domain: Domain.FALSE_DOMAIN,
-                    active_ids: [],
-                    default_employee_ids: [],
-                    default_slot_ids: [],
-                    default_end_datetime: "2018-12-31 23:59:59",
-                    default_start_datetime: "2018-12-01 00:00:00",
-                    scale: "month",
-                }, "sample data should not be sent to the server");
-            });
+            testUtils.mock.intercept(gantt, 'call_service', (ev) => {
+                if (ev.data.service === 'notification') {
+                    const notification = ev.data.args[0];
+                    assert.deepEqual(notification, {
+                        type: 'danger',
+                        message: "There are no shifts to send or publish.",
+                    }, 'A danger notification should be displayed since there are no slots to send.');
+                }
+            }, true);
 
             assert.hasClass(gantt, "o_view_sample_data");
             assert.ok(gantt.$(".o_gantt_row").length > 2,

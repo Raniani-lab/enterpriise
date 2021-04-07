@@ -47,12 +47,7 @@
                     <field name="recurrency_id" invisible='1'/>
                     <group>
                         <group>
-                            <label for="employee_id" />
-                            <div class="o_row">
-                                <span attrs="{'invisible': ['|', ('employee_id', '=', False), ('work_email', '!=', False)]}" class="fa fa-exclamation-triangle text-danger" role="alert"
-                                    title="There is no work email address configured for this employee. You will not be able to send the planning to them."> </span>
-                                <field name="employee_id"/>
-                            </div>
+                            <field name="employee_id"/>
                             <field name="role_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
@@ -79,10 +74,11 @@
                                 <field name="repeat_until" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}" class="col-auto col-lg-2 flex-shrink-1" nolabel="1"/>
                             </div>
                         </div>
-                    </group>
-                    <group>
                         <field name="allow_template_creation" invisible="1"/>
-                        <field name="template_creation" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
+                        <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager">
+                            <label for="template_creation"/>
+                            <field name="template_creation"/>
+                        </div>
                     </group>
                     <group>
                         <field name="name" string="" placeholder="Additional message" nolabel="1"/>

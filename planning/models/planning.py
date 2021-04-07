@@ -338,11 +338,11 @@ class Planning(models.Model):
 
     @api.depends('recurrency_id.repeat_interval')
     def _compute_repeat_interval(self):
-        for slot in self:
+        recurrency_slots = self.filtered('recurrency_id')
+        for slot in recurrency_slots:
             if slot.recurrency_id:
                 slot.repeat_interval = slot.recurrency_id.repeat_interval
-            else:
-                slot.repeat_interval = False
+        (self - recurrency_slots).update(self.default_get(['repeat_interval']))
 
     @api.depends('recurrency_id.repeat_until')
     def _compute_repeat_until(self):
@@ -354,11 +354,11 @@ class Planning(models.Model):
 
     @api.depends('recurrency_id.repeat_type')
     def _compute_repeat_type(self):
-        for slot in self:
+        recurrency_slots = self.filtered('recurrency_id')
+        for slot in recurrency_slots:
             if slot.recurrency_id:
                 slot.repeat_type = slot.recurrency_id.repeat_type
-            else:
-                slot.repeat_type = False
+        (self - recurrency_slots).update(self.default_get(['repeat_type']))
 
     def _inverse_repeat(self):
         for slot in self:

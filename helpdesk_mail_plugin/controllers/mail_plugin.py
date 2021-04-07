@@ -34,3 +34,6 @@ class MailPluginController(mail_plugin.MailPluginController):
 
     def _mail_content_logging_models_whitelist(self):
         return super(MailPluginController, self)._mail_content_logging_models_whitelist() + ['helpdesk.ticket']
+
+    def _translation_modules_whitelist(self):
+        return super(MailPluginController, self)._translation_modules_whitelist() + ['helpdesk_mail_plugin']

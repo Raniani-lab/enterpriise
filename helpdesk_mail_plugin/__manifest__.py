@@ -12,5 +12,8 @@
                    Turn emails received in your mailbox into Tickets and log their content as internal notes.""",
     'data': [
         'views/helpdesk_ticket_views.xml'
-    ]
+    ],
+    'web.assets_backend': [
+        'helpdesk_mail_plugin/static/src/to_translate/**/*',
+    ],
 }

@@ -18,7 +18,7 @@
         <field name="name">Appointment Booked</field>
         <field name="sequence">10</field>
         <field name="res_model">calendar.appointment.type</field>
-        <field name="default" eval="False"/>
+        <field name="default" eval="True"/>
         <field name="parent_id" ref="mt_calendar_event_booked"/>
         <field name="relation_field">appointment_type_id</field>
     </record>

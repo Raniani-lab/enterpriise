@@ -12,7 +12,7 @@ class CalendarEvent(models.Model):
         return str(uuid.uuid4())
 
     access_token = fields.Char('Access Token', default=_default_access_token, readonly=True)
-    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Online Appointment', readonly=True)
+    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Online Appointment', readonly=True, tracking=True)
 
     def _get_public_fields(self):
         return super()._get_public_fields() | {'appointment_type_id'}
@@ -53,9 +53,9 @@ class CalendarEvent(models.Model):
 
     def _track_template(self, changes):
         res = super(CalendarEvent, self)._track_template(changes)
-        if 'start_date' in changes and self.appointment_type_id:
+        if 'appointment_type_id' in changes:
             booked_template = self.env.ref('website_calendar.appointment_booked_mail_template').sudo()
-            res['start_date'] = (booked_template, {
+            res['appointment_type_id'] = (booked_template, {
                 'auto_delete_message': True,
                 'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('website_calendar.mt_calendar_event_booked'),
                 'email_layout_xmlid': 'mail.mail_notification_light'

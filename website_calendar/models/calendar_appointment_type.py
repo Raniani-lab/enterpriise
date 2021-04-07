@@ -72,6 +72,11 @@ class CalendarAppointmentType(models.Model):
             else:
                 appointment_type.website_url = False
 
+    @api.model
+    def create(self, values):
+        """ We don't want the current user to be follower of all created types """
+        return super(CalendarAppointmentType, self.with_context(mail_create_nosubscribe=True)).create(values)
+
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         default = default or {}

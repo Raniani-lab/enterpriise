@@ -501,9 +501,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     lambda p: p.workorder_ids[index].state not in ('cancel', 'done')
                 )[:1]
 
-        # Update workorder quantity produced
-        self.qty_produced = self.qty_producing
-
         # One a piece is produced, you can launch the next work order
         self._start_nextworkorder()
         self.button_finish()

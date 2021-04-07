@@ -142,7 +142,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         # least in either the grid 71 or 72. So in the case where both are set to 0, we are adding the grid 71 in the
         # xml with 0 as a value.
         if len([item for item in grids_list if item[0] == '71' or item[0] == '72']) == 0:
-            grids_list.append(('71', 0))
+            grids_list.append(('71', 0, False, None))
 
         grids_list = sorted(grids_list, key=lambda a: a[0])
         for code, amount, carryover_bounds, tax_line in grids_list:

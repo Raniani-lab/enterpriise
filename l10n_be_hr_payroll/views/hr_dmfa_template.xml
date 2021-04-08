@@ -832,7 +832,9 @@
                 · MM est le mois
                 . JJ est le jour
              -->
-            <OccupationEndingDate t-esc="occupation.date_stop"/>
+            <t t-if="occupation.date_stop != -1">
+                <OccupationEndingDate t-esc="occupation.date_stop"/>
+            </t>
 
             <!-- 00046
                 DESCRIPTION:    Numéro de commission paritaire dont relève le travailleur dans le cadre de l'occupation déclarée ou au moment du premier octroi d’indemnités complémentaires.

@@ -55,9 +55,9 @@ class HrDMFAReport(models.Model):
             ('struct_id', '=', regular_payslip.id),
             ('company_id', '=', self.company_id.id),
         ])
-        return sum(p.vehicle_id.co2_fee for p in payslips_sudo)
+        return round(sum(p.vehicle_id.co2_fee for p in payslips_sudo), 2)
 
-    def _get_global_contribution(self, payslips):
+    def _get_global_contribution(self, employees_infos, double_onss):
         # En DMFA et en DMFAPPL, la cotisation de solidarité sur l’usage personnel d’un véhicule de
         # société se déclare globalement par catégorie d'employeur dans le bloc 90002 « cotisation
         # non liée à une personne physique» sous le code travailleur 862.
@@ -73,5 +73,5 @@ class HrDMFAReport(models.Model):
         # cotisation doit être mentionné dans les cotisations dues pour l’ensemble de l’entreprise,
         # les numéros de plaques des véhicules concernés introduits dans l’écran prévu et
         # l'avantage déclaré avec les rémunérations du travailleur.
-        amount = super()._get_global_contribution(payslips)
+        amount = super()._get_global_contribution(employees_infos, double_onss)
         return amount + self._get_vehicles_contribution()

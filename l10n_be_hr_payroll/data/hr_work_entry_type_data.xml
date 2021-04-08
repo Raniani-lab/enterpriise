@@ -179,7 +179,8 @@
         <field name="code">LEAVE280</field>
         <field name="is_leave">True</field>
         <field name="color">5</field>
-        <field name="dmfa_code">30</field>
+        <!-- 50, not 30 -->
+        <field name="dmfa_code">50</field> 
     </record>
 
     <record id="work_entry_type_breast_feeding" model="hr.work.entry.type">
@@ -283,7 +284,7 @@
         <field name="code">LEAVE301</field>
         <field name="is_leave">True</field>
         <field name="color">8</field>
-        <field name="dmfa_code">-1</field>
+        <field name="dmfa_code">52</field>
     </record>
 
     <record id="work_entry_type_simple_holiday_pay_variable_salary" model="hr.work.entry.type">

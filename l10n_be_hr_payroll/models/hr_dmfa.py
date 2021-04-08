@@ -5,7 +5,8 @@ import base64
 import re
 
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 from lxml import etree
 
 from odoo import api, fields, models, _
@@ -209,25 +210,102 @@ class DMFAWorker(DMFANode):
         self.worker_code = WORKER_CODE
         self.local_unit_id = -1 # Deprecated since 2014
 
-        self.occupations = self._prepare_occupations(self.payslips.mapped('contract_id'))
-        self.deductions = self._prepare_deductions()
-        self.contributions = self._prepare_contributions()
+        self.occupations = self._prepare_occupations(self.payslips.mapped('contract_id'), self.quarter_start, self.quarter_end)
+        skip_remun = all(o.skip_remun for o in self.occupations)
+        if not skip_remun:
+            self.deductions = self._prepare_deductions()
+            self.contributions = self._prepare_contributions()
+        else:
+            self.deductions = []
+            self.contributions = []
 
     def _prepare_contributions(self):
-        lines = self.env['hr.payslip.line']
-        contribution_rules = (
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_onss_rule'),
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_onss'),
-            # self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_rules_onss_termination'),  # Pecule de vacances déjà déclaré en global
-            # self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_rules_onss_termination'), # Pecule de vacances déjà déclaré en global
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_thirteen_month_onss_rule'),
-        )
-        for line in self.payslips.mapped('line_ids'):
-            if line.salary_rule_id in contribution_rules:
-                lines |= line
-        return [DMFAWorkerContribution(lines)]
+        # lines = self.env['hr.payslip.line']
+        # contribution_rules = (
+        #     self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_onss_rule'),
+        #     self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_onss'),
+        #     self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_rules_onss_termination'),  # Pecule de vacances simple
+        #     self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_rules_onss_termination'), # Pecule de vacances simple
+        #     self.env.ref('l10n_be_hr_payroll.cp200_employees_thirteen_month_onss_rule'),
+        # )
+        # for line in self.payslips.mapped('line_ids'):
+        #     if line.salary_rule_id in contribution_rules:
+        #         lines |= line
+        basis_lines = {
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'): 'SALARY',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees'): 'BASIC',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month'): 'SALARY',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'): 'PAY_SIMPLE',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'): 'PAY_SIMPLE',
+        }
+        # https://www.socialsecurity.be/portail/glossaires/dmfa.nsf/2d585b02976cddabc125686a00590d12/e8361adfc1f6e88cc1256df6002b9948/$FILE/AN2004-1-Fr2.pdf
+        contribution_payslips = self.env['hr.payslip']
+        for occupation in self.occupations:
+            if not occupation.skip_remun:
+                contribution_payslips |= occupation.payslips
+        basis = round(sum(
+            p._get_salary_line_total(basis_lines[p.struct_id]) for p in contribution_payslips if p.struct_id in basis_lines), 2)
+        return [
+            DMFAWorkerContribution(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionFFE(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionSpecialFFE(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionCPAE(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionWageRestraint(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionSpecialSocialCotisation(contribution_payslips, basis)
+        ] + [
+            DMFAWorkerContributionTemporaryUnemployment(contribution_payslips, basis)
+        ]
 
-    def _prepare_occupations(self, contracts):
+    def _prepare_occupations(self, contracts, quarter_start, quarter_end):
+        def _split_termination_period(date_from, date_to):
+            # Split the period into quarters for the current date, and into
+            # years for the following dates
+            # _split_termination_period(date(2003, 8, 20), date(2005, 2, 10))
+            # Returns:
+            # [(datetime.date(2003, 8, 20), datetime.date(2003, 9, 30)),
+            #  (datetime.date(2003, 10, 1), datetime.date(2003, 12, 31)),
+            #  (datetime.date(2004, 1, 1), datetime.date(2004, 12, 31)),
+            #  (datetime.date(2005, 1, 1), datetime.date(2005, 2, 10))]
+            # _split_termination_period(date(2021, 3, 25), date(2021, 4, 1))
+            # [(datetime.date(2021, 3, 25), datetime.date(2021, 3, 31)),
+            #  (datetime.date(2021, 4, 1), datetime.date(2021, 4, 1))]
+            periods = []
+            boundaries_list = [
+                [(1, 1), (31, 3)],
+                [(1, 4), (30, 6)],
+                [(1, 7), (30, 9)],
+                [(1, 10), (31, 12)],
+            ]
+            current_year = date_from.year
+            while date_from < date_to:
+                year = date_from.year
+                if current_year == year:
+                    # Split into quarters
+                    for index, boundaries in enumerate(boundaries_list):
+                        boundaries_start = boundaries[0]
+                        start = date(year, boundaries_start[1], boundaries_start[0])
+                        boundaries_end = boundaries[1]
+                        end = date(year, boundaries_end[1], boundaries_end[0])
+                        if start <= date_from <= end:
+                            periods.append((date_from, min(date_to, end)))
+                            if date_to < end:
+                                return periods
+                            if index == 3:
+                                date_from = date(year + 1, 1, 1)
+                            else:
+                                date_from = end + relativedelta(day=1, months=1)
+                else:
+                    # Split into years
+                    end = date_from + relativedelta(day=31, month=12)
+                    periods.append((date_from, min(end, date_to)))
+                    date_from = end + relativedelta(day=1, month=1, years=1)
+            return periods
+
         values = []
         termination_fees = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
         # Group contracts with the same occupation
@@ -237,16 +315,110 @@ class DMFAWorker(DMFANode):
         for data in occupation_data:
             occupation_contracts, date_from, date_to = data
             payslips = self.payslips.filtered(lambda p: p.contract_id in occupation_contracts)
-            termination_payslip = payslips.filtered(lambda p: p.struct_id == termination_fees)
-            if termination_payslip:
+            termination_payslips = payslips.filtered(lambda p: p.struct_id == termination_fees)
+            termination_occupations = []
+            if termination_payslips:
                 # YTI TODO master: Store the supposed notice period even for termination fees
-                termination_wizard = self.env['hr.payslip.employee.depature.notice'].new({'employee_id': 44, 'start_notice_period': date_to, 'notice_respect': 'with'})
+                # Le salaire et les données relatives aux prestations se rapportant à une indemnité
+                # payée suite à une rupture irrégulière de contrat de travail doivent toujours être
+                # repris sur une ligne d'occupation distincte (donc séparée des données se
+                # rapportant à la période pendant laquelle le contrat de travail a été exécuté).
+                # Les règles de distinction qui étaient d'application sous l'ancienne déclaration
+                # pour déclarer des indemnités de rupture sont conservées (la partie se rapportant
+                # au trimestre pendant lequel le contrat est rompu, la partie se rapportant aux
+                # trimestres ultérieurs de l'année civile en cours, la partie se rapportant à
+                # chacune des années civiles suivantes). Les dates de début et de fin de cette
+                # ligne d'occupation sont celles des périodes couvertes par l'indemnité de rupture.
+                # EXEMPLE:
+                # Un employé a été licencié le 31 août 2003 et a droit à une indemnité de rupture
+                # de 18 mois. Dans ce cas, vous reprenez les données relatives à la rémunération
+                # et aux prestations de ce travailleur sur la déclaration du troisième trimestre de
+                # 2003 sur cinq lignes d'occupation différentes.
+                # - Ligne 1: les données relatives à la période pendant laquelle il y a eu des
+                #            prestations c'est-à-dire du 1er juillet 2003 au 31 août 2003 (tenant
+                #            compte naturellement du fait que cette période ne doit pas être scindée
+                #            en plusieurs lignes d'occupation).
+                # - Ligne 2: les données relatives à l'indemnité de rupture pour la période du 1er
+                #            septembre 2003 au 30 septembre 2003.
+                # - Ligne 3: les données relatives à l'indemnité de rupture pour la période du 1er
+                #            octobre 2003 au 31 décembre 2003.
+                # - Ligne 4: les données relatives à l'indemnité de rupture pour la période du 1er
+                #            janvier 2004 au 31 décembre 2004.
+                # - Ligne 5: les données relatives à l'indemnité de rupture pour la période du 1er
+                #            janvier 2005 au 28 février 2005 (fin de la période couverte par
+                #            l'indemnité de rupture).
+                # A l'exception des cas relativement exceptionnels prévus dans la législation sur
+                # les contrats de travail prévoyant que de telles indemnités peuvent être payées
+                # mensuellement (entreprises en difficulté), les indemnités doivent toujours être
+                # reprises intégralement sur la déclaration du trimestre au cours duquel le contrat
+                # de travail a été rompu.
+                termination_wizard = self.env['hr.payslip.employee.depature.notice'].new({
+                    'employee_id': termination_payslips.employee_id.id,
+                    'start_notice_period': date_to,
+                    'notice_respect': 'with'
+                })
+                termination_wizard._compute_oldest_contract_id()
                 termination_wizard._onchange_notice_duration()
-                termination_from = date_to
+                termination_from = date_to + relativedelta(days=1)
                 termination_to = termination_wizard.end_notice_period
-                values.append((contracts, termination_payslip, termination_from, termination_to))
-            values.append((contracts, payslips - termination_payslip, date_from, date_to))
-        return DMFAOccupation.init_multi(values)
+                # YTI Check Termination fees
+                # Les indemnités considérées comme de la rémunération sont déclarées
+                # en DmfA, avec le code rémunération 3 et en mentionnant, pour la période correspondante
+                # couverte par la rémunération, le code prestation 1;
+                # <Service>
+                #   <ServiceSequenceNbr>1</ServiceSequenceNbr>
+                #   <ServiceCode>001</ServiceCode>
+                #   <ServiceNbrDays>03900</ServiceNbrDays>
+                #   <ServiceNbrHours>29640</ServiceNbrHours>
+                # </Service>
+                # <Remun>
+                #   <RemunSequenceNbr>1</RemunSequenceNbr>
+                #   <RemunCode>003</RemunCode>
+                #   <RemunAmount>00000400546</RemunAmount>
+                # </Remun>
+                termination_periods = _split_termination_period(termination_from, termination_to)
+                termination_remuneration = termination_payslips._get_salary_line_total('BASIC')
+                period_remuneration = termination_remuneration / len(termination_periods)
+                # values.append((occupation_contracts, termination_payslips, termination_from, termination_to))
+                termination_values = [(
+                    occupation_contracts,
+                    termination_payslips,
+                    termination_period[0],
+                    termination_period[1],
+                ) for termination_period in termination_periods]
+                termination_sequence = 90
+                termination_occupations = DMFAOccupation.init_multi(termination_values)
+                for termination_occupation in termination_occupations:
+                    termination_occupation.skip_remun = False
+                    termination_occupation.sequence = termination_sequence
+                    termination_sequence += 1
+                    termination_occupation.services = [DMFANode(termination_payslips.env)]
+                    service = termination_occupation.services[0]
+                    service.contract = occupation_contracts.sorted(key='date_start', reverse=True)[0]
+                    service.code = '001'
+                    service.sequence = 99
+                    calendar = service.contract.resource_calendar_id
+                    dt_from = datetime.combine(termination_occupation.date_start, datetime.min.time())
+                    dt_to = datetime.combine(termination_occupation.date_stop, datetime.max.time())
+                    occupation_work_data = calendar.get_work_duration_data(
+                        dt_from, dt_to, compute_leaves=False)
+                    total_days = occupation_work_data['days']
+                    total_days = round(total_days * 2) / 2  # Round to half days
+                    service.nbr_days = format_amount(total_days, width=5)
+                    total_hours = occupation_work_data['hours']
+                    service.nbr_hours = format_amount(total_hours, width=5)
+                    service.flight_nbr_minutes = -1
+                    termination_occupation.remunerations = [DMFANode(termination_payslips.env)]
+                    remun = termination_occupation.remunerations[0]
+                    remun.code = '003'
+                    remun.sequence = 99
+                    remun.frequency = -1
+                    remun.amount = format_amount(period_remuneration)
+                    remun.percentage_paid = -1
+            if date_to and date_to > quarter_end:
+                date_to = False
+            values.append((occupation_contracts, payslips - termination_payslips, date_from, date_to))
+        return DMFAOccupation.init_multi(values) + termination_occupations
 
     def _prepare_deductions(self):
         """ Only employement bonus deduction is currently supported """
@@ -262,12 +434,109 @@ class DMFAWorkerContribution(DMFANode):
     Represents the paid amounts on the employee payslips
     """
 
-    def __init__(self, payslip_lines, sequence=None):
-        super().__init__(payslip_lines.env, sequence=sequence)
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
         self.worker_code = WORKER_CODE
-        self.contribution_type = 2  # only code for worker 495; see annexe 3
-        self.amount = format_amount(- sum(payslip_lines.mapped('total')))
+        # Though 2 is the only code for worker 495; see annexe 3
+        # the correct value is 0 for 4xx numbers.
+        self.contribution_type = 0
+        self.calculation_basis = format_amount(basis)
+        self.amount = format_amount(round(basis * 0.381, 2))
+        self.first_hiring_date = -1
+
+class DMFAWorkerContributionFFE(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - FFE Fond fermeture Entreprise
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 809
+        self.contribution_type = 5
+        self.calculation_basis = format_amount(basis)
+        # Cotisations de base FFE
+        # Employeurs avec finalités industrielles ou commerciales
+        # a) en moyenne au moins 20 travailleurs
+        # 0,17% (0,18%)
+        # YTI TODO: Manage the different possible rates
+        self.amount = format_amount(round(basis * 0.0018, 2))
+        self.first_hiring_date = -1
+
+
+class DMFAWorkerContributionSpecialFFE(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - Special FFE Fond fermeture Entreprise
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 810
+        self.contribution_type = 0
+        self.calculation_basis = format_amount(basis)
+        # Cotisations de base FFE
+        # Tous les employeurs
+        # Pour tous les travailleurs soumis à la réglementation sur le chômage
+        # 0,13% (0,14%)
+        # YTI TODO: Manage the different possible rates
+        self.amount = format_amount(round(basis * 0.0014, 2))
+        self.first_hiring_date = -1
+
+
+class DMFAWorkerContributionCPAE(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - CPAE
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 831
+        self.contribution_type = 0
+        self.calculation_basis = format_amount(basis)
+        # Le Fonds social est financé par la contribution trimestrielle que versent à son profit
+        # les entreprises relevant de la CPAE, dont la perception est assurée par l'Office national
+        # de sécurité sociale.
+        # Les cotisations sont fixées comme suit:
+        # Chaque trimestre : 0,23 % de la masse salariale brute
+        self.amount = format_amount(round(basis * 0.0023, 2))
+        self.first_hiring_date = -1
+
+
+class DMFAWorkerContributionWageRestraint(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - Wage Restreint (modération salariale)
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 855
+        self.contribution_type = 0
+        self.calculation_basis = format_amount(basis)
+        # YTI TODO: Manage the different possible rates
+        # La cotisation de 1,60 % (portée à 1,69 % par l'effet de la cotisation de modération
+        # salariale) n'est pas due par tous les employeurs. Elle n'est due que par les employeurs
+        # qui, pendant la période de référence, occupaient en moyenne au moins 10 travailleurs.
+        self.amount = format_amount(round(basis * 0.0169, 2))
+        self.first_hiring_date = -1
+
+class DMFAWorkerContributionSpecialSocialCotisation(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - Special Social Cotisation
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 856
+        self.contribution_type = 0
         self.calculation_basis = -1
+        self.amount = format_amount(round(-payslips._get_salary_line_total('M.ONSS'), 2))
+        self.first_hiring_date = -1
+
+class DMFAWorkerContributionTemporaryUnemployment(DMFANode):
+    """
+    Represents the paid amounts on the employee payslips - Temporary Unemployment
+    """
+    def __init__(self, payslips, basis, sequence=None):
+        super().__init__(payslips.env, sequence=sequence)
+        self.worker_code = 859
+        self.contribution_type = 0
+        self.calculation_basis = format_amount(basis)
+        # YTI TODO: Manage the different possible rates
+        self.amount = format_amount(round(basis * 0.0010, 2))
         self.first_hiring_date = -1
 
 
@@ -277,7 +546,7 @@ class DMFAOccupation(DMFANode):
     """
     def __init__(self, contracts, payslips, date_from, date_to, sequence=1):
         super().__init__(contracts.env, sequence=sequence)
-        # YTI Check Termination fees
+
         contract = contracts.sorted(key='date_start', reverse=True)[0]
         calendar = contract.resource_calendar_id
         self.contract = contract
@@ -289,7 +558,9 @@ class DMFAOccupation(DMFANode):
         # YTI TODO: Add a time credit + a contractual part time demo to check this
         # See: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/fill_in_dmfa/dmfa_fillinrules/workerrecord_occupationrecords/occupationrecord.html
         if contract.time_credit or contract.resource_calendar_id.work_time_rate < 100:
-            if contract.time_credit:
+            if contract.time_credit and contract.time_credit_type_id.code == 'LEAVE300':
+                hours_per_week = contract.standard_calendar_id.hours_per_week
+            elif contract.time_credit and contract.time_credit_type_id.code == 'LEAVE301':
                 hours_per_week = contract.standard_calendar_id.hours_per_week
             else:
                 hours_per_week = contract.company_id.resource_calendar_id.hours_per_week
@@ -297,7 +568,15 @@ class DMFAOccupation(DMFANode):
             hours_per_week = contract.company_id.resource_calendar_id.hours_per_week
         self.ref_mean_working_hours = ('%.2f' % hours_per_week).replace('.', '').zfill(4)
 
-        self.reorganisation_measure = -1
+        # Voir Annexe 44: Réorganisation du temps de travail
+        if contract.time_credit and contract.time_credit_type_id.code == 'LEAVE300':
+            if not contract.resource_calendar_id.hours_per_week:
+                self.reorganisation_measure = 3
+            else:
+                self.reorganisation_measure = 4
+        else:
+            self.reorganisation_measure = -1
+
         self.employment_promotion = -1
         self.worker_status = -1
         self.retired = '0'
@@ -309,13 +588,28 @@ class DMFAOccupation(DMFANode):
         self.ActivityCode = -1  # Facultative
         self.days_justification = -1 # YTI: Will be useful for payroll based on attendances
 
-        days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+        if contract.time_credit and contract.time_credit_type_id.code == 'LEAVE301':
+            # YTI: Could be cleaned by setting calendar correctly at the beginning
+            days_per_week = 5.0
+            mean_working_hours = 38.0
+        else:
+            if calendar.two_weeks_calendar:
+                days_per_week = 5 * calendar.work_time_rate / 100
+            else:
+                days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+            mean_working_hours = contract.resource_calendar_id.hours_per_week
+
         self.days_per_week = format_amount(days_per_week, width=3)
-        self.mean_working_hours = int(days_per_week * calendar.hours_per_day)
-        self.is_parttime = 1 if calendar.is_fulltime else 0
+        self.mean_working_hours = ('%.2f' % mean_working_hours).replace('.', '').zfill(4)
+
+        self.is_parttime = 1 if (not calendar.is_fulltime and not contract.time_credit) else 0
+
         self.commission = 200  # only CP200 currently supported
-        self.services = self._prepare_services()
-        self.remunerations = self._prepare_remunerations()
+        self.services, self.skip_remun = self._prepare_services()
+        if not self.skip_remun:
+            self.remunerations = self._prepare_remunerations()
+        else:
+            self.remunerations = []
         self.occupation_informations = self._prepare_occupation_informations()
         work_address = contract.employee_id.address_id
         location_unit = self.env['l10n_be.dmfa.location.unit'].search([('partner_id', '=', work_address.id)])
@@ -324,10 +618,11 @@ class DMFAOccupation(DMFANode):
     def _prepare_services(self):
         services_by_dmfa_code = defaultdict(lambda: self.env['hr.payslip.worked_days'])
         for wd in self.payslips.mapped('worked_days_line_ids'):
-            # Don't declare out of contract + credit time / parental time off
-            if wd.work_entry_type_id.dmfa_code != '-1' and wd.work_entry_type_id.code not in ['OUT', 'LEAVE300', 'LEAVE301']:
+            # Don't declare out of contract + credit time
+            if wd.work_entry_type_id.dmfa_code != '-1' and wd.work_entry_type_id.code not in ['OUT', 'LEAVE300', 'LEAVE510']:
                 services_by_dmfa_code[wd.work_entry_type_id.dmfa_code] |= wd
-        return DMFAService.init_multi([(wds,) for wds in services_by_dmfa_code.values()])
+        skip_remun = all(dmfa_code in ['30', '50', '52'] for dmfa_code in services_by_dmfa_code.keys())
+        return (DMFAService.init_multi([(wds,) for wds in services_by_dmfa_code.values()]), skip_remun)
 
     def _prepare_remunerations(self):
         # ANNEXE 7: Codification des rémunérations
@@ -373,7 +668,7 @@ class DMFAOccupation(DMFANode):
             termination_n: 7,
             termination_n1: 7,
             regular_car: 10,
-            termination_fees: 4,
+            termination_fees: 3,
         }
         frequencies = {
             rule_13th_month_gross: 12
@@ -384,7 +679,11 @@ class DMFAOccupation(DMFANode):
             if code:
                 frequency = frequencies.get(line.salary_rule_id)
                 lines_by_code[code, frequency] |= line
-        return DMFARemuneration.init_multi([(lines, code, frequency) for (code, frequency), lines in lines_by_code.items()])
+        # La valeur zéro pour la remuneration est autorisée uniquement pour le solde du budget
+        # mobilité (code rémunération 029).
+        return DMFARemuneration.init_multi([(
+            lines, code, frequency
+        ) for (code, frequency), lines in lines_by_code.items() if sum(lines.mapped('total'))])
 
     def _prepare_occupation_informations(self):
         return DMFAOccupationInformation.init_multi([])
@@ -457,9 +756,10 @@ class DMFAService(DMFANode):
         work_entry_type = worked_days[0].work_entry_type_id
         self.code = work_entry_type.dmfa_code.zfill(3)
 
-        total_hours = sum(worked_days.mapped('number_of_days'))
-        total_hours = round(total_hours * 2) / 2  # Round to half days
-        self.nbr_days = format_amount(total_hours, width=5)
+        total_hours = sum(worked_days.mapped('number_of_hours'))
+        total_days = total_hours / 7.6
+        total_days = round(total_days * 2) / 2  # Round to half days
+        self.nbr_days = format_amount(total_days, width=5)
 
         self.nbr_hours = format_amount(sum(worked_days.mapped('number_of_hours')), width=5)
 
@@ -550,13 +850,20 @@ class HrDMFAReport(models.Model):
     def _compute_filename(self):
         # https://www.socialsecurity.be/site_fr/general/helpcentre/batch/files/directives.htm
         num_expedition = self.env["ir.config_parameter"].sudo().get_param("l10n_be.dmfa_expeditor_nbr", False)
+        now = fields.Date.today()
         if not num_expedition:
             raise UserError(_('There is no defined expeditor number for the company.'))
-        num_suite = str(self.id).zfill(5)
-        now = fields.Date.today()
-        # YTI TODO master: Add is_test field, to set R or T accordingly
-        filename = 'FI.DMFA.%s.%s.%s.R.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite)
+
         for dmfa in self:
+            if not dmfa._origin.dmfa_xml_filename:
+                num_suite = 0
+            else:
+                num_suite = dmfa.dmfa_xml_filename.split('.')[4]
+                num_suite = str(int(num_suite) + 1)
+            num_suite = str(num_suite).zfill(5)
+
+            # YTI TODO master: Add is_test field, to set R or T accordingly
+            filename = 'FI.DMFA.%s.%s.%s.R.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite)
             dmfa.dmfa_xml_filename = filename
 
     @api.depends('year', 'quarter')
@@ -581,7 +888,7 @@ class HrDMFAReport(models.Model):
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))
-        xml_formatted_str = etree.tostring(root, pretty_print=True, encoding='utf-8', xml_declaration=True)
+        xml_formatted_str = etree.tostring(root, pretty_print=True, encoding='UTF-8', xml_declaration=True)
 
         self.dmfa_xml = base64.encodebytes(xml_formatted_str)
 
@@ -621,7 +928,8 @@ class HrDMFAReport(models.Model):
         for payslip in payslips:
             employee_payslips[payslip.employee_id] |= payslip
 
-        return {
+        double_basis, double_onss = self._get_double_holiday_pay_contribution(payslips)  # rounded
+        result = {
             'employer_class': self.company_id.dmfa_employer_class,
             'onss_company_id': format_amount(self.company_id.onss_company_id or 0, width=10, hundredth=False),
             'onss_registration_number': format_amount(self.company_id.onss_registration_number or 0, width=9, hundredth=False),
@@ -629,7 +937,7 @@ class HrDMFAReport(models.Model):
             'quarter_start': self.quarter_start,
             'quarter_end': self.quarter_end,
             'data': self,
-            'global_contribution': format_amount(self._get_global_contribution(payslips)),
+            # 'global_contribution': format_amount(self._get_global_contribution(payslips)),
             'system5': 0,
             'holiday_starting_date': -1,
             'natural_persons': DMFANaturalPerson.init_multi([(
@@ -637,24 +945,51 @@ class HrDMFAReport(models.Model):
                 employee_payslips[employee],
                 self.quarter_start,
                 self.quarter_end) for employee in employees]),
-            'double_holiday_pay_contribution': format_amount(self._get_double_holiday_pay_contribution(payslips)),
-            'unrelated_calculation_basis': -1,
+            'double_holiday_pay_contribution': format_amount(double_onss),
+            'unrelated_calculation_basis': format_amount(double_basis),
         }
+        result['global_contribution'] = format_amount(self._get_global_contribution(result['natural_persons'], double_onss))
+        return result
 
-    def _get_global_contribution(self, payslips):
+    def _get_global_contribution(self, employees_infos, double_onss):
         """ Sum of all the owed contributions to ONSS"""
-        lines = payslips.mapped('line_ids').filtered(lambda l: l.code == 'ONSSTOTAL')
-        return sum(lines.mapped('total'))
+        total = double_onss
+        # Sum all employer contributions
+        for natural_person in employees_infos:
+            for worker_record in natural_person.worker_records:
+                for contribution in worker_record.contributions:
+                    total += int(contribution.amount) / 100.0
+        # Sum all employee contributions
+        for natural_person in employees_infos:
+            for worker_record in natural_person.worker_records:
+                # This isn't correct, but could be. Or is it not?
+                # for occupation in worker_record.occupations:
+                #     for remuneration in occupation.remunerations:
+                #         if remuneration.code != '010':  # Private car reimbursement not under ONSS
+                #             total += int(remuneration.amount) / 100.00 * 0.1307
+                for deduction in worker_record.deductions:
+                    total -= int(deduction.amount) / 100.00
+        return round(total, 2)
 
     def _get_double_holiday_pay_contribution(self, payslips):
         """ Some contribution are not specified at the worker level but globally for the whole company """
         # Montant de la cotisation exeptionnelle (code 870)
         onss_double_holidays = self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_onss_rule') # <0
-        onss_holiday_pay_n1 = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_rules_special_contribution_onss_total') # >0
-        onss_holiday_pay_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_rules_special_contribution_onss_total') # >0
+        onss_holiday_pay_n1 = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_rules_special_contribution_termination') # <0
+        onss_holiday_pay_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_rules_special_contribution_termination') # <0
+
         double_lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id == onss_double_holidays)
         holiday_pay_lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id in onss_holiday_pay_n1 + onss_holiday_pay_n)
-        return -sum(double_lines.mapped('total')) + sum(holiday_pay_lines.mapped('total'))
+
+        basis_lines = {
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'): 'SALARY',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'): 'PAY DOUBLE',
+            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'): 'PAY DOUBLE',
+        }
+        basis = round(sum(
+            p._get_salary_line_total(basis_lines[p.struct_id]) for p in payslips if p.struct_id in basis_lines), 2)
+        onss_amount = round(-sum(double_lines.mapped('total')) - sum(holiday_pay_lines.mapped('total')), 2)
+        return (basis, onss_amount)
 
 
 class HrDMFALocationUnit(models.Model):

@@ -3325,7 +3325,7 @@ QUnit.module('Views', {
             null,
             "height: 0px;"
         ]);
-        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgb(252, 250, 243)");
+        assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgb(251, 249, 243)");
 
         unpatchDate();
         gantt.destroy();

@@ -46,7 +46,7 @@ QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
 
         assert.strictEqual(
             scMenu.el.querySelectorAll(".menu_companies_item")[0].textContent,
-            "Hermit"
+            "Hermit(current)"
         );
         assert.strictEqual(
             scMenu.el.querySelectorAll(".menu_companies_item")[1].textContent,
@@ -61,7 +61,7 @@ QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
         assert.hasClass(scMenu.el.querySelectorAll(".menu_companies_item i")[1], "fa-square-o");
         assert.hasClass(scMenu.el.querySelectorAll(".menu_companies_item i")[2], "fa-square-o");
 
-        assert.strictEqual(scMenu.el.textContent, "COMPANIESHermitHerman'sHeroes TM");
+        assert.strictEqual(scMenu.el.textContent, "CompaniesHermit(current)Herman'sHeroes TM");
     });
 
     QUnit.test("companies can be toggled and logged in", async (assert) => {

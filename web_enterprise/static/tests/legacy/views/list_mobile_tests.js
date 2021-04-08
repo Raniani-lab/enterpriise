@@ -61,8 +61,7 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
             await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
-            assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "1 selected");
+            assert.ok(list.$('.o_list_selection_box').text().includes("1 selected"))
             // unselect a record
             await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchstart');
             await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
@@ -73,8 +72,7 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
             await dom.triggerEvent(list.$('.o_data_row:eq(0)'), 'touchend');
             await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchstart');
             await dom.triggerEvent(list.$('.o_data_row:eq(1)'), 'touchend');
-            assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "2 selected");
+            assert.ok(list.$('.o_list_selection_box').text().includes("2 selected"))
             assert.containsOnce(list.el, 'div.o_control_panel .o_cp_action_menus');
             await testUtils.controlPanel.toggleActionMenu(list);
             assert.deepEqual(testUtils.controlPanel.getMenuItemTexts(list), ['Delete'],
@@ -111,8 +109,8 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
 
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsNone(list.$('.o_list_selection_box'), '.o_list_select_domain');
-            assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "1 selected");
+            assert.strictEqual(list.$('.o_list_selection_box').text().replace(/\s+/g, ' '),
+                " × 1 selected ");
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsOnce(list.el, 'div.o_control_panel .o_cp_action_menus');
             await testUtils.controlPanel.toggleActionMenu(list);
@@ -126,14 +124,14 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
             assert.containsOnce(list, '.o_list_selection_box');
             assert.containsOnce(list.$('.o_list_selection_box'), '.o_list_select_domain');
             assert.strictEqual(list.$('.o_list_selection_box').text().replace(/\s+/g, ' ').trim(),
-                "3 selected Select all 4");
+                "× 3 selected Select all 4");
 
             // select all domain
             await dom.click(list.$('.o_list_selection_box .o_list_select_domain'));
 
             assert.containsOnce(list, '.o_list_selection_box');
-            assert.strictEqual(list.$('.o_list_selection_box').text().trim(),
-                "All 4 selected");
+            assert.strictEqual(list.$('.o_list_selection_box').text().replace(/\s+/g, ' ').trim(),
+                "× All 4 selected");
 
             list.destroy();
         });

@@ -62,7 +62,7 @@
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left">
-                                    <em><t t-esc="moment(record.last_action_date.raw_value).format('L')" /></em>
+                                    <em><field name="last_action_date" widget="date"/></em>
                                     <div class="o_kanban_inline_block">
                                         <field name="activity_ids" widget="kanban_activity"/>
                                     </div>

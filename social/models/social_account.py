@@ -45,7 +45,8 @@ class SocialAccount(models.Model):
     has_account_stats = fields.Boolean("Has Account Stats", default=True, required=True,
         help="""Defines whether this account has Audience/Engagements/Stories stats.
         Account with stats are displayed on the dashboard.""")
-    utm_medium_id = fields.Many2one('utm.medium', string="UTM Medium", required=True, help="Every time an account is created, a utm.medium is also created and linked to the account")
+    utm_medium_id = fields.Many2one('utm.medium', string="UTM Medium", required=True, ondelete='restrict',
+        help="Every time an account is created, a utm.medium is also created and linked to the account")
 
     def _compute_statistics(self):
         """ Every social module should override this method if it 'has_account_stats'.

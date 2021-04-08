@@ -165,7 +165,7 @@
                     </tr><tr>
                         <td class="o_text">Daily Target</td>
                         <td t-att-class="demo_class + 'o_secondary'">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_closed' t-att-value="values['helpdesk_target_closed'] ? values['helpdesk_target_closed'] : undefined" title="Click to set">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_closed' t-att-value="values['helpdesk_target_closed'] ? values['helpdesk_target_closed'] : undefined" t-att-title=" show_demo ? 'Tickets closed daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_closed']">
                                     <t t-esc="values['helpdesk_target_closed']"/>
                                 </t>
@@ -175,7 +175,7 @@
                             </span>
                         </td>
                         <td t-att-class="demo_class + 'o_secondary'" t-if="rating_enable">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="values['helpdesk_target_rating'] ? values['helpdesk_target_rating'] : undefined" title="Click to set">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_rating' t-att-value="values['helpdesk_target_rating'] ? values['helpdesk_target_rating'] : undefined" t-att-title=" show_demo ? 'Happy rating daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_rating']">
                                     <t t-esc="values['helpdesk_target_rating']"/>%
                                 </t>
@@ -185,7 +185,7 @@
                             </span>
                         </td>
                         <td t-att-class="demo_class + 'o_secondary'" t-if="success_rate_enable">
-                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_success' t-att-value="values['helpdesk_target_success'] ? values['helpdesk_target_success'] : undefined" title="Click to set">
+                            <span t-att-class="(show_demo ? '' : 'o_target_to_set')" name='helpdesk_target_success' t-att-value="values['helpdesk_target_success'] ? values['helpdesk_target_success'] : undefined" t-att-title="show_demo ? 'Success rate daily target' : 'Click to set'">
                                 <t t-if="values['helpdesk_target_success']">
                                     <t t-esc="values['helpdesk_target_success']"/>%
                                 </t>

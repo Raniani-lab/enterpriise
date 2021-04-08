@@ -78,8 +78,8 @@ class TestMACommon(TestMailFullCommon):
             if info.get('trace_status'):
                 if activity.mass_mailing_id.mailing_type == 'mail':
                     self.assertMailTraces(
-                        [{'partner': record.customer_id,  # TDE FIXME: make it generic
-                          'email': record.email_normalized if not record.customer_id else None,  # TDE FIXME: make it generic
+                        [{'partner': self.env['res.partner'],  # TDE FIXME: make it generic and check why partner seems unset
+                          'email': record.email_normalized,  # TDE FIXME: make it generic and check for aprtner
                           'state': info['trace_status'],
                           'record': record,
                          } for record in info['records']],

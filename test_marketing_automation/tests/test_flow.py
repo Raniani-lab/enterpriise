@@ -37,7 +37,9 @@ class TestMarketAutoFlow(TestMACommon):
             'domain': '%s' % ([('name', '!=', 'Invalid')]),
         })
         # first activity: send a mailing
-        cls.act1_mailing = cls._create_mailing(model='marketing.test.sms', keep_archives=True).with_user(cls.user_markauto)
+        cls.act1_mailing = cls._create_mailing(
+            model='marketing.test.sms', email_from=cls.user_markauto.email_formatted,
+            keep_archives=True).with_user(cls.user_markauto)
         cls.act1 = cls._create_activity(
             cls.campaign, mailing=cls.act1_mailing,
             trigger_type='begin', interval_number=0

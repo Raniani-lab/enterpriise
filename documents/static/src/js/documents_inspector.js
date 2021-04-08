@@ -13,14 +13,15 @@ const session = require('web.session');
 const { str_to_datetime } = require('web.time');
 const dialogs = require('web.view_dialogs');
 const Widget = require('web.Widget');
+const StandaloneFieldManagerMixin = require("web.StandaloneFieldManagerMixin");
 
 const TAGS_SEARCH_LIMIT = 8;
 
-const DocumentsInspector = Widget.extend({
+const DocumentsInspector = Widget.extend(StandaloneFieldManagerMixin, {
     template: 'documents.DocumentsInspector',
-    custom_events: {
+    custom_events: _.extend({}, StandaloneFieldManagerMixin.custom_events, {
         field_changed: '_onFieldChanged',
-    },
+    }),
     events: {
         'click .o_inspector_archive': '_onArchive',
         'click .o_inspector_request_icon': '_onClickRequestIcon',
@@ -54,6 +55,7 @@ const DocumentsInspector = Widget.extend({
      */
     init: function (parent, params) {
         this._super(...arguments);
+        StandaloneFieldManagerMixin.init.call(this, parent.model);
 
         this._viewType = params.viewType;
         this.nbDocuments = params.state.count;
@@ -648,8 +650,19 @@ const DocumentsInspector = Widget.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onFieldChanged: function (ev) {
+    _onFieldChanged: async function (ev) {
         ev.stopPropagation();
+        const fieldName = ev.target.name;
+        if (
+            ev.target.field.type === 'many2one' &&
+            ev.data.changes[fieldName] &&
+            !ev.data.changes[fieldName].id
+        ) {
+            this._registerWidget(ev.data.dataPointID, fieldName, ev.target);
+            await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
+            const record = this.model.get(ev.data.dataPointID);
+            ev.data.changes[fieldName].id = record.data[fieldName].res_id;
+        }
         this._saveMulti(ev.data.changes);
     },
     /**

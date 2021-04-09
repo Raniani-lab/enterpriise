@@ -136,24 +136,24 @@ class TestIndustryFsmEmployeeRate(TestFsmFlowSaleCommon):
             3) Validate the task and check if the SO generated contains 2 SOLs for the same product but with a different price unit.
         """
         self.fsm_project_employee_rate.sale_line_employee_ids.unlink()
-        self.fsm_project_employee_rate.write({
-            'sale_line_employee_ids': [
-                Command.create({
-                    'employee_id': self.employee_manager.id,
-                    'timesheet_product_id': self.product_order_timesheet1.id,
-                    'price_unit': 20.0,
-                }),
-                Command.create({
-                    'employee_id': self.employee_user2.id,
-                    'timesheet_product_id': self.product_order_timesheet1.id,
-                }),
-                Command.create({
-                    'employee_id': self.employee_user3.id,
-                    'timesheet_product_id': self.product_delivery_timesheet2.id,
-                })
-            ],
+        ProjectSaleLineEmployeeMap = self.env['project.sale.line.employee.map'].with_context(default_project_id=self.fsm_project_employee_rate.id)
+        employee_manager_mapping = ProjectSaleLineEmployeeMap.create({
+            'employee_id': self.employee_manager.id,
+            'timesheet_product_id': self.product_order_timesheet1.id,
         })
+        employee_user2_mapping = ProjectSaleLineEmployeeMap.create({
+            'employee_id': self.employee_user2.id,
+            'timesheet_product_id': self.product_order_timesheet1.id,
+        })
+        ProjectSaleLineEmployeeMap.create({
+            'employee_id': self.employee_user3.id,
+            'timesheet_product_id': self.product_delivery_timesheet2.id,
+        })
+        self.fsm_project_employee_rate.sale_line_employee_ids._compute_price_unit()
+        employee_manager_mapping.write({'price_unit': 20.0})
         self.assertEqual(len(self.fsm_project_employee_rate.sale_line_employee_ids), 3)
+        self.assertEqual(employee_manager_mapping.timesheet_product_id, employee_user2_mapping.timesheet_product_id, 'Both mappings should have the same service product.')
+        self.assertNotEqual(employee_manager_mapping.price_unit, employee_user2_mapping.price_unit, 'The price unit of both mappings with the same service product should be different.')
 
         # 2) Create task with timesheets containing the mappings with the same product
         task = self.Task.create({

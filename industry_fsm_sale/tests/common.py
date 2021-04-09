@@ -57,6 +57,8 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
                 })
             ]
         })
+        # Compute the _compute_price_id, because this one is not trigger because of the _compute_sale_line_id of this same model in this module.
+        cls.fsm_project_employee_rate.sale_line_employee_ids._compute_price_unit()
 
         cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',

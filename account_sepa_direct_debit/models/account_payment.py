@@ -127,8 +127,8 @@ class AccountPayment(models.Model):
         sdd_scheme = self[0].sdd_mandate_id.sdd_scheme
         create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], sdd_scheme)
         
-        create_xml_node(PmtTpInf, 'SeqTp', 'FRST')
-        #Note: FRST refers to the COLLECTION of payments, not the type of mandate used
+        create_xml_node(PmtTpInf, 'SeqTp', 'RCUR')
+        #Note: RCUR refers to the COLLECTION of payments, not the type of mandate used
         #This value is only used for informatory purpose.
 
         create_xml_node(PmtInf, 'ReqdColltnDt', fields.Date.from_string(required_collection_date).strftime("%Y-%m-%d"))

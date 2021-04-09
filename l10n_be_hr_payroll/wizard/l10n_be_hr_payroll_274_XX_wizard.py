@@ -234,14 +234,13 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         )
         payment_reference = "%s%s" % (
             first_10_characters,
-            int(first_10_characters) % 97,
+            str(int(first_10_characters) % 97 or 97).zfill(2),
         )
         self.payment_reference = "+++ %s / %s / %s +++" % (
             payment_reference[0:3],
             payment_reference[3:7],
             payment_reference[7:12],
         )
-
         date_from = payslips[0].date_from
         date_to = payslips[0].date_to
         district = payslips[0].company_id.l10n_be_revenue_code[:2]

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 from odoo.exceptions import UserError, ValidationError
 
 from psycopg2 import ProgrammingError
@@ -300,6 +300,13 @@ class DataMergeModel(models.Model):
         for model_name in models:
             if model_name and hasattr(self.env[model_name], '_prevent_merge') and self.env[model_name]._prevent_merge:
                 raise ValidationError('Deduplication is forbidden on the model: %s' % model_name)
+
+    def copy(self, default=None):
+        self.ensure_one()
+        default = default or {}
+        if not default.get('name'):
+            default['name'] = _('%s (copy)', self.name)
+        return super().copy(default)
 
     def write(self, vals):
         if 'active' in vals and not vals['active']:

@@ -69,11 +69,24 @@ class SocialLivePostFacebook(models.Model):
 
         if post.image_ids and len(post.image_ids) == 1:
             # if you have only 1 image, you have to use another endpoint with different parameters...
-            params['caption'] = params['message']
-            photos_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, '/v3.3/%s/photos' % facebook_target_id)
             image = post.image_ids[0]
-            result = requests.request('POST', photos_endpoint_url, params=params,
-                files={'source': ('source', open(image._full_path(image.store_fname), 'rb'), image.mimetype)})
+            if image.mimetype == 'image/gif':
+                # gifs are posted on the '/videos' endpoint, with a different base url
+                endpoint_url = url_join(
+                    "https://graph-video.facebook.com",
+                    f'/v3.2/{facebook_target_id}/videos'
+                )
+                params['description'] = params['message']
+            else:
+                # a single regular image is posted on the '/photos' endpoint
+                endpoint_url = url_join(
+                    self.env['social.media']._FACEBOOK_ENDPOINT,
+                    f'/v3.2/{facebook_target_id}/photos'
+                )
+                params['caption'] = params['message']
+
+            result = requests.request('POST', endpoint_url, params=params,
+                files={'source': (image.name, open(image._full_path(image.store_fname), 'rb'), image.mimetype)})
         else:
             if post.image_ids:
                 images_attachments = post._format_images_facebook(facebook_target_id, account.facebook_access_token)
@@ -89,7 +102,10 @@ class SocialLivePostFacebook(models.Model):
             result = requests.post(post_endpoint_url, params)
 
         if (result.status_code == 200):
-            self.facebook_post_id = result.json().get('id', False)
+            result_json = result.json()
+            # when posting an image, the id of the related post is in 'post_id'
+            # otherwise, we use the 'id' key that matches the post id we retrieve in stream.posts
+            self.facebook_post_id = result_json.get('post_id', result_json.get('id', False))
             values = {
                 'state': 'posted',
                 'failure_reason': False

@@ -112,7 +112,8 @@ class SocialStreamFacebook(models.Model):
                     result.update({
                         'stream_post_image_ids': [(0, 0, attachment) for attachment in images],
                     })
-            elif attachment.get('type') == 'photo':
+            elif attachment.get('type') in ['photo', 'animated_image_video']:
+                # TODO improvement later: handle videos in Feed view to correctly display FB GIFs?
                 image_src = attachment.get('media', {}).get('image', {}).get('src')
                 if image_src:
                     result.update({'stream_post_image_ids': [(0, 0, {'image_url': image_src})]})

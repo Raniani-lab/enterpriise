@@ -51,7 +51,7 @@ class ResCompany(models.Model):
         with_crt = self.filtered(lambda x: x.l10n_ar_afip_ws_crt)
         remaining = self - with_crt
         for rec in with_crt:
-            certificate = self._l10n_ar_get_certificate_object(rec.l10n_ar_afip_ws_crt)
+            certificate = self._l10n_ar_get_certificate_object(rec.with_context(bin_size=False).l10n_ar_afip_ws_crt)
             rec.l10n_ar_afip_ws_crt_fname = certificate.get_subject().CN
         remaining.l10n_ar_afip_ws_crt_fname = ''
 
@@ -61,7 +61,7 @@ class ResCompany(models.Model):
         for rec in self.filtered('l10n_ar_afip_ws_crt'):
             error = False
             try:
-                content = base64.decodebytes(rec.l10n_ar_afip_ws_crt).decode('ascii')
+                content = base64.decodebytes(rec.with_context(bin_size=False).l10n_ar_afip_ws_crt).decode('ascii')
                 crypto.load_certificate(crypto.FILETYPE_PEM, content)
             except Exception as exc:
                 if 'Expecting: CERTIFICATE' in repr(exc) or "('PEM routines', 'get_name', 'no start line')" in repr(exc):
@@ -78,7 +78,7 @@ class ResCompany(models.Model):
         for rec in self.filtered('l10n_ar_afip_ws_key'):
             error = False
             try:
-                content = base64.decodebytes(rec.l10n_ar_afip_ws_key).decode('ascii').strip()
+                content = base64.decodebytes(rec.with_context(bin_size=False).l10n_ar_afip_ws_key).decode('ascii').strip()
                 crypto.load_privatekey(crypto.FILETYPE_PEM, content)
             except Exception as exc:
                 error = _('Not a valid private key file')
@@ -94,7 +94,7 @@ class ResCompany(models.Model):
     def _l10n_ar_get_afip_crt_expire_date(self):
         """ return afip certificate expire date in datetime.date() """
         self.ensure_one()
-        crt = self.l10n_ar_afip_ws_crt
+        crt = self.with_context(bin_size=False).l10n_ar_afip_ws_crt
         if crt:
             certificate = self._l10n_ar_get_certificate_object(crt)
             datestring = certificate.get_notAfter().decode()
@@ -191,7 +191,7 @@ class ResCompany(models.Model):
 
         if not self.l10n_ar_afip_ws_key:
             self._generate_afip_private_key()
-        pkey = base64.decodebytes(self.l10n_ar_afip_ws_key)
+        pkey = base64.decodebytes(self.with_context(bin_size=False).l10n_ar_afip_ws_key)
 
         private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, pkey)
         req.set_pubkey(private_key)

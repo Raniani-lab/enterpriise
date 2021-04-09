@@ -18,12 +18,6 @@ class HrPayslip(models.Model):
         for payslip in self:
             payslip.expenses_count = len(payslip.mapped('expense_sheet_ids.expense_line_ids'))
 
-    @api.onchange('input_line_ids')
-    def _onchange_input_line_ids(self):
-        expense_type = self.env.ref('hr_payroll_expense.expense_other_input', raise_if_not_found=False)
-        if not self.input_line_ids.filtered(lambda line: line.input_type_id == expense_type):
-            self.expense_sheet_ids.write({'payslip_id': False})
-
     @api.model_create_multi
     def create(self, vals_list):
         payslips = super().create(vals_list)
@@ -45,6 +39,8 @@ class HrPayslip(models.Model):
         res = super().write(vals)
         if 'expense_sheet_ids' in vals:
             self._compute_expense_input_line_ids()
+        if 'input_line_ids' in vals:
+            self._update_expense_sheets()
         return res
 
     def _compute_expense_input_line_ids(self):
@@ -60,6 +56,12 @@ class HrPayslip(models.Model):
                 'input_type_id': expense_type.id
             }))
             payslip.update({'input_line_ids': input_lines_vals})
+
+    def _update_expense_sheets(self):
+        expense_type = self.env.ref('hr_payroll_expense.expense_other_input', raise_if_not_found=False)
+        for payslip in self:
+            if not payslip.input_line_ids.filtered(lambda line: line.input_type_id == expense_type):
+                payslip.expense_sheet_ids.write({'payslip_id': False})
 
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()

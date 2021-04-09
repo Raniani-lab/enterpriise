@@ -10,18 +10,6 @@ class MrpProduction(models.Model):
 
     check_ids = fields.One2many('quality.check', 'production_id', string="Checks")
 
-    def action_assign(self):
-        res = super().action_assign()
-        for production in self:
-            for workorder in production.workorder_ids:
-                for check in workorder.check_ids:
-                    if check.test_type not in ('register_consumed_materials', 'register_byproducts'):
-                        continue
-                    if check.move_line_id:
-                        continue
-                    check.write(workorder._defaults_from_move(check.move_id))
-        return res
-
     def _generate_backorder_productions(self, close_mo=True):
         backorders = super()._generate_backorder_productions(close_mo=close_mo)
         for wo in backorders.workorder_ids:

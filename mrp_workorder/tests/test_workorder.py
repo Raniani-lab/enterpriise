@@ -1322,3 +1322,35 @@ class TestWorkOrder(common.TestMrpCommon):
         wo._next()
         wo.do_finish()
         self.assertEqual(mo.qty_producing, 5)
+
+    def test_suggested_lot_in_multi_step(self):
+        """Suggest the assigned lot in multi step system."""
+        self.warehouse = self.env.ref('stock.warehouse0')
+        self.env['quality.point'].create({
+            'product_ids': [(4, self.submarine_pod.id)],
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'operation_id': self.bom_submarine.operation_ids[0].id,
+            'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
+            'component_id': self.elon_musk.id,
+        })
+        self.warehouse.manufacture_steps = 'pbm'
+        self.submarine_pod.tracking = 'none'
+        self.bom_submarine.bom_line_ids.filtered(lambda l: l.product_id.id != self.elon_musk.id).unlink()
+        self.bom_submarine.operation_ids[1:].unlink()
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        mrp_order_form.product_qty = 1
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.button_plan()
+
+        production.picking_ids.action_assign()
+        production.picking_ids.move_line_ids.lot_id = self.elon2
+        production.picking_ids.move_line_ids.qty_done = 1
+        production.picking_ids.button_validate()
+
+        wo = production.workorder_ids
+        wo.button_start()
+        self.assertEqual(production.move_raw_ids.move_line_ids.lot_id, self.elon2, "Lot should be assigned.")
+        self.assertEqual(wo.lot_id, self.elon2, "Lot should be set in the step")

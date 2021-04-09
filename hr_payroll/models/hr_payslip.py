@@ -496,16 +496,17 @@ class HrPayslip(models.Model):
 
     @api.depends('employee_id')
     def _compute_company_id(self):
-        for slip in self:
+        for slip in self.filtered(lambda p: p.employee_id):
             slip.company_id = slip.employee_id.company_id
 
     @api.depends('employee_id', 'date_from', 'date_to')
     def _compute_contract_id(self):
         for slip in self:
             if not slip.employee_id or not slip.date_from or not slip.date_to:
+                slip.contract_id = False
                 continue
             # Add a default contract if not already defined or invalid
-            if slip.contract_id or slip.employee_id == slip.contract_id.employee_id:
+            if slip.contract_id and slip.employee_id == slip.contract_id.employee_id:
                 continue
             contracts = slip.employee_id._get_contracts(slip.date_from, slip.date_to)
             slip.contract_id = contracts[0] if contracts else False
@@ -544,7 +545,9 @@ class HrPayslip(models.Model):
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_worked_days_line_ids(self):
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
-        valid_slips.worked_days_line_ids.unlink()
+        # Make sure to reset invalid payslip's worked days line
+        invalid_slips = self - valid_slips
+        invalid_slips.worked_days_line_ids = [(5, False, False)]
         # Ensure work entries are generated for all contracts
         generate_from = min(p.date_from for p in self)
         current_month_end = date_utils.end_of(fields.Date.today(), 'month')

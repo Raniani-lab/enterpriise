@@ -169,13 +169,15 @@ class UPSRequest():
         return re.sub('[^0-9]','', phone)
 
     def check_required_value(self, shipper, ship_from, ship_to, order=False, picking=False):
-        required_field = {'city': 'City', 'zip': 'ZIP code', 'country_id': 'Country', 'phone': 'Phone'}
+        required_field = {'city': 'City', 'country_id': 'Country', 'phone': 'Phone'}
         # Check required field for shipper
         res = [required_field[field] for field in required_field if not shipper[field]]
         if shipper.country_id.code in ('US', 'CA', 'IE') and not shipper.state_id.code:
             res.append('State')
         if not shipper.street and not shipper.street2:
             res.append('Street')
+        if shipper.country_id.code != 'HK' and not shipper.zip:
+            res.append('ZIP code')
         if res:
             return _("The address of your company is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
         if len(self._clean_phone_number(shipper.phone)) < 10:
@@ -186,6 +188,8 @@ class UPSRequest():
             res.append('State')
         if not ship_from.street and not ship_from.street2:
             res.append('Street')
+        if ship_from.country_id.code != 'HK' and not ship_from.zip:
+            res.append('ZIP code')
         if res:
             return _("The address of your warehouse is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
         if len(self._clean_phone_number(ship_from.phone)) < 10:
@@ -196,6 +200,8 @@ class UPSRequest():
             res.append('State')
         if not ship_to.street and not ship_to.street2:
             res.append('Street')
+        if ship_to.country_id.code != 'HK' and not ship_to.zip:
+            res.append('ZIP code')
         if len(ship_to.street or '') > 35 or len(ship_to.street2 or '') > 35:
             return _("UPS address lines can only contain a maximum of 35 characters. You can split the contacts addresses on multiple lines to try to avoid this limitation.")
         if picking and not order:

@@ -6,19 +6,29 @@
         min-height: 100%;
     }
 
+    .o_statusbar_status .o_arrow_button:not(.disabled) {
+        @extend .btn-light;
+
+        @include hover-focus-active() {
+            &:after {
+                border-left-color: gray('100');
+            }
+        }
+    }
+
     // Sheet
     .o_form_sheet_bg {
         flex: 1 0 auto;
         background-color: $o-webclient-background-color;
-        border-bottom: 1px solid gray('300');
+        border-bottom: 1px solid $border-color;
 
         > .o_form_sheet {
             @include make-container();
             @include make-container-max-widths();
 
             background-color: $o-view-background-color;
-            border: 1px solid gray('400');
-            box-shadow: 0 5px 20px -15px black;
+            border: 1px solid $border-color;
+            box-shadow: 0 5px 20px -15px rgba(#000, 0.4);
             margin: $o-sheet-vpadding*0.2 auto;
             @include media-breakpoint-up(md) {
                 margin: $o-sheet-vpadding*0.5 auto;
@@ -105,7 +115,7 @@
     .o_form_label {
         &.o_form_label_empty, &.o_form_label_false {
             opacity: 0.5;
-            font-weight: normal;
+            font-weight: $font-weight-normal;
         }
         @include media-breakpoint-down(sm) {
             font-size: $o-font-size-base-touch;
@@ -119,14 +129,14 @@
 
             > .nav.nav-tabs {
                 @include o-form-sheet-inner-left-padding;
-                border-bottom: $nav-tabs-border-width solid gray('400');
+                border-bottom-color: $border-color;
 
                 > .nav-item {
                     white-space: nowrap;
 
                     > .nav-link {
                         color: $body-color;
-                        border-color: gray('400');
+                        border-color: $border-color;
                         background-color: white;
 
                         &:hover, &:focus, &:active {
@@ -148,10 +158,8 @@
                         }
                     }
 
-                    &:not(.o_invisible_modifier) {
-                        + .nav-item > .nav-link {
-                            border-left: 0;
-                        }
+                    + .nav-item {
+                        margin-left: -1px;
                     }
                 }
             }
@@ -305,11 +313,7 @@
     // Status Bar
     .o_form_statusbar {
         > .o_statusbar_status > .o_arrow_button {
-            font-weight: 500;
-
-            &.btn-primary.disabled {
-                font-weight: bold;
-            }
+            font-weight: $font-weight-bold;
 
             // Last element at the right should respect overall padding
             &:first-of-type {
@@ -378,14 +382,14 @@
             }
         }
         .o_td_label .o_form_label {
-            font-weight: normal;
+            font-weight: $font-weight-normal;
         }
     }
 
     .o_form_label {
         margin-top: 3px;
         font-size: $o-label-font-size-factor * $o-font-size-base-touch;
-        font-weight: normal;
+        font-weight: $font-weight-normal;
         color: $o-brand-secondary;
     }
 }

@@ -726,7 +726,7 @@
                     t-att-value="widget.state.default_value"/>
             </t>
         </div>
-        <t t-if="_.contains(['many2many', 'many2one', 'one2many'], widget.state.field.type)">
+        <t t-if="_.contains(['many2many', 'many2one'], widget.state.field.type)">
             <div class="o_web_studio_sidebar_text o_web_studio_sidebar_iscode">
                 <label for="domain">Domain</label>
                 <input id="domain" name="domain" type="text" data-type="attributes"

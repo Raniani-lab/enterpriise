@@ -336,7 +336,7 @@ class assets_report(models.AbstractModel):
                     FROM temp_account_move m
                     WHERE date <= %(date_from)s {where_account_move}
                     ORDER BY asset_id, date DESC, id DESC
-                ) move_before ON last_move.asset_id = asset.id
+                ) move_before ON move_before.asset_id = asset.id
 
                 WHERE asset.company_id in %(company_ids)s
                 AND asset.acquisition_date <= %(date_to)s

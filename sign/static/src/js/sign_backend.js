@@ -461,8 +461,10 @@ odoo.define('sign.template', function(require) {
                                 }
                             }
                         };
-                        self.buttonsDraggableComponent = new SmoothScrollOnDrag(this, $fieldTypeButtons.appendTo(self.$fieldTypeToolbar).filter('button'), self.$('#viewerContainer'), smoothScrollOptions);
-                        $fieldTypeButtons.each(function(i, el) {
+                        $fieldTypeButtons.appendTo(self.$fieldTypeToolbar)
+                        var $fieldTypeButtonItems = $fieldTypeButtons.children('.o_sign_field_type_button')
+                        self.buttonsDraggableComponent = new SmoothScrollOnDrag(this, $fieldTypeButtonItems, self.$('#viewerContainer'), smoothScrollOptions);
+                        $fieldTypeButtonItems.each(function(i, el) {
                             self.enableCustomBar($(el));
                         });
 

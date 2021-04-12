@@ -501,6 +501,10 @@ textarea.o_sign_sign_item {
     padding: 10px;
 }
 
+.o_sign_field_type_toolbar_items {
+    overflow: auto;
+}
+
 #outerContainer.o_sign_field_type_toolbar_visible {
     margin-left: 14rem;
     width: auto;

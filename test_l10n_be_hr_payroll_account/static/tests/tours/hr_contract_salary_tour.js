@@ -1227,6 +1227,11 @@ Tour.register('hr_contract_salary_tour_2', {
                 window.location.href = window.location.origin + '/web';
             },
         },
+        {
+            content: "Check home page is loaded",
+            trigger: 'a.o_app.o_menuitem',
+            run: function() {},
+        },
     ]
 );
 

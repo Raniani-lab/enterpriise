@@ -68,7 +68,7 @@ class MarketingCampaignTest(TestMACommon):
         self.assertEqual(len(test_records), 5)
         test_records[-1].write({'name': test_records[0].name})
 
-        name_field = self.env['ir.model.fields'].search([
+        name_field = self.env['ir.model.fields'].sudo().search([
             ('model_id', '=', self.env['ir.model']._get('marketing.test.sms').id),
             ('name', '=', 'name')
         ])
@@ -104,14 +104,14 @@ class MarketingCampaignTest(TestMACommon):
         test_records[-1].write({'customer_id': test_records[0].customer_id.id})
         self.assertEqual(test_records[3].customer_id, self.env['res.partner'])
 
-        partner_field = self.env['ir.model.fields'].search([
-            ('model_id', '=', self.env['ir.model']._get('marketing.test.sms').id),
+        partner_field = self.env['ir.model.fields'].sudo().search([
+            ('model_id', '=', self.env['ir.model']._get_id('marketing.test.sms')),
             ('name', '=', 'customer_id')
         ])
 
         campaign = self.env['marketing.campaign'].create({
             'name': 'My First Campaign',
-            'model_id': self.env['ir.model']._get('marketing.test.sms').id,
+            'model_id': self.env['ir.model']._get_id('marketing.test.sms'),
             'domain': '%s' % [('id', 'in', test_records.ids)],
             'unique_field_id': partner_field.id,
         })

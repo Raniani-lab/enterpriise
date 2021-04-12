@@ -285,19 +285,20 @@ class MarketingCampaign(models.Model):
             db_rec_ids = _uniquify_list(RecordModel.search(record_domain).ids)
             to_create = [rid for rid in db_rec_ids if rid not in existing_rec_ids]  # keep ordered IDs
             to_remove = set(existing_rec_ids) - set(db_rec_ids)
-            if campaign.unique_field_id and campaign.unique_field_id.name != 'id':
+            unique_field = campaign.unique_field_id.sudo()
+            if unique_field.name != 'id':
                 without_duplicates = []
                 existing_records = RecordModel.with_context(prefetch_fields=False).browse(existing_rec_ids).exists()
                 # Split the read in batch of 1000 to avoid the prefetch
                 # crawling the cache for the next 1000 records to fetch
-                unique_field_vals = {rec[campaign.unique_field_id.name]
+                unique_field_vals = {rec[unique_field.name]
                                         for index in range(0, len(existing_records), 1000)
                                         for rec in existing_records[index:index+1000]}
 
                 for rec in RecordModel.with_context(prefetch_fields=False).browse(to_create):
-                    field_val = rec[campaign.unique_field_id.name]
+                    field_val = rec[unique_field.name]
                     # we exclude the empty recordset with the first condition
-                    if (not campaign.unique_field_id.relation or field_val) and field_val not in unique_field_vals:
+                    if (not unique_field.relation or field_val) and field_val not in unique_field_vals:
                         without_duplicates.append(rec.id)
                         unique_field_vals.add(field_val)
                 to_create = without_duplicates

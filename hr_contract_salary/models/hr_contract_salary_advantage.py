@@ -31,7 +31,7 @@ class HrContractSalaryAdvantage(models.Model):
         help="Contract field linked to this advantage cost. If not set, the advantage won't be taken into account when computing the employee budget.")
     # LUL rename into field and cost_field to be consistent with fold_field and manual_field?
     field = fields.Char(related="res_field_id.name", readonly=True)
-    cost_field = fields.Char(related="cost_res_field_id.name", string="Cost Field Name", readonly=True)
+    cost_field = fields.Char(related="cost_res_field_id.name", string="Cost Field Name", readonly=True, compute_sudo=True)
     sequence = fields.Integer(default=100)
     advantage_type_id = fields.Many2one(
         'hr.contract.salary.advantage.type', required=True,

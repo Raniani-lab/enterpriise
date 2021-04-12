@@ -7,7 +7,7 @@
     'category': 'Marketing/Events',
     'sequence': 1021,
     'version': '1.0',
-    'summary': 'Send reminder push notifications to event attendees based on wishlisted tracks.',
+    'summary': 'Send reminder push notifications to event attendees based on favorites tracks.',
     'website': 'https://www.odoo.com/page/events',
     'description': "",
     'depends': [

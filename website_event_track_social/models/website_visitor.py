@@ -10,7 +10,7 @@ class WebsiteVisitor(models.Model):
 
     event_track_push_enabled_ids = fields.Many2many(
         'event.track', string="Push Enabled Tracks",
-        help="Tracks that are 'default wishlisted' can be blacklisted and the visitor is removed from push reminders.",
+        help="Tracks that are 'default favorited' can be blacklisted and the visitor is removed from push reminders.",
         compute="_compute_event_track_push_enabled_ids", compute_sudo=True,
         search="_search_event_track_push_enabled_ids",
         groups="event.group_event_user")

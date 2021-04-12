@@ -38,7 +38,7 @@ NotificationWidget.include({
 
         if (popupConfig.title && popupConfig.body) {
             popupConfig.title = _t('Get the best experience!');
-            popupConfig.body = _t('Allow notifications to be able to add talks into your wishlist, or connect to other attendees.');
+            popupConfig.body = _t('Allow notifications to be able to add talks into your favorite list or connect to other attendees.');
             popupConfig.delay = 0;
         }
 

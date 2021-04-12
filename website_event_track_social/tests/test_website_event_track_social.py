@@ -73,7 +73,7 @@ class TestTrackPush(TestEventOnlineCommon):
 
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
         self.assertTrue(bool(push_reminder))
-        self.assertEqual("Your wishlisted track 'Track 1' will start in 10 minutes!", push_reminder.message)
+        self.assertEqual("Your favorite track 'Track 1' will start in 10 minutes!", push_reminder.message)
         self.assertEqual(
             url_join(track_1.event_id.get_base_url(), track_1.website_url),
             push_reminder.push_notification_target_url)
@@ -91,7 +91,7 @@ class TestTrackPush(TestEventOnlineCommon):
         })
         track_1.flush(['name', 'date'])
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
-        self.assertEqual("Your wishlisted track 'New Name' will start in 20 minutes!", push_reminder.message)
+        self.assertEqual("Your favorite track 'New Name' will start in 20 minutes!", push_reminder.message)
         self.assertEqual(track_1.date - relativedelta(minutes=20), push_reminder.scheduled_date)
 
         track_1.write({'push_reminder': False})

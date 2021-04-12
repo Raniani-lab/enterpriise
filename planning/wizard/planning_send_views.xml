@@ -5,7 +5,7 @@
         <field name="name">planning.send.form</field>
         <field name="model">planning.send</field>
         <field name="arch" type="xml">
-            <form>
+            <form js_class="planning_send_form">
                     <group>
                         <group>
                             <label for="start_datetime">Period</label>
@@ -21,7 +21,7 @@
                         </group>
                     </group>
                     <group col="2">
-                        <field name="employee_ids" widget="many2many_tags" default_focus="1"/>
+                        <field name="employee_ids" widget="employee_many2many_tags_email" default_focus="1" context="{'force_email':True, 'show_email':True}"/>
                         <field name="note" nolabel="1" colspan="2" placeholder="Additional message"/>
                     </group>
                 <footer>

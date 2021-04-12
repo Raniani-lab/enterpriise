@@ -162,18 +162,6 @@ result = abs(categories.ONSS) - abs(categories.ONSSRESTRUCTURING) - abs(categori
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>
 
-    <record id="cp200_employees_salary_reim_travel" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Reimbursement of travel expenses</field>
-        <field name="code">Tr.E</field>
-        <field name="amount_select">code</field>
-        <field name="sequence">65</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.others_reimbursed_amount)</field>
-        <field name="amount_python_compute">result = contract.others_reimbursed_amount</field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
-    </record>
-
     <record id="cp200_employees_salary_company_car" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_div_impos"/>
         <field name="name">Benefit in Kind (Company Car)</field>

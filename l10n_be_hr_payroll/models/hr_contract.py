@@ -36,7 +36,6 @@ class HrContract(models.Model):
         compute='_compute_train_transport_reimbursed_amount', readonly=False, store=True)
     public_transport_reimbursed_amount = fields.Monetary(string='Public Transport Reimbursed amount',
         compute='_compute_public_transport_reimbursed_amount', readonly=False, store=True)
-    others_reimbursed_amount = fields.Monetary(string='Other Reimbursed amount')
     warrants_cost = fields.Monetary(compute='_compute_commission_cost', string="Warrant monthly cost for the employer")
     yearly_commission = fields.Monetary(compute='_compute_commission_cost')
     yearly_commission_cost = fields.Monetary(compute='_compute_commission_cost')

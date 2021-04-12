@@ -313,7 +313,7 @@ class HrPayroll(Controller):
             'date_start', 'date_end', 'wage', 'state', 'wage_type', 'hourly_wage', 'holidays',
             'transport_mode_car', 'transport_mode_private_car', 'transport_mode_train',
             'transport_mode_public', 'train_transport_employee_amount',
-            'public_transport_employee_amount', 'km_home_work', 'others_reimbursed_amount',
+            'public_transport_employee_amount', 'km_home_work',
             'commission_on_target', 'fuel_card', 'internet', 'representation_fees', 'mobile',
             'has_laptop', 'meal_voucher_amount', 'eco_checks', 'ip', 'ip_wage_rate', 'time_credit',
             'work_time_rate', 'fiscal_voluntarism', 'fiscal_voluntary_rate',

@@ -486,19 +486,18 @@ class TestExamples(AccountTestInvoicingCommon):
         }
         self.case_test(values, employee, payslip_values=payslip, contract_values=contract, car_values=car, car_contract_values=car_contract)
 
-    # No IP, with employment bonus and public transportation
-    def test_no_ip_emp_bonus_public_transportation(self):
+    # No IP, with employment bonus
+    def test_no_ip_emp_bonus(self):
         values = OrderedDict([
             ('BASIC', 2075.44),
             ('SALARY', 2075.44),
             ('ONSS', -271.26),
             ('EmpBonus.1', 106.44),
             ('P.P', -299.68),
-            ('Tr.E', 105.04),
             ('M.ONSS', -9.88),
             ('MEAL_V_EMP', -21.8),
             ('P.P.DED', 35.27),
-            ('NET', 1719.57),
+            ('NET', 1614.53),
         ])
 
         employee = {
@@ -509,7 +508,6 @@ class TestExamples(AccountTestInvoicingCommon):
             'name': 'Contract For Roger',
             'date_start': datetime.date(2015, 1, 1),
             'representation_fees': 0,
-            'others_reimbursed_amount': 105.04,
             'wage': 2075.44,
             'wage_on_signature': 2075.44,
             'internet': False,
@@ -534,14 +532,13 @@ class TestExamples(AccountTestInvoicingCommon):
             ('ONSS', -354.87),
             ('P.P', -2.11),
             ('IP.DED', -50.74),
-            ('Tr.E', 200),
             ('M.ONSS', -24.28),
             ('MEAL_V_EMP', -19.62),
             ('ATN.INT.2', -5.0),
             ('ATN.MOB.2', -4.0),
             ('REP.FEES', 150.0),
             ('IP', 676.54),
-            ('NET', 2604.53),
+            ('NET', 2404.53),
         ])
 
         employee = {
@@ -566,7 +563,6 @@ class TestExamples(AccountTestInvoicingCommon):
             'wage': 2706.14,
             'wage_on_signature': 2706.14,
             'representation_fees': 150,
-            'others_reimbursed_amount': 200,
             'internet': True,
             'mobile': True,
             'ip': True,
@@ -597,40 +593,6 @@ class TestExamples(AccountTestInvoicingCommon):
         }
 
         self.case_test(values, employee, payslip_values=payslip, contract_values=contract, holidays_values=holidays_values, car_values=car_vals)
-
-    # PFI with public transportation reimbursed
-    def test_pfi_public_transportation_pay(self):
-        values = OrderedDict([
-            ('BASIC', 2264.76),
-            ('SALARY', 2264.76),
-            ('P.P', -452.95),
-            ('Tr.E', 100),
-            ('MEAL_V_EMP', -21.8),
-            ('NET', 1890.01),
-        ])
-
-        employee = {
-            'name': 'Roger'
-        }
-
-        contract = {
-            'name': 'PFI Contract for Roger',
-            'date_start': datetime.date(2015, 1, 1),
-            'wage': 2264.76,
-            'wage_on_signature': 2264.76,
-            'meal_voucher_amount': 7.45,
-            'others_reimbursed_amount': 100,
-            'internet': False,
-            'mobile': False,
-        }
-
-        payslip = {
-            'date_from': datetime.date(2019, 2, 1),
-            'date_to': datetime.date(2019, 2, 28),
-            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_pfi'),
-        }
-
-        self.case_test(values, employee, payslip_values=payslip, contract_values=contract)
 
     # PFI with company car
     def test_pfi_company_car_pay(self):

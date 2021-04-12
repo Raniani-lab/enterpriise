@@ -70,18 +70,6 @@ if contract.mobile:
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
     </record>
-    
-    <record id="cp200_pfi_reim_travel" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Reimbursement of travel expenses</field>
-        <field name="code">Tr.E</field>
-        <field name="amount_select">code</field>
-        <field name="sequence">65</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.others_reimbursed_amount)</field>
-        <field name="amount_python_compute">result = contract.others_reimbursed_amount</field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_pfi"/>
-    </record>
 
     <record id="cp200_pfi_salary_withholding_taxes" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_pp"/>

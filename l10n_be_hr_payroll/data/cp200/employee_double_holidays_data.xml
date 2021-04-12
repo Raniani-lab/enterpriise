@@ -124,18 +124,6 @@ result = result / 0.92 * 0.85
         <field name="active" eval="False"/>
     </record>
 
-    <record id="cp200_employees_double_holiday_reim_travel" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Reimbursement of travel expenses</field>
-        <field name="code">Tr.E</field>
-        <field name="amount_select">code</field>
-        <field name="sequence">65</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.others_reimbursed_amount)</field>
-        <field name="amount_python_compute">result = contract.others_reimbursed_amount</field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-    </record>
-
     <record id="cp200_employees_double_holiday_gross_with_ip" model="hr.salary.rule">
         <field name="name">Total Gross</field>
         <field name="sequence">90</field>

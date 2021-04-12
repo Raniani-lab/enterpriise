@@ -85,6 +85,7 @@ class HrContract(models.Model):
     no_onss = fields.Boolean(string="No ONSS")
     no_withholding_taxes = fields.Boolean()
     rd_percentage = fields.Integer("Time Percentage in R&D")
+    employee_age = fields.Integer('Age of Employee', compute='_compute_employee_age')
     l10n_be_impulsion_plan = fields.Selection([
         ('25yo', '< 25 years old'),
         ('12mo', '12 months +'),
@@ -244,6 +245,14 @@ class HrContract(models.Model):
     def _compute_public_transport_reimbursed_amount(self):
         for contract in self:
             contract.public_transport_reimbursed_amount = contract._get_public_transport_reimbursed_amount(contract.public_transport_employee_amount)
+
+    @api.depends('employee_id')
+    def _compute_employee_age(self):
+        for contract in self:
+            if not contract.employee_id or not contract.employee_id.birthday:
+                contract.employee_age = 0
+            else:
+                contract.employee_age = relativedelta(fields.Date.today(), contract.employee_id.birthday).years
 
     def _get_public_transport_reimbursed_amount(self, amount):
         # As of February 1st, 2020, reimbursement for non-train-based public transportation,

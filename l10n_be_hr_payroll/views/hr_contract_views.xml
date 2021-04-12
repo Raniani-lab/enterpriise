@@ -164,6 +164,11 @@
                     <field name="rd_percentage"/>
                 </group>
                 <group string="Impulsion Plan" name="impulsion_plan">
+                    <label for="employee_age" attrs="{'invisible': [('employee_age', '=', 0)]}"/>
+                    <div attrs="{'invisible': [('employee_age', '=', 0)]}">
+                        <field name="employee_age"/>
+                        <span> years old</span>
+                    </div>
                     <field name="l10n_be_impulsion_plan"/>
                 </group>
                 <group string="ONSS Reduction" name="onss_retructuring">

@@ -119,7 +119,18 @@ var PlanningGanttController = GanttController.extend({
             ],
             context: _.extend({}, self.context || {}),
         })
-        .then(function(){
+        .then(function (result) {
+            let notificationOptions = {
+                type: 'success',
+                message: `<i class="fa fa-fw fa-check"/> ${_t("The shifts from the previous week have successfully been copied.")}`,
+            };
+            if (!result) {
+                notificationOptions = {
+                    type: 'danger',
+                    message: _t('There are no shifts to copy or the previous shifts were already copied.'),
+                };
+            }
+            self.displayNotification(notificationOptions);
             self.reload();
         });
     },

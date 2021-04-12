@@ -65,7 +65,17 @@ class PlanningSend(models.TransientModel):
                 for slot in open_slots:
                     if not employee.planning_role_ids or not slot.role_id or slot.role_id in employee.planning_role_ids:
                         employees_to_send |= employee
-        return planning._send_planning(message=self.note, employees=employees_to_send)
+        res = planning._send_planning(message=self.note, employees=employees_to_send)
+        if res:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'success',
+                    'message': _("The schedule was successfully sent to your employees."),
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
 
     def action_publish(self):
         slot_to_publish = self.slot_ids

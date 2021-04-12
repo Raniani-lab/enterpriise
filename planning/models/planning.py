@@ -735,7 +735,10 @@ class Planning(models.Model):
                 values['is_published'] = False
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
-        return self.create(new_slot_values)
+        if new_slot_values:
+            self.create(new_slot_values)
+            return True
+        return False
 
     # ----------------------------------------------------
     # Sending Shifts

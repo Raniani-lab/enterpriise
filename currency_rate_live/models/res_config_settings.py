@@ -325,13 +325,13 @@ class ResCompany(models.Model):
             rslt['USD'] = (1.0, today)
 
         htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
-        rates_table = htmlelem.find(".//table[@id='historicalRateTbl']/tbody")
-        for rate_entry in list(rates_table):
-            if type(rate_entry) != etree._Comment: # The returned HTML always contains commented lines (for some reason), so we ignore them
-                currency_code = rate_entry.find('.//a').text
-                if currency_code in available_currency_names:
-                    rate = float(rate_entry.find("td[@class='historicalRateTable-rateHeader']").text)
-                    rslt[currency_code] = (rate, today)
+        rates_entries = htmlelem.xpath(".//div[@id='table-section']//tbody/tr")
+        for rate_entry in rates_entries:
+            # line structure is <th>CODE</th><td>NAME<td><td>UNITS PER CURRENCY</td><td>CURRENCY PER UNIT</td>
+            currency_code = ''.join(rate_entry.find('.//th').itertext()).strip()
+            if currency_code in available_currency_names:
+                rate = float(rate_entry.find("td[2]").text)
+                rslt[currency_code] = (rate, today)
 
         return rslt
 

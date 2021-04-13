@@ -187,9 +187,14 @@ class assets_report(models.AbstractModel):
 
                 if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']):
                     depreciation_minus = depreciation_closing
+                    # depreciation_opening and depreciation_add are computed from first_move (assuming it is a depreciation move),
+                    # but when previous condition is True and first_move and last_move are the same record, then first_move is not a
+                    # depreciation move.
+                    # In that case, depreciation_opening and depreciation_add must be corrected.
+                    if al['first_move_id'] == al['last_move_id']:
+                        depreciation_opening = depreciation_closing
+                        depreciation_add = 0
                     depreciation_closing = 0.0
-                    depreciation_opening += depreciation_add
-                    depreciation_add = 0
                     asset_minus = asset_closing
                     asset_closing = 0.0
 
@@ -297,7 +302,9 @@ class assets_report(models.AbstractModel):
                        COALESCE(first_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_start,
                        COALESCE(last_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_end,
                        COALESCE(last_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_end,
-                       COALESCE(first_move.amount_total, 0.0) as depreciation
+                       COALESCE(first_move.amount_total, 0.0) as depreciation,
+                       COALESCE(first_move.id, move_before.id) as first_move_id,
+                       COALESCE(last_move.id, move_before.id) as last_move_id
                 FROM account_asset as asset
                 LEFT JOIN account_account as account ON asset.account_asset_id = account.id
                 LEFT JOIN (
@@ -311,6 +318,7 @@ class assets_report(models.AbstractModel):
 
                 LEFT OUTER JOIN (
                     SELECT DISTINCT ON (asset_id)
+                        id,
                         asset_depreciated_value,
                         asset_remaining_value,
                         amount_total,
@@ -322,6 +330,7 @@ class assets_report(models.AbstractModel):
 
                 LEFT OUTER JOIN (
                     SELECT DISTINCT ON (asset_id)
+                        id,
                         asset_depreciated_value,
                         asset_remaining_value,
                         amount_total,
@@ -333,6 +342,7 @@ class assets_report(models.AbstractModel):
 
                 LEFT OUTER JOIN (
                     SELECT DISTINCT ON (asset_id)
+                        id,
                         asset_depreciated_value,
                         asset_remaining_value,
                         amount_total,

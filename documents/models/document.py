@@ -366,7 +366,7 @@ class Document(models.Model):
     @api.model
     def create(self, vals):
         keys = [key for key in vals if
-                self._fields[key].related and self._fields[key].related[0] == 'attachment_id']
+                self._fields[key].related and self._fields[key].related.split('.')[0] == 'attachment_id']
         attachment_dict = {key: vals.pop(key) for key in keys if key in vals}
         attachment = self.env['ir.attachment'].browse(vals.get('attachment_id'))
 

@@ -633,28 +633,47 @@ class MrpEco(models.Model):
         self.write({'state': 'progress'})
 
     def action_apply(self):
-        self.ensure_one()
         self._check_company()
-        self.mapped('new_bom_id').apply_new_version()
-        documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
-        documents.mapped('ir_attachment_id').unlink()
-        for attach in self.with_context(active_test=False).mrp_document_ids:
-            product_attach = attach.copy({
-                'res_model': 'product.template',
-                'res_id': self.product_tmpl_id.id,
-            })
-            if not attach.active:
-                product_attach.write({
-                    'name': attach.name + '(v'+str(self.product_tmpl_id.version)+')'
-                })
-        self.product_tmpl_id.version = self.product_tmpl_id.version + 1
-        vals = {'state': 'done'}
-        stage_id = self.env['mrp.eco.stage'].search([
-            ('final_stage', '=', True),
-            ('type_ids', 'in', self.type_id.id)], limit=1).id
-        if stage_id:
-            vals['stage_id'] = stage_id
-        self.write(vals)
+        eco_need_action = self.env['mrp.eco']
+        for eco in self:
+            if eco.state == 'done':
+                continue
+            if eco.state == 'rebase':
+                eco.apply_rebase()
+            if eco.allow_apply_change:
+                eco.mapped('new_bom_id').apply_new_version()
+                documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
+                documents.mapped('ir_attachment_id').unlink()
+                for attach in self.with_context(active_test=False).mrp_document_ids:
+                    product_attach = attach.copy({
+                        'res_model': 'product.template',
+                        'res_id': eco.product_tmpl_id.id,
+                    })
+                    if not attach.active:
+                        product_attach.write({
+                            'name': attach.name + '(v'+str(eco.product_tmpl_id.version)+')'
+                        })
+                eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
+                vals = {'state': 'done'}
+                stage_id = self.env['mrp.eco.stage'].search([
+                    ('final_stage', '=', True),
+                    ('type_ids', 'in', eco.type_id.id)], limit=1).id
+                if stage_id:
+                    vals['stage_id'] = stage_id
+                eco.write(vals)
+            else:
+                eco_need_action |= eco
+        if eco_need_action:
+            return {
+                'name': _('Eco'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree, form',
+                'views': [[False, 'tree'], [False, 'form']],
+                'res_model': 'mrp.eco',
+                'target': 'current',
+                'domain': [('id', 'in', eco_need_action.ids)],
+                'context': {'search_default_changetoapply': False},
+            }
 
     def action_see_attachments(self):
         self.ensure_one()

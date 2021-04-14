@@ -81,7 +81,7 @@ class AccountAsset(models.Model):
     # model-related fields
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
     user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
-    display_model_choice = fields.Boolean(compute="_compute_value", compute_sudo=True)
+    display_model_choice = fields.Boolean(compute="_compute_display_model_choice")
     display_account_asset_id = fields.Boolean(compute="_compute_value", compute_sudo=True)
 
     # Capital gain
@@ -111,7 +111,6 @@ class AccountAsset(models.Model):
                 if not record.account_asset_id and (record.state == 'model' or not record.account_asset_id or record.asset_type != 'purchase'):
                     record.account_asset_id = record.account_depreciation_id if record.asset_type in ('purchase', 'expense') else record.account_depreciation_expense_id
                 record.original_value = record.original_value or False
-                record.display_model_choice = record.state == 'draft' and self.env['account.asset'].search([('state', '=', 'model'), ('asset_type', '=', record.asset_type)])
                 record.display_account_asset_id = True
                 continue
             if any(line.move_id.state == 'draft' for line in record.original_move_line_ids):
@@ -121,7 +120,6 @@ class AccountAsset(models.Model):
             if any(type != record.original_move_line_ids[0].move_id.move_type for type in record.original_move_line_ids.mapped('move_id.move_type')):
                 raise UserError(_("All the lines should be from the same move type"))
             record.account_asset_id = record.original_move_line_ids[0].account_id
-            record.display_model_choice = record.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('account_asset_id.user_type_id', '=', record.user_type_id.id)])
             record.display_account_asset_id = False
             if not record.journal_id:
                 record.journal_id = misc_journal_id
@@ -132,6 +130,19 @@ class AccountAsset(models.Model):
                 record.original_value /= max(1, int(record.original_move_line_ids.quantity))
             if (total_credit and total_debit) or record.original_value == 0:
                 raise UserError(_("You cannot create an asset from lines containing credit and debit on the account or with a null amount"))
+
+    @api.depends('asset_type', 'user_type_id', 'state')
+    def _compute_display_model_choice(self):
+        for record in self:
+            domain = [('state', '=', 'model')]
+            if record.user_type_id:
+                domain += [('user_type_id', '=', record.user_type_id.id)]
+            else:
+                domain += [('asset_type', '=', record.asset_type)]
+            record.display_model_choice = (
+                record.state == 'draft'
+                and bool(self.env['account.asset'].search(domain, limit=1))
+            )
 
     @api.depends('original_move_line_ids', 'prorata_date', 'first_depreciation_date')
     def _compute_acquisition_date(self):

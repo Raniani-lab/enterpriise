@@ -505,14 +505,25 @@ class MrpEco(models.Model):
         return message
 
     def _create_approvals(self):
+        approval_vals = []
+        activity_vals = []
         for eco in self:
             for approval_template in eco.stage_id.approval_template_ids:
                 approval = eco.approval_ids.filtered(lambda app: app.approval_template_id == approval_template and not app.is_closed)
                 if not approval:
-                    self.env['mrp.eco.approval'].create({
+                    approval_vals.append({
                         'eco_id': eco.id,
                         'approval_template_id': approval_template.id,
                     })
+                    for user in approval_template.user_ids:
+                        activity_vals.append({
+                            'activity_type_id': self.env.ref('mrp_plm.mail_activity_eco_approval').id,
+                            'user_id': user.id,
+                            'res_id': eco.id,
+                            'res_model_id': self.env.ref('mrp_plm.model_mrp_eco').id,
+                        })
+        self.env['mrp.eco.approval'].create(approval_vals)
+        self.env['mail.activity'].create(activity_vals)
 
     def _create_or_update_approval(self, status):
         for eco in self:

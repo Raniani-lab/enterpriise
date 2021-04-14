@@ -99,6 +99,66 @@ class TestEdiResults(TestMxEdiCommon):
             expected_etree = self.get_xml_tree_from_string(self.expected_payment_cfdi_values)
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_payment_cfdi_another_currency_invoice(self):
+        with freeze_time(self.frozen_today):
+            invoice = self.env['account.move'].with_context(edi_test_mode=True).create({
+                'move_type': 'out_invoice',
+                'partner_id': self.partner_a.id,
+                'currency_id': self.fake_usd_data['currency'].id,
+                'invoice_date': '2017-01-01',
+                'date': '2017-01-01',
+                'invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'price_unit': 1200.0})],
+            })
+
+            self.payment.payment_id.action_l10n_mx_edi_force_generate_cfdi()
+            invoice.action_post()
+            self.payment.action_post()
+
+            (invoice.line_ids + self.payment.line_ids)\
+                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .reconcile()
+
+            # Fake the fact the invoice is signed.
+            self._process_documents_web_services(invoice)
+            invoice.l10n_mx_edi_cfdi_uuid = '123456789'
+
+            generated_files = self._process_documents_web_services(self.payment.move_id, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_payment_cfdi_values),
+                '''
+                    <xpath expr="//Complemento" position="replace">
+                        <Complemento>
+                            <Pagos
+                                Version="1.0">
+                                <Pago
+                                    FechaPago="2017-01-01T12:00:00"
+                                    MonedaP="Gol"
+                                    Monto="8480.000"
+                                    FormaDePagoP="99"
+                                    TipoCambioP="0.500000">
+                                    <DoctoRelacionado
+                                        Folio="2"
+                                        IdDocumento="123456789"
+                                        ImpPagado="1200.000"
+                                        ImpSaldoAnt="1200.000"
+                                        ImpSaldoInsoluto="0.000"
+                                        MetodoDePagoDR="PUE"
+                                        MonedaDR="USD"
+                                        TipoCambioDR="2.000000"
+                                        NumParcialidad="1"
+                                        Serie="INV/2017/01/"/>
+                                </Pago>
+                            </Pagos>
+                        </Complemento>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     # -------------------------------------------------------------------------
     # STATEMENT LINES
     # -------------------------------------------------------------------------

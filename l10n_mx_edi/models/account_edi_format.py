@@ -306,22 +306,35 @@ class AccountEdiFormat(models.Model):
         * cfdi_str:     A string of the unsigned cfdi of the invoice.
         * error:        An error if the cfdi was not successfuly generated.
         '''
-
+        # Process reconciled invoices.
         invoice_vals_list = []
-        for partial, amount, invoice_line in move._get_reconciled_invoices_partials():
-            invoice = invoice_line.move_id
+        pay_rec_lines = move.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
+        for field1, field2 in (('debit', 'credit'), ('credit', 'debit')):
+            for partial in pay_rec_lines[f'matched_{field1}_ids']:
+                payment_line = partial[f'{field2}_move_id']
+                invoice_line = partial[f'{field1}_move_id']
+                invoice = invoice_line.move_id
+                payment_amount = partial[f'{field2}_amount_currency']
+                invoice_amount = partial[f'{field1}_amount_currency']
 
-            if not invoice.l10n_mx_edi_cfdi_request:
-                continue
+                if not invoice.l10n_mx_edi_cfdi_request:
+                    continue
 
-            invoice_vals_list.append({
-                'invoice': invoice,
-                'exchange_rate': invoice.amount_total / abs(invoice.amount_total_signed),
-                'payment_policy': invoice.l10n_mx_edi_payment_policy,
-                'number_of_payments': len(invoice._get_reconciled_payments()) + len(invoice._get_reconciled_statement_lines()),
-                'amount_paid': amount,
-                **self._l10n_mx_edi_get_serie_and_folio(invoice),
-            })
+                if invoice_line.currency_id == payment_line.currency_id:
+                    # Same currency
+                    rate = 1.0
+                else:
+                    # It needs to be how much invoice currency you pay for one payment currency
+                    rate = invoice_amount / payment_amount
+
+                invoice_vals_list.append({
+                    'invoice': invoice,
+                    'exchange_rate': rate,
+                    'payment_policy': invoice.l10n_mx_edi_payment_policy,
+                    'number_of_payments': len(invoice._get_reconciled_payments()) + len(invoice._get_reconciled_statement_lines()),
+                    'amount_paid': invoice_amount,
+                    **self._l10n_mx_edi_get_serie_and_folio(invoice),
+                })
 
         mxn_currency = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
         if move.currency_id == mxn_currency:
@@ -370,7 +383,6 @@ class AccountEdiFormat(models.Model):
             cfdi_values['customer_fiscal_residence'] = None
 
         cfdi = self.env.ref('l10n_mx_edi.payment10')._render(cfdi_values)
-
         decoded_cfdi_values = move._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi)
         cfdi_cadena_crypted = cfdi_values['certificate'].sudo().get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted

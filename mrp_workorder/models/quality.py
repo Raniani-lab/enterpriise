@@ -4,6 +4,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models, _
+from odoo.fields import Command
 from odoo.osv.expression import OR
 
 
@@ -23,7 +24,7 @@ class TestType(models.Model):
 class MrpRouting(models.Model):
     _inherit = "mrp.routing.workcenter"
 
-    quality_point_ids = fields.One2many('quality.point', 'operation_id')
+    quality_point_ids = fields.One2many('quality.point', 'operation_id', copy=True)
     quality_point_count = fields.Integer('Steps', compute='_compute_quality_point_count')
 
     @api.depends('quality_point_ids')
@@ -35,6 +36,18 @@ class MrpRouting(models.Model):
         data = dict((res['operation_id'][0], res['operation_id_count']) for res in read_group_res)
         for operation in self:
             operation.quality_point_count = data.get(operation.id, 0)
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'bom_id' in vals:
+            self.quality_point_ids._change_product_ids_for_bom(self.bom_id)
+        return res
+
+    def copy(self, default=None):
+        res = super().copy(default)
+        if default and "bom_id" in default:
+            res.quality_point_ids._change_product_ids_for_bom(res.bom_id)
+        return res
 
     def action_mrp_workorder_show_steps(self):
         self.ensure_one()
@@ -118,6 +131,14 @@ class QualityPoint(models.Model):
         for quality_point in self:
             quality_point.is_workorder_step = quality_point.operation_id or quality_point.picking_type_ids and\
                 all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
+
+    def _change_product_ids_for_bom(self, bom_id):
+        products = bom_id.product_id or bom_id.product_tmpl_id.product_variant_ids
+        self.product_ids = [Command.set(products.ids)]
+
+    @api.onchange('operation_id')
+    def _onchange_operation_id(self):
+        self._change_product_ids_for_bom(self.bom_id)
 
 
 class QualityAlert(models.Model):

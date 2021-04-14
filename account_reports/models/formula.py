@@ -10,6 +10,7 @@ import ast
 
 PROTECTED_KEYWORDS = (
     'sum', 'sum_if_pos', 'sum_if_neg',
+    'sum_if_pos_groupby', 'sum_if_neg_groupby',
     'debit', 'credit', 'balance',
     'count_rows', 'from_context', 'NDays',
     '__builtins__'
@@ -34,7 +35,7 @@ class FormulaLocals(dict):
             return self.solver._get_balance_from_context(self.financial_line)
         elif item == 'count_rows':
             return self.solver._get_amls_results(self.financial_line)[item].get(self.key[0], 0)
-        elif item in ('sum', 'sum_if_pos', 'sum_if_neg'):
+        elif item in ('sum', 'sum_if_pos', 'sum_if_neg', 'sum_if_pos_groupby', 'sum_if_neg_groupby'):
             return self.solver._get_amls_results(self.financial_line)[item].get(self.key, 0.0)
         else:
             financial_line = self.solver._get_line_by_code(item)
@@ -203,7 +204,7 @@ class FormulaSolver:
                 self.financial_line = financial_line
 
             def visit_Name(self, node):
-                if node.id in ('sum', 'sum_if_pos', 'sum_if_neg'):
+                if node.id in ('sum', 'sum_if_pos', 'sum_if_neg', 'sum_if_pos_groupby', 'sum_if_neg_groupby'):
                     # The current line contains a 'sum' and then, must be evaluate directly.
                     self.solver._get_amls_results(self.financial_line)
                 else:
@@ -316,7 +317,7 @@ class FormulaSolver:
             formula = inject_in_formula(formula, 'count_rows', results['amls']['count_rows'].get(0, 0))
 
             # Manage 'sum', 'sum_if_pos', 'sum_if_neg'.
-            for keyword in ('sum', 'sum_if_pos', 'sum_if_neg'):
+            for keyword in ('sum', 'sum_if_pos', 'sum_if_neg', 'sum_if_pos_groupby', 'sum_if_neg_groupby'):
                 balance = sum(results['amls'][keyword].values())
                 formula = inject_in_formula(formula, keyword, balance, is_monetary=True)
 

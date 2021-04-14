@@ -963,7 +963,7 @@ class AccountFinancialReportLine(models.Model):
     # CONSTRAINS
     # -------------------------------------------------------------------------
 
-    @api.constrains('code', 'groupby')
+    @api.constrains('code', 'groupby', 'formulas')
     def _check_line_consistency(self):
         AccountMoveLine = self.env['account.move.line']
 
@@ -979,6 +979,12 @@ class AccountFinancialReportLine(models.Model):
                 groupby_field = AccountMoveLine._fields.get(self.groupby)
                 if not groupby_field or not self.env['account.financial.html.report']._is_allowed_groupby_field(groupby_field):
                     raise ValidationError(_("Groupby field %s is invalid on line with name '%s'") % (self.groupby, rec.name))
+
+            # Make sure groupby is specified in conjunction with 'sum_if_pos_groupby' or 'sum_if_neg_groupby'
+            if rec.formulas:
+                if any(key in rec.formulas for key in ('sum_if_pos_groupby', 'sum_if_neg_groupby')) and not rec.groupby:
+                    raise ValidationError(_("Please specify a Group by field when using '%s' in Formulas, on line with name '%s'")
+                                          % (self.formulas, rec.name))
 
     # -------------------------------------------------------------------------
     # OPTIONS
@@ -1203,10 +1209,12 @@ class AccountFinancialReportLine(models.Model):
 
         The results is something like:
         {
-            'sum':          {key: <balance>...},
-            'sum_if_pos':   {key: <balance>...},
-            'sum_if_neg':   {key: <balance>...},
-            'count_rows':   {period_index: <number_of_rows_in_period>...},
+            'sum':                  {key: <balance>...},
+            'sum_if_pos':           {key: <balance>...},
+            'sum_if_pos_groupby':   {key: <balance>...},
+            'sum_if_neg':           {key: <balance>...},
+            'sum_if_neg_groupby':   {key: <balance>...},
+            'count_rows':           {period_index: <number_of_rows_in_period>...},
         }
 
         ... where:
@@ -1230,7 +1238,12 @@ class AccountFinancialReportLine(models.Model):
 
         AccountFinancialReportHtml = self.financial_report_id
         groupby_list = AccountFinancialReportHtml._get_options_groupby_fields(options_list[0])
-        groupby_clause = ','.join('account_move_line.%s' % gb for gb in groupby_list)
+        all_groupby_list = groupby_list.copy()
+        groupby_in_formula = any(x in (self.formulas or '') for x in ('sum_if_pos_groupby', 'sum_if_neg_groupby'))
+        if groupby_in_formula and self.groupby and self.groupby not in all_groupby_list:
+            all_groupby_list.append(self.groupby)
+        groupby_clause = ','.join('account_move_line.%s' % gb for gb in all_groupby_list)
+
         ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
         financial_report = self._get_financial_report()
 
@@ -1244,8 +1257,7 @@ class AccountFinancialReportLine(models.Model):
 
             queries.append('''
                 SELECT
-                    ''' + (groupby_clause and '%s,' % groupby_clause) + '''
-                    %s AS period_index,
+                    ''' + (groupby_clause and '%s,' % groupby_clause) + ''' %s AS period_index,
                     COUNT(DISTINCT account_move_line.''' + (self.groupby or 'id') + ''') AS count_rows,
                     COALESCE(SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)), 0.0) AS balance
                 FROM ''' + tables + '''
@@ -1261,7 +1273,9 @@ class AccountFinancialReportLine(models.Model):
         results = {
             'sum': {},
             'sum_if_pos': {},
+            'sum_if_pos_groupby': {},
             'sum_if_neg': {},
+            'sum_if_neg_groupby': {},
             'count_rows': {},
         }
 
@@ -1279,8 +1293,12 @@ class AccountFinancialReportLine(models.Model):
             results['sum'][key] = res['balance']
             if results['sum'][key] > 0:
                 results['sum_if_pos'][key] = results['sum'][key]
+                results['sum_if_pos_groupby'].setdefault(key, 0.0)
+                results['sum_if_pos_groupby'][key] += res['balance']
             if results['sum'][key] < 0:
                 results['sum_if_neg'][key] = results['sum'][key]
+                results['sum_if_neg_groupby'].setdefault(key, 0.0)
+                results['sum_if_neg_groupby'][key] += res['balance']
 
         return results
 

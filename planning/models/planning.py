@@ -179,6 +179,16 @@ class Planning(models.Model):
 
     @api.depends('start_datetime', 'end_datetime', 'employee_id.resource_calendar_id', 'allocated_hours')
     def _compute_allocated_percentage(self):
+        # [TW:Cyclic dependency] allocated_hours,allocated_percentage
+        # As allocated_hours and allocated percentage have some common dependencies, and are dependant one from another, we have to make sure
+        # they are computed in the right order to get rid of undeterministic computation.
+        #
+        # Allocated percentage must only be recomputed if allocated_hours has been modified by the user and not in any other cases.
+        # If allocated hours have to be recomputed, the allocated percentage have to keep its current value.
+        # Hence, we stop the computation of allocated percentage if allocated hours have to be recomputed.
+        allocated_hours_field = self._fields['allocated_hours']
+        if allocated_hours_field in self.env.fields_to_compute():
+            return
         for slot in self:
             if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
                 if slot.allocation_type == 'planning':
@@ -964,7 +974,6 @@ class Planning(models.Model):
     def _filter_slots_front_end(self, employee):
         # Is overridden to filter slots for the front end.
         return self
-
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

@@ -165,10 +165,9 @@ class MrpEco(models.Model):
 
     @api.model
     def _get_type_selection(self):
-        types = [
-            ('product', _('Product Only')),
-            ('bom', _('Bill of Materials'))]
-        return types
+        return [
+            ('bom', _('Bill of Materials')),
+            ('product', _('Product Only'))]
 
     name = fields.Char('Reference', copy=False, required=True)
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True, check_company=True)
@@ -186,10 +185,10 @@ class MrpEco(models.Model):
     note = fields.Html('Note')
     effectivity = fields.Selection([
         ('asap', 'As soon as possible'),
-        ('date', 'At Date')], string='Effectivity',  # Is this English ?
+        ('date', 'At Date')], string='Effective',  # Is this English ?
         compute='_compute_effectivity', inverse='_set_effectivity', store=True,
         help='Date on which the changes should be applied. For reference only.')
-    effectivity_date = fields.Datetime('Effectivity Date', tracking=True, help="For reference only.")
+    effectivity_date = fields.Datetime('Effective Date', tracking=True, help="For reference only.")
     approval_ids = fields.One2many('mrp.eco.approval', 'eco_id', 'Approvals', help='Approvals by stage')
 
     state = fields.Selection([
@@ -217,7 +216,7 @@ class MrpEco(models.Model):
 
     product_tmpl_id = fields.Many2one('product.template', "Product", check_company=True)
     type = fields.Selection(selection=_get_type_selection, string='Apply on',
-        default='product', required=True)
+        default='bom', required=True)
     bom_id = fields.Many2one(
         'mrp.bom', "Bill of Materials",
         domain="[('product_tmpl_id', '=', product_tmpl_id)]", check_company=True)  # Should at least have bom or routing on which it is applied?
@@ -231,7 +230,7 @@ class MrpEco(models.Model):
     bom_rebase_ids = fields.One2many('mrp.eco.bom.change', 'rebase_id', string="BoM Rebase")
     routing_change_ids = fields.One2many(
         'mrp.eco.routing.change', 'eco_id', string="ECO Routing Changes",
-        compute='_compute_routing_change_ids', help='Difference between old routing and new routing revision', store=True)
+        compute='_compute_routing_change_ids', help='Difference between old operation and new operation revision', store=True)
     mrp_document_count = fields.Integer('# Attachments', compute='_compute_attachments')
     mrp_document_ids = fields.One2many(
         'mrp.document', 'res_id', string='Attachments',

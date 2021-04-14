@@ -244,11 +244,14 @@
         <field name="arch" type="xml">
             <tree sample="1">
                 <field name="name"/>
+                <field name="product_tmpl_id" optional="hide"/>
                 <field name="bom_id"/>
                 <field name="user_id" widget='many2one_avatar_user'/>
-                <field name="effectivity_date"/>
-                <field name="state" invisible="1"/>
+                <field name="type" optional="hide"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags"/>
                 <field name="stage_id"/>
+                <field name="effectivity" optional="hide"/>
+                <field name="effectivity_date"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
@@ -388,7 +391,7 @@
                 <field name="allow_apply_change" invisible="1"/>
                 <header>
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': ['|', ('active', '=', False), ('state', '=', 'confirmed')]}"/>
-                    <button string="Start New Revision" name="action_new_revision" type="object"
+                    <button string="Start Revision" name="action_new_revision" type="object"
                             class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
                     <button string="Apply Rebase" name="apply_rebase" help="Rebase new revision of BoM with previous eco bom and old bom changes." type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'rebase')]}"/>
                     <button string="Conflict Resolved" name="conflict_resolve" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'conflict')]}" confirm="System will automatically resolved the conflict(s) and apply changes. Do you agree?"/>
@@ -397,9 +400,7 @@
                     <button string="Reject" name="reject" type="object"
                             class="oe_highlight" attrs="{'invisible': [('user_can_reject', '=', False)]}"/>
                     <button string="Apply Changes" name="action_apply" type="object"
-                            class="oe_highlight" attrs="{'invisible': [('allow_apply_change', '=', False)]}"/>
-                    <button name="action_see_attachments" type="object" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}" string="Update Documents"/>
-                    <button name="open_new_bom" type="object" attrs="{'invisible': ['|', ('new_bom_id', '=', False), ('state', '=', 'done')]}" string="Update BoM"/>
+                            class="oe_highlight" attrs="{'invisible': ['|', ('allow_apply_change', '=', False), ('state', '=', 'done')]}"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -409,8 +410,8 @@
                         <button name="open_new_bom" icon="fa-flask" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" class="oe_stat_button">
                         <div class="o_field_widget o_stat_info mr4">
                             <div>
-                                <span>BOM</span><br/>
-                                <span>Revision :<field name="new_bom_revision" readonly="True"/> </span>
+                                <span>Revision</span><br/>
+                                <span>V<field name="new_bom_revision" readonly="True"/> </span>
                             </div>
                         </div>
                         </button>
@@ -418,7 +419,7 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
                     <div class="oe_title">
-                        <label for="name" string="Short Summary"/>
+                        <label for="name" string="Description"/>
                         <h2><field name="name" placeholder="e.g. Awesome Product 2.0" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
                     </div>
                     <group>
@@ -483,9 +484,9 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Routing Changes" name="routing_changes"
-                            attrs="{'invisible': [('state', '=', 'confirmed')]}"
-                            help="Changes made on the routing.">
+                        <page string="Operation Changes" name="operation_changes"
+                            attrs="{'invisible': [('routing_change_ids', '=', [])]}"
+                            help="Changes made on the operation.">
                             <field name="routing_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
                                     <field name="change_type"/>

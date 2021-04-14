@@ -25,7 +25,7 @@ class generic_tax_report(models.AbstractModel):
 
     def _init_filter_tax_report(self, options, previous_options=None):
         options['available_tax_reports'] = []
-        companies = self.env.companies if options.get('multi_company') else self.env.company
+        companies = self.env.companies if self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company') else self.env.company
         available_reports = companies.get_available_tax_reports()
         for report in available_reports:
             options['available_tax_reports'].append({

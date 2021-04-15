@@ -1,10 +1,11 @@
 odoo.define('web_mobile.barcode.tests', function (require) {
     "use strict";
 
+    const ajax = require('web.ajax');
     const fieldRegistry = require('web.field_registry');
     const FormView = require('web.FormView');
     const { FieldMany2One } = require('web.relational_fields');
-    const { createView, dom, mock, nextTick } = require('web.test_utils');
+    const { createView, dom, mock } = require('web.test_utils');
 
     const FieldMany2OneBarcode = require('web_mobile.barcode_fields');
     const mobile = require('web_mobile.core');
@@ -141,12 +142,13 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                 mockRPC,
             });
 
+            await ajax.loadJS('/web/static/lib/jquery.touchSwipe/jquery.touchSwipe.js');
+
             const $scanButton = form.$('.o_barcode_mobile');
 
             assert.equal($scanButton.length, 1, "has scanner button");
-            
+
             await dom.click($scanButton);
-            await nextTick(); 
 
             const $modal = $('.o_modal_full .modal-lg');
             assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
@@ -163,7 +165,6 @@ odoo.define('web_mobile.barcode.tests', function (require) {
             form.destroy();
             fieldRegistry.add('many2one_barcode', FieldMany2One);
             mock.unpatch(mobile.methods);
-            
         });
     });
 });

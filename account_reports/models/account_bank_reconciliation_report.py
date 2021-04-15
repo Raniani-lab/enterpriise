@@ -149,7 +149,6 @@ class AccountBankReconciliationReport(models.AbstractModel):
         # - Add a custom search template to get a not-editable date filter.
         templates = super()._get_templates()
         templates['main_template'] = 'account_reports.bank_reconciliation_report_main_template'
-        templates['search_template'] = 'account_reports.bank_reconciliation_report_search_template'
         return templates
 
     @api.model
@@ -593,7 +592,10 @@ class AccountBankReconciliationReport(models.AbstractModel):
             'no_format': balance_gl,
         }
         if last_statement:
-            difference = balance_gl - last_statement.balance_end
+            report_date = fields.Date.from_string(options['date']['date_to'])
+            lines_before_date_to = last_statement.line_ids.filtered(lambda line: line.date <= report_date)
+            balance_end = last_statement.balance_start + sum(lines_before_date_to.mapped('amount'))
+            difference = balance_gl - balance_end
 
             if not report_currency.is_zero(difference):
                 balance_cell.update({
@@ -602,7 +604,7 @@ class AccountBankReconciliationReport(models.AbstractModel):
                     'title': _("The current balance in the General Ledger %s doesn't match the balance of your last "
                                "bank statement %s leading to an unexplained difference of %s.") % (
                         balance_cell['name'],
-                        self.format_value(last_statement.balance_end_real, report_currency),
+                        self.format_value(balance_end, report_currency),
                         self.format_value(difference, report_currency),
                     ),
                 })

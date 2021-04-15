@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
 from freezegun import freeze_time
 
 from .common import TestAccountReportsCommon
+from odoo import fields
 from odoo.tests import tagged
 
 
@@ -289,3 +291,78 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     5: {'currency': journal_currency},
                 },
             )
+
+    def test_reconciliation_change_date(self):
+        ''' Tests the impact of positive/negative payments/statements on the reconciliation report in a single-currency
+        environment.
+        '''
+        bank_journal = self.company_data['default_journal_bank']
+
+        statement = self.env['account.bank.statement'].create({
+            'name': 'statement_1',
+            'date': '2019-01-10',
+            'balance_start': 0.0,
+            'balance_end_real': 130.0,
+            'journal_id': bank_journal.id,
+            'line_ids': [
+                (0, 0, {'payment_ref': 'line_1',    'amount': 10.0,     'date': '2019-01-01'}),
+                (0, 0, {'payment_ref': 'line_2',    'amount': 20.0,     'date': '2019-01-02'}),
+                (0, 0, {'payment_ref': 'line_3',    'amount': 30.0,     'date': '2019-01-03'}),
+                (0, 0, {'payment_ref': 'line_4',    'amount': -40.0,    'date': '2019-01-04'}),
+                (0, 0, {'payment_ref': 'line_5',    'amount': 50.0,     'date': '2019-01-05'}),
+                (0, 0, {'payment_ref': 'line_6',    'amount': 60.0,     'date': '2019-01-06'}),
+            ],
+        })
+
+        # Ensure all move names are computed.
+        statement.button_post()
+        statement.button_reopen()
+        statement['balance_end_real'] = 140.0
+
+        # report._get_lines() makes SQL queries without flushing
+        statement.flush()
+        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+
+        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
+        options['all_entries'] = True
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                                            Date            Amount
+            [   0,                                                              1,              3],
+            [
+                ('Balance of 101404 Bank',                                      '01/01/2019',   10.0),
+
+                ('Including Unreconciled Bank Statement Receipts',              '',             10.0),
+                ('BNK1/2019/01/0001',                                           '01/01/2019',   10.0),
+                ('Total Including Unreconciled Bank Statement Receipts',        '',             10.0),
+
+                ('Total Balance of 101404 Bank',                                '01/01/2019',   10.0),
+            ],
+            currency_map={3: {'currency': bank_journal.currency_id}},
+        )
+
+        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-04'))
+        options['all_entries'] = True
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                                            Date            Amount
+            [   0,                                                              1,              3],
+            [
+                ('Balance of 101404 Bank',                                      '01/04/2019',   20.0),
+
+                ('Including Unreconciled Bank Statement Receipts',              '',             60.0),
+                ('BNK1/2019/01/0001',                                           '01/01/2019',   10.0),
+                ('BNK1/2019/01/0002',                                           '01/02/2019',   20.0),
+                ('BNK1/2019/01/0003',                                           '01/03/2019',   30.0),
+                ('Total Including Unreconciled Bank Statement Receipts',        '',             60.0),
+
+                ('Including Unreconciled Bank Statement Payments',              '',             -40.0),
+                ('BNK1/2019/01/0004',                                           '01/04/2019',   -40.0),
+                ('Total Including Unreconciled Bank Statement Payments',        '',             -40.0),
+
+                ('Total Balance of 101404 Bank',                                '01/04/2019',   20.0),
+            ],
+            currency_map={3: {'currency': bank_journal.currency_id}},
+        )

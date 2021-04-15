@@ -745,6 +745,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_al" model="res.partner.bank">
@@ -779,6 +782,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_mit" model="res.partner.bank">
@@ -815,6 +821,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_niv" model="res.partner.bank">
@@ -850,6 +859,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_stw" model="res.partner.bank">
@@ -885,6 +897,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_chs" model="res.partner.bank">
@@ -920,6 +935,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_qdp" model="res.partner.bank">
@@ -956,6 +974,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_fme" model="res.partner.bank">
@@ -991,6 +1012,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_fpi" model="res.partner.bank">
@@ -1026,6 +1050,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jth" model="res.partner.bank">
@@ -1061,6 +1088,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_ngh" model="res.partner.bank">
@@ -1096,6 +1126,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_vad" model="res.partner.bank">
@@ -1131,6 +1164,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_han" model="res.partner.bank">
@@ -1164,6 +1200,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jve" model="res.partner.bank">
@@ -1197,6 +1236,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jep" model="res.partner.bank">
@@ -1230,6 +1272,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jod" model="res.partner.bank">
@@ -1263,6 +1308,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jog" model="res.partner.bank">
@@ -1296,6 +1344,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jgo" model="res.partner.bank">
@@ -1329,6 +1380,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_lur" model="res.partner.bank">
@@ -1362,6 +1416,9 @@
         <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="type">private</field>
+        <field name="street">Brussels Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_hne" model="res.partner.bank">
@@ -2121,7 +2178,7 @@
         <field name="country_id" ref="base.be"/>
         <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
         <field name="identification_id">90-09-05-874-51</field>
-        <field name="ssnid">91111111192</field>
+        <field name="niss">91111111192</field>
         <field name="bank_account_id" ref="res_partner_bank_account_joseph_noluck"/>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jon-image.jpg"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>

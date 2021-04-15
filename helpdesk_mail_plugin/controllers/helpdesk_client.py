@@ -18,7 +18,7 @@ class HelpdeskClientController(http.Controller):
         record = request.env['helpdesk.ticket'].create({
             'name': html2plaintext(email_subject),
             'partner_id': partner_id,
-            'description': html2plaintext(email_body),
+            'description': email_body,
             'user_id': request.env.uid
         })
 

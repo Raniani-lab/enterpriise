@@ -228,7 +228,7 @@ class HelpdeskTicket(models.Model):
 
     name = fields.Char(string='Subject', required=True, index=True)
     team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True)
-    description = fields.Text()
+    description = fields.Html()
     active = fields.Boolean(default=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type")
     tag_ids = fields.Many2many('helpdesk.tag', string='Tags')

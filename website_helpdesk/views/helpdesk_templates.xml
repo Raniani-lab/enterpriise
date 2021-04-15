@@ -76,7 +76,7 @@
                             </t>
                         </div>
 
-                        <t t-if="team.description">
+                        <t t-if="not is_html_empty(team.description)">
                             <div class="card bg-secondary mt-2" id="about_team">
                                 <h6 class="card-header"><b>About our team</b></h6>
                             <div class="card-body">

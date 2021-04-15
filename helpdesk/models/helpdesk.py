@@ -38,7 +38,7 @@ class HelpdeskTeam(models.Model):
         return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
 
     name = fields.Char('Helpdesk Team', required=True, translate=True)
-    description = fields.Text('About Team', translate=True)
+    description = fields.Html('About Team', translate=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     sequence = fields.Integer("Sequence", default=10)
@@ -550,7 +550,7 @@ class HelpdeskSLA(models.Model):
     _description = "Helpdesk SLA Policies"
 
     name = fields.Char('SLA Policy Name', required=True, index=True)
-    description = fields.Text('SLA Policy Description')
+    description = fields.Html('SLA Policy Description')
     active = fields.Boolean('Active', default=True)
     team_id = fields.Many2one('helpdesk.team', 'Team', required=True)
     target_type = fields.Selection([('stage', 'Reaching Stage'), ('assigning', 'Assigning Ticket')], default='stage', required=True)

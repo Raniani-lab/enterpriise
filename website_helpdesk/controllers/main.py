@@ -3,6 +3,7 @@
 
 from odoo import http
 from odoo.http import request
+from odoo.tools import is_html_empty
 
 
 class WebsiteHelpdesk(http.Controller):
@@ -30,5 +31,6 @@ class WebsiteHelpdesk(http.Controller):
         result = self.get_helpdesk_team_data(team or teams[0], search=search)
         # For breadcrumb index: get all team
         result['teams'] = teams
+        result['is_html_empty'] = is_html_empty
         result['default_partner_values'] = self._get_partner_data()
         return request.render("website_helpdesk.team", result)

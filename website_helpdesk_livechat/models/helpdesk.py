@@ -4,7 +4,7 @@
 import re
 
 from odoo import api, fields, models, _
-from odoo.tools import html_escape
+from odoo.tools import html_escape, plaintext2html
 
 
 class HelpdeskTeam(models.Model):
@@ -70,7 +70,7 @@ class MailChannel(models.Model):
                 helpdesk_ticket = self.env['helpdesk.ticket'].create({
                     'name': ' '.join(list_value),
                     'user_id': self.env.user.id,
-                    'description': description,
+                    'description': plaintext2html(description),
                     'partner_id': customer.id if customer else False,
                     'team_id': team_id,
                 })

@@ -35,6 +35,13 @@ msgid "<span class=\"mr-1\">Every</span>"
 msgstr ""
 
 #. module: data_merge
+#: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
+msgid ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': [('custom_merge_method', "
+"'=', False)]}\">Model specific</span>"
+msgstr ""
+
+#. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_rule_uniq_model_id_field_id
 msgid "A field can only appear once!"
 msgstr ""
@@ -124,6 +131,11 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__mix_by_company
 msgid "Cross-Company"
+msgstr ""
+
+#. module: data_merge
+#: model:ir.model.fields,field_description:data_merge.field_data_merge_model__custom_merge_method
+msgid "Custom Merge Method"
 msgstr ""
 
 #. module: data_merge

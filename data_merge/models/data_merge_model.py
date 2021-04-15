@@ -58,6 +58,7 @@ class DataMergeModel(models.Model):
     merge_mode = fields.Selection([
         ('manual', 'Manual'),
         ('automatic', 'Automatic')], string='Merge Mode', default='manual')
+    custom_merge_method = fields.Boolean(compute='_compute_custom_merge_method')
 
     rule_ids = fields.One2many('data_merge.rule', 'model_id', string="Deduplication Rules", help='Suggest to merge records matching at least one of these rules')
     records_to_merge_count = fields.Integer(compute='_compute_records_to_merge_count')
@@ -99,6 +100,14 @@ class DataMergeModel(models.Model):
         counts = {cd['model_id'][0]:cd['model_id_count'] for cd in count_data}
         for dm_model in self:
             dm_model.records_to_merge_count = counts[dm_model.id] if dm_model.id in counts else 0
+
+    @api.onchange('res_model_name')
+    def _compute_custom_merge_method(self):
+        for dm_model in self:
+            if dm_model.res_model_name:
+                dm_model.custom_merge_method = hasattr(self.env[dm_model.res_model_name], '_merge_method')
+            else:
+                dm_model.custom_merge_method = False
 
     ############################
     ### Cron / find duplicates

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, tools, _lt
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
@@ -43,19 +43,19 @@ WARNING_DUPLICATE_VENDOR_REFERENCE = 1
 WARNING_DATE_PRIOR_OF_LOCK_DATE = 2
 
 ERROR_MESSAGES = {
-    ERROR_INTERNAL: _("An error occurred"),
-    ERROR_DOCUMENT_NOT_FOUND: _("The document could not be found"),
-    ERROR_NO_DOCUMENT_NAME: _("No document name provided"),
-    ERROR_UNSUPPORTED_IMAGE_FORMAT: _("Unsupported image format"),
-    ERROR_FILE_NAMES_NOT_MATCHING: _("You must send the same quantity of documents and file names"),
-    ERROR_NO_CONNECTION: _("Server not available. Please retry later"),
-    ERROR_SERVER_IN_MAINTENANCE: _("Server is currently under maintenance. Please retry later"),
-    ERROR_PASSWORD_PROTECTED: _("Your PDF file is protected by a password. The OCR can't extract data from it"),
-    ERROR_TOO_MANY_PAGES: _("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
+    ERROR_INTERNAL: _lt("An error occurred"),
+    ERROR_DOCUMENT_NOT_FOUND: _lt("The document could not be found"),
+    ERROR_NO_DOCUMENT_NAME: _lt("No document name provided"),
+    ERROR_UNSUPPORTED_IMAGE_FORMAT: _lt("Unsupported image format"),
+    ERROR_FILE_NAMES_NOT_MATCHING: _lt("You must send the same quantity of documents and file names"),
+    ERROR_NO_CONNECTION: _lt("Server not available. Please retry later"),
+    ERROR_SERVER_IN_MAINTENANCE: _lt("Server is currently under maintenance. Please retry later"),
+    ERROR_PASSWORD_PROTECTED: _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
+    ERROR_TOO_MANY_PAGES: _lt("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
 }
 WARNING_MESSAGES = {
-    WARNING_DUPLICATE_VENDOR_REFERENCE: _("Warning: there is already a vendor bill with this reference (%s)"),
-    WARNING_DATE_PRIOR_OF_LOCK_DATE: _("Warning: as the bill date is prior to the lock date, the accounting date was set for the first following day"),
+    WARNING_DUPLICATE_VENDOR_REFERENCE: _lt("Warning: there is already a vendor bill with this reference (%s)"),
+    WARNING_DATE_PRIOR_OF_LOCK_DATE: _lt("Warning: as the bill date is prior to the lock date, the accounting date was set for the first following day"),
 }
 
 

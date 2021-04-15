@@ -108,7 +108,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/upgrade_fields_tests.js',
             'web_enterprise/static/tests/views/list_tests.js',
         ],
-        'web.qunit_mobile_suite': [
+        'web.qunit_mobile_suite_tests': [
             'web_enterprise/static/tests/test_utils.js',
             'web_enterprise/static/tests/action_manager_mobile_tests.js',
             'web_enterprise/static/tests/control_panel_mobile_tests.js',

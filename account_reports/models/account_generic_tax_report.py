@@ -276,9 +276,24 @@ class generic_tax_report(models.AbstractModel):
 
         :return: The closing moves.
         """
-        on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
-        on_empty_action = self.env.ref('account_accountant.action_tax_group')
+        fp_country = self._get_country_for_fiscal_position_filter(options)
+        if fp_country:
+            context = {
+                'default_country_id': fp_country.id,
+                'search_default_country_id': fp_country.id,
+            }
+        else:
+            context = {}
 
+        on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
+        on_empty_action = {
+            'type': 'ir.actions.act_window',
+            'name': 'Tax groups',
+            'res_model': 'account.tax.group',
+            'view_mode': 'tree',
+            'views': [[False, 'list']],
+            'context': context,
+        }
         # make the preliminary checks
         if options.get('multi_company', False):
             # Ensure that we only have one company selected
@@ -286,7 +301,7 @@ class generic_tax_report(models.AbstractModel):
 
         company = self.env.company
         if not self.env['account.tax.group']._any_is_configured(company):
-            raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
+            raise RedirectWarning(on_empty_msg, on_empty_action, _('Configure your TAX accounts'))
 
         start_date = fields.Date.from_string(options.get('date').get('date_from'))
         end_date = fields.Date.from_string(options.get('date').get('date_to'))

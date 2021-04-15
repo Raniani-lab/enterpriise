@@ -125,7 +125,7 @@ class IntrastatReport(models.AbstractModel):
                 str(int(abs(mass))).zfill(10),                                  # Mass                  length=10
                 '+',                                                            # Supplementary sign    length=1
                 '0000000000',                                                   # Supplementary unit    length=10
-                inv.amount_total_signed >= 0 and '+' or '-',                    # Invoice sign          length=1
+                inv.move_type in ['in_invoice', 'out_invoice'] and '+' or '-',  # Invoice sign          length=1
                 str(int(value)).zfill(10),                                      # Invoice value         length=10
                 '+',                                                            # Statistical sign      length=1
                 '0000000000',                                                   # Statistical value     length=10

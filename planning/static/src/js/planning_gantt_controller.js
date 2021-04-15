@@ -1,14 +1,12 @@
-odoo.define('planning.PlanningGanttController', function (require) {
-'use strict';
+/** @odoo-module alias=planning.PlanningGanttController **/
 
-var GanttController = require('web_gantt.GanttController');
-var core = require('web.core');
-var _t = core._t;
-var Dialog = require('web.Dialog');
-var dialogs = require('web.view_dialogs');
+import GanttController from 'web_gantt.GanttController';
+import { _t } from 'web.core';
+import Dialog from 'web.Dialog';
+import { FormViewDialog } from 'web.view_dialogs';
 
 var PlanningGanttController = GanttController.extend({
-    events: _.extend({}, GanttController.prototype.events, {
+    events: Object.assign({}, GanttController.prototype.events, {
         'click .o_gantt_button_copy_previous_week': '_onCopyWeekClicked',
         'click .o_gantt_button_send_all': '_onSendAllClicked',
     }),
@@ -42,7 +40,7 @@ var PlanningGanttController = GanttController.extend({
         var record = resID ? _.findWhere(this.model.get().records, {id: resID,}) : {};
         var title = resID ? record.display_name : _t("Open");
 
-        var dialog = new dialogs.FormViewDialog(this, {
+        const dialog = new FormViewDialog(this, {
             title: _.str.sprintf(title),
             res_model: this.modelName,
             view_id: this.dialogViews[0][0],
@@ -147,6 +145,4 @@ var PlanningGanttController = GanttController.extend({
     },
 });
 
-return PlanningGanttController;
-
-});
+export default PlanningGanttController;

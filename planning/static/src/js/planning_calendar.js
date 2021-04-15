@@ -1,15 +1,12 @@
-odoo.define('planning.Calendar', function (require) {
-"use strict";
+/** @odoo-module alias=planning.Calendar **/
 
-    var core = require('web.core');
+import { qweb as QWeb } from 'web.core';
 
-    var CalendarPopover = require('web.CalendarPopover');
-    var CalendarRenderer = require('web.CalendarRenderer');
-    var CalendarModel = require('web.CalendarModel');
-    var CalendarView = require('web.CalendarView');
-    var view_registry = require('web.view_registry');
-
-    var QWeb = core.qweb;
+import CalendarPopover from 'web.CalendarPopover';
+import CalendarRenderer from 'web.CalendarRenderer';
+import CalendarModel from 'web.CalendarModel';
+import CalendarView from 'web.CalendarView';
+import view_registry from 'web.view_registry';
 
     var PlanningCalendarPopover = CalendarPopover.extend({
         willStart: function() {
@@ -81,4 +78,3 @@ odoo.define('planning.Calendar', function (require) {
     });
 
     view_registry.add('planning_calendar', PlanningCalendarView);
-});

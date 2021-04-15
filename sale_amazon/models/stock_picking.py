@@ -22,8 +22,10 @@ class StockPicking(models.Model):
         if 'date_done' in vals:
             amazon_pickings = self.sudo().filtered(lambda p: p.sale_id and p.sale_id.amazon_order_ref)
             amazon_pickings._check_sales_order_line_completion()
-            super(StockPicking, amazon_pickings).write(dict(amazon_sync_pending=True, **vals))
-            pickings -= amazon_pickings
+            # Flag as pending sync the pickings linked to Amazon that are the last step of a (multi-step) delivery route
+            last_step_amazon_pickings = amazon_pickings.filtered(lambda p: p.location_dest_id.usage == 'customer')
+            super(StockPicking, last_step_amazon_pickings).write(dict(amazon_sync_pending=True, **vals))
+            pickings -= last_step_amazon_pickings
         return super(StockPicking, pickings).write(vals)
 
     def _check_sales_order_line_completion(self):

@@ -261,3 +261,53 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         self.assertEqual(
             len(contributor), 0, "The contribution should not be registered"
         )
+
+    def test_document_replacement_with_handler(self):
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        vals = {
+            "name": "file",
+            "folder_id": self.folder.id,
+            "raw": r"{}",
+            "handler": "spreadsheet"
+        }
+        document.write(vals)
+        self.assertEqual(document.handler, "spreadsheet", "The handler must contain the value of the handler mentioned in vals")
+
+    def test_document_replacement_with_mimetype(self):
+
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        vals = {
+            "name": "test.txt",
+            "datas": b'aGVsbG8hCg==\n',
+            "folder_id": self.folder.id,
+            "mimetype": "text/plain",
+        }
+        document.write(vals)
+        self.assertEqual(document.handler, False, "The handler should have been reset")
+
+    def test_document_replacement_with_mimetype_and_handler(self):
+        document = self.env["documents.document"].create({
+            "raw": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+        })
+        vals = {
+            "name": "spreadsheet_file",
+            "folder_id": self.folder.id,
+            "raw": r"{}",
+            "mimetype": "application/octet-stream",
+            "handler": "spreadsheet"
+        }
+        document.write(vals)
+        self.assertEqual(document.handler, "spreadsheet", "the handler must contain the value of the handler mentioned in vals")

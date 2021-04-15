@@ -41,6 +41,8 @@ class Document(models.Model):
         return documents
 
     def write(self, vals):
+        if 'mimetype' in vals and 'handler' not in vals:
+            vals['handler'] = False
         if 'raw' in vals:
             self._update_spreadsheet_contributors()
         if all(document.handler == 'spreadsheet' for document in self):

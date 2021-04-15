@@ -105,7 +105,7 @@ class SocialAccountYoutube(models.Model):
                 )
 
                 token_refresh_response = requests.get(
-                    url_join(social_iap_endpoint, 'iap/social_youtube/refresh_token'),
+                    url_join(social_iap_endpoint, 'api/social/youtube/1/refresh_token'),
                     params={
                         'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                         'refresh_token': account.youtube_refresh_token

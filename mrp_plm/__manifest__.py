@@ -26,6 +26,7 @@ Product Life Management
         'views/mrp_document_views.xml',
         'views/mrp_eco_views.xml',
         'views/product_views.xml',
+        'views/mrp_production_views.xml',
         'report/mrp_report_bom_structure.xml',
     ],
     'demo': [],
@@ -35,6 +36,7 @@ Product Life Management
         'web.assets_backend': [
             'mrp_plm/static/src/js/mrp_plm.js',
             'mrp_plm/static/src/js/mrp_bom_report.js',
+            'mrp_plm/static/src/js/mrp_plm_toaster_button.js',
             'mrp_plm/static/src/scss/mrp_plm_dashboard.scss',
         ],
         'web.assets_qweb': [

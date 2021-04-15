@@ -91,6 +91,17 @@ var PlanningGanttController = GanttController.extend({
                         self.dialog.$footer.find('button').removeAttr('disabled');
                     }
                 });
+            } else {
+                const initialState = dialog.form_view.model.get(dialog.form_view.handle);
+                const state = dialog.form_view.renderer.state;
+
+                if (initialState.data.template_creation != state.data.template_creation && state.data.template_creation) {
+                    // Then the shift should be saved as a template too.
+                    self.displayNotification({
+                        type: 'success',
+                        message: `<i class="fa fa-fw fa-check"/>` + _t("This shift was successfully saved as a template."),
+                    });
+                }
             }
         });
 

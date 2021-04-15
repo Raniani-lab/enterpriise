@@ -1,16 +1,9 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
-import base64
-from collections import defaultdict
 from functools import reduce
-from lxml import etree
 
 from odoo import api, fields, models, _
-
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round
 
 EMPLOYER_ONSS = 0.2714
 

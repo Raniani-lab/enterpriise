@@ -13,7 +13,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.modules.module import get_resource_path
 
-# Sources: 
+# Sources:
 # - Technical Doc https://finances.belgium.be/fr/E-services/Belcotaxonweb/documentation-technique
 # - "Avis aux débiteurs" https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avis_aux_debiteurs#q2
 

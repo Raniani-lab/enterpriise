@@ -5,8 +5,8 @@ from odoo import fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
-class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
-    _inherit = 'l10n.be.withholding.tax.exemption'
+class L10nBe274XX(models.Model):
+    _inherit = 'l10n_be.274_xx'
 
     move_id = fields.Many2one('account.move', 'Accounting Entry', readonly=True)
 

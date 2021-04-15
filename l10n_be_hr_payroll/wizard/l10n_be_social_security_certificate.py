@@ -109,7 +109,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
         total_employer_cost = emp_onss + emp_termination_onss + closure_fund + charges_redistribution + co2_fees + structural_reductions + meal_voucher_employer + withholding_taxes_deduction
         holiday_pay_provision = 0
 
-        wizard_274 = self.env['l10n.be.withholding.tax.exemption'].create({
+        wizard_274 = self.env['l10n_be.274_xx'].new({
             'date_start': date_from,
             'date_end': date_to,
         })

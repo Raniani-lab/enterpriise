@@ -4,6 +4,7 @@ import GanttController from 'web_gantt.GanttController';
 import { _t } from 'web.core';
 import Dialog from 'web.Dialog';
 import { FormViewDialog } from 'web.view_dialogs';
+import { _displayDialogWhenEmployeeNoEmail } from './planning_send/form_controller';
 
 var PlanningGanttController = GanttController.extend({
     events: Object.assign({}, GanttController.prototype.events, {
@@ -46,6 +47,11 @@ var PlanningGanttController = GanttController.extend({
     },
 
     /**
+     * @see {/planning_send/form_controller.js}
+     */
+    _displayDialogWhenEmployeeNoEmail,
+
+    /**
      * Opens dialog to add/edit/view a record
      * Override required to execute the reload of the gantt view when an action is performed on a
      * single record.
@@ -58,6 +64,7 @@ var PlanningGanttController = GanttController.extend({
         var self = this;
         var record = resID ? _.findWhere(this.model.get().records, {id: resID,}) : {};
         var title = resID ? record.display_name : _t("Open");
+        const allContext = Object.assign({}, this.context, context);
 
         const dialog = new FormViewDialog(this, {
             title: _.str.sprintf(title),
@@ -66,7 +73,7 @@ var PlanningGanttController = GanttController.extend({
             res_id: resID,
             readonly: !this.is_action_enabled('edit'),
             deletable: this.is_action_enabled('edit') && resID,
-            context: _.extend({}, this.context, context),
+            context: allContext,
             on_saved: this.reload.bind(this, {}),
             on_remove: this._onDialogRemove.bind(this, resID),
         });
@@ -74,7 +81,7 @@ var PlanningGanttController = GanttController.extend({
             // we reload as record can be created or modified (sent, unpublished, ...)
             self.reload();
         });
-        dialog.on('execute_action', this, function(e) {
+        dialog.on('execute_action', this, async function(e) {
             const action_name = e.data.action_data.name || e.data.action_data.special;
             const event_data = _.clone(e.data);
 
@@ -94,6 +101,7 @@ var PlanningGanttController = GanttController.extend({
             } else {
                 const initialState = dialog.form_view.model.get(dialog.form_view.handle);
                 const state = dialog.form_view.renderer.state;
+                const resID = e.data.env.currentID;
 
                 if (initialState.data.template_creation != state.data.template_creation && state.data.template_creation) {
                     // Then the shift should be saved as a template too.
@@ -101,6 +109,23 @@ var PlanningGanttController = GanttController.extend({
                         type: 'success',
                         message: `<i class="fa fa-fw fa-check"/>` + _t("This shift was successfully saved as a template."),
                     });
+                }
+
+                if (action_name === 'action_send' && resID) {
+                    e.stopPropagation();
+                    // We want to check if all employees impacted to this action have a email.
+                    // For those who do not have any email in work_email field, then a FormViewDialog is displayed for each employee who is not email.
+                    try {
+                        const result = await this.model.getEmployeesWithoutWorkEmail({
+                            model: self.modelName,
+                            res_id: resID
+                        });
+                        await this._displayDialogWhenEmployeeNoEmail(result);
+                        self.trigger_up('execute_action', event_data);
+                        setTimeout(() => self.dialog.destroy(), 100);
+                    } catch (err) {
+                        self.dialog.$footer.find('button').removeAttr('disabled');
+                    }
                 }
             }
         });

@@ -744,18 +744,46 @@ class Planning(models.Model):
     # Sending Shifts
     # ----------------------------------------------------
 
-    def action_send(self):
+    def get_employees_without_work_email(self):
+        """ Check if the employees to send the slot have a work email set.
+
+            This method is used in a rpc call.
+
+            :returns: a dictionnary containing the all needed information to continue the process.
+                Returns None, if no employee or all employees have an email set.
+        """
+        self.ensure_one()
+        if not self.employee_id.check_access_rights('write', raise_exception=False):
+            return None
+        employees = self.employee_id or self._get_employees_to_send_slot()
+        employee_ids_without_work_email = employees.filtered(lambda employee: not employee.work_email).ids
+        if not employee_ids_without_work_email:
+            return None
+        context = dict(self._context)
+        context['force_email'] = True
+        return {
+            'relation': 'hr.employee',
+            'res_ids': employee_ids_without_work_email,
+            'context': context,
+        }
+
+    def _get_employees_to_send_slot(self):
         self.ensure_one()
         if not self.employee_id or not self.employee_id.work_email:
-            self.is_published = True
             domain = [('company_id', '=', self.company_id.id), ('work_email', '!=', False)]
             if self.role_id:
                 domain = expression.AND([
                     domain,
                     ['|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', self.role_id.id)]])
-            employee_ids = self.env['hr.employee'].sudo().search(domain)
-            return self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
-        self._send_slot(self.employee_id, self.start_datetime, self.end_datetime)
+            return self.env['hr.employee'].sudo().search(domain)
+        return self.employee_id
+
+    def action_send(self):
+        self.ensure_one()
+        if not self.employee_id or not self.employee_id.work_email:
+            self.is_published = True
+        employee_ids = self._get_employees_to_send_slot()
+        self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
         return True
 
     def action_publish(self):

@@ -21,7 +21,7 @@
                         </group>
                     </group>
                     <group col="2">
-                        <field name="employee_ids" widget="employee_many2many_tags_email" default_focus="1" context="{'force_email':True, 'show_email':True}"/>
+                        <field name="employee_ids" widget="many2many_tags" default_focus="1"/>
                         <field name="note" nolabel="1" colspan="2" placeholder="Additional message"/>
                     </group>
                 <footer>

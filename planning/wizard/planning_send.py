@@ -37,7 +37,19 @@ class PlanningSend(models.TransientModel):
             wiz.slot_ids = self.env['planning.slot'].search([('start_datetime', '>=', wiz.start_datetime),
                                                              ('start_datetime', '<=', wiz.end_datetime)])
 
-
+    def get_employees_without_work_email(self):
+        self.ensure_one()
+        if not self.employee_ids.check_access_rights('write', raise_exception=False):
+            return None
+        employee_ids_without_work_email = self.employee_ids.filtered(lambda employee: not employee.work_email).ids
+        if not employee_ids_without_work_email:
+            return None
+        context = dict(self._context, force_email=True)
+        return {
+            'relation': 'hr.employee',
+            'res_ids': employee_ids_without_work_email,
+            'context': context,
+        }
 
     def action_send(self):
         if not self.employee_ids:

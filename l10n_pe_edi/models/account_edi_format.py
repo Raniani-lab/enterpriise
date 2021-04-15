@@ -126,6 +126,11 @@ class AccountEdiFormat(models.Model):
             '3128': _lt("As you have a document that must be detracted (withheld) which mean a document over 700 "
                         "Soles With services you must select on the 'Operation Type field the correct code 1001 "
                         "for example"),
+            '154': _lt("Your RUC is not linked to Digiflow as OSE, please make sure you have follow this process in the SUNAT portal:\n"
+                       "1. Linked Digiflow as OSE.\n"
+                       "2. Authorize Digiflow as PSE.\n"
+                       "Reference: \n"
+                       "https://www.odoo.com/documentation/user/14.0/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"),
         }
 
     @api.model

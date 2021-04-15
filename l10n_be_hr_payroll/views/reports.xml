@@ -80,7 +80,7 @@
 
         <record id="action_report_ip_273S" model="ir.actions.report">
             <field name="name">273S PDF</field>
-            <field name="model">l10n.be.withholding.tax.ip.declaration</field>
+            <field name="model">l10n_be.273s</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">l10n_be_hr_payroll.report_273S</field>
             <field name="report_file">l10n_be_hr_payroll.report_273S</field>

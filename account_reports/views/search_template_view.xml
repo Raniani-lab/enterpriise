@@ -285,7 +285,7 @@
                 Domestic
             </t>
             <t t-elif="options['fiscal_position'] == 'all'">
-                Everything
+                All
             </t>
             <t t-else="">
                 <t t-set="selected_fiscal_position" t-value="[opt for opt in options['available_vat_fiscal_positions'] if opt['id'] == options['fiscal_position']][0]"/>

@@ -1129,10 +1129,11 @@ Are you sure you want to remove the selection values of those records?""") % len
         })
         chatter_node = etree.Element('div', {'class': 'oe_chatter'})
         follower_node = etree.Element('field', {'name': 'message_follower_ids'})
-        activity_node = etree.Element('field', {'name': 'activity_ids'})
-        thread_node = etree.Element('field', {'name': 'message_ids'})
         chatter_node.append(follower_node)
-        chatter_node.append(activity_node)
+        if model.is_mail_activity:
+            activity_node = etree.Element('field', {'name': 'activity_ids'})
+            chatter_node.append(activity_node)
+        thread_node = etree.Element('field', {'name': 'message_ids'})
         chatter_node.append(thread_node)
         xpath_node.append(chatter_node)
 

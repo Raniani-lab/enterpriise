@@ -47,6 +47,12 @@ class generic_tax_report(models.AbstractModel):
             # (always available for all companies) and the report in options is not available for this company
             options['tax_report'] = available_reports and available_reports[0].id or 'generic'
 
+        if self._is_generic_report(options):
+            # The generic report never shows the fiscal position filter; always displays everything
+            if not previous_options:
+                previous_options = {}
+            previous_options['fiscal_position'] = 'all'
+
         # tax_report is now set, so we'll be able to know which country we're loading the report from.
         super()._init_filter_fiscal_position(options, previous_options)
 
@@ -65,16 +71,11 @@ class generic_tax_report(models.AbstractModel):
         pass
 
     def _get_country_for_fiscal_position_filter(self, options):
-        multicompany_enabled = self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company')
-
-        if not self._is_generic_report(options):
-            tax_report_id = int(options['tax_report'])
-            return self.env['account.tax.report'].browse(tax_report_id).country_id
-
-        elif multicompany_enabled and len(self.env.companies) > 1:
+        if self._is_generic_report(options):
             return None
 
-        return self.env.company.account_fiscal_country_id
+        tax_report_id = int(options['tax_report'])
+        return self.env['account.tax.report'].browse(tax_report_id).country_id
 
     def _get_options(self, previous_options=None):
         rslt = super(generic_tax_report, self)._get_options(previous_options)

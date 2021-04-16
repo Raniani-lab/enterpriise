@@ -596,9 +596,11 @@ class AccountReport(models.AbstractModel):
 
             options['allow_domestic'] = self.env.company.account_fiscal_country_id == country
 
-            accepted_prev_vals = {'all', *vat_fiscal_positions.ids}
+            accepted_prev_vals = {*vat_fiscal_positions.ids}
             if options['allow_domestic']:
                 accepted_prev_vals.add('domestic')
+            if len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1) or not accepted_prev_vals:
+                accepted_prev_vals.add('all')
 
             if previous_options and previous_options.get('fiscal_position') in accepted_prev_vals:
                 # Legit value from previous options; keep it

@@ -9,7 +9,7 @@ from odoo.tools import mute_logger
 from .common import TestFsmFlowSaleCommon
 
 
-@tagged('-at_install', 'post_install', 'fsm_project')
+@tagged('-at_install', 'post_install')
 class TestIndustryFsmProject(TestFsmFlowSaleCommon):
 
     def test_timesheet_product_is_required(self):
@@ -54,8 +54,8 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
 
         # 2) Convert a project with pricing_type="employee_rate"
         # Configuration of the employee rate project before convert it into fsm project
-        self.project_employee_rate.write({
-            'sale_order_id': self.so.id,
+        self.project_employee_rate = self.project_task_rate.copy({
+            'name': 'Project with pricing_type="employee_rate"',
             'sale_line_id': self.so.order_line[0].id,
             'sale_line_employee_ids': [(0, 0, {
                 'employee_id': self.employee_user.id,
@@ -72,6 +72,11 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         self.assertFalse(self.project_employee_rate.sale_line_id)
 
         # 3) Convert a project with pricing_type="project_rate"
+        # Configuration of the "project rate" project before convert it into fsm project
+        self.project_project_rate = self.project_task_rate.copy({
+            'name': 'Project with pricing_type="project_rate"',
+            'sale_line_id': self.so.order_line[1].id,
+        })
         self.project_project_rate.write({'is_fsm': True})
         self.assertTrue(self.project_project_rate.is_fsm)
         self.assertTrue(self.project_project_rate.allow_material)

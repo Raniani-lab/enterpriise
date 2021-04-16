@@ -36,5 +36,5 @@
     ],
     'installable': True,
     'license': 'OEEL-1',
-    'post_init_hook': '_setup_tax_type'
+    'post_init_hook': '_l10n_co_edi_post_init',
 }

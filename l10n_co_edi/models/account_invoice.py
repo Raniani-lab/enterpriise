@@ -149,9 +149,12 @@ class AccountMove(models.Model):
 
     def _l10n_co_edi_create_carvajal_request(self):
         company = self.company_id
+        l10n_edi_carvajal_wsdl = self.env['ir.config_parameter'].get_param('l10n_edi_carvajal_wsdl')
+        if l10n_edi_carvajal_wsdl:
+            l10n_edi_carvajal_wsdl = l10n_edi_carvajal_wsdl % ('-stage' if company.l10n_co_edi_test_mode else '')
         return CarvajalRequest(company.l10n_co_edi_username, company.l10n_co_edi_password,
                                company.l10n_co_edi_company, company.l10n_co_edi_account,
-                               company.l10n_co_edi_test_mode)
+                               company.l10n_co_edi_test_mode, l10n_edi_carvajal_wsdl)
 
     def _l10n_co_edi_get_delivery_date(self):
         return self.invoice_date + timedelta(1)

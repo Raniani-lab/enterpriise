@@ -54,17 +54,20 @@ class CarvajalUsernameToken(UsernameToken):
 
 
 class CarvajalRequest():
-    def __init__(self, username, password, company, account, test_mode):
+    def __init__(self, username, password, company, account, test_mode, wsdl):
         self.username = username or ''
         self.password = password or ''
         self.company = company or ''
         self.account = account or ''
+        self.wsdl = wsdl
 
         self.client = self._init_client(test_mode)
 
     def _init_client(self, test_mode):
         token = self._create_wsse_header(self.username, self.password)
-        return Client('https://wscenf%s.cen.biz/isows/InvoiceService?wsdl' % ('lab' if test_mode else ''), plugins=[CarvajalPlugin()], wsse=token)
+        if not self.wsdl:
+            self.wsdl = 'https://wscenf%s.cen.biz/isows/InvoiceService?wsdl' % ('lab' if test_mode else '')
+        return Client(self.wsdl, plugins=[CarvajalPlugin()], wsse=token)
 
     def _create_wsse_header(self, username, password):
 

@@ -10,7 +10,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     xmlDependencies: ['/appointment/static/src/xml/calendar_appointment_slots.xml'],
     events: {
         'change select[name="timezone"]': '_onRefresh',
-        'change select[id="selectEmployee"]': '_onRefresh',
+        'change select[id="selectStaffUser"]': '_onRefresh',
         'click .o_js_calendar_navigate': '_onCalendarNavigate',
         'click .o_day': '_onClickDaySlot',
     },
@@ -48,18 +48,18 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     },
 
     /**
-     * Refresh the slots info when the user modify the timezone or the employee
+     * Refresh the slots info when the user modify the timezone or the staff member
      */
     _onRefresh: function (ev) {
         if (this.$("#slots_availabilities")[0]) {
             var self = this;
             const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
-            const employeeID = this.$("#slots_form select[name='employee_id']").val();
+            const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
             const timezone = this.$("select[name='timezone']").val();
             this._rpc({
                 route: `/calendar/${appointmentTypeID}/update_available_slots`,
                 params: {
-                    employee_id: employeeID,
+                    staff_user_id: staffUserID,
                     timezone: timezone,
                 },
             }).then(function (data) {

@@ -10,7 +10,6 @@ AttendeeCalendarRenderer.include({
         'click .o_appointment_create_custom_appointment': '_onCreateCustomAppointment',
         'click .o_appointment_discard_slots': '_onDiscardSlots',
         'click .o_appointment_get_last_copy_link': '_onGetLastCopyLink',
-        'click .o_appointment_search_create_work_hours_appointment': '_onSearchCreateWorkHoursAppointment',
         'click .o_appointment_select_slots': '_onSelectSlots',
     }),
     /**
@@ -19,14 +18,19 @@ AttendeeCalendarRenderer.include({
      */
      _initSidebar() {
         this._super(...arguments);
-        if (this.state.employeeId) {
-            const appointments = this.state.employeeAppointmentTypes || [];
-            this.$sidebar.prepend(qweb.render('Calendar.calendar_link_buttons', {
-                appointments: appointments,
-                work_hours_appointment: appointments.find(appointment => appointment.category == 'work_hours'),
-                employee_id: this.state.employeeId,
-            }));
-        }
+        this.$sidebar.prepend(qweb.render('Calendar.calendar_link_buttons', this._prepareAppointmentButtonsTemplateContext()));
+    },
+    /**
+     * Returns the useful data to render the calendar link buttons.
+     * Meant to be overriden in submodules
+     * @returns {Object}
+     */
+     _prepareAppointmentButtonsTemplateContext() {
+        const appointments = this.state.staffUserAppointmentTypes || [];
+        return {
+            appointments: appointments,
+            staff_user_id: this.getSession().uid,
+        };
     },
     /**
      * Adapt the options of the calendar when we are in the
@@ -253,17 +257,6 @@ AttendeeCalendarRenderer.include({
             this.$sidebar.find('.o_appointment_create_custom_appointment').addClass('disabled');
             this._onChangeDisplay(ev);
         }
-    },
-    /**
-     * Used when clicking on the Work Hours appointment type in the dropdown.
-     * We display an info box to the user to let him know that the url was copied
-     * and that it allows him to recopy it until he closes the box
-     * @param {Event} ev 
-     */
-     _onSearchCreateWorkHoursAppointment(ev) {
-        ev.stopPropagation();
-        this.trigger_up('search_create_work_hours_appointment_type', ev);
-        this._onChangeDisplay(ev);
     },
     /**
      * Switch the calendar mode to slots-creation to create slots for

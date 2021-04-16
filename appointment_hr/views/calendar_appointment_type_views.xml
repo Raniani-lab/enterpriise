@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="calendar_appointment_type_view_form_inherit_appointment_hr" model="ir.ui.view">    
+        <field name="name">calendar.appointment.type.form.inherit.appointment.hr</field>
+        <field name="model">calendar.appointment.type</field>
+        <field name="inherit_id" ref="appointment.calendar_appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='staff_user_ids']/tree/field[@name='name']" position="after">
+                <field name="employee_resource_calendar_id" string="Employee Work Hours"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

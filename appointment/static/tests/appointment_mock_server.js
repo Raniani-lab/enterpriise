@@ -17,8 +17,8 @@ MockServer.include({
                 return false;
             }
             const customAppointmentTypeID = this._mockCreate('calendar.appointment.type', {
-                name: "Appointment with Actual Employee",
-                employee_ids: [session.uid],
+                name: "Appointment with Actual Staff Member",
+                staff_user_ids: [session.uid],
                 category: 'custom',
                 website_published: true,
             });
@@ -34,38 +34,18 @@ MockServer.include({
             });
             return {
                 id: customAppointmentTypeID,
-                url: `http://amazing.odoo.com/calendar/3?filter_employee_ids=%5B${session.uid}%5D`,
+                url: `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
-        } else if (route === "/appointment/calendar_appointment_type/search_create_work_hours") {
-            let workHoursAppointmentID = this._mockSearch(
-                'calendar.appointment.type',
-                [[['category', '=', 'work_hours'], ['employee_ids', 'in', [session.uid]]]],
-                {},
-            )[0];
-            if (!workHoursAppointmentID) {
-                workHoursAppointmentID = this._mockCreate('calendar.appointment.type', {
-                    name: "Work Hours with Actual Employee",
-                    employee_ids: [session.uid],
-                    category: 'work_hours',
-                    website_published: true,
-                });
-            }
-            return {
-                id: workHoursAppointmentID,
-                url: `http://amazing.odoo.com/calendar/3?filter_employee_ids=%5B${session.uid}%5D`,
-            };
-        } else if (route === "/appointment/calendar_appointment_type/get_employee_appointment_types") {
+        } else if (route === "/appointment/calendar_appointment_type/get_staff_user_appointment_types") {
             if (session.uid) {
-                const employeeID = session.uid;
                 const domain = [
-                    ['employee_ids', 'in', [employeeID]],
+                    ['staff_user_ids', 'in', [session.uid]],
                     ['category', '!=', 'custom'],
                     ['website_published', '=', true],
                 ];
                 const appointment_types_info = this._mockSearchRead('calendar.appointment.type', [domain, ['category', 'name']], {});
 
                 return Promise.resolve({
-                    employee_id: employeeID,
                     appointment_types_info: appointment_types_info
                 });
             }

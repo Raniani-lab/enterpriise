@@ -20,12 +20,11 @@ QUnit.module('appointment.appointment_link', {
                     id: {string: 'ID', type: 'integer'},
                     name: {string: 'Name', type: 'char'},
                     partner_id: {string: 'Partner', type: 'many2one', relation: 'res.partner'},
-                    employee_id: {string: 'Employee', type: 'many2one', relation: 'hr.employee'},
                 },
                 records: [
-                    {id: session.uid, name: 'User 1', partner_id: 1, employee_id: 1},
-                    {id: 214, name: 'User 214', partner_id: 214, employee_id: 214},
-                    {id: 216, name: 'User 216', partner_id: 216, employee_id: 216},
+                    {id: session.uid, name: 'User 1', partner_id: 1},
+                    {id: 214, name: 'User 214', partner_id: 214},
+                    {id: 216, name: 'User 216', partner_id: 216},
                 ],
             },
             'res.partner': {
@@ -90,12 +89,12 @@ QUnit.module('appointment.appointment_link', {
                 fields: {
                     name: {type: 'char'},
                     website_url: {type: 'char'},
-                    employee_ids: {type: 'many2many', relation: 'hr.employee'},
+                    staff_user_ids: {type: 'many2many', relation: 'res.users'},
                     website_published: {type: 'boolean'},
                     slot_ids: {type: 'one2many', relation: 'calendar.appointment.slot'},
                     category: {
                         type: 'selection',
-                        selection: [['website', 'Website'], ['custom', 'Custom'], ['work_hours', 'Work Hours']]
+                        selection: [['website', 'Website'], ['custom', 'Custom']]
                     },
                 },
                 records: [{
@@ -103,14 +102,14 @@ QUnit.module('appointment.appointment_link', {
                     name: 'Very Interesting Meeting',
                     website_url: '/calendar/schedule-a-demo-1/appointment',
                     website_published: true,
-                    employee_ids: [214],
+                    staff_user_ids: [214],
                     category: 'website',
                 }, {
                     id: 2,
                     name: 'Test Appointment',
                     website_url: '/calendar/test-appointment-2/appointment',
                     website_published: true,
-                    employee_ids: [session.uid],
+                    staff_user_ids: [session.uid],
                     category: 'website',
                 }],
             },
@@ -126,26 +125,6 @@ QUnit.module('appointment.appointment_link', {
                         selection: [['recurring', 'Recurring'], ['unique', 'One Shot']],
                     },
                 },
-            },
-            'hr.employee': {
-                fields: {
-                    id: {type: 'integer'},
-                    name: {type: 'char'},
-                    user_id: {type: 'many2one', relation: 'res.users'},
-                },
-                records: [{
-                    id: session.uid,
-                    name: 'Actual Employee',
-                    user_id: session.uid,
-                }, {
-                    id: 214,
-                    name: 'Denis Ledur',
-                    user_id: 214,
-                },{
-                    id: 216,
-                    name: 'Bhailalbhai',
-                    user_id: 216,
-                }],
             },
             'filter_partner': {
                 fields: {
@@ -176,7 +155,7 @@ QUnit.module('appointment.appointment_link', {
 }, function () {
 
 QUnit.test('verify appointment links button are displayed', async function (assert) {
-    assert.expect(3);
+    assert.expect(2);
 
     const calendar = await createCalendarView({
         View: AttendeeCalendarView,
@@ -211,7 +190,6 @@ QUnit.test('verify appointment links button are displayed', async function (asse
     await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
 
     assert.containsOnce(calendar, 'button:contains("Test Appointment")');
-    assert.containsOnce(calendar, 'button:contains("Work Hours")');
 
     calendar.destroy();
 });
@@ -338,7 +316,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
                 writeText: (value) => {
                     assert.strictEqual(
                         value,
-                        `http://amazing.odoo.com/calendar/3?filter_employee_ids=%5B${session.uid}%5D`
+                        `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`
                     );
                 }
             }
@@ -489,7 +467,7 @@ QUnit.test('click & copy appointment type url', async function (assert) {
                 writeText: (value) => {
                     assert.strictEqual(
                         value,
-                        `http://amazing.odoo.com/calendar/2?filter_employee_ids=%5B${session.uid}%5D`
+                        `http://amazing.odoo.com/calendar/2?filter_staff_user_ids=%5B${session.uid}%5D`
                     );
                 }
             }
@@ -528,78 +506,6 @@ QUnit.test('click & copy appointment type url', async function (assert) {
 
     await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
     await testUtils.dom.click(calendar.$('.o_appointment_appointment_link_clipboard:first'));
-
-    calendar.destroy();
-});
-
-QUnit.test('create/search work hours appointment type', async function (assert) {
-    assert.expect(9);
-
-    patchWithCleanup(browser, {
-        navigator: {
-            clipboard: {
-                writeText: (value) => {
-                    assert.strictEqual(
-                        value,
-                        `http://amazing.odoo.com/calendar/3?filter_employee_ids=%5B${session.uid}%5D`
-                    );
-                }
-            }
-        }
-    });
-
-    const calendar = await createCalendarView({
-        View: AttendeeCalendarView,
-        model: 'calendar.event',
-        data: this.data,
-        arch: 
-        `<calendar class="o_calendar_test"
-                    js_class="attendee_calendar"
-                    all_day="allday"
-                    date_start="start"
-                    date_stop="stop"
-                    color="partner_id">
-            <field name="name"/>
-            <field name="partner_ids" write_model="filter_partner" write_field="partner_id"/>
-        </calendar>`,
-        viewOptions: {
-            initialDate: initialDate,
-        },
-        mockRPC: function (route, args) {
-            if (route === "/appointment/calendar_appointment_type/search_create_work_hours") {
-                assert.step(route);
-            } else if (route === '/microsoft_calendar/sync_data') {
-                return Promise.resolve();
-            } else if (route === '/web/dataset/call_kw/res.partner/get_attendee_detail') {
-                return Promise.resolve([]);
-            }
-            return this._super.apply(this, arguments);
-        },
-        session: {
-            'web.base.url': 'http://amazing.odoo.com',
-        },
-    }, { positionalClicks: true });
-
-    assert.strictEqual(2, this.data['calendar.appointment.type'].records.length)
-
-    await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
-
-    await testUtils.dom.click(calendar.$('.o_appointment_search_create_work_hours_appointment'));
-    await testUtils.nextTick();
-
-    assert.verifySteps(['/appointment/calendar_appointment_type/search_create_work_hours']);
-    assert.strictEqual(3, this.data['calendar.appointment.type'].records.length,
-        "Create a new appointment type")
-
-    await testUtils.dom.click(calendar.$('.o_appointment_change_display'));
-    await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
-
-    await testUtils.dom.click(calendar.$('.o_appointment_search_create_work_hours_appointment'));
-    await testUtils.nextTick();
-
-    assert.verifySteps(['/appointment/calendar_appointment_type/search_create_work_hours']);
-    assert.strictEqual(3, this.data['calendar.appointment.type'].records.length,
-        "Does not create a new appointment type");
 
     calendar.destroy();
 });

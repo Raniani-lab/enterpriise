@@ -15,11 +15,13 @@ class CalendarAppointmentShare(models.TransientModel):
 
     appointment_type_ids = fields.Many2many('calendar.appointment.type', domain=_domain_appointment_type_ids, string='Appointments')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count')
-    suggested_employee_ids = fields.Many2many('hr.employee', related='appointment_type_ids.employee_ids', string='Possible employees',
-        help="Get the employees link to the appointment type selected to apply a domain on the employees that can be selected")
-    employee_ids = fields.Many2many('hr.employee', domain=[('user_id', '!=', False)], string='Employees',
-        compute='_compute_employee_id', inverse='_inverse_employee_id',
-        help="The employees that will be display/filter for the user to make its appointment")
+    suggested_staff_user_ids = fields.Many2many(
+        'res.users', related='appointment_type_ids.staff_user_ids', string='Possible staff members',
+        help="Get the staff members linked to the appointment type selected to apply a domain on the staff members that can be selected")
+    staff_user_ids = fields.Many2many(
+        'res.users', string='Staff',
+        compute='_compute_staff_user_id', store=True, readonly=False,
+        help="The staff members that will be displayed/filtered for the user to make its appointment")
     share_link = fields.Char('Link', compute='_compute_share_link')
 
     @api.depends('appointment_type_ids')
@@ -28,25 +30,22 @@ class CalendarAppointmentShare(models.TransientModel):
             appointment_link.appointment_type_count = len(appointment_link.appointment_type_ids)
 
     @api.depends('appointment_type_ids')
-    def _compute_employee_ids(self):
+    def _compute_staff_user_ids(self):
         for appointment_link in self:
-            employees = appointment_link.appointment_type_ids.employee_ids._origin
-            if len(employees) == 1:
-                appointment_link.employee_ids = employees
+            staff_users = appointment_link.appointment_type_ids.staff_user_ids._origin
+            if len(staff_users) == 1:
+                appointment_link.staff_user_ids = staff_users
             else:
-                appointment_link.employee_ids = self.env.user.employee_id if self.env.user.employee_id in employees else False
+                appointment_link.staff_user_ids = self.env.user.id if self.env.user.id in staff_users else False
 
-    def _inverse_employee_ids(self):
-        pass
-
-    @api.depends('appointment_type_ids', 'employee_ids')
+    @api.depends('appointment_type_ids', 'staff_user_ids')
     def _compute_share_link(self):
         """
-        Compute a link that will be share for the user depending on the appointment types and employees
-        selected. We allow to preselect a group of employees if there is only one appointment type selected.
-        Indeed, it would be too complex to manage employees with multiple appointment types.
+        Compute a link that will be share for the user depending on the appointment types and staff members
+        selected. We allow to preselect a group of staff members if there is only one appointment type selected.
+        Indeed, it would be too complex to manage staff members with multiple appointment types.
         Two possible params can be generated with the link:
-            - filter_employee_ids: which allows the user to select an employee between the ones selected
+            - filter_staff_user_ids: which allows the user to select an staff member between the ones selected
             - filter_appointment_type_ids: which display a selection of appointment types to user from which
             he can choose
         """
@@ -54,10 +53,10 @@ class CalendarAppointmentShare(models.TransientModel):
         for appointment_link in self:
             url_param = dict()
             if len(appointment_link.appointment_type_ids) == 1:
-                # If only one appointment type is selected, we share the appointment link with the possible employees selected
-                if appointment_link.employee_ids:
+                # If only one appointment type is selected, we share the appointment link with the possible staff members selected
+                if appointment_link.staff_user_ids:
                     url_param.update({
-                        'filter_employee_ids': str(appointment_link.employee_ids.ids)
+                        'filter_staff_user_ids': str(appointment_link.staff_user_ids.ids)
                     })
                 appt_link = url_join('%s/' % calendar_url, slug(appointment_link.appointment_type_ids._origin))
                 share_link = '%s?%s' % (appt_link, url_encode(url_param))

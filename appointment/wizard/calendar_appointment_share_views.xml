@@ -8,9 +8,9 @@
                 <sheet>
                     <group>
                         <field name="appointment_type_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                        <field name="suggested_employee_ids" invisible="1"/>
+                        <field name="suggested_staff_user_ids" invisible="1"/>
                         <field name="appointment_type_count" invisible="1"/>
-                        <field name="employee_ids" widget="many2many_tags" domain="[('id','in',suggested_employee_ids)]" attrs="{'invisible': [('appointment_type_count', '&gt;', 1)]}" options="{'no_create': True}"/>
+                        <field name="staff_user_ids" widget="many2many_tags" domain="[('id','in',suggested_staff_user_ids)]" attrs="{'invisible': [('appointment_type_count', '&gt;', 1)]}" options="{'no_create': True}"/>
                     </group>
                     <group>
                         <field name="share_link" widget="CopyClipboardChar" readonly="1"/>

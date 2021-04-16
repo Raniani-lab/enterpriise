@@ -24,26 +24,24 @@ CalendarModel.include({
      */
     __get() {
         var result = this._super(...arguments);
-        result.employeeAppointmentTypes = this.data.employeeAppointmentTypes;
-        result.employeeId = this.data.employeeId;
+        result.staffUserAppointmentTypes = this.data.staffUserAppointmentTypes;
         result.calendarMode = this.calendarMode;
         return result;
     },
     /**
-     * Fetch the employee of the user and the assiociated appointment types.
-     * This appointment types will be rendered in a dropdown button on the calendar
+     * Fetch the staff user and the assiociated appointment types.
+     * These appointment types will be rendered in a dropdown button on the calendar
      * view for the user to copy its url in order to be share with a client.
-     * In case the user has no employee, this dropdown button will not be displayed.
      * @override
      * @returns {Promise}
      */
     async _loadCalendar() {
         const _super = this._super.bind(this);
-        const appointmentEmployeeInfo = await this._rpc({
-            route: '/appointment/calendar_appointment_type/get_employee_appointment_types',
+        const appointmentStaffUserInfo = await this._rpc({
+            route: '/appointment/calendar_appointment_type/get_staff_user_appointment_types',
         });
-        this.data.employeeId = appointmentEmployeeInfo.employee_id;
-        this.data.employeeAppointmentTypes = appointmentEmployeeInfo.appointment_types_info;
+        this.data.appointmentStaffUserInfo = appointmentStaffUserInfo;
+        this.data.staffUserAppointmentTypes = appointmentStaffUserInfo.appointment_types_info;
         return _super(...arguments);
     },
     /**

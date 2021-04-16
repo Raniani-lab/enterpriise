@@ -38,15 +38,11 @@
                 <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-right col" data-labelledby="dropdownAppointmentLink">
                     <t t-foreach="appointments" t-as="appointment">
                         <button t-if="appointment.category == 'website'" t-att-id="appointment.id"
-                            t-attf-data-url="/calendar/#{appointment.id}#{employee_id ? '?filter_employee_ids=[' + employee_id + ']' : ''}"
+                            t-attf-data-url="/calendar/#{appointment.id}#{staff_user_id ? '?filter_staff_user_ids=[' + staff_user_id + ']' : ''}"
                             class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_button_link o_appointment_appointment_link_clipboard text-truncate">
                             <span class="align-bottom" t-out="appointment.name"/>
                         </button>
                     </t>
-                    <button id="search_create_work_hours_appointment"
-                        class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_button_link o_appointment_search_create_work_hours_appointment">
-                        <span class="align-bottom">Work Hours</span>
-                    </button>
                 </div>
             </div>
         </div>

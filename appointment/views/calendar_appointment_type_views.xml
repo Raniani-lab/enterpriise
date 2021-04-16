@@ -8,9 +8,9 @@
             <search string="Appointment Types">
                 <field name="name"/>
                 <field name="location"/>
-                <field name="employee_ids"/>
+                <field name="staff_user_ids"/>
                 <field name="category"/>
-                <filter string="My Appointments" name="my_appointments" domain="[('employee_ids.user_id', 'in', [uid])]"/>
+                <filter string="My Appointments" name="my_appointments" domain="[('staff_user_ids', 'in', [uid])]"/>
                 <separator/>
                 <filter name="filter_active" string="Archived" domain="[('active', '=', False)]"/>
             </search>
@@ -71,7 +71,7 @@
                 <field name="name" readonly="1"/>
                 <field name="location"/>
                 <field name="appointment_tz"/>
-                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="staff_user_ids" widget="many2many_tags" optional="hide"/>
                 <field name="country_ids" widget="many2many_tags" groups="base.group_no_one" optional="show"/>
             </tree>
         </field>
@@ -86,7 +86,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" readonly="1"/>
                 <field name="appointment_tz"/>
-                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="staff_user_ids" widget="many2many_tags" optional="hide"/>
                 <field name="category" groups="base.group_no_one"/>
             </tree>
         </field>
@@ -150,11 +150,10 @@
                                     <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
                                 </group>
                             </group>
-                            <separator string="Available Employees"/>
-                            <field name="employee_ids" attrs="{'readonly': [('category', '!=', 'website')]}">
-                                <tree string="Employees" delete="1" create="0">
+                            <separator string="Available Staff"/>
+                            <field name="staff_user_ids" attrs="{'readonly': [('category', '!=', 'website')]}">
+                                <tree string="Staff members" delete="1">
                                     <field name="name"/>
-                                    <field name="resource_calendar_id"/>
                                 </tree>
                             </field>
                         </page>

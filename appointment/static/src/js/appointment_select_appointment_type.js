@@ -25,7 +25,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
 
     /**
      * On appointment type change: adapt appointment intro text and available
-     * employees (if option enabled)
+     * staff members (if option enabled)
      *
      * @override
      * @param {Event} ev

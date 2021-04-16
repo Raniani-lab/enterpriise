@@ -17,45 +17,18 @@ class AppointmentTest(common.HttpCase):
 
     def setUp(self):
         super(AppointmentTest, self).setUp()
-
-        # calendar events can mess up the availability of our employee later on.
+        # calendar events can mess up the availability of our staff member later on.
         self.env['calendar.event'].search([]).unlink()
 
-        self.company = self.env['res.company'].search([], limit=1)
-
-        self.resource_calendar = self.env['resource.calendar'].create({
-            'name': 'Small Day',
-            'company_id': self.company.id
-        })
-
-        self.resource_calendar.write({'attendance_ids': [(5, False, False)]})  # Wipe out all attendances
-
-        self.attendance = self.env['resource.calendar.attendance'].create({
-            'name': 'monday morning',
-            'dayofweek': '0',
-            'hour_from': 8,
-            'hour_to': 12,
-            'calendar_id': self.resource_calendar.id
-        })
-
-        self.first_user_in_brussel = self.env['res.users'].create({'name': 'Grace Slick', 'login': 'grace'})
-        self.first_user_in_brussel.write({'tz': 'Europe/Brussels'})
-
-        self.second_user_in_australia = self.env['res.users'].create({'name': 'Australian guy', 'login': 'australian'})
-        self.second_user_in_australia.write({'tz': 'Australia/West'})
-
-        self.employee_in_brussel = self.env['hr.employee'].create({
+        self.first_staff_user_in_brussel = self.env['res.users'].create({
             'name': 'Grace Slick',
-            'user_id': self.first_user_in_brussel.id,
-            'company_id': self.company.id,
-            'resource_calendar_id': self.resource_calendar.id
+            'login': 'grace',
+            'tz': 'Europe/Brussels'
         })
-
-        self.employee_in_australia = self.env['hr.employee'].create({
-            'name': 'Chris Fisher',
-            'user_id': self.second_user_in_australia.id,
-            'company_id': self.company.id,
-            'resource_calendar_id': self.resource_calendar.id,
+        self.second_staff_user_in_australia = self.env['res.users'].create({
+            'name': 'Australian guy',
+            'login': 'australian',
+            'tz': 'Australia/West'
         })
 
         self.appointment_in_brussel = self.env['calendar.appointment.type'].create({
@@ -65,13 +38,13 @@ class AppointmentTest(common.HttpCase):
             'max_schedule_days': 15,
             'min_cancellation_hours': 1,
             'appointment_tz': 'Europe/Brussels',
-            'employee_ids': [(4, self.employee_in_brussel.id, False)],
+            'staff_user_ids': [(4, self.first_staff_user_in_brussel.id, False)],
             'slot_ids': [(0, False, {'weekday': '1', 'start_hour': 9, 'end_hour': 10})]  # Yes, monday has either 0 or 1 as weekday number depending on the object it's in
         })
 
     def test_extreme_timezone_delta(self):
-        context_australia = {'uid': self.second_user_in_australia.id,
-                             'tz': self.second_user_in_australia.tz,
+        context_australia = {'uid': self.second_staff_user_in_australia.id,
+                             'tz': self.second_staff_user_in_australia.tz,
                              'lang': 'en_US'}
 
         # As if the second user called the function
@@ -103,7 +76,7 @@ class AppointmentTest(common.HttpCase):
                         already_checked.add(day['day'])
                         self.assertEqual(len(day['slots']), 1, 'Each monday should have only one slot')
                         slot = day['slots'][0]
-                        self.assertEqual(slot['employee_id'], self.employee_in_brussel.id, 'The right employee should be available on each slot')
+                        self.assertEqual(slot['staff_user_id'], self.first_staff_user_in_brussel.id, 'The right staff member should be available on each slot')
                         self.assertEqual(slot['hours'], '09:00', 'Slots hours has to be 09:00')  # We asked to display the slots as Europe/Brussels
 
         # Ensuring that we've gone through the *crucial* asserts at least once
@@ -257,37 +230,5 @@ class AppointmentTest(common.HttpCase):
             self.env['calendar.appointment.type'].create({
                 'name': 'Custom without employee',
                 'category': 'custom',
-                'employee_ids': [self.employee_in_brussel.id, self.employee_in_australia.id]
+                'staff_user_ids': [self.first_staff_user_in_brussel.id, self.second_staff_user_in_australia.id]
             })
-
-    @users('admin')
-    def test_create_work_hours_appointment_without_employee(self):
-        # No Validation Error, the actual employee should be set by default
-        self.env['calendar.appointment.type'].create({
-            'name': 'Work hours without employee',
-            'category': 'work_hours',
-        })
-
-    @users('admin')
-    def test_create_work_hours_appointment_multiple_employees(self):
-        with self.assertRaises(ValidationError):
-            self.env['calendar.appointment.type'].create({
-                'name': 'Work hours without employee',
-                'category': 'work_hours',
-                'employee_ids': [self.employee_in_brussel.id, self.employee_in_australia.id]
-            })
-
-    @users('admin')
-    def test_search_create_work_hours(self):
-        self.authenticate('admin', 'admin')
-        request = self.url_open(
-            "/appointment/calendar_appointment_type/search_create_work_hours",
-            data=json.dumps({}),
-            headers={"Content-Type": "application/json"},
-        ).json()
-        result = request.get('result', False)
-        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
-        self.assertEqual(appointment_type.category, 'work_hours')
-        self.assertEqual(len(appointment_type.slot_ids), 14, "Two slots have been created")
-        self.assertTrue(all(slot.slot_type == 'recurring' for slot in appointment_type.slot_ids), "All slots are 'recurring'")

@@ -22,7 +22,7 @@ Wysiwyg.include({
                         context: {
                             form_view_ref: "appointment.calendar_appointment_insert_share_view_form",
                             default_appointment_type_ids: [],
-                            default_employee_ids: [],
+                            default_staff_user_ids: [],
                         },
                         title: "Insert Appointment Link",
                         readonly: false,

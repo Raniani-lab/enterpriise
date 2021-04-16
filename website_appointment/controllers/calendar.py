@@ -6,6 +6,6 @@ from odoo.osv.expression import AND
 
 
 class WebsiteAppointmentController(AppointmentController):
-    def _get_employee_appointment_type_domain(self, employee):
-        domain = super()._get_employee_appointment_type_domain(employee)
+    def _get_staff_user_appointment_type_domain(self):
+        domain = super()._get_staff_user_appointment_type_domain()
         return AND([domain, [('website_published', '=', True)]])

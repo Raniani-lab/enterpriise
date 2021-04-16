@@ -14,7 +14,6 @@ CalendarController.include({
         'appointment_get_copied_url': '_onCopyLastAppointmentURL',
         'appointment_link_clipboard': '_onClickAppointmentLink',
         'create_custom_appointment': '_onCreateCustomAppointment',
-        'search_create_work_hours_appointment_type': '_onSearchCreateWorkHoursAppointment',
         'slots_discard': '_onDiscardSlots',
         'set_slots_creation_mode': '_setModeToSlotsCreation',
     }),
@@ -78,20 +77,6 @@ CalendarController.include({
         const slotEvents = events.filter(event => event.extendedProps.slot);
         slotEvents.forEach(event => event.remove());
         this.model.setCalendarMode('default');
-    },
-    /**
-     * Search/create the work hours appointment type of the user when
-     * he clicks on the button "Work Hours".
-     * @param {Event} ev 
-     */
-     async _onSearchCreateWorkHoursAppointment(ev) {
-        const workHoursAppointment = await this._rpc({
-            route: '/appointment/calendar_appointment_type/search_create_work_hours',
-        });
-        if (workHoursAppointment.id) {
-            browser.navigator.clipboard.writeText(workHoursAppointment.url);
-            this.lastAppointmentURL = workHoursAppointment.url;
-        }
     },
     /**
      * Update the mode of the calendar to slots-creation

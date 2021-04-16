@@ -45,43 +45,38 @@ class Appointment(http.Controller):
     @http.route([
         '/calendar/<model("calendar.appointment.type"):appointment_type>',
     ], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_type(self, appointment_type, filter_employee_ids=None, timezone=None, state=False, **kwargs):
+    def calendar_appointment_type(self, appointment_type, filter_staff_user_ids=None, timezone=None, state=False, **kwargs):
         """
         Render the appointment information alongside the calendar for the slot selection
 
         :param appointment_type: the appointment type we are currently on
-        :param filter_employee_ids: the employees that will be displayed for the appointment registration, if not given
-            all employees set for the appointment type are used
+        :param filter_staff_user_ids: the staff members that will be displayed for the appointment registration, if not given
+            all staff members set for the appointment type are used
         :param timezone: the timezone used to display the available slots
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
             - cancel: Info message to confirm that an appointment has been canceled
-            - failed-employee: Error message displayed when the slot has been taken while doing the registration
+            - failed-staff-user: Error message displayed when the slot has been taken while doing the registration
             - failed-partner: Info message displayed when the partner has already an event in the time slot selected
         """
         appointment_type = appointment_type.sudo()
         request.session['timezone'] = timezone or appointment_type.appointment_tz
-        try:
-            filter_employee_ids = json.loads(filter_employee_ids) if filter_employee_ids else []
-        except json.decoder.JSONDecodeError:
-            raise ValueError()
 
-        if appointment_type.assign_method == 'chosen' and not filter_employee_ids:
-            suggested_employees = appointment_type.employee_ids
+        filtered_staff_user_ids = self._get_filtered_staff_user_ids(appointment_type, filter_staff_user_ids, **kwargs)
+
+        if appointment_type.assign_method == 'chosen' and not filtered_staff_user_ids:
+            suggested_staff_users = appointment_type.staff_user_ids
         else:
-            suggested_employees = appointment_type.employee_ids.filtered(lambda emp: emp.id in filter_employee_ids)
+            suggested_staff_users = appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filtered_staff_user_ids)
 
-        # Keep retrocompatibility with the the old personnal link ?employee_id=
-        employee_id = kwargs.get('employee_id')
-        if not suggested_employees and employee_id and int(employee_id) in appointment_type.employee_ids.ids:
-            suggested_employees = request.env['hr.employee'].sudo().browse(int(employee_id))
-
-        default_employee = suggested_employees[0] if suggested_employees else request.env['hr.employee']
-        slots = appointment_type._get_appointment_slots(request.session['timezone'], default_employee)
+        slots = appointment_type._get_appointment_slots(
+            request.session['timezone'],
+            suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
+        )
         formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]
 
         return request.render("appointment.appointment_info", {
             'appointment_type': appointment_type,
-            'suggested_employees': suggested_employees,
+            'suggested_staff_users': suggested_staff_users,
             'main_object': appointment_type,
             'timezone': request.session['timezone'],
             'slots': slots,
@@ -90,19 +85,27 @@ class Appointment(http.Controller):
             'formated_days': formated_days,
         })
 
+    def _get_filtered_staff_user_ids(self, appointment_type, filter_staff_user_ids=None, **kwargs):
+        """ This method returns the ids of the suggested staff users, extracting relevant data from link.
+            It is overriden in submodule to ensure retrocompatibility."""
+        try:
+            return json.loads(filter_staff_user_ids) if filter_staff_user_ids else []
+        except json.decoder.JSONDecodeError:
+            return []
+
     @http.route([
         '/calendar/<model("calendar.appointment.type"):appointment_type>/appointment',
     ], type='http', auth='public', website=True, sitemap=True)
-    def calendar_appointment(self, appointment_type, filter_employee_ids=None, timezone=None, failed=False, **kwargs):
+    def calendar_appointment(self, appointment_type, filter_staff_user_ids=None, timezone=None, failed=False, **kwargs):
         return request.redirect('/calendar/%s?%s' % (slug(appointment_type), keep_query('*')))
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/info'], type='http', auth="public", website=True, sitemap=True)
-    def calendar_appointment_form(self, appointment_type, employee_id, date_time, duration, **kwargs):
+    def calendar_appointment_form(self, appointment_type, staff_user_id, date_time, duration, **kwargs):
         """
         Render the form to get information about the user for the appointment
 
         :param appointment_type: the appointment type related
-        :param employee_id: the employee selected for the appointment
+        :param staff_user_id: the staff member selected for the appointment
         :param date_time: the slot datetime selected for the appointment
         :param fitler_appointment_type_ids: see ``Appointment.calendar_appointments()`` route
         """
@@ -118,17 +121,17 @@ class Appointment(http.Controller):
             'datetime_locale': day_name + ' ' + date_formated,
             'datetime_str': date_time,
             'duration_str': duration,
-            'employee_id': employee_id,
+            'staff_user_id': staff_user_id,
         })
 
     @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, methods=["POST"])
-    def calendar_appointment_submit(self, appointment_type, datetime_str, duration_str, employee_id, name, phone, email, **kwargs):
+    def calendar_appointment_submit(self, appointment_type, datetime_str, duration_str, staff_user_id, name, phone, email, **kwargs):
         """
         Create the event for the appointment and redirect on the validation page with a summary of the appointment.
 
         :param appointment_type: the appointment type related
         :param datetime_str: the string representing the datetime
-        :param employee_id: the employee selected for the appointment
+        :param staff_user_id: the staff member selected for the appointment
         :param name: the name of the user sets in the form
         :param phone: the phone of the user sets in the form
         :param email: the email of the user sets in the form
@@ -139,13 +142,12 @@ class Appointment(http.Controller):
         duration = float(duration_str)
         date_end = date_start + relativedelta(hours=duration)
 
-        # check availability of the employee again (in case someone else booked while the client was entering the form)
-        employee = request.env['hr.employee'].sudo().browse(int(employee_id)).exists()
-        if employee not in appointment_type.sudo().employee_ids:
+        # check availability of the staff user again (in case someone else booked while the client was entering the form)
+        staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)).exists()
+        if staff_user not in appointment_type.sudo().staff_user_ids:
             raise NotFound()
-        if employee.user_id and employee.user_id.partner_id:
-            if not employee.user_id.partner_id.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/calendar/%s/appointment?state=failed-employee' % slug(appointment_type))
+        if staff_user and not staff_user.partner_id.calendar_verify_availability(date_start, date_end):
+            return request.redirect('/calendar/%s/appointment?state=failed-staff-user' % appointment_type.id)
 
         Partner = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
@@ -191,20 +193,20 @@ class Appointment(http.Controller):
         # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
         event = request.env['calendar.event'].with_context(
             mail_notify_author=True,
-            allowed_company_ids=employee.user_id.company_ids.ids,
+            allowed_company_ids=staff_user.company_ids.ids,
         ).sudo().create(
-                self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, name, employee, Partner)
-            )
+            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, name, staff_user, Partner)
+        )
         event.attendee_ids.write({'state': 'accepted'})
         return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
 
-    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, name, employee, partner):
+    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, name, staff_user, partner):
         """
         prepares all values needed to create a new calendar.event
         """
         categ_id = request.env.ref('appointment.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
-        partner_ids = list(set([employee.user_id.partner_id.id] + [partner.id]))
+        partner_ids = list(set([staff_user.partner_id.id] + [partner.id]))
         return {
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
@@ -223,7 +225,7 @@ class Appointment(http.Controller):
             'partner_ids': [(4, pid, False) for pid in partner_ids],
             'categ_ids': [(4, categ_id.id, False)],
             'appointment_type_id': appointment_type.id,
-            'user_id': employee.user_id.id,
+            'user_id': staff_user.id,
         }
 
     @http.route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
@@ -328,15 +330,15 @@ class Appointment(http.Controller):
         return appointment_type.message_intro or ''
 
     @http.route(['/calendar/<int:appointment_type_id>/update_available_slots'], type="json", auth="public", website=True)
-    def calendar_appointment_update_available_slots(self, appointment_type_id, employee_id=None, timezone=None, **kwargs):
+    def calendar_appointment_update_available_slots(self, appointment_type_id, staff_user_id=None, timezone=None, **kwargs):
         """
-            Route called when the employee or the timezone is modified to adapt the possible slots accordingly
+            Route called when the staff member or the timezone is modified to adapt the possible slots accordingly
         """
         appointment_type = request.env['calendar.appointment.type'].browse(int(appointment_type_id))
 
         request.session['timezone'] = timezone or appointment_type.appointment_tz
-        employee = request.env['hr.employee'].sudo().browse(int(employee_id)) if employee_id else None
-        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], employee)
+        staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else None
+        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], staff_user)
 
         return request.env.ref('appointment.appointment_calendar')._render({
             'appointment_type': appointment_type,

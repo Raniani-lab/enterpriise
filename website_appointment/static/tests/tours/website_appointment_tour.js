@@ -25,14 +25,14 @@ tour.register('website_appointment_tour', {
         content: 'set max scheduled days',
         run: 'text 45',
     }, {
-        trigger: 'div[name="employee_ids"] a',
-        content: 'add employees',
+        trigger: 'div[name="staff_user_ids"] a',
+        content: 'add staff members',
     }, {
         trigger: '.o_list_record_selector',
-        content: 'select employees',
+        content: 'select staff members',
     }, {
         trigger: '.o_select_button',
-        content: 'save new employees for the appointment type',
+        content: 'save new staff members for the appointment type',
     }, {
         trigger: 'a:contains("Availability")',
         content: 'go to slots tab',

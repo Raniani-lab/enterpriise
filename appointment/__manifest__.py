@@ -3,7 +3,7 @@
 
 {
     'name': 'Appointments',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Marketing/Online Appointment',
     'sequence': 215,
     'summary': 'Allow people to book meetings in your agenda',
@@ -11,7 +11,7 @@
     'description': """
         Allow clients to Schedule Appointments through the Portal
     """,
-    'depends': ['calendar_sms', 'hr', 'portal'],
+    'depends': ['calendar_sms', 'portal'],
     'data': [
         'data/calendar_data.xml',
         'data/mail_data.xml',

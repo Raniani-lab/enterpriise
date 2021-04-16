@@ -323,6 +323,10 @@
                 <field name="type"/>
                 <field name="activity_ids" />
                 <field name="activity_state" />
+                <field name="allow_change_kanban_state"/>
+                <field name="legend_blocked"/>
+                <field name="legend_normal"/>
+                <field name="legend_done"/>
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -364,9 +368,7 @@
                                 <div class="oe_kanban_bottom_right">
                                     <div class="float-left mr4" groups="base.group_user">
                                         <field name="activity_ids" widget="kanban_activity"/>
-                                        <span t-if="record.kanban_state.raw_value == 'normal'" class="o_status o_status_grey" title="Waiting for Approvals" role="img" aria-label="Waiting for Approvals"/>
-                                        <span t-if="record.kanban_state.raw_value == 'done'" class="o_status o_status_green" title="All Approvals have be done" role="img" aria-label="All Approvals have be done"/>
-                                        <span t-if="record.kanban_state.raw_value == 'blocked'" class="o_status o_status_red" title="Someone rejected this change" role="img" aria-label="Someone rejected this change"/>
+                                        <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
                                     </div>
                                     <field name="user_id" widget="many2one_avatar_user"/>
                                 </div>
@@ -403,6 +405,9 @@
                             class="oe_highlight" attrs="{'invisible': ['|', ('allow_apply_change', '=', False), ('state', '=', 'done')]}"/>
                 </header>
                 <sheet>
+                    <field name="legend_blocked" invisible="1"/>
+                    <field name="legend_normal" invisible="1"/>
+                    <field name="legend_done" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-file-text-o" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
                             <field string="Documents" name="mrp_document_count" widget="statinfo"/>
@@ -417,7 +422,8 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <field name="kanban_state" widget="state_selection"/>
+                    <field name="allow_change_kanban_state" invisible="1"/>
+                    <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
                     <div class="oe_title">
                         <label for="name" string="Description"/>
                         <h2><field name="name" placeholder="e.g. Awesome Product 2.0" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
@@ -710,15 +716,39 @@
                             <field name="final_stage"/>
                         </group>
                     </group>
-                    <h2>Approvals</h2>
-                    <field name="approval_template_ids">
-                        <tree editable="bottom">
-                            <field name="sequence" widget="handle"/>
-                            <field name="name" placeholder="e.g. Engineering Department"/>
-                            <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="approval_type"/>
-                        </tree>
-                    </field>
+                    <group name="approvals" string="Approvals">
+                        <field name="approval_template_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name" placeholder="e.g. Engineering Department"/>
+                                <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="approval_type"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group name="stage_state_config" string="Stage Description and Tooltips">
+                        <p class="text-muted" colspan="2">
+                            You can define here labels that will be displayed for the state instead
+                            of the default labels.
+                        </p>
+                        <label for="legend_normal" string=" " class="o_status oe_project_kanban_legend"
+                            title="Task in progress. Click to block or set as done."
+                            aria-label="Task in progress. Click to block or set as done." role="img"/>
+                        <field name="legend_normal" nolabel="1"/>
+                        <label for="legend_blocked" string=" " class="o_status o_status_red oe_project_kanban_legend"
+                            title="Task is blocked. Click to unblock or set as done."
+                            aria-label="Task is blocked. Click to unblock or set as done." role="img"/>
+                        <field name="legend_blocked" nolabel="1"/>
+                        <label for="legend_done" string=" " class="o_status o_status_green oe_project_kanban_legend"
+                            title="This step is done. Click to block or set in progress."
+                            aria-label="This step is done. Click to block or set in progress." role="img"/>
+                        <field name="legend_done" nolabel="1"/>
+
+                        <p class="text-muted" colspan="2">
+                            You can also add a description to help your coworkers understand the meaning and purpose of the stage.
+                        </p>
+                        <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
+                    </group>
                 </sheet>
             </form>
         </field>

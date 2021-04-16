@@ -146,6 +146,16 @@ class MrpEcoStage(models.Model):
     approval_template_ids = fields.One2many('mrp.eco.approval.template', 'stage_id', 'Approvals')
     approval_roles = fields.Char('Approval Roles', compute='_compute_approvals', store=True)
     is_blocking = fields.Boolean('Blocking Stage', compute='_compute_is_blocking', store=True)
+    legend_blocked = fields.Char(
+        'Red Kanban Label', default=lambda s: _('Blocked'), translate=True, required=True,
+        help='Override the default value displayed for the blocked state for kanban selection, when the ECO is in that stage.')
+    legend_done = fields.Char(
+        'Green Kanban Label', default=lambda s: _('Ready'), translate=True, required=True,
+        help='Override the default value displayed for the done state for kanban selection, when the ECO is in that stage.')
+    legend_normal = fields.Char(
+        'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
+        help='Override the default value displayed for the normal state for kanban selection, when the ECO is in that stage.')
+    description = fields.Text(help="Description and tooltips of the stage states.")
 
     @api.depends('approval_template_ids.name')
     def _compute_approvals(self):
@@ -208,7 +218,13 @@ class MrpEco(models.Model):
         ('normal', 'In Progress'),
         ('done', 'Approved'),
         ('blocked', 'Blocked')], string='Kanban State',
-        copy=False, compute='_compute_kanban_state', store=True)
+        copy=False, compute='_compute_kanban_state', store=True, readonly=False)
+    legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', related_sudo=False)
+    legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', related_sudo=False)
+    legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', related_sudo=False)
+    kanban_state_label = fields.Char(compute='_compute_kanban_state_label', string='Kanban State Label', tracking=True)
+    allow_change_kanban_state = fields.Boolean(
+        'Allow Change Kanban State', compute='_compute_allow_change_kanban_state')
     allow_change_stage = fields.Boolean(
         'Allow Change Stage', compute='_compute_allow_change_stage')
     allow_apply_change = fields.Boolean(
@@ -437,6 +453,21 @@ class MrpEco(models.Model):
     def _compute_allow_apply_change(self):
         for rec in self:
             rec.allow_apply_change = rec.stage_id.allow_apply_change and rec.state in ('confirmed', 'progress')
+
+    @api.depends('stage_id.approval_template_ids')
+    def _compute_allow_change_kanban_state(self):
+        for rec in self:
+            rec.allow_change_kanban_state = False if rec.stage_id.approval_template_ids else True
+
+    @api.depends('stage_id', 'kanban_state')
+    def _compute_kanban_state_label(self):
+        for eco in self:
+            if eco.kanban_state == 'normal':
+                eco.kanban_state_label = eco.legend_normal
+            elif eco.kanban_state == 'blocked':
+                eco.kanban_state_label = eco.legend_blocked
+            else:
+                eco.kanban_state_label = eco.legend_done
 
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):

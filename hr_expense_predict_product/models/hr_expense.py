@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 
+import psycopg2
 import re
 
 class HrExpense(models.Model):
@@ -25,7 +26,7 @@ class HrExpense(models.Model):
 
     def _predict_field(self, sql_query, description, category):
         psql_lang = self._get_predict_postgres_dictionary()
-        parsed_description = re.sub("[*&()|!':]+", " ", description)
+        parsed_description = re.sub("[*&()|!':<]+", " ", description)
         parsed_description = ' | '.join(parsed_description.split())
         limit_parameter = self.env["ir.config_parameter"].sudo().get_param("expense.predict.history.limit", '10000')
         params = {
@@ -36,11 +37,12 @@ class HrExpense(models.Model):
             'limit_parameter': int(limit_parameter),
         }
         try:
-            self.env.cr.execute(sql_query, params)
-            result = self.env.cr.fetchone()
+            with self.env.cr.savepoint():
+                self.env.cr.execute(sql_query, params)
+                result = self.env.cr.fetchone()
             if result:
                 return result[1]
-        except Exception as e:
+        except psycopg2.errors.SyntaxError:
             # In case there is an error while parsing the to_tsquery (wrong character for example)
             # We don't want to have a traceback, instead return False
             return False

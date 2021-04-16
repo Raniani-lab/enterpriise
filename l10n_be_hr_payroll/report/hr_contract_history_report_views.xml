@@ -12,20 +12,6 @@
             <field name="resource_calendar_id" position="attributes">
                 <attribute name="attrs">{'invisible': [('time_credit', '=', True)]}</attribute>
             </field>
-            <page name="contract_history" position="after">
-                <page string="Attachment of Salary" name="contract_attachment_of_salary" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <group>
-                        <field name="wage_type" invisible="1"/>
-                        <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
-                        <label for="fiscal_voluntary_rate" attrs="{'invisible': [('fiscal_voluntarism', '=', False)]}"/>
-                        <div class="o_row" attrs="{'invisible': [('fiscal_voluntarism', '=', False)]}">
-                            <field name="fiscal_voluntary_rate" nolabel="1"/>
-                            <span>%</span>
-                        </div>
-                        <field name="attachment_salary_ids" attrs="{'invisible': [('attachment_salary_ids', '==', False)]}"/>
-                    </group>
-                </page>
-            </page>
             <xpath expr="//sheet" position="before">
                 <div role="alert" class="alert alert-danger text-center" attrs="{'invisible': [('l10n_be_is_below_scale', '=', False)]}">
                     <field name="l10n_be_is_below_scale_warning"/>

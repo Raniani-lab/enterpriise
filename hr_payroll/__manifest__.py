@@ -24,6 +24,7 @@
         'views/hr_salary_rule_views.xml',
         'views/hr_payslip_views.xml',
         'views/hr_payslip_input_views.xml',
+        'views/hr_salary_attachment_views.xml',
         'views/hr_employee_views.xml',
         'data/hr_payroll_sequence.xml',
         'views/hr_payroll_report.xml',
@@ -39,8 +40,9 @@
         'views/hr_rule_parameter_views.xml',
         'views/hr_payroll_report_views.xml',
         'views/hr_work_entry_report_views.xml',
+        'report/hr_salary_attachment_report_views.xml',
         'views/hr_payroll_menu.xml',
-        'report/hr_contract_history_report_views.xml'
+        'report/hr_contract_history_report_views.xml',
     ],
     'demo': ['data/hr_payroll_demo.xml'],
     'assets': {

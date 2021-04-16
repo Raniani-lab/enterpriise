@@ -3,7 +3,7 @@
 
 from datetime import date, datetime
 from collections import defaultdict
-from odoo import api, fields, models
+from odoo import _, fields, models
 from odoo.tools import date_utils
 from odoo.osv import expression
 
@@ -151,3 +151,14 @@ class HrContract(models.Model):
         ]).filtered(lambda p: p.is_regular)
         if all_payslips:
             all_payslips.action_refresh_from_work_entries()
+
+    def action_new_salary_attachment(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Salary Attachment'),
+            'res_model': 'hr.salary.attachment',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_employee_id': self.employee_id.id}
+        }

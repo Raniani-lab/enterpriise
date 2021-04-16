@@ -13,6 +13,13 @@
                         type="object" icon="fa-dollar" groups="hr_payroll.group_hr_payroll_user">
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
+                <button name="action_open_salary_attachments"
+                    class="oe_stat_button"
+                    icon="fa-credit-card"
+                    type="object"
+                    groups="hr_payroll.group_hr_payroll_user">
+                    <field name="salary_attachment_count" string="Salary Attachments" widget="statinfo"/>
+                </button>
             </div>
         </field>
     </record>

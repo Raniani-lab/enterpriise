@@ -3,11 +3,13 @@
 
 from odoo import api, fields, models, tools
 
-
-class l10nBeAttachementSalaryReport(models.Model):
-    _name = "l10n_be.attachment.salary.report"
-    _description = 'Attachment of Salary Summary / Report'
+class HrSalaryAttachmentReport(models.Model):
+    _name = 'hr.salary.attachment.report'
+    _description = 'Salary Attachment / Report'
     _auto = False
+
+    # TODO: this is the old reporting, we can have more accurate data from the new salary_attachment
+    # TODO: redo this
 
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
     payslip_id = fields.Many2one('hr.payslip', string="Payslip Name", readonly=True)
@@ -34,6 +36,6 @@ class l10nBeAttachementSalaryReport(models.Model):
                     CASE WHEN pl.code = 'CHILD_SUPPORT' THEN pl.amount END AS child_support_amount
                 FROM hr_payslip p
                 LEFT JOIN hr_payslip_line pl on (pl.slip_id = p.id)
-                WHERE pl.code IN ('ATTACH_SALARY', 'ASSIG_SALARY', 'CHILD_SUPPORT') and p.state = 'done'
+                WHERE pl.code IN ('ATTACH_SALARY', 'ASSIG_SALARY', 'CHILD_SUPPORT') and p.state = 'paid'
             );
         """ % self._table)

@@ -11,11 +11,6 @@
         <field name="model_id" ref="model_l10n_be_dmfa_location_unit"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
-    <record id="ir_rule_attachment_salary_report_multi_company" model="ir.rule">
-        <field name="name">Attachment of Salary: Multi Company</field>
-        <field name="model_id" ref="model_l10n_be_attachment_salary_report"/>
-        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
-    </record>
     <record id="ir_rule_l10n_be_273S_multi_company" model="ir.rule">
         <field name="name">HR Payroll BE 273S: Multi Company</field>
         <field name="model_id" ref="model_l10n_be_273s"/>
@@ -43,5 +38,3 @@
     </record>
 
 </odoo>
-
-

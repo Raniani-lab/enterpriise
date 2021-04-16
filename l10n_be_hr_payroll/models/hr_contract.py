@@ -84,7 +84,6 @@ class HrContract(models.Model):
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
     fiscal_voluntary_rate = fields.Float(string="Fiscal Voluntary Rate", help="Should be between 0 and 100 %")
-    attachment_salary_ids = fields.One2many('l10n_be.attachment.salary', 'contract_id')
     no_onss = fields.Boolean(string="No ONSS")
     no_withholding_taxes = fields.Boolean()
     rd_percentage = fields.Integer("Time Percentage in R&D")

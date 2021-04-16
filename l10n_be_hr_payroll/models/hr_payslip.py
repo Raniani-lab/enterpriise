@@ -23,17 +23,10 @@ class Payslip(models.Model):
     representation_fees_missing_days = fields.Integer(
         string='Days Not Granting Representation Fees',
         compute='_compute_work_entry_dependent_benefits')
-    has_attachment_salary = fields.Boolean(compute='_compute_has_attachment_salary', store=True)
-    input_line_ids = fields.One2many(
-        compute='_compute_input_line_ids', store=True, readonly=False)
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_input_line_ids(self):
-        attachment_types = {
-            'attachment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_attachment_salary').id,
-            'assignment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_assignment_salary').id,
-            'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
-        }
+        res = super()._compute_input_line_ids()
         for slip in self:
             if not slip.employee_id or not slip.date_from or not slip.date_to:
                 continue
@@ -61,43 +54,13 @@ class Payslip(models.Model):
                         'amount': to_recover,
                         'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_european_leave_deduction').id,
                     })]})
-
-            if not slip.contract_id:
-                lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
-                slip.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
-            if slip.has_attachment_salary:
-                lines_to_keep = slip.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_types.values())
-                input_line_vals = [(5, 0, 0)] + [(4, line.id, False) for line in lines_to_keep]
-
-                valid_attachments = slip.contract_id.attachment_salary_ids.filtered(
-                    lambda a: a.date_from <= slip.date_to and a.date_to >= slip.date_from)
-
-                for garnished_type in list(set(valid_attachments.mapped('garnished_type'))):
-                    attachments = valid_attachments.filtered(lambda a: a.garnished_type == garnished_type)
-                    amount = sum(attachments.mapped('amount'))
-                    name = ', '.join(attachments.mapped('name'))
-                    input_type_id = attachment_types[garnished_type]
-                    input_line_vals.append((0, 0, {
-                        'name': name,
-                        'amount': amount,
-                        'input_type_id': input_type_id,
-                    }))
-                slip.update({'input_line_ids': input_line_vals})
+        return res
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid', 'worked_days_line_ids.is_credit_time')
     def _compute_worked_hours(self):
         super()._compute_worked_hours()
         for payslip in self:
             payslip.sum_worked_hours -= sum([line.number_of_hours for line in payslip.worked_days_line_ids if line.is_credit_time])
-
-    @api.depends(
-        'contract_id.attachment_salary_ids.date_from', 'contract_id.attachment_salary_ids.date_from',
-        'date_from', 'date_to')
-    def _compute_has_attachment_salary(self):
-        for payslip in self:
-            payslip.has_attachment_salary = payslip.is_regular and any(
-                a.date_from <= payslip.date_to and
-                a.date_to >= payslip.date_from for a in payslip.contract_id.attachment_salary_ids)
 
     def _compute_work_entry_dependent_benefits(self):
         if self.env.context.get('salary_simulation'):

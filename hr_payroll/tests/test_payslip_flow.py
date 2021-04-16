@@ -35,6 +35,12 @@ class TestPayslipFlow(TestPayslipBase):
         # I verify that the payslip is in done state
         self.assertEqual(richard_payslip.state, 'done', 'State not changed!')
 
+        # Then I click on the 'Mark as paid' button on payslip
+        richard_payslip.action_payslip_paid()
+
+        # I verify that the payslip is in paid state
+        self.assertEqual(richard_payslip.state, 'paid', 'State not changed!')
+
         # I want to check refund payslip so I click on refund button.
         richard_payslip.refund_sheet()
 

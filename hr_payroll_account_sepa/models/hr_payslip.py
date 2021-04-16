@@ -10,7 +10,6 @@ from odoo.exceptions import UserError
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    state = fields.Selection(selection_add=[('paid', 'Paid')])
     sepa_export_date = fields.Date(string='Generation Date', help="Creation date of the related export file.")
     sepa_export = fields.Binary(string='SEPA File', help="Export file related to this payslip")
     sepa_export_filename = fields.Char(string='File Name', help="Name of the export file generated for this payslip", store=True)

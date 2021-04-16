@@ -58,6 +58,13 @@
         parent="menu_hr_payroll_employees_root"
         sequence="30"/>
 
+    <menuitem
+        id="hr_menu_salary_attachments"
+        name="Salary Attachments"
+        action="hr_payroll.hr_salary_attachment_action"
+        parent="menu_hr_payroll_employees_root"
+        sequence="35"/>
+
     <!-- **** Payslips **** -->
     <menuitem
         id="menu_hr_payroll_employee_payslips"
@@ -95,6 +102,12 @@
         action="hr_work_entry_report_action"
         sequence="20"
         parent="menu_hr_payroll_report"/>
+
+    <menuitem
+        id="menu_hr_payroll_attachment_salary_report"
+        action="hr_salary_attachment_report_action"
+        parent="menu_hr_payroll_report"
+        sequence="25"/>
 
     <!-- **** Configuration **** -->
 

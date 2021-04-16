@@ -174,29 +174,16 @@
                 <group string="ONSS Reduction" name="onss_retructuring" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_onss_restructuring"/>
                 </group>
+                <group name="fiscal_voluntarism" string="Fiscal Voluntarism">
+                    <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                    <label for="fiscal_voluntary_rate"
+                           attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}"/>
+                    <div class="o_row" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}">
+                        <field name="fiscal_voluntary_rate" nolabel="1"/>
+                        <span>%</span>
+                    </div>
+                </group>
             </group>
-            <page name="information" position="after">
-                <page string="Attachment of Salary" name="salary_attachment" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <group>
-                        <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
-                        <label for="fiscal_voluntary_rate"
-                               attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}"/>
-                        <div class="o_row" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}">
-                            <field name="fiscal_voluntary_rate" nolabel="1"/>
-                            <span>%</span>
-                        </div>
-                        <field name="attachment_salary_ids">
-                            <tree editable="bottom">
-                                <field name="name"/>
-                                <field name="garnished_type"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="amount"/>
-                            </tree>
-                        </field>
-                    </group>
-                </page>
-            </page>
             <xpath expr="//sheet" position="before">
                 <div role="alert" class="alert alert-danger text-center" attrs="{'invisible': ['|', ('l10n_be_is_below_scale', '=', False), ('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_is_below_scale_warning"/>

@@ -146,6 +146,52 @@
             <field name="struct_id" ref="structure_002"/>
         </record>
 
+        <record id="hr_salary_rule_salary_attachment" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Attachment of Salary</field>
+            <field name="code">ATTACH_SALARY</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.ATTACH_SALARY</field>
+            <field name="amount_python_compute">
+result = -inputs.ATTACH_SALARY.amount
+result_name = inputs.ATTACH_SALARY.name
+            </field>
+            <field name="struct_id" ref="structure_002"/>
+        </record>
+
+        <record id="hr_salary_rule_salary_assignment" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Assignment of Salary</field>
+            <field name="code">ASSIG_SALARY</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.ASSIG_SALARY</field>
+            <field name="amount_python_compute">
+result = -inputs.ASSIG_SALARY.amount
+result_name = inputs.ASSIG_SALARY.name
+            </field>
+            <field name="struct_id" ref="structure_002"/>
+        </record>
+
+        <record id="hr_salary_rule_child_support" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Child Support</field>
+            <field name="code">CHILD_SUPPORT</field>
+            <field name="amount_select">code</field>
+            <field name="sequence">174</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.CHILD_SUPPORT</field>
+            <field name="amount_python_compute">
+result = -inputs.CHILD_SUPPORT.amount
+result_name = inputs.CHILD_SUPPORT.name
+            </field>
+            <field name="struct_id" ref="structure_002"/>
+        </record>
+
+
         <record id="hr_salary_rule_13th_month_salary" model="hr.salary.rule">
             <field name="amount_select">percentage</field>
             <field name="amount_percentage" eval="10.0"/>
@@ -252,6 +298,15 @@
 
         <record id="hr_contract.hr_contract_vad" model="hr.contract">
             <field name="structure_type_id" ref="hr_contract.structure_type_employee"/>
+        </record>
+
+        <!-- Salary Attachments -->
+        <record id="child_support" model="hr.salary.attachment">
+            <field name="employee_id" ref="hr.employee_qdp"/>
+            <field name="monthly_amount">150</field>
+            <field name="deduction_type">child_support</field>
+            <field name="date_start" eval="DateTime.today()"/>
+            <field name="description">Child Support</field>
         </record>
 
         <!-- Work entries -->

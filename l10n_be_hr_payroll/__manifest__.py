@@ -38,8 +38,6 @@ Belgian Payroll Rules.
         'views/hr_employee_views.xml',
         'views/res_users_views.xml',
         'views/hr_work_entry_views.xml',
-        'views/hr_payslip_views.xml',
-        'views/l10n_be_attachment_salary_views.xml',
         'views/report_termination_fees.xml',
         'views/report_termination_holidays.xml',
         'views/hr_dmfa_template.xml',

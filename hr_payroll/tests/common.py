@@ -142,6 +142,51 @@ class TestPayslipBase(TransactionCase):
             'category_id': cls.env.ref('hr_payroll.DED').id,
             'struct_id': cls.developer_pay_structure.id,
         })
+
+        cls.slry_attach_rule = cls.env['hr.salary.rule'].create({
+            'name': 'Attachment of Salary',
+            'sequence': 174,
+            'amount_select': 'code',
+            'amount_python_compute': '''
+result = -inputs.ATTACH_SALARY.amount
+result_name = inputs.ATTACH_SALARY.name
+            ''',
+            'condition_select': 'python',
+            'condition_python': 'result = inputs.ATTACH_SALARY',
+            'code': 'ATTACH_SALARY',
+            'category_id': cls.env.ref('hr_payroll.DED').id,
+            'struct_id': cls.developer_pay_structure.id,
+        })
+
+        cls.slry_assig_rule = cls.env['hr.salary.rule'].create({
+            'name': 'Assignment of Salary',
+            'sequence': 174,
+            'amount_select': 'code',
+            'amount_python_compute': '''
+result = -inputs.ASSIG_SALARY.amount
+result_name = inputs.ASSIG_SALARY.name
+            ''',
+            'condition_select': 'python',
+            'condition_python': 'result = inputs.ASSIG_SALARY',
+            'code': 'ASSIG_SALARY',
+            'category_id': cls.env.ref('hr_payroll.DED').id,
+            'struct_id': cls.developer_pay_structure.id,
+        })
+
+        cls.child_support_rule = cls.env['hr.salary.rule'].create({
+            'name': 'Child Support',
+            'sequence': 174,
+            'amount_select': 'code',
+            'amount_python_compute': '''
+result = -inputs.CHILD_SUPPORT.amount
+result_name = inputs.CHILD_SUPPORT.name
+            ''',
+            'condition_select': 'python',
+            'condition_python': 'result = inputs.CHILD_SUPPORT',
+            'code': 'CHILD_SUPPORT',
+            'category_id': cls.env.ref('hr_payroll.DED').id,
+            'struct_id': cls.developer_pay_structure.id,
+        })
         cls.structure_type.default_struct_id = cls.developer_pay_structure
 
     def create_work_entry(self, start, stop, work_entry_type=None):

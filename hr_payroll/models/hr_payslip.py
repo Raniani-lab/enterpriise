@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, date_utils, convert_file, html2plaintext
@@ -28,7 +28,7 @@ class HrPayslip(models.Model):
     struct_id = fields.Many2one(
         'hr.payroll.structure', string='Structure',
         compute='_compute_struct_id', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]},
         help='Defines the rules that have to be applied to this payslip, according '
              'to the contract chosen. If the contract is empty, this field isn\'t '
              'mandatory anymore and all the valid rules of the structures '
@@ -38,7 +38,7 @@ class HrPayslip(models.Model):
     name = fields.Char(
         string='Payslip Name', required=True,
         compute='_compute_name', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     number = fields.Char(
         string='Reference', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
@@ -57,6 +57,7 @@ class HrPayslip(models.Model):
         ('draft', 'Draft'),
         ('verify', 'Waiting'),
         ('done', 'Done'),
+        ('paid', 'Paid'),
         ('cancel', 'Rejected')],
         string='Status', index=True, readonly=True, copy=False,
         default='draft', tracking=True,
@@ -81,10 +82,11 @@ class HrPayslip(models.Model):
     worked_days_line_ids = fields.One2many(
         'hr.payslip.worked_days', 'payslip_id', string='Payslip Worked Days', copy=True,
         compute='_compute_worked_days_line_ids', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     input_line_ids = fields.One2many(
         'hr.payslip.input', 'payslip_id', string='Payslip Inputs',
-        readonly=False, states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        compute='_compute_input_line_ids', store=True,
+        readonly=False, states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     paid = fields.Boolean(
         string='Made Payment Order ? ', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
@@ -92,7 +94,7 @@ class HrPayslip(models.Model):
     contract_id = fields.Many2one(
         'hr.contract', string='Contract', domain="[('company_id', '=', company_id)]",
         compute='_compute_contract_id', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     credit_note = fields.Boolean(
         string='Credit Note', readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
@@ -117,6 +119,75 @@ class HrPayslip(models.Model):
     is_superuser = fields.Boolean(compute="_compute_is_superuser")
     edited = fields.Boolean()
     queued_for_pdf = fields.Boolean(default=False)
+
+    salary_attachment_ids = fields.Many2many(
+        'hr.salary.attachment',
+        relation='hr_payslip_hr_salary_attachment_rel',
+        string='Salary Attachments',
+        compute='_compute_salary_attachment_ids',
+        store=True,
+        readonly=False,
+    )
+    salary_attachment_count = fields.Integer('Salary Attachment count', compute='_compute_salary_attachment_count')
+
+    @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to', 'struct_id')
+    def _compute_input_line_ids(self):
+        attachment_types = self._get_attachment_types()
+        attachment_type_ids = [f.id for f in attachment_types.values()]
+        for slip in self:
+            if not slip.employee_id or not slip.employee_id.salary_attachment_ids or not slip.struct_id:
+                lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_type_ids)
+                slip.update({'input_line_ids': [Command.unlink(line.id) for line in lines_to_remove]})
+            if slip.employee_id.salary_attachment_ids:
+                lines_to_keep = slip.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_type_ids)
+                input_line_vals = [Command.clear()] + [Command.link(line.id) for line in lines_to_keep]
+
+                valid_attachments = slip.employee_id.salary_attachment_ids.filtered(
+                    lambda a: a.state == 'open' and a.date_start <= slip.date_to
+                )
+
+                # Only take deduction types present in structure
+                deduction_types = list(set(valid_attachments.mapped('deduction_type')))
+                struct_deduction_lines = list(set(slip.struct_id.rule_ids.mapped('code')))
+                included_deduction_types = [f for f in deduction_types if attachment_types[f].code in struct_deduction_lines]
+                for deduction_type in included_deduction_types:
+                    if not slip.struct_id.rule_ids.filtered(lambda r: r.active and r.code == attachment_types[deduction_type].code):
+                        continue
+                    attachments = valid_attachments.filtered(lambda a: a.deduction_type == deduction_type)
+                    amount = sum(attachments.mapped('active_amount'))
+                    name = ', '.join(attachments.mapped('description'))
+                    input_type_id = attachment_types[deduction_type].id
+                    input_line_vals.append(Command.create({
+                        'name': name,
+                        'amount': amount,
+                        'input_type_id': input_type_id,
+                    }))
+                slip.update({'input_line_ids': input_line_vals})
+
+    @api.depends('input_line_ids.input_type_id', 'input_line_ids')
+    def _compute_salary_attachment_ids(self):
+        attachment_types = self._get_attachment_types()
+        for slip in self:
+            if not slip.input_line_ids and not slip.salary_attachment_ids:
+                continue
+            attachments = self.env['hr.salary.attachment']
+            if slip.employee_id and slip.input_line_ids:
+                input_line_type_ids = slip.input_line_ids.mapped('input_type_id.id')
+                deduction_types = [f for f in attachment_types if attachment_types[f].id in input_line_type_ids]
+                attachments = slip.employee_id.salary_attachment_ids.filtered(
+                    lambda a: (
+                        a.state == 'open'
+                        and a.deduction_type in deduction_types
+                        and a.date_start <= slip.date_to
+                    )
+                )
+            slip.salary_attachment_ids = attachments
+
+    @api.depends('salary_attachment_ids')
+    def _compute_salary_attachment_count(self):
+        for slip in self:
+            slip.salary_attachment_count = len(slip.salary_attachment_ids)
+
 
     @api.depends('employee_id', 'state')
     def _compute_negative_net_to_report_display(self):
@@ -211,6 +282,25 @@ class HrPayslip(models.Model):
         if any(payslip.date_from > payslip.date_to for payslip in self):
             raise ValidationError(_("Payslip 'Date From' must be earlier 'Date To'."))
 
+    def write(self, vals):
+        res = super().write(vals)
+
+        if 'state' in vals and vals['state'] == 'paid':
+            # Register payment in Salary Attachments
+            # NOTE: Since we combine multiple attachments on one input line, it's not possible to compute
+            #  how much per attachment needs to be taken record_payment will consume monthly payments (child_support) before other attachments
+            attachment_types = self._get_attachment_types()
+            for slip in self.filtered(lambda r: r.salary_attachment_ids):
+                for deduction_type, input_type_id in attachment_types.items():
+                    attachments = slip.salary_attachment_ids.filtered(lambda r: r.deduction_type == deduction_type)
+                    input_lines = slip.input_line_ids.filtered(lambda r: r.input_type_id.id == input_type_id.id)
+                    # Use the amount from the computed value in the payslip lines not the input
+                    salary_lines = slip.line_ids.filtered(lambda r: r.code in input_lines.mapped('code'))
+                    if not attachments or not salary_lines:
+                        continue
+                    attachments.record_payment(abs(salary_lines.total))
+        return res
+
     def action_payslip_draft(self):
         return self.write({'state': 'draft'})
 
@@ -285,9 +375,24 @@ class HrPayslip(models.Model):
         self.write({'state': 'cancel'})
         self.mapped('payslip_run_id').action_close()
 
+    def action_payslip_paid(self):
+        if any(slip.state != 'done' for slip in self):
+            raise UserError(_('Cannot mark payslip as paid if not confirmed.'))
+        self.write({'state': 'paid'})
+
     def action_open_work_entries(self):
         self.ensure_one()
         return self.employee_id.action_open_work_entries()
+
+    def action_open_salary_attachments(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Salary Attachments'),
+            'res_model': 'hr.salary.attachment',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', self.salary_attachment_ids.ids)],
+        }
 
     def refund_sheet(self):
         copied_payslips = self.env['hr.payslip']
@@ -347,6 +452,14 @@ class HrPayslip(models.Model):
             day_rounded = float_round(days, precision_rounding=precision_rounding, rounding_method=work_entry_type.round_days_type)
             return day_rounded
         return days
+
+    @api.model
+    def _get_attachment_types(self):
+        return {
+            'attachment': self.env.ref('hr_payroll.input_attachment_salary'),
+            'assignment': self.env.ref('hr_payroll.input_assignment_salary'),
+            'child_support': self.env.ref('hr_payroll.input_child_support'),
+        }
 
     def _get_worked_day_lines_hours_per_day(self):
         self.ensure_one()
@@ -899,6 +1012,7 @@ class HrPayslipRun(models.Model):
         ('draft', 'Draft'),
         ('verify', 'Verify'),
         ('close', 'Done'),
+        ('paid', 'Paid'),
     ], string='Status', index=True, readonly=True, copy=False, default='draft')
     date_start = fields.Date(string='Date From', required=True, readonly=True,
         states={'draft': [('readonly', False)]}, default=lambda self: fields.Date.to_string(date.today().replace(day=1)))
@@ -931,6 +1045,10 @@ class HrPayslipRun(models.Model):
         if self._are_payslips_ready():
             self.write({'state' : 'close'})
 
+    def action_paid(self):
+        self.mapped('slip_ids').action_payslip_paid()
+        self.write({'state': 'paid'})
+
     def action_validate(self):
         self.mapped('slip_ids').filtered(lambda slip: slip.state not in ['draft', 'cancel']).action_payslip_done()
         self.action_close()
@@ -949,7 +1067,7 @@ class HrPayslipRun(models.Model):
     def _unlink_if_draft_or_cancel(self):
         if any(self.filtered(lambda payslip_run: payslip_run.state not in ('draft'))):
             raise UserError(_('You cannot delete a payslip batch which is not draft!'))
-        if any(self.mapped('slip_ids').filtered(lambda payslip: payslip.state not in ('draft','cancel'))):
+        if any(self.mapped('slip_ids').filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
 
     def _are_payslips_ready(self):

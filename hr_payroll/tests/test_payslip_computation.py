@@ -283,3 +283,55 @@ class TestPayslipComputation(TestPayslipContractBase):
         self.assertEqual(payslip.normal_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.basic_wage, 0, "It should have a default wage of 0")
         self.assertEqual(payslip.net_wage, 0, "It should have a default wage of 0")
+
+    def test_payslip_with_salary_attachment(self):
+        #Create multiple salary attachments, some running, some closed
+        self.env['hr.salary.attachment'].create([
+            {
+                'employee_id': self.richard_emp.id,
+                'monthly_amount': 150,
+                'deduction_type': 'child_support',
+                'date_start': date(2016, 1, 1),
+                'description': 'Child Support',
+            },
+            {
+                'employee_id': self.richard_emp.id,
+                'monthly_amount': 400,
+                'total_amount': 1000,
+                'paid_amount': 1000,
+                'deduction_type': 'assignment',
+                'date_start': date(2015, 1, 1),
+                'date_end': date(2015, 4, 1),
+                'description': 'Unpaid fine',
+                'state': 'close',
+            },
+        ])
+
+        car_accident = self.env['hr.salary.attachment'].create({
+                'employee_id': self.richard_emp.id,
+                'monthly_amount': 250,
+                'paid_amount': 1450,
+                'total_amount': 1500,
+                'deduction_type': 'attachment',
+                'date_start': date(2016, 1, 1),
+                'description': 'Car accident',
+        })
+
+        payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip of Richard',
+            'employee_id': self.richard_emp.id,
+            'date_from': date(2016, 1, 1),
+            'date_to': date(2016, 1, 31)
+        })
+        input_lines = payslip.input_line_ids
+        self.assertTrue(input_lines.filtered(lambda r: r.code == 'CHILD_SUPPORT'), 'There should be an input line for child support.')
+        self.assertTrue(input_lines.filtered(lambda r: r.code == 'ATTACH_SALARY'), 'There should be an input line for the car accident.')
+        self.assertTrue(input_lines.filtered(lambda r: r.code == 'ATTACH_SALARY').amount <= 50, 'The amount for the car accident input line should be 50 or less.')
+        self.assertFalse(input_lines.filtered(lambda r: r.code == 'ASSIG_SALARY'), 'There should not be an input line for the unpaid fine.')
+        payslip.compute_sheet()
+        lines = payslip.line_ids
+        self.assertTrue(lines.filtered(lambda r: r.code == 'CHILD_SUPPORT'), 'There should be a salary line for child support.')
+        self.assertTrue(lines.filtered(lambda r: r.code == 'ATTACH_SALARY'), 'There should be a salary line for car accident.')
+        payslip.action_payslip_done()
+        payslip.action_payslip_paid()
+        self.assertEqual(car_accident.state, 'close', 'The salary attachment should be completed.')

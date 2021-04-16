@@ -15,3 +15,7 @@ from . import hr_leave_allocation
 from . import hr_leave
 from . import hr_departure_reason
 from . import hr_job
+from . import l10n_be_274_XX
+from . import l10n_be_273S
+from . import l10n_be_281_10
+from . import l10n_be_281_45

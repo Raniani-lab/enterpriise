@@ -12,7 +12,7 @@ class ReportL10nBeHrPayroll27410(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         return {
             'doc_ids' : docids,
-            'doc_model' : self.env['l10n.be.withholding.tax.exemption'],
+            'doc_model' : self.env['l10n_be.274_xx'],
             'data' : data,
-            'docs' : self.env['l10n.be.withholding.tax.exemption'].browse(self.env.context.get('active_id')),
+            'docs' : self.env['l10n_be.274_xx'].browse(self.env.context.get('active_id')),
         }

@@ -4,17 +4,20 @@
 import base64
 
 from collections import defaultdict
+from datetime import date
 from lxml import etree
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.modules.module import get_resource_path
 from odoo.exceptions import UserError
+from odoo.tools import format_date
 
 
-class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
-    _name = 'l10n.be.withholding.tax.ip.declaration'
+class L10nBe273S(models.Model):
+    _name = 'l10n_be.273s'
     _description = '273S Sheet'
+    _order = 'period'
 
     @api.model
     def default_get(self, field_list=None):
@@ -22,10 +25,24 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         return super().default_get(field_list)
 
+    year = fields.Integer(required=True, default=lambda self: fields.Date.today().year)
+    month = fields.Selection([
+        ('1', 'January'),
+        ('2', 'February'),
+        ('3', 'March'),
+        ('4', 'April'),
+        ('5', 'May'),
+        ('6', 'June'),
+        ('7', 'July'),
+        ('8', 'August'),
+        ('9', 'September'),
+        ('10', 'October'),
+        ('11', 'November'),
+        ('12', 'December'),
+    ], required=True, default=lambda self: str((fields.Date.today() + relativedelta(months=-1)).month))
     period = fields.Date(
-        'Period', required=True,
-        default=lambda self: fields.Date.today() + relativedelta(months=-1, day=1),
-        help="Period to consider. Only the month and year will be considered.")
+        'Period', compute='_compute_period',
+        required=True, store=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     state = fields.Selection([
@@ -46,15 +63,26 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
     ], default='normal', compute='_compute_validation_state', store=True)
     error_message = fields.Char('Error Message', compute='_compute_validation_state', store=True)
 
+    def name_get(self):
+        return [(
+            record.id,
+            format_date(self.env, record.period, date_format="MMMM y", lang_code=self.env.user.lang)
+        ) for record in self]
+
+    @api.depends('year', 'month')
+    def _compute_period(self):
+        for record in self:
+            record.period = date(record.year, int(record.month), 1)
+
     @api.depends('xml_file', 'pdf_file', 'xml_validation_state')
     def _compute_state(self):
-        for wizard in self:
+        for record in self:
             state = 'draft'
-            if wizard.xml_file and wizard.pdf_file and wizard.xml_validation_state:
+            if record.xml_file and record.pdf_file and record.xml_validation_state:
                 state = 'done'
-            elif wizard.xml_file or wizard.pdf_file:
+            elif record.xml_file or record.pdf_file:
                 state = 'waiting'
-            wizard.state = state
+            record.state = state
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
@@ -66,18 +94,18 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
 
-        no_xml_file_wizards = self.filtered(lambda wizard: not wizard.xml_file)
-        no_xml_file_wizards.update({
+        no_xml_file_records = self.filtered(lambda record: not record.xml_file)
+        no_xml_file_records.update({
             'xml_validation_state': 'normal',
             'error_message': False})
-        for wizard in self - no_xml_file_wizards:
-            xml_root = etree.fromstring(base64.b64decode(wizard.xml_file))
+        for record in self - no_xml_file_records:
+            xml_root = etree.fromstring(base64.b64decode(record.xml_file))
             try:
                 schema.assertValid(xml_root)
-                wizard.xml_validation_state = 'done'
+                record.xml_validation_state = 'done'
             except etree.DocumentInvalid as err:
-                wizard.xml_validation_state = 'invalid'
-                wizard.error_message = str(err)
+                record.xml_validation_state = 'invalid'
+                record.error_message = str(err)
 
     def _get_rendering_data(self):
         date_from = self.period + relativedelta(day=1)
@@ -154,15 +182,6 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
         self.pdf_filename = '%s-273S_report.pdf' % (self.period.strftime('%B%Y'))
         self.pdf_file = base64.encodebytes(export_273S_pdf)
 
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_mode': 'form',
-            'res_id': self.id,
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
-
     def action_generate_xml(self):
         self.ensure_one()
         self.xml_filename = '%s-273S_report.xml' % (self.period.strftime('%B%Y'))
@@ -174,15 +193,5 @@ class HrPayrollWithholdingTaxIPDeclaration(models.TransientModel):
 
         self.xml_file = base64.encodebytes(xml_formatted_str)
 
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_mode': 'form',
-            'res_id': self.id,
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
-
     def action_validate(self):
         self.ensure_one()
-        return {'type': 'ir.actions.act_window_close'}

@@ -6,17 +6,20 @@ import io
 
 from collections import defaultdict
 from dateutil.relativedelta import relativedelta
+from datetime import date
 from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.modules.module import get_resource_path
+from odoo.tools import format_date
 from odoo.tools.misc import xlsxwriter
 
 
-class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
-    _name = 'l10n.be.withholding.tax.exemption'
+class L10nBe274XX(models.Model):
+    _name = 'l10n_be.274_xx'
     _description = '274.XX Sheets'
+    _order = 'date_start'
 
     @api.model
     def default_get(self, field_list=None):
@@ -24,16 +27,29 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             raise UserError(_('You must be logged in a Belgian company to use this feature'))
         return super().default_get(field_list)
 
+    year = fields.Integer(required=True, default=lambda self: fields.Date.today().year)
+    month = fields.Selection([
+        ('1', 'January'),
+        ('2', 'February'),
+        ('3', 'March'),
+        ('4', 'April'),
+        ('5', 'May'),
+        ('6', 'June'),
+        ('7', 'July'),
+        ('8', 'August'),
+        ('9', 'September'),
+        ('10', 'October'),
+        ('11', 'November'),
+        ('12', 'December'),
+    ], required=True, default=lambda self: str((fields.Date.today() + relativedelta(months=-1)).month))
     date_start = fields.Date(
-        'Start Period', required=True,
-        default=lambda self: fields.Date.today() + relativedelta(day=1),
-        help="Start date of the period to consider.")
+        'Start Period', required=True, store=True, readonly=False,
+        compute='_compute_dates')
     date_end = fields.Date(
-        'End Period', required=True,
-        default=lambda self: fields.Date.today() + relativedelta(day=31),
-        help="End date of the period to consider.")
+        'End Period', required=True, store=True, readonly=False,
+        compute='_compute_dates')
     line_ids = fields.One2many(
-        'l10n.be.withholding.tax.exemption.line', 'wizard_id',
+        'l10n_be.274_xx.line', 'sheet_id',
         compute='_compute_line_ids', store=True, readonly=False, compute_sudo=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
@@ -68,6 +84,20 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
 
+    def name_get(self):
+        return [(
+            record.id,
+            format_date(self.env, record.date_start, date_format="MMMM y", lang_code=self.env.user.lang)
+        ) for record in self]
+
+    @api.depends('year', 'month')
+    def _compute_dates(self):
+        for record in self:
+            record.update({
+                'date_start': date(record.year, int(record.month), 1),
+                'date_end': date(record.year, int(record.month), 1) + relativedelta(day=31),
+            })
+
     @api.depends('xml_file')
     def _compute_validation_state(self):
         xsd_schema_file_path = get_resource_path(
@@ -77,18 +107,18 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         )
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
-        for wizard in self:
-            if not wizard.xml_file:
-                wizard.xml_validation_state = 'normal'
-                wizard.error_message = False
+        for sheet in self:
+            if not sheet.xml_file:
+                sheet.xml_validation_state = 'normal'
+                sheet.error_message = False
             else:
-                xml_root = etree.fromstring(base64.b64decode(wizard.xml_file))
+                xml_root = etree.fromstring(base64.b64decode(sheet.xml_file))
                 try:
                     schema.assertValid(xml_root)
-                    wizard.xml_validation_state = 'done'
+                    sheet.xml_validation_state = 'done'
                 except etree.DocumentInvalid as err:
-                    wizard.xml_validation_state = 'invalid'
-                    wizard.error_message = str(err)
+                    sheet.xml_validation_state = 'invalid'
+                    sheet.error_message = str(err)
 
     def _get_valid_payslips(self):
         return self.env['hr.payslip'].search([
@@ -110,30 +140,30 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         structure_holidays_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
         invalid_structures = structure_termination + structure_holidays_n1 + structure_holidays_n
 
-        for wizard in self:
+        for sheet in self:
             mapped_pp = defaultdict(lambda: 0)
             mapped_taxable_amount = defaultdict(lambda: 0)
             payslips = self._get_valid_payslips()
 
             # Total
-            wizard.taxable_amount = payslips._get_pp_taxable_amount()
-            wizard.pp_amount = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips)
+            sheet.taxable_amount = payslips._get_pp_taxable_amount()
+            sheet.pp_amount = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips)
             # Valid payslips for exemption
             payslips = payslips.filtered(lambda p: p.contract_id.rd_percentage and p.struct_id not in invalid_structures)
             # 32 : Civil Engineers / Doctors
             payslips_32 = payslips.filtered(lambda p: p.employee_id.certificate in ['doctor', 'civil_engineer'])
-            wizard.taxable_amount_32 = payslips_32._get_pp_taxable_amount()
-            wizard.pp_amount_32 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_32)
+            sheet.taxable_amount_32 = payslips_32._get_pp_taxable_amount()
+            sheet.pp_amount_32 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_32)
 
             # 33 : Masters
             payslips_33 = payslips.filtered(lambda p: p.employee_id.certificate in ['master'])
-            wizard.taxable_amount_33 = payslips_33._get_pp_taxable_amount()
-            wizard.pp_amount_33 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_33)
+            sheet.taxable_amount_33 = payslips_33._get_pp_taxable_amount()
+            sheet.pp_amount_33 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_33)
             # 33 : Bachelors
             payslips_34 = payslips.filtered(lambda p: p.employee_id.certificate in ['bachelor'])
-            wizard.taxable_amount_34 = payslips_34._get_pp_taxable_amount()
-            wizard.pp_amount_34 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_34)
-            wizard.write({
+            sheet.taxable_amount_34 = payslips_34._get_pp_taxable_amount()
+            sheet.pp_amount_34 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_34)
+            sheet.write({
                 'deducted_amount': 0,
                 'deducted_amount_32': 0,
                 'deducted_amount_33': 0,
@@ -144,12 +174,12 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
                 if payslip.contract_id.rd_percentage:
                     deducted_amount = payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
                     if payslip.employee_id.certificate in ['doctor', 'civil_engineer']:
-                        wizard.deducted_amount_32 += deducted_amount
+                        sheet.deducted_amount_32 += deducted_amount
                     elif payslip.employee_id.certificate == 'master':
-                        wizard.deducted_amount_33 += deducted_amount
+                        sheet.deducted_amount_33 += deducted_amount
                     elif payslip.employee_id.certificate == 'bachelor':
-                        wizard.deducted_amount_34 += deducted_amount
-                    wizard.deducted_amount += deducted_amount
+                        sheet.deducted_amount_34 += deducted_amount
+                    sheet.deducted_amount += deducted_amount
                     mapped_pp[payslip.employee_id] += payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
                     mapped_taxable_amount[payslip.employee_id] += payslip._get_pp_taxable_amount()
 
@@ -160,12 +190,12 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
             # small companies (article 15 §§, 1 to 6 of the Companies Code). This limitation has
             # not changed on January 1, 2020.
             # https://www.belspo.be/belspo/organisation/fisc_dipl_fr.stm
-            wizard.capped_amount_34 = min(
-                wizard.deducted_amount_34,
-                (wizard.deducted_amount_32 + wizard.deducted_amount_33) / 4)
+            sheet.capped_amount_34 = min(
+                sheet.deducted_amount_34,
+                (sheet.deducted_amount_32 + sheet.deducted_amount_33) / 4)
 
-            wizard.line_ids = [(5, 0, 0)] + [(0, 0, {
-                'wizard_id': wizard.id,
+            sheet.line_ids = [(5, 0, 0)] + [(0, 0, {
+                'sheet_id': sheet.id,
                 'employee_id': employee.id,
                 'amount': mapped_pp[employee],
                 'taxable_amount': mapped_taxable_amount[employee],
@@ -189,14 +219,6 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         self.sheet_274_10_filename = filename
         self.sheet_274_10 = base64.encodebytes(export_274_sheet_pdf)
         self.state = 'waiting'
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_mode': 'form',
-            'res_id': self.id,
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
 
     def _to_eurocent(self, amount):
         return '%s' % int(amount * 100)
@@ -351,14 +373,6 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         self.xml_file = base64.encodebytes(xml_formatted_str)
 
         self.state = 'waiting'
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_mode': 'form',
-            'res_id': self.id,
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
 
     def action_generate_xls(self):
         output = io.BytesIO()
@@ -423,37 +437,16 @@ class L10nBeHrPayrollWithholdingTaxExemption(models.TransientModel):
         self.xls_filename = "withholding_tax_exemption_details.xlsx"
 
         self.state = 'waiting'
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'view_mode': 'form',
-            'res_id': self.id,
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
-
-    def action_validate(self):
-        self.ensure_one()
-        if self.sheet_274_10:
-            self._post_process_generated_file(self.sheet_274_10, self.sheet_274_10_filename)
-        if self.xls_file:
-            self._post_process_generated_file(self.xls_file, self.xls_filename)
-        if self.xml_file:
-            self._post_process_generated_file(self.xml_file, self.xml_filename)
-        return {'type': 'ir.actions.act_window_close'}
-
-    def _post_process_generated_file(self, data, filename):
-        return
 
 
-class L10nBeHrPayrollWithholdingTaxExemptionLine(models.TransientModel):
-    _name = 'l10n.be.withholding.tax.exemption.line'
+class L10nBe274XXLine(models.Model):
+    _name = 'l10n_be.274_xx.line'
     _description = '274.XX Sheets Line'
 
-    wizard_id = fields.Many2one('l10n.be.withholding.tax.exemption')
+    sheet_id = fields.Many2one('l10n_be.274_xx')
     employee_id = fields.Many2one('hr.employee')
     certificate = fields.Selection(related='employee_id.certificate')
     taxable_amount = fields.Monetary()
     amount = fields.Monetary(string="Exempted Amount")
-    company_id = fields.Many2one('res.company', related='wizard_id.company_id')
+    company_id = fields.Many2one('res.company', related='sheet_id.company_id')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')

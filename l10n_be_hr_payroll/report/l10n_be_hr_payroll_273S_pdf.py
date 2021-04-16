@@ -12,7 +12,7 @@ class ReportL10nBeHrPayroll273S(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         return {
             'doc_ids': docids,
-            'doc_model': self.env['l10n.be.withholding.tax.ip.declaration'],
+            'doc_model': self.env['l10n_be.273s'],
             'data': data,
-            'docs': self.env['l10n.be.withholding.tax.ip.declaration'].browse(self.env.context.get('active_id')),
+            'docs': self.env['l10n_be.273s'].browse(self.env.context.get('active_id')),
         }

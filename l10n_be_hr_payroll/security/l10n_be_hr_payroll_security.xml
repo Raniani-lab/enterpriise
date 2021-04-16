@@ -16,6 +16,31 @@
         <field name="model_id" ref="model_l10n_be_attachment_salary_report"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
+    <record id="ir_rule_l10n_be_273S_multi_company" model="ir.rule">
+        <field name="name">HR Payroll BE 273S: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_273s"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_l10n_be_28110_multi_company" model="ir.rule">
+        <field name="name">HR Payroll BE 281.10: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_281_10"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_l10n_be_28145_multi_company" model="ir.rule">
+        <field name="name">HR Payroll BE 281.45: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_281_45"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_l10n_be_274_XX_multi_company" model="ir.rule">
+        <field name="name">HR Payroll BE 274.XX: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_274_xx"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="ir_rule_l10n_be_274_XX_line_multi_company" model="ir.rule">
+        <field name="name">HR Payroll BE 274.XX Line: Multi Company</field>
+        <field name="model_id" ref="model_l10n_be_274_xx_line"/>
+        <field name="domain_force">[('sheet_id.company_id', 'in', company_ids)]</field>
+    </record>
 
 </odoo>
 

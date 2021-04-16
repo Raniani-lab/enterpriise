@@ -188,7 +188,7 @@ class DMFANaturalPerson(DMFANode):
         super().__init__(employee.env, sequence=sequence)
         self.employee = employee
         self.payslips = payslips
-        self.identification_id = employee.ssnid
+        self.identification_id = employee.niss
         self.quarter_start = quarter_start
         self.quarter_end = quarter_end
         self.worker_records = DMFAWorker.init_multi([(payslips, quarter_start, quarter_end)])

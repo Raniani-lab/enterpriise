@@ -377,10 +377,15 @@ class AccountBankReconciliationReport(models.AbstractModel):
         if journal.default_account_id in accounts:
             return [], []
 
-        # Include payments made in the future.
-        options_wo_date = {**options, 'date': None}
+        current_date = fields.Date.from_string(options['date']['date_to'])
+        if current_date < fields.Date.context_today(self):
+            # If the user selected a date in the past, filter payments as well.
+            new_options = options
+        else:
+            # Include payments made in the future.
+            new_options = {**options, 'date': None}
 
-        tables, where_clause, where_params = self.with_company(journal.company_id)._query_get(options_wo_date, domain=[
+        tables, where_clause, where_params = self.with_company(journal.company_id)._query_get(new_options, domain=[
             ('journal_id', '=', journal.id),
             ('account_id', 'in', accounts.ids),
             ('payment_id.is_matched', '=', False)

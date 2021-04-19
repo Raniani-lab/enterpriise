@@ -319,6 +319,16 @@ class TestReconciliationReport(TestAccountReportsCommon):
         statement.button_reopen()
         statement['balance_end_real'] = 140.0
 
+        payment = self.env['account.payment'].create({
+            'amount': 1000.0,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'date': '2019-01-03',
+            'journal_id': bank_journal.id,
+            'partner_id': self.partner_a.id,
+        })
+        payment.action_post()
+
         # report._get_lines() makes SQL queries without flushing
         statement.flush()
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
@@ -363,6 +373,13 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 ('Total Including Unreconciled Bank Statement Payments',        '',             -40.0),
 
                 ('Total Balance of 101404 Bank',                                '01/04/2019',   20.0),
+
+                ('Outstanding Payments/Receipts',                               '',             1000.0),
+                ('(+) Outstanding Receipts',                                    '',             1000.0),
+                ('BNK1/2019/01/0007',                                           '01/03/2019',   1000.0),
+                ('Total (+) Outstanding Receipts',                              '',             1000.0),
+                ('Total Outstanding Payments/Receipts',                         '',             1000.0),
+
             ],
             currency_map={3: {'currency': bank_journal.currency_id}},
         )

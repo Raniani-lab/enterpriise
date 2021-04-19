@@ -92,4 +92,4 @@ class Project(models.Model):
     @api.depends('sale_line_employee_ids.sale_line_id', 'sale_line_id')
     def _compute_partner_id(self):
         basic_projects = self.filtered(lambda project: not project.is_fsm)
-        super(Project, self - basic_projects)._compute_partner_id()
+        super(Project, basic_projects)._compute_partner_id()

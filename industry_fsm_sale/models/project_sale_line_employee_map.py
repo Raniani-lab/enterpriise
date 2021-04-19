@@ -30,13 +30,19 @@ class ProjectProductEmployeeMap(models.Model):
             self.env.remove_to_compute(currency_id_field, fsm_mappings)
         super(ProjectProductEmployeeMap, self - fsm_mappings)._compute_sale_line_id()
 
-    @api.depends('sale_line_id', 'sale_line_id.price_unit', 'timesheet_product_id')
+    @api.depends('sale_line_id.price_unit', 'timesheet_product_id')
     def _compute_price_unit(self):
         mappings_with_product_and_no_sol = self.filtered(lambda mapping: not mapping.sale_line_id and mapping.timesheet_product_id)
         for line in mappings_with_product_and_no_sol:
             line.price_unit = line.timesheet_product_id.lst_price
-            line.currency_id = line.timesheet_product_id.currency_id
         super(ProjectProductEmployeeMap, self - mappings_with_product_and_no_sol)._compute_price_unit()
+
+    @api.depends('sale_line_id.price_unit', 'timesheet_product_id')
+    def _compute_currency_id(self):
+        fsm_project_mappings = self.filtered(lambda mapping: mapping.project_id.is_fsm)
+        for mapping in fsm_project_mappings:
+            mapping.currency_id = mapping.timesheet_product_id.currency_id if mapping.timesheet_product_id else False
+        super(ProjectProductEmployeeMap, self - fsm_project_mappings)._compute_currency_id()
 
     @api.model
     def create(self, vals):

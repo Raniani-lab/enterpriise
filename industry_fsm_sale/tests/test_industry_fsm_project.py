@@ -5,6 +5,7 @@ from psycopg2 import IntegrityError
 
 from odoo.tests import tagged
 from odoo.tools import mute_logger
+from odoo.tests.common import Form
 
 from .common import TestFsmFlowSaleCommon
 
@@ -83,3 +84,30 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         self.assertEqual(self.project_project_rate.pricing_type, 'task_rate')
         self.assertFalse(self.project_project_rate.sale_order_id)
         self.assertFalse(self.project_project_rate.sale_line_id)
+
+    def test_fsm_project_form_view(self):
+        """ Test if in the form view of the fsm project, the user can always edit the price unit in the mapping
+
+            Test Case:
+            =========
+            1) Use the Form class to create a fsm project with a form view
+            2) Define this project as fsm project (is_fsm = True)
+            3) Create an employee mapping in this project
+            4) Check if the _compute_price_unit set the correct price unit
+            5) Change manually the price unit in this mapping and check if the edition is correctly done as expected
+            6) Save the creation and check the value in the pricing_type, partner_id and employee mapping price_unit fields.
+        """
+        with Form(self.env['project.project'].with_context({'tracking_disable': True})) as project_form:
+            project_form.name = 'Test Fsm Project'
+            project_form.is_fsm = True
+            with project_form.sale_line_employee_ids.new() as mapping_form:
+                mapping_form.employee_id = self.employee_manager
+                mapping_form.timesheet_product_id = self.product_order_timesheet1
+                self.assertEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be computed and equal to the price unit defined in the timesheet product.')
+                mapping_form.price_unit = 150
+                self.assertNotEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be the one selected by the user and no longer the one defined in the timesheet product.')
+                self.assertEqual(mapping_form.price_unit, 150, 'The price should be equal to 150.')
+            project = project_form.save()
+            self.assertEqual(project.pricing_type, 'employee_rate', 'The pricing type of this project should be equal to employee rate since it has a mapping.')
+            self.assertFalse(project.partner_id, 'No partner should be set with the compute_partner_id because this compute should be ignored in a fsm project.')
+            self.assertEqual(project.sale_line_employee_ids.price_unit, 150, 'The price unit should remain to 150.')

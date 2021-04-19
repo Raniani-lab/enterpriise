@@ -162,7 +162,7 @@ class L10nBe273S(models.Model):
                         'zip': employee.address_home_id.zip,
                         'country': employee.address_home_id.country_id.code,
                         'nationality': employee.country_id.code,
-                        'identification': employee.identification_id.replace('-', '').replace('.', ''),
+                        'identification': employee.niss.replace('-', '').replace('.', ''),
                     },
                     'gross_amount': ip_values[0],
                     'deductable_costs': {

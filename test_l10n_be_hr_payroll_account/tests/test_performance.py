@@ -220,10 +220,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             print("--- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Validation
-        with self.assertQueryCount(admin=785):
+        with self.assertQueryCount(admin=787):
             start_time = time.time()
             payslips.action_payslip_done()
-            # --- 11.888638019561768 seconds ---
+            # --- 6.975736618041992 seconds ---
             print("--- %s seconds ---" % (time.time() - start_time))
 
         # 273S Declaration

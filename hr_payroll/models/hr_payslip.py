@@ -241,7 +241,10 @@ class HrPayslip(models.Model):
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
         self.write({'state' : 'done'})
-        self.filtered(lambda p: p._get_salary_line_total('NET') < 0).write({'has_negative_net_to_report': True})
+
+        line_values = self._get_line_values(['NET'], skip_sum=True)
+
+        self.filtered(lambda p: line_values['NET'][p.id]['total'] < 0).write({'has_negative_net_to_report': True})
         self.mapped('payslip_run_id').action_close()
         # Validate work entries for regular payslips (exclude end of year bonus, ...)
         regular_payslips = self.filtered(lambda p: p.struct_id.type_id.default_struct_id == p.struct_id)
@@ -567,7 +570,7 @@ class HrPayslip(models.Model):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
-    def _get_line_values(self, code_list, vals_list=None):
+    def _get_line_values(self, code_list, vals_list=None, skip_sum=False):
         if vals_list is None:
             vals_list = ['total']
         valid_values = {'quantity', 'amount', 'total'}
@@ -612,7 +615,8 @@ class HrPayslip(models.Model):
             code = row['code']
             payslip_id = row['id']
             for vals in vals_list:
-                result[code]['sum'][vals] += row[vals]
+                if not skip_sum:
+                    result[code]['sum'][vals] += row[vals]
                 result[code][payslip_id][vals] += row[vals]
         return result
 

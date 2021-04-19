@@ -201,6 +201,12 @@ class L10nBe28145(models.Model):
         for payslip in all_payslips:
             employee_payslips[payslip.employee_id] |= payslip
 
+        line_codes = [
+            'IP',
+            'IP.DED',
+        ]
+        all_line_values = all_payslips._get_line_values(line_codes, skip_sum=True)
+
         belgium = self.env.ref('base.be')
         sequence = 0
         # warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
@@ -208,6 +214,10 @@ class L10nBe28145(models.Model):
             is_belgium = employee.address_home_id.country_id == belgium
             payslips = employee_payslips[employee]
             sequence += 1
+
+            mapped_total = {
+                code: sum(all_line_values[code][p.id]['total'] for p in payslips)
+                for code in line_codes}
 
             sheet_values = {
                 'employee': employee,
@@ -236,10 +246,10 @@ class L10nBe28145(models.Model):
                 'f2114_voornamen': employee.name,
                 'f45_2030_aardpersoon': 1,
                 'f45_2031_verantwoordingsstukken': 0,
-                'f45_2060_brutoinkomsten': round(payslips._get_salary_line_total('IP'), 2),
-                'f45_2061_forfaitairekosten': round(payslips._get_salary_line_total('IP') / 2.0, 2),
+                'f45_2060_brutoinkomsten': round(mapped_total['IP'], 2),
+                'f45_2061_forfaitairekosten': round(mapped_total['IP'] / 2.0, 2),
                 'f45_2062_werkelijkekosten': 0,
-                'f45_2063_roerendevoorheffing': round(-payslips._get_salary_line_total('IP.DED'), 2),
+                'f45_2063_roerendevoorheffing': round(-mapped_total['IP.DED'], 2),
                 'f45_2099_comment': '',
                 'f45_2109_fiscaalidentificat': employee.identification_id if employee.country_id != belgium else '',
                 'f45_2110_kbonbr': 0, # ?

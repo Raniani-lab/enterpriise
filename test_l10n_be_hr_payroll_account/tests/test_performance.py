@@ -274,6 +274,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         with self.assertQueryCount(admin=9):
             start_time = time.time()
             declaration_281_45.action_generate_xml()
-            # --- 0.15049433708190918 seconds ---
+            # --- 0.027942657470703125 seconds ---
             print("Declaration 281.45:--- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)

@@ -532,7 +532,7 @@ class AccountAsset(models.Model):
             if not asset.depreciation_move_ids:
                 asset.compute_depreciation_board()
             asset._check_depreciations()
-            asset.depreciation_move_ids._post()
+            asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')._post()
 
     def _return_disposal_view(self, move_ids):
         name = _('Disposal Move')

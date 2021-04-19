@@ -249,16 +249,11 @@ class TestAccountAsset(TestAccountReportsCommon):
         recognition = invoice.asset_ids
         self.assertEqual(len(recognition), 1, 'One and only one recognition should have been created from invoice.')
 
-        # I confirm revenue recognition.
-        recognition.validate()
         self.assertTrue(recognition.state == 'open',
                         'Recognition should be in Open state')
         first_invoice_line = invoice.invoice_line_ids[0]
         self.assertEqual(recognition.original_value, first_invoice_line.price_subtotal,
                          'Recognition value is not same as invoice line.')
-
-        recognition.depreciation_move_ids.write({'auto_post': False})
-        recognition.depreciation_move_ids.action_post()
 
         # I check data in move line and installment line.
         first_installment_line = recognition.depreciation_move_ids.sorted(lambda r: r.id)[0]

@@ -38,3 +38,12 @@ def uninstall_hook(cr, registry):
     for action in actions:
         action.view_mode = ','.join(view_mode for view_mode in action.view_mode.split(',') if view_mode != 'grid')
 
+    # revert module override of external view inherit_id
+    inherit_ids = {
+        'hr_timesheet.hr_timesheet_line_my_timesheet_search': 'hr_timesheet.hr_timesheet_line_search',
+    }
+    for view_xid, inherit_xid in inherit_ids.items():
+        view = env.ref(view_xid, raise_if_not_found=False)
+        inherit = env.ref(inherit_xid, raise_if_not_found=False)
+        if view and inherit:
+            view.inherit_id = inherit

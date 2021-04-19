@@ -26,9 +26,13 @@ class HelpdeskTeam(models.Model):
 
     def _default_stage_ids(self):
         default_stage = self.env['helpdesk.stage'].search([('name', '=', _('New'))], limit=1)
-        if default_stage:
-            return [(4, default_stage.id)]
-        return [(0, 0, {'name': _('New'), 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
+        if not default_stage:
+            default_stage = self.env['helpdesk.stage'].create({
+                'name': _("New"),
+                'sequence': 0,
+                'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False).id or None
+            })
+        return [(4, default_stage.id)]
 
     def _default_domain_member_ids(self):
         return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]

@@ -81,6 +81,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'company_id': cls.company.id,
             'km_home_work': 75,
             'niss': '93051822361',
+            'certificate': 'master',
+
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.brand = cls.env['fleet.vehicle.model.brand'].create([{
@@ -139,6 +141,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'eco_checks': 250.0,
             'ip_wage_rate': 25.0,
             'ip': True,
+            'rd_percentage': 100,
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.sick_time_off_type = cls.env['hr.leave.type'].create({
@@ -234,3 +237,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             # --- 0.027051687240600586 seconds ---
             print("--- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_273S.xml_validation_state, 'done', declaration_273S.error_message)
+
+        # 274.XX Declaration
+        declaration_274_XX = self.env['l10n_be.274_xx'].with_context(allowed_company_ids=self.company.ids).create({
+            'year': self.date_from.year,
+            'month': str(self.date_from.month),
+        })
+        with self.assertQueryCount(admin=100):
+            start_time = time.time()
+            declaration_274_XX.action_generate_xml()
+            # --- 0.40171217918395996 seconds ---
+            print("--- %s seconds ---" % (time.time() - start_time))
+        self.assertEqual(declaration_274_XX.xml_validation_state, 'done', declaration_274_XX.error_message)

@@ -41,8 +41,7 @@ class L10nBe273S(models.Model):
         ('12', 'December'),
     ], required=True, default=lambda self: str((fields.Date.today() + relativedelta(months=-1)).month))
     period = fields.Date(
-        'Period', compute='_compute_period',
-        required=True, store=True)
+        'Period', compute='_compute_period', store=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     state = fields.Selection([

@@ -563,10 +563,61 @@ class HrPayslip(models.Model):
         return [(5, False, False)]
 
     def _get_salary_line_total(self, code):
+        _logger.warning('The method _get_salary_line_total is deprecated in favor of _get_line_values')
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
+    def _get_line_values(self, code_list, vals_list=None):
+        if vals_list is None:
+            vals_list = ['total']
+        valid_values = {'quantity', 'amount', 'total'}
+        if set(vals_list) - valid_values:
+            raise UserError(_('The following values are not valid:\n%s', '\n'.join(list(set(vals_list) - valid_values))))
+        self.flush()
+        selected_fields = ','.join('SUM(%s) AS %s' % (vals, vals) for vals in vals_list)
+        self.env.cr.execute("""
+            SELECT
+                p.id,
+                pl.code,
+                %s
+            FROM hr_payslip_line pl
+            JOIN hr_payslip p
+            ON p.id IN %s
+            AND pl.slip_id = p.id
+            AND pl.code IN %s
+            GROUP BY p.id, pl.code
+        """ % (selected_fields, '%s', '%s'), (tuple(self.ids), tuple(code_list)))
+        request_rows = self.env.cr.dictfetchall()
+        # self = hr.payslip(1, 2)
+        # request_rows = [
+        #     {'id': 1, 'code': 'IP', 'total': 100, 'quantity': 1},
+        #     {'id': 1, 'code': 'IP.DED', 'total': 200, 'quantity': 1},
+        #     {'id': 2, 'code': 'IP', 'total': -2, 'quantity': 1},
+        #     {'id': 2, 'code': 'IP.DED', 'total': -3, 'quantity': 1}
+        # ]
+        result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
+        # result = {
+        #     'IP': {
+        #         'sum': {'quantity': 2, 'total': 300},
+        #         1: {'quantity': 1, 'total': 100},
+        #         2: {'quantity': 1, 'total': 200},
+        #     },
+        #     'IP.DED': {
+        #         'sum': {'quantity': 2, 'total': -5},
+        #         1: {'quantity': 1, 'total': -2},
+        #         2: {'quantity': 1, 'total': -3},
+        #     },
+        # }
+        for row in request_rows:
+            code = row['code']
+            payslip_id = row['id']
+            for vals in vals_list:
+                result[code]['sum'][vals] += row[vals]
+                result[code][payslip_id][vals] += row[vals]
+        return result
+
     def _get_salary_line_quantity(self, code):
+        _logger.warning('The method _get_salary_line_quantity is deprecated in favor of _get_line_values')
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.quantity for line in lines])
 

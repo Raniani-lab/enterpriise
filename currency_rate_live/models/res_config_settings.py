@@ -330,7 +330,7 @@ class ResCompany(models.Model):
             # line structure is <th>CODE</th><td>NAME<td><td>UNITS PER CURRENCY</td><td>CURRENCY PER UNIT</td>
             currency_code = ''.join(rate_entry.find('.//th').itertext()).strip()
             if currency_code in available_currency_names:
-                rate = float(rate_entry.find("td[2]").text)
+                rate = float(rate_entry.find("td[2]").text.replace(',', ''))
                 rslt[currency_code] = (rate, today)
 
         return rslt

@@ -23,7 +23,7 @@ class MrpEcoType(models.Model):
     nb_approvals_my = fields.Integer('Waiting my Approvals', compute='_compute_nb')
     nb_validation = fields.Integer('To Apply', compute='_compute_nb')
     color = fields.Integer('Color', default=1)
-    stage_ids = fields.One2many('mrp.eco.stage', 'type_id', 'Stages')
+    stage_ids = fields.Many2many('mrp.eco.stage', 'mrp_eco_stage_type_rel', 'type_id', 'stage_id', string='Stages')
 
     def _compute_nb(self):
         # TDE FIXME: this seems not good for performances, to check (replace by read_group later on)
@@ -33,16 +33,16 @@ class MrpEcoType(models.Model):
                 ('type_id', '=', eco_type.id), ('state', '!=', 'done')
             ])
             eco_type.nb_validation = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('stage_id.allow_apply_change', '=', True),
                 ('state', '=', 'progress')
             ])
             eco_type.nb_approvals = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('approval_ids.status', '=', 'none')
             ])
             eco_type.nb_approvals_my = MrpEco.search_count([
-                ('stage_id.type_id', '=', eco_type.id),
+                ('type_id', '=', eco_type.id),
                 ('approval_ids.status', '=', 'none'),
                 ('approval_ids.required_user_ids', '=', self.env.user.id)
             ])
@@ -142,7 +142,7 @@ class MrpEcoStage(models.Model):
     folded = fields.Boolean('Folded in kanban view')
     allow_apply_change = fields.Boolean(string='Allow to apply changes', help='Allow to apply changes from this stage.')
     final_stage = fields.Boolean(string='Final Stage', help='Once the changes are applied, the ECOs will be moved to this stage.')
-    type_id = fields.Many2one('mrp.eco.type', 'Type', required=True, default=lambda self: self.env['mrp.eco.type'].search([], limit=1))
+    type_ids = fields.Many2many('mrp.eco.type', 'mrp_eco_stage_type_rel', 'stage_id', 'type_id', string='Types', required=True)
     approval_template_ids = fields.One2many('mrp.eco.approval.template', 'stage_id', 'Approvals')
     approval_roles = fields.Char('Approval Roles', compute='_compute_approvals', store=True)
     is_blocking = fields.Boolean('Blocking Stage', compute='_compute_is_blocking', store=True)
@@ -183,9 +183,9 @@ class MrpEco(models.Model):
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True, check_company=True)
     type_id = fields.Many2one('mrp.eco.type', 'Type', required=True)
     stage_id = fields.Many2one(
-        'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_id', '=', type_id)]",
+        'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_ids', 'in', type_id)]",
         group_expand='_read_group_stage_ids', tracking=True,
-        default=lambda self: self.env['mrp.eco.stage'].search([('type_id', '=', self._context.get('default_type_id'))], limit=1))
+        default=lambda self: self.env['mrp.eco.stage'].search([('type_ids', 'in', self._context.get('default_type_id'))], limit=1))
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     tag_ids = fields.Many2many('mrp.eco.tag', string='Tags')
     priority = fields.Selection([
@@ -476,7 +476,7 @@ class MrpEco(models.Model):
 
     @api.onchange('type_id')
     def onchange_type_id(self):
-        self.stage_id = self.env['mrp.eco.stage'].search([('type_id', '=', self.type_id.id)], limit=1).id
+        self.stage_id = self.env['mrp.eco.stage'].search([('type_ids', 'in', self.type_id.id)], limit=1).id
 
     @api.model
     def create(self, vals):
@@ -497,7 +497,7 @@ class MrpEco(models.Model):
                     has_blocking_stages = self.env['mrp.eco.stage'].search_count([
                         ('sequence', '>=', eco.stage_id.sequence),
                         ('sequence', '<=', newstage.sequence),
-                        ('type_id', '=', eco.type_id.id),
+                        ('type_ids', 'in', eco.type_id.id),
                         ('id', 'not in', [eco.stage_id.id] + [vals['stage_id']]),
                         ('is_blocking', '=', True)])
                     if has_blocking_stages:
@@ -516,8 +516,8 @@ class MrpEco(models.Model):
         in the Kanban view, even if there is no ECO in that stage
         """
         search_domain = []
-        if self._context.get('default_type_id'):
-            search_domain = [('type_id', '=', self._context['default_type_id'])]
+        if self._context.get('default_type_ids'):
+            search_domain = [('type_ids', 'in', self._context['default_type_ids'])]
 
         stage_ids = stages._search(search_domain, order=order, access_rights_uid=SUPERUSER_ID)
         return stages.browse(stage_ids)
@@ -632,7 +632,9 @@ class MrpEco(models.Model):
                 })
         self.product_tmpl_id.version = self.product_tmpl_id.version + 1
         vals = {'state': 'done'}
-        stage_id = self.env['mrp.eco.stage'].search([('final_stage', '=', True), ('type_id', '=', self.type_id.id)], limit=1).id
+        stage_id = self.env['mrp.eco.stage'].search([
+            ('final_stage', '=', True),
+            ('type_ids', 'in', self.type_id.id)], limit=1).id
         if stage_id:
             vals['stage_id'] = stage_id
         self.write(vals)

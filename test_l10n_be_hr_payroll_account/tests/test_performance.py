@@ -4,6 +4,7 @@
 import time
 
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
@@ -277,3 +278,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             # --- 0.027942657470703125 seconds ---
             print("Declaration 281.45:--- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
+
+        # Social Security Certificate
+        social_security_certificate = self.env['l10n.be.social.security.certificate'].with_context(allowed_company_ids=self.company.ids).create({
+            'date_from': self.date_from + relativedelta(day=1, month=1),
+            'date_to': self.date_from + relativedelta(day=31, month=12),
+        })
+        with self.assertQueryCount(admin=24):
+            start_time = time.time()
+            social_security_certificate.print_report()
+            # --- 0.24560809135437012 seconds ---
+            print("Social Security Certificate:--- %s seconds ---" % (time.time() - start_time))

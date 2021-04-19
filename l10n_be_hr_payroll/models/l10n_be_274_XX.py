@@ -43,10 +43,10 @@ class L10nBe274XX(models.Model):
         ('12', 'December'),
     ], required=True, default=lambda self: str((fields.Date.today() + relativedelta(months=-1)).month))
     date_start = fields.Date(
-        'Start Period', required=True, store=True, readonly=False,
+        'Start Period', store=True, readonly=False,
         compute='_compute_dates')
     date_end = fields.Date(
-        'End Period', required=True, store=True, readonly=False,
+        'End Period', store=True, readonly=False,
         compute='_compute_dates')
     line_ids = fields.One2many(
         'l10n_be.274_xx.line', 'sheet_id',

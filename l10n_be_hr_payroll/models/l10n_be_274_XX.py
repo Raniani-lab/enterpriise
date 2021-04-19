@@ -145,24 +145,26 @@ class L10nBe274XX(models.Model):
             mapped_taxable_amount = defaultdict(lambda: 0)
             payslips = self._get_valid_payslips()
 
+            line_values = payslips._get_line_values(['GROSS', 'PPTOTAL'])
+
             # Total
-            sheet.taxable_amount = payslips._get_pp_taxable_amount()
-            sheet.pp_amount = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips)
+            sheet.taxable_amount = line_values['GROSS']['sum']['total']
+            sheet.pp_amount = line_values['PPTOTAL']['sum']['total']
             # Valid payslips for exemption
             payslips = payslips.filtered(lambda p: p.contract_id.rd_percentage and p.struct_id not in invalid_structures)
             # 32 : Civil Engineers / Doctors
             payslips_32 = payslips.filtered(lambda p: p.employee_id.certificate in ['doctor', 'civil_engineer'])
-            sheet.taxable_amount_32 = payslips_32._get_pp_taxable_amount()
-            sheet.pp_amount_32 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_32)
+            sheet.taxable_amount_32 = sum(line_values['GROSS'][p.id]['total'] for p in payslips_32)
+            sheet.pp_amount_32 = sum(line_values['PPTOTAL'][p.id]['total'] for p in payslips_32)
 
             # 33 : Masters
             payslips_33 = payslips.filtered(lambda p: p.employee_id.certificate in ['master'])
-            sheet.taxable_amount_33 = payslips_33._get_pp_taxable_amount()
-            sheet.pp_amount_33 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_33)
+            sheet.taxable_amount_33 = sum(line_values['GROSS'][p.id]['total'] for p in payslips_33)
+            sheet.pp_amount_33 = sum(line_values['PPTOTAL'][p.id]['total'] for p in payslips_33)
             # 33 : Bachelors
             payslips_34 = payslips.filtered(lambda p: p.employee_id.certificate in ['bachelor'])
-            sheet.taxable_amount_34 = payslips_34._get_pp_taxable_amount()
-            sheet.pp_amount_34 = sum(abs(p._get_salary_line_total('PPTOTAL')) for p in payslips_34)
+            sheet.taxable_amount_34 = sum(line_values['GROSS'][p.id]['total'] for p in payslips_34)
+            sheet.pp_amount_34 = sum(line_values['PPTOTAL'][p.id]['total'] for p in payslips_34)
             sheet.write({
                 'deducted_amount': 0,
                 'deducted_amount_32': 0,
@@ -172,7 +174,7 @@ class L10nBe274XX(models.Model):
 
             for payslip in payslips:
                 if payslip.contract_id.rd_percentage:
-                    deducted_amount = payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
+                    deducted_amount = payslip.contract_id.rd_percentage / 100 * 0.8 * line_values['PPTOTAL'][payslip.id]['total']
                     if payslip.employee_id.certificate in ['doctor', 'civil_engineer']:
                         sheet.deducted_amount_32 += deducted_amount
                     elif payslip.employee_id.certificate == 'master':
@@ -180,8 +182,8 @@ class L10nBe274XX(models.Model):
                     elif payslip.employee_id.certificate == 'bachelor':
                         sheet.deducted_amount_34 += deducted_amount
                     sheet.deducted_amount += deducted_amount
-                    mapped_pp[payslip.employee_id] += payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
-                    mapped_taxable_amount[payslip.employee_id] += payslip._get_pp_taxable_amount()
+                    mapped_pp[payslip.employee_id] += payslip.contract_id.rd_percentage / 100 * 0.8 * line_values['PPTOTAL'][payslip.id]['total']
+                    mapped_taxable_amount[payslip.employee_id] += line_values['GROSS'][payslip.id]['total']
 
             # The total amount of the exemption from payment of the withholding tax granted to
             # researchers who have a bachelor's degree is limited to 25% of the total amount of
@@ -324,32 +326,30 @@ class L10nBe274XX(models.Model):
         structure_holidays_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
         invalid_structures = structure_termination + structure_holidays_n1 + structure_holidays_n
 
+        line_values = payslips._get_line_values(['GROSS', 'PPTOTAL'])
+
         for payslip in payslips:
-            pp_total = payslip._get_salary_line_total('PPTOTAL')
+            pp_total = line_values['PPTOTAL'][payslip.id]['total']
             if pp_total >= 0:
                 pp_total_eurocent = int(pp_total * 100)
-                taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
+                taxable_eurocent = int(line_values['GROSS'][payslip.id]['total'] * 100)
                 declaration_10['prepayment'] += pp_total_eurocent
                 declaration_10['taxable_revenue'] += taxable_eurocent
                 result['positive_total'] += pp_total_eurocent
 
             if payslip.struct_id not in invalid_structures and payslip.contract_id.rd_percentage:
                 employee = payslip.employee_id
-                deduction = - payslip.contract_id.rd_percentage / 100 * 0.8 * abs(payslip._get_salary_line_total('PPTOTAL'))
+                deduction = - payslip.contract_id.rd_percentage / 100 * 0.8 * line_values['PPTOTAL'][payslip.id]['total']
                 if deduction:
+                    pp_total_eurocent = int(deduction * 100)
+                    taxable_eurocent = int(line_values['GROSS'][payslip.id]['total'] * 100)
                     if employee.certificate in ['doctor', 'civil_engineer']:
-                        pp_total_eurocent = int(deduction * 100)
-                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
                         declaration_32['prepayment'] += pp_total_eurocent
                         declaration_32['taxable_revenue'] += taxable_eurocent
                     elif employee.certificate == 'master':
-                        pp_total_eurocent = int(deduction * 100)
-                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
                         declaration_33['prepayment'] += pp_total_eurocent
                         declaration_33['taxable_revenue'] += taxable_eurocent
                     elif employee.certificate == 'bachelor':
-                        pp_total_eurocent = int(deduction * 100)
-                        taxable_eurocent = int(payslip._get_pp_taxable_amount() * 100)
                         declaration_34['prepayment'] += pp_total_eurocent
                         declaration_34['taxable_revenue'] += taxable_eurocent
                     result['negative_total'] += int(deduction * 100)

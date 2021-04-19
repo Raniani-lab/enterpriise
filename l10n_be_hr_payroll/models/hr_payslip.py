@@ -493,9 +493,6 @@ class Payslip(models.Model):
                 ))
         return super().action_payslip_done()
 
-    def _get_pp_taxable_amount(self):
-        return sum(p._get_salary_line_total('GROSS') for p in self)
-
     def _get_pdf_reports(self):
         res = super()._get_pdf_reports()
         holiday_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')

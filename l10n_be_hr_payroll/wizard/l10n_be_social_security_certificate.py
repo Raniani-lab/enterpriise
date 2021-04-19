@@ -30,6 +30,9 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
     social_security_filename = fields.Char()
 
     def print_report(self):
+        def _get_total(payslips, all_values, codes):
+            return sum(all_values[code][p.id]['total'] for p in payslips for code in codes)
+
         self.ensure_one()
         report_data = {}
 
@@ -59,40 +62,48 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
         thirteen_slips = all_payslips.filtered(lambda p: p.struct_id == thirteen_pay)
         student_slips = all_payslips.filtered(lambda p: p.struct_id == student_pay)
 
-        gross_before_onss = sum(p._get_salary_line_total('BASIC') + p._get_salary_line_total('COMMISSION') for p in monthly_slips)
-        atn = sum(p._get_salary_line_total('ATN.INT') + p._get_salary_line_total('ATN.MOB') + p._get_salary_line_total('ATN.LAP') for p in monthly_slips)
-        termination_fees = sum(p._get_salary_line_total('BASIC') for p in termination_slips)
-        student = sum(p._get_salary_line_total('BASIC') for p in student_slips)
-        thirteen_month = sum(p._get_salary_line_total('BASIC') for p in thirteen_slips)
-        double_pay = sum(p._get_salary_line_total('D.P') + p._get_salary_line_total('EU.LEAVE.DEDUC') for p in double_slips)
+        code_list = [
+            'BASIC', 'COMMISSION', 'ATN.INT', 'ATN.MOB', 'ATN.LAP', 'BASIC', 'BASIC', 'BASIC',
+            'D.P', 'EU.LEAVE.DEDUC', 'ATN.CAR', 'PAY_SIMPLE', 'PAY DOUBLE',
+            'PAY DOUBLE COMPLEMENTARY', 'SALARY', 'SALARY', 'ONSSTOTAL', 'ONSSTOTAL', 'ONSS1',
+            'ONSS2', 'ONSS', 'ONSS', 'ONSS', 'REP.FEES', 'CAR.PRIV', 'P.P', 'M.ONSS',
+            'ATTACH_SALARY', 'ATN.CAR.2', 'ATN.MOB.2', 'ATN.INT.2', 'ATN.LAP.2', 'MEAL_V_EMP',
+            'IMPULSION25', 'IMPULSION12', 'ASSIG_SALARY', 'ADVANCE', 'NET', 'P.P.DED']
+        all_values = all_payslips._get_line_values(code_list, vals_list=['total', 'quantity'], skip_sum=True)
+
+        gross_before_onss = _get_total(monthly_slips, all_values, ['BASIC', 'COMMISSION'])
+        atn = _get_total(monthly_slips, all_values, ['ATN.INT', 'ATN.MOB', 'ATN.LAP'])
+        termination_fees = _get_total(termination_slips, all_values, ['BASIC'])
+        student = _get_total(student_slips, all_values, ['BASIC'])
+        thirteen_month = _get_total(thirteen_slips, all_values, ['BASIC'])
+        double_pay = _get_total(double_slips, all_values, ['D.P', 'EU.LEAVE.DEDUC'])
         total_gross_before_onss = gross_before_onss + atn + termination_fees + student + thirteen_month + double_pay
-        atn_without_onss = sum(p._get_salary_line_total('ATN.CAR') for p in monthly_slips)
-        early_holiday_pay = sum(p._get_salary_line_total('PAY_SIMPLE') for p in holiday_slips)
-        holiday_pay_supplement = sum(p._get_salary_line_total('PAY DOUBLE') for p in holiday_slips)
-        other_exempted_amount = sum(p._get_salary_line_total('PAY DOUBLE COMPLEMENTARY') for p in holiday_slips)
-        thirteen_month_gross = sum(p._get_salary_line_total('SALARY') for p in thirteen_slips)
-        double_gross = sum(p._get_salary_line_total('SALARY') for p in double_slips)
+        atn_without_onss = _get_total(monthly_slips, all_values, ['ATN.CAR'])
+        early_holiday_pay = _get_total(holiday_slips, all_values, ['PAY_SIMPLE'])
+        holiday_pay_supplement = _get_total(holiday_slips, all_values, ['PAY DOUBLE'])
+        other_exempted_amount = _get_total(holiday_slips, all_values, ['PAY DOUBLE COMPLEMENTARY'])
+        thirteen_month_gross = _get_total(thirteen_slips, all_values, ['SALARY'])
+        double_gross = _get_total(double_slips, all_values, ['SALARY'])
         subtotal_gross = total_gross_before_onss + atn_without_onss + early_holiday_pay + holiday_pay_supplement + other_exempted_amount + student + thirteen_month_gross + double_gross
-        onss_cotisation = sum(p._get_salary_line_total('ONSSTOTAL') for p in monthly_slips)
-        onss_cotisation_termination_fees = sum(p._get_salary_line_total('ONSSTOTAL') for p in termination_slips)
-        anticipated_holiday_pay_retenue = sum(p._get_salary_line_total('ONSS1') for p in holiday_slips)
-        holiday_pay_supplement_retenue = sum(p._get_salary_line_total('ONSS2') for p in holiday_slips)
-        onss_thirteen_month = sum(p._get_salary_line_total('ONSS') for p in thirteen_slips)
-        onss_double = sum(p._get_salary_line_total('ONSS') for p in double_slips)
-        onss_student = sum(p._get_salary_line_total('ONSS') for p in student_slips)
-        representation_fees = sum(p._get_salary_line_total('REP.FEES') for p in monthly_slips)
-        private_car = sum(p._get_salary_line_total('CAR.PRIV') for p in monthly_slips + student_slips)
+        onss_cotisation = _get_total(monthly_slips, all_values, ['ONSSTOTAL'])
+        onss_cotisation_termination_fees = _get_total(termination_slips, all_values, ['ONSSTOTAL'])
+        anticipated_holiday_pay_retenue = _get_total(holiday_slips, all_values, ['ONSS1'])
+        holiday_pay_supplement_retenue = _get_total(holiday_slips, all_values, ['ONSS2'])
+        onss_thirteen_month = _get_total(thirteen_slips, all_values, ['ONSS'])
+        onss_double = _get_total(double_slips, all_values, ['ONSS'])
+        onss_student = _get_total(student_slips, all_values, ['ONSS'])
+        representation_fees = _get_total(monthly_slips, all_values, ['REP.FEES'])
+        private_car = _get_total(monthly_slips + student_slips, all_values, ['CAR.PRIV'])
         atn_car = atn_without_onss
-        withholding_taxes = sum(p._get_salary_line_total('P.P') for p in all_payslips)
-        misc_onss = sum(p._get_salary_line_total('M.ONSS') for p in all_payslips)
-        salary_attachment = sum(p._get_salary_line_total('ATTACH_SALARY') for p in all_payslips)
-        atn_deduction = sum(
-            p._get_salary_line_total('ATN.CAR.2') + p._get_salary_line_total('ATN.MOB.2') + p._get_salary_line_total('ATN.INT.2') + p._get_salary_line_total('ATN.LAP.2') for p in monthly_slips)
-        meal_voucher_employee = sum(p._get_salary_line_total('MEAL_V_EMP') for p in monthly_slips + student_slips)
-        net_third_party = sum(p._get_salary_line_total('IMPULSION25') + p._get_salary_line_total('IMPULSION12') for p in monthly_slips)
-        salary_assignment = sum(p._get_salary_line_total('ASSIG_SALARY') for p in all_payslips)
-        salary_advance = sum(p._get_salary_line_total('ADVANCE') for p in monthly_slips)
-        net = sum(p._get_salary_line_quantity('NET') for p in all_payslips)
+        withholding_taxes = _get_total(all_payslips, all_values, ['P.P'])
+        misc_onss = _get_total(all_payslips, all_values, ['M.ONSS'])
+        salary_attachment = _get_total(all_payslips, all_values, ['ATTACH_SALARY'])
+        atn_deduction = _get_total(monthly_slips, all_values, ['ATN.CAR.2', 'ATN.MOB.2', 'ATN.INT.2', 'ATN.LAP.2'])
+        meal_voucher_employee = _get_total(monthly_slips + student_slips, all_values, ['MEAL_V_EMP'])
+        net_third_party = _get_total(monthly_slips, all_values, ['IMPULSION25', 'IMPULSION12'])
+        salary_assignment = _get_total(all_payslips, all_values, ['ASSIG_SALARY'])
+        salary_advance = _get_total(monthly_slips, all_values, ['ADVANCE'])
+        net = _get_total(all_payslips, all_values, ['NET'])
         total_net = net + salary_advance
         # YTI TODO: Pliz
         emp_onss = 0
@@ -104,8 +115,8 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
         else:
             co2_fees = 0
         structural_reductions = 0
-        meal_voucher_employer = sum(p._get_salary_line_quantity('MEAL_V_EMP') * p.contract_id.meal_voucher_paid_by_employer for p in monthly_slips + student_slips)
-        withholding_taxes_deduction = sum(p._get_salary_line_total('P.P.DED') for p in monthly_slips)
+        meal_voucher_employer = sum(all_values['MEAL_V_EMP'][p.id]['quantity'] * p.contract_id.meal_voucher_paid_by_employer for p in monthly_slips + student_slips)
+        withholding_taxes_deduction = _get_total(monthly_slips, all_values, ['P.P.DED'])
         total_employer_cost = emp_onss + emp_termination_onss + closure_fund + charges_redistribution + co2_fees + structural_reductions + meal_voucher_employer + withholding_taxes_deduction
         holiday_pay_provision = 0
 

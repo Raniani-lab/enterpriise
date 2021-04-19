@@ -49,7 +49,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                 'move_type': 'in_invoice',
                 'partner_id': self.partner_a.id,
                 'journal_id': self.company_data['default_journal_purchase'].id,
-                'date': fields.Date.from_string('2020-06-30'),
+                'invoice_date': fields.Date.from_string('2020-06-30'),
                 'invoice_line_ids': [(0, 0, {
                     'name': 'Turlututu',
                     'price_unit': 50.0,
@@ -74,7 +74,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                 'move_type': 'in_invoice',
                 'partner_id': self.partner_a.id,
                 'journal_id': self.company_data['default_journal_purchase'].id,
-                'date': fields.Date.from_string('2020-09-30'),
+                'invoice_date': fields.Date.from_string('2020-09-30'),
                 'invoice_line_ids': [(0, 0, {
                     'name': 'Turlututu',
                     'price_unit': 500.0,
@@ -109,7 +109,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
             'journal_id': company_data['default_journal_purchase'].id,
-            'date': fields.Date.from_string('2020-03-31'),
+            'invoice_date': fields.Date.from_string('2020-03-31'),
             'invoice_line_ids': [
                 (0, 0, {
                     'name': 'Turlututu',

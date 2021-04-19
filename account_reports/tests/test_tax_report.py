@@ -585,7 +585,6 @@ class TestTaxReport(TestAccountReportsCommon):
             'move_type': 'out_invoice',
             'partner_id': self.partner_a.id,
             'invoice_date': invoice_date,
-            'date': invoice_date,
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product_a.id,
                 'price_unit': price_unit,
@@ -980,7 +979,7 @@ class TestTaxReport(TestAccountReportsCommon):
             return self.env['account.move'].create({
                 'move_type': inv_type,
                 'partner_id': partner.id,
-                'date': date,
+                'invoice_date': date,
                 'invoice_line_ids': [(0, 0, {
                     'name': 'test',
                     'quantity': 1,
@@ -1147,7 +1146,7 @@ class TestTaxReport(TestAccountReportsCommon):
             return self.env['account.move'].create({
                 'move_type': inv_type,
                 'partner_id': partner.id,
-                'date': date,
+                'invoice_date': date,
                 'invoice_line_ids': [
                     (0, 0, {
                         'name': 'test',

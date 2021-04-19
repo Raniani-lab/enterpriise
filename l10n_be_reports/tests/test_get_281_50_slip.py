@@ -104,7 +104,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         move = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
-            'date': fields.Date.from_string('2000-05-12'),
+            'invoice_date': fields.Date.from_string('2000-05-12'),
             'currency_id': self.currency_data['currency'].id,
             'invoice_payment_term_id': self.pay_terms_a.id,
             'invoice_line_ids': [
@@ -153,7 +153,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         move = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
-            'date': fields.Date.from_string('2000-05-12'),
+            'invoice_date': fields.Date.from_string('2000-05-12'),
             'currency_id': self.currency_data['currency'].id,
             'invoice_payment_term_id': self.pay_terms_a.id,
             'invoice_line_ids': [

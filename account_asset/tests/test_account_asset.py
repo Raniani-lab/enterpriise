@@ -236,6 +236,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         invoice = self.env['account.move'].with_context(asset_type='purchase').create({
             'move_type': 'in_invoice',
             'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
+            'invoice_date': '2020-12-31',
             'invoice_line_ids': [(0, 0, {
                 'name': 'Insurance claim',
                 'account_id': self.company_data['default_account_assets'].id,
@@ -704,6 +705,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
             "ref": "line1",
             "move_type": "in_invoice",
+            "invoice_date": "2020-12-31",
             "line_ids": [
                 (0, 0, {
                     "account_id": account.id,
@@ -741,6 +743,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             "partner_id": self.env['res.partner'].create({'name': 'Johny'}).id,
             "ref": "line1",
             "move_type": "in_invoice",
+            "invoice_date": "2020-12-31",
             "invoice_line_ids": [
                 (0, 0, {
                     "account_id": account.id,
@@ -778,6 +781,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         invoice = self.env['account.move'].create({
             'move_type': 'in_refund',
+            'invoice_date': '2020-12-31',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [(0, 0, {
                 'name': 'Refund Insurance claim',
@@ -849,6 +853,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
+            'invoice_date': '2020-12-31',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [
                 (0, 0, {
@@ -898,6 +903,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(len(product_a_150_lines.asset_ids), 6)
         credit_note = invoice._reverse_moves()
         with Form(credit_note) as move_form:
+            move_form.invoice_date = move_form.date
             move_form.invoice_line_ids.remove(0)
             move_form.invoice_line_ids.remove(0)
             with move_form.invoice_line_ids.edit(0) as line_form:

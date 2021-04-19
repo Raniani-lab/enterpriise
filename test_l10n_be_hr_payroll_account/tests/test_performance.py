@@ -19,6 +19,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.company_data['company'].country_id = cls.env.ref('base.be')
 
+        cls.company = cls.env.company
+
         cls.env.user.tz = 'Europe/Brussels'
 
         cls.date_from = date(2020, 9, 1)
@@ -26,13 +28,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.addresses = cls.env['res.partner'].create([{
             'name': "Test Private Address %i" % i,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'type': "private"
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.resource_calendar_38_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar : 38 Hours/Week",
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
@@ -65,7 +67,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Employee %i" % i,
             'address_home_id': cls.addresses[i].id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'km_home_work': 75,
         } for i in range(cls.EMPLOYEES_COUNT)])
 
@@ -82,7 +84,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Car %i" % i,
             'license_plate': "TEST %i" % i,
             'driver_id': cls.employees[i].address_home_id.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'model_id': cls.model.id,
             'first_contract_date': date(2020, 10, 8),
             'co2': 88.0,
@@ -94,7 +96,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.vehicle_contracts = cls.env['fleet.vehicle.log.contract'].create([{
             'name': "Test Contract%s" % i,
             'vehicle_id': cls.cars[i].id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'start_date': date(2020, 10, 8),
             'expiration_date': date(2021, 10, 8),
             'state': "open",
@@ -107,7 +109,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Contract For Payslip Test %i" % i,
             'employee_id': cls.employees[i].id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'date_generated_from': datetime(2020, 9, 1, 0, 0, 0),
             'date_generated_to': datetime(2020, 9, 1, 0, 0, 0),
             'car_id': cls.cars[i].id,
@@ -143,7 +145,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.env['resource.calendar.leaves'].create([{
             'name': "Public Holiday (global)",
             'calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'date_from': datetime(2020, 9, 22, 5, 0, 0),
             'date_to': datetime(2020, 9, 22, 23, 0, 0),
             'resource_id': False,
@@ -156,7 +158,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.env['resource.calendar.leaves'].create([{
             'name': "Legal Leave %i" % i,
             'calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'resource_id': cls.employees[i].resource_id.id,
             'date_from': datetime(2020, 9, 14, 5, 0, 0),
             'date_to': datetime(2020, 9, 15, 23, 0, 0),
@@ -167,6 +169,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @users('admin')
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
+        self.env.user.company_ids |= self.company
+
         # Work entry generation
         with self.assertQueryCount(admin=6026):
             # Note 4408 requests are related to the db insertions
@@ -179,7 +183,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Payslip %i" % i,
             'employee_id': self.employees[i].id,
             'contract_id': self.contracts[i].id,
-            'company_id': self.env.company.id,
+            'company_id': self.company.id,
             'vehicle_id': self.cars[i].id,
             'struct_id': structure.id,
             'date_from': self.date_from,
@@ -187,13 +191,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         } for i in range(self.EMPLOYEES_COUNT)]
 
         # Payslip Creation
-        with self.assertQueryCount(admin=1314):
-            payslips = self.env['hr.payslip'].create(payslips_values)
+        with self.assertQueryCount(admin=1113):
+            payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=4347):
+        with self.assertQueryCount(admin=4348):
             payslips.compute_sheet()
 
         # Payslip Validation
-        with self.assertQueryCount(admin=352):
+        with self.assertQueryCount(admin=785):
             payslips.action_payslip_done()

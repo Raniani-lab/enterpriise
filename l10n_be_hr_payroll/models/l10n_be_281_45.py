@@ -89,24 +89,21 @@ class L10nBe28145(models.Model):
             '%s%s' % (record.reference_year, _('- Test') if record.is_test else '')
         ) for record in self]
 
-    @api.model
     def _check_employees_configuration(self, employees):
         if not all(emp.company_id and emp.company_id.street and emp.company_id.zip and emp.company_id.city and emp.company_id.phone and emp.company_id.vat for emp in employees):
             raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
 
         invalid_employees = employees.filtered(
-            lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city)
+            lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city or not e.address_home_id.country_id)
         if invalid_employees:
-            raise UserError(_("The following employees don't have a valid private address (with a street, a zip and a city):\n%s", '\n'.join(invalid_employees.mapped('name'))))
+            raise UserError(_("The following employees don't have a valid private address (with a street, a zip, a city and a country):\n%s", '\n'.join(invalid_employees.mapped('name'))))
 
         if not all(emp.contract_ids and emp.contract_id for emp in employees):
             raise UserError(_('Some employee has no contract.'))
 
-        if not all(emp.identification_id for emp in employees):
-            raise UserError(_('Some employee has no identification id.'))
-
-        if not all(emp.language_code for emp in employees):
-            raise UserError(_('Some employee has no language.'))
+        invalid_employees = employees.filtered(lambda e: not e._is_niss_valid())
+        if invalid_employees:
+            raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(invalid_employees.mapped('name'))))
 
     @api.model
     def _get_lang_code(self, lang):

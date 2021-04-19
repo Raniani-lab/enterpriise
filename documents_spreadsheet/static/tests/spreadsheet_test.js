@@ -622,6 +622,7 @@ odoo.define("documents_spreadsheet.spreadsheet_tests", function (require) {
             const sheetId = model.getters.getActiveSheetId();
             assert.equal(getCellContent(model, "B2"), `=PIVOT.HEADER("1","foo","1","measure","probability")`,
                 "It should contain a pivot formula");
+            model.dispatch("ADD_MERGE", { sheetId, zone: { top: 0, bottom: 1, left: 0, right: 0}});
             model.dispatch("SELECT_CELL", { col: 0, row: 1 }); // A1 and A2 are merged; select A2
             assert.ok(model.getters.isInMerge(sheetId, ...toCartesian("A2")));
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");

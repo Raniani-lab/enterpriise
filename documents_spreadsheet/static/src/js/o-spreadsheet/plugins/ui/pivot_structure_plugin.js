@@ -636,7 +636,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         }
         /**
          * Build the headers of the columns
-         *  1) Merge the top-left cell
+         *  1) Apply style on the top-left cells
          *  2) Create the column headers
          *  3) Create the total measures
          *  4) Merge the consecutives titles
@@ -652,13 +652,13 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
             const [colAnchor, rowAnchor] = anchor;
             const bold = [];
             const levels = pivot.cache.getColGroupByLevels();
-            // 1) Top Left merge
-            this._merge({
+            // 1) Apply style on the top-left cells
+            this._applyStyle(HEADER_STYLE, [{
                 top: rowAnchor,
                 bottom: rowAnchor + levels,
                 left: colAnchor,
                 right: colAnchor,
-            });
+            }]);
 
             // 2) Create the column headers
             let col = colAnchor + 1;

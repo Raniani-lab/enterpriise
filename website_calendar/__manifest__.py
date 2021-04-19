@@ -46,6 +46,9 @@ Allow clients to Schedule Appointments through your Website
             'website_calendar/static/src/js/website_calendar_select_appointment_type.js',
             'website_calendar/static/src/js/website_calendar_select_appointment_slot.js',
         ],
+        'web_editor.assets_wysiwyg': [
+            'website_calendar/static/src/js/wysiwyg.js',
+        ],
         'web.assets_backend': [
             'website_calendar/static/src/scss/calendar_appointment_type_views.scss',
         ],

@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import time
+
 from datetime import date, datetime
 
 from odoo.tests.common import tagged
@@ -17,7 +19,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.EMPLOYEES_COUNT = 100
 
-        cls.company_data['company'].country_id = cls.env.ref('base.be')
+        cls.company_data['company'].write({
+            'country_id': cls.env.ref('base.be').id,
+            'l10n_be_company_number': '0477472701',
+            'l10n_be_revenue_code': '1293',
+            'street': 'Rue du Paradis',
+            'zip': '6870',
+            'city': 'Eghezee',
+            'vat': 'BE0897223670',
+            'phone': '061928374',
+        })
 
         cls.company = cls.env.company
 
@@ -69,6 +80,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
             'company_id': cls.company.id,
             'km_home_work': 75,
+            'niss': '93051822361',
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.brand = cls.env['fleet.vehicle.model.brand'].create([{
@@ -192,12 +204,33 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         # Payslip Creation
         with self.assertQueryCount(admin=1113):
+            start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
+            # --- 0.3016078472137451 seconds ---
+            print("--- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Computation
         with self.assertQueryCount(admin=4348):
+            start_time = time.time()
             payslips.compute_sheet()
+            # --- 9.298089027404785 seconds ---
+            print("--- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Validation
         with self.assertQueryCount(admin=785):
+            start_time = time.time()
             payslips.action_payslip_done()
+            # --- 11.888638019561768 seconds ---
+            print("--- %s seconds ---" % (time.time() - start_time))
+
+        # 273S Declaration
+        declaration_273S = self.env['l10n_be.273s'].with_context(allowed_company_ids=self.company.ids).create({
+            'year': self.date_from.year,
+            'month': str(self.date_from.month),
+        })
+        with self.assertQueryCount(admin=5):
+            start_time = time.time()
+            declaration_273S.action_generate_xml()
+            # --- 0.32388758659362793 seconds ---
+            print("--- %s seconds ---" % (time.time() - start_time))
+        self.assertEqual(declaration_273S.xml_validation_state, 'done', declaration_273S.error_message)

@@ -266,3 +266,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             # --- 0.0810704231262207 seconds ---
             print("Declaration 281.10:--- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
+
+        # 281.45 Declaration
+        declaration_281_45 = self.env['l10n_be.281_45'].with_context(allowed_company_ids=self.company.ids).create({
+            'reference_year': str(self.date_from.year),
+        })
+        with self.assertQueryCount(admin=9):
+            start_time = time.time()
+            declaration_281_45.action_generate_xml()
+            # --- 0.15049433708190918 seconds ---
+            print("Declaration 281.45:--- %s seconds ---" % (time.time() - start_time))
+        self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)

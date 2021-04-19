@@ -37,10 +37,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.date_from = date(2020, 9, 1)
         cls.date_to = date(2020, 9, 30)
 
+        belgium = cls.env.ref('base.be')
         cls.addresses = cls.env['res.partner'].create([{
             'name': "Test Private Address %i" % i,
             'company_id': cls.company.id,
-            'type': "private"
+            'type': "private",
+            'street': 'Brussels Street',
+            'city': 'Brussels',
+            'zip': '2928',
+            'country_id': belgium.id,
+
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.resource_calendar_38_hours_per_week = cls.env['resource.calendar'].create([{
@@ -210,21 +216,21 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
             # --- 0.3016078472137451 seconds ---
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Payslips Creation: --- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Computation
         with self.assertQueryCount(admin=4348):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Payslips Computation: --- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Validation
         with self.assertQueryCount(admin=787):
             start_time = time.time()
             payslips.action_payslip_done()
             # --- 6.975736618041992 seconds ---
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Payslips Validation: --- %s seconds ---" % (time.time() - start_time))
 
         # 273S Declaration
         declaration_273S = self.env['l10n_be.273s'].with_context(allowed_company_ids=self.company.ids).create({
@@ -235,7 +241,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_273S.action_generate_xml()
             # --- 0.027051687240600586 seconds ---
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Declaration 273S: --- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_273S.xml_validation_state, 'done', declaration_273S.error_message)
 
         # 274.XX Declaration
@@ -247,5 +253,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_274_XX.action_generate_xml()
             # --- 0.04558062553405762 seconds ---
-            print("--- %s seconds ---" % (time.time() - start_time))
+            print("Declaration 274.XX: --- %s seconds ---" % (time.time() - start_time))
         self.assertEqual(declaration_274_XX.xml_validation_state, 'done', declaration_274_XX.error_message)
+
+        # 281.10 Declaration
+        declaration_281_10 = self.env['l10n_be.281_10'].with_context(allowed_company_ids=self.company.ids).create({
+            'reference_year': str(self.date_from.year),
+        })
+        with self.assertQueryCount(admin=7):
+            start_time = time.time()
+            declaration_281_10.action_generate_xml()
+            # --- 0.23595595359802246 seconds ---
+            print("Declaration 281.10:--- %s seconds ---" % (time.time() - start_time))
+        self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)

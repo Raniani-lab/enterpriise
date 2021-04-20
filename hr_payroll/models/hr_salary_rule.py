@@ -46,6 +46,39 @@ class HrPayrollStructure(models.Model):
                 'amount_python_compute': 'result = -inputs.DEDUCTION.amount',
             }),
             (0, 0, {
+                'name': _('Attachment of Salary'),
+                'sequence': 174,
+                'code': 'ATTACH_SALARY',
+                'category_id': self.env.ref('hr_payroll.DED').id,
+                'condition_select': 'python',
+                'condition_python': 'result = inputs.ATTACH_SALARY',
+                'amount_select': 'code',
+                'amount_python_compute': """result = -inputs.ATTACH_SALARY.amount
+result_name = inputs.ATTACH_SALARY.name""",
+            }),
+            (0, 0, {
+                'name': _('Assignment of Salary'),
+                'sequence': 174,
+                'code': 'ASSIG_SALARY',
+                'category_id': self.env.ref('hr_payroll.DED').id,
+                'condition_select': 'python',
+                'condition_python': 'result = inputs.ASSIG_SALARY',
+                'amount_select': 'code',
+                'amount_python_compute': """result = -inputs.ASSIG_SALARY.amount
+result_name = inputs.ASSIG_SALARY.name""",
+            }),
+            (0, 0, {
+                'name': _('Child Support'),
+                'sequence': 174,
+                'code': 'CHILD_SUPPORT',
+                'category_id': self.env.ref('hr_payroll.DED').id,
+                'condition_select': 'python',
+                'condition_python': 'result = inputs.CHILD_SUPPORT',
+                'amount_select': 'code',
+                'amount_python_compute': """result = -inputs.CHILD_SUPPORT.amount
+result_name = inputs.CHILD_SUPPORT.name""",
+            }),
+            (0, 0, {
                 'name': _('Reimbursement'),
                 'sequence': 199,
                 'code': 'REIMBURSEMENT',

@@ -387,7 +387,7 @@
                 <field name="user_can_reject" invisible="1"/>
                 <field name="allow_apply_change" invisible="1"/>
                 <header>
-                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': [('active', '=', False)]}"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': ['|', ('active', '=', False), ('state', '=', 'confirmed')]}"/>
                     <button string="Start New Revision" name="action_new_revision" type="object"
                             class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
                     <button string="Apply Rebase" name="apply_rebase" help="Rebase new revision of BoM with previous eco bom and old bom changes." type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'rebase')]}"/>

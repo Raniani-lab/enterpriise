@@ -126,7 +126,7 @@ class CustomerPortal(portal.CustomerPortal):
         tickets_count = len(request.env['helpdesk.ticket'].search(domain))
         pager = portal_pager(
             url="/my/tickets",
-            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'search_in': search_in, 'search': search},
+            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'search_in': search_in, 'search': search, 'groupby': groupby},
             total=tickets_count,
             page=page,
             step=self._items_per_page

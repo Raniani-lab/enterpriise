@@ -168,9 +168,10 @@ class ReportAccountAgedPartner(models.AbstractModel):
         columns = [
             self._header_column(),
             self._field_column('report_date'),
-            self._field_column('account_name', name="Account", ellipsis=True),
+
+            self._field_column('account_name', name=_("Account"), ellipsis=True),
             self._field_column('expected_pay_date'),
-            self._field_column('period0', name=_("As of: %s") % format_date(self.env, options['date']['date_to'])),
+            self._field_column('period0', name=_("As of: %s", format_date(self.env, options['date']['date_to']))),
             self._field_column('period1', sortable=True),
             self._field_column('period2', sortable=True),
             self._field_column('period3', sortable=True),

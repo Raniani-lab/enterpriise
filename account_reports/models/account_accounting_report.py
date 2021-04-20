@@ -139,7 +139,9 @@ class AccountingReport(models.AbstractModel):
             getter = r_getter
             def formatter(v):
                 return v[1] if v else ''
-        return self._custom_column(name=name or self._fields[field_name].string,
+
+        IrModelFields = self.env['ir.model.fields']
+        return self._custom_column(name=name or IrModelFields._get(self._name, field_name).field_description,
                                    getter=getter,
                                    formatter=formatter,
                                    classes=classes,

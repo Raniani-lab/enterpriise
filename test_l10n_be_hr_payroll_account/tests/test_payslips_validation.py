@@ -775,8 +775,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     def _validate_payslip(self, payslip, results):
         error = []
+        line_values = payslip._get_line_values(results.keys(), skip_sum=True)
         for code, value in results.items():
-            payslip_line_value = payslip._get_salary_line_total(code)
+            payslip_line_value = line_values[code][payslip.id]['total']
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
@@ -3761,8 +3762,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 2151.98,
         }
         error = []
+        line_values = classic_payslip._get_line_values(payslip_result.keys(), skip_sum=True)
         for code, value in payslip_result.items():
-            payslip_line_value = classic_payslip._get_salary_line_total(code)
+            payslip_line_value = line_values[code][classic_payslip.id]['total']
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
@@ -4340,7 +4342,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE213'), 7.6, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(payslip._get_line_values(['REP.FEES'])['REP.FEES'][payslip.id]['total'], 150.0, places=2)
 
     def test_payslip_on_contract_cancelation(self):
         payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
@@ -4373,7 +4375,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150, places=2)
+        self.assertAlmostEqual(payslip._get_line_values(['REP.FEES'])['REP.FEES'][payslip.id]['total'], 150, places=2)
 
     def test_credit_time_representation_fees_prorated(self):
         self.contract.write({
@@ -4402,7 +4404,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 372.15, places=2)
+        self.assertAlmostEqual(payslip._get_line_values(['REP.FEES'])['REP.FEES'][payslip.id]['total'], 372.15, places=2)
 
     def test_contractual_part_time_representation_fees(self):
         self.contract.write({
@@ -4419,7 +4421,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 150.0, places=2)
+        self.assertAlmostEqual(payslip._get_line_values(['REP.FEES'])['REP.FEES'][payslip.id]['total'], 150.0, places=2)
 
     def test_contractual_part_time_representation_fees_prorated(self):
         self.contract.write({
@@ -4437,7 +4439,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 129.2, places=2)
 
-        self.assertAlmostEqual(payslip._get_salary_line_total('REP.FEES'), 375.86, places=2)
+        self.assertAlmostEqual(payslip._get_line_values(['REP.FEES'])['REP.FEES'][payslip.id]['total'], 375.86, places=2)
 
     def test_employment_bonus_half_days(self):
         self.env['resource.calendar.leaves'].create([{

@@ -153,8 +153,9 @@ class TestExamples(AccountTestInvoicingCommon):
         # Check that all is right
         error = False
         result = ""
+        line_values = payslip_id._get_line_values(line_values.keys(), skip_sum=True)
         for code, value in line_values.items():
-            payslip_value = payslip_id._get_salary_line_total(code)
+            payslip_value = line_values[code][payslip_id.id]['total']
             if float_compare(payslip_value, value, precision_rounding=payslip_id.currency_id.rounding):
                 error = True
                 result += "Code: %s, Expected: %s, Reality: %s\n" % (code, value, payslip_value)

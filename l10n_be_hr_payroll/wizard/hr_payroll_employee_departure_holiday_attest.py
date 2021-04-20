@@ -113,7 +113,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n(self):
         for wizard in self:
             if wizard.payslip_n_ids:
-                wizard.net_n = sum(p._origin._get_salary_line_total('SALARY') for p in wizard.payslip_n_ids)
+                wizard.net_n = wizard.payslip_n_ids._origin._get_line_values(['SALARY'])['SALARY']['sum']['total']
             else:
                 wizard.net_n = 0
 
@@ -121,7 +121,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     def _compute_net_n1(self):
         for wizard in self:
             if wizard.payslip_n1_ids:
-                wizard.net_n1 = sum(p._origin._get_salary_line_total('SALARY') for p in wizard.payslip_n1_ids)
+                wizard.net_n1 = wizard.payslip_n1_ids._origin._get_line_values(['SALARY'])['SALARY']['sum']['total']
             else:
                 wizard.net_n1 = 0
 
@@ -174,7 +174,8 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             lambda p: 'OUT' not in p.worked_days_line_ids.mapped('code'))
 
         if monthly_payslips:
-            annual_gross = monthly_payslips[0]._get_salary_line_total('GROSS') * 12
+            slip = monthly_payslips[0]
+            annual_gross = slip._get_line_values(['GROSS'], skip_sum=True)['GROSS'][slip.id]['total'] * 12
         else:
             annual_gross = 0
 
@@ -233,7 +234,7 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
             ('state', 'in', ['done', 'paid', 'verify']),
             ('struct_id', '=', double_structure.id)])
         # Part already deducted on the double holiday for year N
-        double_amount_n = double_holiday_n._get_salary_line_total("EU.LEAVE.DEDUC")
+        double_amount_n = double_holiday_n._get_line_values(['EU.LEAVE.DEDUC'])['EU.LEAVE.DEDUC']['sum']['total']
         # Original Amount to deduct
         payslip_n1 = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),

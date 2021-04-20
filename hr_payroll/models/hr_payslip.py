@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
                     ('employee_id', '=', payslip.employee_id.id),
                 ])
                 payslip.negative_net_to_report_display = payslips_to_report
-                payslip.negative_net_to_report_amount = sum(p._get_salary_line_total('NET') for p in payslips_to_report)
+                payslip.negative_net_to_report_amount = payslips_to_report._get_line_values(['NET'])['NET']['sum']['total']
                 payslip.negative_net_to_report_message = _(
                     'Note: There are previous payslips with a negative amount for a total of %s to report.',
                     round(payslip.negative_net_to_report_amount, 2))
@@ -176,9 +176,10 @@ class HrPayslip(models.Model):
             payslip.line_ids = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in payslip._get_payslip_lines()]
 
     def _compute_basic_net(self):
+        line_values = (self._origin)._get_line_values(['BASIC', 'NET'], skip_sum=True)
         for payslip in self:
-            payslip.basic_wage = (payslip._origin or payslip)._get_salary_line_total('BASIC')
-            payslip.net_wage = (payslip._origin or payslip)._get_salary_line_total('NET')
+            payslip.basic_wage = line_values['BASIC'][payslip._origin.id]['total']
+            payslip.net_wage = line_values['NET'][payslip._origin.id]['total']
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid')
     def _compute_worked_hours(self):
@@ -570,6 +571,11 @@ class HrPayslip(models.Model):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.total for line in lines])
 
+    def _get_salary_line_quantity(self, code):
+        _logger.warning('The method _get_salary_line_quantity is deprecated in favor of _get_line_values')
+        lines = self.line_ids.filtered(lambda line: line.code == code)
+        return sum([line.quantity for line in lines])
+
     def _get_line_values(self, code_list, vals_list=None, skip_sum=False):
         if vals_list is None:
             vals_list = ['total']
@@ -590,7 +596,6 @@ class HrPayslip(models.Model):
             AND pl.code IN %s
             GROUP BY p.id, pl.code
         """ % (selected_fields, '%s', '%s'), (tuple(self.ids), tuple(code_list)))
-        request_rows = self.env.cr.dictfetchall()
         # self = hr.payslip(1, 2)
         # request_rows = [
         #     {'id': 1, 'code': 'IP', 'total': 100, 'quantity': 1},
@@ -598,7 +603,7 @@ class HrPayslip(models.Model):
         #     {'id': 2, 'code': 'IP', 'total': -2, 'quantity': 1},
         #     {'id': 2, 'code': 'IP.DED', 'total': -3, 'quantity': 1}
         # ]
-        result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
+        request_rows = self.env.cr.dictfetchall()
         # result = {
         #     'IP': {
         #         'sum': {'quantity': 2, 'total': 300},
@@ -611,6 +616,7 @@ class HrPayslip(models.Model):
         #         2: {'quantity': 1, 'total': -3},
         #     },
         # }
+        result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
         for row in request_rows:
             code = row['code']
             payslip_id = row['id']
@@ -619,11 +625,6 @@ class HrPayslip(models.Model):
                     result[code]['sum'][vals] += row[vals]
                 result[code][payslip_id][vals] += row[vals]
         return result
-
-    def _get_salary_line_quantity(self, code):
-        _logger.warning('The method _get_salary_line_quantity is deprecated in favor of _get_line_values')
-        lines = self.line_ids.filtered(lambda line: line.code == code)
-        return sum([line.quantity for line in lines])
 
     def _get_worked_days_line_amount(self, code):
         wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)

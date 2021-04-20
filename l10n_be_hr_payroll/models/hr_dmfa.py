@@ -243,8 +243,9 @@ class DMFAWorker(DMFANode):
         for occupation in self.occupations:
             if not occupation.skip_remun:
                 contribution_payslips |= occupation.payslips
-        basis = round(sum(
-            p._get_salary_line_total(basis_lines[p.struct_id]) for p in contribution_payslips if p.struct_id in basis_lines), 2)
+        contribution_payslips = contribution_payslips.filtered(lamba p: p.struct_id in basis_lines)
+        line_values = contribution_payslips._get_line_values(['SALARY', 'BASIC', 'PAY_SIMPLE'], skip_sum=True)
+        basis = round(sum(line_values[basis_lines[p.struct_id]][p.id]['total'] for p in contribution_payslips), 2)
         return [
             DMFAWorkerContribution(contribution_payslips, basis)
         ] + [
@@ -377,7 +378,7 @@ class DMFAWorker(DMFANode):
                 #   <RemunAmount>00000400546</RemunAmount>
                 # </Remun>
                 termination_periods = _split_termination_period(termination_from, termination_to)
-                termination_remuneration = termination_payslips._get_salary_line_total('BASIC')
+                termination_remuneration = termination_payslips._get_line_values(['BASIC'], skip_sum=True)['BASIC'][termination_payslips.id]['total']
                 period_remuneration = termination_remuneration / len(termination_periods)
                 # values.append((occupation_contracts, termination_payslips, termination_from, termination_to))
                 termination_values = [(
@@ -523,7 +524,7 @@ class DMFAWorkerContributionSpecialSocialCotisation(DMFANode):
         self.worker_code = 856
         self.contribution_type = 0
         self.calculation_basis = -1
-        self.amount = format_amount(round(-payslips._get_salary_line_total('M.ONSS'), 2))
+        self.amount = format_amount(round(-payslips._get_line_values(['M.ONSS'])['M.ONSS']['sum']['total'], 2))
         self.first_hiring_date = -1
 
 class DMFAWorkerContributionTemporaryUnemployment(DMFANode):
@@ -986,8 +987,9 @@ class HrDMFAReport(models.Model):
             self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'): 'PAY DOUBLE',
             self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'): 'PAY DOUBLE',
         }
-        basis = round(sum(
-            p._get_salary_line_total(basis_lines[p.struct_id]) for p in payslips if p.struct_id in basis_lines), 2)
+        payslips = payslips.filtered(lambda p: p.struct_id in basis_lines)
+        line_values = payslips._get_line_values(['SALARY', 'PAY DOUBLE'], skip_sum=True)
+        basis = round(sum(line_values[basis_lines[p.struct_id]][p.id]['total'] for p in payslips), 2)
         onss_amount = round(-sum(double_lines.mapped('total')) - sum(holiday_pay_lines.mapped('total')), 2)
         return (basis, onss_amount)
 

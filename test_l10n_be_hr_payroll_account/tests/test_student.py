@@ -87,9 +87,11 @@ class TestStudent(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         self.assertEqual(len(payslip.line_ids), 6)
-        self.assertAlmostEqual(payslip._get_salary_line_total('BASIC'), 586.98, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('ONSS'), -15.91, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('GROSS'), 571.07, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('CAR.PRIV'), 14.29, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('MEAL_V_EMP'), -6.54, places=2)
-        self.assertAlmostEqual(payslip._get_salary_line_total('NET'), 578.82, places=2)
+        line_values = payslip._get_line_values(['BASIC', 'ONSS', 'GROSS', 'CAR.PRIV', 'MEAL_V_EMP', 'NET'], skip_sum=True)
+
+        self.assertAlmostEqual(line_values['BASIC'][payslip.id]['total'], 586.98, places=2)
+        self.assertAlmostEqual(line_values['ONSS'][payslip.id]['total'], -15.91, places=2)
+        self.assertAlmostEqual(line_values['GROSS'][payslip.id]['total'], 571.07, places=2)
+        self.assertAlmostEqual(line_values['CAR.PRIV'][payslip.id]['total'], 14.29, places=2)
+        self.assertAlmostEqual(line_values['MEAL_V_EMP'][payslip.id]['total'], -6.54, places=2)
+        self.assertAlmostEqual(line_values['NET'][payslip.id]['total'], 578.82, places=2)

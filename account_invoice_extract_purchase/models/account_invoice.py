@@ -29,7 +29,7 @@ class AccountMove(models.Model):
             return new_string
 
         user_infos = super(AccountMove, self).get_user_infos()
-        po_sequence = self.env['ir.sequence'].search([('code', '=', 'purchase.order')])
+        po_sequence = self.env['ir.sequence'].search([('code', '=', 'purchase.order'), ('company_id', 'in', [self.company_id.id, False])], order='company_id', limit=1)
         if po_sequence:
             po_regex_prefix, po_regex_suffix = po_sequence._get_prefix_suffix()
             po_regex_prefix = transform_numbers_to_regex(po_regex_prefix)

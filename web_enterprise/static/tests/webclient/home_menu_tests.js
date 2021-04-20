@@ -408,7 +408,7 @@ QUnit.module(
         });
 
         QUnit.test("Navigation (only apps, only one line)", async function (assert) {
-            assert.expect(9);
+            assert.expect(8);
 
             homeMenuProps = {
                 apps: new Array(3).fill().map((x, i) => {
@@ -440,20 +440,12 @@ QUnit.module(
                 { number: 2, key: "Tab", index: 2 },
                 { number: 3, key: "ArrowRight", index: 0 },
                 { number: 4, key: "Tab", shiftKey: true, index: 2 },
-                // no movement input.selectionStart value is 1
-                { number: 5, key: "ArrowLeft", index: 2 },
-                // stop and modify input.selectionStart
-                { number: 6, key: "ArrowLeft", index: 1 },
-                { number: 7, key: "ArrowDown", index: 1 },
-                { number: 8, key: "ArrowUp", index: 1 },
+                { number: 5, key: 'ArrowLeft', index: 1 },
+                { number: 6, key: 'ArrowDown', index: 1 },
+                { number: 7, key: 'ArrowUp', index: 1 },
             ];
 
-            await walkOn(assert, homeMenu, path.slice(0, 5));
-
-            // allow movement to left
-            input.setSelectionRange(0, 0);
-
-            await walkOn(assert, homeMenu, path.slice(5));
+            await walkOn(assert, homeMenu, path);
 
             homeMenu.destroy();
         });
@@ -577,7 +569,7 @@ QUnit.module(
         );
 
         QUnit.test("Navigation (only 3 menuItems)", async function (assert) {
-            assert.expect(10);
+            assert.expect(9);
 
             homeMenuProps = {
                 apps: [],
@@ -612,23 +604,16 @@ QUnit.module(
                 { number: 5, key: "ArrowDown", index: 2 },
                 { number: 6, key: "ArrowDown", index: 0 },
                 { number: 7, key: "ArrowRight", index: 0 },
-                // no movement here because of input.selectionStart value
                 { number: 8, key: "ArrowLeft", index: 0 },
-                // no movement here because the item is the only one on its line
-                { number: 9, key: "ArrowLeft", index: 0 },
             ];
 
-            await walkOn(assert, homeMenu, path.slice(0, 8));
-            // modify position of 'cursor' in query to allow movement to the left
-            input.setSelectionRange(0, 0);
-
-            await walkOn(assert, homeMenu, path.slice(8));
+            await walkOn(assert, homeMenu, path);
 
             homeMenu.destroy();
         });
 
         QUnit.test("Navigation (one line of 3 apps and 2 menuItems)", async function (assert) {
-            assert.expect(13);
+            assert.expect(12);
 
             homeMenuProps = {
                 apps: new Array(3).fill().map((x, i) => {
@@ -676,16 +661,10 @@ QUnit.module(
                 { number: 8, key: "ArrowUp", index: 4 },
                 { number: 9, key: "ArrowUp", index: 3 },
                 { number: 10, key: "ArrowUp", index: 0 },
-                // no movement here because of input.selectionStart value
-                { number: 11, key: "ArrowLeft", index: 0 },
-                { number: 12, key: "ArrowLeft", index: 2 },
+                { number: 11, key: 'ArrowLeft', index: 2 },
             ];
 
-            await walkOn(assert, homeMenu, path.slice(0, 11));
-            // modify position of 'cursor' in query to allow movement to the left
-            input.setSelectionRange(0, 0);
-
-            await walkOn(assert, homeMenu, path.slice(11));
+            await walkOn(assert, homeMenu, path);
 
             homeMenu.destroy();
         });

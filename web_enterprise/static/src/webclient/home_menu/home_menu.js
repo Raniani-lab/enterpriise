@@ -82,6 +82,7 @@ export class HomeMenu extends Component {
             if (selectedItem) {
                 // Center window on the focused item
                 selectedItem.scrollIntoView({ block: "center" });
+                selectedItem.focus();
             }
         }
         this._updateScrollBarWidth();

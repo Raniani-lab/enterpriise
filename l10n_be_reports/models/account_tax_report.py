@@ -45,6 +45,6 @@ class AccountTaxReport(models.Model):
                     max(0.0, amounts['c88'] - (amounts['c81'] + amounts['c82'] + amounts['c83'] + amounts['c84']) * 100) if amounts['c88'] > 99999 else False),
                 # Code AD
                 (_('[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 if [88] > 99.999'),
-                    max(0.0, amounts['c44'] - (amounts['c00'] + amounts['c01'] + amounts['c02'] + amounts['c03'] + amounts['c45'] + amounts['c46L'] + amounts['c46T'] + amounts['c47'] + amounts['48s44'] + amounts['48s46L'] + amounts['48s46T'] + amounts['c49']) * 200) if amounts['c44'] > 99999 else False),
+                    max(0.0, amounts['c44'] - (amounts['c00'] + amounts['c01'] + amounts['c02'] + amounts['c03'] + amounts['c45'] + amounts['c46L'] + amounts['c46T'] + amounts['c47'] + amounts['c48s44'] + amounts['c48s46L'] + amounts['c48s46T'] + amounts['c49']) * 200) if amounts['c44'] > 99999 else False),
             ]
         return super(AccountTaxReport, self).get_checks_to_perform(amounts, carried_over)

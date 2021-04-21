@@ -640,6 +640,7 @@ class MrpEco(models.Model):
         self.write(vals)
 
     def action_see_attachments(self):
+        self.ensure_one()
         domain = ['&', ('res_model', '=', self._name), ('res_id', '=', self.id)]
         attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
         return {
@@ -656,7 +657,14 @@ class MrpEco(models.Model):
                         Use this feature to store any files, like drawings or specifications.
                     </p>'''),
             'limit': 80,
-            'context': "{'default_res_model': '%s','default_res_id': %d, 'default_company_id': %s}" % (self._name, self.id, self.company_id.id)
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+                'default_company_id': self.company_id.id,
+                'create': self.state != 'done',
+                'edit': self.state != 'done',
+                'delete': self.state != 'done',
+            }
         }
 
     def open_new_bom(self):
@@ -668,7 +676,14 @@ class MrpEco(models.Model):
             'res_model': 'mrp.bom',
             'target': 'current',
             'res_id': self.new_bom_id.id,
-            'context': dict(default_product_tmpl_id=self.product_tmpl_id.id, default_product_id=self.product_tmpl_id.product_variant_id.id)}
+            'context': {
+                'default_product_tmpl_id': self.product_tmpl_id.id,
+                'default_product_id': self.product_tmpl_id.product_variant_id.id,
+                'create': self.state != 'done',
+                'edit': self.state != 'done',
+                'delete': self.state != 'done',
+            },
+        }
 
 
 class MrpEcoBomChange(models.Model):

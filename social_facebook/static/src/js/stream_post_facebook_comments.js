@@ -50,7 +50,7 @@ var StreamPostFacebookComments = StreamPostComments.extend({
                 return comment.from.picture.data.url;
             } else {
                 // unknown author
-                return "/web/static/src/img/user_placeholder.jpg";
+                return "/web/static/img/user_placeholder.jpg";
             }
         } else {
             return _.str.sprintf("https://graph.facebook.com/v3.3/%s/picture?height=48&width=48", this.pageFacebookId);

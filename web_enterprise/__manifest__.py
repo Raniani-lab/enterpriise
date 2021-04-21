@@ -32,7 +32,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'web._assets_common_styles': [
             ('replace', 'web/static/src/scss/ui_extra.scss', 'web_enterprise/static/src/scss/ui.scss'),
 
-            'web_enterprise/static/src/scss/fonts.scss',
+            'web_enterprise/static/fonts/fonts.scss',
         ],
         'web.assets_backend': [
             ('replace', 'web/static/src/scss/webclient_extra.scss', 'web_enterprise/static/src/scss/webclient.scss'),

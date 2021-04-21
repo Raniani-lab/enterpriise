@@ -35,7 +35,7 @@ Accounting Reports
             ('include', 'web._assets_helpers'),
             'web/static/lib/bootstrap/scss/_variables.scss',
             ('include', 'web._assets_bootstrap'),
-            'web/static/src/scss/fonts.scss',
+            'web/static/fonts/fonts.scss',
             'account_reports/static/src/scss/account_financial_report.scss',
             'account_reports/static/src/scss/account_report_print.scss',
         ],

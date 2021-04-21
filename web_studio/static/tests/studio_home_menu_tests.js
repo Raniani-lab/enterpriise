@@ -17,7 +17,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
                     label: "Discuss",
                     parents: "",
                     webIcon: 'mail,static/description/icon.png',
-                    webIconData: "/web_enterprise/static/src/img/default_icon_app.png",
+                    webIconData: "/web_enterprise/static/img/default_icon_app.png",
                     xmlid: 'app.1',
                 }, {
                     action: "122",
@@ -36,7 +36,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
                     label: "Contacts",
                     parents: "",
                     webIcon: false,
-                    webIconData: "/web_enterprise/static/src/img/default_icon_app.png",
+                    webIconData: "/web_enterprise/static/img/default_icon_app.png",
                     xmlid: 'app.3',
                 }],
             };
@@ -80,7 +80,7 @@ odoo.define("web_studio.studio_home_menu_tests", function (require) {
             assert.strictEqual(firstApp.dataset.menuXmlid, 'app.1');
             assert.containsOnce(firstApp, 'div.o_app_icon');
             assert.strictEqual(firstApp.querySelector('div.o_app_icon').style.backgroundImage,
-                'url("/web_enterprise/static/src/img/default_icon_app.png")');
+                'url("/web_enterprise/static/img/default_icon_app.png")');
             assert.containsOnce(firstApp, 'div.o_caption');
             assert.strictEqual(firstApp.querySelector('div.o_caption').innerText, 'Discuss');
             assert.containsOnce(firstApp, '.o_web_studio_edit_icon i');

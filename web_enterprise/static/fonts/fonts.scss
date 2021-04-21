@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------
 // Roboto
 // ------------------------------------------------------------------
-$roboto-font-path: '../fonts/Roboto';
+$roboto-font-path: './Roboto';
 
 @mixin roboto-font($type, $weight, $style) {
     @font-face {

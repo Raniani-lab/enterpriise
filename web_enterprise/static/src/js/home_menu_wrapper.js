@@ -75,7 +75,7 @@ odoo.define("web_enterprise.HomeMenuWrapper", function (require) {
                     } else if (backgroundColor !== undefined) { // Could split in three parts?
                         item.webIcon = { iconClass, color, backgroundColor };
                     } else {
-                        item.webIconData = '/web_enterprise/static/src/img/default_icon_app.png';
+                        item.webIconData = '/web_enterprise/static/img/default_icon_app.png';
                     }
                 } else {
                     item.menu_id = parents[1].id;

@@ -110,7 +110,7 @@
         .o_field_image img {
             max-width: 100%;
             height: auto;
-            &[src="/web/static/src/img/placeholder.png"] {
+            &[src="/web/static/img/placeholder.png"] {
                 padding: 3% 6%;
                 background: $o-web-studio-bg-lighter;
             }

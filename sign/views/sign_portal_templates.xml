@@ -127,7 +127,7 @@
                                         <img t-if="my_sign_item.partner_id.image_1024" class="rounded-circle mt-1 o_portal_contact_img"
                                              t-att-src="image_data_uri(my_sign_item.partner_id.image_1024)" alt="Contact"/>
                                         <img t-else="" class="rounded-circle mt-1 o_portal_contact_img"
-                                             src="/web/static/src/img/user_menu_avatar.png" alt="Contact"/>
+                                             src="/web/static/img/user_menu_avatar.png" alt="Contact"/>
                                     </div>
                                     <div class="col pl-md-0">
                                         <div t-field="my_sign_item.partner_id"

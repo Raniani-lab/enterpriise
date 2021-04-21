@@ -45,7 +45,7 @@ of recall defined. You can define different policies for different companies.
             ('include', 'web._assets_helpers'),
             'web/static/lib/bootstrap/scss/_variables.scss',
             ('include', 'web._assets_bootstrap'),
-            'web/static/src/scss/fonts.scss',
+            'web/static/fonts/fonts.scss',
             'account_followup/static/src/scss/account_followup_letter.scss',
         ],
         'web.assets_backend': [

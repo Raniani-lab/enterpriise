@@ -42,12 +42,38 @@ class AccountEdiFormat(models.Model):
 
     @api.model
     def _l10n_pe_edi_unzip_edi_document(self, zip_str):
+        """Unzip the first file of a zipfile
+        :param zip_str: zipfile in base64 bytes
+        :returns: the contents of the first file
+        """
         buffer = io.BytesIO(zip_str)
         zipfile_obj = zipfile.ZipFile(buffer)
         filename = zipfile_obj.namelist()[0]
         content = zipfile_obj.read(filename)
         buffer.close()
         return content
+
+    @api.model
+    def _l10n_pe_edi_unzip_all_edi_documents(self, zip_bytes):
+        """Unzips all the files of a base64 zip_bytes and if contains a CDR XML, it will unzip
+        that one first
+        :param zip_bytes: Zipfile in base64 that contains the response and signed XML
+        :returns: xml files in base64
+        """
+        with io.BytesIO(base64.b64decode(zip_bytes)) as buffer:
+            zip_bytes = zipfile.ZipFile(buffer)
+            result = []
+            for content_name in zip_bytes.namelist():
+                xml_bytes = zip_bytes.read(content_name)
+                application_response = etree.fromstring(xml_bytes).xpath('//applicationResponse')
+                # If application response is in the xml file, we are actually interested in the contents of it
+                # (which is a zip in base64, which contains the file we are interested in)
+                if not application_response:
+                    result.append([content_name, base64.b64encode(xml_bytes)])
+                else:
+                    unzipped_cdr = self._l10n_pe_edi_unzip_edi_document(base64.b64decode(application_response[0].text))
+                    result.append([content_name[2:], base64.b64encode(unzipped_cdr)])
+        return result
 
     @api.model
     def _l10n_pe_edi_get_general_error_messages(self):

@@ -101,19 +101,23 @@ class assets_report(models.AbstractModel):
         if not account_code:
             # This is used if there is no account_asset_id
             account_code = '##'
-        account_code_short = account_code[:2]
         group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
         self = self._with_context_company2code2account()
         account_id = self.env.context['company2code2account'].get(company_id, {}).get(account_code)
-        account_string = account_id.display_name if account_id else _("No asset account")
+        account_suffix = [] if parent_group else [account_id.display_name if account_id else _("No asset account")]
         for k, v in group_dict.items():
-            try:
-                if int(account_code_short) == int(k):
-                    return (parent_group or [k]) + [v['name']]
-            except ValueError:
-                if k[:2] <= account_code_short <= k[-2:]:
-                    return self._get_account_group_with_company(account_code_short, company_id, (parent_group or [k]) + [v['name']], v['children']) + [account_string]
-        return (parent_group or [account_code_short]) + [account_string]
+            key_split = k.split('-')
+            account_code_short = account_code[:len(str(key_split[0]))]
+            if not v.get('children') and account_code_short == k:
+                return (parent_group or [k]) + [v['name']] + account_suffix
+            elif v.get('children') and key_split[0] <= account_code_short <= key_split[1]:
+                return self._get_account_group_with_company(
+                    account_code_short,
+                    company_id,
+                    (parent_group or [k]) + [v['name']],
+                    v['children']
+                ) + account_suffix
+        return (parent_group or [account_code[:2]]) + account_suffix
 
     def _get_rate_cached(self, from_currency, to_currency, company, date, cache):
         if from_currency == to_currency:

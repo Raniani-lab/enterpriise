@@ -111,6 +111,7 @@ class HrPayslip(models.Model):
     negative_net_to_report_amount = fields.Float(compute='_compute_negative_net_to_report_display')
     is_superuser = fields.Boolean(compute="_compute_is_superuser")
     edited = fields.Boolean()
+    queued_for_pdf = fields.Boolean(default=False)
 
     @api.depends('employee_id', 'state')
     def _compute_negative_net_to_report_display(self):
@@ -259,7 +260,13 @@ class HrPayslip(models.Model):
             work_entries.action_validate()
 
         if self.env.context.get('payslip_generate_pdf'):
-            self._generate_pdf()
+            if self.env.context.get('payslip_generate_pdf_direct'):
+                self._generate_pdf()
+            else:
+                self.write({'queued_for_pdf', True})
+                payslip_cron = self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs', raise_if_not_found=False)
+                if payslip_cron:
+                    payslip_cron._trigger()
 
     def action_payslip_cancel(self):
         if not self.env.user._is_system() and self.filtered(lambda slip: slip.state == 'done'):
@@ -727,6 +734,22 @@ class HrPayslip(models.Model):
             'binding_view_types': 'form',
             'res_id': wizard.id
         }
+
+    @api.model
+    def _cron_generate_pdf(self):
+        BATCH_SIZE = 10
+
+        def _fetch_payslips(self):
+            return self.search([
+                ('state', 'in', ['done', 'paid']),
+                ('queued_for_pdf', '=', True),
+            ], limit=BATCH_SIZE)
+        payslips = _fetch_payslips(self)
+        while payslips:
+            payslips._generate_pdf()
+            payslips.write({'queued_for_pdf': False})
+            self.env.cr.commit()
+            payslips = _fetch_payslips(self)
 
 
 class HrPayslipLine(models.Model):

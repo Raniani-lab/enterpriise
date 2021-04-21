@@ -27,7 +27,7 @@ class TestCaseDocumentsBridgeHR(TestPayslipBase):
             'contract_id': contract.id,
         })
         payslip.compute_sheet()
-        payslip.with_context(payslip_generate_pdf=True).action_payslip_done()
+        payslip.with_context(payslip_generate_pdf=True, payslip_generate_pdf_direct=True).action_payslip_done()
 
         attachment = self.env['ir.attachment'].search([('res_model', '=', payslip._name), ('res_id', '=', payslip.id)])
         self.assertTrue(attachment, "Validating a payslip should have created an attachment")

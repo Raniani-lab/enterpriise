@@ -9,6 +9,8 @@
             <field name="print_report_name">'Payslip - %s' % (object.employee_id.name)</field>
             <field name="binding_model_id" ref="model_hr_payslip"/>
             <field name="binding_type">report</field>
+            <field name="attachment">(object.state in ['done', 'paid']) and (object.name)</field>
+            <field name="attachment_use" eval="True"/>
         </record>
         <record id="action_report_register" model="ir.actions.report">
             <field name="name">Contribution Registers</field>

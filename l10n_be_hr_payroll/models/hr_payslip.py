@@ -209,11 +209,9 @@ class Payslip(models.Model):
         ], order="date_from asc")
         complete_payslips = payslips.filtered(
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
-        total_amount = 0
         if not complete_payslips:
-            return total_amount
-        for code in ['COM', 'COMMISSION']:
-            total_amount += sum(p._get_salary_line_total(code) for p in complete_payslips)
+            return 0
+        total_amount = complete_payslips._get_line_values(['COMMISSION'], compute_sum=True)['COMMISSION']['sum']['total']
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:
@@ -233,7 +231,7 @@ class Payslip(models.Model):
             ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
             ('date_from', '<', self.date_from),
         ], order="date_from asc")
-        total_amount = sum(p._get_salary_line_total("BASIC") for p in warrant_payslips)
+        total_amount = warrant_payslips._get_line_values(['BASIC'], compute_sum=True)['BASIC']['sum']['total']
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:
@@ -492,9 +490,6 @@ class Payslip(models.Model):
                     '\n'.join([e.name for e in bad_language_slips.mapped('employee_id')])
                 ))
         return super().action_payslip_done()
-
-    def _get_pp_taxable_amount(self):
-        return sum(p._get_salary_line_total('GROSS') for p in self)
 
     def _get_pdf_reports(self):
         res = super()._get_pdf_reports()

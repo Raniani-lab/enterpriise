@@ -1,11 +1,17 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
+import time
+
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests.common import users, warmup
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('post_install', '-at_install', 'payroll_perf')
@@ -17,22 +23,39 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.EMPLOYEES_COUNT = 100
 
-        cls.company_data['company'].country_id = cls.env.ref('base.be')
+        cls.company_data['company'].write({
+            'country_id': cls.env.ref('base.be').id,
+            'l10n_be_company_number': '0477472701',
+            'l10n_be_revenue_code': '1293',
+            'street': 'Rue du Paradis',
+            'zip': '6870',
+            'city': 'Eghezee',
+            'vat': 'BE0897223670',
+            'phone': '061928374',
+        })
+
+        cls.company = cls.env.company
 
         cls.env.user.tz = 'Europe/Brussels'
 
         cls.date_from = date(2020, 9, 1)
         cls.date_to = date(2020, 9, 30)
 
+        belgium = cls.env.ref('base.be')
         cls.addresses = cls.env['res.partner'].create([{
             'name': "Test Private Address %i" % i,
-            'company_id': cls.env.company.id,
-            'type': "private"
+            'company_id': cls.company.id,
+            'type': "private",
+            'street': 'Brussels Street',
+            'city': 'Brussels',
+            'zip': '2928',
+            'country_id': belgium.id,
+
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.resource_calendar_38_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar : 38 Hours/Week",
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
@@ -65,8 +88,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Employee %i" % i,
             'address_home_id': cls.addresses[i].id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'km_home_work': 75,
+            'niss': '93051822361',
+            'certificate': 'master',
+
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.brand = cls.env['fleet.vehicle.model.brand'].create([{
@@ -82,7 +108,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Car %i" % i,
             'license_plate': "TEST %i" % i,
             'driver_id': cls.employees[i].address_home_id.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'model_id': cls.model.id,
             'first_contract_date': date(2020, 10, 8),
             'co2': 88.0,
@@ -94,7 +120,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.vehicle_contracts = cls.env['fleet.vehicle.log.contract'].create([{
             'name': "Test Contract%s" % i,
             'vehicle_id': cls.cars[i].id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'start_date': date(2020, 10, 8),
             'expiration_date': date(2021, 10, 8),
             'state': "open",
@@ -107,7 +133,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Contract For Payslip Test %i" % i,
             'employee_id': cls.employees[i].id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'date_generated_from': datetime(2020, 9, 1, 0, 0, 0),
             'date_generated_to': datetime(2020, 9, 1, 0, 0, 0),
             'car_id': cls.cars[i].id,
@@ -125,6 +151,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'eco_checks': 250.0,
             'ip_wage_rate': 25.0,
             'ip': True,
+            'rd_percentage': 100,
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.sick_time_off_type = cls.env['hr.leave.type'].create({
@@ -143,7 +170,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.env['resource.calendar.leaves'].create([{
             'name': "Public Holiday (global)",
             'calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'date_from': datetime(2020, 9, 22, 5, 0, 0),
             'date_to': datetime(2020, 9, 22, 23, 0, 0),
             'resource_id': False,
@@ -156,7 +183,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.env['resource.calendar.leaves'].create([{
             'name': "Legal Leave %i" % i,
             'calendar_id': cls.resource_calendar_38_hours_per_week.id,
-            'company_id': cls.env.company.id,
+            'company_id': cls.company.id,
             'resource_id': cls.employees[i].resource_id.id,
             'date_from': datetime(2020, 9, 14, 5, 0, 0),
             'date_to': datetime(2020, 9, 15, 23, 0, 0),
@@ -167,6 +194,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @users('admin')
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
+        self.env.user.company_ids |= self.company
+
         # Work entry generation
         with self.assertQueryCount(admin=6026):
             # Note 4408 requests are related to the db insertions
@@ -179,7 +208,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': "Test Payslip %i" % i,
             'employee_id': self.employees[i].id,
             'contract_id': self.contracts[i].id,
-            'company_id': self.env.company.id,
+            'company_id': self.company.id,
             'vehicle_id': self.cars[i].id,
             'struct_id': structure.id,
             'date_from': self.date_from,
@@ -188,12 +217,78 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         # Payslip Creation
         with self.assertQueryCount(admin=1314):
-            payslips = self.env['hr.payslip'].create(payslips_values)
+            start_time = time.time()
+            payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
+            # --- 0.3016078472137451 seconds ---
+            _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=4347):
+        with self.assertQueryCount(admin=4348):
+            start_time = time.time()
             payslips.compute_sheet()
+            # --- 9.298089027404785 seconds ---
+            _logger.info("Payslips Computation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Validation
-        with self.assertQueryCount(admin=352):
+        with self.assertQueryCount(admin=796):
+            start_time = time.time()
             payslips.action_payslip_done()
+            # --- 6.975736618041992 seconds ---
+            _logger.info("Payslips Validation: --- %s seconds ---", time.time() - start_time)
+
+        # 273S Declaration
+        declaration_273S = self.env['l10n_be.273s'].with_context(allowed_company_ids=self.company.ids).create({
+            'year': self.date_from.year,
+            'month': str(self.date_from.month),
+        })
+        with self.assertQueryCount(admin=7):
+            start_time = time.time()
+            declaration_273S.action_generate_xml()
+            # --- 0.027051687240600586 seconds ---
+            _logger.info("Declaration 273S: --- %s seconds ---", time.time() - start_time)
+        self.assertEqual(declaration_273S.xml_validation_state, 'done', declaration_273S.error_message)
+
+        # 274.XX Declaration
+        declaration_274_XX = self.env['l10n_be.274_xx'].with_context(allowed_company_ids=self.company.ids).create({
+            'year': self.date_from.year,
+            'month': str(self.date_from.month),
+        })
+        with self.assertQueryCount(admin=10):
+            start_time = time.time()
+            declaration_274_XX.action_generate_xml()
+            # --- 0.04558062553405762 seconds ---
+            _logger.info("Declaration 274.XX: --- %s seconds ---", time.time() - start_time)
+        self.assertEqual(declaration_274_XX.xml_validation_state, 'done', declaration_274_XX.error_message)
+
+        # 281.10 Declaration
+        declaration_281_10 = self.env['l10n_be.281_10'].with_context(allowed_company_ids=self.company.ids).create({
+            'reference_year': str(self.date_from.year),
+        })
+        with self.assertQueryCount(admin=9):
+            start_time = time.time()
+            declaration_281_10.action_generate_xml()
+            # --- 0.0810704231262207 seconds ---
+            _logger.info("Declaration 281.10:--- %s seconds ---", time.time() - start_time)
+        self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
+
+        # 281.45 Declaration
+        declaration_281_45 = self.env['l10n_be.281_45'].with_context(allowed_company_ids=self.company.ids).create({
+            'reference_year': str(self.date_from.year),
+        })
+        with self.assertQueryCount(admin=9):
+            start_time = time.time()
+            declaration_281_45.action_generate_xml()
+            # --- 0.027942657470703125 seconds ---
+            _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
+        self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
+
+        # Social Security Certificate
+        social_security_certificate = self.env['l10n.be.social.security.certificate'].with_context(allowed_company_ids=self.company.ids).create({
+            'date_from': self.date_from + relativedelta(day=1, month=1),
+            'date_to': self.date_from + relativedelta(day=31, month=12),
+        })
+        with self.assertQueryCount(admin=25):
+            start_time = time.time()
+            social_security_certificate.print_report()
+            # --- 0.1080021858215332 seconds ---
+            _logger.info("Social Security Certificate:--- %s seconds ---", time.time() - start_time)

@@ -420,8 +420,8 @@ class HrPayroll(Controller):
             "\t" * offset + "self.assertAlmostEqual(self.payslip._get_worked_days_line_number_of_hours('%s'), %s, places=2)" % (
                 wd.code, wd.number_of_hours) for wd in payslip.worked_days_line_ids
         ] + [''] + [
-            "\t" * offset + "self.assertAlmostEqual(self.payslip._get_salary_line_total('%s'), %s, places=2)" % (
-                line.code, line.total) for line in payslip.line_ids
+            "\t" * offset + "self.assertAlmostEqual(self.payslip._get_line_values('%s', compute_sum=True)['%s']['sum']['total'], %s, places=2)" % (
+                line.code, line.code, line.total) for line in payslip.line_ids
         ]
 
         script = "\n".join(content_py_file) + '\n'  # take all content to create the script

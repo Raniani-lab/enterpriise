@@ -191,8 +191,9 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'NET': -2.09
         }
         error = []
+        line_values = payslip_new_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
-            payslip_line_value = payslip_new_contract._get_salary_line_total(code)
+            payslip_line_value = line_values[code][payslip_new_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
@@ -310,8 +311,9 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'NET': 528.96
         }
         error = []
+        line_values = payslip_original_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
-            payslip_line_value = payslip_original_contract._get_salary_line_total(code)
+            payslip_line_value = line_values[code][payslip_original_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
@@ -361,9 +363,9 @@ class TestCreditTime(AccountTestInvoicingCommon):
         }
 
         error = []
+        line_values = payslip_new_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
-            payslip_new_contract._get_salary_line_total(code)
-            payslip_line_value = payslip_new_contract._get_salary_line_total(code)
+            payslip_line_value = line_values[code][payslip_new_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):
                 error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))

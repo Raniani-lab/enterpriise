@@ -148,20 +148,22 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         workers_data = collections.defaultdict(lambda: collections.defaultdict(lambda: dict(full=0, part=0)))
         meal_voucher = dict(male=0, female=0, total=0)
 
+        line_values = payslips._get_line_values(
+            ['GROSS', 'CAR.PRIV', 'ONSSEMPLOYER', 'MEAL_V_EMP'], vals_list=['total', 'quantity'])
         for payslip in payslips:
             gender = payslip.employee_id.gender
             calendar = payslip.contract_id.resource_calendar_id
             contract_type = 'full' if calendar.full_time_required_hours == calendar.hours_per_week else 'part'
-            gross = round(payslip._get_salary_line_total('GROSS'), 2)
-            private_car = round(payslip._get_salary_line_total('CAR.PRIV'), 2)
-            onss_employer = round(payslip._get_salary_line_total('ONSSEMPLOYER'), 2)
+            gross = round(line_values['GROSS'][payslip.id]['total'], 2)
+            private_car = round(line_values['CAR.PRIV'][payslip.id]['total'], 2)
+            onss_employer = round(line_values['ONSSEMPLOYER'][payslip.id]['total'], 2)
             workers_data['total_gross'][gender][contract_type] += gross
             workers_data['private_car'][gender][contract_type] += private_car
             workers_data['onss_employer'][gender][contract_type] += onss_employer
             workers_data['total'][gender][contract_type] = gross + private_car + onss_employer
 
             employer_amount = payslip.contract_id.meal_voucher_paid_by_employer
-            meal_voucher[gender] += round(employer_amount * payslip._get_salary_line_quantity('MEAL_V_EMP'), 2)
+            meal_voucher[gender] += round(employer_amount * line_values['MEAL_V_EMP'][payslip.id]['quantity'], 2)
 
         report_data['102'] = workers_data
         report_data['103'] = meal_voucher
@@ -319,8 +321,9 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         report_data['58031'] = male_payslips._get_worked_days_line_amount(training_code)
         report_data['58131'] = female_payslips._get_worked_days_line_amount(training_code)
 
-        report_data['58032'] = sum(p._get_worked_days_line_amount(training_code) / p._get_salary_line_total('SALARY') * p._get_salary_line_total('ONSSTOTAL') for p in male_payslips)
-        report_data['58132'] = sum(p._get_worked_days_line_amount(training_code) / p._get_salary_line_total('SALARY') * p._get_salary_line_total('ONSSTOTAL') for p in female_payslips)
+        line_values = (male_payslips + female_payslips)._get_line_values(['SALARY', 'ONSSTOTAL'])
+        report_data['58032'] = sum(p._get_worked_days_line_amount(training_code) / line_values['SALARY'][p.id]['total'] * line_values['ONSSTOTAL'][p.id]['total'] for p in male_payslips)
+        report_data['58132'] = sum(p._get_worked_days_line_amount(training_code) / line_values['SALARY'][p.id]['total'] * line_values['ONSSTOTAL'][p.id]['total'] for p in female_payslips)
 
         report_data['5803'] = report_data['58031'] + report_data['58032']
         report_data['5813'] = report_data['58131'] + report_data['58132']

@@ -94,18 +94,16 @@ class L10nBe28110(models.Model):
             raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat"))
 
         invalid_employees = employees.filtered(
-            lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city)
+            lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city or not e.address_home_id.country_id)
         if invalid_employees:
-            raise UserError(_("The following employees don't have a valid private address (with a street, a zip and a city):\n%s", '\n'.join(invalid_employees.mapped('name'))))
+            raise UserError(_("The following employees don't have a valid private address (with a street, a zip, a city and a country):\n%s", '\n'.join(invalid_employees.mapped('name'))))
 
         if not all(emp.contract_ids and emp.contract_id for emp in employees):
             raise UserError(_('Some employee has no contract.'))
 
-        if not all(emp.identification_id for emp in employees):
-            raise UserError(_('Some employee has no identification id.'))
-
-        if not all(emp.language_code for emp in employees):
-            raise UserError(_('Some employee has no language.'))
+        invalid_employees = employees.filtered(lambda e: not e._is_niss_valid())
+        if invalid_employees:
+            raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(invalid_employees.mapped('name'))))
 
     @api.model
     def _get_lang_code(self, lang):
@@ -216,6 +214,12 @@ class L10nBe28110(models.Model):
         for payslip in all_payslips:
             employee_payslips[payslip.employee_id] |= payslip
 
+        line_codes = [
+            'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP',
+            'ATN.CAR', 'REP.FEES', 'PUB.TRANS', 'EmpBonus.1', 'GROSS'
+        ]
+        all_line_values = all_payslips._get_line_values(line_codes)
+
         belgium = self.env.ref('base.be')
         sequence = 0
         warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
@@ -223,6 +227,10 @@ class L10nBe28110(models.Model):
             is_belgium = employee.address_home_id.country_id == belgium
             payslips = employee_payslips[employee]
             sequence += 1
+
+            mapped_total = {
+                code: sum(all_line_values[code][p.id]['total'] for p in payslips)
+                for code in line_codes}
 
             sheet_values = {
                 'employee': employee,
@@ -264,10 +272,10 @@ class L10nBe28110(models.Model):
                 'f10_2057_volontarysuplmentaryhourscovid': 0,
                 'f10_2058_km': employee.has_bicycle and employee.km_home_work or 0.0,
                 # f10_2059_totaalcontrole
-                'f10_2060_gewonebezoldiginge': round(payslips._get_salary_line_total('NET'), 2),
+                'f10_2060_gewonebezoldiginge': round(mapped_total['NET'], 2),
                 'f10_2061_bedragoveruren300horeca': 0,
                 # f10_2062_totaal
-                'f10_2063_vervroegdvakantieg': round(payslips._get_salary_line_total('PAY_SIMPLE'), 2),
+                'f10_2063_vervroegdvakantieg': round(mapped_total['PAY_SIMPLE'], 2),
                 'f10_2064_afzbelachterstall': 0,
                 'f10_2065_opzeggingsreclasseringsverg': 0,
                 'f10_2066_impulsfund': 0,
@@ -277,19 +285,19 @@ class L10nBe28110(models.Model):
                 'f10_2070_decemberremuneration': 0,
                 'f10_2071_totalevergoeding': 0,
                 'f10_2072_pensioentoezetting':  0,
-                'f10_2074_bedrijfsvoorheffing': round(payslips._get_salary_line_total('PPTOTAL'), 2),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
-                'f10_2075_bijzonderbijdrage': round(payslips._get_salary_line_total('M.ONSS'), 2),
-                'f10_2076_voordelenaardbedrag': round(sum(payslips._get_salary_line_total(code) for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2),
+                'f10_2074_bedrijfsvoorheffing': round(mapped_total['PPTOTAL'], 2),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
+                'f10_2075_bijzonderbijdrage': round(mapped_total['M.ONSS'], 2),
+                'f10_2076_voordelenaardbedrag': round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2),
                 # f10_2077_totaal
-                'f10_2078_eigenkosten': round(payslips._get_salary_line_total('REP.FEES'), 2),
+                'f10_2078_eigenkosten': round(mapped_total['REP.FEES'], 2),
                 'f10_2079_tussenkomstintr': 0,
                 'f10_2080_detacheringsvergoed': 0,
                 'f10_2081_gewonebijdragenenpremies': 0,
-                'f10_2082_bedrag': round(payslips.filtered(lambda p: p.struct_id == warrant_structure)._get_salary_line_total('GROSS'), 2),
+                'f10_2082_bedrag': round(sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == warrant_structure), 2),
                 'f10_2083_bedrag': 0,
                 'f10_2084_mobiliteitsvergoedi': 0,
                 'f10_2085_forfbezoldiging': 0,
-                'f10_2086_openbaargemeenschap': round(payslips._get_salary_line_total('PUB.TRANS'), 2),
+                'f10_2086_openbaargemeenschap': round(mapped_total['PUB.TRANS'], 2),
                 'f10_2087_bedrag': 0,
                 'f10_2088_andervervoermiddel': 0,
                 'f10_2090_outborderdays': 0,
@@ -308,7 +316,7 @@ class L10nBe28110(models.Model):
                 'f10_2110_aantaloveruren360': 0,
                 'f10_2111_achterstalloveruren300horeca': 0,
                 'f10_2113_forfaitrsz': 0,
-                'f10_2115_bonus': round(payslips._get_salary_line_total('EmpBonus.1'), 2),
+                'f10_2115_bonus': round(mapped_total['EmpBonus.1'], 2),
                 'f10_2116_badweatherstamps': 0,
                 'f10_2117_nonrecurrentadvantages': 0,
                 'f10_2118_aantaloveruren': 0,
@@ -324,7 +332,7 @@ class L10nBe28110(models.Model):
                 'f10_2128_vrijaanvullendpensioenwerknemers': 0,
                 'f10_2129_totaaloverwerktoeslag': 0,
                 'f10_2130_privatepc': 0,
-                'f10_2131_bedrijfsvoorheffingvanwerkgever': round(payslips._get_salary_line_total('PPTOTAL'), 2),
+                'f10_2131_bedrijfsvoorheffingvanwerkgever': round(mapped_total['EmpBonus.1'], 2),
                 'f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever': 0,
                 'f10_2134_totaalbedragmobiliteitsbudget': 0,
                 'f10_2135_amountpaidforvolontarysuplementaryhourscovid': 0,

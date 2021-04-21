@@ -41,8 +41,7 @@ class L10nBe273S(models.Model):
         ('12', 'December'),
     ], required=True, default=lambda self: str((fields.Date.today() + relativedelta(months=-1)).month))
     period = fields.Date(
-        'Period', compute='_compute_period',
-        required=True, store=True)
+        'Period', compute='_compute_period', store=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     state = fields.Selection([
@@ -119,17 +118,19 @@ class L10nBe273S(models.Model):
         if employees:
             raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(employees.mapped('name'))))
 
-        # The first threshold is at 16320 € of gross IP, so we only consider the rate at 7.5 %. 
+        # The first threshold is at 16320 € of gross IP, so we only consider the rate at 7.5 %.
         # YTI TODO: Handle different thresholds in master
-        gross_amount = sum(p._get_salary_line_total('IP') for p in payslips)
-        tax_amount = - sum(p._get_salary_line_total('IP.DED') for p in payslips)
+        line_values = payslips._get_line_values(['IP', 'IP.DED'])
+
+        gross_amount = line_values['IP']['sum']['total']
+        tax_amount = - line_values['IP.DED']['sum']['total']
 
         mapped_ip = defaultdict(lambda: [0, 0])
         for payslip in payslips.sudo():
-            ip_amount = payslip._get_salary_line_total('IP')
+            ip_amount = line_values['IP'][payslip.id]['total']
             if ip_amount:
-                mapped_ip[payslip.employee_id][0] += payslip._get_salary_line_total('IP')
-                mapped_ip[payslip.employee_id][1] += payslip._get_salary_line_total('IP.DED')
+                mapped_ip[payslip.employee_id][0] += ip_amount
+                mapped_ip[payslip.employee_id][1] += line_values['IP.DED'][payslip.id]['total']
 
         currency = self.env.company.currency_id
 
@@ -163,7 +164,7 @@ class L10nBe273S(models.Model):
                         'zip': employee.address_home_id.zip,
                         'country': employee.address_home_id.country_id.code,
                         'nationality': employee.country_id.code,
-                        'identification': employee.identification_id.replace('-', '').replace('.', ''),
+                        'identification': employee.niss.replace('-', '').replace('.', ''),
                     },
                     'gross_amount': ip_values[0],
                     'deductable_costs': {

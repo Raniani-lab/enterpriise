@@ -866,17 +866,17 @@ class HelpdeskTicket(models.Model):
         to portal and portal customers. If they are notified they should
         probably have access to the document. """
         groups = super(HelpdeskTicket, self)._notify_get_groups(msg_vals=msg_vals)
-        msg_vals = msg_vals or {}
 
         self.ensure_one()
-        for group_name, group_method, group_data in groups:
+        for group_name, _group_method, group_data in groups:
             if group_name != 'customer':
                 group_data['has_button_access'] = True
 
         if self.user_id:
             return groups
 
-        take_action = self._notify_get_action_link('assign', **msg_vals)
+        local_msg_vals = dict(msg_vals or {})
+        take_action = self._notify_get_action_link('assign', **local_msg_vals)
         helpdesk_actions = [{'url': take_action, 'title': _('Assign to me')}]
         helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
         new_groups = [(

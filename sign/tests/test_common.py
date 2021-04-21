@@ -106,6 +106,18 @@ class TestSignCommon(TransactionCase):
             'company_id': cls.company_id.id,
         })
 
+        cls.partner_3_id = cls.env['res.partner'].create({
+            'name': 'Martine Poulichette',
+            'street': '59 rue des Wallons',
+            'city': 'Louvain-la-Neuve',
+            'zip': '1348',
+            'country_id': cls.env.ref("base.be").id,
+            'phone': '+0032476543211',
+            'email': 'martine.poulichette.a@example.com',
+            'email_normalized': 'martine.poulichette.a@example.com',
+            'company_id': cls.company_id.id,
+        })
+
         cls.single_role_sign_request = cls.create_sign_request(cls, cls.template, [cls.partner_id.id])
         cls.multi_role_sign_request = cls.create_sign_request(cls, cls.template_multi_role, [cls.partner_id.id, cls.partner_2_id.id])
         cls.default_role_sign_request = cls.create_sign_request(cls, cls.template_without_sign_items, [cls.partner_id.id])

@@ -52,7 +52,7 @@
                                 <tr>
                                     <td>
                                         <span t-field="log.action"/>
-                                        <img t-if="log.action != 'save' and log.sign_request_item_id.signature" class="text-left" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
+                                        <img t-if="log.action == 'sign' and log.sign_request_item_id.signature" class="text-left" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
                                     </td>
                                     <td> <span t-field="log.partner_id"/>
                                     <t t-if="log.partner_id.email">

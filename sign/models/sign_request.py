@@ -223,7 +223,7 @@ class SignRequest(models.Model):
     def open_logs(self):
         self.ensure_one()
         return {
-            "name": _("Access History"),
+            "name": _("Activity Logs"),
             "type": "ir.actions.act_window",
             "res_model": "sign.log",
             'view_mode': 'tree,form',
@@ -624,9 +624,10 @@ class SignRequest(models.Model):
         if attachment_ids:
             attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.write({'attachment_ids': [Command.set(attachment_ids.ids)]})
-        sign_request.message_subscribe(partner_ids=followers)
-        sign_request.activity_update(sign_users)
         sign_request.set_signers(signers)
+        # All CCers and signers are followers of the sign request.
+        sign_request.message_subscribe(partner_ids=followers + sign_request.request_item_ids.partner_id.ids)
+        sign_request.activity_update(sign_users)
         if send:
             sign_request.action_sent()
         if without_mail:
@@ -671,7 +672,7 @@ class SignRequestItem(models.Model):
 
     access_token = fields.Char(required=True, default=_default_access_token, readonly=True)
     access_via_link = fields.Boolean('Accessed Through Token')
-    role_id = fields.Many2one('sign.item.role', string="Role")
+    role_id = fields.Many2one('sign.item.role', string="Role", readonly=True)
     sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True)
     sms_token = fields.Char('SMS Token', readonly=True)
 
@@ -683,11 +684,56 @@ class SignRequestItem(models.Model):
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
-    signer_email = fields.Char(compute="_compute_email", readonly=False, store=True)
+    signer_email = fields.Char(compute="_compute_email", store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
+    change_authorized = fields.Boolean(related='role_id.change_authorized')
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
+
+    def write(self, vals):
+        if vals.get('partner_id') is False:
+            raise UserError(_("You need to define a signatory"))
+        request_items_reassigned = self.env['sign.request.item']
+        if vals.get('partner_id'):
+            request_items_reassigned |= self.filtered(lambda sri: self.partner_id.id != vals['partner_id'])
+            if any(sri.state not in ['sent', 'draft']
+                   or sri.sign_request_id.state not in ['sent', 'canceled']
+                   or not sri.role_id.change_authorized
+                   for sri in request_items_reassigned):
+                raise UserError(_("You cannot reassign this signatory"))
+            new_sign_partner = self.env['res.partner'].browse(vals.get('partner_id'))
+            old_sign_users = self.env['res.users'].search([
+                ('partner_id.id', 'in', request_items_reassigned.partner_id.ids),
+                ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
+            ], limit=len(request_items_reassigned.partner_id))
+            for request_item in request_items_reassigned:
+                # remove old activities for internal users
+                old_sign_user = old_sign_users.filtered(lambda usr: usr.partner_id.id == request_item.partner_id.id)
+                if old_sign_user:
+                    request_item.sign_request_id.activity_unlink(['mail.mail_activity_data_todo'], user_id=old_sign_user.id)
+                # create logs
+                request_item.sign_request_id.message_post(
+                    body=_('The contact of %(role)s has been changed from %(old_partner)s to %(new_partner)s.',
+                           role=request_item.role_id.name, old_partner=request_item.partner_id.name, new_partner=new_sign_partner.name))
+
+            # add new followers
+            request_items_reassigned.sign_request_id.message_subscribe(partner_ids=[vals.get('partner_id')])
+            # add new activities for internal users
+            new_sign_user = self.env['res.users'].search([
+                ('partner_id.id', '=', vals.get('partner_id')),
+                ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
+            ], limit=1)
+            if new_sign_user:
+                self.sign_request_id.activity_update(new_sign_user)
+
+        res = super(SignRequestItem, self).write(vals)
+
+        # change access token
+        for request_item in request_items_reassigned.filtered(lambda sri: sri.is_mail_sent):
+            request_item.access_token = self._default_access_token()
+            request_item.is_mail_sent = False
+        return res
 
     def action_draft(self):
         for request_item in self:
@@ -874,21 +920,10 @@ class SignRequestItem(models.Model):
         for signature_request in self:
             signature_request.access_url = '/my/signature/%s' % signature_request.id
 
-    @api.depends('partner_id')
+    @api.depends('partner_id.email')
     def _compute_email(self):
-        for sign_request_item in self:
+        for sign_request_item in self.filtered(lambda sri: sri.state in ["draft", "sent"]):
             sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
-
-    def _update_email(self):
-        for sign_request_item in self:
-            sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
-            sign_request_item.access_token = self.env['sign.request']._default_access_token()
-            if sign_request_item.is_mail_sent:
-                sign_request_item.sign_request_id.message_post(
-                    body=_('The mail address of %s has been updated. The request will be automatically resent.',
-                           sign_request_item.partner_id.name))
-                self.env['sign.log']._create_log(sign_request_item, 'update_mail', is_request=False)
-                sign_request_item.resend_sign_access()
 
 
 class SignRequestItemValue(models.Model):

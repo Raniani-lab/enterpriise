@@ -104,7 +104,7 @@
         <field name="name">sign.request.form</field>
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false">
+            <form create="false">
                 <header>
                     <button string="Resend" type="object" states="canceled" name="action_resend" class="oe_highlight oe_read_only"/>
                     <button string="Preview" type="object" name="go_to_document" class="oe_highlight"/>
@@ -133,7 +133,7 @@
                     <field name="integrity" invisible="1"/>
                     <div class="oe_title">
                         <label for="reference" string="Document Name"/>
-                        <h1><field name="reference" placeholder="e.g. Non-disclosure agreement"/></h1>
+                        <h1><field name="reference" placeholder="e.g. Non-disclosure agreement" readonly="1"/></h1>
                     </div>
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': [('integrity', '=', True)]}">
                         The integrity of the document's history cannot be verified. This could mean that signature values or the underlying PDF document may have been modified after the fact.
@@ -221,11 +221,12 @@
         <field name="name">sign.request.item.tree</field>
         <field name="model">sign.request.item</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="partner_id"/>
-                <field name="signer_email" class="oe_read_only"/>
-                <field name="role_id" class="oe_read_only"/>
-                <field name="state" class="oe_read_only"/>
+            <tree editable="bottom" create="false" delete="false">
+                <field name="change_authorized" invisible="1"/>
+                <field name="partner_id" attrs="{'readonly': ['|', ('change_authorized', '=', False), ('state', '=', 'completed')]}"/>
+                <field name="signer_email"/>
+                <field name="role_id"/>
+                <field name="state"/>
                 <field name="is_mail_sent" invisible="1"/>
                 <button name="resend_sign_access" string="Send" type="object" icon="fa-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '!=', False)]}"/>
                 <button name="resend_sign_access" string="Resend" type="object" icon="fa-check-square-o pr-2" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>

@@ -3,6 +3,7 @@
 from .test_common import TestSignCommon
 from unittest.mock import patch
 from odoo.addons.sign.models.sign_log import SignLog
+from odoo.exceptions import UserError
 
 
 class TestSignRequest(TestSignCommon):
@@ -30,6 +31,25 @@ class TestSignRequest(TestSignCommon):
         token_c = request_item.access_token
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
         self.assertEqual(token_c, token_b, "sign request item's access token should be not changed after the document is signed by the signer")
+
+    @patch.object(SignLog, "_create_log")
+    def test_sign_request_item_reassign_signatory(self, _create_log):
+        sign_request = self.single_role_sign_request
+        request_item_ids = sign_request.request_item_ids
+        request_item = request_item_ids[0]
+        token_a = request_item.access_token
+        self.assertEqual(request_item.signer_email, "laurie.poiret.a@example.com", 'email address should be laurie.poiret.a@example.com')
+        self.assertEqual(request_item.is_mail_sent, True, 'email should be sent')
+        self.assertEqual(request_item.role_id.change_authorized, False, 'Role employee is not allowed to be changed')
+        with self.assertRaises(UserError):
+            request_item.write({'partner_id': self.partner_3_id.id})
+        with self.assertRaises(UserError):
+            request_item.write({'partner_id': False})
+        request_item.role_id.change_authorized = True
+        request_item.write({'partner_id': self.partner_3_id.id})
+        self.assertEqual(request_item.signer_email, "martine.poulichette.a@example.com", 'email address should be martine.poulichette.a@example.com')
+        self.assertNotEqual(token_a, request_item.access_token, "sign request item's access token should be changed")
+        self.assertEqual(request_item.is_mail_sent, False, 'email should not be sent')
 
     def test_templates_send_accesses(self):
         for sign_request in [self.default_role_sign_request, self.multi_role_sign_request, self.single_role_sign_request]:

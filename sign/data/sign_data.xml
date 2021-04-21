@@ -188,6 +188,7 @@
 
     <record model="sign.item.role" id="sign_item_role_company">
         <field name="name">Company</field>
+        <field name="change_authorized" eval="True"/>
         <field name="color" eval="9"/>
     </record>
 

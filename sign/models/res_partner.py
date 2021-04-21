@@ -35,6 +35,16 @@ class ResPartner(models.Model):
         partners_email_changed = self.filtered(lambda r: r.email != vals['email']) if 'email' in vals else None
         res = super(ResPartner, self).write(vals)
         if partners_email_changed:
-            sign_request_items = self.env['sign.request.item'].sudo().search([('partner_id', 'in', partners_email_changed.ids), ('state', '!=', 'completed'), ('sign_request_id.active', '=', True)])
-            sign_request_items._update_email()
+            request_items = self.env['sign.request.item'].sudo().search([
+                ('partner_id', 'in', partners_email_changed.ids),
+                ('state', '!=', 'completed'),
+                ('sign_request_id.active', '=', True),
+                ('is_mail_sent', '=', True)])
+            for request_item in request_items:
+                request_item.sign_request_id.message_post(
+                    body=_('The mail address of %(partner)s has been updated. The request will be automatically resent.',
+                           partner=request_item.partner_id.name))
+                self.env['sign.log']._create_log(request_item, 'update_mail', is_request=False)
+                request_item.access_token = self.env['sign.request']._default_access_token()
+                request_item.resend_sign_access()
         return res

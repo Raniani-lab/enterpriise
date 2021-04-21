@@ -312,7 +312,8 @@ class SignItemParty(models.Model):
     color = fields.Integer()
     default = fields.Boolean(required=True, default=False)
 
-    sms_authentification = fields.Boolean('SMS Authentication', default=False,)
+    sms_authentification = fields.Boolean('SMS Authentication')
+    change_authorized = fields.Boolean('Change Authorized')
 
     @api.model
     def add(self, name):

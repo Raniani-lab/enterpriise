@@ -775,7 +775,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     def _validate_payslip(self, payslip, results):
         error = []
-        line_values = payslip._get_line_values(results.keys(), skip_sum=True)
+        line_values = payslip._get_line_values(results.keys())
         for code, value in results.items():
             payslip_line_value = line_values[code][payslip.id]['total']
             if float_compare(payslip_line_value, value, 2):
@@ -3762,7 +3762,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 2151.98,
         }
         error = []
-        line_values = classic_payslip._get_line_values(payslip_result.keys(), skip_sum=True)
+        line_values = classic_payslip._get_line_values(payslip_result.keys())
         for code, value in payslip_result.items():
             payslip_line_value = line_values[code][classic_payslip.id]['total']
             if float_compare(payslip_line_value, value, 2):

@@ -149,7 +149,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         meal_voucher = dict(male=0, female=0, total=0)
 
         line_values = payslips._get_line_values(
-            ['GROSS', 'CAR.PRIV', 'ONSSEMPLOYER', 'MEAL_V_EMP'], vals_list=['total', 'quantity'], skip_sum=True)
+            ['GROSS', 'CAR.PRIV', 'ONSSEMPLOYER', 'MEAL_V_EMP'], vals_list=['total', 'quantity'])
         for payslip in payslips:
             gender = payslip.employee_id.gender
             calendar = payslip.contract_id.resource_calendar_id
@@ -321,7 +321,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         report_data['58031'] = male_payslips._get_worked_days_line_amount(training_code)
         report_data['58131'] = female_payslips._get_worked_days_line_amount(training_code)
 
-        line_values = (male_payslips + female_payslips)._get_line_values(['SALARY', 'ONSSTOTAL'], skip_sum=True)
+        line_values = (male_payslips + female_payslips)._get_line_values(['SALARY', 'ONSSTOTAL'])
         report_data['58032'] = sum(p._get_worked_days_line_amount(training_code) / line_values['SALARY'][p.id]['total'] * line_values['ONSSTOTAL'][p.id]['total'] for p in male_payslips)
         report_data['58132'] = sum(p._get_worked_days_line_amount(training_code) / line_values['SALARY'][p.id]['total'] * line_values['ONSSTOTAL'][p.id]['total'] for p in female_payslips)
 

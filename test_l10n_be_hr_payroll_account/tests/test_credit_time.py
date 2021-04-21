@@ -191,7 +191,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'NET': -2.09
         }
         error = []
-        line_values = payslip_new_contract._get_line_values(payslip_results.keys(), skip_sum=True)
+        line_values = payslip_new_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
             payslip_line_value = line_values[code][payslip_new_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):
@@ -311,7 +311,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'NET': 528.96
         }
         error = []
-        line_values = payslip_original_contract._get_line_values(payslip_results.keys(), skip_sum=True)
+        line_values = payslip_original_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
             payslip_line_value = line_values[code][payslip_original_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):
@@ -363,7 +363,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         }
 
         error = []
-        line_values = payslip_new_contract._get_line_values(payslip_results.keys(), skip_sum=True)
+        line_values = payslip_new_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():
             payslip_line_value = line_values[code][payslip_new_contract.id]['total']
             if float_compare(payslip_line_value, value, 2):

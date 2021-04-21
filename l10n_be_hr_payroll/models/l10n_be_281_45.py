@@ -205,7 +205,7 @@ class L10nBe28145(models.Model):
             'IP',
             'IP.DED',
         ]
-        all_line_values = all_payslips._get_line_values(line_codes, skip_sum=True)
+        all_line_values = all_payslips._get_line_values(line_codes)
 
         belgium = self.env.ref('base.be')
         sequence = 0

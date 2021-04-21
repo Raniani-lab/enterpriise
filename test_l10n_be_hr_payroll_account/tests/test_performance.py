@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import logging
 import time
 
 from datetime import date, datetime
@@ -9,6 +10,8 @@ from dateutil.relativedelta import relativedelta
 from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests.common import users, warmup
+
+_logger = logging.getLogger(__name__)
 
 
 @tagged('post_install', '-at_install', 'payroll_perf')
@@ -217,6 +220,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
             # --- 0.3016078472137451 seconds ---
+            _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
             print("Payslips Creation: --- %s seconds ---" % (time.time() - start_time))
 
         # Payslip Computation
@@ -224,14 +228,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---
-            print("Payslips Computation: --- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Payslips Computation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Validation
         with self.assertQueryCount(admin=787):
             start_time = time.time()
             payslips.action_payslip_done()
             # --- 6.975736618041992 seconds ---
-            print("Payslips Validation: --- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Payslips Validation: --- %s seconds ---", time.time() - start_time)
 
         # 273S Declaration
         declaration_273S = self.env['l10n_be.273s'].with_context(allowed_company_ids=self.company.ids).create({
@@ -242,7 +246,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_273S.action_generate_xml()
             # --- 0.027051687240600586 seconds ---
-            print("Declaration 273S: --- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Declaration 273S: --- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_273S.xml_validation_state, 'done', declaration_273S.error_message)
 
         # 274.XX Declaration
@@ -254,7 +258,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_274_XX.action_generate_xml()
             # --- 0.04558062553405762 seconds ---
-            print("Declaration 274.XX: --- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Declaration 274.XX: --- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_274_XX.xml_validation_state, 'done', declaration_274_XX.error_message)
 
         # 281.10 Declaration
@@ -265,7 +269,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_281_10.action_generate_xml()
             # --- 0.0810704231262207 seconds ---
-            print("Declaration 281.10:--- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Declaration 281.10:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
 
         # 281.45 Declaration
@@ -276,7 +280,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             declaration_281_45.action_generate_xml()
             # --- 0.027942657470703125 seconds ---
-            print("Declaration 281.45:--- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
 
         # Social Security Certificate
@@ -288,4 +292,4 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             start_time = time.time()
             social_security_certificate.print_report()
             # --- 0.1080021858215332 seconds ---
-            print("Social Security Certificate:--- %s seconds ---" % (time.time() - start_time))
+            _logger.info("Social Security Certificate:--- %s seconds ---", time.time() - start_time)

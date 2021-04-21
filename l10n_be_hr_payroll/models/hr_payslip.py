@@ -211,7 +211,7 @@ class Payslip(models.Model):
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
         if not complete_payslips:
             return 0
-        total_amount = complete_payslips._get_line_values(['COMMISSION'])['COMMISSION']['sum']['total'] 
+        total_amount = complete_payslips._get_line_values(['COMMISSION'], compute_sum=True)['COMMISSION']['sum']['total']
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:
@@ -231,7 +231,7 @@ class Payslip(models.Model):
             ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
             ('date_from', '<', self.date_from),
         ], order="date_from asc")
-        total_amount = warrant_payslips._get_line_values(['BASIC'])['BASIC']['sum']['total']
+        total_amount = warrant_payslips._get_line_values(['BASIC'], compute_sum=True)['BASIC']['sum']['total']
         first_contract_date = self.employee_id.first_contract_date
         # Only complete months count
         if first_contract_date.day != 1:

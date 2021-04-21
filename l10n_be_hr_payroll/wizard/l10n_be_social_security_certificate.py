@@ -69,7 +69,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             'ONSS2', 'ONSS', 'ONSS', 'ONSS', 'REP.FEES', 'CAR.PRIV', 'P.P', 'M.ONSS',
             'ATTACH_SALARY', 'ATN.CAR.2', 'ATN.MOB.2', 'ATN.INT.2', 'ATN.LAP.2', 'MEAL_V_EMP',
             'IMPULSION25', 'IMPULSION12', 'ASSIG_SALARY', 'ADVANCE', 'NET', 'P.P.DED']
-        all_values = all_payslips._get_line_values(code_list, vals_list=['total', 'quantity'], skip_sum=True)
+        all_values = all_payslips._get_line_values(code_list, vals_list=['total', 'quantity'])
 
         gross_before_onss = _get_total(monthly_slips, all_values, ['BASIC', 'COMMISSION'])
         atn = _get_total(monthly_slips, all_values, ['ATN.INT', 'ATN.MOB', 'ATN.LAP'])

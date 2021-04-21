@@ -42,7 +42,7 @@ class HrContractSalary(main.HrContractSalary):
         monthly_total_lines = resume_lines.filtered(lambda l: l.value_type == 'monthly_total')
 
         all_codes = (resume_lines - monthly_total_lines).mapped('code')
-        line_values = payslip._get_line_values(all_codes, payslip, skip_sum=True)
+        line_values = payslip._get_line_values(all_codes)
         for resume_line in resume_lines - monthly_total_lines:
             value = round(line_values[resume_line.code][payslip.id]['total'], 2)
             result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, new_contract.company_id.currency_id.symbol)

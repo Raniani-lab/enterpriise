@@ -87,7 +87,7 @@ class TestStudent(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         self.assertEqual(len(payslip.line_ids), 6)
-        line_values = payslip._get_line_values(['BASIC', 'ONSS', 'GROSS', 'CAR.PRIV', 'MEAL_V_EMP', 'NET'], skip_sum=True)
+        line_values = payslip._get_line_values(['BASIC', 'ONSS', 'GROSS', 'CAR.PRIV', 'MEAL_V_EMP', 'NET'])
 
         self.assertAlmostEqual(line_values['BASIC'][payslip.id]['total'], 586.98, places=2)
         self.assertAlmostEqual(line_values['ONSS'][payslip.id]['total'], -15.91, places=2)

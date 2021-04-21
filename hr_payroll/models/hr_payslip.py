@@ -121,7 +121,7 @@ class HrPayslip(models.Model):
                     ('employee_id', '=', payslip.employee_id.id),
                 ])
                 payslip.negative_net_to_report_display = payslips_to_report
-                payslip.negative_net_to_report_amount = payslips_to_report._get_line_values(['NET'])['NET']['sum']['total']
+                payslip.negative_net_to_report_amount = payslips_to_report._get_line_values(['NET'], compute_sum=True)['NET']['sum']['total']
                 payslip.negative_net_to_report_message = _(
                     'Note: There are previous payslips with a negative amount for a total of %s to report.',
                     round(payslip.negative_net_to_report_amount, 2))
@@ -176,7 +176,7 @@ class HrPayslip(models.Model):
             payslip.line_ids = [(5, 0, 0)] + [(0, 0, line_vals) for line_vals in payslip._get_payslip_lines()]
 
     def _compute_basic_net(self):
-        line_values = (self._origin)._get_line_values(['BASIC', 'NET'], skip_sum=True)
+        line_values = (self._origin)._get_line_values(['BASIC', 'NET'])
         for payslip in self:
             payslip.basic_wage = line_values['BASIC'][payslip._origin.id]['total']
             payslip.net_wage = line_values['NET'][payslip._origin.id]['total']
@@ -243,7 +243,7 @@ class HrPayslip(models.Model):
             raise ValidationError(_("You can't validate a cancelled payslip."))
         self.write({'state' : 'done'})
 
-        line_values = self._get_line_values(['NET'], skip_sum=True)
+        line_values = self._get_line_values(['NET'])
 
         self.filtered(lambda p: line_values['NET'][p.id]['total'] < 0).write({'has_negative_net_to_report': True})
         self.mapped('payslip_run_id').action_close()
@@ -576,7 +576,7 @@ class HrPayslip(models.Model):
         lines = self.line_ids.filtered(lambda line: line.code == code)
         return sum([line.quantity for line in lines])
 
-    def _get_line_values(self, code_list, vals_list=None, skip_sum=False):
+    def _get_line_values(self, code_list, vals_list=None, compute_sum=False):
         if vals_list is None:
             vals_list = ['total']
         valid_values = {'quantity', 'amount', 'total'}
@@ -621,7 +621,7 @@ class HrPayslip(models.Model):
             code = row['code']
             payslip_id = row['id']
             for vals in vals_list:
-                if not skip_sum:
+                if compute_sum:
                     result[code]['sum'][vals] += row[vals]
                 result[code][payslip_id][vals] += row[vals]
         return result

@@ -74,7 +74,8 @@ class TestStudent(AccountTestInvoicingCommon):
             'state': 'draft',
         } for vals in vals_list])
 
-        payslip = self.env['hr.payslip'].with_context(allowed_company_ids=self.env.company.ids).new({
+        payslip = self.env['hr.payslip'].with_context(allowed_company_ids=self.env.company.ids).create({
+            'name': 'Test Payslip',
             'employee_id': self.employee.id,
             'date_from': date(2020, 9, 1),
             'date_to': date(2020, 9, 30),
@@ -92,6 +93,6 @@ class TestStudent(AccountTestInvoicingCommon):
         self.assertAlmostEqual(line_values['BASIC'][payslip.id]['total'], 586.98, places=2)
         self.assertAlmostEqual(line_values['ONSS'][payslip.id]['total'], -15.91, places=2)
         self.assertAlmostEqual(line_values['GROSS'][payslip.id]['total'], 571.07, places=2)
-        self.assertAlmostEqual(line_values['CAR.PRIV'][payslip.id]['total'], 14.29, places=2)
+        self.assertAlmostEqual(line_values['CAR.PRIV'][payslip.id]['total'], 14.28, places=2)
         self.assertAlmostEqual(line_values['MEAL_V_EMP'][payslip.id]['total'], -6.54, places=2)
         self.assertAlmostEqual(line_values['NET'][payslip.id]['total'], 578.82, places=2)

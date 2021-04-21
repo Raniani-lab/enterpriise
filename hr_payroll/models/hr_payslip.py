@@ -582,6 +582,9 @@ class HrPayslip(models.Model):
         valid_values = {'quantity', 'amount', 'total'}
         if set(vals_list) - valid_values:
             raise UserError(_('The following values are not valid:\n%s', '\n'.join(list(set(vals_list) - valid_values))))
+        result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
+        if not self:
+            return result
         self.flush()
         selected_fields = ','.join('SUM(%s) AS %s' % (vals, vals) for vals in vals_list)
         self.env.cr.execute("""
@@ -616,7 +619,6 @@ class HrPayslip(models.Model):
         #         2: {'quantity': 1, 'total': -3},
         #     },
         # }
-        result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
         for row in request_rows:
             code = row['code']
             payslip_id = row['id']

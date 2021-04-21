@@ -8,7 +8,7 @@ from collections import OrderedDict
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tools.float_utils import float_compare
 from odoo.tests import common, tagged
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+
 
 @tagged('post_install', '-at_install', 'examples')
 class TestExamples(AccountTestInvoicingCommon):
@@ -69,9 +69,9 @@ class TestExamples(AccountTestInvoicingCommon):
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment').id,
         })
 
-    def case_test(self, line_values, employee_values, payslip_values=None, contract_values=None, holidays_values=None, car_values=None, car_contract_values=None):
+    def case_test(self, payslip_results, employee_values, payslip_values=None, contract_values=None, holidays_values=None, car_values=None, car_contract_values=None):
         """
-            Line_values is a dict with key = line.code and value = line.value
+            payslip_results is a dict with key = line.code and value = line.value
             Employee_values is either a dict to pass to create or an xmlid
             Payslip_values is a dict to pass to create
             Contract_values is a dict to pass to create
@@ -153,8 +153,8 @@ class TestExamples(AccountTestInvoicingCommon):
         # Check that all is right
         error = False
         result = ""
-        line_values = payslip_id._get_line_values(line_values.keys())
-        for code, value in line_values.items():
+        line_values = payslip_id._get_line_values(payslip_results.keys())
+        for code, value in payslip_results.items():
             payslip_value = line_values[code][payslip_id.id]['total']
             if float_compare(payslip_value, value, precision_rounding=payslip_id.currency_id.rounding):
                 error = True
@@ -418,27 +418,26 @@ class TestExamples(AccountTestInvoicingCommon):
     # ATN + No leave + IP (2019) + car
     def test_with_car_with_atn_with_car(self):
         values = OrderedDict([
-            ('BASIC', 3473.56),
+            ('BASIC', 3452.42),
             ('ATN.INT', 5.00),
-            ('ATN.MOB', 4.0),
-            ('SALARY', 3482.56),
-            ('ONSS', -455.17),
+            ('ATN.MOB', 0.0),
+            ('SALARY', 3457.42),
+            ('ONSS', -451.88),
             ('ATN.CAR', 109.17),
-            ('GROSSIP', 3136.56),
-            ('IP.PART', -868.39),
-            ('GROSS', 2268.17),
-            ('P.P', -465.98),
+            ('GROSSIP', 3114.7),
+            ('IP.PART', -863.11),
+            ('GROSS', 2251.6),
+            ('P.P', -458.76),
             ('ATN.CAR.2', -109.17),
             ('ATN.INT.2', -5.00),
-            ('ATN.MOB.2', -4.00),
-            ('M.ONSS', -32.72),
+            ('ATN.MOB.2', 0),
+            ('M.ONSS', -32.48),
             ('MEAL_V_EMP', -22.89),
             ('REP.FEES', 150.00),
-            ('IP', 868.39),
-            ('IP.DED', -65.13),
-            ('NET', 2581.67),
+            ('IP', 863.11),
+            ('IP.DED', -64.73),
+            ('NET', 2571.67),
         ])
-        values = OrderedDict([])
         address = self.env['res.partner'].create({
             'name': 'Roger4',
         })

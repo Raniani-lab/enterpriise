@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 import calendar
 import re
 
+
 class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
@@ -183,3 +184,24 @@ class AccountGenericTaxReport(models.AbstractModel):
             vat_number = vat_number[2:]
 
         return vat_number, country_code
+
+    def get_popup_messages(self, line_balance, options):
+        country_id = self.env['account.tax.report'].browse(options['tax_report']).country_id
+        if country_id.code != 'BE':
+            return super().get_popup_messages(line_balance, options)
+        return {
+            'positive': {
+                'description1': _("This amount in the XML file will be increased by the positive amount from"),
+                'description2': _(" past period(s), previously stored on the corresponding tax line."),
+                'description3': _("The amount in the xml will be : %s", self.format_value(line_balance)),
+            },
+            'negative': {
+                'description1': _("This amount in the XML file will be reduced by the negative amount from"),
+                'description2': _(" past period(s), previously stored on the corresponding tax line."),
+                'description3': _("The amount in the xml will be : %s", self.format_value(line_balance)),
+            },
+            'out_of_bounds': {
+                'description1': _("This amount in the XML file will be set to %s.", self.format_value(line_balance)),
+                'description2': _("The difference will be carried over to the next period's declaration."),
+            }
+        }

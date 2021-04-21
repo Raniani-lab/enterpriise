@@ -323,6 +323,19 @@ var accountReportsWidget = AbstractAction.extend({
                         })
                     });
 
+                    // Bind the 'view carryover lines' button with the 'action_view_carryover_lines' python method.
+                    $content.find('.js_view_carryover_lines').on('click', function(event){
+                        self._rpc({
+                            model: 'account.tax.report.line',
+                            method: 'action_view_carryover_lines',
+                            args: [$(event.target).data('id')],
+                            context: self.odoo_context,
+                        })
+                        .then(function(result){
+                            return self.do_action(result);
+                        })
+                    });
+
                     var formula_element = $content.find('.js_popup_formula');
 
                     // Highlight involved codes during formula evaluation.

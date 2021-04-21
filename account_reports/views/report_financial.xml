@@ -223,11 +223,8 @@
                 <t t-set="cell_classes" t-value="(cell.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or ''))"/>
                 <td t-att-class="'o_account_report_line ' + cell_classes + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
                     t-att-style="cell.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
-                    <t t-if="cell.get('info_tooltip')">
-                        <span data-toggle="tooltip" data-placement="left"
-                                   t-att-title="cell.get('info_tooltip')">
-                                <i class="fa fa-info-circle" style="color:#008784;"/>
-                        </span>
+                    <t t-if="cell.get('popup_data')">
+                        <t t-call="{{cell.get('template', 'account_reports.cell_template_popup_carryover')}}"/>
                     </t>
                     <span class="o_account_report_column_value" t-att-title="cell.get('title')">
                         <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
@@ -304,6 +301,15 @@
         t-att="cell['popup_attributes']"
         t-att-data="cell['popup_data']"
        role="button"/>
+</template>
+
+<template id="cell_template_popup_carryover">
+    <a
+        t-att-class="'o_account_report_popup fa fa-info-circle'"
+        t-att-template="cell['popup_template']"
+        t-att="{'tabindex': 1}"
+        t-att-data="cell['popup_data']"
+        role="button"/>
 </template>
 
 <template id="main_template_with_filter_input_accounts" inherit_id="account_reports.main_template"  primary="True">

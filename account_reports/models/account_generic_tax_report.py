@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 
 from odoo import models, api, fields, Command
 from odoo.tools import safe_eval
@@ -931,43 +932,58 @@ class generic_tax_report(models.AbstractModel):
 
         # When we are not printing (on the web page) we'll show a contextual tooltip.
         if not self.env.context.get('print_mode') and carryover_bounds is not None:
-            info_tooltip = ""
-            style = "white-space:nowrap;"
-
-            carried_over_tooltip = _("This amount in the XML file will be set to %s.<br>"
-                                     "The difference will be carried over to the next period's declaration."
-                                     "<br><br>The carryover balance will be : %s")
-            carrying_over_tooltip = _("This amount in the XML file will be %s by the negative amount from"
-                                      " past period(s), previously stored on the corresponding tax line."
-                                      "<br><br>The amount in the xml will be : %s"
-                                      "<br>The carryover balance will be : %s")
+            column_style = "white-space:nowrap;"
+            popup_data = {}
+            messages = self.get_popup_messages(line_balance, options)
 
             if carryover_bounds[0] is not None and column['balance'] < carryover_bounds[0]:
-                info_tooltip = carried_over_tooltip % (self.format_value(line_balance),
-                                                       carryover_balance)
-                style += " color:red;"
+                popup_data.update(messages['out_of_bounds'])
+                column_style += " color:red;"
             elif carryover_bounds[1] is not None and column['balance'] > carryover_bounds[1]:
-                info_tooltip = carried_over_tooltip % (self.format_value(line_balance),
-                                                       carryover_balance)
-                style += " color:green;"
+                popup_data.update(messages['out_of_bounds'])
+                column_style += " color:green;"
             # We are between the bounds. We'll take as much as possible in the carryover balance as we can without
             # going out of bounds
             else:
-                if column['balance'] - line_balance < 0:
-                    info_tooltip = carrying_over_tooltip % (self.format_value(line_balance),
-                                                            carryover_balance)
-                elif column['balance'] - line_balance > 0:
-                    info_tooltip = carrying_over_tooltip % ('reduced',
-                                                            self.format_value(line_balance),
-                                                            carryover_balance)
+                balance = column['balance'] - line_balance
+                if balance < 0:
+                    popup_data.update(messages['positive'])
+                elif balance > 0:
+                    popup_data.update(messages['negative'])
 
             # Add the tooltip and style as needed
-            column['style'] = style
-            column['info_tooltip'] = info_tooltip
+            column['style'] = column_style
+
+            if popup_data:
+                popup_data.update({
+                    'id': tax_report_line.id,
+                    'debug': self.user_has_groups('base.group_no_one'),
+                    'balance': _("The carryover balance will be : %s", carryover_balance),
+                })
+                column['popup_data'] = json.dumps(popup_data)
+                column['popup_template'] = 'accountReports.CarryOverInfoTemplate'
         else:
             # Update the balance when printing
             column['name'] = self.format_value(line_balance)
             column['balance'] = line_balance
+
+    def get_popup_messages(self, line_balance, options):
+        return {
+            'positive': {
+                'description1': _("This amount will be increased by the positive amount from"),
+                'description2': _(" past period(s), previously stored on the corresponding tax line."),
+                'description3': _("The amount will be : %s", self.format_value(line_balance)),
+            },
+            'negative': {
+                'description1': _("This amount will be reduced by the negative amount from"),
+                'description2': _(" past period(s), previously stored on the corresponding tax line."),
+                'description3': _("The amount will be : %s", self.format_value(line_balance)),
+            },
+            'out_of_bounds': {
+                'description1': _("This amount will be set to %s.", self.format_value(line_balance)),
+                'description2': _("The difference will be carried over to the next period's declaration."),
+            }
+        }
 
     def get_amounts_after_carryover(self, tax_report_line, amount, carryover_bounds, options, period):
         """

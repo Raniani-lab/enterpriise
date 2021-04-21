@@ -66,4 +66,26 @@
             </tr>
         </table>
     </t>
+
+    <t t-name="accountReports.CarryOverInfoTemplate">
+        <table>
+            <tr>
+                <td><t t-esc="description1"/></td>
+            </tr>
+            <tr>
+                <td><t t-esc="description2"/></td>
+            </tr>
+            <tr><td/></tr>
+            <tr>
+                <td><t t-esc="description3"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <t t-esc="balance"/>
+                    <button t-if="debug" t-att-data-id="id"
+                        class="btn btn-sm btn-secondary js_view_carryover_lines">View Carryover Lines</button>
+                </td>
+            </tr>
+        </table>
+    </t>
 </templates>

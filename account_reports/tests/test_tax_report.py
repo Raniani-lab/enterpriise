@@ -1053,8 +1053,10 @@ class TestTaxReport(TestAccountReportsCommon):
         def register_payment_for_invoice(invoice):
             """ Fully pay the invoice, so that the cash basis entries are created
             """
+            payment_method_xmlid = 'account.account_payment_method_manual_in' if invoice.is_inbound() else 'account.account_payment_method_manual_out'
             self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
                 'payment_date': invoice.date,
+                'payment_method_id': self.env['ir.model.data'].xmlid_to_res_id(payment_method_xmlid),
             })._create_payments()
 
         # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
@@ -1168,8 +1170,10 @@ class TestTaxReport(TestAccountReportsCommon):
         def register_payment_for_invoice(invoice):
             """ Fully pay the invoice, so that the cash basis entries are created
             """
+            payment_method_xmlid = 'account.account_payment_method_manual_in' if invoice.is_inbound() else 'account.account_payment_method_manual_out'
             self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
                 'payment_date': invoice.date,
+                'payment_method_id': self.env['ir.model.data'].xmlid_to_res_id(payment_method_xmlid),
             })._create_payments()
 
         # -100 (base, invoice) + 100 (base, refund) - 20 (tax, invoice) + 5 (25% tax, refund) = -15

@@ -121,6 +121,11 @@ odoo.define('approvals_tour', function(require) {
             content: 'approve request',
             run: 'click',
         },
+        {
+            trigger: 'button[name="action_withdraw"]',
+            content: 'wait the the request to be approved',
+            run: function(){},
+        }
     ]);
 
 });

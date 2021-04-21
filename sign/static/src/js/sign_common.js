@@ -1463,11 +1463,11 @@ odoo.define('sign.document_signing', function (require) {
                 // See: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete#browser_compatibility
                 $signatureItem.attr('autocomplete', 'new-password');
                 // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
-                if (type.name.includes('Text') && type.placeholder === $signatureItem.prop('placeholder')) {
+                if ([_t('Text'), _t('Multiline Text')].includes(type.name) && type.placeholder === $signatureItem.prop('placeholder')) {
                     $signatureItem.attr('placeholder', ' ');
                     $signatureItem.find(".o_placeholder").text(" ");
                 }
-                if (type.name === "Date") {
+                if (type.name === _t("Date")) {
                     $signatureItem.on('focus', function(e) {
                         if($signatureItem.val() === "") {
                             $signatureItem.val(moment().format(time.getLangDateFormat()));

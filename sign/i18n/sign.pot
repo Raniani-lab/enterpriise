@@ -1329,9 +1329,12 @@ msgid "Modify Template"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__textarea
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_multiline_text
+#, python-format
 msgid "Multiline Text"
 msgstr ""
 
@@ -2397,9 +2400,12 @@ msgid "Templates"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__text
 #: model:sign.item.type,name:sign.sign_item_type_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_text
+#, python-format
 msgid "Text"
 msgstr ""
 

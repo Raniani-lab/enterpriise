@@ -342,11 +342,6 @@ var FollowupFormController = FormController.extend({
             args: [options]
         })
         .then(function () {
-            self.renderer.chatter.trigger_up('reload_mail_fields', {
-                activity: true,
-                thread: true,
-                followers: true
-            });
             self._displayDone();
         });
     },

@@ -45,12 +45,16 @@ var FollowupFormRenderer = FormRenderer.extend({
      * Remove the mail alert above the report.
      */
     removeMailAlert: function () {
-        if (this.chatter) {
-            this.chatter.trigger_up('reload_mail_fields', {
-                activity: true,
-                thread: true,
-                followers: true
+        if (owl.Component.env.isMessagingInitialized()) {
+            const thread = owl.Component.env.models['mail.thread'].findFromIdentifyingData({
+                id: this.state.res_id,
+                model: this.state.model,
             });
+            if (thread) {
+                thread.refresh();
+                thread.refreshActivities();
+                thread.refreshFollowers();
+            }
         }
         this.$('div.alert.alert-info.alert-dismissible').remove();
     },

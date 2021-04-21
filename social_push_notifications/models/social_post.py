@@ -87,6 +87,18 @@ class SocialPostPushNotifications(models.Model):
                 vals['push_notification_target_url'] = extracted_url
         return super(SocialPostPushNotifications, self).write(vals)
 
+    def _action_post(self):
+        """ We also setup a CRON trigger at "now" to run the job as soon as possible to get the
+        minimum amount of delay for the end user as push notifications are only sent when the CRON
+        job runs (see social_push_notifications/social_live_post.py#_post). """
+
+        super(SocialPostPushNotifications, self)._action_post()
+
+        if 'push_notifications' in self.account_ids.mapped('media_type') and self.post_method == 'now':
+            # trigger CRON job ASAP so that push notifications are sent
+            cron = self.env.ref('social.ir_cron_post_scheduled')
+            cron._trigger(at=fields.Datetime.now())
+
     @api.model
     def _cron_publish_scheduled(self):
         """ This method is overridden to gather all pending push live.posts ('ready' state) and post them.

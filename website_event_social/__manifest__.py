@@ -6,7 +6,7 @@
     'name': 'Schedule push notifications on attendees',
     'category': 'Marketing/Events',
     'sequence': 1020,
-    'version': '1.0',
+    'version': '1.1',
     'summary': 'Bridge module to push notifications to event attendees',
     'website': 'https://www.odoo.com/page/events',
     'description': "",
@@ -16,7 +16,6 @@
     ],
     'data': [
         'views/event_event_views.xml',
-        'views/social_post_views.xml',
         'views/event_templates_registration.xml'
     ],
     'demo': [

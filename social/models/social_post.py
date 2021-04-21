@@ -247,7 +247,18 @@ class SocialPost(models.Model):
             for index, vals in enumerate(vals_list):
                 vals['utm_source_id'] = sources[index].id
 
-        return super(SocialPost, self).create(vals_list)
+        res = super(SocialPost, self).create(vals_list)
+
+        cron = self.env.ref('social.ir_cron_post_scheduled')
+        cron_trigger_dates = set([
+            post.scheduled_date
+            for post in res
+            if post.scheduled_date
+        ])
+        if cron_trigger_dates:
+            cron._trigger(cron_trigger_dates)
+
+        return res
 
     def write(self, vals):
         if not self.env.is_superuser() and \
@@ -260,6 +271,10 @@ class SocialPost(models.Model):
                 raise UserError(_("You can only move posts that are scheduled."))
 
             vals['scheduled_date'] = vals['calendar_date']
+
+        if vals.get('scheduled_date'):
+            cron = self.env.ref('social.ir_cron_post_scheduled')
+            cron._trigger(at=fields.Datetime.from_string(vals.get('scheduled_date')))
 
         return super(SocialPost, self).write(vals)
 

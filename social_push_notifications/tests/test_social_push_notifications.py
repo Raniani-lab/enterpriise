@@ -3,16 +3,17 @@
 
 import base64
 import datetime
-from firebase_admin import messaging
 
+from firebase_admin import messaging
 from unittest.mock import patch
 
 from odoo import fields
+from odoo.addons.base.tests.test_ir_cron import CronMixinCase
 from odoo.addons.social.tests.common import SocialCase
 from odoo.addons.social_push_notifications.models.social_account import SocialAccountPushNotifications
 
 
-class SocialPushNotificationsCase(SocialCase):
+class SocialPushNotificationsCase(SocialCase, CronMixinCase):
     @classmethod
     def setUpClass(cls):
         super(SocialPushNotificationsCase, cls).setUpClass()
@@ -22,6 +23,10 @@ class SocialPushNotificationsCase(SocialCase):
         })
 
     def test_post(self):
+        """ Test a full flow of posting social_push_notifications.
+        We trigger the send method of the post and check that it does all the way to the Firebase
+        sending calls. """
+
         # Create some visitors with or without push_token in different timezone (or no timezone)
         timezones = ['Europe/Brussels', 'America/New_York', 'Asia/Vladivostok', False]
         Visitor = self.env['website.visitor']
@@ -34,16 +39,30 @@ class SocialPushNotificationsCase(SocialCase):
             })
         visitors = Visitor.create(visitor_vals)
         self.social_post.create_uid.write({'tz': timezones[0]})
-        self.social_post.write({
-            'use_visitor_timezone': True,
-            'post_method': 'scheduled',
-            'scheduled_date': fields.Datetime.now() - datetime.timedelta(minutes=1)
-        })
+
+        scheduled_date = fields.Datetime.now() - datetime.timedelta(minutes=1)
+        with self.capture_triggers('social.ir_cron_post_scheduled') as captured_triggers:
+            self.social_post.write({
+                'use_visitor_timezone': True,
+                'post_method': 'scheduled',
+                'scheduled_date': scheduled_date
+            })
+
+        # when scheduling, a CRON trigger is created to match the scheduled_date
+        self.assertEqual(len(captured_triggers.records), 1)
+        captured_trigger = captured_triggers.records[0]
+        self.assertEqual(captured_trigger.call_at, scheduled_date)
+        self.assertEqual(captured_trigger.cron_id, self.env.ref('social.ir_cron_post_scheduled'))
 
         self.assertEqual(self.social_post.state, 'draft')
 
-        self.social_post._action_post()
+        with self.capture_triggers('social.ir_cron_post_scheduled') as captured_triggers:
+            self.social_post._action_post()  # begin the post process
 
+        # as the post_method is 'scheduled', a CRON trigger should not be created, we already have one
+        self.assertEqual(len(captured_triggers.records), 0)
+
+        # check that live posts are correctly created
         live_posts = self.env['social.live.post'].search([('post_id', '=', self.social_post.id)])
         self.assertEqual(len(live_posts), 2)
 

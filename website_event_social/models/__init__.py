@@ -3,5 +3,3 @@
 
 from . import event
 from . import res_partner
-from . import social_live_post
-from . import social_post

@@ -6,7 +6,7 @@
     'name': 'Push notification to track listeners',
     'category': 'Marketing/Events',
     'sequence': 1021,
-    'version': '1.0',
+    'version': '1.1',
     'summary': 'Send reminder push notifications to event attendees based on favorites tracks.',
     'website': 'https://www.odoo.com/page/events',
     'description': "",
@@ -15,7 +15,6 @@
         'website_event_track',
     ],
     'data': [
-        'views/event_event_views.xml',
         'views/event_track_views.xml'
     ],
     'demo': [

@@ -516,7 +516,7 @@ class AccountReport(models.AbstractModel):
             })
             if not self._context.get('print_mode') or unfolded:
                 # add every direct child group recursively
-                for child in val_dict['children_codes']:
+                for child in sorted(val_dict['children_codes']):
                     add_to_hierarchy(lines, child, level + 1, val_dict['id'], hierarchy)
                 # add all the lines that are in this group but not in one of this group's children groups
                 for l in val_dict['lines']:

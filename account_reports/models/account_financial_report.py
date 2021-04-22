@@ -685,7 +685,7 @@ class ReportAccountFinancialReport(models.Model):
 
         # If a financial line has a control domain, a check is made to detect any potential discrepancy
         if financial_line.control_domain:
-            if not financial_line._check_control_domain(options, groupby_keys, results):
+            if not financial_line._check_control_domain(options, results):
                 # If a discrenpancy is found, a check is made to see if the current line is
                 # missing items or has items appearing more than once.
                 has_missing = solver._has_missing_control_domain(options, financial_line)
@@ -1184,7 +1184,7 @@ class AccountFinancialReportLine(models.Model):
 
         return results
 
-    def _check_control_domain(self, options, groupby_keys, results):
+    def _check_control_domain(self, options, results):
         """ Compare values from the solver with those from the control domain.
         :return:    False if values do not match.
         """

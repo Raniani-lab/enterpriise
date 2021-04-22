@@ -100,7 +100,11 @@ class AccountMove(models.Model):
                         ('company_id', '=', company.id),
                     ], limit=1)
                     if tax:
-                        tax.active = True  # Needs to be active to be included in invoice total computation
+                        # Only set if not already set, otherwise it triggers a
+                        # needless and potentially heavy recompute for
+                        # everything related to the tax.
+                        if not tax.active:
+                            tax.active = True  # Needs to be active to be included in invoice total computation
                     else:
                         tax = self.env['account.tax'].sudo().with_context(default_company_id=company.id).create({
                             'name': 'Tax %.3f %%' % (tax_rate),

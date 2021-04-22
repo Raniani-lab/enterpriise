@@ -68,7 +68,7 @@
                     <div class="col-sm">
                         <div name="o_sdd_signature_config"
                              t-att-data-call-url="undefined"
-                             data-name="VISITOR_NAME"
+                             t-att-data-default-name="not request.env.user._is_public() and request.env.user.name"
                              data-mode="draw"
                              data-signature-type="signature"
                         />

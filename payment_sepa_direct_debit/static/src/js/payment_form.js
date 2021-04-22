@@ -100,7 +100,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                 !ibanInput.reportValidity()
                 || !phoneInput.reportValidity()
                 || !verificationCodeInput.reportValidity()
-                || (this.sdd_signature_required && !signerInput.reportValidity())
+                || (this.sdd_signature_required && signerInput && !signerInput.reportValidity())
             ) {
                 this._enableButton(); // The submit button is disabled at this point, enable it
                 return Promise.resolve(); // Let the browser request to fill out required fields
@@ -108,7 +108,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
 
             // Extract the signature from the signature widget if the option is enabled
             let signature = undefined;
-            if (this.sdd_signature_required) {
+            if (this.sdd_signature_required && signerInput) {
                 const signValues = this.signatureWidget._getValues();
                 if (signValues) {
                     signature = signValues.signature;
@@ -125,7 +125,10 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                     'mandate_id': this.mandate_id,
                     'phone': phoneInput.value,
                     'verification_code': verificationCodeInput.value,
-                    'signer': this.sdd_signature_required ? signerInput.value : undefined,
+                    // If the submit button was hit before that the signature widget was loaded, the
+                    // input will be null. Pass undefined to let the server raise an error.
+                    'signer': this.sdd_signature_required && signerInput
+                        ? signerInput.value : undefined,
                     'signature': signature,
                 },
             }).then(tokenId => {

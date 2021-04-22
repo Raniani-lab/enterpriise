@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_contract_salary.hr_contract_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='%(hr_contract_salary.generate_simulation_link_action)d']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('employee_id', '=', False), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
+                <attribute name="attrs">{'invisible': ['&amp;', ('country_code', '=', 'BE'), '|', ('employee_id', '=', False), '&amp;', ('time_credit', '=', True), ('work_time_rate', '=', 0)]}</attribute>
             </xpath>
             <field name="image_1920" position="after">
                 <field name="id_card"/>
@@ -16,8 +16,8 @@
                 <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
             </field>
             <xpath expr="//label[@for='final_yearly_costs']" position="before">
-                <label for="final_yearly_costs_fte"/>
-                <div class="o_row">
+                <label for="final_yearly_costs_fte" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="final_yearly_costs_fte" nolabel="1"/>
                     <span>/ year</span>
                 </div>

@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <xpath expr="//label[@for='wage']" position="before">
                 <label for="time_credit_full_time_wage"
-                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}"/>
+                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
                 <div class="o_row" name="time_credit_full_time_wage"
-                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}">
+                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}">
                     <field name="time_credit_full_time_wage" nolabel="1"/>
                     <span>/ month</span>
                 </div>
@@ -21,25 +21,25 @@
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>
             <xpath expr="//field[@name='resource_calendar_id']/parent::div" position="after">
-                <div colspan="2" class="o_checkbox_optional_field">
+                <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <label for="time_credit"/>
                     <field name="time_credit"/>
                     <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
                 </div>
-                <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}"/>
-                <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)]}"/>
+                <field name="standard_calendar_id" attrs="{'invisible': ['|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
+                <field name="time_credit_type_id" attrs="{'invisible': ['|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
             </xpath>
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
                 <button name="%(credit_time_wizard_action)d" string="Part Time"
-                        attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', True)]}"
+                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), '|', ('employee_id', '=', False), ('time_credit', '=', True)]}"
                         type="action" groups="hr_contract.group_hr_contract_manager"/>
                 <button name="%(exit_credit_time_wizard_action)d" string="Full Time"
-                        attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', False)]}"
+                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), '|', ('employee_id', '=', False), ('time_credit', '=', False)]}"
                         type="action" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="before">
-                <group name="monthly_benefits">
+                <group name="monthly_benefits" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <label for="commission_on_target" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
                     <div class="o_row" attrs="{'invisible': [('wage_type', '=', 'hourly')]}">
                         <field name="commission_on_target" nolabel="1"/>
@@ -69,7 +69,7 @@
                     </div>
                     <field name="has_laptop" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
                 </group>
-                <group string="Hospital Insurance">
+                <group string="Hospital Insurance" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="has_hospital_insurance"/>
                     <field name="insured_relative_spouse"/>
                     <field name="insured_relative_adults"/>
@@ -84,19 +84,19 @@
                 </group>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="inside">
-                <label for="meal_voucher_amount"/>
-                <div class="o_row">
+                <label for="meal_voucher_amount" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="meal_voucher_amount" nolabel="1"/>
                     <span>/ worked day</span>
                 </div>
-                <label for="eco_checks"/>
-                <div class="o_row">
+                <label for="eco_checks" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
+                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="eco_checks" nolabel="1"/>
                     <span>/ year</span>
                 </div>
             </xpath>
             <xpath expr="//group[@name='salary_info']" position="after">
-                <group name="transportation" string="Transportation">
+                <group name="transportation" string="Transportation" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <group name="transportation_left">
                         <field name="transport_mode_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
                         <label for="fuel_card" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
@@ -156,14 +156,14 @@
                 </group>
             </xpath>
             <group name="salary_info" position="inside">
-                <group string="Posted Employee" name="posted_employee">
+                <group string="Posted Employee" name="posted_employee" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="no_onss"/>
                     <field name="no_withholding_taxes"/>
                 </group>
-                <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption">
+                <group string="Withholding Taxes Exemption" name="withholding_taxes_exemption" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="rd_percentage"/>
                 </group>
-                <group string="Impulsion Plan" name="impulsion_plan">
+                <group string="Impulsion Plan" name="impulsion_plan" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <label for="employee_age" attrs="{'invisible': [('employee_age', '=', 0)]}"/>
                     <div attrs="{'invisible': [('employee_age', '=', 0)]}">
                         <field name="employee_age"/>
@@ -171,12 +171,12 @@
                     </div>
                     <field name="l10n_be_impulsion_plan"/>
                 </group>
-                <group string="ONSS Reduction" name="onss_retructuring">
+                <group string="ONSS Reduction" name="onss_retructuring" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_onss_restructuring"/>
                 </group>
             </group>
             <page name="information" position="after">
-                <page string="Attachment of Salary" name="salary_attachment">
+                <page string="Attachment of Salary" name="salary_attachment" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <group>
                         <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
                         <label for="fiscal_voluntary_rate"
@@ -198,7 +198,7 @@
                 </page>
             </page>
             <xpath expr="//sheet" position="before">
-                <div role="alert" class="alert alert-danger text-center" attrs="{'invisible': [('l10n_be_is_below_scale', '=', False)]}">
+                <div role="alert" class="alert alert-danger text-center" attrs="{'invisible': ['|', ('l10n_be_is_below_scale', '=', False), ('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_is_below_scale_warning"/>
                     <field name="l10n_be_is_below_scale" invisible="1"/>
                 </div>

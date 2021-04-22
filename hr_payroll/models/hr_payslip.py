@@ -73,6 +73,11 @@ class HrPayslip(models.Model):
         compute='_compute_company_id', store=True, readonly=False,
         default=lambda self: self.env.company,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+    country_id = fields.Many2one(
+        'res.country', string='Country',
+        related='company_id.country_id', readonly=True
+    )
+    country_code = fields.Char(related='country_id.code', readonly=True)
     worked_days_line_ids = fields.One2many(
         'hr.payslip.worked_days', 'payslip_id', string='Payslip Worked Days', copy=True,
         compute='_compute_worked_days_line_ids', store=True, readonly=False,
@@ -906,6 +911,11 @@ class HrPayslipRun(models.Model):
     payslip_count = fields.Integer(compute='_compute_payslip_count')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
         default=lambda self: self.env.company)
+    country_id = fields.Many2one(
+        'res.country', string='Country',
+        related='company_id.country_id', readonly=True
+    )
+    country_code = fields.Char(related='country_id.code', readonly=True)
 
     def _compute_payslip_count(self):
         for payslip_run in self:

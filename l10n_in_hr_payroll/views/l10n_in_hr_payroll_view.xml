@@ -6,12 +6,12 @@
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='salary_info']" position="inside">
-                    <group string="Allowance">
+                    <group string="Allowance" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
                         <field name="driver_salay"/>
                         <field name="house_rent_allowance_metro_nonmetro"/>
                         <field name="supplementary_allowance"/>
                     </group>
-                    <group string="Deduction">
+                    <group string="Deduction" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
                         <field name="tds"/>
                         <field name="voluntary_provident_fund"/>
                         <field name="medical_insurance"/>
@@ -28,10 +28,11 @@
             <data>
                 <xpath expr="//field[@name='credit_note']" position="after">
                     <newline/>
-                    <field name="available_advice"/>
+                    <field name="available_advice" attrs="{'invisible': [('country_code', '!=', 'IN')]}"/>
                 </xpath>
                  <xpath expr="//button[@name='action_draft']" position="after">
-                    <button name="create_advice" string="Create Advice" type="object" states="close" />
+                    <button name="create_advice" string="Create Advice" type="object" states="close"
+                        attrs="{'invisible': [('country_code', '!=', 'IN')]}"/>
                  </xpath>
             </data>
             </field>

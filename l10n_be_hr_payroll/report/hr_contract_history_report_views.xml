@@ -13,7 +13,7 @@
                 <attribute name="attrs">{'invisible': [('time_credit', '=', True)]}</attribute>
             </field>
             <page name="contract_history" position="after">
-                <page string="Attachment of Salary" name="contract_attachment_of_salary">
+                <page string="Attachment of Salary" name="contract_attachment_of_salary" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <group>
                         <field name="wage_type" invisible="1"/>
                         <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>

@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <page name="hr_settings" position="after">
-                <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager">
+                <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager"
+                    attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
                     <group>
                         <field name="id_card"/>
                         <field name="driving_license"/>

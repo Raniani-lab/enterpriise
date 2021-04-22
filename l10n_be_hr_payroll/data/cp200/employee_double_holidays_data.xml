@@ -33,53 +33,6 @@
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
     </record>
 
-    <record id="cp200_employees_double_holiday_atn_internet" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_impos"/>
-        <field name="name">Benefit in Kind (Internet)</field>
-        <field name="code">ATN.INT</field>
-        <field name="sequence">16</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.internet)</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = 5.0</field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
-    </record>
-
-    <record id="cp200_employees_double_holiday_atn_mobile" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_impos"/>
-        <field name="name">Benefit in Kind (Phone Subscription)</field>
-        <field name="code">ATN.MOB</field>
-        <field name="sequence">17</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.mobile)</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-if contract.mobile and not contract.internet:
-    result = 4.0 + 5.0
-if contract.mobile and contract.internet:
-    result = 4.0
-        </field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
-    </record>
-
-    <record id="cp200_employees_double_holiday_atn_laptop" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_impos"/>
-        <field name="name">Benefit in Kind (Laptop)</field>
-        <field name="code">ATN.LAP</field>
-        <field name="sequence">18</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = bool(contract.has_laptop)</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = 7.0</field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
-    </record>
-
     <!-- 85% of monthly gross salary is used to compute social contributions -->
     <record id="cp200_employees_double_holiday_gross_salary" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll_head_salary"/>
@@ -164,58 +117,6 @@ result = result / 0.92 * 0.85
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-    </record>
-
-    <record id="cp200_employees_double_holiday_atn_internet_2" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_net"/>
-        <field name="name">Benefit in Kind (Internet)</field>
-        <field name="code">ATN.INT.2</field>
-        <field name="sequence">161</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.internet</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result_qty = result_rules['ATN.INT']['quantity']
-result = -result_rules['ATN.INT']['amount']
-        </field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
-    </record>
-
-    <record id="cp200_employee_double_holiday_atn_mobile_2" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_net"/>
-        <field name="name">Benefit in Kind (Phone Subscription)</field>
-        <field name="code">ATN.MOB.2</field>
-        <field name="sequence">162</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.mobile</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-if contract.mobile:
-    result_qty = result_rules['ATN.MOB']['quantity']
-    result = -result_rules['ATN.MOB']['amount']
-        </field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
-    </record>
-
-    <record id="cp200_employees_double_holiday_atn_laptop_2" model="hr.salary.rule">
-        <field name="category_id" ref="hr_payroll_head_div_net"/>
-        <field name="name">Benefit in Kind (Laptop)</field>
-        <field name="code">ATN.LAP.2</field>
-        <field name="sequence">163</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.has_laptop</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result_qty = result_values['ATN.LAP']['quantity']
-result = -result_rules['ATN.LAP']['amount']
-        </field>
-        <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
-        <!-- YTI TODO: Remove me in master -->
-        <field name="active" eval="False"/>
     </record>
 
     <record id="cp200_employees_double_holiday_ip" model="hr.salary.rule">

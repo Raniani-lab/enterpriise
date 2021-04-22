@@ -22,6 +22,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                         {id: 3, project_id: 31, task_id: 1, employee_id: 23, date: "2017-01-25", unit_amount: 5.5},
                         {id: 4, project_id: 142, task_id: 54, employee_id: 11, date: "2017-01-27", unit_amount: 10},
                         {id: 5, project_id: 142, task_id: 12, employee_id: 7, date: "2017-01-27", unit_amount: -3.5},
+                        {id: 6, project_id: 142, task_id: 1, employee_id: 12, date: "2017-01-26", unit_amount: 4},
                     ]
                 },
                 'project.project': {
@@ -52,6 +53,9 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                     }, {
                         id: 23,
                         name: "Yoshi",
+                    }, {
+                        id: 12,
+                        name: "Toad",
                     }],
                     get_timesheet_and_working_hours_for_employees(args) {
                         const employeeIds = [...new Set(args[0].map(item => item.employee_id))];
@@ -76,12 +80,20 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                                 };
                             }
 
-                            // We don't really care about the others
+                            else if (employeeId === 12) {
+                                result[employeeId] = {
+                                    'units_to_work': 21,
+                                    'uom': 'days',
+                                    'worked_hours': 20,
+                                };
+                            }
+
+                            // The others have done too much hours (overtime)
                             else {
                                 result[employeeId] = {
                                     'units_to_work': 6,
                                     'uom': 'hours',
-                                    'worked_hours': 6
+                                    'worked_hours': 10
                                 };
                             }
 
@@ -117,11 +129,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 currentDate: "2017-01-25",
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 5,
-                'should have 5 employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
+                'should have 6 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 5,
-                'should have 5 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 6,
+                'should have 6 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -138,11 +150,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 groupBy: ['employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 3,
-                'should have 3 employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 4,
+                'should have 4 employee avatars');
 
-                 assert.containsN(grid, '.o_grid_section_subtext', 3,
-                'should have 3 timesheet employee avatars');
+                 assert.containsN(grid, '.o_grid_section_subtext', 4,
+                'should have 4 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -159,11 +171,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 groupBy: ['employee_id', 'task_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 5,
-                'should have 5 employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
+                'should have 6 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 5,
-                'should have 5 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 6,
+                'should have 6 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -180,11 +192,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 groupBy: ['task_id', 'employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 5,
-                'should have 5 employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
+                'should have 6 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 5,
-                'should have 5 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 6,
+                'should have 6 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -205,11 +217,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 currentDate: "2017-01-25",
             });
 
-            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 3,
-                'should have 3 employee avatars');
+            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4,
+                'should have 4 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 3,
-                'should have 3 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 4,
+                'should have 4 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -231,11 +243,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 groupBy: ['employee_id', 'task_id'],
             });
 
-            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 3,
-                'should have 3 employee avatars');
+            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4,
+                'should have 4 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 3,
-                'should have 3 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 4,
+                'should have 4 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -257,11 +269,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 groupBy: ['task_id', 'employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 5,
-                'should have 5 employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
+                'should have 6 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 5,
-                'should have 5 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 6,
+                'should have 6 timesheet employee avatars');
 
             grid.destroy();
         });
@@ -302,17 +314,17 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 arch: this.arch,
                 currentDate: "2017-01-25",
             });
-
-            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('654')").length;
+            // worked_hours - units_to_work = 0 => we add d-none class (for the employee who has not done all his hours (employee.id = 7))
+            const numberOfSpanWhereAllHoursCompleted = grid.$(`span.d-none`).length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllHoursCompletedYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('654')").length;
+            const numberOfSpanWhereAllHoursCompletedYetAreRed = grid.$(`span.o_grid_section_subtext_overtime_indication.d-none`).length;
             assert.ok(numberOfSpanWhereAllHoursCompletedYetAreRed === 0, 'Completed hours should not red');
 
             grid.destroy();
         });
 
-        QUnit.test('timesheet avatar widget should display hours in red if all the hours were not performed and we are in the pase', async function(assert) {
+        QUnit.test('timesheet avatar widget should display hours in red if all the hours were not performed and we are in the past', async function(assert) {
 
            assert.expect(2);
 
@@ -324,11 +336,32 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 currentDate: "2017-01-25",
             });
 
-            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('987')").length;
+            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('+04:00')").length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllHoursCompletedYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('987')").length;
-            assert.ok(numberOfSpanWhereAllHoursCompletedYetAreRed === numberOfSpanWhereAllHoursCompleted, 'Uncompleted hours should all be red');
+            const numberOfSpanWhereAllHoursCompletedYetAreGreen = grid.$("span.o_grid_section_subtext_overtime:contains('+04:00')").length;
+            assert.strictEqual(numberOfSpanWhereAllHoursCompletedYetAreGreen, numberOfSpanWhereAllHoursCompleted, 'The employee has done too much hours, thus we have an overtime.');
+
+            grid.destroy();
+        });
+
+        QUnit.test('timesheet avatar widget should display days in red if all the days were not performed and we are in the past', async function(assert) {
+
+            assert.expect(2);
+
+            const grid = await createView({
+                View: TimesheetGridView,
+                model: 'analytic.line',
+                data: this.data,
+                arch: this.arch,
+                currentDate: "2017-01-25",
+            });
+
+            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('-1.00 days')").length;
+            assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
+
+            const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('-1.00 days')").length;
+            assert.strictEqual(numberOfSpanWhereAllDaysAreNotDoneYetAreRed, numberOfSpanWhereAllHoursCompleted, 'The employee has not done enough days, thus we display the number of days in red.');
 
             grid.destroy();
         });

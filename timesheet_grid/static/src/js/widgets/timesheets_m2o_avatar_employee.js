@@ -1,10 +1,7 @@
-odoo.define('timesheet_grid.TimesheetM2OAvatarEmployee', require => {
-    'use strict';
-
-    const StandaloneM2OAvatarEmployee = require('hr.StandaloneM2OAvatarEmployee');
-    const core = require('web.core');
-    const qweb = core.qweb;
-    const _lt = core._lt;
+/** @odoo-module alias=timesheet_grid.TimesheetM2OAvatarEmployee **/
+import field_utils from 'web.field_utils';
+import StandaloneM2OAvatarEmployee from 'hr.StandaloneM2OAvatarEmployee';
+import { qweb, _lt } from 'web.core';
 
     /**
      * Widget that add hours to be performed next to the avatar name.
@@ -15,7 +12,7 @@ odoo.define('timesheet_grid.TimesheetM2OAvatarEmployee', require => {
 
         $className: '.o_grid_section_subtext',
         hoursTemplate: 'timesheet_grid.Many2OneAvatarHoursSubfield',
-        title: _lt('Time the employee should be working according to his contract.'),
+        title: _lt('Difference between the number of hours recorded and the number of hours the employee was supposed to work according to his contract.'),
 
         init(parent, value, rowIndex, rangeContext, timeBoundariesContext, workingHoursData) {
             this._super(...arguments);
@@ -30,6 +27,9 @@ odoo.define('timesheet_grid.TimesheetM2OAvatarEmployee', require => {
                 this.cacheHours = workingHoursData['units_to_work'];
                 this.cacheUnit = workingHoursData['uom'];
                 this.cacheWorkedHours = workingHoursData['worked_hours'];
+                if (this.cacheUnit === 'days') {
+                    this.title = _lt('Difference between the number of days recorded and the number of days the employee was supposed to work according to his contract.');
+                }
             } else {
                 this.hasAllTheRequiredData = false;
                 console.error("For some reason, the working hours of the employee couldn't be loaded...");
@@ -98,11 +98,33 @@ odoo.define('timesheet_grid.TimesheetM2OAvatarEmployee', require => {
         },
 
         /**
+         * @returns boolean should show the hours line
+         */
+        _shouldShowHours() {
+            return this.cacheWorkedHours !== undefined && this.cacheWorkedHours != null && this.cacheWorkedHours - this.cacheHours != 0 && moment(this.timeContext.end) < moment();
+        },
+
+        _displayOvertimeIndication() {
+            if (!this._shouldShowHours()) {
+                return null;
+            }
+            const overtime = this.cacheWorkedHours - this.cacheHours;
+            let overtimeIndication = overtime > 0 ? '+' : '';
+            if (this.cacheUnit === 'days') { // format in days
+                overtimeIndication += `${(Math.round(overtime * 100) / 100).toFixed(2)} ${this.cacheUnit}`;
+            } else { // format in hours
+                overtimeIndication += field_utils.format.float_time(this.cacheWorkedHours - this.cacheHours);
+            }
+
+            return overtimeIndication;
+        },
+
+        /**
          * Generate (qweb render) the template from the attribute values.
          */
         _updateTemplateFromCacheData() {
             this.$templateHtml = $(qweb._render(this.hoursTemplate, {
-                'number': this.cacheHours,
+                'overtime_indication': this._displayOvertimeIndication(),
                 'unit': this.cacheUnit,
                 'range': this.rangeContext,
                 'not_enough_hours': this._shouldShowHoursInRed(),
@@ -112,6 +134,4 @@ odoo.define('timesheet_grid.TimesheetM2OAvatarEmployee', require => {
 
     });
 
-    return TimesheetM2OAvatarEmployee;
-
-});
+export default TimesheetM2OAvatarEmployee;

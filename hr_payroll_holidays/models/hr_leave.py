@@ -13,11 +13,19 @@ class HrLeave(models.Model):
         # Get employees payslips
         all_payslips = self.env['hr.payslip'].sudo().search([
             ('employee_id', 'in', self.mapped('employee_id').ids),
-            ('state', '=', 'done'),
+            ('state', 'in', ['done', 'paid', 'verify']),
         ]).filtered(lambda p: p.is_regular)
+        done_payslips = all_payslips.filtered(lambda p: p.state in ['done', 'paid'])
+        waiting_payslips = all_payslips - done_payslips
         # Mark Leaves to Defer
         for leave in self:
-            if any(payslip.employee_id == leave.employee_id and (payslip.date_from <= leave.date_to.date() and payslip.date_to >= leave.date_from.date()) for payslip in all_payslips):
+            if any(
+                payslip.employee_id == leave.employee_id \
+                and (payslip.date_from <= leave.date_to.date() \
+                and payslip.date_to >= leave.date_from.date()) for payslip in done_payslips) \
+                    and not any(payslip.employee_id == leave.employee_id \
+                and (payslip.date_from <= leave.date_to.date() \
+                and payslip.date_to >= leave.date_from.date()) for payslip in waiting_payslips):
                 leave.to_defer = True
         res = super().action_validate()
         self._recompute_payslips()

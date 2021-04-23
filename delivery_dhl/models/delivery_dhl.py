@@ -109,7 +109,7 @@ class Providerdhl(models.Model):
             warehouse_partner_id = order.warehouse_id.partner_id
             currency_id = order.currency_id or order.company_id.currency_id
             total_value = sum(line.price_reduce_taxinc * line.product_uom_qty for line in order.order_line.filtered(lambda l: l.product_id.type in ('consu', 'product') and not l.display_type))
-            destination_partner_id = order.partner_id
+            destination_partner_id = order.partner_shipping_id
 
         rating_request = {}
         srm = DHLProvider(self.log_xml, request_type="rate", prod_environment=self.prod_environment)

@@ -2,9 +2,12 @@
 
 import logging
 
+import psycopg2
+
 from . import mws_connector as mwsc
 from odoo import api, exceptions, fields, models, _
 from odoo.osv import expression
+from odoo.service.model import PG_CONCURRENCY_ERRORS_TO_RETRY
 
 from odoo.addons.sale_amazon.lib import mws
 
@@ -391,6 +394,18 @@ class AmazonAccount(models.Model):
                     order, order_found, amazon_status = self._get_order(
                         order_data, items_data, amazon_order_ref)
             except Exception as error:
+                logging_values = {'error': repr(error), 'order_ref': amazon_order_ref, 'account_id': self.id}
+                _logger.warning("error (%(error)s) while syncing sale.order with amazon_order_ref %(order_ref)s for "
+                                "amazon.account with id %(account_id)s", logging_values)
+                if isinstance(error, psycopg2.OperationalError) and error.pgcode in PG_CONCURRENCY_ERRORS_TO_RETRY:
+                    # this is a transaction serialization error; do not consider it as a
+                    # "business" error, and let the request or cron job be retried later
+                    # when this kind of error occurs
+                    # By raising an exception of the `PG_CONCURRENCY_ERRORS_TO_RETRY` kind,
+                    # we let the default Odoo's behavior happen, which is:
+                    # - If it is in an action (button, manually run the schedule action), it will retry the request
+                    # - It it is the scheduled action, it will raise the error and rollback the current cursor
+                    raise
                 sync_failure = True
                 _logger.exception(error)
             else:

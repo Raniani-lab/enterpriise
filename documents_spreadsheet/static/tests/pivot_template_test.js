@@ -1501,5 +1501,41 @@ module(
             assert.verifySteps(["spreadsheet_created", "redirect_to_spreadsheet"])
             list.destroy();
         });
+
+        test("open template client action without collaborative indicators", async function (assert) {
+            assert.expect(2);
+            const actionManager = await createActionManager({ data: this.data });
+            await actionManager.doAction({
+                type: "ir.actions.client",
+                tag: "action_open_template",
+                params: { active_id: 1 },
+            });
+            assert.containsNone(actionManager, ".o_spreadsheet_sync_status");
+            assert.containsNone(actionManager, ".o_spreadsheet_number_users");
+            actionManager.destroy();
+        });
+
+        test("collaboration communication is disabled", async function(assert) {
+            assert.expect(1);
+            const actionManager = await createActionManager({
+                data: this.data,
+                mockRPC: async function (route, args) {
+                    if (route.includes("join_spreadsheet_session")) {
+                        assert.ok(false, "it should not join a collaborative session");
+                    }
+                    if (route.includes("dispatch_spreadsheet_message")) {
+                        assert.ok(false, "it should not dispatch collaborative revisions");
+                    }
+                    return this._super(...arguments);
+                },
+            });
+            await actionManager.doAction({
+                type: "ir.actions.client",
+                tag: "action_open_template",
+                params: { active_id: 1 },
+            });
+            assert.ok(true);
+            actionManager.destroy();
+        });
     }
 );

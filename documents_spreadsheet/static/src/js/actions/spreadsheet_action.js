@@ -3,6 +3,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
 
     const AbstractAction = require("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_action.js");
     const core = require("web.core");
+    const SpreadsheetCollaborativeChannel = require("documents_spreadsheet.SpreadsheetCollaborativeChannel");
 
     const { _lt, _t } = core;
 
@@ -18,9 +19,11 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
         /**
          * @override
          */
-        init() {
+        init(parent, action) {
             this._super(...arguments);
             this.isFavorited = false;
+            this.transportService = action.params.transportService
+                || new SpreadsheetCollaborativeChannel(owl.Component.env, this.res_id);
         },
 
         /**

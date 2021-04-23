@@ -36,9 +36,11 @@ odoo.define("documents_spreadsheet.ControlPanel", function (require) {
         },
         isSpreadsheetSynced: {
             type: Boolean,
+            optional: true
         },
         numberOfConnectedUsers: {
             type: Number,
+            optional: true
         }
     });
 

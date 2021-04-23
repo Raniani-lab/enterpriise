@@ -6,7 +6,6 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_ac
     const { ComponentWrapper } = require("web.OwlCompatibility");
     const SpreadsheetComponent = require("documents_spreadsheet.SpreadsheetComponent");
     const SpreadsheetControlPanel = require("documents_spreadsheet.ControlPanel");
-    const SpreadsheetCollaborativeChannel = require("documents_spreadsheet.SpreadsheetCollaborativeChannel");
 
     const _t = core._t;
 
@@ -49,8 +48,6 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_ac
             this.res_id = action.params.active_id;
             this.showFormulas = action.params.showFormulas || false;
             this.initCallback = action.params.initCallback || false;
-            this.transportService = action.params.transportService
-                || new SpreadsheetCollaborativeChannel(owl.Component.env, this.res_id);
 
             this.spreadsheetComponent = false;
             this.spreadsheetName = false;

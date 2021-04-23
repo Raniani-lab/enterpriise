@@ -3,6 +3,7 @@
 
 import ast
 
+from collections import defaultdict
 from random import randint
 
 from odoo import api, fields, models, tools, SUPERUSER_ID, _
@@ -389,33 +390,49 @@ class MrpEco(models.Model):
     @api.depends('bom_id.operation_ids', 'new_bom_id.operation_ids')
     def _compute_routing_change_ids(self):
         for rec in self:
-            # TDE TODO: should we add workcenter logic ?
+            if rec.state == 'confirmed' or rec.type == 'product':
+                continue
             new_routing_commands = [(5,)]
-            old_routing_lines = dict(((op.workcenter_id,), op) for op in rec.bom_id.operation_ids)
+            old_routing_lines = defaultdict(list)
+            for op in rec.bom_id.operation_ids:
+                old_routing_lines[op.workcenter_id.id].append(op)
             if rec.new_bom_id and rec.bom_id:
                 for operation in rec.new_bom_id.operation_ids:
-                    key = (operation.workcenter_id,)
-                    old_op = old_routing_lines.pop(key, None)
-                    if old_op and tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
-                        new_routing_commands += [(0, 0, {
-                            'change_type': 'update',
-                            'workcenter_id': operation.workcenter_id.id,
-                            'new_time_cycle_manual': operation.time_cycle_manual,
-                            'old_time_cycle_manual': old_op.time_cycle_manual
-                        })]
-                    elif not old_op:
+                    old_ops = old_routing_lines[operation.workcenter_id.id]
+                    if old_ops:
+                        old_op = old_ops.pop(0)
+                        if not old_ops:
+                            old_routing_lines.pop(operation.workcenter_id.id)
+                        if tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
+                            new_routing_commands += [(0, 0, {
+                                'change_type': 'update',
+                                'workcenter_id': operation.workcenter_id.id,
+                                'new_time_cycle_manual': operation.time_cycle_manual,
+                                'old_time_cycle_manual': old_op.time_cycle_manual,
+                                'operation_id': operation.id,
+                            })]
+                        new_routing_commands += self._prepare_detailed_change_commands(operation, old_op)
+                    else:
                         new_routing_commands += [(0, 0, {
                             'change_type': 'add',
                             'workcenter_id': operation.workcenter_id.id,
-                            'new_time_cycle_manual': operation.time_cycle_manual
+                            'new_time_cycle_manual': operation.time_cycle_manual,
+                            'operation_id': operation.id,
                         })]
-                for key, old_op in old_routing_lines.items():
+                        new_routing_commands += self._prepare_detailed_change_commands(operation, None)
+            for old_ops in old_routing_lines.values():
+                for old_op in old_ops:
                     new_routing_commands += [(0, 0, {
                         'change_type': 'remove',
                         'workcenter_id': old_op.workcenter_id.id,
-                        'old_time_cycle_manual': old_op.time_cycle_manual
+                        'old_time_cycle_manual': old_op.time_cycle_manual,
+                        'operation_id': old_op.id,
                     })]
             rec.routing_change_ids = new_routing_commands
+
+    def _prepare_detailed_change_commands(self, new, old):
+        """Necessary for overrides to track change of quality checks"""
+        return []
 
     def _compute_user_approval(self):
         for eco in self:
@@ -728,6 +745,8 @@ class MrpEcoRoutingChange(models.Model):
     old_time_cycle_manual = fields.Float('Old manual duration', default=0)
     new_time_cycle_manual = fields.Float('New manual duration', default=0)
     upd_time_cycle_manual = fields.Float('Manual Duration Change', compute='_compute_upd_time_cycle_manual', store=True)
+    operation_id = fields.Many2one('mrp.routing.workcenter', 'New or Previous Operation')
+    operation_name = fields.Char(related='operation_id.name', string='Operation')
 
     @api.depends('new_time_cycle_manual', 'old_time_cycle_manual')
     def _compute_upd_time_cycle_manual(self):

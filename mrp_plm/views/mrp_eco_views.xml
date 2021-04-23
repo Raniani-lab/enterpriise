@@ -495,6 +495,7 @@
                             help="Changes made on the operation.">
                             <field name="routing_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
+                                    <field name="operation_name"/>
                                     <field name="change_type"/>
                                     <field name="workcenter_id"/>
                                     <field name="upd_time_cycle_manual"/>

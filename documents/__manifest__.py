@@ -47,7 +47,6 @@
             'documents/static/src/js/documents_model_mixin.js',
             'documents/static/src/js/documents_utils.js',
             'documents/static/src/js/documents_view_mixin.js',
-            'documents/static/src/bugfix/bugfix.js',
             'documents/static/src/js/documents_document_viewer.js',
             'documents/static/src/js/documents_kanban_color_widget.js',
             'documents/static/src/js/documents_kanban_controller.js',
@@ -69,7 +68,6 @@
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.js',
             'documents/static/src/js/systray_activity_menu.js',
             'documents/static/src/js/tours/documents.js',
-            'documents/static/src/bugfix/bugfix.scss',
             'documents/static/src/scss/documents_views.scss',
             'documents/static/src/scss/documents_kanban_view.scss',
             'documents/static/src/owl/components/pdf_manager/pdf_manager.scss',
@@ -88,7 +86,6 @@
             'documents/static/tests/mock_server.js',
         ],
         'web.qunit_suite_tests': [
-            'documents/static/src/bugfix/bugfix_tests.js',
             'documents/static/tests/documents_test_utils.js',
             'documents/static/tests/documents_kanban_tests.js',
             'documents/static/tests/documents_pdf_manager_tests.js',

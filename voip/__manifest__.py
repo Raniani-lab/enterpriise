@@ -32,7 +32,6 @@ Allows to make call from next activities or with click-to-dial.
     'assets': {
         'web.assets_backend': [
             'voip/static/lib/sip.js',
-            'voip/static/src/bugfix/bugfix.js',
             'voip/static/src/components/activity/activity.js',
             'voip/static/src/js/call_center_field.js',
             'voip/static/src/js/dialing_panel.js',
@@ -47,18 +46,15 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/user_agent.js',
             'voip/static/src/js/web_client.js',
             'voip/static/src/models/activity/activity.js',
-            'voip/static/src/bugfix/bugfix.scss',
             'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
         ],
         'web.qunit_suite_tests': [
-            'voip/static/src/bugfix/bugfix_tests.js',
             'voip/static/src/components/activity/activity_tests.js',
             'voip/static/tests/phone_widget_tests.js',
             'voip/static/tests/dialing_panel_tests.js',
         ],
         'web.assets_qweb': [
-            'voip/static/src/bugfix/bugfix.xml',
             'voip/static/src/components/activity/activity.xml',
             'voip/static/src/xml/*.xml',
         ],

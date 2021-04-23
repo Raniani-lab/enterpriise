@@ -249,7 +249,7 @@ class SocialPost(models.Model):
         if any(not post.account_ids for post in self):
             raise UserError(_(
                 'Please specify at least one account to post into (for post ID(s) %s).',
-                ', '.join(self.filtered(lambda p: not p.account_ids).ids)
+                ', '.join([str(post.id) for post in self if not post.account_ids])
             ))
 
     def action_schedule(self):

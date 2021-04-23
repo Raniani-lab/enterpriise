@@ -255,12 +255,12 @@
         <field name="level" eval="3" />
         <field name="sequence" eval="7"/>
         <field name="parent_id" ref='account_financial_report_line_02_3_fr_bilan_actif'/>
-        <field name="formulas">AVANCES_ACOMPTES_CORPORE_BRUT - AVANCES_ACOMPTES_CORPORE_AMOR</field>
+        <field name="formulas">AVANCES_ACOMPTES_INCORPORE_BRUT - AVANCES_ACOMPTES_INCORPORE_AMOR</field>
     </record>
 
     <record id="account_financial_report_line_03_0_7_brut_fr_bilan_actif" model="account.financial.html.report.line">
         <field name="name">Avances et acomptes - Brut</field>
-        <field name="code">AVANCES_ACOMPTES_CORPORE_BRUT</field>
+        <field name="code">AVANCES_ACOMPTES_INCORPORE_BRUT</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="1"/>
         <field name="parent_id" ref='account_financial_report_line_03_0_7_fr_bilan_actif'/>
@@ -271,7 +271,7 @@
 
     <record id="account_financial_report_line_03_0_7_amor_fr_bilan_actif" model="account.financial.html.report.line">
         <field name="name">Avances et acomptes - Amortissements et provisions (à déduire)</field>
-        <field name="code">AVANCES_ACOMPTES_CORPORE_AMOR</field>
+        <field name="code">AVANCES_ACOMPTES_INCORPORE_AMOR</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="2"/>
         <field name="parent_id" ref='account_financial_report_line_03_0_7_fr_bilan_actif'/>
@@ -417,7 +417,7 @@
     </record>
 
     <record id="account_financial_report_line_03_1_5_fr_bilan_actif" model="account.financial.html.report.line">
-        <field name="name">Immobilisations incorporelles en cours - NET</field>
+        <field name="name">Immobilisations corporelles en cours - NET</field>
         <field name="code">IMMOBILLIS_COURS</field>
         <field name="level" eval="3" />
         <field name="sequence" eval="5"/>
@@ -426,7 +426,7 @@
     </record>
 
     <record id="account_financial_report_line_03_1_5_brut_fr_bilan_actif" model="account.financial.html.report.line">
-        <field name="name">Immobilisations incorporelles en cours - Brut</field>
+        <field name="name">Immobilisations corporelles en cours - Brut</field>
         <field name="code">IMMOBILLIS_COURS_BRUT</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="1"/>
@@ -437,7 +437,7 @@
     </record>
 
     <record id="account_financial_report_line_03_1_5_amor_fr_bilan_actif" model="account.financial.html.report.line">
-        <field name="name">Immobilisations incorporelles en cours - Amortissements et provisions (à déduire)</field>
+        <field name="name">Immobilisations corporelles en cours - Amortissements et provisions (à déduire)</field>
         <field name="code">IMMOBILLIS_COURS_AMOR</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="2"/>
@@ -449,16 +449,16 @@
 
     <record id="account_financial_report_line_03_1_6_fr_bilan_actif" model="account.financial.html.report.line">
         <field name="name">Avances et acomptes - NET</field>
-        <field name="code">AVANCES_ACOMPTES_INCORP</field>
+        <field name="code">AVANCES_ACOMPTES_CORP</field>
         <field name="level" eval="3" />
         <field name="sequence" eval="6"/>
         <field name="parent_id" ref='account_financial_report_line_02_4_fr_bilan_actif'/>
-        <field name="formulas">AVANCES_ACOMPTES_INCORP_BRUT - AVANCES_ACOMPTES_INCORP_AMOR</field>
+        <field name="formulas">AVANCES_ACOMPTES_CORP_BRUT - AVANCES_ACOMPTES_CORP_AMOR</field>
     </record>
 
     <record id="account_financial_report_line_03_1_6_brut_fr_bilan_actif" model="account.financial.html.report.line">
         <field name="name">Avances et acomptes - Brut</field>
-        <field name="code">AVANCES_ACOMPTES_INCORP_BRUT</field>
+        <field name="code">AVANCES_ACOMPTES_CORP_BRUT</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="1"/>
         <field name="parent_id" ref='account_financial_report_line_03_1_6_fr_bilan_actif'/>
@@ -469,7 +469,7 @@
 
     <record id="account_financial_report_line_03_1_6_amor_fr_bilan_actif" model="account.financial.html.report.line">
         <field name="name">Avances et acomptes - Amortissements et provisions (à déduire)</field>
-        <field name="code">AVANCES_ACOMPTES_INCORP_AMOR</field>
+        <field name="code">AVANCES_ACOMPTES_CORP_AMOR</field>
         <field name="level" eval="4" />
         <field name="sequence" eval="2"/>
         <field name="parent_id" ref='account_financial_report_line_03_1_6_fr_bilan_actif'/>
@@ -689,7 +689,7 @@
         <field name="level" eval="2" />
         <field name="sequence" eval="6"/>
         <field name="parent_id" ref='account_financial_report_line_01_fr_bilan_actif'/>
-        <field name="formulas">CAPITAL_NON_APPELE + FRAIS_ETABLISS + FRAIS_DEVELOPEMENT + CONCESSION_SIMILAIRES + FONDS_COMMERCIAL + AUTRES_INCORPO + IMMOBILIS_COURS + AVANCES_ACOMPTES_CORPORE + TERRAINS + CONSTRUCTIONS + INSTALLATION_OUTILLAGE + AUTRES_CORPORE + IMMOBILLIS_COURS + AVANCES_ACOMPTES_INCORP + PARTICIPATIONS + CREANCES_PARTICIPATIONS + TITRES_PORTEFEUILLE + AUTRES_IMMOBILISES + PRETS + AUTRES_FINANCIAL</field>
+        <field name="formulas">CAPITAL_NON_APPELE + FRAIS_ETABLISS + FRAIS_DEVELOPEMENT + CONCESSION_SIMILAIRES + FONDS_COMMERCIAL + AUTRES_INCORPO + IMMOBILIS_COURS + AVANCES_ACOMPTES_CORPORE + TERRAINS + CONSTRUCTIONS + INSTALLATION_OUTILLAGE + AUTRES_CORPORE + IMMOBILLIS_COURS + AVANCES_ACOMPTES_CORP + PARTICIPATIONS + CREANCES_PARTICIPATIONS + TITRES_PORTEFEUILLE + AUTRES_IMMOBILISES + PRETS + AUTRES_FINANCIAL</field>
     </record>
 
     <record id="account_financial_report_line_2_02_1_fr_bilan_actif" model="account.financial.html.report.line">

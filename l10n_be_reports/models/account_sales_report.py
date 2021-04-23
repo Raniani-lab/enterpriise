@@ -5,8 +5,15 @@ import time
 from odoo import models, fields, api, _
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError
+
+
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
+
+    def _get_non_generic_country_codes(self, options):
+        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
+        codes.add('BE')
+        return codes
 
     def _get_ec_sale_code_options_data(self, options):
         if self._get_report_country_code(options) != 'BE':

@@ -19,7 +19,6 @@ class ECSalesReport(models.AbstractModel):
     </record>
     """
 
-
     _name = 'account.sales.report'
     _description = 'EC Sales List'
     _inherit = 'account.report'
@@ -33,6 +32,10 @@ class ECSalesReport(models.AbstractModel):
         templates = super(ECSalesReport, self)._get_templates()
         templates['main_template'] = 'account_reports.account_reports_sales_report_main_template'
         return templates
+
+    def _get_non_generic_country_codes(self, options):
+        # to be overriden by country specific method
+        return set()
 
     def _get_report_country_code(self, options):
         # Overridden in order to use the fiscal country of the current company

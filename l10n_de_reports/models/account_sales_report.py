@@ -4,13 +4,17 @@
 import json
 import zipfile
 import math
-import io
 import tempfile
 from odoo import models, fields, api, _
 
 
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
+
+    def _get_non_generic_country_codes(self, options):
+        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
+        codes.add('DE')
+        return codes
 
     def _get_ec_sale_code_options_data(self, options):
         if self._get_report_country_code(options) != 'DE':

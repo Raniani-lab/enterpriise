@@ -10,6 +10,11 @@ from odoo.exceptions import UserError
 class ECSalesReport(models.AbstractModel):
     _inherit = 'account.sales.report'
 
+    def _get_non_generic_country_codes(self, options):
+        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
+        codes.add('LU')
+        return codes
+
     def _get_ec_sale_code_options_data(self, options):
         if self._get_report_country_code(options) != 'LU':
             return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)

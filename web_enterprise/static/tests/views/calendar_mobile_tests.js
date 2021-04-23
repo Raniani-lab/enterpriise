@@ -45,7 +45,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
         QUnit.module('CalendarView Mobile');
 
         QUnit.test('simple calendar rendering in mobile', async function (assert) {
-            assert.expect(3);
+            assert.expect(7);
 
             const calendar = await testUtils.createView({
                 arch: `
@@ -66,6 +66,22 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
                 "next button should be hidden");
             assert.isVisible(document.querySelector('.o_control_panel .o_cp_bottom_right button.o_cp_today_button'),
                 "today button should be visible in the pager area (bottom right corner)");
+
+            // Test all views
+            // displays month mode by default
+            assert.containsOnce(calendar.el, '.fc-view-container > .fc-timeGridWeek-view', "should display the current week");
+
+            // switch to day mode
+            await testUtils.dom.click($('.o_control_panel .o_calendar_button_day'));
+            assert.containsOnce(calendar.el, '.fc-view-container > .fc-timeGridDay-view', "should display the current day");
+
+            // switch to month mode
+            await testUtils.dom.click($('.o_control_panel .o_calendar_button_month'));
+            assert.containsOnce(calendar.el, '.fc-view-container > .fc-dayGridMonth-view', "should display the current month");
+
+            // switch to year mode
+            await testUtils.dom.click($('.o_control_panel .o_calendar_button_year'));
+            assert.containsOnce(calendar.el, '.fc-view-container > .fc-dayGridYear-view', "should display the current year");
 
             calendar.destroy();
         });

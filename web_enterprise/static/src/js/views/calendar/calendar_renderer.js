@@ -117,37 +117,37 @@ CalendarRenderer.include({
         oldOptions.eventDragStart = (info) => {
             this.isSwipeEnabled = false;
             if (oldEventDragStart) {
-                oldEventDragStart(info);
+                oldEventDragStart.call(this.calendar, info);
             }
         };
         oldOptions.eventPositioned = (info) => {
             this.isSwipeEnabled = false;
             if (oldEventPositioned) {
-                oldEventPositioned(info);
+                oldEventPositioned.call(this.calendar, info);
             }
         };
         oldOptions.eventRender = (info) => {
             this.isSwipeEnabled = false;
             if (oldEventRender) {
-                oldEventRender(info);
+                oldEventRender.call(this.calendar, info);
             }
         };
         oldOptions.eventResize = (eventResizeInfo) => {
             this.isSwipeEnabled = false;
             if (oldEventResize) {
-                oldEventResize(eventResizeInfo);
+                oldEventResize.call(this.calendar, eventResizeInfo);
             }
         };
         oldOptions.eventResizeStart = (mouseResizeInfo) => {
             this.isSwipeEnabled = false;
             if (oldEventResizeStart) {
-                oldEventResizeStart(mouseResizeInfo);
+                oldEventResizeStart.call(this.calendar, mouseResizeInfo);
             }
         };
         oldOptions.selectAllow = (selectInfo) => {
             this.isSwipeEnabled = false;
             if (oldSelectAllow) {
-                return oldSelectAllow(selectInfo);
+                return oldSelectAllow.call(this.calendar, selectInfo);
             }
             return true;
         };
@@ -155,7 +155,7 @@ CalendarRenderer.include({
             // Needed to avoid to trigger select and dateClick on long tap
             selectionInfo.jsEvent.isSelectiong = true;
             if (oldSelect) {
-                return oldSelect(selectionInfo);
+                return oldSelect.call(this.calendar, selectionInfo);
             }
         };
         // /!\ Override if dateClick is set in web module

@@ -296,10 +296,9 @@ class FetchmailServer(models.Model):
 
             invoice_form.l10n_latam_document_type_id = document_type
             invoice_form.l10n_latam_document_number = document_number
-
             for invoice_line in self._get_dte_lines(dte_xml, company_id, partner.id):
                 with invoice_form.invoice_line_ids.new() as invoice_line_form:
-                    invoice_line_form.product_id = invoice_line.get('product', False)
+                    invoice_line_form.product_id = invoice_line.get('product', self.env['product.product'])
                     invoice_line_form.name = invoice_line.get('name')
                     invoice_line_form.quantity = invoice_line.get('quantity')
                     invoice_line_form.price_unit = invoice_line.get('price_unit')
@@ -309,7 +308,6 @@ class FetchmailServer(models.Model):
                         invoice_line_form.tax_ids.clear()
                     for tax in invoice_line.get('taxes', []):
                         invoice_line_form.tax_ids.add(tax)
-
             for reference_line in self._get_invoice_references(dte_xml):
                 if not self._is_valid_reference_doc_type(
                         reference_line.get('l10n_cl_reference_doc_type_selection')):

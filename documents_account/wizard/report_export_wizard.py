@@ -17,7 +17,11 @@ class ReportExportWizard(models.TransientModel):
     folder_id = fields.Many2one(string="Folder", comodel_name='documents.folder',
         help="Folder where to save the generated file", required=True,
         default=_get_default_folder)
-    tag_ids = fields.Many2many('documents.tag', 'export_wiz_document_tag_rel', string="Tags")
+    tag_ids = fields.Many2many('documents.tag', 'export_wiz_document_tag_rel', string="Tags", domain="[('folder_id', '=', folder_id)]")
+
+    @api.onchange('folder_id')
+    def on_folder_id_change(self):
+        self.tag_ids = False
 
     def export_report(self):
         # When making the export with Documents app installed, we want the resulting action to open the folder of Documents where

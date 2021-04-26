@@ -6,6 +6,7 @@ odoo.define("sale_industry_fsm.tour", function (require) {
 var tour = require('web_tour.tour');
 require('industry_fsm.tour');
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var _t = core._t;
 
 var fsmStartStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
@@ -23,7 +24,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: 'right',
 }, {
     trigger: 'input.o_field_char',
-    content: _t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>'),
+    content: Markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
     position: 'right',
 }, {
     trigger: ".o_form_button_save",
@@ -32,7 +33,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: ".btn-primary",
-    content: _t("Use the breadcrumbs to go back to your <b>list of products</b>."),
+    content: Markup(_t("Use the breadcrumbs to go back to your <b>list of products</b>.")),
     position: "bottom",
 }, {
     trigger: "button[name='fsm_add_quantity']",
@@ -43,7 +44,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: '.o_fsm_material_kanban',
-    content: _t("Use the breadcrumbs to go back to your <b>task</b>."),
+    content: Markup(_t("Use the breadcrumbs to go back to your <b>task</b>.")),
     position: "bottom"
 });
 

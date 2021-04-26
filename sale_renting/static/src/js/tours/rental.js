@@ -2,6 +2,7 @@ odoo.define('sale_renting.tour', function (require) {
 "use strict";
 
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
@@ -11,7 +12,7 @@ tour.register('rental_tour', {
     sequence: 240,
 }, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
-    content: _t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App."),
+    content: Markup(_t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App.")),
     position: 'bottom',
     edition: 'enterprise'
 }, {

@@ -2,6 +2,7 @@ odoo.define('social.tour', function (require) {
 "use strict";
 
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
@@ -15,17 +16,17 @@ tour.register('social_tour', {
         tour.stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',
-            content: _t("Let's create your own <b>social media</b> dashboard."),
+            content: Markup(_t("Let's create your own <b>social media</b> dashboard.")),
             position: 'bottom',
             edition: 'enterprise',
         }, {
             trigger: 'button.o_stream_post_kanban_new_stream',
-            content: _t("Let's <b>connect</b> to Facebook, LinkedIn or Twitter."),
+            content: Markup(_t("Let's <b>connect</b> to Facebook, LinkedIn or Twitter.")),
             position: 'bottom',
             edition: 'enterprise',
         }, {
             trigger: '.o_social_media_cards',
-            content: _t("Choose which <b>account</b> you would like to link first."),
+            content: Markup(_t("Choose which <b>account</b> you would like to link first.")),
             position: 'right',
             edition: 'enterprise',
         }, {

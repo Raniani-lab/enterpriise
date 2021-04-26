@@ -2,6 +2,7 @@ odoo.define('account_accountant.tour', function (require) {
     "use strict";
 
     const core = require('web.core');
+    const {Markup} = require('web.utils');
     const tour = require('web_tour.tour');
 
     const _t = core._t;
@@ -37,7 +38,7 @@ odoo.define('account_accountant.tour', function (require) {
             // While not ideal, it is ok, since that means the user obviously knows how to create a vendor bill...
             {
                 trigger: 'button.btn-primary[data-name="action_create_vendor_bill"]',
-                content: _t('Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on hand, use our sample bill.</i>'),
+                content: Markup(_t('Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on hand, use our sample bill.</i>')),
                 position: 'bottom',
             }, {
                 trigger: 'button[name="apply"]',
@@ -89,7 +90,7 @@ odoo.define('account_accountant.tour', function (require) {
         [
             {
                 trigger: 'button.btn-primary[name="check_status"]',
-                content: _t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>'),
+                content: Markup(_t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>')),
                 position: 'bottom',
             }
         ]

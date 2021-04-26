@@ -2,6 +2,7 @@ odoo.define('industry_fsm.tour', function (require) {
 "use strict";
 
 var core = require('web.core');
+const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
@@ -11,7 +12,7 @@ tour.register('industry_fsm_tour', {
     url: "/web",
 }, [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
-    content: _t('Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to start.</i>'),
+    content: Markup(_t('Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to start.</i>')),
     position: 'bottom',
 }, {
     trigger: '.o-kanban-button-new',
@@ -21,7 +22,7 @@ tour.register('industry_fsm_tour', {
 }, {
     trigger: 'input.o_task_name',
     extra_trigger: '.o_form_editable',
-    content: _t('Add a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>'),
+    content: Markup(_t('Add a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>')),
     position: 'right',
     width: 200,
 }, {
@@ -47,7 +48,7 @@ tour.register('industry_fsm_tour', {
     position: 'bottom',
 }, {
     trigger: 'button[name="save_timesheet"]',
-    content: _t('Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has automatically been applied.</i>'),
+    content: Markup(_t('Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has automatically been applied.</i>')),
     position: 'bottom',
     id: 'fsm_save_timesheet',
 }, {

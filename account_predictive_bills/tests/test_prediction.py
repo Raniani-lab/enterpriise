@@ -16,7 +16,8 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
         cls.test_partners = cls.env['res.partner'].create([{'name': 'test partner %s' % i} for i in range(7)])
 
         expense_type = cls.env.ref('account.data_account_type_expenses')
-        cls.test_accounts = cls.env['account.account'].create({
+
+        accounts_data = [{
             'code': 'test%s' % i,
             'name': name,
             'user_type_id': expense_type.id,
@@ -27,7 +28,9 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
             "Test Various Contributions",
             "Test Rental Charges",
             "Test Purchase of commodity",
-        )))
+        ))]
+
+        cls.test_accounts = cls.env['account.account'].create(accounts_data)
 
         cls.frozen_today = fields.Date.today()
 

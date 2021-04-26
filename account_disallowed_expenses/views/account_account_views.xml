@@ -5,10 +5,9 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet/group" position="inside">
-                <group attrs="{'invisible': [('internal_group', '!=', 'expense'), ('internal_group', '!=', 'income')]}">
-                    <field name="disallowed_expenses_category_id" string="Disallowed Expenses"/>
-                </group>
+            <xpath expr="//field[@name='tax_ids']" position="after">
+                <field name="disallowed_expenses_category_id" string="Disallowed Expenses"
+                attrs="{'invisible': [('internal_group', '!=', 'expense'), ('internal_group', '!=', 'income')]}"/>
             </xpath>
         </field>
     </record>

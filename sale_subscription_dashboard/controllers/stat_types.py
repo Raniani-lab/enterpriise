@@ -179,8 +179,8 @@ def compute_nb_contracts(start_date, end_date, filters):
 
 
 def compute_mrr(start_date, end_date, filters):
-    fields = ['account_move_line.subscription_mrr', 'account_move_line.currency_id',
-              'account_move_line.company_currency_id', 'account_move_line.company_id']
+    fields = ["(CASE WHEN account_move.move_type = 'out_invoice' THEN 1 ELSE -1 END) * account_move_line.subscription_mrr as subscription_mrr",
+              'account_move_line.currency_id', 'account_move_line.company_currency_id', 'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [
         "date %(date)s BETWEEN account_move_line.subscription_start_date AND account_move_line.subscription_end_date",

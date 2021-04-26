@@ -56,6 +56,7 @@ class SignContract(Sign):
             if contract.employee_id.address_home_id:
                 contract.employee_id.address_home_id.active = True
             self._create_activity_advantage(contract, 'countersigned')
+            self._send_advantage_sign_request(contract)
 
     def _create_activity_advantage(self, contract, contract_state):
         advantages = request.env['hr.contract.salary.advantage'].sudo().search([
@@ -72,6 +73,53 @@ class SignContract(Sign):
                     note="%s: %s" % (advantage.name or advantage.res_field_id.name, value),
                     user_id=advantage.activity_responsible_id.id)
 
+    def _send_advantage_sign_request(self, contract):
+        advantages = request.env['hr.contract.salary.advantage'].sudo().search([
+            ('structure_type_id', '=', contract.structure_type_id.id),
+            ('sign_template_id', '!=', False)])
+
+        if not request.env.user.email_formatted:
+            sign_request = request.env['sign.request'].with_user(SUPERUSER_ID)
+        else:
+            sign_request = request.env['sign.request'].sudo()
+
+        sent_templates = request.env['sign.template']
+        for advantage in advantages:
+            field = advantage.res_field_id.name
+            value = contract[field]
+            sign_template = advantage.sign_template_id
+            if sign_template in sent_templates:
+                continue
+            if (advantage.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
+                    advantage.activity_creation_type == "always" and value:
+
+                sent_templates |= sign_template
+
+                res = sign_request.initialize_new(
+                    sign_template.id,
+                    [{
+                        'role': request.env.ref('sign.sign_item_role_employee').id,
+                        'partner_id': contract.employee_id.address_home_id.id
+                    }, {
+                        'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
+                        'partner_id': contract.hr_responsible_id.partner_id.id
+                    }],
+                    [contract.hr_responsible_id.partner_id.id],
+                    'Signature Request - ' + advantage.name or contract.name,
+                    'Signature Request - ' + advantage.name or contract.name,
+                    '',
+                    False)
+
+                sign_request = request.env['sign.request'].browse(res['id']).sudo()
+                sign_request.toggle_favorited()
+                sign_request.action_sent()
+                # Add the external person after action_sent to avoid sending him the
+                # accesses before the signature is done.
+                sign_request.message_subscribe(partner_ids=advantage.sign_copy_partner_id.ids)
+                sign_request.write({'state': 'sent'})
+                sign_request.request_item_ids.write({'state': 'sent'})
+
+                contract.sign_request_ids += sign_request
 
 class HrContractSalary(http.Controller):
 

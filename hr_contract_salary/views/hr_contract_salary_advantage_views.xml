@@ -85,6 +85,11 @@
                             <field name="activity_creation_type" widget="radio" attrs="{'invisible': [('activity_type_id', '=', False)], 'required': [('activity_type_id', '!=', False)]}"/>
                             <field name="activity_responsible_id" options="{'no_create_edit': True}" attrs="{'invisible': [('activity_type_id', '=', False)], 'required': [('activity_type_id', '!=', False)]}"/>
                         </group>
+                        <group>
+                            <field name="sign_template_id"/>
+                            <field name="sign_copy_partner_id" attrs="{'invisible': [('sign_template_id', '=', False)]}" context="{'force_email':True, 'show_email': True}"/>
+                            <field name="sign_frenquency" attrs="{'invisible': [('sign_template_id', '=', False)]}"/>
+                        </group>
                     </group>
                     <group>
                         <field name="hide_description"/>

@@ -73,6 +73,11 @@ class HrContractSalaryAdvantage(models.Model):
     activity_creation = fields.Selection([('countersigned', 'Contract is countersigned'), ('running', 'Employee signs his contract')], default='countersigned', help="The benefit is created when the employee signs his contract at the end of the salary configurator or when the HR manager countersigns the contract.")
     activity_creation_type = fields.Selection([('always', 'When the advantage is set'), ('onchange', 'When the advantage is modified')], default='always', help="Choose whether to create a next activity each time that the advantage is taken by the employee or on modification only.")
     activity_responsible_id = fields.Many2one('res.users', 'Assigned to')
+    sign_template_id = fields.Many2one('sign.template', string="Template to Sign")
+    sign_copy_partner_id = fields.Many2one('res.partner', string="Send a copy to", help="Email address to which to transfer the signature.")
+    sign_frenquency = fields.Selection([
+        ('onchange', 'When the advantage is set'),
+        ('always', 'When the advantage is modified')], default="onchange")
 
     _sql_constraints = [
         (

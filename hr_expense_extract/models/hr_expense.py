@@ -2,9 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.iap.tools import iap_tools
-from odoo import api, exceptions, fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
-from odoo.tests.common import Form
 
 import logging
 import time
@@ -12,7 +11,7 @@ import time
 
 _logger = logging.getLogger(__name__)
 
-CLIENT_OCR_VERSION = 120
+CLIENT_OCR_VERSION = 130
 
 # list of result id that can be sent by iap-extract
 SUCCESS = 0
@@ -35,6 +34,7 @@ ERROR_MESSAGES = {
     ERROR_NO_CONNECTION: _("Server not available. Please retry later"),
     ERROR_SERVER_IN_MAINTENANCE: _("Server is currently under maintenance. Please retry later"),
 }
+
 
 class HrExpenseExtractionWords(models.Model):
     _name = "hr.expense.extract.words"
@@ -90,11 +90,10 @@ class HrExpense(models.Model):
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Expense extract id", copy=False)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Expense extract id", copy=False, readonly=True)
     extract_word_ids = fields.One2many("hr.expense.extract.words", inverse_name="expense_id", copy=False)
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
-
 
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
@@ -110,15 +109,15 @@ class HrExpense(models.Model):
     def get_validation(self, field):
 
         text_to_send = {}
-        if field == "exp_total":
+        if field == "total":
             text_to_send["content"] = self.unit_amount
-        elif field == "exp_date":
+        elif field == "date":
             text_to_send["content"] = str(self.date)
-        elif field == "exp_description":
+        elif field == "description":
             text_to_send["content"] = self.name
-        elif field == "exp_currency":
+        elif field == "currency":
             text_to_send["content"] = self.currency_id.name
-        elif field == "exp_bill_reference":
+        elif field == "bill_reference":
             text_to_send["content"] = self.reference
         return text_to_send
 
@@ -128,14 +127,14 @@ class HrExpense(models.Model):
 
         for expense in self.filtered(lambda x: x.extract_state == 'waiting_validation'):
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/validate'
+                'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/validate'
 
             values = {
-                'exp_total': expense.get_validation('exp_total'),
-                'exp_date': expense.get_validation('exp_date'),
-                'exp_description': expense.get_validation('exp_description'),
-                'exp_currency': expense.get_validation('exp_currency'),
-                'exp_bill_reference': expense.get_validation('exp_bill_reference')
+                'total': expense.get_validation('total'),
+                'date': expense.get_validation('date'),
+                'description': expense.get_validation('description'),
+                'currency': expense.get_validation('currency'),
+                'bill_reference': expense.get_validation('bill_reference')
             }
             params = {
                 'document_id': expense.extract_remote_id,
@@ -188,11 +187,11 @@ class HrExpense(models.Model):
             ocr_results = result['results'][0]
             self.extract_word_ids.unlink()
 
-            description_ocr = ocr_results['exp_description']['selected_value']['content'] if 'exp_description' in ocr_results else ""
-            total_ocr = ocr_results['exp_total']['selected_value']['content'] if 'exp_total' in ocr_results else ""
-            date_ocr = ocr_results['exp_date']['selected_value']['content'] if 'exp_date' in ocr_results else ""
-            currency_ocr = ocr_results['exp_currency']['selected_value']['content'] if 'exp_currency' in ocr_results else ""
-            bill_reference_ocr =  ocr_results['exp_bill_reference']['selected_value']['content'] if 'exp_bill_reference' in ocr_results else ""
+            description_ocr = ocr_results['description']['selected_value']['content'] if 'description' in ocr_results else ""
+            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
+            date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
+            currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
+            bill_reference_ocr = ocr_results['bill_reference']['selected_value']['content'] if 'bill_reference' in ocr_results else ""
 
             self.name = description_ocr
             self.date = date_ocr
@@ -218,7 +217,6 @@ class HrExpense(models.Model):
     def action_send_for_digitalization(self):
         if any(expense.state != 'draft' or expense.sheet_id for expense in self):
             raise UserError(_("You cannot send a expense that is not in draft state!"))
-        
 
         for expense in self:
             expense.retry_ocr()

@@ -579,24 +579,25 @@ class AccountReconciliation(models.AbstractModel):
     @api.model
     def _get_query_reconciliation_widget_liquidity_lines(self, statement_line, domain=[]):
         journal = statement_line.journal_id
-        tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
-        matching_account_clauses = []
+
+        account_ids = []
 
         # Matching on debit account.
         allow_debit_statement_matching = journal.payment_debit_account_id != journal.default_account_id
         if allow_debit_statement_matching:
-            matching_account_clauses.append('account_move_line.account_id = %s')
-            where_params.append(journal.payment_debit_account_id.id)
+            account_ids.append(journal.payment_debit_account_id.id)
 
         # Matching on credit account.
         allow_credit_statement_matching = journal.payment_credit_account_id != journal.default_account_id
         if allow_credit_statement_matching:
-            matching_account_clauses.append('account_move_line.account_id = %s')
-            where_params.append(journal.payment_credit_account_id.id)
+            account_ids.append(journal.payment_credit_account_id.id)
 
-        # Matching on internal transfer account.
-        matching_account_clauses.append('(journal.id != %s AND account_move_line.account_id = company.transfer_account_id)')
-        where_params.append(journal.id)
+        domain = domain + [
+            ('journal_id.type', 'in', ('bank', 'cash')),
+            ('account_id', 'in', account_ids),
+        ]
+
+        tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
 
         query = '''
             SELECT ''' + self._get_query_select_clause() + '''
@@ -606,7 +607,6 @@ class AccountReconciliation(models.AbstractModel):
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN res_company company ON company.id = journal.company_id
             WHERE ''' + where_clause + '''
-            AND (''' + ' OR '.join(matching_account_clauses) + ''')
         '''
         return query, where_params
 
@@ -614,7 +614,7 @@ class AccountReconciliation(models.AbstractModel):
     def _get_query_reconciliation_widget_receivable_payable_lines(self, statement_line, domain=[]):
         domain = domain + [
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
-            ('journal_id.type', 'not in', ('bank', 'cash')),
+            ('payment_id', '=', False),
         ]
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
 
@@ -654,9 +654,25 @@ class AccountReconciliation(models.AbstractModel):
         :param domain:          A applicable domain on the account.move.line model.
         :return:                (query, params)
         '''
-        domain += [
+        journal = statement_line.journal_id
+
+        account_ids = []
+
+        # Matching on debit account.
+        allow_debit_statement_matching = journal.payment_debit_account_id != journal.default_account_id
+        if allow_debit_statement_matching:
+            account_ids.append(journal.payment_debit_account_id.id)
+
+        # Matching on credit account.
+        allow_credit_statement_matching = journal.payment_credit_account_id != journal.default_account_id
+        if allow_credit_statement_matching:
+            account_ids.append(journal.payment_credit_account_id.id)
+
+        domain = domain + [
             ('account_id.internal_type', 'not in', ('receivable', 'payable')),
+            '|',
             ('journal_id.type', 'not in', ('bank', 'cash')),
+            ('account_id', 'not in', account_ids),
         ]
         tables, where_clause, where_params = self._prepare_reconciliation_widget_query(statement_line, domain=domain)
 

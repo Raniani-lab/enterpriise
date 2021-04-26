@@ -9,6 +9,10 @@ _logger = logging.getLogger(__name__)
 @odoo.tests.tagged('post_install', '-at_install')
 class TestReconciliationWidget(TestAccountReconciliationCommon):
 
+    def _get_st_widget_suggestions(self, st_line, mode='rp'):
+        suggestions = self.env['account.reconciliation.widget'].get_move_lines_for_bank_statement_line(st_line.id, mode=mode)
+        return self.env['account.move.line'].browse([x['id'] for x in suggestions])
+
     def test_statement_suggestion_other_currency(self):
         # company currency is EUR
         # payment in USD
@@ -384,3 +388,120 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
 
             for line in all_lines:
                 self.assertTrue(line.reconciled)
+
+    def test_st_line_suggestion_manual_reimbursement_with_st_line(self):
+        statement = self.env['account.bank.statement'].create({
+            'name': 'test',
+            'date': '2019-01-01',
+            'balance_end_real': 0.0,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line2',
+                    'amount': -100.0,
+                    'date': '2019-01-01',
+                }),
+                (0, 0, {
+                    'payment_ref': 'line1',
+                    'amount': 100.0,
+                    'date': '2019-01-01',
+                }),
+            ],
+        })
+        statement.button_post()
+
+        line1 = statement.line_ids[0]
+        line2 = statement.line_ids[1]
+
+        # Reconcile it with a payable account.
+        line1.reconcile([{
+            'name': "whatever",
+            'account_id': self.company_data['default_account_payable'].id,
+            'balance': 100.0,
+        }])
+
+        suggested_amls = self._get_st_widget_suggestions(line2, mode='rp')
+        self.assertRecordValues(suggested_amls, [{'statement_line_id': line1.id}])
+
+        suggested_amls = self._get_st_widget_suggestions(line2, mode='misc')
+        self.assertFalse(suggested_amls)
+
+    def test_st_line_suggestion_reconcile_account_on_bank_journal(self):
+        self.company_data['default_account_assets'].reconcile = True
+
+        internal_transfer = self.env['account.move'].create({
+            'date': '2019-01-01',
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'name': 'line1',
+                    'account_id': self.company_data['default_journal_bank'].default_account_id.id,
+                    'debit': 1000.0,
+                }),
+                (0, 0, {
+                    'name': 'line1',
+                    'account_id': self.company_data['default_account_assets'].id,
+                    'credit': 1000.0,
+                }),
+            ],
+        })
+        internal_transfer.action_post()
+
+        statement = self.env['account.bank.statement'].create({
+            'name': 'test',
+            'date': '2019-01-01',
+            'balance_end_real': -1000.0,
+            'journal_id': self.company_data['default_journal_cash'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line2',
+                    'amount': -1000.0,
+                    'date': '2019-01-01',
+                }),
+            ],
+        })
+        statement.button_post()
+
+        suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='rp')
+        self.assertFalse(suggested_amls)
+
+        suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='misc')
+        self.assertRecordValues(suggested_amls, [{
+            'move_id': internal_transfer.id,
+            'account_id': self.company_data['default_account_assets'].id,
+        }])
+
+    def test_st_line_suggestion_reconcile_with_payment(self):
+        statement = self.env['account.bank.statement'].create({
+            'name': 'test',
+            'date': '2019-01-01',
+            'balance_end_real': -1000.0,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line2',
+                    'amount': -1000.0,
+                    'date': '2019-01-01',
+                }),
+            ],
+        })
+        statement.button_post()
+
+        payment = self.env['account.payment'].create({
+            'payment_type': 'outbound',
+            'partner_type': 'supplier',
+            'date': '2019-01-01',
+            'amount': 1000.0,
+            'currency_id': self.env.company.currency_id.id,
+            'partner_id': self.partner_a.id,
+        })
+        payment.action_post()
+
+        suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='rp')
+        self.assertRecordValues(suggested_amls, [{
+            'payment_id': payment.id,
+            'account_id': self.company_data['default_journal_bank'].payment_credit_account_id.id,
+        }])
+
+        suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='misc')
+        self.assertFalse(suggested_amls)

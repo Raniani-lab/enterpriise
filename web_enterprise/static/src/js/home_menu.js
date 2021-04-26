@@ -47,6 +47,7 @@ odoo.define("web_enterprise.HomeMenu", function (require) {
                 // Check if expiration panel must be shown and get its prop diffDays.
                 displayExpirationPanel: this._shouldExpirationPanelBeDisplayed(),
                 focusedIndex: null,
+                isIosApp: navigator.userAgent.match(/OdooMobile \(iOS\)/i),
                 isSearching: false,
                 query: "",
             });

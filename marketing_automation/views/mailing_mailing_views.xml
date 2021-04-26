@@ -105,7 +105,7 @@
                                 <label for="reply_to"/>
                                 <div>
                                     <field name="reply_to_mode" widget="radio" attrs="{'invisible': [('mailing_model_real', '=', 'mailing.contact')]}"/>
-                                    <field name="reply_to" attrs="{'required': [('reply_to_mode', '=', 'email')], 'invisible': [('reply_to_mode', '!=', 'email')]}"/>
+                                    <field name="reply_to" attrs="{'required': [('reply_to_mode', '=', 'new')], 'invisible': [('reply_to_mode', '!=', 'new')]}"/>
                                 </div>
                             </group>
                         </group>

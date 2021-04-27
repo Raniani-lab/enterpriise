@@ -10,3 +10,4 @@ from . import hr_payroll_generate_warrant_payslips
 from . import hr_payroll_index_wizard
 from . import l10n_be_social_balance_sheet
 from . import l10n_be_social_security_certificate
+from . import l10n_be_eco_vouchers_wizard

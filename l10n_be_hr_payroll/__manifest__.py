@@ -90,6 +90,7 @@ Belgian Payroll Rules.
         'report/l10n_be_social_security_certificate_report_template.xml',
         'views/l10n_be_273S_views.xml',
         'views/l10n_be_274_XX_views.xml',
+        'wizard/l10n_be_eco_vouchers_wizard_views.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

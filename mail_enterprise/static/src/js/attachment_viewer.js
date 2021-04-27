@@ -3,6 +3,7 @@ odoo.define('mail_enterprise.AttachmentViewer', function (require) {
 
 var core = require('web.core');
 var Widget = require('web.Widget');
+var { hidePDFJSButtons } = require('@web/js/libs/pdfjs');
 
 var QWeb = core.qweb;
 
@@ -64,6 +65,9 @@ var AttachmentViewer = Widget.extend({
     _renderAttachment: function () {
         this.$el.empty();
         this.$el.append(QWeb.render('mail_enterprise.AttachmentPreview', {widget: this}));
+        if (this.activeAttachment.type === 'pdf') {
+            hidePDFJSButtons(this.el);
+        }
     },
 
     /**

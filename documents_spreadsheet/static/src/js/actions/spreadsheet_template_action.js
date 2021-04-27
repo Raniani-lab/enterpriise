@@ -2,6 +2,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_template_ac
     "use strict";
 
     const AbstractAction = require("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_action.js");
+    const { base64ToJson, jsonToBase64 } = require("documents_spreadsheet.pivot_utils");
     const core = require("web.core");
 
     const { _lt, _t } = core;
@@ -23,7 +24,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_template_ac
 
         _updateData(record) {
             this._super(record);
-            this.spreadsheetData = JSON.parse(atob(record.data));
+            this.spreadsheetData = base64ToJson(record.data);
         },
 
         /**
@@ -80,7 +81,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_template_ac
             return this._rpc({
                 model: "spreadsheet.template",
                 method: "write",
-                args: [[this.res_id], { data: btoa(data), thumbnail }],
+                args: [[this.res_id], { data: jsonToBase64(data), thumbnail }],
             });
         },
     });

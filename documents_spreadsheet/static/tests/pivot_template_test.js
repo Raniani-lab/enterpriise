@@ -17,7 +17,9 @@ import {
     createSpreadsheetFromPivot,
     setCellContent,
     getCellContent,
-    getCellFormula
+    getCellValue,
+    getCellFormula,
+    createSpreadsheetTemplate,
 } from "./spreadsheet_test_utils";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -26,6 +28,7 @@ import { actionService } from "@web/webclient/actions/action_service";
 
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
+const { jsonToBase64, base64ToJson } = pivotUtils;
 
 const { module, test } = QUnit;
 
@@ -773,7 +776,7 @@ module(
         });
 
         test("Save as template menu", async function (assert) {
-            assert.expect(6);
+            assert.expect(7);
             const serviceRegistry = registry.category("services");
             serviceRegistry.add("actionMain", actionService);
             const fakeActionService = {
@@ -785,7 +788,7 @@ module(
                                 assert.step("create_template_wizard");
 
                                 const context = options.additionalContext;
-                                const data = JSON.parse(atob(context.default_data));
+                                const data = base64ToJson(context.default_data);
                                 const name = context.default_template_name;
                                 const cells = data.sheets[0].cells;
                                 assert.equal(
@@ -802,6 +805,10 @@ module(
                                     cells.B3.formula.text,
                                     `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
                                 );
+                                assert.equal(
+                                    cells.A11.content,
+                                    "😃",
+                                );
                                 return Promise.resolve(true);
                             }
                             return actionMain.doAction(actionRequest, options);
@@ -811,7 +818,7 @@ module(
             };
             serviceRegistry.add("action", fakeActionService);
 
-            const { env } = await createSpreadsheetFromPivot({
+            const { env, model } = await createSpreadsheetFromPivot({
                 pivotView: {
                     model: "partner",
                     data: this.data,
@@ -823,6 +830,7 @@ module(
                         </pivot>`,
                 },
             });
+            setCellContent(model, "A11", "😃");
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
             const saveAsTemplate = file.children.find((item) => item.id === "save_as_template");
             saveAsTemplate.action(env);
@@ -1627,6 +1635,53 @@ module(
                 params: { active_id: 1 },
             });
             assert.ok(true);
+        });
+
+        test("Create new spreadsheet from template containing non Latin characters", async function (assert) {
+            assert.expect(1);
+            const model = new Model();
+            setCellContent(model, "A1", "😃");
+            this.data["spreadsheet.template"].records = [{
+                id: 99,
+                name: "template",
+                data: jsonToBase64(model.exportData()),
+            }];
+            const list = await createView({
+                View: TemplateListView,
+                model: "spreadsheet.template",
+                data: this.data,
+                arch: `
+                    <tree>
+                        <field name="name"/>
+                        <button string="New spreadsheet" class="o-new-spreadsheet float-right" name="create_spreadsheet" icon="fa-plus" />
+                    </tree>
+                `,
+            });
+            await dom.click(`button[name="create_spreadsheet"]`);
+            const documents = this.data["documents.document"].records
+            const data = JSON.parse(documents[documents.length-1].raw);
+            const cells = data.sheets[0].cells;
+            assert.equal(cells.A1.content, "😃");
+            list.destroy();
+        });
+
+        test("open template with non Latin characters", async function (assert) {
+            assert.expect(1);
+            const model = new Model();
+            setCellContent(model, "A1", "😃");
+            this.data["spreadsheet.template"].records = [{
+                id: 99,
+                name: "template",
+                data: jsonToBase64(model.exportData()),
+            }];
+            const { model: template } = await createSpreadsheetTemplate({
+                data: this.data,
+                spreadsheetId: 99,
+            })
+            assert.equal(
+                getCellValue(template, "A1"), "😃",
+                "It should show the smiley as a smiley 😉"
+            );
         });
     }
 );

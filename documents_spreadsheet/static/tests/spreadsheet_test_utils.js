@@ -1,5 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.TestUtils default=0 */
 import spreadsheet from "documents_spreadsheet.spreadsheet";
+import pivotUtils from "documents_spreadsheet.pivot_utils";
 import { createView } from "web.test_utils";
 import PivotView from "web.PivotView";
 import MockServer from 'web.MockServer';
@@ -13,6 +14,8 @@ import { ClientActionAdapter } from "@web/legacy/action_adapters";
 
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
+const { jsonToBase64 } = pivotUtils;
+
 
 
 /**
@@ -132,7 +135,7 @@ function getSpreadsheetActionEnv(actionManager) {
     }
 }
 
-export async function createSpreadsheet(params = {}) {
+export async function createSpreadsheetAction(actionTag, params = {}) {
     let { spreadsheetId, data, arch, mockRPC, legacyServicesRegistry } = params;
     let spreadsheetAction;
     patchWithCleanup(ClientActionAdapter.prototype, {
@@ -141,15 +144,6 @@ export async function createSpreadsheet(params = {}) {
             spreadsheetAction = this.widget;
         }
     });
-    if (!spreadsheetId) {
-        const documents = params.data["documents.document"].records;
-        spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
-        documents.push({
-            id: spreadsheetId,
-            name: "pivot spreadsheet",
-            raw: "{}",
-        });
-    }
     const serverData = {models: data, views: arch}
     const webClient = await createWebClient({
         serverData,
@@ -163,7 +157,7 @@ export async function createSpreadsheet(params = {}) {
     const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
     await doAction(webClient, {
         type: "ir.actions.client",
-        tag: "action_open_spreadsheet",
+        tag: actionTag,
         params: {
             active_id: spreadsheetId,
             transportService,
@@ -174,6 +168,34 @@ export async function createSpreadsheet(params = {}) {
         model: getSpreadsheetActionModel(spreadsheetAction),
         env: getSpreadsheetActionEnv(spreadsheetAction),
     };
+}
+
+export async function createSpreadsheet(params = {}) {
+    if (!params.spreadsheetId) {
+        const documents = params.data["documents.document"].records;
+        const spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
+        documents.push({
+            id: spreadsheetId,
+            name: "pivot spreadsheet",
+            raw: "{}",
+        });
+        params = {...params, spreadsheetId }
+    }
+    return createSpreadsheetAction("action_open_spreadsheet", params);
+}
+
+export async function createSpreadsheetTemplate(params = {}) {
+    if (!params.spreadsheetId) {
+        const templates = params.data["spreadsheet.template"].records;
+        const spreadsheetId = Math.max(...templates.map((d) => d.id)) + 1;
+        templates.push([{
+            id: spreadsheetId,
+            name: "test template",
+            data: jsonToBase64({}),
+        }]);
+        params = {...params, spreadsheetId }
+    }
+    return createSpreadsheetAction("action_open_template", params);
 }
 
 /**

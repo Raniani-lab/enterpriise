@@ -6,6 +6,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
     var framework = require('web.framework');
 
     const PivotDialog =require("documents_spreadsheet.PivotDialog")
+    const { jsonToBase64 } = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
     const uuidv4 = spreadsheet.helpers.uuidv4;
@@ -249,7 +250,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 options: {
                     additional_context: {
                         default_template_name: `${name} - Template`,
-                        default_data: btoa(JSON.stringify(data)),
+                        default_data: jsonToBase64(data),
                         default_thumbnail: this.getThumbnail(),
                     },
                 },

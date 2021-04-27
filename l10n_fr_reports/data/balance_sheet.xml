@@ -275,6 +275,7 @@
         <field name="level" eval="4" />
         <field name="sequence" eval="2"/>
         <field name="parent_id" ref='account_financial_report_line_03_0_7_fr_bilan_actif'/>
+        <field name="domain" eval="[('account_id.code', '=like', '2937%')]"/>
         <field name="formulas">- sum</field>
     </record>
 
@@ -473,6 +474,7 @@
         <field name="level" eval="4" />
         <field name="sequence" eval="2"/>
         <field name="parent_id" ref='account_financial_report_line_03_1_6_fr_bilan_actif'/>
+        <field name="domain" eval="[('account_id.code', '=like', '2938%')]"/>
         <field name="formulas">- sum</field>
     </record>
 

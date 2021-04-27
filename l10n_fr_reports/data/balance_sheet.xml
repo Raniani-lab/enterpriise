@@ -941,11 +941,11 @@
                                    '|', ('account_id.code', '=like', '456%'),
                                    '|', ('account_id.code', '=like', '467%'),
                                    '|', ('account_id.code', '=like', '468%'),
+                                   '|', ('account_id.code', '=like', '470%'),
                                    ('account_id.code', '=like', '478%'),
                                    '!', '|', ('account_id.code', '=like', '4287%'),
                                    '|', ('account_id.code', '=like', '4452%'),
                                    '|', ('account_id.code', '=like', '4455%'),
-                                   '|', ('account_id.code', '=like', '4457%'),
                                    '|', ('account_id.code', '=like', '44584%'),
                                    '|', ('account_id.code', '=like', '44587%'),
                                    '|', ('account_id.code', '=like', '4562%'),
@@ -1544,6 +1544,7 @@
         <field name="parent_id" ref='account_financial_report_line_02_6_fr_bilan_passif'/>
         <field name="domain" eval="['|', ('account_id.code', '=like', '400%'),
                                    '|', ('account_id.code', '=like', '401%'),
+                                   '|', ('account_id.code', '=like', '402%'),
                                    '|', ('account_id.code', '=like', '403%'),
                                    ('account_id.code', '=like', '408%'),
                                    '!', ('account_id.code', '=like', '4084%')]"/>
@@ -1565,7 +1566,6 @@
                                    '|', ('account_id.code', '=like', '442%'),
                                    '|', ('account_id.code', '=like', '4452%'),
                                    '|', ('account_id.code', '=like', '4455%'),
-                                   '|', ('account_id.code', '=like', '4457%'),
                                    '|', ('account_id.code', '=like', '44584%'),
                                    '|', ('account_id.code', '=like', '44587%'),
                                    '|', ('account_id.code', '=like', '446%'),
@@ -1585,8 +1585,12 @@
                                    '|', ('account_id.code', '=like', '438%'),
                                    '|', ('account_id.code', '=like', '443%'),
                                    '|', ('account_id.code', '=like', '444%'),
-                                   ('account_id.code', '=like', '448%'),
-                                   '!', ('account_id.code', '=like', '4287%')]"/>
+                                   '|', ('account_id.code', '=like', '448%'),
+                                   '|', ('account_id.code', '=like', '4457%'),
+                                   ('account_id.code', '=like', '4458%'),
+                                   '!', '|', ('account_id.code', '=like', '4287%'), 
+                                   '|', ('account_id.code', '=like', '44584%'),
+                                   ('account_id.code', '=like', '44587%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum_if_neg_groupby</field>
     </record>
@@ -1628,6 +1632,8 @@
         <field name="level" eval="3" />
         <field name="sequence" eval="9"/>
         <field name="domain" eval="['|', ('account_id.code', '=like', '467%'),
+                                   '|', ('account_id.code', '=like', '468%'),
+                                   '|', ('account_id.code', '=like', '470%'),
                                    ('account_id.code', '=like', '478%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum_if_neg_groupby</field>

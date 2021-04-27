@@ -116,7 +116,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
         # eg the debit from account 106284 will be added to the fields: 106284, 10628, 1062, 106, 10
         # Account data lines have as id the id of the account.account record;
         # total report line has 'grouped_accounts_total' string as id and must be filtered out
-        for line in [ln for ln in lines if isinstance(ln.get('id'), int)]:
+        for line in [ln for ln in lines if self._get_model_info_from_id(ln.get('id'))[0] == 'account.account']:
             code = line.get('name').split()[0]
             # Code of account being reported in the P&L: result for the year
             p_l_code = code[0] in ('6', '7')

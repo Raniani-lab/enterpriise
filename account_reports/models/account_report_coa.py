@@ -111,7 +111,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
             name = account.name_get()[0][1]
 
             lines.append({
-                'id': account.id,
+                'id': self._get_generic_line_id('account.account', account.id),
                 'name': name,
                 'title_hover': name,
                 'columns': columns,
@@ -122,7 +122,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
 
         # Total report line.
         lines.append({
-             'id': 'grouped_accounts_total',
+             'id': self._get_generic_line_id(None, None, markup='grouped_accounts_total'),
              'name': _('Total'),
              'class': 'total o_account_coa_column_contrast',
              'columns': [{'name': self.format_value(total), 'class': 'number'} for total in totals],

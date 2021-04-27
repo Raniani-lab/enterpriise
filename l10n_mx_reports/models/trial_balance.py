@@ -95,7 +95,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 for child in childs:
                     child['columns'] = [{'name': self.format_value(v)} for v in child['columns']]
             lines.append({
-                'id': 'hierarchy_' + line.code,
+                'id': self._get_generic_line_id(None, line.code, markup='hierarchy'),
                 'name': line.name,
                 'columns': [{'name': v} for v in cols],
                 'level': 1,
@@ -105,7 +105,7 @@ class MxReportAccountTrial(models.AbstractModel):
             lines.extend(childs)
             if not options.get('coa_only'):
                 lines.append({
-                    'id': 'total_%s' % line.code,
+                    'id': self._get_generic_line_id(None, line.code, markup='total'),
                     'name': _('Total %s', line.name)[2:],
                     'level': 0,
                     'class': 'hierarchy_total',
@@ -113,7 +113,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 })
         if not options.get('coa_only'):
             lines.append({
-                'id': 'hierarchy_total',
+                'id': self._get_generic_line_id(None, None, markup='hierarchy_total'),
                 'name': _('Total'),
                 'level': 0,
                 'class': 'hierarchy_total',
@@ -141,7 +141,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 for col in range(n_cols):
                     cols += [sum(a[col] for a in child_cols)]
             lines.append({
-                'id': 'level_one_%s' % child.id,
+                'id': self._get_generic_line_id('account.financial.html.report.line', child.id, markup='level_one'),
                 'name': child.name,
                 'columns': cols,
                 'level': 2,
@@ -183,8 +183,7 @@ class MxReportAccountTrial(models.AbstractModel):
                 for col in range(n_cols):
                     cols += [sum(a[col] for a in child_cols)]
             lines.append({
-                'id': 'level_two_%s' % tag.id,
-                'parent_id': 'level_one_%s' % line.id,
+                'id': self._get_generic_line_id('account.account.tag', tag.id, markup='level_two'),
                 'name': name,
                 'columns': cols,
                 'level': 3,
@@ -225,8 +224,7 @@ class MxReportAccountTrial(models.AbstractModel):
             if not options.get('coa_only'):
                 cols = self._get_cols(initial_balances, account, comparison_table, grouped_accounts)
             lines.append({
-                'id': account.id,
-                'parent_id': 'level_two_%s' % tag.id,
+                'id': self._get_generic_line_id('account.account', account.id, markup='level_four'),
                 'name': name,
                 'level': 4,
                 'columns': cols,
@@ -373,31 +371,6 @@ class MxReportAccountTrial(models.AbstractModel):
         new_params.pop('financial_group_line_id', False)
         return super(MxReportAccountTrial, self).open_journal_items(
             options, new_params)
-
-    def view_all_journal_items(self, options, params):
-        if not params.get('id') or 'hierarchy' in params.get('id'):
-            return super(MxReportAccountTrial, self).view_all_journal_items(
-                options, params)
-        ctx = self._set_context(options)
-        lines = self.with_context(**ctx)._get_lines(options)
-        new_params = params.copy()
-        new_params.pop('id', False)
-        accounts = self._get_accounts_journal_items([params.get('id')], lines)
-        ctx = {'search_default_account': 1}
-        res = super(MxReportAccountTrial, self.with_context(
-            **ctx)).view_all_journal_items(options, new_params)
-        res.get('domain', []).append(('account_id', 'in', accounts))
-        return res
-
-    def _get_accounts_journal_items(self, params, lines):
-        levels = [
-            l.get('level') for l in lines if l.get('parent_id') in params]
-        if levels and levels[0] == 4:
-            return [
-                l.get('id') for l in lines if l.get('parent_id') in params]
-        params = [
-            l.get('id') for l in lines if l.get('parent_id') in params]
-        return self._get_accounts_journal_items(params, lines)
 
     def _set_context(self, options):
         ctx = super(MxReportAccountTrial, self)._set_context(options)

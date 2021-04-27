@@ -254,7 +254,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0001'
     },
     {
-        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]:contains("lot0001")',
+        trigger: '.o_barcode_line.o_highlight .qty-done:contains("4")',
         run: function() {
             currentViewState.scanMessage = 'scan_more_dest';
             checkState(currentViewState);
@@ -363,7 +363,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan lot0002'
     },
     {
-        trigger: '.o_barcode_line.o_highlight[data-barcode="productlot1"]:contains("lot0002")',
+        trigger: '.o_barcode_line.o_highlight .qty-done:contains("4")',
         run: function() {
             const $lines =  helper.getLines({barcode: 'productlot1'});
             helper.assert($lines.length, 2, "Expect 2 lines for productlot1");

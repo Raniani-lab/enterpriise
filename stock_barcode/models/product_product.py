@@ -18,10 +18,14 @@ class Product(models.Model):
 
     @api.model
     def get_all_products_by_barcode(self):
-        products = self.env['product.product'].with_context(display_default_code=False).search_read(
-            [('barcode', '!=', None), ('type', '!=', 'service')],
-            ['barcode', 'code', 'display_name', 'uom_id', 'tracking']
-        )
+        moves = self.env['stock.move'].search_read(
+            [('product_id.barcode', '!=', None)],
+            ['product_id'], order='create_date DESC', limit=10000)
+        product_ids = list(set(m['product_id'][0] for m in moves))
+        product_ids += self.env['product.product'].search(
+            [('barcode', '!=', None), ('type', '!=', 'service')], limit=10000).ids
+        products = self.env['product.product'].browse(product_ids[:10000]).read(
+            ['barcode', 'code', 'display_name', 'uom_id', 'tracking'])
         packagings = self.env['product.packaging'].search_read(
             [('barcode', '!=', None)],
             ['barcode', 'product_id', 'qty']

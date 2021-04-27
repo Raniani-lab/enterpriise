@@ -778,7 +778,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message_scan_src',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
             helper.assertPreviousVisible(true);

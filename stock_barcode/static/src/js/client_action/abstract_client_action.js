@@ -232,6 +232,24 @@ var ClientAction = AbstractAction.extend({
         });
     },
 
+    _getProductByBarcode: async function (barcode) {
+        let product = this.productsByBarcode[barcode];
+        if (product) {
+            return product;
+        } else {
+            product = await this._rpc({
+                model: 'product.product',
+                method: 'search_read',
+                args: [[['barcode', '=', barcode]], ['barcode', 'display_name', 'uom_id', 'tracking']],
+            });
+            if (product.length) {
+                this.productsByBarcode[barcode] = product[0];
+                return product[0];
+            }
+            return false;
+        }
+    },
+
     _loadNomenclature: function () {
         // barcode nomenclature
         this.barcodeParser = new BarcodeParser({'nomenclature_id': this.currentState.nomenclature_id});
@@ -243,14 +261,15 @@ var ClientAction = AbstractAction.extend({
     _isProduct: function (barcode) {
         var parsed = this.barcodeParser.parse_barcode(barcode);
         if (parsed.type === 'weight') {
-            var product = this.productsByBarcode[parsed.base_code];
+            return this._getProductByBarcode(parsed.base_code).then(function (product) {
             // if base barcode is not a product, error will be thrown in _step_product()
-            if (product) {
-                product.qty = parsed.value;
-            }
-            return product;
+                if (product) {
+                    product.qty = parsed.value;
+                }
+                return product;
+            });
         } else {
-            return this.productsByBarcode[parsed.code];
+            return this._getProductByBarcode(parsed.code);
         }
     },
 
@@ -1055,13 +1074,13 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} linesActions
      * @returns {Promise}
      */
-    _step_product: function (barcode, linesActions) {
+    _step_product: async function (barcode, linesActions) {
         var self = this;
         this.currentStep = 'product';
         this.stepState = $.extend(true, {}, this.currentState);
         var errorMessage;
 
-        var product = this._isProduct(barcode);
+        var product = await this._isProduct(barcode);
         if (product) {
             if (product.tracking !== 'none' && self.requireLotNumber) {
                 this.currentStep = 'lot';
@@ -1248,7 +1267,7 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} linesActions
      * @returns {Promise}
      */
-    _step_lot: function (barcode, linesActions) {
+    _step_lot: async function (barcode, linesActions) {
         if (! this.groups.group_production_lot || !this.requireLotNumber)  {
             return Promise.reject();
         }
@@ -1258,7 +1277,8 @@ var ClientAction = AbstractAction.extend({
         var self = this;
 
         // Bypass this step if needed.
-        if (this.productsByBarcode[barcode]) {
+        var product = await this._isProduct(barcode);
+        if (product) {
             return this._step_product(barcode, linesActions);
         } else if (this.locationsByBarcode[barcode]) {
             return this._step_destination(barcode, linesActions);

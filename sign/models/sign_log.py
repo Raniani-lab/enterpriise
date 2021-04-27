@@ -44,6 +44,7 @@ class SignLog(models.Model):
             ('open', 'View/Download'),
             ('save', 'Save'),
             ('sign', 'Signature'),
+            ('update_mail', 'Mail Update'),
         ], required=True,
     )
 
@@ -154,3 +155,11 @@ class SignLog(models.Model):
                 'longitude': request.session['geoip'].get('longitude') or 0.0,
             })
         return vals
+
+    def _create_log(self, record, action, is_request=False, **kwargs):
+        Log = request.env['sign.log'].sudo()
+        vals = Log._prepare_vals_from_request(record) if is_request else Log._prepare_vals_from_item(record)
+        vals['action'] = action
+        vals.update(kwargs)
+        vals = Log._update_vals_with_http_request(vals)
+        Log.create(vals)

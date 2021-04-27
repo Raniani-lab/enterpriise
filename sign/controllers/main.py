@@ -6,7 +6,6 @@ import io
 import logging
 import mimetypes
 import re
-import werkzeug
 
 from PyPDF2 import PdfFileReader
 
@@ -22,7 +21,7 @@ class Sign(http.Controller):
 
     def get_document_qweb_context(self, id, token):
         sign_request = http.request.env['sign.request'].sudo().browse(id).exists()
-        if not sign_request:
+        if http.request.is_frontend and (not sign_request or not sign_request.active):
             if token:
                 return http.request.render('sign.deleted_sign_request')
             else:
@@ -67,11 +66,8 @@ class Sign(http.Controller):
         for value in sr_values:
             item_values[value.sign_item_id.id] = value.value
 
-        Log = request.env['sign.log'].sudo()
-        vals = Log._prepare_vals_from_item(current_request_item) if current_request_item else Log._prepare_vals_from_request(sign_request)
-        vals['action'] = 'open'
-        vals = Log._update_vals_with_http_request(vals)
-        Log.create(vals)
+        is_request, record = (False, current_request_item) if current_request_item else (True, sign_request)
+        request.env['sign.log']._create_log(record, "open", is_request)
 
         return {
             'sign_request': sign_request,
@@ -103,15 +99,15 @@ class Sign(http.Controller):
             return http.request.render('sign.deleted_sign_request')
         current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
         current_request_item.access_via_link = True
-        return werkzeug.redirect('/sign/document/%s/%s' % (id, token))
+        return http.local_redirect('/sign/document/%s/%s' % (id, token))
 
     @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public')
     def sign_document_public(self, id, token, **post):
         document_context = self.get_document_qweb_context(id, token)
-        document_context['portal'] = post.get('portal')
         if not isinstance(document_context, dict):
             return document_context
 
+        document_context['portal'] = post.get('portal')
         current_request_item = document_context.get('current_request_item')
         if current_request_item and current_request_item.partner_id.lang:
             http.request.env.context = dict(http.request.env.context, lang=current_request_item.partner_id.lang)
@@ -291,12 +287,7 @@ class Sign(http.Controller):
         for sign_user in sign_users:
             request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
-        Log = request.env['sign.log'].sudo()
-        vals = Log._prepare_vals_from_item(request_item)
-        vals['action'] = 'sign'
-        vals['token'] = token
-        vals = Log._update_vals_with_http_request(vals)
-        Log.create(vals)
+        request.env['sign.log']._create_log(request_item, "sign", is_request=False, token=token)
         request_item.action_completed()
         return True
 

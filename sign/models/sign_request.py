@@ -20,7 +20,7 @@ from werkzeug.urls import url_join
 from random import randint
 
 from odoo import api, fields, models, http, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, config, get_lang, is_html_empty
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, config, get_lang, is_html_empty, formataddr
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "src", "fonts", "sign"))
@@ -227,11 +227,7 @@ class SignRequest(models.Model):
             included_request_items = sign_request.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners)
 
             if sign_request.send_signature_accesses(subject, message, ignored_partners=ignored_partners):
-                Log = http.request.env['sign.log'].sudo()
-                vals = Log._prepare_vals_from_request(sign_request)
-                vals['action'] = 'create'
-                vals = Log._update_vals_with_http_request(vals)
-                Log.create(vals)
+                self.env['sign.log']._create_log(sign_request, "create", is_request=True)
                 included_request_items.action_sent()
             else:
                 sign_request.action_draft()
@@ -591,7 +587,7 @@ class SignRequestItem(models.Model):
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
-    signer_email = fields.Char(related='partner_id.email', readonly=False, depends=(['partner_id']), store=True)
+    signer_email = fields.Char(compute="_compute_email", readonly=False, store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
 
     latitude = fields.Float(digits=(10, 7))
@@ -603,6 +599,7 @@ class SignRequestItem(models.Model):
             'signing_date': None,
             'access_token': self._default_access_token(),
             'state': 'draft',
+            'is_mail_sent': False,
         })
         for request_item in self:
             itemsToClean = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id or not r.responsible_id)
@@ -621,10 +618,10 @@ class SignRequestItem(models.Model):
     def send_signature_accesses(self, subject=None, message=None):
         tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
-            if not signer.partner_id or not signer.partner_id.email:
-                continue
-            if not signer.create_uid.email:
-                continue
+            if not signer.partner_id or not signer.signer_email:
+                raise UserError(_("Please complete the partner email address"))
+            if not signer.create_uid.email_formatted:
+                raise UserError(_("Please configure your email address"))
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             tpl = tpl.with_context(lang=signer_lang)
             body = tpl._render({
@@ -634,15 +631,13 @@ class SignRequestItem(models.Model):
                 'body': message if not is_html_empty(message) else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
-            if not signer.signer_email:
-                raise UserError(_("Please configure the signer's email address"))
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
                 {'model_description': 'signature', 'company': signer.create_uid.company_id},
                 {'email_from': signer.create_uid.email_formatted,
                  'author_id': signer.create_uid.partner_id.id,
-                 'email_to': signer.partner_id.email_formatted,
+                 'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
                  'subject': subject},
                 force_send=True,
                 lang=signer_lang,
@@ -689,10 +684,10 @@ class SignRequestItem(models.Model):
     def resend_access(self, id):
         sign_request_item = self.browse(id)
         sign_request_item.write({'is_mail_sent': True})
-        sign_request_item.sign_request_id.message_post(body=_('The signature mail has been send to %s.') % sign_request_item.partner_id.name)
         message = sign_request_item.sign_request_id.message
         subject = _("Signature Request - %s") % (sign_request_item.sign_request_id.template_id.attachment_id.name)
         self.browse(id).send_signature_accesses(subject=subject, message=message)
+        sign_request_item.sign_request_id.message_post(body=_('The signature mail has been send to %s.') % sign_request_item.partner_id.name)
 
     def _reset_sms_token(self):
         for record in self:
@@ -707,6 +702,22 @@ class SignRequestItem(models.Model):
         super(SignRequestItem, self)._compute_access_url()
         for signature_request in self:
             signature_request.access_url = '/my/signature/%s' % signature_request.id
+
+    @api.depends('partner_id')
+    def _compute_email(self):
+        for sign_request_item in self:
+            sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
+
+    def _update_email(self):
+        for sign_request_item in self:
+            sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
+            sign_request_item.access_token = self.env['sign.request']._default_access_token()
+            if sign_request_item.is_mail_sent:
+                sign_request_item.sign_request_id.message_post(
+                    body=_('The mail address of %s has been updated. The request will be automatically resent.',
+                           sign_request_item.partner_id.name))
+                self.env['sign.log']._create_log(sign_request_item, 'update_mail', is_request=False)
+                sign_request_item.resend_sign_access()
 
 
 class SignRequestItemValue(models.Model):

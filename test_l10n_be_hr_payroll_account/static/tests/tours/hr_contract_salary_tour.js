@@ -990,6 +990,11 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click',
         },
         {
+            content: "Add email Address",
+            trigger: ".modal-dialog .o_group input[name=\"email\"]",
+            run: 'text mitchell.stephen@example.com',
+        },
+        {
             content: "Confirm Partner Creation",
             trigger: ".modal-dialog .btn-primary span:contains('Save')",
             run: 'click'

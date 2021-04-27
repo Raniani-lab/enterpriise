@@ -30,3 +30,11 @@ class ResPartner(models.Model):
                 'search_default_in_progress': 1,
             },
         }
+
+    def write(self, vals):
+        partners_email_changed = self.filtered(lambda r: r.email != vals['email']) if 'email' in vals else None
+        res = super(ResPartner, self).write(vals)
+        if partners_email_changed:
+            sign_request_items = self.env['sign.request.item'].sudo().search([('partner_id', 'in', partners_email_changed.ids), ('state', '!=', 'completed'), ('sign_request_id.active', '=', True)])
+            sign_request_items._update_email()
+        return res

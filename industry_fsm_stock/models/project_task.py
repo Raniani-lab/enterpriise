@@ -8,9 +8,12 @@ from odoo.tools import float_compare, float_round
 class Task(models.Model):
     _inherit = "project.task"
 
-    def action_fsm_validate(self):
-        result = super(Task, self).action_fsm_validate()
+    def _prepare_materials_delivery(self):
+        """ Prepare the materials delivery
 
+            We validate the stock and generates/updates delivery order.
+            This method is called at the end of the action_fsm_validate method in industry_fsm_sale.
+        """
         for task in self.filtered(lambda x: x.allow_billable and x.sale_order_id):
             exception = False
             sale_line = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id)])
@@ -27,7 +30,6 @@ class Task(models.Model):
                     self.env['sale.order']._log_decrease_ordered_quantity(documents)
             if not exception:
                 task.sudo()._validate_stock()
-        return result
 
     def _validate_stock(self):
         self.ensure_one()

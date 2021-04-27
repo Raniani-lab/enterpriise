@@ -233,6 +233,7 @@ class Task(models.Model):
             task._fsm_create_sale_order_line()
             if task.sudo().sale_order_id.state in ['draft', 'sent']:
                 task.sudo().sale_order_id.action_confirm()
+        billable_tasks._prepare_materials_delivery()
 
     def _fsm_ensure_sale_order(self):
         """ get the SO of the task. If no one, create it and return it """
@@ -399,6 +400,17 @@ class Task(models.Model):
                 'timesheet_ids': [fields.Command.update(timesheet_id, {'so_line': sale_order_line.id}) for timesheet_id in not_billed_timesheets.ids]
             })
 
+    def _prepare_materials_delivery(self):
+        # While industry_fsm_stock is not installed then we automatically deliver materials
+        read_group_timesheets = self.env['account.analytic.line'].sudo().search_read([('task_id', 'in', self.ids), ('project_id', '!=', False), ('so_line', '!=', False)], ['so_line'])
+        timesheet_sol_ids = [timesheet['so_line'][0] for timesheet in read_group_timesheets]
+        sale_order_lines = self.env['sale.order.line'].sudo().search([
+            ('id', 'not in', timesheet_sol_ids),
+            ('task_id', 'in', self.ids),
+            ('order_id', 'in', self.sale_order_id.sudo().filtered(lambda so: so.state == 'sale').ids),
+        ])
+        for sol in sale_order_lines:
+            sol.qty_delivered = sol.product_uom_qty
 
 class ProjectTaskRecurrence(models.Model):
     _inherit = 'project.task.recurrence'

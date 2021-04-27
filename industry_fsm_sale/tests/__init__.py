@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from . import test_deliver_materials_when_task_done
 from . import test_fsm_project_pricing_type
 from . import test_industry_fsm_sale_flow
 from . import test_multicompany

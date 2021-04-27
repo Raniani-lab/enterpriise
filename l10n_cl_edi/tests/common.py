@@ -35,6 +35,7 @@ class TestL10nClEdiCommon(AccountEdiTestCommon):
             'l10n_cl_sii_regional_office': 'ur_SaC',
             'l10n_cl_company_activity_ids': [(6, 0, [cls.env.ref('l10n_cl_edi.eco_new_acti_620200').id])],
             'extract_show_ocr_option_selection': 'no_send',
+            'tax_calculation_rounding_method': 'round_globally',
         })
         cls.company_data['company'].partner_id.write({
             'l10n_cl_sii_taxpayer_type': '1',

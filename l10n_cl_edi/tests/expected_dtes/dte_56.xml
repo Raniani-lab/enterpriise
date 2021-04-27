@@ -32,8 +32,8 @@
 			<Totales>
 				<MntNeto>885779</MntNeto>
 				<TasaIVA>19.00</TasaIVA>
-				<IVA>168299</IVA>
-				<MntTotal>1054078</MntTotal>
+				<IVA>168298</IVA>
+				<MntTotal>1054077</MntTotal>
 			</Totales>
 		</Encabezado>
 		<Detalle>
@@ -125,7 +125,7 @@
         <FE>2019-10-23</FE>
         <RR>76086428-5</RR>
         <RSR>Partner SII</RSR>
-        <MNT>1054078</MNT>
+        <MNT>1054077</MNT>
         <IT1>product_a</IT1>
         <CAF version="1.0">
                     <DA>
@@ -147,10 +147,10 @@
                 </CAF>
                 <TSTED>2019-10-24T20:00:00</TSTED>
             </DD>
-                <FRMT algoritmo="SHA1withRSA">Jc+ML4w/1Fs7sNQ7uvV32Bh+/vvCUeu7uRZaXDgSiTwrcKib7DESIkp4p2dHLP9V77+uKdVI9uB7lnVGWTYGGQ==</FRMT>
+                <FRMT algoritmo="SHA1withRSA">P3EXzjm0wo/4lGDwMW02rAwUFKwVl2tqbbMEzS86XsJqW9xBKeBPSMlROCBnE8BLK0t2WK372hlqswFGQzPMYA==</FRMT>
             </TED><TmstFirma>2019-10-24T20:00:00</TmstFirma>
             </Documento>
-        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#F122T56"><Transforms><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>VTyu/JV2bXM1tXpa0sSugtpd8YM=</DigestValue></Reference></SignedInfo><SignatureValue>Iaww+TzCieOl1yaAqTbZrNOero2mHjRY6xKT8hGH53IipgLwsWsdTBl5QaZ52544PxBnrUYaOVuRphFU1Qd6yQYf7ZBVvBhEiAVZZBeFX/PtCWLtwRhQrDDRTbBmgHs3YwtlZs52mtB71YkZ58wXfCGd2V+bSOubOc/Dlo4DrYQJHgSiqmBCotlOoM0x6nG4JoeFJGpVUiOLjZc62dPJZKpBhQsFEoToqoHKMTaiFWM57gBn46JgQiOBnmki4b1Qgn3Xoa6PIXn45eUvo6AF032juSZHr0dRdDxXXYx1q2cTapoB9+8ktxVgXax+jzRFIc+KOqcoGcSbmTMrIp2kU+ZS3/bxb6KF81a2o7ZR4qDK819Jqx72UuyzpBvUeISa1UHOgyW0Mddl6Nv7NtuFgV8u1dCr+t6GkM0zGyKwaBdJnq7fBDrXG2lMUIzIzLAJa9gcu/Zd6UDLxP8dRB9dyOSQFB4Lv0vv+JcEAa2mom4yydFNUT9CvRedfxLeGW7cwTl03j9G8YnTKcRSMZ8dipiJkPV6UBwyrB4Ho5RTprbOWr2tBqyWvYjsBFDIN+0Y600tMN/1p/HQrtK2PiievZ5FxBaq4fCwksHEABVYBe7V0J7Id++vGg393JNVFdJy8vopQX4t9ofb6+0m6XnzMGY4Ckxq1E19BZWGkwAbC5U=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>z9febWH4bX4RyTuvflZzqd2sxdye2IxC8OHwFlLfNOjcb3+APvvIwP50Eo1jyU8p3+4ylSEOaawBdwj/QOWIdZ9mhbfnZvXD8aQx2Qwt63s9rNtSnlHi/2X4Qfgn777dfgr3AddxCbtM4H5qChginhyPzJeND7dRtgCQU88HABJW3LDQDWrjt6aAGMIHqM2giZVKugz9SMP73R0KrdChRAgx1Z3Qo5K/RB6fsYGvGZDV7pcMGCSNFSTK+7lKeadI+Wupbf8K3UBAFXgwEd0XEpN+ZJvmoRD5Gv6VKbw88sKyQvG1gijmWW5a2vomuJBXhgT02FkL0wgzupsc4kT5q9s51ZIADXiq5G4s5iVaxiqHZKUvLKTCAXEBtyypgOgQ7C9z/9NIKutNW+tXciYZ+ngPHIWwtRmUhv2Kf4I3sjqLfRswMDnbmApw1DXzgJZT6qM/JCIl8SV40wnZ4f/SIQFXbpkP0s9UMY0YC2m0bUrXKfij7ALuZsf2S19tDoEOG49YXXsVoz+LKsO0XLL2XmcTPAxPvgeEGI9eSBczkpGcHBpQAFKZ8vpDkRInyaN9hBLeyTWWebRYZqJU1RgNA1GGbLEfm1e/d1Tza2re8ovrL3DgW1z7FHZuvMlAtoQuqu8E5eMak2u9eMxM6AoOOxIJ4+ALcCrB0FumIwUvgIU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#F122T56"><Transforms><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>795icPZpp5LSKpAODIh9hoc6Rqg=</DigestValue></Reference></SignedInfo><SignatureValue>sa8nGvZtwLqX4bGRLjLH7fdCriHk/m56tFWBHHCEhnfo/OYNiGfQ4ghTZp8FRT9zVWB81po+Amw0ugHkeQDW5BTD1h16ec1gHIbQzo/aULMPLoWZGDib2iUJ3VIs/MhY+jEMVtz1qSJYMbdRhXqP3hr7XSWEVLW1J2oibQN9XaL5qEfHtFyFwRdAHWnxfZ9odVHm0jIc1KxTeGkfzxcFRQmWlkTLP4XhhFQToAl+rRWeJFdsSCpzfBoi+G4XdurvJ4GG+C7CTuuRs+OsiefrUCdX/Xfq8mvdAALEhQI2oiTaT2Kwml05iW8USXVow+tPnvSG9nA/DMmm9DkMICxQc38gkE/D1VpGRxsk6uVBavqFfE50bID+VaA/J7hD4G+Cc84UPkPHUmQuQFpHV/XxVa+k1/fq3onGn6Ej54n60SVScFCLbiTT5mEOv5XGSrWsgRwoQg7UCsuS3Gft6sP1XLlbfVyaMAhPsIuDTqM3xlO5LW/vRJInxmqudRQshUMv6vOPa/Agab4NoSveDjgofzIgB4FaOM6I4b0q6moMYtlq06teixeQjokPjGjezi0FA2U/To1alknyxr9l3NnkgrBtiOWe+vTEortCk3HOnYP1yl4s4SRZzw5rgYutS53Fa/Hpqn0694tV2G9jqV45fNls6HJOze1y9VoS25Sy2Sw=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>z9febWH4bX4RyTuvflZzqd2sxdye2IxC8OHwFlLfNOjcb3+APvvIwP50Eo1jyU8p3+4ylSEOaawBdwj/QOWIdZ9mhbfnZvXD8aQx2Qwt63s9rNtSnlHi/2X4Qfgn777dfgr3AddxCbtM4H5qChginhyPzJeND7dRtgCQU88HABJW3LDQDWrjt6aAGMIHqM2giZVKugz9SMP73R0KrdChRAgx1Z3Qo5K/RB6fsYGvGZDV7pcMGCSNFSTK+7lKeadI+Wupbf8K3UBAFXgwEd0XEpN+ZJvmoRD5Gv6VKbw88sKyQvG1gijmWW5a2vomuJBXhgT02FkL0wgzupsc4kT5q9s51ZIADXiq5G4s5iVaxiqHZKUvLKTCAXEBtyypgOgQ7C9z/9NIKutNW+tXciYZ+ngPHIWwtRmUhv2Kf4I3sjqLfRswMDnbmApw1DXzgJZT6qM/JCIl8SV40wnZ4f/SIQFXbpkP0s9UMY0YC2m0bUrXKfij7ALuZsf2S19tDoEOG49YXXsVoz+LKsO0XLL2XmcTPAxPvgeEGI9eSBczkpGcHBpQAFKZ8vpDkRInyaN9hBLeyTWWebRYZqJU1RgNA1GGbLEfm1e/d1Tza2re8ovrL3DgW1z7FHZuvMlAtoQuqu8E5eMak2u9eMxM6AoOOxIJ4+ALcCrB0FumIwUvgIU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>
 MIIF1jCCA74CCQCRWYi6uLtDIDANBgkqhkiG9w0BAQsFADCBrDELMAkGA1UEBhMC
 Q0wxMzAxBgNVBAoMKlNvYyBkZSBTZXJ2aWNpb3MgSGVjdG9yIERhbmllbCBCbGFu
 Y28gRUlSTDEzMDEGA1UECwwqU29jIGRlIFNlcnZpY2lvcyBIZWN0b3IgRGFuaWVs

@@ -91,8 +91,8 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         self.assertEqual(move.company_id, self.company_data['company'])
         self.assertEqual(len(move.invoice_line_ids), 2)
         self.assertEqual(move.currency_id.name, 'CLP')
-        self.assertEqual(move.amount_total, 351391)
-        self.assertEqual(move.amount_tax, 56105)
+        self.assertEqual(move.amount_total, 351390)
+        self.assertEqual(move.amount_tax, 56104)
 
     def test_create_invoice_34_from_attachment(self):
         """Include Invoice Reference"""

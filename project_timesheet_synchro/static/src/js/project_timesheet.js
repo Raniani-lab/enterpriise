@@ -2102,7 +2102,7 @@ odoo.define('project_timeshee.ui', function (require ) {
         init: function(parent) {
             this._super(parent);
             this.show_iframe = true;
-            self.odoo_is_online = false;
+            this.odoo_is_online = false;
             window.addEventListener("message", this.received_message, false);
             core.bus.on('db_created', this, this.on_db_creation_success);
         },

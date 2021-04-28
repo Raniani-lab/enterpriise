@@ -7,8 +7,10 @@ import makeTestEnvironment from "web.test_env";
 const { EventBus } = owl.core
 
 class MockBusService {
-    channels = [];
-    _bus = new EventBus()
+    constructor() {
+        this.channels = [];
+        this._bus = new EventBus();
+    }
 
     addChannel(name) {
         this.channels.push(name);

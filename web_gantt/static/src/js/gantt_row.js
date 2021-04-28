@@ -767,8 +767,8 @@ var GanttRow = Widget.extend({
                     self.$('.o_gantt_pill').popover('disable');
                     self.$lockIndicator.appendTo($pill);
                 },
-                drag: function () {
-                    if ($(event.target).hasClass('o_gantt_pill_editing')) {
+                drag: function (ev) {
+                    if ($(ev.target).hasClass('o_gantt_pill_editing')) {
                         // Kill draggable if pill opened its dialog
                         return false;
                     }

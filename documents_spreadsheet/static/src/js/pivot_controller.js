@@ -57,7 +57,7 @@ odoo.define("documents_spreadsheet.PivotController", function (require) {
                     method: "get_spreadsheets_to_display",
                     args: [],
                 });
-                const dialog = new SpreadsheetSelectorDialog(self, spreadsheets).open();
+                const dialog = new SpreadsheetSelectorDialog(this, spreadsheets).open();
                 dialog.on("confirm", this, this._insertInSpreadsheet);
             }
         },

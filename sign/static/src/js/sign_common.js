@@ -1086,12 +1086,12 @@ odoo.define('sign.document_signing', function (require) {
 
         events: {
             'click button.o_sign_resend_sms': function(e) {
-                var $btn = self.$('.o_sign_resend_sms');
+                var $btn = this.$('.o_sign_resend_sms');
                 $btn.attr('disabled', true);
                 var route = '/sign/send-sms/' + this.requestID + '/' + this.requestToken + '/' + this.$('#o_sign_phone_number_input').val();
                 session.rpc(route, {}).then(function(success) {
                     if (!success) {
-                        Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
+                        Dialog.alert(this, _t("Unable to send the SMS, please contact the sender of the document."), {
                             title: _t("Error"),
                         });
                     }
@@ -1104,7 +1104,7 @@ odoo.define('sign.document_signing', function (require) {
                     }
                 }).guardedCatch(function (error) {
                     $btn.removeAttr('disabled');
-                    Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
+                    Dialog.alert(this, _t("Unable to send the SMS, please contact the sender of the document."), {
                         title: _t("Error"),
                     });
                 });
@@ -1138,6 +1138,8 @@ odoo.define('sign.document_signing', function (require) {
                 }
                 if (typeof response === 'object') {
                     if (response.url) {
+                        // FIXME: the variable 'sucess' is not declared
+                        // eslint-disable-next-line no-undef
                         document.location.pathname = success.url;
                     }
                 }
@@ -1672,7 +1674,7 @@ odoo.define('sign.document_signing', function (require) {
 
         custom_events: { // do_notify is not supported in backend so it is simulated with a bootstrap alert inserted in a frontend-only DOM element
             'notification': function (e) {
-                $('<div/>', {html: e.data.message}).addClass('alert alert-success').insertAfter(self.$('.o_sign_request_reference_title'));
+                $('<div/>', {html: e.data.message}).addClass('alert alert-success').insertAfter(this.$('.o_sign_request_reference_title'));
             },
         },
 

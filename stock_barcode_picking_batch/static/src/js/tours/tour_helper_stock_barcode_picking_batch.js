@@ -26,7 +26,7 @@ function getLines (options) {
     }
     let $lines = $(selector);
     if (!$lines && barcode) {
-        fail('cannot get the line with the barcode ' + barcode);
+        helper.fail('cannot get the line with the barcode ' + barcode);
     }
 
     if (index) {
@@ -42,7 +42,7 @@ function getLines (options) {
         }
         $lines = $lines.filter(filters);
         if ($lines.length !== index.length) {
-            fail(`try to select ${index.length} line(s), found ${$lines.length} line(s) instead`);
+            helper.fail(`try to select ${index.length} line(s), found ${$lines.length} line(s) instead`);
         }
     }
 

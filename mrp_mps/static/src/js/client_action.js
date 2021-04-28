@@ -741,7 +741,6 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} searchQuery
      */
     _onSearch: function (searchQuery) {
-        event.stopPropagation();
         var self = this;
         this.domain = searchQuery.domain;
         this.$pager.remove();

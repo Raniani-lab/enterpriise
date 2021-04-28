@@ -493,7 +493,7 @@ const MapModel = AbstractModel.extend({
             this._rpc({
                 model: 'res.partner',
                 method: 'update_latitude_longitude',
-                context: self.context,
+                context: this.context,
                 args: [this.partnerToCache]
             });
             this.partnerToCache = [];

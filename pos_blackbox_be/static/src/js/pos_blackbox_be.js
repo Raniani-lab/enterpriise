@@ -6,6 +6,8 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
     var Class = require('web.Class');
     var devices = require('point_of_sale.devices');
     var _t      = core._t;
+    const utils = require('web.utils');
+    const round_pr = utils.round_precision;
 
     var orderline_super = models.Orderline.prototype;
     models.Orderline = models.Orderline.extend({
@@ -1187,6 +1189,8 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             if (!data.value) {
                 this._show_could_not_connect_error();
             } else {
+                // Everything will be changed in 14.0 soon, so we skip the eslint test on this line
+                // eslint-disable-next-line no-undef
                 var parsed_response = this.parse_fdm_pin_response(response);
 
                  // pin being verified will show up as 'error'
@@ -1234,6 +1238,8 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
 
         _check_and_parse_fdm_hash_and_sign_response: function (resolve, reject, hide_error, data) {
             if (!data.value) {
+                // Everything will be changed in 14.0 soon, so we skip the eslint test on this line
+                // eslint-disable-next-line no-undef
                 return this._retry_request_fdm_hash_and_sign(packet, hide_error);
             } else {
                 var parsed_response = this.parse_fdm_hash_and_sign_response(data.value);

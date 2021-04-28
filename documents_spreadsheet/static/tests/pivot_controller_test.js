@@ -493,6 +493,26 @@ test("pivot with a quote in name", async function (assert) {
     actionManager.destroy();
 });
 
+test("group by regular field defined with not supported aggregate", async function (assert) {
+    assert.expect(2);
+
+    const {actionManager, model} = await createSpreadsheetFromPivot({
+        model: "partner",
+        data: getTestData(),
+        arch: `
+        <pivot string="Partners">
+            <field name="foo" type="row"/>
+            <field name="field_with_array_agg" type="measure"/>
+        </pivot>`,
+    });
+    const B7 = getCell(model, "B7");
+    assert.equal(B7.error, `Not implemented: array_agg`);
+    assert.equal(B7.value, `#ERROR`);
+
+    actionManager.destroy();
+});
+
+
 test("group by related field with archived record", async function (assert) {
     assert.expect(3);
 

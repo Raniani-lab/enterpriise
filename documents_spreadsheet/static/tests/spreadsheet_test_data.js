@@ -75,6 +75,12 @@ export function getTestData() {
                     searchable: true,
                     group_operator: "avg",
                 },
+                field_with_array_agg: {
+                    string: "field_with_array_agg",
+                    type: "integer",
+                    searchable: true,
+                    group_operator: "array_agg",
+                },
             },
             records: [{
                 id: 1,
@@ -83,6 +89,7 @@ export function getTestData() {
                 date: "2016-04-14",
                 product_id: 37,
                 probability: 10,
+                field_with_array_agg: 1,
             }, {
                 id: 2,
                 foo: 1,
@@ -90,6 +97,7 @@ export function getTestData() {
                 date: "2016-10-26",
                 product_id: 41,
                 probability: 11,
+                field_with_array_agg: 2,
             }, {
                 id: 3,
                 foo: 17,
@@ -97,6 +105,7 @@ export function getTestData() {
                 date: "2016-12-15",
                 product_id: 41,
                 probability: 95,
+                field_with_array_agg: 3,
             }, {
                 id: 4,
                 foo: 2,
@@ -104,6 +113,7 @@ export function getTestData() {
                 date: "2016-12-11",
                 product_id: 41,
                 probability: 15,
+                field_with_array_agg: 4,
             }],
         },
         product: {

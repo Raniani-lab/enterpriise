@@ -1,6 +1,7 @@
 /** @odoo-module alias=documents_spreadsheet.PivotCache */
 
 import spreadsheet from "../o_spreadsheet_loader";
+import {_t} from "web.core";
 
 const { toString} = spreadsheet.helpers;
 

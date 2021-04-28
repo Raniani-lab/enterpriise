@@ -12,6 +12,7 @@ from odoo import api, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, date_utils, convert_file
+from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
 
@@ -403,7 +404,8 @@ class HrPayslip(models.Model):
 
     def _get_base_local_dict(self):
         return {
-            'float_round': float_round
+            'float_round': float_round,
+            'float_compare': float_compare,
         }
 
     def _get_localdict(self):

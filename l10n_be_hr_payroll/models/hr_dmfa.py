@@ -661,6 +661,8 @@ class DMFAOccupation(DMFANode):
         termination_n = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n_pay_simple')
         termination_n1 = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_n1_pay_simple')
         termination_fees = self.env.ref('l10n_be_hr_payroll.cp200_employees_termination_fees_basic')
+        holiday_pay_recovery_n = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n', raise_if_not_found=False)
+        holiday_pay_recovery_n1 = self.env.ref('l10n_be_hr_payroll_holiday_pay_recovery.cp200_employees_salary_holiday_pay_recovery_n1', raise_if_not_found=False)
         # YTI TODO: Double holidays ?
         # YTI TODO: Students
         codes = {
@@ -671,6 +673,9 @@ class DMFAOccupation(DMFANode):
             regular_car: 10,
             termination_fees: 3,
         }
+        if holiday_pay_recovery_n:
+            codes[holiday_pay_recovery_n] = 12
+            codes[holiday_pay_recovery_n1] = 12
         frequencies = {
             rule_13th_month_gross: 12
         }

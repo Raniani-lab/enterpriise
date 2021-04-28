@@ -84,7 +84,7 @@ result = 7.0
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories.BASIC
+result = categories.BASIC + result_rules['HolPayRecN']['total'] + result_rules['HolPayRecN1']['total']
 if inputs.COMMISSION:
     result += result_rules['COMMISSION']['total']
 if inputs.AFTERPUB:

@@ -16,10 +16,7 @@ class HrPayslipWorkedDays(models.Model):
 
     @api.depends('is_paid', 'is_credit_time', 'number_of_hours', 'payslip_id', 'payslip_id.normal_wage', 'payslip_id.sum_worked_hours')
     def _compute_amount(self):
-        # YTI TODO master: This crappy hack can removed as soon as hr_payroll_edit_lines is merged into hr_payroll
-        if 'edited' in self.payslip_id:
-            self = self.filtered(lambda wd: not wd.payslip_id.edited)
-        monthly_self = self.filtered(lambda wd: wd.payslip_id.wage_type == "monthly")
+        monthly_self = self.filtered(lambda wd: not wd.payslip_id.edited and wd.payslip_id.wage_type == "monthly")
 
         credit_time_days = monthly_self.filtered(lambda worked_day: worked_day.is_credit_time)
         credit_time_days.update({'amount': 0})

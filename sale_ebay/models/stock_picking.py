@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, api
-
+import re
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -28,7 +28,7 @@ class StockPicking(models.Model):
                     call_data['Shipment'] = {
                         'ShipmentTrackingDetails': {
                             'ShipmentTrackingNumber': picking.carrier_tracking_ref,
-                            'ShippingCarrierUsed': picking.carrier_id.name,
+                            'ShippingCarrierUsed': re.sub('[^A-Za-z0-9- ]', '', picking.carrier_id.name),
                         },
                     }
                 self.env['product.template'].ebay_execute("CompleteSale", call_data)

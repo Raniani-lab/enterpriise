@@ -832,16 +832,14 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         const ruleId = parseInt(ev.currentTarget.dataset.ruleId);
         const rule = this.state.approvalData.rules.find(r => r.id === ruleId);
         const dialog = new DomainSelectorDialog(this, this.model_name, rule.domain||[], {
-            title: _('Condition'),
+            title: _t('Condition'),
             readonly: false,
             fields: this.fields,
             size: 'medium',
             operators: ["=", "!=", "<", ">", "<=", ">=", "in", "not in", "set", "not set"],
             followRelations: true,
             debugMode: config.isDebug(),
-            $content: $(
-                _t("<div><p>The approval rule is only applied to records matching the following condition:</p></div>")
-            ),
+            $content: $('<div>').append('<p>', {text: _t('The approval rule is only applied to records matching the following condition:')}),
         }).open();
         dialog.on("domain_selected", this, function (e) {
             this.trigger_up('approval_condition', {

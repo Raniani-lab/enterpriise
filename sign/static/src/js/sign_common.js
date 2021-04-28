@@ -1690,7 +1690,12 @@ odoo.define('sign.document_signing', function (require) {
             }
 
             if (this.current_name) {
-                parent.$('div.container-fluid .col-lg-3').first().after('<div class="col-lg-2"><div class="o_sign_request_signer text-center text-secondary">'+_('Signing as ')+'<b>'+this.current_name+'</b></h2></div></div>');
+                $('<div class="col-lg-2">')
+                    .append(
+                        $('<div class="o_sign_request_signer text-center text-secondary">')
+                            .text(_t('Signing as '))
+                            .append('<b>', {text: this.current_name}))
+                    .appendTo(parent.$('div.container-fluid .col-lg-3').first());
                 parent.$('div.container-fluid .col-lg-3').first().removeClass('col-lg-3').addClass('col-lg-5');
                 parent.$('div.container-fluid .col-lg-9').first().removeClass('col-lg-9').addClass('col-lg-5');
             }

@@ -66,7 +66,7 @@ var ClientAction = AbstractAction.extend({
         this.currentPageIndex = 0;  // The displayed page index related to `this.pages`.
         this.groups = {};
         this.title = this.actionParams.model === 'stock.quant' ? // title of
-            _('Inventory Adjustment') : ''; // the main navbar
+            _t('Inventory Adjustment') : ''; // the main navbar
 
         this.mode = undefined;      // supported mode: `receipt`, `internal`, `delivery`, `inventory`
         this.scannedLocation = undefined;
@@ -1087,7 +1087,7 @@ var ClientAction = AbstractAction.extend({
                     linesActions.push([this.linesWidget.addProduct, [res.lineDescription, this.actionParams.model]]);
                 }
             } else if (!(res.id || res.virtualId)) {
-                return Promise.reject(_("There are no lines to increment."));
+                return Promise.reject(_t("There are no lines to increment."));
             } else {
                 if (product.tracking === 'none' || !self.requireLotNumber) {
                     linesActions.push([this.linesWidget.incrementProduct, [res.id || res.virtualId, product.qty || 1, this.actionParams.model]]);

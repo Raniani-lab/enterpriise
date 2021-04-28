@@ -152,7 +152,7 @@ odoo.define('sign.views_custo', function(require) {
                         self.do_action({
                             type: "ir.actions.client",
                             tag: 'sign.Template',
-                            name: _('Template ') + ' "' + f.name + '"',
+                            name: _.str.sprintf(_t('Template "%s"'), f.name),
                             context: {
                                 sign_edit_call: sign_edit_context,
                                 id: data.template,

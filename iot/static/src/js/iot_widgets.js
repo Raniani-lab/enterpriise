@@ -165,7 +165,7 @@ var IoTDownloadLogsButton = Widget.extend(IoTConnectionMixin, {
      */
     start: function () {
         this._super.apply(this, arguments);
-        this.$el.text(_('Download Logs'));
+        this.$el.text(_t('Download Logs'));
     },
 
     //--------------------------------------------------------------------------

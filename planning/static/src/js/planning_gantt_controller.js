@@ -60,11 +60,10 @@ var PlanningGanttController = GanttController.extend({
         dialog.on('execute_action', this, function(e) {
             const action_name = e.data.action_data.name || e.data.action_data.special;
             const event_data = _.clone(e.data);
-            let message;
 
             if (action_name === "unlink") {
                 e.stopPropagation();
-                message = _('Are you sure that you want to do delete this shift?');
+                const message = _t('Are you sure that you want to do delete this shift?');
 
                 Dialog.confirm(self, message, {
                     confirm_callback: function(evt) {

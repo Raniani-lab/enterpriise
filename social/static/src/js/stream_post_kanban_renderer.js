@@ -5,6 +5,7 @@ var core = require('web.core');
 var KanbanColumn = require('web.KanbanColumn');
 var KanbanRenderer = require('web.KanbanRenderer');
 var QWeb = core.qweb;
+const _t = core._t;
 var utils = require('web.utils');
 
 /**
@@ -87,11 +88,11 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
         this.$el.closest('.o_content').prepend($('<a>', {
             class: 'o_social_stream_post_kanban_new_content alert alert-info mb-0 text-center border-bottom' + (this.refreshRequired ? '' : ' d-none'),
             href: '#',
-            text: _('New content available.')
+            text: _t('New content available.')
         }).append($('<i>', {
             class: 'fa fa-refresh ml-2 mr-1'
         })).append($('<b>', {
-            text: _('Click to refresh.')
+            text: _t('Click to refresh.')
         })).on('click', function (ev) {
             ev.preventDefault();
             $(ev.currentTarget).addClass('d-none');

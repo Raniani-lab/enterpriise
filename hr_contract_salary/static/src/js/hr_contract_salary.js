@@ -4,7 +4,7 @@ odoo.define('hr_contract_salary', function (require) {
 const concurrency = require('web.concurrency');
 const publicWidget = require('web.public.widget');
 const utils = require('web.utils');
-const {qweb} = require('web.core');
+const {qweb, _t} = require('web.core');
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -171,7 +171,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             if (input.value && !Number.isInteger(parseFloat(input.value))) {
                 isInvalidInput = true;
                 if (!input.classList.contains('border-danger')) {
-                    $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Not a valid input in integer field') + "</div>");
+                    $("<div class='alert alert-danger alert-dismissable fade show'>")
+                        .text(_t('Not a valid input in integer field'))
+                        .appendTo($("button#hr_cs_submit").parent());
                     input.classList.toggle('border-danger', isInvalidInput);
                     $(".alert").delay(4000).slideUp(200, function () {
                         $(this).alert('close');
@@ -349,7 +351,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 requiredEmptyRadio = true;
                 const $warning = document.createElement('div');
                 $warning.classList = 'alert alert-danger alert-dismissable fade show';
-                $warning.textContent = _('Some required fields are not filled');
+                $warning.textContent = _t('Some required fields are not filled');
                 document.querySelector("button#hr_cs_submit").parentElement.append($warning);
                 $radio.classList.toggle('invalid_radio', requiredEmptyRadio);
                 document.querySelector("section#hr_cs_personal_information").scrollIntoView({block: "start", behavior: "smooth"});
@@ -359,7 +361,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         });
 
         if(requiredEmptyInput || requiredEmptySelect) {
-            $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Some required fields are not filled') + "</div>");
+            $("<div class='alert alert-danger alert-dismissable fade show'>")
+                .text(_t('Some required fields are not filled'))
+                .appendTo($("button#hr_cs_submit").parent());
             $("input:required").toArray().forEach(input => {
                 $(input).toggleClass('bg-danger', input.value === '');
             });
@@ -371,7 +375,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }
         if (invalid_email) {
             $("input[name='email']").addClass('bg-danger');
-            $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + _('Not a valid e-mail address') + "</div>");
+            $("<div class='alert alert-danger alert-dismissable fade show'>")
+                .text(_t('Not a valid e-mail address'))
+                .appendTo($("button#hr_cs_submit").parent());
             $("section#hr_cs_personal_information")[0].scrollIntoView({block: "start", behavior: "smooth"});
         } else {
             $("input[name='email']").removeClass('bg-danger');

@@ -2,7 +2,7 @@
 <odoo>
 
     <menuitem id="menu_helpdesk_root" name="Helpdesk"
-        sequence="25"
+        sequence="90"
         web_icon="helpdesk,static/description/icon.png"
         groups="helpdesk.group_helpdesk_user"/>
 

@@ -924,7 +924,7 @@
 
     <!-- Top menu / dashboard icon -->
 
-    <menuitem name="Documents" id="documents.menu_root" groups="documents.group_documents_user" web_icon="documents,static/description/icon.png"/>
+    <menuitem name="Documents" id="documents.menu_root" groups="documents.group_documents_user" web_icon="documents,static/description/icon.png" sequence="65"/>
 
     <!-- Top bar menus -->
 

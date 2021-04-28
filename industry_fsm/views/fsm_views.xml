@@ -571,7 +571,7 @@
 
     <menuitem id="fsm_menu_root"
         name="Field Service"
-        sequence="57"
+        sequence="80"
         web_icon="industry_fsm,static/description/icon.png"
         groups="industry_fsm.group_fsm_user"/>
 

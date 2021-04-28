@@ -480,7 +480,7 @@
     <menuitem
         id="planning_menu_root"
         name="Planning"
-        sequence="25"
+        sequence="85"
         groups="base.group_user"
         web_icon="planning,static/description/icon.png"/>
 

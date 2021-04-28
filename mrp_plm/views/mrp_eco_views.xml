@@ -774,7 +774,7 @@
         id="menu_mrp_plm_root"
         name="PLM"
         web_icon="mrp_plm,static/description/icon.png"
-        sequence="52"
+        sequence="170"
         groups="mrp_plm.group_plm_user"/>
 
     <menuitem

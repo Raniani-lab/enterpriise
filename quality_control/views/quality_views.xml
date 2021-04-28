@@ -956,7 +956,7 @@
         id="menu_quality_root"
         name="Quality"
         web_icon="quality_control,static/description/icon.png"
-        sequence="51"
+        sequence="150"
         groups="quality.group_quality_user"/>
 
     <menuitem

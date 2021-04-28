@@ -5,6 +5,7 @@
         name="Rental"
         web_icon="sale_renting,static/description/icon.png"
         groups="sales_team.group_sale_salesman"
+        sequence="45"
     />
 
     <menuitem id="menu_rental_config" name="Configuration" parent="rental_menu_root" sequence="10"/>

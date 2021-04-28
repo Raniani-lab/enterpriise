@@ -6,6 +6,7 @@
         name="IoT"
         web_icon="iot,static/description/icon.png"
         groups="base.group_system"
+        sequence="265"
     />
 
     <!-- IoT Boxes -->

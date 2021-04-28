@@ -1,3 +1,4 @@
+/* global OdooDeviceUtility */
 odoo.define('web_mobile.core', function () {
 "use strict";
 

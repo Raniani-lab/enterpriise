@@ -151,5 +151,5 @@ py.extract = function (str) {
     return extract(py.parse(py.tokenize(str)));
 };
 
-
+// eslint-disable-next-line no-undef
 })(typeof exports === 'undefined' ? py : exports);

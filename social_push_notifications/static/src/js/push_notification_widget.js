@@ -1,3 +1,4 @@
+/* global firebase */
 odoo.define('social_push_notifications.NotificationManager', function (require) {
 "use strict";
 

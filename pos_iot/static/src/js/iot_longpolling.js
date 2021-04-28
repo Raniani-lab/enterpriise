@@ -1,3 +1,4 @@
+/* global posmodel */
 odoo.define('pos_iot.IoTLongpolling', function (require) {
 'use strict';
 

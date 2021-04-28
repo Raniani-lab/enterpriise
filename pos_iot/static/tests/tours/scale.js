@@ -1,3 +1,4 @@
+/* global posmodel */
 odoo.define('posiot.scale.tour', function (require) {
     'use strict';
 

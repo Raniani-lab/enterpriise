@@ -1,3 +1,4 @@
+/* global posmodel */
 odoo.define('pos_iot.test.payment_terminals', function (require) {
 'use strict';
 

@@ -1,3 +1,4 @@
+/* global OdooFin */
 odoo.define('account_online_synchronization.odoo_fin_connector', function(require) {
 "use strict";
 

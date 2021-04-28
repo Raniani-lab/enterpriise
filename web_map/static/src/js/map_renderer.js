@@ -1,3 +1,5 @@
+/* global L */
+// L is the object of leaflet
 odoo.define('web_map.MapRenderer', function (require) {
     "use strict";
 

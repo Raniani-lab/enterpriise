@@ -1,3 +1,4 @@
+/* global Sha1 */
 odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
     var models = require('point_of_sale.models');
     const { Gui } = require('point_of_sale.Gui');

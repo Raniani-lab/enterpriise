@@ -40,7 +40,7 @@ class ProjectOverview(models.Model):
             # add last column to compute the second remaining with forecast
             for row in result['rows']:
                 # Sold - Done (current month excl.) - MAX (Done and Forecasted for this month) - Forecasted (current month excl.)
-                row += [row[-2] - (row[5] - row[4]) - max(row[4], row[6]) - (row[10] - row[6])]
+                row += [round((row[-2] - (row[5] - row[4]) - max(row[4], row[6]) - (row[10] - row[6])), 2)]
         return result
 
     def _table_header(self):

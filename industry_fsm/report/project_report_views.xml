@@ -7,6 +7,9 @@
         <field name="arch" type="xml">
             <pivot string="Tasks Analysis" display_quantity="true" disable_linking="True" sample="1">
                 <field name="project_id" type="row"/>
+                <field name="hours_effective" widget="timesheet_uom" type="measure"/>
+                <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
+                <field name="hours_planned" widget="timesheet_uom" type="measure"/>
             </pivot>
         </field>
     </record>
@@ -15,12 +18,15 @@
         <field name="name">report.project.task.user.graph</field>
         <field name="model">report.project.task.user.fsm</field>
         <field name="arch" type="xml">
-            <graph string="Tasks Analysis" type="bar" sample="1" disable_linking="1">
+            <graph string="Tasks Analysis" type="bar" sample="1" disable_linking="1" js_class="hr_timesheet_graphview">
                     <field name="project_id" type="row"/>
                     <field name="user_id" type="col"/>
                     <field name="nbr" type="measure"/>
-                </graph>
-            </field>
+                    <field name="hours_effective" widget="timesheet_uom" type="measure"/>
+                    <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
+                    <field name="hours_planned" widget="timesheet_uom" type="measure"/>
+            </graph>
+        </field>
     </record>
 
     <record id="project_task_user_action_report_fsm" model="ir.actions.act_window">

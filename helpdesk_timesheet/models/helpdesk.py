@@ -117,6 +117,8 @@ class HelpdeskTicket(models.Model):
         """ Set the correct label for `unit_amount`, depending on company UoM """
         result = super(HelpdeskTicket, self)._fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
         result['arch'] = self.env['account.analytic.line']._apply_timesheet_label(result['arch'])
+        if view_type in ['pivot', 'graph', 'cohort'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
+            result['arch'] = self.env['project.task']._apply_time_label(result['arch'], related_model=self._name)
         return result
 
     def action_timer_start(self):

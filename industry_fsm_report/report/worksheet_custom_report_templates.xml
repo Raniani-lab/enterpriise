@@ -39,6 +39,7 @@
                                 </tr>
                             </thead>
                             <tbody class="sale_tbody">
+                                <t t-set='is_uom_day' t-value='doc.timesheet_ids._is_timesheet_encode_uom_day()'/>
                                 <t t-foreach="doc.timesheet_ids" t-as="line">
                                     <tr>
                                         <td>
@@ -51,7 +52,12 @@
                                             <span t-field="line.display_name"/>
                                         </td>
                                         <td class="text-left">
-                                            <span t-field="line.unit_amount" t-options="{'widget': 'float_time'}"/><span> hour(s)</span>
+                                            <t t-if="is_uom_day">
+                                                <span t-esc="line._convert_hours_to_days(line.unit_amount)" t-options='{"widget": "timesheet_uom"}'/><span> day(s)</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="line.unit_amount" t-options="{'widget': 'float_time'}"/><span> hour(s)</span>
+                                            </t>
                                         </td>
                                     </tr>
                                 </t>

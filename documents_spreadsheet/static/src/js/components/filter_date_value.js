@@ -53,7 +53,13 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
         onPeriodChanged(ev) {
             const value = ev.target.value;
             this.trigger("time-range-changed", {
-                year: this.props.year,
+                /** We need to ensure that a year is set when the period
+                 * is selected since the user can bypass the year selection.
+                 * If we don't, we might end up with a date filter with year===undefined
+                 * which works to setup a pivot domain but is technically incorrect
+                 * and will return a bad value on FILTER.VALUE function.
+                 * */
+                year: this.props.year || this.dateOptions('year')[0].id,
                 period: value !== "empty" ? value : undefined,
             });
         }

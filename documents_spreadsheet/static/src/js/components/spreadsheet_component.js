@@ -3,6 +3,8 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
 
     const core = require("web.core");
     const Dialog = require("web.OwlDialog");
+    var framework = require('web.framework');
+
     const PivotDialog =require("documents_spreadsheet.PivotDialog")
     const spreadsheet = require("documents_spreadsheet.spreadsheet_extended");
 
@@ -21,6 +23,7 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
                 saveAsTemplate: this._saveAsTemplate.bind(this),
                 makeCopy: this.makeCopy.bind(this),
                 openPivotDialog: this.openPivotDialog.bind(this),
+                download: this._download.bind(this),
             });
             this.state = useState({
                 dialog: {
@@ -64,6 +67,9 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
             }
             if (this.props.initCallback) {
                 this.props.initCallback(this.spreadsheet.comp.model);
+            }
+            if (this.props.download){
+                this._download();
             }
         }
 
@@ -190,6 +196,30 @@ odoo.define("documents_spreadsheet.SpreadsheetComponent", function (require) {
          */
         newSpreadsheet() {
             this.trigger("new_spreadsheet");
+        }
+
+        /**
+         * Downloads the spreadsheet in xlsx format
+         */
+        async _download() {
+            const model = this.spreadsheet.comp.model;
+            await Promise.all(model.getters.getPivots().map((pivot) => model.getters.getAsyncCache(pivot.id, {
+                initialDomain: false,
+                force: true
+            })));
+            await Promise.all(model.getters.getGlobalFilters().map((filter) => model.getters.getFilterDisplayValue(filter.label)));
+
+            framework.blockUI();
+            try {
+                const { files } = await this.spreadsheet.comp.env.exportXLSX();
+                this.trigger("download", {
+                    name: this.props.name,
+                    files,
+                });
+            }
+            finally {
+                framework.unblockUI();
+            }
         }
 
         /**

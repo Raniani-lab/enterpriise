@@ -4,6 +4,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
     const AbstractAction = require("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_action.js");
     const core = require("web.core");
     const SpreadsheetCollaborativeChannel = require("documents_spreadsheet.SpreadsheetCollaborativeChannel");
+    const session = require('web.session');
 
     const { _lt, _t } = core;
 
@@ -11,7 +12,8 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
         custom_events: {
             ...AbstractAction.prototype.custom_events,
             favorite_toggled: "_onSpreadSheetFavoriteToggled",
-            spreadsheet_sync_status: "_onSpreadsheetSyncStatus"
+            spreadsheet_sync_status: "_onSpreadsheetSyncStatus",
+            download: "_onDownload"
         },
         notificationMessage: _lt("New spreadsheet created in Documents"),
 
@@ -103,6 +105,21 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_action.js",
                 }],
             });
         },
+
+        /**
+         * @private
+         * @param {OdooEvent} ev
+         */
+        _onDownload(ev){
+            session.get_file({
+                url: '/documents/xlsx',
+                data : {
+                    zip_name: `${ev.data.name}.xlsx`,
+                    files: JSON.stringify(ev.data.files),
+                }
+            });
+        },
+
         /**
          * @param {OdooEvent} ev
          * @returns {Promise}

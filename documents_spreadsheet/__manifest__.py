@@ -12,6 +12,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/documents_views.xml',
+        'views/documents_templates.xml',
         'wizard/save_spreadsheet_template.xml',
     ],
     'application': False,

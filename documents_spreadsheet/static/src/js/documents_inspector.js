@@ -2,6 +2,9 @@ odoo.define("spreadsheet.DocumentsInspector", function (require) {
     "use strict";
 
     const DocumentsInspector = require("documents.DocumentsInspector");
+    const core = require('web.core');
+
+    const _t = core._t;
 
     DocumentsInspector.include({
         events: _.extend(
@@ -60,5 +63,36 @@ odoo.define("spreadsheet.DocumentsInspector", function (require) {
                 });
             }
         },
+
+        /**
+         * @override
+         */
+        _onDownload: function () {
+            if(this.records.some(record => record.data.handler === 'spreadsheet')){
+                if (this.records.length === 1) {
+                    this.do_action({
+                        type: "ir.actions.client",
+                        tag: "action_open_spreadsheet",
+                        params: {
+                            active_id: this.records[0].data.id,
+                            download: true,
+                        },
+                    });
+                }
+                else {
+                    this.displayNotification({
+                        type: "danger",
+                        message: _t("Spreadsheets mass download not yet supported.\n Download spreadsheets individually instead."),
+                        sticky: false,
+                    });
+                    this.trigger_up('download', {
+                        resIds: this.records.filter(record => record.data.handler !== 'spreadsheet').map(record => record.res_id),
+                    });
+                }
+            }
+            else{
+                this._super(...arguments);
+            }
+        }
     });
 });

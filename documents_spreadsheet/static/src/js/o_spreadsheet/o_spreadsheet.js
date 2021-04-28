@@ -55,6 +55,8 @@
         };
     };
 
+    // Scheduler
+    const MAXIMUM_EVALUATION_CHECK_DELAY_MS = 15;
     // Colors
     const BACKGROUND_GRAY_COLOR = "#f5f5f5";
     const BACKGROUND_HEADER_COLOR = "#F8F9FA";
@@ -79,6 +81,7 @@
     const ICON_EDGE_LENGTH = 18;
     const UNHIDE_ICON_EDGE_LENGTH = 14;
     const MIN_CF_ICON_MARGIN = 4;
+    const FIGURE_BORDER_SIZE = 1;
     // Fonts
     const DEFAULT_FONT_WEIGHT = "400";
     const DEFAULT_FONT_SIZE = 10;
@@ -1348,6 +1351,7 @@
         compute: function (value) {
             return Math.abs(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ACOS
@@ -1363,6 +1367,7 @@
             assert(() => Math.abs(_value) <= 1, _lt("The value (%s) must be between -1 and 1 inclusive.", _value.toString()));
             return Math.acos(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ACOSH
@@ -1378,6 +1383,7 @@
             assert(() => _value >= 1, _lt("The value (%s) must be greater than or equal to 1.", _value.toString()));
             return Math.acosh(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ACOT
@@ -1396,6 +1402,7 @@
             // @compatibility Google: return sign * Math.PI / 2 - Math.atan(toNumber(_value));
             return (sign * Math.PI) / 2 - Math.atan(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ACOTH
@@ -1411,6 +1418,7 @@
             assert(() => Math.abs(_value) > 1, _lt("The value (%s) cannot be between -1 and 1 inclusive.", _value.toString()));
             return Math.log((_value + 1) / (_value - 1)) / 2;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ASIN
@@ -1426,6 +1434,7 @@
             assert(() => Math.abs(_value) <= 1, _lt("The value (%s) must be between -1 and 1 inclusive.", _value.toString()));
             return Math.asin(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ASINH
@@ -1439,6 +1448,7 @@
         compute: function (value) {
             return Math.asinh(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ATAN
@@ -1452,6 +1462,7 @@
         compute: function (value) {
             return Math.atan(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ATAN2
@@ -1469,6 +1480,7 @@
             assert(() => _x !== 0 || _y !== 0, _lt(`Function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return Math.atan2(_y, _x);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ATANH
@@ -1484,6 +1496,7 @@
             assert(() => Math.abs(_value) < 1, _lt("The value (%s) must be between -1 and 1 exclusive.", _value.toString()));
             return Math.atanh(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // CEILING
@@ -1502,6 +1515,7 @@
             assert(() => _factor >= 0 || _value <= 0, _lt("The factor (%s) must be positive when the value (%s) is positive.", _factor.toString(), _value.toString()));
             return _factor ? Math.ceil(_value / _factor) * _factor : 0;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // CEILING.MATH
@@ -1531,6 +1545,7 @@
             }
             return -Math.ceil(Math.abs(_number) / _significance) * _significance;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // CEILING.PRECISE
@@ -1546,6 +1561,7 @@
         compute: function (number, significance) {
             return CEILING_MATH.compute(number, significance, 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COS
@@ -1559,6 +1575,7 @@
         compute: function (angle) {
             return Math.cos(toNumber(angle));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COSH
@@ -1572,6 +1589,7 @@
         compute: function (value) {
             return Math.cosh(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COT
@@ -1587,6 +1605,7 @@
             assert(() => _angle !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return 1 / Math.tan(_angle);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COTH
@@ -1602,6 +1621,7 @@
             assert(() => _value !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return 1 / Math.tanh(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNTBLANK
@@ -1616,6 +1636,7 @@
         compute: function () {
             return reduceAny(arguments, (acc, a) => (a === null || a === undefined || a === "" ? acc + 1 : acc), 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNTIF
@@ -1634,6 +1655,7 @@
             });
             return count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNTIFS
@@ -1654,6 +1676,7 @@
             });
             return count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNTUNIQUE
@@ -1719,6 +1742,7 @@
             assert(() => _angle !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return 1 / Math.sin(_angle);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // CSCH
@@ -1734,6 +1758,7 @@
             assert(() => _value !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return 1 / Math.sinh(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DECIMAL
@@ -1763,6 +1788,7 @@
             assert(() => !isNaN(deci), _lt("The value (%s) must be a valid base %s representation.", _value, _base.toString()));
             return deci;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DEGREES
@@ -1776,6 +1802,7 @@
         compute: function (angle) {
             return (toNumber(angle) * 180) / Math.PI;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // EXP
@@ -1789,6 +1816,7 @@
         compute: function (value) {
             return Math.exp(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // FLOOR
@@ -1807,6 +1835,7 @@
             assert(() => _factor >= 0 || _value <= 0, _lt("The factor (%s) must be positive when the value (%s) is positive.", _factor.toString(), _value.toString()));
             return _factor ? Math.floor(_value / _factor) * _factor : 0;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // FLOOR.MATH
@@ -1836,6 +1865,7 @@
             }
             return -Math.floor(Math.abs(_number) / _significance) * _significance;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // FLOOR.PRECISE
@@ -1851,6 +1881,7 @@
         compute: function (number, significance = DEFAULT_SIGNIFICANCE) {
             return FLOOR_MATH.compute(number, significance, 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISEVEN
@@ -1865,6 +1896,7 @@
             const _value = strictToNumber(value);
             return Math.floor(Math.abs(_value)) & 1 ? false : true;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISO.CEILING
@@ -1880,6 +1912,7 @@
         compute: function (number, significance = DEFAULT_SIGNIFICANCE) {
             return CEILING_MATH.compute(number, significance, 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISODD
@@ -1894,6 +1927,7 @@
             const _value = strictToNumber(value);
             return Math.floor(Math.abs(_value)) & 1 ? true : false;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // LN
@@ -1909,6 +1943,7 @@
             assert(() => _value > 0, _lt("The value (%s) must be strictly positive.", _value.toString()));
             return Math.log(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MOD
@@ -1932,6 +1967,7 @@
             }
             return modulus;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ODD
@@ -1949,6 +1985,7 @@
             temp = temp & 1 ? temp : temp + 1;
             return _value < 0 ? -temp : temp;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // PI
@@ -1960,6 +1997,7 @@
         compute: function () {
             return Math.PI;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // POWER
@@ -1978,6 +2016,7 @@
             assert(() => _base >= 0 || Number.isInteger(_exponent), _lt("The exponent (%s) must be an integer when the base is negative.", _exponent.toString()));
             return Math.pow(_base, _exponent);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // PRODUCT
@@ -2014,6 +2053,7 @@
             }
             return acc;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // RAND
@@ -2025,6 +2065,7 @@
         compute: function () {
             return Math.random();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // RANDBETWEEN
@@ -2049,6 +2090,7 @@
             assert(() => _low <= _high, _lt("The high (%s) must be greater than or equal to the low (%s).", _high.toString(), _low.toString()));
             return _low + Math.ceil((_high - _low + 1) * Math.random()) - 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ROUND
@@ -2077,6 +2119,7 @@
             }
             return _value >= 0 ? tempResult : -tempResult;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ROUNDDOWN
@@ -2105,6 +2148,7 @@
             }
             return _value >= 0 ? tempResult : -tempResult;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ROUNDUP
@@ -2133,6 +2177,7 @@
             }
             return _value >= 0 ? tempResult : -tempResult;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SEC
@@ -2146,6 +2191,7 @@
         compute: function (angle) {
             return 1 / Math.cos(toNumber(angle));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SECH
@@ -2159,6 +2205,7 @@
         compute: function (value) {
             return 1 / Math.cosh(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SIN
@@ -2172,6 +2219,7 @@
         compute: function (angle) {
             return Math.sin(toNumber(angle));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SINH
@@ -2185,6 +2233,7 @@
         compute: function (value) {
             return Math.sinh(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SQRT
@@ -2201,6 +2250,7 @@
             assert(() => _value >= 0, _lt("The value (%s) must be positive or null.", _value.toString()));
             return Math.sqrt(_value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SUM
@@ -2216,6 +2266,7 @@
         compute: function () {
             return reduceNumbers(arguments, (acc, a) => acc + a, 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SUMIF
@@ -2241,6 +2292,7 @@
             });
             return sum;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SUMIFS
@@ -2264,6 +2316,7 @@
             });
             return sum;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TAN
@@ -2277,6 +2330,7 @@
         compute: function (angle) {
             return Math.tan(toNumber(angle));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TANH
@@ -2290,6 +2344,7 @@
         compute: function (value) {
             return Math.tanh(toNumber(value));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TRUNC
@@ -2313,6 +2368,7 @@
             }
             return Math.trunc(_value * Math.pow(10, _places)) / Math.pow(10, _places);
         },
+        isExported: true,
     };
 
     var math = /*#__PURE__*/Object.freeze({
@@ -2401,6 +2457,45 @@
     function getNextColor() {
         colorIndex = ++colorIndex % colors$1.length;
         return colors$1[colorIndex];
+    }
+    /**
+     * Converts any CSS color value to a standardized hex6 value.
+     * Accepts: hex3, hex6 and rgb (rgba is not supported)
+     *
+     * toHex6("#ABC")
+     * >> "AABBCC"
+     *
+     * toHex6("#AAAFFF")
+     * >> "AAAFFF"
+     *
+     * toHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     *
+     * (note: number sign is dropped as it is not supported in xlsx format)
+     */
+    function toHex6(color) {
+        if (color.includes("rgb")) {
+            return rgbToHex6(color);
+        }
+        color = color.replace("#", "").toUpperCase();
+        if (color.length === 3) {
+            color = color.split("").reduce((acc, h) => acc + h + h, "");
+        }
+        return color;
+    }
+    /**
+     * Convert a CSS rgb color string to a standardized hex6 color value.
+     *
+     * rgbToHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     */
+    function rgbToHex6(color) {
+        return color
+            .slice(4, -1)
+            .split(",")
+            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))
+            .join("")
+            .toUpperCase();
     }
 
     //------------------------------------------------------------------------------
@@ -3162,11 +3257,11 @@
         }
         return rows;
     }
-    function exportCols(cols) {
+    function exportCols(cols, exportDefaults = false) {
         const exportedCols = {};
         for (let i in cols) {
             const col = cols[i];
-            if (col.size !== DEFAULT_CELL_WIDTH) {
+            if (col.size !== DEFAULT_CELL_WIDTH || exportDefaults) {
                 exportedCols[i] = { size: col.size };
             }
             if (col.isHidden) {
@@ -3176,11 +3271,11 @@
         }
         return exportedCols;
     }
-    function exportRows(rows) {
+    function exportRows(rows, exportDefaults = false) {
         const exportedRows = {};
         for (let i in rows) {
             const row = rows[i];
-            if (row.size !== DEFAULT_CELL_HEIGHT) {
+            if (row.size !== DEFAULT_CELL_HEIGHT || exportDefaults) {
                 exportedRows[i] = { size: row.size };
             }
             if (row.isHidden) {
@@ -3317,6 +3412,7 @@
             const average = sum / count;
             return reduceNumbers(arguments, (acc, a) => acc + Math.abs(average - a), 0) / count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // AVERAGE
@@ -3338,6 +3434,7 @@
             assert(() => count !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return sum / count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // AVERAGE.WEIGHTED
@@ -3419,6 +3516,7 @@
             assert(() => count !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return sum / count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // AVERAGEIF
@@ -3447,6 +3545,7 @@
             assert(() => count !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return sum / count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // AVERAGEIFS
@@ -3473,6 +3572,7 @@
             assert(() => count !== 0, _lt(`Evaluation of function [[FUNCTION_NAME]] caused a divide by zero error.`));
             return sum / count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNT
@@ -3502,6 +3602,7 @@
             }
             return count;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COUNTA
@@ -3516,6 +3617,7 @@
         compute: function () {
             return reduceAny(arguments, (acc, a) => (a !== undefined && a !== null ? acc + 1 : acc), 0);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COVAR
@@ -3532,6 +3634,7 @@
         compute: function (dataY, dataX) {
             return covariance(dataY, dataX, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COVARIANCE.P
@@ -3546,6 +3649,7 @@
         compute: function (dataY, dataX) {
             return covariance(dataY, dataX, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COVARIANCE.S
@@ -3560,6 +3664,7 @@
         compute: function (dataY, dataX) {
             return covariance(dataY, dataX, true);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // LARGE
@@ -3593,6 +3698,7 @@
             assert(() => count >= n, _lt("Function [[FUNCTION_NAME]] parameter 2 value (%s) is out of range.", n.toString()));
             return result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MAX
@@ -3609,6 +3715,7 @@
             const result = reduceNumbers(arguments, (acc, a) => (acc < a ? a : acc), -Infinity);
             return result === -Infinity ? 0 : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MAXA
@@ -3627,6 +3734,7 @@
             }, -Infinity);
             return maxa === -Infinity ? 0 : maxa;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MAXIFS
@@ -3651,6 +3759,7 @@
             });
             return result === -Infinity ? 0 : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MEDIAN
@@ -3670,6 +3779,7 @@
             });
             return centile([data], 0.5, true);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MIN
@@ -3686,6 +3796,7 @@
             const result = reduceNumbers(arguments, (acc, a) => (a < acc ? a : acc), Infinity);
             return result === Infinity ? 0 : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MINA
@@ -3704,6 +3815,7 @@
             }, Infinity);
             return mina === Infinity ? 0 : mina;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MINIFS
@@ -3728,6 +3840,7 @@
             });
             return result === Infinity ? 0 : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // PERCENTILE
@@ -3743,6 +3856,7 @@
         compute: function (data, percentile) {
             return PERCENTILE_INC.compute(data, percentile);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // PERCENTILE.EXC
@@ -3758,6 +3872,7 @@
         compute: function (data, percentile) {
             return centile(data, percentile, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // PERCENTILE.INC
@@ -3773,6 +3888,7 @@
         compute: function (data, percentile) {
             return centile(data, percentile, true);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // QUARTILE
@@ -3788,6 +3904,7 @@
         compute: function (data, quartileNumber) {
             return QUARTILE_INC.compute(data, quartileNumber);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // QUARTILE.EXC
@@ -3804,6 +3921,7 @@
             const _quartileNumber = Math.trunc(toNumber(quartileNumber));
             return centile(data, 0.25 * _quartileNumber, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // QUARTILE.INC
@@ -3820,6 +3938,7 @@
             const _quartileNumber = Math.trunc(toNumber(quartileNumber));
             return centile(data, 0.25 * _quartileNumber, true);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SMALL
@@ -3853,6 +3972,7 @@
             assert(() => count >= n, _lt("Function [[FUNCTION_NAME]] parameter 2 value (%s) is out of range.", n.toString()));
             return result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEV
@@ -3867,6 +3987,7 @@
         compute: function () {
             return Math.sqrt(VAR.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEV.P
@@ -3881,6 +4002,7 @@
         compute: function () {
             return Math.sqrt(VAR_P.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEV.S
@@ -3895,6 +4017,7 @@
         compute: function () {
             return Math.sqrt(VAR_S.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEVA
@@ -3909,6 +4032,7 @@
         compute: function () {
             return Math.sqrt(VARA.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEVP
@@ -3923,6 +4047,7 @@
         compute: function () {
             return Math.sqrt(VARP.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // STDEVPA
@@ -3937,6 +4062,7 @@
         compute: function () {
             return Math.sqrt(VARPA.compute(...arguments));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VAR
@@ -3951,6 +4077,7 @@
         compute: function () {
             return variance(arguments, true, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VAR.P
@@ -3965,6 +4092,7 @@
         compute: function () {
             return variance(arguments, false, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VAR.S
@@ -3979,6 +4107,7 @@
         compute: function () {
             return variance(arguments, true, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VARA
@@ -3993,6 +4122,7 @@
         compute: function () {
             return variance(arguments, true, true);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VARP
@@ -4007,6 +4137,7 @@
         compute: function () {
             return variance(arguments, false, false);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VARPA
@@ -4021,6 +4152,7 @@
         compute: function () {
             return variance(arguments, false, true);
         },
+        isExported: true,
     };
 
     var statistical = /*#__PURE__*/Object.freeze({
@@ -4158,6 +4290,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return AVERAGE.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DCOUNT
@@ -4170,6 +4303,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return COUNT.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DCOUNTA
@@ -4182,6 +4316,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return COUNTA.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DGET
@@ -4195,6 +4330,7 @@
             assert(() => cells.length === 1, _lt("More than one match found in DGET evaluation."));
             return cells[0];
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DMAX
@@ -4207,6 +4343,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return MAX.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DMIN
@@ -4219,6 +4356,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return MIN.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DPRODUCT
@@ -4231,6 +4369,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return PRODUCT.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DSTDEV
@@ -4243,6 +4382,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return STDEV.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DSTDEVP
@@ -4255,6 +4395,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return STDEVP.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DSUM
@@ -4267,6 +4408,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return SUM.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DVAR
@@ -4279,6 +4421,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return VAR.compute([cells]);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DVARP
@@ -4291,6 +4434,7 @@
             const cells = getMatchingCells(database, field, criteria);
             return VARP.compute([cells]);
         },
+        isExported: true,
     };
 
     var database = /*#__PURE__*/Object.freeze({
@@ -4343,6 +4487,7 @@
             assert(() => delta >= 0, _lt(`The function [[FUNCTION_NAME]] result must be greater than or equal 01/01/1900.`));
             return Math.round(delta / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DATEVALUE
@@ -4359,6 +4504,7 @@
             assert(() => internalDate !== null, _lt("The date_string (%s) cannot be parsed to date/time.", _dateString.toString()));
             return Math.trunc(internalDate.value);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DAY
@@ -4372,6 +4518,7 @@
         compute: function (date) {
             return toJsDate(date).getDate();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DAYS
@@ -4389,6 +4536,7 @@
             const dateDif = _endDate.getTime() - _startDate.getTime();
             return Math.round(dateDif / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // EDATE
@@ -4411,6 +4559,7 @@
             const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // EOMONTH
@@ -4432,6 +4581,7 @@
             const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // HOUR
@@ -4445,6 +4595,7 @@
         compute: function (date) {
             return toJsDate(date).getHours();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISOWEEKNUM
@@ -4518,6 +4669,7 @@
             const dif = (_date.getTime() - firstDay.getTime()) / 86400000;
             return Math.floor(dif / 7) + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MINUTE
@@ -4531,6 +4683,7 @@
         compute: function (date) {
             return toJsDate(date).getMinutes();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MONTH
@@ -4544,6 +4697,7 @@
         compute: function (date) {
             return toJsDate(date).getMonth() + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // NETWORKDAYS
@@ -4559,6 +4713,7 @@
         compute: function (startDate, endDate, holidays) {
             return NETWORKDAYS_INTL.compute(startDate, endDate, 1, holidays);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // NETWORKDAYS.INTL
@@ -4659,6 +4814,7 @@
             }
             return invertDate ? -netWorkingDay : netWorkingDay;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // NOW
@@ -4675,6 +4831,7 @@
             const time = today.getHours() / 24 + today.getMinutes() / 1440 + today.getSeconds() / 86400;
             return Math.floor(delta / 86400000) + time;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SECOND
@@ -4688,6 +4845,7 @@
         compute: function (date) {
             return toJsDate(date).getSeconds();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TIME
@@ -4713,6 +4871,7 @@
             assert(() => _hour >= 0, _lt(`The function [[FUNCTION_NAME]] result cannot be negative`));
             return _hour / 24 + _minute / (24 * 60) + _second / (24 * 60 * 60);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TIMEVALUE
@@ -4730,6 +4889,7 @@
             const result = internalDate.value - Math.trunc(internalDate.value);
             return result < 0 ? 1 + result : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TODAY
@@ -4745,6 +4905,7 @@
             const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // WEEKDAY
@@ -4767,6 +4928,7 @@
                 return m === 0 ? 7 : m;
             return m === 0 ? 6 : m - 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // WEEKNUM
@@ -4806,6 +4968,7 @@
             }
             return Math.floor(dif / 7) + (dayStart === 1 ? 1 : 2);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // WORKDAY
@@ -4822,6 +4985,7 @@
         compute: function (startDate, numDays, holidays = undefined) {
             return WORKDAY_INTL.compute(startDate, numDays, 1, holidays);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // WORKDAY.INTL
@@ -4862,6 +5026,7 @@
             const delta = timeStepDate - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // YEAR
@@ -4875,6 +5040,7 @@
         compute: function (date) {
             return toJsDate(date).getFullYear();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // YEARFRAC
@@ -5504,6 +5670,7 @@
                 return true;
             }
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISLOGICAL
@@ -5515,6 +5682,7 @@
         compute: function (value) {
             return typeof value === "boolean";
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISNONTEXT
@@ -5526,6 +5694,7 @@
         compute: function (value) {
             return typeof value !== "string";
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISNUMBER
@@ -5537,6 +5706,7 @@
         compute: function (value) {
             return typeof value === "number";
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ISTEXT
@@ -5548,6 +5718,7 @@
         compute: function (value) {
             return typeof value === "string";
         },
+        isExported: true,
     };
 
     var info = /*#__PURE__*/Object.freeze({
@@ -5596,6 +5767,7 @@
             assert(() => foundBoolean, _lt(`[[FUNCTION_NAME]] has no valid input data.`));
             return acc;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // IF
@@ -5612,6 +5784,7 @@
             const result = toBoolean(logicalExpression) ? valueIfTrue() : valueIfFalse();
             return result === null || result === undefined ? "" : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // IFERROR
@@ -5633,6 +5806,7 @@
             }
             return result === null || result === undefined ? "" : result;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // IFS
@@ -5655,6 +5829,7 @@
             }
             throw new Error(_lt(`No match.`));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // NOT
@@ -5667,6 +5842,7 @@
         compute: function (logicalExpression) {
             return !toBoolean(logicalExpression);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // OR
@@ -5689,6 +5865,7 @@
             assert(() => foundBoolean, _lt(`[[FUNCTION_NAME]] has no valid input data.`));
             return acc;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // XOR
@@ -5711,6 +5888,7 @@
             assert(() => foundBoolean, _lt(`[[FUNCTION_NAME]] has no valid input data.`));
             return acc;
         },
+        isExported: true,
     };
 
     var logical = /*#__PURE__*/Object.freeze({
@@ -5758,6 +5936,7 @@
             const zone = toZone((cellReference || this.__originCellXC));
             return zone.left + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // COLUMNS
@@ -5770,6 +5949,7 @@
             const zone = toZone(range);
             return zone.right - zone.left + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // HLOOKUP
@@ -5798,6 +5978,7 @@
             assert(() => colIndex > -1, _lt("Did not find value '%s' in [[FUNCTION_NAME]] evaluation.", searchKey));
             return range[colIndex][_index - 1];
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // LOOKUP
@@ -5828,6 +6009,7 @@
             assert(() => index <= nbRow - 1, _lt("[[FUNCTION_NAME]] evaluates to an out of range column value %s.", (index + 1).toString()));
             return resultRange[0][index];
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // MATCH
@@ -5863,6 +6045,7 @@
             assert(() => index >= 0, _lt("Did not find value '%s' in [[FUNCTION_NAME]] evaluation.", searchKey));
             return index + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ROW
@@ -5876,6 +6059,7 @@
             const zone = toZone((cellReference || this.__originCellXC));
             return zone.top + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // ROWS
@@ -5888,6 +6072,7 @@
             const zone = toZone(range);
             return zone.bottom - zone.top + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // VLOOKUP
@@ -5916,6 +6101,7 @@
             assert(() => rowIndex > -1, _lt("Did not find value '%s' in [[FUNCTION_NAME]] evaluation.", searchKey));
             return range[_index - 1][rowIndex];
         },
+        isExported: true,
     };
 
     var lookup = /*#__PURE__*/Object.freeze({
@@ -5958,6 +6144,7 @@
         compute: function (value1, value2) {
             return toString(value1) + toString(value2);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // DIVIDE
@@ -6215,6 +6402,7 @@
             assert(() => _tableNumber >= 1, _lt("The table_number (%s) is out of range.", _tableNumber.toString()));
             return String.fromCharCode(_tableNumber);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // CONCATENATE
@@ -6229,6 +6417,7 @@
         compute: function () {
             return reduceAny(arguments, (acc, a) => acc + toString(a), "");
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // EXACT
@@ -6243,6 +6432,7 @@
         compute: function (string1, string2) {
             return toString(string1) === toString(string2);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // FIND
@@ -6265,6 +6455,7 @@
             assert(() => result >= 0, _lt("In [[FUNCTION_NAME]] evaluation, cannot find '%s' within '%s'.", _searchFor.toString(), _textToSearch));
             return result + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // JOIN
@@ -6297,6 +6488,7 @@
             assert(() => _numberOfCharacters >= 0, _lt("The number_of_characters (%s) must be positive or null.", _numberOfCharacters.toString()));
             return toString(text).substring(0, _numberOfCharacters);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // LEN
@@ -6310,6 +6502,7 @@
         compute: function (text) {
             return toString(text).length;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // LOWER
@@ -6323,6 +6516,7 @@
         compute: function (text) {
             return toString(text).toLowerCase();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // REPLACE
@@ -6344,6 +6538,7 @@
             const _newText = toString(newText);
             return _text.substring(0, _position - 1) + _newText + _text.substring(_position - 1 + _length);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // RIGHT
@@ -6362,6 +6557,7 @@
             const stringLength = _text.length;
             return _text.substring(stringLength - _numberOfCharacters, stringLength);
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SEARCH
@@ -6384,6 +6580,7 @@
             assert(() => result >= 0, _lt("In [[FUNCTION_NAME]] evaluation, cannot find '%s' within '%s'.", _searchFor, _textToSearch));
             return result + 1;
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // SUBSTITUTE
@@ -6413,6 +6610,7 @@
             let n = 0;
             return _textToSearch.replace(reg, (text) => (++n === _occurrenceNumber ? _replaceWith : text));
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TEXTJOIN
@@ -6432,6 +6630,7 @@
             let n = 0;
             return reduceAny(textsOrArrays, (acc, a) => !(_ignoreEmpty && toString(a) === "") ? (n++ ? acc + _delimiter : "") + toString(a) : acc, "");
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // TRIM
@@ -6445,6 +6644,7 @@
         compute: function (text) {
             return toString(text).trim();
         },
+        isExported: true,
     };
     // -----------------------------------------------------------------------------
     // UPPER
@@ -6458,6 +6658,7 @@
         compute: function (text) {
             return toString(text).toUpperCase();
         },
+        isExported: true,
     };
 
     var text = /*#__PURE__*/Object.freeze({
@@ -6514,7 +6715,7 @@
         for (let name in fns) {
             const addDescr = fns[name];
             addDescr.category = category;
-            functionRegistry.add(name, addDescr);
+            functionRegistry.add(name, { isExported: false, ...addDescr });
         }
     }
 
@@ -6607,6 +6808,7 @@
         // ---------------------------------------------------------------------------
         import(data) { }
         export(data) { }
+        exportForExcel(data) { }
         /**
          * This method can be implemented in any plugin, to loop over the plugin's data structure and adapt the plugin's ranges.
          * To adapt them, the implementation of the function must have a perfect knowledge of the data structure, thus
@@ -7084,6 +7286,9 @@
                 }
             }
             data.borders = borders;
+        }
+        exportForExcel(data) {
+            this.export(data);
         }
     }
     BordersPlugin.getters = ["getCellBorder"];
@@ -8285,6 +8490,7 @@
                             cells[xc].formula = {
                                 text: cell.formula.text || "",
                                 dependencies: ((_a = cell.dependencies) === null || _a === void 0 ? void 0 : _a.map((d) => this.getters.getRangeString(d, _sheet.id))) || [],
+                                value: cell.value,
                             };
                             break;
                         case CellType.number:
@@ -8297,6 +8503,9 @@
                 _sheet.cells = cells;
             }
             data.styles = styles;
+        }
+        exportForExcel(data) {
+            this.export(data);
         }
         // ---------------------------------------------------------------------------
         // GETTERS
@@ -8812,6 +9021,40 @@
                 dataSetsHaveTitle: data && dataSets.length !== 0 ? Boolean(data.dataSets[0].labelCell) : false,
             };
         }
+        getChartDefinitionExcel(sheetId, figureId) {
+            const data = this.chartFigures[figureId];
+            const dataSets = data.dataSets
+                .map((ds) => this.toExcelDataset(ds))
+                .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
+            return {
+                ...this.getChartDefinitionUI("forceSheetReference", figureId),
+                dataSets,
+            };
+        }
+        toExcelDataset(ds) {
+            var _a;
+            const labelZone = (_a = ds.labelCell) === null || _a === void 0 ? void 0 : _a.zone;
+            let dataZone = ds.dataRange.zone;
+            if (labelZone) {
+                const { height, width } = zoneToDimension(dataZone);
+                if (height === 1) {
+                    dataZone = { ...dataZone, left: dataZone.left + 1 };
+                }
+                else if (width === 1) {
+                    dataZone = { ...dataZone, top: dataZone.top + 1 };
+                }
+            }
+            const dataRange = {
+                ...ds.dataRange,
+                zone: dataZone,
+            };
+            return {
+                label: ds.labelCell
+                    ? this.getters.getRangeString(ds.labelCell, "forceSheetReference")
+                    : undefined,
+                range: this.getters.getRangeString(dataRange, "forceSheetReference"),
+            };
+        }
         // ---------------------------------------------------------------------------
         // Import/Export
         // ---------------------------------------------------------------------------
@@ -8842,6 +9085,18 @@
                     }
                     sheet.figures = figures;
                 }
+            }
+        }
+        exportForExcel(data) {
+            for (let sheet of data.sheets) {
+                const sheetFigures = this.getters.getFigures(sheet.id);
+                const figures = sheetFigures;
+                for (let figure of figures) {
+                    if (figure && figure.tag === "chart") {
+                        figure.data = this.getChartDefinitionExcel(sheet.id, figure.id);
+                    }
+                }
+                sheet.charts = figures;
             }
         }
         // ---------------------------------------------------------------------------
@@ -9029,6 +9284,9 @@
                     }
                 }
             }
+        }
+        exportForExcel(data) {
+            this.export(data);
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -9364,6 +9622,9 @@
                     sheet.figures.push({ ...figure, data });
                 }
             }
+        }
+        exportForExcel(data) {
+            this.export(data);
         }
     }
     FigurePlugin.getters = ["getFigures", "getFigure"];
@@ -9725,6 +9986,9 @@
                 }
             }
         }
+        exportForExcel(data) {
+            this.export(data);
+        }
     }
     MergePlugin.getters = [
         "isInMerge",
@@ -9878,6 +10142,9 @@
                     break;
             }
         }
+        // ---------------------------------------------------------------------------
+        // Import/Export
+        // ---------------------------------------------------------------------------
         import(data) {
             // we need to fill the sheetIds mapping first, because otherwise formulas
             // that depends on a sheet not already imported will not be able to be
@@ -9902,7 +10169,7 @@
                 this.updateHiddenElementsGroups(sheet.id, "rows");
             }
         }
-        export(data) {
+        exportSheets(data, exportDefaultSizes = false) {
             data.sheets = this.visibleSheets.filter(isDefined).map((id) => {
                 const sheet = this.sheets[id];
                 return {
@@ -9910,8 +10177,8 @@
                     name: sheet.name,
                     colNumber: sheet.cols.length,
                     rowNumber: sheet.rows.length,
-                    rows: exportRows(sheet.rows),
-                    cols: exportCols(sheet.cols),
+                    rows: exportRows(sheet.rows, exportDefaultSizes),
+                    cols: exportCols(sheet.cols, exportDefaultSizes),
                     merges: [],
                     cells: {},
                     conditionalFormats: [],
@@ -9919,6 +10186,12 @@
                     areGridLinesVisible: sheet.areGridLinesVisible === undefined ? true : sheet.areGridLinesVisible,
                 };
             });
+        }
+        export(data) {
+            this.exportSheets(data);
+        }
+        exportForExcel(data) {
+            this.exportSheets(data, true);
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -16606,6 +16879,9 @@
                     }
                     this.isUpToDate.add(cmd.sheetId);
                     break;
+                case "EVALUATE_ALL_SHEETS":
+                    this.evaluateAllSheets();
+                    break;
                 case "UNDO":
                 case "REDO":
                     this.isUpToDate.clear();
@@ -16636,7 +16912,7 @@
             return compiledFormula(ranges, sheetId, ...params);
         }
         isIdle() {
-            return this.loadingCells === 0;
+            return this.loadingCells === 0 && this.WAITING.size === 0 && this.PENDING.size === 0;
         }
         getRangeFormattedValues(reference, defaultSheetId) {
             const [range, sheetName] = reference.split("!").reverse();
@@ -16673,7 +16949,7 @@
                         }
                     }
                     if (current > 0) {
-                        window.setTimeout(recomputeCells, 15);
+                        window.setTimeout(recomputeCells, MAXIMUM_EVALUATION_CHECK_DELAY_MS);
                     }
                 };
                 window.setTimeout(recomputeCells, 5);
@@ -16866,6 +17142,18 @@
             }
             return [refFn, range, evalContext];
         }
+        /**
+         * Triggers an evaluation of all cells on all sheets.
+         */
+        evaluateAllSheets() {
+            for (const sheetId of this.getters.getVisibleSheets()) {
+                if (!this.isUpToDate.has(sheetId)) {
+                    this.evaluate(sheetId);
+                    this.isUpToDate.add(sheetId);
+                }
+            }
+            this.startScheduler();
+        }
     }
     EvaluationPlugin.getters = ["evaluateFormula", "isIdle", "getRangeFormattedValues", "getRangeValues"];
     EvaluationPlugin.modes = ["normal", "readonly"];
@@ -16893,6 +17181,15 @@
         "rgb(23,190,207)",
         "rgb(158,218,229)",
     ];
+    class ChartColors {
+        constructor() {
+            this.graphColorIndex = 0;
+        }
+        next() {
+            return GraphColors[this.graphColorIndex++ % GraphColors.length];
+        }
+    }
+
     class EvaluationChartPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
@@ -17132,11 +17429,12 @@
                 }
             }
             const runtime = this.getDefaultConfiguration(definition.type, definition.title, labels);
-            let graphColorIndex = 0;
+            const colors = new ChartColors();
+            const pieColors = [];
             if (definition.type === "pie") {
                 const maxLength = Math.max(...definition.dataSets.map((ds) => this.getData(ds, definition.sheetId).length));
                 for (let i = 0; i <= maxLength; i++) {
-                    graphColorIndex = ++graphColorIndex % GraphColors.length;
+                    pieColors.push(colors.next());
                 }
             }
             for (const [dsIndex, ds] of Object.entries(definition.dataSets)) {
@@ -17154,24 +17452,19 @@
                 else {
                     label = label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`;
                 }
+                const color = definition.type !== "pie" ? colors.next() : "#FFFFFF"; // white border for pie chart
                 const dataset = {
                     label,
                     data: ds.dataRange ? this.getData(ds, definition.sheetId) : [],
                     lineTension: 0,
-                    borderColor: definition.type !== "pie" ? GraphColors[graphColorIndex] : "#FFFFFF",
-                    backgroundColor: GraphColors[graphColorIndex],
+                    borderColor: color,
+                    backgroundColor: color,
                 };
                 if (definition.type === "pie") {
-                    const colors = [];
-                    for (let i = 0; i <= dataset.data.length - 1; i++) {
-                        colors.push(GraphColors[graphColorIndex]);
-                        graphColorIndex = ++graphColorIndex % GraphColors.length;
-                    }
                     // In case of pie graph, dataset.backgroundColor is an array of string
-                    // @ts-ignore
-                    dataset.backgroundColor = colors;
+                    // @ts-ignore - we know dataset.data is an array
+                    dataset.backgroundColor = pieColors;
                 }
-                graphColorIndex = ++graphColorIndex % GraphColors.length;
                 runtime.data.datasets.push(dataset);
             }
             return runtime;
@@ -20431,6 +20724,18 @@
         };
         return data;
     }
+    function createEmptyExcelSheet(name = "Sheet1") {
+        return {
+            ...createEmptySheet(name),
+            charts: [],
+        };
+    }
+    function createEmptyExcelWorkbookData() {
+        return {
+            ...createEmptyWorkbookData(),
+            sheets: [createEmptyExcelSheet("Sheet1")],
+        };
+    }
 
     function transformZone(zone, executed) {
         if (executed.type === "REMOVE_COLUMNS_ROWS") {
@@ -21883,6 +22188,1616 @@
         }
     }
 
+    const XLSX_FORMAT_MAP = {
+        General: 0,
+        "0": 1,
+        "0.00": 2,
+        "#,#00": 3,
+        "#,##0.00": 4,
+        "0%": 9,
+        "0.00%": 10,
+        "0.00E+00": 11,
+        "# ?/?": 12,
+        "# ??/??": 13,
+        "mm-dd-yy": 14,
+        "d-mm-yy": 15,
+        "mm-yy": 16,
+        "mmm-yy": 17,
+        "h:mm AM/PM": 18,
+        "h:mm:ss AM/PM": 19,
+        "h:mm": 20,
+        "h:mm:ss": 21,
+        "m/d/yy h:mm": 22,
+        "#,##0 ;(#,##0)": 37,
+        "#,##0 ;[Red](#,##0)": 38,
+        "#,##0.00;(#,##0.00)": 39,
+        "#,##0.00;[Red](#,##0.00)": 40,
+        "mm:ss": 45,
+        "[h]:mm:ss": 46,
+        "mmss.0": 47,
+        "##0.0E+0": 48,
+        "@": 49,
+        "hh:mm:ss a": 19,
+    };
+    const XLSX_ICONSET_MAP = {
+        arrow: "3Arrows",
+        smiley: "3Symbols",
+        dot: "3TrafficLights1",
+    };
+    const NAMESPACE = {
+        styleSheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        sst: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        Relationships: "http://schemas.openxmlformats.org/package/2006/relationships",
+        Types: "http://schemas.openxmlformats.org/package/2006/content-types",
+        worksheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        workbook: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        drawing: "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing",
+    };
+    const DRAWING_NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main";
+    const DRAWING_NS_C = "http://schemas.openxmlformats.org/drawingml/2006/chart";
+    const CONTENT_TYPES = {
+        workbook: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+        sheet: "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
+        sharedStrings: "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
+        styles: "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml",
+        drawing: "application/vnd.openxmlformats-officedocument.drawing+xml",
+        chart: "application/vnd.openxmlformats-officedocument.drawingml.chart+xml",
+    };
+    const RELATIONSHIP_NSR = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+    const HEIGHT_FACTOR = 0.75; // 100px => 75 u
+    const WIDTH_FACTOR = 0.1425; // 100px => 14.25 u
+    const FIRST_NUMFMT_ID = 164;
+    const FORCE_DEFAULT_ARGS_FUNCTIONS = {
+        FLOOR: [{ type: "NUMBER", value: 1 }],
+        CEILING: [{ type: "NUMBER", value: 1 }],
+        ROUND: [{ type: "NUMBER", value: 0 }],
+        ROUNDUP: [{ type: "NUMBER", value: 0 }],
+        ROUNDDOWN: [{ type: "NUMBER", value: 0 }],
+    };
+    /**
+     * This list contains all "future" functions that are not compatible with older versions of Excel
+     * For more information, see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-xlsx/5d1b6d44-6fc1-4ecd-8fef-0b27406cc2bf
+     */
+    const NON_RETROCOMPATIBLE_FUNCTIONS = [
+        "ACOT",
+        "ACOTH",
+        "AGGREGATE",
+        "ARABIC",
+        "BASE",
+        "BETA.DIST",
+        "BETA.INV",
+        "BINOM.DIST",
+        "BINOM.DIST.RANGE",
+        "BINOM.INV",
+        "BITAND",
+        "BITLSHIFT",
+        "BITOR",
+        "BITRSHIFT",
+        "BITXOR",
+        "CEILING.MATH",
+        "CEILING.PRECISE",
+        "CHISQ.DIST",
+        "CHISQ.DIST.RT",
+        "CHISQ.INV",
+        "CHISQ.INV.RT",
+        "CHISQ.TEST",
+        "COMBINA",
+        "CONCAT",
+        "CONFIDENCE.NORM",
+        "CONFIDENCE.T",
+        "COT",
+        "COTH",
+        "COVARIANCE.P",
+        "COVARIANCE.S",
+        "CSC",
+        "CSCH",
+        "DAYS",
+        "DECIMAL",
+        "ERF.PRECISE",
+        "ERFC.PRECISE",
+        "EXPON.DIST",
+        "F.DIST",
+        "F.DIST.RT",
+        "F.INV",
+        "F.INV.RT",
+        "F.TEST",
+        "FILTERXML",
+        "FLOOR.MATH",
+        "FLOOR.PRECISE",
+        "FORECAST.ETS",
+        "FORECAST.ETS.CONFINT",
+        "FORECAST.ETS.SEASONALITY",
+        "FORECAST.ETS.STAT",
+        "FORECAST.LINEAR",
+        "FORMULATEXT",
+        "GAMMA",
+        "GAMMA.DIST",
+        "GAMMA.INV",
+        "GAMMALN.PRECISE",
+        "GAUSS",
+        "HYPGEOM.DIST",
+        "IFNA",
+        "IFS",
+        "IMCOSH",
+        "IMCOT",
+        "IMCSC",
+        "IMCSCH",
+        "IMSEC",
+        "IMSECH",
+        "IMSINH",
+        "IMTAN",
+        "ISFORMULA",
+        "ISOWEEKNUM",
+        "LOGNORM.DIST",
+        "LOGNORM.INV",
+        "MAXIFS",
+        "MINIFS",
+        "MODE.MULT",
+        "MODE.SNGL",
+        "MUNIT",
+        "NEGBINOM.DIST",
+        "NORM.DIST",
+        "NORM.INV",
+        "NORM.S.DIST",
+        "NORM.S.INV",
+        "NUMBERVALUE",
+        "PDURATION",
+        "PERCENTILE.EXC",
+        "PERCENTILE.INC",
+        "PERCENTRANK.EXC",
+        "PERCENTRANK.INC",
+        "PERMUTATIONA",
+        "PHI",
+        "POISSON.DIST",
+        "QUARTILE.EXC",
+        "QUARTILE.INC",
+        "QUERYSTRING",
+        "RANK.AVG",
+        "RANK.EQ",
+        "RRI",
+        "SEC",
+        "SECH",
+        "SHEET",
+        "SHEETS",
+        "SKEW.P",
+        "STDEV.P",
+        "STDEV.S",
+        "SWITCH",
+        "T.DIST",
+        "T.DIST.2T",
+        "T.DIST.RT",
+        "T.INV",
+        "T.INV.2T",
+        "T.TEST",
+        "TEXTJOIN",
+        "UNICHAR",
+        "UNICODE",
+        "VAR.P",
+        "VAR.S",
+        "WEBSERVICE",
+        "WEIBULL.DIST",
+        "XOR",
+        "Z.TEST",
+    ];
+
+    // -------------------------------------
+    //            CF HELPERS
+    // -------------------------------------
+    /**
+     * Forces the first char of a string to lowerCase
+     * e.g. BeginWith --> beginWith
+     * */
+    function convertOperator(operator) {
+        return operator.charAt(0).toLowerCase() + operator.slice(1);
+    }
+    // -------------------------------------
+    //        WORKSHEET HELPERS
+    // -------------------------------------
+    function getCellType(value) {
+        switch (typeof value) {
+            case "boolean":
+                return "b";
+            case "string":
+                return "str";
+            case "number":
+                return "n";
+        }
+    }
+    /**
+     * For some reason, Excel will only take the devicePixelRatio (i.e. interface scale on Windows desktop)
+     * into account for the height.
+     */
+    function convertHeight(height) {
+        return Math.round(HEIGHT_FACTOR * height * window.devicePixelRatio * 100) / 100;
+    }
+    function convertWidth(width) {
+        return Math.round(WIDTH_FACTOR * width * 100) / 100;
+    }
+    function extractStyle(cell, data) {
+        let style = {};
+        if (cell.style) {
+            style = data.styles[cell.style];
+        }
+        let border = {};
+        if (cell.border) {
+            border = data.borders[cell.border];
+        }
+        const styles = {
+            font: {
+                size: (style === null || style === void 0 ? void 0 : style.fontSize) || DEFAULT_FONT_SIZE,
+                color: (style === null || style === void 0 ? void 0 : style.textColor) ? style.textColor : "000000",
+                family: 2,
+                name: "Arial",
+            },
+            fill: (style === null || style === void 0 ? void 0 : style.fillColor) ? {
+                fgColor: style.fillColor,
+            }
+                : { reservedAttribute: "none" },
+            numFmt: cell.format,
+            border: border || {},
+            verticalAlignment: "center",
+            horizontalAlignment: style === null || style === void 0 ? void 0 : style.align,
+        };
+        styles.font["strike"] = !!(style === null || style === void 0 ? void 0 : style.strikethrough) || undefined;
+        styles.font["bold"] = !!(style === null || style === void 0 ? void 0 : style.bold) || undefined;
+        styles.font["italic"] = !!(style === null || style === void 0 ? void 0 : style.italic) || undefined;
+        return styles;
+    }
+    function normalizeStyle(construct, styles) {
+        const { id: fontId } = pushElement(styles["font"], construct.fonts);
+        const { id: fillId } = pushElement(styles["fill"], construct.fills);
+        const { id: borderId } = pushElement(styles["border"], construct.borders);
+        // Normalize this
+        const numFmtId = convertFormat(styles["numFmt"], construct.numFmts);
+        const style = {
+            fontId,
+            fillId,
+            borderId,
+            numFmtId,
+            verticalAlignment: styles["verticalAlignment"],
+            horizontalAlignment: styles["horizontalAlignment"],
+        };
+        const { id } = pushElement(style, construct.styles);
+        return id;
+    }
+    function convertFormat(format, numFmtStructure) {
+        if (!format) {
+            return 0;
+        }
+        let formatId = XLSX_FORMAT_MAP[format];
+        if (!formatId) {
+            const { id } = pushElement(format, numFmtStructure);
+            formatId = id + FIRST_NUMFMT_ID;
+        }
+        return formatId;
+    }
+    function pushElement(property, propertyList) {
+        for (let [key, value] of Object.entries(propertyList)) {
+            if (JSON.stringify(value) === JSON.stringify(property)) {
+                return { id: parseInt(key, 10), list: propertyList };
+            }
+        }
+        let elemId = propertyList.findIndex((elem) => JSON.stringify(elem) === JSON.stringify(property));
+        if (elemId === -1) {
+            propertyList.push(property);
+            elemId = propertyList.length - 1;
+        }
+        return {
+            id: elemId,
+            list: propertyList,
+        };
+    }
+    const chartIds = [];
+    /**
+     * Convert a chart o-spreadsheet id to a xlsx id which
+     * are unsigned integers (starting from 1).
+     */
+    function convertChartId(chartId) {
+        const xlsxId = chartIds.findIndex((id) => id === chartId);
+        if (xlsxId === -1) {
+            chartIds.push(chartId);
+            return chartIds.length;
+        }
+        return xlsxId + 1;
+    }
+    /**
+     * Convert a value expressed in dot to EMU.
+     * EMU = English Metrical Unit
+     * There are 914400 EMU per inch.
+     *
+     * /!\ A value expressed in EMU cannot be fractional.
+     * See https://docs.microsoft.com/en-us/windows/win32/vml/msdn-online-vml-units#other-units-of-measurement
+     */
+    function convertDotValueToEMU(value) {
+        const DPI = 96;
+        return Math.round((value * 914400) / DPI);
+    }
+
+    // -------------------------------------
+    //            XML HELPERS
+    // -------------------------------------
+    function createXMLFile(doc, path, contentType) {
+        return {
+            content: new XMLSerializer().serializeToString(doc),
+            path,
+            contentType,
+        };
+    }
+    function xmlEscape(str) {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+    }
+    function formatAttributes(attrs) {
+        return attrs.map(([key, val]) => `${key}="${val}"`).join(" ");
+    }
+    function parseXML(xmlString) {
+        const document = new DOMParser().parseFromString(xmlString, "text/xml");
+        const parserError = document.querySelector("parsererror");
+        if (parserError) {
+            const errorString = parserError.innerHTML;
+            const lineNumber = parseInt(errorString.split(":")[1], 10);
+            const xmlStringArray = xmlString.trim().split("\n");
+            const xmlPreview = xmlStringArray
+                .slice(Math.max(lineNumber - 3, 0), Math.min(lineNumber + 2, xmlStringArray.length))
+                .join("\n");
+            throw new Error(`XML string could not be parsed: ${errorString}\n${xmlPreview}`);
+        }
+        return document;
+    }
+    function getDefaultXLSXStructure() {
+        return {
+            relsFiles: [],
+            sharedStrings: [],
+            // default Values that will always be part of the style sheet
+            styles: [
+                {
+                    fontId: 0,
+                    fillId: 0,
+                    numFmtId: 0,
+                    borderId: 0,
+                    verticalAlignment: "center",
+                },
+            ],
+            fonts: [
+                {
+                    size: DEFAULT_FONT_SIZE,
+                    family: 2,
+                    color: "000000",
+                    name: "Calibri",
+                },
+            ],
+            fills: [{ reservedAttribute: "none" }, { reservedAttribute: "gray125" }],
+            borders: [{}],
+            numFmts: [],
+            dxfs: [],
+        };
+    }
+    function createOverride(partName, contentType) {
+        return /*xml*/ `
+    <Override ContentType="${contentType}" PartName="${partName}" />
+  `;
+    }
+
+    /**
+     * Each axis present inside a graph needs to be identified by an unsigned integer
+     * The value does not matter, it can be hardcoded.
+     */
+    const catAxId = 17781237;
+    const valAxId = 88853993;
+    function createChart(chart) {
+        const namespaces = [
+            ["xmlns:r", RELATIONSHIP_NSR],
+            ["xmlns:a", DRAWING_NS_A],
+            ["xmlns:c", DRAWING_NS_C],
+        ];
+        const chartShapeProperty = shapeProperty({
+            backgroundColor: "FFFFFF",
+            line: { color: "000000" },
+        });
+        // <manualLayout/> to manually position the chart in the figure container
+        let title = "";
+        if (chart.data.title) {
+            title = /*xml*/ `
+      <c:title>
+        ${insertText(chart.data.title)}
+        <c:overlay val="0" />
+      </c:title>
+    `;
+        }
+        // switch on chart type
+        let plot = "";
+        switch (chart.data.type) {
+            case "bar":
+                plot = addBarChart(chart.data);
+                break;
+            case "line":
+                plot = addLineChart(chart.data);
+                break;
+            case "pie":
+                plot = addDoughnutChart(chart.data, { holeSize: 0 });
+                break;
+        }
+        const xml = /*xml*/ `
+    <c:chartSpace ${formatAttributes(namespaces)}>
+      <c:roundedCorners val="0" />
+      <!-- <manualLayout/> to manually position the chart in the figure container -->
+      ${chartShapeProperty}
+      <c:chart>
+        ${title}
+        <c:autoTitleDeleted val="0" />
+        <c:plotArea>
+          <!-- how the chart element is placed on the chart -->
+          <c:layout />
+          ${plot}
+        </c:plotArea>
+        ${addLegend("t")}
+      </c:chart>
+    </c:chartSpace>
+  `;
+        return parseXML(xml);
+    }
+    function shapeProperty(params) {
+        return /*xml*/ `
+    <c:spPr>
+      ${params.backgroundColor ? solidFill(params.backgroundColor) : ""}
+      ${params.line ? lineAttributes(params.line) : ""}
+    </c:spPr>
+  `;
+    }
+    function solidFill(color) {
+        return /*xml*/ `
+    <a:solidFill>
+      <a:srgbClr val="${color}"/>
+    </a:solidFill>
+  `;
+    }
+    function lineAttributes(params) {
+        const attrs = [["cmpd", "sng"]];
+        if (params.width) {
+            attrs.push(["w", convertDotValueToEMU(params.width)]);
+        }
+        const lineStyle = params.style ? /*xml*/ `<a:prstDash val="${params.style}"/>` : "";
+        return /*xml*/ `
+    <a:ln ${formatAttributes(attrs)}>
+      ${solidFill(params.color)}
+      ${lineStyle}
+    </a:ln>
+  `;
+    }
+    function insertText(text, fontsize = 22) {
+        return /*xml*/ `
+    <c:tx>
+      <c:rich>
+        <a:bodyPr />
+        <a:lstStyle />
+        <a:p>
+          <a:pPr lvl="0">
+            <a:defRPr b="0">
+              ${solidFill("000000")}
+              <a:latin typeface="+mn-lt"/>
+            </a:defRPr>
+          </a:pPr>
+          <a:r> <!-- Runs -->
+            <a:rPr sz="${fontsize * 100}"/>
+            <a:t>${xmlEscape(text)}</a:t>
+          </a:r>
+        </a:p>
+      </c:rich>
+    </c:tx>
+  `;
+    }
+    function insertTextProperties(fontsize = 12, bold = false, italic = false) {
+        const defPropertiesAttributes = [
+            ["b", bold ? "1" : "0"],
+            ["i", italic ? "1" : "0"],
+            ["sz", fontsize * 100],
+        ];
+        return /*xml*/ `
+    <c:txPr>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:p>
+        <a:pPr lvl="0">
+          <a:defRPr ${formatAttributes(defPropertiesAttributes)}>
+            ${solidFill("000000")}
+            <a:latin typeface="+mn-lt"/>
+          </a:defRPr>
+        </a:pPr>
+      </a:p>
+    </c:txPr>
+  `;
+    }
+    function addBarChart(chart) {
+        // gapWitdh and overlap that define the space between clusters (in %) and the overlap between datasets (from -100: completely scattered to 100, completely overlapped)
+        // see gapWidth : https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_gapWidth_topic_ID0EFVEQB.html#topic_ID0EFVEQB
+        // see overlap : https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_overlap_topic_ID0ELYQQB.html#topic_ID0ELYQQB
+        //
+        // overlap and gapWitdh seems to be by default at -20 and 20 in chart.js.
+        // See https://www.chartjs.org/docs/latest/charts/bar.html and https://www.chartjs.org/docs/latest/charts/bar.html#barpercentage-vs-categorypercentage
+        const colors = new ChartColors();
+        const dataSetsNodes = [];
+        for (const [dsIndex, dataset] of Object.entries(chart.dataSets)) {
+            const color = toHex6(colors.next());
+            const dataShapeProperty = shapeProperty({
+                backgroundColor: color,
+                line: { color },
+            });
+            dataSetsNodes.push(/*xml*/ `
+      <c:ser>
+        <c:idx val="${dsIndex}"/>
+        <c:order val="${dsIndex}"/>
+        ${dataset.label ? /*xml*/ `<c:tx>${stringRef(dataset.label)}</c:tx>` : ""}
+        ${dataShapeProperty}
+        ${chart.labelRange ? /*xml*/ `<c:cat>${stringRef(chart.labelRange)}</c:cat>` : ""} <!-- x-coordinate values -->
+        <c:val> <!-- x-coordinate values -->
+          ${numberRef(dataset.range)}
+        </c:val>
+      </c:ser>
+    `);
+        }
+        return /*xml*/ `
+    <c:barChart>
+      <c:barDir val="col"/>
+      <c:grouping val="clustered"/>
+      <c:overlap val="-20"/>
+      <c:gapWidth val="70"/>
+      <!-- each data marker in the series does not have a different color -->
+      <c:varyColors val="0"/>
+      ${dataSetsNodes.join("\n")}
+      <c:axId val="${catAxId}" />
+      <c:axId val="${valAxId}" />
+    </c:barChart>
+    ${addAx("b", "c:catAx", catAxId, valAxId)}
+    ${addAx("l", "c:valAx", valAxId, catAxId)}
+  `;
+    }
+    function addLineChart(chart) {
+        const colors = new ChartColors();
+        const dataSetsNodes = [];
+        for (const [dsIndex, dataset] of Object.entries(chart.dataSets)) {
+            const dataShapeProperty = shapeProperty({
+                line: {
+                    width: 2.5,
+                    style: "solid",
+                    color: toHex6(colors.next()),
+                },
+            });
+            dataSetsNodes.push(/*xml*/ `
+      <c:ser>
+        <c:idx val="${dsIndex}"/>
+        <c:order val="${dsIndex}"/>
+        <c:smooth val="0"/>
+        <c:marker>
+          <c:symbol val="circle" />
+          <c:size val="5"/>
+        </c:marker>
+        ${dataset.label ? `<c:tx>${stringRef(dataset.label)}</c:tx>` : ""}
+        ${dataShapeProperty}
+        ${chart.labelRange ? `<c:cat>${stringRef(chart.labelRange)}</c:cat>` : ""} <!-- x-coordinate values -->
+        <c:val> <!-- x-coordinate values -->
+          ${numberRef(dataset.range)}
+        </c:val>
+      </c:ser>
+    `);
+        }
+        return /*xml*/ `
+    <c:lineChart>
+      <!-- each data marker in the series does not have a different color -->
+      <c:varyColors val="0"/>
+      ${dataSetsNodes.join("\n")}
+      <c:axId val="${catAxId}" />
+      <c:axId val="${valAxId}" />
+    </c:lineChart>
+    ${addAx("b", "c:catAx", catAxId, valAxId)}
+    ${addAx("l", "c:valAx", valAxId, catAxId)}
+  `;
+    }
+    function addDoughnutChart(chart, { holeSize } = { holeSize: 50 }) {
+        const colors = new ChartColors();
+        const maxLength = Math.max(...chart.dataSets.map((ds) => {
+            const zone = toZone(ds.range);
+            const { height, width } = zoneToDimension(zone);
+            return height * width;
+        }));
+        const doughnutColors = range(0, maxLength).map(() => toHex6(colors.next()));
+        const dataSetsNodes = [];
+        for (const [dsIndex, dataset] of Object.entries(chart.dataSets).reverse()) {
+            //dataset slice labels
+            const zone = toZone(dataset.range);
+            const { height, width } = zoneToDimension(zone);
+            const dataPoints = [];
+            for (const index of range(0, height * width)) {
+                const pointShapeProperty = shapeProperty({
+                    backgroundColor: doughnutColors[index],
+                    line: { color: "FFFFFF", width: 1.5 },
+                });
+                dataPoints.push(/*xml*/ `
+        <c:dPt>
+          <c:idx val="${index}"/>
+          ${pointShapeProperty}
+        </c:dPt>
+      `);
+            }
+            dataSetsNodes.push(/*xml*/ `
+      <c:ser>
+        <c:idx val="${dsIndex}"/>
+        <c:order val="${dsIndex}"/>
+        ${dataset.label ? `<c:tx>${stringRef(dataset.label)}</c:tx>` : ""}
+        ${dataPoints.join("\n")}
+        ${insertDataLabels({ showLeaderLines: true })}
+        ${chart.labelRange ? `<c:cat>${stringRef(chart.labelRange)}</c:cat>` : ""}
+        <c:val>
+          ${numberRef(dataset.range)}
+        </c:val>
+      </c:ser>
+    `);
+        }
+        return /*xml*/ `
+    <c:doughnutChart>
+      <c:varyColors val="1" />
+      <c:holeSize val="${holeSize}" />
+      ${insertDataLabels()}
+      ${dataSetsNodes.join("\n")}
+    </c:doughnutChart>
+  `;
+    }
+    function insertDataLabels({ showLeaderLines } = { showLeaderLines: false }) {
+        return /*xml*/ `
+    <dLbls>
+      <c:showLegendKey val="0"/>
+      <c:showVal val="0"/>
+      <c:showCatName val="0"/>
+      <c:showSerName val="0"/>
+      <c:showPercent val="0"/>
+      <c:showBubbleSize val="0"/>
+      <c:showLeaderLines val="${showLeaderLines ? "1" : "0"}"/>
+    </dLbls>
+  `;
+    }
+    function addAx(position, axisName, axId, crossAxId) {
+        // Each Axis present inside a graph needs to be identified by an unsigned integer in order to be referenced by its crossAxis.
+        // I.e. x-axis, will reference y-axis and vice-versa.
+        return /*xml*/ `
+    <${axisName}>
+      <c:axId val="${axId}"/>
+      <c:crossAx val="${crossAxId}"/> <!-- reference to the other axe of the chart -->
+      <c:delete val="0"/> <!-- by default, axis are not displayed -->
+      <c:scaling>
+        <c:orientation  val="minMax" />
+      </c:scaling>
+      <c:axPos val="${position}" />
+      ${insertMajorGridLines()}
+      <c:majorTickMark val="out" />
+      <c:minorTickMark val="none" />
+      <c:numFmt formatCode="General" sourceLinked="1" />
+      <c:title>
+        ${insertText("")}
+      </c:title>
+      ${insertTextProperties(10)}
+    </${axisName}>
+    <!-- <tickLblPos/> omitted -->
+  `;
+    }
+    function addLegend(position) {
+        return /*xml*/ `
+    <c:legend>
+      <c:legendPos val="${position}"/>
+      <c:overlay val="0"/>
+      ${insertTextProperties(10)}
+    </c:legend>
+  `;
+    }
+    function insertMajorGridLines(color = "B7B7B7") {
+        return /*xml*/ `
+    <c:majorGridlines>
+      ${shapeProperty({ line: { color } })}
+    </c:majorGridlines>
+  `;
+    }
+    function stringRef(reference) {
+        return /*xml*/ `
+    <c:strRef>
+      <c:f>${reference}</c:f>
+    </c:strRef>
+  `;
+    }
+    function numberRef(reference) {
+        return /*xml*/ `
+    <c:numRef>
+      <c:f>${reference}</c:f>
+      <c:numCache />
+    </c:numRef>
+  `;
+    }
+
+    function addFormula(formula) {
+        const functions = functionRegistry.content;
+        const tokens = tokenize(formula.text);
+        const attrs = [];
+        let node = "";
+        const isExported = tokens
+            .filter((tk) => tk.type === "FUNCTION")
+            .every((tk) => functions[tk.value.toUpperCase()].isExported);
+        if (isExported) {
+            let cycle = "";
+            const XlsxFormula = adaptFormulaToExcel(formula);
+            // hack for cycles : if we don't set a value (be it 0 or #VALUE!), it will appear as invisible on excel,
+            // Making it very hard for the client to find where the recursion is.
+            if (formula.value === "#CYCLE") {
+                attrs.push(["t", "str"]);
+                cycle = /*xml*/ `<v>${xmlEscape(formula.value)}</v>`;
+            }
+            node = /*xml*/ `
+      <f>
+        ${xmlEscape(XlsxFormula)}
+      </f>
+      ${cycle}
+    `;
+            return { attrs, node };
+        }
+        else {
+            // Shouldn't we always output the value then ?
+            const value = formula.value;
+            // what if value = 0? Is this condition correct?
+            if (value) {
+                const type = getCellType(value);
+                attrs.push(["t", type]);
+                node = /*xml*/ `<v>${xmlEscape(value)}</v>`;
+            }
+            return { attrs, node };
+        }
+    }
+    function addContent(content, sharedStrings) {
+        let value = content;
+        const attrs = [];
+        if (["TRUE", "FALSE"].includes(value.trim())) {
+            value = value === "TRUE" ? "1" : "0";
+            attrs.push(["t", "b"]);
+        }
+        else if (!isNumber(value)) {
+            const { id } = pushElement(content, sharedStrings);
+            value = id.toString();
+            attrs.push(["t", "s"]);
+        }
+        return { attrs, node: /*xml*/ `<v>${xmlEscape(value)}</v>` };
+    }
+    function adaptFormulaToExcel(formula) {
+        let formulaText = formula.text;
+        if (formulaText[0] === "=") {
+            formulaText = formulaText.slice(1);
+        }
+        const ast = parse(formulaText);
+        let newFormulaText = ast ? astToExcelFormula(ast) : formula.text;
+        return getFormulaContent(newFormulaText, formula.dependencies);
+    }
+    /**
+     * Converts an ast formula to the corresponding string
+     *
+     * We cannot use astToFormula directly; since the function is of recursive form,
+     * it will call itself when we'd need it to call astToExcelFormula to process
+     * the specific cases of FUNCALL and ASYNC_FUNCALL.
+     * Function calls are different because:
+     * - non retrocompatible function needs to be prepended
+     * - required args which are optional in o-spreadsheet
+     */
+    function astToExcelFormula(ast) {
+        let value;
+        switch (ast.type) {
+            case "FUNCALL":
+            case "ASYNC_FUNCALL":
+                value = ast.value.toUpperCase();
+                // In this case, the Excel function will need required args that might not be mandatory in Spreadsheet
+                const exportDefaultArgs = FORCE_DEFAULT_ARGS_FUNCTIONS[value];
+                if (exportDefaultArgs) {
+                    const requiredArgs = functionRegistry.content[value].args.filter((el) => !el.optional);
+                    const diffArgs = requiredArgs.length - ast.args.length;
+                    if (diffArgs) {
+                        // We know that we have at least 1 default Value missing
+                        for (let i = ast.args.length; i < requiredArgs.length; i++) {
+                            const currentDefaultArg = exportDefaultArgs[i - diffArgs];
+                            ast.args.push({ type: currentDefaultArg.type, value: currentDefaultArg.value });
+                        }
+                    }
+                }
+                // Prepend function names that are not compatible with Old Excel versions
+                ast.value = NON_RETROCOMPATIBLE_FUNCTIONS.includes(value) ? `_xlfn.${value}` : value;
+                const args = ast.args.map((arg) => astToExcelFormula(arg));
+                return `${ast.value}(${args.join(",")})`;
+            case "NUMBER":
+                return ast.value.toString();
+            case "STRING":
+                // strings that correspond to a date should be converted to the format YYYY-DD-MM
+                value = ast.value.replace(new RegExp('"', "g"), "");
+                const internalDate = parseDateTime(value);
+                if (internalDate) {
+                    let format = [];
+                    if (value.match(mdyDateRegexp) || value.match(ymdDateRegexp)) {
+                        format.push("yyyy-mm-dd");
+                    }
+                    if (value.match(timeRegexp)) {
+                        format.push("hh:mm:ss");
+                    }
+                    return `"${formatDateTime({ value: internalDate.value, format: format.join(" ") })}"`;
+                }
+                else {
+                    return ast.value;
+                }
+            case "BOOLEAN":
+                return ast.value ? "TRUE" : "FALSE";
+            case "UNARY_OPERATION":
+                return ast.value + astToExcelFormula(ast.right);
+            case "BIN_OPERATION":
+                return astToExcelFormula(ast.left) + ast.value + astToExcelFormula(ast.right);
+            case "REFERENCE":
+                return `${FORMULA_REF_IDENTIFIER}${ast.value}${FORMULA_REF_IDENTIFIER}`;
+            default:
+                return ast.value;
+        }
+    }
+    function getFormulaContent(formula, dependencies) {
+        let newContent = formula;
+        if (dependencies) {
+            for (let [index, d] of Object.entries(dependencies)) {
+                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
+                newContent = newContent.replace(new RegExp(stringPosition, "g"), d);
+            }
+        }
+        return newContent;
+    }
+
+    function addConditionalFormatting(dxfs, conditionalFormats) {
+        // Conditional Formats
+        const cfNodes = [];
+        for (const cf of conditionalFormats) {
+            // Special case for each type of rule: might be better to extract that logic in dedicated functions
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    cfNodes.push(addCellIsRule(cf, cf.rule, dxfs));
+                    break;
+                case "ColorScaleRule":
+                    cfNodes.push(addColorScaleRule(cf, cf.rule));
+                    break;
+                case "IconSetRule":
+                    cfNodes.push(addIconSetRule(cf, cf.rule));
+                    break;
+                default:
+                    console.warn(`Conditional formatting ${cf.rule.type} not implemented`);
+                    break;
+            }
+        }
+        return cfNodes;
+    }
+    // ----------------------
+    //         RULES
+    // ----------------------
+    function addCellIsRule(cf, rule, dxfs) {
+        const ruleAttributes = commonCfAttributes(cf);
+        ruleAttributes.push(["type", "cellIs"], ["operator", convertOperator(rule.operator)]);
+        const formulas = rule.values.map((value) => /*xml*/ `<formula>${value}</formula>`);
+        const dxf = {};
+        if (rule.style.textColor) {
+            dxf.font = { color: rule.style.textColor };
+        }
+        if (rule.style.fillColor) {
+            dxf.fill = { fgColor: rule.style.fillColor };
+        }
+        const { id } = pushElement(dxf, dxfs);
+        ruleAttributes.push(["dxfId", id]);
+        return /*xml*/ `
+    <conditionalFormatting sqref="${cf.ranges.join(" ")}">
+      <cfRule ${formatAttributes(ruleAttributes)}>
+        ${formulas.join("\n")}
+      </cfRule>
+    </conditionalFormatting>
+  `;
+    }
+    function addColorScaleRule(cf, rule) {
+        const ruleAttributes = commonCfAttributes(cf);
+        ruleAttributes.push(["type", "colorScale"]);
+        /** mimic our flow:
+         * for a given ColorScale CF, each range of the "ranges set" has its own behaviour.
+         */
+        const conditionalFormats = [];
+        for (const range of cf.ranges) {
+            const cfValueObject = [];
+            const colors = [];
+            let canExport = true;
+            for (let position of ["minimum", "midpoint", "maximum"]) {
+                const threshold = rule[position];
+                if (!threshold) {
+                    // pass midpoint if not defined
+                    continue;
+                }
+                if (threshold.type === "formula") {
+                    canExport = false;
+                    continue;
+                }
+                cfValueObject.push(thresholdAttributes(threshold, position));
+                colors.push([["rgb", colorNumberString(threshold.color)]]);
+            }
+            if (!canExport) {
+                console.warn("Conditional formats with formula rules are not supported at the moment. The rule is therefore skipped.");
+                continue;
+            }
+            const cfValueObjectNodes = cfValueObject.map((attrs) => /*xml*/ `<cfvo ${formatAttributes(attrs)}/>`);
+            const cfColorNodes = colors.map((attrs) => /*xml*/ `<color ${formatAttributes(attrs)}/>`);
+            conditionalFormats.push(/*xml*/ `
+      <conditionalFormatting sqref="${range}">
+        <cfRule ${formatAttributes(ruleAttributes)}>
+          <colorScale>
+            ${cfValueObjectNodes.join("\n")}
+            ${cfColorNodes.join("\n")}
+          </colorScale>
+        </cfRule>
+      </conditionalFormatting>
+    `);
+        }
+        return /*xml*/ `
+    ${conditionalFormats.join("\n")}
+  `;
+    }
+    function addIconSetRule(cf, rule) {
+        const ruleAttributes = commonCfAttributes(cf);
+        ruleAttributes.push(["type", "iconSet"]);
+        /** mimic our flow:
+         * for a given IconSet CF, each range of the "ranges set" has its own behaviour.
+         */
+        const conditionalFormats = [];
+        for (const range of cf.ranges) {
+            const cfValueObject = [
+                // It looks like they always want 3 cfvo and they add a dummy entry
+                [
+                    ["type", "percent"],
+                    ["val", 0],
+                ],
+            ];
+            let canExport = true;
+            for (let position of ["lowerInflectionPoint", "upperInflectionPoint"]) {
+                if (rule[position].type === "formula") {
+                    canExport = false;
+                    continue;
+                }
+                const threshold = rule[position];
+                cfValueObject.push([
+                    ...thresholdAttributes(threshold, position),
+                    ["gte", threshold.operator === "ge" ? "1" : "0"],
+                ]);
+            }
+            if (!canExport) {
+                console.warn("Conditional formats with formula rules are not supported at the moment. The rule is therefore skipped.");
+                continue;
+            }
+            const cfValueObjectNodes = cfValueObject.map((attrs) => /*xml*/ `<cfvo ${formatAttributes(attrs)} />`);
+            conditionalFormats.push(/*xml*/ `
+      <conditionalFormatting sqref="${range}">
+        <cfRule ${formatAttributes(ruleAttributes)}>
+          <iconSet iconSet="${getIconSet(rule.icons)}">
+            ${cfValueObjectNodes.join("\n")}
+          </iconSet>
+        </cfRule>
+      </conditionalFormatting>
+    `);
+        }
+        return /*xml*/ `
+    ${conditionalFormats.join("\n")}
+  `;
+    }
+    // ----------------------
+    //         MISC
+    // ----------------------
+    function commonCfAttributes(cf) {
+        return [
+            ["priority", 1],
+            ["stopIfTrue", cf.stopIfTrue ? 1 : 0],
+        ];
+    }
+    function getIconSet(iconSet) {
+        return XLSX_ICONSET_MAP[Object.keys(XLSX_ICONSET_MAP).find((key) => iconSet.upper.toLowerCase().startsWith(key)) ||
+            "dots"];
+    }
+    function thresholdAttributes(threshold, position) {
+        const type = getExcelThresholdType(threshold.type, position);
+        const attrs = [["type", type]];
+        if (type !== "min" && type !== "max") {
+            // what if the formula is not correct
+            // references cannot be relative :/
+            let val = threshold.value;
+            if (type === "formula") {
+                try {
+                    checkRelativeReferences(threshold.value);
+                    val = adaptFormulaToExcel(normalize(threshold.value));
+                }
+                catch (error) {
+                    val = threshold.value;
+                }
+            }
+            attrs.push(["val", xmlEscape(val)]); // value is undefined only for type="value")
+        }
+        return attrs;
+    }
+    /**
+     * This function adapts our Threshold types to their Excel equivalents.
+     *
+     * if type === "value" ,then we must replace it by min or max according to the position
+     * if type === "number", then it becomes num
+     * if type === "percentage", it becomes "percent"
+     * rest of the time, the type is unchanged
+     */
+    function getExcelThresholdType(type, position) {
+        switch (type) {
+            case "value":
+                return position === "minimum" ? "min" : "max";
+            case "number":
+                return "num";
+            case "percentage":
+                return "percent";
+            default:
+                return type;
+        }
+    }
+    /**
+     * Relative references are not supported in formula
+     */
+    function checkRelativeReferences(formula) {
+        const { dependencies } = normalize(formula);
+        if (dependencies.length) {
+            console.warn("Relative references might not work in conditional format formula thresholds in Excel.");
+        }
+    }
+
+    function createDrawing(chartRelIds, sheet, figures) {
+        const namespaces = [
+            ["xmlns:xdr", NAMESPACE.drawing],
+            ["xmlns:r", RELATIONSHIP_NSR],
+            ["xmlns:a", DRAWING_NS_A],
+            ["xmlns:c", DRAWING_NS_C],
+        ];
+        const figuresNodes = [];
+        for (const [figureIndex, figure] of Object.entries(figures)) {
+            // position
+            const { from, to } = convertFigureData(figure, sheet);
+            const chartId = convertChartId(figure.id);
+            const cNvPrAttrs = [
+                ["id", chartId],
+                ["name", `Chart ${chartId}`],
+                ["title", "Chart"],
+            ];
+            figuresNodes.push(/*xml*/ `
+      <xdr:twoCellAnchor>
+        <xdr:from>
+          <xdr:col>${from.col}</xdr:col>
+          <xdr:colOff>${from.colOff}</xdr:colOff>
+          <xdr:row>${from.row}</xdr:row>
+          <xdr:rowOff>${from.rowOff}</xdr:rowOff>
+        </xdr:from>
+        <xdr:to>
+          <xdr:col>${to.col}</xdr:col>
+          <xdr:colOff>${to.colOff}</xdr:colOff>
+          <xdr:row>${to.row}</xdr:row>
+          <xdr:rowOff>${to.rowOff}</xdr:rowOff>
+        </xdr:to>
+        <xdr:graphicFrame>
+          <xdr:nvGraphicFramePr>
+            <xdr:cNvPr ${formatAttributes(cNvPrAttrs)} />
+            <xdr:cNvGraphicFramePr />
+          </xdr:nvGraphicFramePr>
+          <xdr:xfrm>
+            <a:off x="0" y="0"/>
+            <a:ext cx="0" cy="0"/>
+          </xdr:xfrm>
+          <a:graphic>
+            <a:graphicData uri="${DRAWING_NS_C}">
+              <c:chart r:id="${chartRelIds[figureIndex]}" />
+            </a:graphicData>
+          </a:graphic>
+        </xdr:graphicFrame>
+        <xdr:clientData fLocksWithSheet="0"/>
+      </xdr:twoCellAnchor>
+    `);
+        }
+        const xml = /*xml*/ `
+    <xdr:wsDr ${formatAttributes(namespaces)}>
+      ${figuresNodes.join("\n")}
+    </xdr:wsDr>
+  `;
+        return parseXML(xml);
+    }
+    /**
+     *  Returns the coordinates of topLeft (from) and BottomRight (to) of the chart in English Metric Units (EMU)
+     */
+    function convertFigureData(figure, sheet) {
+        const { x, y, height, width } = figure;
+        const cols = Object.values(sheet.cols);
+        const rows = Object.values(sheet.rows);
+        const { index: colFrom, offset: offsetColFrom } = figureCoordinates(cols, x);
+        const { index: colTo, offset: offsetColTo } = figureCoordinates(cols, x + width);
+        const { index: rowFrom, offset: offsetRowFrom } = figureCoordinates(rows, y);
+        const { index: rowTo, offset: offsetRowTo } = figureCoordinates(rows, y + height);
+        return {
+            from: {
+                col: colFrom,
+                colOff: offsetColFrom,
+                row: rowFrom,
+                rowOff: offsetRowFrom,
+            },
+            to: {
+                col: colTo,
+                colOff: offsetColTo,
+                row: rowTo,
+                rowOff: offsetRowTo,
+            },
+        };
+    }
+    /** Returns figure coordinates in EMU for a specific header dimension
+     *  See https://docs.microsoft.com/en-us/windows/win32/vml/msdn-online-vml-units#other-units-of-measurement
+     */
+    function figureCoordinates(headers, position) {
+        let currentPosition = 0;
+        for (const [headerIndex, header] of Object.entries(headers)) {
+            if (currentPosition <= position && position < currentPosition + header.size) {
+                return {
+                    index: parseInt(headerIndex),
+                    offset: convertDotValueToEMU(position - currentPosition + FIGURE_BORDER_SIZE),
+                };
+            }
+            else {
+                currentPosition += header.size;
+            }
+        }
+        return {
+            index: headers.length - 1,
+            offset: convertDotValueToEMU(position - currentPosition + FIGURE_BORDER_SIZE),
+        };
+    }
+
+    function addNumberFormats(numFmts) {
+        const numFmtNodes = [];
+        for (let [index, numFmt] of Object.entries(numFmts)) {
+            const numFmtAttrs = [
+                ["numFmtId", parseInt(index) + FIRST_NUMFMT_ID],
+                ["formatCode", numFmt],
+            ];
+            numFmtNodes.push(/*xml*/ `
+      <numFmt ${formatAttributes(numFmtAttrs)}/>
+    `);
+        }
+        return /*xml*/ `
+    <numFmts count="${numFmts.length}">
+      ${numFmtNodes.join("\n")}
+    </numFmts>
+  `;
+    }
+    function addFonts(fonts) {
+        const fontNodes = [];
+        for (let font of Object.values(fonts)) {
+            fontNodes.push(/*xml*/ `
+      <font>
+        ${font.bold ? /*xml*/ `<b />` : ""}
+        ${font.italic ? /*xml*/ `<i />` : ""}
+        ${font.strike ? /*xml*/ `<strike />` : ""}
+        <sz val="${font.size}" />
+        <color rgb="${toHex6(font.color)}" />
+        <name val="${font.name}" />
+      </font>
+    `);
+        }
+        return /*xml*/ `
+    <fonts count="${fonts.length}">
+      ${fontNodes.join("\n")}
+    </fonts>
+  `;
+    }
+    function addFills(fills) {
+        const fillNodes = [];
+        for (let fill of Object.values(fills)) {
+            if (fill.reservedAttribute !== undefined) {
+                fillNodes.push(/*xml*/ `
+        <fill>
+          <patternFill patternType="${fill.reservedAttribute}" />
+        </fill>
+      `);
+            }
+            else {
+                fillNodes.push(/*xml*/ `
+        <fill>
+          <patternFill patternType="solid">
+            <fgColor rgb="${toHex6(fill.fgColor)}" />
+            <bgColor indexed="64" />
+          </patternFill>
+        </fill>
+      `);
+            }
+        }
+        return /*xml*/ `
+    <fills count="${fills.length}">
+    ${fillNodes.join("\n")}
+    </fills>
+  `;
+    }
+    function addBorders(borders) {
+        const borderNodes = [];
+        for (let border of Object.values(borders)) {
+            borderNodes.push(/*xml*/ `
+      <border>
+        <left ${formatBorderAttribute(border["left"])} />
+        <right ${formatBorderAttribute(border["right"])} />
+        <top ${formatBorderAttribute(border["top"])} />
+        <bottom ${formatBorderAttribute(border["bottom"])} />
+        <diagonal ${formatBorderAttribute(border["diagonal"])} />
+      </border>
+    `);
+        }
+        return /*xml*/ `
+    <borders count="${borders.length}">
+      ${borderNodes.join("\n")}
+    </borders>
+  `;
+    }
+    function formatBorderAttribute(description) {
+        if (!description) {
+            return "";
+        }
+        return formatAttributes([
+            ["style", description[0]],
+            ["color", toHex6(description[1])],
+        ]);
+    }
+    function addStyles(styles) {
+        const styleNodes = [];
+        for (let style of styles) {
+            const attributes = [
+                ["numFmtId", style.numFmtId],
+                ["fillId", style.fillId],
+                ["fontId", style.fontId],
+                ["borderId", style.borderId],
+            ];
+            // Note: the apply${substyleName} does not seem to be required
+            const alignAttrs = [];
+            if (style.verticalAlignment) {
+                alignAttrs.push(["vertical", style.verticalAlignment]);
+            }
+            if (style.horizontalAlignment) {
+                alignAttrs.push(["horizontal", style.horizontalAlignment]);
+            }
+            styleNodes.push(/*xml*/ `
+      <xf ${formatAttributes(attributes)}>
+        ${alignAttrs ? /*xml*/ `<alignment ${formatAttributes(alignAttrs)} />` : ""}
+      </xf>
+    `);
+        }
+        return /*xml*/ `
+    <cellXfs count="${styles.length}">
+      ${styleNodes.join("\n")}
+    </cellXfs>
+  `;
+    }
+    /**
+     * DXFS : Differential Formatting Records - Conditional formats
+     */
+    function addCellWiseConditionalFormatting(dxfs // cell-wise CF
+    ) {
+        var _a;
+        const dxfNodes = [];
+        for (const dxf of dxfs) {
+            let fontNode = "";
+            if ((_a = dxf.font) === null || _a === void 0 ? void 0 : _a.color) {
+                fontNode = /*xml*/ `
+        <font rgb="${toHex6(dxf.font.color)}" />
+      `;
+            }
+            let fillNode = "";
+            if (dxf.fill) {
+                fillNode = /*xml*/ `
+        <fill>
+          <patternFill>
+            <bgColor rgb="${toHex6(dxf.fill.fgColor)}" />
+          </patternFill>
+        </fill>
+      `;
+            }
+            dxfNodes.push(/*xml*/ `
+      <dxf>
+        ${fontNode}
+        ${fillNode}
+      </dxf>
+    `);
+        }
+        return /*xml*/ `
+    <dxfs count="${dxfs.length}">
+      ${dxfNodes.join("\n")}
+    </dxfs>
+  `;
+    }
+
+    function addColumns(cols) {
+        if (!Object.values(cols).length) {
+            return /*xml*/ "";
+        }
+        const colNodes = [];
+        for (let [id, col] of Object.entries(cols)) {
+            // Always force our own col width
+            const attributes = [
+                ["min", parseInt(id) + 1],
+                ["max", parseInt(id) + 1],
+                ["width", convertWidth(col.size || DEFAULT_CELL_WIDTH)],
+                ["customWidth", 1],
+                ["hidden", col.isHidden ? 1 : 0],
+            ];
+            colNodes.push(/*xml*/ `
+      <col ${formatAttributes(attributes)}/>
+    `);
+        }
+        return /*xml*/ `
+    <cols>
+      ${colNodes.join("\n")}
+    </cols>
+  `;
+    }
+    function addRows(construct, data, sheet) {
+        const rowNodes = [];
+        for (let r = 0; r < sheet.rowNumber; r++) {
+            const rowAttrs = [["r", r + 1]];
+            const row = sheet.rows[r] || {};
+            // Always force our own row height
+            rowAttrs.push(["ht", convertHeight(row.size || DEFAULT_CELL_HEIGHT)], ["customHeight", 1], ["hidden", row.isHidden ? 1 : 0]);
+            const cellNodes = [];
+            for (let c = 0; c < sheet.colNumber; c++) {
+                const xc = toXC(c, r);
+                const cell = sheet.cells[xc];
+                if (cell) {
+                    const attributes = [["r", xc]];
+                    // style
+                    const id = normalizeStyle(construct, extractStyle(cell, data));
+                    attributes.push(["s", id]);
+                    let additionalAttrs = [];
+                    let cellNode = "";
+                    // Either formula or static value inside the cell
+                    if (cell.formula) {
+                        ({ attrs: additionalAttrs, node: cellNode } = addFormula(cell.formula));
+                    }
+                    else if (cell.content && cell.content !== "") {
+                        ({ attrs: additionalAttrs, node: cellNode } = addContent(cell.content, construct.sharedStrings));
+                    }
+                    attributes.push(...additionalAttrs);
+                    cellNodes.push(/*xml*/ `
+          <c ${formatAttributes(attributes)}>
+            ${cellNode}
+          </c>
+        `);
+                }
+            }
+            if (cellNodes.length) {
+                rowNodes.push(/*xml*/ `
+        <row ${formatAttributes(rowAttrs)}>
+          ${cellNodes.join("\n")}
+        </row>
+      `);
+            }
+        }
+        return /*xml*/ `
+    <sheetData>
+      ${rowNodes.join("\n")}
+    </sheetData>
+  `;
+    }
+    function addMerges(merges) {
+        if (merges.length) {
+            const mergeNodes = merges.map((merge) => /*xml*/ `<mergeCell ref="${merge}" />`);
+            return /*xml*/ `
+      <mergeCells count="${merges.length}">
+        ${mergeNodes.join("\n")}
+      </mergeCells>
+    `;
+        }
+        else
+            return "";
+    }
+
+    function getXLSX(data) {
+        const files = [];
+        const construct = getDefaultXLSXStructure();
+        files.push(createWorkbook(data, construct));
+        files.push(...createWorksheets(data, construct));
+        files.push(createStylesSheet(construct));
+        files.push(createSharedStrings(construct.sharedStrings));
+        files.push(...createRelsFiles(construct.relsFiles));
+        files.push(createContentTypes(files));
+        files.push(createRelRoot());
+        return {
+            name: `my_spreadsheet.xlsx`,
+            files,
+        };
+    }
+    function createWorkbook(data, construct) {
+        const namespaces = [
+            ["xmlns", NAMESPACE["workbook"]],
+            ["xmlns:r", RELATIONSHIP_NSR],
+        ];
+        const sheetNodes = [];
+        for (const [index, sheet] of Object.entries(data.sheets)) {
+            const attributes = [
+                ["name", sheet.name],
+                ["sheetId", parseInt(index) + 1],
+                ["r:id", `rId${parseInt(index) + 1}`],
+            ];
+            sheetNodes.push(/*xml*/ `
+      <sheet ${formatAttributes(attributes)} />
+    `);
+            addRelsToFile(construct.relsFiles, "xl/_rels/workbook.xml.rels", {
+                type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet",
+                target: `worksheets/sheet${index}.xml`,
+            });
+        }
+        const xml = /*xml*/ `
+    <workbook ${formatAttributes(namespaces)}>
+      <sheets>
+        ${sheetNodes.join("\n")}
+      </sheets>
+    </workbook>
+  `;
+        return createXMLFile(parseXML(xml), "xl/workbook.xml", "workbook");
+    }
+    function createWorksheets(data, construct) {
+        const files = [];
+        for (const [sheetIndex, sheet] of Object.entries(data.sheets)) {
+            const namespaces = [
+                ["xmlns", NAMESPACE["worksheet"]],
+                ["xmlns:r", RELATIONSHIP_NSR],
+            ];
+            const sheetFormatAttributes = [
+                ["defaultRowHeight", convertHeight(DEFAULT_CELL_HEIGHT)],
+                ["defaultColWidth", convertWidth(DEFAULT_CELL_WIDTH)],
+            ];
+            // Figures and Charts
+            let drawingNode = "";
+            const charts = sheet.charts;
+            if (charts.length) {
+                const chartRelIds = [];
+                for (const chart of charts) {
+                    const xlsxChartId = convertChartId(chart.id);
+                    const chartRelId = addRelsToFile(construct.relsFiles, `xl/drawings/_rels/drawing${sheetIndex}.xml.rels`, {
+                        target: `../charts/chart${xlsxChartId}.xml`,
+                        type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart",
+                    });
+                    chartRelIds.push(chartRelId);
+                    files.push(createXMLFile(createChart(chart), `xl/charts/chart${xlsxChartId}.xml`, "chart"));
+                }
+                const drawingRelId = addRelsToFile(construct.relsFiles, `xl/worksheets/_rels/sheet${sheetIndex}.xml.rels`, {
+                    target: `../drawings/drawing${sheetIndex}.xml`,
+                    type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing",
+                });
+                files.push(createXMLFile(createDrawing(chartRelIds, sheet, charts), `xl/drawings/drawing${sheetIndex}.xml`, "drawing"));
+                drawingNode = /*xml*/ `<drawing r:id="${drawingRelId}" />`;
+            }
+            const sheetXml = /*xml*/ `
+      <worksheet ${formatAttributes(namespaces)}>
+        <sheetFormatPr ${formatAttributes(sheetFormatAttributes)} />
+        ${addColumns(sheet.cols)}
+        ${addRows(construct, data, sheet)}
+        ${addMerges(sheet.merges)}
+        ${addConditionalFormatting(construct.dxfs, sheet.conditionalFormats).join("\n")}
+        ${drawingNode}
+      </worksheet>
+    `;
+            files.push(createXMLFile(parseXML(sheetXml), `xl/worksheets/sheet${sheetIndex}.xml`, "sheet"));
+        }
+        addRelsToFile(construct.relsFiles, "xl/_rels/workbook.xml.rels", {
+            type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings",
+            target: "sharedStrings.xml",
+        });
+        addRelsToFile(construct.relsFiles, "xl/_rels/workbook.xml.rels", {
+            type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
+            target: "styles.xml",
+        });
+        return files;
+    }
+    function createStylesSheet(construct) {
+        const namespaces = [
+            ["xmlns", NAMESPACE["styleSheet"]],
+            ["xmlns:r", RELATIONSHIP_NSR],
+        ];
+        const styleXml = /*xml*/ `
+    <styleSheet ${formatAttributes(namespaces)}>
+      ${addNumberFormats(construct.numFmts)}
+      ${addFonts(construct.fonts)}
+      ${addFills(construct.fills)}
+      ${addBorders(construct.borders)}
+      ${addStyles(construct.styles)}
+      ${addCellWiseConditionalFormatting(construct.dxfs)}
+    </styleSheet>
+  `;
+        return createXMLFile(parseXML(styleXml), "xl/styles.xml", "styles");
+    }
+    function createSharedStrings(strings) {
+        const namespaces = [
+            ["xmlns", NAMESPACE["sst"]],
+            ["count", strings.length],
+            ["uniqueCount", strings.length],
+        ];
+        const stringNodes = strings.map((string) => /*xml*/ `<si><t>${xmlEscape(string)}</t></si>`);
+        const xml = /*xml*/ `
+    <sst ${formatAttributes(namespaces)}>
+      ${stringNodes.join("\n")}
+    </sst>
+  `;
+        return createXMLFile(parseXML(xml), "xl/sharedStrings.xml", "sharedStrings");
+    }
+    function createRelsFiles(relsFiles) {
+        const XMLRelsFiles = [];
+        for (const relFile of relsFiles) {
+            const relationNodes = [];
+            for (const rel of relFile.rels) {
+                const attributes = [
+                    ["Id", rel.id],
+                    ["Target", rel.target],
+                    ["Type", rel.type],
+                ];
+                relationNodes.push(/*xml*/ `
+        <Relationship ${formatAttributes(attributes)} />
+      `);
+            }
+            const xml = /*xml*/ `
+      <Relationships xmlns="${NAMESPACE["Relationships"]}">
+        ${relationNodes.join("\n")}
+      </Relationships>
+    `;
+            XMLRelsFiles.push(createXMLFile(parseXML(xml), relFile.path));
+        }
+        return XMLRelsFiles;
+    }
+    function createContentTypes(files) {
+        const overrideNodes = [];
+        for (const file of files) {
+            if (file.contentType) {
+                overrideNodes.push(createOverride("/" + file.path, CONTENT_TYPES[file.contentType]));
+            }
+        }
+        const xml = /*xml*/ `
+    <Types xmlns="${NAMESPACE["Types"]}">
+      <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
+      <Default Extension="xml" ContentType="application/xml" />
+      ${overrideNodes.join("\n")}
+    </Types>
+  `;
+        return createXMLFile(parseXML(xml), "[Content_Types].xml");
+    }
+    function createRelRoot() {
+        const attributes = [
+            ["Id", "rId1"],
+            ["Type", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"],
+            ["Target", "xl/workbook.xml"],
+        ];
+        const xml = /*xml*/ `
+    <Relationships xmlns="${NAMESPACE["Relationships"]}">
+      <Relationship ${formatAttributes(attributes)} />
+    </Relationships>
+  `;
+        return createXMLFile(parseXML(xml), "_rels/.rels");
+    }
+    /**
+     * Add a relation to the given file and return its id.
+     */
+    function addRelsToFile(relsFiles, path, rel) {
+        let relsFile = relsFiles.find((file) => file.path === path);
+        // the id is a one-based int casted as string
+        let id;
+        if (!relsFile) {
+            id = "rId1";
+            relsFiles.push({ path, rels: [{ ...rel, id }] });
+        }
+        else {
+            id = `rId${(relsFile.rels.length + 1).toString()}`;
+            relsFile.rels.push({
+                ...rel,
+                id,
+            });
+        }
+        return id;
+    }
+
     var Status;
     (function (Status) {
         Status[Status["Ready"] = 0] = "Ready";
@@ -22191,6 +24106,46 @@
                 this.dispatch("STOP_EDITION", { cancel: true });
             }
             this.config.isReadonly = isReadonly || false;
+        }
+        /**
+         * Wait until all async cells in spreadsheet are computed
+         */
+        async waitForIdle() {
+            return new Promise((resolve) => {
+                const interval = setInterval(() => {
+                    if (this.getters.isIdle()) {
+                        clearInterval(interval);
+                        // after the last cell has been evaluated, the dependencies of that cell still need to
+                        // be evaluated at the next scheduler "tick" so we are waiting a little more than the
+                        // next scheduler tick to ensure it's done.
+                        setTimeout(() => {
+                            this.getters.isIdle();
+                            resolve();
+                        }, MAXIMUM_EVALUATION_CHECK_DELAY_MS + 1);
+                    }
+                }, 20);
+            });
+        }
+        /**
+         * Exports the current model data into a list of serialized XML files
+         * to be zipped together as an *.xlsx file.
+         *
+         * We need to trigger a cell revaluation  on every sheet and ensure that even
+         * async functions are evaluated.
+         * This prove to be necessary if the client did not trigger that evaluation in the first place
+         * (e.g. open a document with several sheet and click on download before visiting each sheet)
+         */
+        async exportXLSX() {
+            this.dispatch("EVALUATE_ALL_SHEETS");
+            await this.waitForIdle();
+            let data = createEmptyExcelWorkbookData();
+            for (let handler of this.handlers) {
+                if (handler instanceof CorePlugin) {
+                    handler.exportForExcel(data);
+                }
+            }
+            data = JSON.parse(JSON.stringify(data));
+            return getXLSX(data);
         }
     }
 
@@ -26065,6 +28020,8 @@
                 _t: Spreadsheet._t,
                 clipboard: navigator.clipboard,
                 export: this.model.exportData.bind(this.model),
+                waitForIdle: this.model.waitForIdle.bind(this.model),
+                exportXLSX: this.model.exportXLSX.bind(this.model),
             });
             useExternalListener(window, "resize", this.render);
             useExternalListener(document.body, "cut", this.copy.bind(this, true));
@@ -26275,8 +28232,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-05-28T14:29:49.669Z';
-    exports.__info__.hash = 'd3f95bb';
+    exports.__info__.date = '2021-05-31T09:15:24.170Z';
+    exports.__info__.hash = 'f5fcd44';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

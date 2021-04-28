@@ -54,6 +54,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_ac
             this.spreadsheetData = false;
             this.stateUpdateMessages = [];
             this.cancelFirst = true;
+            this.download = action.params.download || false;
         },
 
         /**
@@ -91,6 +92,7 @@ odoo.define("documents_spreadsheet/static/src/js/actions/spreadsheet_abstract_ac
                 transportService: this.transportService,
                 thumbnailSize: this.thumbnailSize,
                 snapshotRequested: this.snapshotRequested,
+                download: this.download
             });
             await this.spreadsheetComponent.mount(container);
             this.spreadsheetComponent._addListener("make_copy");

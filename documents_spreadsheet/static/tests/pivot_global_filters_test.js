@@ -111,14 +111,14 @@ module("documents_spreadsheet > pivot_global_filters", {
         const filterValues = actionManager.el.querySelector(".date_filter_values .o_input");
         await testUtils.dom.click(filterValues);
 
-        assert.equal(actionManager.el.querySelectorAll(".date_filter_values .o_input").length, 2)
-        const month = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(1)")
-        assert.equal(month.length, 13)
-        const year = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(2)")
-        assert.equal(year.length, 4)
+        assert.equal(actionManager.el.querySelectorAll(".date_filter_values .o_input").length, 2);
+        const month = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(1)");
+        assert.equal(month.length, 13);
+        const year = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(2)");
+        assert.equal(year.length, 4);
 
         await testUtils.fields.editAndTrigger(month, "october", ["change"]);
-        assert.equal(year.length, 3)
+        assert.equal(year.length, 3);
 
         await testUtils.fields.editAndTrigger(year, "this_year", ["change"]);
 
@@ -170,11 +170,11 @@ module("documents_spreadsheet > pivot_global_filters", {
         const filterValues = actionManager.el.querySelector(".date_filter_values .o_input");
         await testUtils.dom.click(filterValues);
 
-        assert.equal(actionManager.el.querySelectorAll(".date_filter_values .o_input").length, 2)
-        const month = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(1)")
-        assert.equal(month.length, 13)
-        const year = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(2)")
-        assert.equal(year.length, 4)
+        assert.equal(actionManager.el.querySelectorAll(".date_filter_values .o_input").length, 2);
+        const month = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(1)");
+        assert.equal(month.length, 13);
+        const year = actionManager.el.querySelector(".date_filter_values .o_input:nth-child(2)");
+        assert.equal(year.length, 4);
 
         await testUtils.fields.editAndTrigger(month, "november", ["change"]);
         // intentionally skip the year input
@@ -191,7 +191,7 @@ module("documents_spreadsheet > pivot_global_filters", {
         assert.equal(globalFilter.defaultValue.period, "november");
         assert.equal(globalFilter.rangeType, "month");
         assert.equal(globalFilter.type, "date");
-        actionManager.destroy()
+        actionManager.destroy();
     })
 
     test("Cannot have duplicated names", async function (assert) {

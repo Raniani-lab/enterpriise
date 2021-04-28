@@ -373,3 +373,9 @@ $margin-right: 15px;
         }
     }
 }
+
+/* Document share page, for some reason uses backend assets */
+article.spreadsheet_fade {
+    cursor: default;
+    opacity: 50%;
+}

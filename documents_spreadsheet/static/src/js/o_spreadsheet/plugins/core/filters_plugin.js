@@ -45,6 +45,8 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
     };
     const PERIOD_OPTIONS = Object.assign({}, MONTHS, YEARS);
 
+    const { uuidv4 } = spreadsheet.helpers;
+
     class FiltersPlugin extends spreadsheet.CorePlugin {
         constructor(getters, history, range, dispatch, config) {
             super(...arguments);
@@ -271,7 +273,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
         // ---------------------------------------------------------------------
 
         /**
-         * Import the pivots
+         * Import the filters
          *
          * @param {Object} data
          */
@@ -284,7 +286,7 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             }
         }
         /**
-         * Export the pivots
+         * Export the filters
          *
          * @param {Object} data
          */
@@ -293,6 +295,67 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
             for (let globalFilter of data.globalFilters) {
                 globalFilter.value = undefined;
             }
+        }
+
+        /**
+         * Adds all active filters (and their values) at the time of export in a dedicated sheet
+         *
+         * @param {Object} data
+         */
+        exportForExcel(data){
+            if (this.globalFilters.length === 0){
+                return;
+            }
+            const styles = Object.entries(data.styles)
+            let titleStyleId =
+              styles.findIndex(
+                el => JSON.stringify(el[1]) === JSON.stringify({bold: true})
+              ) + 1;
+
+            if (titleStyleId <= 0){
+                titleStyleId = styles.length + 1
+                data.styles[styles.length + 1] = {bold: true}
+            }
+
+            const cells = {}
+            cells["A1"] = {content: "Filter", style: titleStyleId}
+            cells["B1"] = {content: "Value", style: titleStyleId}
+            for (let [index, filter] of Object.entries(this.globalFilters)){
+                const row = parseInt(index) + 2;
+                cells[`A${row}`] = {content: filter.label};
+                let content;
+                switch (filter.type){
+                    case "text":
+                        content = filter.value || "";
+                        break;
+                    case "date":
+                        content = getPeriodOptions(moment())
+                            .filter(
+                                ({ id }) =>
+                                    filter.value && [filter.value.year, filter.value.period].includes(id)
+                            )
+                            .map((period) => period.description)
+                            .join(" ");
+                        break;
+                    case "relation":
+                        content = this.recordsDisplayName[filter.id].join(', ');
+                        break;
+                }
+                cells[`B${row}`] = { content };
+            }
+            data.sheets.push({
+                id: uuidv4(),
+                name: "Active Filters",
+                cells,
+                colNumber: 2,
+                rowNumber: this.globalFilters.length + 1,
+                cols: {},
+                rows: {},
+                merges: [],
+                figures: [],
+                conditionalFormats: [],
+                charts: [],
+            })
         }
 
         // ---------------------------------------------------------------------

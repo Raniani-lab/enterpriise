@@ -34,6 +34,11 @@ topbarMenuRegistry.addChild("save_as_template", ["file"], {
     sequence: 40,
     action: (env) => env.saveAsTemplate(),
 });
+topbarMenuRegistry.addChild("download", ["file"], {
+    name: _t("Download"),
+    sequence: 50,
+    action: (env) => env.download(),
+});
 topbarMenuRegistry.add("pivots", {
     name: _t("Pivots"),
     sequence: 60,

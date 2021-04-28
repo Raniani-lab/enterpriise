@@ -73,6 +73,10 @@ class ShareRoute(http.Controller):
 
         return response
 
+    def _get_downloadable_documents(self, documents):
+        """ to override to filter out documents that cannot be downloaded """
+        return documents
+
     def _make_zip(self, name, documents):
         """returns zip files for the Document Inspector and the portal.
 
@@ -83,7 +87,7 @@ class ShareRoute(http.Controller):
         stream = io.BytesIO()
         try:
             with zipfile.ZipFile(stream, 'w') as doc_zip:
-                for document in documents:
+                for document in self._get_downloadable_documents(documents):
                     if document.type != 'binary':
                         continue
                     status, content, filename, mimetype, filehash = request.env['ir.http']._binary_record_content(

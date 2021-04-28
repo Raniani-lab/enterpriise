@@ -340,7 +340,7 @@ class Task(models.Model):
                     product = default_product
 
             # Get all existing service sales order items in the sales order (step 6)
-            existing_service_sols = self.sudo(False).sale_order_id.order_line.filtered('is_service')
+            existing_service_sols = self.sudo().sale_order_id.order_line.filtered('is_service')
             sols_by_product_and_price_dict = defaultdict(lambda: self.env['sale.order.line'])  # key: (product_id, price_unit), value: sales order items
             for sol in existing_service_sols:  # classify the SOLs to easily find the ones that we want.
                 sols_by_product_and_price_dict[sol.product_id.id, sol.price_unit] |= sol
@@ -382,7 +382,7 @@ class Task(models.Model):
             self.sudo().write(task_values)
         else:
             # Check if there is a SOL containing the default product of the project before to create a new one.
-            sale_order_line = self.sale_order_id and self.sudo(False).sale_order_id.order_line.filtered(lambda sol: sol.product_id == self.project_id.timesheet_product_id)[:1]
+            sale_order_line = self.sale_order_id and self.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id == self.project_id.timesheet_product_id)[:1]
             if not sale_order_line:
                 sale_order_line = self.env['sale.order.line'].sudo().create({
                     'order_id': self.sale_order_id.id,

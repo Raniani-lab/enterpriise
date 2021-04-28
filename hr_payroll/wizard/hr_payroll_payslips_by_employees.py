@@ -117,7 +117,7 @@ class HrPayslipEmployees(models.TransientModel):
                 'struct_id': self.structure_id.id or contract.structure_type_id.default_struct_id.id,
             })
             payslips_vals.append(values)
-        payslips = Payslip.create(payslips_vals)
+        payslips = Payslip.with_context(tracking_disable=True).create(payslips_vals)
         payslips.compute_sheet()
         payslip_run.state = 'verify'
 

@@ -25,55 +25,25 @@ class l10nBeWorkEntryDailyBenefitReport(models.Model):
         work_entry_type_benefits = self.env['hr.work.entry.type'].get_work_entry_type_benefits()
         statement = sql.SQL("""
             CREATE OR REPLACE VIEW {table_name} AS (
-                WITH hr_work_entry_type_providing_advantages AS (
-                    SELECT id,
-                           {field_list}
-                    FROM   hr_work_entry_type
-                    WHERE  meal_voucher = true OR
-                           private_car = true OR
-                           representation_fees = true
-                ),
-                hr_time_zone_work_entries AS (
-                          SELECT work_entry.employee_id,
-                                 timezone(calendar.tz, work_entry.date_start::timestamptz) AS date_start,
-                                 timezone(calendar.tz, work_entry.date_stop::timestamptz) AS date_stop,
-                                 work_entry_type_id
-                            FROM hr_work_entry AS work_entry
-                      INNER JOIN hr_contract AS contract ON work_entry.contract_id = contract.id
-                      INNER JOIN resource_calendar AS calendar ON contract.resource_calendar_id = calendar.id
-                      WHERE      work_entry.state IN ('draft', 'validated')
-                ),
-                hr_work_entry_split_in_days AS (
-                    SELECT     employee_id,
-                               GREATEST (day_serie, date_start) AS date_start_day,
-                               LEAST(day_serie + INTERVAL '1 day', date_stop) AS date_stop_day,
-                               {field_list}
-                    FROM       hr_time_zone_work_entries AS work_entry
-                    INNER JOIN hr_work_entry_type_providing_advantages AS work_entry_type ON work_entry.work_entry_type_id = work_entry_type.id
-                    CROSS JOIN generate_series(date_trunc('day', work_entry.date_start), date_trunc('day', work_entry.date_stop), INTERVAL '1 day') AS day_serie
-                ),
-                hr_work_entry_one_advantage_per_row AS (
-                    SELECT     employee_id,
-                               date_start_day,
-                               date_stop_day,
-                               advantage.benefit_name,
-                               advantage.is_applicable
-                    FROM       hr_work_entry_split_in_days
-                    CROSS JOIN LATERAL (VALUES {lateral_values_field_list}) AS advantage(benefit_name, is_applicable)
-                )
-                SELECT   ROW_NUMBER() OVER(ORDER BY employee_id, date_start_day::date, benefit_name) AS id,
-                         employee_id,
-                         date_start_day::date AS day,
-                         benefit_name
-                FROM     hr_work_entry_one_advantage_per_row
-                WHERE    is_applicable = true
-                GROUP BY employee_id, benefit_name, date_start_day::date, date_stop_day::date
-                HAVING SUM(date_part('hour', date_stop_day - date_start_day)) > 0
+                    SELECT row_number() OVER (ORDER BY work_entry.employee_id, advantage.benefit_name) AS id,
+                           work_entry.employee_id,
+                           GREATEST(day_serie.day_serie, timezone(calendar.tz::text, work_entry.date_start::timestamp with time zone))::date AS day,
+                           advantage.benefit_name
+
+                      FROM hr_work_entry work_entry
+                      JOIN hr_contract contract ON work_entry.contract_id = contract.id
+                      JOIN resource_calendar calendar ON contract.resource_calendar_id = calendar.id
+                      JOIN hr_work_entry_type ON work_entry.work_entry_type_id = hr_work_entry_type.id
+                CROSS JOIN LATERAL generate_series(date_trunc('day'::text, work_entry.date_start), date_trunc('day'::text, work_entry.date_stop), '1 day'::interval) day_serie(day_serie)
+                CROSS JOIN LATERAL ( VALUES ('meal_voucher'::text,hr_work_entry_type.meal_voucher), ('private_car'::text,hr_work_entry_type.private_car), ('representation_fees'::text,hr_work_entry_type.representation_fees)) advantage(benefit_name, is_applicable)
+
+                     WHERE (work_entry.state::text = ANY (ARRAY['draft'::character varying::text, 'validated'::character varying::text]))
+                       AND hr_work_entry_type.meal_voucher = true OR hr_work_entry_type.private_car = true OR hr_work_entry_type.representation_fees = true
+                       AND advantage.is_applicable
+
+                  GROUP BY 2,3,4
+
+                    HAVING sum(date_part('hour'::text, LEAST(day_serie.day_serie + '1 day'::interval, timezone(calendar.tz::text, work_entry.date_stop::timestamp with time zone)) - GREATEST(day_serie.day_serie, timezone(calendar.tz::text, work_entry.date_start::timestamp with time zone)))) > 0::double precision
             );
-        """).format(
-            table_name=sql.Identifier(self._table),
-            field_list=sql.SQL(',').join(
-                        [sql.Identifier(work_entry_type_benefit) for work_entry_type_benefit in work_entry_type_benefits]),
-            lateral_values_field_list=sql.SQL(',').join(
-                        [sql.SQL("({benefit_name}, {benefit_value})").format(benefit_name=sql.Literal(work_entry_type_benefit), benefit_value=sql.Identifier(work_entry_type_benefit)) for work_entry_type_benefit in work_entry_type_benefits]))
+        """).format(table_name=sql.Identifier(self._table))
         self._cr.execute(statement)

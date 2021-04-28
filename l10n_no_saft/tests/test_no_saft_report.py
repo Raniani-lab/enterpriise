@@ -136,7 +136,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                 <AccountDescription>Utgående merverdiavgift høy sats</AccountDescription>
                                 <StandardAccountID>2701</StandardAccountID>
                                 <AccountType>GL</AccountType>
-                                <OpeningCreditBalance>0.00</OpeningCreditBalance>
+                                <OpeningDebitBalance>0.00</OpeningDebitBalance>
                                 <ClosingCreditBalance>500.00</ClosingCreditBalance>
                             </Account>
                             <Account>
@@ -152,7 +152,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                 <AccountDescription>Salgsinntekt handelsvarer avgiftspl. høy sats</AccountDescription>
                                 <StandardAccountID>3000</StandardAccountID>
                                 <AccountType>GL</AccountType>
-                                <OpeningCreditBalance>0.00</OpeningCreditBalance>
+                                <OpeningDebitBalance>0.00</OpeningDebitBalance>
                                 <ClosingCreditBalance>2000.00</ClosingCreditBalance>
                             </Account>
                             <Account>

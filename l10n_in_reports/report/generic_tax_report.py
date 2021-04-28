@@ -3,7 +3,8 @@
 
 from odoo import models
 
-class generic_tax_report(models.AbstractModel):
+
+class AccountGenericTaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
     @property

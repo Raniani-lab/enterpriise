@@ -606,113 +606,6 @@ class TestTaxReport(TestAccountReportsCommon):
         )
         self.assertEqual(options['fiscal_position'], foreign_vat_fpos.id, "When only one VAT fiscal position is available for a non-domestic country, it should be chosen by default")
 
-    def test_generic_tax_report(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(
-            report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'),
-            {'tax_report': 'generic'}
-        )
-
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                        NET             TAX
-            [   0,                                          1,              2],
-            [
-                ('Sales',                                   2200.0,         320.0),
-
-                ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
-                ('sale_tax_percentage_excl (10.0)',         1200.0,         120.0),
-
-                ('Purchases',                               2000.0,         1120.0),
-
-                ('purchase_tax_group',                      2000.0,         1120.0),
-            ],
-        )
-
-    def test_generic_tax_report_comparisons(self):
-        invoices = self.env['account.move'].create([{
-            'move_type': 'out_invoice',
-            'partner_id': self.partner_a.id,
-            'invoice_date': invoice_date,
-            'invoice_line_ids': [(0, 0, {
-                'product_id': self.product_a.id,
-                'price_unit': price_unit,
-                'tax_ids': [(6, 0, self.sale_tax_percentage_excl.ids)],
-            })],
-        } for invoice_date, price_unit in (('2019-01-01', 100.0), ('2019-02-01', 1000.0), ('2019-03-01', 10000.0))])
-        invoices.action_post()
-
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(
-            report, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'),
-            {'tax_report': 'generic'}
-        )
-        options = self._update_comparison_filter(options, report, 'previous_period', 2)
-
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                        NET             TAX             NET             TAX             NET             TAX
-            [   0,                                          1,              2,              3,              4,              5,              6],
-            [
-                ('Sales',                                   10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
-                ('sale_tax_percentage_excl (10.0)',         10000.0,        1000.0,         1000.0,         100.0,          100.0,          10.0),
-            ],
-        )
-
-    def test_generic_tax_report_by_account_tax(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(
-            report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'),
-            {'tax_report': 'generic_grouped_account_tax'}
-        )
-        with self.assertRaises(UserError):
-            report._get_lines(options)
-
-        # Remove the move using a tax with 'amount_type': 'group'
-        self.move_purchase.button_draft()
-        self.move_purchase.posted_before = False
-        self.move_purchase.unlink()
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                        NET             TAX
-            [   0,                                               1,             2],
-            [
-                ('Sales',                                   2200.0,         320.0),
-                ('400000 Product Sales',                    2000.0,         300.0),
-                ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
-                ('sale_tax_percentage_excl (10.0)',         1000.0,         100.0),
-                ('250000 Tax Account',                       200.0,          20.0),
-                ('sale_tax_percentage_excl (10.0)',          200.0,          20.0),
-            ],
-        )
-
-    def test_generic_tax_report_by_tax_account(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(
-            report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'),
-            {'tax_report': 'generic_grouped_tax_account'}
-        )
-        with self.assertRaises(UserError):
-            report._get_lines(options)
-
-        # Remove the move using a tax with 'amount_type': 'group'
-        self.move_purchase.button_draft()
-        self.move_purchase.posted_before = False
-        self.move_purchase.unlink()
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                        NET             TAX
-            [   0,                                               1,             2],
-            [
-                ('Sales',                                   2200.0,         320.0),
-                ('sale_tax_percentage_incl_1 (20.0)',       1000.0,         200.0),
-                ('400000 Product Sales',                    1000.0,         200.0),
-                ('sale_tax_percentage_excl (10.0)',         1200.0,         120.0),
-                ('250000 Tax Account',                       200.0,          20.0),
-                ('400000 Product Sales',                    1000.0,         100.0),
-            ],
-        )
-
     def test_tax_report_grid(self):
         company = self.company_data['company']
 
@@ -1361,9 +1254,9 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                         Net              Tax
             [   0,                             1,               2],
             [
-                ("Sales",                    400,             168),
-                ("Regular (42.0)",           200,              84),
-                ("Cash Basis (42.0)",        200,              84),
+                ("Sales",                    '',              168),
+                ("Regular (42.0%)",          200,              84),
+                ("Cash Basis (42.0%)",       200,              84),
             ],
         )
 

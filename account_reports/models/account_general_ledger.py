@@ -419,43 +419,40 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         # 3) Get sums for the initial balance.
         # ============================================
 
-        domain = None
+        domain = []
         if expanded_account:
             domain = [('account_id', '=', expanded_account.id)]
-        elif unfold_all:
-            domain = []
-        elif options['unfolded_lines']:
+        elif not unfold_all and options['unfolded_lines']:
             domain = [('account_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
 
-        if domain is not None:
-            for i, options_period in enumerate(options_list):
+        for i, options_period in enumerate(options_list):
 
-                # The period domain is expressed as:
-                # [
-                #   ('date' <= options['date_from'] - 1),
-                #   '|',
-                #   ('date' >= fiscalyear['date_from']),
-                #   ('account_id.user_type_id.include_initial_balance', '=', True)
-                # ]
+            # The period domain is expressed as:
+            # [
+            #   ('date' <= options['date_from'] - 1),
+            #   '|',
+            #   ('date' >= fiscalyear['date_from']),
+            #   ('account_id.user_type_id.include_initial_balance', '=', True)
+            # ]
 
-                new_options = self._get_options_initial_balance(options_period)
-                tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-                params += where_params
-                queries.append('''
-                    SELECT
-                        account_move_line.account_id                            AS groupby,
-                        'initial_balance'                                       AS key,
-                        NULL                                                    AS max_date,
-                        %s                                                      AS period_number,
-                        COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
-                        SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                        SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                        SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                    FROM %s
-                    LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                    WHERE %s
-                    GROUP BY account_move_line.account_id
-                ''' % (i, tables, ct_query, where_clause))
+            new_options = self._get_options_initial_balance(options_period)
+            tables, where_clause, where_params = self._query_get(new_options, domain=domain)
+            params += where_params
+            queries.append('''
+                SELECT
+                    account_move_line.account_id                            AS groupby,
+                    'initial_balance'                                       AS key,
+                    NULL                                                    AS max_date,
+                    %s                                                      AS period_number,
+                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM %s
+                LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
+                WHERE %s
+                GROUP BY account_move_line.account_id
+            ''' % (i, tables, ct_query, where_clause))
 
         # ============================================
         # 4) Get sums for the tax declaration.
@@ -542,7 +539,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 account_move_line__move_id.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
-                account_move_line__move_id.move_type         AS move_type,
+                account_move_line__move_id.move_type    AS move_type,
                 account.code                            AS account_code,
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,

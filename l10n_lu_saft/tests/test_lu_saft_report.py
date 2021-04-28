@@ -153,7 +153,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <AccountDescription>VAT received</AccountDescription>
                                 <StandardAccountID>461411</StandardAccountID>
                                 <AccountType>Current Liabilitie</AccountType>
-                                <OpeningCreditBalance>0.00</OpeningCreditBalance>
+                                <OpeningDebitBalance>0.00</OpeningDebitBalance>
                                 <ClosingCreditBalance>340.00</ClosingCreditBalance>
                             </Account>
                             <Account>
@@ -161,7 +161,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
                                 <AccountDescription>Sales of finished goods</AccountDescription>
                                 <StandardAccountID>702100</StandardAccountID>
                                 <AccountType>Income</AccountType>
-                                <OpeningCreditBalance>0.00</OpeningCreditBalance>
+                                <OpeningDebitBalance>0.00</OpeningDebitBalance>
                                 <ClosingCreditBalance>2000.00</ClosingCreditBalance>
                             </Account>
                         </GeneralLedgerAccounts>

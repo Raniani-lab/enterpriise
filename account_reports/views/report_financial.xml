@@ -29,6 +29,14 @@
     <li t-if="line['caret_options'] == 'tax.report.line'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_tax_report_line" class="dropdown-item">Audit</a>
     </li>
+    <li t-if="line['caret_options'] == 'default.tax.report'">
+        <a role="menuitem"
+            tabindex="-1"
+            t-att-data-args="line['caret_options_args']"
+            action="action_dropdown_audit_default_tax_report"
+            class="dropdown-item"
+        >Audit</a>
+    </li>
     <li t-if="line['caret_options'] == 'account.bank.statement'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" data-object="account.bank.statement" action="open_document" class="dropdown-item">View Bank Statement</a></li>
     <li t-if="line['caret_options'] == 'account.analytic.account'">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_analytic_entries" class="dropdown-item">Analytic Entries</a>

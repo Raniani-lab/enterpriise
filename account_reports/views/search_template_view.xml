@@ -391,7 +391,6 @@
                    class="dropdown-item js_account_reports_one_choice_filter"
                    data-filter="tax_report"
                    data-id="generic_grouped_account_tax"
-                   t-if="options['by_account_available']"
                    groups="account.group_account_readonly"
                 >
                     Group by: Account > Tax
@@ -401,7 +400,6 @@
                    class="dropdown-item js_account_reports_one_choice_filter"
                    data-filter="tax_report"
                    data-id="generic_grouped_tax_account"
-                   t-if="options['by_account_available']"
                    groups="account.group_account_readonly"
                 >
                     Group by: Tax > Account

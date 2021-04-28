@@ -16,7 +16,7 @@
     ],
     'data': [
         'data/ir_cron_data.xml',
-        'views/saft_report_templates.xml'
+        'data/saft_report.xml'
     ],
     'license': 'OEEL-1',
     'auto_install': True,

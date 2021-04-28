@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from itertools import groupby
-from odoo import models, _
+import base64
+import io
+
+from odoo import api, models, tools, _
 from odoo.exceptions import UserError
 
 
@@ -11,54 +13,72 @@ class AccountGeneralLedger(models.AbstractModel):
 
     def _get_reports_buttons(self, options):
         buttons = super()._get_reports_buttons(options)
-        if self._get_report_country_code(options) == 'LU':
+        if self.env.company.account_fiscal_country_id.code == 'LU':
             buttons.append({'name': _('Export SAF-T (Luxembourg)'), 'sequence': 5, 'action': 'print_xml', 'file_export_type': _('XML')})
         return buttons
 
-    def _prepare_header_data(self, options):
-        res = super()._prepare_header_data(options)
-        if self.env.company.account_fiscal_country_id.code == 'LU':
-            res.update({
-                'file_version': '2.01',
-                'accounting_basis': 'Invoice Accounting',
+    @api.model
+    def _fill_l10n_lu_saft_report_invoices_values(self, options, values):
+        res = {
+            'total_invoices_debit': 0.0,
+            'total_invoices_credit': 0.0,
+            'invoice_vals_list': [],
+            'uoms': [],
+            'product_vals_list': [],
+        }
+
+        # Fill 'total_invoices_debit', 'total_invoices_credit', 'invoice_vals_list'.
+        encountered_product_ids = set()
+        encountered_product_uom_ids = set()
+        for move_vals in values['move_vals_list']:
+            if move_vals['type'] not in ('out_invoice', 'out_refund'):
+                continue
+
+            move_vals.update({
+                'invoice_line_vals_list': [],
+                'tax_detail_vals_list': [],
+                'total_invoice_untaxed_balance': 0.0,
+                'total_invoice_tax_balance': 0.0,
             })
-        return res
 
-    def _get_updated_select_clause(self, select_clause):
-        select_clause = super()._get_updated_select_clause(select_clause)
-        if self.env.company.account_fiscal_country_id.code == 'LU':
-            select_clause += ''',
-                account_move_line.product_id,
-                account_move_line.quantity,
-                account_move_line.price_unit,
-                account_move_line.product_uom_id,
-                account_move_line__move_id.invoice_origin,
-                account_move_line__move_id.invoice_date,
-                account_move_line__move_id.amount_total_signed,
-                account_move_line__move_id.amount_untaxed_signed,
-                product.default_code                                          AS product_code,
-                uom.name                                                      AS uom,
-                CASE
-                     WHEN account_move_line__move_id.move_type = 'out_invoice'
-                     THEN 'C'
-                     WHEN account_move_line__move_id.move_type = 'out_refund'
-                     THEN 'D'
-                     ELSE NULL
-                END                                                           AS invoice_line_indicator
-            '''
-        return select_clause
+            for line_vals in move_vals['line_vals_list']:
+                if line_vals['tax_line_id']:
+                    move_vals['tax_detail_vals_list'].append({
+                        'currency_id': line_vals['currency_id'],
+                        'tax_id': line_vals['tax_line_id'],
+                        'tax_name': line_vals['tax_name'],
+                        'tax_amount': line_vals['tax_amount'],
+                        'tax_amount_type': line_vals['tax_amount_type'],
+                        'amount': line_vals['balance'],
+                        'amount_currency': line_vals['amount_currency'],
+                        'rate': line_vals['rate'],
+                    })
+                    move_vals['total_invoice_tax_balance'] -= line_vals['balance']
+                elif not line_vals['account_internal_type'] in ('receivable', 'payable') and not line_vals['exclude_from_invoice_tab']:
+                    move_vals['total_invoice_untaxed_balance'] -= line_vals['balance']
+                    if line_vals['balance'] > 0.0:
+                        res['total_invoices_debit'] += line_vals['balance']
+                    else:
+                        res['total_invoices_credit'] -= line_vals['balance']
+                    if line_vals['product_id']:
+                        encountered_product_ids.add(line_vals['product_id'])
+                    if line_vals['product_uom_id']:
+                        encountered_product_uom_ids.add(line_vals['product_uom_id'])
+                    move_vals['invoice_line_vals_list'].append(line_vals)
 
-    def _get_updated_from_clause(self, from_clause):
-        from_clause = super()._get_updated_from_clause(from_clause)
-        if self.env.company.account_fiscal_country_id.code == 'LU':
-            from_clause += '''
-                LEFT JOIN uom_uom uom                             ON uom.id = account_move_line.product_uom_id
-                LEFT JOIN product_product product                 ON product.id =account_move_line.product_id
-            '''
-        return from_clause
+            res['invoice_vals_list'].append(move_vals)
+            move_vals['total_invoice_balance'] = move_vals['total_invoice_untaxed_balance'] + move_vals['total_invoice_tax_balance']
 
-    def _get_query_products(self, product_ids):
-        query = '''
+        # Fill 'uoms'.
+        uoms = self.env['uom.uom'].browse(list(encountered_product_uom_ids))
+        non_ref_uoms = uoms.filtered(lambda uom: uom.uom_type != 'reference')
+        if non_ref_uoms:
+            # search base UoM for UoM master table
+            uoms |= self.env['uom.uom'].search([('category_id', 'in', non_ref_uoms.category_id.ids), ('uom_type', '=', 'reference')])
+        res['uoms'] = uoms
+
+        # Fill 'product_vals_list'.
+        self._cr.execute('''
             SELECT
                 product.id,
                 product.barcode,
@@ -82,126 +102,57 @@ class AccountGeneralLedger(models.AbstractModel):
                 LEFT JOIN uom_uom base_uom          ON base_uom.category_id = uom.category_id AND base_uom.uom_type='reference'
             WHERE product.id in %s
             ORDER BY default_code
-        '''
-        return query, [tuple(set(product_ids))]
+        ''', [tuple(encountered_product_ids)])
 
-    def _prepare_product_master_data(self, product_ids):
-        if not product_ids:
-            return []
-        query, params = self._get_query_products(product_ids)
-        self._cr.execute(query, params)
-        product_data = self._cr.dictfetchall()
-
-        duplicate_product_codes = []
-        empty_product_codes = []
-        for product_code, grouped_products in groupby(product_data, key=lambda product: product['default_code']):
+        res['product_vals_list'] = self._cr.dictfetchall()
+        duplicate_product_codes = set()
+        empty_product_codes = set()
+        for product_code, grouped_products in groupby(res['product_vals_list'], key=lambda product: product['default_code']):
             product_list = list(grouped_products)
             if not product_code:
-                empty_product_codes.append(product_list[0]['name'])
+                empty_product_codes.add(product_list[0]['name'])
             elif len(product_list) > 1:
-                duplicate_product_codes += [product['name'] for product in product_list]
+                for product in product_list:
+                    duplicate_product_codes.add(product['name'])
         if duplicate_product_codes:
-            raise UserError(_("Below products has duplicated `Internal Reference`, please make them unique:\n`%s`.") % (', '.join(set(duplicate_product_codes))))
+            raise UserError(_(
+                "Below products has duplicated `Internal Reference`, please make them unique:\n`%s`.",
+                ', '.join(duplicate_product_codes),
+            ))
         if empty_product_codes:
-            raise UserError(_("Please define `Internal Reference` for below products:\n`%s`.") % (', '.join(set(empty_product_codes))))
-        return product_data
+            raise UserError(_(
+                "Please define `Internal Reference` for below products:\n`%s`.",
+                ', '.join(empty_product_codes),
+            ))
 
-    def _prepare_general_ledger_data(self, move_lines_data):
-        res = super()._prepare_general_ledger_data(move_lines_data)
+        values.update(res)
 
-        def update_tax_information_totals_dict(tax_information_totals, move_id, tax_line_dict, taxed_amount):
-            tax_line_dict.update({
-                'amount_data': taxed_amount,
-            })
-            if not tax_information_totals.get(move_id):
-                tax_information_totals[move_id] = [tax_line_dict]
-            else:
-                tax_information_totals[move_id].append(tax_line_dict)
-            return
+    @api.model
+    def _prepare_saft_report_values(self, options):
+        # OVERRIDE
+        template_vals = super()._prepare_saft_report_values(options)
 
-        if self.env.company.account_fiscal_country_id.code == 'LU':
-            move_data = res['move_data']
-            all_tax_data = res['all_tax_data']
+        if self.env.company.account_fiscal_country_id.code != 'LU':
+            return template_vals
 
-            uom_ids = set()
-            product_ids = set()
-            partner_ids = set()
+        template_vals.update({
+            'xmlns': 'urn:OECD:StandardAuditFile-Taxation/2.00',
+            'file_version': '2.01',
+            'accounting_basis': 'Invoice Accounting',
+        })
+        self._fill_l10n_lu_saft_report_invoices_values(options, template_vals)
+        return template_vals
 
-            invoice_total_debit = 0
-            invoice_total_credit = 0
-            invoice_data = {'invoices': []}
-            tax_information_totals = {}
+    @api.model
+    def get_xml(self, options):
+        # OVERRIDE
+        content = super().get_xml(options)
 
-            for move_id, move in move_data.items():
-                if move['move_type'] in self.env['account.move'].get_sale_types():
-                    partner_id = move.get('partner_id')
-                    if partner_id:
-                        partner_ids.add(partner_id)
-                    for line_id, move_line in move['lines'].items():
-                        if move_line.get('product_uom_id'):
-                            uom_ids.add(move_line['product_uom_id'])
-                        if move_line.get('product_id'):
-                            product_ids.add(move_line['product_id'])
+        if self.env.company.account_fiscal_country_id.code != 'LU':
+            return content
 
-                        move.update({
-                            'invoice_date': move_line['invoice_date'],
-                            'amount_total_signed': '%.2f' % move_line['amount_total_signed'],
-                            'amount_untaxed_signed': '%.2f' % move_line['amount_untaxed_signed']
-                        })
-
-                        # product's unit price and taxed amount is only stored in invoice's currency,
-                        # hence, we convert these amounts into company's currency using this function
-                        move_line['price_unit_signed'] = self._convert_amount_to_company_currency(move_line['price_unit'], move_line['currency_id'], move_line['date'])
-
-                        # summarised tax payable totals per tax needs to be shown for each transaction,
-                        # hence, preparing dictionary for the same.
-                        tax_id = move_line.get('tax_line_id') or move_line.get('invoice_line_tax_id')
-                        if tax_id:
-                            tax_line_dict = all_tax_data.get(tax_id, {}).copy()
-                            if move_line.get('tax_line_id'):
-                                if move_line.get('credit'):
-                                    taxed_amount = self._prepare_amount_data(move_line.get('credit'), move_line)
-                                else:
-                                    taxed_amount = self._prepare_amount_data(move_line.get('debit'), move_line)
-                                update_tax_information_totals_dict(tax_information_totals, move_id, tax_line_dict, taxed_amount)
-                            elif tax_line_dict.get('amount') == 0:
-                                # this ensures 0 rated taxes shown in document totals
-                                update_tax_information_totals_dict(tax_information_totals, move_id, tax_line_dict, self._prepare_amount_data(0, move_line))
-
-                    amount_untaxed_signed = float(move['amount_untaxed_signed'])
-                    if move['move_type'] == 'out_invoice':
-                        invoice_total_credit += amount_untaxed_signed
-                    elif move['move_type'] == 'out_refund':
-                        invoice_total_debit += amount_untaxed_signed
-
-                    invoice_data['invoices'].append(move)
-                    invoice_data['invoice_total_debit'] = '%.2f' % abs(invoice_total_debit)
-                    invoice_data['invoice_total_credit'] = '%.2f' % abs(invoice_total_credit)
-
-            UoM = self.env['uom.uom']
-            uoms = UoM.browse(uom_ids)
-            non_ref_uoms = uoms.filtered(lambda uom: uom.uom_type != 'reference')
-            if non_ref_uoms:
-                # search base UoM for UoM master table
-                uoms |= UoM.search([('category_id', 'in', non_ref_uoms.mapped('category_id').ids), ('uom_type', '=', 'reference')])
-
-            res.update({
-                'uom_data': uoms.read(['name', 'uom_type']),
-                'product_data': self._prepare_product_master_data(product_ids),
-                'all_partner_details': self._get_addresses_and_contacts(partner_ids, invoice_partner=True),
-                'invoice_data': invoice_data,
-                'tax_information_totals': tax_information_totals
-            })
-
-        return res
-
-    def _prepare_saft_report_data(self, options):
-        res = super()._prepare_saft_report_data(options)
-        if res['country_code'] == 'LU':
-            res['xmlns'] = 'urn:OECD:StandardAuditFile-Taxation/2.00'
-        return res
-
-    def _get_xsd_file(self):
-        if self.env.company.account_fiscal_country_id.code == 'LU':
-            return 'FAIA_v_2_01_reduced_version_A.xsd'
-        return super()._get_xsd_file()
+        xsd_attachment = self.env['ir.attachment'].search([('name', '=', 'xsd_cached_FAIA_v_2_01_reduced_version_A_xsd')])
+        if xsd_attachment:
+            with io.BytesIO(base64.b64decode(xsd_attachment.with_context(bin_size=False).datas)) as xsd:
+                tools.xml_utils._check_with_xsd(content, xsd)
+        return content

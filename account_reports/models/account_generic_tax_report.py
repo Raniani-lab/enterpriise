@@ -527,7 +527,7 @@ class generic_tax_report(models.AbstractModel):
         self.env.cr.execute(query, where_params)
         for tax_line_id, account_id, balance in self.env.cr.fetchall():
             if tax_line_id in dict_to_fill:
-                dict_to_fill[tax_line_id][account_id]['periods'][period_number]['tax'] = balance
+                dict_to_fill[tax_line_id][account_id]['periods'][period_number]['tax'] += balance
                 dict_to_fill[tax_line_id][account_id]['show'] = True
 
     def _get_type_tax_use_string(self, value):

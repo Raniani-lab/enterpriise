@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
 from unittest.mock import patch
 
 from .common import TestAccountReportsCommon
@@ -325,7 +326,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
         self._assert_vat_closing(options, {
             self.foreign_vat_fpos: [
-                # pylint: disable=C0326
                 # sales: 800 * 0.5 * 0.7 - 200 * 0.5 * 0.7
                 {'debit': 210,      'credit': 0.0,      'account_id': self.tax_account_1.id},
                 # sales: 800 * 0.5 * (-0.1) - 200 * 0.5 * (-0.1)
@@ -351,7 +351,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
         self._assert_vat_closing(options, {
             self.env['account.fiscal.position']: [
-                # pylint: disable=C0326
                 # sales: 200 * 0.5 * 0.7 - 20 * 0.5 * 0.7
                 {'debit': 63,       'credit': 0.0,      'account_id': self.tax_account_1.id},
                 # sales: 200 * 0.5 * (-0.1) - 20 * 0.5 * (-0.1)
@@ -379,7 +378,6 @@ class TestTaxReport(TestAccountReportsCommon):
         self._assert_vat_closing(options, {
             # From test_vat_closing_domestic
             self.env['account.fiscal.position']: [
-                # pylint: disable=C0326
                 # sales: 200 * 0.5 * 0.7 - 20 * 0.5 * 0.7
                 {'debit': 63,       'credit': 0.0,      'account_id': self.tax_account_1.id},
                 # sales: 200 * 0.5 * (-0.1) - 20 * 0.5 * (-0.1)
@@ -396,7 +394,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
             # From test_vat_closing_single_fpos
             self.foreign_vat_fpos: [
-                # pylint: disable=C0326
                 # sales: 800 * 0.5 * 0.7 - 200 * 0.5 * 0.7
                 {'debit': 210,      'credit': 0.0,      'account_id': self.tax_account_1.id},
                 # sales: 800 * 0.5 * (-0.1) - 200 * 0.5 * (-0.1)
@@ -422,7 +419,6 @@ class TestTaxReport(TestAccountReportsCommon):
         )
         self.assertLinesValues(
             report._get_lines(options),
-            # pylint: disable=C0326
             #   Name                                                          Balance
             [   0,                                                            1],
             [
@@ -462,7 +458,6 @@ class TestTaxReport(TestAccountReportsCommon):
         )
         self.assertLinesValues(
             report._get_lines(options),
-            # pylint: disable=C0326
             #   Name                                                          Balance
             [   0,                                                            1],
             [
@@ -502,7 +497,6 @@ class TestTaxReport(TestAccountReportsCommon):
         )
         self.assertLinesValues(
             report._get_lines(options),
-            # pylint: disable=C0326
             #   Name                                                          Balance
             [   0,                                                            1],
             [
@@ -565,7 +559,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            # pylint: disable=C0326
             #   Name                                        NET             TAX
             [   0,                                          1,              2],
             [
@@ -1222,3 +1215,97 @@ class TestTaxReport(TestAccountReportsCommon):
         # Case 4: always 'all' on generic report
         to_check = report._get_options({'fiscal_position': foreign_vat_fpos.id, 'tax_report': 'generic'})
         self.assertEqual(to_check['fiscal_position'], 'all', "The generic report should always use 'all' fiscal position option.")
+
+    def test_tax_report_multi_inv_line_no_rep_account(self):
+        """ Tests the behavior of the tax report when using a tax without any
+        repartition account (hence doing its tax lines on the base account),
+        and using the tax on two lines (to make sure grouping is handled
+        properly by the report).
+        We do that for both regular and cash basis taxes.
+        """
+        # Create taxes
+        regular_tax = self.env['account.tax'].create({
+            'name': 'Regular',
+            'amount': 42,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        caba_tax = self.env['account.tax'].create({
+            'name': 'Cash Basis',
+            'amount': 42,
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'tax_exigibility': 'on_payment',
+            # We use default repartition: 1 base line, 1 100% tax line
+        })
+
+        # Make one invoice of 2 lines for each of our taxes
+        invoice_date = fields.Date.from_string('2021-04-01')
+        other_account_revenue = self.company_data['default_account_revenue'].copy()
+
+        regular_invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': invoice_date,
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'line 1',
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'price_unit': 100,
+                    'tax_ids': [(6, 0, regular_tax.ids)],
+                }),
+
+                (0, 0, {
+                    'name': 'line 2',
+                    'account_id': other_account_revenue.id,
+                    'price_unit': 100,
+                    'tax_ids': [(6, 0, regular_tax.ids)],
+                })
+            ],
+        })
+
+        caba_invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': invoice_date,
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'line 1',
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'price_unit': 100,
+                    'tax_ids': [(6, 0, caba_tax.ids)],
+                }),
+
+                (0, 0, {
+                    'name': 'line 2',
+                    'account_id': other_account_revenue.id,
+                    'price_unit': 100,
+                    'tax_ids': [(6, 0, caba_tax.ids)],
+                })
+            ],
+        })
+
+        # Post the invoices
+        regular_invoice.action_post()
+        caba_invoice.action_post()
+
+        # Pay cash basis invoice
+        self.env['account.payment.register'].with_context(active_ids=caba_invoice.ids, active_model='account.move').create({
+            'payment_date': invoice_date,
+        })._create_payments()
+
+        # Check the generic report
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, invoice_date, invoice_date, {'tax_report': 'generic'})
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                         Net              Tax
+            [   0,                             1,               2],
+            [
+                ("Sales",                    400,             168),
+                ("Regular (42.0)",           200,              84),
+                ("Cash Basis (42.0)",        200,              84),
+            ],
+        )

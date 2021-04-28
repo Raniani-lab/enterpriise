@@ -236,6 +236,8 @@ class AccountJournal(models.Model):
         return DbtrAcct
 
     def _get_PstlAdr(self, partner_id):
+        if not partner_id.country_id.code:
+            raise ValidationError(_('Partner %s has no country code defined.', partner_id.name))
         PstlAdr = etree.Element("PstlAdr")
         Ctry = etree.SubElement(PstlAdr, "Ctry")
         Ctry.text = partner_id.country_id.code

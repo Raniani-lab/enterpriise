@@ -1,12 +1,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+import re
 from random import randint
 
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
+
+INT_PHONE_NUMBER_FORMAT_REGEX = r'^\+[^+]+$'
 
 
 class SDDMandate(models.Model):
@@ -42,6 +45,10 @@ class SDDMandate(models.Model):
 
         if self.verified:
             raise ValidationError("SEPA: " + _("This mandate has already been verified."))
+        if not re.match(INT_PHONE_NUMBER_FORMAT_REGEX, phone):
+            raise ValidationError(
+                "SEPA: " + _("The phone number should be in international format.")
+            )
         self.write({
             'phone_number': phone.replace(' ', ''),
             'verification_code': randint(1000, 9999)

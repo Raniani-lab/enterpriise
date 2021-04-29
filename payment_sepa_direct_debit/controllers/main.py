@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
+import re
 
 from odoo import _, http
 from odoo.exceptions import UserError, ValidationError
@@ -9,6 +10,7 @@ from odoo.http import request
 from odoo.addons.base.models.res_bank import sanitize_account_number
 from odoo.addons.base_iban.models.res_partner_bank import validate_iban
 from odoo.addons.iap.tools import iap_tools
+from odoo.addons.payment_sepa_direct_debit.models.sdd_mandate import INT_PHONE_NUMBER_FORMAT_REGEX
 from odoo.addons.phone_validation.tools.phone_validation import phone_sanitize_numbers
 
 _logger = logging.getLogger(__name__)
@@ -153,6 +155,10 @@ class SepaDirectDebitController(http.Controller):
         :rtype: str
         :raise: ValidationError if the phone number is invalid
         """
+        if not re.match(INT_PHONE_NUMBER_FORMAT_REGEX, phone):
+            raise ValidationError(
+                "SEPA: " + _("The phone number should be in international format.")
+            )
         phone = phone_sanitize_numbers([phone], None, None).get(phone, {}).get('sanitized')
         if not phone:
             raise ValidationError("SEPA: " + _("Incorrect phone number."))

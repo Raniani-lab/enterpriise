@@ -15,13 +15,43 @@ const STYLE = css`
             &.o_connector_hovered {
                 z-index: 1;
             }
-        }
-        .connector_stroke_button{
-            stroke: rgb(9, 17, 36);
-            stroke-width: 24px;
-            &:hover{
-                stroke: #00a09d;
-                fill: #e6f6f5;
+            .o_connector_stroke_button {
+                > rect {
+                    cursor: pointer;
+                    stroke: #091124;
+                    stroke-width: 24px;
+                    fill: white;
+                }
+                &.o_connector_stroke_reschedule_button {
+                    line {
+                        stroke: #00a09d;
+                    }
+                    &:hover{
+                        > rect {
+                            fill: #00a09d;
+                        }
+                        line {
+                            stroke: white;
+                        }
+                    }
+                }
+                &.o_connector_stroke_remove_button {
+                    g {
+                        rect {
+                            fill: #dd3c4f;
+                        }
+                    }
+                    &:hover{
+                        > rect {
+                            fill: #dd3c4f;
+                        }
+                        g {
+                            rect {
+                                fill: white;
+                            }
+                        }
+                    }
+                }
             }
         }
 `;
@@ -209,7 +239,7 @@ class Connector extends Component {
     // -----------------------------------------------------------------------------
 
     /**
-     * Handler for connector_stroke_remove_button click event.
+     * Handler for connector_stroke_buttons remove click event.
      *
      * @param {OwlEvent} ev
      */
@@ -219,6 +249,30 @@ class Connector extends Component {
             id: this.props.id,
         };
         this.trigger('remove-button-click', payload);
+    }
+    /**
+     * Handler for connector_stroke_buttons reschedule sooner click event.
+     *
+     * @param {OwlEvent} ev
+     */
+    _onRescheduleSoonerClick(ev) {
+        const payload = {
+            data: deepMerge(this.props.data),
+            id: this.props.id,
+        };
+        this.trigger('reschedule-sooner-click', payload);
+    }
+    /**
+     * Handler for connector_stroke_buttons reschedule later click event.
+     *
+     * @param {OwlEvent} ev
+     */
+    _onRescheduleLaterClick(ev) {
+        const payload = {
+            data: deepMerge(this.props.data),
+            id: this.props.id,
+        };
+        this.trigger('reschedule-later-click', payload);
     }
 
 }

@@ -44,6 +44,15 @@ const TaskGanttConnectorModel = TaskGanttModel.extend({
             });
         });
     },
+    async rescheduleTask(direction, masterTaskId, slaveTaskId) {
+        return this.mutex.exec(() => {
+            return this._rpc({
+                model: 'project.task',
+                method: 'action_reschedule',
+                args: [direction, masterTaskId, slaveTaskId],
+            });
+        });
+    }
 });
 
 export default TaskGanttConnectorModel;

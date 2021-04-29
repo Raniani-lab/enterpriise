@@ -10,6 +10,7 @@ const TaskGanttConnectorController = TaskGanttController.extend({
         {
             display_milestone_popover: '_onDisplayMilestonePopover',
             on_remove_connector: '_onRemoveConnector',
+            on_reschedule_task: '_onRescheduleTask',
             on_create_connector: '_onCreateConnector',
             on_pill_highlight: '_onPillHighlight',
             on_connector_highlight: '_onConnectorHighlight',
@@ -133,6 +134,18 @@ const TaskGanttConnectorController = TaskGanttController.extend({
     async _onRemoveConnector(ev) {
         ev.stopPropagation();
         return this.model.removeDependency(ev.data.masterTaskId, ev.data.slaveTaskId).then(
+            (result) => this.reload()
+        );
+    },
+    /**
+     * Handler for renderer on-reschedule-task event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    async _onRescheduleTask(ev) {
+        ev.stopPropagation();
+        return this.model.rescheduleTask(ev.data.direction, ev.data.masterTaskId, ev.data.slaveTaskId).then(
             (result) => this.reload()
         );
     },

@@ -14,9 +14,6 @@ const STYLE = css`
             left: 0;
             width: 100%;
             height: 100%;
-            .connector_stroke_remove_button {
-                cursor: pointer;
-            }
         }
 `;
 
@@ -239,6 +236,16 @@ class ConnectorContainer extends Component {
     _onConnectorRemoveButtonClick(ev) {
         ev.stopPropagation();
         this.trigger('connector-remove-button-click', ev.detail);
+    }
+
+    _onConnectorRescheduleLaterButtonClick(ev) {
+        ev.stopPropagation();
+        this.trigger('connector-reschedule-later-button-click', ev.detail);
+    }
+
+    _onConnectorRescheduleSoonerButtonClick(ev) {
+        ev.stopPropagation();
+        this.trigger('connector-reschedule-sooner-button-click', ev.detail);
     }
 
     /**

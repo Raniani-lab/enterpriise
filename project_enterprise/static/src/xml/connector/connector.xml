@@ -68,23 +68,39 @@
                 <t t-set="markerEnd" t-value="'o_connector_arrow_head_' + props.id"/>
                 <t t-set="width" t-value="style.stroke.width"/>
             </t>
-            <t t-set="removeButtonSize" t-value="6 * style.stroke.width"/>
-            <svg class="connector_stroke_remove_button"
-                 pointer-events="auto"
+            <svg class="o_connector_stroke_buttons"
+                 pointer-events="all"
                  t-att="{
-                            'height': removeButtonSize,
-                            'width': removeButtonSize,
-                            'x': removeButtonPosition.left - removeButtonSize / 2,
-                            'y': removeButtonPosition.top - removeButtonSize / 2
+                            'height': 16,
+                            'width': 48,
+                            'x': removeButtonPosition.left -  24,
+                            'y': removeButtonPosition.top - 8
                         }"
                  t-if="props.canBeRemoved and props.hovered"
                  version="1.1"
-                 viewBox="0 0 512 512"
+                 viewBox="0 0 1536 512"
                  xmlns="http://www.w3.org/2000/svg">
-                <g transform="rotate(45,256,256)" t-on-click.stop="_onRemoveButtonClick">
-                    <circle stroke-width="32" stroke="white" fill="rgb(221, 60, 79)" cx="256" cy="256" r="224"/>
-                    <rect x="228" y="113" fill="white" width="56" height="286"/>
-                    <rect x="113" y="228" fill="white" width="286" height="56"/>
+                <rect fill="transparent" x="0" y="0" width="1536" height="512"/>
+                <g t-on-click.stop="_onRescheduleSoonerClick" class="o_connector_stroke_button o_connector_stroke_reschedule_button">
+                    <rect fill="white" x="20" y="20" width="472" height="472" rx="236" ry="236"/>
+                    <g pointer-events="none">
+                        <line x1="192" y1="256" x2="320" y2="128" stroke-width="56"/>
+                        <line x1="192" y1="256" x2="320" y2="384" stroke-width="56"/>
+                    </g>
+                </g>
+                <g t-on-click.stop="_onRemoveButtonClick" class="o_connector_stroke_button o_connector_stroke_remove_button">
+                    <rect fill="white" x="532" y="20" width="472" height="472" class="o_connector_stroke_button" rx="236" ry="236"/>
+                    <g transform="rotate(45,768,256)" pointer-events="none">
+                        <rect x="740" y="100" fill="rgb(221, 60, 79)" width="56" height="312"/>
+                        <rect x="612" y="228" fill="rgb(221, 60, 79)" width="312" height="56"/>
+                    </g>
+                </g>
+                <g t-on-click.stop="_onRescheduleLaterClick" class="o_connector_stroke_button o_connector_stroke_reschedule_button">
+                    <rect fill="white" x="1044" y="20" width="472" height="472" rx="236" ry="236"/>
+                    <g pointer-events="none">
+                        <line x1="1216" y1="128" x2="1344" y2="256" stroke-width="56"/>
+                        <line x1="1216" y1="384" x2="1344" y2="256" stroke-width="56"/>
+                    </g>
                 </g>
             </svg>
         </svg>

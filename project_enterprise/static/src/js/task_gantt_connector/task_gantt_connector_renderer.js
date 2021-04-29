@@ -19,6 +19,8 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         connector_mouseout: '_onConnectorMouseOut',
         connector_mouseover: '_onConnectorMouseOver',
         connector_remove_button_click: '_onConnectorRemoveButtonClick',
+        connector_reschedule_later_button_click: 'onConnectorRescheduleLaterButtonClick',
+        connector_reschedule_sooner_button_click: 'onConnectorRescheduleSoonerButtonClick',
     }),
     events: Object.assign({ }, TaskGanttRenderer.prototype.events || { }, {
         'mouseenter .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseEnter',
@@ -547,6 +549,40 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
         this.trigger_up(
         'on_remove_connector',
         {
+            masterTaskId: payload.data.masterId,
+            slaveTaskId: payload.data.id,
+        });
+    },
+    /**
+     * Handler for Connector connector_reschedule_later_button_click event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    onConnectorRescheduleLaterButtonClick(ev) {
+        ev.stopPropagation();
+        const payload = ev.data;
+        this.trigger_up(
+        'on_reschedule_task',
+        {
+            direction: 'forward',
+            masterTaskId: payload.data.masterId,
+            slaveTaskId: payload.data.id,
+        });
+    },
+    /**
+     * Handler for Connector connector_reschedule_sooner_button_click event.
+     *
+     * @param {OdooEvent} ev
+     * @private
+     */
+    onConnectorRescheduleSoonerButtonClick(ev) {
+        ev.stopPropagation();
+        const payload = ev.data;
+        this.trigger_up(
+        'on_reschedule_task',
+        {
+            direction: 'backward',
             masterTaskId: payload.data.masterId,
             slaveTaskId: payload.data.id,
         });

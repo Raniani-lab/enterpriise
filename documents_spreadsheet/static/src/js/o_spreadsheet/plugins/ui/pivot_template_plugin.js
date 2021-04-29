@@ -3,6 +3,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
 
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const CommandResult = require("documents_spreadsheet.CommandResult");
+    const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
     const { parse, astToFormula } = spreadsheet;
 
     class PivotTemplatePlugin extends spreadsheet.UIPlugin {
@@ -35,14 +36,14 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             switch (cmd.type) {
                 case "CONVERT_PIVOT_TO_TEMPLATE":
                     this._convertFormulas(
-                        this._getCells(/^\s*=.*PIVOT/),
+                        this._getCells(pivotFormulaRegex),
                         this._absoluteToRelative.bind(this),
                         this.getters.getPivots()
                     );
                     break;
                 case "CONVERT_PIVOT_FROM_TEMPLATE":
                     this._convertFormulas(
-                        this._getCells(/^\s*=.*PIVOT/),
+                        this._getCells(pivotFormulaRegex),
                         this._relativeToAbsolute.bind(this),
                         this.getters.getPivots()
                     );

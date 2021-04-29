@@ -2,16 +2,16 @@
 
 import PivotView from "web.PivotView";
 import testUtils from "web.test_utils";
+import { getBasicArch, getTestData } from "./spreadsheet_test_data";
 import {
     createSpreadsheetFromPivot,
     getCell,
     getCellContent,
     getCellFormula,
     getCells,
-    getMerges,
+    getMerges
 } from "./spreadsheet_test_utils";
 
-import { getBasicArch, getTestData } from "./spreadsheet_test_data";
 
 const createView = testUtils.createView;
 const { module, test } = QUnit;
@@ -551,5 +551,135 @@ test("group by regular field with archived record", async function (assert) {
     assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","2")`);
     assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","foo","17")`);
     assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER("1")`);
+    actionManager.destroy();
+});
+
+test("can select a Pivot from cell formula", async function (assert) {
+    assert.expect(1);
+    const data = getTestData();
+    const { actionManager, model } = await createSpreadsheetFromPivot({
+        data,
+        arch: `
+        <pivot string="Partners">
+            <field name="product_id" type="col"/>
+            <field name="foo" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+    });
+    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId});
+    const selectedPivot = model.getters.getSelectedPivot();
+    assert.strictEqual(
+        selectedPivot.id,
+        1
+    );
+    actionManager.destroy();
+});
+
+test("can select a Pivot from cell formula with '-' before the formula", async function (assert) {
+    assert.expect(1);
+
+    const data = getTestData();
+    const { actionManager, model } = await createSpreadsheetFromPivot({
+        data,
+        arch: `
+        <pivot string="Partners">
+            <field name="product_id" type="col"/>
+            <field name="foo" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+    });
+    model.dispatch("SET_VALUE", {
+        xc: "C3",
+        text: `=-PIVOT("1","probability","bar","false","foo","2")`,
+    });
+    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId});
+    const selectedPivot = model.getters.getSelectedPivot();
+    assert.strictEqual(
+        selectedPivot.id,
+        1
+    );
+    actionManager.destroy();
+});
+
+test("can select a Pivot from cell formula with other numerical values", async function (assert) {
+    assert.expect(1);
+
+    const data = getTestData();
+    const { actionManager, model } = await createSpreadsheetFromPivot({
+        data,
+        arch: `
+        <pivot string="Partners">
+            <field name="product_id" type="col"/>
+            <field name="foo" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+    });
+    model.dispatch("SET_VALUE", {
+        xc: "C3",
+        text: `=3*PIVOT("1","probability","bar","false","foo","2")+2`,
+    });
+    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId});
+    const selectedPivot = model.getters.getSelectedPivot();
+    assert.strictEqual(
+        selectedPivot.id,
+        1
+    );
+    actionManager.destroy();
+});
+
+test("can select a Pivot from cell formula where pivot is in a function call", async function (assert) {
+    assert.expect(1);
+
+    const data = getTestData();
+    const { actionManager, model } = await createSpreadsheetFromPivot({
+        data,
+        arch: `
+        <pivot string="Partners">
+            <field name="product_id" type="col"/>
+            <field name="foo" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+    });
+    model.dispatch("SET_VALUE", {
+        xc: "C3",
+        text: `=SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))`,
+    });
+    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId});
+    const selectedPivot = model.getters.getSelectedPivot();
+    assert.strictEqual(
+        selectedPivot.id,
+        1
+    );
+    actionManager.destroy();
+});
+
+test("can select a Pivot from cell formula (Mix of test scenarios above)", async function (assert) {
+    assert.expect(1);
+
+    const data = getTestData();
+    const { actionManager, model } = await createSpreadsheetFromPivot({
+        data,
+        arch: `
+        <pivot string="Partners">
+            <field name="product_id" type="col"/>
+            <field name="foo" type="row"/>
+            <field name="probability" type="measure"/>
+        </pivot>`,
+    });
+    model.dispatch("SET_VALUE", {
+        xc: "C3",
+        text: `=3*SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))+2*PIVOT("1","probability","bar","false","foo","2")`,
+    });
+    const pivotId = model.getters.getPivotFromPosition(2, 2);
+    model.dispatch("SELECT_PIVOT", { pivotId});
+    const selectedPivot = model.getters.getSelectedPivot();
+    assert.strictEqual(
+        selectedPivot.id,
+        1
+    );
     actionManager.destroy();
 });

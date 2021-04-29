@@ -1,8 +1,9 @@
 /** @odoo-module alias=documents_spreadsheet.MenuItemRegistry */
 
-import spreadsheet from "../o_spreadsheet_loader";
 import { _t } from "web.core";
-import { REINSERT_PIVOT_CHILDREN, INSERT_PIVOT_CELL_CHILDREN } from "./pivot_actions";
+import { pivotFormulaRegex } from "../helpers/pivot_helpers";
+import spreadsheet from "../o_spreadsheet_loader";
+import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "./pivot_actions";
 
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 const { createFullMenuItem } = spreadsheet.helpers;
@@ -93,5 +94,8 @@ cellMenuRegistry.add("reinsert_pivot", {
         env.dispatch("SELECT_PIVOT", { pivotId });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
     },
-    isVisible: (env) => env.getters.getPivots().length,
+    isVisible: (env) => {
+        const cell = env.getters.getActiveCell();
+        return cell && cell.type === "formula" && cell.formula.text.match(pivotFormulaRegex);
+    }
 });

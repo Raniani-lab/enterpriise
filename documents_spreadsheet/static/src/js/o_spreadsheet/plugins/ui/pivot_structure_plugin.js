@@ -23,6 +23,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
     const {
+        getNumberOfPivotFormulas,
         getFormulaNameAndArgs,
     } = require("documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js");
 
@@ -138,6 +139,9 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @returns Autofilled value
          */
         getNextValue(formula, isColumn, increment) {
+            if (getNumberOfPivotFormulas(formula)!==1) {
+                return formula;
+            }
             const { functionName, args } = getFormulaNameAndArgs(formula);
             const pivot = this.getters.getPivot(args[0]);
             if (!pivot || !this.isCacheLoaded(pivot.id)) {

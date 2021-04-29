@@ -12,11 +12,12 @@
  */
 
 import { _t } from "web.core";
-
-import PivotCache from "./pivot_cache";
 import spreadsheet from "../o_spreadsheet_loader";
+import PivotCache from "./pivot_cache";
 
 const { Model } = spreadsheet;
+
+export const pivotFormulaRegex = /^=.*PIVOT/;
 
 export const formats = {
     "day": { in: "DD MMM YYYY", out: "DD/MM/YYYY", display: "DD MMM YYYY", interval: "d" },

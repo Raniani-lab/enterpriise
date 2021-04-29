@@ -194,7 +194,7 @@ class Payslip(models.Model):
                         'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_after_contract_public_holidays').id,
                     })]})
         # Handle loss on commissions
-        if self._get_last_year_average_variable_revenues():
+        if self.contract_id.commission_on_target and self._get_last_year_average_variable_revenues():
             we_types_ids = (
                 self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday') + self.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment')
             ).ids

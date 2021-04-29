@@ -414,9 +414,16 @@ if not categories.BASIC:
 else:
     calendar = contract.resource_calendar_id
     days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
-    work_time_rate = contract.resource_calendar_id.work_time_rate
+    incapacity_attendances = calendar.attendance_ids.filtered(lambda a: a.work_entry_type_id.code == 'LEAVE281')
+    if incapacity_attendances:
+        incapacity_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in incapacity_attendances)
+        incapacity_hours = incapacity_hours / 2 if calendar.two_weeks_calendar else incapacity_hours
+        incapacity_rate = (1 - incapacity_hours / calendar.hours_per_week) if calendar.hours_per_week else 0
+        work_time_rate = contract.resource_calendar_id.work_time_rate * incapacity_rate
+    else:
+        work_time_rate = contract.resource_calendar_id.work_time_rate
 
-    threshold = 279.31
+    threshold = 0 if (worked_days.OUT and worked_days.OUT.number_of_hours) else 279.31
     if days_per_week and contract.representation_fees > threshold:
         # Only part of the representation costs are pro-rated because certain costs are fully
         # covered for the company (teleworking costs, mobile phone, internet, etc., namely:

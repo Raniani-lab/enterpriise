@@ -197,7 +197,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.env.user.company_ids |= self.company
 
         # Work entry generation
-        with self.assertQueryCount(admin=6026):
+        with self.assertQueryCount(admin=6028):
             # Note 4408 requests are related to the db insertions
             # i.e. self.env['hr.work.entry'].create(vals_list) and thus
             # are not avoidable.

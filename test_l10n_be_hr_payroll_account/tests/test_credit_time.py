@@ -305,10 +305,10 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -3.27,
             'PUB.TRANS': 24.0,
             'CAR.PRIV': 7.02,
-            'REP.FEES': 150.0,
+            'REP.FEES': 18.46,
             'IP': 103.85,
             'IP.DED': -7.79,
-            'NET': 528.96
+            'NET': 397.42
         }
         error = []
         line_values = payslip_original_contract._get_line_values(payslip_results.keys())
@@ -356,10 +356,10 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -17.44,
             'PUB.TRANS': 24.0,
             'CAR.PRIV': 29.82,
-            'REP.FEES': 150.0,
+            'REP.FEES': 98.08,
             'IP': 530.77,
             'IP.DED': -39.81,
-            'NET': 1875.91,
+            'NET': 1823.99,
         }
 
         error = []

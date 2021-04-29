@@ -815,7 +815,7 @@ QUnit.module('ReportEditorManager', {
 
             // drag and drop a Text component, which should trigger a view edition
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Text)');
-            await testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
+            await testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'), { position: 'right' });
 
             rem.destroy();
         });

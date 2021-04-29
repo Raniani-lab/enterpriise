@@ -7,6 +7,31 @@
     height: 100%;
     overflow: auto;
 
+    @include media-breakpoint-down(sm) {
+        &.o_ios_app .o_home_menu_scrollable {
+            width: initial;
+            margin-right: $o-horizontal-padding - 4px;
+            margin-left: $o-horizontal-padding - 4px;
+
+            .o_apps .o_app.o_menuitem {
+                display: flex;
+                flex: 1 0 100%;
+                margin: 1px 0;
+                background-color: rgba(255, 255, 255, 0.1);
+
+                .o_app_icon {
+                    width: 15%;
+                    margin: 0 $o-horizontal-padding;
+                }
+
+                .o_caption {
+                    align-self: center;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
     &.o_search_hidden .o_home_menu_scrollable > div:first-child {
         margin-top: 10px;
         @include media-breakpoint-up(md) {

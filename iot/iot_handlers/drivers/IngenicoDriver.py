@@ -698,6 +698,11 @@ class IngenicoDriver(Driver):
                 device.protocolId = msg.getProtocolId()
                 OutgoingIngenicoMessage( device.dev, device.terminalId, cls._ecrId, device.protocolId, "HelloResponse", b'\x00')
                 return True
+            elif msg and msg.magic == b'P4Y-ECR!' and msg.getMessageType() == "KeepAliveRequest":
+                device.terminalId = msg.getTerminalId()
+                device.protocolId = msg.getProtocolId()
+                OutgoingIngenicoMessage(device.dev, device.terminalId, cls._ecrId, device.protocolId, "KeepAliveResponse", b'\x00', reason=msg.getKeepAliveReasonId())
+                return True
             return False
         except Exception:
             _logger.error(format_exc())
@@ -757,7 +762,7 @@ class IngenicoDriver(Driver):
             while not self._stopped.isSet():
                 sleep(1)
                 msg = IncommingIngenicoMessage(self)
-                if msg:
+                if msg and msg.magic == b'P4Y-ECR!':
                     self.data['value'] = 'Connected'
                     self.data["Response"] = False
                     self.data["Error"] = False
@@ -771,6 +776,9 @@ class IngenicoDriver(Driver):
                         self.data["Ticket"] = msg.getTransactionTicket() if msg.getTransactionTicket() else self.data["Ticket"]
                     self.data['Stage'] = msg.getTransactionStage() if msg.getTransactionStage() else self.data['Stage']
                     self.data['cid'] = self.cid
+                else:
+                    self.disconnect()
+                    break
                 event_manager.device_changed(self)
         except Exception:
             self.disconnect()

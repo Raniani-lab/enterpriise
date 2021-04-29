@@ -4,6 +4,8 @@
 from operator import itemgetter
 from collections import OrderedDict
 
+from markupsafe import Markup
+
 from odoo import http, _
 from odoo.exceptions import MissingError
 from odoo.http import request
@@ -49,7 +51,7 @@ class CustomerPortal(portal.CustomerPortal):
         }
 
         searchbar_inputs = {
-            'all': {'input': 'all', 'label': _('Search <span class="nolabel"> (in Document)</span>')},
+            'all': {'input': 'all', 'label': Markup(_('Search <span class="nolabel"> (in Document)</span>'))},
         }
 
         searchbar_groupby = {

@@ -132,7 +132,7 @@
                                             </t>
                                         </select>
                                     </t>
-                                    <span class="form-text" t-att-name="'description_' + advantage.field"><t t-raw="contract._get_advantage_description(advantage)"/></span>
+                                    <span class="form-text" t-att-name="'description_' + advantage.field"><t t-out="contract._get_advantage_description(advantage)"/></span>
                                 </div>
                             </div>
                             <div class="col-md-2">

@@ -445,9 +445,9 @@
 <!-- stylesheets -->
 <!-- This template is only used when printing a financial report to a PDF output -->
 <template id="print_template">
-    <t t-raw="'&lt;base href=%s&gt;' % base_url"/>
     <html>
         <head>
+            <base t-att-ref="base_url"/>
             <meta http-equiv="content-type" content="text/html; charset=utf-8" />
             <t t-call-assets="account_reports.assets_financial_report" t-js="False"/>
         </head>

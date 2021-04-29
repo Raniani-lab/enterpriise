@@ -13,7 +13,7 @@
         <t t-call="web.layout">
             <t t-set="head">
                 <script type="text/javascript">
-                    odoo.session_info = <t t-raw="json.dumps({
+                    odoo.session_info = <t t-out="json.dumps({
                         'is_admin': request.env.user._is_admin(),
                         'is_system': request.env.user._is_system(),
                         'user_id': request.env.user.id,
@@ -34,7 +34,7 @@
                     }
                 </style>
 
-                <t t-raw="head"/>
+                <t t-out="head"/>
             </t>
 
             <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
@@ -60,7 +60,7 @@
                     </ul>
                 </header>
                 <main class="d-flex flex-column flex-nowrap">
-                    <t t-raw="0"/>
+                    <t t-out="0"/>
                 </main>
                 <footer class="flex-grow-0 flex-shrink-0 mb16 mt32 ">
                     <div class="text-center col-sm-12">

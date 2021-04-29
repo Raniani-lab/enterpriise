@@ -3,6 +3,8 @@
 
 from operator import itemgetter
 
+from markupsafe import Markup
+
 from odoo import http
 from odoo.exceptions import AccessError, MissingError, UserError
 from odoo.http import request
@@ -59,7 +61,7 @@ class CustomerPortal(portal.CustomerPortal):
             'last_message_cust': {'label': _('Last message is from customer')},
         }
         searchbar_inputs = {
-            'content': {'input': 'content', 'label': _('Search <span class="nolabel"> (in Content)</span>')},
+            'content': {'input': 'content', 'label': Markup(_('Search <span class="nolabel"> (in Content)</span>'))},
             'message': {'input': 'message', 'label': _('Search in Messages')},
             'customer': {'input': 'customer', 'label': _('Search in Customer')},
             'id': {'input': 'id', 'label': _('Search in Reference')},

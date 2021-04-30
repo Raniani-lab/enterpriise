@@ -51,6 +51,7 @@ class Planning(models.Model):
     department_id = fields.Many2one(related='employee_id.department_id', store=True)
     user_id = fields.Many2one('res.users', string="User", related='employee_id.user_id', store=True, readonly=True)
     manager_id = fields.Many2one(related='employee_id.parent_id')
+    job_title = fields.Char(related='employee_id.job_title')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')
     color = fields.Integer("Color", related='role_id.color')
@@ -73,7 +74,7 @@ class Planning(models.Model):
     is_unassign_deadline_passed = fields.Boolean('Is unassignement deadline not past', compute="_compute_is_unassign_deadline_passed")
     is_assigned_to_me = fields.Boolean('Is This Shift Assigned To The Current User', compute='_compute_is_assigned_to_me')
     conflicting_slot_ids = fields.Many2many('planning.slot', compute='_compute_overlap_slot_count')
-    overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count')
+    overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count', search='_search_overlap_slot_count')
     is_past = fields.Boolean('Is This Shift In The Past?', compute='_compute_past_shift')
 
     # time allocation
@@ -240,6 +241,23 @@ class Planning(models.Model):
                 slot.conflicting_slot_ids = [(6, 0, slot_result)]
         else:
             self.overlap_slot_count = 0
+
+    @api.model
+    def _search_overlap_slot_count(self, operator, value):
+        if operator not in ['=', '>'] or not isinstance(value, int) or value != 0:
+            raise NotImplementedError(_('Operation not supported, you should always compare overlap_slot_count to 0 value with = or > operator.'))
+
+        query = """
+            SELECT S1.id
+            FROM planning_slot S1
+            INNER JOIN planning_slot S2 ON S1.employee_id = S2.employee_id AND S1.id <> S2.id
+            WHERE
+                S1.start_datetime < S2.end_datetime
+                AND S1.end_datetime > S2.start_datetime
+                AND S1.allocated_percentage + S2.allocated_percentage > 100
+        """
+        operator_new = (operator == ">") and "inselect" or "not inselect"
+        return [('id', operator_new, (query, ()))]
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_slot_duration(self):
@@ -554,7 +572,7 @@ class Planning(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'planning.slot',
-            'name': _('Shifts in conflict'),
+            'name': _('Shifts in Conflict'),
             'view_mode': 'gantt,list,form',
             'domain': domain_map[self.id],
             'context': {

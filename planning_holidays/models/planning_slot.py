@@ -95,7 +95,7 @@ class Slot(models.Model):
                         if same_day_leave:
                             period_leaves += _('%(prefix)s on %(dfrom)s',
                                                prefix=prefix,
-                                               dfrom=_('that day') if single_day_slot else _('the %s') % format_date(self.env, period.get('from')))
+                                               dfrom=_('that day') if single_day_slot else format_date(self.env, period.get('from')))
                         else:
                             period_leaves += _('%(prefix)s from the %(dfrom)s to the %(dto)s',
                                                prefix=prefix,

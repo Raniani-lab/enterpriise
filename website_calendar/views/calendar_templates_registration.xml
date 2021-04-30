@@ -86,11 +86,13 @@
                                             </div>
                                         </t>
                                         <t t-if="question.question_type == 'checkbox'">
-                                            <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
-                                                <label>
-                                                    <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
-                                                        t-att-value="answer.name" class="mr-2"/><t t-esc="answer.name"/>
-                                                </label>
+                                            <div t-attf-class="checkbox-group #{question.question_required and 'required' or ''}">
+                                                <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
+                                                    <label>
+                                                        <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
+                                                            t-att-value="answer.name" class="mr-2"/><t t-esc="answer.name"/>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </t>
                                     </div>

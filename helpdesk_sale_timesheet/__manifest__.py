@@ -5,7 +5,7 @@
     'name': 'Sell Helpdesk Timesheet',
     'category': 'Hidden',
     'summary': 'Project, Helpdesk, Timesheet and Sale Orders',
-    'depends': ['helpdesk_timesheet', 'sale_timesheet'],
+    'depends': ['helpdesk_timesheet', 'sale_timesheet', 'helpdesk_sale'],
     'description': """
         Bill timesheets logged on helpdesk tickets.
     """,

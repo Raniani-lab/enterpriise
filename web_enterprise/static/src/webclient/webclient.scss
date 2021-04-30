@@ -73,24 +73,23 @@ select {
 
 .btn-secondary {
   // Customize the button design without overwrite the default '$secondary'
-  // variable that it's used by other components like .btn-outline-secondary,
-  // list-groups, tables, badges...
+  // variable that it's used by other components like list-groups, tables,
+  // badges...
 
   @include button-variant(
     $background: $o-btn-secondary-bg,
     $border: $o-btn-secondary-bg,
     $hover-background: $o-btn-secondary-hover-bg,
-    $hover-border: $o-btn-secondary-hover-bg,
-    $active-background: $o-btn-secondary-active-bg,
-    $active-border: $o-btn-secondary-active-bg
+    $hover-border: $o-btn-secondary-hover-border,
+    $active-background: $o-btn-secondary-hover-bg,
+    $active-border: $o-btn-secondary-hover-border
   );
 
   // By default, act like a .btn-link
-  color: $primary;
+  @include o-hover-text-color($link-color, $link-hover-color);
 
-  &.fa:not(.fa-search) {
-    // For button icons, act like '.btn-link.text-muted'
-    color: $secondary;
+  &.disabled, &:disabled {
+    @include o-hover-text-color($link-color, $link-color);
   }
 }
 
@@ -101,14 +100,33 @@ select {
 
   @include button-variant(
     $background: $o-btn-secondary-bg,
-    $border: lighten($secondary, 40%),
+    $border: $o-gray-200,
     $hover-background: $o-btn-secondary-hover-bg,
-    $hover-border: $o-btn-secondary-hover-bg,
-    $active-background: $o-btn-secondary-active-bg,
-    $active-border: lighten($secondary, 40%)
+    $hover-border: $o-gray-300,
+    $active-background: $o-btn-secondary-hover-bg,
+    $active-border: $o-gray-300
   );
+}
 
-  color: $secondary;
+.btn-light {
+  // Achieve "clickable text" elements that act like buttons once the
+  // the user interacts with (eg. control-panel dropdowns);
+  @include button-variant(
+    $background: #fff,
+    $border: #fff,
+    $hover-background: $o-gray-100,
+    $hover-border: $o-gray-200,
+    $active-background: $o-gray-100,
+    $active-border: $o-gray-300
+  );
+}
+
+.btn-outline-secondary, .btn-light {
+  @include o-hover-text-color($o-main-text-color, $o-gray-900);
+
+  &.disabled, &:disabled {
+    @include o-hover-text-color($o-main-text-color, $o-main-text-color);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -189,37 +207,20 @@ select {
   }
 }
 
-//== Well
-.card {
-  box-shadow: none;
-}
-
 //== Badges
 .badge {
   border: 1px solid $o-brand-primary;
 }
 
 //== Buttons
-.btn,
-.btn-group > .btn {
-  border-radius: 0px;
-
-  &:hover,
-  &:active,
-  &:focus,
-  &:active:focus {
-    outline: none;
-  }
-}
-
-.btn-primary.active,
-.btn-secondary.active {
-  box-shadow: none;
-}
-
 .btn-primary,
 .btn-secondary {
   text-transform: uppercase;
+}
+
+// Disable unnecessary box-shadows on mouse hover
+.btn:focus:hover {
+  box-shadow: none;
 }
 
 //== Navbar

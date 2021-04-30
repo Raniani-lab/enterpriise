@@ -1,3 +1,15 @@
+.o_control_panel {
+    // Apply 'btn-light' design while keeping
+    // 'btn-secondary' class in order to avoid unnecessary
+    // xml inconsistencies between version.
+    .o_cp_bottom_left .btn-secondary.fa,
+    .o_dropdown_toggler_btn.btn-secondary,
+    .o_pager .btn-secondary,
+    .o_switch_view.btn-secondary {
+        @extend .btn-light;
+    }
+}
+
 @include media-breakpoint-up(sm) {
     .o_control_panel {
         .o_cp_bottom_left {

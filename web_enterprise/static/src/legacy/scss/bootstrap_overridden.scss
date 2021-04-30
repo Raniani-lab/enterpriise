@@ -14,6 +14,12 @@ $info: #87C0D1;
 $warning: #F0AD4E;
 $danger: #DC6965;
 
+// Options
+
+// Disable predefined decorative box-shadow styles on various components.
+// Does not affect box-shadows used for focus states.
+$enable-shadows: false;
+
 // Components
 //
 // Define common padding and border radius sizes and more.
@@ -51,6 +57,7 @@ $table-head-color: $headings-color;
 // For each of Bootstrap's buttons, define text, background, and border color.
 
 $btn-font-weight: $font-weight-bold;
+$btn-transition: none;
 
 // Dropdowns
 //

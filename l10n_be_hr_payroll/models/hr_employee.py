@@ -40,14 +40,6 @@ class HrEmployee(models.Model):
     end_notice_period = fields.Date("End notice period", groups="hr.group_hr_user", copy=False, tracking=True)
     first_contract_in_company = fields.Date("First contract in company", groups="hr.group_hr_user", copy=False)
 
-    # YTI REMOVE THIS FIELD
-    language_code = fields.Selection([
-        ('dutch', 'Dutch'),
-        ('french', 'French'),
-        ('german', 'German'),
-        ], default='french', string='Language', groups="hr.group_hr_user")
-    # YTI Probably to remove
-    nif_country_code = fields.Integer(string="NIF Country Code", default=0, groups="hr.group_hr_user", help="Fiscal Identification Number")
     has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
         help="Use a bicycle as a transport mode to go to work")
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])

@@ -797,6 +797,11 @@ class HrDMFAReport(models.Model):
         ('3', '3rd'),
         ('4', '4th'),
     ], required=True, default=lambda self: str(date_utils.get_quarter_number(fields.Date.today())))
+    file_type = fields.Selection([
+        ('R', 'Real File (R)'),
+        ('S', 'Declaration Test (S)'),
+        ('T', 'Circuit Test (T)'),
+    ], default='R', required=True)
     dmfa_xml = fields.Binary(string="XML file")
     dmfa_xml_filename = fields.Char(compute='_compute_filename', store=True)
     quarter_start = fields.Date(compute='_compute_dates')
@@ -862,9 +867,10 @@ class HrDMFAReport(models.Model):
                 num_suite = dmfa.dmfa_xml_filename.split('.')[4]
                 num_suite = str(int(num_suite) + 1)
             num_suite = str(num_suite).zfill(5)
+            file_type = dmfa.file_type
 
             # YTI TODO master: Add is_test field, to set R or T accordingly
-            filename = 'FI.DMFA.%s.%s.%s.R.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite)
+            filename = 'FI.DMFA.%s.%s.%s.%s.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite, file_type)
             dmfa.dmfa_xml_filename = filename
 
     @api.depends('year', 'quarter')
@@ -999,7 +1005,7 @@ class HrDMFALocationUnit(models.Model):
     _description = 'Work Place defined by ONSS'
     _rec_name = 'code'
 
-    code = fields.Integer(required=True)
+    code = fields.Char(required=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', string="Working Address", required=True)
 

@@ -15,6 +15,7 @@
                             <field name="reference"/>
                             <field name="year"/>
                             <field name="quarter"/>
+                            <field name="file_type"/>
                             <field name="dmfa_xml_filename" invisible="1"/>
                             <field name="dmfa_xml" readonly="1" filename="dmfa_xml_filename"/>
                         </group>

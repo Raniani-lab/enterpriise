@@ -29,7 +29,9 @@ class HrContract(models.Model):
         help="Default contract used when making an offer to an applicant.")
     sign_template_id = fields.Many2one('sign.template', string="New Contract Document Template",
         help="Default document that the applicant will have to sign to accept a contract offer.")
-    contract_update_template_id = fields.Many2one('sign.template', string="Contract Update Document Template",
+    contract_update_template_id = fields.Many2one(
+        'sign.template', string="Contract Update Document Template",
+        compute='_compute_contract_update_template_id', store=True, readonly=False,
         help="Default document that the employee will have to sign to update his contract.")
     signatures_count = fields.Integer(compute='_compute_signatures_count', string='# Signatures',
         help="The number of signatures on the pdf contract with the most signatures.")
@@ -160,6 +162,12 @@ class HrContract(models.Model):
         for contract in self:
             contract.contract_reviews_count = self.with_context(active_test=False).search_count(
                 [('origin_contract_id', '=', contract.id)])
+
+    @api.depends('sign_template_id')
+    def _compute_contract_update_template_id(self):
+        for contract in self:
+            if contract.sign_template_id and not contract.contract_update_template_id:
+                contract.contract_update_template_id = contract.sign_template_id
 
     def _get_redundant_salary_data(self):
         employees = self.mapped('employee_id').filtered(lambda employee: not employee.active)

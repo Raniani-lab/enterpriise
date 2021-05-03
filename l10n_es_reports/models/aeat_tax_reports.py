@@ -723,7 +723,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_number(347) + self._boe_format_string(mod_347_boe_sequence.next_by_id(), length=10)
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
-        rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char='0', align='right')
+        rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
 
         declarados_count_line_data = self._get_lines(boe_report_options, line_id=self.env.ref('l10n_es_reports.mod_347_statistics_operations_count').id)[0]
         rslt += self._boe_format_number(sum(i['no_format'] for i in declarados_count_line_data['columns']), length=9)
@@ -910,7 +910,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_number(349) + self._boe_format_string(mod_349_boe_sequence.next_by_id(), length=10)
         rslt += self._boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
-        rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char='0', align='right')
+        rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
         rslt += self._boe_format_string(period, length=2)
         rslt += self._boe_format_number(self._retrieve_report_line(options, 'l10n_es_reports.mod_349_statistics_invoices_partners_count'), length=9)
         rslt += self._boe_format_number(self._retrieve_report_line(options, 'l10n_es_reports.mod_349_statistics_invoices_total_amount'), length=15, in_currency=True, decimal_places=2)

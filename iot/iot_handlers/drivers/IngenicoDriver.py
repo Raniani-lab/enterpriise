@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from binascii import unhexlify
-from logging import getLogger
+import logging
 from time import sleep
 from traceback import format_exc
 from zlib import crc32
@@ -11,7 +11,16 @@ from odoo.addons.hw_drivers.driver import Driver
 from odoo.addons.hw_drivers.event_manager import event_manager
 from odoo.addons.hw_drivers.iot_handlers.interfaces.SocketInterface import socket_devices
 
-_logger = getLogger(__name__)
+_logger = logging.getLogger(__name__)
+
+# Because drivers don't get loaded as normal Python modules but directly in
+# load_iot_handlers called by Manager.run, the log levels that get applied to the odoo
+# import hierarchy won't apply here. This means DEBUG level messages will not display
+# even if specified and INFO messages will show even if the log level is configured to
+# be ERROR at the odoo-bin level. In order to work around this, it's possible to
+# uncomment this line and set the desired level directly for this module.
+# _logger.setLevel(logging.DEBUG)
+
 
 class IngenicoTagType():
     """Tag type Function.
@@ -564,9 +573,17 @@ class IncommingIngenicoMessage(IngenicoMessage):
         """
         super().__init__(dev)
 
+        # If we're being called in `supported`, `self.dev` will be a socket. If we're
+        # being called in `run`, `self.dev` will be an IngenicoDriver and `self.dev.dev`
+        # will be the socket.
+        if isinstance(self.dev, IngenicoDriver):
+            _logger.debug("Listening on: %s", self.dev.dev)
+
         # Receive message length and reduce it with length of magic string
+        _logger.debug("Waiting for message length")
         length = self._bcdToInt(self.dev.recv(4)) - 8
         # Check if message is from Ingenico terminal by comparing magic string
+        _logger.debug("Waiting for magic string")
         self.magic = self.dev.recv(8)
         if self.magic and self.magic == self._const.magic:
             # Receive and decode message
@@ -744,14 +761,14 @@ class IngenicoDriver(Driver):
     def recv(self, length):
         try:
             return self.dev.recv(length)
-        except socket.error:
-            _logger.error(socket.error)
+        except socket.error as e:
+            _logger.error("Socket error in recv: %s", e)
 
     def send(self, request):
         try:
             return self.dev.send(request)
-        except socket.error:
-            _logger.error(socket.error)
+        except socket.error as e:
+            _logger.error("Socket error in send: %s", e)
 
     def run(self):
         """If an payment terminal is found, start listening for messages from the terminal.
@@ -761,7 +778,9 @@ class IngenicoDriver(Driver):
             self.data = {'value': '', 'Stage': False, 'Response': False, 'Ticket': False, 'Error': False}
             while not self._stopped.isSet():
                 sleep(1)
+                _logger.debug("Waiting for incoming message")
                 msg = IncommingIngenicoMessage(self)
+                _logger.debug("Incoming message received")
                 if msg and msg.magic == b'P4Y-ECR!':
                     self.data['value'] = 'Connected'
                     self.data["Response"] = False
@@ -777,9 +796,11 @@ class IngenicoDriver(Driver):
                     self.data['Stage'] = msg.getTransactionStage() if msg.getTransactionStage() else self.data['Stage']
                     self.data['cid'] = self.cid
                 else:
+                    _logger.info("Terminating due to an invalid message")
                     self.disconnect()
                     break
                 event_manager.device_changed(self)
         except Exception:
+            _logger.info("Terminating due to an exception")
             self.disconnect()
             _logger.error(format_exc())

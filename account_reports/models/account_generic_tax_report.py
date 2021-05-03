@@ -6,6 +6,7 @@ from odoo import models, api, fields, Command
 from odoo.tools import safe_eval
 from odoo.tools.translate import _
 from odoo.exceptions import UserError, RedirectWarning
+from odoo.osv import expression
 from datetime import datetime
 from math import copysign
 import re
@@ -826,7 +827,19 @@ class generic_tax_report(models.AbstractModel):
 
             eval_dict = self._get_total_line_eval_dict(period_balances_by_code, period_date_from, period_date_to, options)
             period_total = safe_eval.safe_eval(expand_formula(report_line.formula), eval_dict)
-            columns.append({'name': '' if period_total is None else self.format_value(period_total), 'style': 'white-space:nowrap;', 'balance': period_total or 0.0})
+
+            carryover_account_balance = self.get_carried_over_balance_before_date(report_line, options, period_index)
+            column = {
+                'name': '' if period_total is None else self.format_value(period_total),
+                'style': 'white-space:nowrap;',
+                'balance': period_total or 0.0,
+            }
+
+            carryover_bounds = report_line._get_carryover_bounds(options, period_total, carryover_account_balance)
+            if carryover_bounds:
+                column['carryover_bounds'] = carryover_bounds
+
+            columns.append(column)
 
         return {
             'id': deferred_line['id'],
@@ -834,7 +847,8 @@ class generic_tax_report(models.AbstractModel):
             'unfoldable': False,
             'columns': columns,
             'level': deferred_line['level'],
-            'line_code': report_line.code
+            'line_code': report_line.code,
+            'tax_report_line': report_line
         }
 
     def _build_tax_section_line(self, section, parent_id, hierarchy_level):
@@ -860,11 +874,23 @@ class generic_tax_report(models.AbstractModel):
         """
         columns = []
         for i, period in enumerate(grid_data['periods']):
-            carryover_lines = grid_data['obj'].carryover_line_ids
-            carryover_account_balance = self.get_carried_over_balance_before_date(carryover_lines, options, i)
-            columns += [{'name': self.format_value(period['balance']), 'style': 'white-space:nowrap;',
-                         'balance': period['balance'],
-                         'carryover_bounds': grid_data['obj']._get_carryover_bounds(options, period['balance'], carryover_account_balance)}]
+            carryover_account_balance = self.get_carried_over_balance_before_date(grid_data['obj'], options, i)
+
+            value = period['balance']
+            if grid_data['obj'].is_carryover_used_in_balance:
+                value += carryover_account_balance
+
+            column = {
+                'name': self.format_value(value),
+                'style': 'white-space:nowrap;',
+                'balance': value
+            }
+
+            carryover_bounds = grid_data['obj']._get_carryover_bounds(options, value, carryover_account_balance)
+            if carryover_bounds:
+                column['carryover_bounds'] = carryover_bounds
+
+            columns.append(column)
 
         line_id = self._get_generic_line_id('account.tax.report.line', grid_data['obj'].id, parent_line_id=parent_id)
 
@@ -1031,11 +1057,30 @@ class generic_tax_report(models.AbstractModel):
         :return: The formatted list of lines
         """
         if options.get('tax_report'):
-            carry_over_lines = [line for line in lines if any(c.get('carryover_bounds', False) for c in line['columns'])]
-            for line in carry_over_lines:
-                for index, column in enumerate(line['columns']):
-                    # The index of the column represent the periods, where 0 = current and 1+ the compared ones
-                    self._format_column_after_carryover(line, column, index, options)
+            tax_report_line_report_line_mapping = {}
+
+            for line in lines:
+                if not line.get('tax_report_line'):
+                    continue
+
+                # If the line has carryover bounds, we'll take it.
+                if any(c.get('carryover_bounds') for c in line['columns']):
+                    for index, column in enumerate(line['columns']):
+                        # The index of the column represent the periods, where 0 = current and 1+ the compared ones
+                        self._format_column_after_carryover(line, column, index, options)
+
+                # Keep track of the link between account.tax.report.line and our report line
+                tax_report_line_report_line_mapping[line.get('tax_report_line').id] = line
+
+                # So that we can find that line if it is target of another one.
+                if line['tax_report_line'].carry_over_destination_line_id:
+                    destination_line_id = line['tax_report_line'].carry_over_destination_line_id.id
+                    if destination_line_id not in tax_report_line_report_line_mapping:
+                        continue
+
+                    columns = tax_report_line_report_line_mapping[destination_line_id]['columns']
+                    for index, column in enumerate(columns):
+                        self._format_column_after_carryover(line, column, index, options)
 
             # Also update the section totals to represent those changes
             # Filter to ignore control lines if any
@@ -1061,16 +1106,18 @@ class generic_tax_report(models.AbstractModel):
 
         # When we are not printing (on the web page) we'll show a contextual tooltip.
         if not self.env.context.get('print_mode') and carryover_bounds is not None:
-            column_style = "white-space:nowrap;"
             popup_data = {}
-            messages = self.get_popup_messages(line_balance, options)
+            messages = self._get_popup_messages(line_balance, carryover_balance, options)
+            column_styles = self._get_column_styles(line)
+            column_style = column_styles.get('base_style', '')
 
             if carryover_bounds[0] is not None and column['balance'] < carryover_bounds[0]:
                 popup_data.update(messages['out_of_bounds'])
-                column_style += " color:red;"
+                column_style += column_styles.get('below_bound_style', '')
             elif carryover_bounds[1] is not None and column['balance'] > carryover_bounds[1]:
                 popup_data.update(messages['out_of_bounds'])
-                column_style += " color:green;"
+                column_style += column_styles.get('above_bound_style', '')
+
             # We are between the bounds. We'll take as much as possible in the carryover balance as we can without
             # going out of bounds
             else:
@@ -1081,22 +1128,33 @@ class generic_tax_report(models.AbstractModel):
                     popup_data.update(messages['negative'])
 
             # Add the tooltip and style as needed
-            column['style'] = column_style
+            if column_style:
+                column['style'] = column_style
 
             if popup_data:
                 popup_data.update({
                     'id': tax_report_line.id,
                     'debug': self.user_has_groups('base.group_no_one'),
-                    'balance': _("The carryover balance will be : %s", carryover_balance),
+                    'balance': messages.get('balance', ''),
                 })
                 column['carryover_popup_data'] = json.dumps(popup_data)
                 column['popup_template'] = 'accountReports.CarryOverInfoTemplate'
         else:
             # Update the balance when printing
-            column['name'] = self.format_value(line_balance)
-            column['balance'] = line_balance
+            # If the carryover is persistent, do not take the balance into account when formatting:
+            # it'll already have been directly into the report.
+            if tax_report_line.is_carryover_persistent:
+                column['name'] = self.format_value(line_balance)
+                column['balance'] = line_balance
 
-    def get_popup_messages(self, line_balance, options):
+    def _get_column_styles(self, report_line):
+        return {
+            'base_style': 'white-space:nowrap;',
+            'above_bound_style': ' color:green;',
+            'below_bound_style': ' color:red;',
+        }
+
+    def _get_popup_messages(self, line_balance, carryover_balance, options):
         return {
             'positive': {
                 'description1': _("This amount will be increased by the positive amount from"),
@@ -1111,30 +1169,32 @@ class generic_tax_report(models.AbstractModel):
             'out_of_bounds': {
                 'description1': _("This amount will be set to %s.", self.format_value(line_balance)),
                 'description2': _("The difference will be carried over to the next period's declaration."),
-            }
+            },
+            'balance': _("The carried over balance will be : %s", carryover_balance),
         }
 
     def get_amounts_after_carryover(self, tax_report_line, amount, carryover_bounds, options, period):
         """
         Adapt the line amount based on the carried over balance for this line.
-        If negative, it'll be set to 0.
-        If positive but there is some values carried over from the past, then we'll deduct that value
-        from the line.
+        If the amount is outside of the bounds, it'll be set to the nearest one and the difference will be
+        added to the carryover balance.
+        If the amount is between the bounds, we'll use as much we can without stepping out of them to try
+        to neutralize the carryover balance.
         :param tax_report_line: The tax report line of which we are trying to find the carryover balance
         :param amount: The amount we are formatting.
-        :param carryover_bounds: The upper and lower bounds for this carryover.
+        :param carryover_bounds: The upper and lower bounds for this line.
         :param options: The report options.
         :param period: An index representing the period of this line in the options.
         0 is the current period, and 1+ would be periods that are being compared to.
         :return: The newly adapted amount for the line, along with the one for the carryover
         """
-        if not carryover_bounds or not tax_report_line:
-            return amount
+        if carryover_bounds is None:
+            return amount, self.get_carried_over_balance_before_date(tax_report_line, options, period)
 
         delta = 0
 
         # Get the balance from this account for chosen period
-        carryover_balance = self.get_carried_over_balance_before_date(tax_report_line.carryover_line_ids, options, period)
+        carryover_balance = self.get_carried_over_balance_before_date(tax_report_line, options, period)
 
         # Amounts below the lower bounds are set to it
         if carryover_bounds[0] is not None and amount < carryover_bounds[0]:
@@ -1198,13 +1258,13 @@ class generic_tax_report(models.AbstractModel):
     def _get_report_name(self):
         return _('Tax Report')
 
-    def get_carried_over_balance_before_date(self, carryover_lines, options, period=0):
+    def get_carried_over_balance_before_date(self, tax_report_line, options, period=0):
         """
         Allows to get the carried over balance before a certain date.
         This allows us to keep the carry over for a certain period consistent even once the balance has changed.
         :param period: The period of the column we are trying to get the balance for.
         :param options: The options of the report.
-        :param carryover_lines: The carryover lines of the concerned tax line.
+        :param tax_report_line: The concerned tax report line.
         :return: The balance of the accounts before the given date.
         """
         if period == 0:
@@ -1214,13 +1274,21 @@ class generic_tax_report(models.AbstractModel):
 
         requested_date = datetime.strptime(date_from, "%Y-%m-%d").date()
 
-        # Get the balance of all the lines that where not carried over at this date
+        # Get the default domain for the carryover lines of this tax line.
+        domain = tax_report_line._get_carryover_lines_domain(options)
+
+        # Append to the domain the necessary filters depending on the current context.
         if options['fiscal_position'] == 'domestic':
-            relevant_lines = [line for line in carryover_lines if line.date < requested_date and not line.foreign_vat_fiscal_position_id]
+            domain = expression.AND([domain, [('date', '<', requested_date),
+                                              ('foreign_vat_fiscal_position_id', '=', False)]])
         elif options['fiscal_position'] == 'all':
-            relevant_lines = [line for line in carryover_lines if line.date < requested_date]
+            domain = expression.AND([domain, [('date', '<', requested_date)]])
         else:
-            relevant_lines = [line for line in carryover_lines if line.date < requested_date and line.foreign_vat_fiscal_position_id == options['fiscal_position']]
-        balance = sum(line.amount for line in relevant_lines)
+            domain = expression.AND([domain, [('date', '<', requested_date),
+                                              ('foreign_vat_fiscal_position_id', '=', options['fiscal_position'])]])
+
+        # Get the correct carryover lines, and use them to get the balance
+        carryover_lines = self.env['account.tax.carryover.line'].search(domain)
+        balance = sum(line.amount for line in carryover_lines)
 
         return balance

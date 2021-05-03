@@ -7,13 +7,13 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     def _post(self, soft=True):
+        AccountGenericTaxReport = self.env['account.generic.tax.report']
         for move in self.filtered(lambda m: not m.posted_before and m.tax_closing_end_date):
             # When working with carried over lines, update the tax line with the changes when posting the period move
             options = move._get_report_options_from_tax_closing_entry()
             new_context = self.env['account.generic.tax.report']._set_context(options)
             report_lines = self.env['account.generic.tax.report'].with_context(new_context)._get_lines(options)
 
-            AccountGenericTaxReport = self.env['account.generic.tax.report']
             for line in [line for line in report_lines if line['columns'][0].get('carryover_bounds', False)]:
                 line_balance = line['columns'][0]['balance']
                 carryover_bounds = line['columns'][0].get('carryover_bounds')
@@ -30,11 +30,14 @@ class AccountMove(models.Model):
                     options['tax_report_option'] = report.id
 
                     old_carryover_balance = AccountGenericTaxReport.get_carried_over_balance_before_date(
-                        carry_to_line.carryover_line_ids, options)
+                        carry_to_line, options)
                     dummy, carryover_balance = AccountGenericTaxReport.get_amounts_after_carryover(
                         carry_to_line, line_balance, carryover_bounds, options, 0)
 
-                    carryover_delta = carryover_balance - old_carryover_balance
+                    if tax_line.is_carryover_persistent:
+                        carryover_delta = carryover_balance - old_carryover_balance
+                    else:
+                        carryover_delta = line_balance - old_carryover_balance
 
                     if options['fiscal_position'] == 'domestic':
                         fiscal_position_id = False

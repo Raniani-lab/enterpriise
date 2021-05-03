@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 from .common import TestAccountReportsCommon
 from odoo.tests import tagged
-from odoo import fields
 from odoo.tests.common import Form
 
 
@@ -36,94 +35,29 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
                                                       carry_over_condition='no_negative_amount_carry_over_condition')
         cls.tax_11_line = cls._create_tax_report_line('Base 11%', cls.tax_report, sequence=2, tag_name='base_11')
 
-    def test_tax_report_carry_over(self):
-        report, _, tax_42 = self._trigger_carryover_line_creation(self.company_data)
+        cls.tax_22_line = cls._create_tax_report_line('Base 22%', cls.tax_report, sequence=3, tag_name='base_22',
+                                                      is_carryover_used_in_balance=True)
+        cls.tax_27_line = cls._create_tax_report_line('Base 27%', cls.tax_report, sequence=4, tag_name='base_27',
+                                                      carry_over_condition='always_carry_over_and_set_to_0',
+                                                      carry_over_destination_line_id=cls.tax_22_line.id,
+                                                      is_carryover_persistent=False)
 
-        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
-        # to return an empty attachment.
-        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
-
-            # ====== Add a new invoice later than this period, reducing slightly the carried over amount ======
-
-            invoice = self.env['account.move'].create({
-                'move_type': 'in_invoice',
-                'partner_id': self.partner_a.id,
-                'journal_id': self.company_data['default_journal_purchase'].id,
-                'invoice_date': fields.Date.from_string('2020-06-30'),
-                'invoice_line_ids': [(0, 0, {
-                    'name': 'Turlututu',
-                    'price_unit': 50.0,
-                    'quantity': 1,
-                    'account_id': self.company_data['default_account_expense'].id,
-                    'tax_ids': [(6, 0, tax_42.ids)],
-                    })],
-            })
-            invoice.action_post()
-            options = self._init_options(report, invoice.date, invoice.date)
-
-            vat_closing_move = report._generate_tax_closing_entries(options)
-            vat_closing_move.action_post()
-
-            # This period is adding another line to the carryover which increase the balance by 21
-            carried_over_sum = sum([line.amount for line in self.tax_42_line.carryover_line_ids])
-            self.assertEqual(carried_over_sum, -21.0)
-
-            # ====== Add another invoice to stop the carry over ======
-
-            invoice = self.env['account.move'].create({
-                'move_type': 'in_invoice',
-                'partner_id': self.partner_a.id,
-                'journal_id': self.company_data['default_journal_purchase'].id,
-                'invoice_date': fields.Date.from_string('2020-09-30'),
-                'invoice_line_ids': [(0, 0, {
-                    'name': 'Turlututu',
-                    'price_unit': 500.0,
-                    'quantity': 1,
-                    'account_id': self.company_data['default_account_expense'].id,
-                    'tax_ids': [(6, 0, tax_42.ids)],
-                })],
-            })
-            invoice.action_post()
-            options = self._init_options(report, invoice.date, invoice.date)
-
-            vat_closing_move = report._generate_tax_closing_entries(options)
-            vat_closing_move.action_post()
-
-            # This period is positive from a larger amount than needed and thus negate the carry over balance
-            carried_over_sum = sum([line.amount for line in self.tax_42_line.carryover_line_ids])
-            self.assertEqual(carried_over_sum, 0.0)
-
-    def test_tax_report_carry_over_multi_company(self):
-        """
-        Setup the creation of a carryover line in both companies.
-        If the multi-company is working properly, the second one should not get the line from the first one.
-        """
-        self._trigger_carryover_line_creation(self.company_data_2)
-        self._trigger_carryover_line_creation(self.company_data)
-
-    def _trigger_carryover_line_creation(self, company_data):
-        tax_11, tax_42 = self._configure_tax_for_company(company_data)
+    def _trigger_carryover_line_creation(self, company_data, tax_lines, with_reversal=True):
+        taxes = self._configure_tax_for_company(company_data, tax_lines)
 
         # Trigger the creation of a carryover line for the selected company
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
             'partner_id': self.partner_a.id,
             'journal_id': company_data['default_journal_purchase'].id,
-            'invoice_date': fields.Date.from_string('2020-03-31'),
+            'invoice_date': '2020-03-31',
             'invoice_line_ids': [
                 (0, 0, {
                     'name': 'Turlututu',
                     'price_unit': 100.0,
                     'quantity': 1,
                     'account_id': company_data['default_account_expense'].id,
-                    'tax_ids': [(6, 0, tax_11.ids)]}),
-
-                (0, 0, {
-                 'name': 'Turlututu',
-                 'price_unit': 100.0,
-                 'quantity': 1,
-                 'account_id': company_data['default_account_expense'].id,
-                 'tax_ids': [(6, 0, tax_42.ids)]})
+                    'tax_ids': [(6, 0, tax.ids)]}) for tax in taxes
             ],
         })
         invoice.action_post()
@@ -137,44 +71,31 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         # Invalidate the cache to ensure the lines will be fetched in the right order.
         report.invalidate_cache()
 
-        # We refund the invoice
-        refund_wizard = self.env['account.move.reversal'].with_context(active_model="account.move",
-                                                                       active_ids=invoice.ids).create(
-            {
-                'reason': 'Test refund tax repartition',
-                'refund_method': 'refund',
-                'date': fields.Date.from_string('2020-03-31'),
-                'journal_id': invoice.journal_id.id,
-            })
-        res = refund_wizard.reverse_moves()
-        refund = self.env['account.move'].browse(res['res_id'])
+        if with_reversal:
+            # We refund the invoice
+            refund_wizard = self.env['account.move.reversal'].with_context(active_model="account.move",
+                                                                           active_ids=invoice.ids).create(
+                {
+                    'reason': 'Test refund tax repartition',
+                    'refund_method': 'refund',
+                    'date': '2020-03-31',
+                    'journal_id': invoice.journal_id.id,
+                })
+            res = refund_wizard.reverse_moves()
+            refund = self.env['account.move'].browse(res['res_id'])
 
-        # Change the value of the line with tax 42 to get a negative value on the report
-        move_form = Form(refund)
-        with move_form.invoice_line_ids.edit(1) as line_form:
-            line_form.price_unit = 200
-        move_form.save()
+            # Change the value of the line with tax 42 to get a negative value on the report
+            move_form = Form(refund)
+            with move_form.invoice_line_ids.edit(1) as line_form:
+                line_form.price_unit = 200
+            move_form.save()
 
-        refund.action_post()
-
-        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
-        # to return an empty attachment.
-        with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
-            # Generate and post the vat closing move. This should trigger the carry over
-            # And create a carry over line for the tax line 42
-            vat_closing_move = report._generate_tax_closing_entries(options)
-            vat_closing_move.action_post()
-
-            # The negative amount on the line 42 (which is using carry over) was -42.
-            # This amount will be carried over to the future in the tax line
-            # The with company is required here as without it, we would find all lines from both companies
-            carried_over_sum = sum([line.amount for line in self.tax_42_line.with_company(company_data['company']).carryover_line_ids])
-            self.assertEqual(carried_over_sum, -42.0)
+            refund.action_post()
 
         # return the information needed to do further tests if needed
-        return report, tax_11, tax_42
+        return report, taxes, invoice
 
-    def _configure_tax_for_company(self, company_data):
+    def _configure_tax_for_company(self, company_data, tax_lines):
         company = company_data['company']
 
         tax_group_purchase = self.env['account.tax.group'].with_company(company).sudo().create({
@@ -183,93 +104,177 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             'property_tax_payable_account_id': company_data['default_account_payable'].copy().id,
         })
 
-        tax_template_11 = self.env['account.tax.template'].create({
-            'name': 'Impôt sur les revenus',
-            'tax_group_id': tax_group_purchase.id,
-            'amount': '11',
-            'amount_type': 'percent',
-            'type_tax_use': 'purchase',
-            'chart_template_id': company.chart_template_id.id,
-            'invoice_repartition_line_ids': [
+        taxes = []
+
+        for line in tax_lines:
+            amount = line.tag_name.split('_')[1]
+            template = self.env['account.tax.template'].create({
+                'name': 'Test tax template',
+                'tax_group_id': tax_group_purchase.id,
+                'amount': amount,
+                'amount_type': 'percent',
+                'type_tax_use': 'purchase',
+                'chart_template_id': company.chart_template_id.id,
+                'invoice_repartition_line_ids': [
+                    (0, 0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'base',
+                        'use_in_tax_closing': True
+                    }),
+                    (0, 0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'tax',
+                        'plus_report_line_ids': [line.id],
+                        'use_in_tax_closing': True
+                    }),
+                ],
+                'refund_repartition_line_ids': [
+                    (0, 0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'base',
+                        'use_in_tax_closing': True
+                    }),
+                    (0, 0, {
+                        'factor_percent': 100,
+                        'repartition_type': 'tax',
+                        'minus_report_line_ids': [line.id],
+                        'use_in_tax_closing': True
+                    }),
+                ],
+            })
+
+            # The templates needs an xmlid in order so that we can call _generate_tax
+            self.env['ir.model.data'].create({
+                'name': 'account_reports.test_tax_report_tax_'+amount+'_'+company.name,
+                'module': 'account_reports',
+                'res_id': template.id,
+                'model': 'account.tax.template',
+            })
+            tax_id = template._generate_tax(company)['tax_template_to_tax'][template.id]
+            taxes.append(self.env['account.tax'].browse(tax_id))
+
+        return taxes
+
+    def _check_carryover_test_result(self, invoice, report, company_data, expected_value, tax_line):
+        options = self._init_options(report, invoice.date, invoice.date)
+        # Due to warning in runbot when printing wkhtmltopdf in the test, patch the method that fetch the pdf in order
+        # to return an empty attachment.
+        with patch.object(type(report), '_get_vat_report_attachments', autospec=True,
+                          side_effect=lambda *args, **kwargs: []):
+            # Generate and post the vat closing move. This should trigger the carry over
+            # And create a carry over line for the tax line 42
+            vat_closing_move = report._generate_tax_closing_entries(options)
+            vat_closing_move.action_post()
+
+            # The negative amount on the line 42 (which is using carry over) was -42.
+            # This amount will be carried over to the future in the tax line
+            # The with company is necessary to ensure that it is the same as the one of the report
+            domain = tax_line.with_company(company_data['company'])._get_carryover_lines_domain(options)
+            carryover_lines = self.env['account.tax.carryover.line'].search(domain)
+            carried_over_sum = sum([line.amount for line in carryover_lines])
+            self.assertEqual(carried_over_sum, expected_value)
+
+    def test_tax_report_carry_over(self):
+        report, taxes, invoice = self._trigger_carryover_line_creation(self.company_data, [self.tax_11_line,
+                                                                                           self.tax_42_line])
+
+        # ====== Test the current value, based on the invoice created earlier ======
+
+        self._check_carryover_test_result(invoice, report, self.company_data, -42.0, self.tax_42_line)
+
+        # ====== Add a new invoice later than this period, reducing slightly the carried over amount ======
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'invoice_date': '2020-06-30',
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Turlututu',
+                'price_unit': 50.0,
+                'quantity': 1,
+                'account_id': self.company_data['default_account_expense'].id,
+                'tax_ids': [(6, 0, taxes[1].ids)],
+                })],
+        })
+        invoice.action_post()
+        self._check_carryover_test_result(invoice, report, self.company_data, -21.0, self.tax_42_line)
+
+        # ====== Add another invoice to stop the carry over ======
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'invoice_date': '2020-09-30',
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Turlututu',
+                'price_unit': 500.0,
+                'quantity': 1,
+                'account_id': self.company_data['default_account_expense'].id,
+                'tax_ids': [(6, 0, taxes[1].ids)],
+            })],
+        })
+        invoice.action_post()
+        self._check_carryover_test_result(invoice, report, self.company_data, 0.0, self.tax_42_line)
+
+    def test_tax_report_carry_over_multi_company(self):
+        """
+        Setup the creation of a carryover line in both companies.
+        If the multi-company is working properly, the second one should not get the line from the first one.
+        """
+        report, _, invoice = self._trigger_carryover_line_creation(self.company_data_2, [self.tax_11_line,
+                                                                                         self.tax_42_line])
+        self._check_carryover_test_result(invoice, report, self.company_data_2, -42.0, self.tax_42_line)
+        report, _, invoice = self._trigger_carryover_line_creation(self.company_data, [self.tax_11_line,
+                                                                                       self.tax_42_line])
+        self._check_carryover_test_result(invoice, report, self.company_data, -42.0, self.tax_42_line)
+
+    def test_tax_report_carry_over_persistent(self):
+        report, taxes, _ = self._trigger_carryover_line_creation(self.company_data, [self.tax_27_line], False)
+        company_data = self.company_data
+
+        # Trigger the creation of a carryover line for the selected company
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': company_data['default_journal_purchase'].id,
+            'invoice_date': '2020-03-31',
+            'invoice_line_ids': [
                 (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                    'use_in_tax_closing': True
-                }),
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'tax',
-                    'plus_report_line_ids': [self.tax_11_line.id],
-                    'use_in_tax_closing': True
-                }),
-            ],
-            'refund_repartition_line_ids': [
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                    'use_in_tax_closing': True
-                }),
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'tax',
-                    'minus_report_line_ids': [self.tax_11_line.id],
-                    'use_in_tax_closing': True
-                }),
+                    'name': 'Turlututu',
+                    'price_unit': 100.0,
+                    'quantity': 1,
+                    'account_id': company_data['default_account_expense'].id,
+                    'tax_ids': [(6, 0, taxes[0].ids)]}),
             ],
         })
-
-        tax_template_42 = self.env['account.tax.template'].create({
-            'name': 'Impôt sur les revenants',
-            'tax_group_id': tax_group_purchase.id,
-            'amount': '42',
-            'amount_type': 'percent',
-            'type_tax_use': 'purchase',
-            'chart_template_id': company.chart_template_id.id,
-            'invoice_repartition_line_ids': [
+        # Create the vat closing and make sure of the value
+        # Line 27 carry over to line 22, so we check this one.
+        self._check_carryover_test_result(invoice, report, self.company_data, 27.0, self.tax_22_line)
+        invoice_2 = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'journal_id': company_data['default_journal_purchase'].id,
+            'invoice_date': '2020-04-30',
+            'invoice_line_ids': [
                 (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                    'use_in_tax_closing': True
-                }),
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'tax',
-                    'plus_report_line_ids': [self.tax_42_line.id],
-                    'use_in_tax_closing': True
-                }),
-            ],
-            'refund_repartition_line_ids': [
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                    'use_in_tax_closing': True
-                }),
-                (0, 0, {
-                    'factor_percent': 100,
-                    'repartition_type': 'tax',
-                    'minus_report_line_ids': [self.tax_42_line.id],
-                    'use_in_tax_closing': True
-                }),
+                    'name': 'Turlututu',
+                    'price_unit': 50.0,
+                    'quantity': 1,
+                    'account_id': company_data['default_account_expense'].id,
+                    'tax_ids': [(6, 0, taxes[0].ids)]}),
             ],
         })
+        invoice.action_post()
+        invoice_2.action_post()
+        options = self._init_options(report, invoice_2.date, invoice_2.date)
 
-        # The templates needs an xmlid in order so that we can call _generate_tax
-        self.env['ir.model.data'].create({
-            'name': 'account_reports.test_tax_report_tax_11_'+company.name,
-            'module': 'account_reports',
-            'res_id': tax_template_11.id,
-            'model': 'account.tax.template',
-        })
-        tax_11_id = tax_template_11._generate_tax(company)['tax_template_to_tax'][tax_template_11.id]
-        tax_11 = self.env['account.tax'].browse(tax_11_id)
+        # In the report, because we marked the line as such, the line 22 should be affected by the carryover
+        # of the line 27
+        lines = report._get_lines(options)
+        line_id = report._get_generic_line_id('account.tax.report.line', self.tax_22_line.id)
+        line_22 = [line for line in lines if line['id'] == line_id][0]
 
-        self.env['ir.model.data'].create({
-            'name': 'account_reports.test_tax_report_tax_42_'+company.name,
-            'module': 'account_reports',
-            'res_id': tax_template_42.id,
-            'model': 'account.tax.template',
-        })
-        tax_42_id = tax_template_42._generate_tax(company)['tax_template_to_tax'][tax_template_42.id]
-        tax_42 = self.env['account.tax'].browse(tax_42_id)
-
-        return tax_11, tax_42
+        # The balance of the line 22 for the next period is the balance of its carryover from last period.
+        self.assertEqual(line_22['columns'][0]['balance'], 27.0)

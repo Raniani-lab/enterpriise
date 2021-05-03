@@ -366,7 +366,7 @@ var accountReportsWidget = AbstractAction.extend({
                         self._rpc({
                             model: 'account.tax.report.line',
                             method: 'action_view_carryover_lines',
-                            args: [$(event.target).data('id')],
+                            args: [$(event.target).data('id'), self.report_options],
                             context: self.odoo_context,
                         })
                         .then(function(result){

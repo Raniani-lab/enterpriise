@@ -10,6 +10,7 @@ var ViewsWidget = Widget.extend({
     events: {
         'click .o_save': '_onClickSave',
         'click .o_discard': '_onClickDiscard',
+        'click .o_reception_report': '_onClickReceptionReport',
     },
 
     init: function (clientAction, model, view, defaultValue, params, mode, view_type) {
@@ -120,6 +121,27 @@ var ViewsWidget = Widget.extend({
         ev.stopPropagation();
         this.trigger_up('reload');
     },
+
+    /**
+     * Handles the click on the button to see reception report.
+     * This can be removed if the ability to add button via standard
+     * "action button" comes back...
+     *
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickReceptionReport: function (ev) {
+        ev.stopPropagation();
+        let self = this;
+        let ids = self.controller.model.get(self.controller.handle).res_ids;
+        return self._rpc({
+            'model': self.model,
+            'method': 'action_view_reception_report',
+            'args': ids,
+        }).then(function(res) {
+            return self.do_action(res, {additional_context: {default_picking_ids: ids}});
+        });
+    }
 });
 
 return ViewsWidget;

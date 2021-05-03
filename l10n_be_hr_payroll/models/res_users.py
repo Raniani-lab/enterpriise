@@ -4,6 +4,28 @@
 from odoo import models, fields, api, _
 
 
+L10N_BE_PAYROLL_READABLE_FIELDS = [
+    'spouse_fiscal_status_explanation',
+]
+L10N_BE_PAYROLL_WRITABLE_FIELDS = [
+    'spouse_fiscal_status',
+    'disabled',
+    'disabled_spouse_bool',
+    'disabled_children_bool',
+    'resident_bool',
+    'disabled_children_number',
+    'dependent_children',
+    'other_dependent_people',
+    'other_senior_dependent',
+    'other_disabled_senior_dependent',
+    'other_juniors_dependent',
+    'other_disabled_juniors_dependent',
+    'dependent_seniors',
+    'dependent_juniors',
+    'l10n_be_scale_seniority',
+]
+
+
 class User(models.Model):
     _inherit = ['res.users']
 
@@ -24,33 +46,10 @@ class User(models.Model):
     dependent_juniors = fields.Integer(related='employee_ids.dependent_juniors', readonly=False)
     l10n_be_scale_seniority = fields.Integer(related='employee_id.l10n_be_scale_seniority', readonly=False, related_sudo=False)
 
-    def __init__(self, pool, cr):
-        """ Override of __init__ to add access rights.
-            Access rights are disabled by default, but allowed
-            on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
-        """
-        l10n_be_payroll_readable_fields = [
-            'spouse_fiscal_status_explanation',
-        ]
-        l10n_be_payroll_writable_fields = [
-            'spouse_fiscal_status',
-            'disabled',
-            'disabled_spouse_bool',
-            'disabled_children_bool',
-            'resident_bool',
-            'disabled_children_number',
-            'dependent_children',
-            'other_dependent_people',
-            'other_senior_dependent',
-            'other_disabled_senior_dependent',
-            'other_juniors_dependent',
-            'other_disabled_juniors_dependent',
-            'dependent_seniors',
-            'dependent_juniors',
-            'l10n_be_scale_seniority',
-        ]
-        init_res = super(User, self).__init__(pool, cr)
-        # duplicate list to avoid modifying the original reference
-        type(self).SELF_READABLE_FIELDS = type(self).SELF_READABLE_FIELDS + l10n_be_payroll_readable_fields + l10n_be_payroll_writable_fields
-        type(self).SELF_WRITEABLE_FIELDS = type(self).SELF_WRITEABLE_FIELDS + l10n_be_payroll_writable_fields
-        return init_res
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS + L10N_BE_PAYROLL_READABLE_FIELDS + L10N_BE_PAYROLL_WRITABLE_FIELDS
+
+    @property
+    def SELF_WRITEABLE_FIELDS(self):
+        return super().SELF_WRITEABLE_FIELDS + L10N_BE_PAYROLL_WRITABLE_FIELDS

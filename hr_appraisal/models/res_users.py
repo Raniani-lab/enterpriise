@@ -11,20 +11,13 @@ class User(models.Model):
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
     last_appraisal_id = fields.Many2one(related='employee_id.last_appraisal_id')
 
-    def __init__(self, pool, cr):
-        """ Override of __init__ to add access rights.
-            Access rights are disabled by default, but allowed
-            on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
-        """
-        appraisal_readable_fields = [
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS + [
             'next_appraisal_date',
             'last_appraisal_date',
             'last_appraisal_id',
         ]
-        init_res = super(User, self).__init__(pool, cr)
-        # duplicate list to avoid modifying the original reference
-        type(self).SELF_READABLE_FIELDS = appraisal_readable_fields + type(self).SELF_READABLE_FIELDS
-        return init_res
 
     def action_send_appraisal_request(self):
         return {

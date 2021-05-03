@@ -1581,7 +1581,7 @@ Are you sure you want to remove the selection values of those records?""") % len
     @http.route('/web_studio/set_default_value', type='json', auth='user')
     def set_default_value(self, model_name, field_name, value):
         """ Set the default value associated to the given field. """
-        request.env['ir.default'].set(model_name, field_name, value, company_id=True)
+        request.env['ir.default'].with_context(studio=True).set(model_name, field_name, value, company_id=True)
 
     @http.route('/web_studio/create_inline_view', type='json', auth='user')
     def create_inline_view(self, model, view_id, field_name, subview_type, subview_xpath):

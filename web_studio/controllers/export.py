@@ -29,6 +29,7 @@ MODELS_TO_EXPORT = [
     'base.automation',
     'ir.model.access',
     'ir.rule',
+    'ir.default',
 ]
 # list of fields to export by model
 FIELDS_TO_EXPORT = {
@@ -83,6 +84,7 @@ FIELDS_TO_EXPORT = {
         'sub_object', 'subject', 'use_default_to'
     ],
     'res.groups': ['color', 'comment', 'implied_ids', 'name', 'share'],
+    'ir.default': ['field_id', 'condition', 'json_value'],
 }
 # list of relational fields to NOT export, by model
 FIELDS_NOT_TO_EXPORT = {

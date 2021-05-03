@@ -1,5 +1,5 @@
 
-$o-form-lightsecondary: lighten($o-brand-secondary, 25%) !default;
+$o-form-lightsecondary: $o-gray-200 !default;
 
 $o-tooltip-background-color: $o-view-background-color !default;
 $o-tooltip-color: $o-main-text-color !default;

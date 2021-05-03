@@ -1,10 +1,9 @@
-odoo.define('project_enterprise.TaskGanttModel', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var GanttModel = require('web_gantt.GanttModel');
-var _t = require('web.core')._t;
+import GanttModel from 'web_gantt.GanttModel';
+import { _t } from 'web.core';
 
-var TaskGanttModel = GanttModel.extend({
+export const TaskGanttModel = GanttModel.extend({
     /**
      * @private
      * @override
@@ -76,7 +75,4 @@ var TaskGanttModel = GanttModel.extend({
         }
         return values;
     },
-});
-
-return TaskGanttModel;
 });

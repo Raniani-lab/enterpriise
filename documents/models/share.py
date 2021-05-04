@@ -88,7 +88,9 @@ class DocumentShare(models.Model):
             search_ids = set(document_ids)
 
         if self.type == 'domain':
-            record_domain = literal_eval(self.domain)
+            record_domain = []
+            if self.domain:
+                record_domain = literal_eval(self.domain)
             domains.append(record_domain)
             if self.action == 'download':
                 domains.append([('type', '!=', 'empty')])

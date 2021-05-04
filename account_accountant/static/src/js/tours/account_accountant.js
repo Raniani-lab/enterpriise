@@ -33,8 +33,10 @@ odoo.define('account_accountant.tour', function (require) {
         },
         [
             ...tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Let’s automate your bills, bank transactions and accounting processes.')),
+            // The tour will stop here if there is at least 1 vendor bill in the database.
+            // While not ideal, it is ok, since that means the user obviously knows how to create a vendor bill...
             {
-                trigger: 'a[data-method="setting_upload_bill_wizard"].o_onboarding_step_action',
+                trigger: 'button.btn-primary[data-name="action_create_vendor_bill"]',
                 content: _t('Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on hand, use our sample bill.</i>'),
                 position: 'bottom',
             }, {

@@ -224,9 +224,17 @@ class ResPartner(models.Model):
             LEFT OUTER JOIN LATERAL (
                 SELECT line.id
                   FROM account_move_line line
+                  JOIN account_account account ON line.account_id = account.id
+                  JOIN account_move move ON line.move_id = move.id
              LEFT JOIN account_followup_followup_line ful ON ful.id = line.followup_line_id
                  WHERE line.partner_id = partner.id
+                   AND account.internal_type = 'receivable'
+                   AND account.deprecated IS NOT TRUE
+                   AND move.state = 'posted'
+                   AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
+                   AND line.blocked IS FALSE
+                   AND line.company_id = %(company_id)s
                    AND COALESCE(ful.delay, -999) < partner.followup_delay
                    AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, -999) <= %(current_date)s
                  LIMIT 1
@@ -235,8 +243,16 @@ class ResPartner(models.Model):
             LEFT OUTER JOIN LATERAL (
                 SELECT line.id
                   FROM account_move_line line
+                  JOIN account_account account ON line.account_id = account.id
+                  JOIN account_move move ON line.move_id = move.id
                  WHERE line.partner_id = partner.id
+                   AND account.internal_type = 'receivable'
+                   AND account.deprecated IS NOT TRUE
+                   AND move.state = 'posted'
+                   AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
+                   AND line.blocked IS FALSE
+                   AND line.company_id = %(company_id)s
                    AND COALESCE(line.date_maturity, line.date) <= %(current_date)s
                  LIMIT 1
             ) exceeded_unreconciled_aml ON true

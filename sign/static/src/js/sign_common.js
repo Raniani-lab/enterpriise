@@ -1136,13 +1136,6 @@ odoo.define('sign.document_signing', function (require) {
                         self.requestID, {'nextSign': (self.name_list || []).length})).open();
                     self.do_hide();
                 }
-                if (typeof response === 'object') {
-                    if (response.url) {
-                        // FIXME: the variable 'sucess' is not declared
-                        // eslint-disable-next-line no-undef
-                        document.location.pathname = success.url;
-                    }
-                }
             });
         },
 

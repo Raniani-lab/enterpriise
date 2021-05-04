@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import logging
 import datetime
 import traceback
@@ -12,7 +13,7 @@ from uuid import uuid4
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
-from odoo.tools import format_date, float_compare
+from odoo.tools import format_date, is_html_empty
 from odoo.tools.float_utils import float_is_zero
 
 _logger = logging.getLogger(__name__)
@@ -82,7 +83,7 @@ class SaleSubscription(models.Model):
         help="The subscription template defines the invoice policy and the payment terms.", tracking=True, check_company=True)
     subscription_log_ids = fields.One2many('sale.subscription.log', 'subscription_id', string='Subscription Logs', readonly=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
-    description = fields.Text()
+    description = fields.Html()
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one(
         'crm.team', 'Sales Team', change_default=True, default=_get_default_team,
@@ -580,9 +581,9 @@ class SaleSubscription(models.Model):
         fpos = self.env['account.fiscal.position'].with_company(company).get_fiscal_position(self.partner_id.id, partner_shipping_id)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
         if self.description:
-            narration += '\n' + self.description
-        elif self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and self.company_id.invoice_terms:
-            narration += '\n' + self.company_id.invoice_terms
+            narration += '<br/>' + self.description
+        elif self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and not is_html_empty(self.company_id.invoice_terms):
+            narration += '<br/>' + self.company_id.invoice_terms
         res = {
             'move_type': 'out_invoice',
             'partner_id': partner_id,
@@ -1244,7 +1245,7 @@ class SaleSubscriptionTemplate(models.Model):
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
     code = fields.Char(help="Code is added automatically in the display name of every subscription.")
-    description = fields.Text(translate=True, string="Terms and Conditions")
+    description = fields.Html(translate=True, string="Terms and Conditions")
     recurring_rule_type = fields.Selection([('daily', 'Days'), ('weekly', 'Weeks'),
                                             ('monthly', 'Months'), ('yearly', 'Years'), ],
                                            string='Recurrence', required=True,

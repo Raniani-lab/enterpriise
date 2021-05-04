@@ -272,7 +272,7 @@
                             </div>
 
                             <!-- ======  Terms and conditions ====== -->
-                            <t t-if="account.description">
+                            <t t-if="not is_html_empty(account.description)">
                                 <h4 class="mb-1">Terms and Conditions</h4>
                                 <hr class="my-0"/>
                                 <div t-field="account.description"/>

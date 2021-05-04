@@ -27,7 +27,9 @@ class AccountGenericTaxReport(models.AbstractModel):
                 values[split_line_code[1]] = {'value': balance, 'field_type': 'number'}
 
         on_payment = self.env['account.tax'].search([
-            ('company_id', '=', self.env.company.id), ('tax_exigibility', '=', 'on_payment')], limit=1)
+            ('company_id', 'in', self.get_report_company_ids(options)),
+            ('tax_exigibility', '=', 'on_payment')
+        ], limit=1)
         values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}
         values['205'] = {'value': on_payment and '1' or '0', 'field_type': 'boolean'}
         values['403'] = {'value': 0, 'field_type': 'number'}

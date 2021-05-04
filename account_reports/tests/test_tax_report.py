@@ -40,8 +40,13 @@ class TestTaxReport(TestAccountReportsCommon):
             'state_id': cls. country_state_1.id, # Not necessary at the moment; put there for consistency and robustness with possible future changes
             'account_tax_periodicity': 'trimester',
         })
-        cls.company_data['company'].chart_template_id.country_id = cls.fiscal_country # So that we can easily instantiate test tax templates within this country
 
+        # So that we can easily instantiate test tax templates within this country
+        cls.company_data['company'].chart_template_id.country_id = cls.fiscal_country
+        tax_templates = cls.env['account.tax.template'].search([('chart_template_id', '=', cls.company_data['company'].chart_template_id.id)])
+        tax_templates.mapped('tax_group_id').write({
+            'country_id': cls.fiscal_country.id,
+        })
 
         # Prepare tax groups
         cls.tax_group_1 = cls._instantiate_basic_test_tax_group()
@@ -238,7 +243,7 @@ class TestTaxReport(TestAccountReportsCommon):
         })
 
     @classmethod
-    def _add_basic_tax_for_report(cls, tax_report, percentage, type_tax_use, tax_group, tax_repartition):
+    def _add_basic_tax_for_report(cls, tax_report, percentage, type_tax_use, tax_group, tax_repartition, company=None):
         """ Creates a basic test tax, as well as tax report lines and tags, connecting them all together.
 
         A tax report line will be created within tax report for each of the elements in tax_repartition,
@@ -258,6 +263,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'type_tax_use': type_tax_use,
             'tax_group_id': tax_group.id,
             'country_id': tax_report.country_id.id,
+            'company_id': company.id if company else cls.env.company.id,
         })
 
         to_write = {}
@@ -304,15 +310,21 @@ class TestTaxReport(TestAccountReportsCommon):
 
         :param options: the tax report options to make the closing for
         :param closing_vals_by_fpos: A list of dict(fiscal_position: [dict(line_vals)], where fiscal_position is (possibly empty)
-                                     account.fiscal.position record, and line_vals, the expected values for each closing move lines
+                                     account.fiscal.position record, and line_vals, the expected values for each closing move lines.
+                                     In case options contains the 'multi_company' key, a tuple (company, fiscal_position) replaces the
+                                     fiscal_position key
         """
         report = self.env['account.generic.tax.report']
         with patch.object(type(report), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
             vat_closing_moves = report._generate_tax_closing_entries(options)
 
-            closing_moves_by_fpos = {move.fiscal_position_id: move for move in vat_closing_moves}
-            for fiscal_position, closing_vals in closing_vals_by_fpos.items():
-                vat_closing_move = closing_moves_by_fpos[fiscal_position]
+            if options.get('multi_company'):
+                closing_moves_by_fpos = {(move.company_id, move.fiscal_position_id): move for move in vat_closing_moves}
+            else:
+                closing_moves_by_fpos = {move.fiscal_position_id: move for move in vat_closing_moves}
+
+            for key, closing_vals in closing_vals_by_fpos.items():
+                vat_closing_move = closing_moves_by_fpos[key]
                 self.assertRecordValues(vat_closing_move.line_ids, closing_vals)
             self.assertEqual(len(closing_vals_by_fpos), len(vat_closing_moves), "Exactly one move should have been generated per fiscal position; nothing else.")
 
@@ -422,7 +434,6 @@ class TestTaxReport(TestAccountReportsCommon):
             self._assert_vat_closing(options, {
                 # From test_vat_closing_domestic
                 self.env['account.fiscal.position']: [
-                    # pylint: disable=C0326
                     # sales: 200 * 0.5 * 0.7 - 20 * 0.5 * 0.7
                     {'debit': 63,       'credit': 0.0,      'account_id': self.tax_account_1.id},
                     # sales: 200 * 0.5 * (-0.1) - 20 * 0.5 * (-0.1)
@@ -439,7 +450,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
                 # From test_vat_closing_single_fpos
                 self.foreign_vat_fpos: [
-                    # pylint: disable=C0326
                     # sales: 800 * 0.5 * 0.7 - 200 * 0.5 * 0.7
                     {'debit': 210,      'credit': 0.0,      'account_id': self.tax_account_1.id},
                     # sales: 800 * 0.5 * (-0.1) - 200 * 0.5 * (-0.1)
@@ -1355,3 +1365,237 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("Cash Basis (42.0)",        200,              84),
             ],
         )
+
+    def test_tax_unit(self):
+        tax_unit_report = self.env['account.tax.report'].create({
+            'name': "And now for something completely different",
+            'country_id': self.fiscal_country.id
+        })
+
+        company_1 = self.company_data['company']
+        company_2 = self.company_data_2['company']
+        company_data_3 = self.setup_company_data("Company 3", chart_template=company_1.chart_template_id)
+        company_3 = company_data_3['company']
+        unit_companies = company_1 + company_2
+        all_companies = unit_companies + company_3
+
+        company_2.currency_id = company_1.currency_id
+
+        tax_unit = self.env['account.tax.unit'].create({
+            'name': "One unit to rule them all",
+            'country_id': self.fiscal_country.id,
+            'vat': "toto",
+            'company_ids': [Command.set(unit_companies.ids)],
+            'main_company_id': company_1.id,
+        })
+
+        created_taxes = {}
+        tax_accounts = {}
+        invoice_date = fields.Date.from_string('2018-01-01')
+        for index, company in enumerate(all_companies):
+            # Make sure the fiscal country is what we want
+            company.account_fiscal_country_id = self.fiscal_country
+
+            # Create a tax for this report
+            tax_account = self.env['account.account'].create({
+                'name': 'Tax unit test tax account',
+                'code': 'test_tax_unit',
+                'user_type_id': self.env['ir.model.data'].xmlid_to_res_id('account.data_account_type_current_assets'),
+                'company_id': company.id,
+            })
+
+            test_tax = self._add_basic_tax_for_report(tax_unit_report, 42, 'sale', self.tax_group_1, [(100, tax_account, True)], company=company)
+            created_taxes[company] = test_tax
+            tax_accounts[company] = tax_account
+
+            # Create an invoice with this tax
+            self.init_invoice(
+                'out_invoice',
+                partner=self.partner_a,
+                invoice_date=invoice_date,
+                post=True,
+                amounts=[100 * (index + 1)],
+                taxes=test_tax, company=company
+            )
+
+        # Check report content, with various scenarios of active companies
+        report_object = self.env['account.generic.tax.report']
+        for active_companies in (company_1, company_2, company_3, unit_companies, all_companies, company_2 + company_3):
+
+            # In the regular flow, selected companies are changed from the selector, in the UI.
+            # The tax unit option of the report changes the value of the selector, so it'll
+            # always stay consistent with allowed_company_ids.
+            options = self._init_options(
+                report_object.with_context(allowed_company_ids=active_companies.ids),
+                invoice_date,
+                invoice_date,
+                {'tax_report': tax_unit_report.id, 'fiscal_position': 'domestic'}
+            )
+
+            target_unit = tax_unit if company_3 != active_companies[0] else None
+            self.assertTrue(
+                (not target_unit and not options['available_tax_units']) \
+                or (options['available_tax_units'] and any(available_unit['id'] == target_unit.id for available_unit in options['available_tax_units'])),
+                "The tax unit should always be available when self.env.company is part of it."
+            )
+
+            self.assertEqual(
+                options['tax_unit'] != 'company_only',
+                active_companies == unit_companies,
+                "The tax unit option should only be enabled when all the companies of the unit are selected, and nothing else."
+            )
+
+            self.assertLinesValues(
+                report_object.with_context(allowed_company_ids=active_companies.ids)._get_lines(options),
+                #   Name                                                          Balance
+                [   0,                                                            1],
+                [
+                    # Company 1
+                    ('%s-invoice-base' % created_taxes[company_1].id,           100 if company_1 in active_companies else 0),
+                    ('%s-invoice-100' % created_taxes[company_1].id,             42 if company_1 in active_companies else 0),
+                    ('%s-refund-base' % created_taxes[company_1].id,              0),
+                    ('%s-refund-100' % created_taxes[company_1].id,               0),
+
+                    # Company 2
+                    ('%s-invoice-base' % created_taxes[company_2].id,           200 if active_companies == unit_companies or active_companies[0] == company_2 else 0),
+                    ('%s-invoice-100' % created_taxes[company_2].id,             84 if active_companies == unit_companies or active_companies[0] == company_2 else 0),
+                    ('%s-refund-base' % created_taxes[company_2].id,              0),
+                    ('%s-refund-100' % created_taxes[company_2].id,               0),
+
+                    # Company 3 (not part of the unit, so always 0 in our cases)
+                    ('%s-invoice-base' % created_taxes[company_3].id,           300 if company_3 == active_companies[0] else 0),
+                    ('%s-invoice-100' % created_taxes[company_3].id,            126 if company_3 == active_companies[0] else 0),
+                    ('%s-refund-base' % created_taxes[company_3].id,              0),
+                    ('%s-refund-100' % created_taxes[company_3].id,               0),
+                ],
+            )
+
+        # Check closing for the vat unit
+        options = self._init_options(
+            report_object.with_context(allowed_company_ids=unit_companies.ids),
+            invoice_date,
+            invoice_date,
+            {'tax_report': tax_unit_report.id, 'fiscal_position': 'domestic'}
+        )
+
+        # Ensure tax group is properly configured for company2 as well
+        self.tax_group_1.with_company(company_2).write({
+            'property_tax_receivable_account_id': self.company_data_2['default_account_receivable'].copy().id,
+            'property_tax_payable_account_id': self.company_data_2['default_account_payable'].copy().id,
+        })
+
+        self._assert_vat_closing(options, {
+            (company_1, self.env['account.fiscal.position']): [
+                {'debit': 42,       'credit':  0,       'account_id': tax_accounts[company_1].id},
+                {'debit':  0,       'credit': 42,       'account_id': self.tax_group_1.with_company(company_1).property_tax_payable_account_id.id},
+            ],
+
+            (company_1, self.foreign_vat_fpos): [
+                # Don't check accounts here; they are gotten by searching on taxes, basically we don't care about them as it's 0-balanced.
+                {'debit':  0,       'credit':  0,},
+                {'debit':  0,       'credit':  0,},
+            ],
+
+            (company_2, self.env['account.fiscal.position']): [
+                {'debit': 84,       'credit':  0,       'account_id': tax_accounts[company_2].id},
+                {'debit':  0,       'credit': 84,       'account_id': self.tax_group_1.with_company(company_2).property_tax_payable_account_id.id},
+            ],
+        })
+
+    def test_vat_unit_with_foreign_vat_fpos(self):
+        # Company 1 has the test country as domestic country, and a foreign VAT fpos in a different province
+        company_1 = self.company_data['company']
+
+        # Company 2 belongs to a different country, and has a foreign VAT fpos to the test country, with just one
+        # move adding 1000 in the first line of the report.
+        company_2 = self.company_data_2['company']
+        company_2.currency_id = company_1.currency_id
+
+        foreign_vat_fpos = self.env['account.fiscal.position'].create({
+            'name': 'fpos',
+            'foreign_vat': 'tagada tsoin tsoin',
+            'country_id': self.fiscal_country.id,
+            'company_id': company_2.id,
+        })
+
+        report_line = self.env['account.tax.report.line'].search([
+            ('report_id', '=', self.basic_tax_report.id),
+            ('name', '=', '%s-invoice-base' % self.test_fpos_tax_sale.id),
+        ])
+
+        plus_tag = report_line.tag_ids.filtered(lambda x: not x.tax_negate)
+
+        comp2_move = self.env['account.move'].create({
+            'journal_id': self.company_data_2['default_journal_misc'].id,
+            'date': '2021-02-02',
+            'fiscal_position_id': foreign_vat_fpos.id,
+            'line_ids': [
+                Command.create({
+                    'account_id': self.company_data_2['default_account_assets'].id,
+                    'credit': 1000,
+                }),
+
+                Command.create({
+                    'account_id': self.company_data_2['default_account_expense'].id,
+                    'debit': 1000,
+                    'tax_tag_ids': [Command.set(plus_tag.ids)],
+                }),
+            ]
+        })
+
+        comp2_move.action_post()
+
+        # Both companies belong to a tax unit in test country
+        tax_unit = self.env['account.tax.unit'].create({
+            'name': "Taxvengers, assemble!",
+            'country_id': self.fiscal_country.id,
+            'vat': "dudu",
+            'company_ids': [Command.set((company_1 + company_2).ids)],
+            'main_company_id': company_1.id,
+        })
+
+        # Opening the tax report for test country, we should see the same as in test_tax_report_fpos_everything + the 1000 of company 2, whatever the main company
+
+        # Varying the order of the two companies (and hence changing the "main" active one) should make no difference.
+        report_object = self.env['account.generic.tax.report']
+        for unit_companies in ((company_1 + company_2), (company_2 + company_1)):
+            options = self._init_options(
+                report_object.with_context(allowed_company_ids=unit_companies.ids),
+                fields.Date.from_string('2021-01-01'),
+                fields.Date.from_string('2021-03-31'),
+                {'tax_report': self.basic_tax_report.id, 'fiscal_position': 'domestic'}
+            )
+
+            self.assertEqual(options['tax_unit'], tax_unit.id, "The tax unit should have been auto-detected.")
+            self.assertEqual(options['fiscal_position'], 'all', "The provided fiscal position ('domestic') was inconsistent with the use of tax units, it should have been reinitialized")
+
+            self.assertLinesValues(
+                report_object._get_lines(options),
+                #   Name                                                          Balance
+                [   0,                                                            1],
+                [
+                    # out_invoice + 1000 from company_2 on the first line
+                    ('%s-invoice-base' % self.test_fpos_tax_sale.id,          2000),
+                    ('%s-invoice-30' % self.test_fpos_tax_sale.id,             150),
+                    ('%s-invoice-70' % self.test_fpos_tax_sale.id,             350),
+                    ('%s-invoice--10' % self.test_fpos_tax_sale.id,            -50),
+
+                    #out_refund
+                    ('%s-refund-base' % self.test_fpos_tax_sale.id,           -220),
+                    ('%s-refund-30' % self.test_fpos_tax_sale.id,              -33),
+                    ('%s-refund-70' % self.test_fpos_tax_sale.id,              -77),
+                    ('%s-refund--10' % self.test_fpos_tax_sale.id,              11),
+
+                    #in_invoice
+                    ('%s-invoice-base' % self.test_fpos_tax_purchase.id,      1400),
+                    ('%s-invoice-10' % self.test_fpos_tax_purchase.id,          70),
+                    ('%s-invoice-60' % self.test_fpos_tax_purchase.id,         420),
+                    ('%s-invoice--5' % self.test_fpos_tax_purchase.id,         -35),
+
+                    #in_refund
+                    ('%s-refund-base' % self.test_fpos_tax_purchase.id,       -660),
+                    ('%s-refund-10' % self.test_fpos_tax_purchase.id,          -33),
+                    ('%s-refund-60' % self.test_fpos_tax_purchase.id,         -198),
+                    ('%s-refund--5' % self.test_fpos_tax_purchase.id,         16.5),
+                ],
+            )

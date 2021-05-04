@@ -23,7 +23,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         template_context = {line['line_code']: line['columns'][0]['balance'] for line in report_lines}
 
-        template_context['org_number'] = self.env.company.org_number
+        template_context['org_number'] = self._get_sender_company_for_export().org_number
         template_context['period'] = (options['date']['date_to'][:4] + options['date']['date_to'][5:7])
         template_context['comment'] = ''
 

@@ -29,6 +29,7 @@ class ResCompany(models.Model):
     account_revaluation_journal_id = fields.Many2one('account.journal', domain=[('type', '=', 'general')])
     account_revaluation_expense_provision_account_id = fields.Many2one('account.account', string='Expense Provision Account')
     account_revaluation_income_provision_account_id = fields.Many2one('account.account', string='Income Provision Account')
+    account_tax_unit_ids = fields.Many2many(string="Tax Units", comodel_name='account.tax.unit', help="The tax units this company belongs to.")
 
     def _get_default_misc_journal(self):
         """ Returns a default 'miscellanous' journal to use for
@@ -102,9 +103,6 @@ class ResCompany(models.Model):
 
         if not fiscal_positions:
             fiscal_positions = []
-
-        if not self.env['account.tax.group']._any_is_configured(self):
-            return False
 
         # Compute period dates depending on the date
         period_start, period_end = self._get_tax_closing_period_boundaries(in_period_date)

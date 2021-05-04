@@ -25,7 +25,7 @@ class GenericTaxReport(models.AbstractModel):
                                   and (%(show_draft)s or move.state = 'posted')
                                   and aml.date <= %(date_to)s
                                   and aml.date >= %(date_from)s
-                                  and move.company_id = %(company_id)s;"""
+                                  and move.company_id in %(company_ids)s;"""
 
             account_types = tuple(self.env['ir.model.data'].xmlid_to_res_id(xmlid) for xmlid in ['account.data_account_type_revenue', 'account.data_account_type_expenses', 'account.data_account_type_depreciation'])
             params = {
@@ -33,7 +33,7 @@ class GenericTaxReport(models.AbstractModel):
                 'show_draft': options['all_entries'],
                 'date_to': period_date_to,
                 'date_from': period_date_from,
-                'company_id': self.env.company.id,
+                'company_ids': tuple(self.get_report_company_ids(options)),
             }
             self.env.cr.execute(net_profit_query, params)
             eval_dict['net_profit'] = self.env.cr.fetchall()[0][0]

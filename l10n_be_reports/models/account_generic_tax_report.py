@@ -37,23 +37,23 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         vat_no, country_from_vat = self._check_vat_number(self.get_vat_for_export(options))
 
-        company = self.env.company
-        default_address = company.partner_id.address_get()
-        address = self.env['res.partner'].browse(default_address.get("default")) or company.partner_id
+        sender_company = self._get_sender_company_for_export(options)
+        default_address = sender_company.partner_id.address_get()
+        address = self.env['res.partner'].browse(default_address.get("default")) or sender_company.partner_id
         if not address.email:
-            raise UserError(_('No email address associated with the company.'))
+            raise UserError(_('No email address associated with company %s.', sender_company.name))
         if not address.phone:
-            raise UserError(_('No phone associated with the company.'))
+            raise UserError(_('No phone associated with company %s.', sender_company.name))
 
         # Compute xml
 
-        default_address = company.partner_id.address_get()
-        address = self.env['res.partner'].browse(default_address.get("default", company.partner_id.id))
+        default_address = sender_company.partner_id.address_get()
+        address = self.env['res.partner'].browse(default_address.get("default", sender_company.partner_id.id))
 
         issued_by = vat_no
         dt_from = options['date'].get('date_from')
         dt_to = options['date'].get('date_to')
-        send_ref = str(company.partner_id.id) + str(dt_from[5:7]) + str(dt_to[:4])
+        send_ref = str(sender_company.partner_id.id) + str(dt_from[5:7]) + str(dt_to[:4])
         starting_month = dt_from[5:7]
         ending_month = dt_to[5:7]
         quarter = str(((int(starting_month) - 1) // 3) + 1)
@@ -69,7 +69,7 @@ class AccountGenericTaxReport(models.AbstractModel):
                         'vat_no': complete_vat,
                         'only_vat': vat_no,
                         # Company name can contain only latin characters
-                        'cmpny_name': re.sub('[^-A-Za-z0-9/?:().,\'+ ]', ' ', company.name),
+                        'cmpny_name': re.sub('[^-A-Za-z0-9/?:().,\'+ ]', ' ', sender_company.name),
                         'address': "%s %s" % (address.street or "", address.street2 or ""),
                         'post_code': address.zip or "",
                         'city': address.city or "",

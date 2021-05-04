@@ -7,7 +7,7 @@ import io
 import json
 import logging
 from collections import defaultdict
-from math import copysign
+from math import copysign, inf
 
 import lxml.html
 from babel.dates import get_quarter_names
@@ -345,7 +345,7 @@ class AccountReport(models.AbstractModel):
         :param options:             The current report options to build.
         :param previous_options:    The previous options coming from another report.
         """
-        if self.filter_comparison is None or not options.get('date'):
+        if self.filter_comparison is None:
             return
 
         previous_comparison = (previous_options or {}).get('comparison', {})
@@ -633,8 +633,9 @@ class AccountReport(models.AbstractModel):
     ####################################################
 
     def _init_filter_fiscal_position(self, options, previous_options=None):
+        # Depents from multi_company option
         vat_fpos_domain = [
-            ('company_id', 'in', self.env.company.ids),
+            ('company_id', 'in', [comp['id'] for comp in options.get('multi_company', self.env.company)]),
             ('foreign_vat', '!=', False),
         ]
         country = self._get_country_for_fiscal_position_filter(options)
@@ -669,6 +670,7 @@ class AccountReport(models.AbstractModel):
         options['available_vat_fiscal_positions'] = [{
             'id': fiscal_pos.id,
             'name': fiscal_pos.name,
+            'company_id': fiscal_pos.company_id.id,
         } for fiscal_pos in vat_fiscal_positions]
 
     def _get_country_for_fiscal_position_filter(self, options):
@@ -692,16 +694,10 @@ class AccountReport(models.AbstractModel):
         return [('move_id.fiscal_position_id', '=', fiscal_position_opt)]
 
     ####################################################
-    # OPTIONS: CORE
+    # OPTIONS: MULTI COMPANY
     ####################################################
 
-    def _get_options(self, previous_options=None):
-        # Create default options.
-        options = {
-            'unfolded_lines': previous_options and previous_options.get('unfolded_lines') or [],
-        }
-
-        # Multi-company is there for security purpose and can't be disabled by a filter.
+    def _init_filter_multi_company(self, options, previous_options=None):
         if self.filter_multi_company:
             if self._context.get('allowed_company_ids'):
                 # Retrieve the companies through the multi-companies widget.
@@ -715,16 +711,17 @@ class AccountReport(models.AbstractModel):
                     {'id': c.id, 'name': c.name} for c in companies
                 ]
 
-        # Call _init_filter_date/_init_filter_comparison because the second one must be called after the first one.
-        if self.filter_date:
-            self._init_filter_date(options, previous_options=previous_options)
-        if self.filter_comparison:
-            self._init_filter_comparison(options, previous_options=previous_options)
+    ####################################################
+    # OPTIONS: CORE
+    ####################################################
 
-        filter_list = [attr for attr in dir(self)
-                       if (attr.startswith('filter_') or attr.startswith('order_')) and attr not in ('filter_date', 'filter_comparison', 'filter_multi_company') and len(attr) > 7 and not callable(getattr(self, attr))]
+    def _get_options(self, previous_options=None):
+        # Create default options.
+        options = {
+            'unfolded_lines': previous_options and previous_options.get('unfolded_lines') or [],
+        }
 
-        for filter_key in filter_list:
+        for filter_key in self._get_filters_in_init_sequence():
             options_key = filter_key[7:]
             init_func = getattr(self, '_init_%s' % filter_key, None)
             if init_func:
@@ -739,16 +736,45 @@ class AccountReport(models.AbstractModel):
 
         return options
 
+    def _get_filters_in_init_sequence(self):
+        """ Gets all filters in the right order to initialize them, so that each filters is
+        guaranteed to be after all of its dependencies in the resulting list.
+
+        :return: a list of stings, corresponding to the filter names
+        """
+        # Get all filters
+        filter_list = [
+            attr for attr in dir(self)
+            if (
+                (attr.startswith('filter_') or attr.startswith('order_'))
+                and len(attr) > 7
+                and not callable(getattr(self, attr))
+            )
+        ]
+
+        # Order them in a dependency-compliant way
+        forced_sequence_map = self._get_forced_filter_init_sequence_map()
+        filter_list.sort(key=lambda x: forced_sequence_map.get(x, inf))
+
+        return filter_list
+
+    def _get_forced_filter_init_sequence_map(self):
+        """ By default, not specific order is ensured for the filters when calling _get_filters_in_init_sequence.
+        This function allows giving them a sequence number. It can be overridden
+        to make filters depend on each other.
+
+        :return: dict(str, int): str is the filter name, int is its sequence (lowest = first).
+                                 Multiple filters may share the same sequence, their relative order is then not guaranteed.
+        """
+        return {'filter_multi_company': 10, 'filter_fiscal_position': 20, 'filter_date': 30, 'filter_comparison': 40}
+
     @api.model
     def _get_options_domain(self, options):
         domain = [
             ('display_type', 'not in', ('line_section', 'line_note')),
             ('move_id.state', '!=', 'cancel'),
+            ('company_id', 'in', self.get_report_company_ids(options)),
         ]
-        if options.get('multi_company', False):
-            domain += [('company_id', 'in', self.env.companies.ids)]
-        else:
-            domain += [('company_id', '=', self.env.company.id)]
         domain += self._get_options_journals_domain(options)
         domain += self._get_options_date_domain(options)
         domain += self._get_options_analytic_domain(options)
@@ -1235,15 +1261,11 @@ class AccountReport(models.AbstractModel):
             ctx['partner_ids'] = self.env['res.partner'].browse([int(partner) for partner in options['partner_ids']])
         if options.get('partner_categories'):
             ctx['partner_categories'] = self.env['res.partner.category'].browse([int(category) for category in options['partner_categories']])
-        if not ctx.get('allowed_company_ids') or not options.get('multi_company'):
-            """Contrary to the generic multi_company strategy,
-            If we have not specified multiple companies, we only use
-            the user company for account reports.
 
-            To do so, we set the allowed_company_ids to only the main current company
-            so that self.env.company == self.env.companies
-            """
-            ctx['allowed_company_ids'] = self.env.company.ids
+        # Some reports call the ORM at some point when generating their lines (for example, tax report, with carry over lines).
+        # Setting allowed companies from the options like this allows keeping these operations consistent with the options.
+        ctx['allowed_company_ids'] = self.get_report_company_ids(options)
+
         return ctx
 
     def get_report_informations(self, options):
@@ -1251,6 +1273,7 @@ class AccountReport(models.AbstractModel):
         return a dictionary of informations that will be needed by the js widget, manager_id, footnotes, html of report and searchview, ...
         '''
         options = self._get_options(options)
+        self = self.with_context(self._set_context(options)) # For multicompany, when allowed companies are changed by options (such as aggregare_tax_unit)
 
         searchview_dict = {'options': options, 'context': self.env.context}
         # Check if report needs analytic
@@ -1742,6 +1765,15 @@ class AccountReport(models.AbstractModel):
         fp_country = self._get_country_for_fiscal_position_filter(options)
         return fp_country and fp_country.code or None
 
+    @api.model
+    def get_report_company_ids(self, options):
+        """ Returns a list containing the ids of the companies to be used to
+        render this report, following the provided options.
+        """
+        if options.get('multi_company'):
+            return [comp_data['id'] for comp_data in options['multi_company']]
+        else:
+            return self.env.company.ids
 
     ####################################################
     # HOOKS

@@ -12,6 +12,7 @@ var RelationalFields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 var WarningDialog = require('web.CrashManager').WarningDialog;
 var Widget = require('web.Widget');
+var session = require('web.session');
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -187,7 +188,15 @@ var accountReportsWidget = AbstractAction.extend({
         this.ignore_session = action.params && action.params.ignore_session;
         if ((this.ignore_session === 'read' || this.ignore_session === 'both') !== true) {
             var persist_key = 'report:'+this.report_model+':'+this.financial_id+':'+session.company_id;
-            this.report_options = JSON.parse(sessionStorage.getItem(persist_key)) || this.report_options;
+            var company_reload_persist_key = this.get_persist_options_key_for_company_reload(session.user_context['allowed_company_ids']);
+
+            this.report_options = JSON.parse(sessionStorage.getItem(company_reload_persist_key))
+                                  || JSON.parse(sessionStorage.getItem(persist_key))
+                                  || this.report_options;
+
+            // company_reload_persist_key is a one shot; so if it existed (and hence was used),
+            // meaning we are rendering the refreshed report, remove it.
+            sessionStorage.removeItem(company_reload_persist_key);
         }
         return this._super.apply(this, arguments);
     },
@@ -237,6 +246,36 @@ var accountReportsWidget = AbstractAction.extend({
             var persist_key = 'report:'+this.report_model+':'+this.financial_id+':'+session.company_id;
             sessionStorage.setItem(persist_key, JSON.stringify(this.report_options));
         }
+    },
+    persist_options_for_company_reload: function(company_ids) {
+        /* Stores the current report options in the session, using a key containing company_ids.
+        This is a hack to support tax units properly on the tax report: when selecting a tax
+        unit option, setCompanies is called, and the whole page gets refreshed.
+
+        Due to deep framework implementation magic, setCompanies triggers a willStart before
+        the refresh, then the page is refreshed, then a second willStart is triggered. Each
+        of these willStart calls get_report_informations, and hence recompute the options and lines.
+
+        The refresh makes it so that the tax unit option that just got selected is lost if we don't
+        make it persist in the session. However, doing it with the regular persist_options will cause
+        the first willStart to use it in previous_options while self.env.companies is not yet compatible
+        with it, making the init_filter_multi_company reinitialize it with something inconsistent with
+        what we clicked on, before the second willStart acts using those wrongly reinitialized options
+        as previous_options.
+
+        To circumvent that, we use a specific session key containing company_ids, so that it can be used
+        in willStart to get previous_options if self.env.companies is correct (that is, only in the second willStart,
+        after the refresh). This key is used only once, willStart deletes it after using it.
+        */
+        if ((this.ignore_session === 'write' || this.ignore_session === 'both') !== true) {
+            var persist_key = this.get_persist_options_key_for_company_reload(company_ids);
+            sessionStorage.setItem(persist_key, JSON.stringify(this.report_options));
+        }
+    },
+    get_persist_options_key_for_company_reload: function(company_ids) {
+        company_ids = company_ids ? [...company_ids] : []
+        company_ids.sort((a, b) => a - b);
+        return 'report:reload_company_ids:'+company_ids.toString()+':'+this.report_model+':'+this.financial_id+':'+session.company_id;
     },
     // Updates the control panel and render the elements that have yet to be rendered
     update_cp: function() {
@@ -615,8 +654,27 @@ var accountReportsWidget = AbstractAction.extend({
         $(document).on('click', '.js_account_report_custom_currency', rate_handler);
         this.$searchview_buttons.find('.js_account_report_custom_currency').click(rate_handler);
         this.$searchview_buttons.find('.js_account_reports_one_choice_filter').click(function (event) {
-            self.report_options[$(this).data('filter')] = $(this).data('id');
-            self.reload();
+            var option_value = $(this).data('filter');
+            self.report_options[option_value] = $(this).data('id');
+
+            if (option_value === 'tax_unit') {
+                // Change the currently selected companies depending on the chosen tax_unit option
+                // We need to do that to prevent record rules from accepting records that they shouldn't when generating the report.
+
+                var main_company = session.user_context.allowed_company_ids[0];
+                var companies = [main_company];
+
+                if (self.report_options['tax_unit'] != 'company_only') {
+                    var unit_id = self.report_options['tax_unit'];
+                    var selected_unit = self.report_options['available_tax_units'].filter(unit => unit.id == unit_id)[0];
+                    companies = selected_unit.company_ids;
+                }
+                self.persist_options_for_company_reload(companies); // So that previous_options are kept after the reload performed by setCompanies
+                session.setCompanies(main_company, companies);
+            }
+            else {
+                self.reload();
+            }
         });
         this.$searchview_buttons.find('.js_account_report_date_cmp_filter').click(function (event) {
             self.report_options.comparison.filter = $(this).data('filter');

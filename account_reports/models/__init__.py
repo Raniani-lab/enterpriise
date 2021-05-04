@@ -28,3 +28,4 @@ from . import ir_actions
 from . import account_sales_report
 from . import account_sales_report_generic
 from . import account_move
+from . import account_tax

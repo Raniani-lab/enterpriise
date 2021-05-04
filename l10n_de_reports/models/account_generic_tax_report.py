@@ -31,7 +31,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             # For quarters, the period should be 41, 42, 43, 44 depending on the quarter.
             template_context['period'] = int(month_end / 3 + 40)
         template_context['creation_date'] = date.today().strftime("%Y%m%d")
-        template_context['company'] = self.env.company
+        template_context['company'] = self._get_sender_company_for_export(options)
 
         qweb = self.env['ir.qweb']
         doc = qweb._render('l10n_de_reports.tax_export_xml', values=template_context)

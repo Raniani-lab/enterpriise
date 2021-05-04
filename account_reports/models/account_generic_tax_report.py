@@ -26,8 +26,7 @@ class generic_tax_report(models.AbstractModel):
 
     def _init_filter_tax_report(self, options, previous_options=None):
         options['available_tax_reports'] = []
-        companies = self.env.companies if self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company') else self.env.company
-        available_reports = companies.get_available_tax_reports()
+        available_reports = self.env.company.get_available_tax_reports()
         for report in available_reports:
             options['available_tax_reports'].append({
                 'id': report.id,
@@ -48,14 +47,65 @@ class generic_tax_report(models.AbstractModel):
             # (always available for all companies) and the report in options is not available for this company
             options['tax_report'] = available_reports and available_reports[0].id or 'generic'
 
-        if self._is_generic_report(options):
+    def _init_filter_fiscal_position(self, options, previous_options=None):
+        # Depends from the tax_report and tax_unit options
+        if self._is_generic_report(options) or options['tax_unit'] != 'company_only':
             # The generic report never shows the fiscal position filter; always displays everything
+            # Also, when displaying a tax unit, we always disable fiscal position filter and show everything
             if not previous_options:
                 previous_options = {}
             previous_options['fiscal_position'] = 'all'
 
-        # tax_report is now set, so we'll be able to know which country we're loading the report from.
         super()._init_filter_fiscal_position(options, previous_options)
+
+    def _init_filter_multi_company(self, options, previous_options=None):
+        tax_units_domain = [('company_ids', 'in', self.env.company.id)]
+
+        if not self._is_generic_report(options):
+            report_country_code = self._get_report_country_code(options)
+            tax_units_domain.append(('country_id.code', '=', report_country_code))
+
+        available_tax_units = self.env['account.tax.unit'].search(tax_units_domain)
+
+        # Filter available units to only consider the ones whose companies are all accessible to the user
+        available_tax_units = available_tax_units.filtered(
+            lambda x: all(unit_company in self.env.user.company_ids for unit_company in x.sudo().company_ids)
+            # sudo() to avoid bypassing companies the current user does not have access to
+        )
+
+        options['available_tax_units'] = [{
+            'id': tax_unit.id,
+            'name': tax_unit.name,
+            'company_ids': tax_unit.company_ids.ids
+        } for tax_unit in available_tax_units]
+
+        # Available tax_unit option values that are currently allowed by the company selector
+        # A js hack ensures the page is reloaded and the selected companies modified
+        # when clicking on a tax unit option in the UI, so we don't need to worry about that here.
+        companies_authorized_tax_unit_opt = {
+            *(available_tax_units.filtered(lambda x: set(self.env.companies) == set(x.company_ids)).ids),
+            'company_only'
+        }
+
+        if previous_options and previous_options.get('tax_unit') in companies_authorized_tax_unit_opt:
+            options['tax_unit'] = previous_options['tax_unit']
+
+        else:
+            # No tax_unit gotten from previous options; initialize it
+            # A tax_unit will be set by default if only one tax unit is available for the report
+            # (which should always be true for non-generic reports, whih have a country), and the companies of
+            # the unit are the only ones currently selected.
+            if companies_authorized_tax_unit_opt == {'company_only'}:
+                options['tax_unit'] = 'company_only'
+            elif len(available_tax_units) == 1 and available_tax_units[0].id in companies_authorized_tax_unit_opt:
+                options['tax_unit'] = available_tax_units[0].id
+            else:
+                options['tax_unit'] = 'company_only'
+
+        # Finally initialize multi_company filter
+        if options['tax_unit'] != 'company_only':
+            tax_unit = available_tax_units.filtered(lambda x: x.id == options['tax_unit'])
+            options['multi_company'] = [{'name': company.name, 'id': company.id} for company in tax_unit.company_ids]
 
     @api.model
     def _is_generic_report(self, options):
@@ -64,12 +114,6 @@ class generic_tax_report(models.AbstractModel):
     @api.model
     def _is_grouped_report(self, options):
         return isinstance(options['tax_report'], str) and options['tax_report'].startswith('generic_grouped')
-
-
-    def _init_filter_fiscal_position(self, options, previous_options=None):
-        # Overridden as the computation of this filter depends on the tax_report option (as it needs the country).
-        # So we compute it at the end of _init_filter_tax_report to ensure the dependency is met.
-        pass
 
     def _get_country_for_fiscal_position_filter(self, options):
         if self._is_generic_report(options):
@@ -81,18 +125,33 @@ class generic_tax_report(models.AbstractModel):
     def _get_options(self, previous_options=None):
         rslt = super(generic_tax_report, self)._get_options(previous_options)
         rslt['date']['strict_range'] = True
+        return rslt
 
-        if self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company'):
-            if len(self.env.companies.mapped('currency_id')) > 1:
-                raise UserError(_("The multi-company option of the tax report does not allow opening it for companies in different currencies."))
+    def _get_forced_filter_init_sequence_map(self):
+        rslt = super()._get_forced_filter_init_sequence_map()
 
-        elif 'multi_company' in rslt:
-            # filter_multi_company is readonly. Hence, it cannot be modified before calling super().
-            # However, we only want multi company activated on the tax report if the config parameter
-            # is set. By default, it has to be disabled. So, we remove it from the resulting options.
-            del rslt['multi_company']
+        rslt['filter_tax_report'] = rslt['filter_multi_company'] - 1
 
         return rslt
+
+    @api.model
+    def get_vat_for_export(self, options):
+        if options['tax_unit'] != 'company_only':
+            tax_unit = self.env['account.tax.unit'].browse(options['tax_unit'])
+            return tax_unit.vat
+
+        return super().get_vat_for_export(options)
+
+    @api.model
+    def _get_sender_company_for_export(self, options):
+        """ Return the sender company when generating an export file from this report.
+            :return: self.env.company if not using a tax unit, else the main company of that unit
+        """
+        if options['tax_unit'] != 'company_only':
+            tax_unit = self.env['account.tax.unit'].browse(options['tax_unit'])
+            return tax_unit.main_company_id
+
+        return self.env.company
 
     def _get_reports_buttons(self, options):
         res = super(generic_tax_report, self)._get_reports_buttons(options)
@@ -100,12 +159,14 @@ class generic_tax_report(models.AbstractModel):
             res.append({'name': _('Closing Journal Entry'), 'action': 'periodic_vat_entries', 'sequence': 8})
         return res
 
-    def _compute_vat_closing_entry(self, options):
+    def _compute_vat_closing_entry(self, company, options):
         """Compute the VAT closing entry.
 
         This method returns the one2many commands to balance the tax accounts for the selected period, and
         a dictionnary that will help balance the different accounts set per tax group.
         """
+        self = self.with_company(company) # Needed to handle access to property fields correctly
+
         # first, for each tax group, gather the tax entries per tax and account
         self.env['account.tax'].flush(['name', 'tax_group_id'])
         self.env['account.tax.repartition.line'].flush(['use_in_tax_closing'])
@@ -130,9 +191,10 @@ class generic_tax_report(models.AbstractModel):
             **options,
             'all_entries': False,
             'date': dict(options['date']),
+            'multi_company': [{'id': company.id, 'name': company.name}],
         }
 
-        period_start, period_end = self.env.company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
+        period_start, period_end = company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
         new_options['date']['date_from'] = fields.Date.to_string(period_start)
         new_options['date']['date_to'] = fields.Date.to_string(period_end)
 
@@ -180,9 +242,9 @@ class generic_tax_report(models.AbstractModel):
         # If the tax report is completely empty, we add two 0-valued lines, using the first in in and out
         # account id we find on the taxes.
         if len(move_vals_lines) == 0:
-            tax_out_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'sale')], limit=1)\
+            tax_out_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'sale'), ('company_id', '=', company.id)], limit=1)\
                 .invoice_repartition_line_ids.account_id
-            tax_in_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'purchase')], limit=1)\
+            tax_in_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'purchase'), ('company_id', '=', company.id)], limit=1)\
                 .invoice_repartition_line_ids.account_id
 
             if tax_out_account_id and tax_in_account_id:
@@ -276,63 +338,82 @@ class generic_tax_report(models.AbstractModel):
 
         :return: The closing moves.
         """
-        fp_country = self._get_country_for_fiscal_position_filter(options)
-        if fp_country:
-            context = {
-                'default_country_id': fp_country.id,
-                'search_default_country_id': fp_country.id,
-            }
-        else:
-            context = {}
+        options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
+        companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+        end_date = fields.Date.from_string(options['date']['date_to'])
 
-        on_empty_msg = _('It seems that you have no entries to post, are you sure you correctly configured the accounts on your tax groups?')
-        on_empty_action = {
+        closing_moves_by_company = defaultdict(lambda: self.env['account.move'])
+        if closing_moves:
+            for move in closing_moves.filtered(lambda x: x.state == 'draft'):
+                closing_moves_by_company[move.company_id] |= move
+        else:
+            closing_moves = self.env['account.move']
+            for company in companies:
+                include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, options)
+                company_closing_moves = company._get_and_update_tax_closing_moves(end_date, fiscal_positions=fiscal_positions, include_domestic=include_domestic)
+                closing_moves_by_company[company] = company_closing_moves
+                closing_moves += company_closing_moves
+
+        for company, company_closing_moves in closing_moves_by_company.items():
+
+            # First gather the countries for which the closing is being done
+            countries = self.env['res.country']
+            for move in company_closing_moves:
+                if move.fiscal_position_id.foreign_vat:
+                    countries |= move.fiscal_position_id.country_id
+                else:
+                    countries |= company.account_fiscal_country_id
+
+            # Check the tax groups from the company for any misconfiguration in these countries
+            if self.env['account.tax.group']._check_misconfigured_tax_groups(company, countries):
+                self._redirect_to_misconfigured_tax_groups(company, countries)
+
+            if company.tax_lock_date and company.tax_lock_date >= end_date:
+                raise UserError(_("This period is already closed for company %s", company.name))
+
+            for move in company_closing_moves:
+                # get tax entries by tax_group for the period defined in options
+                move_options = {**options, 'fiscal_position': move.fiscal_position_id.id if move.fiscal_position_id else 'domestic'}
+                line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(company, move_options)
+
+                line_ids_vals += self._add_tax_group_closing_items(tax_group_subtotal, end_date)
+
+                if move.line_ids:
+                    line_ids_vals += [Command.delete(aml.id) for aml in move.line_ids]
+
+                move_vals = {}
+                if line_ids_vals:
+                    move_vals['line_ids'] = line_ids_vals
+
+                move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
+                if move_options.get('tax_report_control_error'):
+                    move.message_post(body=move_options.get('tax_report_control_error'))
+
+                move.write(move_vals)
+
+        return closing_moves
+
+    def _redirect_to_misconfigured_tax_groups(self, company, countries):
+        """ Raises a RedirectWarning informing the user his tax groups are missing configuration
+        for a given company, redirecting him to the tree view of account.tax.group, filtered
+        accordingly to the provided countries.
+        """
+        need_config_action = {
             'type': 'ir.actions.act_window',
             'name': 'Tax groups',
             'res_model': 'account.tax.group',
             'view_mode': 'tree',
             'views': [[False, 'list']],
-            'context': context,
+            'context': len(countries) == 1 and {'search_default_country_id': countries.ids or {}},
+            # More than 1 id into search_default isn't supported
         }
-        # make the preliminary checks
-        if options.get('multi_company', False):
-            # Ensure that we only have one company selected
-            raise UserError(_("You can only post tax entries for one company at a time"))
 
-        company = self.env.company
-        if not self.env['account.tax.group']._any_is_configured(company):
-            raise RedirectWarning(on_empty_msg, on_empty_action, _('Configure your TAX accounts'))
-
-        start_date = fields.Date.from_string(options.get('date').get('date_from'))
-        end_date = fields.Date.from_string(options.get('date').get('date_to'))
-        if not closing_moves:
-            include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, options)
-            closing_moves = company._get_and_update_tax_closing_moves(end_date, fiscal_positions=fiscal_positions, include_domestic=include_domestic)
-
-        if company.tax_lock_date and company.tax_lock_date >= end_date:
-            raise UserError(_("This period is already closed"))
-
-        for move in closing_moves.filtered(lambda x: x.state == 'draft'):
-            # get tax entries by tax_group for the period defined in options
-            move_options = {**options, 'fiscal_position': move.fiscal_position_id.id if move.fiscal_position_id else 'domestic'}
-            line_ids_vals, tax_group_subtotal = self._compute_vat_closing_entry(move_options)
-
-            line_ids_vals += self._add_tax_group_closing_items(tax_group_subtotal, end_date)
-
-            if move.line_ids:
-                line_ids_vals += [(2, aml.id) for aml in move.line_ids]
-
-            move_vals = {}
-            if line_ids_vals:
-                move_vals['line_ids'] = line_ids_vals
-
-            move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
-            if move_options.get('tax_report_control_error'):
-                move.message_post(body=move_options.get('tax_report_control_error'))
-
-            move.write(move_vals)
-
-        return closing_moves
+        raise RedirectWarning(
+            _('Some of your tax groups are missing information in company %s. Please complete their configuration.', company.display_name),
+            need_config_action,
+            _('Configure your TAX accounts - %s', company.display_name),
+            additional_context={'allowed_company_ids': company.ids, 'force_account_company': company.id}
+        )
 
     def _get_fpos_info_for_tax_closing(self, company, options):
         """ Returns the fiscal positions information to use to generate the tax closing
@@ -345,7 +426,7 @@ class generic_tax_report(models.AbstractModel):
         if options['fiscal_position'] == 'domestic':
             fpos_ids = []
         elif options['fiscal_position'] == 'all':
-            fpos_ids = [opt['id'] for opt in options['available_vat_fiscal_positions']]
+            fpos_ids = [opt['id'] for opt in options['available_vat_fiscal_positions'] if opt['company_id'] == company.id]
         else:
             fpos_ids = [options['fiscal_position']]
 
@@ -755,10 +836,7 @@ class generic_tax_report(models.AbstractModel):
         """
         columns = []
         for i, period in enumerate(grid_data['periods']):
-            if not self.env['ir.config_parameter'].sudo().get_param('account_tax_report_multi_company'):
-                carryover_lines = grid_data['obj'].with_company(self.env.company).carryover_line_ids
-            else:
-                carryover_lines = grid_data['obj'].carryover_line_ids
+            carryover_lines = grid_data['obj'].carryover_line_ids
             carryover_account_balance = self.get_carried_over_balance_before_date(carryover_lines, options, i)
             columns += [{'name': self.format_value(period['balance']), 'style': 'white-space:nowrap;',
                          'balance': period['balance'],
@@ -1057,8 +1135,8 @@ class generic_tax_report(models.AbstractModel):
         else, it yields account.tax records.
         """
         if self._is_generic_layout(options):
-            company_term = self.env.companies.ids if options.get('multi_company') else self.env.company.ids
-            for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', 'in', company_term)]):
+            report_companies = self.get_report_company_ids(options)
+            for tax in self.env['account.tax'].with_context(active_test=False).search([('company_id', 'in', report_companies)]):
                 yield tax
         else:
             for line in self.env['account.tax.report'].browse(options['tax_report']).line_ids:

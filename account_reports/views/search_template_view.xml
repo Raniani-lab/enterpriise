@@ -339,7 +339,8 @@
                 t-if="options.get('ec_sale_code') != None">
             <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
-        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position" t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1)">
+        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position"
+            t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1) and options['tax_unit'] != 'company_only'">
             <t t-call="account_reports.search_template_fiscal_position_choser"/>
         </div>
     </template>
@@ -350,12 +351,17 @@
             <div class="alert alert-light text-center mb-0 no_print" t-if="options.get('group_by')">
                 <span>Please note that the report may include some rounding differences towards the bookings.</span>
             </div>
+
+            <div class="alert alert-info text-center mb-0 no_print" t-if="not model._is_generic_report(options) and options.get('available_tax_unit') and options['tax_unit'] == 'company_only'">
+                <span>This company is part of a tax unit. You're currently not viewing the whole unit; to change that, tick the "aggregate" option of "tax unit" menu.</span>
+            </div>
         </xpath>
     </template>
 
     <template id="search_template_generic_tax_report" inherit_id="account_reports.search_template" primary="True">
         <xpath expr="//div[@id='extra_options_dropdown']/t" position="after">
             <t t-call="account_reports.search_template_tax_report_choser"/>
+            <t t-call="account_reports.search_template_tax_unit_chooser"/>
         </xpath>
     </template>
 
@@ -406,6 +412,36 @@
                 <t t-foreach="options['available_tax_reports']" t-as="report">
                     <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="report['name']" t-att-data-id="report['id']" data-filter="tax_report">
                         <t t-esc="report['name']"/>
+                    </a>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <template id="search_template_tax_unit_chooser">
+        <div id="tax_unit_option" class="btn-group o_dropdown">
+            <button t-if="options['available_tax_units']" type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-home"/>
+                Tax Unit:
+                <t>
+                    <t t-if="options['tax_unit'] == 'company_only'">
+                        Company Only
+                    </t>
+                    <t t-else="">
+                        <t t-set="selected_tax_unit" t-value="[opt for opt in options['available_tax_units'] if opt['id'] == options['tax_unit']][0]"/>
+                        <t t-esc="selected_tax_unit['name']"/>
+                    </t>
+                </t>
+            </button>
+
+            <div class="dropdown-menu o_filter_menu" role="menu">
+                <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" data-filter="tax_unit" data-id="company_only" groups="account.group_account_readonly">Company Only</a>
+
+                <div role="separator" class="dropdown-divider"/>
+
+                <t t-foreach="options['available_tax_units']" t-as="available_tax_unit">
+                    <a role="menuitem" class="dropdown-item js_account_reports_one_choice_filter" t-att-title="available_tax_unit['name']" t-att-data-id="available_tax_unit['id']" data-filter="tax_unit">
+                        <t t-esc="available_tax_unit['name']"/>
                     </a>
                 </t>
             </div>

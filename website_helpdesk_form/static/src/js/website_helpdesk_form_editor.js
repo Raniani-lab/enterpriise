@@ -11,11 +11,13 @@ FormEditorRegistry.add('create_ticket', {
         type: 'char',
         required: true,
         name: 'partner_name',
+        fillWith: 'name',
         string: 'Your Name',
     }, {
         type: 'email',
         required: true,
         name: 'partner_email',
+        fillWith: 'email',
         string: 'Your Email',
     }, {
         type: 'char',

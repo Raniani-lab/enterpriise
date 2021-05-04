@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.misc import parse_date
+from odoo.tools import is_html_empty
 import re
 
 class SaleOrder(models.Model):
@@ -68,7 +69,7 @@ class SaleOrder(models.Model):
             'team_id': self.team_id.id,
             'payment_term_id': self.payment_term_id.id,
             'date_start': fields.Date.context_today(self),
-            'description': self.note or template.description,
+            'description': self.note if not is_html_empty(self.note) else template.description,
             'pricelist_id': self.pricelist_id.id,
             'company_id': self.company_id.id,
             'analytic_account_id': self.analytic_account_id.id,

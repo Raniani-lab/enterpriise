@@ -34,7 +34,7 @@ class ApprovalRequest(models.Model):
     partner_id = fields.Many2one('res.partner', string="Contact", check_company=True)
     reference = fields.Char(string="Reference")
     amount = fields.Float(string="Amount")
-    reason = fields.Text(string="Description")
+    reason = fields.Html(string="Description")
     request_status = fields.Selection([
         ('new', 'To Submit'),
         ('pending', 'Submitted'),

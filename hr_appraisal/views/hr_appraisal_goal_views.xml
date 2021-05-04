@@ -63,6 +63,7 @@
             <kanban quick_create="false" class="o_hr_employee_kanban" js_class="appraisal_kanban" sample="1">
                 <field name="description"/>
                 <field name="progression"/>
+                <field name="text_description"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click oe_kanban_content">
@@ -83,12 +84,7 @@
                                 </strong>
                             </div>
                             <div class="goal_description">
-                                <t t-if="record.description.raw_value.length &lt; 80">
-                                    <span><t t-esc="record.description.raw_value"/></span>
-                                </t>
-                                <t t-if="record.description.raw_value.length &gt;= 80">
-                                    <span><t t-esc="record.description.raw_value.slice(0, 77) + '...'"/></span>
-                                </t>
+                                <span><t t-esc="record.text_description.raw_value"/></span>
                             </div>
                             <div class="mb-5 mt-5">
                                 <span t-attf-class="o_goal_progression #{record.progression.raw_value === '0' ? 'active' : ''}">0 %</span>

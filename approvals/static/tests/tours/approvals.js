@@ -41,7 +41,7 @@ odoo.define('approvals_tour', function(require) {
             run: 'text Berlin, Schulz Hotel',
         },
         {
-            trigger: 'textarea[name="reason"]',
+            trigger: 'div[name="reason"]',
             content: 'give description',
             run: 'text We need to go, because reason (and also for beer))',
         },

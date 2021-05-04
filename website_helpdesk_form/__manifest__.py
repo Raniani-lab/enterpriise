@@ -7,11 +7,10 @@
     'sequence': 58,
     'summary': 'Qualify helpdesk queries with a website form',
     'depends': [
-        'website_form',
         'website_helpdesk',
     ],
     'description': """
-Generate tickets in Helpdesk app from a form published on your website. This form can be customized thanks to the *Form Builder* module (available in Odoo Enterprise).
+Generate tickets in Helpdesk app from a form published on your website. This form can be customized thanks to the *Website Builder*.
     """,
     'data': [
         'data/website_helpdesk.xml',

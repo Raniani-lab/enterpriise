@@ -98,6 +98,16 @@
         <field name="user_id" ref="l10n_be_hr_contract_salary.user_laurie_poiret"/>
     </record>
 
+    <record id="fleet_belgian_category" model="fleet.category">
+        <field name="name">Belgian Fleet</field>
+        <field name="description">The Belgian Fleet</field>
+        <field name="tag_ids" eval="[(4, ref('fleet.fleet_category_tag_internal'))]"/>
+        <field name="internal" eval="True"/>
+        <field name="manager_id" ref="base.user_admin"/>
+        <field name="favorite_user_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="fleet.model_corsa" model="fleet.vehicle.model">
         <field name="can_be_requested" eval="True"/>
         <field name="default_car_value">18000</field>
@@ -130,7 +140,8 @@
         <field name="license_plate">1-JFC-095</field>
         <field name="acquisition_date" eval="time.strftime('2020-01-01')"/>
         <field name="co2">88</field>
-        <field name="driver_id" ref="res_partner_laurie_poiret_private_address"/>
+        <field name="driver_employee_id" ref="hr_employee_laurie_poiret"/>
+        <field name="fleet_id" ref="fleet_belgian_category"/>
         <field name="car_value">38000</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="transmission">manual</field>
@@ -169,7 +180,8 @@
 
     <record id="fleet_vehicle_bike_laurie_poiret" model="fleet.vehicle">
         <field name="model_id" ref="fleet_vehicle_model_san_remo"/>
-        <field name="driver_id" ref="res_partner_laurie_poiret"/>
+        <field name="driver_employee_id" ref="hr_employee_laurie_poiret"/>
+        <field name="fleet_id" ref="fleet_belgian_category"/>
         <field name="car_value">1000</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>

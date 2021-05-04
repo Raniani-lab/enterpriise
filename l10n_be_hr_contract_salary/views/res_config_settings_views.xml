@@ -17,4 +17,33 @@
         </field>
     </record>
 
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.l10n_be_hr_contract_salary.fleet</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="91"/>
+        <field name="inherit_id" ref="fleet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='fleet']">
+                <h2>Multi Fleet</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Default internal fleet</span>
+                            <div class="text-muted">
+                                The vehicles created in the salary configurator will be automatically assigned to the selected fleet.
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <span class="o_form_label col-lg-3 o_light_label">Fleet</span>
+                                    <field name="internal_fleet_category_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

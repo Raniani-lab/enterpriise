@@ -11,17 +11,23 @@ class HrContract(models.Model):
     @api.model
     def _get_available_vehicles_domain(self, driver_id=None, vehicle_type='car'):
         return expression.AND([
-            expression.AND([
-                expression.OR([
-                    [('future_driver_id', '=', False)],
-                    [('future_driver_id', '=', driver_id.id if driver_id else False)],
-                ]),
-                [('model_id.vehicle_type', '=', vehicle_type)],
-            ]),
             expression.OR([
-                [('driver_id', '=', False)],
-                [('driver_id', '=', driver_id.id if driver_id else False)],
-                [('plan_to_change_car', '=', True)] if vehicle_type == 'car' else [('plan_to_change_bike', '=', True)]
+                [('company_id', '=', False)],
+                [('company_id', '=', self.company_id.id)]
+            ]),
+            expression.AND([
+                expression.AND([
+                    expression.OR([
+                        [('future_driver_id', '=', False)],
+                        [('future_driver_id', '=', driver_id.id if driver_id else False)],
+                    ]),
+                    [('model_id.vehicle_type', '=', vehicle_type)],
+                ]),
+                expression.OR([
+                    [('driver_id', '=', False)],
+                    [('driver_id', '=', driver_id.id if driver_id else False)],
+                    [('plan_to_change_car', '=', True)] if vehicle_type == 'car' else [('plan_to_change_bike', '=', True)]
+                ])
             ])
         ])
 

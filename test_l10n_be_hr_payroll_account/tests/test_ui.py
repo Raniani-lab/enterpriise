@@ -138,7 +138,7 @@ class TestUi(odoo.tests.HttpCase):
             'name': 'Bike Brand',
         })
 
-        self.env['fleet.vehicle.model'].create({
+        self.env['fleet.vehicle.model'].with_company(company_id).create({
             'name': 'Bike 1',
             'brand_id': bike_brand.id,
             'vehicle_type': 'bike',
@@ -147,7 +147,7 @@ class TestUi(odoo.tests.HttpCase):
             'default_recurring_cost_amount_depreciated': 25,
         })
 
-        self.env['fleet.vehicle.model'].create({
+        self.env['fleet.vehicle.model'].with_company(company_id).create({
             'name': 'Bike 2',
             'brand_id': bike_brand.id,
             'vehicle_type': 'bike',
@@ -158,6 +158,9 @@ class TestUi(odoo.tests.HttpCase):
         model_a3 = self.env.ref("fleet.model_a3").with_company(company_id)
         model_a3.default_recurring_cost_amount_depreciated = 450
         model_a3.can_be_requested = True
+
+        model_opel = self.env.ref("fleet.model_corsa").with_company(company_id)
+        model_opel.can_be_requested = True
 
         self.env['fleet.vehicle'].create({
             'model_id': model_a3.id,

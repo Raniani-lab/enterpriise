@@ -181,12 +181,14 @@ class HrContractSalary(http.Controller):
                 'active': False,
                 'country_id': be_country.id,
                 'certificate': False,  # To force encoding it
+                'company_id': contract.company_id.id,
             })
             contract.employee_id.address_home_id = request.env['res.partner'].sudo().create({
                 'name': 'Simulation',
                 'type': 'private',
                 'country_id': be_country.id,
                 'active': False,
+                'company_id': contract.company_id.id,
             })
 
         if 'applicant_id' in kw:

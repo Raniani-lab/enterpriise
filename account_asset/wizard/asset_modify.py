@@ -82,7 +82,8 @@ class AssetModify(models.TransientModel):
         residual_increase = max(0, self.value_residual - new_residual)
         salvage_increase = max(0, self.salvage_value - new_salvage)
 
-        if residual_increase or salvage_increase:
+        # Check for residual/salvage increase while rounding with the company currency precision to prevent float precision issues.
+        if  self.currency_id.round(residual_increase + salvage_increase) > 0:
             move = self.env['account.move'].create({
                 'journal_id': self.asset_id.journal_id.id,
                 'date': fields.Date.today(),

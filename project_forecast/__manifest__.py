@@ -17,7 +17,6 @@
         'views/project_forecast_views.xml',
         'views/project_views.xml',
         'views/res_config_settings_views.xml',
-        'security/project_forecast_security.xml',
     ],
     'application': False,
     'license': 'OEEL-1',
@@ -25,7 +24,6 @@
     'assets': {
         'web.assets_backend': [
             'project_forecast/static/src/js/forecast_gantt.js',
-            'project_forecast/static/src/scss/planning_view.scss',
         ],
         'web.assets_frontend': [
             'project_forecast/static/src/js/forecast_calendar_front.js',

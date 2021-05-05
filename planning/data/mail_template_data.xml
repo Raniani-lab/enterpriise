@@ -36,13 +36,13 @@
                         % if object.project_id
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">Project</th>
-                            <td style="padding: 5px;">${object.project_id.name or ''}</td>
+                            <td style="padding: 5px;">${object.sudo().project_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.task_id
                         <tr>
                             <th style="padding: 5px;text-align: left; width: 15%;">Task</th>
-                            <td style="padding: 5px;">${object.task_id.name or ''}</td>
+                            <td style="padding: 5px;">${object.sudo().task_id.name or ''}</td>
                         </tr>
                         % endif
                         % if object.name

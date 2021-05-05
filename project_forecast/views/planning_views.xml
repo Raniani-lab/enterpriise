@@ -8,8 +8,23 @@
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="project_id" optional="hide" />
-                <field name="task_id" optional="hide" widget="task_with_hours"/>
+                <field name="project_id" optional="hide" options="{'no_open': True}"/>
+                <field name="task_id" optional="hide" widget="task_with_hours" options="{'no_open': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="planning_slot_view_tree_project_user" model="ir.ui.view">
+        <field name="name">planning.slot.project.user.tree</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning_slot_view_tree"/>
+        <field name="groups_id" eval="[(4, ref('project.group_project_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
             </xpath>
         </field>
     </record>
@@ -21,17 +36,8 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="is_private_project" invisible="1"/>
-                <field name="project_id" context="{'default_allow_forecast': True}"/>
-                <span colspan="2" class="oe_edit_only" attrs="{'invisible': [('is_private_project', '=', False)]}">
-                    <dl class="o_planning_project_warning_dl">
-                        <dt class="o_planning_project_warning_dt text-muted" aria-hidden="True">
-                            <i class="fa fa-exclamation-triangle fa-sm"/>&amp;nbsp;</dt>
-                        <dd class="o_planning_project_warning_dd text-muted">This employee doesn't have access to this project and, thus, won't see this shift.
-                            Please, update the privacy settings of the project accordingly.</dd>
-                    </dl>
-                </span>
-                <field name="task_id" context="{'default_project_id': project_id, 'default_allow_forecast': True}" widget="task_with_hours"/>
+                <field name="project_id" context="{'default_allow_forecast': True}" options="{'no_open': True}"/>
+                <field name="task_id" context="{'default_project_id': project_id, 'default_allow_forecast': True}" widget="task_with_hours" options="{'no_open': True}"/>
             </xpath>
             <xpath expr="//field[@name='allocated_hours']" position="after">
                 <field name="allow_forecast" invisible="1"/>
@@ -41,19 +47,17 @@
         </field>
     </record>
 
-    <record id="planning_view_form_in_gantt" model="ir.ui.view">
-        <field name="name">planning.slot.form.gantt</field>
+    <record id="planning_slot_view_form_project_user" model="ir.ui.view">
+        <field name="name">planning.slot.project.user.form</field>
         <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_form_in_gantt"/>
+        <field name="inherit_id" ref="planning_slot_view_form"/>
+        <field name="groups_id" eval="[(4, ref('project.group_project_user'))]"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@id='send']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_published', '=', False), ('is_private_project', '=', True)]}</attribute>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
             </xpath>
-            <xpath expr="//button[@id='publish_send']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_published', '=', True), ('is_private_project', '=', True)]}</attribute>
-            </xpath>
-            <xpath expr="//button[@id='publish']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_published', '=', True), ('is_private_project', '=', True)]}</attribute>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="options">{'no_open': False}</attribute>
             </xpath>
         </field>
     </record>

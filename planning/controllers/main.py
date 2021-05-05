@@ -40,8 +40,6 @@ class ShiftController(http.Controller):
         else:
             planning_slots = planning_sudo.slot_ids.filtered(lambda s: s.employee_id == employee_sudo)
 
-        planning_slots = planning_slots._filter_slots_front_end(employee_sudo)
-
         # filter and format slots
         slots_start_datetime = []
         slots_end_datetime = []

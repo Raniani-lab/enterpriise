@@ -971,9 +971,6 @@ class Planning(models.Model):
             'publication_warning': False,
         })
 
-    def _filter_slots_front_end(self, employee):
-        # Is overridden to filter slots for the front end.
-        return self
 
 class PlanningRole(models.Model):
     _name = 'planning.role'

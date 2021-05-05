@@ -2,24 +2,23 @@
 <templates id="template" xml:space="preserve">
 
 <t t-name="web_enterprise.MobileSwitchCompanyMenu" owl="1">
-    <div class="o_burger_menu_companies">
-        <span class="o_burger_menu_user_title">COMPANIES</span>
+    <div class="o_burger_menu_companies dropdown-item pt-4 pb-3 bg-100">
+        <div class="o_burger_menu_user_title text-muted mb-3">Companies</div>
         <div t-foreach="user.allowed_companies" t-as="company_id">
             <t t-set="company" t-value="user.allowed_companies[company_id]" />
             <t t-set="id" t-value="company.id"/>
             <t t-set="displayName" t-value="company.name"/>
             <t t-set="isCompanySelected" t-value="user.context.allowed_company_ids.includes(id)"/>
-            <t t-set="checkIcon" t-value="isCompanySelected ? 'fa-check-square' : 'fa-square-o'"/>
-            <t t-set="textMuted" t-value="isCompanySelected ?  '' : 'text-muted'"/>
-            <t t-set="backgroundColor" t-value="user.current_company.id === id ? 'lightgrey' : ''"/>
-            <div class="d-flex py-0 px-0 menu_companies_item" t-att-data-company-id="id">
-                <div class="ml-auto pl-3 pr-3 border border-top-0 border-left-0 border-bottom-0 toggle_company o_py" t-on-click="toggleCompany(company.id)">
-                    <span style="height: 2rem;">
-                        <i t-attf-class="fa fa-fw {{checkIcon}} pt-2"></i>
-                    </span>
+            <t t-set="checkIcon" t-value="isCompanySelected ? 'fa-check-square text-primary' : 'fa-square-o text-muted'"/>
+            <t t-set="isCompanyCurrent" t-value="user.current_company.id === id"/>
+            <t t-set="companyStatusClasses" t-value="isCompanyCurrent ? 'font-weight-bold' : 'text-muted'"/>
+            <div class="d-flex align-items-center menu_companies_item mb-2" t-att-data-company-id="id">
+                <div class="py-1 pr-3 border-right toggle_company o_py" t-on-click="toggleCompany(company.id)">
+                    <i t-attf-class="fa fa-fw {{checkIcon}}"></i>
                 </div>
-                <div class="d-flex flex-grow-1 align-items-center py-2 log_into pl-3 o_py" t-attf-style="background-color: {{backgroundColor}};" t-on-click="logIntoCompany(company.id)">
-                    <span t-esc="displayName" t-attf-class='mr-3 company_label {{textMuted}}'/>
+                <div t-attf-class="py-1 flex-grow-1 log_into px-3 o_py {{companyStatusClasses}}" t-on-click="logIntoCompany(company.id)" style="min-width:0">
+                    <span t-esc="displayName" t-attf-class="company_label"/>
+                    <small t-if="isCompanyCurrent" class="ml-2 text-muted">(current)</small>
                 </div>
             </div>
         </div>

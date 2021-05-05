@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
   <t t-name="web_enterprise.BurgerUserMenu" owl="1">
-    <div class="o_user_menu_mobile">
+    <div class="o_user_menu_mobile mt-2">
       <t t-foreach="getElements()" t-as="element" t-key="element_index">
           <t t-if="!element.hide">
               <t t-if="element.type == 'item'">

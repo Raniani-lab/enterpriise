@@ -51,36 +51,38 @@ class SocketInterface(Interface):
         Interface to do any iot_devices related cleanup in response.
         After this the new connection can replace the old one.
         """
-        _logger.debug("replace_socket_device initial _detected_devices: {}".format(self._detected_devices))
         driver_thread = iot_devices.get(addr)
 
-        if not driver_thread:
-            _logger.warning("Found socket_device entry {} with no corresponding iot_device".format(addr))
-            dev.close()
-            return
-
-        old_dev = socket_devices[addr].dev
-        _logger.debug("Closing socket: {}".format(old_dev))
         # Actively close the existing connection and do not allow receiving further
         # data. This will result in a currently blocking recv call returning b'' and
         # subsequent recv calls raising an OSError about a bad file descriptor.
-        old_dev.shutdown(socket.SHUT_RD)
+        old_dev = socket_devices[addr].dev
+        _logger.debug("Closing socket: %s", old_dev)
+        try:
+            # If the socket was already closed, a bad file descriptor OSError will be
+            # raised. This can happen if the IngenicoDriver thread initiated the
+            # disconnect itself.
+            old_dev.shutdown(socket.SHUT_RD)
+        except OSError:
+            pass
         old_dev.close()
 
-        _logger.debug("Waiting for driver thread to finish")
-        driver_thread.join()
-        _logger.debug("Driver thread finished")
+        if driver_thread:
+            _logger.debug("Waiting for driver thread to finish")
+            driver_thread.join()
+            _logger.debug("Driver thread finished")
+
+        del socket_devices[addr]
 
         # Shutting down the socket will result in the corresponding IngenicoDriver
-        # thread terminating and removing the corresponding entries in socket_devices
-        # and iot_devices. In the Interface thread _detected_devices will still contain
-        # the old socket device. This means update_iot_devices won't detect there was a
-        # change after create_socket_device gets called since that would create a new
-        # entry with the same key. A composite key of ip and port would avoid that, but
-        # this causes problems since the key is also reported to the Odoo database,
-        # which means a new device would show up in the IoT app for each key.
-        # _detected_devices is a dict_keys, which means we can't directly modify it
-        # either. Hence this hack.
+        # thread terminating and removing the corresponding entry in iot_devices. In the
+        # Interface thread _detected_devices will still contain the old socket device.
+        # This means update_iot_devices won't detect there was a change after
+        # create_socket_device gets called since that would create a new entry with the
+        # same key. A composite key of ip and port would avoid that, but this causes
+        # problems since the key is also reported to the Odoo database, which means a
+        # new device would show up in the IoT app for each key. _detected_devices is a
+        # dict_keys, which means we can't directly modify it either. Hence this hack.
         _logger.debug("Updating _detected_devices")
         new_detected_devices = dict.fromkeys(self._detected_devices, 0)
         if addr in new_detected_devices:

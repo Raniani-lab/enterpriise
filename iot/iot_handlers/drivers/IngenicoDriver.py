@@ -726,8 +726,27 @@ class IngenicoDriver(Driver):
             return False
 
     def disconnect(self):
-        del socket_devices[self.device_identifier]
-        super(IngenicoDriver, self).disconnect()
+        # Close the socket but leave the socket_devices entry. If we were to delete it,
+        # and the SocketInterface gets a new connection from the terminal, it would
+        # create a new socket_devices entry with the same key. Interface's
+        # update_iot_devices method would not detect that something changed and no new
+        # IngenicoDriver thread would be created, resulting in a deadlock. What will
+        # instead happen by leaving the socket_devices entry, is that
+        # replace_socket_device will get called instead. It will update
+        # _detected_devices in Interface, so update_iot_devices will create a new
+        # IngenicoDriver thread. None of this is ideal, but a cleaner fix would require
+        # changing the architecture of Interface and how interfaces and drivers can
+        # talk to each other.
+        sock = socket_devices[self.device_identifier].dev
+        try:
+            sock.shutdown(socket.SHUT_RD)
+        except OSError:
+            # A bad file descriptor OSError will be thrown if the socket was already
+            # closed
+            pass
+        sock.close()
+
+        super().disconnect()
 
     def _getSequence(self):
         """Returns the sequence number for the next outgoing message.

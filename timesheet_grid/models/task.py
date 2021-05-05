@@ -37,10 +37,10 @@ class Task(models.Model):
                     else:
                         task.display_timer_start_primary = False
 
-    @api.depends('allow_timesheets', 'project_id.allow_timesheet_timer', 'analytic_account_active')
+    @api.depends('allow_timesheets', 'analytic_account_active')
     def _compute_display_timesheet_timer(self):
         for task in self:
-            task.display_timesheet_timer = task.allow_timesheets and task.project_id.allow_timesheet_timer and task.analytic_account_active
+            task.display_timesheet_timer = task.allow_timesheets and task.analytic_account_active
 
     def action_timer_start(self):
         if not self.user_timer_id.timer_start and self.display_timesheet_timer:

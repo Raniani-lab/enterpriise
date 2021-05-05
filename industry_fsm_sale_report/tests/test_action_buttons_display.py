@@ -36,7 +36,6 @@ class TestTimerButtons(TransactionCase):
         cls.project = cls.env['project.project'].create({
             'name': 'My Project',
             'partner_id': cls.customer.id,
-            'allow_timesheet_timer': True,
             'allow_timesheets': True,
             'allow_worksheets': True,
             'allow_material': True,
@@ -108,7 +107,7 @@ class TestTimerButtons(TransactionCase):
 
     def test_timer_buttons_05(self):
         # only visible if the 'Timesheet Timer' feature is enabled on the project
-        self.project.allow_timesheet_timer = False
+        self.project.allow_timesheets = False
         self.assertFalse(self.task.display_timer_start_primary)
         self.assertFalse(self.task.display_timer_start_secondary)
         self.assertFalse(self.task.display_timer_stop)

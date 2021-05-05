@@ -371,7 +371,6 @@
             'fsm_mode': True,
             'default_is_fsm': True,
             'default_allow_timesheets': True,
-            'default_allow_timesheet_timer': True,
             'default_allow_worksheets': True,
             }
         </field>

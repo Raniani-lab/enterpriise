@@ -8,6 +8,7 @@ const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const Widget = require('web.Widget');
 
 const Many2One = relational_fields.FieldMany2One;
+const TaskWithHours = require('hr_timesheet.task_with_hours');
 const _t = core._t;
 
 const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
@@ -34,7 +35,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
             relation: 'project.project',
             type: 'many2one',
             value: this.projectId,
-            domain: [['allow_timesheet_timer', '=', true]],
+            domain: [['allow_timesheets', '=', true]],
         }]);
 
         this.task = await this.model.makeRecord('account.analytic.line', [{
@@ -74,7 +75,7 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         this.projectMany2one = projectMany2one;
 
         const taskRecord = this.model.get(this.task);
-        const taskMany2one = new Many2One(this, 'task_id', taskRecord, {
+        const taskMany2one = new TaskWithHours(this, 'task_id', taskRecord, {
             attrs: {
                 placeholder: placeholderTask,
             },

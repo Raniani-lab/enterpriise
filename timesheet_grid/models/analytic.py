@@ -787,8 +787,9 @@ class AnalyticLine(models.Model):
                 [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
                 [pivot_view_id, 'pivot'],
                 [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
+                [self.env.ref('hr_timesheet.view_kanban_account_analytic_line').id, 'kanban']
             ],
-            "view_mode": 'grid,tree,pivot,graph',
+            "view_mode": 'grid,tree,pivot,graph,kanban',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "context": context,

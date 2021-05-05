@@ -33,7 +33,6 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
             'is_fsm': True,
             'allow_billable': True,
             'allow_timesheets': True,
-            'allow_timesheet_timer': True,
         })
 
         cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})

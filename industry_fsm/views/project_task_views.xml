@@ -127,7 +127,7 @@
     <record id="project_view_form_inherit" model="ir.ui.view">
         <field name="name">project.view.form.inherit</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="timesheet_grid.project_view_form_inherit"/>
+        <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
         <field name="arch" type="xml">
             <xpath  expr="//div[@id='rating_settings']" position="before">
                 <div class="col-lg-6 o_setting_box" groups="base.group_no_one">

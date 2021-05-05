@@ -14,7 +14,6 @@ class ResCompany(models.Model):
             'name': project_name,
             'is_fsm': True,
             'allow_timesheets': True,
-            'allow_timesheet_timer': True,
             'type_ids': type_ids,
             'company_id': company.id
         } for company in self]

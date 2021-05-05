@@ -17,7 +17,7 @@ class SaleOrderLine(models.Model):
     def _timesheet_create_project_prepare_values(self):
         """Generate project values"""
         values = super(SaleOrderLine, self)._timesheet_create_project_prepare_values()
-        values['allow_timesheet_timer'] = True
+        values['allow_timesheets'] = True
         return values
 
     def _timesheet_compute_delivered_quantity_domain(self):

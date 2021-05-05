@@ -55,7 +55,6 @@ class HelpdeskTeam(models.Model):
                 (0, 0, {'name': _('Closed'), 'is_closed': True})
             ],
             'allow_timesheets': True,
-            'allow_timesheet_timer': True,
             **other,
         })
 
@@ -70,6 +69,11 @@ class HelpdeskTeam(models.Model):
     def write(self, vals):
         if 'use_helpdesk_timesheet' in vals and not vals['use_helpdesk_timesheet']:
             vals['project_id'] = False
+            # to unlink timer when use_helpdesk_timesheet is false
+            self.env['timer.timer'].search([
+                ('res_model', '=', 'helpdesk.ticket'),
+                ('res_id', 'in', self.with_context(active_test=False).ticket_ids.ids)
+            ]).unlink()
         result = super(HelpdeskTeam, self).write(vals)
         for team in self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id):
             team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {})

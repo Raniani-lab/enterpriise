@@ -183,7 +183,7 @@ class MrpEco(models.Model):
         ('0', 'Normal'),
         ('1', 'High')], string='Priority', tracking=True,
         index=True)
-    note = fields.Text('Note')
+    note = fields.Html('Note')
     effectivity = fields.Selection([
         ('asap', 'As soon as possible'),
         ('date', 'At Date')], string='Effectivity',  # Is this English ?

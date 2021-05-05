@@ -311,7 +311,7 @@ class IrModel(models.Model):
         for model in self:
             note_field = self.env['ir.model.fields'].create({
                 'name': 'x_studio_notes',
-                'ttype': 'text',
+                'ttype': 'html',
                 'field_description': _('Notes'),
                 'model_id': model.id,
                 'copied': True,

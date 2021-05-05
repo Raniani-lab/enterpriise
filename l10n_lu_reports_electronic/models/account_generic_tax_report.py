@@ -73,7 +73,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         lu_template_values = self._get_lu_electronic_report_values(options)
         rendered_content = self.env.ref('l10n_lu_reports_electronic.l10n_lu_electronic_report_template')._render(lu_template_values)
-        content = "\n".join(re.split(r'\n\s*\n', rendered_content.decode("utf-8"))) # Remove empty lines
+        content = "\n".join(re.split(r'\n\s*\n', rendered_content)) # Remove empty lines
         self._lu_validate_xml_content(content)
 
         return "<?xml version='1.0' encoding='UTF-8'?>" + content

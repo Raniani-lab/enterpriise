@@ -216,7 +216,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             res_ids=self.ids, data={'report_data': report_data})
 
         self.social_security_filename = filename
-        self.social_security_sheet = base64.encodebytes(export_274_sheet_pdf)
+        self.social_security_sheet = base64.encodebytes(export_274_sheet_pdf.encode())
 
         self.state = 'done'
         return {

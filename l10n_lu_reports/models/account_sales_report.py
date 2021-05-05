@@ -166,4 +166,4 @@ class ECSalesReport(models.AbstractModel):
         })
 
         rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.EcSalesLuXMLReport', xml_data)
-        return b"<?xml version='1.0' encoding='utf-8'?>" + rendered_content
+        return b"<?xml version='1.0' encoding='utf-8'?>" + rendered_content.encode()

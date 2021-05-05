@@ -311,7 +311,7 @@ class AccountFollowupReport(models.AbstractModel):
         # OVERRIDE: When added to the chatter by mail, don't loose the table-responsive set on the followup report table.
         res = super()._replace_class()
         if self._context.get('mail'):
-            res.pop(b'table-responsive', None)
+            res.pop('table-responsive', None)
         return res
 
     @api.model
@@ -332,11 +332,11 @@ class AccountFollowupReport(models.AbstractModel):
         if email and email.strip():
             # When printing we need te replace the \n of the summary by <br /> tags
             body_html = self.with_context(print_mode=True, mail=True, lang=partner.lang or self.env.user.lang).get_html(options)
-            body_html = body_html.replace(b'o_account_reports_edit_summary_pencil', b'o_account_reports_edit_summary_pencil d-none')
-            start_index = body_html.find(b'<span>', body_html.find(b'<div class="o_account_reports_summary">'))
-            end_index = start_index > -1 and body_html.find(b'</span>', start_index) or -1
+            body_html = body_html.replace('o_account_reports_edit_summary_pencil', 'o_account_reports_edit_summary_pencil d-none')
+            start_index = body_html.find('<span>', body_html.find('<div class="o_account_reports_summary">'))
+            end_index = start_index > -1 and body_html.find('</span>', start_index) or -1
             if end_index > -1:
-                replaced_msg = body_html[start_index:end_index].replace(b'\n', b'')
+                replaced_msg = body_html[start_index:end_index].replace('\n', '')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[invoice_partner.id],

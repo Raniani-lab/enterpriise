@@ -393,13 +393,13 @@ class Picking(models.Model):
         dd = self.env.ref('l10n_cl_edi_stock.dd_template')._render(self._l10n_cl_edi_prepare_values())
         # We need to unescape this because if not, in the xml you will have &amp;amp; and will give you errors
         # in the signature check, with a rejection.
-        dd = dd.replace(rb'&amp;', b'&')
+        dd = str(dd).replace(r'&amp;', '&')
         ted = self.env.ref('l10n_cl_edi.ted_template')._render({
             'dd': dd,
-            'frmt': self._sign_message(dd.decode('utf-8').encode('ISO-8859-1'), caf_file.findtext('RSASK')),
+            'frmt': self._sign_message(dd.encode('ISO-8859-1'), caf_file.findtext('RSASK')),
             'stamp': self._get_cl_current_strftime()
         })
-        ted = unescape(ted.decode('utf-8'))
+        ted = unescape(ted)
         return {
             'ted': re.sub(r'\n\s*$', '', ted, flags=re.MULTILINE),
             'barcode': etree.tostring(etree.fromstring(re.sub(
@@ -429,7 +429,7 @@ class Picking(models.Model):
         dte_barcode_xml = self._l10n_cl_get_dte_barcode_xml(caf_file)
         template = self._get_dte_template()
         dte = template._render(self._prepare_dte_values())
-        dte = unescape(dte.decode('utf-8')).replace(r'&', '&amp;')
+        dte = unescape(dte).replace(r'&', '&amp;')
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_dte = self._sign_full_xml(
             dte, digital_signature, doc_id_number, 'doc', self.l10n_latam_document_type_id._is_doc_type_voucher())
@@ -450,7 +450,7 @@ class Picking(models.Model):
             'TmstFirmaEnv': self._get_cl_current_strftime(),
             'dte': base64.b64decode(self.l10n_cl_dte_file.datas).decode('ISO-8859-1')
         })
-        dte_rendered = unescape(dte_rendered.decode('utf-8')).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>',
+        dte_rendered = unescape(dte_rendered).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>',
                                                                       '')
         dte_signed = self._sign_full_xml(
             dte_rendered, digital_signature, 'SetDoc',

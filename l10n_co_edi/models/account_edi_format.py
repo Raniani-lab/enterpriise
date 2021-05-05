@@ -180,7 +180,7 @@ class AccountEdiFormat(models.Model):
             'description': description,
             'format_monetary': format_monetary,
         })
-        return '<?xml version="1.0" encoding="utf-8"?>'.encode() + xml_content
+        return b'<?xml version="1.0" encoding="utf-8"?>' + xml_content.encode()
 
     def _l10n_co_post_invoice_step_1(self, invoice):
         '''Sends the xml to carvajal.
@@ -193,7 +193,7 @@ class AccountEdiFormat(models.Model):
             'res_id': invoice.id,
             'res_model': invoice._name,
             'type': 'binary',
-            'datas': base64.encodebytes(xml),
+            'raw': xml,
             'mimetype': 'application/xml',
             'description': _('Colombian invoice UBL generated for the %s document.', invoice.name),
         })

@@ -146,10 +146,9 @@ class MXReportAccountCoa(models.AbstractModel):
         values = self.with_context(ctx)._get_coa_dict(options)
         cfdicoa = qweb._render(CFDICOA_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
-            cfdicoa = cfdicoa.replace(key.encode('UTF-8'),
-                                      value.encode('UTF-8') + b':')
+            cfdicoa = cfdicoa.replace(key, value + ':')
         cfdicoa = self._l10n_mx_edi_add_digital_stamp(
-            CFDICOA_XSLT_CADENA % version, cfdicoa)
+            CFDICOA_XSLT_CADENA % version, cfdicoa.encode())
 
         with tools.file_open(CFDICOA_XSD % version, "rb") as xsd:
             _check_with_xsd(cfdicoa, xsd)

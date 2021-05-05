@@ -103,7 +103,7 @@ class Certificate(models.Model):
         signature_str = self.env.ref('l10n_pe_edi.pe_ubl_2_1_signature')._render({'digest_value': digest_b64})
 
         # Eliminate all non useful spaces and new lines in the stream
-        signature_str = signature_str.decode('UTF-8').replace('\n', '').replace('  ', '')
+        signature_str = signature_str.replace('\n', '').replace('  ', '')
 
         signature_tree = etree.fromstring(signature_str)
         signed_info_element = signature_tree.xpath('.//ds:SignedInfo', namespaces=namespaces)[0]

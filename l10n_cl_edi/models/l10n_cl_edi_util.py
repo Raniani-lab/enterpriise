@@ -224,13 +224,12 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         signed_info = signed_info_template._render({
             'uri': '#{}'.format(uri),
             'digest_value': base64.b64encode(
-                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))),
+                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))).decode(),
         })
         signed_info_c14n = etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
-                                          with_comments=False, inclusive_ns_prefixes=None).decode('utf-8')
+                                          with_comments=False, inclusive_ns_prefixes=None).decode()
         signature = self.env.ref('l10n_cl_edi.signature_template')._render({
-            'signed_info': etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
-                                          with_comments=False, inclusive_ns_prefixes=None).decode('utf-8'),
+            'signed_info': signed_info_c14n,
             'signature_value': self._sign_message(
                 signed_info_c14n.encode('utf-8'), digital_signature.private_key.encode('ascii')),
             'modulus': digital_signature._get_private_key_modulus(),
@@ -238,10 +237,10 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'certificate': '\n' + textwrap.fill(digital_signature.certificate, 64),
         })
         # We use etree tostring and fromstring to replace the line break by \n in the certificate
-        signature = etree.tostring(etree.fromstring(unescape(signature.decode('utf-8'))))
+        signature = etree.tostring(etree.fromstring(unescape(signature)), encoding='unicode')
         # The validation of the signature document
         self._xml_validator(signature, 'sig')
-        full_doc = self._l10n_cl_append_sig(xml_type, signature.decode('utf-8'), digest_value)
+        full_doc = self._l10n_cl_append_sig(xml_type, signature, digest_value)
         # The validation of the full document
         self._xml_validator(full_doc, xml_type, is_doc_type_voucher)
         return '{header}{full_doc}'.format(
@@ -281,7 +280,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     def _get_signed_token(self, digital_signature, seed):
         token_xml = self.env.ref('l10n_cl_edi.token_template')._render({'seed': seed})
-        return self._sign_full_xml(token_xml.decode('UTF-8'), digital_signature, '', 'token')
+        return self._sign_full_xml(token_xml, digital_signature, '', 'token')
 
     @l10n_cl_edi_retry(logger=_logger)
     def _get_token_ws(self, mode, signed_token):

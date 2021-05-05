@@ -6,6 +6,7 @@ import datetime
 import io
 import json
 import logging
+import markupsafe
 from collections import defaultdict
 from math import copysign, inf
 
@@ -14,7 +15,6 @@ from babel.dates import get_quarter_names
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api, _
-from odoo.addons.base.models.qweb import MarkupSafeBytes
 from odoo.addons.web.controllers.main import clean_action
 from odoo.exceptions import RedirectWarning
 from odoo.osv import expression
@@ -1394,8 +1394,8 @@ class AccountReport(models.AbstractModel):
             for k,v in self._replace_class().items():
                 html = html.replace(k, v)
             # append footnote as well
-            html = html.replace(b'<div class="js_account_report_footnotes"></div>', self.get_html_footnotes(footnotes_to_render))
-        return MarkupSafeBytes(html)
+            html = html.replace('<div class="js_account_report_footnotes"></div>', self.get_html_footnotes(footnotes_to_render))
+        return markupsafe.Markup(html)
 
     def get_html_footnotes(self, footnotes):
         template = self._get_templates().get('footnotes_template', 'account_reports.footnotes_template')
@@ -1528,7 +1528,7 @@ class AccountReport(models.AbstractModel):
         """When printing pdf, we sometime want to remove/add/replace class for the report to look a bit different on paper
         this method is used for this, it will replace occurence of value key by the dict value in the generated pdf
         """
-        return {b'o_account_reports_no_print': b'', b'table-responsive': b'', b'<a': b'<span', b'</a>': b'</span>'}
+        return {'o_account_reports_no_print': '', 'table-responsive': '', '<a': '<span', '</a>': '</span>'}
 
     def get_pdf(self, options, minimal_layout=True):
         # As the assets are generated during the same transaction as the rendering of the
@@ -1568,7 +1568,6 @@ class AccountReport(models.AbstractModel):
                     'res_company': self.env.company,
                 })
             header = self.env['ir.actions.report']._render_template("web.external_layout", values=rcontext)
-            header = header.decode('utf-8') # Ensure that headers and footer are correctly encoded
             spec_paperformat_args = {}
             # Default header and footer in case the user customized web.external_layout and removed the header/footer
             headers = header.encode()

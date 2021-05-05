@@ -347,7 +347,7 @@ class HrPayslip(models.Model):
                 attachments_vals_list.append({
                     'name': pdf_name,
                     'type': 'binary',
-                    'datas': base64.encodebytes(pdf_content),
+                    'raw': pdf_content.encode(),
                     'res_model': payslip._name,
                     'res_id': payslip.id
                 })

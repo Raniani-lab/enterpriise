@@ -178,7 +178,7 @@ class AccountMove(models.Model):
             'code_rejected': '-1' if status_type == 'claimed' else None,
             '__keep_empty_lines': True,
         })
-        response = unescape(response.decode('utf-8'))
+        response = unescape(response)
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_response = self._sign_full_xml(
             response, digital_signature, '', 'env_resp', self.l10n_latam_document_type_id._is_doc_type_voucher())
@@ -315,7 +315,7 @@ class AccountMove(models.Model):
                 './/ns1:DigestValue', namespaces={'ns1': 'http://www.w3.org/2000/09/xmldsig#'}),
             '__keep_empty_lines': True,
         })
-        xml_ack_template = xml_ack_template.decode('utf-8').replace(
+        xml_ack_template = xml_ack_template.replace(
             '&lt;', '<').replace('&gt;', '>').replace('&quot;', '"').replace(
             '<?xml version="1.0" encoding="ISO-8859-1" ?>', '')
         try:
@@ -429,7 +429,7 @@ class AccountMove(models.Model):
             'dte': dte_barcode_xml['ted'],
             '__keep_empty_lines': True,
         })
-        dte = unescape(dte.decode('utf-8')).replace(r'&', '&amp;')
+        dte = unescape(dte).replace(r'&', '&amp;')
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_dte = self._sign_full_xml(
             dte, digital_signature, doc_id_number, 'doc', self.l10n_latam_document_type_id._is_doc_type_voucher())
@@ -472,7 +472,7 @@ class AccountMove(models.Model):
             'dte': base64.b64decode(self.l10n_cl_dte_file.datas).decode('ISO-8859-1'),
             '__keep_empty_lines': True,
         })
-        dte_rendered = unescape(dte_rendered.decode('utf-8')).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>', '')
+        dte_rendered = unescape(dte_rendered).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>', '')
         dte_signed = self._sign_full_xml(
             dte_rendered, digital_signature, 'SetDoc',
             self.l10n_latam_document_type_id._is_doc_type_voucher() and 'bol' or 'env',
@@ -641,15 +641,15 @@ class AccountMove(models.Model):
             'caf': self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number)),
             '__keep_empty_lines': True,
         })
-        dd = dd.replace(rb'&amp;', b'&')
+        dd = str(dd).replace(r'&amp;', '&')
         caf_file = self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number))
         ted = self.env.ref('l10n_cl_edi.ted_template')._render({
             'dd': dd,
-            'frmt': self._sign_message(dd.decode('utf-8').encode('ISO-8859-1'), caf_file.findtext('RSASK')),
+            'frmt': self._sign_message(dd.encode('ISO-8859-1'), caf_file.findtext('RSASK')),
             'stamp': self._get_cl_current_strftime(),
             '__keep_empty_lines': True,
         })
-        ted = unescape(ted.decode('utf-8'))
+        ted = unescape(ted)
         return {
             'ted': re.sub(r'\n\s*$', '', ted, flags=re.MULTILINE),
             'barcode': etree.tostring(etree.fromstring(re.sub(

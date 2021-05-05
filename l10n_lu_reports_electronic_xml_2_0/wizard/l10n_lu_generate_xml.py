@@ -102,7 +102,7 @@ class L10nLuGenerateXML(models.TransientModel):
         lu_template_values['format_float'] = lambda f: tools.float_utils.float_repr(f, 2).replace('.', ',')
         rendered_content = self.env.ref('l10n_lu_reports_electronic_xml_2_0.l10n_lu_electronic_report_template')._render(lu_template_values)
 
-        content = "\n".join(re.split(r'\n\s*\n', rendered_content.decode("utf-8")))
+        content = "\n".join(re.split(r'\n\s*\n', rendered_content))
         self._lu_validate_xml_content(content)
         self.env['account.report']._lu_validate_ecdf_prefix()
 

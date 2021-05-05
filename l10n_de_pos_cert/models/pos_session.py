@@ -100,7 +100,7 @@ class PosSession(models.Model):
             'amounts_per_vat_id': amounts_per_vat_id_result
         })
 
-        return ast.literal_eval(json.decode('utf-8').strip())
+        return ast.literal_eval(json.strip())
 
     def _l10n_de_send_fiskaly_cash_point_closing(self, json):
         cash_point_closing_uuid = str(uuid.uuid4())

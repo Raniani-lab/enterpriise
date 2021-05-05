@@ -333,10 +333,9 @@ class MxReportAccountTrial(models.AbstractModel):
         values = self.with_context(ctx).get_bce_dict(options)
         cfdicoa = qweb._render(CFDIBCE_TEMPLATE, values=values)
         for key, value in MX_NS_REFACTORING.items():
-            cfdicoa = cfdicoa.replace(key.encode('UTF-8'),
-                                      value.encode('UTF-8') + b':')
+            cfdicoa = cfdicoa.replace(key, value + ':')
         cfdicoa = self._l10n_mx_edi_add_digital_stamp(
-            CFDIBCE_XSLT_CADENA % version, cfdicoa)
+            CFDIBCE_XSLT_CADENA % version, cfdicoa.encode())
 
         with tools.file_open(CFDIBCE_XSD % version, "rb") as xsd:
             _check_with_xsd(cfdicoa, xsd)

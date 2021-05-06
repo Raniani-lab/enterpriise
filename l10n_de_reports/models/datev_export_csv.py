@@ -348,7 +348,7 @@ class DatevExportCSV(models.AbstractModel):
                     'amount': str(amount).replace('.', ','),
                     'buschluessel': code_correction,
                     'gegenkonto': to_account_code,
-                    'belegfeld1': receipt1[-12:],
+                    'belegfeld1': receipt1[-36:],
                     'belegfeld2': receipt2,
                     'datum': datetime.strftime(aml.move_id.date, '%d-%m'),
                     'konto': account_code or '',

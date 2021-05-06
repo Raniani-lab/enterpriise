@@ -8,7 +8,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     coupons_count = fields.Integer('Coupons Count', compute="_compute_coupons_count")
-    coupon_ids = fields.Many2many('coupon.coupon', string="Generated Coupons")
+    coupon_ids = fields.Many2many('coupon.coupon', string="Generated Coupons", copy=False)
 
     @api.depends('coupon_ids')
     def _compute_coupons_count(self):

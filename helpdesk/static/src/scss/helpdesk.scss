@@ -1,12 +1,14 @@
-.o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
-    $helpdesk-record-width: 420px;
+@include media-breakpoint-up(md) {
+    .o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
+        $helpdesk-record-width: 420px;
 
-    .o_kanban_group {
-        width: $helpdesk-record-width + 2*$o-kanban-group-padding;
-    }
-    .o_kanban_record {
-        width: $helpdesk-record-width;
-        min-height: 250px;
+        .o_kanban_group {
+            width: $helpdesk-record-width + 2*$o-kanban-group-padding;
+        }
+        .o_kanban_record {
+            width: $helpdesk-record-width;
+            min-height: 250px;
+        }
     }
 }
 
@@ -156,7 +158,7 @@
 
 @include media-breakpoint-up(md) {
     .o_kanban_view.o_kanban_dashboard.o_helpdesk_kanban {
-        padding-top: 185px;
+        padding-top: 200px;
     }
     .o_helpdesk_dashboard {
         position: fixed;

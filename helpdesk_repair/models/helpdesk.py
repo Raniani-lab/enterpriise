@@ -8,7 +8,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     repairs_count = fields.Integer('Repairs Count', compute='_compute_repairs_count', compute_sudo=True)
-    repair_ids = fields.One2many('repair.order', 'ticket_id', string='Repairs')
+    repair_ids = fields.One2many('repair.order', 'ticket_id', string='Repairs', copy=False)
 
     @api.depends('repair_ids')
     def _compute_repairs_count(self):

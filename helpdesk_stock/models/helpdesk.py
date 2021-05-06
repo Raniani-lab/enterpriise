@@ -12,7 +12,7 @@ class HelpdeskTicket(models.Model):
     lot_id = fields.Many2one('stock.production.lot', string='Lot/Serial Number', help="Lot/Serial number concerned by the ticket", domain="[('product_id', '=', product_id)]")
 
     pickings_count = fields.Integer('Return Orders Count', compute="_compute_pickings_count")
-    picking_ids = fields.Many2many('stock.picking', string="Return Orders")
+    picking_ids = fields.Many2many('stock.picking', string="Return Orders", copy=False)
 
     @api.depends('picking_ids')
     def _compute_pickings_count(self):

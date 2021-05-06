@@ -6,6 +6,7 @@ from . import account_sales_report_common
 from . import test_account_reports_filters
 from . import test_general_ledger_report
 from . import test_partner_ledger_report
+from . import test_aged_report_multi_currencies
 from . import test_aged_report
 from . import test_tax_report
 from . import test_cash_flow_report

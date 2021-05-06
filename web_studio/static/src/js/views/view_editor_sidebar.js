@@ -67,6 +67,10 @@ var OPTIONS_BY_WIDGET = {
     ],
 };
 
+const UNSUPPORTED_WIDGETS_BY_VIEW = {
+    list: ['many2many_checkboxes'],
+};
+
 return Widget.extend(StandaloneFieldManagerMixin, {
     template: 'web_studio.ViewEditorSidebar',
     events: {
@@ -172,6 +176,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             // deep copy of field because the object is modified
             // in this widget and this shouldn't impact it
             var field = jQuery.extend(true, {}, this.fields[this.state.attrs.name]);
+            var unsupportedWidgets = UNSUPPORTED_WIDGETS_BY_VIEW[this.view_type] || [];
 
             // fieldRegistryMap contains all widgets and components but we want to filter
             // these widgets based on field types (and description for non debug mode)
@@ -185,7 +190,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     const description = self.getFieldInfo(arr[1], 'description');
                     const isWidgetKeyDescription = arr[0] === self.widgetKey && !description;
                     var isSupported = _.contains(supportedFieldTypes, field.type)
-                        && arr[0].indexOf('.') < 0;
+                        && arr[0].indexOf('.') < 0 && unsupportedWidgets.indexOf(arr[0]) < 0;
                     return config.isDebug() ? isSupported : isSupported && description || isWidgetKeyDescription;
                 })
                 .sortBy(function (arr) {

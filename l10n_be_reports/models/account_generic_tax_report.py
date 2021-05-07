@@ -32,7 +32,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     def get_xml(self, options):
         # Check
-        if self.env.company.account_fiscal_country_id.code != 'BE':
+        if self._get_report_country_code(options) != 'BE':
             return super(AccountGenericTaxReport, self).get_xml(options)
 
         vat_no, country_from_vat = self._check_vat_number(self.get_vat_for_export(options))

@@ -13,6 +13,9 @@ class AccountGenericTaxReport(models.AbstractModel):
         return buttons
 
     def get_xml(self, options):
+        if self._get_report_country_code(options) != 'DE':
+            return super(AccountGenericTaxReport, self).get_xml(options)
+
         ctx = self._set_context(options)
         report_lines = self.with_context(ctx)._get_lines(options)
 

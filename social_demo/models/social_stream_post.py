@@ -62,7 +62,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 0}},
             'from': {
                 'name': 'Mitchell Admin',
-                'profile_image_url_https': '/web/image/res.users/2/image_128'
+                'profile_image_url_https': '/web/image/res.users/2/avatar_128'
             },
             'message': message
         }
@@ -74,7 +74,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 0}},
             'from': {
                 'name': 'Mitchell Admin',
-                'profile_image_url_https': '/web/image/res.users/2/image_128',
+                'profile_image_url_https': '/web/image/res.users/2/avatar_128',
                 'authorUrn': 'urn:li:organization:2414183',
             },
             'message': message
@@ -97,7 +97,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 53}},
             'from': {
                 'name': 'The Jackson Group',
-                'profile_image_url_https': '/web/image/res.partner/%s/image_128' % res_partner_10.id,
+                'profile_image_url_https': '/web/image/res.partner/%s/avatar_128' % res_partner_10.id,
                 'id': 'urn:li:organization:2414183',
             },
             'message': 'Great products!',
@@ -109,7 +109,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 4}},
             'from': {
                 'name': 'Deco Addict',
-                'profile_image_url_https': '/web/image/res.partner/%s/image_128' % res_partner_2.id,
+                'profile_image_url_https': '/web/image/res.partner/%s/avatar_128' % res_partner_2.id,
                 'id': 'urn:li:organization:2414183',
             },
             'message': 'Can I get in touch with one of your salesman?',
@@ -131,7 +131,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 21}},
             'from': {
                 'name': 'Ready Mat',
-                'profile_image_url_https': '/web/image/res.partner/%s/image_128' % res_partner_4.id,
+                'profile_image_url_https': '/web/image/res.partner/%s/avatar_128' % res_partner_4.id,
                 'authorUrn': 'urn:li:organization:2414183',
             },
             'message': 'I agree!'
@@ -141,7 +141,7 @@ class DemoSocialStreamPost(models.Model):
             'likes': {'summary': {'total_count': 13}},
             'from': {
                 'name': 'Gemini Furniture',
-                'profile_image_url_https': '/web/image/res.partner/%s/image_128' % res_partner_3.id,
+                'profile_image_url_https': '/web/image/res.partner/%s/avatar_128' % res_partner_3.id,
                 'authorUrn': 'urn:li:organization:2414183',
             },
             'message': 'Me too ❤️'

@@ -160,7 +160,7 @@ QUnit.module('ViewEditorManager', {
         this.data['res.partner'].records.push({
             display_name: 'Dustin',
             id: 11,
-            image_128: 'D Artagnan',
+            avatar_128: 'D Artagnan',
         });
     },
     afterEach() {
@@ -2936,7 +2936,7 @@ QUnit.module('ViewEditorManager', {
                     <field name="display_name"/>
                     <img
                         t-if="false"
-                        t-att-src="kanban_image('res.partner', 'image_128', record.partner_id.raw_value)"
+                        t-att-src="kanban_image('res.partner', 'avatar_128', record.partner_id.raw_value)"
                         class="oe_kanban_avatar"/>
                 </t>
             </templates>
@@ -2962,7 +2962,7 @@ QUnit.module('ViewEditorManager', {
         this.data['res.partner'].records.push({
             display_name: 'Dustin',
             id: 1,
-            image_128: 'D Artagnan',
+            avatar_128: 'D Artagnan',
         });
 
         this.data.coucou.fields.partner_id = {string: 'Res Partner', type: 'many2one', relation: 'res.partner'};
@@ -3005,7 +3005,7 @@ QUnit.module('ViewEditorManager', {
                                         "<field name='display_name'/>" +
                                         "<div class='oe_kanban_bottom_right'>" +
                                             "<div>test</div>" + // dummy div to make sure img is deleted (otherwise parent div of only child will be deleted)
-                                            "<img t-att-src='kanban_image(\"res.partner\", \"image_128\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
+                                            "<img t-att-src='kanban_image(\"res.partner\", \"avatar_128\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
                                         "</div>" +
                                     "</div>" +
                                 "</t>" +

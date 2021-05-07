@@ -29,7 +29,7 @@ var ContactSync = Widget.extend({
      */
     _onClick: function () {
         var fieldNames = [
-            'name', 'image_1920', 'parent_id', 'phone', 'mobile', 'email',
+            'name', 'avatar_1920', 'parent_id', 'phone', 'mobile', 'email',
             'street', 'street2', 'city', 'state_id', 'zip', 'country_id',
             'website', 'function',
         ];
@@ -39,9 +39,9 @@ var ContactSync = Widget.extend({
             args: [this.res_id, fieldNames],
         }).then(function (r) {
             const contact = Object.assign({}, r[0], {
-                image: r[0].image_1920,
+                image: r[0].avatar_1920,
             });
-            delete contact.image_1920;
+            delete contact.avatar_1920;
             mobile.methods.addContact(contact);
         });
     },

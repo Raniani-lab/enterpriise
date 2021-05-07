@@ -15,7 +15,7 @@ var getDemoAuthorPictureSrc = function (comment) {
     if (comment) {
         return comment.from.profile_image_url_https;
     } else {
-        return '/web/image/res.users/2/image_128';
+        return '/web/image/res.users/2/avatar_128';
     }
 };
 

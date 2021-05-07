@@ -37,7 +37,7 @@ class DemoSocialAccount(models.Model):
         ]
         return [{
             'name': res_partner.name,
-            'profile_image_url_https': '/web/image/res.partner/%s/image_128' % res_partner.id,
+            'profile_image_url_https': '/web/image/res.partner/%s/avatar_128' % res_partner.id,
             'screen_name': res_partner.name.replace(' ', '').lower(),
             'description': res_partner.website
 

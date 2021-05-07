@@ -32,7 +32,7 @@ class DemoSocialLivePost(models.Model):
                     stream_post_search_to_create.append({
                         'stream_id': twitter_stream_search.id,
                         'author_name': 'My Company Account',
-                        'twitter_profile_image_url': '/web/image/res.users/%s/image_128' % self.env.ref('base.user_admin').id,
+                        'twitter_profile_image_url': '/web/image/res.users/%s/avatar_128' % self.env.ref('base.user_admin').id,
                         'message': live_post.post_id.message,
                         'published_date': fields.Datetime.now()
                     })
@@ -65,7 +65,7 @@ class DemoSocialLivePost(models.Model):
         stream_posts_to_create = [dict({
             'stream_id': stream_id,
             'author_name': 'My Company Account',
-            'twitter_profile_image_url': '/web/image/res.users/%s/image_128' % self.env.ref('base.user_admin').id,
+            'twitter_profile_image_url': '/web/image/res.users/%s/avatar_128' % self.env.ref('base.user_admin').id,
             'message': live_post.post_id.message,
             'published_date': fields.Datetime.now()
         }, **additional_vals) for live_post in self]

@@ -32,7 +32,7 @@ class DemoSocialStream(models.Model):
         """ When adding a stream, we create some fake stream.posts for demo purposes. """
 
         res_partner_10 = self.env.ref('social_demo.res_partner_10', raise_if_not_found=False)
-        author_image = ('/web/image/res.partner/%s/image_128' % res_partner_10.id) if res_partner_10 else ''
+        author_image = ('/web/image/res.partner/%s/avatar_128' % res_partner_10.id) if res_partner_10 else ''
 
         for stream in self:
             if stream.twitter_followed_account_id:

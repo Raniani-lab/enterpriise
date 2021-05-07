@@ -253,7 +253,7 @@
                 <templates>
                     <div t-name="activity-box">
                         <img t-if="record.user_id.raw_value"
-                             t-att-src="activity_image('res.users', 'image_128', record.user_id.raw_value)"
+                             t-att-src="activity_image('res.users', 'avatar_128', record.user_id.raw_value)"
                              t-att-title="record.user_id.value" t-att-alt="record.user_id.value"/>
                         <div>
                             <field name="name" display="full"/>

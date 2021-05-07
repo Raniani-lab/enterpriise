@@ -124,10 +124,8 @@
                                 <span class="o_portal_category">Your Information</span>
                                 <div class="row">
                                     <div class="col flex-grow-0 pr-3">
-                                        <img t-if="my_sign_item.partner_id.image_1024" class="rounded-circle mt-1 o_portal_contact_img"
-                                             t-att-src="image_data_uri(my_sign_item.partner_id.image_1024)" alt="Contact"/>
-                                        <img t-else="" class="rounded-circle mt-1 o_portal_contact_img"
-                                             src="/web/static/img/user_menu_avatar.png" alt="Contact"/>
+                                        <img class="rounded-circle mt-1 o_portal_contact_img"
+                                             t-att-src="image_data_uri(my_sign_item.partner_id.avatar_1024)" alt="Contact"/>
                                     </div>
                                     <div class="col pl-md-0">
                                         <div t-field="my_sign_item.partner_id"

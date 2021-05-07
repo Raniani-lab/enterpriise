@@ -30,7 +30,7 @@ const PhoneCall = Widget.extend({
      * @param {string} param1.name
      * @param {string} param1.partner_email
      * @param {integer} param1.partner_id
-     * @param {string} param1.partner_image_128
+     * @param {string} param1.partner_avatar_128
      * @param {string} [param1.partner_name]
      * @param {string} param1.phone
      * @param {string} param1.state ['cancel', 'done', 'open', 'pending']
@@ -51,7 +51,7 @@ const PhoneCall = Widget.extend({
         name,
         partner_email,
         partner_id,
-        partner_image_128,
+        partner_avatar_128,
         partner_name,
         phone,
         state,
@@ -66,7 +66,7 @@ const PhoneCall = Widget.extend({
         this.date = call_date;
         this.email = partner_email;
         this.id = id;
-        this.imageSmall = partner_image_128;
+        this.imageSmall = partner_avatar_128;
         this.isContact = isContact;
         this.isRecent = isRecent;
         this.minutes = Math.floor(duration).toString();

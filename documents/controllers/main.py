@@ -278,7 +278,7 @@ class ShareRoute(http.Controller):
             env = request.env
             share = env['documents.share'].sudo().browse(share_id)
             if share._get_documents_and_check_access(access_token, document_ids=[], operation='read') is not False:
-                image = env['res.users'].sudo().browse(share.create_uid.id).image_128
+                image = env['res.users'].sudo().browse(share.create_uid.id).avatar_128
 
                 if not image:
                     binary = Binary()

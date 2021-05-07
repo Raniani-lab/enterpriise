@@ -23,7 +23,7 @@
                 <div class="col-lg-4 mobile-hide">
                     <div class="o_sign_request_from d-flex justify-content-center flex-wrap">
                         <t t-if="sign_request.template_id.user_id">
-                            <img class="float-left mr-2 my-1" t-attf-src="data:image/png;base64,#{sign_request.template_id.user_id.image_128}" alt="Signature" style="max-width: 32px;"/>
+                            <img class="float-left mr-2 my-1" t-attf-src="#{image_data_uri(sign_request.template_id.user_id.avatar_128)}" alt="Signature" style="max-width: 32px;"/>
                         </t>
                         <div>
                             <t t-if="sign_request.template_id.user_id.name">Requested by <b><t t-esc="sign_request.template_id.user_id.name"/></b><br/></t>

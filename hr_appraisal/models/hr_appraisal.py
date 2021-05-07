@@ -34,6 +34,8 @@ class HrAppraisal(models.Model):
         'hr.department', related='employee_id.department_id', string='Department', store=True)
     image_128 = fields.Image(related='employee_id.image_128')
     image_1920 = fields.Image(related='employee_id.image_1920')
+    avatar_128 = fields.Image(related='employee_id.avatar_128')
+    avatar_1920 = fields.Image(related='employee_id.avatar_1920')
     job_id = fields.Many2one('hr.job', related='employee_id.job_id', readonly=False)
     last_appraisal_id = fields.Many2one('hr.appraisal', related='employee_id.last_appraisal_id')
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')

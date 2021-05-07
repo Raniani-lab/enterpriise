@@ -65,13 +65,20 @@
                             <field name="manual_res_field_id" attrs="{'invisible': [('display_type', '!=', 'manual')]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
                             <field name="manual_field" invisible="1"/>
                             <field name="display_type"/>
-                            <field name="value_ids" attrs="{'invisible': [('display_type', 'not in', ['dropdown', 'radio'])]}">
+                            <field name="value_ids" attrs="{'invisible': [('display_type', 'not in', ['dropdown', 'radio', 'dropdown-group'])]}">
                                 <tree editable="bottom">
+                                    <control>
+                                        <create name="add_line_control" string="Add a line"/>
+                                        <create name="add_section_control" string="Add a section" context="{'default_display_type': 'section'}"/>
+                                    </control>
+                                    <field name="display_type" invisible="1"/>
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
-                                    <field name="value"/>
-                                    <field name="color"/>
-                                    <field name="hide_description"/>
+                                    <field name="value"
+                                        attrs="{'invisible': [('display_type', '=', 'section')], 'required': [('display_type', '!=', 'section')]}"/>
+                                    <field name="color"
+                                        attrs="{'invisible': [('display_type', '=', 'section')], 'required': [('display_type', '!=', 'section')]}"/>
+                                    <field name="hide_description" attrs="{'invisible': [('display_type', '=', 'section')]}"/>
                                 </tree>
                             </field>
                             <field name="slider_min" attrs="{'invisible': [('display_type', '!=', 'slider')]}"/>

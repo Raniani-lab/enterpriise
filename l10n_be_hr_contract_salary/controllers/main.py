@@ -124,7 +124,7 @@ class HrContractSalary(main.HrContractSalary):
         return res
 
     def _get_advantages_values(self, contract):
-        mapped_advantages, advantage_types, dropdown_options, initial_values = super()._get_advantages_values(contract)
+        mapped_advantages, advantage_types, dropdown_options, dropdown_group_options, initial_values = super()._get_advantages_values(contract)
 
         available_cars = request.env['fleet.vehicle'].sudo().search(
             contract._get_available_vehicles_domain(contract.employee_id.address_home_id)).sorted(key=lambda car: car.total_depreciated_cost)
@@ -203,7 +203,7 @@ class HrContractSalary(main.HrContractSalary):
             initial_values['select_company_bike_depreciated_cost'] = 'new-%s' % contract.new_bike_model_id.id
 
         initial_values['has_hospital_insurance'] = contract.insurance_amount
-        return mapped_advantages, advantage_types, dropdown_options, initial_values
+        return mapped_advantages, advantage_types, dropdown_options, dropdown_group_options, initial_values
 
     def _get_new_contract_values(self, contract, employee, advantages):
         res = super()._get_new_contract_values(contract, employee, advantages)

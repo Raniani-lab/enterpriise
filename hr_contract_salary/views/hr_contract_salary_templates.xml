@@ -96,7 +96,7 @@
                                         </datalist>
                                     </t>
                                     <t t-if="advantage.display_type == 'radio'">
-                                        <t t-foreach="advantage.value_ids" t-as="value">
+                                        <t t-foreach="advantage.value_ids.filtered(lambda v: v.display_type == 'line')" t-as="value">
                                             <label class="hr_cs_control hr_cs_control_radio advantage_input">
                                                 <input
                                                     type="radio"
@@ -129,6 +129,24 @@
                                             <t t-set="options" t-value="dropdown_options[advantage.field]"/>
                                             <t t-foreach="options" t-as="option">
                                                 <option t-att-value="option[0]" t-att-selected="initial_values['select_' + advantage.field] == option[0]"><t t-esc="option[1]"/></option>
+                                            </t>
+                                        </select>
+                                    </t>
+                                    <t t-if="advantage.display_type == 'dropdown-group'">
+                                        <select
+                                            class="form-control form-control-primary mt16 mb8 advantage_input"
+                                            applies-on="contract"
+                                            t-att-name="'select_' + advantage.field">
+                                            <t t-set="groups" t-value="dropdown_group_options[advantage.field]"/>
+                                            <t t-foreach="groups" t-as="group">
+                                                <optgroup t-att-label="group">
+                                                    <t t-set="options" t-value="groups[group]"/>
+                                                    <t t-foreach="options" t-as="option">
+                                                        <option t-att-value="option[0]" t-att-selected="initial_values['select_' + advantage.field] == option[0]">
+                                                            <t t-esc="option[1]"/>
+                                                        </option>
+                                                    </t>
+                                                </optgroup>
                                             </t>
                                         </select>
                                     </t>

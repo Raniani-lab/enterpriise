@@ -3,7 +3,7 @@
 
 import hashlib
 
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from odoo import fields, http, models, SUPERUSER_ID, _
 
 from odoo.addons.sign.controllers.main import Sign
@@ -330,6 +330,7 @@ class HrContractSalary(http.Controller):
     def _get_advantages_values(self, contract):
         initial_values = {}
         dropdown_options = {}
+        dropdown_group_options = {}
 
         # ADVANTAGES
         advantages = self._get_advantages(contract)
@@ -348,18 +349,31 @@ class HrContractSalary(http.Controller):
                 manual_field = '%s_manual' % (advantage.field)
                 field = advantage.manual_field or advantage.field
                 initial_values[manual_field] = contract[field] if field and field in contract else 0
-            elif advantage.display_type == 'dropdown':
+            elif advantage.display_type == 'dropdown' or advantage.display_type == 'dropdown-group':
                 initial_values['select_%s' % field] = contract[field]
 
         dropdown_advantages = advantages.filtered(lambda a: a.display_type == 'dropdown')
         for dropdown_advantage in dropdown_advantages:
-            dropdown_options[dropdown_advantage.field] = [(value.value, value.value) for value in dropdown_advantage.value_ids]
+            dropdown_options[dropdown_advantage.field] = \
+                [(value.value, value.value) for value in dropdown_advantage.value_ids.filtered(lambda v: v.display_type == 'line')]
+        dropdown_group_advantages = advantages.filtered(lambda a: a.display_type == 'dropdown-group')
+        for dropdown_group_advantage in dropdown_group_advantages:
+            values = OrderedDict()
+            values[""] = []
+            current_section = ""
+            for value in dropdown_group_advantage.value_ids:
+                if value.display_type == 'section':
+                    current_section = value.name
+                    values[current_section] = []
+                else:
+                    values[current_section].append((value.value, value.value))
+            dropdown_group_options[dropdown_group_advantage.field] = values
         advantage_types = sorted(advantages.mapped('advantage_type_id'), key=lambda x: x.sequence)
-        return mapped_advantages, advantage_types, dropdown_options, initial_values
+        return mapped_advantages, advantage_types, dropdown_options, dropdown_group_options, initial_values
 
     def _get_salary_package_values(self, contract):
         mapped_personal_infos, dropdown_options_1, initial_values_1 = self._get_personal_infos(contract)
-        mapped_advantages, advantage_types, dropdown_options_2, initial_values_2 = self._get_advantages_values(contract)
+        mapped_advantages, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract)
         all_initial_values = {**initial_values_1, **initial_values_2}
         all_initial_values = {key: round(value, 2) if isinstance(value, float) else value for key, value in all_initial_values.items()}
         all_dropdown_options = {**dropdown_options_1, **dropdown_options_2}
@@ -372,6 +386,7 @@ class HrContractSalary(http.Controller):
             'advantage_types': advantage_types,
             'mapped_personal_infos': mapped_personal_infos,
             'dropdown_options': all_dropdown_options,
+            'dropdown_group_options': dropdown_group_options,
             'initial_values': all_initial_values,
         }
 

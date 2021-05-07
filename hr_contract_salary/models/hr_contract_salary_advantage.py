@@ -52,6 +52,7 @@ class HrContractSalaryAdvantage(models.Model):
     display_type = fields.Selection(selection=[
         ('always', 'Always Selected'),
         ('dropdown', 'Dropdown'),
+        ('dropdown-group', 'Dropdown Group'),
         ('slider', 'Slider'),
         ('radio', 'Radio Buttons'),
         ('manual', 'Manual Input'),
@@ -113,8 +114,15 @@ class HrContractSalaryAdvantageValue(models.Model):
     name = fields.Char(translate=True)
     sequence = fields.Integer(default=100)
     advantage_id = fields.Many2one('hr.contract.salary.advantage')
-    value = fields.Char(required=True)
+    value = fields.Char()
     color = fields.Selection(selection=[
         ('green', 'Green'),
-        ('red', 'Red')], string="Color", default="green", required=True)
+        ('red', 'Red')], string="Color", default="green")
     hide_description = fields.Boolean()
+
+    display_type = fields.Selection([
+            ('line', 'Line'),
+            ('section', 'Section'),
+        ],
+        default='line',
+    )

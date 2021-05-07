@@ -14,7 +14,7 @@
     <p>
     Appointment booked for ${object.appointment_type_id.name} with ${object.partner_id.name}.
     </p>
-        <div style="text-align: center; margin: 16px 0px 16px 0px;">
+    <div style="text-align: center; padding: 16px 0px 16px 0px;">
         <a href="/calendar/meeting/join?token=${object.access_token}"
             style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">
             Join</a>

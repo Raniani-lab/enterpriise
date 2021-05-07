@@ -15,7 +15,7 @@
     <a href="/my/ticket/${object.id}/${object.access_token}">${object.name}</a>
     % endif
     has been received and is being reviewed by our ${object.team_id.name or ''} team.
-    The reference of your ticket is ${object.id}.<br /><br />
+    The reference of your ticket is ${object.id}.<br />
 
     <div style="text-align: center; padding: 16px 0px 16px 0px;">
         <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" href="${object.get_portal_url()}">View the ticket</a><br/>

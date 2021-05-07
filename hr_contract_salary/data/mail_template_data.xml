@@ -10,7 +10,7 @@
 <div style="margin: 0px; padding: 0px;">
     <h2>Congratulations!</h2>
     You can configure your salary package by clicking on the link below.
-    <div style="margin: 16px 0px 16px 0px;">
+    <div style="padding: 16px 0px 16px 0px;">
         <a href="${ctx.get('salary_package_url')}"
             target="_blank"
             style="background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;">Configure your package</a>
@@ -30,7 +30,7 @@
 <div style="margin: 0px; padding: 0px;">
     <h2>Congratulations!</h2>
     You can configure your salary package by clicking on the link below.
-    <div style="margin: 16px 0px 16px 0px;">
+    <div style="padding: 16px 0px 16px 0px;">
         <a href="${ctx.get('salary_package_url')}"
             target="_blank"
             style="background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;">Configure your package</a>

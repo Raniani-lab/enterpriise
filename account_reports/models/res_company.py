@@ -120,7 +120,6 @@ class ResCompany(models.Model):
                 ('state', '=', 'draft'),
                 ('company_id', '=', self.id),
                 ('activity_ids.activity_type_id', '=', tax_closing_activity_type_id),
-                ('tax_closing_end_date', '<=', period_end),
                 ('tax_closing_end_date', '>=', period_start),
                 ('fiscal_position_id', '=', fpos.id if fpos else None),
             ])
@@ -128,12 +127,12 @@ class ResCompany(models.Model):
             # This should never happen, but can be caused by wrong manual operations
             if len(tax_closing_move) > 1:
                 if fpos:
-                    error = _("Multiple draft tax closing entries exist for fiscal position %s between %s and %s. There should be at most one. \n %s")
-                    params = (fpos.name, period_start, period_end, tax_closing_move.mapped('display_name'))
+                    error = _("Multiple draft tax closing entries exist for fiscal position %s after %s. There should be at most one. \n %s")
+                    params = (fpos.name, period_start, tax_closing_move.mapped('display_name'))
 
                 else:
-                    error = _("Multiple draft tax closing entries exist for your domestic region between %s and %s. There should be at most one. \n %s")
-                    params = (period_start, period_end, tax_closing_move.mapped('display_name'))
+                    error = _("Multiple draft tax closing entries exist for your domestic region after %s. There should be at most one. \n %s")
+                    params = (period_start, tax_closing_move.mapped('display_name'))
 
                 raise UserError(error % params)
 
@@ -194,7 +193,7 @@ class ResCompany(models.Model):
                 state_codes = fiscal_position.mapped('state_ids.code') if fiscal_position.state_ids else []
             else:
                 # On domestic country
-                country_code= self.account_fiscal_country_id.code
+                country_code = self.account_fiscal_country_id.code
 
                 # Only consider the state in case there are foreign VAT fpos on states in this country
                 vat_fpos_with_state_count = self.env['account.fiscal.position'].search_count([

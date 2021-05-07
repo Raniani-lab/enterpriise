@@ -182,22 +182,45 @@ class ResCompany(models.Model):
         """ Returns a string description of the provided period dates, with the
         given tax periodicity.
         """
-        if fiscal_position:
-            region_string = fiscal_position.country_id.name
+        self.ensure_one()
 
-            if fiscal_position.state_ids:
-                region_string += " - %s" % ', '.join(fiscal_position.mapped('state_ids.name'))
+        foreign_vat_fpos_count = self.env['account.fiscal.position'].search_count([
+            ('company_id', '=', self.id),
+            ('foreign_vat', '!=', False)
+        ])
+        if foreign_vat_fpos_count:
+            if fiscal_position:
+                country_code = fiscal_position.country_id.code
+                state_codes = fiscal_position.mapped('state_ids.code') if fiscal_position.state_ids else []
+            else:
+                # On domestic country
+                country_code= self.account_fiscal_country_id.code
+
+                # Only consider the state in case there are foreign VAT fpos on states in this country
+                vat_fpos_with_state_count = self.env['account.fiscal.position'].search_count([
+                    ('company_id', '=', self.id),
+                    ('foreign_vat', '!=', False),
+                    ('country_id', '=', self.account_fiscal_country_id.id),
+                    ('state_ids', '!=', False),
+                ])
+                state_codes = [self.state_id.code] if vat_fpos_with_state_count else []
+
+            if state_codes:
+                region_string = " (%s - %s)" % (country_code, ', '.join(state_codes))
+            else:
+                region_string = " (%s)" % country_code
         else:
-            region_string = _('Domestic')
+            # Don't add region information in case there is no foreign VAT fpos
+            region_string = ''
 
         if periodicity == 'year':
-            return _("Tax return for %s (%s)", period_start.year, region_string)
+            return _("Tax return for %s%s", period_start.year, region_string)
         elif periodicity == 'trimester':
-            return _("Tax return for %s (%s)", format_date(self.env, period_start, date_format='qqq'), region_string)
+            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='qqq'), region_string)
         elif periodicity == 'monthly':
-            return _("Tax return for %s (%s)", format_date(self.env, period_start, date_format='LLLL'), region_string)
+            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='LLLL'), region_string)
         else:
-            return _("Tax return from %s to %s (%s)", format_date(self.env, period_start), format_date(self.env, period_end), region_string)
+            return _("Tax return from %s to %s%s", format_date(self.env, period_start), format_date(self.env, period_end), region_string)
 
     def _get_tax_closing_period_boundaries(self, date):
         """ Returns the boundaries of the tax period containing the provided date

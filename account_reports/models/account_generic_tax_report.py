@@ -310,8 +310,6 @@ class generic_tax_report(models.AbstractModel):
             move_vals = {}
             if line_ids_vals:
                 move_vals['line_ids'] = line_ids_vals
-            else:
-                raise RedirectWarning(on_empty_msg, on_empty_action.id, _('Configure your TAX accounts'))
 
             move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
             if move_options.get('tax_report_control_error'):
@@ -345,7 +343,6 @@ class generic_tax_report(models.AbstractModel):
             include_domestic = options['fiscal_position'] == 'domestic'
 
         return include_domestic, fiscal_positions
-
 
     def _get_columns_name(self, options):
         columns_header = [{'style': 'width: 100%'}]

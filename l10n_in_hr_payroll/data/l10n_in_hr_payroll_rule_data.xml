@@ -12,12 +12,8 @@
         <field name="type_id" ref="hr_contract.structure_type_worker"/>
         <field name="country_id" ref="base.in"/>
     </record>
-    <record id="hr_contract.structure_type_employee" model="hr.payroll.structure.type">
-        <field name="default_struct_id" ref="structure_0002"/>
-    </record>
     <record id="hr_contract.structure_type_worker" model="hr.payroll.structure.type">
         <field name="wage_type">hourly</field>
-        <field name="default_struct_id" ref="structure_worker_0001"/>
     </record>
     <record id="hr_payroll_salary_structure_type_ind_emp" model="hr.payroll.structure.type">
         <field name="name">Non-Executives</field>
@@ -28,6 +24,10 @@
         <field name="name">Non-Executive Employee</field>
         <field name="country_id" ref="base.in"/>
         <field name="type_id" ref="hr_payroll_salary_structure_type_ind_emp"/>
+    </record>
+
+    <record id="l10n_in_hr_payroll.hr_payroll_salary_structure_type_ind_emp" model="hr.payroll.structure.type">
+        <field name="default_struct_id" ref="hr_payroll_salary_structure_ind_emp"/>
     </record>
 
     <!-- Hr Salary Rules for allowance-->

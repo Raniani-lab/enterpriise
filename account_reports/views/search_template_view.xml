@@ -339,7 +339,7 @@
                 t-if="options.get('ec_sale_code') != None">
             <t t-call="account_reports.search_template_ec_sale_code"/>
         </div>
-        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position" t-if="len(options['available_vat_fiscal_positions']) > 1">
+        <div id="fiscal_position_choice_option" class="btn-group o_dropdown o_account_reports_filter_fiscal_position" t-if="len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1)">
             <t t-call="account_reports.search_template_fiscal_position_choser"/>
         </div>
     </template>

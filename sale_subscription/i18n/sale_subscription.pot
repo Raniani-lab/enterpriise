@@ -1860,8 +1860,11 @@ msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
+#: code:addons/sale_subscription/models/sale_order.py:0
+#: code:addons/sale_subscription/models/sale_order.py:0
+#: code:addons/sale_subscription/models/sale_subscription.py:0
 #, python-format
-msgid "Invoicing period: %s - %s"
+msgid "Invoicing period"
 msgstr ""
 
 #. module: sale_subscription

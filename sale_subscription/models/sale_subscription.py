@@ -192,7 +192,7 @@ class SaleSubscription(models.Model):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
         order_line_obj = self.env['sale.order.line']
-        ratio, message = self._partial_recurring_invoice_ratio(date_from=date_from)
+        ratio, message, period_msg = self._partial_recurring_invoice_ratio(date_from=date_from)
         if message != "":
             sale_order.message_post(body=message)
         _discount = (1 - ratio) * 100
@@ -204,7 +204,7 @@ class SaleSubscription(models.Model):
             'product_uom': option_line.uom_id.id,
             'discount': _discount,
             'price_unit': self.pricelist_id.with_context(uom=option_line.uom_id.id).get_product_price(option_line.product_id, 1, False),
-            'name': option_line.name,
+            'name': option_line.name + '\n' + period_msg,
         }
         return order_line_obj.create(values)
 
@@ -220,6 +220,7 @@ class SaleSubscription(models.Model):
         recurring_last_invoice = recurring_next_invoice - invoicing_period
         time_to_invoice = recurring_next_invoice - date
         ratio = float(time_to_invoice.days) / float((recurring_next_invoice - recurring_last_invoice).days)
+        period_msg = _("Invoicing period") + ": %s - %s" % (format_date(self.env, date), format_date(self.env, recurring_next_invoice))
         if (ratio < 0 or ratio > 1):
             message = _(
                 "Discount computation failed because the upsell date is not between the next "
@@ -233,7 +234,7 @@ class SaleSubscription(models.Model):
             ratio = 1.00
         else:
             message = ""
-        return ratio, message
+        return ratio, message, period_msg
 
     def partial_recurring_invoice_ratio(self, date_from=False):
         return self._partial_recurring_invoice_ratio(date_from=False)[0]

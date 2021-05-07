@@ -4,6 +4,8 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools.misc import parse_date
+import re
 
 class SaleOrder(models.Model):
     _name = "sale.order"
@@ -187,33 +189,48 @@ class SaleOrderLine(models.Model):
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             next_date = self.subscription_id.recurring_next_date
             previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
+            is_already_period_msg = True if _("Invoicing period") in self.name else False
             if self.order_id.subscription_management != 'upsell':  # renewal or creation: one entire period
                 date_start = previous_date
                 date_start_display = previous_date
                 date_end = next_date - relativedelta(days=1)  # the period does not include the next renewal date
-            else:  # upsell: pro-rated period
-                # here we have a slight problem: the date used to compute the pro-rated discount
-                # (that is, the date_from in the upsell wizard) is not stored on the line,
-                # preventing an exact computation of start and end revenue dates
-                # witness me as I try to retroengineer the ~correct dates 🙆‍
-                # (based on `partial_recurring_invoice_ratio` from the sale.subscription model)
-                total_days = (next_date - previous_date).days
-                days = round((1 - self.discount / 100.0) * total_days)
-                date_start = next_date - relativedelta(days=days+1)
-                date_start_display = next_date - relativedelta(days=days)
-                date_end = next_date - relativedelta(days=1)
-
-            lang = self.order_id.partner_invoice_id.lang
-            format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
-            # Ugly workaround to display the description in the correct language
-            if lang:
-                self = self.with_context(lang=lang)
-            period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(date_start_display), {}), format_date(fields.Date.to_string(date_end), {}))
-            res.update({
+            else:  # upsell: pro-rated period\
+                date_start, date_start_display, date_end = None, None, None
+                if is_already_period_msg:
+                    try:
+                        regexp = _("Invoicing period") + ": (.*) - (.*)"
+                        match = re.search(regexp, self.name)
+                        date_start = parse_date(self.env, match.group(1))
+                        date_start_display = date_start
+                        date_end = parse_date(self.env, match.group(2))
+                    except AttributeError:
+                        # Fallback on discount
+                        pass
+                if not date_start or not date_start_display or not date_end:
+                    # here we have a slight problem: the date used to compute the pro-rated discount
+                    # (that is, the date_from in the upsell wizard) is not stored on the line,
+                    # preventing an exact computation of start and end revenue dates
+                    # witness me as I try to retroengineer the ~correct dates 🙆‍
+                    # (based on `partial_recurring_invoice_ratio` from the sale.subscription model)
+                    total_days = (next_date - previous_date).days
+                    days = round((1 - self.discount / 100.0) * total_days)
+                    date_start = next_date - relativedelta(days=days+1)
+                    date_start_display = next_date - relativedelta(days=days)
+                    date_end = next_date - relativedelta(days=1)
+            if not is_already_period_msg:
+                lang = self.order_id.partner_invoice_id.lang
+                format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
+                # Ugly workaround to display the description in the correct language
+                if lang:
+                    self = self.with_context(lang=lang)
+                period_msg = _("Invoicing period") + ": %s - %s" % (format_date(fields.Date.to_string(date_start_display), {}), format_date(fields.Date.to_string(date_end), {}))
+                res.update({
                     'name': res['name'] + '\n' + period_msg,
-                    'subscription_start_date': date_start,
-                    'subscription_end_date': date_end,
                 })
+            res.update({
+                'subscription_start_date': date_start,
+                'subscription_end_date': date_end,
+            })
             if self.subscription_id.analytic_account_id:
                 res['analytic_account_id'] = self.subscription_id.analytic_account_id.id
         return res

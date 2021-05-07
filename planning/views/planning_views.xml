@@ -62,7 +62,7 @@
                             <field name="allocated_hours" widget="float_time"/>
                         </group>
                     </group>
-                    <group>
+                    <group groups="planning.group_planning_manager">
                         <div colspan="2" class="o_checkbox_optional_field" groups="planning.group_planning_manager">
                             <label for="repeat"/>
                             <field name="repeat"/>
@@ -146,7 +146,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='shift_templates']" position="replace">
-                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}">
+                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}" class="oe_edit_only">
                     <label for="template_id" class="oe_edit_only"/>
                     <div class="o_row">
                         <field name="template_id" nolabel="1" class="text-break flex-wrap"

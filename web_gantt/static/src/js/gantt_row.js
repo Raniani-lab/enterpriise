@@ -770,7 +770,7 @@ var GanttRow = Widget.extend({
 
                     self.$('.ui-drag-hover').removeClass('ui-drag-hover');
                     self.$el.removeClass('o_gantt_dragging');
-                    self.$('.o_gantt_pill').popover('enable');
+                    self.$('.o_gantt_pill').popover('enable').popover('dispose');
                 },
                 helper: 'clone',
             });
@@ -805,7 +805,7 @@ var GanttRow = Widget.extend({
                 stop: function () {
                     self.trigger_up('updating_pill_stopped');
                     self.trigger_up('stop_no_dragging');
-                    self.$('.o_gantt_pill').popover('enable');
+                    self.$('.o_gantt_pill').popover('enable').popover('dispose');
                     self.$lockIndicator.detach();
                 },
             });
@@ -862,7 +862,7 @@ var GanttRow = Widget.extend({
                     setTimeout(() => {
                         self.trigger_up('updating_pill_stopped');
                         self.$el.removeClass('o_gantt_dragging');
-                        self.$('.o_gantt_pill').popover('enable');
+                        self.$('.o_gantt_pill').popover('enable').popover('dispose');
                     });
                     var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
                     var direction = ui.position.left ? 'left' : 'right';

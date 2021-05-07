@@ -8,8 +8,8 @@ from odoo.addons.payment.tests.common import PaymentCommon
 class SepaDirectDebitCommon(PaymentCommon):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company = cls.env.company
         cls.company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'

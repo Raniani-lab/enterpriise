@@ -14,7 +14,6 @@ class ProjectProductEmployeeMap(models.Model):
             ('invoice_policy', '=', 'delivery'),
             ('service_type', '=', 'timesheet'),
             '|', ('company_id', '=', False), ('company_id', '=', company_id)]""")
-    sale_line_id = fields.Many2one(required=False)
     price_unit = fields.Float(readonly=False)
 
     @api.depends('partner_id')

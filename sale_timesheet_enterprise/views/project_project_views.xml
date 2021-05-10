@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@id='timesheet_settings']" position="after">
                 <xpath expr="//div[@id='timer_setting']" position="move"/>
-                <xpath expr="//div[@id='allow_billable_container']" position="move"/>
             </xpath>
         </field>
     </record>

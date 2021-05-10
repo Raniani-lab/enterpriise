@@ -79,17 +79,6 @@
         </field>
     </record>
 
-    <record id="view_task_tree2_fsm_report" model="ir.ui.view">
-        <field name="name">project.task.tree2.fsm.report</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_tree2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='project_id']" position="after">
-                <field name="worksheet_template_id" optional="hide"/>
-            </xpath>
-        </field>
-    </record>
-
     <record id="action_fsm_worksheets" model="ir.actions.act_window">
         <field name="name">Worksheet Templates</field>
         <field name="res_model">worksheet.template</field>
@@ -130,7 +119,7 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <xpath expr="//field[@name='partner_id']" position="before">
                 <field name="worksheet_template_id" optional="hide"/>
             </xpath>
         </field>

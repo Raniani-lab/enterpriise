@@ -14,7 +14,8 @@ In your project plan, you can compare your timesheets and your forecast to bette
     'website': 'https://www.odoo.com/app/project',
     'depends': ['project_forecast', 'sale_timesheet'],
     'data': [
-        'views/project_templates.xml'
+        'views/project_templates.xml',
+        'views/project_project_views.xml'
     ],
     'auto_install': True,
     'license': 'OEEL-1',

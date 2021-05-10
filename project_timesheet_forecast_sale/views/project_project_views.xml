@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_timesheet_forecast_view_kanban_inherit_sale_timesheet" model="ir.ui.view">
+        <field name="name">project.project.kanban.inherit.sale.timesheet</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="hr_timesheet.view_project_kanban_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_manage_reporting')]" position="inside">
+                <div t-if="record.allow_timesheets.raw_value and record.allow_billable.raw_value" role="menuitem" groups="project.group_project_manager">
+                    <a name="%(project_timesheet_forecast.project_timesheet_forecast_report_action)d" type="action" context="{'search_default_project_id': [active_id]}">
+                        Timesheet and Planning Analysis
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

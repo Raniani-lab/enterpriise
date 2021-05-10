@@ -505,3 +505,52 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
 
         suggested_amls = self._get_st_widget_suggestions(statement.line_ids, mode='misc')
         self.assertFalse(suggested_amls)
+
+    def test_with_reconciliation_model(self):
+        bank_fees = self.env['account.reconcile.model'].create({
+            'name': 'Bank Fees',
+            'line_ids': [(0, 0, {
+                'account_id': self.company_data['default_account_expense'].id,
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'amount_type': 'fixed',
+                'amount_string': '50',
+            })],
+        })
+
+        customer = self.partner_a
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': customer.id,
+            'invoice_date': '2021-05-12',
+            'date': '2021-05-12',
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.product_a.id,
+                'price_unit': 1000.0,
+            })],
+        })
+        invoice.action_post()
+        inv_receivable = invoice.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
+
+        payment = self.env['account.payment'].create({
+            'partner_id': customer.id,
+            'amount': 600,
+        })
+        payment.action_post()
+        payment_receivable = payment.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
+
+        self.env['account.reconciliation.widget'].process_move_lines([{
+            'id': None,
+            'type': None,
+            'mv_line_ids': (inv_receivable + payment_receivable).ids,
+            'new_mv_line_dicts': [{
+                'name': 'SuperLabel',
+                'balance': -bank_fees.line_ids.amount,
+                'analytic_tag_ids': [[6, None, []]],
+                'account_id': bank_fees.line_ids.account_id.id,
+                'journal_id': bank_fees.line_ids.journal_id.id,
+                'reconcile_model_id': bank_fees.id}
+            ]
+        }])
+
+        self.assertEqual(invoice.amount_residual, 350)

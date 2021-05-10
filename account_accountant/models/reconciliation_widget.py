@@ -972,7 +972,7 @@ class AccountReconciliation(models.AbstractModel):
         }
 
         if 'debit' not in vals and 'credit' not in vals:
-            balance = sum(move_lines.mapped('amount_residual'))
+            balance = -vals.get('balance', 0.0) or sum(move_lines.mapped('amount_residual'))
         else:
             balance = vals.get('credit', 0.0) - vals.get('debit', 0.0)
         line_vals['debit'] = balance if balance > 0.0 else 0.0

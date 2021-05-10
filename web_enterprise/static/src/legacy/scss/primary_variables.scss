@@ -33,6 +33,10 @@ $o-btn-secondary-bg: white;
 $o-btn-secondary-hover-bg: darken($o-btn-secondary-bg, 10%);
 $o-btn-secondary-active-bg: darken($o-btn-secondary-bg, 8%);
 
+$o-border-radius: .25rem;
+$o-border-radius-lg: .3rem;
+$o-border-radius-sm: .2rem;
+
 // Home menu
 $o-home-menu-container-size: 850px;
 $o-home-menu-app-icon-max-width: 70px;

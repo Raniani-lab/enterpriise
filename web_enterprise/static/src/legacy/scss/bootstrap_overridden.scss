@@ -86,11 +86,19 @@ $nav-tabs-link-active-border-color: transparent;
 
 $card-bg: $gray-100;
 
+// Badges
+
+$badge-border-radius: $o-border-radius;
+
 // Alerts
 //
 // Define alert colors, border radius, and padding.
 
 $alert-border-width: 0;
+
+// Popovers
+
+$popover-border-radius: $o-border-radius;
 
 // Breadcrumbs
 

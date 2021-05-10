@@ -112,6 +112,44 @@ select {
 }
 
 //------------------------------------------------------------------------------
+// Border-radius utility classes
+//------------------------------------------------------------------------------
+// Restore bootstrap 'border-radius' utility classes that were set to '0'
+// because of general variables settings in bootstrap_overridden.scss.
+//
+// Note: with Bootstrap v5 these overrides will not be necessary anymore.
+// The newcoming API could be used to generate utility classes that use our
+// custom values directly (https://getbootstrap.com/docs/5.0/utilities/api).
+
+
+.rounded {
+  border-radius: $o-border-radius !important;
+
+  &-sm {
+    border-radius: $o-border-radius-sm !important;
+  }
+
+  &-lg {
+    border-radius: $o-border-radius-lg !important;
+  }
+
+  @each $side in ('left', 'right') {
+    &-#{$side} {
+      border-top-#{$side}-radius: $o-border-radius !important;
+      border-bottom-#{$side}-radius: $o-border-radius !important;
+    }
+  }
+
+  @each $direction in ('top', 'bottom') {
+    &-#{$direction} {
+      border-#{$direction}-left-radius: $o-border-radius !important;
+      border-#{$direction}-right-radius: $o-border-radius !important;
+    }
+  }
+}
+
+
+//------------------------------------------------------------------------------
 // Misc.
 //------------------------------------------------------------------------------
 .o_loading > span {
@@ -195,7 +233,3 @@ select {
   font-size: 1em; // Override 75% of .label
 }
 
-//== Popover
-.popover {
-  border-radius: $border-radius;
-}

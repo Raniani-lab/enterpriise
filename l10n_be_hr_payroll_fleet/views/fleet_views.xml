@@ -35,6 +35,17 @@
         </field>
     </record>
 
+    <record id="fleet_vehicle_model_view_tree" model="ir.ui.view">
+        <field name="name">fleet.vehicle.model.tree</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="can_be_requested" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="fleet_vehicle_model_view_form" model="ir.ui.view">
         <field name="name">fleet.vehicle.model.form</field>
         <field name="model">fleet.vehicle.model</field>
@@ -81,6 +92,17 @@
                         </group>
                     </group>
                 </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_model_view_search" model="ir.ui.view">
+        <field name="name">fleet.vehicle.model.search</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='brand_id']" position="after">
+                <filter name="filter_can_be_requested" string="Can Be Requested" domain="[('can_be_requested', '=', True)]"/>
             </xpath>
         </field>
     </record>

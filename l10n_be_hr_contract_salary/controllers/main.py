@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import OrderedDict
+
 from odoo import fields, _
 from odoo.addons.hr_contract_salary.controllers import main
 from odoo.addons.sign.controllers.main import Sign
 from odoo.http import route, request
 
+ODOMETER_UNITS = {'kilometers': 'km', 'miles': 'mi'}
 
 class SignContract(Sign):
 
@@ -135,53 +138,131 @@ class HrContractSalary(main.HrContractSalary):
         if int(force_car):
             force_car_id = request.env['fleet.vehicle'].sudo().browse(int(force_car))
             available_cars |= force_car_id
-        dropdown_options['company_car_total_depreciated_cost'] = [(
-            'old-%s' % (car.id),
-            '%s/%s/ \u2022 %s € \u2022 %s%s' % (
-                car.model_id.brand_id.name,
-                car.model_id.name,
-                round(car.total_depreciated_cost, 2),
-                car._get_acquisition_date(),
-                '\u2022 Available in %s' % car.next_assignation_date.strftime('%B %Y') if car.next_assignation_date else u''
-            )
-        ) for car in available_cars]
-        dropdown_options['company_bike_depreciated_cost'] = [(
-            'old-%s' % (bike.id),
-            '%s/%s/ \u2022 %s € \u2022 %s' % (
-                bike.model_id.brand_id.name,
-                bike.model_id.name,
-                round(bike.total_depreciated_cost, 2),
-                '\u2022 Available in %s' % bike.next_assignation_date.strftime('%B %Y') if bike.next_assignation_date else u''
-            )
-        ) for bike in available_bikes]
 
+        def generate_dropdown_group_data(available, can_be_requested, only_new, allow_new_cars, vehicle_type='Car'):
+            # Creates the necessary data for the dropdown group, looks like this
+            # {
+            #     'category_name': [
+            #         (value, value),
+            #         (value, value),...
+            #     ],
+            #     'other_category': ...
+            # }
+            model_categories = (available.model_id.category_id | can_be_requested.category_id)
+            model_categories_ids = model_categories.sorted(key=lambda c: (c.sequence, c.id)).ids
+            model_categories_ids.append(0) # Case when no category
+            result = OrderedDict()
+            for category in model_categories_ids:
+                category_id = model_categories.filtered(lambda c: c.id == category)
+                car_values = []
+                if not only_new:
+                    cars = available.filtered_domain([
+                        ('model_id.category_id', '=', category),
+                    ])
+                    car_values.extend([(
+                        'old-%s' % (car.id),
+                        '%s/%s \u2022 %s € \u2022 %s%s%s' % (
+                            car.model_id.brand_id.name,
+                            car.model_id.name,
+                            round(car.total_depreciated_cost, 2),
+                            car._get_acquisition_date() if vehicle_type == 'Car' else '',
+                            _('\u2022 Available in %s', car.next_assignation_date.strftime('%B %Y')) if car.next_assignation_date else u'',
+                            ' \u2022 %s %s' % (car.odometer, ODOMETER_UNITS[car.odometer_unit]) if vehicle_type == 'Car' else '',
+                        )
+                    ) for car in cars])
+
+                if allow_new_cars:
+                    requestables = can_be_requested.filtered_domain([
+                        ('category_id', '=', category)
+                    ])
+                    car_values.extend([(
+                        'new-%s' % (model.id),
+                        '%s \u2022 %s € \u2022 New %s' % (
+                            model.display_name,
+                            round(model.default_total_depreciated_cost, 2),
+                            vehicle_type,
+                        )
+                    ) for model in requestables])
+
+                if car_values:
+                    result[category_id.name or _("No Category")] = car_values
+            return result
+
+        def generate_dropdown_data(available, can_be_requested, only_new_cars, allow_new_cars, vehicle_type='Car'):
+            result = []
+            if not only_new_cars:
+                result.extend([(
+                    'old-%s' % (car.id),
+                    '%s/%s \u2022 %s € \u2022 %s%s%s' % (
+                        car.model_id.brand_id.name,
+                        car.model_id.name,
+                        round(car.total_depreciated_cost, 2),
+                        car._get_acquisition_date() if vehicle_type == 'Car' else '',
+                        _('\u2022 Available in %s', car.next_assignation_date.strftime('%B %Y')) if car.next_assignation_date else u'',
+                        ' \u2022 %s %s' % (car.odometer, ODOMETER_UNITS[car.odometer_unit]) if vehicle_type == 'Car' else '',
+                    )
+                ) for car in available])
+            if allow_new_cars:
+                result.extend([(
+                    'new-%s' % (model.id),
+                    '%s \u2022 %s € \u2022 New %s' % (
+                        model.display_name,
+                        round(model.default_total_depreciated_cost, 2),
+                        vehicle_type,
+                    )
+                ) for model in can_be_requested_models])
+            return result
+
+        advantages = self._get_advantages(contract)
+        car_advantage = advantages.filtered(
+            lambda a: a.res_field_id.name == 'company_car_total_depreciated_cost'
+        )
+        bike_advantage = advantages.filtered(
+            lambda a: a.res_field_id.name == 'company_bike_depreciated_cost'
+        )
+        wishlist_car_advantage = advantages.filtered(
+            lambda a: a.res_field_id.name == 'wishlist_car_total_depreciated_cost'
+        )
+
+        # Car stuff
         can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
         contract._get_possible_model_domain()).sorted(key=lambda model: model.default_total_depreciated_cost)
-        new_car_options = [(
-            'new-%s' % (model.id),
-            '%s \u2022 %s € \u2022 New Car' % (
-                model.display_name,
-                round(model.default_total_depreciated_cost, 2),
-            )
-        ) for model in can_be_requested_models]
-        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
-        contract._get_possible_model_domain(vehicle_type='bike')).sorted(key=lambda model: model.default_total_depreciated_cost)
-        new_bike_options = [(
-            'new-%s' % (model.id),
-            '%s \u2022 %s € \u2022 New Bike' % (
-                model.display_name,
-                round(model.default_total_depreciated_cost, 2),
-            )
-        ) for model in can_be_requested_models]
-        dropdown_options['company_bike_depreciated_cost'] += new_bike_options
 
         force_new_car = request.httprequest.args.get('new_car', False)
+        allow_new_cars = False
+        wishlist_new_cars = False
         if force_new_car or contract.available_cars_amount < contract.max_unused_cars:
-            dropdown_options['company_car_total_depreciated_cost'] += new_car_options
+            allow_new_cars = True
         else:
-            dropdown_options['wishlist_car_total_depreciated_cost'] = new_car_options
+            wishlist_new_cars = True
+
+        if car_advantage.display_type == 'dropdown-group':
+            dropdown_group_options['company_car_total_depreciated_cost'] = \
+                generate_dropdown_group_data(available_cars, can_be_requested_models, False, allow_new_cars)
+        else:
+            dropdown_options['company_car_total_depreciated_cost'] = \
+                generate_dropdown_data(available_cars, can_be_requested_models, False, allow_new_cars)
+
+        if wishlist_new_cars:
+            if wishlist_car_advantage.display_type == 'dropdown-group':
+                dropdown_group_options['wishlist_car_total_depreciated_cost'] = \
+                    generate_dropdown_group_data(available_cars, can_be_requested_models, True, True)
+            else:
+                dropdown_options['wishlist_car_total_depreciated_cost'] = \
+                    generate_dropdown_data(available_cars, can_be_requested_models, True, True)
             initial_values['fold_wishlist_car_total_depreciated_cost'] = False
             initial_values['wishlist_car_total_depreciated_cost'] = 0
+
+        # Bike stuff
+        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
+        contract._get_possible_model_domain(vehicle_type='bike')).sorted(key=lambda model: model.default_total_depreciated_cost)
+        if bike_advantage.display_type == 'dropdown-group':
+            dropdown_group_options['company_bike_depreciated_cost'] = \
+                generate_dropdown_group_data(available_bikes, can_be_requested_models, False, True, 'Bike')
+        else:
+            dropdown_options['company_bike_depreciated_cost'] = \
+                generate_dropdown_data(available_bikes, can_be_requested_models, False, True, 'Bike')
+
 
         if force_car_id:
             initial_values['select_company_car_total_depreciated_cost'] = 'old-%s' % force_car_id.id

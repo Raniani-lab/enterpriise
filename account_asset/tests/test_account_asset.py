@@ -308,7 +308,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'credit': 12000,
             'account_id': CEO_car.account_asset_id.id,
         }, {
-            'debit': 0,
+            'debit': 10000,
             'credit': 0,
             'account_id': CEO_car.account_depreciation_id.id,
         }, {
@@ -316,7 +316,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'credit': 0,
             'account_id': self.closing_invoice.invoice_line_ids.account_id.id,
         }, {
-            'debit': 11900,
+            'debit': 1900,
             'credit': 0,
             'account_id': CEO_car.account_depreciation_expense_id.id,
         }])

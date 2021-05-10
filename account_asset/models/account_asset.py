@@ -595,7 +595,10 @@ class AccountAsset(models.Model):
             initial_amount = asset.original_value
             initial_account = asset.original_move_line_ids.account_id if len(asset.original_move_line_ids.account_id) == 1 else asset.account_asset_id
             depreciation_moves = asset.depreciation_move_ids.filtered(lambda r: r.state == 'posted' and not (r.reversal_move_id and r.reversal_move_id[0].state == 'posted'))
-            depreciated_amount = copysign(sum(depreciation_moves.mapped('amount_total')), -initial_amount)
+            depreciated_amount = copysign(
+                sum(depreciation_moves.mapped('amount_total')) + asset.already_depreciated_amount_import,
+                -initial_amount,
+            )
             depreciation_account = asset.account_depreciation_id
             invoice_amount = copysign(invoice_line_id.price_subtotal, -initial_amount)
             invoice_account = invoice_line_id.account_id

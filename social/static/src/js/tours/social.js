@@ -34,7 +34,7 @@ tour.register('social_tour', {
             position: 'bottom',
             edition: 'enterprise',
         }, {
-            trigger: 'textarea[name="message"]',
+            trigger: '.o_social_post_message_wrapper',
             content: _t("Write a message to get a preview of your post."),
             position: 'bottom',
             edition: 'enterprise',

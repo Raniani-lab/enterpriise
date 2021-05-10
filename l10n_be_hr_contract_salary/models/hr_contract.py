@@ -144,7 +144,8 @@ class HrContract(models.Model):
             vehicle = self.env['fleet.vehicle.model'].sudo().browse(vehicle_id)
             co2 = vehicle.default_co2
             fuel_type = vehicle.default_fuel_type
-            door_number = odometer = immatriculation = False
+            transmission = vehicle.transmission
+            door_number = odometer = immatriculation = trailer_hook = False
         else:
             vehicle = self.env['fleet.vehicle'].sudo().browse(vehicle_id)
             co2 = vehicle.co2
@@ -152,10 +153,14 @@ class HrContract(models.Model):
             door_number = vehicle.doors
             odometer = vehicle.odometer
             immatriculation = vehicle.acquisition_date
+            transmission = vehicle.transmission
+            trailer_hook = "Yes" if vehicle.trailer_hook else "No"
         car_elements = {
             'CO2 Emission': co2,
             'Fuel Type': fuel_type,
+            'Transmission': transmission,
             'Doors Number': door_number,
+            'Trailer Hook': trailer_hook,
             'Odometer': odometer,
             'Immatriculation Date': immatriculation
         }

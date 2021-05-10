@@ -40,7 +40,7 @@
         <field name="model">fleet.vehicle.model</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='vendors']" position="before">
+            <xpath expr="//page[@name='information']" position="replace">
                 <page string="Information" name="information">
                     <group>
                         <group string="Salary">
@@ -77,6 +77,7 @@
                                 <span> g / km</span>
                             </div>
                             <field name="default_fuel_type" widget="selection" required="True"/>
+                            <field name="transmission"/>
                         </group>
                     </group>
                 </page>

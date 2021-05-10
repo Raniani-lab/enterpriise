@@ -315,7 +315,7 @@ var accountReportsWidget = AbstractAction.extend({
                         self._rpc({
                             model: 'account.financial.html.report.line',
                             method: 'action_view_journal_entries',
-                            args: [$(event.target).data('id'), self.report_options],
+                            args: [$(event.target).data('id'), self.report_options, self.financial_id],
                             context: self.odoo_context,
                         })
                         .then(function(result){

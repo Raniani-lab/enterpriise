@@ -156,7 +156,7 @@ class FormulaSolver:
             # If this line is visited for the first time, trigger the computation of '_compute_sum' and
             # cache the results.
 
-            results = financial_line._compute_sum(self.options_list)
+            results = financial_line._compute_sum(self.options_list, self.financial_report)
             for key in results['sum']:
                 self.encountered_keys.add(key)
 

@@ -346,7 +346,8 @@ class ReportAccountFinancialReport(models.Model):
             elif is_leaf and financial_report_line['unfolded']:
                 # Fetch the account.move.lines.
                 solver_results = solver.get_results(financial_line)
-                for groupby_id, display_name, results in financial_line._compute_amls_results(options_list, sign=solver_results['amls']['sign']):
+                sign = solver_results['amls']['sign']
+                for groupby_id, display_name, results in financial_line._compute_amls_results(options_list, self, sign=sign):
                     aml_lines.append(self._get_financial_aml_report_line(
                         options_list[0],
                         financial_report_line['id'],
@@ -685,7 +686,7 @@ class ReportAccountFinancialReport(models.Model):
 
         # If a financial line has a control domain, a check is made to detect any potential discrepancy
         if financial_line.control_domain:
-            if not financial_line._check_control_domain(options, results):
+            if not financial_line._check_control_domain(options, results, self):
                 # If a discrenpancy is found, a check is made to see if the current line is
                 # missing items or has items appearing more than once.
                 has_missing = solver._has_missing_control_domain(options, financial_line)
@@ -990,12 +991,30 @@ class AccountFinancialReportLine(models.Model):
     # OPTIONS
     # -------------------------------------------------------------------------
 
-    def _get_options_financial_line(self, options):
+    def _get_options_financial_line(self, options, calling_financial_report, parent_financial_report):
         ''' Create a new options specific to one financial line.
-        :param options: The report options.
-        :return:        The report options adapted to the financial line.
+        :param options:                     The report options.
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :param parent_financial_report:     The financial report owning the current financial report line that need to
+                                            be evaluated by the solver.
+        :return:                            The report options adapted to the financial line.
         '''
         self.ensure_one()
+
+        # Make sure to adapt the options if the current report is not the one owning the current financial report line.
+        # This is necessary when the 'date' filter mode is not the same in both reports. For example, some P&L lines
+        # are used in some balance sheet formulas. However, the balance sheet is a single-date mode report but not the
+        # P&L.
+        if calling_financial_report != parent_financial_report:
+            new_options = parent_financial_report._get_options(previous_options=options)
+
+            # Propate the 'ir_filters' manually because 'applicable_filters_ids' could be different
+            # in both reports. In that case, we need to propagate it whatever the configuration.
+            if options.get('ir_filters'):
+                new_options['ir_filters'] = options['ir_filters']
+
+            options = new_options
+
         new_options = options.copy()
         new_options['date'] = options['date'].copy()
         date_from = options['date']['date_from']
@@ -1055,7 +1074,7 @@ class AccountFinancialReportLine(models.Model):
     # QUERIES
     # -------------------------------------------------------------------------
 
-    def _compute_amls_results(self, options_list, sign=1):
+    def _compute_amls_results(self, options_list, calling_financial_report, sign=1):
         ''' Compute the results for the unfolded lines by taking care about the line order and the group by filter.
 
         Suppose the line has '-sum' as formulas with 'partner_id' in groupby and 'currency_id' in group by filter.
@@ -1068,10 +1087,11 @@ class AccountFinancialReportLine(models.Model):
              |__ res.partner ids
                               |_ key where the first element is the period number, the second one being a res.currency id.
 
-        :param options_list:        The report options list, first one being the current dates range, others being the
-                                    comparisons.
-        :param sign:                1 or -1 to get negative values in case of '-sum' formula.
-        :return:                    A list (groupby_key, display_name, {key: <balance>...}).
+        :param options_list:                The report options list, first one being the current dates range, others
+                                            being the comparisons.
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :param sign:                        1 or -1 to get negative values in case of '-sum' formula.
+        :return:                            A list (groupby_key, display_name, {key: <balance>...}).
         '''
         self.ensure_one()
         params = []
@@ -1084,13 +1104,13 @@ class AccountFinancialReportLine(models.Model):
         groupby_field = self.env['account.move.line']._fields[self.groupby]
 
         ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
-        financial_report = self._get_financial_report()
+        parent_financial_report = self._get_financial_report()
 
         # Prepare a query by period as the date is different for each comparison.
 
         for i, options in enumerate(options_list):
-            new_options = self._get_options_financial_line(options)
-            line_domain = self._get_domain(new_options, financial_report)
+            new_options = self._get_options_financial_line(options, calling_financial_report, parent_financial_report)
+            line_domain = self._get_domain(new_options, parent_financial_report)
 
             tables, where_clause, where_params = AccountFinancialReportHtml._query_get(new_options, domain=line_domain)
 
@@ -1111,7 +1131,7 @@ class AccountFinancialReportLine(models.Model):
 
         results = {}
 
-        financial_report.env.cr.execute(' UNION ALL '.join(queries), params)
+        self._cr.execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]
@@ -1133,17 +1153,19 @@ class AccountFinancialReportLine(models.Model):
 
         return [(groupby_key, display_name, results[groupby_key]) for groupby_key, display_name in sorted_values]
 
-    def _compute_control_domain(self, options_list):
+    def _compute_control_domain(self, options_list, calling_financial_report):
         """ Run an SQL query to fetch the results from the control domain.
-        :return:    A dictionary with he total for each period.
+
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :return:                            A dictionary with he total for each period.
         """
 
         self.ensure_one()
         params = []
         queries = []
 
-        financial_report = self._get_financial_report()
-        groupby_list = financial_report._get_options_groupby_fields(options_list[0])
+        parent_financial_report = self._get_financial_report()
+        groupby_list = parent_financial_report._get_options_groupby_fields(options_list[0])
         groupby_clause = ','.join('account_move_line.%s' % gb for gb in groupby_list)
 
         ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
@@ -1151,10 +1173,10 @@ class AccountFinancialReportLine(models.Model):
         # Prepare a query by period as the date is different for each comparison.
 
         for i, options in enumerate(options_list):
-            new_options = self._get_options_financial_line(options)
+            new_options = self._get_options_financial_line(options, calling_financial_report, parent_financial_report)
             control_domain = self.control_domain and ast.literal_eval(ustr(self.control_domain)) or []
 
-            tables, where_clause, where_params = financial_report._query_get(new_options, domain=control_domain)
+            tables, where_clause, where_params = parent_financial_report._query_get(new_options, domain=control_domain)
 
             queries.append(f'''
                 SELECT
@@ -1171,7 +1193,7 @@ class AccountFinancialReportLine(models.Model):
         # Fetch the results.
 
         results = {}
-        financial_report._cr.execute(' UNION ALL '.join(queries), params)
+        parent_financial_report._cr.execute(' UNION ALL '.join(queries), params)
 
         for res in self._cr.dictfetchall():
             # Build the key and save the balance
@@ -1184,13 +1206,14 @@ class AccountFinancialReportLine(models.Model):
 
         return results
 
-    def _check_control_domain(self, options, results):
+    def _check_control_domain(self, options, results, calling_financial_report):
         """ Compare values from the solver with those from the control domain.
-        :return:    False if values do not match.
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :return:                            False if values do not match.
         """
 
         options_list = self.env['account.report']._get_options_periods_list(options)
-        results_control = self._compute_control_domain(options_list)
+        results_control = self._compute_control_domain(options_list, calling_financial_report)
         company_round = self.env.company.currency_id.round
 
         # Values are compared in absolute terms since they are coming from different sources :
@@ -1202,7 +1225,7 @@ class AccountFinancialReportLine(models.Model):
             for key in results_control
         )
 
-    def _compute_sum(self, options_list):
+    def _compute_sum(self, options_list, calling_financial_report):
         ''' Compute the values to be used inside the formula for the current line.
         If called, it means the current line formula contains something making its line a leaf ('sum' or 'count_rows')
         for example.
@@ -1228,9 +1251,10 @@ class AccountFinancialReportLine(models.Model):
         * (1,2): At the period 1 (first comparison), the results for 'partner_id = 2' are...
         * (1,3): At the period 1 (first comparison), the results for 'partner_id = 3' are...
 
-        :param options_list:        The report options list, first one being the current dates range, others being the
-                                    comparisons.
-        :return:                    A python dictionary.
+        :param options_list:                The report options list, first one being the current dates range, others
+                                            being the comparisons.
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :return:                            A python dictionary.
         '''
         self.ensure_one()
         params = []
@@ -1245,13 +1269,13 @@ class AccountFinancialReportLine(models.Model):
         groupby_clause = ','.join('account_move_line.%s' % gb for gb in all_groupby_list)
 
         ct_query = self.env['res.currency']._get_query_currency_table(options_list[0])
-        financial_report = self._get_financial_report()
+        parent_financial_report = self._get_financial_report()
 
         # Prepare a query by period as the date is different for each comparison.
 
         for i, options in enumerate(options_list):
-            new_options = self._get_options_financial_line(options)
-            line_domain = self._get_domain(new_options, financial_report)
+            new_options = self._get_options_financial_line(options, calling_financial_report, parent_financial_report)
+            line_domain = self._get_domain(new_options, parent_financial_report)
 
             tables, where_clause, where_params = AccountFinancialReportHtml._query_get(new_options, domain=line_domain)
 
@@ -1279,7 +1303,7 @@ class AccountFinancialReportLine(models.Model):
             'count_rows': {},
         }
 
-        financial_report.env.cr.execute(' UNION ALL '.join(queries), params)
+        self._cr.execute(' UNION ALL '.join(queries), params)
         for res in self._cr.dictfetchall():
             # Build the key.
             key = [res['period_index']]
@@ -1355,16 +1379,18 @@ class AccountFinancialReportLine(models.Model):
                     copied_formulas = copied_formulas.replace(k + suffix, v + suffix)
             copy_line_id.formulas = copied_formulas
 
-    def action_view_journal_entries(self, options):
+    def action_view_journal_entries(self, options, calling_financial_report):
         ''' Action when clicking on the "View Journal Items" in the debug info popup.
 
-        :param options:     The report options.
-        :return:            An action showing the account.move.lines for the current financial report line.
+        :param options:                     The report options.
+        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :return:                            An action showing the account.move.lines for the current financial report
+                                            line.
         '''
         self.ensure_one()
-        financial_report = self._get_financial_report()
-        new_options = self._get_options_financial_line(options)
-        domain = self._get_domain(new_options, financial_report) + financial_report._get_options_domain(new_options)
+        parent_financial_report = self._get_financial_report()
+        new_options = self._get_options_financial_line(options, calling_financial_report, parent_financial_report)
+        domain = self._get_domain(new_options, parent_financial_report) + parent_financial_report._get_options_domain(new_options)
         return {
             'type': 'ir.actions.act_window',
             'name': _('Journal Items'),
@@ -1374,5 +1400,5 @@ class AccountFinancialReportLine(models.Model):
             'target': 'current',
             'views': [[self.env.ref('account.view_move_line_tree').id, 'list']],
             'domain': domain,
-            'context': {**financial_report._set_context(options)},
+            'context': {**parent_financial_report._set_context(options)},
         }

@@ -293,17 +293,11 @@
         <record id="account_financial_current_year_earnings_line_1" model="account.financial.html.report.line">
             <field name="name">Current Year Earnings</field>
             <field name="code">CURR_YEAR_EARNINGS_PNL</field>
-            <field name="domain" eval="[('account_id.user_type_id', 'in', [
-                ref('account.data_account_type_revenue'),
-                ref('account.data_account_type_other_income'),
-                ref('account.data_account_type_direct_costs'),
-                ref('account.data_account_type_expenses'),
-                ref('account.data_account_type_depreciation')
-            ])]" />
-            <field name="formulas">-sum</field>
+            <field name="domain" eval="[]" />
+            <field name="formulas">NEP</field>
             <field name="sequence" eval="1"/>
             <field name="parent_id" ref='account_financial_current_year_earnings0'/>
-            <field name="special_date_changer">from_fiscalyear</field>
+            <field name="special_date_changer">normal</field>
             <field name="level" eval="3" />
         </record>
         <record id="account_financial_current_year_earnings_line_2" model="account.financial.html.report.line">
@@ -319,11 +313,26 @@
         <record id="account_financial_previous_year_earnings0" model="account.financial.html.report.line">
             <field name="name">Previous Years Unallocated Earnings</field>
             <field name="code">PREV_YEAR_EARNINGS</field>
-            <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]" />
-            <field name="formulas">NEP - sum - CURR_YEAR_EARNINGS</field>
+            <field name="domain" eval="[('account_id.user_type_id', 'in', [
+                ref('account.data_account_type_revenue'),
+                ref('account.data_account_type_other_income'),
+                ref('account.data_account_type_direct_costs'),
+                ref('account.data_account_type_expenses'),
+                ref('account.data_account_type_depreciation')
+            ])]" />
+            <field name="formulas">-sum + ALLOCATED_EARNINGS - CURR_YEAR_EARNINGS</field>
             <field name="sequence" eval="2"/>
             <field name="special_date_changer">from_beginning</field>
             <field name="parent_id" ref='account_financial_unaffected_earnings0'/>
+            <field name="level" eval="2" />
+        </record>
+        <record id="account_financial_allocated_earnings" model="account.financial.html.report.line">
+            <field name="name">Allocated Earnings</field>
+            <field name="code">ALLOCATED_EARNINGS</field>
+            <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+            <field name="formulas">-sum</field>
+            <field name="sequence" eval="2"/>
+            <field name="special_date_changer">from_beginning</field>
             <field name="level" eval="2" />
         </record>
         <record id="account_financial_retained_earnings0" model="account.financial.html.report.line">

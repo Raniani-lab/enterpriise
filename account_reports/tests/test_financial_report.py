@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
+
 from .common import TestAccountReportsCommon
 
 from odoo import fields
@@ -25,6 +27,12 @@ class TestFinancialReport(TestAccountReportsCommon):
 
         # ==== Accounts ====
 
+        # Cleanup existing "Current year earnings" accounts since we can only have one by company.
+        cls.env['account.account'].search([
+            ('company_id', 'in', (cls.company_data['company'] + cls.company_data_2['company']).ids),
+            ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id),
+        ]).unlink()
+
         account_type_data = [
             (cls.env.ref('account.data_account_type_receivable'),           {'reconcile': True}),
             (cls.env.ref('account.data_account_type_payable'),              {'reconcile': True}),
@@ -35,13 +43,8 @@ class TestFinancialReport(TestAccountReportsCommon):
             (cls.env.ref('account.data_account_type_non_current_assets'),   {}),
             (cls.env.ref('account.data_account_type_equity'),               {}),
             (cls.env.ref('account.data_unaffected_earnings'),               {}),
+            (cls.env.ref('account.data_account_type_revenue'),              {}),
         ]
-
-        unaffected_earnings_account = cls.env['account.account'].search([
-                                        ('company_id', '=', cls.company_data['company'].id),
-                                        ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id)])
-        if unaffected_earnings_account:
-            unaffected_earnings_account.unlink()
 
         accounts = cls.env['account.account'].create([{
             **data[1],
@@ -51,16 +54,10 @@ class TestFinancialReport(TestAccountReportsCommon):
             'company_id': cls.company_data['company'].id,
         } for i, data in enumerate(account_type_data)])
 
-        unaffected_earnings_account = cls.env['account.account'].search([
-                                        ('company_id', '=', cls.company_data_2['company'].id),
-                                        ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id)])
-        if unaffected_earnings_account:
-            unaffected_earnings_account.unlink()
-
         accounts_2 = cls.env['account.account'].create([{
             **data[1],
-            'name': 'account%s' % (i + len(account_type_data)),
-            'code': 'code%s' % (i + len(account_type_data)),
+            'name': 'account%s' % (i + 100),
+            'code': 'code%s' % (i + 100),
             'user_type_id': data[0].id,
             'company_id': cls.company_data_2['company'].id,
         } for i, data in enumerate(account_type_data)])
@@ -101,6 +98,8 @@ class TestFinancialReport(TestAccountReportsCommon):
             'line_ids': [
                 (0, 0, {'debit': 1000.0,    'credit': 0.0,      'account_id': accounts[0].id,   'partner_id': cls.partner_a.id}),
                 (0, 0, {'debit': 0.0,       'credit': 1000.0,   'account_id': accounts[2].id,   'partner_id': cls.partner_b.id}),
+                (0, 0, {'debit': 250.0,     'credit': 0.0,      'account_id': accounts[0].id,   'partner_id': cls.partner_a.id}),
+                (0, 0, {'debit': 0.0,       'credit': 250.0,    'account_id': accounts[9].id,   'partner_id': cls.partner_a.id}),
             ],
         })
         cls.move_2018.action_post()
@@ -136,18 +135,18 @@ class TestFinancialReport(TestAccountReportsCommon):
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      -200.0),
-                ('Current Assets',                              -900.0),
+                ('ASSETS',                                      50.0),
+                ('Current Assets',                              -650.0),
                 ('Bank and Cash Accounts',                      -1300.0),
                 ('code2 account2',                              -1300.0),
                 ('Total Bank and Cash Accounts',                -1300.0),
-                ('Receivables',                                 1100.0),
+                ('Receivables',                                 1350.0),
                 ('Current Assets',                              400.0),
                 ('Prepayments',                                 -1100.0),
-                ('Total Current Assets',                        -900.0),
+                ('Total Current Assets',                        -650.0),
                 ('Plus Fixed Assets',                           0.0),
                 ('Plus Non-current Assets',                     700.0),
-                ('Total ASSETS',                                -200.0),
+                ('Total ASSETS',                                50.0),
 
                 ('LIABILITIES',                                 -200.0),
                 ('Current Liabilities',                         -200.0),
@@ -157,18 +156,18 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Plus Non-current Liabilities',                0.0),
                 ('Total LIABILITIES',                           -200.0),
 
-                ('EQUITY',                                      0.0),
-                ('Unallocated Earnings',                        -800.0),
+                ('EQUITY',                                      250.0),
+                ('Unallocated Earnings',                        -550.0),
                 ('Current Year Unallocated Earnings',           -800.0),
                 ('Current Year Earnings',                       0.0),
                 ('Current Year Allocated Earnings',             -800.0),
                 ('Total Current Year Unallocated Earnings',     -800.0),
-                ('Previous Years Unallocated Earnings',         0.0),
-                ('Total Unallocated Earnings',                  -800.0),
+                ('Previous Years Unallocated Earnings',         250.0),
+                ('Total Unallocated Earnings',                  -550.0),
                 ('Retained Earnings',                           800.0),
-                ('Total EQUITY',                                0.0),
+                ('Total EQUITY',                                250.0),
 
-                ('LIABILITIES + EQUITY',                        -200.0),
+                ('LIABILITIES + EQUITY',                        50.0),
             ],
         )
 
@@ -194,19 +193,19 @@ class TestFinancialReport(TestAccountReportsCommon):
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      -200.0),
-                ('Current Assets',                              -4400.0),
+                ('ASSETS',                                      50.0),
+                ('Current Assets',                              -4150.0),
                 ('Bank and Cash Accounts',                      -3300.0),
-                ('code11 account11',                            -2000.0),
+                ('code102 account102',                          -2000.0),
                 ('code2 account2',                              -1300.0),
                 ('Total Bank and Cash Accounts',                -3300.0),
-                ('Receivables',                                 2100.0),
+                ('Receivables',                                 2350.0),
                 ('Current Assets',                              400.0),
                 ('Prepayments',                                 -3600.0),
-                ('Total Current Assets',                        -4400.0),
+                ('Total Current Assets',                        -4150.0),
                 ('Plus Fixed Assets',                           0.0),
                 ('Plus Non-current Assets',                     4200.0),
-                ('Total ASSETS',                                -200.0),
+                ('Total ASSETS',                                50.0),
 
                 ('LIABILITIES',                                 -200.0),
                 ('Current Liabilities',                         -200.0),
@@ -216,18 +215,18 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Plus Non-current Liabilities',                0.0),
                 ('Total LIABILITIES',                           -200.0),
 
-                ('EQUITY',                                      0.0),
-                ('Unallocated Earnings',                        -800.0),
+                ('EQUITY',                                      250.0),
+                ('Unallocated Earnings',                        -550.0),
                 ('Current Year Unallocated Earnings',           -800.0),
                 ('Current Year Earnings',                       0.0),
                 ('Current Year Allocated Earnings',             -800.0),
                 ('Total Current Year Unallocated Earnings',     -800.0),
-                ('Previous Years Unallocated Earnings',         0.0),
-                ('Total Unallocated Earnings',                  -800.0),
+                ('Previous Years Unallocated Earnings',         250.0),
+                ('Total Unallocated Earnings',                  -550.0),
                 ('Retained Earnings',                           800.0),
-                ('Total EQUITY',                                0.0),
+                ('Total EQUITY',                                250.0),
 
-                ('LIABILITIES + EQUITY',                        -200.0),
+                ('LIABILITIES + EQUITY',                        50.0),
             ],
         )
 
@@ -237,7 +236,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             [   0,                                              1],
             [
                 ('Bank and Cash Accounts',                      -3300.0),
-                ('code11 account11',                            -2000.0),
+                ('code102 account102',                          -2000.0),
                 ('code2 account2',                              -1300.0),
                 ('Total Bank and Cash Accounts',                -3300.0),
             ],
@@ -255,19 +254,19 @@ class TestFinancialReport(TestAccountReportsCommon):
             #   Name                                            Balance     Comparison  %
             [   0,                                              1,          2,          3],
             [
-                ('ASSETS',                                      -200.0,     0.0,        'n/a'),
-                ('Current Assets',                              -4400.0,    -3500.0,    '25.7%'),
+                ('ASSETS',                                      50.0,       250.0,      '-80.0%'),
+                ('Current Assets',                              -4150.0,    -3250.0,    '27.7%'),
                 ('Bank and Cash Accounts',                      -3300.0,    -3000.0,    '10.0%'),
-                ('code11 account11',                            -2000.0,    -2000.0,    '0.0%'),
+                ('code102 account102',                          -2000.0,    -2000.0,    '0.0%'),
                 ('code2 account2',                              -1300.0,    -1000.0,    '30.0%'),
                 ('Total Bank and Cash Accounts',                -3300.0,    -3000.0,    '10.0%'),
-                ('Receivables',                                 2100.0,     2000.0,     '5.0%'),
+                ('Receivables',                                 2350.0,     2250.0,     '4.4%'),
                 ('Current Assets',                              400.0,      0.0,        'n/a'),
                 ('Prepayments',                                 -3600.0,    -2500.0,    '44.0%'),
-                ('Total Current Assets',                        -4400.0,    -3500.0,    '25.7%'),
+                ('Total Current Assets',                        -4150.0,    -3250.0,    '27.7%'),
                 ('Plus Fixed Assets',                           0.0,        0.0,        'n/a'),
                 ('Plus Non-current Assets',                     4200.0,     3500.0,     '20.0%'),
-                ('Total ASSETS',                                -200.0,     0.0,        'n/a'),
+                ('Total ASSETS',                                50.0,       250.0,      '-80.0%'),
 
                 ('LIABILITIES',                                 -200.0,     0.0,        'n/a'),
                 ('Current Liabilities',                         -200.0,     0.0,        'n/a'),
@@ -277,18 +276,18 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Plus Non-current Liabilities',                0.0,        0.0,        'n/a'),
                 ('Total LIABILITIES',                           -200.0,     0.0,        'n/a'),
 
-                ('EQUITY',                                      0.0,        0.0,        'n/a'),
-                ('Unallocated Earnings',                        -800.0,     0.0,        'n/a'),
-                ('Current Year Unallocated Earnings',           -800.0,     0.0,        'n/a'),
-                ('Current Year Earnings',                       0.0,        0.0,        'n/a'),
+                ('EQUITY',                                      250.0,      250.0,      '0.0%'),
+                ('Unallocated Earnings',                        -550.0,     250.0,      '-320.0%'),
+                ('Current Year Unallocated Earnings',           -800.0,     250.0,      '-420.0%'),
+                ('Current Year Earnings',                       0.0,        250.0,      '-100.0%'),
                 ('Current Year Allocated Earnings',             -800.0,     0.0,        'n/a'),
-                ('Total Current Year Unallocated Earnings',     -800.0,     0.0,        'n/a'),
-                ('Previous Years Unallocated Earnings',         0.0,        0.0,        'n/a'),
-                ('Total Unallocated Earnings',                  -800.0,     0.0,        'n/a'),
+                ('Total Current Year Unallocated Earnings',     -800.0,     250.0,      '-420.0%'),
+                ('Previous Years Unallocated Earnings',         250.0,      0.0,        'n/a'),
+                ('Total Unallocated Earnings',                  -550.0,     250.0,      '-320.0%'),
                 ('Retained Earnings',                           800.0,      0.0,        'n/a'),
-                ('Total EQUITY',                                0.0,        0.0,        'n/a'),
+                ('Total EQUITY',                                250.0,      250.0,      '0.0%'),
 
-                ('LIABILITIES + EQUITY',                        -200.0,     0.0,        'n/a'),
+                ('LIABILITIES + EQUITY',                        50.0,       250.0,      '-80.0%'),
             ],
         )
 
@@ -298,7 +297,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             [   0,                                              1,          2,          3],
             [
                 ('Bank and Cash Accounts',                      -3300.0,    -3000.0,    '10.0%'),
-                ('code11 account11',                            -2000.0,    -2000.0,    '0.0%'),
+                ('code102 account102',                          -2000.0,    -2000.0,    '0.0%'),
                 ('code2 account2',                              -1300.0,    -1000.0,    '30.0%'),
                 ('Total Bank and Cash Accounts',                -3300.0,    -3000.0,    '10.0%'),
             ],
@@ -321,19 +320,19 @@ class TestFinancialReport(TestAccountReportsCommon):
             lines,
             [   0,                                          1,                  2,                  3,                  4,                  5,                  6],
             [
-                ('ASSETS',                                  4500.0,             1000.0,             1150.0,             4500.0,             1000.0,             0.0),
-                ('Current Assets',                          1000.0,             1000.0,             450.0,              1000.0,             1000.0,             0.0),
+                ('ASSETS',                                  4500.0,             1250.0,             1150.0,             4500.0,             1250.0,             0.0),
+                ('Current Assets',                          1000.0,             1250.0,             450.0,              1000.0,             1250.0,             0.0),
                 ('Bank and Cash Accounts',                  0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Receivables',                             1000.0,             1000.0,             50.0,               1000.0,             1000.0,             0.0),
-                ('code0 account0',                          0.0,                1000.0,             50.0,               0.0,                1000.0,             0.0),
-                ('code9 account9',                          1000.0,             0.0,                0.0,                1000.0,             0.0,                0.0),
-                ('Total Receivables',                       1000.0,             1000.0,             50.0,               1000.0,             1000.0,             0.0),
+                ('Receivables',                             1000.0,             1250.0,             50.0,               1000.0,             1250.0,             0.0),
+                ('code0 account0',                          0.0,                1250.0,             50.0,               0.0,                1250.0,             0.0),
+                ('code100 account100',                      1000.0,             0.0,                0.0,                1000.0,             0.0,                0.0),
+                ('Total Receivables',                       1000.0,             1250.0,             50.0,               1000.0,             1250.0,             0.0),
                 ('Current Assets',                          0.0,                0.0,                400.0,              0.0,                0.0,                0.0),
                 ('Prepayments',                             0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Total Current Assets',                    1000.0,             1000.0,             450.0,              1000.0,             1000.0,             0.0),
+                ('Total Current Assets',                    1000.0,             1250.0,             450.0,              1000.0,             1250.0,             0.0),
                 ('Plus Fixed Assets',                       0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
                 ('Plus Non-current Assets',                 3500.0,             0.0,                700.0,              3500.0,             0.0,                0.0),
-                ('Total ASSETS',                            4500.0,             1000.0,             1150.0,             4500.0,             1000.0,             0.0),
+                ('Total ASSETS',                            4500.0,             1250.0,             1150.0,             4500.0,             1250.0,             0.0),
 
                 ('LIABILITIES',                             0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
                 ('Current Liabilities',                     0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
@@ -343,18 +342,18 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Plus Non-current Liabilities',            0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
                 ('Total LIABILITIES',                       0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
 
-                ('EQUITY',                                  0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Unallocated Earnings',                    0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Current Year Unallocated Earnings',       0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Current Year Earnings',                   0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
+                ('EQUITY',                                  0.0,                250.0,              0.0,                0.0,                250.0,              0.0),
+                ('Unallocated Earnings',                    0.0,                250.0,              0.0,                0.0,                250.0,              0.0),
+                ('Current Year Unallocated Earnings',       0.0,                0.0,                0.0,                0.0,                250.0,              0.0),
+                ('Current Year Earnings',                   0.0,                0.0,                0.0,                0.0,                250.0,              0.0),
                 ('Current Year Allocated Earnings',         0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Total Current Year Unallocated Earnings', 0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Previous Years Unallocated Earnings',     0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Total Unallocated Earnings',              0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
+                ('Total Current Year Unallocated Earnings', 0.0,                0.0,                0.0,                0.0,                250.0,              0.0),
+                ('Previous Years Unallocated Earnings',     0.0,                250.0,              0.0,                0.0,                0.0,                0.0),
+                ('Total Unallocated Earnings',              0.0,                250.0,              0.0,                0.0,                250.0,              0.0),
                 ('Retained Earnings',                       0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
-                ('Total EQUITY',                            0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
+                ('Total EQUITY',                            0.0,                250.0,              0.0,                0.0,                250.0,              0.0),
 
-                ('LIABILITIES + EQUITY',                    0.0,                0.0,                0.0,                0.0,                0.0,                0.0),
+                ('LIABILITIES + EQUITY',                    0.0,                250.0,              0.0,                0.0,                250.0,              0.0),
             ],
         )
 
@@ -362,10 +361,10 @@ class TestFinancialReport(TestAccountReportsCommon):
             self.report._get_lines(options, line_id=line_id),
             [   0,                                          1,                  2,                  3,                  4,                  5,                  6],
             [
-                ('Receivables',                             1000.0,             1000.0,             50.0,               1000.0,             1000.0,             0.0),
-                ('code0 account0',                          0.0,                1000.0,             50.0,               0.0,                1000.0,             0.0),
-                ('code9 account9',                          1000.0,             0.0,                0.0,                1000.0,             0.0,                0.0),
-                ('Total Receivables',                       1000.0,             1000.0,             50.0,               1000.0,             1000.0,             0.0),
+                ('Receivables',                             1000.0,             1250.0,             50.0,               1000.0,             1250.0,             0.0),
+                ('code0 account0',                          0.0,                1250.0,             50.0,               0.0,                1250.0,             0.0),
+                ('code100 account100',                      1000.0,             0.0,                0.0,                1000.0,             0.0,                0.0),
+                ('Total Receivables',                       1000.0,             1250.0,             50.0,               1000.0,             1250.0,             0.0),
             ],
         )
 

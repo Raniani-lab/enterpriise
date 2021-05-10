@@ -63,7 +63,7 @@ This feature is only supported/useful in spanish MOD347 report.""")
                 'date_to': fields.Date.to_string(from_fy_dates['date_to']),
                 'mode': 'range',
             })
-            fy_results = super()._compute_amls_results([fy_options], sign=1)
+            fy_results = super()._compute_amls_results([fy_options], self, sign=1)
 
             # Compute records to exclude per period.
             ids_to_exclude = []
@@ -79,14 +79,14 @@ This feature is only supported/useful in spanish MOD347 report.""")
                 new_options_list.append(options)
         return new_options_list
 
-    def _compute_amls_results(self, options_list, sign=1):
+    def _compute_amls_results(self, options_list, calling_financial_report, sign=1):
         # OVERRIDE to filter out lines that are under the threshold given by the 'l10n_es_mod347_threshold' field.
         if self.l10n_es_mod347_threshold:
             options_list = self._get_options_with_threshold(options_list)
-        return super()._compute_amls_results(options_list, sign=sign)
+        return super()._compute_amls_results(options_list, calling_financial_report, sign=sign)
 
-    def _compute_sum(self, options_list):
+    def _compute_sum(self, options_list, calling_financial_report):
         # OVERRIDE to filter out lines that are under the threshold given by the 'l10n_es_mod347_threshold' field.
         if self.l10n_es_mod347_threshold:
             options_list = self._get_options_with_threshold(options_list)
-        return super()._compute_sum(options_list)
+        return super()._compute_sum(options_list, calling_financial_report)

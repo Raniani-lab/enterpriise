@@ -270,90 +270,139 @@ class AccountReport(models.AbstractModel):
         return self._get_dates_period(options, date_from, date_to, mode, period_type=period_type, strict_range=strict_range)
 
     def _init_filter_date(self, options, previous_options=None):
+        """ Initialize the 'date' options key.
+
+        :param options:             The current report options to build.
+        :param previous_options:    The previous options coming from another report.
+        """
         if self.filter_date is None:
             return
 
         previous_date = (previous_options or {}).get('date', {})
+        previous_mode = previous_date.get('mode')
+        previous_filter = previous_date.get('filter')
 
-        # Default values.
-        mode = previous_date.get('mode') or self.filter_date.get('mode', 'range')
-        options_filter = previous_date.get('filter') or self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
-        date_from = fields.Date.to_date(previous_date.get('date_from') or self.filter_date.get('date_from'))
-        date_to = fields.Date.to_date(previous_date.get('date_to') or self.filter_date.get('date_to'))
-        strict_range = previous_date.get('strict_range', False)
+        default_filter = self.filter_date['filter']
+        options_mode = self.filter_date['mode']
+        options_filter = previous_filter or default_filter
+        options_strict_range = self.filter_date.get('strict_range', False)
+        date_from = date_to = period_type = False
 
-        # Create date option for each company.
-        period_type = False
-        if 'today' in options_filter:
-            date_to = fields.Date.context_today(self)
-            date_from = date_utils.get_month(date_to)[0]
-        elif 'month' in options_filter:
-            date_from, date_to = date_utils.get_month(fields.Date.context_today(self))
-            period_type = 'month'
-        elif 'quarter' in options_filter:
-            date_from, date_to = date_utils.get_quarter(fields.Date.context_today(self))
-            period_type = 'quarter'
-        elif 'year' in options_filter:
-            company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.context_today(self))
-            date_from = company_fiscalyear_dates['date_from']
-            date_to = company_fiscalyear_dates['date_to']
-        elif not date_from:
-            # options_filter == 'custom' && mode == 'single'
-            date_from = date_utils.get_month(date_to)[0]
+        # 'today' is not managed in 'range' mode.
+        if previous_mode == 'single' and options_mode == 'range' and previous_filter == 'today':
+            options_filter = 'this_year'
 
-        options['date'] = self._get_dates_period(options, date_from, date_to, mode, period_type=period_type, strict_range=strict_range)
+        # Try to retrieve dates from previous options.
+        if not previous_filter or previous_filter == 'custom':
+            custom_date_from = previous_date.get('date_from')
+            custom_date_to = previous_date.get('date_to')
+            if custom_date_to or custom_date_from:
+                # Ensure the integrity of the custom filter.
+                date_to = fields.Date.from_string(custom_date_to or custom_date_from)
+                date_from = fields.Date.from_string(custom_date_from) if custom_date_from else date_utils.get_month(date_to)[0]
+            elif previous_filter == 'custom':
+                # Failed to propagate the custom filter.
+                options_filter = default_filter
+
+        # Compute 'date_from' / 'date_to'.
+        if not date_from or not date_to:
+            if options_filter == 'today':
+                date_to = fields.Date.context_today(self)
+                date_from = date_utils.get_month(date_to)[0]
+            elif 'month' in options_filter:
+                date_from, date_to = date_utils.get_month(fields.Date.context_today(self))
+                period_type = 'month'
+            elif 'quarter' in options_filter:
+                date_from, date_to = date_utils.get_quarter(fields.Date.context_today(self))
+                period_type = 'quarter'
+            elif 'year' in options_filter:
+                company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.context_today(self))
+                date_from = company_fiscalyear_dates['date_from']
+                date_to = company_fiscalyear_dates['date_to']
+            elif options_filter == 'custom':
+                custom_date_from = self.filter_date.get('date_from')
+                custom_date_to = self.filter_date.get('date_to')
+                date_to = fields.Date.from_string(custom_date_to or custom_date_from)
+                date_from = fields.Date.from_string(custom_date_from) if custom_date_from else date_utils.get_month(date_to)[0]
+
+        options['date'] = self._get_dates_period(
+            options,
+            date_from,
+            date_to,
+            options_mode,
+            period_type=period_type,
+            strict_range=options_strict_range,
+        )
         if 'last' in options_filter:
             options['date'] = self._get_dates_previous_period(options, options['date'])
         options['date']['filter'] = options_filter
 
     def _init_filter_comparison(self, options, previous_options=None):
+        """ Initialize the 'comparison' options key.
+
+        This filter must be loaded after the 'date' filter.
+
+        :param options:             The current report options to build.
+        :param previous_options:    The previous options coming from another report.
+        """
         if self.filter_comparison is None or not options.get('date'):
             return
 
-        cmp_filter = self.filter_comparison and self.filter_comparison.get('filter', 'no_comparison')
-        number_period = self.filter_comparison and self.filter_comparison.get('number_period', 1)
-        date_from = self.filter_comparison and self.filter_comparison.get('date_from')
-        date_to = self.filter_comparison and self.filter_comparison.get('date_to')
+        previous_comparison = (previous_options or {}).get('comparison', {})
+        previous_filter = previous_comparison.get('filter')
 
-        # Copy value from previous_options.
-        previous_value = previous_options and previous_options.get('comparison')
-        if previous_value:
-            cmp_filter = previous_value.get('filter') or cmp_filter
-            # Copy dates if filter is custom.
-            if cmp_filter == 'custom':
-                if previous_value['date_from'] is not None:
-                    date_from = previous_value['date_from']
-                if previous_value['date_to'] is not None:
-                    date_to = previous_value['date_to']
+        default_filter = self.filter_comparison.get('filter', 'no_comparison')
+        options_filter = previous_filter or default_filter
+        number_period = previous_comparison.get('number_period') or self.filter_comparison.get('number_period', 1)
+        strict_range = options['date']['strict_range']
+        date_from = date_to = False
 
-            # Copy the number of periods.
-            if previous_value.get('number_period') and previous_value['number_period'] > 1:
-                number_period = previous_value['number_period']
-
-        options['comparison'] = {'filter': cmp_filter, 'number_period': number_period}
-        options['comparison']['date_from'] = date_from
-        options['comparison']['date_to'] = date_to
-        options['comparison']['periods'] = []
-
-        if cmp_filter == 'no_comparison':
-            return
-
-        if cmp_filter == 'custom':
+        # Try to adapt the 'custom' filter.
+        if previous_filter == 'custom':
+            date_from = previous_comparison.get('date_from')
+            date_to = previous_comparison.get('date_to')
             number_period = 1
 
-        previous_period = options['date']
-        for index in range(0, number_period):
-            if cmp_filter == 'previous_period':
-                period_vals = self._get_dates_previous_period(options, previous_period)
-            elif cmp_filter == 'same_last_year':
-                period_vals = self._get_dates_previous_year(options, previous_period)
+        if not date_from or not date_to:
+            if options_filter == 'custom':
+                date_from = self.filter_comparison.get('date_from')
+                date_to = self.filter_comparison.get('date_to')
             else:
-                date_from_obj = fields.Date.from_string(date_from)
-                date_to_obj = fields.Date.from_string(date_to)
-                strict_range = previous_period.get('strict_range', False)
-                period_vals = self._get_dates_period(options, date_from_obj, date_to_obj, previous_period['mode'], strict_range=strict_range)
-            options['comparison']['periods'].append(period_vals)
-            previous_period = period_vals
+                date_from = options['date']['date_from']
+                date_to = options['date']['date_to']
+
+        options['comparison'] = {
+            'filter': options_filter,
+            'number_period': number_period,
+            'date_from': date_from,
+            'date_to': date_to,
+            'periods': [],
+        }
+        date_from_obj = fields.Date.from_string(date_from)
+        date_to_obj = fields.Date.from_string(date_to)
+
+        if options_filter == 'custom':
+            options['comparison']['periods'].append(self._get_dates_period(
+                options,
+                date_from_obj,
+                date_to_obj,
+                options['date']['mode'],
+                strict_range=strict_range,
+            ))
+        elif options_filter in ('previous_period', 'same_last_year'):
+            previous_period = options['date']
+            for dummy in range(0, number_period):
+                if options_filter == 'previous_period':
+                    period_vals = self._get_dates_previous_period(options, previous_period)
+                elif options_filter == 'same_last_year':
+                    period_vals = self._get_dates_previous_year(options, previous_period)
+                else:
+                    date_from_obj = fields.Date.from_string(date_from)
+                    date_to_obj = fields.Date.from_string(date_to)
+                    strict_range = previous_period.get('strict_range', False)
+                    period_vals = self._get_dates_period(options, date_from_obj, date_to_obj, previous_period['mode'], strict_range=strict_range)
+                options['comparison']['periods'].append(period_vals)
+                previous_period = period_vals
 
         if len(options['comparison']['periods']) > 0:
             options['comparison'].update(options['comparison']['periods'][0])
@@ -979,22 +1028,16 @@ class AccountReport(models.AbstractModel):
         return action
 
     def open_general_ledger(self, options, params=None):
-        if not params:
-            params = {}
-        ctx = self.env.context.copy()
-        ctx.pop('id', '')
-        account_id = self._get_caret_option_target_id(params.get('id', 0))
-        ctx['default_filter_accounts'] = self.env['account.account'].browse(account_id).code or ''
-        action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_general_ledger")
-        options['unfolded_lines'] = ['account_%s' % account_id]
-        options['unfold_all'] = False
-        if 'date' in options and options['date']['mode'] == 'single':
-            # If we are coming from a report with a single date, we need to change the options to ranged
-            options['date']['mode'] = 'range'
-            options['date']['period_type'] = 'fiscalyear'
-        ctx.update({'model': 'account.general.ledger'})
-        action.update({'params': {'options': options, 'context': ctx, 'ignore_session': 'read'}})
-        return action
+        if params.get('id'):
+            account_id = self._get_caret_option_target_id(params.get('id', 0))
+            options = dict(options)
+            options['unfolded_lines'] = ['account_%s' % account_id]
+        action_vals = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')
+        action_vals['params'] = {
+            'options': options,
+            'ignore_session': 'read',
+        }
+        return action_vals
 
     def _get_caret_option_target_id(self, line_id):
         """ Retrieve the target model's id for lines obtained from a financial

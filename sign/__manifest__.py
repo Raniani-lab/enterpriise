@@ -70,7 +70,6 @@ Let your customers follow the signature process easily.
             'sign/static/src/components/activity/activity.js',
             'sign/static/src/components/sign_request/sign_request.js',
             'sign/static/src/scss/sign_backend.scss',
-            'sign/static/src/css/iframe.css',
         ],
         'web.assets_frontend': [
             'sign/static/src/scss/sign_frontend.scss',

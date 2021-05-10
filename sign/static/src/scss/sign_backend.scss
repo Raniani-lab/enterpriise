@@ -186,6 +186,61 @@
         top: 159px !important;
         left: 4px !important;
     }
+
+    .o_sign_item_custom_popover{
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .o_input {
+            padding: 5px;
+        }
+
+        .o_sign_responsible_select {
+            display: block;
+            position: relative;
+        }
+    }
+
+    .popover {
+        .o_sign_delete_field_button {
+            float: right;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .o_sign_delete_field_button.fa-trash {
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity ease 250ms;
+            margin-top: 8px;
+        }
+        :hover > .o_sign_delete_field_button.fa-trash {
+            opacity: 1.0;
+        }
+    }
+
+    .o_sign_close_button {
+        padding: 0;
+        background-color: transparent;
+        border: 0;
+        float: right;
+        line-height: 1;
+        text-shadow: 0 1px 0 #FFFFFF;
+        opacity: .5;
+    }
+}
+
+.o_block_scroll {
+    overflow: hidden;
 }
 
 .o_kanban_view {

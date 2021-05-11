@@ -491,7 +491,7 @@ class AmazonAccount(models.Model):
             return {
                 'name': kwargs.get('description', ''),
                 'product_id': kwargs.get('product_id'),
-                'price_unit': _subtotal / _quantity,
+                'price_unit': _subtotal / _quantity if _quantity else 0,
                 'tax_id': [(6, 0, kwargs.get('tax_ids', []))],
                 'product_uom_qty': _quantity,
                 'discount': (kwargs.get('discount', 0) / _subtotal) * 100 if _subtotal else 0,

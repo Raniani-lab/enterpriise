@@ -232,8 +232,6 @@ class AccountEdiFormat(models.Model):
             }
             for tax_detail_vals in tax_detail_vals_list:
                 tax = tax_detail_vals['tax']
-                if tax.l10n_mx_tax_type == 'Exento':
-                    continue
 
                 tags = tax_detail_vals['tags']
                 if len(tags) == 1:

@@ -61,10 +61,10 @@
                                                 <t t-set="tax" t-value="tax_detail_vals['tax']"/>
                                                 <cfdi:Traslado
                                                     t-att-Base="format_float(tax_detail_vals['tax_base_amount_currency'], currency_precision)"
-                                                    t-att-Impuesto="tax_detail_vals['tax_name']"
+                                                    t-att-Impuesto="tax_detail_vals['tax_name'] or ('002' if tax.l10n_mx_tax_type == 'Exento' else False)"
                                                     t-att-TipoFactor="tax.l10n_mx_tax_type"
-                                                    t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"
-                                                    t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], 2)"/>
+                                                    t-att-TasaOCuota="format_float(tax.amount / 100.0, 6) if tax.l10n_mx_tax_type != 'Exento' else False"
+                                                    t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], 2) if tax.l10n_mx_tax_type != 'Exento' else False"/>
                                             </t>
                                         </cfdi:Traslados>
                                     </t>
@@ -103,11 +103,13 @@
                             <cfdi:Traslados>
                                 <t t-foreach="tax_detail_vals_list_transferred" t-as="tax_detail_vals">
                                     <t t-set="tax" t-value="tax_detail_vals['tax']"/>
-                                    <cfdi:Traslado
-                                        t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], currency_precision)"
-                                        t-att-Impuesto="tax_detail_vals['tax_name']"
-                                        t-att-TipoFactor="tax.l10n_mx_tax_type"
-                                        t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"/>
+                                    <t t-if="tax.l10n_mx_tax_type != 'Exento'">
+                                        <cfdi:Traslado
+                                            t-att-Importe="format_float(tax_detail_vals['tax_amount_currency'], currency_precision)"
+                                            t-att-Impuesto="tax_detail_vals['tax_name']"
+                                            t-att-TipoFactor="tax.l10n_mx_tax_type"
+                                            t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"/>
+                                    </t>
                                 </t>
                             </cfdi:Traslados>
                         </t>

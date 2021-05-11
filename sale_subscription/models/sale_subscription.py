@@ -87,7 +87,7 @@ class SaleSubscription(models.Model):
     user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one(
         'crm.team', 'Sales Team', change_default=True, default=_get_default_team,
-        check_company=True,
+        check_company=True, ondelete="set null", tracking=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
     invoice_count = fields.Integer(compute='_compute_invoice_count')
@@ -1379,7 +1379,7 @@ class SaleSubscriptionLog(models.Model):
         ('closed', 'Closed')], required=True, default='draft', help="Subscription stage category when the change occured")
 
     user_id = fields.Many2one('res.users', string='Salesperson')
-    team_id = fields.Many2one('crm.team', string='Sales Team')
+    team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")
     amount_signed = fields.Monetary(string='Change in MRR', readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True)
     amount_company_currency = fields.Monetary(

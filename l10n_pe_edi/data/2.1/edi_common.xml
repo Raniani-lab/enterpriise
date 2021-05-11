@@ -31,15 +31,17 @@
                     <cbc:TaxAmount
                             t-att-currencyID="line.currency_id.name"
                             t-esc="format_float(line.price_total - line.price_subtotal)"/>
-                        <cac:TaxSubtotal t-foreach="line_vals['tax_detail_vals_list']" t-as="tax_detail_vals">
+                        <cac:TaxSubtotal
+                            t-foreach="tax_details['invoice_line_tax_details'][line]['tax_details'].values()"
+                            t-as="tax_detail_vals">
                             <t t-set="tax" t-value="tax_detail_vals['tax']"/>
                             <cbc:TaxableAmount
                                     t-if="tax.tax_group_id.l10n_pe_edi_code != 'ICBPER'"
                                     t-att-currencyID="line.currency_id.name"
-                                    t-esc="format_float(tax_detail_vals['tax_base_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="line.currency_id.name"
-                                    t-esc="format_float(tax_detail_vals['tax_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'])"/>
                             <cbc:BaseUnitMeasure
                                     t-if="tax.tax_group_id.l10n_pe_edi_code == 'ICBPER'"
                                     t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
@@ -165,7 +167,7 @@
                         <cac:PayeeFinancialAccount>
                             <cbc:ID t-esc="spot['PayeeFinancialAccount']"/>
                         </cac:PayeeFinancialAccount>
-                    
+
                     </cac:PaymentMeans>
                     <cac:PaymentTerms>
                         <cbc:ID t-esc="spot['ID']"/>
@@ -183,19 +185,18 @@
                     <cbc:TaxAmount
                             t-att-currencyID="record.currency_id.name"
                             t-esc="format_float(record.amount_tax)"/>
-                        <cac:TaxSubtotal t-foreach="tax_detail_vals_list_grouped" t-as="tax_detail_vals">
-                            <t t-set="tax" t-value="tax_detail_vals['tax']"/>
+                        <cac:TaxSubtotal t-foreach="tax_details_grouped['tax_details'].values()" t-as="tax_detail_vals">
                             <cbc:TaxableAmount
                                     t-att-currencyID="record.currency_id.name"
-                                    t-esc="format_float(tax_detail_vals['tax_base_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="record.currency_id.name"
-                                    t-esc="format_float(tax_detail_vals['tax_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'])"/>
                             <cac:TaxCategory>
                                 <cac:TaxScheme>
-                                    <cbc:ID t-esc="tax.l10n_pe_edi_tax_code"/>
-                                    <cbc:Name t-esc="tax.tax_group_id.l10n_pe_edi_code"/>
-                                    <cbc:TaxTypeCode t-esc="tax.l10n_pe_edi_international_code"/>
+                                    <cbc:ID t-esc="tax_detail_vals['l10n_pe_edi_tax_code']"/>
+                                    <cbc:Name t-esc="tax_detail_vals['l10n_pe_edi_code']"/>
+                                    <cbc:TaxTypeCode t-esc="tax_detail_vals['l10n_pe_edi_international_code']"/>
                                 </cac:TaxScheme>
                             </cac:TaxCategory>
                         </cac:TaxSubtotal>

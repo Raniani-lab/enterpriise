@@ -217,42 +217,35 @@ class AccountEdiFormat(models.Model):
 
         # ==== Tax details ====
 
-        def dispatch_tax_details(tax_detail_vals_list):
-            ''' Helper to dispatch the tax details between transferred and withholding
-            where transferred are regular taxes and withholding taxes are negative ones.
+        def get_tax_cfdi_name(tax_detail_vals):
+            tags = set()
+            for detail in tax_detail_vals['group_tax_details']:
+                for tag in detail['tax_repartition_line_id'].tag_ids:
+                    tags.add(tag)
+            tags = list(tags)
+            if len(tags) == 1:
+                return {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(tags[0].name)
+            elif tax_detail_vals['tax'].l10n_mx_tax_type == 'Exento':
+                return '002'
+            else:
+                return None
 
-            :param tax_detail_vals_list: The tax detail dictionary aggregated per tax.
-            :return: A Python dictionary (see below).
-            '''
-            vals = {
-                'tax_detail_vals_list_transferred': [],
-                'tax_detail_vals_list_withholding': [],
-                'total_tax_transferred': 0.0,
-                'total_tax_withholding': 0.0,
-            }
-            for tax_detail_vals in tax_detail_vals_list:
-                tax = tax_detail_vals['tax']
+        def filter_tax_transferred(tax_values):
+            return tax_values['tax_id'].amount >= 0.0
 
-                tags = tax_detail_vals['tags']
-                if len(tags) == 1:
-                    tax_detail_vals['tax_name'] = {'ISR': '001', 'IVA': '002', 'IEPS': '003'}.get(tags.name)
-                else:
-                    tax_detail_vals['tax_name'] = None
+        def filter_tax_withholding(tax_values):
+            return tax_values['tax_id'].amount < 0.0
 
-                if tax.amount >= 0.0:
-                    vals['tax_detail_vals_list_transferred'].append(tax_detail_vals)
-                    vals['total_tax_transferred'] += tax_detail_vals['tax_amount_currency']
-                else:
-                    vals['tax_detail_vals_list_withholding'].append(tax_detail_vals)
-                    vals['total_tax_withholding'] += tax_detail_vals['tax_amount_currency']
-            return vals
+        cfdi_values.update({
+            'get_tax_cfdi_name': get_tax_cfdi_name,
+            'tax_details_transferred': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred),
+            'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding),
+        })
 
-        # For each line separately.
-        for line_vals in cfdi_values['invoice_line_vals_list']:
-            line_vals.update(dispatch_tax_details(line_vals['tax_detail_vals_list']))
-
-        # For the whole invoice.
-        cfdi_values.update(dispatch_tax_details(cfdi_values['tax_detail_vals_list']))
+        cfdi_values.update({
+            'has_tax_details_transferred_no_exento': any(x['tax'].l10n_mx_tax_type != 'Exento' for x in cfdi_values['tax_details_transferred']['tax_details'].values()),
+            'has_tax_details_withholding_no_exento': any(x['tax'].l10n_mx_tax_type != 'Exento' for x in cfdi_values['tax_details_withholding']['tax_details'].values()),
+        })
 
         return cfdi_values
 

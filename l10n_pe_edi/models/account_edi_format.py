@@ -180,26 +180,17 @@ class AccountEdiFormat(models.Model):
             line = line_vals['line']
             line_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(line_vals['price_unit_after_discount']) else '02'
 
-            for tax_detail_vals in line_vals['tax_detail_vals_list']:
-                tax_detail_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(tax_detail_vals['tax_amount_currency']) else '02'
+        # Tax details.
+        def grouping_key_generator(tax_values):
+            tax = tax_values['tax_id']
+            return {
+                'l10n_pe_edi_code': tax.tax_group_id.l10n_pe_edi_code,
+                'l10n_pe_edi_international_code': tax.l10n_pe_edi_international_code,
+                'l10n_pe_edi_tax_code': tax.l10n_pe_edi_tax_code,
+            }
 
-        tax_details_custom_gb = {}
-        for tax_detail_vals in values['tax_detail_vals_list']:
-            tax = tax_detail_vals['tax']
-
-            tuple_key = (
-                tax.tax_group_id.l10n_pe_edi_code,
-                tax.l10n_pe_edi_international_code,
-                tax.l10n_pe_edi_tax_code,
-            )
-            tax_details_custom_gb.setdefault(tuple_key, {
-                **tax_detail_vals,
-                'tax_base_amount_currency': 0.0,
-                'tax_amount_currency': 0.0,
-            })
-            tax_details_custom_gb[tuple_key]['tax_base_amount_currency'] += tax_detail_vals['tax_base_amount_currency']
-            tax_details_custom_gb[tuple_key]['tax_amount_currency'] += tax_detail_vals['tax_amount_currency']
-        values['tax_detail_vals_list_grouped'] = list(tax_details_custom_gb.values())
+        values['tax_details'] = invoice._prepare_edi_tax_details()
+        values['tax_details_grouped'] = invoice._prepare_edi_tax_details(grouping_key_generator=grouping_key_generator)
 
         return values
 

@@ -54,8 +54,9 @@ class ReportPartnerLedger(models.AbstractModel):
         domain = super(ReportPartnerLedger, self)._get_options_domain(options)
         if options.get('unreconciled'):
             domain.append(('full_reconcile_id', '=', False))
-        if self.env.context.get('model') == 'account.partner.ledger':
-            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('ref', 'ilike', 'EXCH%')]
+        exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
+        if exch_code:
+            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id.id', 'in', exch_code.ids)]
         domain.append(('account_id.internal_type', 'in', [t['id'] for t in self._get_options_account_type(options)]))
 
         return domain

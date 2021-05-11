@@ -4,16 +4,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:57+0000\n"
-"PO-Revision-Date: 2021-01-12 07:57+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: data_merge
+#: code:addons/data_merge/models/data_merge_model.py:0
+#, python-format
+msgid "%s (copy)"
+msgstr ""
 
 #. module: data_merge
 #. openerp-web
@@ -31,14 +37,19 @@ msgstr ""
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
+msgid ""
+"<span attrs=\"{'invisible': [('custom_merge_method', '=', False)]}\">Model "
+"specific</span>"
+msgstr ""
+
+#. module: data_merge
+#: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "<span class=\"mr-1\">Every</span>"
 msgstr ""
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
-msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible': [('custom_merge_method', "
-"'=', False)]}\">Model specific</span>"
+msgid "<span class=\"oe_inline\">%</span>"
 msgstr ""
 
 #. module: data_merge

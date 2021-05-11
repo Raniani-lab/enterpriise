@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -141,7 +141,7 @@ msgid "C - Medical Express"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
-#: model:ir.model.fields.selection,name:delivery_dhl.selection__product_packaging__package_carrier_type__dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__stock_package_type__package_carrier_type__dhl
 msgid "DHL"
 msgstr ""
 
@@ -177,7 +177,7 @@ msgid "DHL Configuration"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
 msgid "DHL Package Type"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__display_name
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__display_name
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__id
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__id
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__id
 msgid "ID"
 msgstr ""
 
@@ -345,7 +345,7 @@ msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier____last_update
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging____last_update
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -401,11 +401,6 @@ msgid "Pounds"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Product Packaging"
-msgstr ""
-
-#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr ""
@@ -450,6 +445,11 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
 msgid "Shipping Methods"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_stock_package_type
+msgid "Stock package type"
 msgstr ""
 
 #. module: delivery_dhl

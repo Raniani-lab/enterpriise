@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,6 +44,11 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "% Ownership"
+msgstr ""
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.header_cell_template
+msgid "%<br/>"
 msgstr ""
 
 #. module: account_consolidation
@@ -98,6 +103,13 @@ msgstr ""
 msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                    Journals:"
+msgstr ""
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
+msgid "<span class=\"o_form_label oe_inline\">%</span>"
 msgstr ""
 
 #. module: account_consolidation
@@ -861,11 +873,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_partner_ids
 msgid "Followers (Partners)"
 msgstr ""
@@ -897,6 +904,11 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Groups"
+msgstr ""
+
+#. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: account_consolidation

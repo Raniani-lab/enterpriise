@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:30+0000\n"
+"PO-Revision-Date: 2021-05-11 09:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -102,13 +102,6 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add an image"
-msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
-#, python-format
-msgid "Add it to your feed."
 msgstr ""
 
 #. module: social
@@ -212,14 +205,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
-msgid "Choose the type of <b>stream</b> you would like to add."
+msgid "Choose which <b>account</b> you would like to link first."
 msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
 #, python-format
-msgid "Choose which <b>account</b> you would like to link first."
+msgid "Click to refresh."
 msgstr ""
 
 #. module: social
@@ -256,6 +249,13 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Connecting Problem"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,help:social.field_social_live_post__message
+msgid ""
+"Content of the social post message that is post-processed (links are "
+"shortened, UTMs, ...)"
 msgstr ""
 
 #. module: social
@@ -438,12 +438,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: social
-#: model:ir.model.fields,field_description:social.field_social_media__message_channel_ids
-#: model:ir.model.fields,field_description:social.field_social_post__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_partner_ids
 #: model:ir.model.fields,field_description:social.field_social_post__message_partner_ids
 msgid "Followers (Partners)"
@@ -486,6 +480,12 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_account_stats
 msgid "Has Account Stats"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,field_description:social.field_social_media__has_message
+#: model:ir.model.fields,field_description:social.field_social_post__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: social
@@ -584,6 +584,13 @@ msgid ""
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#, python-format
+msgid "It will appear in the Feed once it has posts to display."
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__stream_post_image_urls
 msgid ""
 "JSON array capturing the URLs of the images to make it easy to display them "
@@ -633,14 +640,6 @@ msgstr ""
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Let's <b>connect</b> to Facebook, LinkedIn or Twitter."
-msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
-#, python-format
-msgid ""
-"Let's add <b>another stream</b> to get a better overview of this channel."
 msgstr ""
 
 #. module: social
@@ -761,6 +760,7 @@ msgid "Medium Name"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_live_post__message
 #: model:ir.model.fields,field_description:social.field_social_post__message
 #: model:ir.model.fields,field_description:social.field_social_stream_post__message
 msgid "Message"
@@ -825,9 +825,21 @@ msgstr ""
 
 #. module: social
 #. openerp-web
+#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#, python-format
+msgid "New content available."
+msgstr ""
+
+#. module: social
+#. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Next"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: social
@@ -979,7 +991,7 @@ msgstr ""
 #. module: social
 #: code:addons/social/models/social_post.py:0
 #, python-format
-msgid "Please specify a message and at least one account to post into."
+msgid "Please specify at least one account to post into (for post ID(s) %s)."
 msgstr ""
 
 #. module: social
@@ -1047,6 +1059,7 @@ msgid "Posting"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_stream__stream_post_ids
 #: model:ir.ui.menu,name:social.menu_social_post
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_kanban
@@ -1164,13 +1177,6 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
 msgid "Scheduled Date"
-msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/tours/social.js:0
-#, python-format
-msgid "Select the <b>account</b> you just added."
 msgstr ""
 
 #. module: social
@@ -1353,6 +1359,13 @@ msgid "Stories Trend"
 msgstr ""
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#, python-format
+msgid "Stream Added (%s)"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__stream_post_id
 msgid "Stream Post"
 msgstr ""
@@ -1405,6 +1418,12 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__calendar_date
 msgid "Technical field for the calendar view."
+msgstr ""
+
+#. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "The 'message' field is required for post ID %s"
 msgstr ""
 
 #. module: social

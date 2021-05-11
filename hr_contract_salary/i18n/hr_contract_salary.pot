@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -63,6 +63,11 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"o_stat_text\">Reviews</span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
+msgid "<span class=\"text-muted mr4 ml4\">|</span>"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -863,7 +868,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__monthly_yearly_costs
-msgid "Monthly Cost (FTE)"
+msgid "Monthly Cost (Real)"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -960,6 +965,20 @@ msgstr ""
 msgid ""
 "No signature template defined on the contract. Please contact the HR "
 "responsible."
+msgstr ""
+
+#. module: hr_contract_salary
+#. openerp-web
+#: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
+#, python-format
+msgid "Not a valid e-mail address"
+msgstr ""
+
+#. module: hr_contract_salary
+#. openerp-web
+#: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
+#, python-format
+msgid "Not a valid input in integer field"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1232,7 +1251,10 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__sequence
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__sequence
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_type__sequence
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__sequence
 msgid "Sequence"
 msgstr ""
@@ -1265,6 +1287,14 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_min
 msgid "Slider Min"
+msgstr ""
+
+#. module: hr_contract_salary
+#. openerp-web
+#: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
+#: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
+#, python-format
+msgid "Some required fields are not filled"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1365,16 +1395,12 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__monthly_yearly_costs
-msgid ""
-"Total monthly cost of the employee for the employer for a full time "
-"equivalent."
+msgid "Total real monthly cost of the employee for the employer."
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__final_yearly_costs
-msgid ""
-"Total yearly cost of the employee for the employer for a full time "
-"equivalent."
+msgid "Total real yearly cost of the employee for the employer."
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1446,7 +1472,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__final_yearly_costs
-msgid "Yearly Cost (FTE)"
+msgid "Yearly Cost (Real)"
 msgstr ""
 
 #. module: hr_contract_salary

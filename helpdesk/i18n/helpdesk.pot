@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:30+0000\n"
+"PO-Revision-Date: 2021-05-11 09:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -205,6 +205,11 @@ msgid ""
 msgstr ""
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
+msgid "<small>#</small>"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small><b>Close this ticket</b></small>"
 msgstr ""
@@ -219,6 +224,11 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
 msgid "<span class=\"o_stat_text\"> Tickets</span>"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "<span>days of inactivity</span>"
 msgstr ""
 
 #. module: helpdesk
@@ -244,6 +254,11 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<strong class=\"col-lg-2\">Reported on</strong>"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "<strong>After</strong>"
 msgstr ""
 
 #. module: helpdesk
@@ -500,6 +515,11 @@ msgid ""
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_ticket
+msgid "Automatic Closing"
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__assign_method
 msgid ""
 "Automatic assignment method for new tickets:\n"
@@ -620,6 +640,11 @@ msgid "Close date"
 msgstr ""
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid "Close inactive tickets automatically"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close the ticket"
 msgstr ""
@@ -663,6 +688,11 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__is_close
 msgid "Closing Stage"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__allow_portal_ticket_closing
+msgid "Closure by Customers"
 msgstr ""
 
 #. module: helpdesk
@@ -1082,12 +1112,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_channel_ids
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_partner_ids
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_partner_ids
 msgid "Followers (Partners)"
@@ -1169,6 +1193,12 @@ msgid "Has External Mail Server"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__has_message
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_reached_late
 msgid "Has SLA reached late"
 msgstr ""
@@ -1234,6 +1264,13 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket_type
 msgid "Helpdesk Ticket Type"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.actions.server,name:helpdesk.ir_cron_auto_close_ticket_ir_actions_server
+#: model:ir.cron,cron_name:helpdesk.ir_cron_auto_close_ticket
+#: model:ir.cron,name:helpdesk.ir_cron_auto_close_ticket
+msgid "Helpdesk Ticket: Automatically close the tickets"
 msgstr ""
 
 #. module: helpdesk
@@ -1355,6 +1392,23 @@ msgstr ""
 #: model:helpdesk.stage,name:helpdesk.stage_in_progress
 #, python-format
 msgid "In Progress"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__from_stage_ids
+msgid "In Stages"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_day
+msgid "Inactive Period(days)"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__from_stage_ids
+msgid ""
+"Inactive tickets in these stages will be automatically closed. Leave empty "
+"to take into account all the stages from the team."
 msgstr ""
 
 #. module: helpdesk
@@ -1575,6 +1629,11 @@ msgid "Minutes to reach given stage based on ticket creation date"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__to_stage_id
+msgid "Move to Stage"
+msgstr ""
+
+#. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:0
 #, python-format
@@ -1672,6 +1731,11 @@ msgstr ""
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Newest"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: helpdesk
@@ -1922,6 +1986,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_graph_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_pivot_analysis
 msgid "Performance Analysis"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__auto_close_day
+msgid "Period of inactivity after which tickets will be automatically closed."
 msgstr ""
 
 #. module: helpdesk
@@ -2450,6 +2519,13 @@ msgid "Stage Search"
 msgstr ""
 
 #. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__to_stage_id
+msgid ""
+"Stage to which inactive tickets will be automatically moved once the period "
+"of inactivity is reached."
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_stage_action
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__stage_ids
 #: model:ir.ui.menu,name:helpdesk.helpdesk_stage_menu
@@ -2852,18 +2928,8 @@ msgid "Ticket closed by the customer"
 msgstr ""
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__allow_portal_ticket_closing
-msgid "Ticket closing"
-msgstr ""
-
-#. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new
 msgid "Ticket created"
-msgstr ""
-
-#. module: helpdesk
-#: model:mail.message.subtype,description:helpdesk.mt_ticket_rated
-msgid "Ticket rated"
 msgstr ""
 
 #. module: helpdesk

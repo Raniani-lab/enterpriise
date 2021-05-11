@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 13:47+0000\n"
-"PO-Revision-Date: 2020-11-27 13:47+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -328,14 +328,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
@@ -357,6 +349,14 @@ msgstr ""
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Group By"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_check__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_point__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: quality
@@ -552,6 +552,12 @@ msgstr ""
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: quality

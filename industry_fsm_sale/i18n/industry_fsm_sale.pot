@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:37+0000\n"
-"PO-Revision-Date: 2021-02-18 14:37+0000\n"
+"POT-Creation-Date: 2021-05-11 09:32+0000\n"
+"PO-Revision-Date: 2021-05-11 09:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,12 +43,25 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
-msgid "An FSM project must be billed at task rate."
+msgid "An FSM project must be billed at task rate or employee rate."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
+msgid "Analytic Line"
 msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
 msgid "Billable"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/models/project_task.py:0
+#, python-format
+msgid ""
+"By saving this change, all timesheet entries will be linked to the selected "
+"Sales Order Item without distinction."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -109,8 +122,11 @@ msgid "Display Create Invoice Secondary"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__display_name
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__display_name
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__display_name
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__display_name
@@ -151,8 +167,11 @@ msgid "Hours"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence__id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings__id
@@ -208,8 +227,11 @@ msgid "Invoices"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_account_analytic_line____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product____last_update
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project____last_update
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task_recurrence____last_update
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_res_config_settings____last_update
@@ -249,13 +271,6 @@ msgid "No tasks found. Let's create one!"
 msgstr ""
 
 #. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
-#, python-format
-msgid "Please enter an integer value"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Price:"
 msgstr ""
@@ -269,6 +284,16 @@ msgstr ""
 #: model:ir.model,name:industry_fsm_sale.model_product_product
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Product"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
+msgid "Product Category"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_product_template
+msgid "Product Template"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -286,7 +311,20 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_project
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__project_id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__project_id
 msgid "Project"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_project_sale_line_employee_map
+msgid "Project Sales line, employee mapping"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__project_template_id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__project_template_id
+msgid "Project Template"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -309,6 +347,11 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_order_form_inherit_sale_project
 msgid "Related Task"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__sale_line_id
+msgid "Sale Order Item"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -343,6 +386,27 @@ msgid "Save your product."
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,help:industry_fsm_sale.field_product_product__project_id
+#: model:ir.model.fields,help:industry_fsm_sale.field_product_template__project_id
+msgid ""
+"Select a billable project on which tasks can be created. This setting must "
+"be set for each company."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,help:industry_fsm_sale.field_product_product__project_template_id
+#: model:ir.model.fields,help:industry_fsm_sale.field_product_template__project_template_id
+msgid ""
+"Select a billable project to be the skeleton of the new created project when"
+" selling the current product. Its stages and tasks will be duplicated."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__timesheet_product_id
+msgid "Service"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_task
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order__task_id
 msgid "Task"
@@ -361,6 +425,13 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
 msgid "The material can be allowed only when the task can be billed."
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
+#, python-format
+msgid "The set quantity is invalid"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -400,6 +471,11 @@ msgid "Track the material used to complete tasks"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
+msgid "Unit Price"
+msgstr ""
+
+#. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
@@ -411,4 +487,9 @@ msgstr ""
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to <b>go back to your task</b>."
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message
+msgid "Warning Message"
 msgstr ""

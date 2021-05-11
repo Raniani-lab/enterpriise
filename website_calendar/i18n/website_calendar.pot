@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 07:57+0000\n"
-"PO-Revision-Date: 2021-01-12 07:57+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,21 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:0
+#: code:addons/website_calendar/models/calendar_appointment_type.py:0
 #, python-format
 msgid " (copy)"
+msgstr ""
+
+#. module: website_calendar
+#: code:addons/website_calendar/controllers/main.py:0
+#, python-format
+msgid " * Email: %s"
+msgstr ""
+
+#. module: website_calendar
+#: code:addons/website_calendar/controllers/main.py:0
+#, python-format
+msgid " * Mobile: %s"
 msgstr ""
 
 #. module: website_calendar
@@ -43,31 +55,184 @@ msgid "(timezone:"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "+1 (650) 691-3277"
-msgstr ""
-
-#. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:0
 #, python-format
 msgid ", All Day"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "-- select a country --"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
+#: model:mail.template,body_html:website_calendar.appointment_booked_mail_template
 msgid ""
-"<br/>\n"
-"                            It's too late to cancel online, please contact the attendees another way if you really can't make it."
+"<div>\n"
+"    % set colors = {'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}\n"
+"    % set recurrent = object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')\n"
+"    <p>\n"
+"    Appointment booked for ${object.appointment_type_id.name} with ${object.partner_id.name}.\n"
+"    </p>\n"
+"        <div style=\"text-align: center; margin: 16px 0px 16px 0px;\">\n"
+"        <a href=\"/calendar/meeting/join?token=${object.access_token}\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">\n"
+"            Join</a>\n"
+"        <a href=\"/web?#id=${object.id}&amp;view_type=form&amp;model=calendar.event\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">\n"
+"            View</a>\n"
+"    </div>\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n"
+"            <td width=\"130px;\">\n"
+"                <div style=\"border-top-left-radius: 3px; border-top-right-radius: 3px; font-size: 12px; border-collapse: separate; text-align: center; font-weight: bold; color: #ffffff; min-height: 18px; background-color: #875A7B; border: 1px solid #875A7B;\">\n"
+"                    ${format_datetime(dt=object.start, tz=object.mail_tz if not object.allday else None, dt_format=\"EEEE\", lang_code=object.env.lang)}\n"
+"                </div>\n"
+"                <div style=\"font-size: 48px; min-height: auto; font-weight: bold; text-align: center; color: #5F5F5F; background-color: #F8F8F8; border: 1px solid #875A7B;\">\n"
+"                    ${str(object.start.day)}\n"
+"                </div>\n"
+"                <div style=\"font-size: 12px; text-align: center; font-weight: bold; color: #ffffff; background-color: #875A7B;\">\n"
+"                    ${format_datetime(dt=object.start, tz=object.mail_tz if not object.allday else None, dt_format=\"MMMM y\", lang_code=object.env.lang)}\n"
+"                </div>\n"
+"                <div style=\"border-collapse: separate; color: #5F5F5F; text-align: center; font-size: 12px; border-bottom-right-radius: 3px; font-weight: bold; border: 1px solid #875A7B; border-bottom-left-radius: 3px;\">\n"
+"                    % if not object.allday\n"
+"                        <div>\n"
+"                            ${format_time(time=object.start, tz=object.mail_tz, time_format=\"short\", lang_code=object.env.lang)}\n"
+"                        </div>\n"
+"                        % if object.mail_tz\n"
+"                        <div style=\"font-size: 10px; font-weight: normal\">\n"
+"                            (${object.mail_tz})\n"
+"                        </div>\n"
+"                        % endif\n"
+"                    %endif\n"
+"                </div>\n"
+"            </td>\n"
+"            <td width=\"20px;\"/>\n"
+"            <td style=\"padding-top: 5px;\">\n"
+"                <p><strong>Details of the event</strong></p>\n"
+"                <ul>\n"
+"                    % if object.location:\n"
+"                        <li>Location: ${object.location}\n"
+"                            (<a target=\"_blank\" href=\"http://maps.google.com/maps?oi=map&amp;q=${object.location}\">View Map</a>)\n"
+"                        </li>\n"
+"                    % endif\n"
+"                    % if recurrent:\n"
+"                        <li>When: ${object.recurrence_id.name}</li>\n"
+"                    % endif\n"
+"                    % if not object.allday and object.duration\n"
+"                        <li>Duration: ${('%dH%02d' % (object.duration,round(object.duration*60)%60))}</li>\n"
+"                    % endif\n"
+"                    % if object.description:\n"
+"                        % set splitted_description = object.description_to_html_lines()\n"
+"                        <li>Description:\n"
+"                            <ul>\n"
+"                                % for description_line in splitted_description:\n"
+"                                <li>${description_line | safe}</li>\n"
+"                                % endfor\n"
+"                            </ul>\n"
+"                        </li>\n"
+"                    % endif\n"
+"                    <li>Attendees\n"
+"                    <ul>\n"
+"                    % for attendee in object.attendee_ids:\n"
+"                        <li>\n"
+"                            <div style=\"display: inline-block; border-radius: 50%; width: 10px; height: 10px; background:${colors[attendee.state] or 'white'};\"> </div>\n"
+"                            % if attendee.common_name != object.common_name:\n"
+"                                <span style=\"margin-left:5px\">${attendee.common_name}</span>\n"
+"                            % else:\n"
+"                                <span style=\"margin-left:5px\">You</span>\n"
+"                            % endif\n"
+"                        </li>\n"
+"                    % endfor\n"
+"                    </ul></li>\n"
+"                    % if object.videocall_location:\n"
+"                    <li>Join Video Call: <a href=\"${object.videocall_location}\" target=\"_blank\">${object.videocall_location}</a></li>\n"
+"                    % endif\n"
+"                </ul>\n"
+"            </td>\n"
+"    </tr></table>\n"
+"</div>\n"
+"            "
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
-msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+#: model:mail.template,body_html:website_calendar.appointment_canceled_mail_template
+msgid ""
+"<div>\n"
+"    % set colors = {'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}\n"
+"    % set recurrent = object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')\n"
+"    <p>\n"
+"    The appointment for ${object.appointment_type_id.name} with ${object.partner_id.name} has been canceled.\n"
+"    </p>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n"
+"            <td width=\"130px;\">\n"
+"                <div style=\"border-top-left-radius: 3px; border-top-right-radius: 3px; font-size: 12px; border-collapse: separate; text-align: center; font-weight: bold; color: #ffffff; min-height: 18px; background-color: #875A7B; border: 1px solid #875A7B;\">\n"
+"                    ${format_datetime(dt=object.start, tz=object.mail_tz if not object.allday else None, dt_format=\"EEEE\", lang_code=object.env.lang)}\n"
+"                </div>\n"
+"                <div style=\"font-size: 48px; min-height: auto; font-weight: bold; text-align: center; color: #5F5F5F; background-color: #F8F8F8; border: 1px solid #875A7B;\">\n"
+"                    ${str(object.start.day)}\n"
+"                </div>\n"
+"                <div style=\"font-size: 12px; text-align: center; font-weight: bold; color: #ffffff; background-color: #875A7B;\">\n"
+"                    ${format_datetime(dt=object.start, tz=object.mail_tz if not object.allday else None, dt_format=\"MMMM y\", lang_code=object.env.lang)}\n"
+"                </div>\n"
+"                <div style=\"border-collapse: separate; color: #5F5F5F; text-align: center; font-size: 12px; border-bottom-right-radius: 3px; font-weight: bold; border: 1px solid #875A7B; border-bottom-left-radius: 3px;\">\n"
+"                    % if not object.allday\n"
+"                        <div>\n"
+"                            ${format_time(time=object.start, tz=object.mail_tz, time_format=\"short\", lang_code=object.env.lang)}\n"
+"                        </div>\n"
+"                        % if object.mail_tz\n"
+"                        <div style=\"font-size: 10px; font-weight: normal\">\n"
+"                            (${object.mail_tz})\n"
+"                        </div>\n"
+"                        % endif\n"
+"                    %endif\n"
+"                </div>\n"
+"            </td>\n"
+"            <td width=\"20px;\"/>\n"
+"            <td style=\"padding-top: 5px;\">\n"
+"                <del>\n"
+"                    <p><strong>Details of the event</strong></p>\n"
+"                    <ul>\n"
+"                        % if object.location:\n"
+"                            <li>Location: ${object.location}\n"
+"                                (<a target=\"_blank\" href=\"http://maps.google.com/maps?oi=map&amp;q=${object.location}\">View Map</a>)\n"
+"                            </li>\n"
+"                        % endif\n"
+"                        % if recurrent:\n"
+"                            <li>When: ${object.recurrence_id.name}</li>\n"
+"                        % endif\n"
+"                        % if not object.allday and object.duration\n"
+"                            <li>Duration: ${('%dH%02d' % (object.duration,round(object.duration*60)%60))}</li>\n"
+"                        % endif\n"
+"                        % if object.description:\n"
+"                            % set splitted_description = object.description_to_html_lines()\n"
+"                            <li>Description:\n"
+"                                <ul>\n"
+"                                    % for description_line in splitted_description:\n"
+"                                    <li>${description_line | safe}</li>\n"
+"                                    % endfor\n"
+"                                </ul>\n"
+"                            </li>\n"
+"                        % endif\n"
+"                        <li>Attendees\n"
+"                        <ul>\n"
+"                        % for attendee in object.attendee_ids:\n"
+"                            <li>\n"
+"                                <div style=\"display: inline-block; border-radius: 50%; width: 10px; height: 10px; background:${colors[attendee.state] or 'white'};\"> </div>\n"
+"                                % if attendee.common_name != object.common_name:\n"
+"                                    <span style=\"margin-left:5px\">${attendee.common_name}</span>\n"
+"                                % else:\n"
+"                                    <span style=\"margin-left:5px\">You</span>\n"
+"                                % endif\n"
+"                            </li>\n"
+"                        % endfor\n"
+"                        </ul></li>\n"
+"                        % if object.videocall_location:\n"
+"                        <li>Join Video Call: <a href=\"${object.videocall_location}\" target=\"_blank\">${object.videocall_location}</a></li>\n"
+"                        % endif\n"
+"                    </ul>\n"
+"                </del>\n"
+"            </td>\n"
+"    </tr></table>\n"
+"</div>\n"
+"            "
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_cards
+msgid "<i class=\"fa fa-ban mr-2\"/>Unpublished"
 msgstr ""
 
 #. module: website_calendar
@@ -86,6 +251,25 @@ msgid "<i class=\"fa fa-fw fa-times\"/>Cancel / Reschedule"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
+msgid "<i class=\"fa fa-long-arrow-left text-primary mr-2\"/>All Appointments"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
+msgid ""
+"<i class=\"fa fa-pencil mr-2\" role=\"img\" aria-label=\"Edit\" "
+"title=\"Create custom questions in backend\"/><em>Add Custom Questions</em>"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.website_calendar_index_topbar
+msgid "<span class=\"navbar-brand h4 my-0 mr-auto\">Appointments</span>"
+msgstr ""
+
+#. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> days</span>"
 msgstr ""
@@ -98,6 +282,11 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours</span>"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "<span>Published</span>"
 msgstr ""
 
 #. module: website_calendar
@@ -116,14 +305,25 @@ msgid "<span>until </span>"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
+msgid "<strong class=\"mr-2\">Duration:</strong>"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
+msgid "<strong class=\"mr-2\">Location:</strong>"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_list_layout
 msgid ""
 "<strong>Appointment canceled!</strong>\n"
 "                            You can schedule another appointment from here."
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 msgid ""
 "<strong>Appointment failed!</strong>\n"
 "                            The selected timeslot is not available anymore.\n"
@@ -132,7 +332,7 @@ msgid ""
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 msgid ""
 "<strong>Appointment failed!</strong>\n"
 "                            The selected timeslot is not available.\n"
@@ -140,8 +340,13 @@ msgid ""
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_select_timezone
+msgid "<strong>Timezone</strong>"
+msgstr ""
+
+#. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
-msgid "<strong>Your appointment has been successfully booked!</strong>"
+msgid "<strong>Your appointment has been successfully booked!</strong><br/>"
 msgstr ""
 
 #. module: website_calendar
@@ -179,7 +384,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
 msgid ""
 "Allow your customers to book an appointment on your website\n"
-"                by creating appointment types here."
+"                by creating appointment types."
 msgstr ""
 
 #. module: website_calendar
@@ -190,11 +395,33 @@ msgstr ""
 
 #. module: website_calendar
 #: code:addons/website_calendar/models/website.py:0
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model:website.menu,name:website_calendar.menu_appointment
 #, python-format
 msgid "Appointment"
+msgstr ""
+
+#. module: website_calendar
+#: model:mail.message.subtype,description:website_calendar.mt_calendar_event_booked
+#: model:mail.message.subtype,name:website_calendar.mt_appointment_type_booked
+#: model:mail.message.subtype,name:website_calendar.mt_calendar_event_booked
+msgid "Appointment Booked"
+msgstr ""
+
+#. module: website_calendar
+#: model:mail.template,subject:website_calendar.appointment_booked_mail_template
+msgid "Appointment Booked: ${object.appointment_type_id.name}"
+msgstr ""
+
+#. module: website_calendar
+#: model:mail.message.subtype,description:website_calendar.mt_calendar_event_canceled
+#: model:mail.message.subtype,name:website_calendar.mt_appointment_type_canceled
+#: model:mail.message.subtype,name:website_calendar.mt_calendar_event_canceled
+msgid "Appointment Canceled"
+msgstr ""
+
+#. module: website_calendar
+#: model:mail.template,subject:website_calendar.appointment_canceled_mail_template
+msgid "Appointment Canceled: ${object.appointment_type_id.name}"
 msgstr ""
 
 #. module: website_calendar
@@ -213,15 +440,13 @@ msgid "Appointment Introduction"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
-msgid "Appointment Time"
-msgstr ""
-
-#. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_appointment_type
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__appointment_type_id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__appointment_type_id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__name
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_type_select
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_search
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_tree
 msgid "Appointment Type"
 msgstr ""
@@ -232,11 +457,7 @@ msgid "Appointment:"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
-msgid "Appointment<span class=\"chevron\"/>"
-msgstr ""
-
-#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__appointment_type_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_event_view_pivot
@@ -244,8 +465,24 @@ msgid "Appointments"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__assignation_method
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__assign_method
 msgid "Assignment Method"
+msgstr ""
+
+#. module: website_calendar
+#: code:addons/website_calendar/models/calendar_appointment_slot.py:0
+#, python-format
+msgid ""
+"Atleast one slot duration from start to end is invalid: a slot should end "
+"after start"
+msgstr ""
+
+#. module: website_calendar
+#: code:addons/website_calendar/models/calendar_appointment_slot.py:0
+#, python-format
+msgid ""
+"Atleast one slot duration is not enough to create a slot with the duration "
+"set in the appointment type"
 msgstr ""
 
 #. module: website_calendar
@@ -264,6 +501,11 @@ msgid "Availabilities"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "Availability"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__answer_ids
 msgid "Available Answers"
 msgstr ""
@@ -276,6 +518,16 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_appointment_share
+msgid "Calendar Appointment Share Wizard"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model,name:website_calendar.model_calendar_attendee
+msgid "Calendar Attendee Information"
 msgstr ""
 
 #. module: website_calendar
@@ -299,8 +551,13 @@ msgid "Checkboxes (multiple answers)"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__chosen
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assign_method__chosen
 msgid "Chosen by the Customer"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_share_view_form
+msgid "Close"
 msgstr ""
 
 #. module: website_calendar
@@ -319,9 +576,8 @@ msgid "Confirmation Message"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 msgid "Confirmation<span class=\"chevron\"/>"
 msgstr ""
 
@@ -336,26 +592,19 @@ msgid "Contact"
 msgstr ""
 
 #. module: website_calendar
-#. openerp-web
-#: code:addons/website_calendar/static/src/js/appointment_employee_url.js:0
-#, python-format
-msgid "Copied !"
-msgstr ""
-
-#. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:0
-#, python-format
-msgid "Country: %s"
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__cover_properties
+msgid "Cover Properties"
 msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
-msgid "Create a new appointment type"
+msgid "Create an appointment type"
 msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__create_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__create_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_uid
 msgid "Created by"
@@ -364,6 +613,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__create_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__create_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_date
 msgid "Created on"
@@ -382,8 +632,10 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_attendee__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_res_partner__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_website__display_name
@@ -401,20 +653,20 @@ msgid "Duration:"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
-msgid "Edit"
-msgstr ""
-
-#. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:0
-#, python-format
-msgid "Email: %s"
-msgstr ""
-
-#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__employee_ids
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Employees"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__end_hour
+msgid "Ending Hour"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "Every"
 msgstr ""
 
 #. module: website_calendar
@@ -423,18 +675,8 @@ msgid "Followers"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Fri"
 msgstr ""
 
 #. module: website_calendar
@@ -443,7 +685,24 @@ msgid "Friday"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "From"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_share__suggested_employee_ids
+msgid ""
+"Get the employees link to the appointment type selected to apply a domain on"
+" the employees that can be selected"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assign_method
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
 msgstr ""
@@ -451,8 +710,10 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_attendee__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__id
 #: model:ir.model.fields,field_description:website_calendar.field_res_partner__id
 #: model:ir.model.fields,field_description:website_calendar.field_website__id
@@ -472,19 +733,6 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.setup
-msgid ""
-"In order to configure your first appointment, go\n"
-"                        to the \"Calendar\" application in Odoo and create\n"
-"                        an online appointment."
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
-msgid "Individual Appointment Link"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_intro
 msgid "Introduction Message"
 msgstr ""
@@ -500,6 +748,13 @@ msgid "Is Published"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
+msgid ""
+"It's too late to cancel online, please contact the attendees another way if "
+"you really can't make it."
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
 msgid ""
 "Keep empty to allow visitors from any country, otherwise you only allow "
@@ -509,8 +764,10 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question____last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type____last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_attendee____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_res_partner____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_website____last_update
@@ -520,6 +777,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__write_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_uid
 msgid "Last Updated by"
@@ -528,9 +786,20 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__write_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__share_link
+msgid "Link"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_share_view_form
+msgid "Link Generator"
 msgstr ""
 
 #. module: website_calendar
@@ -565,17 +834,6 @@ msgid "Messages"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/controllers/main.py:0
-#, python-format
-msgid "Mobile: %s"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Mon"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__1
 msgid "Monday"
 msgstr ""
@@ -583,6 +841,11 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__text
 msgid "Multi-line text"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_search
+msgid "My Appointments"
 msgstr ""
 
 #. module: website_calendar
@@ -600,8 +863,9 @@ msgid "New Appointment Type"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.setup
-msgid "No appointments available!"
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_cards
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_list_layout
+msgid "No appointment found."
 msgstr ""
 
 #. module: website_calendar
@@ -656,11 +920,6 @@ msgid "Online Appointment : Time Slot"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model,name:website_calendar.model_calendar_appointment_type
-msgid "Online Appointment Type"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
 #: model:ir.actions.act_window,name:website_calendar.calendar_event_action_reporting
 #: model:ir.module.category,name:website_calendar.module_category_calendar
@@ -677,14 +936,24 @@ msgid "Placeholder"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:0
+#: code:addons/website_calendar/models/calendar_appointment_slot.py:0
 #, python-format
 msgid "Please enter a valid hour between 0:00 and 24:00 for your slots."
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 msgid "Please, select another date."
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__suggested_employee_ids
+msgid "Possible employees"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "Published"
 msgstr ""
 
 #. module: website_calendar
@@ -710,7 +979,7 @@ msgid "Radio (one answer)"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assignation_method__random
+#: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_type__assign_method__random
 msgid "Random"
 msgstr ""
 
@@ -755,11 +1024,6 @@ msgid "SMS Text Message - 1 Hours"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Sat"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__6
 msgid "Saturday"
 msgstr ""
@@ -770,7 +1034,7 @@ msgid "Schedule Appointment"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_list_layout
 msgid "Schedule an Appointment"
 msgstr ""
 
@@ -792,7 +1056,12 @@ msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
-msgid "Scheduling & Availability"
+msgid "Scheduling"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_share__appointment_type_count
+msgid "Selected Appointments Count"
 msgstr ""
 
 #. module: website_calendar
@@ -807,28 +1076,25 @@ msgid "Sequence"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
+msgid "Share"
+msgstr ""
+
+#. module: website_calendar
+#: code:addons/website_calendar/models/calendar_appointment_type.py:0
+#, python-format
+msgid "Share Link"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_question__question_type__char
 msgid "Single line text"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
-msgid "Slots"
-msgstr ""
-
-#. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__hour
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__start_hour
 msgid "Starting Hour"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
-msgid "Starting Hour (0:00 - 24:00)"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Sun"
 msgstr ""
 
 #. module: website_calendar
@@ -837,13 +1103,15 @@ msgid "Sunday"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
-msgid "The full URL to access the document through the website."
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_share__employee_ids
+msgid ""
+"The employees that will be display/filter for the user to make its "
+"appointment"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Thu"
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
+msgid "The full URL to access the document through the website."
 msgstr ""
 
 #. module: website_calendar
@@ -852,28 +1120,19 @@ msgid "Thursday"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "Time"
-msgstr ""
-
-#. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Time displayed in"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_select_timezone
-msgid "Time zone:"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 msgid "Time<span class=\"chevron\"/>"
 msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_kanban
 msgid "Timezone"
 msgstr ""
 
@@ -883,8 +1142,8 @@ msgid "Timezone where appointment take place"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Tue"
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "To"
 msgstr ""
 
 #. module: website_calendar
@@ -903,7 +1162,18 @@ msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.index
+#: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
+msgid "Until (max)"
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_cards
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_list_layout
+msgid "Use the top button '<b>+ New</b>' to create an appointment type."
+msgstr ""
+
+#. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointments_list_layout
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
 msgstr ""
 
@@ -953,11 +1223,6 @@ msgid "Website opengraph image"
 msgstr ""
 
 #. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
-msgid "Wed"
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.model.fields.selection,name:website_calendar.selection__calendar_appointment_slot__weekday__3
 msgid "Wednesday"
 msgstr ""
@@ -974,27 +1239,22 @@ msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.employee_select
-msgid "With:"
+msgid "With"
 msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "Your Country"
+msgid "Your Email *"
 msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "Your Email"
+msgid "Your Name *"
 msgstr ""
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "Your Name"
-msgstr ""
-
-#. module: website_calendar
-#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
-msgid "Your Phone"
+msgid "Your Phone *"
 msgstr ""
 
 #. module: website_calendar
@@ -1008,6 +1268,7 @@ msgid "e.g. Schedule a demo"
 msgstr ""
 
 #. module: website_calendar
+#: model_terms:ir.ui.view,arch_db:website_calendar.appointment_info
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "hour"
 msgstr ""

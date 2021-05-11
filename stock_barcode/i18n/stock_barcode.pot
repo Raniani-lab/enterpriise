@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-archive mr-3\" title=\"Package\"/>"
 msgstr ""
 
@@ -33,12 +33,16 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Serial/Lot Number\"/>"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
+msgid "<i class=\"fa fa-fw fa-lg fa-cube mr-3\" title=\"Counted Quantity\"/>"
+msgstr ""
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cube mr-3\" title=\"Quantity\"/>"
 msgstr ""
@@ -63,7 +67,7 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-map-marker mr-3\" title=\"Location\"/>"
 msgstr ""
 
@@ -75,13 +79,13 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-tags mr-3\" title=\"Product\"/>"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-user-o mr-3\" title=\"Owner\"/>"
 msgstr ""
 
@@ -101,7 +105,12 @@ msgid "<i class=\"fa fa-print\"/> Print barcode demo sheet"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
+msgid "<span> / </span>"
+msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<span>On Hand</span>"
 msgstr ""
 
@@ -121,7 +130,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__product_barcode
 #: model:ir.ui.menu,name:stock_barcode.stock_barcode_menu
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_form_view_inherit
 #, python-format
 msgid "Barcode"
 msgstr ""
@@ -166,6 +174,8 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
@@ -187,6 +197,11 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Confirm"
+msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
+msgid "Counted Quantity"
 msgstr ""
 
 #. module: stock_barcode
@@ -243,12 +258,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory__display_name
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_location__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__display_name
 msgid "Display Name"
@@ -279,8 +293,8 @@ msgid "Download"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line__dummy_id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__dummy_id
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__dummy_id
 msgid "Dummy"
 msgstr ""
 
@@ -294,7 +308,6 @@ msgstr ""
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "From"
 msgstr ""
@@ -304,12 +317,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory__id
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_location__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__id
 msgid "ID"
@@ -327,28 +339,17 @@ msgid "International Article Number used for product identification."
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model,name:stock_barcode.model_stock_inventory
-msgid "Inventory"
+#. openerp-web
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
+#, python-format
+msgid "Inventory Adjustment"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
-#: model:ir.actions.act_window,name:stock_barcode.stock_barcode_inventory_type_action_kanban
-#: model:ir.actions.server,name:stock_barcode.action_open_barcode_inventory_adjustment_view
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "Inventory Adjustments"
-msgstr ""
-
-#. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
-msgid "Inventory Details"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model,name:stock_barcode.model_stock_inventory_line
-msgid "Inventory Line"
 msgstr ""
 
 #. module: stock_barcode
@@ -366,12 +367,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line____last_update
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory____last_update
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_location____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type____last_update
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_quant____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant_package____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap____last_update
 msgid "Last Modified on"
@@ -397,14 +397,7 @@ msgid "Leave it"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.actions.act_window,help:stock_barcode.stock_barcode_inventory_type_action_kanban
-msgid ""
-"Let's create an inventory adjustment in order to add products to your "
-"inventory or adjust the current quantities in stock."
-msgstr ""
-
-#. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Location"
 msgstr ""
 
@@ -435,11 +428,6 @@ msgid "Move Line"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
-msgid "New Inventory"
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
@@ -460,11 +448,6 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.actions.act_window,help:stock_barcode.stock_barcode_inventory_type_action_kanban
-msgid "No inventory adjustment found"
-msgstr ""
-
-#. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:0
 #, python-format
 msgid "No picking or location or product corresponding to barcode %(barcode)s"
@@ -477,7 +460,6 @@ msgid "No picking or product corresponding to barcode %(barcode)s"
 msgstr ""
 
 #. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_inventory.py:0
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product found for barcode %s"
@@ -486,17 +468,6 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
 msgid "Nomenclature"
-msgstr ""
-
-#. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.view_stock_barcode_inventory_kanban
-msgid "Open Inventory"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_inventory.py:0
-#, python-format
-msgid "Open Inventory form"
 msgstr ""
 
 #. module: stock_barcode
@@ -527,8 +498,8 @@ msgid "Operations"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Owner"
 msgstr ""
 
@@ -538,7 +509,7 @@ msgid "Owner:"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Package"
 msgstr ""
 
@@ -613,8 +584,8 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_product
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Product"
 msgstr ""
 
@@ -674,8 +645,8 @@ msgid "Quantity Reserved"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
-msgid "Real Quantity"
+#: model:ir.model,name:stock_barcode.model_stock_quant
+msgid "Quants"
 msgstr ""
 
 #. module: stock_barcode
@@ -699,12 +670,6 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:0
 #, python-format
 msgid "Scan a"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_inventory.py:0
-#, python-format
-msgid "Scan a product to filter the inventories."
 msgstr ""
 
 #. module: stock_barcode
@@ -783,8 +748,8 @@ msgid "Select a Product"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Serial/Lot Number"
 msgstr ""
 
@@ -815,13 +780,6 @@ msgstr ""
 msgid ""
 "The barcode \"%(barcode)s\" doesn't correspond to a proper product, package "
 "or location."
-msgstr ""
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/inventory_client_action.js:0
-#, python-format
-msgid "The inventory adjustment has been cancelled"
 msgstr ""
 
 #. module: stock_barcode
@@ -877,6 +835,13 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
+#, python-format
+msgid "There are no lines to increment."
+msgstr ""
+
+#. module: stock_barcode
+#. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "This inventory adjustment is already done"
@@ -895,8 +860,8 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
 #, python-format
 msgid ""
-"This location is not a child of the selected locations on the inventory "
-"adjustment."
+"This location is not a valid for this inventory adjustment. You may need to "
+"change your current company."
 msgstr ""
 
 #. module: stock_barcode
@@ -923,7 +888,6 @@ msgstr ""
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "To"
 msgstr ""
@@ -951,8 +915,8 @@ msgid "Transfers allow you to move products from one location to another."
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 msgid "Unit of Measure"
 msgstr ""
@@ -1035,12 +999,6 @@ msgstr ""
 #: code:addons/stock_barcode/wizard/stock_barcode_lot.py:0
 #, python-format
 msgid "You cannot scan two times the same serial number"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_inventory.py:0
-#, python-format
-msgid "You must define a warehouse for the company: %s."
 msgstr ""
 
 #. module: stock_barcode

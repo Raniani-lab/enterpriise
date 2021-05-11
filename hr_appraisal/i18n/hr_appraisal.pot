@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-18 14:36+0000\n"
-"PO-Revision-Date: 2021-02-18 14:36+0000\n"
+"POT-Creation-Date: 2021-05-11 09:30+0000\n"
+"PO-Revision-Date: 2021-05-11 09:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,6 +44,12 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal_plan.py:0
 #, python-format
 msgid "%s months %s"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "1 Meeting"
 msgstr ""
 
 #. module: hr_appraisal
@@ -220,13 +226,6 @@ msgstr ""
 msgid ""
 "<span class=\"o_stat_text\">Employee's</span>\n"
 "                            <span class=\"o_stat_text\">Goals</span>"
-msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-msgid ""
-"<span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '=', False)]}\">1 Meeting</span>\n"
-"                            <span class=\"o_stat_value\" attrs=\"{'invisible': [('meeting_id', '!=', False)]}\">No Meeting</span>"
 msgstr ""
 
 #. module: hr_appraisal
@@ -803,12 +802,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_channel_ids
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_partner_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_partner_ids
 msgid "Followers (Partners)"
@@ -849,6 +842,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Group by..."
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__has_message
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: hr_appraisal
@@ -956,6 +955,12 @@ msgid "Last Appraisal Date"
 msgstr ""
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Last Meeting"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_calendar_event____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal____last_update
@@ -1042,8 +1047,13 @@ msgid "Mark as Done"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_id
-msgid "Meeting"
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_count_display
+msgid "Meeting Count"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_ids
+msgid "Meetings"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1089,6 +1099,12 @@ msgid "Needs improvement"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_calendar_event_id
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_date_deadline
 msgid "Next Activity Deadline"
@@ -1110,6 +1126,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__next_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__next_appraisal_date
 msgid "Next Appraisal Date"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Next Meeting"
+msgstr ""
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "No Meeting"
 msgstr ""
 
 #. module: hr_appraisal
@@ -1355,7 +1383,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Unpublished"
-msgstr "
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread

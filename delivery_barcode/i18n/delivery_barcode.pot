@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgid "Barcode Scanned"
 msgstr ""
 
 #. module: delivery_barcode
-#: model:ir.model.fields,field_description:delivery_barcode.field_stock_picking__delivery_packaging_ids
-msgid "Delivery Packaging"
+#: model:ir.model.fields,field_description:delivery_barcode.field_stock_picking__delivery_package_type_ids
+msgid "Delivery Package Type"
 msgstr ""
 
 #. module: delivery_barcode

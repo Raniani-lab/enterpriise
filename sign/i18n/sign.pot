@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.2+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-25 11:09+0000\n"
-"PO-Revision-Date: 2021-02-25 11:09+0000\n"
+"POT-Creation-Date: 2021-05-11 09:30+0000\n"
+"PO-Revision-Date: 2021-05-11 09:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -263,6 +263,7 @@ msgid "Accessed Through Token"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_mail_activity_type__category
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Action"
 msgstr ""
@@ -275,11 +276,6 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__action
 msgid "Action Performed"
-msgstr ""
-
-#. module: sign
-#: model:ir.model.fields,field_description:sign.field_mail_activity_type__category
-msgid "Action to Perform"
 msgstr ""
 
 #. module: sign
@@ -432,7 +428,7 @@ msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
-msgid "Automatic Partner Field"
+msgid "Auto-fill Partner Field"
 msgstr ""
 
 #. module: sign
@@ -644,6 +640,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: model:sign.item.type,name:sign.sign_item_type_date
@@ -830,7 +827,7 @@ msgid "Duplicated Template"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:342
+#: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "ERROR: Invalid PDF file!"
 msgstr ""
@@ -950,11 +947,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_sign_request__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_partner_ids
 msgid "Followers (Partners)"
 msgstr ""
@@ -1016,6 +1008,11 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__has_default_template
 msgid "Has Default Template"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: sign
@@ -1414,6 +1411,11 @@ msgid "Newest"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr ""
@@ -1581,11 +1583,6 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__partner_id
 msgid "Partner"
-msgstr ""
-
-#. module: sign
-#: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
-msgid "Partner field to use to auto-complete the fields of this type"
 msgstr ""
 
 #. module: sign
@@ -2284,6 +2281,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format
+msgid "Signing as "
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
+#, python-format
 msgid "Some fields have still to be completed !"
 msgstr ""
 
@@ -2360,11 +2364,25 @@ msgid "Tags:"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
+msgid ""
+"Technical name of the field on the partner model to auto-complete this "
+"signature field at the time of signature."
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__template_id
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__template_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_backend.js:0
+#, python-format
+msgid "Template \"%s\""
 msgstr ""
 
 #. module: sign
@@ -2872,6 +2890,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/js/sign_common.js:0
 #, python-format

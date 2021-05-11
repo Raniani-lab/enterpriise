@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:39+0000\n"
-"PO-Revision-Date: 2020-09-01 07:39+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgid "BUSINESS_SERVICE_CENTER"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__display_name
-#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__display_name
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__delivery_type__fedex
-#: model:ir.model.fields.selection,name:delivery_fedex.selection__product_packaging__package_carrier_type__fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__stock_package_type__package_carrier_type__fedex
 msgid "FedEx"
 msgstr ""
 
@@ -201,7 +201,7 @@ msgid "Fedex International"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_packaging_id
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_package_type_id
 msgid "Fedex Package Type"
 msgstr ""
 
@@ -239,7 +239,7 @@ msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__id
-#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__id
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__id
 msgid "ID"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier____last_update
-#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging____last_update
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -365,11 +365,6 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
 msgid "Password"
-msgstr ""
-
-#. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_product_packaging
-msgid "Product Packaging"
 msgstr ""
 
 #. module: delivery_fedex
@@ -494,6 +489,11 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Standard Services"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_stock_package_type
+msgid "Stock package type"
 msgstr ""
 
 #. module: delivery_fedex

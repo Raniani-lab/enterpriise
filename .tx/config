@@ -112,11 +112,6 @@ file_filter = account_reports_cash_basis/i18n/<lang>.po
 source_file = account_reports_cash_basis/i18n/account_reports_cash_basis.pot
 source_lang = en
 
-[odoo-master.account_reports_tax]
-file_filter = account_reports_tax/i18n/<lang>.po
-source_file = account_reports_tax/i18n/account_reports_tax.pot
-source_lang = en
-
 [odoo-master.account_saft]
 file_filter = account_saft/i18n/<lang>.po
 source_file = account_saft/i18n/account_saft.pot
@@ -437,14 +432,14 @@ file_filter = hr_referral/i18n/<lang>.po
 source_file = hr_referral/i18n/hr_referral.pot
 source_lang = en
 
-[odoo-master.hr_work_entry_contract]
-file_filter = hr_work_entry_contract/i18n/<lang>.po
-source_file = hr_work_entry_contract/i18n/hr_work_entry_contract.pot
+[odoo-master.hr_work_entry_contract_enterprise]
+file_filter = hr_work_entry_contract_enterprise/i18n/<lang>.po
+source_file = hr_work_entry_contract_enterprise/i18n/hr_work_entry_contract_enterprise.pot
 source_lang = en
 
-[odoo-master.hr_work_entry_holidays]
-file_filter = hr_work_entry_holidays/i18n/<lang>.po
-source_file = hr_work_entry_holidays/i18n/hr_work_entry_holidays.pot
+[odoo-master.hr_work_entry_holidays_enterprise]
+file_filter = hr_work_entry_holidays_enterprise/i18n/<lang>.po
+source_file = hr_work_entry_holidays_enterprise/i18n/hr_work_entry_holidays_enterprise.pot
 source_lang = en
 
 [odoo-master.im_livechat_enterprise]
@@ -752,11 +747,6 @@ file_filter = sale_subscription_dashboard/i18n/<lang>.po
 source_file = sale_subscription_dashboard/i18n/sale_subscription_dashboard.pot
 source_lang = en
 
-[odoo-master.sale_subscription_sepa_direct_debit]
-file_filter = sale_subscription_sepa_direct_debit/i18n/<lang>.po
-source_file = sale_subscription_sepa_direct_debit/i18n/sale_subscription_sepa_direct_debit.pot
-source_lang = en
-
 [odoo-master.sale_subscription_taxcloud]
 file_filter = sale_subscription_taxcloud/i18n/<lang>.po
 source_file = sale_subscription_taxcloud/i18n/sale_subscription_taxcloud.pot
@@ -815,6 +805,11 @@ source_lang = en
 [odoo-master.social_twitter]
 file_filter = social_twitter/i18n/<lang>.po
 source_file = social_twitter/i18n/social_twitter.pot
+source_lang = en
+
+[odoo-master.social_youtube]
+file_filter = social_youtube/i18n/<lang>.po
+source_file = social_youtube/i18n/social_youtube.pot
 source_lang = en
 
 [odoo-master.stock_account_enterprise]
@@ -930,6 +925,11 @@ source_lang = en
 [odoo-master.website_calendar]
 file_filter = website_calendar/i18n/<lang>.po
 source_file = website_calendar/i18n/website_calendar.pot
+source_lang = en
+
+[odoo-master.website_calendar_crm]
+file_filter = website_calendar_crm/i18n/<lang>.po
+source_file = website_calendar_crm/i18n/website_calendar_crm.pot
 source_lang = en
 
 [odoo-master.website_delivery_ups]

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.1+e\n"
+"Project-Id-Version: Odoo Server saas~14.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-11 07:33+0000\n"
-"PO-Revision-Date: 2020-12-11 07:33+0000\n"
+"POT-Creation-Date: 2021-05-11 09:31+0000\n"
+"PO-Revision-Date: 2021-05-11 09:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -196,6 +196,12 @@ msgid "My Pipeline"
 msgstr ""
 
 #. module: crm_enterprise
+#: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard
+#: model_terms:ir.actions.act_window,help:crm_enterprise.crm_opportunity_action_dashboard
+msgid "No data found!"
+msgstr ""
+
+#. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_cohort
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
@@ -259,6 +265,16 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Stage"
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard
+msgid "This Dashboard allows you to see at a glance how well you are doing."
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.actions.act_window,help:crm_enterprise.crm_opportunity_action_dashboard
+msgid "Use this menu to have an overview of your Pipeline."
 msgstr ""
 
 #. module: crm_enterprise

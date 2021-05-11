@@ -403,6 +403,43 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(move_lines[0].product_id.id, self.productserial1.id)
         self.assertEqual(move_lines[0].qty_done, 3.0)
 
+    def test_receipt_from_scratch_with_lots_5(self):
+        """ With picking type options "use_create_lots" and "use_existing_lots" enabled, scan a tracked product and enter a serial number already registered (but not used) in the system
+        """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        grp_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+
+        self.picking_type_in.use_create_lots = True
+        self.picking_type_in.use_existing_lots = True
+        snObj = self.env['stock.production.lot']
+        snObj.create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
+
+        receipt_picking = self.env['stock.picking'].create({
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+
+        self.env['stock.move'].create({
+            'name': 'test_receipt_1',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.productserial1.id,
+            'product_uom': self.productserial1.uom_id.id,
+            'product_uom_qty': 1,
+            'picking_id': receipt_picking.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+
+        url = self._get_client_action_url(receipt_picking.id)
+        self.start_tour(url, 'test_receipt_from_scratch_with_sn_1', login='admin', timeout=180)
+        move_lines = receipt_picking.move_line_ids
+        self.assertEqual(move_lines[0].product_id.id, self.productserial1.id)
+        self.assertEqual(move_lines[0].lot_id.name, 'sn1')
+        self.assertEqual(move_lines[0].qty_done, 1.0)
 
     def test_receipt_reserved_1(self):
         """ Open a receipt. Move a unit of `self.product1` into shelf1, shelf2, shelf3 and shelf 4.

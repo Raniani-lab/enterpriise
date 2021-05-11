@@ -2000,6 +2000,21 @@ tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
 
 ]);
 
+tour.register('test_receipt_from_scratch_with_sn_1', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification.bg-success'
+    },
+]);
+
 tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
     /* scan a product tracked by serial number. Then scan 4 a its serial numbers.
     */

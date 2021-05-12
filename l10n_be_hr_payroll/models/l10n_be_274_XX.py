@@ -354,6 +354,18 @@ class L10nBe274XX(models.Model):
                         declaration_34['taxable_revenue'] += taxable_eurocent
                     result['negative_total'] += int(deduction * 100)
 
+            # The total amount of the exemption from payment of the withholding tax granted to
+            # researchers who have a bachelor's degree is limited to 25% of the total amount of
+            # the exemption from the payment of the withholding tax granted to researchers who have
+            # a diploma qualifying as a doctorate or Master. This percentage will be doubled for
+            # small companies (article 15 §§, 1 to 6 of the Companies Code). This limitation has
+            # not changed on January 1, 2020.
+            # https://www.belspo.be/belspo/organisation/fisc_dipl_fr.stm
+            declaration_34['prepayment'] = -min(
+                - declaration_34['prepayment'],
+                round(- declaration_32['prepayment'] - declaration_33['prepayment'] / 4.0))
+
+
         result['declarations'] = [declaration_10, declaration_32, declaration_33, declaration_34]
         result['positive_total'] = str(result['positive_total'])
         result['negative_total'] = str(result['negative_total'])

@@ -12,7 +12,9 @@ VAT_MANDATORY_FIELDS = [
     # Simplified-only
     '450', '801', '802',
     # Monthly-only
-    '093', '097', '457'
+    '093', '097', '457',
+    # Mandatory when 403 is specified (always true for us, with 0% tax)
+    '033', '042', '403',
 ]
 
 # Mapping dictionary: monthly fields as keys, list of corresponding annual fields as values

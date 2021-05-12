@@ -30,6 +30,8 @@ class AccountGenericTaxReport(models.AbstractModel):
             ('company_id', '=', self.env.company.id), ('tax_exigibility', '=', 'on_payment')], limit=1)
         values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}
         values['205'] = {'value': on_payment and '1' or '0', 'field_type': 'boolean'}
+        values['403'] = {'value': 0, 'field_type': 'number'}
+        values['042'] = {'value': 0, 'field_type': 'float'}
 
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))

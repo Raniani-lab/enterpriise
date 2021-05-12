@@ -10,15 +10,24 @@ class PaymentAcquirer(models.Model):
 
     @api.model
     def _is_tokenization_required(self, sale_order_id=None, **kwargs):
-        """ Override of payment to return whether a subscription product is included in the order.
+        """ Override of payment to return whether confirming the order will create a subscription.
+
+        If any product of the order is a attached to a subscription template, and if that order is
+        not linked to an already existing subscription, tokenization of the payment transaction is
+        required.
+        If the order is linked to an existing subscription, there is no need to require the
+        tokenization because no payment token is ever assigned to the subscription when the sales
+        order is confirmed.
 
         :param int sale_order_id: The sale order to be paid, if any, as a `sale.order` id
-        :return: Whether a subscription product is include in the sale order
+        :return: Whether confirming the order will create a subscription
         :rtype: bool
         """
         if sale_order_id:
             sale_order = self.env['sale.order'].browse(sale_order_id).exists()
-            return any(product.recurring_invoice for product in sale_order.order_line.product_id)
+            for order_line in sale_order.order_line:
+                if not order_line.subscription_id and order_line.product_id.recurring_invoice:
+                    return True
         return super()._is_tokenization_required(sale_order_id=sale_order_id, **kwargs)
 
 

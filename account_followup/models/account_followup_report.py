@@ -245,7 +245,7 @@ class AccountFollowupReport(models.AbstractModel):
         Override
         Return the name of the report
         """
-        return _('Followup Report')
+        return _('Payment Reminder')
 
     def _get_reports_buttons(self, options):
         """

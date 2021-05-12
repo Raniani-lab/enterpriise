@@ -55,6 +55,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/swipe_item_mixin.scss',
             'web_enterprise/static/src/legacy/scss/form_view_mobile.scss',
             'web_enterprise/static/src/legacy/scss/kanban_view_mobile.scss',
+            'web_enterprise/static/src/scss/pivot_view_mobile.scss',
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',

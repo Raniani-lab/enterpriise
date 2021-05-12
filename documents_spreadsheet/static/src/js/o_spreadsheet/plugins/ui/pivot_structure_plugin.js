@@ -1185,7 +1185,10 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @param {Object} zone
          */
         _merge(sheetId, zone) {
-            this.dispatch("ADD_MERGE", { sheetId, target: [zone] });
+            // Some superfluous values are set in cells that end up "beneath"
+            // merges. Those non-empty cells prevent the merge, unless forced.
+            // TODO remove those useless cell updates and/or merge zones first.
+            this.dispatch("ADD_MERGE", { sheetId, target: [zone], force: true });
         }
     }
 

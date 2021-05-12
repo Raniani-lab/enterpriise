@@ -216,6 +216,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                     sendSmsButton.classList.remove('fa', 'fa-check');
                 }, 15000);
             }).guardedCatch(error => {
+                error.event.preventDefault();
                 sendSmsButton.removeAttribute('disabled');
                 this._displayError(
                     _t("Server Error"),

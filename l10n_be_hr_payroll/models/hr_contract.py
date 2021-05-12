@@ -593,3 +593,34 @@ class HrContract(models.Model):
             result.append((contracts, date_from, date_to))
             done_contracts |= contracts
         return result
+
+    def _get_fields_that_recompute_we(self):
+        return super()._get_fields_that_recompute_we() + [
+            'time_credit',
+            'time_credit_type_id',
+            'standard_calendar_id',
+        ]
+
+    def _get_fields_that_recompute_payslip(self):
+        # Returns the fields that should recompute the payslip
+        return super()._get_fields_that_recompute_payslip() + [
+            'representation_fees',
+            'ip',
+            'ip_wage_rate',
+            'mobile',
+            'internet',
+            'transport_mode_car',
+            'transport_mode_private_car',
+            'transport_mode_train',
+            'transport_mode_public',
+            'train_transport_employee_amount',
+            'public_transport_employee_amount',
+            'km_home_work',
+            'has_laptop',
+            'meal_voucher_amount'
+            'work_time_rate',
+            'fiscal_voluntarism',
+            'fiscal_voluntary_rate',
+            'no_onss',
+            'no_withholding_taxes',
+        ]

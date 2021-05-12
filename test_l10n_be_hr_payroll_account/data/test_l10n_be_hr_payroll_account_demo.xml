@@ -1817,14 +1817,6 @@
         <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_bank_holiday"/>
     </record>
 
-    <record id="work_entry_type_phc" model="hr.work.entry.type">
-        <field name="name">Public Holiday Compensation</field>
-        <field name="code">PHC1</field>
-        <field name="color">3</field>
-        <field name="is_leave">True</field>
-        <field name="dmfa_code">1</field>
-    </record>
-
     <record id="holiday_status_phc" model="hr.leave.type">
         <field name="name">Public Holiday Compensation</field>
         <field name="allocation_type">no</field>
@@ -1834,7 +1826,7 @@
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="validity_start" eval="time.strftime('%Y-01-01')"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="work_entry_type_id" ref="work_entry_type_phc"/>
+        <field name="work_entry_type_id" ref="l10n_be_hr_payroll.work_entry_type_phc"/>
     </record>
 
     <record id="holiday_status_small_unemployment" model="hr.leave.type">

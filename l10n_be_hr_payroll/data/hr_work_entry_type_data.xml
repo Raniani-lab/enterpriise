@@ -237,6 +237,14 @@
         <field name="name" eval="'Annual Time Off '+time.strftime('%Y')"/>
     </record>
 
+    <record id="work_entry_type_phc" model="hr.work.entry.type">
+        <field name="name">Public Holiday Compensation</field>
+        <field name="code">PHC1</field>
+        <field name="color">3</field>
+        <field name="is_leave">True</field>
+        <field name="dmfa_code">1</field>
+    </record>
+
     <record id="work_entry_type_extra_legal" model="hr.work.entry.type">
         <field name="name">Extra Legal Time Off</field>
         <field name="code">LEAVE213</field>

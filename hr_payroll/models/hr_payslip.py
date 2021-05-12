@@ -154,6 +154,7 @@ class HrPayslip(models.Model):
                 'input_type_id': deduction_input_type.id,
                 'amount': abs(self.negative_net_to_report_amount),
             })]})
+            self.compute_sheet()
         self.env['hr.payslip'].search([
             ('has_negative_net_to_report', '=', True),
             ('employee_id', '=', self.employee_id.id),
@@ -241,6 +242,9 @@ class HrPayslip(models.Model):
         self.env['ir.attachment'].sudo().create(attachments_vals_list)
 
     def action_payslip_done(self):
+        invalid_payslips = self.filtered(lambda p: p.contract_id and (p.contract_id.date_start > p.date_to or (p.contract_id.date_end and p.contract_id.date_end < p.date_from)))
+        if invalid_payslips:
+            raise ValidationError(_('The following employees have a contract outside of the payslip period:\n%s', '\n'.join(invalid_payslips.mapped('employee_id.name'))))
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
         self.write({'state' : 'done'})

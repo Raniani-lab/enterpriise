@@ -38,6 +38,7 @@ class l10nBeWorkEntryDailyBenefitReport(models.Model):
                 CROSS JOIN LATERAL ( VALUES ('meal_voucher'::text,hr_work_entry_type.meal_voucher), ('private_car'::text,hr_work_entry_type.private_car), ('representation_fees'::text,hr_work_entry_type.representation_fees)) advantage(benefit_name, is_applicable)
 
                      WHERE (work_entry.state::text = ANY (ARRAY['draft'::character varying::text, 'validated'::character varying::text]))
+                       AND work_entry.active = true
                        AND hr_work_entry_type.meal_voucher = true OR hr_work_entry_type.private_car = true OR hr_work_entry_type.representation_fees = true
                        AND advantage.is_applicable
 

@@ -841,7 +841,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': datetime.datetime(2020, 9, 14, 6, 0, 0),
             'date_to': datetime.datetime(2020, 9, 14, 14, 36, 0),
             'time_type': "leave",
-            'work_entry_type_id': self.env.ref('test_l10n_be_hr_payroll_account.work_entry_type_phc').id
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_phc').id
         }])
 
         payslip = self._generate_payslip(self.date_from, self.date_to)
@@ -1166,9 +1166,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': datetime.datetime(2020, 9, 14, 6, 0, 0),
             'date_to': datetime.datetime(2020, 9, 14, 14, 36, 0),
             'time_type': "leave",
-            'work_entry_type_id': self.env.ref('test_l10n_be_hr_payroll_account.work_entry_type_phc').id
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_phc').id
         }])
-        public_compensation_type = self.env.ref('test_l10n_be_hr_payroll_account.work_entry_type_phc')
+        public_compensation_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_phc')
         # YTI TODO: master: Get rid of this.
         if 'representation_fees' in public_compensation_type:
             public_compensation_type.representation_fees = True

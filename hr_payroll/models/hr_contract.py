@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import date, datetime
 from collections import defaultdict
 from odoo import api, fields, models
 from odoo.tools import date_utils
@@ -114,10 +114,36 @@ class HrContract(models.Model):
     def _get_default_work_entry_type(self):
         return self.structure_type_id.default_work_entry_type_id or super(HrContract, self)._get_default_work_entry_type()
 
+    def _get_fields_that_recompute_payslip(self):
+        # Returns the fields that should recompute the payslip
+        return [self._get_contract_wage]
+
     def write(self, vals):
         if 'state' in vals and vals['state'] == 'cancel':
             self.env['hr.payslip'].search([
                 ('contract_id', 'in', self.filtered(lambda c: c.state != 'cancel').ids),
                 ('state', 'in', ['draft', 'verify']),
             ]).action_payslip_cancel()
-        return super().write(vals)
+        res = super().write(vals)
+        dependendant_fields = self._get_fields_that_recompute_payslip()
+        if any(key in dependendant_fields for key in vals.keys()):
+            for contract in self:
+                contract._recompute_payslips(self.date_start, self.date_end or date.max)
+        return res
+
+    def _recompute_work_entries(self, date_from, date_to):
+        self.ensure_one()
+        super()._recompute_work_entries(date_from, date_to)
+        self._recompute_payslips(date_from, date_to)
+
+    def _recompute_payslips(self, date_from, date_to):
+        self.ensure_one()
+        all_payslips = self.env['hr.payslip'].sudo().search([
+            ('contract_id', '=', self.id),
+            ('state', 'in', ['draft', 'verify']),
+            ('date_from', '<=', date_to),
+            ('date_to', '>=', date_from),
+            ('company_id', '=', self.env.company.id),
+        ]).filtered(lambda p: p.is_regular)
+        if all_payslips:
+            all_payslips.action_refresh_from_work_entries()

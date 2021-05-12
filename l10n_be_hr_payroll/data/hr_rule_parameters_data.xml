@@ -571,7 +571,7 @@
     (48550.00,  999999999.00, 53.50)
 ]</field>
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rates"/>
-            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
 
         <!-- Holiday Pay - PP Exoneration -->
@@ -596,7 +596,7 @@
     12: 75150.00,
 }</field>
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_exoneration"/>
-            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
 
         <!-- Holiday Pay - PP rate reduction -->
@@ -614,7 +614,7 @@
     5: (75.0, 32850.00),
 }</field>
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rate_reduction"/>
-            <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
+            <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
 
         <!-- ONSS Restructuring -->
@@ -728,6 +728,5 @@
             <field name="rule_parameter_id" ref="rule_parameter_cp200_salary_scale"/>
             <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
         </record>
-
     </data>
 </odoo>

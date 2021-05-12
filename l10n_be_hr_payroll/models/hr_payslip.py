@@ -35,6 +35,7 @@ class Payslip(models.Model):
             'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
         }
         struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+        struct_double = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
         for slip in self:
             if not slip.employee_id or not slip.date_from or not slip.date_to:
                 continue
@@ -53,6 +54,16 @@ class Payslip(models.Model):
                 })]
                 input_line_vals = to_remove_vals + to_add_vals
                 slip.update({'input_line_ids': input_line_vals})
+            # If a double holiday pay should be recovered
+            elif slip.struct_id == struct_double:
+                to_recover = slip._get_sum_european_time_off_days()
+                if to_recover:
+                    slip.write({'input_line_ids': [(0, 0, {
+                        'name': _('European Leaves Deduction'),
+                        'amount': to_recover,
+                        'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_european_leave_deduction').id,
+                    })]})
+
             if not slip.contract_id:
                 lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_types.values())
                 slip.update({'input_line_ids': [(3, line.id, False) for line in lines_to_remove]})
@@ -189,12 +200,12 @@ class Payslip(models.Model):
                 input_type_id = self.env.ref('l10n_be_hr_payroll.cp200_other_input_after_contract_public_holidays').id
                 if input_type_id not in self.input_line_ids.mapped('input_type_id').ids:
                     self.write({'input_line_ids': [(0, 0, {
-                        'name': 'After Contract Public Holidays',
+                        'name': _('After Contract Public Holidays'),
                         'amount': 0.0,
                         'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_after_contract_public_holidays').id,
                     })]})
         # Handle loss on commissions
-        if self.contract_id.commission_on_target and self._get_last_year_average_variable_revenues():
+        if self._get_last_year_average_variable_revenues():
             we_types_ids = (
                 self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday') + self.env.ref('l10n_be_hr_payroll.work_entry_type_small_unemployment')
             ).ids
@@ -210,11 +221,14 @@ class Payslip(models.Model):
         return res
 
     def _get_last_year_average_variable_revenues(self):
+        if not self.contract_id.commission_on_target:
+            return 0
+        date_from = self.env.context.get('variable_revenue_date_from', self.date_from)
         payslips = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),
             ('state', 'in', ['done', 'paid']),
-            ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
-            ('date_from', '<', self.date_from),
+            ('date_from', '>=', date_from + relativedelta(months=-12, day=1)),
+            ('date_from', '<', date_from),
         ], order="date_from asc")
         complete_payslips = payslips.filtered(
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
@@ -229,7 +243,7 @@ class Payslip(models.Model):
             start = first_contract_date + relativedelta(day=1, months=1)
         else:
             start = first_contract_date
-        end = self.date_from + relativedelta(day=31, months=-1)
+        end = date_from + relativedelta(day=31, months=-1)
         number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
         number_of_month = min(12, number_of_month)
         return total_amount / number_of_month if number_of_month else 0
@@ -330,7 +344,6 @@ class Payslip(models.Model):
         hours = contracts._get_work_hours(date_from, date_to)
         paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
         unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
-
         return paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
 
     def _get_paid_amount_13th_month(self):
@@ -365,17 +378,26 @@ class Payslip(models.Model):
         if not contracts:
             return 0.0
 
-        year = self.date_from.year - 1
-        date_from = date(year, 1, 1)
-        date_to = date(year, 12, 31)
-
-        # 1. Number of months
-        n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
-
-        # 2. Deduct absences
-        presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
         basic = self.contract_id._get_contract_wage()
-        return basic * n_months / 12 * presence_prorata
+        if self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+            year = self.date_from.year - 1
+            date_from = date(year, 1, 1)
+            date_to = date(year, 12, 31)
+
+            # 1. Number of months
+            n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
+
+            # 2. Deduct absences
+            presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
+
+            fixed_salary = basic * n_months / 12 * presence_prorata
+        else:
+            fixed_salary = basic
+
+        avg_variable_revenues = self.with_context(
+            variable_revenue_date_from=self.date_from + relativedelta(day=1, month=1)
+        )._get_last_year_average_variable_revenues()
+        return fixed_salary + avg_variable_revenues
 
     def _get_paid_amount(self):
         self.ensure_one()
@@ -388,9 +410,7 @@ class Payslip(models.Model):
             if self.struct_id == struct_warrant:
                 return self._get_paid_amount_warrant()
             struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
-            # YTI TO FIX: This is not based on the experience on the company but on the
-            # number of allowed legal time off
-            if False and self.struct_id == struct_double_holiday_pay and self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
+            if self.struct_id == struct_double_holiday_pay:
                 return self._get_paid_double_holiday()
         return super()._get_paid_amount()
 
@@ -399,84 +419,16 @@ class Payslip(models.Model):
         return any(l in active_langs for l in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
 
     def _get_sum_european_time_off_days(self, check=False):
-        """
-            Sum European Time Off Worked Days (LEAVE216) contained in any payslips over
-            the last year.
-            We search if there is a payslip over this year, with a the code 'EU.LEAVE.DEDUC'.
-            If yes, then we don't take the worked days in the previous year.
-
-            We also search the 'LEAVE216' worked days contained in any payslip two year ago, as
-            they are deducted from the double holiday pay during this period. It's usually on the
-            following holiday pay (next year), but we cannot have a negative Net Salary.
-            That's why we can deduct these leaves two years after.
-        """
-        work_days_code = 'LEAVE216'
-        payslip_line_code = 'EU.LEAVE.DEDUC'
-        year = self.date_from.year - 1
-        date_from = fields.Date.to_string(date(year, 1, 1))
-        date_to = fields.Date.to_string(date(year, 12, 31))
-
-        if check:
-            select = "1"
-            limit_records = "LIMIT 1"
-        else:
-            select = "sum(hwd.amount)"
-            limit_records = ""
-
-        # If the european leaves have not been deducted in the last double holiday pay
-        # we should deduct them this year
-        date_from_earlier = fields.Date.to_string(date(year - 1, 1, 1))
-        period_start = fields.Date.to_string(date(year + 1, 1, 1))
-        period_stop = fields.Date.to_string(date(year + 1, 12, 31))
-
-        query = """
-            SELECT {select}
-            FROM hr_payslip hp, hr_payslip_worked_days hwd, hr_work_entry_type hwet
-            WHERE hp.state in ('done', 'paid')
-            AND hp.id = hwd.payslip_id
-            AND hwet.id = hwd.work_entry_type_id
-            AND hp.employee_id = %(employee)s
-            AND hp.date_to <= %(stop)s
-            AND hwet.code = %(work_days_code)s
-            AND (
-                hp.date_from >= %(start)s
-                AND NOT EXISTS(
-                    SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
-                    WHERE hp.id <> hp2.id
-                    AND hp2.state in ('done', 'paid')
-                    AND hp2.id = hpl.slip_id
-                    AND hp2.employee_id = hp.employee_id
-                    AND hp2.date_from >= %(period_start)s
-                    AND hp2.date_to <= %(period_stop)s
-                ) OR (
-                    hp.date_from >= %(start_earlier)s
-                    AND NOT EXISTS(
-                        SELECT 1 FROM hr_payslip hp2, hr_payslip_line hpl
-                        WHERE hp.id <> hp2.id
-                        AND hp2.state in ('done', 'paid')
-                        AND hp2.id = hpl.slip_id
-                        AND hp2.employee_id = hp.employee_id
-                        AND hp2.date_from >= %(start)s
-                        AND hp2.date_to <= %(stop)s
-                        AND hpl.code = %(payslip_line_code)s LIMIT 1
-                    )
-                )
-            )
-            {limit}""".format(
-                select=select,
-                limit=limit_records)
-
-        self.env.cr.execute(query, {
-            'employee': self.employee_id.id,
-            'work_days_code': work_days_code,
-            'start': date_from,
-            'stop': date_to,
-            'start_earlier': date_from_earlier,
-            'period_start': period_start,
-            'period_stop': period_stop,
-            'payslip_line_code': payslip_line_code})
-        res = self.env.cr.fetchone()
-        return res[0] if res else 0.0
+        self.ensure_one()
+        two_years_payslips = self.env['hr.payslip'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('date_to', '<=', date(self.date_from.year, 12, 31)),
+            ('date_from', '>=', date(self.date_from.year - 2, 1, 1)),
+            ('state', 'in', ['done', 'paid']),
+        ])
+        european_time_off_amount = two_years_payslips._get_worked_days_line_amount('LEAVE216')
+        already_recovered_amount = two_years_payslips._get_line_values(['EU.LEAVE.DEDUC'], compute_sum=True)['EU.LEAVE.DEDUC']['sum']['total']
+        return european_time_off_amount + already_recovered_amount
 
     def _is_invalid(self):
         invalid = super()._is_invalid()
@@ -535,26 +487,25 @@ class Payslip(models.Model):
 
 
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
+    # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument
+    def find_rates(x, rates):
+        for low, high, rate in rates:
+            if low <= x <= high:
+                return rate
+
     if not inputs.ANNUAL_TAXABLE:
         return 0
     annual_taxable = inputs.ANNUAL_TAXABLE.amount
-    # Exoneration for children in charge
-    children = payslip.contract_id.employee_id.dependent_children
-    scale = payslip.rule_parameter('holiday_pay_pp_exoneration')
-    if children and children in scale and annual_taxable <= scale[children]:
-        return 0
 
+    # Note: Exoneration for children in charge is managed on the salary.rule for the amount
     rates = payslip.rule_parameter('holiday_pay_pp_rates')
-    for low, high, rate in rates:
-        if low <= annual_taxable <= high:
-            pp_rate = rate
-            break
+    pp_rate = find_rates(annual_taxable, rates)
 
-    # Reduction for children in charge
-    scale = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
-    if children and children in scale and annual_taxable <= scale[children][1]:
-        pp_rate -= scale[children][0]
-
+    # Rate Reduction for children in charge
+    children = payslip.dict.employee_id.dependent_children
+    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
+    if children and annual_taxable <= children_reduction.get(children, children_reduction[5])[1]:
+        pp_rate *= (1 - children_reduction.get(children, children_reduction[5])[0] / 100.0)
     return pp_rate
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
@@ -752,38 +703,53 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
     return min(result, -categories.ONSS)
 
 def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, inputs):
-    rates = [
-        (8460.0, 0), (10830.0, 0.1917),
-        (13775.0, 0.2120), (16520.0, 0.2625),
-        (18690.0, 0.3130), (20870.0, 0.3433),
-        (25230.0, 0.3634), (27450.0, 0.3937),
-        (36360.0, 0.4239), (47480.0, 0.4744)]
+    # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument
+    def find_rates(x, rates):
+        for low, high, rate in rates:
+            if low <= x <= high:
+                return rate / 100.0
+
+    rates = payslip.rule_parameter('holiday_pay_pp_rates')
+    children_exoneration = payslip.rule_parameter('holiday_pay_pp_exoneration')
+    children_reduction = payslip.rule_parameter('holiday_pay_pp_rate_reduction')
 
     employee = payslip.contract_id.employee_id
-    def find_rates(x):
-        for a, b in rates:
-            if x <= a:
-                return b
-        return 0.535
 
-    # Up to 12 children
-    children_exoneration = [0.0, 13329.0, 16680.0, 21820.0, 27560.0, 33300.0, 39040.0, 44780.0, 50520.0, 56260.0, 62000.0, 67740.0, 73480.0]
-    # Only if no more than 5 children
-    children_reduction = [(0, 0), (22940.0, 0.075), (22940.0, 0.2), (25235.0, 0.35), (29825.0, 0.55), (32120.0, 0.75)]
+    gross = categories.GROSS
 
-    n = employee.dependent_children
-    yearly_revenue = categories.GROSS * 12.0
+    contract = payslip.dict.contract_id
+    monthly_revenue = contract._get_contract_wage()
+    # Count ANT in yearly remuneration
+    if contract.internet:
+        monthly_revenue += 5.0
+    if contract.mobile and not contract.internet:
+        monthly_revenue += 4.0 + 5.0
+    if contract.mobile and contract.internet:
+        monthly_revenue += 4.0
+    if contract.has_laptop:
+        monthly_revenue += 7.0
+    if contract.transport_mode_car:
+        if 'vehicle_id' in payslip.dict:
+            monthly_revenue += payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from)
+        else:
+            monthly_revenue += contract.car_atn
 
-    if 0 < n < 13 and yearly_revenue <= children_exoneration[n]:
-        yearly_revenue = yearly_revenue - (children_exoneration[n] - yearly_revenue)
+    yearly_revenue = monthly_revenue * (1 - 0.1307) * 12.0
 
-    if n <= 5 and yearly_revenue <= children_reduction[n][0]:
-        withholding_tax_amount = yearly_revenue * find_rates(yearly_revenue) * (1 - children_reduction[n][1])
+    # Exoneration
+    children = employee.dependent_children
+    if children and yearly_revenue <= children_exoneration.get(children, children_exoneration[12]):
+        yearly_revenue -= children_exoneration.get(children, children_exoneration[12]) - yearly_revenue
+
+    # Reduction
+    if children and yearly_revenue <= children_reduction.get(children, children_reduction[5])[1]:
+        withholding_tax_amount = gross * find_rates(yearly_revenue, rates) * (1 - children_reduction.get(children, children_reduction[5])[0] / 100.0)
     else:
-        withholding_tax_amount = yearly_revenue * find_rates(yearly_revenue)
-    return -withholding_tax_amount / 12.0
+        withholding_tax_amount = gross * find_rates(yearly_revenue, rates)
+    return - withholding_tax_amount
 
 def compute_thirteen_month_withholding_taxes(payslip, categories, worked_days, inputs):
+    # YTI: This is all wrong (and outdated).
     employee = payslip.contract_id.employee_id
     rates = [
         (8460.0, 0), (10830.0, 0.2322),

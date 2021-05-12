@@ -73,9 +73,13 @@ class HrContract(models.Model):
     time_credit_full_time_wage = fields.Monetary(
         'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
         store=True, readonly=False)
-    standard_calendar_id = fields.Many2one('resource.calendar', default=lambda self: self.env.company.resource_calendar_id)
-    time_credit_type_id = fields.Many2one('hr.work.entry.type', string='Part Time Work Entry Type',
-                                              help="The work entry type used when generating work entries to fit full time working schedule.")
+    standard_calendar_id = fields.Many2one(
+        'resource.calendar', default=lambda self: self.env.company.resource_calendar_id,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    time_credit_type_id = fields.Many2one(
+        'hr.work.entry.type', string='Part Time Work Entry Type',
+        domain=['&', ('is_leave', '=', True), ('leave_right', '=', False)],
+        help="The work entry type used when generating work entries to fit full time working schedule.")
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")

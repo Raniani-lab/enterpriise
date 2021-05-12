@@ -145,11 +145,12 @@
                 <field name="number" decoration-bf="1"/>
                 <field name="employee_id" widget="many2one_avatar_employee"/>
                 <field name="payslip_run_id"/>
-                <field name="date_from"/>
-                <field name="date_to"/>
+                <field name="struct_id" optional="hide"/>
+                <field name="date_from" optional="hide"/>
+                <field name="date_to" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                <field name="basic_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="net_wage" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-bf="1"/>
+                <field name="basic_wage" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="net_wage" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-bf="1" optional="show"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')"/>
             </tree>
         </field>

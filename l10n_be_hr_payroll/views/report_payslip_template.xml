@@ -47,7 +47,7 @@
                         <tr>
                             <td class="w-25"><strong>Basic Salary</strong></td>
                             <td style="color:#875A7B" class="w-25">
-                                <span t-esc="o.line_ids.filtered(lambda line: line.code == 'BASIC').total"
+                                <span t-esc="o.contract_id._get_contract_wage()"
                                       t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                             </td>
                             <td class="w-25"></td>

@@ -318,6 +318,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': cls.env.ref('hr_work_entry_contract.work_entry_type_unpaid_leave').id,
         })
 
+        cls.european_time_off_type = cls.env['hr.leave.type'].create({
+            'name': 'European Time Off',
+            'allocation_type': 'no',
+            'leave_validation_type': 'both',
+            'request_unit': 'half_day',
+            'company_id': cls.env.company.id,
+            'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_european').id,
+        })
+
     @classmethod
     def _generate_payslip(cls, date_from, date_to):
         work_entries = cls.contract._generate_work_entries(date_from, date_to)
@@ -4838,3 +4847,805 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 237.07,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays(self):
+        self.contract.write({
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 6)
+
+        payslip_results = {
+            'BASIC': 2438.0,
+            'SALARY': 2252.5,
+            'ONSS': -294.4,
+            'GROSS': 2143.6,
+            'P.P': -843.93,
+            'NET': 1299.66,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holiday_no_right(self):
+        self.contract.date_start = datetime.date(2021, 1, 1)
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 6)
+
+        payslip_results = {
+            'BASIC': 0.0,
+            'SALARY': 0.0,
+            'ONSS': 0.0,
+            'GROSS': 0.0,
+            'P.P': 0.0,
+            'NET': 0.0,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_incomplete_year_full_time(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1828.5,
+            'SALARY': 1689.38,
+            'ONSS': -220.8,
+            'GROSS': 1607.7,
+            'P.P': -632.95,
+            'NET': 974.75,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_complete_year_credit_time(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week,
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+            'wage': 2120.0,
+            'wage_on_signature': 2120.0,
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1950.4,
+            'SALARY': 1802.0,
+            'ONSS': -235.52,
+            'GROSS': 1714.88,
+            'P.P': -623.19,
+            'NET': 1091.69,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_incomplete_year_credit_time(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week,
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+            'wage': 2120.0,
+            'wage_on_signature': 2120.0,
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1462.8,
+            'SALARY': 1351.5,
+            'ONSS': -176.64,
+            'GROSS': 1286.16,
+            'P.P': -467.39,
+            'NET': 818.77,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_complete_year_part_time(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week,
+            'wage': 2120.0,
+            'wage_on_signature': 2120.0,
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1950.4,
+            'SALARY': 1802.0,
+            'ONSS': -235.52,
+            'GROSS': 1714.88,
+            'P.P': -623.19,
+            'NET': 1091.69,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_incomplete_year_part_time(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week,
+            'wage': 2120.0,
+            'wage_on_signature': 2120.0,
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1462.8,
+            'SALARY': 1351.5,
+            'ONSS': -176.64,
+            'GROSS': 1286.16,
+            'P.P': -467.39,
+            'NET': 818.77,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_children_no_reduction(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        self.employee.write({
+            'children': 2,
+        })
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1828.5,
+            'SALARY': 1689.38,
+            'ONSS': -220.8,
+            'GROSS': 1607.7,
+            'P.P': -632.95,
+            'NET': 974.75,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_children_with_reductions(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        self.employee.write({
+            'children': 6,
+        })
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 1828.5,
+            'SALARY': 1689.38,
+            'ONSS': -220.8,
+            'GROSS': 1607.7,
+            'P.P': -105.51,
+            'NET': 1502.19,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_variable_revenues_complete_year(self):
+        commission_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2020, 5, 1),
+            'date_to': datetime.datetime(2020, 5, 31),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+                'amount': 3000,
+            })]
+        })
+        commission_payslip.action_refresh_from_work_entries()
+        commission_payslip.action_payslip_done()
+
+        self.contract.write({
+            'commission_on_target': 1000,
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 2668.0,
+            'SALARY': 2465.0,
+            'ONSS': -322.18,
+            'GROSS': 2345.82,
+            'P.P': -923.55,
+            'NET': 1422.27,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_variable_revenues_incomplete_year(self):
+        commission_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2020, 5, 1),
+            'date_to': datetime.datetime(2020, 5, 31),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+                'amount': 3000,
+            })]
+        })
+        commission_payslip.action_refresh_from_work_entries()
+        commission_payslip.action_payslip_done()
+
+        self.contract.write({
+            'commission_on_target': 1000,
+            'date_start': datetime.date(2020, 3, 15),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 2135.16,
+            'SALARY': 1972.71,
+            'ONSS': -257.83,
+            'GROSS': 1877.33,
+            'P.P': -739.11,
+            'NET': 1138.23,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_european_time_off(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 3, 15),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        self.employee.write({
+            'children': 2,
+        })
+
+        european_time_off = self.env['hr.leave'].create({
+            'name': 'European Time Off',
+            'holiday_status_id': self.european_time_off_type.id,
+            'date_from': datetime.datetime(2020, 5, 4, 1, 0, 0),
+            'date_to': datetime.datetime(2020, 5, 4, 23, 0, 0),
+            'request_date_from': datetime.datetime(2020, 5, 4, 1, 0, 0),
+            'request_date_to': datetime.datetime(2020, 5, 4, 23, 0, 0),
+            'number_of_days': 1,
+            'employee_id': self.employee.id,
+        })
+        european_time_off.action_approve()
+        european_time_off.action_validate()
+
+        european_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2020, 5, 1),
+            'date_to': datetime.datetime(2020, 5, 31),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'company_id': self.env.company.id,
+        })
+        european_payslip.action_refresh_from_work_entries()
+        european_payslip.action_payslip_done()
+        self.assertEqual(european_payslip.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE216').amount, 122.31)
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.input_line_ids), 1)
+        payslip_results = {
+            'BASIC': 1828.5,
+            'EU.LEAVE.DEDUC': -122.31,
+            'SALARY': 1576.37,
+            'ONSS': -206.03,
+            'GROSS': 1500.16,
+            'P.P': -590.61,
+            'NET': 909.55,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_european_time_off_over_2_years(self):
+        self.contract.write({
+            'date_start': datetime.date(2019, 1, 1),
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        self.employee.write({
+            'children': 2,
+        })
+
+        # Takes all the 4 weeks of european time off in Feb 2019
+        # Should recover 2650 € in 2020
+        european_time_off = self.env['hr.leave'].create({
+            'name': 'European Time Off',
+            'holiday_status_id': self.european_time_off_type.id,
+            'date_from': datetime.datetime(2019, 2, 1, 1, 0, 0),
+            'date_to': datetime.datetime(2019, 2, 28, 23, 0, 0),
+            'request_date_from': datetime.datetime(2019, 2, 1, 1, 0, 0),
+            'request_date_to': datetime.datetime(2019, 2, 28, 23, 0, 0),
+            'number_of_days': 20,
+            'employee_id': self.employee.id,
+        })
+        european_time_off.action_approve()
+        european_time_off.action_validate()
+
+        european_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2019, 2, 1),
+            'date_to': datetime.datetime(2019, 2, 28),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'company_id': self.env.company.id,
+        })
+        european_payslip.action_refresh_from_work_entries()
+        european_payslip.action_payslip_done()
+        self.assertEqual(european_payslip.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE216').amount, 2650)
+
+        payslip_2020 = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2020, 6, 1),
+            'date_to': datetime.date(2020, 6, 30)
+        })
+        payslip_2020.compute_sheet()
+        payslip_2020.action_payslip_done()
+
+        # We recover the maximum amount in 2020, and we should recover the remaining in 2021
+        # 2650 - 2438 = 212 €
+        self.assertEqual(len(payslip_2020.input_line_ids), 1)
+        payslip_results = {
+            'BASIC': 2438.0,
+            'EU.LEAVE.DEDUC': -2438.0,
+            'SALARY': 0.0,
+            'ONSS': 0.0,
+            'GROSS': 0.0,
+            'P.P': 0.0,
+            'NET': 0.0,
+        }
+        self._validate_payslip(payslip_2020, payslip_results)
+
+        payslip_2021 = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip_2021.compute_sheet()
+        self.assertEqual(len(payslip_2021.input_line_ids), 1)
+
+        payslip_results = {
+            'BASIC': 2438.0,
+            'EU.LEAVE.DEDUC': -212.0,
+            'SALARY': 2056.63,
+            'ONSS': -268.8,
+            'GROSS': 1957.2,
+            'P.P': -770.55,
+            'NET': 1186.65,
+        }
+        self._validate_payslip(payslip_2021, payslip_results)
+
+    def test_double_holidays_company_car(self):
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 6)
+
+        payslip_results = {
+            'BASIC': 2438.0,
+            'SALARY': 2252.5,
+            'ONSS': -294.4,
+            'GROSS': 2143.6,
+            'P.P': -908.67,
+            'NET': 1234.93,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_double_holidays_pay_recovery(self):
+        self.contract.write({
+            'transport_mode_car': False,
+        })
+        self.contract._generate_work_entries(self.contract.date_start, datetime.date(2021, 6, 30))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2021, 6, 1),
+            'date_to': datetime.date(2021, 6, 30),
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_recovery').id,
+                'amount': 438.0,
+            })]
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(payslip.input_line_ids), 1)
+        self.assertEqual(len(payslip.line_ids), 7)
+
+        payslip_results = {
+            'BASIC': 2438.0,
+            'DOUBLERECOVERY': -438.0,
+            'SALARY': 1847.83,
+            'ONSS': -241.51,
+            'GROSS': 1758.49,
+            'P.P': -692.32,
+            'NET': 1066.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_termination_holidays_pp_exoneration_reduction(self):
+        self.employee.children = 2
+
+        termination_payslips = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2021, 5, 1),
+            'date_to': datetime.datetime(2021, 5, 31),
+            'vehicle_id': self.car.id,
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'name': "Test Input",
+                'sequence': 1,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_gross_ref').id,
+                'amount': 43608.44
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 3,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_allocation').id,
+                'amount': 20.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 4,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
+                'amount': 5.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 5,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
+                'amount': 15000.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 6,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave').id,
+                'amount': 0.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 7,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave_days').id,
+                'amount': 0.0
+            })],
+        })
+        termination_payslips.compute_sheet()
+
+        self.assertEqual(len(termination_payslips.worked_days_line_ids), 0)
+        self.assertEqual(len(termination_payslips.input_line_ids), 6)
+        self.assertEqual(len(termination_payslips.line_ids), 13)
+
+        payslip_results = {
+            'PAY_SIMPLE': 2508.58,
+            'DOUBLE_BASIC': 2965.37,
+            'EUROPEAN': 0.0,
+            'PAY DOUBLE': 2965.37,
+            'PAY DOUBLE COMPLEMENTARY': 379.39,
+            'BASIC': 5853.34,
+            'ONSS1': -327.87,
+            'ONSS2': -387.57,
+            'ONSSTOTAL': 715.45,
+            'GROSS': 5137.9,
+            'PROF_TAX': -646.36,
+            'PPTOTAL': 646.36,
+            'NET': 4491.54,
+        }
+        self.assertAlmostEqual(termination_payslips.line_ids.filtered(lambda l: l.code == 'PROF_TAX').rate, -21.00, places=2)
+        self._validate_payslip(termination_payslips, payslip_results)
+
+    def test_termination_holidays_pp_no_exoneration_reduction(self):
+        self.employee.children = 2
+
+        termination_payslips = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2021, 5, 1),
+            'date_to': datetime.datetime(2021, 5, 31),
+            'vehicle_id': self.car.id,
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'name': "Test Input",
+                'sequence': 1,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_gross_ref').id,
+                'amount': 43608.44
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 3,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_allocation').id,
+                'amount': 20.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 4,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
+                'amount': 5.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 5,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
+                'amount': 18000.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 6,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave').id,
+                'amount': 0.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 7,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave_days').id,
+                'amount': 0.0
+            })],
+        })
+        termination_payslips.compute_sheet()
+
+        self.assertEqual(len(termination_payslips.worked_days_line_ids), 0)
+        self.assertEqual(len(termination_payslips.input_line_ids), 6)
+        self.assertEqual(len(termination_payslips.line_ids), 13)
+
+        payslip_results = {
+            'PAY_SIMPLE': 2508.58,
+            'DOUBLE_BASIC': 2965.37,
+            'EUROPEAN': 0.0,
+            'PAY DOUBLE': 2965.37,
+            'PAY DOUBLE COMPLEMENTARY': 379.39,
+            'BASIC': 5853.34,
+            'ONSS1': -327.87,
+            'ONSS2': -387.57,
+            'ONSSTOTAL': 715.45,
+            'GROSS': 5137.9,
+            'PROF_TAX': -1286.53,
+            'PPTOTAL': 1286.53,
+            'NET': 3851.37,
+        }
+        self.assertAlmostEqual(termination_payslips.line_ids.filtered(lambda l: l.code == 'PROF_TAX').rate, -25.04, places=2)
+        self._validate_payslip(termination_payslips, payslip_results)
+
+    def test_termination_holidays_pp_no_exoneration_no_reduction(self):
+        self.employee.children = 2
+
+        termination_payslips = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2021, 5, 1),
+            'date_to': datetime.datetime(2021, 5, 31),
+            'vehicle_id': self.car.id,
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'name': "Test Input",
+                'sequence': 1,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_gross_ref').id,
+                'amount': 43608.44
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 3,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_allocation').id,
+                'amount': 20.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 4,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_time_off_taken').id,
+                'amount': 5.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 5,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_annual_taxable_amount').id,
+                'amount': 25000.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 6,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave').id,
+                'amount': 0.0
+            }), (0, 0, {
+                'name': "Test Input",
+                'sequence': 7,
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_other_input_european_leave_days').id,
+                'amount': 0.0
+            })],
+        })
+        termination_payslips.compute_sheet()
+
+        self.assertEqual(len(termination_payslips.worked_days_line_ids), 0)
+        self.assertEqual(len(termination_payslips.input_line_ids), 6)
+        self.assertEqual(len(termination_payslips.line_ids), 13)
+
+        payslip_results = {
+            'PAY_SIMPLE': 2508.58,
+            'DOUBLE_BASIC': 2965.37,
+            'EUROPEAN': 0.0,
+            'PAY DOUBLE': 2965.37,
+            'PAY DOUBLE COMPLEMENTARY': 379.39,
+            'BASIC': 5853.34,
+            'ONSS1': -327.87,
+            'ONSS2': -387.57,
+            'ONSSTOTAL': 715.45,
+            'GROSS': 5137.9,
+            'PROF_TAX': -1867.11,
+            'PPTOTAL': 1867.11,
+            'NET': 3270.79,
+        }
+        self.assertAlmostEqual(termination_payslips.line_ids.filtered(lambda l: l.code == 'PROF_TAX').rate, -36.34, places=2)
+        self._validate_payslip(termination_payslips, payslip_results)

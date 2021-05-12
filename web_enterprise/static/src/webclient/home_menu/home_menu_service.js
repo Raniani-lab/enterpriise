@@ -87,10 +87,7 @@ export const homeMenuService = {
             async mounted() {
                 hasHomeMenu = true;
                 hasBackgroundAction = this.props.breadcrumbs.length > 0;
-                const newHash = {
-                    "unlock menu_id": undefined,
-                };
-                this.router.pushState(newHash, true);
+                this.router.pushState({ menu_id: undefined }, { lock: false, replace: true });
                 this.env.bus.trigger("HOME-MENU:TOGGLED");
             }
             willUnmount() {
@@ -98,7 +95,7 @@ export const homeMenuService = {
                 hasBackgroundAction = false;
                 const currentMenuId = this.menus.getCurrentApp();
                 if (currentMenuId) {
-                    this.router.pushState({ "lock menu_id": `${currentMenuId.id}` });
+                    this.router.pushState({ menu_id: currentMenuId.id }, { lock: true });
                 }
                 this.env.bus.trigger("HOME-MENU:TOGGLED");
             }

@@ -442,8 +442,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await click(webClient.el.querySelector(".o_app.o_menuitem:nth-child(2)"));
             await legacyExtraNextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, {
-                action: "1002",
-                menu_id: "2",
+                action: 1002,
+                menu_id: 2,
             });
 
             await click(webClient.el.querySelector(".o_menu_toggle"));
@@ -455,8 +455,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             // end if
             assert.deepEqual(webClient.env.services.router.current.hash, {
-                action: "1002",
-                menu_id: "2",
+                action: 1002,
+                menu_id: 2,
             });
         }
     );
@@ -504,8 +504,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         assert.containsNone(webClient, ".o_home_menu");
         const state = webClient.env.services.router.current.hash;
         assert.deepEqual(state, {
-            action: "1002",
-            menu_id: "2",
+            action: 1002,
+            menu_id: 2,
         });
 
         await loadState(webClient, {});

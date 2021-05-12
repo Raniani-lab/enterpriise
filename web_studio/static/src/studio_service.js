@@ -214,7 +214,7 @@ export const studioService = {
                 hash[URL_VIEW_KEY] = state.editedViewType || undefined;
                 hash[URL_TAB_KEY] = state.editorTab;
             }
-            env.services.router.pushState(hash, true);
+            env.services.router.pushState(hash, { replace: true });
         }
 
         function setParams(params = {}) {

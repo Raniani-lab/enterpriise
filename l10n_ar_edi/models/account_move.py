@@ -94,10 +94,19 @@ class AccountMove(models.Model):
                 'tipoCodAut': 'E' if rec.l10n_ar_afip_auth_mode == 'CAE' else 'A',
                 'codAut': int(rec.l10n_ar_afip_auth_code),
             }
-            if rec.commercial_partner_id.vat:
-                data.update({'nroDocRec': rec.commercial_partner_id._get_id_number_sanitize()})
-            if rec.commercial_partner_id.l10n_latam_identification_type_id:
-                data.update({'tipoDocRec': int(rec._get_partner_code_id(rec.commercial_partner_id))})
+
+            commercial_partner_id = rec.commercial_partner_id
+            if commercial_partner_id.country_id and commercial_partner_id.country_id.code != 'AR':
+                nro_doc_rec = int(
+                    commercial_partner_id.country_id.l10n_ar_legal_entity_vat
+                    if commercial_partner_id.is_company else commercial_partner_id.country_id.l10n_ar_natural_vat)
+            else:
+                nro_doc_rec = commercial_partner_id._get_id_number_sanitize() if commercial_partner_id.vat else False
+
+            if nro_doc_rec:
+                data.update({'nroDocRec': nro_doc_rec})
+            if commercial_partner_id.l10n_latam_identification_type_id:
+                data.update({'tipoDocRec': int(rec._get_partner_code_id(commercial_partner_id))})
             # For more info go to https://www.afip.gob.ar/fe/qr/especificaciones.asp
             rec.l10n_ar_afip_qr_code = 'https://www.afip.gob.ar/fe/qr/?p=%s' % base64.b64encode(json.dumps(
                 data).encode()).decode('ascii')

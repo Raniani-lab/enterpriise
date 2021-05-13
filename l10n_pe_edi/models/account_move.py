@@ -197,7 +197,7 @@ class AccountMove(models.Model):
         amount_i, amount_d = divmod(self.amount_total, 1)
         amount_d = int(round(amount_d * 100, 2))
         words = num2words(amount_i, lang='es')
-        result = '%(words)s Y %(currency_name)s %(amount_d)02d/100' % {
+        result = '%(words)s Y %(amount_d)02d/100 %(currency_name)s' % {
             'words': words,
             'amount_d': amount_d,
             'currency_name':  self.currency_id.currency_unit_label,

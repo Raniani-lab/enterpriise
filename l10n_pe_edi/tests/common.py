@@ -119,7 +119,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                     listName="Tipo de Documento"
                     listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01">01</InvoiceTypeCode>
                 <Note languageLocaleID="1000">Monto en letras</Note>
-                <Note languageLocaleID="1000">NUEVE MIL CUATROCIENTOS CUARENTA Y GOLD 00/100</Note>
+                <Note languageLocaleID="1000">NUEVE MIL CUATROCIENTOS CUARENTA Y 00/100 GOLD</Note>
                 <DocumentCurrencyCode>USD</DocumentCurrencyCode>
                 <Signature>
                     <ID>IDSignKG</ID>

@@ -36,6 +36,14 @@ class AnalyticLine(models.Model):
     display_timer = fields.Boolean(
         compute='_compute_display_timer',
         help="Technical field used to display the timer if the encoding unit is 'Hours'.")
+    can_edit = fields.Boolean(compute='_compute_can_edit')
+
+    @api.depends('validated')
+    @api.depends_context('uid')
+    def _compute_can_edit(self):
+        is_approver = self.env.user.has_group('hr_timesheet.group_hr_timesheet_approver')
+        for line in self:
+            line.can_edit = is_approver or not line.validated
 
     def _compute_display_timer(self):
         other_employee_lines = self.filtered(lambda l: l.employee_id not in self.env.user.employee_ids)
@@ -271,7 +279,7 @@ class AnalyticLine(models.Model):
         }
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             notification['params'].update({
-                'title': _("Sorry, you don't have the access to validate the timesheets."),
+                'title': _("You can only validate the timesheets of employees of whom you are the manager or the timesheet approver."),
                 'type': 'danger'
             })
             return notification
@@ -284,16 +292,13 @@ class AnalyticLine(models.Model):
             })
             return notification
 
-        if analytic_lines.filtered(lambda l: l.timer_start):
-            notification['params'].update({
-                'title': _("At least one timer is running on the selected timesheets."),
-                'type': 'danger',
-            })
-            return notification
+        running_analytic_lines = analytic_lines.filtered(lambda l: l.timer_start)
+        if running_analytic_lines:
+            running_analytic_lines.action_timer_stop()
 
         analytic_lines.sudo().write({'validated': True})
         notification['params'].update({
-            'title': _("The timesheets were successfully validated"),
+            'title': _("The timesheets have successfully been validated."),
             'type': 'success',
             'next': {'type': 'ir.actions.act_window_close'},
         })
@@ -311,7 +316,7 @@ class AnalyticLine(models.Model):
     def write(self, vals):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             if 'validated' in vals:
-                raise AccessError(_('Only a Timesheets Approver or Manager is allowed to validate a timesheet'))
+                raise AccessError(_('You can only validate the timesheets of employees of whom you are the manager or the timesheet approver.'))
             elif self.filtered(lambda r: r.is_timesheet and r.validated):
                 raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
 
@@ -321,7 +326,7 @@ class AnalyticLine(models.Model):
     def _unlink_if_manager(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(
                 lambda r: r.is_timesheet and r.validated):
-            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to delete a validated entry.'))
+            raise AccessError(_('You cannot delete a validated entry. Please, contact your manager or your timesheet approver.'))
 
     def unlink(self):
         res = super(AnalyticLine, self).unlink()
@@ -499,7 +504,7 @@ class AnalyticLine(models.Model):
             * Override method of hr_timesheet module.
         """
         if self.validated:
-            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+            raise UserError(_('You cannot use the timer on validated timesheets.'))
         if not self.user_timer_id.timer_start and self.display_timer:
             super(AnalyticLine, self).action_timer_start()
 
@@ -550,7 +555,7 @@ class AnalyticLine(models.Model):
             # sudo as we can have a timesheet related to a company other than the current one.
             self = self.sudo()
         if self.validated:
-            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+            raise UserError(_('You cannot use the timer on validated timesheets.'))
         if self.user_timer_id.timer_start and self.display_timer:
             minutes_spent = super(AnalyticLine, self).action_timer_stop()
             self._add_timesheet_time(minutes_spent, try_to_match)
@@ -631,9 +636,9 @@ class AnalyticLine(models.Model):
 
     def action_add_time_to_timer(self, time):
         if self.validated:
-            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+            raise UserError(_('You cannot use the timer on validated timesheets.'))
         if not self.user_id.employee_ids:
-            raise UserError(_('To set a time to a project, your current user must be linked to an employee'))
+            raise UserError(_('An employee must be linked to your user to record time.'))
         timer = self.user_timer_id
         if not timer:
             self.action_timer_start()
@@ -644,12 +649,12 @@ class AnalyticLine(models.Model):
         if not self.exists():
             return
         if True in self.mapped('validated'):
-            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+            raise UserError(_('You cannot use the timer on validated timesheets.'))
         self.write({'name': description})
 
     def action_change_project_task(self, new_project_id, new_task_id):
         if self.validated:
-            raise UserError(_('Sorry, you cannot use a timer for a validated timesheet'))
+            raise UserError(_('You cannot use the timer on validated timesheets.'))
         if not self.unit_amount:
             self.write({
                 'project_id': new_project_id,

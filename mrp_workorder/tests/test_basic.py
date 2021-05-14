@@ -1932,6 +1932,7 @@ class TestRoutingAndKits(TransactionCase):
         mo_form.product_qty = 10.0
         mo = mo_form.save()
         mo.action_confirm()
+        mo.is_locked = False
         mo_form = Form(mo)
         with mo_form.move_raw_ids.new() as move:
             move.name = mo.name

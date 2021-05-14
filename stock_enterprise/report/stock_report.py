@@ -85,8 +85,8 @@ class StockReport(models.Model):
                     scheduled_date,
                     partner_id,
                     backorder_id IS NOT NULL as is_backorder,
-                    extract(epoch from avg(date_trunc('day',date_done)-date_trunc('day',scheduled_date)))/(24*60*60)::decimal(16,2) as delay,
-                    extract(epoch from avg(date_trunc('day',date_done)-date_trunc('day',date)))/(24*60*60)::decimal(16,2) as cycle_time
+                    (extract(epoch from avg(date_done-scheduled_date))/(24*60*60))::decimal(16,2) as delay,
+                    (extract(epoch from avg(date_done-date))/(24*60*60))::decimal(16,2) as cycle_time
                 FROM
                     stock_picking
                 GROUP BY

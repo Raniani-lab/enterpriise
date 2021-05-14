@@ -281,22 +281,13 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
         <pivot string="Partners">
             <field name="probability" type="measure"/>
         </pivot>`,
-        mockRPC: function (route, args) {
-            if (args.method === "search_read" && args.model === "ir.model") {
-                return Promise.resolve([{ name: "partner" }]);
-            }
+        mockRPC: async function (route, args) {
             if (route.includes("get_spreadsheets_to_display")) {
-                return Promise.resolve([{ id: 1, name: "My Spreadsheet" }]);
+                return [{ id: 1, name: "My Spreadsheet" }];
             }
             if (args.method === "create" && args.model === "documents.document") {
                 assert.step("create");
-                return Promise.resolve([1]);
-            }
-            if (route.includes("join_spreadsheet_session")) {
-                return Promise.resolve({ raw: "{}", revisions: [] });
-            }
-            if (route.includes("dispatch_spreadsheet_message")) {
-                return Promise.resolve();
+                return [1];
             }
             return this._super.apply(this, arguments);
         },
@@ -320,26 +311,15 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
         <pivot string="Partners">
             <field name="probability" type="measure"/>
         </pivot>`,
-        mockRPC: function (route, args) {
-            if (args.method === "search_read" && args.model === "ir.model") {
-                return Promise.resolve([{ name: "partner" }]);
-            }
-            if (args.method === "search_read" && args.model === "documents.document") {
-                return Promise.resolve([{ raw: "{}" }]);
-            }
+        mockRPC: async function (route, args) {
             if (route.includes("get_spreadsheets_to_display")) {
-                return Promise.resolve([{ id: 1, name: "My Spreadsheet" }]);
+                return [{ id: 1, name: "My Spreadsheet" }];
             }
             if (args.method === "write" && args.model === "documents.document") {
                 assert.step("write");
-                return Promise.resolve();
             }
             if (route.includes("join_spreadsheet_session")) {
                 assert.step("join_spreadsheet_session");
-                return Promise.resolve({ raw: "{}", revisions: [] });
-            }
-            if (route.includes("dispatch_spreadsheet_message")) {
-                return Promise.resolve();
             }
             return this._super.apply(this, arguments);
         },

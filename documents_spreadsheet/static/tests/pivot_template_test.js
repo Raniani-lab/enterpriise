@@ -13,7 +13,6 @@ import spreadsheet from "documents_spreadsheet.spreadsheet_extended";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel"
 import {
     createSpreadsheetFromPivot,
-    mockServices,
     setCellContent,
     getCellContent,
     getCellFormula
@@ -1266,7 +1265,6 @@ module(
                     }
                     return this._super.apply(this, arguments);
                 },
-                services: mockServices,
                 intercepts: {
                     do_action: function (ev) {
                         assert.step("create_template_wizard");

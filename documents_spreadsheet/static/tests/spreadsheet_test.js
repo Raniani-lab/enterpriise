@@ -9,8 +9,8 @@ import {
     createView,
 } from "web.test_utils";
 import {
+    createSpreadsheet,
     createSpreadsheetFromPivot,
-    mockServices,
     getCellFormula,
     getCellValue,
     joinSession,
@@ -140,18 +140,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("Number of connected users is correctly rendered", async function (assert) {
         assert.expect(7);
-        const actionManager = await createActionManager({
-            services: mockServices,
-            data: this.data,
-        });
-        const transportService = new MockSpreadsheetCollaborativeChannel();
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 1,
+        const transportService = new MockSpreadsheetCollaborativeChannel()
+        const { actionManager } = await createSpreadsheet({
             transportService,
-            },
+            data: this.data,
         });
         assert.equal(displayedConnectedUsers(actionManager), 1, "It should display one connected user");
         assert.hasClass(getConnectedUsersEl(actionManager), "fa-user", "It should display the fa-user icon");
@@ -204,7 +196,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 "documents.document,false,list": '<tree><field name="name"/></tree>',
                 "documents.document,false,search": "<search></search>",
             },
-            services: mockServices,
             data: this.data,
         });
         await actionManager.doAction(1);
@@ -226,20 +217,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         actionManager.destroy();
     });
 
-    test("untitled speadsheet", async function (assert) {
+    test("untitled spreadsheet", async function (assert) {
         assert.expect(2);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         assert.equal(input.value, "", "It should be empty");
         assert.equal(input.placeholder, "Untitled spreadsheet", "It should display a placeholder");
@@ -249,18 +229,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("input width changes when content changes", async function (assert) {
         assert.expect(2);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         await fields.editInput(input, "My");
         let width = input.offsetWidth;
@@ -274,18 +243,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("changing the input saves the name", async function (assert) {
         assert.expect(1);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         await fields.editAndTrigger(input, "My spreadsheet", ["change"]);
         assert.equal(
@@ -296,20 +254,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         actionManager.destroy();
     });
 
-    test("trailing white spaces are trimed", async function (assert) {
+    test("trailing white spaces are trimmed", async function (assert) {
         assert.expect(2);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         await fields.editInput(input, "My spreadsheet  ");
         const width = input.offsetWidth;
@@ -321,18 +268,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("focus sets the placeholder as value and select it", async function (assert) {
         assert.expect(4);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data, spreadsheetId: 2 });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         assert.equal(input.value, "", "It should be empty");
         await dom.triggerEvent(input, "focus");
@@ -345,23 +281,15 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     test("receiving bad revision reload", async function (assert) {
         assert.expect(2);
         const transportService = new MockSpreadsheetCollaborativeChannel();
-        const actionManager = await createActionManager({
+        const { actionManager } = await createSpreadsheet({
             data: this.data,
-            services: mockServices,
+            transportService,
             intercepts: {
                 do_action: function (ev) {
                     if (ev.data.action === "reload_context") {
                         assert.step("reload");
                     }
                 },
-            },
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService,
             },
         });
         transportService.broadcast({
@@ -376,18 +304,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("only white spaces show the placeholder", async function (assert) {
         assert.expect(2);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 2,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data });
         const input = actionManager.el.querySelector(".breadcrumb-item input");
         await fields.editInput(input, "  ");
         const width = input.offsetWidth;
@@ -399,7 +316,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("toggle favorite", async function (assert) {
         assert.expect(5);
-        const actionManager = await createActionManager({
+        const { actionManager } = await createSpreadsheet({
+            spreadsheetId: 1,
             data: this.data,
             mockRPC: async function (route, args) {
                 if (args.method === "toggle_favorited" && args.model === "documents.document") {
@@ -412,15 +330,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 }
                 return this._super.apply(this, arguments);
             },
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-                active_id: 1,
-                transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
         });
         assert.containsNone(actionManager, ".favorite_button_enabled");
         const favorite = actionManager.el.querySelector(".o_spreadsheet_favorite");
@@ -432,17 +341,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("already favorited", async function (assert) {
         assert.expect(1);
-        const actionManager = await createActionManager({
+        const { actionManager } = await createSpreadsheet({
+            spreadsheetId: 2,
             data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-                active_id: 2,
-                transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
         });
         assert.containsOnce(actionManager, ".favorite_button_enabled", "It should already be favorited");
         actionManager.destroy();
@@ -594,7 +495,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             name: "name",
             display_name: "name",
         }];
-        const sheetId = model.getters.getActiveSheetId();
         model.dispatch("SELECT_CELL", { col: 3, row: 7 });
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
@@ -795,18 +695,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
     test("verify absence of pivots in top menu bar in a spreadsheet without a pivot", async function (assert){
         assert.expect(1);
-        const actionManager = await createActionManager({
-            data: this.data,
-            services: mockServices,
-        });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-            active_id: 1,
-            transportService: new MockSpreadsheetCollaborativeChannel(),
-            },
-        });
+        const { actionManager } = await createSpreadsheet({ data: this.data });
         assert.containsNone(actionManager.el, "div[data-id='pivots']");
         actionManager.destroy();
     });
@@ -979,9 +868,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     test("Can make a copy", async function (assert) {
         assert.expect(4);
         const spreadsheet = this.data["documents.document"].records[1];
-        const actionManager = await createActionManager({
+        const { actionManager, env, model } = await createSpreadsheet({
+            spreadsheetId: spreadsheet.id,
             data: this.data,
-            services: mockServices,
             mockRPC: async function (route, args) {
                 if (args.method === "copy" && args.model === "documents.document") {
                     assert.step("copy");
@@ -999,17 +888,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 return this._super(...arguments);
             },
         });
-        await actionManager.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: { active_id: spreadsheet.id },
-        });
-        // CLEAN ME
-        const spreadSheetComponent = actionManager.getCurrentController().widget
-            .spreadsheetComponent.componentRef.comp;
-        const env = spreadSheetComponent.env;
-        const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp;
-        const model = oSpreadsheetComponent.model;
         const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
         const makeCopy = file.children.find((item) => item.id === "make_copy");
         makeCopy.action(env);
@@ -1109,18 +987,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 <field name="product" type="row"/>
                 <field name="probability" type="measure"/>
             </pivot>`,
-            mockRPC: async function (route, args) {
-                if (args.method === "search_read" && args.model === "ir.model") {
-                    return [{ name: "Product", model: "product" }];
-                }
-                if (route.includes("join_spreadsheet_session")) {
-                    return Promise.resolve({ raw: "{}", revisions: [] });
-                }
-                if (route.includes("dispatch_spreadsheet_message")) {
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
         });
         const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
         await dom.click(searchIcon);
@@ -1256,12 +1122,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 if (args.method === "name_get" && args.model === "product") {
                     assert.step(`name_get_product_${args.args[0]}`)
                 }
-                if (route.includes("join_spreadsheet_session")) {
-                    return Promise.resolve({ raw: "{}", revisions: [] });
-                }
-                if (route.includes("dispatch_spreadsheet_message")) {
-                    return Promise.resolve();
-                }
                 return this._super(...arguments);
             },
         });
@@ -1315,12 +1175,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             mockRPC: function (route, args) {
                 if (args.method === "name_get" && args.model === "product") {
                     assert.step(`name_get_product_${args.args[0]}`)
-                }
-                if (route.includes("join_spreadsheet_session")) {
-                    return Promise.resolve({ raw: "{}", revisions: [] });
-                }
-                if (route.includes("dispatch_spreadsheet_message")) {
-                    return Promise.resolve();
                 }
                 return this._super(...arguments);
             },

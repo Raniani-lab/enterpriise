@@ -10,12 +10,6 @@ import { getBasicArch, getTestData } from "./spreadsheet_test_data";
 const { Model } = spreadsheet;
 const { toCartesian } = spreadsheet.helpers;
 
-export const mockServices = {
-    bus_service: {
-        addChannel: () => {},
-        onNotification: () => {},
-    }
-}
 
 /**
  * Get the value of the given cell
@@ -95,11 +89,71 @@ export function setCellContent(model, xc, content, sheetId = undefined) {
     model.dispatch("UPDATE_CELL", { col, row, sheetId, content });
 }
 
-export function getSpreadsheetActionModel(action) {
-    const spreadSheetComponent =  action.getCurrentController().widget
-    .spreadsheetComponent.componentRef.comp;
-    const oSpreadsheetComponent = spreadSheetComponent.spreadsheet.comp
-    return oSpreadsheetComponent.model;
+/**
+ * Return the odoo spreadsheet component
+ * @param {*} actionManager
+ * @returns {Component}
+ */
+function getSpreadsheetComponent(actionManager) {
+    return  actionManager.getCurrentController().widget
+        .spreadsheetComponent.componentRef.comp;
+}
+
+/**
+ * Return the o-spreadsheet component
+ * @param {*} actionManager
+ * @returns {Component}
+ */
+function getOSpreadsheetComponent(actionManager) {
+    return getSpreadsheetComponent(actionManager).spreadsheet.comp;
+}
+
+/**
+ * Return the o-spreadsheet Model
+ */
+function getSpreadsheetActionModel(actionManager) {
+    return getOSpreadsheetComponent(actionManager).model;
+}
+
+function getSpreadsheetActionEnv(actionManager) {
+    const model = getSpreadsheetActionModel(actionManager);
+    const component = getSpreadsheetComponent(actionManager);
+    const oComponent = getOSpreadsheetComponent(actionManager);
+    return {
+        ...component.env,
+        getters: model.getters,
+        dispatch: model.dispatch,
+        services: model.config.evalContext.env.services,
+        openSidePanel: oComponent.openSidePanel.bind(oComponent),
+    }
+}
+
+export async function createSpreadsheet(params = {}) {
+    let { spreadsheetId } = params;
+    if (!spreadsheetId) {
+        const documents = params.data["documents.document"].records;
+        spreadsheetId = Math.max(...documents.map((d) => d.id)) + 1;
+        documents.push({
+            id: spreadsheetId,
+            name: "pivot spreadsheet",
+            raw: "{}",
+        });
+    }
+    const actionManager = await createActionManager(params);
+    const transportService = params.transportService || new MockSpreadsheetCollaborativeChannel();
+    await actionManager.doAction({
+        type: "ir.actions.client",
+        tag: "action_open_spreadsheet",
+        params: {
+            active_id: spreadsheetId,
+            transportService,
+        },
+    });
+    return {
+        actionManager,
+        model: getSpreadsheetActionModel(actionManager),
+        env: getSpreadsheetActionEnv(actionManager),
+    };
 }
 
 /**
@@ -132,7 +186,7 @@ export async function createSpreadsheetFromPivot(pivotView = {}, actions) {
         data,
         mockRPC: pivotView.mockRPC,
         intercepts: pivotView.intercepts || {},
-        services: pivotView.services || mockServices,
+        services: pivotView.services,
         archs: pivotView.archs || {},
     });
     if (actions) {

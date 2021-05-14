@@ -11,6 +11,7 @@ import spreadsheet from "./o_spreadsheet_loader";
 import PivotPlugin from "documents_spreadsheet.PivotPlugin";
 import PivotStructurePlugin from "documents_spreadsheet.PivotStructurePlugin";
 import PivotTemplatePlugin from "documents_spreadsheet.PivotTemplatePlugin";
+import PivotAutofillPlugin from "documents_spreadsheet.PivotAutofillPlugin";
 import FiltersPlugin from "documents_spreadsheet.FiltersPlugin";
 
 const { coreTypes } = spreadsheet;
@@ -20,6 +21,7 @@ corePluginRegistry.add("odooPivotPlugin", PivotPlugin);
 corePluginRegistry.add("odooFiltersPlugin", FiltersPlugin);
 uiPluginRegistry.add("odooPivotStructurePlugin", PivotStructurePlugin);
 uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
+uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
 
 coreTypes.add("ADD_PIVOT");
 coreTypes.add("ADD_PIVOT_FORMULA");

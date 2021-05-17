@@ -30,10 +30,22 @@ export function getTestData() {
                 thumbnail: { string: "Thumbnail", type: "text" },
                 favorited_ids: { string: "Name", type: "many2many" },
                 is_favorited: { string: "Name", type: "boolean" },
+                partner_id: { string: "Related partner", type: "many2one", relation: "partner" },
+                owner_id: { string: "Owner", type: "many2one", relation: "partner" },
+                handler: {
+                    string: "Handler",
+                    type: "selection",
+                    selection: [["spreadsheet", "Spreadsheet"]],
+                },
+                previous_attachment_ids: { string: "History", type: "many2many", relation: "ir.attachment" },
+                tag_ids: { string: "Tags", type: "many2many", relation: "documents.tag"},
+                folder_id: { string: "Workspaces", type: "many2one", relation: "documents.folder" },
+                res_model: {string: "Model (technical)", type: 'char'},
+                available_rule_ids: { string: "Rules", type: "many2many", relation: "documents.workflow.rule" },
             },
             records: [
-                { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
-                { id: 2, name: "", raw: "{}", is_favorited: true },
+                { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false, folder_id: 1, handler: "spreadsheet" },
+                { id: 2, name: "", raw: "{}", is_favorited: true, folder_id: 1, handler: "spreadsheet" },
             ],
         },
         "ir.model": {
@@ -50,6 +62,38 @@ export function getTestData() {
                 name: "partner",
                 model: "partner",
             }],
+        },
+        "documents.folder": {
+            fields: {
+                name: { string: "Name", type: "char" },
+                parent_folder_id: {
+                    string: "Parent Workspace",
+                    type: "many2one",
+                    relation: "documents.folder",
+                },
+                description: { string: "Description", type: "text" },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: "Workspace1",
+                    description: "Workspace",
+                    parent_folder_id: false,
+                },
+            ],
+        },
+        "documents.tag": {
+            fields: {},
+            records: [],
+            get_tags: () => [],
+        },
+        "documents.workflow.rule": {
+            fields: {},
+            records: [],
+        },
+        "documents.share": {
+            fields: {},
+            records: [],
         },
         partner: {
             fields: {

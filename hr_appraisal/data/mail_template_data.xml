@@ -8,7 +8,7 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        Dear ${ctx.get('employee_to_name') or 'employee'},
                         <br/><br/>
                         An appraisal was requested.
                         <br/>
@@ -25,13 +25,9 @@
                             </a>
                         </p>
                         % endif
-                        <br/><br/>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
-            <field name="report_name">${(object.name or '').replace('/','_')}</field>
-            <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
 
@@ -42,7 +38,7 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        Dear ${ctx.get('employee_to_name') or 'employee'},
                         <br/><br/>
                         An appraisal was requested.
                         <br/>
@@ -59,13 +55,9 @@
                             </a>
                         </p>
                         % endif
-                        <br/><br/>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
-            <field name="report_name">${(object.name or '').replace('/','_')}</field>
-            <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
 
@@ -76,7 +68,7 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx['partner_to_name']},
+                        Dear ${ctx.get('employee_to_name') or 'employee'},
                         <br /><br />
                         I would like to start an Appraisal for you.
 
@@ -88,13 +80,9 @@
                             </a>
                         </p>
                         % endif
-                        <br /><br />
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
-            <field name="report_name">${(object.name or '').replace('/','_')}</field>
-            <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
 
@@ -105,7 +93,7 @@
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear ${ctx['partner_to_name']},
+                        Dear ${ctx.get('employee_to_name') or 'employee'},
                         <br /><br />
                         I wish to request an appraisal.<br />
                         % if ctx.get('recipient_users'):
@@ -117,13 +105,9 @@
                             </a>
                         </p>
                         % endif
-                        <br /><br />
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.employee_id.user_id.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
-            <field name="report_name">${(object.name or '').replace('/','_')}</field>
-            <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
     </data>

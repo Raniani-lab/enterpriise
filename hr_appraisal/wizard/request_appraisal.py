@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class RequestAppraisal(models.TransientModel):
     _name = 'request.appraisal'
+    _inherit = 'mail.composer.mixin'
     _description = "Request an Appraisal"
 
     @api.model
@@ -64,14 +65,9 @@ class RequestAppraisal(models.TransientModel):
                 partners |= self.env['res.partner'].sudo().find_or_create(name_email)
         return partners
 
-    subject = fields.Char('Subject')
-    body = fields.Html('Contents', sanitize_style=True, compute='_compute_body', store=True, readonly=False)
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_mail_compose_message_ir_attachments_rel',
         'wizard_id', 'attachment_id', string='Attachments')
-    template_id = fields.Many2one(
-        'mail.template', 'Use template', index=True,
-        domain="[('model', '=', 'hr.appraisal')]")
     email_from = fields.Char(
         'From', required=True,
         default=lambda self: self.env.user.email_formatted,
@@ -91,15 +87,18 @@ class RequestAppraisal(models.TransientModel):
         for wizard in self:
             if wizard.template_id:
                 ctx = {
-                    'partner_to_name': ', '.join(wizard.recipient_ids.sorted('name').mapped('name')),
+                    'employee_to_name': ', '.join(wizard.recipient_ids.sorted('name').mapped('name')),
                     'recipient_users': wizard.recipient_ids.mapped('user_ids'),
-                    'author_name': wizard.author_id.name,
                     'url': "${ctx['url']}",
                 }
-                wizard.subject = self.env['mail.render.mixin'].with_context(ctx)._render_template(wizard.template_id.subject, 'res.users', self.env.user.ids, post_process=True)[self.env.user.id]
-                wizard.body = self.env['mail.render.mixin'].with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
+                wizard.body = self.with_context(ctx)._render_template(wizard.template_id.body_html, 'res.users', self.env.user.ids, post_process=False)[self.env.user.id]
             elif not wizard.body:
                 wizard.body = ''
+
+    # Overrides of mail.composer.mixin
+    @api.depends('subject')  # fake trigger otherwise not computed in new mode
+    def _compute_render_model(self):
+        self.render_model = 'hr.appraisal'
 
     def action_invite(self):
         """ Process the wizard content and proceed with sending the related
@@ -113,7 +112,9 @@ class RequestAppraisal(models.TransientModel):
         appraisal.sudo()._onchange_employee_id()
 
         ctx = {'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id)}
-        body = self.env['mail.render.mixin'].with_context(ctx)._render_template(self.body, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
+        context_self = self.with_context(ctx)
+        subject = context_self._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
+        body = context_self._render_field('body', appraisal.ids, post_process=True)[appraisal.id]
 
         for user in self.recipient_ids.user_ids or self.env.user:
             appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
@@ -123,7 +124,7 @@ class RequestAppraisal(models.TransientModel):
                 user_id=user.id)
 
         appraisal.message_notify(
-            subject=self.subject,
+            subject=subject,
             body=body,
             email_layout_xmlid='mail.mail_notification_light',
             partner_ids=self.recipient_ids.ids)
@@ -135,4 +136,3 @@ class RequestAppraisal(models.TransientModel):
             'target': 'current',
             'res_id': appraisal.id,
         }
-

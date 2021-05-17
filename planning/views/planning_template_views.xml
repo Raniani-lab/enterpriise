@@ -13,7 +13,6 @@
                             <group>
                                 <field name="active" invisible="1" />
                                 <field name="role_id"/>
-                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="start_time" widget="float_time"/>
@@ -33,7 +32,6 @@
                     <field name="sequence" widget="handle"/>
                     <field name="name" />
                     <field name="role_id"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
                 </tree>
             </field>
         </record>

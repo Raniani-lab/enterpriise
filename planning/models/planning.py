@@ -281,7 +281,7 @@ class Planning(models.Model):
         return (self.end_datetime - self.start_datetime).total_seconds() / 3600.0
 
     def _get_domain_template_slots(self):
-        domain = ['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
+        domain = []
         if self.role_id:
             domain += ['|', ('role_id', '=', self.role_id.id), ('role_id', '=', False)]
         elif self.employee_id and self.employee_id.sudo().planning_role_ids:

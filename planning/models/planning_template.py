@@ -19,7 +19,6 @@ class PlanningTemplate(models.Model):
     role_id = fields.Many2one('planning.role', string="Role")
     start_time = fields.Float('Start Hour', default=0, group_operator=None)
     duration = fields.Float('Duration (Hours)', default=0, group_operator=None)
-    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'You cannot have a start hour greater than 24'),

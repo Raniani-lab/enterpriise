@@ -6,8 +6,11 @@ from odoo import fields, models, api
 class PlanningTemplate(models.Model):
     _inherit = 'planning.slot.template'
 
-    project_id = fields.Many2one('project.project', compute='_compute_project_id', store=True, readonly=False, string="Project", domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]")
-    task_id = fields.Many2one('project.task', string="Task", domain="[('company_id', '=', company_id), ('project_id', '=?', project_id)]")
+    project_id = fields.Many2one('project.project', compute='_compute_project_id',
+                                 store=True, readonly=False, string="Project",
+                                 company_dependent=True, domain="[('allow_forecast', '=', True)]")
+    task_id = fields.Many2one('project.task', string="Task",
+                              company_dependent=True, domain="[('project_id', '=?', project_id)]")
 
     def name_get(self):
         name_template = super(PlanningTemplate, self).name_get()

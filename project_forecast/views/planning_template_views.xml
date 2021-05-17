@@ -6,7 +6,7 @@
         <field name="model">planning.slot.template</field>
         <field name="inherit_id" ref="planning.planning_slot_template_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_id']" position="after">
+            <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
                 <field name="task_id"/>
             </xpath>
@@ -18,7 +18,7 @@
         <field name="model">planning.slot.template</field>
         <field name="inherit_id" ref="planning.planning_slot_template_view_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_id']" position="after">
+            <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
                 <field name="task_id"/>
             </xpath>

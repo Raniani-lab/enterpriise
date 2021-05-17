@@ -260,7 +260,7 @@ var DashboardRenderer = FormRenderer.extend({
 
         // select primary and interval buttons and alter their style
         $buttons.find('.btn-primary,.btn-secondary')
-            .removeClass('btn-primary btn-secondary o_dropdown_toggler_btn')
+            .removeClass('btn-primary btn-secondary')
             .addClass("btn-outline-secondary");
         $buttons.find('[class*=interval_button]').addClass('text-muted text-capitalize');
         // remove bars icon on "Group by" button

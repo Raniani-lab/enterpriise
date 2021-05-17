@@ -8,23 +8,12 @@
     background-color: transparent;
     border-color: transparent;
 
-    .show .dropdown-toggle {
-      background-color: rgba(black, 0.1);
-    }
-    .oe_topbar_avatar {
-      box-shadow: $o-home-studio-menu-shadow;
+    ul.dropdown-menu {
+      border-color: $dropdown-bg;
     }
 
-    &,
-    & > ul > li {
-      > a {
-        text-shadow: $o-home-studio-menu-shadow;
-
-        &:hover,
-        &:focus {
-          background-color: rgba(black, 0);
-        }
-      }
+    .o_dropdown_active {
+      outline: none;
     }
   }
   &.o_home_menu_background_custom .o_home_menu {

@@ -1,72 +1,26 @@
-.ui-autocomplete .ui-menu-item {
-    > a.ui-state-active {
-        background-color: $dropdown-link-hover-bg;
-        color: $dropdown-link-color;
-        &:hover {
-            color: $dropdown-link-color;
+// = Enterprise dropdown customizations
+// ----------------------------------------------------------------------------
+.o_dropdown {
+    &.show .o_dropdown_toggler_btn.btn-secondary,
+    .o_dropdown_toggler_btn.o_dropdown_active.btn-secondary {
+        @include plain-hover-focus() {
+            position: relative;
+            z-index: $zindex-dropdown + 1;
+            border-color: $dropdown-border-color;
+            border-bottom-color: $dropdown-bg;
+            background-color: $dropdown-bg;
+            box-shadow: none;
+            color: $dropdown-link-active-color;
         }
     }
-    &.o_m2o_dropdown_option {
-        > a, > a.ui-state-active {
-            color: $o-brand-primary;
-            &:hover {
-                color: $o-brand-primary;
-            }
-        }
-    }
-}
 
-.oe_dropdown_toggle {
-    float: right;
-    position: relative;
-
-    .oe_dropdown_menu {
-        display: none;
-        position: absolute;
-        min-width: 160px;
-        background: white;
-        border: 1px solid gray;
-        z-index: 3;
-
-        &.oe_opened {
-            display: block;
-        }
+    .o_dropdown_menu {
+        margin-top: -1px;
     }
 }
 
-// Buttons used as dropdown toggler
-.o_dropdown_toggler_btn {
-    padding: 0;
-    color: $o-main-text-color;
-    text-transform: initial;
-
-    &:hover, &:focus, &:active {
-        &, &:active {
-            @extend %o-dropdown-toggle-btn-accent;
-        }
-    }
-    .show > &.dropdown-toggle {
-        &, &:hover, &:focus, &:active {
-            &, &:active {
-                @extend %o-dropdown-toggle-btn-accent;
-            }
-        }
-    }
-}
-%o-dropdown-toggle-btn-accent {
-    background: transparent;
-    color: darken($o-main-text-color, 20%);
-    box-shadow: none;
-}
-
-@include media-breakpoint-down(sm) {
-    .dropdown-menu {
-        .btn-primary {
-            color: white;
-        }
-
-        .btn-secondary{
-            color: $o-brand-primary;
-        }
-    }
+// = Enterprise jQueryUI dropdown
+// ----------------------------------------------------------------------------
+.ui-widget.ui-autocomplete {
+    border-top: 0;
 }

@@ -3,9 +3,9 @@
     // 'btn-secondary' class in order to avoid unnecessary
     // xml inconsistencies between version.
     .o_cp_bottom_left .btn-secondary.fa,
-    .o_dropdown_toggler_btn.btn-secondary,
     .o_pager .btn-secondary,
-    .o_switch_view.btn-secondary {
+    .o_switch_view.btn-secondary,
+    .o_dropdown:not(.show) .o_dropdown_toggler_btn.btn-secondary {
         @extend .btn-light;
     }
 }
@@ -20,6 +20,10 @@
                 > .btn-group {
                     margin: auto 0;
                     display: block;
+                }
+
+                .o_dropdown_toggler_btn {
+                    margin-right: 0;
                 }
             }
         }

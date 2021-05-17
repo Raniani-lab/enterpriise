@@ -172,9 +172,14 @@
         </record>
 
         <record id="crm.action_report_crm_lead_salesteam" model="ir.actions.act_window">
-            <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
+            <field name="view_mode">dashboard,graph,pivot,tree,form,cohort</field>
             <field name="view_id" ref="crm_lead_dashboard_view"/>
-            <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+        </record>
+        <record id="action_report_crm_lead_salesteam_view_dashboard" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">dashboard</field>
+            <field name="view_id" ref="crm_lead_dashboard_view"/>
+            <field name="act_window_id" ref="crm.action_report_crm_lead_salesteam"/>
         </record>
 
         <record id="crm.action_report_crm_opportunity_salesteam" model="ir.actions.act_window">

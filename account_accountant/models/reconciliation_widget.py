@@ -109,7 +109,7 @@ class AccountReconciliation(models.AbstractModel):
         self.env['res.partner']._apply_ir_rules(ir_rules_query, 'read')
         from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
         if where_clause:
-            where_partner = re.sub(r"\bres_partner\b", "p3", ('AND %s' % where_clause))
+            where_partner = re.sub(r"(?<! FROM \")\bres_partner\b", "p3", ('AND %s' % where_clause))
             params += where_clause_params
         else:
             where_partner = ''

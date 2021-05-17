@@ -3,7 +3,7 @@
 
 {
     'name': 'Appraisal - Survey',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Human Resources/Appraisals',
     'sequence': 31,
     'summary': '360 Feedback',

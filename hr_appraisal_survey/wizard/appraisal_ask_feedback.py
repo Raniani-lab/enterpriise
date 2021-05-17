@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class AppraisalAskFeedback(models.TransientModel):
     _name = 'appraisal.ask.feedback'
+    _inherit = 'mail.composer.mixin'
     _description = "Ask Feedback for Appraisal"
 
     def _get_default_deadline(self):
@@ -29,16 +30,10 @@ class AppraisalAskFeedback(models.TransientModel):
 
     appraisal_id = fields.Many2one('hr.appraisal', default=lambda self: self.env.context.get('active_id', None))
     employee_id = fields.Many2one(related='appraisal_id.employee_id', string='Appraisal Employee')
-    subject = fields.Char('Subject', compute='_compute_subject', store=True, readonly=False)
-    body = fields.Html('Contents', sanitize_style=True, compute='_compute_body', store=True, readonly=False)
+    template_id = fields.Many2one(default=lambda self: self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False))
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_survey_mail_compose_message_ir_attachments_rel',
         'wizard_id', 'attachment_id', string='Attachments')
-    template_id = fields.Many2one(
-        'mail.template', 'Use template', index=True,
-        domain="[('model', '=', 'appraisal.ask.feedback')]",
-        default=lambda self: self.env.ref('hr_appraisal_survey.mail_template_appraisal_ask_feedback', raise_if_not_found=False),
-    )
     email_from = fields.Char(
         'From', required=True,
         default=lambda self: self.env.user.email_formatted,
@@ -54,15 +49,10 @@ class AppraisalAskFeedback(models.TransientModel):
         'hr.employee', string="Recipients", domain=[('user_id', '!=', False)])
     deadline = fields.Date(string="Answer Deadline", required=True, default=_get_default_deadline)
 
-    @api.depends('template_id')
-    def _compute_subject(self):
-        for wizard in self.filtered(lambda w: w.template_id):
-            wizard.subject = wizard.template_id.subject
-
-    @api.depends('template_id')
-    def _compute_body(self):
-        for wizard in self.filtered(lambda w: w.template_id):
-            wizard.body = wizard.template_id.body_html
+    # Overrides of mail.composer.mixin
+    @api.depends('survey_template_id')  # fake trigger otherwise not computed in new mode
+    def _compute_render_model(self):
+        self.render_model = 'survey.user_input'
 
     def _prepare_survey_anwers(self, partners):
         answers = self.env['survey.user_input']
@@ -91,9 +81,8 @@ class AppraisalAskFeedback(models.TransientModel):
     def _send_mail(self, answer):
         """ Create mail specific for recipient containing notably its access token """
         ctx = {'employee_name': self.employee_id.name,}
-        RenderMixin = self.env['mail.render.mixin'].with_context(**ctx)
-        subject = RenderMixin._render_template(self.subject, 'survey.user_input', answer.ids, post_process=True)[answer.id]
-        body = RenderMixin._render_template(self.body, 'survey.user_input', answer.ids, post_process=True)[answer.id]
+        subject = self.with_context(**ctx)._render_field('subject', answer.ids, post_process=False)[answer.id]
+        body = self.with_context(**ctx)._render_field('body', answer.ids, post_process=True)[answer.id]
         # post the message
         mail_values = {
             'email_from': self.email_from,

@@ -64,6 +64,7 @@ var GanttRenderer = AbstractRenderer.extend({
         this.canPlan = params.canPlan;
         this.cellPrecisions = params.cellPrecisions;
         this.colorField = params.colorField;
+        this.disableDragdrop = params.disableDragdrop;
         this.progressField = params.progressField;
         this.consolidationParams = params.consolidationParams;
         this.fieldsInfo = params.fieldsInfo;
@@ -96,7 +97,9 @@ var GanttRenderer = AbstractRenderer.extend({
         this._isInDom = true;
         core.bus.on("keydown", this, this._onKeydown);
         core.bus.on("keyup", this, this._onKeyup);
-        this._setRowsDroppable();
+        if (!this.disableDragdrop) {
+            this._setRowsDroppable();
+        }
     },
     /**
      * Called each time the renderer is detached from the DOM.
@@ -140,7 +143,9 @@ var GanttRenderer = AbstractRenderer.extend({
                 $previousRow = row.$el;
             });
             _.invoke(oldRows, 'destroy');
-            self._setRowsDroppable();
+            if (!self.disableDragdrop) {
+                self._setRowsDroppable();
+            }
         });
     },
 
@@ -260,7 +265,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 totalRow.$el.appendTo(self.$('.o_gantt_total_row_container'));
             }
 
-            if (self._isInDom) {
+            if (self._isInDom && !self.disableDragdrop) {
                 self._setRowsDroppable();
             }
 
@@ -312,6 +317,7 @@ var GanttRenderer = AbstractRenderer.extend({
                 hideSidebar: hideSidebar,
                 isOpen: row.isOpen,
                 disableResize: disableResize,
+                disableDragdrop: self.disableDragdrop,
                 rowId: row.id,
                 scales: self.SCALES,
                 unavailabilities: row.unavailabilities,

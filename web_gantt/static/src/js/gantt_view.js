@@ -157,6 +157,7 @@ var GanttView = AbstractView.extend({
         this.rendererParams.string = arch.attrs.string || _t('Gantt View');
         this.rendererParams.popoverTemplate = _.findWhere(arch.children, {tag: 'templates'});
         this.rendererParams.colorField = colorField;
+        this.rendererParams.disableDragdrop = arch.attrs.disable_drag_drop ? !!JSON.parse(arch.attrs.disable_drag_drop) : false;
         this.rendererParams.progressField = arch.attrs.progress;
         this.rendererParams.displayUnavailability = displayUnavailability;
         this.rendererParams.collapseFirstLevel = collapseFirstLevel;

@@ -2566,6 +2566,31 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('should not be draggable when disable_drag_drop is set', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" color="color" disable_drag_drop="1" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id'],
+            domain: [['id', '=', 7]],
+        });
+
+        await testUtils.nextTick();
+
+        assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'ui-draggable',
+            'the group row pill should not be draggable');
+        assert.doesNotHaveClass(gantt.$('.o_gantt_row:not(.o_gantt_row_group) .o_gantt_pill'), 'ui-draggable',
+            'the pill should not be draggable');
+
+        gantt.destroy();
+    });
+
     QUnit.test('gantt_unavailability reloads when the view\'s scale changes', async function(assert){
         assert.expect(11);
 

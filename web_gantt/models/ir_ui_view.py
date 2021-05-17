@@ -25,6 +25,7 @@ GANTT_VALID_ATTRIBUTES = set([
     'default_group_by',
     'dynamic_range',
     'display_unavailability',
+    'disable_drag_drop',
     'total_row',
     'collapse_first_level',
     'offset',

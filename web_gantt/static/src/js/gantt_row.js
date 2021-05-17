@@ -36,6 +36,7 @@ var GanttRow = Widget.extend({
      * @param {boolean} options.canCreate
      * @param {boolean} options.canEdit
      * @param {boolean} options.disableResize Disable resize for pills
+     * @param {boolean} options.disableDragdrop Disable drag and drop for pills
      * @param {boolean} options.hideSidebar Hide sidebar
      * @param {boolean} options.isGroup If is group, It will display all its
      *                  pills on one row, disable resize, don't allow to create
@@ -1094,7 +1095,7 @@ var GanttRow = Widget.extend({
         var $pill = $(ev.currentTarget);
 
         this._setResizable($pill);
-        if (!this.isTotal) {
+        if (!this.isTotal && !this.options.disableDragdrop) {
             this._setDraggable($pill);
         }
         if (!this.isGroup && !config.device.isMobile) {

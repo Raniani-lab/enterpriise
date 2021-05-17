@@ -149,7 +149,7 @@ class ResCompany(models.Model):
     def _parse_fta_data(self, available_currencies):
         ''' Parses the data returned in xml by FTA servers and returns it in a more
         Python-usable form.'''
-        request_url = 'http://www.pwebapps.ezv.admin.ch/apps/rates/rate/getxml?activeSearchType=today'
+        request_url = 'https://www.backend-rates.ezv.admin.ch/api/xmldaily?d=today&locale=en'
         try:
             parse_url = requests.request('GET', request_url)
         except:

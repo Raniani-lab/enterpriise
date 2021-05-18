@@ -121,6 +121,7 @@ class HrPayslip(models.Model):
                 payslips_to_report = self.env['hr.payslip'].search([
                     ('has_negative_net_to_report', '=', True),
                     ('employee_id', '=', payslip.employee_id.id),
+                    ('credit_note', '=', False),
                 ])
                 payslip.negative_net_to_report_display = payslips_to_report
                 payslip.negative_net_to_report_amount = payslips_to_report._get_line_values(['NET'], compute_sum=True)['NET']['sum']['total']
@@ -158,6 +159,7 @@ class HrPayslip(models.Model):
         self.env['hr.payslip'].search([
             ('has_negative_net_to_report', '=', True),
             ('employee_id', '=', self.employee_id.id),
+            ('credit_note', '=', False),
         ]).write({'has_negative_net_to_report': False})
         self.activity_feedback(['hr_payroll.mail_activity_data_hr_payslip_negative_net'])
 
@@ -251,7 +253,7 @@ class HrPayslip(models.Model):
 
         line_values = self._get_line_values(['NET'])
 
-        self.filtered(lambda p: line_values['NET'][p.id]['total'] < 0).write({'has_negative_net_to_report': True})
+        self.filtered(lambda p: not p.credit_note and line_values['NET'][p.id]['total'] < 0).write({'has_negative_net_to_report': True})
         self.mapped('payslip_run_id').action_close()
         # Validate work entries for regular payslips (exclude end of year bonus, ...)
         regular_payslips = self.filtered(lambda p: p.struct_id.type_id.default_struct_id == p.struct_id)

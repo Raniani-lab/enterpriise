@@ -20,6 +20,17 @@ class ResourceCalendar(models.Model):
                 (attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if not attendance.work_entry_type_id.is_leave)
             calendar.hours_per_week = sum_hours / 2 if calendar.two_weeks_calendar else sum_hours
 
+    def _get_days_per_week(self):
+        # Returns the number of days per week during which the employee is working
+        # For examples
+        # 38h / weeks -> 5 days
+        # 19h / weeks (M/T/Wam) -> 3 days
+        # 19h / weeks (Mam/Tam/Wam/Tam/Fam) -> 5 days
+        self.ensure_one()
+        if self.two_weeks_calendar:
+            return 5 * self.work_time_rate / 100
+        return len(set(self.attendance_ids.filtered(lambda a: not a.work_entry_type_id.is_leave).mapped('dayofweek')))
+
     def _compute_is_fulltime(self):
         for calendar in self:
             calendar.is_fulltime = not float_compare(calendar.full_time_required_hours, calendar.hours_per_week, 3)

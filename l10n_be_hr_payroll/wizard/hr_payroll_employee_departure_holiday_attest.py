@@ -95,16 +95,20 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
                 record.payslip_n_ids = [(4, p._origin.id) for p in payslip_n_ids]
                 record.payslip_n1_ids = [(4, p._origin.id) for p in payslip_n1_ids]
 
+                work_entry_type_legal_leave = self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave')
+
                 time_off_n_ids = self.env['hr.leave'].search([
                     ('employee_id', '=', record.employee_id.id),
                     ('date_to', '>=', current_year),
                     ('date_from', '<', next_year),
-                    ('state', '=', 'validate')])
+                    ('state', '=', 'validate'),
+                    ('holiday_status_id.work_entry_type_id', '=', work_entry_type_legal_leave.id)])
 
                 time_off_allocation_n_ids = self.env['hr.leave.allocation'].search([
                     ('employee_id', '=', record.employee_id.id),
                     ('create_date', '>=', current_year),
-                    ('state', '=', 'validate')])
+                    ('state', '=', 'validate'),
+                    ('holiday_status_id.work_entry_type_id', '=', work_entry_type_legal_leave.id)])
 
                 record.time_off_n_ids = [(4, t.id) for t in time_off_n_ids]
                 record.time_off_allocation_n_ids = [(4, t.id) for t in time_off_allocation_n_ids]

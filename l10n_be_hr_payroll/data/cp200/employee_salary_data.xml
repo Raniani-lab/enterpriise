@@ -387,7 +387,7 @@ if not categories.BASIC:
     result_qty = 0
 else:
     calendar = contract.resource_calendar_id
-    days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+    days_per_week = calendar._get_days_per_week()
 
     if days_per_week:
         total_amount = contract.with_context(payslip_date=payslip.date_from)._get_private_car_reimbursed_amount(contract.km_home_work) / 5 * days_per_week
@@ -413,7 +413,7 @@ if not categories.BASIC:
     result_qty = 0
 else:
     calendar = contract.resource_calendar_id
-    days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+    days_per_week = calendar._get_days_per_week()
     incapacity_attendances = calendar.attendance_ids.filtered(lambda a: a.work_entry_type_id.code == 'LEAVE281')
     if incapacity_attendances:
         incapacity_hours = sum((attendance.hour_to - attendance.hour_from) for attendance in incapacity_attendances)

@@ -594,10 +594,7 @@ class DMFAOccupation(DMFANode):
             days_per_week = 5.0
             mean_working_hours = 38.0
         else:
-            if calendar.two_weeks_calendar:
-                days_per_week = 5 * calendar.work_time_rate / 100
-            else:
-                days_per_week = len(set(calendar.mapped('attendance_ids.dayofweek')))
+            days_per_week = calendar._get_days_per_week()
             mean_working_hours = contract.resource_calendar_id.hours_per_week
 
         self.days_per_week = format_amount(days_per_week, width=3)

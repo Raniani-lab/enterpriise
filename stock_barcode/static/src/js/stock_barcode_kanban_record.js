@@ -68,18 +68,20 @@ var StockBarcodeKanbanController = KanbanController.extend({
      * @private
      * @override
      */
-    _onButtonNew: function (ev) {
+    _onButtonNew: async function (ev) {
+        // Keep `_super` into a variable as the reference will be lost after the RPC.
+        const superOnButtonNew = this._super.bind(this);
         if (this.modelName === 'stock.picking') {
-            this._rpc({
+            const action = await this._rpc({
                 model: 'stock.picking',
                 method: 'open_new_picking',
                 context: this.initialState.context,
-            }).then((result) => {
-                this.do_action(result.action);
             });
-        } else {
-            this._super(...arguments);
+            if (action) {
+                return this.do_action(action);
+            }
         }
+        return superOnButtonNew(...arguments);
     },
 });
 return StockBarcodeKanbanController;

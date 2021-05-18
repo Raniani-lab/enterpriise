@@ -424,7 +424,7 @@ class StockPicking(models.Model):
             picking_type = self.env['stock.picking.type'].browse(context.get('active_id'))
             if picking_type.exists():
                 new_picking = self._create_new_picking(picking_type)
-                return self._get_client_action(new_picking.id)
+                return self._get_client_action(new_picking.id)['action']
         return False
 
     def open_picking(self):

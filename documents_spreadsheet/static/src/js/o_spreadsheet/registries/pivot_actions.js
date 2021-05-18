@@ -19,7 +19,6 @@ export const REINSERT_PIVOT_CHILDREN = (env) => Object.values(env.getters.getPiv
             // We need to fetch the cache without the global filters,
             // to get the full pivot structure.
             await env.getters.getAsyncCache(pivot.id, {
-                dataOnly: true,
                 initialDomain: true,
                 force: true,
             })
@@ -30,7 +29,6 @@ export const REINSERT_PIVOT_CHILDREN = (env) => Object.values(env.getters.getPiv
             });
             if (env.getters.getActiveFilterCount()) {
                 await env.getters.getAsyncCache(pivot.id, {
-                    dataOnly: true,
                     initialDomain: false,
                     force: true,
                 })
@@ -55,7 +53,7 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) => Object.values(env.getters.get
                     content: formula,
                 });
             }
-            await env.getters.getAsyncCache(pivot.id, { dataOnly: true, force: true });
+            await env.getters.getAsyncCache(pivot.id, { force: true });
             env.dispatch("EVALUATE_CELLS", { sheetId: env.getters.getActiveSheetId() });
             // Here we need to wait for every cells of the sheet are
             // computed, in order to ensure that the cache of missing

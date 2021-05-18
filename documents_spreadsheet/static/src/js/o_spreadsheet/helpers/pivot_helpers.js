@@ -44,15 +44,14 @@ const periods = {
  *
  * @param {Pivot} pivot
  * @param {Function} rpc Rpc function to use
- * @param {PivotCache} oldCache Cache to fill some values if params.dataOnly is true
+ * @param {PivotCache} oldCache Cache to fill some values
  * @param {Object} params
- * @param {boolean} params.dataOnly fetch only read_group data if possible
  * @param {boolean} params.initialDomain=false only refresh the data with the domain of the pivot,
  *                                      without the global filters
  *
  * @returns {PivotCache}
  */
-export async function createPivotCache(pivot, rpc, oldCache = undefined, { dataOnly = false, initialDomain = false } = {}) {
+export async function createPivotCache(pivot, rpc, oldCache = undefined, { initialDomain = false } = {}) {
     oldCache = await oldCache;
     const domain = (!initialDomain && pivot.computedDomain) || pivot.domain;
     const readGroupRPC = rpc({
@@ -66,8 +65,8 @@ export async function createPivotCache(pivot, rpc, oldCache = undefined, { dataO
         groupBy: pivot.rowGroupBys.concat(pivot.colGroupBys),
         lazy: false,
     });
-    const fieldsPromise = _fetchFields(rpc, pivot, oldCache, { forceRefetch: !dataOnly })
-    const modelNamePromise = _fetchModelName(rpc, pivot, oldCache, { forceRefetch: !dataOnly });
+    const fieldsPromise = _fetchFields(rpc, pivot, oldCache)
+    const modelNamePromise = _fetchModelName(rpc, pivot, oldCache);
     const resultGB = await readGroupRPC;
     const resultFG = await fieldsPromise;
     const resultSR = await modelNamePromise;
@@ -83,8 +82,8 @@ export async function createPivotCache(pivot, rpc, oldCache = undefined, { dataO
  * @param {boolean} params.forceRefetch
  * @returns {Promise<Array<Object>>}
  */
-async function _fetchFields(rpc, pivot, cache, { forceRefetch }) {
-    if (!forceRefetch && cache && Object.keys(cache).length !== 0) {
+async function _fetchFields(rpc, pivot, cache) {
+    if (cache) {
         return cache.getFields();
     }
     else {
@@ -104,8 +103,8 @@ async function _fetchFields(rpc, pivot, cache, { forceRefetch }) {
  * @param {boolean} params.forceRefetch
  * @returns {Promise<string>}
  */
-async function _fetchModelName(rpc, pivot, cache, { forceRefetch }) {
-    if (!forceRefetch && cache) {
+async function _fetchModelName(rpc, pivot, cache) {
+    if (cache) {
         return cache.getModelLabel();
     }
     else {
@@ -120,7 +119,7 @@ async function _fetchModelName(rpc, pivot, cache, { forceRefetch }) {
 }
 /**
  * Fetch the labels which do not exist on the cache (it could happen for
- * exemple in multi-company).
+ * example in multi-company).
  * It also update the cache to avoid further rpc.
  *
  * @param {PivotCache} cache

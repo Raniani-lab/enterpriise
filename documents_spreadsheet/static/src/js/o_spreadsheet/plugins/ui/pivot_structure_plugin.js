@@ -77,12 +77,11 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          *
          * @param {number} pivotId
          * @param {Object} params
-         * @param {boolean} params.dataOnly=false only refresh the data, not the structure of the pivot
          * @param {boolean} params.force=false Force to refresh the cache
          * @param {boolean} params.initialDomain=false only refresh the data with the domain of the pivot,
          *                                      without the global filters
          */
-        async getAsyncCache(pivotId, { dataOnly = false, force = false, initialDomain = false } = {}) {
+        async getAsyncCache(pivotId, { force = false, initialDomain = false } = {}) {
             const pivot = this.getters.getPivot(pivotId);
             if (!pivot) {
                 throw new Error(_.str.sprintf( _t("There is no pivot with the given id: %s"), pivotId));
@@ -100,7 +99,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
             }
             if (!runtime.promise) {
                 runtime.promise = pivotUtils
-                    .createPivotCache(pivot, this.rpc, runtime.cache, { dataOnly, initialDomain})
+                    .createPivotCache(pivot, this.rpc, runtime.cache, { initialDomain})
                     .then((cache) => {
                         runtime.lastUpdate = Date.now();
                         runtime.cache = cache;
@@ -215,7 +214,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         _refreshPivot(id) {
             const pivotIds = id ? [id] : this.getters.getPivots().map((item) => item.id);
             for (let pivotId of pivotIds) {
-                this._refreshPivotCache(pivotId, { dataOnly: true });
+                this._refreshPivotCache(pivotId);
             }
             this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         }
@@ -225,8 +224,8 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @param {string} id Id of the pivot to update
          * @private
          */
-        _refreshPivotCache(id, { dataOnly = false } = {}) {
-            this.getAsyncCache(id, { dataOnly, force: true });
+        _refreshPivotCache(id) {
+            this.getAsyncCache(id, { force: true });
         }
 
         /**
@@ -248,7 +247,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
             );
             pivot.computedDomain = pyUtils.eval("domain", domain, {});
             if (refresh) {
-                this._refreshPivotCache(id, { dataOnly: true });
+                this._refreshPivotCache(id);
             }
         }
 

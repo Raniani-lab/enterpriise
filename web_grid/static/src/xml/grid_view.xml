@@ -280,7 +280,7 @@
             </t>
             <t t-else="">
                 <t t-if="state.errors[cellPath]">
-                    <div class="o_grid_input o_has_error" tabindex="1"
+                    <div class="o_grid_input text-danger o_has_error" tabindex="1"
                         t-on-focus="_onFocusGridCell(cellPath)">
                         <t t-esc="state.errors[cellPath]"/>
                     </div>

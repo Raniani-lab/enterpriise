@@ -90,11 +90,6 @@
                 margin: 4px 0 3px 2px;
                 color: $o-web-studio-text-inactive;
             }
-            .o_web_studio_toption_option.o_web_studio_required_option {
-                > label {
-                    color: theme-color('danger');
-                }
-            }
 
             input, select, textarea, div.input-group-addon {
                 color: $o-web-studio-text-inactive;

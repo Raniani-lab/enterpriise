@@ -52,7 +52,7 @@
                             <div class="o_kanban_record_body">
                                 <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <div class="o_signers container-fluid mt-2">
-                                    <div t-foreach="record.request_item_infos.raw_value" t-as="request_item_info"  t-att-class="(request_item_info.state === 'completed')? 'o_sign_completed row' : 'o_sign_waiting row'">
+                                    <div t-foreach="record.request_item_infos.raw_value" t-as="request_item_info"  t-att-class="(request_item_info.state === 'completed')? 'o_sign_completed text-success row' : 'o_sign_waiting row'">
                                         <input t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 mr-1" type="checkbox" disabled="True"/>
                                         <span>
                                             <t t-esc="request_item_info.partner_name"/><t t-if="request_item_info.signing_date" class="ml-1" t-esc="' ' + request_item_info.signing_date"/>

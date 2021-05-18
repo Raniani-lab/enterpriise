@@ -304,7 +304,7 @@
     <div t-attf-class="o_web_studio_toption_options o_web_studio_toption_#{widget.key}">
         <t t-foreach="widget.options" t-as="o">
             <div t-attf-class="o_web_studio_toption_option o_web_studio_toption_option_#{widget.key}_#{o.key} #{o.required ? 'o_web_studio_required_option' : ''}">
-                <label>
+                <label t-attf-class="#{o.required ? 'text-danger' : ''}">
                     <t t-esc="o.string"/>
                     <i t-if="o.description" class="fa fa-question-circle" t-att-title="o.description"/>
                 </label>

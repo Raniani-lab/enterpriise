@@ -489,13 +489,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "2121",
             "the count should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(1, 126, 132)",
             "the 1st group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(1, 126, 132)",
             "the 2nd group pill should have the correct grey scale)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(1, 126, 132)",
             "the 3rd group pill should have the correct grey scale");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 157)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(3)').css('background-color'), "rgb(1, 126, 132)",
             "the 4th group pill should have the correct grey scale");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
@@ -3126,11 +3126,11 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_consolidated_pill_title ').text().replace(/\s+/g, ''), "0000",
             "the consolidation should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(40, 167, 69)",
             "the 1st group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(40, 167, 69)",
             "the 2nd group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",
@@ -3146,13 +3146,13 @@ QUnit.module('Views', {
         assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_consolidated_pill_title').text().replace(/\s+/g, ''), "301103060",
             "the consolidation should be correctly computed");
 
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(40, 167, 69)",
             "the 1st group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(1)').css('background-color'), "rgb(220, 105, 101)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(1)').css('background-color'), "rgb(220, 53, 69)",
             "the 2nd group pill should have the correct color)");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(2)').css('background-color'), "rgb(40, 167, 69)",
             "the 3rd group pill should have the correct color");
-        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 74)",
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(40, 167, 69)",
             "the 4th group pill should have the correct color");
 
         assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "calc(300% + 2px)",

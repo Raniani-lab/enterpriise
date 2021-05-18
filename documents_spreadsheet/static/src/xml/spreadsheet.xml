@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="o_side_panel_section o-sidePanelButtons">
-            <button t-if="props.id" t-on-click="onDelete" class="o-sidePanelButton o_global_filter_delete">Remove</button>
+            <button t-if="props.id" t-on-click="onDelete" class="o-sidePanelButton o_global_filter_delete text-danger">Remove</button>
             <button t-on-click="onCancel" class="o-sidePanelButton o_global_filter_cancel">Cancel</button>
             <button t-on-click="onSave" class="o-sidePanelButton o_global_filter_save">Save</button>
         </div>

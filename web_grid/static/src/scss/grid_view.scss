@@ -174,9 +174,6 @@ $grid-pill-height: 3rem;
                 background-color: $o-view-background-color;
                 outline: none;
             }
-            &.o_has_error {
-                color: theme-color('danger');
-            }
         }
 
         // "grouped" tbodies get special styling for their title rows (first

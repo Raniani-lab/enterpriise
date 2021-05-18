@@ -28,7 +28,7 @@
   }
 
   // Scoped variables
-  $-base-bg: darken($o-brand-odoo, 10%); // change to get variations on the fly (eg. 'dark mode')
+  $-base-bg: $o-brand-odoo; // change to get variations on the fly (eg. 'dark mode')
   $-base-color: color-yiq($-base-bg);
 
   // ====== Top-Bar

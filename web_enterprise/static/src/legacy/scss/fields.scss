@@ -9,7 +9,7 @@
         border-bottom-width: 2px;
 
         &:not(:focus-within) {
-            border-bottom-color: inherit;
+            border-bottom-color: gray('500');
         }
     }
 }

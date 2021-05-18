@@ -463,7 +463,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test(
         "underlying action's menu items are invisible when HomeMenu is displayed",
         async function (assert) {
-            assert.expect(12);
+            assert.expect(10);
             testConfig.serverData.menus[1].children = [99];
             testConfig.serverData.menus[99] = {
                 id: 99,
@@ -476,11 +476,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 webIcon: false,
             };
             const webClient = await createEnterpriseWebClient({ testConfig });
-            assert.containsOnce(webClient.el, "nav .o_menu_sections");
+            assert.containsNone(webClient.el, "nav .o_menu_sections");
             assert.containsNone(webClient.el, "nav .o_menu_brand");
-            assert.isNotVisible(webClient.el.querySelector(".o_menu_sections"));
-            assert.isNotVisible(webClient.el.querySelector(".o_menu_brand"));
-            await click(webClient.el.querySelector(".o_app.o_menuitem:nth-child(2)"));
+            await click(webClient.el.querySelector(".o_app.o_menuitem:nth-child(1)"));
             await nextTick();
             assert.containsOnce(webClient.el, "nav .o_menu_sections");
             assert.containsOnce(webClient.el, "nav .o_menu_brand");

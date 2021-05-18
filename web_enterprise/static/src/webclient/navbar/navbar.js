@@ -8,13 +8,12 @@ const { hooks } = owl;
 const { useRef } = hooks;
 
 export class EnterpriseNavBar extends NavBar {
-    constructor() {
-        super(...arguments);
+    setup() {
+        super.setup();
         this.actionManager = useService("action");
         this.hm = useService("home_menu");
         this.menuAppsRef = useRef("menuApps");
         this.menuBrand = useRef("menuBrand");
-        this.appSubMenus = useRef("appSubMenus");
         hooks.onMounted(() => {
             this.env.bus.on("HOME-MENU:TOGGLED", this, () => this._updateMenuAppsIcon());
         });

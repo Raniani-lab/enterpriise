@@ -84,6 +84,7 @@ odoo.define('sign.PDFIframe', function (require) {
             var self = this;
             this.attachmentLocation = attachmentLocation;
             this.editMode = editMode;
+            this.requestState = parent.requestState;
             for(var dataName in datas) {
                 this._set_data(dataName, datas[dataName]);
             }
@@ -370,7 +371,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 this.display_select_options($options_display, this.select_options, selected_options, readonly, value);
             }
             return $signatureItem.data({type: type.id, required: required, responsible: responsible, posx: posX, posy: posY, width: width, height: height, name:name, option_ids: option_ids})
-                                 .data('hasValue', !!value);
+                                 .data('hasValue', !!value).toggle(!!value || this.requestState != 'signed');
         },
 
         deleteSignItem: function($item) {
@@ -431,6 +432,7 @@ odoo.define('sign.Document', function (require) {
             this.templateName = this.$('#o_sign_input_template_name').val();
             this.requestID = parseInt(this.$('#o_sign_input_sign_request_id').val());
             this.requestToken = this.$('#o_sign_input_sign_request_token').val();
+            this.requestState = this.$('#o_sign_input_sign_request_state').val();
             this.accessToken = this.$('#o_sign_input_access_token').val();
             this.signerName = this.$('#o_sign_signer_name_input_info').val();
             this.signerPhone = this.$('#o_sign_signer_phone_input_info').val();

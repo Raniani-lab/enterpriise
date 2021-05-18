@@ -381,7 +381,7 @@ class Task(models.Model):
                 task_values['timesheet_ids'] = update_timesheet_commands
 
             self.sudo().write(task_values)
-        else:
+        elif not self.sale_line_id:
             # Check if there is a SOL containing the default product of the project before to create a new one.
             sale_order_line = self.sale_order_id and self.sudo().sale_order_id.order_line.filtered(lambda sol: sol.product_id == self.project_id.timesheet_product_id)[:1]
             if not sale_order_line:
@@ -394,7 +394,7 @@ class Task(models.Model):
                     'product_uom_qty': self.total_hours_spent,
                     'product_uom': self.timesheet_product_id.uom_id.id,
                 })
-            self.sudo().write({  # We need to sudo for the user cannot see all timesheets in the current task.
+            self.sudo().write({  # We need to sudo in case the user cannot see all timesheets in the current task.
                 'sale_line_id': sale_order_line.id,
                 # assign SOL to timesheets
                 'timesheet_ids': [fields.Command.update(timesheet_id, {'so_line': sale_order_line.id}) for timesheet_id in not_billed_timesheets.ids]

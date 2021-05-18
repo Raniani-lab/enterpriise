@@ -51,6 +51,8 @@ class MXReportAccountCoa(models.AbstractModel):
         lines = []
         account_obj = self.env['account.account']
         for domain in afr_lines.mapped('children_ids').mapped('domain'):
+            # TODO CLEAN ME: using account.financial.html.report.line's domain on other
+            # objects as account.move.line is not the proper way.
             account_ids = account_obj.search(
                 ast.literal_eval(domain or '[]'), order='code')
             accounts.extend(account_ids.ids)

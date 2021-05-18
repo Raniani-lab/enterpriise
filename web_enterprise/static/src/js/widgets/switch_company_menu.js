@@ -29,6 +29,14 @@ const SwitchCompanyMenuMobile = SwitchCompanyMenu.extend({
         'click .log_into': '_onSwitchCompanyClick',
         'click .toggle_company': '_onToggleCompanyClick',
     }),
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    _getElements() {
+        return this.$el.find(".o_company_item");
+    },
 });
 
 return {

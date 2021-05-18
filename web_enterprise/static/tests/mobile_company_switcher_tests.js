@@ -92,6 +92,11 @@ odoo.define('web_enterprise.mobile_company_switcher_tests', function (require) {
                     allowed_company_ids: [1],
                 },
             };
+            this.originalToggleDelay = SwitchCompanyMenuMobile.prototype.TOGGLE_DELAY;
+            SwitchCompanyMenuMobile.prototype.TOGGLE_DELAY = 0;
+        },
+        afterEach: function () {
+            SwitchCompanyMenuMobile.prototype.TOGGLE_DELAY = this.originalToggleDelay;
         },
 
     }, function () {

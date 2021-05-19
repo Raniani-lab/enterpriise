@@ -5,6 +5,14 @@
     <menuitem id="menu_hr_payroll_root" name="Payroll" sequence="195" web_icon="hr_payroll,static/description/icon.png" groups="hr_payroll.group_hr_payroll_user"/>
 
     <menuitem
+        id="menu_hr_payroll_dashboard_root"
+        name="Dashboard"
+        parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+        action="hr_payroll_dashboard_open"
+        sequence="40"
+        groups="hr_payroll.group_hr_payroll_user"/>
+
+    <menuitem
         id="menu_hr_payroll_employees_root"
         name="Contracts"
         parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"

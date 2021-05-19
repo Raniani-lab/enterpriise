@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="hr_payroll.DashboardStats" owl="1">
+        <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_block_stats d-flex align-items-end align-items-stretch flex-column">
+            <div class="stats-header row p-2 pl-4">
+                <div class="col w-100">
+                    <h2 class="btn btn-link p-0 disabled text-black">
+                        <t t-esc="data.label"/>
+                    </h2>
+                    <i class="fa fa-question-circle-o" t-if="data.help"
+                        data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="formatHelp()"/>
+                    <div class="d-inline float-right" id="period_selection_toggle">
+                        Annually
+                        <div class="o_boolean_toggle custom-control custom-checkbox" t-on-click.stop.prevent="toggle()">
+                            <input type="checkbox" class="custom-control-input" id="test" t-att-checked="state.monthly"/>
+                            <label class="custom-control-label">
+                                &#8203;
+                                <i class="fa fa-circle"/>
+                            </label>
+                        </div>
+                        Monthly
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-0 mb-2">
+                <div class="col">
+                    <t t-foreach="actionData" t-as="action" t-key="action['action']">
+                        <div t-if="action['count'] > 0" class="row w-100">
+                            <a class="col-9 text-left" href="#"
+                                t-on-click="_doAction(action['action'])">
+                                <t t-esc="action['string']"/>
+                            </a>
+                            <span class="col-3 pr-2 text-right m-auto"><t t-esc="action['count']"/></span>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <div t-att-class="'canvas-container mt-auto ' + (type === 'line' ? 'payroll_line' : 'payroll_bar')">
+                <canvas t-ref="canvas" class="w-100"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="hr_payroll.Tooltip" owl="1">
+        <div class="o-tooltip px-2 py-1">
+            <p style="font-size: large;" t-esc="info.help"/>
+        </div>
+    </t>
+</odoo>

@@ -24,5 +24,8 @@
         'web.assets_frontend': [
             'hr_contract_salary_payroll/static/src/js/**/*',
         ],
+        'web.assets_tests': [
+            'hr_contract_salary_payroll/static/tests/**/*.js',
+        ],
     }
 }

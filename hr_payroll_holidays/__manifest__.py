@@ -19,6 +19,9 @@
         'views/hr_payslip_views.xml',
         'data/mail_activity_data.xml',
     ],
+    'demo': [
+        'data/demo.xml',
+    ],
     'auto_install': True,
     'assets': {
         'web.assets_backend': [

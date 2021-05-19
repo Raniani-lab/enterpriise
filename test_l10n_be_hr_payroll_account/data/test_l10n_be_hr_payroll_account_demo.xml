@@ -1812,6 +1812,7 @@
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_sick"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="support_document">True</field>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
     </record>
 

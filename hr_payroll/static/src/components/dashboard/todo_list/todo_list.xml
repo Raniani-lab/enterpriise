@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+
+    <t t-name="hr_payroll.TodoList" owl="1">
+        <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_todo">
+            <div class="row mt-2 mb-3 ml-4 mr-4 no-gutters">
+                <div class="col-10">
+                    <h2 class="btn btn-link p-0 disabled text-black">
+                        Notes
+                    </h2>
+                </div>
+                <div class="col-2">
+                    <button t-if="state.mode === 'readonly'" string="Edit" class="btn btn-primary float-right"
+                        t-on-click="_onClickEdit">
+                        Edit
+                    </button>
+                    <button t-if="state.mode === 'edit'" string="Save" class="btn btn-primary float-right"
+                        t-on-click="_onClickSave">
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="o_hr_payroll_todo_tabs row flex-wrap m-0">
+                    <t t-foreach="notes" t-as="noteData" t-key="noteData['id']">
+                        <div t-att-class="'o_hr_payroll_todo_tab oe_kanban_color_' + noteData['color'] + ((noteData['id'] == state.activeNoteId) ? ' selected' : '')" t-on-click="_onClickNoteTab(noteData['id'])">
+                            <h3><t t-esc="(noteData.name || 'untitled').substring(0, 30)"/></h3>
+                        </div>
+                    </t>
+                    <div class="o_hr_payroll_todo_tab o_hr_payroll_todo_create" t-on-click="_onClickCreateNote">
+                        <span title="Create new todo note" class="fa fa-plus"/>
+                    </div>
+                </div>
+                <div class="o_hr_payroll_todo_value">
+                    <t t-if="state.mode !== ''">
+                        <PayrollDashboardTodoAdapter Component="FieldHtml" t-ref="memo_display" widgetArgs="noteWidgetArgs"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

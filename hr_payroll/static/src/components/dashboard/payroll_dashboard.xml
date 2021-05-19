@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-name="hr_payroll.Dashboard" owl="1">
+        <div class="o_hr_payroll_dashboard_sheet mt-3">
+            <div class="row m-2">
+                <div class="col m-2 p-0">
+                    <PayrollDashboardActionBox actions="actionData"/>
+                </div>
+                <div class="col m-2 p-0">
+                    <PayrollDashboardPayslipBatch data="batches"/>
+                </div>
+                <div class="col m-2 p-0">
+                    <PayrollDashboardTodo tagId="notes['tag_id']"
+                        t-on-reload-memo="_reloadMemos" t-on-update-memo="_updateMemo"/>
+                </div>
+            </div>
+            <div class="row m-2" t-if="stats &amp;&amp; stats.length > 0">
+                <t t-foreach="stats" t-as="stat" t-key="stat.label">
+                    <div class="col m-2 p-0">
+                        <PayrollDashboardStats data="stat"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</template>

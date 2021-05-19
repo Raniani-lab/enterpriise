@@ -69,6 +69,15 @@ class HrPayslipRun(models.Model):
             "name": "Payslips",
         }
 
+    def action_open_payslip_run_form(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.payslip.run',
+            'views': [[False, 'form']],
+            'res_id': self.id,
+        }
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_draft_or_cancel(self):
         if any(self.filtered(lambda payslip_run: payslip_run.state not in ('draft'))):

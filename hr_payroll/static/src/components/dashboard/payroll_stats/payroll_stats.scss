@@ -1,0 +1,39 @@
+.o_hr_payroll_dashboard_sheet .col .o_hr_payroll_dashboard_block_stats {
+    height: 100%;
+
+    .stats-header {
+        height: 60px;
+
+        .custom-control {
+            cursor: pointer;
+
+            // Always primary color
+            input.custom-control-input + label.custom-control-label {
+                &::before {
+                  background-color: $o-brand-primary !important;
+                }
+            }
+
+            input.custom-control-input:checked + label.custom-control-label {
+                i {
+                    right: 7px;
+                }
+            }
+
+            input.custom-control-input:not(checked) + label.custom-control-label {
+                i {
+                    right: 15px;
+                }
+            }
+        }
+    }
+
+    .canvas-container {
+        &.payroll_line {
+            height: 90px;
+        }
+        &.payroll_bar {
+            height: 200px;
+        }
+    }
+}

@@ -587,6 +587,60 @@ class Payslip(models.Model):
                     return True
         return False
 
+    def _get_dashboard_warnings(self):
+        res = super()._get_dashboard_warnings()
+        belgian_companies = self.env.companies.filtered(lambda c: c.country_id.code == 'BE')
+        if belgian_companies:
+            # NISS VALIDATION
+            invalid_niss_employee_ids = self.env['hr.employee']._get_invalid_niss_employee_ids()
+            if invalid_niss_employee_ids:
+                invalid_niss_str = _('Employees With Invalid NISS Numbers')
+                res.append({
+                    'string': invalid_niss_str,
+                    'count': len(invalid_niss_employee_ids),
+                    'action': self._dashboard_default_action(invalid_niss_str, 'hr.employee', invalid_niss_employee_ids),
+                })
+
+            # GENDER VALIDATION
+            invalid_gender_employees = self.env['hr.employee'].search([
+                ('gender', 'not in', ['male', 'female']),
+                ('company_id', 'in', belgian_companies.ids)
+            ])
+            if invalid_gender_employees:
+                invalid_gender_str = _('Employees With Invalid Configured Gender')
+                res.append({
+                    'string': invalid_gender_str,
+                    'count': len(invalid_gender_employees),
+                    'action': self._dashboard_default_action(invalid_gender_str, 'hr.employee', invalid_gender_employees.ids),
+                })
+
+            # LANGUAGE VALIDATION
+            active_languages = self._is_active_belgian_languages()
+            if active_languages:
+                invalid_language_employees = self.env['hr.employee'].search([
+                    ('company_id', 'in', belgian_companies.ids)
+                ]).filtered(lambda e: e.sudo().address_home_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
+            else:
+                invalid_language_employees = self.env['hr.employee']
+            if invalid_language_employees:
+                invalid_gender_str = _('Employees With Invalid Configured Language')
+                res.append({
+                    'string': invalid_gender_str,
+                    'count': len(invalid_language_employees),
+                    'action': self._dashboard_default_action(invalid_gender_str, 'hr.employee', invalid_language_employees.ids),
+                })
+
+        return res
+
+    @api.model
+    def _get_dashboard_stat_employer_cost_codes(self):
+        res = super()._get_dashboard_stat_employer_cost_codes()
+        res.update({
+            'PPTOTAL': _('Withholding Taxes'),
+            'ONSSEMPLOYER': _('ONSS: Employee Part'),
+        })
+        return res
+
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
     # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument
     def find_rates(x, rates):

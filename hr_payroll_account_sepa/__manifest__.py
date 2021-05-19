@@ -13,4 +13,12 @@
         'wizard/hr_payroll_account_sepa_wizard_views.xml',
     ],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'hr_payroll_account_sepa/static/src/**/*.js',
+        ],
+        'web.assets_qweb': [
+            'hr_payroll_account_sepa/static/src/**/*.xml',
+        ],
+    },
 }

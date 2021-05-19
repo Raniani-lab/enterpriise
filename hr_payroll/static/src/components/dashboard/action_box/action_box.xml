@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="hr_payroll.ActionBox" owl="1">
+        <div class="o_hr_payroll_dashboard_block p-2 pl-4">
+            <div class="row">
+                <div class="col">
+                    <h2 class="btn btn-link p-0 disabled text-black">
+                        Warnings
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <t t-foreach="actionData" t-as="action" t-key="action['action']">
+                        <div t-if="action['count'] > 0" class="row w-100">
+                            <a class="col-9 text-left" href="#"
+                                t-on-click="_doAction(action['action'])">
+                                <t t-esc="action['string']"/>
+                            </a>
+                            <span class="col-3 pr-2 text-right m-auto"><t t-esc="action['count']"/></span>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

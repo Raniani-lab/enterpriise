@@ -3,7 +3,7 @@
 
 from datetime import date, datetime
 from collections import defaultdict
-from odoo import api, _, fields, models
+from odoo import _, api, fields, models
 from odoo.tools import date_utils
 from odoo.osv import expression
 

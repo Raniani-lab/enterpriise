@@ -10,9 +10,11 @@
     'installable': True,
     'application': True,
     'depends': [
+        'note',
         'hr_work_entry_contract_enterprise',
         'mail',
         'web_dashboard',
+        'web_editor',
     ],
     'data': [
         'security/hr_payroll_security.xml',
@@ -37,6 +39,7 @@
         'data/mail_data.xml',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
+        'data/note_data.xml',
         'views/res_config_settings_views.xml',
         'views/report_contributionregister_templates.xml',
         'views/report_payslip_templates.xml',
@@ -46,17 +49,25 @@
         'views/hr_payroll_report_views.xml',
         'views/hr_work_entry_report_views.xml',
         'report/hr_salary_attachment_report_views.xml',
+        'views/hr_payroll_dashboard_views.xml',
         'views/hr_payroll_menu.xml',
         'report/hr_contract_history_report_views.xml',
+        'views/note_note_views.xml',
     ],
     'demo': ['data/hr_payroll_demo.xml'],
     'assets': {
         'web.assets_backend': [
-            'hr_payroll/static/src/js/**/*',
+            'hr_payroll/static/src/**/*.js',
+            'hr_payroll/static/src/**/*.scss',
         ],
         'web.assets_qweb': [
             'hr_payroll/static/src/xml/**/*',
+            'hr_payroll/static/src/**/*.xml',
+        ],
+        'web.assets_tests': [
+            'hr_payroll/static/tests/**/*.js',
         ],
     },
     'license': 'OEEL-1',
+    'post_init_hook': '_post_init_hook',
 }

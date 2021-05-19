@@ -3,7 +3,7 @@
 
 import base64
 
-from odoo import models, fields, _
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 
 
@@ -77,3 +77,21 @@ class HrPayslip(models.Model):
         })
         payslip_runs = self.mapped('payslip_run_id').filtered(
             lambda run: run.state == 'close' and all(slip.state in ['paid', 'cancel'] for slip in run.slip_ids))
+
+    # Dashboard
+    @api.model
+    def _get_dashboard_warnings(self):
+        res = super()._get_dashboard_warnings()
+        invalid_iban_emp_ids = self.env['hr.employee']._get_invalid_iban_employee_ids()
+        if invalid_iban_emp_ids:
+            invalid_iban_str = _('Employees With Invalid Bank Accounts')
+            res.append({
+                'string': invalid_iban_str,
+                'count': len(invalid_iban_emp_ids),
+                'action': self._dashboard_default_action(invalid_iban_str, 'hr.employee', invalid_iban_emp_ids)
+            })
+        return res
+
+    @api.model
+    def _get_dashboard_batch_fields(self):
+        return super()._get_dashboard_batch_fields() + ['sepa_export', 'sepa_export_filename']

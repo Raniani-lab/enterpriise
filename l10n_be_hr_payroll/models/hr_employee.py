@@ -4,7 +4,7 @@
 from functools import reduce
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 
 EMPLOYER_ONSS = 0.2714
 
@@ -114,6 +114,19 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
             if employee.identification_id and not employee.niss:
                 employee.niss = reduce(lambda a, kv: a.replace(*kv), characters.items(), employee.identification_id)
 
+    @api.model
+    def _validate_niss(self, niss):
+        try:
+            test = niss[:-2]
+            if test[0] in ['0', '1', '2', '3', '4', '5']:  # Should be good for several years
+                test = '2%s' % test
+            checksum = int(niss[-2:])
+            if checksum != (97 - int(test) % 97):
+                raise Exception()
+            return True
+        except Exception:
+            return False
+
     def _is_niss_valid(self):
         # The last 2 positions constitute the check digit. This check digit is
         # a sequence of 2 digits forming a number between 01 and 97. This number is equal to 97
@@ -127,14 +140,7 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
         niss = self.niss
         if not niss or len(niss) != 11:
             return False
-        try:
-            test = niss[:-2]
-            if test[0] in ['0', '1', '2', '3', '4', '5']:  # Should be good for several years
-                test = '2%s' % test
-            checksum = int(niss[-2:])
-            return checksum == 97 - int(test) % 97
-        except Exception:
-            return False
+        return self._validate_niss(niss)
 
     @api.onchange('disabled_children_bool')
     def _onchange_disabled_children_bool(self):
@@ -161,3 +167,26 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
         for employee in self:
             employee.dependent_seniors = employee.other_senior_dependent + employee.other_disabled_senior_dependent
             employee.dependent_juniors = employee.other_juniors_dependent + employee.other_disabled_juniors_dependent
+
+    @api.model
+    def _get_invalid_niss_employee_ids(self):
+        # as we do not store if the niss is valid or not it's not possible to fetch all the employees directly
+        # use sql and manually filter the employees
+
+        # return nothing if user has no right to either employee or bank partner
+        try:
+            self.check_access_rights('read')
+            # niss field is for this group only
+            if not self.user_has_groups('hr.group_hr_user'):
+                raise AccessError()
+        except AccessError:
+            return []
+
+        self.env.cr.execute('''
+            SELECT emp.id,
+                   emp.niss
+              FROM hr_employee emp
+             WHERE company_id IN %s
+               AND emp.active=TRUE
+        ''', (tuple(c.id for c in self.env.companies if c.country_id.code == 'BE'),))
+        return [row['id'] for row in self.env.cr.dictfetchall() if not row['niss'] or not self._validate_niss(row['niss'])]

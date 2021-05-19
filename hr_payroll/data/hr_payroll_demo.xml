@@ -246,7 +246,7 @@
         <!-- Salary Attachments -->
         <record id="child_support" model="hr.salary.attachment">
             <field name="employee_id" ref="hr.employee_qdp"/>
-            <field name="monthly_amount">150</field>
+            <field name="monthly_amount">7500</field>
             <field name="deduction_type">child_support</field>
             <field name="date_start" eval="DateTime.today()"/>
             <field name="description">Child Support</field>
@@ -262,6 +262,67 @@
             <value model="hr.employee" eval="obj().search([]).ids"/>
             <value eval="(DateTime.today() + relativedelta(day=1, months=-1))"/>
             <value eval="(DateTime.today() + relativedelta(day=31))"/>
+        </function>
+
+
+        <!-- Payslip batch -->
+        <record id="hr_payslip_batch_latest" model="hr.payslip.run">
+            <field name="name" eval="time.strftime('%B %Y')"/>
+            <field name="date_start" eval="time.strftime('%Y-%m-1')"/>
+            <field name="date_end" eval="(DateTime.today() + relativedelta(months=1, day=1) - relativedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Payslip Admin  -->
+        <record id="hr_payslip_admin_latest_0" model="hr.payslip">
+            <field name="name" eval="'Mitchell Admin 1 ' + time.strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_admin"/>
+            <field name="date_from" eval="time.strftime('%Y-%m-1')"/>
+            <field name="date_to" eval="time.strftime('%Y-%m-15')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1001</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_latest"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="hr_payslip_admin_latest_1" model="hr.payslip">
+            <field name="name" eval="'Mitchell Admin 2 ' + time.strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_admin_new"/>
+            <field name="date_from" eval="time.strftime('%Y-%m-16')"/>
+            <field name="date_to" eval="(DateTime.today() + relativedelta(months=1, day=1) - relativedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1002</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_latest"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Payslip Demo  -->
+        <record id="hr_payslip_demo_latest" model="hr.payslip">
+            <field name="name" eval="'Marc Demo ' + time.strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
+            <field name="date_from" eval="time.strftime('%Y-%m-1')"/>
+            <field name="date_to" eval="(DateTime.today() + relativedelta(months=1, day=1) - relativedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_qdp"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1003</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_latest"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Compute Sheets -->
+        <function model="hr.payslip" name="compute_sheet">
+            <value model="hr.payslip" eval="[ref('hr_payslip_admin_latest_0'), ref('hr_payslip_admin_latest_1'), ref('hr_payslip_demo_latest')]"/>
+        </function>
+
+        <!-- Validate Batch -->
+        <function model="hr.payslip.run" name="action_open">
+            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_latest')]"/>
+        </function>
+
+        <function model="hr.payslip.run" name="action_validate">
+            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_latest')]"/>
         </function>
 
 </odoo>

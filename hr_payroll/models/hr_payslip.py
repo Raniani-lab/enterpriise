@@ -267,7 +267,7 @@ class HrPayslip(models.Model):
             if self.env.context.get('payslip_generate_pdf_direct'):
                 self._generate_pdf()
             else:
-                self.write({'queued_for_pdf', True})
+                self.write({'queued_for_pdf': True})
                 payslip_cron = self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs', raise_if_not_found=False)
                 if payslip_cron:
                     payslip_cron._trigger()

@@ -7,7 +7,7 @@ class SaleSubscription(models.Model):
     _inherit = "sale.subscription"
 
 
-def _do_payment(self, payment_token, invoice, two_steps_sec=True):
+def _do_payment(self, payment_token, invoice):
     if invoice.fiscal_position_id.is_taxcloud and invoice.move_type in ["out_invoice", "out_refund"]:
         invoice.with_context(taxcloud_authorize_transaction=True).validate_taxes_on_invoice()
-    return super(SaleSubscription, self)._do_payment(payment_token, invoice, two_steps_sec=two_steps_sec)
+    return super(SaleSubscription, self)._do_payment(payment_token, invoice)

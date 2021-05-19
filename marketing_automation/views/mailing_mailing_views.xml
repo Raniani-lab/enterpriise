@@ -62,7 +62,7 @@
             <xpath expr="//div[@name='schedule_block']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//field[@name='medium_id']" position="after">
+            <xpath expr="//field[@name='source_id']" position="after">
                 <field name="marketing_activity_ids" string="Activities" widget="many2many_tags"/>
             </xpath>
         </field>

@@ -39,6 +39,10 @@
                 }
             }
         }
+
+        @include media-breakpoint-down(sm) {
+            overflow: auto;
+        }
     }
 
     .o_group {

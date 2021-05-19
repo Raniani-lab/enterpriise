@@ -47,7 +47,7 @@ class AccountAsset(models.Model):
     prorata_date = fields.Date(
         string='Prorata Date',
         readonly=True, states={'draft': [('readonly', False)]})
-    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_value', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
+    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
     account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the depreciation entries, to decrease the asset value.")
     account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the periodical entries, to record a part of the asset as expense.")
 
@@ -82,7 +82,7 @@ class AccountAsset(models.Model):
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
     user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
     display_model_choice = fields.Boolean(compute="_compute_display_model_choice")
-    display_account_asset_id = fields.Boolean(compute="_compute_value", compute_sudo=True)
+    display_account_asset_id = fields.Boolean(compute="_compute_display_account_asset_id")
 
     # Capital gain
     parent_id = fields.Many2one('account.asset', help="An asset has a parent when it is the result of gaining value")
@@ -107,20 +107,12 @@ class AccountAsset(models.Model):
         for record in self:
             misc_journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', record.company_id.id)], limit=1)
             if not record.original_move_line_ids:
-                record.account_asset_id = record.account_asset_id or False
-                if not record.account_asset_id and (record.state == 'model' or not record.account_asset_id or record.asset_type != 'purchase'):
-                    record.account_asset_id = record.account_depreciation_id if record.asset_type in ('purchase', 'expense') else record.account_depreciation_expense_id
                 record.original_value = record.original_value or False
-                record.display_account_asset_id = True
                 continue
             if any(line.move_id.state == 'draft' for line in record.original_move_line_ids):
                 raise UserError(_("All the lines should be posted"))
-            if any(account != record.original_move_line_ids[0].account_id for account in record.original_move_line_ids.mapped('account_id')):
-                raise UserError(_("All the lines should be from the same account"))
             if any(type != record.original_move_line_ids[0].move_id.move_type for type in record.original_move_line_ids.mapped('move_id.move_type')):
                 raise UserError(_("All the lines should be from the same move type"))
-            record.account_asset_id = record.original_move_line_ids[0].account_id
-            record.display_account_asset_id = False
             if not record.journal_id:
                 record.journal_id = misc_journal_id
             total_credit = sum(line.credit for line in record.original_move_line_ids)
@@ -143,6 +135,38 @@ class AccountAsset(models.Model):
                 record.state == 'draft'
                 and bool(self.env['account.asset'].search(domain, limit=1))
             )
+
+    @api.depends('original_move_line_ids')
+    def _compute_display_account_asset_id(self):
+        for record in self:
+            record.display_account_asset_id = not record.original_move_line_ids
+
+    @api.depends('account_depreciation_id', 'account_depreciation_expense_id', 'original_move_line_ids')
+    def _compute_account_asset_id(self):
+        for record in self:
+            if record.original_move_line_ids:
+                if len(record.original_move_line_ids.account_id) > 1:
+                    raise UserError(_("All the lines should be from the same account"))
+                record.account_asset_id = record.original_move_line_ids.account_id
+            if not record.account_asset_id:
+                # Only set a default value, do not erase user inputs
+                record._onchange_account_depreciation_id()
+                record._onchange_account_depreciation_expense_id()
+
+    @api.onchange('account_depreciation_id')
+    def _onchange_account_depreciation_id(self):
+        if not self.original_move_line_ids:
+            if self.asset_type == 'expense':
+                # Always change the account since it is not visible in the form
+                self.account_asset_id = self.account_depreciation_id
+            if self.asset_type == 'purchase' and not self.account_asset_id:
+                # Only set a default value since it is visible in the form
+                self.account_asset_id = self.account_depreciation_id
+
+    @api.onchange('account_depreciation_expense_id')
+    def _onchange_account_depreciation_expense_id(self):
+        if not self.original_move_line_ids and self.asset_type not in ('purchase', 'expense'):
+            self.account_asset_id = self.account_depreciation_expense_id
 
     @api.depends('original_move_line_ids', 'prorata_date', 'first_depreciation_date')
     def _compute_acquisition_date(self):
@@ -221,15 +245,6 @@ class AccountAsset(models.Model):
                     cumulated_depreciation += older_move.amount_total
                 older_move.asset_remaining_value = asset_remaining_value
                 older_move.asset_depreciated_value = cumulated_depreciation
-
-    @api.onchange('account_depreciation_id')
-    def _onchange_account_depreciation_id(self):
-        """
-        The field account_asset_id is required but invisible in the Deferred Revenue Model form.
-        Therefore, set it when account_depreciation_id changes.
-        """
-        if self.asset_type in ('sale', 'expense') and self.state == 'model':
-            self.account_asset_id = self.account_depreciation_id
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):

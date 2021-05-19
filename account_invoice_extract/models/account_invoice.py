@@ -197,7 +197,7 @@ class AccountMove(models.Model):
             user_infos = self.get_user_infos()
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')
-            baseurl = self.env['ir.config_parameter'].get_param('web.base.url')
+            baseurl = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             webhook_url = f"{baseurl}/account_invoice_extract/request_done"
             params = {
                 'account_token': account_token.account_token,

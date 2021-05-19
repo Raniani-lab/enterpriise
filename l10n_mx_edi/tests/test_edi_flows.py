@@ -27,8 +27,8 @@ class TestEdiFlows(TestMxEdiCommon):
 
             self.invoice.button_draft()
 
-            self.assertRecordValues(self.invoice, [{'edi_state': False}])
-            self.assertRecordValues(document, [{'state': False}])
+            self.assertRecordValues(self.invoice, [{'edi_state': 'to_send'}])
+            self.assertRecordValues(document, [{'state': 'to_send'}])
 
             self.invoice.button_cancel()
 
@@ -73,8 +73,8 @@ class TestEdiFlows(TestMxEdiCommon):
 
             self.invoice.button_draft()
 
-            self.assertRecordValues(self.invoice, [{'edi_state': False}])
-            self.assertRecordValues(document, [{'state': False}])
+            self.assertRecordValues(self.invoice, [{'edi_state': 'cancelled'}])
+            self.assertRecordValues(document, [{'state': 'cancelled'}])
 
             self.invoice.action_post()
 
@@ -216,8 +216,8 @@ class TestEdiFlows(TestMxEdiCommon):
 
             self.payment.action_draft()
 
-            self.assertRecordValues(move, [{'edi_state': False}])
-            self.assertRecordValues(document, [{'state': False}])
+            self.assertRecordValues(move, [{'edi_state': 'sent'}])
+            self.assertRecordValues(document, [{'state': 'sent'}])
             self.assertTrue(document.attachment_id)
 
             self.payment.action_cancel()
@@ -281,8 +281,8 @@ class TestEdiFlows(TestMxEdiCommon):
 
             self.payment.action_draft()
 
-            self.assertRecordValues(move, [{'edi_state': False}])
-            self.assertRecordValues(document, [{'state': False}])
+            self.assertRecordValues(move, [{'edi_state': 'sent'}])
+            self.assertRecordValues(document, [{'state': 'sent'}])
             self.assertTrue(document.attachment_id)
 
             self.payment.action_cancel()

@@ -165,7 +165,7 @@ class Certificate(models.Model):
         mx_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')
         if self.env['account.edi.document'].sudo().search([
             ('edi_format_id', '=', mx_edi.id),
-            ('attachment_id', '!=', False),
+            ('state', '=', 'sent'),
         ], limit=1):
             raise UserError(_(
                 'You cannot remove a certificate if at least an invoice has been signed. '

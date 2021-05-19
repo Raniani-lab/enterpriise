@@ -132,7 +132,7 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         cfdi_3_3_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')
-        return self.edi_document_ids.filtered(lambda document: document.edi_format_id == cfdi_3_3_edi and document.attachment_id)
+        return self.edi_document_ids.filtered(lambda document: document.edi_format_id == cfdi_3_3_edi and document.state == 'sent' and document.attachment_id)
 
     def _get_l10n_mx_edi_issued_address(self):
         self.ensure_one()

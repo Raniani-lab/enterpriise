@@ -922,7 +922,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
 
             # == Create the attachment ==
             cfdi_attachment = self._create_invoice_cfdi_attachment(invoice, res['cfdi_signed'])
-            edi_result[invoice] = {'attachment': cfdi_attachment}
+            edi_result[invoice] = {'success': True, 'attachment': cfdi_attachment}
 
             # == Chatter ==
             invoice.with_context(no_new_invoice=True).message_post(
@@ -1027,7 +1027,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             # == Create the attachment ==
             cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
             cfdi_attachment = self._create_payment_cfdi_attachment(move, cfdi_signed)
-            edi_result[move] = {'attachment': cfdi_attachment}
+            edi_result[move] = {'success': True, 'attachment': cfdi_attachment}
 
             # == Chatter ==
             message = _("The CFDI document has been successfully signed.")

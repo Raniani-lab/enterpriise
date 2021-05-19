@@ -598,7 +598,7 @@ class SignRequestItem(models.Model):
     def _default_access_token(self):
         return str(uuid.uuid4())
 
-    partner_id = fields.Many2one('res.partner', string="Contact", ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string="Contact", ondelete='restrict')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")

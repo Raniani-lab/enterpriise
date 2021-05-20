@@ -7,7 +7,7 @@
         t-attf-class="alert-{{state.alertType}}"
         >
         <!-- t-translation="off" should be on next a element below -->
-        <a t-if="state.diffDays &gt; 0" href="#" class="oe_instance_hide_panel float-right" t-on-click.prevent="_onHide" aria-label="Dismiss">×</a>
+        <a t-if="state.diffDays &gt; 0" href="#" class="oe_instance_hide_panel float-right alert-link" t-on-click.prevent="_onHide" aria-label="Dismiss">×</a>
         <span t-if="state.message === 'register'" class="oe_instance_register">
             <t t-if="!mailInstalled">You will be able to register your database once you have installed your first app.</t>
             <t t-else="">

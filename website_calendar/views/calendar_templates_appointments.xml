@@ -275,7 +275,7 @@
                     <span>Time displayed in <strong t-esc="request.session['timezone']"/> timezone</span>
                 </div>
             </div>
-            <div id="slotsList" class="col-lg-4 ml-lg-4"/>
+            <div id="slotsList" class="o_wcalendar_availabilities col-lg-4 ml-lg-4"/>
         </div>
     </template>
 

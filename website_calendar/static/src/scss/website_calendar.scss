@@ -125,11 +125,12 @@
 }
 
 .o_website_calendar_appointment {
-    .o_slots_list {
-        max-height: 275px;
-    
-        a:hover {
-            color: white!important;
+    .o_wcalendar_availabilities {
+        min-height: 31em;
+        .o_slots_list {
+            a:hover {
+                color: white!important;
+            }
         }
     }
 }

@@ -425,21 +425,6 @@
         </field>
     </record>
 
-    <record id="planning_action_my_gantt" model="ir.actions.act_window">
-        <field name="name">My Planning</field>
-        <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_my_shifts': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No shifts found. Let's create one!
-            </p>
-            <p>
-                Let's start your planning by adding a new shift.
-            </p>
-        </field>
-    </record>
-
     <record id="planning_action_open_shift" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>

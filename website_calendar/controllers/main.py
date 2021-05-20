@@ -76,6 +76,11 @@ class WebsiteCalendar(http.Controller):
         else:
             suggested_employees = appointment_type.employee_ids.filtered(lambda emp: emp.id in filter_employee_ids)
 
+        # Keep retrocompatibility with the the old personnal link ?employee_id=
+        employee_id = kwargs.get('employee_id')
+        if not suggested_employees and employee_id and int(employee_id) in appointment_type.employee_ids.ids:
+            suggested_employees = request.env['hr.employee'].sudo().browse(int(employee_id))
+
         default_employee = suggested_employees[0] if suggested_employees else request.env['hr.employee']
         slots = appointment_type._get_appointment_slots(request.session['timezone'], default_employee)
         formated_days = [format_date(fields.Date.from_string('2021-03-0%s' % str(day + 1)), "EEE", get_lang(request.env).code) for day in range(7)]

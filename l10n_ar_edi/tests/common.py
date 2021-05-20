@@ -229,6 +229,7 @@ class TestEdi(SingleTransactionCase):
                         invoice_line_form.product_id = line.get('product', self.product_iva_21)
                         invoice_line_form.quantity = line.get('quantity', 1)
                         invoice_line_form.price_unit = line.get('price_unit', 100)
+            invoice_form.invoice_date = invoice_form.date
         invoice = invoice_form.save()
         return invoice
 

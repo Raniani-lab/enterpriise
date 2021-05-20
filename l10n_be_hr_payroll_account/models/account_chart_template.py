@@ -92,24 +92,12 @@ class AccountChartTemplate(models.Model):
             # ================================================ #
             #              CP200: Double Holidays              #
             # ================================================ #
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_pay_basic').write({
-                'account_credit': accounts['455000'].id
-            })
-
             self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_onss_rule').write({
                 'account_credit': accounts['454000'].id
             })
 
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_employment_bonus_employees').write({
-                'account_debit': accounts['454000'].id
-            })
-
             self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_pay_p_p').write({
                 'account_credit': accounts['453000'].id
-            })
-
-            self.env.ref('l10n_be_hr_payroll.cp200_employees_double_holiday_ip_deduction').write({
-                'account_debit': accounts['453000'].id, # Note: This is a credit, but the amount is negative
             })
 
             self.env['hr.salary.rule'].search([

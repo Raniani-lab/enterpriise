@@ -49,7 +49,6 @@ class TestFex(common.TestFex):
                       {'product': self.env.ref('l10n_ar.product_product_exento'), 'price_unit': 100.0, 'quantity': 1}]})
         tax_exento = self._search_tax('iva_exento')
         self.assertEqual(invoice.invoice_line_ids.mapped('tax_ids'), tax_exento)
-        self._edi_validate_and_review(invoice)
 
     def test_09_invoice_e_product_service(self):
         """ Invoice "4 - Otros (expo)" because it have Services (similar to demo_invoice_7) """
@@ -65,7 +64,6 @@ class TestFex(common.TestFex):
                       {'product': self.env.ref('l10n_ar.product_product_exento'), 'price_unit': 100.0, 'quantity': 1}]})
         tax_exento = self._search_tax('iva_exento')
         self.assertEqual(invoice.invoice_line_ids.mapped('tax_ids'), tax_exento)
-        self._edi_validate_and_review(invoice)
 
     def test_10_invoice_with_notes(self):
         """ Invoice with multiple products/services and with line note """
@@ -82,4 +80,3 @@ class TestFex(common.TestFex):
                       ]})
         tax_exento = self._search_tax('iva_exento')
         self.assertEqual(invoice.invoice_line_ids.mapped('tax_ids'), tax_exento)
-        self._edi_validate_and_review(invoice)

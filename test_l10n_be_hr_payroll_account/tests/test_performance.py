@@ -216,21 +216,21 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         } for i in range(self.EMPLOYEES_COUNT)]
 
         # Payslip Creation
-        with self.assertQueryCount(admin=1314):
+        with self.assertQueryCount(admin=1012):
             start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
             # --- 0.3016078472137451 seconds ---
             _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=4348):
+        with self.assertQueryCount(admin=3051):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---
             _logger.info("Payslips Computation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Validation
-        with self.assertQueryCount(admin=796):
+        with self.assertQueryCount(admin=787):
             start_time = time.time()
             payslips.action_payslip_done()
             # --- 6.975736618041992 seconds ---

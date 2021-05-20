@@ -67,6 +67,7 @@ class HrPayrollStructure(models.Model):
         ]
 
     name = fields.Char(required=True)
+    code = fields.Char()
     active = fields.Boolean(default=True)
     type_id = fields.Many2one(
         'hr.payroll.structure.type', required=True)

@@ -34,12 +34,10 @@ class Payslip(models.Model):
             'assignment_salary': self.env.ref('l10n_be_hr_payroll.cp200_other_input_assignment_salary').id,
             'child_support': self.env.ref('l10n_be_hr_payroll.cp200_other_input_child_support').id,
         }
-        struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-        struct_double = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
         for slip in self:
             if not slip.employee_id or not slip.date_from or not slip.date_to:
                 continue
-            if slip.struct_id == struct_warrant:
+            if slip.struct_id.code == 'CP200WARRANT':
                 months = relativedelta(date_utils.add(slip.date_to, days=1), slip.date_from).months
                 if slip.employee_id.id in self.env.context.get('commission_real_values', {}):
                     warrant_value = self.env.context['commission_real_values'][slip.employee_id.id]
@@ -55,7 +53,7 @@ class Payslip(models.Model):
                 input_line_vals = to_remove_vals + to_add_vals
                 slip.update({'input_line_ids': input_line_vals})
             # If a double holiday pay should be recovered
-            elif slip.struct_id == struct_double:
+            elif slip.struct_id.code == 'CP200DOUBLE':
                 to_recover = slip._get_sum_european_time_off_days()
                 if to_recover:
                     slip.write({'input_line_ids': [(0, 0, {
@@ -252,7 +250,7 @@ class Payslip(models.Model):
         warrant_payslips = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),
             ('state', 'in', ['done', 'paid']),
-            ('struct_id', '=', self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant').id),
+            ('struct_id.code', '=', 'CP200WARRANT'),
             ('date_from', '>=', self.date_from + relativedelta(months=-12, day=1)),
             ('date_from', '<', self.date_from),
         ], order="date_from asc")
@@ -403,14 +401,11 @@ class Payslip(models.Model):
         self.ensure_one()
         belgian_payslip = self.struct_id.country_id.code == "BE"
         if belgian_payslip:
-            struct_13th_month = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
-            if self.struct_id == struct_13th_month:
+            if self.struct_id.code == 'CP200THIRTEEN':
                 return self._get_paid_amount_13th_month()
-            struct_warrant = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
-            if self.struct_id == struct_warrant:
+            if self.struct_id.code == 'CP200WARRANT':
                 return self._get_paid_amount_warrant()
-            struct_double_holiday_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
-            if self.struct_id == struct_double_holiday_pay:
+            if self.struct_id.code == 'CP200DOUBLE':
                 return self._get_paid_double_holiday()
         return super()._get_paid_amount()
 
@@ -441,7 +436,7 @@ class Payslip(models.Model):
 
     def _get_negative_net_input_type(self):
         self.ensure_one()
-        if self.struct_id == self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'):
+        if self.struct_id.code == 'CP200MONTHLY':
             return self.env.ref('l10n_be_hr_payroll.input_negative_net')
         return super()._get_negative_net_input_type()
 
@@ -458,14 +453,12 @@ class Payslip(models.Model):
 
     def _get_pdf_reports(self):
         res = super()._get_pdf_reports()
-        holiday_n = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
-        holiday_n1 = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
         report_n = self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n')
         report_n1 = self.env.ref('l10n_be_hr_payroll.action_report_termination_holidays_n1')
         for payslip in self:
-            if payslip.struct_id == holiday_n1:
+            if payslip.struct_id.code == 'CP200HOLN1':
                 res[report_n1] |= payslip
-            elif payslip.struct_id == holiday_n:
+            elif payslip.struct_id == 'CP200HOLN':
                 res[report_n] |= payslip
         return res
 

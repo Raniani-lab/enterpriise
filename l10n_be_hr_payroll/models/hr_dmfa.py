@@ -232,20 +232,20 @@ class DMFAWorker(DMFANode):
         #     if line.salary_rule_id in contribution_rules:
         #         lines |= line
         basis_lines = {
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'): 'SALARY',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees'): 'BASIC',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month'): 'SALARY',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'): 'PAY_SIMPLE',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'): 'PAY_SIMPLE',
+            'CP200MONTHLY': 'SALARY',
+            'CP200TERM': 'BASIC',
+            'CP200THIRTEEN': 'SALARY',
+            'CP200HOLN': 'PAY_SIMPLE',
+            'CP200HOLN1': 'PAY_SIMPLE',
         }
         # https://www.socialsecurity.be/portail/glossaires/dmfa.nsf/2d585b02976cddabc125686a00590d12/e8361adfc1f6e88cc1256df6002b9948/$FILE/AN2004-1-Fr2.pdf
         contribution_payslips = self.env['hr.payslip']
         for occupation in self.occupations:
             if not occupation.skip_remun:
                 contribution_payslips |= occupation.payslips
-        contribution_payslips = contribution_payslips.filtered(lambda p: p.struct_id in basis_lines)
+        contribution_payslips = contribution_payslips.filtered(lambda p: p.struct_id.code in basis_lines)
         line_values = contribution_payslips._get_line_values(['SALARY', 'BASIC', 'PAY_SIMPLE'])
-        basis = round(sum(line_values[basis_lines[p.struct_id]][p.id]['total'] for p in contribution_payslips), 2)
+        basis = round(sum(line_values[basis_lines[p.struct_id.code]][p.id]['total'] for p in contribution_payslips), 2)
         return [
             DMFAWorkerContribution(contribution_payslips, basis)
         ] + [
@@ -308,7 +308,6 @@ class DMFAWorker(DMFANode):
             return periods
 
         values = []
-        termination_fees = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
         # Group contracts with the same occupation
         # as they should be declared together
         # Put termination fees in it's own occupation
@@ -316,7 +315,7 @@ class DMFAWorker(DMFANode):
         for data in occupation_data:
             occupation_contracts, date_from, date_to = data
             payslips = self.payslips.filtered(lambda p: p.contract_id in occupation_contracts)
-            termination_payslips = payslips.filtered(lambda p: p.struct_id == termination_fees)
+            termination_payslips = payslips.filtered(lambda p: p.struct_id.code == 'CP200TERM')
             termination_occupations = []
             if termination_payslips:
                 # YTI TODO master: Store the supposed notice period even for termination fees
@@ -991,13 +990,13 @@ class HrDMFAReport(models.Model):
         holiday_pay_lines = payslips.mapped('line_ids').filtered(lambda l: l.salary_rule_id in onss_holiday_pay_n1 + onss_holiday_pay_n)
 
         basis_lines = {
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'): 'SALARY',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'): 'PAY DOUBLE',
-            self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays'): 'PAY DOUBLE',
+            'CP200DOUBLE': 'SALARY',
+            'CP200HOLN1': 'PAY DOUBLE',
+            'CP200HOLN1': 'PAY DOUBLE',
         }
-        payslips = payslips.filtered(lambda p: p.struct_id in basis_lines)
+        payslips = payslips.filtered(lambda p: p.struct_id.code in basis_lines)
         line_values = payslips._get_line_values(['SALARY', 'PAY DOUBLE'])
-        basis = round(sum(line_values[basis_lines[p.struct_id]][p.id]['total'] for p in payslips), 2)
+        basis = round(sum(line_values[basis_lines[p.struct_id.code]][p.id]['total'] for p in payslips), 2)
         onss_amount = round(-sum(double_lines.mapped('total')) - sum(holiday_pay_lines.mapped('total')), 2)
         return (basis, onss_amount)
 

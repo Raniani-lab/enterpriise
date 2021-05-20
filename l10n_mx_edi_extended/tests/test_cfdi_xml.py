@@ -40,11 +40,11 @@ class TestEdiResults(TestMxExtendedEdiCommon):
                                 Version="1.1">
                                 <Emisor>
                                     <Domicilio
-                                        Calle="Campobasso"
+                                        Calle="Campobasso Norte"
                                         CodigoPostal="85134"
                                         Estado="SON"
                                         Localidad="04"
-                                        NumeroExterior="Norte 3206"
+                                        NumeroExterior="3206"
                                         NumeroInterior="9000"
                                         Pais="MEX"/>
                                 </Emisor>

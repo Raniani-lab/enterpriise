@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0+e\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-05 16:20+0000\n"
-"PO-Revision-Date: 2020-09-05 16:20+0000\n"
+"POT-Creation-Date: 2021-05-20 15:15+0000\n"
+"PO-Revision-Date: 2021-05-20 15:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,9 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_partner_status
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_dte_partner_status
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_dte_partner_status
 msgid ""
 "\n"
 "    Status of sending the DTE to the partner:\n"
@@ -385,6 +387,11 @@ msgid "0. Cron Job - Load XSD Files (Chilean SII)"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.dte_subtemplate
+msgid "01"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_sii_taxpayer_type
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_sii_taxpayer_type
 msgid ""
@@ -445,6 +452,13 @@ msgid "3: Other"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
+msgid ""
+"<br/>\n"
+"                        Verifique documento en www.sii.cl"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:mail.template,body_html:l10n_cl_edi.l10n_cl_edi_email_template_invoice
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
@@ -467,7 +481,7 @@ msgid ""
 "        % endif\n"
 "        with a total amount of <strong>${format_amount(object.amount_total, object.currency_id)}</strong>\n"
 "        from ${object.company_id.name}.\n"
-"        % if object.payment_state == 'paid':\n"
+"        % if object.payment_state in ('paid', 'in_payment'):\n"
 "            This invoice is already paid.\n"
 "        % else:\n"
 "            Please remit payment at your earliest convenience.\n"
@@ -726,7 +740,19 @@ msgid "CAF XML File"
 msgstr ""
 
 #. module: l10n_cl_edi
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.sequence_view
+#: model:ir.actions.act_window,name:l10n_cl_edi.action_l10n_cl_dte_caf
+#: model:ir.ui.menu,name:l10n_cl_edi.menu_l10n_cl_dte_caf
+msgid "CAFs"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/l10n_cl_dte_caf.py:0
+#, python-format
+msgid "Caf vat %s should be the same that assigned company's vat: %s!"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.l10n_cl_latam_document_type_view
 msgid "Cafs"
 msgstr ""
 
@@ -833,12 +859,16 @@ msgid "Chillán"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_claim
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_claim
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_claim
 msgid "Claim"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_claim_description
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_claim_description
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_claim_description
 msgid "Claim Detail"
 msgstr ""
 
@@ -1015,8 +1045,15 @@ msgid "Curicó"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_acceptation_status
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_dte_acceptation_status
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_dte_acceptation_status
 msgid "DTE Accept status"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_latam_document_type__l10n_cl_dte_caf_ids
+msgid "DTE Caf"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1050,7 +1087,9 @@ msgid "DTE attachment not found => %s"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_file
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_dte_file
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_dte_file
 msgid "DTE file"
 msgstr ""
 
@@ -1096,11 +1135,23 @@ msgid "Delivery Received According"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_debit_note__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_journal__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_reversal__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment_term__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_fetchmail_server__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_ir_attachment__display_name
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference__display_name
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate__display_name
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_company_activities__display_name
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf__display_name
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_edi_util__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_latam_document_type__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -1229,11 +1280,23 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_debit_note__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_journal__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_line__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_reversal__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment_term__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_fetchmail_server__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_ir_attachment__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_company_activities__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf__id
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_edi_util__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_latam_document_type__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__id
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_partner__id
 msgid "ID"
 msgstr ""
 
@@ -1354,6 +1417,12 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/l10n_cl_dte_caf.py:0
+#, python-format
+msgid "It's not a valid XML caf file"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid ""
@@ -1369,7 +1438,7 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_move
-msgid "Journal Entries"
+msgid "Journal Entry"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1403,11 +1472,23 @@ msgid "Lanco"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_debit_note____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_journal____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move_reversal____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment_term____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_fetchmail_server____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_ir_attachment____last_update
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference____last_update
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate____last_update
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_company_activities____last_update
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_dte_caf____last_update
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_edi_util____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_latam_document_type____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -1567,7 +1648,9 @@ msgid "Partner DTE has been generated"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_partner_status
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_dte_partner_status
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_dte_partner_status
 msgid "Partner DTE status"
 msgstr ""
 
@@ -1630,9 +1713,10 @@ msgid "Point Of Sale Number"
 msgstr ""
 
 #. module: l10n_cl_edi
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_import_journal_creation__l10n_cl_point_of_sale_type
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_journal_point_of_sale_type
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_journal__l10n_cl_point_of_sale_type
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_journal_point_of_sale_type
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_journal_point_of_sale_type
 msgid "Point Of Sale Type"
 msgstr ""
 
@@ -1699,7 +1783,9 @@ msgid "Received"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_reference_ids
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_reference_ids
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_reference_ids
 msgid "Reference Records"
 msgstr ""
 
@@ -1726,7 +1812,9 @@ msgid "SII - Test"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_sii_barcode
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_sii_barcode
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_sii_barcode
 msgid "SII Barcode"
 msgstr ""
 
@@ -1741,7 +1829,9 @@ msgid "SII Company Economical Activities"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_status
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_dte_status
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_dte_status
 msgid "SII DTE status"
 msgstr ""
 
@@ -1817,12 +1907,16 @@ msgid "SII Resolution Nº"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_sii_send_ident
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_sii_send_ident
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_sii_send_ident
 msgid "SII Send Identification(Track ID)"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_sii_send_file
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_move__l10n_cl_sii_send_file
+#: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment__l10n_cl_sii_send_file
 msgid "SII Send file"
 msgstr ""
 
@@ -1924,7 +2018,9 @@ msgid "Status"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_status
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_dte_status
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_dte_status
 msgid ""
 "Status of sending the DTE to the SII:\n"
 "    - Not sent: the DTE has not been sent to SII but it has created.\n"
@@ -2007,6 +2103,11 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
+msgid "The VAT tax of this boleta is: "
+msgstr ""
+
+#. module: l10n_cl_edi
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid ""
@@ -2021,6 +2122,7 @@ msgid "The certificate is expired since %s"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/l10n_cl_certificate.py:0
 #: code:addons/l10n_cl_edi/models/l10n_cl_certificate.py:0
 #, python-format
 msgid "The certificate signature_key_file is invalid: %s."
@@ -2062,7 +2164,9 @@ msgid "The parameters to configure the signature certificate."
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_claim
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_claim
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_claim
 msgid "The reason why the DTE was accepted or claimed by the customer"
 msgstr ""
 
@@ -2081,7 +2185,9 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_acceptation_status
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_dte_acceptation_status
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_dte_acceptation_status
 msgid ""
 "The status of the DTE Acceptation\n"
 "    Received: the DTE was received by us for vendor bills, by our customers for customer invoices.\n"
@@ -2092,11 +2198,19 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
-#: code:addons/l10n_cl_edi/models/ir_sequence.py:0
+#: code:addons/l10n_cl_edi/models/l10n_latam_document_type.py:0
 #, python-format
 msgid ""
 "There are no CAFs available for folio %s in the sequence of %s. Please "
 "upload a CAF file or ask for a new one at www.sii.cl website"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/l10n_latam_document_type.py:0
+#, python-format
+msgid ""
+"There are no CAFs available. Please upload a CAF file or ask for a new one "
+"at www.sii.cl website"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -2192,7 +2306,9 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_sii_barcode
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_sii_barcode
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_sii_barcode
 msgid ""
 "This XML contains the portion of the DTE XML that should be coded in PDF417 "
 "and printed in the invoice barcode should be present in the printed invoice "
@@ -2267,6 +2383,13 @@ msgstr ""
 msgid ""
 "This value must be provided and must appear in your pdf or printed tribute "
 "document, under the electronic stamp to be legally valid."
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
+msgid ""
+"Timbre Electrónico SII<br/>\n"
+"                        Resolución Nº:"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -2383,9 +2506,10 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
-#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_import_journal_creation__l10n_cl_point_of_sale_type
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_journal_point_of_sale_type
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_journal__l10n_cl_point_of_sale_type
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_journal_point_of_sale_type
+#: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_journal_point_of_sale_type
 msgid ""
 "You must select \"Online\" for journals with documents that need to be\n"
 "sent to SII automatically. In this case you must upload a CAF file for each\n"
@@ -2409,6 +2533,11 @@ msgid ""
 "Your company has not an activity description configured. This is mandatory "
 "for electronic invoicing. Please go to your company and set the correct one "
 "(www.sii.cl - Mi SII)"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.barcode_stamp_footer
+msgid "de Fecha:"
 msgstr ""
 
 #. module: l10n_cl_edi

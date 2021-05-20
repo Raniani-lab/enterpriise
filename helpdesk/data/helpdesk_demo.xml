@@ -33,6 +33,7 @@
         <field name="stage_ids" eval="[(6, 0, [ref('helpdesk.stage_new'), ref('helpdesk.stage_in_progress'), ref('helpdesk.stage_done'), ref('helpdesk.stage_cancelled')])]"/>
         <field name="use_sla" eval="True"/>
         <field name="use_rating" eval="True"/>
+        <field name="member_ids" eval="[Command.link(ref('base.user_admin'))]"/>
     </record>
 
     <!-- SLA's -->

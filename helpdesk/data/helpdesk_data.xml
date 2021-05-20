@@ -6,6 +6,7 @@
         <field name="alias_name">support</field>
         <field name="stage_ids" eval="False"/> <!-- eval=False to don't get the default stage. New stages are setted below-->
         <field name="use_sla" eval="True"/>
+        <field name="member_ids" eval="[Command.link(ref('base.user_admin'))]"/>
     </record>
 
     <!-- stage "New" gets created by default with sequence 0-->

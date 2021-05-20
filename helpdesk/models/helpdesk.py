@@ -51,12 +51,11 @@ class HelpdeskTeam(models.Model):
         ('manual', 'Manually'),
         ('randomly', 'Random'),
         ('balanced', 'Balanced')], string='Assignment Method', default='manual',
-        compute='_compute_assign_method', store=True, readonly=False, required=True,
-        help='Automatic assignment method for new tickets:\n'
+        required=True, help='Automatic assignment method for new tickets:\n'
              '\tManually: manual\n'
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
-    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids())
+    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(), default=lambda self: self.env.user, required=True)
     visibility_member_ids = fields.Many2many('res.users', 'helpdesk_visibility_team', string='Team Visibility', domain=lambda self: self._default_domain_member_ids(),
         help="Team Members to whom this team will be visible. Keep empty for everyone to see this team.")
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
@@ -134,11 +133,6 @@ class HelpdeskTeam(models.Model):
         without_rating = self.filtered(lambda t: not t.use_rating)
         without_rating.update({'portal_show_rating': False})
 
-    @api.depends('member_ids', 'visibility_member_ids')
-    def _compute_assign_method(self):
-        with_manual = self.filtered(lambda t: not t.member_ids and not t.visibility_member_ids)
-        with_manual.update({'assign_method': 'manual'})
-
     @api.onchange('use_alias', 'name')
     def _onchange_use_alias(self):
         if not self.use_alias:
@@ -148,12 +142,6 @@ class HelpdeskTeam(models.Model):
     def _compute_use_helpdesk_sale_timesheet(self):
         without_timesheet = self.filtered(lambda t: not t.use_helpdesk_timesheet)
         without_timesheet.update({'use_helpdesk_sale_timesheet': False})
-
-    @api.constrains('assign_method', 'member_ids', 'visibility_member_ids')
-    def _check_member_assignation(self):
-        for team in self:
-            if not team.member_ids and not team.visibility_member_ids and team.assign_method != 'manual':
-                raise ValidationError(_("You must assign members to team %s before changing the assignment method.", team.display_name))
 
     # ------------------------------------------------------------
     # ORM overrides
@@ -276,7 +264,7 @@ class HelpdeskTeam(models.Model):
         list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         #TODO: remove SLA calculations if user_uses_sla is false.
         user_uses_sla = self.user_has_groups('helpdesk.group_use_sla') and\
-            bool(self.env['helpdesk.team'].search([('use_sla', '=', True), '|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]))
+            bool(self.env['helpdesk.team'].search([('use_sla', '=', True), ('member_ids', 'in', self._uid)]))
 
         if user_uses_sla:
             group_fields.insert(1, 'sla_deadline:year')
@@ -340,7 +328,7 @@ class HelpdeskTeam(models.Model):
         result['my_high']['hours'] = round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
         result['my_urgent']['hours'] = round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)
 
-        if self.env['helpdesk.team'].search([('use_rating', '=', True), '|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]):
+        if self.env['helpdesk.team'].search([('use_rating', '=', True), ('member_ids', 'in', self._uid)]):
             result['rating_enable'] = True
             # rating of today
             domain = [('user_id', '=', self.env.uid)]
@@ -393,12 +381,12 @@ class HelpdeskTeam(models.Model):
     @api.model
     def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='today', only_my_closed=True)
+        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='today', only_my_closed=True)
 
     @api.model
     def action_view_rating_7days(self):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='seven_days', only_my_closed=True)
+        return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='seven_days', only_my_closed=True)
 
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
@@ -422,20 +410,19 @@ class HelpdeskTeam(models.Model):
         """
         result = dict.fromkeys(self.ids, self.env['res.users'])
         for team in self:
-            member_ids = sorted(team.member_ids.ids) if team.member_ids else sorted(team.visibility_member_ids.ids)
-            if member_ids:
-                if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
-                    last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id
-                    index = 0
-                    if last_assigned_user and last_assigned_user.id in member_ids:
-                        previous_index = member_ids.index(last_assigned_user.id)
-                        index = (previous_index + 1) % len(member_ids)
-                    result[team.id] = self.env['res.users'].browse(member_ids[index])
-                elif team.assign_method == 'balanced':  # find the member with the least open ticket
-                    ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['user_id'])
-                    open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
-                    open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
-                    result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
+            member_ids = sorted(team.member_ids.ids)
+            if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
+                last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id
+                index = 0
+                if last_assigned_user and last_assigned_user.id in member_ids:
+                    previous_index = member_ids.index(last_assigned_user.id)
+                    index = (previous_index + 1) % len(member_ids)
+                result[team.id] = self.env['res.users'].browse(member_ids[index])
+            elif team.assign_method == 'balanced':  # find the member with the least open ticket
+                ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['user_id'])
+                open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
+                open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
+                result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
         return result
 
     def _determine_stage(self):
@@ -504,6 +491,7 @@ class HelpdeskStage(models.Model):
         if team_id:
             return [(4, team_id, 0)]
 
+    active = fields.Boolean(default=True)
     name = fields.Char('Stage Name', required=True, translate=True)
     description = fields.Text(translate=True)
     sequence = fields.Integer('Sequence', default=10)
@@ -531,6 +519,11 @@ class HelpdeskStage(models.Model):
     legend_normal = fields.Char(
         'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
         help='Override the default value displayed for the normal state for kanban selection, when the task or issue is in that stage.')
+
+    def write(self, vals):
+        if 'active' in vals and not vals['active']:
+            self.env['helpdesk.ticket'].search([('stage_id', 'in', self.ids)]).write({'active': False})
+        return super(HelpdeskStage, self).write(vals)
 
     def unlink(self):
         stages = self

@@ -61,6 +61,7 @@
                                 <t t-set="object" t-value="team"/>
                                 <t t-set="publish_edit" t-value="True"/>
                                 <t t-set="action" t-value="'helpdesk.helpdesk_team_action'"/>
+                                <t t-set="menu" t-value="env.ref('helpdesk.menu_helpdesk_root').id"/>
                             </t>
                         </div>
                         <t t-if="team.use_website_helpdesk_form">

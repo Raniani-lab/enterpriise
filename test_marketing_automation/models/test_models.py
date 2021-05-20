@@ -51,6 +51,6 @@ class MarketingTestBlPhone(models.Model):
         """ Override to return the recipient linked to SMS sending. """
         return ['customer_id']
 
-    def _sms_get_number_fields(self):
+    def _phone_get_number_fields(self):
         """ Override to return the fields used to send SMS """
         return ['mobile', 'phone']

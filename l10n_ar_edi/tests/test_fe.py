@@ -86,7 +86,7 @@ class TestFe(common.TestEdi):
         self._test_demo_cases({'demo_invoice_10': '"Responsable Inscripto" in USD and VAT 21'})
 
     def test_22_iibb_sales_ars(self):
-        iibb_tax = self._search_tax('percepcion_iibb')
+        iibb_tax = self._search_tax('percepcion_iibb_ba')
         iibb_tax.active = True
 
         product_27 = self.env.ref('l10n_ar.product_product_telefonia')
@@ -106,7 +106,7 @@ class TestFe(common.TestEdi):
         self._edi_validate_and_review(invoice)
 
     def test_23_iibb_sales_usd(self):
-        iibb_tax = self._search_tax('percepcion_iibb')
+        iibb_tax = self._search_tax('percepcion_iibb_ba')
         iibb_tax.active = True
 
         self._prepare_multicurrency_values()

@@ -83,7 +83,7 @@ class TestBfe(common.TestEdi):
         self._test_case_credit_note('credit_note_b', invoice)
 
     def test_20_iibb_sales_ars(self):
-        iibb_tax = self._search_tax('percepcion_iibb')
+        iibb_tax = self._search_tax('percepcion_iibb_ba')
         iibb_tax.active = True
 
         invoice = self._create_invoice()
@@ -92,7 +92,7 @@ class TestBfe(common.TestEdi):
         self._edi_validate_and_review(invoice, expected_result='O')
 
     def test_21_iibb_sales_usd(self):
-        iibb_tax = self._search_tax('percepcion_iibb')
+        iibb_tax = self._search_tax('percepcion_iibb_ba')
         iibb_tax.active = True
 
         self._prepare_multicurrency_values()

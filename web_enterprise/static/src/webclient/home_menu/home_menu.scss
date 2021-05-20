@@ -8,11 +8,11 @@
     background-color: transparent;
     border-color: transparent;
 
-    ul.dropdown-menu {
+    .dropdown-menu {
       border-color: $dropdown-bg;
     }
 
-    .o_dropdown_active {
+    .o_dropdown_active, > ul > li.show > a {
       outline: none;
     }
   }

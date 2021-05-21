@@ -42,7 +42,7 @@
         id="menu_l10n_be_eco_vouchers_wizard"
         name="Eco-Vouchers"
         action="l10n_be_eco_vouchers_wizard_action"
-        parent="hr_payroll.menu_hr_payroll_report"
-        sequence="50"
+        parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
+        sequence="22"
     />
 </odoo>

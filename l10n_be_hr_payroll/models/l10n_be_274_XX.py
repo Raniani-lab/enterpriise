@@ -14,6 +14,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.modules.module import get_resource_path
 from odoo.tools import format_date
 from odoo.tools.misc import xlsxwriter
+from odoo.osv import expression
 
 
 class L10nBe274XX(models.Model):
@@ -121,11 +122,15 @@ class L10nBe274XX(models.Model):
                     sheet.error_message = str(err)
 
     def _get_valid_payslips(self):
-        return self.env['hr.payslip'].search([
+        domain = [
             ('state', 'in', ['paid', 'done']),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', self.date_start),
-            ('date_to', '<=', self.date_end)])
+            ('date_to', '<=', self.date_end)
+        ]
+        if self.env.context.get('wizard_274xx_force_employee_ids'):
+            domain += expression.AND([domain, [('employee_id', 'in', self.env.context['wizard_274xx_force_employee_ids'])]])
+        return self.env['hr.payslip'].search(domain)
 
     @api.constrains('company_id')
     def _check_l10n_be_company_number(self):
@@ -145,7 +150,7 @@ class L10nBe274XX(models.Model):
             mapped_taxable_amount = defaultdict(lambda: 0)
             payslips = self._get_valid_payslips()
 
-            line_values = payslips._get_line_values(['GROSS', 'PPTOTAL'])
+            line_values = payslips._get_line_values(['GROSS', 'PPTOTAL'], compute_sum=True)
 
             # Total
             sheet.taxable_amount = line_values['GROSS']['sum']['total']

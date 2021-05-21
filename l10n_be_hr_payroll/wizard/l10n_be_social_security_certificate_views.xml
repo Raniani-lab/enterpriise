@@ -11,6 +11,7 @@
                         <field name="date_from" class="oe_inline"/> - <field name="date_to" class="oe_inline"/>
                     </div>
                     <field name="company_id"/>
+                    <field name="aggregation_level"/>
                     <field name="state" invisible="1"/>
                     <div states="done">
                         <h2 attrs="{'invisible': [('social_security_sheet', '=', False)]}">Generation Complete</h2>
@@ -22,6 +23,7 @@
                 <footer>
                     <button name="print_report" string="Print" type="object" class="btn-primary" states="draft"/>
                     <button name="action_validate" string="Validate" type="object" class="btn-primary" states="done"/>
+                    <button name="print_report" string="Print" type="object" states="done"/>
                     <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>

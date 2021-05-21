@@ -9,7 +9,7 @@ class HolidaysRequest(models.Model):
         res = super(HolidaysRequest, self).action_validate()
         for leave in self:
             if leave.employee_id.company_id.country_id.code == "BE" and \
-                    leave.holiday_status_id.work_entry_type_id in self._get_drs_work_entry_types():
+                    leave.holiday_status_id.work_entry_type_id.code in self._get_drs_work_entry_type_codes():
                 drs_link = "https://www.socialsecurity.be/site_fr/employer/applics/drs/index.htm"
                 drs_link = '<a href="%s" target="_blank">%s</a>' % (drs_link, drs_link)
                 leave.activity_schedule(
@@ -22,18 +22,13 @@ class HolidaysRequest(models.Model):
                 )
         return res
 
-    def _get_drs_work_entry_types(self):
+    def _get_drs_work_entry_type_codes(self):
         drs_work_entry_types = [
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_breast_feeding'),
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick'),
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_maternity'),
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_paternity_legal'),
-            self.env.ref('l10n_be_hr_payroll.work_entry_type_youth_time_off'),
+            'LEAVE290', # Breast Feeding
+            'LEAVE280', # Long Term Sick
+            'LEAVE210', # Maternity
+            'LEAVE230', # Paternity Time Off (Legal)
+            'YOUNG01',  # Youth Time Off
+            'LEAVE115', # Work Accident
         ]
-        # TODO LTU in 14.2: add l10n_be_hr_payroll.work_entry_type_work_accident directly in the list
-        work_entry_type_work_accident = self.env.ref('l10n_be_hr_payroll.work_entry_type_work_accident',
-                                                     raise_if_not_found=False)
-        if work_entry_type_work_accident:
-            drs_work_entry_types.append(work_entry_type_work_accident)
-
         return drs_work_entry_types

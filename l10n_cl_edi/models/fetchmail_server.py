@@ -195,10 +195,32 @@ class FetchmailServer(models.Model):
                 attachments=[(att_name, att_content)])
 
     def _check_document_number_exists(self, partner_id, document_number, document_type, company_id):
-        name = '{} {}'.format(document_type.doc_code_prefix, document_number)
-        return self.env['account.move'].sudo().search_count(
-            [('move_type', 'in', ['in_invoice', 'in_refund']), ('name', '=', name), ('partner_id', '=', partner_id),
-             ('company_id', '=', company_id)]) > 0
+        to_check_documents = self.env['account.move'].sudo().search(
+            [('move_type', 'in', ['in_invoice', 'in_refund']),
+             ('name', 'ilike', document_number),
+             ('partner_id', '=', partner_id),
+             ('company_id', '=', company_id)])
+
+        return len(to_check_documents.filtered(
+            lambda x: x.l10n_latam_document_type_id.code == document_type.code and
+                      x.l10n_latam_document_number.lstrip('0') == document_number.lstrip('0')
+        )) > 0
+
+    def _check_document_number_exists_no_partner(self, document_number, document_type, company_id, vat):
+        """ This is a separate method for the no partner case to not modify the other method in stable.
+            If the partner is not found, we put its vat in the narration field, so we avoid to import twice.
+        """
+        to_check_documents = self.env['account.move'].sudo().search([
+            ('move_type', 'in', ['in_invoice', 'in_refund']),
+            ('name', 'ilike', document_number),
+            ('partner_id', '=', False),
+            ('narration', '=', vat),
+            ('company_id', '=', company_id)])
+
+        return len(to_check_documents.filtered(
+            lambda x: x.l10n_latam_document_type_id.code == document_type.code and
+                      x.l10n_latam_document_number.lstrip('0') == document_number.lstrip('0')
+        )) > 0
 
     def _create_invoice_from_attachment(self, att_content, att_name, from_address, company_id):
         moves = []
@@ -214,8 +236,11 @@ class FetchmailServer(models.Model):
                 _logger.info('DTE has been discarded! The document type %s is not a vendor bill' % document_type_code)
                 continue
 
-            partner = self._get_partner(self._get_dte_issuer_vat(dte_xml))
-            if partner and self._check_document_number_exists(partner.id, document_number, document_type, company_id):
+            issuer_vat = self._get_dte_issuer_vat(dte_xml)
+            partner = self._get_partner(issuer_vat)
+            if partner and self._check_document_number_exists(partner.id, document_number, document_type, company_id) \
+                    or (not partner and self._check_document_number_exists_no_partner(document_number, document_type,
+                                                                                      company_id, issuer_vat)):
                 _logger.info('E-invoice already exist: %s', document_number)
                 continue
 
@@ -235,6 +260,8 @@ class FetchmailServer(models.Model):
                     invoice_form.l10n_latam_document_type_id = document_type
                     invoice_form.l10n_latam_document_number = document_number
 
+            if not partner:
+                invoice_form.narration = issuer_vat or ''
             move = invoice_form.save()
 
             dte_attachment = self.env['ir.attachment'].create({

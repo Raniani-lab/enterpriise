@@ -226,7 +226,7 @@ class IngenicoMessage():
             IngenicoTagType( 'Group_TransactionData'        , 'A3'     , 'GRP' , False ),
             IngenicoTagType( 'Group_ConnectionParameters'   , 'A4'     , 'GRP' , False ),
             IngenicoTagType( 'Group_PrintData'          , 'A5'     , 'GRP' , False ),
-            IngenicoTagType( 'Group_TicketData'         , 'A6'     , 'GRP' , False ),
+            IngenicoTagType('Group_TicketData', 'A6', 'TBL', False),
             IngenicoTagType( 'Group_ExtraInformation'       , 'A7'     , 'GRP' , False ),
             IngenicoTagType( 'Group_TransactionInformation' , 'A8'     , 'GRP' , False ),
             IngenicoTagType( 'Group_TcpParameter'       , 'A9'     , 'GRP' , False ),
@@ -542,12 +542,21 @@ class IncommingIngenicoMessage(IngenicoMessage):
         """
         tag = self._getTag()
         tag['len'], lengthBytes = self._getLength()
-        if tag['format'] in ['GRP', 'TBL', 'REC']:
+        if tag['format'] in ['GRP', 'REC']:
             xTags = {}
             xMsgLength = tag['len']
             while xMsgLength > 0:
                 xTag, xMsgLength = self._getMsg(xMsgLength)
                 xTags[xTag['name']] = xTag['msg']
+            tag["msg"] = xTags
+        elif tag['format'] == 'TBL':
+            xTags = []
+            xMsgLength = tag['len']
+            while xMsgLength > 0:
+                xTag, xMsgLength = self._getMsg(xMsgLength)
+                if xTag['format'] != 'REC':
+                    _logger.warning("Expected REC field but got %s with tag %s", xTag['format'], xTag['tag'])
+                xTags.append(xTag['msg'])
             tag["msg"] = xTags
         else:
             tag["msg"] = self.dev.recv(tag['len'])
@@ -576,7 +585,7 @@ class IncommingIngenicoMessage(IngenicoMessage):
         # If we're being called in `supported`, `self.dev` will be a socket. If we're
         # being called in `run`, `self.dev` will be an IngenicoDriver and `self.dev.dev`
         # will be the socket.
-        if isinstance(self.dev, IngenicoDriver):
+        if hasattr(self.dev, 'dev'):
             _logger.debug("Listening on: %s", self.dev.dev)
 
         # Receive message length and reduce it with length of magic string
@@ -592,14 +601,21 @@ class IncommingIngenicoMessage(IngenicoMessage):
             _logger.warning('Out of magic!')
 
     def _getLength(self):
-        """Return the message length of the tag
+        """Returns the message length of the tag as well as the length of the message length itself
 
         The length is read directly from the device buffer. It is important to call this function only after receiving 
         the tag identifier.
         """
+
+        # The message length has a short form that fits in one byte (for lengths < 128)
+        # and a variable length long form where bit 8 is set on the first byte and
+        # the other bits specify the amount of bytes that follow. Those bytes then
+        # contain the length of the actual message. See section 2.1.2 in v1.0.9 of the
+        # TLV Cash Register Interface Specification. It's allowed to encode
+        # lengths < 128 using the long form.
         length = int(self.dev.recv(1).hex(), 16)
-        if (length//128 == 1):
-            return int(self.dev.recv(length%128).hex(), 16), length%128
+        if length // 128 == 1:
+            return int(self.dev.recv(length % 128).hex(), 16), 1 + length % 128
         else:
             return length, 1
 
@@ -652,9 +668,14 @@ class IncommingIngenicoMessage(IngenicoMessage):
 
         If there is no ticket data available return False.
         """
-        if 'Group_TicketData' in self._tagTree['msg']['Group_Body'].keys() \
-                and 'Group_TableRecord' in self._tagTree['msg']['Group_Body']['Group_TicketData'].keys():
-            return self._tagTree['msg']['Group_Body']['Group_TicketData']['Group_TableRecord']['TicketBody']
+        if 'Group_TicketData' in self._tagTree['msg']['Group_Body']:
+            # We currently don't do anything with different ticket types and ignore
+            # headers and footers. The TLV Cash Register Interface spec mentions header
+            # (4.5.7.2) and footer (4.5.7.4) currently being empty, but that they might
+            # be implemented in the future.
+            ticket_data = self._tagTree['msg']['Group_Body']['Group_TicketData']
+            ticket_bodies = [r['TicketBody'] for r in ticket_data if 'TicketBody' in r and r['TicketBody']]
+            return b'\n'.join(ticket_bodies)
         return False
 
     def getKeepAliveInterval(self):

@@ -305,7 +305,7 @@ class AEATAccountFinancialReport(models.Model):
         """ Retrieves the data of the report line denoted by xmlid, with respect
         to the given options.
         """
-        line_id = self.env.ref(xmlid).id
+        line_id = self._get_generic_line_id('account.financial.html.report.line', self.env.ref(xmlid).id)
         line_data = self._get_lines(options, line_id=line_id)[0]
         return line_data['columns'][0]['no_format']
 
@@ -340,9 +340,11 @@ class AEATAccountFinancialReport(models.Model):
         """
         rslt = self._boe_format_string('')
         report_line = self.env.ref(line_xml_id)
-        for generated_line in self._get_lines(report_options, line_id=report_line.id):
+        report_line_id = self._get_generic_line_id('account.financial.html.report.line', report_line.id)
+        for generated_line in self._get_lines(report_options, line_id=report_line_id):
             # We only treat sublines (excluding the 'total' line)
-            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id':
+            parsed_generated_id = self._parse_line_id(generated_line['id'])
+            if parsed_generated_id[-1][0] != 'total' and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id':
                 rslt += fun_to_call({'line_data': generated_line, 'line_xml_id': line_xml_id, 'report_options': report_options})
                 if generated_line['id'] in required_ids_set:
                     required_ids_set.remove(generated_line['id'])
@@ -362,8 +364,10 @@ class AEATAccountFinancialReport(models.Model):
         :param sub_line_id: the id of the "grouped by" model corresponding to the subline we want to retrieve
         """
         report_line = self.env.ref(line_xml_id)
-        for generated_line in self._get_lines(report_options, line_id=report_line.id):
-            if generated_line['id'] != 'total_'+str(report_line.id) and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id' and generated_line['id'] == sub_line_id:
+        report_line_id = self._get_generic_line_id('account.financial.html.report.line', report_line.id)
+        for generated_line in self._get_lines(report_options, line_id=report_line_id):
+            parsed_generated_id = self._parse_line_id(generated_line['id'])
+            if parsed_generated_id[-1][0] != 'total' and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id' and generated_line['id'] == sub_line_id:
                 return generated_line
 
     def _extract_tin(self, partner, error_if_no_tin=True):
@@ -725,10 +729,12 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
         rslt += self._boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
 
-        declarados_count_line_data = self._get_lines(boe_report_options, line_id=self.env.ref('l10n_es_reports.mod_347_statistics_operations_count').id)[0]
+        declarados_count_line_id = self._get_generic_line_id('account.financial.html.report.line', self.env.ref('l10n_es_reports.mod_347_statistics_operations_count').id)
+        declarados_count_line_data = self._get_lines(boe_report_options, line_id=declarados_count_line_id)[0]
         rslt += self._boe_format_number(sum(i['no_format'] for i in declarados_count_line_data['columns']), length=9)
 
-        declarados_total_line_data = self._get_lines(boe_report_options, line_id=self.env.ref('l10n_es_reports.mod_347_operations_title').id)[-1] #Index -1 to get the line containing the total
+        declarados_total_line_id = self._get_generic_line_id('account.financial.html.report.line', self.env.ref('l10n_es_reports.mod_347_operations_title').id)
+        declarados_total_line_data = self._get_lines(boe_report_options, line_id=declarados_total_line_id)[-1] #Index -1 to get the line containing the total
         declarados_total = sum(i['no_format'] for i in declarados_total_line_data['columns'])
         rslt += self._boe_format_number(declarados_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 

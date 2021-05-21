@@ -59,7 +59,6 @@ class TestBOEGeneration(TestAccountReportsCommon):
         })
 
         cls.env.company.vat = "ESA12345674"
-        cls.env.companies = cls.env.company
 
     def _check_boe_export(self, report, options):
         wizard_action = report.print_boe(options)
@@ -72,6 +71,8 @@ class TestBOEGeneration(TestAccountReportsCommon):
         report = self.env.ref('l10n_es_reports.mod_%s' % modelo_number)
         options = self._init_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
         options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
+        if 'multi_company' in options:
+            del options['multi_company']
         self._check_boe_export(report, options)
 
     @freeze_time('2020-12-22')
@@ -93,6 +94,8 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_347')
         options = self._init_options(report, fields.Date.from_string('2020-01-01'), fields.Date.from_string('2020-12-31'))
+        if 'multi_company' in options:
+            del options['multi_company']
         options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
         self._check_boe_export(report, options)
 
@@ -107,5 +110,7 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_349')
         options = self._init_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
+        if 'multi_company' in options:
+            del options['multi_company']
         options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
         self._check_boe_export(report, options)

@@ -225,7 +225,7 @@
             </NOT>
 
             <ORC>
-                <ORC_1>TEST/00001</ORC_1>
+                <ORC_1>reference</ORC_1>
                 
             </ORC>
 
@@ -259,7 +259,7 @@
             </CDN>
 
             <DCN>
-                <DCN_1>TEST/00001</DCN_1>
+                <DCN_1>reference</DCN_1>
             </DCN>
 
             

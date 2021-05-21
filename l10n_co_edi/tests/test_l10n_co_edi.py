@@ -137,6 +137,7 @@ class TestColumbianInvoice(AccountTestInvoicingCommon):
         invoice = self.env['account.move'].create({
             'partner_id': self.company_data_2['company'].partner_id.id,
             'move_type': 'out_invoice',
+            'ref': 'reference',
             'invoice_date': '2020-08-31',
             'invoice_user_id': self.salesperson.id,
             'name': 'OC 123',

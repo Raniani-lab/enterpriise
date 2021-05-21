@@ -738,6 +738,7 @@
         <field name="address_home_id" ref="res_partner_admin_private_address_be"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
         <field name="gender">male</field>
+        <field name="certificate">civil_engineer</field>
     </record>
 
     <record id="res_partner_employee_al" model="res.partner">
@@ -775,6 +776,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_al"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
         <field name="gender">female</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_mit" model="res.partner">
@@ -814,6 +816,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
         <field name="gender">female</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_niv" model="res.partner">
@@ -852,6 +855,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
         <field name="gender">female</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_stw" model="res.partner">
@@ -890,6 +894,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
         <field name="gender">male</field>
+        <field name="certificate">doctor</field>
     </record>
 
     <record id="res_partner_employee_chs" model="res.partner">
@@ -928,6 +933,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
         <field name="gender">male</field>
+        <field name="certificate">doctor</field>
     </record>
 
     <record id="res_partner_employee_qdp" model="res.partner">
@@ -967,6 +973,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
         <field name="gender">male</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_fme" model="res.partner">
@@ -1005,6 +1012,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
         <field name="gender">male</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_fpi" model="res.partner">
@@ -1043,6 +1051,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
         <field name="gender">female</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_jth" model="res.partner">
@@ -1081,6 +1090,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
         <field name="gender">male</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_ngh" model="res.partner">
@@ -1119,6 +1129,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
         <field name="gender">female</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_vad" model="res.partner">
@@ -1157,6 +1168,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
         <field name="gender">female</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_han" model="res.partner">
@@ -1193,6 +1205,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
         <field name="gender">male</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_jve" model="res.partner">
@@ -1229,6 +1242,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
         <field name="gender">male</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_jep" model="res.partner">
@@ -1265,6 +1279,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jep"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
         <field name="gender">male</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_jod" model="res.partner">
@@ -1301,6 +1316,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jod"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
         <field name="gender">female</field>
+        <field name="certificate">bachelor</field>
     </record>
 
     <record id="res_partner_employee_jog" model="res.partner">
@@ -1337,6 +1353,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jog"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
         <field name="gender">male</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_jgo" model="res.partner">
@@ -1373,6 +1390,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jgo"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
         <field name="gender">male</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_lur" model="res.partner">
@@ -1409,6 +1427,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_lur"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
         <field name="gender">male</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="res_partner_employee_hne" model="res.partner">
@@ -1445,6 +1464,7 @@
         <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_hne"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>
         <field name="gender">male</field>
+        <field name="certificate">master</field>
     </record>
 
     <record id="hr_contract_admin" model="hr.contract">
@@ -1465,6 +1485,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_al" model="hr.contract">
@@ -1485,6 +1506,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_mit" model="hr.contract">
@@ -1505,6 +1527,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_stw" model="hr.contract">
@@ -1526,6 +1549,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_qdp" model="hr.contract">
@@ -1546,6 +1570,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="resource_calendar_4_5_wednesday_off" model="resource.calendar">
@@ -1587,6 +1612,7 @@
         <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
         <field name="time_credit" eval="True"/>
         <field name="work_time_rate">0.80</field>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_niv" model="hr.contract">
@@ -1611,6 +1637,7 @@
         <field name="standard_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
         <field name="time_credit" eval="True"/>
         <field name="work_time_rate">0.80</field>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_jth" model="hr.contract">
@@ -1632,6 +1659,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" ref="test_l10n_be_hr_payroll_account.resource_calendar_4_5_wednesday_off"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_chs" model="hr.contract">
@@ -1652,6 +1680,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_jve" model="hr.contract">
@@ -1672,6 +1701,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_fme" model="hr.contract">
@@ -1693,6 +1723,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_fpi" model="hr.contract">
@@ -1714,6 +1745,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_vad" model="hr.contract">
@@ -1735,6 +1767,7 @@
         <field name="sign_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <!--Leave Type-->

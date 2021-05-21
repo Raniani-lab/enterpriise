@@ -189,6 +189,7 @@
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="date_end" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-2))"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_contract_cdi_laurie_poiret" model="hr.contract">
@@ -214,6 +215,7 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
         <field name="resource_calendar_id" model="resource.calendar" eval="obj().search([('company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)], limit=1)"/>
+        <field name="rd_percentage">100</field>
     </record>
 
     <record id="hr_employee_laurie_poiret" model="hr.employee">

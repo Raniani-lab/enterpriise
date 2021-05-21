@@ -446,7 +446,7 @@
             <field name="name">IV. Excedente del ejercicio</field>
             <field name="code">l10n_es_assoc_line_21400</field>
             <field name="parent_id" ref="balance_assoc_line_21000"/>
-            <field name="domain" eval="['|', ('account_id.code','=like','129%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','129%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>

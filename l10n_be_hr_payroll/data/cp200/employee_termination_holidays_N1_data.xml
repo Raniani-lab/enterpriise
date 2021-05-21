@@ -143,7 +143,7 @@ result = - result_rules['ONSS1']['total'] - result_rules['ONSS2']['total']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = BASIC + ONSS1 + ONSS2
+result = BASIC + result_rules['ONSS1']['total'] + result_rules['ONSS2']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays"/>
     </record>

@@ -434,10 +434,68 @@ class HrContract(models.Model):
         return work_data
 
     # override to add work_entry_type from leave
-    def _get_leave_work_entry_type_dates(self, leave, date_from, date_to):
-        result = super()._get_leave_work_entry_type_dates(leave, date_from, date_to)
+    def _get_leave_work_entry_type_dates(self, leave, date_from, date_to, employee):
+        result = super()._get_leave_work_entry_type_dates(leave, date_from, date_to, employee)
         if self.structure_type_id.country_id.code != 'BE':
             return result
+
+        # The public holidays are paid only during the 14 first days of unemployment
+        if result.code == "LEAVE500":
+            unemployed_less_than_14_days_before = self.env['hr.leave'].search([
+                ('employee_id', '=', self.employee_id.id),
+                ('date_to', '>=', leave.date_from + relativedelta(days=-14)),
+                ('date_from', '<=', leave.date_from),
+                ('holiday_status_id.work_entry_type_id.code', 'in', ['LEAVE6666', 'LEAVE6665']),
+                ('state', '=', 'validate'),
+            ], order="date_from asc")
+            if unemployed_less_than_14_days_before:
+                is_unemployed = True
+                for offset in range(15):
+                    day = leave.date_from + relativedelta(days=-offset)
+                    if all(l.date_from > day or l.date_to < day for l in unemployed_less_than_14_days_before):
+                        is_unemployed = False
+                if is_unemployed:
+                    return unemployed_less_than_14_days_before[0].holiday_status_id.work_entry_type_id
+
+        # The public holidays are paid only during the period of 30 days following the start of the
+        # suspension of the employment contract due to illness or accident, work accident or
+        # occupational disease, pregnancy or childbirth leave, strike or lockout;
+        if result.code == "LEAVE500":
+            absent_less_than_X_days_before = self.env['hr.leave'].search([
+                ('employee_id', '=', self.employee_id.id),
+                ('date_to', '>=', leave.date_from + relativedelta(days=-30)),
+                ('date_from', '<=', leave.date_from),
+                ('holiday_status_id.work_entry_type_id.code', 'in', ['LEAVE210', 'LEAVE220', 'LEAVE230', 'LEAVE115', 'LEAVE281']),
+                ('state', '=', 'validate'),
+            ], order="date_from asc")
+            if absent_less_than_X_days_before:
+                is_absent = True
+                # Special case for credit-times
+                # If time credit duration X is:
+                # X < 1 month -> Unpaid
+                # 1 <= X < 3 months -> Paid the first 14 days
+                # X >= 3 months -> Paid the first 30 days
+                # Alway unpaid for full time credit time
+                paid_duration = 30
+                if self.time_credit:
+                    if not self.work_time_rate:
+                        return absent_less_than_X_days_before[0].holiday_status_id.work_entry_type_id
+                    duration_start = self._get_occupation_dates()[0][1]
+                    duration_stop = leave.date_from.date()
+                    number_of_months = (duration_stop.year - duration_start.year) * 12 + (duration_stop.month - duration_start.month)
+                    if number_of_months < 1:
+                        return absent_less_than_X_days_before[0].holiday_status_id.work_entry_type_id
+                    if number_of_months < 3:
+                        paid_duration = 14
+                        absent_less_than_X_days_before = absent_less_than_X_days_before.filtered_domain([
+                            ('date_to', '>=', leave.date_from + relativedelta(days=-paid_duration))])
+                for offset in range(paid_duration):
+                    day = leave.date_from + relativedelta(days=-offset)
+                    if all(l.date_from > day or l.date_to < day for l in absent_less_than_X_days_before):
+                        is_absent = False
+                if is_absent:
+                    return absent_less_than_X_days_before[0].holiday_status_id.work_entry_type_id
+
         # The salary is not guaranteed after 30 calendar days of sick leave (it means from the 31th
         # day of sick leave)
         # LEAVE110 = classic sick leave
@@ -504,7 +562,6 @@ class HrContract(models.Model):
     def _get_bypassing_work_entry_type_codes(self):
         return super()._get_bypassing_work_entry_type_codes() + [
             'LEAVE280', # Long term sick
-            'LEAVE210', # Maternity
             'LEAVE281', # Partial Incapacity
             'LEAVE110', # Sick Leave
         ]

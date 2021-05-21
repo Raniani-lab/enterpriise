@@ -327,6 +327,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_european').id,
         })
 
+        cls.economic_unemployment_time_off_type = cls.env['hr.leave.type'].create({
+            'name': 'Economic Unemployment',
+            'allocation_type': 'no',
+            'leave_validation_type': 'both',
+            'request_unit': 'half_day',
+            'company_id': cls.env.company.id,
+            'work_entry_type_id': cls.env.ref('l10n_be_hr_payroll.work_entry_type_economic_unemployment').id,
+        })
+
     @classmethod
     def _generate_payslip(cls, date_from, date_to):
         work_entries = cls.contract._generate_work_entries(date_from, date_to)
@@ -1830,27 +1839,30 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         october_payslip = self._generate_payslip(datetime.date(2020, 10, 1), datetime.date(2020, 10, 31))
 
-        self.assertEqual(len(october_payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 23)
+        self.assertEqual(len(october_payslip.line_ids), 24)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE210'), 22.0, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE210'), 21.0, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_days('LEAVE500'), 1.0, places=2)
 
-        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE210'), 167.2, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE210'), 159.60, places=2)
+        self.assertAlmostEqual(october_payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
 
         payslip_results = {
-            'BASIC': 0,
+            'BASIC': 122.31,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 9,
-            'ONSS': -1.18,
+            'SALARY': 131.31,
+            'ONSS': -17.16,
             'EmpBonus.1': 0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 148.97,
-            'IP.PART': 0,
-            'GROSS': 148.97,
+            'GROSSIP': 255.29,
+            'IP.PART': -30.58,
+            'GROSS': 224.71,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
@@ -1858,10 +1870,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB.2': -4.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': 0.0,
-            'REP.FEES': 0,
-            'IP': 0,
-            'IP.DED': 0,
-            'NET': -1.18,
+            'REP.FEES': 150.0,
+            'IP': 30.58,
+            'IP.DED': -2.29,
+            'NET': 252.85,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -4281,8 +4293,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self._validate_payslip(payslip, payslip_results)
 
     def test_maternity_time_off_bank_holidays(self):
-        # Maternity time off > bank holiday
-        # Means that the time off isn't paid by the employer
+        # Maternity time off > bank holiday after 30 days
+        # Means that the time off isn't paid by the employer after 30 days
+        # but is paid in this case
 
         maternity_time_off = self.env['hr.leave'].new({
             'name': 'Maternity Time Off : 2 days',
@@ -4312,15 +4325,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 24)
+        self.assertEqual(len(payslip.line_ids), 23)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE210'), 1.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE500'), 1.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 20.0, places=2)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 7.6, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
 
 
@@ -5649,3 +5662,390 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self.assertAlmostEqual(termination_payslips.line_ids.filtered(lambda l: l.code == 'PROF_TAX').rate, -36.34, places=2)
         self._validate_payslip(termination_payslips, payslip_results)
+
+    def test_public_holiday_right_unemployment(self):
+        # Note: The public holidays are paid the first 14 days of unemployment
+
+        self.contract.ip = False
+
+        # Public time offs
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 12, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 12, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }, {
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 26, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 26, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        economic_unemployment = self.env['hr.leave'].create({
+            'name': 'Legal Time Off 2020',
+            'holiday_status_id': self.economic_unemployment_time_off_type.id,
+            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
+            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
+            'number_of_days': 21,
+            'employee_id': self.employee.id,
+        })
+        economic_unemployment.action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2021, 5, 1),
+            'date_to': datetime.date(2021, 5, 31)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 19)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE6665'), 2446.15, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 203.85, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE6665'), 20.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE500'), 1.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE6665'), 152.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'ONSSTOTAL': 347.53,
+            'ATN.CAR': 150.53,
+            'GROSS': 2462.0,
+            'P.P': -545.61,
+            'PPTOTAL': 545.61,
+            'ATN.CAR.2': -150.53,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -23.66,
+            'MEAL_V_EMP': 0,
+            'REP.FEES': 150.0,
+            'NET': 1883.2,
+            'REMUNERATION': 2650.0,
+            'ONSSEMPLOYER': 721.65,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_public_holiday_right_maternity(self):
+        # Note: The public holidays are paid the first 30 days of maternity/partial incapacity, ...
+
+        self.contract.ip = False
+
+        # Public time offs
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 12, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 12, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }, {
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 17, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 17, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        maternity = self.env['hr.leave'].create({
+            'name': 'Legal Time Off 2020',
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
+            'date_from': datetime.datetime(2021, 4, 17, 6, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
+            'request_date_from': datetime.datetime(2021, 4, 17, 6, 0, 0),
+            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
+            'number_of_days': 29,
+            'employee_id': self.employee.id,
+        })
+        maternity.action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2021, 4, 1), datetime.date(2021, 5, 31))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2021, 5, 1),
+            'date_to': datetime.date(2021, 5, 31)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 20)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE210'), 20.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE500'), 1.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 152.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
+
+        payslip_results = {
+            'BASIC': 122.31,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 131.31,
+            'ONSS': -17.16,
+            'EmpBonus.1': 0.0,
+            'ONSSTOTAL': 17.16,
+            'ATN.CAR': 150.53,
+            'GROSS': 264.68,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'ATN.CAR.2': -150.53,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': 0,
+            'REP.FEES': 150.0,
+            'NET': 255.15,
+            'REMUNERATION': 122.31,
+            'ONSSEMPLOYER': 35.64,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_aa_public_holiday_right_maternity_full_time_credit_time(self):
+        # Note: Always unpaid
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_0_hours_per_week.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'date_start': datetime.date(2021, 5, 1),
+            'wage': 0.0,
+            'wage_on_signature': 0.0,
+            'ip': False,
+            'time_credit': True,
+            'work_time_rate': 0,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+        })
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_0_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 4, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 4, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        maternity = self.env['hr.leave'].create({
+            'name': 'Legal Time Off 2020',
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
+            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
+            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
+            'number_of_days': 19,
+            'employee_id': self.employee.id,
+        })
+        maternity.action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2021, 5, 1),
+            'date_to': datetime.date(2021, 5, 31)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 19)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE300'), 21.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 159.6, places=2)
+
+    def test_public_holiday_right_maternity_credit_time_less_1_month(self):
+        # Note: Unpaid
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'date_start': datetime.date(2021, 5, 1),
+            'wage': 2120,
+            'wage_on_signature': 2120,
+            'ip': False,
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+        })
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 4, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 4, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        maternity = self.env['hr.leave'].create({
+            'name': 'Legal Time Off 2020',
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
+            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
+            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
+            'number_of_days': 19,
+            'employee_id': self.employee.id,
+        })
+        maternity.action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2021, 5, 1),
+            'date_to': datetime.date(2021, 5, 31)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 19)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE300'), 4.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE210'), 17.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 129.2, places=2)
+
+    def test_public_holiday_right_maternity_credit_time_less_3_month(self):
+        # Note: Paid the first 14 days
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'date_start': datetime.date(2021, 4, 1),
+            'wage': 2120,
+            'wage_on_signature': 2120,
+            'ip': False,
+            'time_credit': True,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+        })
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 4, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 4, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }, {
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 13, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 13, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }, {
+            'name': "Absence",
+            'calendar_id': self.resource_calendar_4_5_wednesday_off.id,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2021, 5, 17, 4, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 17, 21, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id
+        }])
+
+        maternity = self.env['hr.leave'].create({
+            'name': 'Legal Time Off 2020',
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
+            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
+            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
+            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
+            'number_of_days': 19,
+            'employee_id': self.employee.id,
+        })
+        maternity.action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2021, 5, 1), datetime.date(2021, 5, 31))
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2021, 5, 1),
+            'date_to': datetime.date(2021, 5, 31)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 3)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 21)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 244.62, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE300'), 4.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE210'), 15.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE500'), 2.0, places=2)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 114.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 15.2, places=2)

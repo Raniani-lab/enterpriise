@@ -1329,6 +1329,12 @@ msgid "End of Last Quarter"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_financial_report.py:449
+#, python-format
+msgid "Error while validating the domain of line %s:\n%s"
+msgstr ""
+
+#. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:0
 #, python-format
 msgid "Excess Journal Items"

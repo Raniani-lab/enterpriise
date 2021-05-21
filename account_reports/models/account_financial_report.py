@@ -8,6 +8,7 @@ from odoo import models, fields, api, _
 from odoo.tools import float_is_zero, ustr
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
+from odoo.osv import expression
 
 
 class ReportAccountFinancialReport(models.Model):
@@ -986,6 +987,16 @@ class AccountFinancialReportLine(models.Model):
                 if any(key in rec.formulas for key in ('sum_if_pos_groupby', 'sum_if_neg_groupby')) and not rec.groupby:
                     raise ValidationError(_("Please specify a Group by field when using '%s' in Formulas, on line with name '%s'")
                                           % (self.formulas, rec.name))
+
+    @api.constrains('domain')
+    def _validate_domain(self):
+        error_format = _("Error while validating the domain of line %s:\n%s")
+        for record in self.filtered('domain'):
+            try:
+                domain = record._get_domain({}, record._get_financial_report())
+                expression.expression(domain, self.env['account.move.line'])
+            except Exception as e:
+                raise ValidationError(error_format % (record.name, str(e)))
 
     # -------------------------------------------------------------------------
     # OPTIONS

@@ -2,6 +2,7 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, RedirectWarning
 from odoo.tools.float_utils import float_repr, float_round
+from odoo.tools import html2plaintext
 from datetime import datetime
 from . import afip_errors
 import re
@@ -648,7 +649,7 @@ class AccountMove(models.Model):
                'Moneda_ctz': float_repr(self.l10n_ar_currency_rate, precision_digits=6),
                'Obs_comerciales': self.invoice_payment_term_id.name if self.invoice_payment_term_id else None,
                'Imp_total': float_repr(self.amount_total, precision_digits=2),
-               'Obs': self.narration,
+               'Obs': html2plaintext(self.narration),
                'Forma_pago': self.invoice_payment_term_id.name if self.invoice_payment_term_id else None,
                'Idioma_cbte': 1,  # invoice language: spanish / español
                'Incoterms': self.invoice_incoterm_id.code if self.invoice_incoterm_id else None,

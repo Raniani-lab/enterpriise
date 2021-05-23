@@ -9,7 +9,7 @@
                 <t t-set="spot" t-value="o._l10n_pe_edi_get_spot()"/>
             </xpath>
 
-            <xpath expr="//p[@t-if='o.narration']" position="before">
+            <xpath expr="//p[@t-if='not is_html_empty(o.narration)']" position="before">
                 <p>
                     <span><b>SON:</b> <t t-esc="extra_edi_vals.get('amount_to_text')"/></span>
                 </p>

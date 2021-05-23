@@ -174,7 +174,7 @@ class AccountPayment(models.Model):
             create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'BIC'], self.sdd_mandate_id.partner_bank_id.bank_id.bic.replace(' ', '').upper())
         else:
             create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'Othr', 'Id'], "NOTPROVIDED")
-        Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr','Nm'], self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name)[0]
+        Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr', 'Nm'], self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name or partner.parent_id.name)[0]
 
         if partner.contact_address:
             PstlAdr = create_xml_node(Dbtr, 'PstlAdr')

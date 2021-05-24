@@ -61,16 +61,6 @@
                     % if not object.allday and object.duration
                         <li>Duration: ${('%dH%02d' % (object.duration,round(object.duration*60)%60))}</li>
                     % endif
-                    % if object.description:
-                        % set splitted_description = object.description_to_html_lines()
-                        <li>Description:
-                            <ul>
-                                % for description_line in splitted_description:
-                                <li>${description_line | safe}</li>
-                                % endfor
-                            </ul>
-                        </li>
-                    % endif
                     <li>Attendees
                     <ul>
                     % for attendee in object.attendee_ids:
@@ -88,6 +78,10 @@
                     <li>Join Video Call: <a href="${object.videocall_location}" target="_blank">${object.videocall_location}</a></li>
                     % endif
                 </ul>
+                % if not is_html_empty(object.description):
+                   <p><strong>Description of the event</strong></p>
+                   ${object.description | safe}
+                % endif
             </td>
     </tr></table>
 </div>
@@ -148,16 +142,6 @@
                         % if not object.allday and object.duration
                             <li>Duration: ${('%dH%02d' % (object.duration,round(object.duration*60)%60))}</li>
                         % endif
-                        % if object.description:
-                            % set splitted_description = object.description_to_html_lines()
-                            <li>Description:
-                                <ul>
-                                    % for description_line in splitted_description:
-                                    <li>${description_line | safe}</li>
-                                    % endfor
-                                </ul>
-                            </li>
-                        % endif
                         <li>Attendees
                         <ul>
                         % for attendee in object.attendee_ids:
@@ -175,6 +159,10 @@
                         <li>Join Video Call: <a href="${object.videocall_location}" target="_blank">${object.videocall_location}</a></li>
                         % endif
                     </ul>
+                    % if not is_html_empty(object.description):
+                        <p><strong>Description of the event</strong></p>
+                        ${object.description | safe}
+                    % endif
                 </del>
             </td>
     </tr></table>

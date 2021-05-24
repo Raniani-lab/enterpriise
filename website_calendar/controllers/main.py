@@ -13,7 +13,7 @@ from werkzeug.urls import url_encode
 from odoo import http, _, fields
 from odoo.http import request
 from odoo.osv import expression
-from odoo.tools import html2plaintext, DEFAULT_SERVER_DATETIME_FORMAT as dtf
+from odoo.tools import html2plaintext, is_html_empty, plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
 from odoo.tools.misc import get_lang
 
 from odoo.addons.base.models.ir_ui_view import keep_query
@@ -171,23 +171,26 @@ class WebsiteCalendar(http.Controller):
             })
 
         description_bits = []
+        description = ''
+
         if phone:
-            description_bits.append(_(' * Mobile: %s', phone))
+            description_bits.append(_('Mobile: %s', phone))
         if email:
-            description_bits.append(_(' * Email: %s', email))
+            description_bits.append(_('Email: %s', email))
 
         for question in appointment_type.question_ids:
             key = 'question_' + str(question.id)
             if question.question_type == 'checkbox':
                 answers = question.answer_ids.filtered(lambda x: (key + '_answer_' + str(x.id)) in kwargs)
                 if answers:
-                    description_bits.append(' * %s: %s' % (question.name, ', '.join(answers.mapped('name'))))
+                    description_bits.append('%s: %s' % (question.name, ', '.join(answers.mapped('name'))))
             elif question.question_type == 'text' and kwargs.get(key):
                 answers = [line for line in kwargs[key].split('\n') if line.strip()]
-                description_bits.append(' * %s:\n%s' % (question.name, '\n'.join(answers)))
+                description_bits.append('%s:<br/>%s' % (question.name, plaintext2html(kwargs.get(key).strip())))
             elif kwargs.get(key):
-                description_bits.append(' * %s: %s' % (question.name, kwargs.get(key).strip()))
-        description = '\n'.join(description_bits)
+                description_bits.append('%s: %s' % (question.name, kwargs.get(key).strip()))
+        if description_bits:
+            description = '<ul>' + ''.join(['<li>%s</li>' % bit for bit in description_bits]) + '</ul>'
 
         categ_id = request.env.ref('website_calendar.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
@@ -255,7 +258,8 @@ class WebsiteCalendar(http.Controller):
         locale = get_lang(request.env).code
         day_name = format_func(date_start, 'EEE', locale=locale)
         date_start = day_name + ' ' + format_func(date_start, locale=locale) + date_start_suffix
-        details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.description or ''
+        # convert_online_event_desc_to_text method for correct data formatting in external calendars
+        details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.convert_online_event_desc_to_text(event.description) or ''
         params = {
             'action': 'TEMPLATE',
             'text': event.name,
@@ -272,7 +276,8 @@ class WebsiteCalendar(http.Controller):
             'datetime_start': date_start,
             'google_url': google_url,
             'state': state,
-            'partner_id': partner_id
+            'partner_id': partner_id,
+            'is_html_empty': is_html_empty,
         })
 
     @http.route([

@@ -147,7 +147,7 @@
                                   <span>to: </span><field name="date_end" class="oe_inline ml-4" attrs="{'required': [('has_period','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
                                 </div>
                             </div>
-                            <field name="location" attrs="{'invisible':[('has_location','==','no')], 'required': [('has_location','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
+                            <field name="location" attrs="{'invisible':[('has_location','==','no')], 'required': [('has_location','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}" placeholder="e.g. Brussels" />
                             <field name="partner_id" attrs="{'invisible':[('has_partner','==','no')], 'required': [('has_partner','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
                         </group>
                         <group name="request_details">

@@ -33,28 +33,28 @@ class RentalReport(models.Model):
 
     def _quantity(self):
         return """
-            product_uom_qty / (u.factor * u2.factor) AS quantity,
-            qty_delivered / (u.factor * u2.factor) AS qty_delivered,
-            qty_returned / (u.factor * u2.factor) AS qty_returned
+            sol.product_uom_qty / (u.factor * u2.factor) AS quantity,
+            sol.qty_delivered / (u.factor * u2.factor) AS qty_delivered,
+            sol.qty_returned / (u.factor * u2.factor) AS qty_returned
         """
 
     def _price(self):
         return """
-            price_subtotal / (date_part('day',return_date - pickup_date) + 1)
+            sol.price_subtotal / (date_part('day',sol.return_date - sol.pickup_date) + 1)
         """
 
     def _select(self):
         return """
             sol.id,
-            order_id,
-            product_id,
+            sol.order_id,
+            sol.product_id,
             %s,
-            product_uom,
-            order_partner_id AS partner_id,
-            salesman_id AS user_id,
-            categ_id,
-            product_tmpl_id,
-            generate_series(pickup_date::date, return_date::date, '1 day'::interval)::date date,
+            sol.product_uom,
+            sol.order_partner_id AS partner_id,
+            sol.salesman_id AS user_id,
+            pt.categ_id,
+            p.product_tmpl_id,
+            generate_series(sol.pickup_date::date, sol.return_date::date, '1 day'::interval)::date date,
             %s AS price,
             sol.company_id,
             sol.state,
@@ -74,7 +74,7 @@ class RentalReport(models.Model):
         return """
             (SELECT %s
             FROM %s
-            WHERE is_rental)
+            WHERE sol.is_rental)
         """ % (
             self._select(),
             self._from()

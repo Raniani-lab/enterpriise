@@ -1106,7 +1106,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     });
 
     test("Name is only fetched once", async function (assert) {
-        assert.expect(7);
+        assert.expect(6);
         const { actionManager, model } = await createSpreadsheetFromPivot({
             model: "partner",
             data: this.data,
@@ -1120,7 +1120,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             `,
             mockRPC: function (route, args) {
                 if (args.method === "name_get" && args.model === "product") {
-                    assert.step(`name_get_product_${args.args[0]}`)
+                    assert.step(`name_get_product_${args.args.join("-")}`)
                 }
                 return this._super(...arguments);
             },
@@ -1152,8 +1152,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
 
         // But it only fetches names once
         assert.verifySteps([
-            "name_get_product_37",
-            "name_get_product_41",
+            "name_get_product_37-41",
         ]);
         actionManager.destroy();
     });

@@ -16,6 +16,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
     const core = require("web.core");
     const pivotUtils = require("documents_spreadsheet.pivot_utils");
     const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const PivotRPC = require("documents_spreadsheet.PivotRPC");
     const {
         getFormulaNameAndArgs,
     } = require("documents_spreadsheet/static/src/js/o_spreadsheet/plugins/helpers.js");
@@ -33,8 +34,13 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
     class PivotStructurePlugin extends spreadsheet.UIPlugin {
         constructor(getters, history, dispatch, config) {
             super(getters, history, dispatch, config);
-            this.rpc = config.evalContext.env ? config.evalContext.env.services.rpc : undefined;
+            const rpc = config.evalContext.env ? config.evalContext.env.services.rpc : undefined;
+            const pivotRPC = new PivotRPC(rpc);
+            this.rpc = pivotRPC.delayedRPC.bind(pivotRPC);
             this.selectedPivot = undefined;
+            /* This flag is used to avoid refresh the cache during the model
+               initialization (filters, ...) */
+            this.started = false;
             this.runtimes = {};
         }
 
@@ -60,6 +66,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
                     this._refreshPivot(cmd.id);
                     break;
                 case "START":
+                    this.started = true;
                     this._refreshAllPivots();
                     break;
                 case "ADD_PIVOT":
@@ -71,6 +78,28 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         // ---------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------
+
+        /**
+         * Return the label to display from a value and a field
+         * @param {PivotCache} cache
+         * @param {string} field
+         * @param {string} value
+         * @returns {Promise<string | undefined>}
+         */
+        async getPivotLabel(cache, field, value) {
+            const undef = _t("(Undefined)");
+            if (
+                !cache.isGroupLabelLoaded(field, value) &&
+                cache.getField(field.split(":")[0]).relation &&
+                value !== "false"
+            ) {
+                await this._fetchLabel(cache, field, value);
+            }
+            if (["date", "datetime"].includes(cache.getField(field.split(":")[0]).type)) {
+                return pivotUtils.formatDate(field, value);
+            }
+            return cache.getGroupLabel(field, value) || undef;
+        }
 
         /**
          * Get the cache of the given pivot. If the cache is not ready, wait for it.
@@ -225,7 +254,9 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
          * @private
          */
         _refreshPivotCache(id) {
-            this.getAsyncCache(id, { force: true });
+            if (this.started) {
+                this.getAsyncCache(id, { force: true });
+            }
         }
 
         /**
@@ -600,6 +631,28 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
         // ---------------------------------------------------------------------
 
         /**
+         * Fetch the labels which do not exist on the cache (it could happen for
+         * example in multi-company).
+         * It also update the cache to avoid further rpc.
+         *
+         * @param {PivotCache} cache
+         * @param {string} field Name of the field
+         * @param {string} value Value
+         *
+         * @returns {Promise<string>}
+         */
+        async _fetchLabel(cache, field, value) {
+            const model = cache.getField(field).relation;
+            const label = this.rpc({
+                model,
+                method: 'name_get',
+                args: [parseInt(value, 10)],
+            }).then((result) => result && result[0] && result[0][1] || undefined);
+            cache.addLabel(field, value, label);
+            return cache.getGroupLabel(field, value);
+        }
+
+        /**
          * Build a formula and update the cell with this formula
          *
          * @param {number} col
@@ -658,6 +711,7 @@ odoo.define("documents_spreadsheet.PivotStructurePlugin", function (require) {
     PivotStructurePlugin.getters = [
         "getSelectedPivot",
         "getCache",
+        "getPivotLabel",
         "getAsyncCache",
         "isCacheLoaded",
         "getLastUpdate",

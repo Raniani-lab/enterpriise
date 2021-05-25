@@ -117,28 +117,6 @@ async function _fetchModelName(rpc, pivot, cache) {
         return result[0] && result[0].name;
     }
 }
-/**
- * Fetch the labels which do not exist on the cache (it could happen for
- * example in multi-company).
- * It also update the cache to avoid further rpc.
- *
- * @param {PivotCache} cache
- * @param {Function} rpc Rpc function to use
- * @param {string} field Name of the field
- * @param {string} value Value
- *
- * @returns {Promise<string>}
- */
-export async function fetchLabel(cache, rpc, field, value) {
-    const model = cache.getField(field).relation;
-    const label = rpc({
-        model,
-        method: 'name_get',
-        args: [parseInt(value, 10)],
-    }).then((result) => result && result[0] && result[0][1] || undefined);
-    cache.addLabel(field, value, label);
-    return cache.getGroupLabel(field, value);
-}
 
 /**
  * Format a data

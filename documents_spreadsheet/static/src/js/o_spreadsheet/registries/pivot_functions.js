@@ -60,7 +60,7 @@ functionRegistry
                 }
                 return cache.getField(value).string;
             } else {
-                return (await _getValue(pivot, cache, this.env.services.rpc, field, value)) || "";
+                return (await this.getters.getPivotLabel(cache, field, value)) || "";
             }
         },
         async: true,
@@ -106,28 +106,7 @@ function _getPivot(getters, pivotId) {
     }
     return pivot;
 }
-/**
- * Return the label to display from a value and a field
- * @param {Pivot} pivot
- * @param {Function} rpc
- * @param {string} field
- * @param {string} value
- * @returns {Promise<string | undefined>}
- */
-async function _getValue(pivot, cache, rpc, field, value) {
-    const undef = _t("(Undefined)");
-    if (
-        !cache.isGroupLabelLoaded(field, value) &&
-        cache.getField(field.split(":")[0]).relation &&
-        value !== "false"
-    ) {
-        await fetchLabel(cache, rpc, field, value);
-    }
-    if (["date", "datetime"].includes(cache.getField(field.split(":")[0]).type)) {
-        return formatDate(field, value);
-    }
-    return cache.getGroupLabel(field, value) || undef;
-}
+
 /**
  * Sanitize arguments given to the PIVOT function
  *

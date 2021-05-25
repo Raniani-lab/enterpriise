@@ -61,9 +61,9 @@ QUnit.test('dashboard basic rendering', async function(assert) {
         },
     });
 
-    assert.containsOnce(kanban, 'div.o_helpdesk_dashboard',
+    assert.containsOnce(kanban, 'div.o_helpdesk_content',
             "should render the dashboard");
-    assert.strictEqual(kanban.$(".o_kanban_view_wrapper > .o_helpdesk_dashboard").length, 1,
+    assert.strictEqual(kanban.$(".o_helpdesk_content > .o_helpdesk_banner").length, 1,
         "dashboard should be sibling of renderer element");
     assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), '12.00',
         "should have written correct target");
@@ -107,7 +107,7 @@ QUnit.test('edit the target', async function(assert) {
 
     // edit the target
     await testUtils.dom.click(kanban.$('.o_target_to_set'));
-    await testUtils.fields.editAndTrigger(kanban.$('.o_helpdesk_dashboard input'),
+    await testUtils.fields.editAndTrigger(kanban.$('.o_helpdesk_banner input'),
         1200, [$.Event('keyup', {which: $.ui.keyCode.ENTER})]); // set the target
 
     assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), "1200.00",
@@ -142,7 +142,7 @@ QUnit.test('dashboard rendering with empty many2one', async function(assert) {
         },
     });
 
-    assert.containsOnce(kanban, 'div.o_helpdesk_dashboard',
+    assert.containsOnce(kanban, 'div.o_helpdesk_content',
             "should render the dashboard");
     kanban.destroy();
 });

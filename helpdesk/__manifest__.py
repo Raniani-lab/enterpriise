@@ -63,7 +63,11 @@ Features:
         'web.assets_backend': [
             'helpdesk/static/src/scss/helpdesk.scss',
             'helpdesk/static/src/css/portal_helpdesk.css',
-            'helpdesk/static/src/js/helpdesk_dashboard.js',
+            'helpdesk/static/src/js/helpdesk_kanban_record.js',
+            'helpdesk/static/src/js/helpdesk_kanban_controller.js',
+            'helpdesk/static/src/js/helpdesk_kanban_renderer.js',
+            'helpdesk/static/src/js/helpdesk_kanban_view.js',
+            'helpdesk/static/src/js/helpdesk_widget.js',
             'helpdesk/static/src/js/tours/helpdesk.js',
         ],
         'web.qunit_suite_tests': [

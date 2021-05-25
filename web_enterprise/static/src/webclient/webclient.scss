@@ -217,12 +217,13 @@ select {
 }
 
 //== Buttons
-.btn-primary, .btn-secondary {
-  // Do not uppercase dropdown togglers (except form-view's arrows button)
-  &:not(.o_dropdown_toggler_btn):not(.dropdown-toggle):not(.dropdown-item),
-  &.dropdown-toggle.o_arrow_button {
-    text-transform: uppercase;
-  }
+
+// Uppercase primary and secondary except when secondary is used as a dropdown
+// toggler.
+.btn-primary,
+.btn-secondary:not(.dropdown-toggle):not(.dropdown-item),
+.btn-secondary.o_arrow_button:not(.dropdown-item) {
+  text-transform: uppercase;
 }
 
 // Disable unnecessary box-shadows on mouse hover

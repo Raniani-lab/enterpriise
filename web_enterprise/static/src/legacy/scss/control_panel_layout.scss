@@ -5,7 +5,7 @@
     .o_cp_bottom_left .btn-secondary.fa,
     .o_pager .btn-secondary,
     .o_switch_view.btn-secondary,
-    .o_dropdown:not(.show) .o_dropdown_toggler_btn.btn-secondary {
+    .o_dropdown:not(.show) .o_dropdown_toggler.btn-secondary {
         @extend .btn-light;
     }
 }
@@ -22,7 +22,7 @@
                     display: block;
                 }
 
-                .o_dropdown_toggler_btn {
+                .o_dropdown_toggler {
                     margin-right: 0;
                 }
             }

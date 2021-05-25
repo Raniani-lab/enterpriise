@@ -460,7 +460,7 @@ QUnit.module('Views', {
         // change the group by on view
         await dom.click(actionManager.$('.o_enable_searchview')); // click search icon
         await dom.click(actionManager.$('.o_toggle_searchview_full')); // open full screen search view
-        await dom.click($('.o_group_by_menu > .o_dropdown_toggler_btn')); // open 'group by' drop-down
+        await dom.click($('.o_group_by_menu > .o_dropdown_toggler')); // open 'group by' drop-down
         await dom.click($('.o_group_by_menu .o_menu_item .dropdown-item')); // select first drop-down item
         await dom.click($('button.o_mobile_search_footer')); // click 'See Result' button
 

@@ -73,7 +73,7 @@
     const BOTTOMBAR_HEIGHT = 36;
     const DEFAULT_CELL_WIDTH = 96;
     const DEFAULT_CELL_HEIGHT = 23;
-    const SCROLLBAR_WIDTH = 15;
+    const SCROLLBAR_WIDTH$1 = 15;
     const PADDING_AUTORESIZE = 3;
     const AUTOFILL_EDGE_LENGTH = 8;
     const ICON_EDGE_LENGTH = 18;
@@ -97,6 +97,108 @@
     const MESSAGE_VERSION = 1;
     const DEFAULT_ERROR_MESSAGE = _lt("Invalid expression");
 
+    /**
+     * This regexp is supposed to be as close as possible as the numberRegexp, but
+     * its purpose is to be used by the tokenizer.
+     *
+     * - it tolerates extra characters at the end. This is useful because the tokenizer
+     *   only needs to find the number at the start of a string
+     * - it does not accept "," as thousand separator, because when we tokenize a
+     *   formula, commas are used to separate arguments
+     */
+    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
+    const numberRegexp = /^-?\d+(,\d+)*(\.?\d*(e\d+)?)?(\s*%)?$|^-?\.\d+(\s*%)?$/;
+    /**
+     * Return true if the argument is a "number string".
+     *
+     * Note that "" (empty string) does not count as a number string
+     */
+    function isNumber(value) {
+        // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
+        return numberRegexp.test(value.trim());
+    }
+    const commaRegexp = /,/g;
+    /**
+     * Convert a string into a number. It assumes that the string actually represents
+     * a number (as determined by the isNumber function)
+     *
+     * Note that it accepts "" (empty string), even though it does not count as a
+     * number from the point of view of the isNumber function.
+     */
+    function parseNumber(str) {
+        let n = Number(str.replace(commaRegexp, ""));
+        if (isNaN(n) && str.includes("%")) {
+            n = Number(str.split("%")[0]);
+            if (!isNaN(n)) {
+                return n / 100;
+            }
+        }
+        return n;
+    }
+    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
+        useGrouping: false,
+        maximumFractionDigits: 10,
+    });
+    function formatStandardNumber(n) {
+        if (Number.isInteger(n)) {
+            return n.toString();
+        }
+        return decimalStandardRepresentation.format(n);
+    }
+    // this is a cache than can contains decimal representation formats
+    // from 0 (minimum) to 20 (maximum) digits after the decimal point
+    let decimalRepresentations = [];
+    const maximumDecimalPlaces = 20;
+    function formatDecimal(n, decimals, sep = "") {
+        if (n < 0) {
+            return "-" + formatDecimal(-n, decimals);
+        }
+        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
+        let formatter = decimalRepresentations[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: maxDecimals,
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            decimalRepresentations[maxDecimals] = formatter;
+        }
+        let result = formatter.format(n);
+        if (sep) {
+            let p = result.indexOf(".");
+            result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
+        }
+        return result;
+    }
+    function formatNumber(value, format) {
+        const parts = format.split(";");
+        const l = parts.length;
+        if (value < 0) {
+            if (l > 1) {
+                return _formatValue(-value, parts[1]);
+            }
+            else {
+                return "-" + _formatValue(-value, parts[0]);
+            }
+        }
+        const index = l === 3 && value === 0 ? 2 : 0;
+        return _formatValue(value, parts[index]);
+    }
+    function _formatValue(value, format) {
+        const parts = format.split(".");
+        const decimals = parts.length === 1 ? 0 : parts[1].match(/0/g).length;
+        const separator = parts[0].includes(",") ? "," : "";
+        const isPercent = format.includes("%");
+        if (isPercent) {
+            value = value * 100;
+        }
+        const rawNumber = formatDecimal(value, decimals, separator);
+        if (isPercent) {
+            return rawNumber + "%";
+        }
+        return rawNumber;
+    }
+
     // -----------------------------------------------------------------------------
     // Date Type
     // -----------------------------------------------------------------------------
@@ -105,9 +207,9 @@
     // -----------------------------------------------------------------------------
     const CURRENT_MILLENIAL = 2000; // note: don't forget to update this in 2999
     const CURRENT_YEAR = new Date().getFullYear();
-    const INITIAL_1900_DAY = new Date(1899, 11, 30);
+    const INITIAL_1900_DAY$1 = new Date(1899, 11, 30);
     const INITIAL_JS_DAY = new Date(0);
-    const DATE_JS_1900_OFFSET = INITIAL_JS_DAY - INITIAL_1900_DAY;
+    const DATE_JS_1900_OFFSET = INITIAL_JS_DAY - INITIAL_1900_DAY$1;
     const mdyDateRegexp = /^\d{1,2}(\/|-|\s)\d{1,2}((\/|-|\s)\d{1,4})?$/;
     const ymdDateRegexp = /^\d{3,4}(\/|-|\s)\d{1,2}(\/|-|\s)\d{1,2}$/;
     const timeRegexp = /((\d+(:\d+)?(:\d+)?\s*(AM|PM))|(\d+:\d+(:\d+)?))$/;
@@ -170,7 +272,7 @@
                 // invalid date
                 return null;
             }
-            const delta = jsDate - INITIAL_1900_DAY;
+            const delta = jsDate - INITIAL_1900_DAY$1;
             let format = leadingZero ? `mm${sep}dd` : `m${sep}d`;
             if (parts[yearIndex]) {
                 format = isMDY ? format + sep + "yyyy" : "yyyy" + sep + format;
@@ -317,7 +419,7 @@
             .map((p) => {
             switch (p) {
                 case "hhhh":
-                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY) / (60 * 60 * 1000));
+                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
                     return helapsedHours.toString();
                 case "hh":
                     return hours.toString().padStart(2, "0");
@@ -330,108 +432,6 @@
             }
         })
             .join(":") + meridian);
-    }
-
-    /**
-     * This regexp is supposed to be as close as possible as the numberRegexp, but
-     * its purpose is to be used by the tokenizer.
-     *
-     * - it tolerates extra characters at the end. This is useful because the tokenizer
-     *   only needs to find the number at the start of a string
-     * - it does not accept "," as thousand separator, because when we tokenize a
-     *   formula, commas are used to separate arguments
-     */
-    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
-    const numberRegexp = /^-?\d+(,\d+)*(\.?\d*(e\d+)?)?(\s*%)?$|^-?\.\d+(\s*%)?$/;
-    /**
-     * Return true if the argument is a "number string".
-     *
-     * Note that "" (empty string) does not count as a number string
-     */
-    function isNumber(value) {
-        // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
-        return numberRegexp.test(value.trim());
-    }
-    const commaRegexp = /,/g;
-    /**
-     * Convert a string into a number. It assumes that the string actually represents
-     * a number (as determined by the isNumber function)
-     *
-     * Note that it accepts "" (empty string), even though it does not count as a
-     * number from the point of view of the isNumber function.
-     */
-    function parseNumber(str) {
-        let n = Number(str.replace(commaRegexp, ""));
-        if (isNaN(n) && str.includes("%")) {
-            n = Number(str.split("%")[0]);
-            if (!isNaN(n)) {
-                return n / 100;
-            }
-        }
-        return n;
-    }
-    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
-        useGrouping: false,
-        maximumFractionDigits: 10,
-    });
-    function formatStandardNumber(n) {
-        if (Number.isInteger(n)) {
-            return n.toString();
-        }
-        return decimalStandardRepresentation.format(n);
-    }
-    // this is a cache than can contains decimal representation formats
-    // from 0 (minimum) to 20 (maximum) digits after the decimal point
-    let decimalRepresentations = [];
-    const maximumDecimalPlaces = 20;
-    function formatDecimal(n, decimals, sep = "") {
-        if (n < 0) {
-            return "-" + formatDecimal(-n, decimals);
-        }
-        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
-        let formatter = decimalRepresentations[maxDecimals];
-        if (!formatter) {
-            formatter = new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: maxDecimals,
-                maximumFractionDigits: maxDecimals,
-                useGrouping: false,
-            });
-            decimalRepresentations[maxDecimals] = formatter;
-        }
-        let result = formatter.format(n);
-        if (sep) {
-            let p = result.indexOf(".");
-            result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
-        }
-        return result;
-    }
-    function formatNumber(value, format) {
-        const parts = format.split(";");
-        const l = parts.length;
-        if (value < 0) {
-            if (l > 1) {
-                return _formatValue(-value, parts[1]);
-            }
-            else {
-                return "-" + _formatValue(-value, parts[0]);
-            }
-        }
-        const index = l === 3 && value === 0 ? 2 : 0;
-        return _formatValue(value, parts[index]);
-    }
-    function _formatValue(value, format) {
-        const parts = format.split(".");
-        const decimals = parts.length === 1 ? 0 : parts[1].match(/0/g).length;
-        const separator = parts[0].includes(",") ? "," : "";
-        const isPercent = format.includes("%");
-        if (isPercent) {
-            value = value * 100;
-        }
-        const rawNumber = formatDecimal(value, decimals, separator);
-        if (isPercent) {
-            return rawNumber + "%";
-        }
-        return rawNumber;
     }
 
     // HELPERS
@@ -986,11 +986,12 @@
     const ARG_TYPES = [
         "ANY",
         "BOOLEAN",
+        "DATE",
         "NUMBER",
         "STRING",
-        "DATE",
         "RANGE",
         "RANGE<BOOLEAN>",
+        "RANGE<DATE>",
         "RANGE<NUMBER>",
         "RANGE<STRING>",
         "META",
@@ -1238,6 +1239,7 @@
     function canExecuteInReadonly(cmd) {
         return readonlyAllowedCommands.has(cmd.type);
     }
+    exports.CommandResult = void 0;
     (function (CommandResult) {
         CommandResult[CommandResult["Success"] = 0] = "Success";
         CommandResult[CommandResult["CancelledForUnknownReason"] = 1] = "CancelledForUnknownReason";
@@ -1613,7 +1615,7 @@
     const COUNTIF = {
         description: _lt("A conditional count across a range."),
         args: args(`
-    range (any, range) ${_lt("The range that is tested against criterion.")}
+    range (range) ${_lt("The range that is tested against criterion.")}
     criterion (string) ${_lt("The pattern or test to apply to range.")}
   `),
         returns: ["NUMBER"],
@@ -1631,9 +1633,9 @@
     const COUNTIFS = {
         description: _lt("Count values depending on multiple criteria."),
         args: args(`
-    criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
-    criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-    criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+    criteria_range (range) ${_lt("The range to check against criterion1.")}
+    criterion (string) ${_lt("The pattern or test to apply to criteria_range1.")}
+    additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
     criterion2 (string, repeating) ${_lt("Additional criteria to check.")}
   `),
         returns: ["NUMBER"],
@@ -1648,7 +1650,7 @@
     // -----------------------------------------------------------------------------
     // COUNTUNIQUE
     // -----------------------------------------------------------------------------
-    function isDefined(value) {
+    function isDefined$1(value) {
         switch (value) {
             case undefined:
                 return false;
@@ -1668,7 +1670,7 @@
   `),
         returns: ["NUMBER"],
         compute: function () {
-            return reduceAny(arguments, (acc, a) => (isDefined(a) ? acc.add(a) : acc), new Set()).size;
+            return reduceAny(arguments, (acc, a) => (isDefined$1(a) ? acc.add(a) : acc), new Set()).size;
         },
     };
     // -----------------------------------------------------------------------------
@@ -1677,10 +1679,10 @@
     const COUNTUNIQUEIFS = {
         description: _lt("Counts number of unique values in a range, filtered by a set of criteria."),
         args: args(`
-    range (any, range) ${_lt("The range of cells from which the number of unique values will be counted.")}
-    criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+    range (range) ${_lt("The range of cells from which the number of unique values will be counted.")}
+    criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
     criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-    criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+    additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
     criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
   `),
         returns: ["NUMBER"],
@@ -1688,7 +1690,7 @@
             let uniqueValues = new Set();
             visitMatchingRanges(args, (i, j) => {
                 const value = range[i][j];
-                if (isDefined(value)) {
+                if (isDefined$1(value)) {
                     uniqueValues.add(value);
                 }
             });
@@ -2213,9 +2215,9 @@
     const SUMIF = {
         description: _lt("A conditional sum across a range."),
         args: args(`
-      criteria_range (any, range) ${_lt("The range which is tested against criterion.")}
+      criteria_range (range) ${_lt("The range which is tested against criterion.")}
       criterion (string) ${_lt("The pattern or test to apply to range.")}
-      sum_range (any, range, default=${_lt("criteria_range")}) ${_lt("The range to be summed, if different from range.")}
+      sum_range (range, optional, default=criteria_range) ${_lt("The range to be summed, if different from range.")}
     `),
         returns: ["NUMBER"],
         compute: function (criteriaRange, criterion, sumRange = undefined) {
@@ -2238,11 +2240,10 @@
     const SUMIFS = {
         description: _lt("Sums a range depending on multiple criteria."),
         args: args(`
-      sum_range (any, range) ${_lt("The range to sum.")}
-      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
+      sum_range (range) ${_lt("The range to sum.")}
+      criteria_range1 (range) ${_lt("The range to check against criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      criteria_range2 (any, range, repeating) ${_lt("Additional ranges to check.")}
-      criterion2 (string, repeating) ${_lt("Additional criteria to check.")}
+      additional_values (any, range, optional, repeating) ${_lt("Additional criteria to check.")}
     `),
         returns: ["NUMBER"],
         compute: function (sumRange, ...args) {
@@ -2365,7 +2366,7 @@
         TRUNC: TRUNC
     });
 
-    const colors = [
+    const colors$1 = [
         "#ff851b",
         "#0074d9",
         "#ffdc00",
@@ -2390,8 +2391,8 @@
     }
     let colorIndex = 0;
     function getNextColor() {
-        colorIndex = ++colorIndex % colors.length;
-        return colors[colorIndex];
+        colorIndex = ++colorIndex % colors$1.length;
+        return colors$1[colorIndex];
     }
 
     //------------------------------------------------------------------------------
@@ -2591,7 +2592,7 @@
      * This helper function can be used as a type guard when filtering arrays.
      * const foo: number[] = [1, 2, undefined, 4].filter(isDefined)
      */
-    function isDefined$1(argument) {
+    function isDefined(argument) {
         return argument !== undefined;
     }
     const DEBUG = {};
@@ -3363,9 +3364,9 @@
     const AVERAGEIF = {
         description: _lt(`Average of values depending on criteria.`),
         args: args(`
-      criteria_range (any, range) ${_lt("The range to check against criterion.")}
+      criteria_range (range) ${_lt("The range to check against criterion.")}
       criterion (string) ${_lt("The pattern or test to apply to criteria_range.")}
-      average_range (any, range, default=${_lt("criteria_range")}) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
+      average_range (range, optional, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
     `),
         returns: ["NUMBER"],
         compute: function (criteriaRange, criterion, averageRange = undefined) {
@@ -3391,11 +3392,10 @@
     const AVERAGEIFS = {
         description: _lt(`Average of values depending on multiple criteria.`),
         args: args(`
-      average_range (any, range) ${_lt("The range to average.")}
-      criteria_range1 (any, range) ${_lt("The range to check against criterion1.")}
+      average_range (range) ${_lt("The range to average.")}
+      criteria_range1 (range) ${_lt("The range to check against criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      criteria_range2 (any, range, repeating) ${_lt("Additional ranges to check.")}
-      criterion2 (string, repeating) ${_lt("Additional criteria to check.")}
+      additional_values (any, range, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
     `),
         returns: ["NUMBER"],
         compute: function (averageRange, ...args) {
@@ -3434,7 +3434,7 @@
                         }
                     }
                 }
-                else if (typeof n !== "string" || isNumber(n)) {
+                else if (typeof n !== "string" || isNumber(n) || parseDateTime(n)) {
                     count += 1;
                 }
             }
@@ -3555,7 +3555,7 @@
         description: _lt("Maximum numeric value in a dataset."),
         args: args(`
       value1 (any, range) ${_lt("The first value or range to consider when calculating the maximum value.")}
-      value2 (ant, range, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
+      value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
     `),
         returns: ["NUMBER"],
         returnFormat: ReturnFormatType.FormatFromArgument,
@@ -3572,10 +3572,10 @@
     const MAXIFS = {
         description: _lt("Returns the maximum value in a range of cells, filtered by a set of criteria."),
         args: args(`
-      range (any, range) ${_lt("The range of cells from which the maximum will be determined.")}
-      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+      range (range) ${_lt("The range of cells from which the maximum will be determined.")}
+      criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+      additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
       criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
     `),
         returns: ["NUMBER"],
@@ -3649,10 +3649,10 @@
     const MINIFS = {
         description: _lt("Returns the minimum value in a range of cells, filtered by a set of criteria."),
         args: args(`
-      range (any, range) ${_lt("The range of cells from which the minimum will be determined.")}
-      criteria_range1 (any, range) ${_lt("The range of cells over which to evaluate criterion1.")}
+      range (range) ${_lt("The range of cells from which the minimum will be determined.")}
+      criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+      additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
       criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
     `),
         returns: ["NUMBER"],
@@ -4081,9 +4081,9 @@
         return matchingCells;
     }
     const databaseArgs = args(`
-  database (array) ${_lt("The array or range containing the data to consider, structured in such a way that the first row contains the labels for each column's values.")}
+  database (range) ${_lt("The array or range containing the data to consider, structured in such a way that the first row contains the labels for each column's values.")}
   field (any) ${_lt("Indicates which column in database contains the values to be extracted and operated on.")}
-  criteria (array) ${_lt("An array or range containing zero or more criteria to filter the database values by before operating.")}
+  criteria (range) ${_lt("An array or range containing zero or more criteria to filter the database values by before operating.")}
 `);
     // -----------------------------------------------------------------------------
     // DAVERAGE
@@ -4247,7 +4247,7 @@
         DVARP: DVARP
     });
 
-    const INITIAL_1900_DAY$1 = new Date(1899, 11, 30);
+    const INITIAL_1900_DAY = new Date(1899, 11, 30);
     const DEFAULT_TYPE = 1;
     const DEFAULT_WEEKEND = 1;
     function isLeapYear(year) {
@@ -4277,7 +4277,7 @@
                 _year += 1900;
             }
             const jsDate = new Date(_year, _month - 1, _day);
-            const delta = jsDate.getTime() - INITIAL_1900_DAY$1.getTime();
+            const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             assert(() => delta >= 0, _lt(`The function [[FUNCTION_NAME]] result must be greater than or equal 01/01/1900.`));
             return Math.round(delta / 86400000);
         },
@@ -4346,7 +4346,7 @@
             const mStart = _startDate.getMonth();
             const dStart = _startDate.getDate();
             const jsDate = new Date(yStart, mStart + _months, dStart);
-            const delta = jsDate.getTime() - INITIAL_1900_DAY$1.getTime();
+            const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
     };
@@ -4367,7 +4367,7 @@
             const yStart = _startDate.getFullYear();
             const mStart = _startDate.getMonth();
             const jsDate = new Date(yStart, mStart + _months + 1, 0);
-            const delta = jsDate.getTime() - INITIAL_1900_DAY$1.getTime();
+            const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
     };
@@ -4609,7 +4609,7 @@
         compute: function () {
             let today = new Date();
             today.setMilliseconds(0);
-            const delta = today.getTime() - INITIAL_1900_DAY$1.getTime();
+            const delta = today.getTime() - INITIAL_1900_DAY.getTime();
             const time = today.getHours() / 24 + today.getMinutes() / 1440 + today.getSeconds() / 86400;
             return Math.floor(delta / 86400000) + time;
         },
@@ -4680,7 +4680,7 @@
         compute: function () {
             const today = new Date();
             const jsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            const delta = jsDate.getTime() - INITIAL_1900_DAY$1.getTime();
+            const delta = jsDate.getTime() - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
     };
@@ -4797,7 +4797,7 @@
                     stepDay -= 1;
                 }
             }
-            const delta = timeStepDate - INITIAL_1900_DAY$1.getTime();
+            const delta = timeStepDate - INITIAL_1900_DAY.getTime();
             return Math.round(delta / 86400000);
         },
     };
@@ -4817,16 +4817,16 @@
     // -----------------------------------------------------------------------------
     // YEARFRAC
     // -----------------------------------------------------------------------------
-    const DEFAULT_DAY_COUNT_CONVENTION = 0;
+    const DEFAULT_DAY_COUNT_CONVENTION$1 = 0;
     const YEARFRAC = {
         description: _lt("Exact number of years between two dates."),
         args: args(`
     start_date (date) ${_lt("The start date to consider in the calculation. Must be a reference to a cell containing a date, a function returning a date type, or a number.")}
     end_date (date) ${_lt("The end date to consider in the calculation. Must be a reference to a cell containing a date, a function returning a date type, or a number.")}
-    day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION}) ${_lt("An indicator of what day count method to use.")}
+    day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1}) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (startDate, endDate, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
+        compute: function (startDate, endDate, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
             let _startDate = Math.trunc(toNumber(startDate));
             let _endDate = Math.trunc(toNumber(endDate));
             const _dayCountConvention = Math.trunc(toNumber(dayCountConvention));
@@ -4970,7 +4970,7 @@
         YEARFRAC: YEARFRAC
     });
 
-    const DEFAULT_DAY_COUNT_CONVENTION$1 = 0;
+    const DEFAULT_DAY_COUNT_CONVENTION = 0;
     const DEFAULT_END_OR_BEGINNING = 0;
     function newtonMethod(func, derivFunc, startValue, interMax, epsMax = 1e-10) {
         let x = startValue;
@@ -5045,10 +5045,10 @@
         rate (number) ${_lt("The annualized rate of interest.")}
         yield (number) ${_lt("The expected annual yield of the security.")}
         frequency (number) ${_lt("The number of interest or coupon payments per year (1, 2, or 4).")}
-        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1} ) ${_lt("An indicator of what day count method to use.")}
+        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (settlement, maturity, rate, securityYield, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
+        compute: function (settlement, maturity, rate, securityYield, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
             const start = Math.trunc(toNumber(settlement));
             const end = Math.trunc(toNumber(maturity));
             const _rate = toNumber(rate);
@@ -5172,10 +5172,10 @@
         rate (number) ${_lt("The annualized rate of interest.")}
         yield (number) ${_lt("The expected annual yield of the security.")}
         frequency (number) ${_lt("The number of interest or coupon payments per year (1, 2, or 4).")}
-        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1} ) ${_lt("An indicator of what day count method to use.")}
+        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (settlement, maturity, rate, securityYield, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
+        compute: function (settlement, maturity, rate, securityYield, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
             const duration = DURATION.compute(settlement, maturity, rate, securityYield, frequency, dayCountConvention);
             const y = toNumber(securityYield);
             const k = Math.trunc(toNumber(frequency));
@@ -5266,10 +5266,10 @@
       yield (number) ${_lt("The expected annual yield of the security.")}
       redemption (number) ${_lt("The redemption amount per 100 face value, or par.")}
       frequency (number) ${_lt("The number of interest or coupon payments per year (1, 2, or 4).")}
-      day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1} ) ${_lt("An indicator of what day count method to use.")}
+      day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (settlement, maturity, rate, securityYield, redemption, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
+        compute: function (settlement, maturity, rate, securityYield, redemption, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
             const _settlement = Math.trunc(toNumber(settlement));
             const _maturity = Math.trunc(toNumber(maturity));
             const _rate = toNumber(rate);
@@ -5314,10 +5314,10 @@
         price (number) ${_lt("The price at which the security is bought per 100 face value.")}
         redemption (number) ${_lt("The redemption amount per 100 face value, or par.")}
         frequency (number) ${_lt("The number of interest or coupon payments per year (1, 2, or 4).")}
-        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1} ) ${_lt("An indicator of what day count method to use.")}
+        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (settlement, maturity, rate, price, redemption, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
+        compute: function (settlement, maturity, rate, price, redemption, frequency, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
             const _settlement = Math.trunc(toNumber(settlement));
             const _maturity = Math.trunc(toNumber(maturity));
             const _rate = toNumber(rate);
@@ -5388,10 +5388,10 @@
         issue (date) ${_lt("The date the security was initially issued.")}
         rate (number) ${_lt("The annualized rate of interest.")}
         price (number) ${_lt("The price at which the security is bought.")}
-        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION$1} ) ${_lt("An indicator of what day count method to use.")}
+        day_count_convention (number, default=${DEFAULT_DAY_COUNT_CONVENTION} ) ${_lt("An indicator of what day count method to use.")}
     `),
         returns: ["NUMBER"],
-        compute: function (settlement, maturity, issue, rate, price, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION$1) {
+        compute: function (settlement, maturity, issue, rate, price, dayCountConvention = DEFAULT_DAY_COUNT_CONVENTION) {
             const _settlement = Math.trunc(toNumber(settlement));
             const _maturity = Math.trunc(toNumber(maturity));
             const _issue = Math.trunc(toNumber(issue));
@@ -6417,7 +6417,7 @@
         UPPER: UPPER
     });
 
-    const functions = {
+    const functions$5 = {
         database,
         date,
         financial,
@@ -6447,8 +6447,8 @@
         }
     }
     const functionRegistry = new FunctionRegistry();
-    for (let category in functions) {
-        const fns = functions[category];
+    for (let category in functions$5) {
+        const fns = functions$5[category];
         for (let name in fns) {
             const addDescr = fns[name];
             addDescr.category = category;
@@ -7042,7 +7042,7 @@
      * is useful for the composer, which needs to be able to work with incomplete
      * formulas.
      */
-    const functions$1 = functionRegistry.content;
+    const functions$4 = functionRegistry.content;
     const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,%,^,&".split(",");
     function tokenize(str) {
         const chars = str.split("");
@@ -7193,7 +7193,7 @@
         }
         if (result.length) {
             const value = result.join("");
-            const isFunction = value.toUpperCase() in functions$1;
+            const isFunction = value.toUpperCase() in functions$4;
             const type = isFunction ? "FUNCTION" : "SYMBOL";
             return { type, value };
         }
@@ -7212,7 +7212,7 @@
         return null;
     }
 
-    const functions$2 = functionRegistry.content;
+    const functions$3 = functionRegistry.content;
     const UNARY_OPERATORS = ["-", "+"];
     const OP_PRIORITY = {
         "^": 30,
@@ -7287,7 +7287,7 @@
                     if (tokens.shift().type !== "RIGHT_PAREN") {
                         throw new Error(_lt("Wrong function call"));
                     }
-                    const isAsync = functions$2[current.value.toUpperCase()].async;
+                    const isAsync = functions$3[current.value.toUpperCase()].async;
                     const type = isAsync ? "ASYNC_FUNCALL" : "FUNCALL";
                     return { type, value: current.value, args };
                 }
@@ -7388,7 +7388,7 @@
         }
     }
 
-    const functions$3 = functionRegistry.content;
+    const functions$2 = functionRegistry.content;
     const OPERATOR_MAP = {
         "=": "EQ",
         "+": "ADD",
@@ -7447,7 +7447,7 @@
              * between a cell value and a non cell value.
              */
             function compileFunctionArgs(ast) {
-                const functionDefinition = functions$3[ast.value.toUpperCase()];
+                const functionDefinition = functions$2[ast.value.toUpperCase()];
                 const currentFunctionArguments = ast.args;
                 // check if arguments are supplied in the correct quantities
                 const nbrArg = currentFunctionArguments.length;
@@ -7471,23 +7471,31 @@
                     if (0 <= argPosition && argPosition < functionDefinition.args.length) {
                         const currentArg = currentFunctionArguments[i];
                         const argDefinition = functionDefinition.args[argPosition];
-                        const argTypes = argDefinition.type;
+                        const argTypes = argDefinition.type || [];
                         // detect when an argument need to be evaluated as a meta argument
                         const isMeta = argTypes.includes("META");
                         // detect when an argument need to be evaluated as a lazy argument
                         const isLazy = argDefinition.lazy;
-                        // compile arguments
-                        let argValue = compileAST(currentArg, isLazy, isMeta);
-                        // asking for a range & get a cell --> transform cell value into a range
-                        if (currentArg.type === "REFERENCE") {
-                            const hasRange = argTypes.find((t) => t === "RANGE" ||
-                                t === "RANGE<BOOLEAN>" ||
-                                t === "RANGE<NUMBER>" ||
-                                t === "RANGE<STRING>");
-                            if (hasRange) {
-                                argValue = `range(${currentArg.value}, deps, sheetId)`;
+                        const hasRange = argTypes.some((t) => t === "RANGE" ||
+                            t === "RANGE<BOOLEAN>" ||
+                            t === "RANGE<DATE>" ||
+                            t === "RANGE<NUMBER>" ||
+                            t === "RANGE<STRING>");
+                        const isRangeOnly = argTypes.every((t) => t === "RANGE" ||
+                            t === "RANGE<BOOLEAN>" ||
+                            t === "RANGE<DATE>" ||
+                            t === "RANGE<NUMBER>" ||
+                            t === "RANGE<STRING>");
+                        if (isRangeOnly) {
+                            if (currentArg.type !== "REFERENCE") {
+                                throw new Error(_lt("Function %s expects the parameter %s to be reference to a cell or range, not a %s.", ast.value.toUpperCase(), (i + 1).toString(), currentArg.type.toLowerCase()));
                             }
                         }
+                        let argValue = compileAST(currentArg, isLazy, isMeta, hasRange, {
+                            functionName: ast.value.toUpperCase(),
+                            paramIndex: i + 1,
+                        });
+                        if (currentArg.type === "REFERENCE") ;
                         listArgs.push(argValue);
                     }
                 }
@@ -7511,7 +7519,7 @@
              * function needs to receive as argument the coordinates of a cell rather
              * than its value. For this we have meta arguments.
              */
-            function compileAST(ast, isLazy = false, isMeta = false) {
+            function compileAST(ast, isLazy = false, isMeta = false, hasRange = false, referenceVerification = {}) {
                 let id, left, right, args, fnName, statement;
                 if (ast.type !== "REFERENCE" && !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
                     if (isMeta) {
@@ -7539,11 +7547,11 @@
                             break;
                         }
                         id = nextId++;
-                        if (isMeta) {
-                            statement = `ref(${ast.value}, deps, sheetId, ${isMeta})`;
+                        if (hasRange) {
+                            statement = `range(${ast.value}, deps, sheetId)`;
                         }
                         else {
-                            statement = `ref(${ast.value}, deps, sheetId)`;
+                            statement = `ref(${ast.value}, deps, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName}",  ${referenceVerification.paramIndex})`;
                         }
                         break;
                     case "FUNCALL":
@@ -7607,7 +7615,7 @@
                         break;
                     case "FUNCALL":
                     case "ASYNC_FUNCALL":
-                        fnDef = functions$3[ast.value.toUpperCase()];
+                        fnDef = functions$2[ast.value.toUpperCase()];
                         if (fnDef.returnFormat) {
                             if (fnDef.returnFormat === "FormatFromArgument") {
                                 if (ast.args.length > 0) {
@@ -7629,7 +7637,7 @@
                         // the BIN_OPERATION ast is the only function case where we will look
                         // at the following argument when the current argument has't format.
                         // So this is the only place where the stack can grow.
-                        fnDef = functions$3[OPERATOR_MAP[ast.value]];
+                        fnDef = functions$2[OPERATOR_MAP[ast.value]];
                         if (fnDef.returnFormat) {
                             if (fnDef.returnFormat === "FormatFromArgument") {
                                 const left = formatAST(ast.left);
@@ -8854,21 +8862,21 @@
         }
         checkEmptyDataset(createCommand) {
             return createCommand.definition.dataSets.length === 0
-                ? 19 /* EmptyDataSet */
+                ? 21 /* EmptyDataSet */
                 : 0 /* Success */;
         }
         checkDataset(createCommand) {
             const invalidRanges = createCommand.definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
-            return invalidRanges ? 21 /* InvalidDataSet */ : 0 /* Success */;
+            return invalidRanges ? 23 /* InvalidDataSet */ : 0 /* Success */;
         }
         checkEmptyLabelRange(createCommand) {
             return createCommand.definition.labelRange
                 ? 0 /* Success */
-                : 20 /* EmptyLabelRange */;
+                : 22 /* EmptyLabelRange */;
         }
         checkLabelRange(createCommand) {
             const invalidLabels = !rangeReference.test(createCommand.definition.labelRange || "");
-            return invalidLabels ? 22 /* InvalidLabelRange */ : 0 /* Success */;
+            return invalidLabels ? 24 /* InvalidLabelRange */ : 0 /* Success */;
         }
     }
     ChartPlugin.getters = ["getChartDefinition", "getChartDefinitionUI", "getChartsIdBySheet"];
@@ -9051,7 +9059,7 @@
                         "LessThan",
                         "LessThanOrEqual",
                         "NotContains",
-                    ]));
+                    ]), this.checkOperatorArgsNumber(0, ["IsEmpty", "IsNotEmpty"]));
                 case "ColorScaleRule": {
                     return this.checkValidations(rule, this.checkThresholds(this.checkNaN), this.checkThresholds(this.checkFormulaCompilation), this.checkThresholds(this.checkAsyncFormula), this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
                     // ☝️ Those three validations can be factorized further
@@ -9231,7 +9239,7 @@
         // Getters
         // ---------------------------------------------------------------------------
         getFigures(sheetId) {
-            return Object.values(this.figures[sheetId] || {}).filter(isDefined$1);
+            return Object.values(this.figures[sheetId] || {}).filter(isDefined);
         }
         getFigure(sheetId, figureId) {
             var _a;
@@ -9344,7 +9352,7 @@
         // Getters
         // ---------------------------------------------------------------------------
         getMerges(sheetId) {
-            return Object.values(this.merges[sheetId] || {}).filter(isDefined$1);
+            return Object.values(this.merges[sheetId] || {}).filter(isDefined);
         }
         getMerge(sheetId, col, row) {
             var _a;
@@ -9631,7 +9639,7 @@
     ];
     function exportMerges(merges) {
         return Object.values(merges)
-            .filter(isDefined$1)
+            .filter(isDefined)
             .map((merge) => toXC(merge.left, merge.top) + ":" + toXC(merge.right, merge.bottom));
     }
 
@@ -9795,7 +9803,7 @@
             }
         }
         export(data) {
-            data.sheets = this.visibleSheets.filter(isDefined$1).map((id) => {
+            data.sheets = this.visibleSheets.filter(isDefined).map((id) => {
                 const sheet = this.sheets[id];
                 return {
                     id: sheet.id,
@@ -9837,7 +9845,7 @@
         }
         getSheets() {
             const { visibleSheets, sheets } = this;
-            return visibleSheets.map((id) => sheets[id]).filter(isDefined$1);
+            return visibleSheets.map((id) => sheets[id]).filter(isDefined);
         }
         getVisibleSheets() {
             return this.visibleSheets;
@@ -10815,8 +10823,8 @@
     //------------------------------------------------------------------------------
     // Simple actions
     //------------------------------------------------------------------------------
-    const UNDO_ACTION = (env) => env.dispatch("UNDO");
-    const REDO_ACTION = (env) => env.dispatch("REDO");
+    const UNDO_ACTION = (env) => env.dispatch("REQUEST_UNDO");
+    const REDO_ACTION = (env) => env.dispatch("REQUEST_REDO");
     const COPY_ACTION = async (env) => {
         env.dispatch("COPY", { target: env.getters.getSelectedZones() });
         await env.clipboard.writeText(env.getters.getClipboardContent());
@@ -10847,8 +10855,8 @@
             env.dispatch("PASTE", { target, interactive: true });
         }
     };
-    const PASTE_VALUE_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), onlyValue: true });
-    const PASTE_FORMAT_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), onlyFormat: true });
+    const PASTE_VALUE_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), pasteOption: "onlyValue" });
+    const PASTE_FORMAT_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), pasteOption: "onlyFormat" });
     const DELETE_CONTENT_ACTION = (env) => env.dispatch("DELETE_CONTENT", {
         sheetId: env.getters.getActiveSheetId(),
         target: env.getters.getSelectedZones(),
@@ -10979,6 +10987,22 @@
             dimension: "COL",
             elements: columns,
         });
+    };
+    const INSERT_CELL_SHIFT_DOWN = (env) => {
+        const zone = env.getters.getSelectedZone();
+        env.dispatch("INSERT_CELL", { shiftDimension: "ROW", zone, interactive: true });
+    };
+    const INSERT_CELL_SHIFT_RIGHT = (env) => {
+        const zone = env.getters.getSelectedZone();
+        env.dispatch("INSERT_CELL", { shiftDimension: "COL", zone, interactive: true });
+    };
+    const DELETE_CELL_SHIFT_UP = (env) => {
+        const zone = env.getters.getSelectedZone();
+        env.dispatch("DELETE_CELL", { shiftDimension: "ROW", zone, interactive: true });
+    };
+    const DELETE_CELL_SHIFT_LEFT = (env) => {
+        const zone = env.getters.getSelectedZone();
+        env.dispatch("DELETE_CELL", { shiftDimension: "COL", zone, interactive: true });
     };
     const MENU_INSERT_ROWS_BEFORE_NAME = (env) => {
         const number = getRowsNumber(env);
@@ -11263,7 +11287,7 @@
             sortDirection: "descending",
         });
     };
-    const SORT_CELLS_VISIBILITY = (env) => {
+    const IS_ONLY_ONE_RANGE = (env) => {
         return env.getters.getSelectedZones().length === 1;
     };
 
@@ -11290,11 +11314,13 @@
         shortCut: "Ctrl+V",
         sequence: 30,
         action: PASTE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
     })
         .add("paste_special", {
         name: _lt("Paste special"),
         sequence: 40,
         separator: true,
+        isVisible: IS_ONLY_ONE_RANGE,
     })
         .addChild("paste_value_only", ["paste_special"], {
         name: _lt("Paste values only"),
@@ -11309,7 +11335,7 @@
         .add("sort_range", {
         name: _lt("Sort range"),
         sequence: 50,
-        isVisible: SORT_CELLS_VISIBILITY,
+        isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
     })
         .addChild("sort_ascending", ["sort_range"], {
@@ -11326,26 +11352,60 @@
         name: CELL_INSERT_ROWS_BEFORE_NAME,
         sequence: 70,
         action: INSERT_ROWS_BEFORE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
     })
         .add("add_column_before", {
         name: CELL_INSERT_COLUMNS_BEFORE_NAME,
         sequence: 90,
         action: INSERT_COLUMNS_BEFORE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("insert_cell", {
+        name: _lt("Insert cells"),
+        sequence: 100,
+        isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
+    })
+        .addChild("insert_cell_down", ["insert_cell"], {
+        name: _lt("Shift down"),
+        sequence: 10,
+        action: INSERT_CELL_SHIFT_DOWN,
+    })
+        .addChild("insert_cell_right", ["insert_cell"], {
+        name: _lt("Shift right"),
+        sequence: 20,
+        action: INSERT_CELL_SHIFT_RIGHT,
     })
         .add("delete_row", {
         name: REMOVE_ROWS_NAME,
         sequence: 110,
         action: REMOVE_ROWS_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
     })
         .add("delete_column", {
         name: REMOVE_COLUMNS_NAME,
         sequence: 120,
         action: REMOVE_COLUMNS_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("delete_cell", {
+        name: _lt("Delete cells"),
+        sequence: 125,
+        isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
     })
+        .addChild("delete_cell_up", ["delete_cell"], {
+        name: _lt("Shift up"),
+        sequence: 10,
+        action: DELETE_CELL_SHIFT_UP,
+    })
+        .addChild("delete_cell_down", ["delete_cell"], {
+        name: _lt("Shift left"),
+        sequence: 20,
+        action: DELETE_CELL_SHIFT_LEFT,
+    })
         .add("clear_cell", {
-        name: _lt("Clear cell"),
+        name: _lt("Clear cells"),
         sequence: 130,
         action: DELETE_CONTENT_ACTION,
         isEnabled: (env) => {
@@ -11399,7 +11459,7 @@
         .add("sort_columns", {
         name: (env) => env.getters.getActiveCols().size > 1 ? _lt("Sort columns") : _lt("Sort column"),
         sequence: 50,
-        isVisible: SORT_CELLS_VISIBILITY,
+        isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
     })
         .addChild("sort_ascending", ["sort_columns"], {
@@ -11672,7 +11732,7 @@
         .addChild("sort_range", ["edit"], {
         name: _lt("Sort range"),
         sequence: 62,
-        isVisible: SORT_CELLS_VISIBILITY,
+        isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
     })
         .addChild("sort_ascending", ["edit", "sort_range"], {
@@ -11707,6 +11767,16 @@
         name: REMOVE_COLUMNS_NAME,
         sequence: 90,
         action: REMOVE_COLUMNS_ACTION,
+    })
+        .addChild("edit_delete_cell_shift_up", ["edit"], {
+        name: _lt("Delete cell and shift up"),
+        sequence: 93,
+        action: DELETE_CELL_SHIFT_UP,
+    })
+        .addChild("edit_delete_cell_shift_left", ["edit"], {
+        name: _lt("Delete cell and shift left"),
+        sequence: 97,
+        action: DELETE_CELL_SHIFT_LEFT,
     })
         .addChild("edit_unhide_columns", ["edit"], {
         name: _lt("Unhide all columns"),
@@ -11744,6 +11814,17 @@
         sequence: 40,
         action: INSERT_COLUMNS_AFTER_ACTION,
         isVisible: (env) => env.getters.getActiveRows().size === 0,
+        separator: true,
+    })
+        .addChild("insert_insert_cell_shift_down", ["insert"], {
+        name: _lt("Insert cells and shift down"),
+        sequence: 43,
+        action: INSERT_CELL_SHIFT_DOWN,
+    })
+        .addChild("insert_insert_cell_shift_right", ["insert"], {
+        name: _lt("Insert cells and shift right"),
+        sequence: 47,
+        action: INSERT_CELL_SHIFT_RIGHT,
         separator: true,
     })
         .addChild("insert_chart", ["insert"], {
@@ -11883,9 +11964,9 @@
     }
     const otRegistry = new OTRegistry();
 
-    const { Component } = owl__namespace;
-    const { xml, css } = owl.tags;
-    const TEMPLATE = xml /* xml */ `
+    const { Component: Component$i } = owl__namespace;
+    const { xml: xml$l, css: css$k } = owl__namespace.tags;
+    const TEMPLATE$i = xml$l /* xml */ `
   <div class="o-selection">
     <t t-foreach="ranges" t-as="range" t-key="range.id">
       <input
@@ -11914,7 +11995,7 @@
         t-on-click="disable">OK</button>
     </div>
   </div>`;
-    const CSS = css /* scss */ `
+    const CSS$h = css$k /* scss */ `
   .o-selection {
     input {
       padding: 4px 6px;
@@ -11958,7 +12039,7 @@
      * A `selection-changed` event is triggered every time the input value
      * changes.
      */
-    class SelectionInput extends Component {
+    class SelectionInput extends Component$i {
         constructor() {
             super(...arguments);
             this.id = uuidv4();
@@ -12055,8 +12136,8 @@
             }
         }
     }
-    SelectionInput.template = TEMPLATE;
-    SelectionInput.style = CSS;
+    SelectionInput.template = TEMPLATE$i;
+    SelectionInput.style = CSS$h;
 
     const conditionalFormatingTerms = {
         CF_TITLE: _lt("Format rules"),
@@ -12071,19 +12152,19 @@
         SAVE: _lt("Save"),
         PREVIEWTEXT: _lt("Preview text"),
         Errors: {
-            [28 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
-            [29 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [30 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [31 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [25 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [27 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [26 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [35 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [37 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [36 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [32 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
-            [34 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
-            [33 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
+            [30 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
+            [31 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [32 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [33 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [27 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [29 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [28 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [37 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [39 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [38 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [34 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
+            [36 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
+            [35 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
             unexpected: _lt("The rule is invalid for an unknown reason"),
         },
     };
@@ -12101,18 +12182,20 @@
         MidPoint: _lt("MidPoint"),
     };
     const cellIsOperators = {
-        BeginsWith: _lt("Begins with"),
-        Between: _lt("Between"),
-        ContainsText: _lt("Contains text"),
+        IsEmpty: _lt("Is empty"),
+        IsNotEmpty: _lt("Is not empty"),
+        ContainsText: _lt("Contains"),
+        NotContains: _lt("Does not contain"),
+        BeginsWith: _lt("Starts with"),
         EndsWith: _lt("Ends with"),
         Equal: _lt("Is equal to"),
-        GreaterThan: _lt("Greater than"),
-        GreaterThanOrEqual: _lt("Greater than or equal"),
-        LessThan: _lt("Less than"),
-        LessThanOrEqual: _lt("Less than or equal"),
-        NotBetween: _lt("Not between"),
-        NotContains: _lt("Not contains"),
-        NotEqual: _lt("Not equal"),
+        NotEqual: _lt("Is not equal to"),
+        GreaterThan: _lt("Is greater than"),
+        GreaterThanOrEqual: _lt("Is greater than or equal to"),
+        LessThan: _lt("Is less than"),
+        LessThanOrEqual: _lt("Is less than or equal to"),
+        Between: _lt("Is between"),
+        NotBetween: _lt("Is not between"),
     };
     const chartTerms = {
         ChartType: _lt("Chart type"),
@@ -12128,10 +12211,10 @@
         CreateChart: _lt("Create chart"),
         TitlePlaceholder: _lt("New Chart"),
         Errors: {
-            [19 /* EmptyDataSet */]: _lt("Invalid or no Dataset given"),
-            [20 /* EmptyLabelRange */]: _lt("No Labels given"),
-            [21 /* InvalidDataSet */]: _lt("Invalid dataSet"),
-            [22 /* InvalidLabelRange */]: _lt("Invalid Labels"),
+            [21 /* EmptyDataSet */]: _lt("Invalid or no Dataset given"),
+            [22 /* EmptyLabelRange */]: _lt("No Labels given"),
+            [23 /* InvalidDataSet */]: _lt("Invalid dataSet"),
+            [24 /* InvalidLabelRange */]: _lt("Invalid Labels"),
             unexpected: _lt("The chartdefinition is invalid for an unknown reason"),
         },
     };
@@ -12147,9 +12230,9 @@
         ReplaceFormulas: _lt("Also modify formulas"),
     };
 
-    const { Component: Component$1, useState } = owl__namespace;
-    const { xml: xml$1 } = owl.tags;
-    const TEMPLATE$1 = xml$1 /* xml */ `
+    const { Component: Component$h, useState: useState$h } = owl__namespace;
+    const { xml: xml$k } = owl__namespace.tags;
+    const TEMPLATE$h = xml$k /* xml */ `
   <div class="o-chart">
     <div class="o-section">
       <div class="o-section-title"><t t-esc="env._t('${chartTerms.ChartType}')"/></div>
@@ -12190,11 +12273,11 @@
     </div>
   </div>
 `;
-    class ChartPanel extends Component$1 {
+    class ChartPanel extends Component$h {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState(this.initialState(this.props.figure));
+            this.state = useState$h(this.initialState(this.props.figure));
         }
         async willUpdateProps(nextProps) {
             var _a, _b;
@@ -12265,11 +12348,11 @@
             }
         }
     }
-    ChartPanel.template = TEMPLATE$1;
+    ChartPanel.template = TEMPLATE$h;
     ChartPanel.components = { SelectionInput };
 
-    const { Component: Component$2 } = owl__namespace;
-    const { css: css$1, xml: xml$2 } = owl.tags;
+    const { Component: Component$g } = owl__namespace;
+    const { css: css$j, xml: xml$j } = owl__namespace.tags;
     const COLORS = [
         [
             "#000000",
@@ -12368,7 +12451,7 @@
             "#4c1130",
         ],
     ];
-    class ColorPicker extends Component$2 {
+    class ColorPicker extends Component$g {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
@@ -12380,7 +12463,7 @@
             }
         }
     }
-    ColorPicker.template = xml$2 /* xml */ `
+    ColorPicker.template = xml$j /* xml */ `
   <div class="o-color-picker" t-on-click="onColorClick">
     <div class="o-color-picker-line" t-foreach="COLORS" t-as="colors" t-key="colors">
       <t t-foreach="colors" t-as="color" t-key="color">
@@ -12388,7 +12471,7 @@
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css$1 /* scss */ `
+    ColorPicker.style = css$j /* scss */ `
     .o-color-picker {
       position: absolute;
       top: calc(100% + 5px);
@@ -12453,10 +12536,10 @@
     const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
     const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
 
-    const { Component: Component$3, useState: useState$1, hooks } = owl__namespace;
-    const { useExternalListener } = hooks;
-    const { xml: xml$3, css: css$2 } = owl.tags;
-    const PREVIEW_TEMPLATE = xml$3 /* xml */ `
+    const { Component: Component$f, useState: useState$g, hooks: hooks$2 } = owl__namespace;
+    const { useExternalListener: useExternalListener$5 } = hooks$2;
+    const { xml: xml$i, css: css$i } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$2 = xml$i /* xml */ `
     <div class="o-cf-preview-line"
          t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
                        text-decoration:{{currentStyle.strikethrough ? 'line-through':'none'}};
@@ -12465,7 +12548,7 @@
                        background-color:{{currentStyle.fillColor}};"
          t-esc="previewText || env._t('${conditionalFormatingTerms.PREVIEWTEXT}')" />
 `;
-    const TEMPLATE$2 = xml$3 /* xml */ `
+    const TEMPLATE$g = xml$i /* xml */ `
 <div>
     <div class="o-section-title" t-esc="env._t('${conditionalFormatingTerms.CF_TITLE}')"></div>
     <div class="o-cf-title-text" t-esc="env._t('${conditionalFormatingTerms.IS_RULE}')"></div>
@@ -12474,13 +12557,21 @@
             <option t-att-value="op" t-esc="cellIsOperators[op]"/>
         </t>
     </select>
-    <input type="text" placeholder="Value" t-model="state.condition.value1" class="o-input o-cell-is-value"/>
-    <t t-if="state.condition.operator === 'Between' || state.condition.operator === 'NotBetween'">
-        <input type="text" placeholder="and value" t-model="state.condition.value2" class="o-input"/>
+    <t t-if="state.condition.operator !== 'IsEmpty' and state.condition.operator !== 'IsNotEmpty'">
+      <input type="text"
+             placeholder="Value"
+             t-model="state.condition.value1"
+             class="o-input o-cell-is-value"/>
+      <t t-if="state.condition.operator === 'Between' || state.condition.operator === 'NotBetween'">
+          <input type="text"
+                 placeholder="and value"
+                 t-model="state.condition.value2"
+                 class="o-input"/>
+      </t>
     </t>
     <div class="o-cf-title-text" t-esc="env._t('${conditionalFormatingTerms.FORMATTING_STYLE}')"></div>
 
-    <t t-call="${PREVIEW_TEMPLATE}">
+    <t t-call="${PREVIEW_TEMPLATE$2}">
         <t t-set="currentStyle" t-value="state.style"/>
     </t>
     <div class="o-tools">
@@ -12505,13 +12596,16 @@
                     <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
         </div>
     </div>
+    <div class="o-cf-error" t-if="props.error">
+        <t t-esc="props.error"/>
+      </div>
     <div class="o-sidePanelButtons">
       <button t-on-click="onCancel" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormatingTerms.CANCEL}')"></button>
       <button t-on-click="onSave" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormatingTerms.SAVE}')"></button>
     </div>
 </div>
 `;
-    const CSS$1 = css$2 /* scss */ `
+    const CSS$g = css$i /* scss */ `
   .o-cf-title-text {
     font-size: 12px;
     line-height: 14px;
@@ -12522,17 +12616,21 @@
     border: 1px solid darkgrey;
     padding: 10px;
   }
+  .o-cf-error {
+    color: red;
+    margin-top: 10px;
+  }
 `;
-    class CellIsRuleEditor extends Component$3 {
+    class CellIsRuleEditor extends Component$f {
         constructor() {
             super(...arguments);
             // @ts-ignore   used in XML template
             this.cellIsOperators = cellIsOperators;
             this.cf = this.props.conditionalFormat;
             this.rule = this.cf.rule;
-            this.state = useState$1({
+            this.state = useState$g({
                 condition: {
-                    operator: this.rule && this.rule.operator ? this.rule.operator : "Equal",
+                    operator: this.rule && this.rule.operator ? this.rule.operator : "IsNotEmpty",
                     value1: this.rule && this.rule.values.length > 0 ? this.rule.values[0] : "",
                     value2: this.cf && this.rule.values.length > 1 ? this.rule.values[1] : "",
                 },
@@ -12546,7 +12644,7 @@
                     strikethrough: this.cf && this.rule.style.strikethrough,
                 },
             });
-            useExternalListener(window, "click", this.closeMenus);
+            useExternalListener$5(window, "click", this.closeMenus);
         }
         toggleMenu(tool) {
             const current = this.state[tool];
@@ -12598,19 +12696,19 @@
             this.trigger("cancel-edit");
         }
     }
-    CellIsRuleEditor.template = TEMPLATE$2;
-    CellIsRuleEditor.style = CSS$1;
+    CellIsRuleEditor.template = TEMPLATE$g;
+    CellIsRuleEditor.style = CSS$g;
     CellIsRuleEditor.components = { ColorPicker };
 
-    const { Component: Component$4, useState: useState$2, hooks: hooks$1 } = owl__namespace;
-    const { useExternalListener: useExternalListener$1 } = hooks$1;
-    const { xml: xml$4, css: css$3 } = owl.tags;
-    const PREVIEW_TEMPLATE$1 = xml$4 /* xml */ `
+    const { Component: Component$e, useState: useState$f, hooks: hooks$1 } = owl__namespace;
+    const { useExternalListener: useExternalListener$4 } = hooks$1;
+    const { xml: xml$h, css: css$h } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$1 = xml$h /* xml */ `
   <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
     <t t-esc="env._t('${conditionalFormatingTerms.PREVIEWTEXT}')"/>
   </div>
 `;
-    const THRESHOLD_TEMPLATE = xml$4 /* xml */ `
+    const THRESHOLD_TEMPLATE = xml$h /* xml */ `
   <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
       <div class="o-tools">
         <div class="o-tool  o-dropdown o-with-color">
@@ -12647,7 +12745,7 @@
         t-else="" disabled="1"
       />
   </div>`;
-    const TEMPLATE$3 = xml$4 /* xml */ `
+    const TEMPLATE$f = xml$h /* xml */ `
   <div>
       <div class="o-section-title">
         <t t-esc="env._t('${colorScale.FormatRules}')"/>
@@ -12691,7 +12789,7 @@
         </button>
       </div>
   </div>`;
-    const CSS$2 = css$3 /* scss */ `
+    const CSS$f = css$h /* scss */ `
   .o-cf-title-text {
     font-size: 12px;
     line-height: 14px;
@@ -12717,13 +12815,13 @@
     margin-top: 10px;
   }
 `;
-    class ColorScaleRuleEditor extends Component$4 {
+    class ColorScaleRuleEditor extends Component$e {
         constructor() {
             super(...arguments);
             this.cf = this.props.conditionalFormat;
             this.colorNumberString = colorNumberString;
             this.rule = this.cf.rule;
-            this.stateColorScale = useState$2({
+            this.stateColorScale = useState$f({
                 minimum: this.rule.minimum,
                 maximum: this.rule.maximum,
                 midpoint: this.rule.midpoint ? this.rule.midpoint : { color: 0x444, type: "none" },
@@ -12731,7 +12829,7 @@
                 minimumColorTool: false,
                 midpointColorTool: false,
             });
-            useExternalListener$1(window, "click", this.closeMenus);
+            useExternalListener$4(window, "click", this.closeMenus);
         }
         toggleMenu(tool) {
             const current = this.stateColorScale[tool];
@@ -12785,14 +12883,14 @@
             this.trigger("cancel-edit");
         }
     }
-    ColorScaleRuleEditor.template = TEMPLATE$3;
-    ColorScaleRuleEditor.style = CSS$2;
+    ColorScaleRuleEditor.template = TEMPLATE$f;
+    ColorScaleRuleEditor.style = CSS$f;
     ColorScaleRuleEditor.components = { ColorPicker };
 
-    const { Component: Component$5, useState: useState$3 } = owl__namespace;
-    const { xml: xml$5, css: css$4 } = owl.tags;
+    const { Component: Component$d, useState: useState$e } = owl__namespace;
+    const { xml: xml$g, css: css$g } = owl__namespace.tags;
     // TODO vsc: add ordering of rules
-    const PREVIEW_TEMPLATE$2 = xml$5 /* xml */ `
+    const PREVIEW_TEMPLATE = xml$g /* xml */ `
 <div class="o-cf-preview">
   <div t-att-style="getStyle(cf.rule)" class="o-cf-preview-image">
     123
@@ -12819,12 +12917,12 @@
     </div>
   </div>
 </div>`;
-    const TEMPLATE$4 = xml$5 /* xml */ `
+    const TEMPLATE$e = xml$g /* xml */ `
   <div class="o-cf">
     <t t-if="state.mode === 'list'">
       <div class="o-cf-preview-list" >
           <div t-on-click="onRuleClick(cf)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
-              <t t-call="${PREVIEW_TEMPLATE$2}"/>
+              <t t-call="${PREVIEW_TEMPLATE}"/>
           </div>
       </div>
     </t>
@@ -12852,7 +12950,7 @@
     + Add another rule
     </div>
   </div>`;
-    const CSS$3 = css$4 /* scss */ `
+    const CSS$e = css$g /* scss */ `
   .o-cf {
     min-width: 350px;
     .o-cf-type-selector{
@@ -13002,14 +13100,14 @@
     }
   }
   }`;
-    class ConditionalFormattingPanel extends Component$5 {
+    class ConditionalFormattingPanel extends Component$d {
         constructor(parent, props) {
             super(parent, props);
             this.colorNumberString = colorNumberString;
             this.getters = this.env.getters;
             //@ts-ignore --> used in XML template
             this.cellIsOperators = cellIsOperators;
-            this.state = useState$3({
+            this.state = useState$e({
                 currentCF: undefined,
                 currentRanges: [],
                 mode: "list",
@@ -13123,7 +13221,7 @@
             return {
                 rule: {
                     type: "CellIsRule",
-                    operator: "Equal",
+                    operator: "IsNotEmpty",
                     values: [],
                     style: { fillColor: "#FF0000" },
                 },
@@ -13165,13 +13263,13 @@
             this.state.currentRanges = detail.ranges;
         }
     }
-    ConditionalFormattingPanel.template = TEMPLATE$4;
-    ConditionalFormattingPanel.style = CSS$3;
+    ConditionalFormattingPanel.template = TEMPLATE$e;
+    ConditionalFormattingPanel.style = CSS$e;
     ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, SelectionInput };
 
-    const { Component: Component$6, useState: useState$4 } = owl__namespace;
-    const { xml: xml$6, css: css$5 } = owl.tags;
-    const TEMPLATE$5 = xml$6 /* xml */ `
+    const { Component: Component$c, useState: useState$d } = owl__namespace;
+    const { xml: xml$f, css: css$f } = owl__namespace.tags;
+    const TEMPLATE$d = xml$f /* xml */ `
 <div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel">
   <div class="o-section">
     <div t-esc="env._t('${FindAndReplaceTerms.Search}')" class="o-section-title"/>
@@ -13225,7 +13323,7 @@
 
 </div>
 `;
-    const CSS$4 = css$5 /* scss */ `
+    const CSS$d = css$f /* scss */ `
   .o-find-and-replace {
     outline: none;
     height: 100%;
@@ -13242,11 +13340,11 @@
     }
   }
 `;
-    class FindAndReplacePanel extends Component$6 {
+    class FindAndReplacePanel extends Component$c {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$4(this.initialState());
+            this.state = useState$d(this.initialState());
         }
         get hasSearchResult() {
             return this.env.getters.getCurrentSelectedMatchIndex() !== null;
@@ -13339,8 +13437,8 @@
             };
         }
     }
-    FindAndReplacePanel.template = TEMPLATE$5;
-    FindAndReplacePanel.style = CSS$4;
+    FindAndReplacePanel.template = TEMPLATE$d;
+    FindAndReplacePanel.style = CSS$d;
 
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
@@ -14051,66 +14149,80 @@
     class ClipboardPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
-            this.status = "empty";
-            this.zones = [];
-            this.originSheetId = null;
+            this.status = "invisible";
             this._isPaintingFormat = false;
-            this.pasteOnlyValue = false;
-            this.pasteOnlyFormat = false;
         }
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
-            const force = "force" in cmd ? !!cmd.force : false;
-            if (cmd.type === "PASTE") {
-                return this.isPasteAllowed(cmd.target, force);
+            switch (cmd.type) {
+                case "PASTE":
+                    return this.isPasteAllowed(this.state, cmd.target, !!cmd.force);
+                case "INSERT_CELL": {
+                    const { cut, paste } = this.getInsertCellsTargets(cmd.zone, cmd.shiftDimension);
+                    const state = this.getClipboardState(cut, "CUT");
+                    return this.isPasteAllowed(state, paste, false);
+                }
+                case "DELETE_CELL": {
+                    const { cut, paste } = this.getDeleteCellsTargets(cmd.zone, cmd.shiftDimension);
+                    const state = this.getClipboardState(cut, "CUT");
+                    return this.isPasteAllowed(state, paste, false);
+                }
             }
             return 0 /* Success */;
         }
         handle(cmd) {
             switch (cmd.type) {
                 case "COPY":
-                    this.cutOrCopy(cmd.target, false);
-                    break;
                 case "CUT":
-                    this.cutOrCopy(cmd.target, true);
+                    this.state = this.getClipboardState(cmd.target, cmd.type);
+                    this.status = "visible";
                     break;
                 case "PASTE":
-                    this.pasteOnlyValue = "onlyValue" in cmd && !!cmd.onlyValue;
-                    const onlyFormat = "onlyFormat" in cmd ? !!cmd.onlyFormat : this._isPaintingFormat;
+                    if (!this.state) {
+                        throw new Error("Clipboard state is empty");
+                    }
+                    const pasteOption = cmd.pasteOption || (this._isPaintingFormat ? "onlyFormat" : undefined);
                     this._isPaintingFormat = false;
-                    this.pasteOnlyFormat = !this.pasteOnlyValue && onlyFormat;
                     if (cmd.interactive) {
-                        this.interactivePaste(cmd.target);
+                        this.interactivePaste(this.state, cmd.target, cmd);
                     }
                     else {
-                        this.pasteFromModel(cmd.target);
+                        this.selectPastedZone(this.state, cmd.target);
+                        this.paste(this.state, cmd.target, pasteOption);
+                        this.status = "invisible";
                     }
                     break;
-                case "PASTE_CELL":
-                    const [mainCellColOrigin, mainCellRowOrigin] = this.getters.getMainCell(cmd.originSheet, cmd.originCol, cmd.originRow);
-                    const [mainCellColTarget, mainCellRowTarget] = this.getters.getMainCell(cmd.sheetId, cmd.col, cmd.row);
-                    if (mainCellColTarget === cmd.col && mainCellRowTarget === cmd.row) {
-                        const merge = this.getters.getMerge(cmd.sheetId, cmd.col, cmd.row);
-                        if (merge) {
-                            this.dispatch("REMOVE_MERGE", {
-                                sheetId: cmd.sheetId,
-                                target: [merge],
-                            });
-                        }
+                case "DELETE_CELL": {
+                    const { cut, paste } = this.getDeleteCellsTargets(cmd.zone, cmd.shiftDimension);
+                    const state = this.getClipboardState(cut, "CUT");
+                    if (cmd.interactive) {
+                        this.interactivePaste(state, paste, cmd);
                     }
-                    if (mainCellColOrigin === cmd.originCol && mainCellRowOrigin === cmd.originRow) {
-                        this.pasteMerge(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.originSheet, cmd.sheetId, cmd.cut);
+                    else {
+                        this.paste(state, paste);
                     }
-                    this.pasteCell(cmd.originSheet, cmd.origin, cmd.originBorder, cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.onlyValue, cmd.onlyFormat);
                     break;
+                }
+                case "INSERT_CELL": {
+                    const { cut, paste } = this.getInsertCellsTargets(cmd.zone, cmd.shiftDimension);
+                    const state = this.getClipboardState(cut, "CUT");
+                    if (cmd.interactive) {
+                        this.interactivePaste(state, paste, cmd);
+                    }
+                    else {
+                        this.paste(state, paste);
+                    }
+                    break;
+                }
                 case "PASTE_FROM_OS_CLIPBOARD":
                     this.pasteFromClipboard(cmd.target, cmd.text);
                     break;
                 case "ACTIVATE_PAINT_FORMAT":
+                    this.state = this.getClipboardState(cmd.target, "COPY");
                     this._isPaintingFormat = true;
-                    this.cutOrCopy(cmd.target, false);
+                    this.status = "visible";
                     break;
             }
         }
@@ -14129,33 +14241,124 @@
          * considered as a copy content.
          */
         getClipboardContent() {
-            if (!this.cells) {
+            if (!this.state || !this.state.cells.length) {
                 return "\t";
             }
-            return (this.cells
+            return (this.state.cells
                 .map((cells) => {
                 return cells
                     .map((c) => c.cell
-                    ? this.getters.getCellText(c.cell, c.sheetId, this.getters.shouldShowFormulas())
+                    ? this.getters.getCellText(c.cell, c.position.sheetId, this.getters.shouldShowFormulas())
                     : "")
                     .join("\t");
             })
                 .join("\n") || "\t");
         }
-        getPasteZones(target) {
-            if (!this.cells) {
+        isPaintingFormat() {
+            return this._isPaintingFormat;
+        }
+        // ---------------------------------------------------------------------------
+        // Private methods
+        // ---------------------------------------------------------------------------
+        getDeleteCellsTargets(zone, dimension) {
+            const sheet = this.getters.getActiveSheet();
+            let cut;
+            if (dimension === "COL") {
+                cut = {
+                    ...zone,
+                    left: zone.right + 1,
+                    right: sheet.cols.length - 1,
+                };
+            }
+            else {
+                cut = {
+                    ...zone,
+                    top: zone.bottom + 1,
+                    bottom: sheet.rows.length - 1,
+                };
+            }
+            return { cut: [cut], paste: [zone] };
+        }
+        getInsertCellsTargets(zone, dimension) {
+            const sheet = this.getters.getActiveSheet();
+            let cut;
+            let paste;
+            if (dimension === "COL") {
+                cut = {
+                    ...zone,
+                    right: sheet.cols.length - 1,
+                };
+                paste = {
+                    ...zone,
+                    left: zone.right + 1,
+                    right: zone.right + 1,
+                };
+            }
+            else {
+                cut = {
+                    ...zone,
+                    bottom: sheet.rows.length - 1,
+                };
+                paste = { ...zone, top: zone.bottom + 1, bottom: sheet.rows.length - 1 };
+            }
+            return { cut: [cut], paste: [paste] };
+        }
+        /**
+         * If the position is the top-left of an existing merge, remove it
+         */
+        removeMergeIfTopLeft(position) {
+            const { sheetId, col, row } = position;
+            const [left, top] = this.getters.getMainCell(sheetId, col, row);
+            if (top === row && left === col) {
+                const merge = this.getters.getMerge(sheetId, col, row);
+                if (merge) {
+                    this.dispatch("REMOVE_MERGE", { sheetId, target: [merge] });
+                }
+            }
+        }
+        /**
+         * If the origin position given is the top left of a merge, merge the target
+         * position.
+         */
+        pasteMergeIfExist(origin, target) {
+            let { sheetId, col, row } = origin;
+            const [mainCellColOrigin, mainCellRowOrigin] = this.getters.getMainCell(sheetId, col, row);
+            if (mainCellColOrigin === col && mainCellRowOrigin === row) {
+                const merge = this.getters.getMerge(sheetId, col, row);
+                if (!merge) {
+                    return;
+                }
+                ({ sheetId, col, row } = target);
+                this.dispatch("ADD_MERGE", {
+                    sheetId,
+                    target: [
+                        {
+                            left: col,
+                            top: row,
+                            right: col + merge.right - merge.left,
+                            bottom: row + merge.bottom - merge.top,
+                        },
+                    ],
+                });
+            }
+        }
+        /**
+         * Compute the complete zones where to paste the current clipboard
+         */
+        getPasteZones(target, cells) {
+            if (!cells.length || !cells[0].length) {
                 return target;
             }
-            const height = this.cells.length;
-            const width = this.cells[0].length;
-            const selection = target[target.length - 1];
             const pasteZones = [];
-            let col = selection.left;
-            let row = selection.top;
-            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-            for (let x = 1; x <= repX; x++) {
-                for (let y = 1; y <= repY; y++) {
+            const height = cells.length;
+            const width = cells[0].length;
+            const selection = target[target.length - 1];
+            const col = selection.left;
+            const row = selection.top;
+            const repetitionCol = Math.max(1, Math.floor((selection.right + 1 - col) / width));
+            const repetitionRow = Math.max(1, Math.floor((selection.bottom + 1 - row) / height));
+            for (let x = 1; x <= repetitionCol; x++) {
+                for (let y = 1; y <= repetitionRow; y++) {
                     pasteZones.push({
                         left: col,
                         top: row,
@@ -14166,43 +14369,41 @@
             }
             return pasteZones;
         }
-        isPaintingFormat() {
-            return this._isPaintingFormat;
-        }
-        // ---------------------------------------------------------------------------
-        // Private methods
-        // ---------------------------------------------------------------------------
-        cutOrCopy(zones, cut) {
+        /**
+         * Get the clipboard state from the given zones.
+         */
+        getClipboardState(zones, operation) {
             const tops = new Set(zones.map((z) => z.top));
             const bottoms = new Set(zones.map((z) => z.bottom));
             const areZonesCompatible = tops.size === 1 && bottoms.size === 1;
             let clippedZones = areZonesCompatible ? zones : [zones[zones.length - 1]];
-            clippedZones = clippedZones.map((z) => Object.assign({}, z));
-            const cells = [];
-            const activeSheetId = this.getters.getActiveSheetId();
-            let { top, bottom } = clippedZones[0];
-            for (let r = top; r <= bottom; r++) {
-                const row = [];
-                cells.push(row);
+            clippedZones = clippedZones.map((zone) => ({ ...zone }));
+            const rows = [];
+            const merges = [];
+            const sheetId = this.getters.getActiveSheetId();
+            const { top, bottom } = clippedZones[0];
+            for (let row = top; row <= bottom; row++) {
+                const cells = [];
+                rows.push(cells);
                 for (let zone of clippedZones) {
-                    let { left, right } = zone;
-                    for (let c = left; c <= right; c++) {
-                        const cell = this.getters.getCell(activeSheetId, c, r);
-                        row.push({
-                            cell: cell ? Object.assign({}, cell) : null,
-                            border: this.getters.getCellBorder(activeSheetId, c, r),
-                            col: c,
-                            row: r,
-                            sheetId: activeSheetId,
-                        });
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        const cell = this.getters.getCell(sheetId, col, row);
+                        const border = this.getters.getCellBorder(sheetId, col, row) || undefined;
+                        cells.push({ cell, border, position: { col, row, sheetId } });
+                        const merge = this.getters.getMerge(sheetId, col, row);
+                        if (merge && merge.top === row && merge.left === col) {
+                            merges.push(merge);
+                        }
                     }
                 }
             }
-            this.status = "visible";
-            this.shouldCut = cut;
-            this.zones = clippedZones;
-            this.cells = cells;
-            this.originSheetId = activeSheetId;
+            return {
+                cells: rows,
+                operation,
+                sheetId,
+                zones: clippedZones,
+                merges,
+            };
         }
         pasteFromClipboard(target, content) {
             this.status = "invisible";
@@ -14237,20 +14438,20 @@
                 ],
             });
         }
-        isPasteAllowed(target, force) {
+        isPasteAllowed(state, target, force) {
             const sheetId = this.getters.getActiveSheetId();
-            const { zones, cells, status } = this;
-            // cannot paste if we have a clipped zone larger than a cell and multiple
-            // zones selected
-            if (!zones || !cells || status === "empty") {
-                return 13 /* EmptyClipboard */;
+            if (!state) {
+                return 15 /* EmptyClipboard */;
             }
-            else if (target.length > 1 && (cells.length > 1 || cells[0].length > 1)) {
-                return 12 /* WrongPasteSelection */;
+            if (target.length > 1) {
+                // cannot paste if we have a clipped zone larger than a cell and multiple
+                // zones selected
+                if (state.cells.length > 1 || state.cells[0].length > 1) {
+                    return 14 /* WrongPasteSelection */;
+                }
             }
             if (!force) {
-                const pasteZones = this.getters.getPasteZones(target);
-                for (let zone of pasteZones) {
+                for (let zone of this.getPasteZones(target, state.cells)) {
                     if (this.getters.doesIntersectMerge(sheetId, zone)) {
                         return 2 /* WillRemoveExistingMerge */;
                     }
@@ -14258,37 +14459,50 @@
             }
             return 0 /* Success */;
         }
-        pasteFromModel(target) {
-            const { cells, shouldCut } = this;
-            if (!cells) {
-                return;
+        /**
+         * Paste the clipboard content in the given target
+         */
+        paste(state, target, options) {
+            if (state.operation === "CUT") {
+                this.clearClippedZones(state);
             }
-            this.status = shouldCut ? "empty" : "invisible";
-            if (shouldCut) {
-                this.clearCutZone();
-            }
-            const height = cells.length;
-            const width = cells[0].length;
             if (target.length > 1) {
-                for (let zone of target) {
-                    for (let i = zone.left; i <= zone.right; i++) {
-                        for (let j = zone.top; j <= zone.bottom; j++) {
-                            this.pasteZone(width, height, i, j);
+                for (const zone of target) {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        for (let row = zone.top; row <= zone.bottom; row++) {
+                            this.pasteZone(state, col, row, options);
                         }
                     }
                 }
-                return;
             }
-            const selection = target[target.length - 1];
-            let col = selection.left;
-            let row = selection.top;
-            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-            for (let x = 0; x < repX; x++) {
-                for (let y = 0; y < repY; y++) {
-                    this.pasteZone(width, height, col + x * width, row + y * height);
+            else {
+                const height = state.cells.length;
+                const width = state.cells[0].length;
+                const selection = target[0];
+                const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
+                const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
+                for (let x = 0; x < repX; x++) {
+                    for (let y = 0; y < repY; y++) {
+                        this.pasteZone(state, selection.left + x * width, selection.top + y * height, options);
+                    }
                 }
             }
+            if (state.operation === "CUT") {
+                this.dispatch("REMOVE_MERGE", { sheetId: state.sheetId, target: state.merges });
+                this.state = undefined;
+            }
+        }
+        /**
+         * Update the selection with the newly pasted zone
+         */
+        selectPastedZone(state, target) {
+            const height = state.cells.length;
+            const width = state.cells[0].length;
+            const selection = target[0];
+            const col = selection.left;
+            const row = selection.top;
+            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
+            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
             if (height > 1 || width > 1) {
                 const newSelection = {
                     left: col,
@@ -14305,78 +14519,63 @@
                 });
             }
         }
-        clearCutZone() {
-            for (let row of this.cells) {
-                for (let cell of row) {
-                    if (cell) {
-                        this.dispatch("CLEAR_CELL", {
-                            sheetId: this.originSheetId,
-                            col: cell.col,
-                            row: cell.row,
-                        });
-                        this.dispatch("CLEAR_FORMATTING", {
-                            sheetId: this.originSheetId,
-                            target: [{ top: cell.row, bottom: cell.row, left: cell.col, right: cell.col }],
+        /**
+         * Clear the clipped zones: remove the cells and clear the formatting
+         */
+        clearClippedZones(state) {
+            for (const row of state.cells) {
+                for (const cell of row) {
+                    if (cell.cell) {
+                        this.dispatch("CLEAR_CELL", cell.position);
+                    }
+                }
+            }
+            this.dispatch("CLEAR_FORMATTING", {
+                sheetId: state.sheetId,
+                target: state.zones,
+            });
+        }
+        pasteZone(state, col, row, pasteOption) {
+            const height = state.cells.length;
+            const width = state.cells[0].length;
+            // This condition is used to determine if we have to paste the CF or not.
+            // We have to do it when the command handled is "PASTE", not "INSERT_CELL"
+            // or "DELETE_CELL". So, the state should be the local state
+            const shouldPasteCF = pasteOption !== "onlyValue" && this.state && this.state === state;
+            const sheet = this.getters.getActiveSheet();
+            // first, add missing cols/rows if needed
+            this.addMissingDimensions(sheet, width, height, col, row);
+            // then, perform the actual paste operation
+            for (let r = 0; r < height; r++) {
+                const rowCells = state.cells[r];
+                for (let c = 0; c < width; c++) {
+                    const origin = rowCells[c];
+                    const position = { col: col + c, row: row + r, sheetId: sheet.id };
+                    this.removeMergeIfTopLeft(position);
+                    this.pasteMergeIfExist(origin.position, position);
+                    this.pasteCell(origin, position, state.operation, state.zones, pasteOption);
+                    if (shouldPasteCF) {
+                        this.dispatch("PASTE_CONDITIONAL_FORMAT", {
+                            origin: origin.position,
+                            target: position,
+                            operation: state.operation,
                         });
                     }
                 }
             }
         }
-        pasteZone(width, height, col, row) {
-            // first, add missing cols/rows if needed
-            this.addMissingDimensions(this.getters.getActiveSheet(), width, height, col, row);
-            // then, perform the actual paste operation
-            for (let r = 0; r < height; r++) {
-                const rowCells = this.cells[r];
-                for (let c = 0; c < width; c++) {
-                    const originCell = rowCells[c];
-                    this.dispatch("PASTE_CELL", {
-                        origin: originCell.cell,
-                        originBorder: originCell.border,
-                        originCol: originCell.col,
-                        originRow: originCell.row,
-                        originSheet: originCell.sheetId,
-                        col: col + c,
-                        row: row + r,
-                        sheetId: this.getters.getActiveSheetId(),
-                        cut: this.shouldCut,
-                        onlyValue: this.pasteOnlyValue,
-                        onlyFormat: this.pasteOnlyFormat,
-                    });
-                }
-            }
-        }
-        pasteMerge(originCol, originRow, col, row, originSheet, sheetId, cut) {
-            const merge = this.getters.getMerge(originSheet, originCol, originRow);
-            const sheet = this.getters.getSheet(sheetId);
-            if (!merge || !sheet)
-                return;
-            if (cut) {
-                this.dispatch("REMOVE_MERGE", {
-                    sheetId: originSheet,
-                    target: [merge],
-                });
-            }
-            this.dispatch("ADD_MERGE", {
-                sheetId: this.getters.getActiveSheetId(),
-                target: [
-                    {
-                        left: col,
-                        top: row,
-                        right: col + merge.right - merge.left,
-                        bottom: row + merge.bottom - merge.top,
-                    },
-                ],
-            });
-        }
+        /**
+         * Add columns and/or rows to ensure that col + width and row + height are still
+         * in the sheet
+         */
         addMissingDimensions(sheet, width, height, col, row) {
-            const { cols, rows } = sheet;
+            const { cols, rows, id: sheetId } = sheet;
             const missingRows = height + row - rows.length;
             if (missingRows > 0) {
                 this.dispatch("ADD_COLUMNS_ROWS", {
                     dimension: "ROW",
                     base: rows.length - 1,
-                    sheetId: this.getters.getActiveSheetId(),
+                    sheetId,
                     quantity: missingRows,
                     position: "after",
                 });
@@ -14386,93 +14585,84 @@
                 this.dispatch("ADD_COLUMNS_ROWS", {
                     dimension: "COL",
                     base: cols.length - 1,
-                    sheetId: this.getters.getActiveSheetId(),
+                    sheetId,
                     quantity: missingCols,
                     position: "after",
                 });
             }
         }
-        pasteCell(originSheet, origin, originBorder, originCol, originRow, col, row, onlyValue, onlyFormat) {
-            const sheetId = this.getters.getActiveSheetId();
+        /**
+         * Paste the cell at the given position to the target position
+         */
+        pasteCell(origin, target, operation, zones, pasteOption) {
+            const { sheetId, col, row } = target;
             const targetCell = this.getters.getCell(sheetId, col, row);
-            if (!onlyValue || onlyFormat) {
-                this.dispatch("SET_BORDER", { sheetId, col, row, border: originBorder || undefined });
+            if (pasteOption !== "onlyValue") {
+                this.dispatch("SET_BORDER", { sheetId, col, row, border: origin.border });
             }
-            if (origin) {
-                let style = origin.style || null;
-                let format = origin.format;
-                let content = this.getters.getCellValue(origin, originSheet, true) || "";
-                if (onlyValue) {
-                    style = targetCell ? targetCell.style : undefined;
-                    format = targetCell ? targetCell.format : undefined;
-                    if (origin.type === CellType.formula) {
-                        content = this.valueToContent(origin.value);
-                    }
+            if (origin.cell) {
+                if (pasteOption === "onlyFormat") {
+                    this.dispatch("UPDATE_CELL", {
+                        ...target,
+                        style: origin.cell.style,
+                        format: origin.cell.format,
+                    });
+                    return;
                 }
-                else if (!onlyFormat && origin.type === CellType.formula) {
-                    const offsetX = col - originCol;
-                    const offsetY = row - originRow;
-                    if (this.shouldCut) {
-                        const ranges = [];
-                        for (const range of origin.dependencies) {
-                            if (this.isZoneOverlapClippedZone(range.zone)) {
-                                ranges.push(...this.getters.createAdaptedRanges([range], offsetX, offsetY, sheetId));
-                            }
-                            else {
-                                ranges.push(range);
-                            }
-                        }
-                        content = this.getters.buildFormulaContent(sheetId, origin.formula.text, ranges);
-                    }
-                    else {
-                        const ranges = this.getters.createAdaptedRanges(origin.dependencies, offsetX, offsetY, sheetId);
-                        content = this.getters.buildFormulaContent(sheetId, origin.formula.text, ranges);
-                    }
+                if (pasteOption === "onlyValue") {
+                    const content = this.valueToContent(origin.cell.value);
+                    this.dispatch("UPDATE_CELL", { ...target, content });
+                    return;
                 }
-                const newCell = {
-                    style,
-                    format,
-                    sheetId,
-                    col,
-                    row,
-                };
-                if (!onlyFormat) {
-                    newCell["content"] = content;
+                let content = this.getters.getCellValue(origin.cell, origin.position.sheetId, true) || "";
+                if (origin.cell.type === CellType.formula) {
+                    const offsetX = col - origin.position.col;
+                    const offsetY = row - origin.position.row;
+                    content = this.getUpdatedContent(sheetId, origin.cell, offsetX, offsetY, zones, operation);
                 }
-                this.dispatch("UPDATE_CELL", newCell);
+                this.dispatch("UPDATE_CELL", {
+                    ...target,
+                    content,
+                    style: origin.cell.style || null,
+                    format: origin.cell.format,
+                });
             }
             else if (targetCell) {
-                if (onlyValue) {
-                    this.dispatch("UPDATE_CELL", {
-                        sheetId: sheetId,
-                        col,
-                        row,
-                        content: "",
-                    });
+                if (pasteOption === "onlyValue") {
+                    this.dispatch("UPDATE_CELL", { ...target, content: "" });
                 }
-                else if (onlyFormat) {
-                    this.dispatch("UPDATE_CELL", {
-                        sheetId: sheetId,
-                        col,
-                        row,
-                        style: null,
-                        format: "",
-                    });
+                else if (pasteOption === "onlyFormat") {
+                    this.dispatch("UPDATE_CELL", { ...target, style: null, format: "" });
                 }
                 else {
-                    this.dispatch("CLEAR_CELL", {
-                        sheetId: this.getters.getActiveSheetId(),
-                        col: col,
-                        row: row,
-                    });
+                    this.dispatch("CLEAR_CELL", target);
                 }
             }
         }
         /**
+         * Get the newly updated formula, after applying offsets
+         */
+        getUpdatedContent(sheetId, cell, offsetX, offsetY, zones, operation) {
+            if (operation === "CUT") {
+                const ranges = [];
+                for (const range of cell.dependencies) {
+                    if (this.isZoneOverlapClippedZone(zones, range.zone)) {
+                        ranges.push(...this.getters.createAdaptedRanges([range], offsetX, offsetY, sheetId));
+                    }
+                    else {
+                        ranges.push(range);
+                    }
+                }
+                return this.getters.buildFormulaContent(sheetId, cell.formula.text, ranges);
+            }
+            const ranges = this.getters.createAdaptedRanges(cell.dependencies, offsetX, offsetY, sheetId);
+            return this.getters.buildFormulaContent(sheetId, cell.formula.text, ranges);
+        }
+        /**
          * Check if the given zone and at least one of the clipped zones overlap
          */
-        isZoneOverlapClippedZone(zone) {
-            return this.zones.reduce((isOverlapping, clippedZone) => isOverlapping || overlap(zone, clippedZone), false);
+        isZoneOverlapClippedZone(zones, zone) {
+            return zones.some((clippedZone) => overlap(zone, clippedZone));
         }
         valueToContent(cellValue) {
             switch (typeof cellValue) {
@@ -14486,15 +14676,18 @@
                     return "";
             }
         }
-        interactivePaste(target) {
-            const result = this.dispatch("PASTE", { target, onlyFormat: false });
+        interactivePaste(state, target, cmd) {
+            const result = this.isPasteAllowed(state, target, false);
             if (result !== 0 /* Success */) {
-                if (result === 12 /* WrongPasteSelection */) {
+                if (result === 14 /* WrongPasteSelection */) {
                     this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
                 }
                 if (result === 2 /* WillRemoveExistingMerge */) {
-                    this.ui.askConfirmation(_lt("Pasting here will remove existing merge(s). Paste anyway?"), () => this.dispatch("PASTE", { target, onlyFormat: false, force: true }));
+                    this.ui.notifyUser(_lt("This operation is not possible due to a merge. Please remove the merges first than try again."));
                 }
+            }
+            else {
+                this.dispatch(cmd.type, { ...cmd, interactive: false });
             }
         }
         // ---------------------------------------------------------------------------
@@ -14502,16 +14695,17 @@
         // ---------------------------------------------------------------------------
         drawGrid(renderingContext) {
             const { viewport, ctx, thinLineWidth } = renderingContext;
-            const zones = this.zones;
             if (this.status !== "visible" ||
-                !zones.length ||
-                this.originSheetId !== this.getters.getActiveSheetId()) {
+                !this.state ||
+                !this.state.zones ||
+                !this.state.zones.length ||
+                this.state.sheetId !== this.getters.getActiveSheetId()) {
                 return;
             }
             ctx.setLineDash([8, 5]);
             ctx.strokeStyle = "#3266ca";
             ctx.lineWidth = 3.3 * thinLineWidth;
-            for (const zone of zones) {
+            for (const zone of this.state.zones) {
                 const [x, y, width, height] = this.getters.getRect(zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeRect(x, y, width, height);
@@ -14520,7 +14714,7 @@
         }
     }
     ClipboardPlugin.layers = [2 /* Clipboard */];
-    ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat", "getPasteZones"];
+    ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
     ClipboardPlugin.modes = ["normal", "readonly"];
 
     const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
@@ -14894,8 +15088,8 @@
                     const refSanitized = (sheet ? `${sheet}!` : `${this.getters.getSheetName(this.getters.getEditionSheet())}!`) +
                         xc.replace(/\$/g, "");
                     if (!ranges[refSanitized]) {
-                        ranges[refSanitized] = colors[lastUsedColorIndex];
-                        lastUsedColorIndex = ++lastUsedColorIndex % colors.length;
+                        ranges[refSanitized] = colors$1[lastUsedColorIndex];
+                        lastUsedColorIndex = ++lastUsedColorIndex % colors$1.length;
                     }
                 }
             }
@@ -15028,6 +15222,8 @@
                 case "CREATE_SHEET":
                 case "ADD_COLUMNS_ROWS":
                 case "REMOVE_COLUMNS_ROWS":
+                case "DELETE_CELL":
+                case "INSERT_CELL":
                     this.isUpToDate.clear();
                     break;
                 case "UPDATE_CELL":
@@ -15230,7 +15426,7 @@
                 else {
                     throw new Error(_lt("Invalid sheet name"));
                 }
-                if (!cell || cell.content === "") {
+                if (!cell || cell.type === CellType.empty) {
                     return null;
                 }
                 return getCellValue(cell, range.sheetId);
@@ -15278,22 +15474,22 @@
              *        function for which this parameter is used, we just return the string of the parameter.
              *        The `compute` of the formula's function must process it completely
              */
-            function refFn(position, references, sheetId, isMeta = false) {
+            function refFn(position, references, sheetId, isMeta, functionName, paramNumber) {
                 const range = references[position];
                 if (isMeta) {
                     return evalContext.getters.getRangeString(range, sheetId);
                 }
+                if (range.zone.top > range.zone.bottom || range.zone.left > range.zone.right) {
+                    throw new Error(_lt("invalid range %s:%s", toXC(range.zone.left, range.zone.top), toXC(range.zone.right, range.zone.bottom)));
+                }
+                // if the formula definition could have accepted a range, we would pass through the _range function and not here
+                if (range.zone.bottom !== range.zone.top || range.zone.left !== range.zone.right) {
+                    throw new Error(_lt("Function %s expects the parameter %s to be a single value or a single cell reference, not a range.", functionName.toString(), paramNumber.toString()));
+                }
                 if (range.invalidSheetName) {
                     throw new Error(_lt("Invalid sheet name: %s", range.invalidSheetName));
                 }
-                if (range.zone.left !== range.zone.right || range.zone.top !== range.zone.bottom) {
-                    // it's a range
-                    return _range(range);
-                }
-                else {
-                    //it's a cell
-                    return readCell(range);
-                }
+                return readCell(range);
             }
             /**
              * Return the values of the cell(s) used in reference, but always in the format of a range even
@@ -15302,7 +15498,7 @@
              *
              * the parameters are the same as refFn, except that these parameters cannot be Meta
              */
-            function range(position, references) {
+            function range(position, references, sheetId) {
                 return _range(references[position]);
             }
             return [refFn, range, evalContext];
@@ -15494,6 +15690,15 @@
                     ],
                 };
             }
+            else {
+                config.options.tooltips = {
+                    callbacks: {
+                        title: function (tooltipItems, data) {
+                            return data.datasets[tooltipItems[0].datasetIndex].label;
+                        },
+                    },
+                };
+            }
             return config;
         }
         areZonesUsedInChart(sheetId, zones, chartId) {
@@ -15504,7 +15709,7 @@
             const ranges = [
                 ...chartDefinition.dataSets.map((ds) => ds.dataRange),
                 chartDefinition.labelRange,
-            ].filter(isDefined$1);
+            ].filter(isDefined);
             for (let zone of zones) {
                 for (let range of ranges) {
                     if (range.sheetId === sheetId && overlap(range.zone, zone)) {
@@ -15522,7 +15727,7 @@
             const ranges = [
                 ...chartDefinition.dataSets.map((ds) => ds.dataRange),
                 chartDefinition.labelRange,
-            ].filter(isDefined$1);
+            ].filter(isDefined);
             for (let range of ranges) {
                 if (range.sheetId === sheetId && isInside(col, row, range.zone)) {
                     return true;
@@ -15565,7 +15770,13 @@
             }
             const runtime = this.getDefaultConfiguration(definition.type, definition.title, labels);
             let graphColorIndex = 0;
-            for (const ds of definition.dataSets) {
+            if (definition.type === "pie") {
+                const maxLength = Math.max(...definition.dataSets.map((ds) => this.getData(ds, definition.sheetId).length));
+                for (let i = 0; i <= maxLength; i++) {
+                    graphColorIndex = ++graphColorIndex % GraphColors.length;
+                }
+            }
+            for (const [dsIndex, ds] of Object.entries(definition.dataSets)) {
                 let label;
                 if (ds.labelCell) {
                     const labelRange = ds.labelCell;
@@ -15575,10 +15786,10 @@
                     label =
                         cell && labelRange
                             ? this.getters.getCellText(cell, labelRange.sheetId)
-                            : chartTerms.Series;
+                            : (label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`);
                 }
                 else {
-                    label = chartTerms.Series;
+                    label = label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`;
                 }
                 const dataset = {
                     label,
@@ -15647,6 +15858,10 @@
                         }
                     }
                     switch (rule.operator) {
+                        case "IsEmpty":
+                            return !cell || value.toString().trim() === "";
+                        case "IsNotEmpty":
+                            return cell && value.toString().trim() !== "";
                         case "BeginsWith":
                             if (!cell && rule.values[0] === "") {
                                 return false;
@@ -15656,7 +15871,7 @@
                             if (!cell && rule.values[0] === "") {
                                 return false;
                             }
-                            return cell && value.endsWith(rule.values[0]);
+                            return cell && value && value.toString().endsWith(rule.values[0]);
                         case "Between":
                             return cell && value >= rule.values[0] && value <= rule.values[1];
                         case "NotBetween":
@@ -15664,7 +15879,7 @@
                         case "ContainsText":
                             return cell && value && value.toString().indexOf(rule.values[0]) > -1;
                         case "NotContains":
-                            return cell && value && value.toString().indexOf(rule.values[0]) == -1;
+                            return !cell || !value || value.toString().indexOf(rule.values[0]) == -1;
                         case "GreaterThan":
                             return cell && value > rule.values[0];
                         case "GreaterThanOrEqual":
@@ -15677,12 +15892,12 @@
                             if (!cell && rule.values[0] === "") {
                                 return false;
                             }
-                            return cell && value != rule.values[0];
+                            return cell && value !== rule.values[0];
                         case "Equal":
                             if (!cell && rule.values[0] === "") {
                                 return true;
                             }
-                            return cell && value == rule.values[0];
+                            return cell && value.toString() === rule.values[0];
                         default:
                             console.warn(_lt("Not implemented operator %s for kind of conditional formatting:  %s", rule.operator, rule.type));
                     }
@@ -15707,10 +15922,8 @@
                         this.adaptRules(sheetId, cf, [toXC(cmd.col, cmd.row)], []);
                     }
                     break;
-                case "PASTE_CELL":
-                    if (!cmd.onlyValue) {
-                        this.pasteCf(cmd.originCol, cmd.originRow, cmd.col, cmd.row, cmd.originSheet, cmd.sheetId, cmd.cut);
-                    }
+                case "PASTE_CONDITIONAL_FORMAT":
+                    this.pasteCf(cmd.origin, cmd.target, cmd.operation);
                     break;
                 case "DUPLICATE_SHEET":
                 case "CREATE_SHEET":
@@ -15723,6 +15936,8 @@
                 case "UPDATE_CELL":
                 case "UNDO":
                 case "REDO":
+                case "DELETE_CELL":
+                case "INSERT_CELL":
                     this.isStale = true;
                     break;
             }
@@ -15928,23 +16143,23 @@
                 sheetId,
             });
         }
-        pasteCf(originCol, originRow, col, row, originSheet, destinationSheetId, cut) {
-            const xc = toXC(col, row);
-            for (let rule of this.getters.getConditionalFormats(originSheet)) {
+        pasteCf(origin, target, operation) {
+            const xc = toXC(target.col, target.row);
+            for (let rule of this.getters.getConditionalFormats(origin.sheetId)) {
                 for (let range of rule.ranges) {
-                    if (isInside(originCol, originRow, toZone(range))) {
+                    if (isInside(origin.col, origin.row, toZone(range))) {
                         const cf = rule;
                         const toRemoveRange = [];
-                        if (cut) {
+                        if (operation === "CUT") {
                             //remove from current rule
-                            toRemoveRange.push(toXC(originCol, originRow));
+                            toRemoveRange.push(toXC(origin.col, origin.row));
                         }
-                        if (originSheet === destinationSheetId) {
-                            this.adaptRules(originSheet, cf, [xc], toRemoveRange);
+                        if (origin.sheetId === target.sheetId) {
+                            this.adaptRules(origin.sheetId, cf, [xc], toRemoveRange);
                         }
                         else {
-                            this.adaptRules(destinationSheetId, cf, [xc], []);
-                            this.adaptRules(originSheet, cf, [], toRemoveRange);
+                            this.adaptRules(target.sheetId, cf, [xc], []);
+                            this.adaptRules(origin.sheetId, cf, [], toRemoveRange);
                         }
                     }
                 }
@@ -17833,7 +18048,7 @@
     function randomChoice(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     }
-    const colors$1 = [
+    const colors = [
         "#ff851b",
         "#0074d9",
         "#7fdbff",
@@ -17850,7 +18065,7 @@
     class SelectionMultiUserPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
-            this.availableColors = new Set(colors$1);
+            this.availableColors = new Set(colors);
             this.colors = {};
         }
         isPositionValid(position) {
@@ -17859,7 +18074,7 @@
         }
         chooseNewColor() {
             if (this.availableColors.size === 0) {
-                this.availableColors = new Set(colors$1);
+                this.availableColors = new Set(colors);
             }
             const color = randomChoice([...this.availableColors.values()]);
             this.availableColors.delete(color);
@@ -17980,7 +18195,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 38 /* InvalidSortZone */;
+                        return 40 /* InvalidSortZone */;
                     }
                 }
             }
@@ -18001,7 +18216,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 38 /* InvalidSortZone */;
+                return 40 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -18062,7 +18277,7 @@
             }
             if (result !== 0 /* Success */) {
                 switch (result) {
-                    case 38 /* InvalidSortZone */:
+                    case 40 /* InvalidSortZone */:
                         this.dispatch("SET_SELECTION", {
                             anchor: anchor,
                             zones: [zone],
@@ -18362,7 +18577,7 @@
                         break;
                     }
                     catch (error) {
-                        return 15 /* InvalidSheetId */;
+                        return 17 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -18833,7 +19048,7 @@
      */
     class EventBus {
         constructor() {
-            this.bus = new owl.core.EventBus();
+            this.bus = new owl__namespace.core.EventBus();
         }
         on(type, owner, callback) {
             this.bus.on(type, owner, callback);
@@ -18877,7 +19092,7 @@
             this.processedRevisions = new Set();
             this.clients[client.id] = client;
             this.clientId = client.id;
-            this.debouncedMove = owl.utils.debounce(this._move.bind(this), DEBOUNCE_TIME);
+            this.debouncedMove = owl__namespace.utils.debounce(this._move.bind(this), DEBOUNCE_TIME);
         }
         /**
          * Add a new revision to the collaborative session.
@@ -18965,7 +19180,7 @@
             return client;
         }
         getConnectedClients() {
-            return new Set(Object.values(this.clients).filter(isDefined$1));
+            return new Set(Object.values(this.clients).filter(isDefined));
         }
         getRevisionId() {
             return this.serverRevisionId;
@@ -19014,13 +19229,19 @@
                 case "REVISION_REDONE": {
                     this.waitingAck = false;
                     this.revisions.redo(message.redoneRevisionId, message.nextRevisionId);
-                    this.trigger("revision-redone", { revisionId: message.redoneRevisionId });
+                    this.trigger("revision-redone", {
+                        revisionId: message.redoneRevisionId,
+                        commands: this.revisions.get(message.redoneRevisionId).commands,
+                    });
                     break;
                 }
                 case "REVISION_UNDONE":
                     this.waitingAck = false;
                     this.revisions.undo(message.undoneRevisionId, message.nextRevisionId);
-                    this.trigger("revision-undone", { revisionId: message.undoneRevisionId });
+                    this.trigger("revision-undone", {
+                        revisionId: message.undoneRevisionId,
+                        commands: this.revisions.get(message.undoneRevisionId).commands,
+                    });
                     break;
                 case "REMOTE_REVISION":
                     this.waitingAck = false;
@@ -19325,7 +19546,7 @@
                 dataSets: definition.dataSets
                     .map((range) => toZone(range))
                     .map((zone) => transformZone(zone, executed))
-                    .filter(isDefined$1)
+                    .filter(isDefined)
                     .map(zoneToXc),
                 labelRange: labelZone ? zoneToXc(labelZone) : undefined,
             },
@@ -19384,7 +19605,7 @@
         for (const executedCommand of executed) {
             transformedCommands = transformedCommands
                 .map((cmd) => transform(cmd, executedCommand))
-                .filter(isDefined$1);
+                .filter(isDefined);
         }
         return transformedCommands;
     }
@@ -19447,7 +19668,7 @@
                     }
                     return element;
                 })
-                    .filter(isDefined$1);
+                    .filter(isDefined);
             }
             if (executed.type === "ADD_COLUMNS_ROWS") {
                 const base = executed.position === "before" ? executed.base - 1 : executed.base;
@@ -20275,7 +20496,7 @@
      * It maintains the local undo and redo stack to allow to undo/redo only local
      * changes
      */
-    class LocalHistory extends owl.core.EventBus {
+    class LocalHistory extends owl__namespace.core.EventBus {
         constructor(dispatch, session) {
             super();
             this.dispatch = dispatch;
@@ -20294,8 +20515,8 @@
              */
             this.isWaitingForUndoRedo = false;
             this.session.on("new-local-state-update", this, this.onNewLocalStateUpdate);
-            this.session.on("revision-undone", this, this.selectiveUndo);
-            this.session.on("revision-redone", this, this.selectiveRedo);
+            this.session.on("revision-undone", this, ({ commands }) => this.selectiveUndo(commands));
+            this.session.on("revision-redone", this, ({ commands }) => this.selectiveRedo(commands));
             this.session.on("snapshot", this, () => {
                 this.undoStack = [];
                 this.redoStack = [];
@@ -20304,31 +20525,34 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 42 /* WaitingSessionConfirmation */;
+                return 41 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
-                case "UNDO":
+                case "REQUEST_UNDO":
                     if (!this.canUndo()) {
                         return 5 /* EmptyUndoStack */;
                     }
                     break;
-                case "REDO":
+                case "REQUEST_REDO":
                     if (!this.canRedo()) {
                         return 6 /* EmptyRedoStack */;
                     }
                     break;
             }
+            return 0 /* Success */;
+        }
+        beforeHandle(cmd) { }
+        handle(cmd) {
             switch (cmd.type) {
-                case "UNDO":
-                case "REDO":
+                case "REQUEST_UNDO":
+                case "REQUEST_REDO":
                     // History changes (undo & redo) are *not* applied optimistically on the local state.
                     // We wait a global confirmation from the server. The goal is to avoid handling concurrent
                     // history changes on multiple clients which are very hard to manage correctly.
-                    this.requestHistoryChange(cmd.type);
-                    return 42 /* WaitingSessionConfirmation */;
+                    this.requestHistoryChange(cmd.type === "REQUEST_UNDO" ? "UNDO" : "REDO");
             }
-            return 0 /* Success */;
         }
+        finalize() { }
         requestHistoryChange(type) {
             const id = type === "UNDO" ? this.undoStack.pop() : this.redoStack.pop();
             if (!id) {
@@ -20357,12 +20581,12 @@
                 this.undoStack.shift();
             }
         }
-        selectiveUndo() {
-            this.dispatch("UNDO");
+        selectiveUndo(commands) {
+            this.dispatch("UNDO", { commands });
             this.isWaitingForUndoRedo = false;
         }
-        selectiveRedo() {
-            this.dispatch("REDO");
+        selectiveRedo(commands) {
+            this.dispatch("REDO", { commands });
             this.isWaitingForUndoRedo = false;
         }
     }
@@ -20388,6 +20612,9 @@
                     cmd.elements.sort((a, b) => b - a);
                     const groups = groupConsecutive(cmd.elements);
                     this.executeOnAllRanges((range) => {
+                        if (range.sheetId !== cmd.sheetId) {
+                            return { changeType: "NONE" };
+                        }
                         let newRange = range;
                         let changeType = "NONE";
                         for (let group of groups) {
@@ -20415,6 +20642,9 @@
                     let end = cmd.dimension === "COL" ? "right" : "bottom";
                     let dimension = cmd.dimension === "COL" ? "columns" : "rows";
                     this.executeOnAllRanges((range) => {
+                        if (range.sheetId !== cmd.sheetId) {
+                            return { changeType: "NONE" };
+                        }
                         if (cmd.position === "after") {
                             if (range.zone[start] <= cmd.base && cmd.base < range.zone[end]) {
                                 return {
@@ -20449,6 +20679,9 @@
                 }
                 case "DELETE_SHEET": {
                     this.executeOnAllRanges((range) => {
+                        if (range.sheetId !== cmd.sheetId) {
+                            return { changeType: "NONE" };
+                        }
                         range = {
                             ...range,
                             zone: { ...range.zone },
@@ -20736,7 +20969,7 @@
         Status[Status["Finalizing"] = 3] = "Finalizing";
         Status[Status["Interactive"] = 4] = "Interactive";
     })(Status || (Status = {}));
-    class Model extends owl.core.EventBus {
+    class Model extends owl__namespace.core.EventBus {
         constructor(data = {}, config = {}, stateUpdateMessages = []) {
             super();
             this.corePlugins = [];
@@ -20871,7 +21104,7 @@
             }
         }
         get handlers() {
-            return [this.range, ...this.corePlugins, ...this.uiPlugins];
+            return [this.range, ...this.corePlugins, ...this.uiPlugins, this.history];
         }
         leaveSession() {
             this.session.leave();
@@ -20959,7 +21192,7 @@
          * Check if the given command is allowed by all the plugins and the history.
          */
         checkDispatchAllowed(command) {
-            for (let handler of [this.history, ...this.handlers]) {
+            for (let handler of this.handlers) {
                 const allowDispatch = handler.allowDispatch(command);
                 if (allowDispatch !== 0 /* Success */) {
                     return allowDispatch;
@@ -21047,8 +21280,8 @@
         return !!ev.target && parent.contains(ev.target);
     }
 
-    const { xml: xml$7, css: css$6 } = owl.tags;
-    const { useExternalListener: useExternalListener$2, useRef } = owl.hooks;
+    const { xml: xml$e, css: css$e } = owl.tags;
+    const { useExternalListener: useExternalListener$3, useRef: useRef$5 } = owl.hooks;
     const MENU_WIDTH = 200;
     const MENU_ITEM_HEIGHT = 32;
     const SEPARATOR_BORDER_WIDTH = 1;
@@ -21057,7 +21290,7 @@
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$6 = xml$7 /* xml */ `
+    const TEMPLATE$c = xml$e /* xml */ `
     <div>
       <div class="o-menu" t-att-style="style" t-on-scroll="onScroll" t-on-wheel.stop="">
         <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
@@ -21089,7 +21322,7 @@
         t-ref="subMenuRef"
         t-on-close="subMenu.isOpen=false"/>
     </div>`;
-    const CSS$5 = css$6 /* scss */ `
+    const CSS$c = css$e /* scss */ `
   .o-menu {
     position: absolute;
     width: ${MENU_WIDTH}px;
@@ -21142,9 +21375,9 @@
     class Menu extends owl.Component {
         constructor() {
             super(...arguments);
-            this.subMenuRef = useRef("subMenuRef");
-            useExternalListener$2(window, "click", this.onClick);
-            useExternalListener$2(window, "contextmenu", this.onContextMenu);
+            this.subMenuRef = useRef$5("subMenuRef");
+            useExternalListener$3(window, "click", this.onClick);
+            useExternalListener$3(window, "contextmenu", this.onContextMenu);
             this.subMenu = owl.useState({
                 isOpen: false,
                 position: null,
@@ -21304,20 +21537,20 @@
             }
         }
     }
-    Menu.template = TEMPLATE$6;
+    Menu.template = TEMPLATE$c;
     Menu.components = { Menu };
-    Menu.style = CSS$5;
+    Menu.style = CSS$c;
     Menu.defaultProps = {
         depth: 1,
     };
 
-    const { Component: Component$7 } = owl__namespace;
-    const { xml: xml$8, css: css$7 } = owl.tags;
-    const { useState: useState$5 } = owl.hooks;
+    const { Component: Component$b } = owl__namespace;
+    const { xml: xml$d, css: css$d } = owl__namespace.tags;
+    const { useState: useState$c } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$7 = xml$8 /* xml */ `
+    const TEMPLATE$b = xml$d /* xml */ `
   <div class="o-spreadsheet-bottom-bar">
     <div class="o-sheet-item o-add-sheet" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
@@ -21340,7 +21573,7 @@
           menuItems="menuState.menuItems"
           t-on-close="menuState.isOpen=false"/>
   </div>`;
-    const CSS$6 = css$7 /* scss */ `
+    const CSS$b = css$d /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
     padding-left: ${HEADER_WIDTH}px;
@@ -21420,11 +21653,11 @@
     }
   }
 `;
-    class BottomBar extends Component$7 {
+    class BottomBar extends Component$b {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.menuState = useState$5({ isOpen: false, position: null, menuItems: [] });
+            this.menuState = useState$c({ isOpen: false, position: null, menuItems: [] });
         }
         mounted() {
             this.focusSheet();
@@ -21499,8 +21732,8 @@
             this.openContextMenu(ev.currentTarget, sheetMenuRegistry);
         }
     }
-    BottomBar.template = TEMPLATE$7;
-    BottomBar.style = CSS$6;
+    BottomBar.template = TEMPLATE$b;
+    BottomBar.style = CSS$b;
     BottomBar.components = { Menu };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -21518,13 +21751,13 @@
         window.addEventListener("mousemove", onMouseMove);
     }
 
-    const { Component: Component$8 } = owl__namespace;
-    const { xml: xml$9, css: css$8 } = owl.tags;
-    const { useState: useState$6 } = owl.hooks;
+    const { Component: Component$a } = owl__namespace;
+    const { xml: xml$c, css: css$c } = owl__namespace.tags;
+    const { useState: useState$b } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$8 = xml$9 /* xml */ `
+    const TEMPLATE$a = xml$c /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
     <t t-set="tooltip" t-value="getTooltip()"/>
@@ -21533,7 +21766,7 @@
     </div>
   </div>
 `;
-    const CSS$7 = css$8 /* scss */ `
+    const CSS$a = css$c /* scss */ `
   .o-autofill {
     height: 6px;
     width: 6px;
@@ -21562,10 +21795,10 @@
     }
   }
 `;
-    class Autofill extends Component$8 {
+    class Autofill extends Component$a {
         constructor() {
             super(...arguments);
-            this.state = useState$6({
+            this.state = useState$b({
                 position: { left: 0, top: 0 },
                 handler: false,
             });
@@ -21624,17 +21857,17 @@
             this.env.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = TEMPLATE$8;
-    Autofill.style = CSS$7;
-    class TooltipComponent extends Component$8 {
+    Autofill.template = TEMPLATE$a;
+    Autofill.style = CSS$a;
+    class TooltipComponent extends Component$a {
     }
-    TooltipComponent.template = xml$9 /* xml */ `
+    TooltipComponent.template = xml$c /* xml */ `
     <div t-esc="props.content"/>
   `;
 
     const { Component: Component$9 } = owl__namespace;
-    const { css: css$9, xml: xml$a } = owl.tags;
-    const TEMPLATE$9 = xml$a /* xml */ `
+    const { css: css$b, xml: xml$b } = owl__namespace.tags;
+    const TEMPLATE$9 = xml$b /* xml */ `
   <div>
     <div
       class="o-client-tag"
@@ -21644,7 +21877,7 @@
     />
   </div>
 `;
-    const CSS$8 = css$9 /* scss */ `
+    const CSS$9 = css$b /* scss */ `
   .o-client-tag {
     position: absolute;
     border-top-left-radius: 4px;
@@ -21672,25 +21905,27 @@
         }
     }
     ClientTag.template = TEMPLATE$9;
-    ClientTag.style = CSS$8;
+    ClientTag.style = CSS$9;
 
-    const { Component: Component$a, useState: useState$7 } = owl__namespace;
-    const { xml: xml$b, css: css$a } = owl.tags;
-    const functions$4 = functionRegistry.content;
+    const { Component: Component$8, useState: useState$a } = owl__namespace;
+    const { xml: xml$a, css: css$a } = owl__namespace.tags;
+    const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
     providerRegistry.add("functions", async function () {
-        return Object.keys(functions$4).map((key) => {
+        return Object.keys(functions$1).map((key) => {
             return {
                 text: key,
-                description: functions$4[key].description,
+                description: functions$1[key].description,
             };
         });
     });
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$a = xml$b /* xml */ `
-  <div t-att-class="{'o-autocomplete-dropdown':state.values.length}" >
+    const TEMPLATE$8 = xml$a /* xml */ `
+  <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
+       t-att-style="state.values.length > 0 ? props.borderStyle : null"
+    >
     <t t-foreach="state.values" t-as="v" t-key="v.text">
         <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="fillValue(v_index)">
              <div class="o-autocomplete-value" t-esc="v.text"/>
@@ -21698,7 +21933,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$9 = css$a /* scss */ `
+    const CSS$8 = css$a /* scss */ `
   .o-autocomplete-dropdown {
     pointer-events: auto;
     background-color: #fff;
@@ -21723,10 +21958,10 @@
     }
   }
 `;
-    class TextValueProvider extends Component$a {
+    class TextValueProvider extends Component$8 {
         constructor() {
             super(...arguments);
-            this.state = useState$7({
+            this.state = useState$a({
                 values: [],
                 selectedIndex: 0,
             });
@@ -21773,8 +22008,8 @@
             }
         }
     }
-    TextValueProvider.template = TEMPLATE$a;
-    TextValueProvider.style = CSS$9;
+    TextValueProvider.template = TEMPLATE$8;
+    TextValueProvider.style = CSS$8;
 
     class ContentEditableHelper {
         constructor(el) {
@@ -21923,14 +22158,15 @@
         REPEATABLE: _lt("repeatable"),
     };
 
-    const { Component: Component$b } = owl__namespace;
-    const { xml: xml$c, css: css$b } = owl.tags;
-    const { useState: useState$8 } = owl.hooks;
+    const { Component: Component$7 } = owl__namespace;
+    const { xml: xml$9, css: css$9 } = owl__namespace.tags;
+    const { useState: useState$9 } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Formula Assistant component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$b = xml$c /* xml */ `
+    const TEMPLATE$7 = xml$9 /* xml */ `
   <div class="o-formula-assistant-container"
+       t-att-style="props.borderStyle"
        t-att-class="{
          'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind,
          'o-formula-assistant-event-auto': !assistantState.allowCellSelectionBehind
@@ -21981,7 +22217,7 @@
     </div>
   </div>
 `;
-    const CSS$a = css$b /* scss */ `
+    const CSS$7 = css$9 /* scss */ `
   .o-formula-assistant {
     white-space: normal;
     background-color: #fff;
@@ -22029,10 +22265,10 @@
     opacity: 0.3;
   }
 `;
-    class FunctionDescriptionProvider extends Component$b {
+    class FunctionDescriptionProvider extends Component$7 {
         constructor() {
             super(...arguments);
-            this.assistantState = useState$8({
+            this.assistantState = useState$9({
                 allowCellSelectionBehind: false,
             });
             this.timeOutId = 0;
@@ -22055,13 +22291,13 @@
             }, 2000);
         }
     }
-    FunctionDescriptionProvider.template = TEMPLATE$b;
-    FunctionDescriptionProvider.style = CSS$a;
+    FunctionDescriptionProvider.template = TEMPLATE$7;
+    FunctionDescriptionProvider.style = CSS$7;
 
-    const { Component: Component$c } = owl__namespace;
-    const { useRef: useRef$1, useState: useState$9 } = owl.hooks;
-    const { xml: xml$d, css: css$c } = owl.tags;
-    const functions$5 = functionRegistry.content;
+    const { Component: Component$6 } = owl__namespace;
+    const { useRef: useRef$4, useState: useState$8 } = owl__namespace.hooks;
+    const { xml: xml$8, css: css$8 } = owl__namespace.tags;
+    const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
@@ -22079,7 +22315,7 @@
         RIGHT_PAREN: FunctionColor,
         COMMA: FunctionColor,
     };
-    const TEMPLATE$c = xml$d /* xml */ `
+    const TEMPLATE$6 = xml$8 /* xml */ `
 <div class="o-composer-container">
     <div class="o-composer"
       t-att-style="props.inputStyle"
@@ -22105,6 +22341,7 @@
           search="autoCompleteState.search"
           provider="autoCompleteState.provider"
           t-on-completed="onCompleted"
+          borderStyle="borderStyle"
       />
       <FunctionDescriptionProvider
           t-if="functionDescriptionState.showDescription"
@@ -22112,11 +22349,12 @@
           functionName = "functionDescriptionState.functionName"
           functionDescription = "functionDescriptionState.functionDescription"
           argToFocus = "functionDescriptionState.argToFocus"
+          borderStyle="borderStyle"
       />
     </div>
 </div>
   `;
-    const CSS$b = css$c /* scss */ `
+    const CSS$6 = css$8 /* scss */ `
   .o-composer-container {
     padding: 0;
     margin: 0;
@@ -22136,29 +22374,29 @@
     .o-composer-assistant {
       position: absolute;
       margin: 4px;
-      box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
       pointer-events: none;
     }
   }
 `;
-    class Composer extends Component$c {
+    class Composer extends Component$6 {
         constructor() {
             super(...arguments);
-            this.composerRef = useRef$1("o_composer");
-            this.autoCompleteRef = useRef$1("o_autocomplete_provider");
+            this.composerRef = useRef$4("o_composer");
+            this.autoCompleteRef = useRef$4("o_autocomplete_provider");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.autoCompleteState = useState$9({
+            this.autoCompleteState = useState$8({
                 showProvider: false,
                 provider: "functions",
                 search: "",
             });
-            this.functionDescriptionState = useState$9({
+            this.functionDescriptionState = useState$8({
                 showDescription: false,
                 functionName: "",
                 functionDescription: {},
                 argToFocus: 0,
             });
+            this.borderStyle = `box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);`;
             // we can't allow input events to be triggered while we remove and add back the content of the composer in processContent
             this.shouldProcessInputEvents = false;
             this.tokens = [];
@@ -22459,7 +22697,7 @@
                         // initialize Formula Assistant
                         const tokenContext = tokenAtCursor.functionContext;
                         const parentFunction = tokenContext.parent.toUpperCase();
-                        const description = functions$5[parentFunction];
+                        const description = functions[parentFunction];
                         const argPosition = tokenContext.argPosition;
                         this.functionDescriptionState = {
                             functionName: parentFunction,
@@ -22520,20 +22758,20 @@
             this.contentHelper.removeSelection();
         }
     }
-    Composer.template = TEMPLATE$c;
-    Composer.style = CSS$b;
+    Composer.template = TEMPLATE$6;
+    Composer.style = CSS$6;
     Composer.components = { TextValueProvider, FunctionDescriptionProvider };
     Composer.defaultProps = {
         inputStyle: "",
         focus: false,
     };
 
-    const { Component: Component$d } = owl__namespace;
-    const { useState: useState$a } = owl.hooks;
-    const { xml: xml$e, css: css$d } = owl.tags;
-    const SCROLLBAR_WIDTH$1 = 14;
+    const { Component: Component$5 } = owl__namespace;
+    const { useState: useState$7 } = owl__namespace.hooks;
+    const { xml: xml$7, css: css$7 } = owl__namespace.tags;
+    const SCROLLBAR_WIDTH = 14;
     const SCROLLBAR_HIGHT = 15;
-    const TEMPLATE$d = xml$e /* xml */ `
+    const TEMPLATE$5 = xml$7 /* xml */ `
   <div class="o-grid-composer" t-att-style="containerStyle">
     <Composer
       focus = "props.focus"
@@ -22545,7 +22783,7 @@
   </div>
 `;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
-    const CSS$c = css$d /* scss */ `
+    const CSS$5 = css$7 /* scss */ `
   .o-grid-composer {
     box-sizing: border-box;
     position: absolute;
@@ -22556,11 +22794,11 @@
      * This component is a composer which positions itself on the grid at the anchor cell.
      * It also applies the style of the cell to the composer input.
      */
-    class GridComposer extends Component$d {
+    class GridComposer extends Component$5 {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.composerState = useState$a({
+            this.composerState = useState$7({
                 rect: null,
                 delimitation: null,
             });
@@ -22620,7 +22858,7 @@
             const el = this.el;
             const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
             el.style.maxHeight = (maxHeight + "px");
-            const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH$1;
+            const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH;
             el.style.maxWidth = (maxWidth + "px");
             this.composerState.rect = [this.rect[0], this.rect[1], el.clientWidth, el.clientHeight];
             this.composerState.delimitation = {
@@ -22636,14 +22874,14 @@
             }
         }
     }
-    GridComposer.template = TEMPLATE$d;
-    GridComposer.style = CSS$c;
+    GridComposer.template = TEMPLATE$5;
+    GridComposer.style = CSS$5;
     GridComposer.components = { Composer };
 
-    const { useState: useState$b } = owl__namespace;
-    const { xml: xml$f, css: css$e } = owl.tags;
-    const { useRef: useRef$2 } = owl.hooks;
-    const TEMPLATE$e = xml$f /* xml */ `
+    const { useState: useState$6 } = owl__namespace;
+    const { xml: xml$6, css: css$6 } = owl.tags;
+    const { useRef: useRef$3 } = owl.hooks;
+    const TEMPLATE$4 = xml$6 /* xml */ `
 <div class="o-chart-container">
   <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
   <canvas t-ref="graphContainer"/>
@@ -22655,7 +22893,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$d = css$e /* scss */ `
+    const CSS$4 = css$6 /* scss */ `
   .o-chart-container {
     width: 100%;
     height: 100%;
@@ -22683,20 +22921,31 @@
     class ChartFigure extends owl.Component {
         constructor() {
             super(...arguments);
-            this.menuState = useState$b({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = useRef$2("graphContainer");
+            this.menuState = useState$6({ isOpen: false, position: null, menuItems: [] });
+            this.canvas = useRef$3("graphContainer");
         }
         mounted() {
-            this.createChart();
+            const figure = this.props.figure;
+            const chartData = this.env.getters.getChartRuntime(figure.id);
+            if (chartData) {
+                this.createChart(chartData);
+            }
         }
         patched() {
             var _a;
             const figure = this.props.figure;
             const chartData = this.env.getters.getChartRuntime(figure.id);
             if (chartData) {
-                if (chartData.data && chartData.data.datasets) {
+                if (chartData.type !== this.chart.config.type) {
+                    // Updating a chart type requires to update its options accordingly, if feasible at all.
+                    // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
+                    // See https://www.chartjs.org/docs/latest/developers/updates.html
+                    // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
+                    this.chart && this.chart.destroy();
+                    this.createChart(chartData);
+                }
+                else if (chartData.data && chartData.data.datasets) {
                     this.chart.data = chartData.data;
-                    this.chart.config.type = chartData.type;
                     if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
                         this.chart.config.options.title = chartData.options.title;
                     }
@@ -22710,14 +22959,10 @@
                 this.chart && this.chart.destroy();
             }
         }
-        createChart() {
-            const figure = this.props.figure;
-            const chartData = this.env.getters.getChartRuntime(figure.id);
-            if (chartData) {
-                const canvas = this.canvas.el;
-                const ctx = canvas.getContext("2d");
-                this.chart = new window.Chart(ctx, chartData);
-            }
+        createChart(chartData) {
+            const canvas = this.canvas.el;
+            const ctx = canvas.getContext("2d");
+            this.chart = new window.Chart(ctx, chartData);
         }
         showMenu(ev) {
             const registry = new MenuItemRegistry();
@@ -22764,13 +23009,13 @@
             };
         }
     }
-    ChartFigure.template = TEMPLATE$e;
-    ChartFigure.style = CSS$d;
+    ChartFigure.template = TEMPLATE$4;
+    ChartFigure.style = CSS$4;
     ChartFigure.components = { Menu };
 
-    const { xml: xml$g, css: css$f } = owl.tags;
-    const { useState: useState$c } = owl__namespace;
-    const TEMPLATE$f = xml$g /* xml */ `<div>
+    const { xml: xml$5, css: css$5 } = owl__namespace.tags;
+    const { useState: useState$5 } = owl__namespace;
+    const TEMPLATE$3 = xml$5 /* xml */ `<div>
     <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div class="o-figure-wrapper"
              t-att-style="getStyle(info)"
@@ -22807,7 +23052,7 @@
     const BORDER_WIDTH = 1;
     const ACTIVE_BORDER_WIDTH = 2;
     const MIN_FIG_SIZE = 80;
-    const CSS$e = css$f /*SCSS*/ `
+    const CSS$3 = css$5 /*SCSS*/ `
   .o-figure-wrapper {
     overflow: hidden;
   }
@@ -22885,7 +23130,7 @@
         constructor() {
             super(...arguments);
             this.figureRegistry = figureRegistry;
-            this.dnd = useState$c({
+            this.dnd = useState$5({
                 figureId: "",
                 x: 0,
                 y: 0,
@@ -23037,18 +23282,18 @@
             }
         }
     }
-    FiguresContainer.template = TEMPLATE$f;
-    FiguresContainer.style = CSS$e;
+    FiguresContainer.template = TEMPLATE$3;
+    FiguresContainer.style = CSS$3;
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    const { Component: Component$e } = owl__namespace;
-    const { xml: xml$h, css: css$g } = owl.tags;
-    const { useState: useState$d } = owl.hooks;
+    const { Component: Component$4 } = owl__namespace;
+    const { xml: xml$4, css: css$4 } = owl__namespace.tags;
+    const { useState: useState$4 } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Resizer component
     // -----------------------------------------------------------------------------
-    class AbstractResizer extends Component$e {
+    class AbstractResizer extends Component$4 {
         constructor() {
             super(...arguments);
             this.PADDING = 0;
@@ -23058,7 +23303,7 @@
             this.lastElement = null;
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.state = useState$d({
+            this.state = useState$4({
                 resizerIsActive: false,
                 isResizing: false,
                 activeElement: 0,
@@ -23269,7 +23514,7 @@
             return col.start - offset - this._getHeaderSize();
         }
     }
-    ColResizer.template = xml$h /* xml */ `
+    ColResizer.template = xml$4 /* xml */ `
     <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
       t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.resizerIsActive">
@@ -23291,14 +23536,13 @@
         </t>
       </t>
     </div>`;
-    ColResizer.style = css$g /* scss */ `
+    ColResizer.style = css$4 /* scss */ `
     .o-col-resizer {
       position: absolute;
       top: 0;
       left: ${HEADER_WIDTH}px;
       right: 0;
       height: ${HEADER_HEIGHT}px;
-      overflow: hidden;
       .o-handle {
         position: absolute;
         height: ${HEADER_HEIGHT}px;
@@ -23413,7 +23657,7 @@
             return row.start - offset - this._getHeaderSize();
         }
     }
-    RowResizer.template = xml$h /* xml */ `
+    RowResizer.template = xml$4 /* xml */ `
     <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
     t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu">
       <t t-if="state.resizerIsActive">
@@ -23435,7 +23679,7 @@
         </t>
       </t>
     </div>`;
-    RowResizer.style = css$g /* scss */ `
+    RowResizer.style = css$4 /* scss */ `
     .o-row-resizer {
       position: absolute;
       top: ${HEADER_HEIGHT}px;
@@ -23443,7 +23687,6 @@
       right: 0;
       width: ${HEADER_WIDTH}px;
       height: 100%;
-      overflow: hidden;
       .o-handle {
         position: absolute;
         height: 4px;
@@ -23478,18 +23721,18 @@
       }
     }
   `;
-    class Overlay extends Component$e {
+    class Overlay extends Component$4 {
         selectAll() {
             this.env.dispatch("SELECT_ALL");
         }
     }
-    Overlay.template = xml$h /* xml */ `
+    Overlay.template = xml$4 /* xml */ `
     <div class="o-overlay">
       <ColResizer />
       <RowResizer />
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
-    Overlay.style = css$g /* scss */ `
+    Overlay.style = css$4 /* scss */ `
     .o-overlay {
       .all {
         position: absolute;
@@ -23531,10 +23774,10 @@
      * - a horizontal resizer (to resize columns)
      * - a vertical resizer (same, for rows)
      */
-    const { Component: Component$f, useState: useState$e } = owl__namespace;
-    const { xml: xml$i, css: css$h } = owl.tags;
-    const { useRef: useRef$3, onMounted, onWillUnmount, useExternalListener: useExternalListener$3 } = owl.hooks;
-    const registries = {
+    const { Component: Component$3, useState: useState$3 } = owl__namespace;
+    const { xml: xml$3, css: css$3 } = owl__namespace.tags;
+    const { useRef: useRef$2, onMounted, onWillUnmount, useExternalListener: useExternalListener$2 } = owl__namespace.hooks;
+    const registries$1 = {
         ROW: rowMenuRegistry,
         COL: colMenuRegistry,
         CELL: cellMenuRegistry,
@@ -23544,10 +23787,10 @@
     // and also should not result in typing the character C or V in the composer
     const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
     function useCellHovered(env, getViewPort) {
-        const hoveredPosition = useState$e({});
+        const hoveredPosition = useState$3({});
         const { browser, getters } = env;
         const { Date, setInterval, clearInterval } = browser;
-        const canvasRef = useRef$3("canvas");
+        const canvasRef = useRef$2("canvas");
         let x = 0;
         let y = 0;
         let lastMoved = 0;
@@ -23589,7 +23832,7 @@
         return hoveredPosition;
     }
     function useTouchMove(handler, canMoveUp) {
-        const canvasRef = useRef$3("canvas");
+        const canvasRef = useRef$2("canvas");
         let x = null;
         let y = null;
         function onTouchStart(ev) {
@@ -23632,7 +23875,7 @@
     // -----------------------------------------------------------------------------
     // TEMPLATE
     // -----------------------------------------------------------------------------
-    const TEMPLATE$g = xml$i /* xml */ `
+    const TEMPLATE$2 = xml$3 /* xml */ `
   <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel">
     <t t-if="getters.getEditionMode() !== 'inactive'">
       <GridComposer
@@ -23677,7 +23920,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$f = css$h /* scss */ `
+    const CSS$2 = css$3 /* scss */ `
   .o-grid {
     position: relative;
     overflow: hidden;
@@ -23707,14 +23950,14 @@
       z-index: 2;
       &.vertical {
         right: 0;
-        top: ${SCROLLBAR_WIDTH + 1}px;
+        top: ${SCROLLBAR_WIDTH$1 + 1}px;
         bottom: 15px;
         width: 15px;
       }
       &.horizontal {
         bottom: 0;
         height: 15px;
-        right: ${SCROLLBAR_WIDTH + 1}px;
+        right: ${SCROLLBAR_WIDTH$1 + 1}px;
         left: ${HEADER_WIDTH}px;
       }
     }
@@ -23723,17 +23966,17 @@
     // -----------------------------------------------------------------------------
     // JS
     // -----------------------------------------------------------------------------
-    class Grid extends Component$f {
+    class Grid extends Component$3 {
         constructor() {
             super(...arguments);
-            this.menuState = useState$e({
+            this.menuState = useState$3({
                 isOpen: false,
                 position: null,
                 menuItems: [],
             });
-            this.vScrollbarRef = useRef$3("vscrollbar");
-            this.hScrollbarRef = useRef$3("hscrollbar");
-            this.canvas = useRef$3("canvas");
+            this.vScrollbarRef = useRef$2("vscrollbar");
+            this.hScrollbarRef = useRef$2("hscrollbar");
+            this.canvas = useRef$2("canvas");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.currentSheet = this.getters.getActiveSheetId();
@@ -23758,8 +24001,8 @@
                 "CTRL+S": () => {
                     this.trigger("save-requested");
                 },
-                "CTRL+Z": () => this.dispatch("UNDO"),
-                "CTRL+Y": () => this.dispatch("REDO"),
+                "CTRL+Z": () => this.dispatch("REQUEST_UNDO"),
+                "CTRL+Y": () => this.dispatch("REQUEST_REDO"),
                 "CTRL+B": () => this.dispatch("SET_FORMATTING", {
                     sheetId: this.getters.getActiveSheetId(),
                     target: this.getters.getSelectedZones(),
@@ -23793,7 +24036,7 @@
             this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
             this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
             useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
-            useExternalListener$3(window, "resize", this.resizeGrid.bind(this));
+            useExternalListener$2(window, "resize", this.resizeGrid.bind(this));
         }
         get errorTooltip() {
             const { col, row } = this.hoveredCell;
@@ -23808,9 +24051,9 @@
                 const { width: viewportWidth, height: viewportHeight } = this.getters.getViewportDimension();
                 const [x, y, width, height] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 const hAlign = x + width + 200 < viewportWidth ? "left" : "right";
-                const hOffset = hAlign === "left" ? x + width : viewportWidth - x + (SCROLLBAR_WIDTH + 2);
+                const hOffset = hAlign === "left" ? x + width : viewportWidth - x + (SCROLLBAR_WIDTH$1 + 2);
                 const vAlign = y + 120 < viewportHeight ? "top" : "bottom";
-                const vOffset = vAlign === "top" ? y : viewportHeight - y - height + (SCROLLBAR_WIDTH + 2);
+                const vOffset = vAlign === "top" ? y : viewportHeight - y - height + (SCROLLBAR_WIDTH$1 + 2);
                 return {
                     isOpen: true,
                     style: `${hAlign}:${hOffset}px;${vAlign}:${vOffset}px`,
@@ -23836,8 +24079,8 @@
         }
         resizeGrid() {
             this.dispatch("RESIZE_VIEWPORT", {
-                height: this.el.clientHeight - SCROLLBAR_WIDTH,
-                width: this.el.clientWidth - SCROLLBAR_WIDTH,
+                height: this.el.clientHeight - SCROLLBAR_WIDTH$1,
+                width: this.el.clientWidth - SCROLLBAR_WIDTH$1,
             });
         }
         onScroll() {
@@ -24082,19 +24325,19 @@
                 width: this.el.clientWidth,
                 height: this.el.clientHeight,
             };
-            this.menuState.menuItems = registries[type]
+            this.menuState.menuItems = registries$1[type]
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
     }
-    Grid.template = TEMPLATE$g;
-    Grid.style = CSS$f;
+    Grid.template = TEMPLATE$2;
+    Grid.style = CSS$2;
     Grid.components = { GridComposer, Overlay, Menu, Autofill, FiguresContainer, ClientTag };
 
-    const { Component: Component$g } = owl__namespace;
-    const { xml: xml$j, css: css$i } = owl.tags;
-    const { useState: useState$f } = owl.hooks;
-    const TEMPLATE$h = xml$j /* xml */ `
+    const { Component: Component$2 } = owl__namespace;
+    const { xml: xml$2, css: css$2 } = owl__namespace.tags;
+    const { useState: useState$2 } = owl__namespace.hooks;
+    const TEMPLATE$1 = xml$2 /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
@@ -24107,7 +24350,7 @@
       <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
     </div>
   </div>`;
-    const CSS$g = css$i /* scss */ `
+    const CSS$1 = css$2 /* scss */ `
   .o-sidePanel {
     display: flex;
     flex-direction: column;
@@ -24198,10 +24441,10 @@
     }
   }
 `;
-    class SidePanel extends Component$g {
+    class SidePanel extends Component$2 {
         constructor() {
             super(...arguments);
-            this.state = useState$f({
+            this.state = useState$2({
                 panel: sidePanelRegistry.get(this.props.component),
             });
         }
@@ -24214,12 +24457,12 @@
                 : this.state.panel.title;
         }
     }
-    SidePanel.template = TEMPLATE$h;
-    SidePanel.style = CSS$g;
+    SidePanel.template = TEMPLATE$1;
+    SidePanel.style = CSS$1;
 
-    const { Component: Component$h, useState: useState$g, hooks: hooks$2 } = owl__namespace;
-    const { xml: xml$k, css: css$j } = owl.tags;
-    const { useExternalListener: useExternalListener$4, useRef: useRef$4 } = hooks$2;
+    const { Component: Component$1, useState: useState$1, hooks } = owl__namespace;
+    const { xml: xml$1, css: css$1 } = owl__namespace.tags;
+    const { useExternalListener: useExternalListener$1, useRef: useRef$1 } = hooks;
     const FORMATS = [
         { name: "general", text: "General (no specific format)" },
         { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
@@ -24232,7 +24475,7 @@
     // -----------------------------------------------------------------------------
     // TopBar
     // -----------------------------------------------------------------------------
-    class TopBar extends Component$h {
+    class TopBar extends Component$1 {
         constructor() {
             super(...arguments);
             this.formats = FORMATS;
@@ -24241,7 +24484,7 @@
             this.dispatch = this.env.dispatch;
             this.getters = this.env.getters;
             this.style = {};
-            this.state = useState$g({
+            this.state = useState$1({
                 menuState: { isOpen: false, position: null, menuItems: [] },
                 activeTool: "",
             });
@@ -24255,14 +24498,14 @@
             this.fillColor = "white";
             this.textColor = "black";
             this.menus = [];
-            this.menuRef = useRef$4("menuRef");
+            this.menuRef = useRef$1("menuRef");
             this.composerStyle = `
     line-height: 34px;
     border-bottom: 1px solid #e0e2e4;
     border-left: 1px solid #e0e2e4;
     background-color: white;
   `;
-            useExternalListener$4(window, "click", this.onClick);
+            useExternalListener$1(window, "click", this.onClick);
         }
         get topbarComponents() {
             return topbarComponentRegistry
@@ -24416,13 +24659,13 @@
             this.closeMenus();
         }
         undo() {
-            this.dispatch("UNDO");
+            this.dispatch("REQUEST_UNDO");
         }
         redo() {
-            this.dispatch("REDO");
+            this.dispatch("REQUEST_REDO");
         }
     }
-    TopBar.template = xml$k /* xml */ `
+    TopBar.template = xml$1 /* xml */ `
     <div class="o-spreadsheet-topbar">
       <div class="o-topbar-top">
         <!-- Menus -->
@@ -24532,7 +24775,7 @@
 
       </div>
     </div>`;
-    TopBar.style = css$j /* scss */ `
+    TopBar.style = css$1 /* scss */ `
     .o-spreadsheet-topbar {
       background-color: white;
       display: flex;
@@ -24699,14 +24942,14 @@
   `;
     TopBar.components = { ColorPicker, Menu, Composer };
 
-    const { Component: Component$i, useState: useState$h } = owl__namespace;
-    const { useRef: useRef$5, useExternalListener: useExternalListener$5 } = owl.hooks;
-    const { xml: xml$l, css: css$k } = owl.tags;
-    const { useSubEnv } = owl.hooks;
+    const { Component, useState } = owl__namespace;
+    const { useRef, useExternalListener } = owl__namespace.hooks;
+    const { xml, css } = owl__namespace.tags;
+    const { useSubEnv } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$i = xml$l /* xml */ `
+    const TEMPLATE = xml /* xml */ `
   <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
     <TopBar
       t-on-click="focusGrid"
@@ -24726,7 +24969,7 @@
            panelProps="sidePanel.panelProps"/>
     <BottomBar t-on-click="focusGrid" class="o-two-columns"/>
   </div>`;
-    const CSS$h = css$k /* scss */ `
+    const CSS = css /* scss */ `
   .o-spreadsheet {
     display: grid;
     grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
@@ -24753,7 +24996,7 @@
   }
 `;
     const t = (s) => s;
-    class Spreadsheet extends Component$i {
+    class Spreadsheet extends Component {
         constructor() {
             super(...arguments);
             this.model = new Model(this.props.data, {
@@ -24767,9 +25010,9 @@
                 isReadonly: this.props.isReadonly,
                 snapshotRequested: this.props.snapshotRequested,
             }, this.props.stateUpdateMessages);
-            this.grid = useRef$5("grid");
-            this.sidePanel = useState$h({ isOpen: false, panelProps: {} });
-            this.composer = useState$h({
+            this.grid = useRef("grid");
+            this.sidePanel = useState({ isOpen: false, panelProps: {} });
+            this.composer = useState({
                 topBar: false,
                 grid: false,
             });
@@ -24790,12 +25033,12 @@
                 clipboard: navigator.clipboard,
                 export: this.model.exportData.bind(this.model),
             });
-            useExternalListener$5(window, "resize", this.render);
-            useExternalListener$5(document.body, "cut", this.copy.bind(this, true));
-            useExternalListener$5(document.body, "copy", this.copy.bind(this, false));
-            useExternalListener$5(document.body, "paste", this.paste);
-            useExternalListener$5(document.body, "keyup", this.onKeyup.bind(this));
-            useExternalListener$5(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
+            useExternalListener(window, "resize", this.render);
+            useExternalListener(document.body, "cut", this.copy.bind(this, true));
+            useExternalListener(document.body, "copy", this.copy.bind(this, false));
+            useExternalListener(document.body, "paste", this.paste);
+            useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
+            useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
         }
         get focusTopBarComposer() {
             return this.model.getters.getEditionMode() !== "inactive" && this.composer.topBar;
@@ -24923,8 +25166,8 @@
             }
         }
     }
-    Spreadsheet.template = TEMPLATE$i;
-    Spreadsheet.style = CSS$h;
+    Spreadsheet.template = TEMPLATE;
+    Spreadsheet.style = CSS;
     Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel };
     Spreadsheet._t = t;
 
@@ -24944,9 +25187,9 @@
         BOTTOMBAR_HEIGHT,
         DEFAULT_CELL_WIDTH,
         DEFAULT_CELL_HEIGHT,
-        SCROLLBAR_WIDTH,
+        SCROLLBAR_WIDTH: SCROLLBAR_WIDTH$1,
     };
-    const registries$1 = {
+    const registries = {
         autofillModifiersRegistry,
         autofillRulesRegistry,
         cellMenuRegistry,
@@ -24993,14 +25236,14 @@
     exports.normalize = normalize;
     exports.parse = parse;
     exports.readonlyAllowedCommands = readonlyAllowedCommands;
-    exports.registries = registries$1;
+    exports.registries = registries;
     exports.setTranslationMethod = setTranslationMethod;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-05-12T10:46:29.226Z';
-    exports.__info__.hash = 'b23b50b';
+    exports.__info__.date = '2021-05-25T12:51:50.572Z';
+    exports.__info__.hash = '042718c';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

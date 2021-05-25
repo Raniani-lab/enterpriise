@@ -602,9 +602,9 @@ module("documents_spreadsheet > pivot_global_filters", {
                 },
             });
             assert.equal(model.getters.getGlobalFilters().length, 1);
-            model.dispatch("UNDO");
+            model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters().length, 0);
-            model.dispatch("REDO");
+            model.dispatch("REQUEST_REDO");
             assert.equal(model.getters.getGlobalFilters().length, 1);
         }
     );
@@ -629,9 +629,9 @@ module("documents_spreadsheet > pivot_global_filters", {
             });
             model.dispatch("REMOVE_PIVOT_FILTER", { id: "42" });
             assert.equal(model.getters.getGlobalFilters().length, 0);
-            model.dispatch("UNDO");
+            model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters().length, 1);
-            model.dispatch("REDO");
+            model.dispatch("REQUEST_REDO");
             assert.equal(model.getters.getGlobalFilters().length, 0);
         }
     );
@@ -668,9 +668,9 @@ module("documents_spreadsheet > pivot_global_filters", {
                 },
             });
             assert.equal(model.getters.getGlobalFilters()[0].label, "Arthouuuuuur");
-            model.dispatch("UNDO");
+            model.dispatch("REQUEST_UNDO");
             assert.equal(model.getters.getGlobalFilters()[0].label, "Cuillère");
-            model.dispatch("REDO");
+            model.dispatch("REQUEST_REDO");
             assert.equal(model.getters.getGlobalFilters()[0].label, "Arthouuuuuur");
         }
     );

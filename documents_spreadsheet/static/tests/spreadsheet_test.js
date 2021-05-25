@@ -591,7 +591,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await reinsertPivot1.action(env);
         assert.equal(getCellFormula(model, "E10"), `=PIVOT("1","probability","bar","110","foo","1")`,
             "It should contain a pivot formula");
-        model.dispatch("UNDO");
+        model.dispatch("REQUEST_UNDO");
         assert.notOk(model.getters.getCell(sheetId, 4, 9), "It should have removed the re-inserted pivot");
         actionManager.destroy();
     });
@@ -1227,9 +1227,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.containsOnce(document.body, ".o_pivot_table_dialog");
         await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
         assert.equal(getCellFormula(model, "D8"), getCellFormula(model, "B1"));
-        model.dispatch("UNDO");
+        model.dispatch("REQUEST_UNDO");
         assert.equal(model.getters.getCell(sheetId, 3, 7), undefined);
-        model.dispatch("REDO");
+        model.dispatch("REQUEST_REDO");
         assert.equal(getCellFormula(model, "D8"), getCellFormula(model, "B1"));
         actionManager.destroy();
     });

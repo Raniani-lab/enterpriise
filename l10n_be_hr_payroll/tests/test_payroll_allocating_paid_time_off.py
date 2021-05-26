@@ -75,23 +75,24 @@ class TestPayrollAllocatingPaidTimeOff(TestPayrollCommon):
 
         After the calculation done in test above, we need to convert 121.6 in days for the mid time of John, that is :
         121.6 / (19 hours per week / 3 days) = 19.2 days (we round to 19 days)
+        But since an employee should never have more than 4 weeks of paid time off, his total is reduced to 4 weeks of 3 days a week aka 12 days
         """
         self.assertEqual(len(self.wizard.alloc_employee_ids), 2, "Normally, we should find 2 employees to allocate their paid time off for the next period")
 
         alloc_employee = self.wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id == self.employee_georges.id)
-        self.assertEqual(alloc_employee.paid_time_off_to_allocate, 15, "With a 4/5 time in this period, Georges could have 16 days of paid time off but his working schedule in last period allow him 15 days")
+        self.assertEqual(alloc_employee.paid_time_off_to_allocate, 14.5, "With a 4/5 time in this period, Georges could have 16 days of paid time off but his working schedule in last period allow him 14.5 days")
 
         alloc_employee = self.wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id == self.employee_john.id)
-        self.assertEqual(alloc_employee.paid_time_off_to_allocate, 19, "With a mid-time in this period, John Doe should have 19 half days of paid time off but we must retain that he could have 16 days at total this period")
+        self.assertEqual(alloc_employee.paid_time_off_to_allocate, 10, "With a mid-time in this period, John Doe should have 10 half days of paid time off but we must retain that he could have 16 days at total this period")
 
         view = self.wizard.generate_allocation()
         allocations = self.env['hr.leave.allocation'].search(view['domain'])
         georges_allocation = allocations.filtered(lambda alloc: alloc.employee_id.id == self.employee_georges.id)
 
-        self.assertEqual(georges_allocation.number_of_days, 15)
+        self.assertEqual(georges_allocation.number_of_days, 14.5)
         self.assertAlmostEqual(georges_allocation.max_leaves_allocated, 15 * 7.6, places=0, msg="based on the last year, we retain that Georges can have at most 16 days of paid time off")
 
         john_allocation = allocations.filtered(lambda alloc: alloc.employee_id.id == self.employee_john.id)
 
-        self.assertEqual(john_allocation.number_of_days, 19)
+        self.assertEqual(john_allocation.number_of_days, 10)
         self.assertAlmostEqual(john_allocation.max_leaves_allocated, 16 * 7.6, places=0)

@@ -11,7 +11,6 @@ export class NewViewDialog extends ConfirmationDialog {
         this.studio = useService("studio");
         this.user = useService("user");
         this.mandatoryStopDate = ["gantt", "cohort"].includes(this.viewType);
-        this.bodyTemplate = "web_studio.NewViewFieldsSelector";
 
         this.props.title = sprintf(this.env._t("Generate %s View"), this.viewType);
 
@@ -88,7 +87,8 @@ export class NewViewDialog extends ConfirmationDialog {
         super._confirm();
     }
 }
-NewViewDialog.template = "web_studio.OwlNewViewDialog";
+NewViewDialog.bodyTemplate = "web_studio.NewViewFieldsSelector";
+NewViewDialog.footerTemplate = "web_studio.OwlNewViewDialogFooter";
 NewViewDialog.GROUPABLE_TYPES = ["many2one", "char", "boolean", "selection", "date", "datetime"];
 NewViewDialog.MEASURABLE_TYPES = ["integer", "float"];
 NewViewDialog.props = Object.assign(Object.create(ConfirmationDialog.props), {

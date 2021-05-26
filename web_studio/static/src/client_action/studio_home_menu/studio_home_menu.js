@@ -4,6 +4,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/service_hook";
 import { IconCreator } from "../icon_creator/icon_creator";
 import { NotEditableActionError } from "../../studio_service";
+import { _lt } from "@web/core/l10n/translation";
 
 const NEW_APP_BUTTON = {
     isNewAppButton: true,
@@ -11,6 +12,13 @@ const NEW_APP_BUTTON = {
     webIconData: "/web_studio/static/src/img/default_icon_app.png",
 };
 
+class StudioHomeMenuDialog extends Dialog {}
+StudioHomeMenuDialog.title = _lt("Edit Application Icon");
+StudioHomeMenuDialog.contentClass = "o_web_studio_edit_menu_icon_modal";
+StudioHomeMenuDialog.size = "modal-md";
+StudioHomeMenuDialog.bodyTemplate = "web_studio.StudioHomeMenuDialogBody";
+StudioHomeMenuDialog.footerTemplate = "web_studio.StudioHomeMenuDialogFooter";
+StudioHomeMenuDialog.components = Object.assign({}, Dialog.components, { IconCreator });
 /**
  * Studio home menu
  *
@@ -42,6 +50,9 @@ export class StudioHomeMenu extends HomeMenu {
 
         this.state.iconCreatorDialogShown = false;
         this.state.editedAppData = {};
+        this._closeDialog = this._closeDialog.bind(this);
+        this._onSave = this._onSave.bind(this);
+        this._onIconChanged = this._onIconChanged.bind(this);
     }
 
     mounted() {
@@ -199,8 +210,7 @@ export class StudioHomeMenu extends HomeMenu {
 }
 
 StudioHomeMenu.components = Object.assign({}, HomeMenu.components, {
-    IconCreator,
-    Dialog,
+    StudioHomeMenuDialog,
 });
 StudioHomeMenu.props = { apps: HomeMenu.props.apps };
 StudioHomeMenu.template = "web_studio.StudioHomeMenu";

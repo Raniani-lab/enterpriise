@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.OwlNewViewDialog" owl="1">
-  <Dialog t-props="dialogProps">
-    <t t-call="{{ bodyTemplate }}" />
-    <t t-set-slot="buttons">
-      <button class="btn btn-primary" t-on-click="_confirm">
-        Activate View
-      </button>
-      <button class="btn btn-secondary" t-on-click="_close">
-        Cancel
-      </button>
-    </t>
-  </Dialog>
+<t t-name="web_studio.OwlNewViewDialogFooter" owl="1">
+  <button class="btn btn-primary" t-on-click="_confirm">
+    Activate View
+  </button>
+  <button class="btn btn-secondary" t-on-click="close">
+    Cancel
+  </button>
 </t>
 
 <t t-name="web_studio.NewViewFieldsSelector" owl="1">

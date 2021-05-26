@@ -908,7 +908,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {integer} response.statusCode used in this function respectively
      *   stand for:
      * - 404 : Not Found
+     * - 486 : Busy Here
+     * - 487 : Request Terminated (request has terminated by bye or cancel)
      * - 488 : Not Acceptable Here
+     * - 600 : Busy Everywhere
      * - 603 : Decline
      */
     _onRejected(response) {
@@ -916,6 +919,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._stopRingtones();
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
+        if (response.statusCode === 487) {
+            this.trigger_up('sip_cancel_outgoing');
+            // Don't show an error when the user hung up on their own.
+            return;
+        }
         if (
             response.statusCode === 404 ||
             response.statusCode === 488 ||
@@ -927,8 +935,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     response.reasonPhrase),
                 { isTemporary: true });
             this.trigger_up('sip_cancel_outgoing');
-        } else if (response.statusCode === 486){
-            // 486: "Busy Here"
+        } else if (response.statusCode === 486 || response.statusCode === 600) {
             this._triggerError(
                 _t("The person you try to contact is currently unavailable."),
                 { isTemporary: true }

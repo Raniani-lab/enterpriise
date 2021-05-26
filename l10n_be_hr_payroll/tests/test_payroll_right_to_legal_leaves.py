@@ -104,9 +104,10 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
             'leave_type_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 16)
-        view = wizard.action_validate()
-        self.assertEqual(allocation.number_of_days, 16)
+        self.assertEqual(wizard.time_off_allocation, 15.5)
+        view = wizard.with_context(force_schedule=True).action_validate()
+        self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
+        self.assertEqual(allocation.number_of_days, 15.5)
 
     def test_credit_time_for_employee_test_example2(self):
         """
@@ -152,9 +153,10 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
             'leave_type_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 17)
-        view = wizard.action_validate()
-        self.assertEqual(allocation.number_of_days, 17, "15 days left becomes 12 (15 * .8) + 5 for the days already taken.")
+        self.assertEqual(wizard.time_off_allocation, 16.5)
+        view = wizard.with_context(force_schedule=True).action_validate()
+        self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
+        self.assertEqual(allocation.number_of_days, 16.5, "15 days left becomes 11.5 (15 * .78, rounded down) + 5 for the days already taken.")
 
     def test_credit_time_for_employee_test_example3(self):
         """
@@ -240,5 +242,5 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
         })
         self.assertEqual(wizard.time_off_allocation, 10 + allocation.leaves_taken) #Effectively allocation.number_of_days * 24/20 + leaves_taken
         view = wizard.with_context(force_schedule=True).action_validate()
-        self.env['l10n_be.hr.payroll.schedule.change.allocation']._cron_apply(date(2018, 4, 1))
+        self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
         self.assertEqual(allocation.number_of_days, 10 + allocation.leaves_taken, "10 days allocated by the credit + the number of leaves taken")

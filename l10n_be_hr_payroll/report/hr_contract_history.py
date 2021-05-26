@@ -21,6 +21,9 @@ class ContractHistory(models.Model):
     l10n_be_is_below_scale = fields.Boolean(
         string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')
     l10n_be_is_below_scale_warning = fields.Char(compute='_compute_l10n_be_is_below_scale')
+    has_valid_schedule_change_contract = fields.Boolean(
+        compute='_compute_has_valid_schedule_change_contract',
+        help="Whether or not the employee has a contract candidate for a working schedule change")
 
     @api.depends('contract_id')
     def _compute_l10n_be_is_below_scale(self):
@@ -53,14 +56,18 @@ class ContractHistory(models.Model):
             history.reference_monthly_wage = mapped_employee_contract[history.employee_id].time_credit_full_time_wage
             history.reference_yearly_cost = mapped_employee_contract[history.employee_id].final_yearly_costs
 
-    def action_credit_time_wizard(self):
-        self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('l10n_be_hr_payroll.credit_time_wizard_action')
-        action['context'] = {'active_id': self.contract_id.id}
-        return action
+    @api.depends('contract_ids')
+    def _compute_has_valid_schedule_change_contract(self):
+        for history in self:
+            history.has_valid_schedule_change_contract = bool(self.contract_ids.filtered(lambda c: c.state in ('draft', 'open')))
 
-    def action_exit_credit_time_wizard(self):
+    def action_work_schedule_change_wizard(self):
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('l10n_be_hr_payroll.exit_credit_time_wizard_action')
-        action['context'] = {'active_id': self.contract_id.id}
+        action = self.env['ir.actions.actions']._for_xml_id('l10n_be_hr_payroll.schedule_change_wizard_action')
+        #Use the valid contract starting on the furthest date
+        valid_contracts = self.contract_ids.filtered(lambda c: c.state in ('draft', 'open'))
+        if not valid_contracts:
+            return False
+        contract_id = valid_contracts.sorted('date_start')[-1]
+        action['context'] = {'active_id': contract_id.id}
         return action

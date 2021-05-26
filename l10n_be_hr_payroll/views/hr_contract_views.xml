@@ -20,6 +20,9 @@
             <xpath expr="//div[@name='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
             </xpath>
+            <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('country_code', '=', 'BE'), ('state', '!=', 'draft')]}</attribute>
+            </xpath>
             <page name="information" position="after">
                 <page string="Part Time" name="part_time" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <group>
@@ -37,12 +40,9 @@
             </page>
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
-                <button name="%(credit_time_wizard_action)d" string="Part Time"
-                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), '|', ('employee_id', '=', False), ('time_credit', '=', True)]}"
-                        type="action" groups="hr_contract.group_hr_contract_manager"/>
-                <button name="%(exit_credit_time_wizard_action)d" string="Full Time"
-                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), '|', ('employee_id', '=', False), ('time_credit', '=', False)]}"
-                        type="action" groups="hr_contract.group_hr_contract_manager"/>
+                <button name="%(schedule_change_wizard_action)d" string="Working Schedule Change"
+                        type="action" groups="hr_contract.group_hr_contract_manager"
+                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('state', '=', 'draft')]}"/>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="inside">
                 <label for="commission_on_target" attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('wage_type', '=', 'hourly')]}"/>

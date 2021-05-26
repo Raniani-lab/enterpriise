@@ -147,8 +147,9 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 paid_time_off_to_allocate = allocation_hours / calendar_of_company.hours_per_day if calendar_of_company.hours_per_day else 0
                 # Make sure we do not give more time than we should due to rounding
                 # (example: 2020 fulltime and starts 2021 with a part time contract would have 10.5 days which is not right)
-                # * 4 for weeks, / 2 for 2 half days composing a full day (morning, afternoon)
-                max_days_for_calendar = (len(calendar.attendance_ids) * 4) / 2
+                # * 4 for weeks, * 2 for two week calendars, / 2 for 2 half days composing a full day (morning, afternoon)
+                max_days_for_calendar = (len(calendar.attendance_ids) * 4) / 2 if not calendar.two_weeks_calendar\
+                    else (len(calendar.attendance_ids) * 2 / 2)
                 if paid_time_off_to_allocate > max_days_for_calendar:
                     paid_time_off_to_allocate = max_days_for_calendar
                 else:

@@ -95,18 +95,19 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'attendance_ids': [(5, 0, 0)],
         })
 
-        wizard = self.env['l10n_be.hr.payroll.credit.time.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
+        wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
             'contract_id': self.original_contract.id,
-            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+            'absence_work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
-            'resource_calendar_id': new_calendar.id
+            'resource_calendar_id': new_calendar.id,
+            'part_time': True,
         })
-        wizard.validate_credit_time()
+        wizard.action_validate()
 
         contracts = self.env['hr.contract'].search([('employee_id', '=', self.employee.id)])
         new_contract = contracts[1]
-        self.assertEqual(len(contracts), 2)
+        self.assertEqual(len(contracts), 3)
         self.assertEqual(self.original_contract.date_end, datetime.date(2020, 3, 4))
         self.assertEqual(new_contract.date_start, datetime.date(2020, 3, 5))
         self.assertEqual(new_contract._get_contract_wage(), 0)
@@ -116,12 +117,12 @@ class TestCreditTime(AccountTestInvoicingCommon):
         # Generate Work Entries
         date_start = datetime.date(2020, 3, 1)
         date_stop = datetime.date(2020, 3, 31)
-        work_entries = contracts._generate_work_entries(date_start, date_stop)
+        work_entries = (self.original_contract | new_contract)._generate_work_entries(date_start, date_stop)
         # The work entries are generated until today, so only take those from march
         work_entries = work_entries.filtered(lambda w: w.date_start.month == 3)
 
         work_entries_1 = work_entries.filtered(lambda w: w.contract_id == self.original_contract)
-        work_entries_2 = work_entries - work_entries_1
+        work_entries_2 = work_entries.filtered(lambda w: w.contract_id == new_contract)
         self.assertEqual(len(work_entries_1), 6) # 2, 3, 4 March Morning - Afternoon
         self.assertEqual(len(work_entries_2), 38) # 5-6 (2), 9-13 (5), 16-20 (5), 23-27 (5), 30-31 (2) March Morning - Afternoon
 
@@ -222,18 +223,19 @@ class TestCreditTime(AccountTestInvoicingCommon):
             ],
         })
 
-        wizard = self.env['l10n_be.hr.payroll.credit.time.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
+        wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.env.company.ids).new({
             'contract_id': self.original_contract.id,
-            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
+            'absence_work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_credit_time').id,
             'date_start': datetime.date(2020, 3, 5),
             'date_end': datetime.date(2020, 4, 30),
-            'resource_calendar_id': new_calendar.id
+            'resource_calendar_id': new_calendar.id,
+            'part_time': True,
         })
-        wizard.validate_credit_time()
+        wizard.action_validate()
 
         contracts = self.env['hr.contract'].search([('employee_id', '=', self.employee.id)])
         new_contract = contracts[1]
-        self.assertEqual(len(contracts), 2)
+        self.assertEqual(len(contracts), 3)
         self.assertEqual(self.original_contract.date_end, datetime.date(2020, 3, 4))
         self.assertEqual(new_contract.date_start, datetime.date(2020, 3, 5))
         self.assertEqual(new_contract._get_contract_wage(), 2400)
@@ -243,7 +245,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
         # Generate Work Entries
         date_start = datetime.date(2020, 3, 1)
         date_stop = datetime.date(2020, 3, 31)
-        work_entries = contracts._generate_work_entries(date_start, date_stop)
+        work_entries = (self.original_contract | new_contract)._generate_work_entries(date_start, date_stop)
         # The work entries are generated until today, so only take those from march
         work_entries = work_entries.filtered(lambda w: w.date_start.month == 3)
 

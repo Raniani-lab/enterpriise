@@ -1285,7 +1285,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         calendar after second mo: [mo2][mo1] """
 
         self.workcenter_1.alternative_workcenter_ids = self.wc_alt_1 | self.wc_alt_2
-        self.env['mrp.workcenter'].search([]).write({'tz': 'UTC'})  # compute all date in UTC
+        self.env['mrp.workcenter'].search([]).resource_calendar_id.write({'tz': 'UTC'})  # compute all date in UTC
 
         planned_date = datetime(2023, 5, 15, 14, 0)
         mo_form = Form(self.env['mrp.production'])

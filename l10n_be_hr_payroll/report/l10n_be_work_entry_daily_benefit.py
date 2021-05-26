@@ -31,14 +31,13 @@ class l10nBeWorkEntryDailyBenefitReport(models.Model):
                            advantage.benefit_name
 
                       FROM hr_work_entry work_entry
-                      JOIN hr_contract contract ON work_entry.contract_id = contract.id
+                      JOIN hr_contract contract ON work_entry.contract_id = contract.id AND work_entry.active
                       JOIN resource_calendar calendar ON contract.resource_calendar_id = calendar.id
                       JOIN hr_work_entry_type ON work_entry.work_entry_type_id = hr_work_entry_type.id
                 CROSS JOIN LATERAL generate_series(date_trunc('day'::text, work_entry.date_start), date_trunc('day'::text, work_entry.date_stop), '1 day'::interval) day_serie(day_serie)
                 CROSS JOIN LATERAL ( VALUES ('meal_voucher'::text,hr_work_entry_type.meal_voucher), ('private_car'::text,hr_work_entry_type.private_car), ('representation_fees'::text,hr_work_entry_type.representation_fees)) advantage(benefit_name, is_applicable)
 
                      WHERE (work_entry.state::text = ANY (ARRAY['draft'::character varying::text, 'validated'::character varying::text]))
-                       AND work_entry.active = true
                        AND hr_work_entry_type.meal_voucher = true OR hr_work_entry_type.private_car = true OR hr_work_entry_type.representation_fees = true
                        AND advantage.is_applicable
 

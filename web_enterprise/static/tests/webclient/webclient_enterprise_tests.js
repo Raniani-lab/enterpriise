@@ -6,9 +6,9 @@ import {
     getActionManagerTestConfig,
     loadState,
 } from "@web/../tests/webclient/actions/helpers";
-import { DebugManager } from "@web/core/debug/debug_menu";
 import { debugService } from "@web/core/debug/debug_service";
 import { registry } from "@web/core/registry";
+import { editView } from "@web/legacy/debug_manager";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import testUtils from "web.test_utils";
@@ -367,8 +367,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         async function (assert) {
             assert.expect(9);
             serviceRegistry.add("debug", debugService);
-            registry.category("systray").add("debug", DebugManager);
-            registry.category("debug").add("item_1", () => {
+            const debugRegistry = registry.category("debug");
+            debugRegistry.category("view").add("editView", editView);
+            debugRegistry.add("item_1", () => {
                 return {
                     type: "item",
                     description: "globalItem",

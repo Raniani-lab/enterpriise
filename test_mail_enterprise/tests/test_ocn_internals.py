@@ -47,7 +47,6 @@ class TestPushNotification(MailCommon):
             ],
             'public': 'private',
             'channel_type': 'chat',
-            'email_send': False,
             'name': "Direct Message",
         })
 
@@ -57,7 +56,6 @@ class TestPushNotification(MailCommon):
                 (4, cls.user_inbox.partner_id.id),
             ],
             'public': 'public',
-            'email_send': False,
             'name': 'Channel',
         })
 

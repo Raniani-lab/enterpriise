@@ -82,6 +82,17 @@
             </field>
         </record>
 
+        <record id="crm_lead_view_pivot_forecast" model="ir.ui.view">
+            <field name="name">crm.lead.view.pivot.forecast.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_pivot_forecast"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='probability']" position="after">
+                    <field name="days_to_convert" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="crm_lead_view_graph" model="ir.ui.view">
             <field name="name">crm.lead.graph.view</field>
             <field name="model">crm.lead</field>
@@ -90,6 +101,17 @@
                     <field name="create_date" interval="week" type="row"/>
                     <field name="color" invisible="1"/>
                 </graph>
+            </field>
+        </record>
+
+        <record id="crm_lead_view_graph_forecast" model="ir.ui.view">
+            <field name="name">crm.lead.view.graph.forecast.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_graph_forecast"/>
+            <field name="arch" type="xml">
+                <xpath expr="field[@name='probability']" position="after">
+                    <field name="days_to_convert" invisible="1"/>
+                </xpath>
             </field>
         </record>
 

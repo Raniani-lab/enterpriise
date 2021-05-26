@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.tools.sql import column_exists, create_column
 
 
 class AccountMove(models.Model):
@@ -33,6 +34,11 @@ class AccountMove(models.Model):
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
+
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move_line", "intrastat_product_origin_country_id"):
+            create_column(self.env.cr, "account_move_line", "intrastat_product_origin_country_id", "int4")
+        return super()._auto_init()
 
     intrastat_transaction_id = fields.Many2one('account.intrastat.code', string='Intrastat', domain="[('type', '=', 'transaction')]")
     intrastat_product_origin_country_id = fields.Many2one('res.country', string='Product Country', compute='_compute_origin_country', store=True, readonly=False)

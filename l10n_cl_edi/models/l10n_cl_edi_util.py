@@ -196,14 +196,6 @@ class L10nClEdiUtilMixin(models.AbstractModel):
                 _('The XSD validation files from SII has not been found, please run manually the cron: "Download XSD"'))
             return True
 
-    def _add_signed_info_attr(self, data, xml_type):
-        if xml_type in ['doc', 'recep', 'token']:
-            att = 'xmlns="http://www.w3.org/2000/09/xmldsig#"'
-        else:
-            att = 'xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
-
-        return data.decode('utf-8').replace('<SignedInfo>', '<SignedInfo %s>' % att)
-
     def _sign_full_xml(self, message, digital_signature, uri, xml_type, is_doc_type_voucher=False):
         """
         Signed the xml following the SII documentation:
@@ -211,12 +203,15 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         """
         digest_value = re.sub(r'\n\s*$', '', message, flags=re.MULTILINE)
         digest_value_tree = etree.tostring(etree.fromstring(digest_value)[0])
-        signed_info = self.env.ref('l10n_cl_edi.signed_info_template')._render({
+        if xml_type in ['doc', 'recep', 'token']:
+            signed_info_template = self.env.ref('l10n_cl_edi.signed_info_template')
+        else:
+            signed_info_template = self.env.ref('l10n_cl_edi.signed_info_template_with_xsi')
+        signed_info = signed_info_template._render({
             'uri': '#{}'.format(uri),
             'digest_value': base64.b64encode(
                 self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))),
         })
-        signed_info = self._add_signed_info_attr(signed_info, xml_type)
         signed_info_c14n = etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
                                           with_comments=False, inclusive_ns_prefixes=None).decode('utf-8')
         signature = self.env.ref('l10n_cl_edi.signature_template')._render({

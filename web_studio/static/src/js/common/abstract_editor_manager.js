@@ -468,7 +468,7 @@ var AbstractEditorManager = Widget.extend({
      * @param {OdooEvent} ev
      */
     _onStudioError: function (ev) {
-        this.do_warn(_t("Error"), this.error_messages[ev.data.error]);
+        this.displayNotification({ title: _t("Error"), message: this.error_messages[ev.data.error], type: 'danger' });
     },
     /**
      * To be overriden.

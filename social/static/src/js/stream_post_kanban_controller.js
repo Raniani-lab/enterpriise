@@ -119,10 +119,10 @@ var StreamPostKanbanController = KanbanController.extend({
         if (this.renderer.state.socialAccountsStats.length > 0 || this.isSocialManager) {
             this._addNewStream();
         } else {
-            this.do_warn(
-                false,
-                _t("No social accounts configured, please contact your administrator.")
-            );
+            this.displayNotification({
+                message: _t("No social accounts configured, please contact your administrator."),
+                type: 'danger',
+            });
         }
     },
 
@@ -143,10 +143,10 @@ var StreamPostKanbanController = KanbanController.extend({
                 document.location = action.url;
             });
         } else {
-            this.do_warn(
-                false,
-                _t("Sorry, you're not allowed to re-link this account, please contact your administrator.")
-            );
+            this.displayNotification({
+                message: _t("Sorry, you're not allowed to re-link this account, please contact your administrator."),
+                type: 'danger',
+            });
         }
     },
 

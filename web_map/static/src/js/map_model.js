@@ -354,26 +354,29 @@ const MapModel = AbstractModel.extend({
     _mapBoxErrorHandling: function (err) {
         switch (err.status) {
             case 401:
-                this.do_warn(
-                    _t('Token invalid'),
-                    _t('The view has switched to another provider but functionalities will be limited')
-                );
+                this.displayNotification({
+                    title: _t('Token invalid'),
+                    message: _t('The view has switched to another provider but functionalities will be limited'),
+                    type: 'danger',
+                });
                 break;
             case 403:
-                this.do_warn(
-                    _t('Unauthorized connection'),
-                    _t('The view has switched to another provider but functionalities will be limited')
-                );
+                this.displayNotification({
+                    title: _t('Unauthorized connection'),
+                    message: _t('The view has switched to another provider but functionalities will be limited'),
+                    type: 'danger',
+                });
                 break;
             case 422:   // Max. addresses reached
             case 429:   // Max. requests reached
                 this.data.routingError = this._getErrorMessage(err.responseJSON.message);
                 break;
             case 500:
-                this.do_warn(
-                    _t('MapBox servers unreachable'),
-                    _t('The view has switched to another provider but functionalities will be limited')
-                );
+                this.displayNotification({
+                    title: _t('MapBox servers unreachable'),
+                    message: _t('The view has switched to another provider but functionalities will be limited'),
+                    type: 'danger',
+                });
         }
     },
     /**

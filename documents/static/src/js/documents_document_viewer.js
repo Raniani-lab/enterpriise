@@ -122,7 +122,7 @@ const DocumentsDocumentViewer = DocumentViewer.extend(WidgetAdapterMixin, {
     _onPdfManagerError(ev) {
         ev.stopPropagation();
         const { message } = ev.data;
-        this.do_notify(_t("Error"), message || '');
+        this.displayNotification({ title: _t("Error"), message });
     },
     /**
      * @private

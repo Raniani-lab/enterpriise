@@ -136,7 +136,7 @@ const BatchCreateClientAction = AbstractAction.extend({
                 selectedPickingTypeId = parseInt($(this).attr('data-id'));
             });
             if (!selectedPickingTypeId) {
-                this.do_warn(_t("Error"), _t("Please select an Operation Type"));
+                this.displayNotification({ title: _t("Error"), message: _t("Please select an Operation Type"), type: 'danger' });
             } else {
                 const $lines = $(QWeb.render('stock_barcode_picking_batch_create_choose_pickings_template', {
                     pickings: this.potentialPickings,
@@ -173,8 +173,10 @@ const BatchCreateClientAction = AbstractAction.extend({
                 });
             } else {
                 // No pickings selected or something went wrong and confirm button was clicked when it shouldn't have been possible
-                this.do_warn(false,
-                    _t('No transfers were selected or something has gone wrong!'));
+                this.displayNotification({
+                    message: _t('No transfers were selected or something has gone wrong!'),
+                    type: 'danger',
+                });
             }
         }
     },

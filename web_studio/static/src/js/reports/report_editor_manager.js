@@ -144,7 +144,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
             var msg = '<pre>' + error + '</pre>';
-            this.do_warn(_t("Error when compiling AST"), msg, true);
+            this.displayNotification({ title: _t("Error when compiling AST"), message: msg, sticky: true, type: 'danger' });
             return this._undo(opID, true).then(function () {
                 return Promise.reject();
             });

@@ -412,7 +412,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
             }));
             var renderingProms = self._getComponentsObject(node.components).map(function (Component) {
                 if (!Component) {
-                    self.do_warn("Missing component", self.state.directive);
+                    self.displayNotification({ title: "Missing component", message: self.state.directive, type: 'danger' });
                     return;
                 }
                 var previousWidgetState = self.previousState[self._computeUniqueNodeName(node.node)] &&

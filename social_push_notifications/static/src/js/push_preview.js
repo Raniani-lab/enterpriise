@@ -63,8 +63,9 @@ var PushPreviewButton = Widget.extend({
         if (Notification.permission === "denied") {
             this.displayNotification({
                 title: _t("Notifications blocked"),
-                message: _t("Your browser notifications are blocked or you're not in an HTTPS environment.")
-        });
+                message: _t("Your browser notifications are blocked or you're not in an HTTPS environment."),
+                type: 'danger',
+            });
             return;
         }
 

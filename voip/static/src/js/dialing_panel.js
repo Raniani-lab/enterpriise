@@ -149,7 +149,7 @@ const DialingPanel = Widget.extend({
             await this._activeTab.callFromActivityWidget(params);
             return this._makeCall(params.number);
         } else {
-            this.do_notify(YOUR_ARE_ALREADY_IN_A_CALL);
+            this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
         }
     },
     /**
@@ -175,7 +175,7 @@ const DialingPanel = Widget.extend({
             const phoneCall = await this._activeTab.callFromPhoneWidget(params);
             return this._makeCall(params.number, phoneCall);
         } else {
-            this.do_notify(YOUR_ARE_ALREADY_IN_A_CALL);
+            this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
         }
     },
     /**
@@ -275,11 +275,11 @@ const DialingPanel = Widget.extend({
                 return;
             }
             if (!this._isWebRTCSupport) {
-                this.do_notify(_t("Your browser could not support WebRTC. Please check your configuration."));
+                this.displayNotification({ title: _t("Your browser could not support WebRTC. Please check your configuration.") });
                 return;
             }
             if (!number) {
-                this.do_notify(false, _t("The phonecall has no number"));
+                this.displayNotification({ message: _t("The phonecall has no number") });
                 return;
             }
             if (!this._isShow || this._isFolded) {
@@ -289,7 +289,7 @@ const DialingPanel = Widget.extend({
             this._userAgent.makeCall(number);
             this._isInCall = true;
         } else {
-            this.do_notify(YOUR_ARE_ALREADY_IN_A_CALL);
+            this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
         }
     },
     /**
@@ -859,7 +859,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onSipCustomerUnavailable() {
-        this.do_notify(false, _t("Customer unavailable. Please try later."));
+        this.displayNotification({ message: _t("Customer unavailable. Please try later.") });
     },
     /**
      * @private

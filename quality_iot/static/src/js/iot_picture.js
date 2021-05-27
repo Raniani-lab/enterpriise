@@ -26,7 +26,7 @@ var TabletImageIoT = TabletImage.extend(iot_widgets.IoTValueFieldMixin, {
         ev.stopImmediatePropagation();
         if (this.iot_device) {
             ev.preventDefault();
-            this.do_notify(false, _t('Capture image...'));
+            this.displayNotification({ message: _t('Capture image...') });
             this.iot_device.action('')
                 .then(function(data) {
                     self._onIoTActionResult(data);
@@ -44,7 +44,7 @@ var TabletImageIoT = TabletImage.extend(iot_widgets.IoTValueFieldMixin, {
      */
     _onValueChange: function (data){
         if (data.owner && data.owner === data.session_id) {
-            this.do_notify(data.message);
+            this.displayNotification({ title: data.message });
             if (data.image){
                 this._setValue(data.image);
             }

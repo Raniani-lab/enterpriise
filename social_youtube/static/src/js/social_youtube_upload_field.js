@@ -384,11 +384,14 @@ var YoutubeUploadField = basicFields.FieldChar.extend({
 
         var file = fileNodes.files[0];
         if (file.size > this.maxUploadSize) {
-            this.do_warn(
-                _t("Video Upload"),
-                _.str.sprintf(
+            this.displayNotification({
+                title: _t("Video Upload"),
+                message: _.str.sprintf(
                     _t("The selected video exceeds the maximum allowed size of %s."),
-                    utils.human_size(this.maxUploadSize)));
+                    utils.human_size(this.maxUploadSize)
+                ),
+                type: 'danger',
+            });
             return false;
         }
 

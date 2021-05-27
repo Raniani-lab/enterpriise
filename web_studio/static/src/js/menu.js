@@ -202,7 +202,7 @@ Menu.include({
      */
     _onBackgroundLoaded: function (event, result) {
         if (result.error || !result.id ) {
-            this.do_warn(result.error);
+            this.displayNotification({ title: result.error, type: 'danger' });
         } else {
             framework.blockUI();
             this._setBackgroundImage(result.id)

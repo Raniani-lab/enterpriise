@@ -29,7 +29,7 @@ var IoTDeviceFormController = FormController.extend({
         if (data.result === true) {
             saveRecord();
         } else {
-            this.do_warn(_t('Connection to device failed'), _t('Check if the device is still connected'));
+            this.displayNotification({ title: _t('Connection to device failed'), message: _t('Check if the device is still connected'), type: 'danger' });
         }
     },
     /**

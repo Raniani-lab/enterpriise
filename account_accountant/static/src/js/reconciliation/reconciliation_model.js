@@ -665,10 +665,10 @@ var StatementModel = BasicModel.extend({
                 delete prop.partial_amount_str;
                 delete prop.partial_amount;
                 if (isNaN(amount) || amount < 0) {
-                    this.do_warn(_.str.sprintf(
+                    this.displayNotification({ title: _.str.sprintf(
                         _t('The amount %s is not a valid partial amount'),
                         data.amount
-                    ));
+                    ), type: 'danger' });
                 }
                 return this._computeLine(line);
             }

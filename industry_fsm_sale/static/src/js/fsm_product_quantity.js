@@ -223,7 +223,7 @@ const FSMProductQty = FieldInteger.extend({
         } catch (err) {
             // incase of UserError do not display the warning
             if (err.message.data.name !== 'odoo.exceptions.UserError') {
-                this.do_warn(false, _t("The set quantity is invalid"));
+                this.displayNotification({ message: _t("The set quantity is invalid"), type: 'danger' });
             }
             this.setInvalidClass();
         }

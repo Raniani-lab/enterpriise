@@ -57,7 +57,7 @@ var StockBarcodeKanbanController = KanbanController.extend({
                     replace_last_action: true,
                 });
             } else if (result.warning) {
-                this.do_warn(result.warning.title, result.warning.message);
+                this.displayNotification({ title: result.warning.title, message: result.warning.message, type: 'danger' });
             }
         });
     },

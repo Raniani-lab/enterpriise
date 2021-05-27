@@ -85,10 +85,10 @@ FormController.include({
         }
         var record = this.model.get(activeBarcode.handle);
         if (record.data.state === 'cancel' || record.data.state === 'done') {
-            this.do_warn(false, _.str.sprintf(
+            this.displayNotification({ message: _.str.sprintf(
                 _t("The picking is %s and cannot be edited"),
                 record.data.state
-            ));
+            ), type: 'danger' });
             return Promise.reject();
         }
         return this._barcodeAddX2MQuantity(barcode, activeBarcode);

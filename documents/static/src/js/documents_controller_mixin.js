@@ -372,8 +372,13 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         }
         if (_.isObject(result)) {
             if (result.hasOwnProperty('warning')) {
-                let documents = result['warning']['documents'].map((d) => `<li>${d}</li>`);
-                this.do_warn(result['warning']['title'], `<ul>${documents.join('')}</ul>`);
+                let documents = result['warning']['documents'].map((d) => `<li>${owl.utils.escape(d)}</li>`);
+                this.displayNotification({
+                    title: result['warning']['title'],
+                    message: `<ul>${documents.join('')}</ul>`,
+                    type: 'danger',
+                    messageIsHtml: true, // dynamic parts of the message are escaped above
+                });
                 this.reload();
             } else {
                 await this.do_action(result, { on_close: () => this.reload() });
@@ -1016,10 +1021,10 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const result = xhr.status === 200
             ? JSON.parse(xhr.response)
             : {
-                error: _.str.sprintf(_t("status code: %s </br> message: %s"), xhr.status, xhr.response)
+                error: _.str.sprintf(_t("status code: %s, message: %s"), xhr.status, xhr.response)
             };
         if (result.error) {
-            this.do_notify(_t("Error"), result.error, true);
+            this.displayNotification({ title: _t("Error"), message: result.error, sticky: true });
         } else if (result.ids && result.ids.length > 0) {
             this._selectedRecordIds = result.ids;
         }

@@ -215,7 +215,7 @@ var HelpdeskDashboardController = KanbanController.extend({
         var target_name = e.data.target_name;
         var target_value = e.data.target_value;
         if (isNaN(target_value)) {
-            this.do_warn(false, _t("Please enter an integer value"));
+            this.displayNotification({ message: _t("Please enter an integer value"), type: 'danger' });
         } else {
             var values = {};
             values[target_name] = parseInt(target_value);

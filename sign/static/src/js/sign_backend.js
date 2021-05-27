@@ -1018,7 +1018,7 @@ odoo.define('sign.template', function(require) {
                 .then(function prepare_template(template) {
                     if (template.length === 0) {
                         self.templateID = undefined;
-                        self.do_notify(_t("Warning"), _t("The template doesn't exist anymore."));
+                        self.displayNotification({ title: _t("Warning"), message: _t("The template doesn't exist anymore.") });
                         return Promise.resolve();
                     }
                     template = template[0];

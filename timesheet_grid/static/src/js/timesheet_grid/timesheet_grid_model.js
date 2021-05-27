@@ -37,7 +37,7 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                     return filter.split(':').length === 1;
                 });
                 if (GroupBy.length !== params.groupBy.length) {
-                    this.do_warn(false, _t('Grouping by date is not supported'));
+                    this.displayNotification({ message: _t('Grouping by date is not supported'), type: 'danger' });
                 }
                 params.groupBy = GroupBy;
             }

@@ -347,7 +347,7 @@ var PickingClientAction = ClientAction.extend({
         const superCancel = this._super.bind(this);
         this.mutex.exec(() => {
             return superCancel().then(() => {
-                this.do_notify(false, _t("The transfer has been cancelled"));
+                this.displayNotification({ message: _t("The transfer has been cancelled") });
                 this.trigger_up('exit');
             });
         });
@@ -389,7 +389,7 @@ var PickingClientAction = ClientAction.extend({
     _putInPack: function () {
         var self = this;
         if (this.currentState.group_tracking_lot === false) {
-            this.do_warn(false, _t("To use packages, enable 'Delivery Packages' from the settings"));
+            this.displayNotification({ message: _t("To use packages, enable 'Delivery Packages' from the settings"), type: 'danger' });
             return;
         }
         this.mutex.exec(function () {

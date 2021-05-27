@@ -64,6 +64,11 @@ $dropdown-divider-bg: $gray-200;
 
 // Forms
 //
+
+// Will affect bootstrap default forms only (eg. popover textarea)
+$input-focus-box-shadow: none;
+$input-focus-border-color: mix($o-brand-primary, $gray-300);
+
 $custom-checkbox-indicator-border-radius: 1px; // Just a slight smoothing.
 
 // Z-index master list

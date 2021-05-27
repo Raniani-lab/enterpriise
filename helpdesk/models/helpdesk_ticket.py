@@ -230,7 +230,7 @@ class HelpdeskTicket(models.Model):
     team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True)
     description = fields.Html()
     active = fields.Boolean(default=True)
-    ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type")
+    ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Type")
     tag_ids = fields.Many2many('helpdesk.tag', string='Tags')
     company_id = fields.Many2one(related='team_id.company_id', string='Company', store=True, readonly=True)
     color = fields.Integer(string='Color Index')
@@ -252,11 +252,11 @@ class HelpdeskTicket(models.Model):
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
-    is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_name', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', store=True, readonly=False)
     partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_phone', store=True, readonly=False)
+    commercial_partner_id = fields.Many2one(related="partner_id.commercial_partner_id")
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
@@ -375,11 +375,6 @@ class HelpdeskTicket(models.Model):
         if (value and operator in expression.NEGATIVE_TERM_OPERATORS) or (not value and operator not in expression.NEGATIVE_TERM_OPERATORS):  # is failed
             return [[('sla_status_ids.reached_datetime', '>', datetime_now), ('sla_reached_late', '!=', False)]]
         return [('sla_status_ids.reached_datetime', '<', datetime_now), ('sla_reached_late', '=', False)]  # is success
-
-    @api.depends('user_id')
-    def _compute_is_self_assigned(self):
-        for ticket in self:
-            ticket.is_self_assigned = self.env.user == ticket.user_id
 
     @api.depends('team_id')
     def _compute_user_and_stage_ids(self):

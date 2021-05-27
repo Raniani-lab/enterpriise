@@ -3,6 +3,7 @@
     <record id="helpdesk_ticket_view_form_inherit_website_helpdesk_forum" model="ir.ui.view">
         <field name="name">Tickets: Website</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="priority">90</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">

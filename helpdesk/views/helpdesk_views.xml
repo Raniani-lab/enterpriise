@@ -255,8 +255,15 @@
                         <img t-if="record.user_id.raw_value"
                              t-att-src="activity_image('res.users', 'avatar_128', record.user_id.raw_value)"
                              t-att-title="record.user_id.value" t-att-alt="record.user_id.value"/>
-                        <div>
-                            <field name="name" display="full"/>
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between">
+                                <div style="min-width: 0;">
+                                    <field name="name" display="full"/>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    #<field name="id"/>
+                                </div>
+                            </div>
                             <field name="partner_id" muted="1" display="full"/>
                         </div>
                     </div>
@@ -398,16 +405,21 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets" multi_edit="1" sample="1">
-                <field name="team_id" invisible="1" readonly="1"/>
-                <field name="display_name" string="Ticket Name" readonly="1"/>
-                <field name="partner_id" optional="show"/>
+                <field name="display_name" string="Name" readonly="1"/>
+                <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
+                <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user"/>
-                <field name="ticket_type_id" optional="hide"/>
-                <field name="priority" optional="hide"/>
-                <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="partner_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="priority" optional="show" widget="priority"/>
+                <field name="sla_status_ids" widget="many2many_tags" options="{'color_field': 'color'}" string="SLAs" optional="hide"/>
+                <field name="sla_deadline" optional="show" widget="remaining_days"/>
+                <field name="ticket_type_id" optional="hide"/>
+                <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
                 <field name="stage_id" optional="show" readonly="1"/>
-                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -421,10 +433,9 @@
                 <group>
                     <field name="name"/>
                     <field name="domain_user_ids" invisible="1"/>
+                    <field name="team_id" required="1" invisible="context.get('default_team_id')"  options="{'no_open': True}"/>
                     <field name="user_id" domain="[('id', 'in', domain_user_ids)]" options="{'no_open': True}"/>
                     <field name="partner_id" options="{'no_open': True}" widget="res_partner_many2one"/>
-                    <field name="priority" nolabel="1" widget="priority"/>
-                    <div class="float-right"><field name="kanban_state" widget="state_selection"/></div>
                 </group>
             </form>
         </field>
@@ -459,23 +470,24 @@
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
-                                    <a name="%(portal.portal_share_action)d" type="action" class="dropdown-item" role="menuitem">Share</a>
                                     <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit</a></t>
                                     <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
                                     <a name="toggle_active" type="object" class="dropdown-item" role="menuitem" t-if="! record.active.value">Restore</a>
-                                    <a name="toggle_active" type="object" class="dropdown-item" role="menuitem" t-if="record.active.value">Archive</a>
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
                             <div class="oe_kanban_content">
                                 <div>
-                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                </div>
-                                <div>
                                     <strong><field name="name"/> (#<field name="id"/>)</strong>
                                 </div>
                                 <div>
-                                    <field name="partner_id"/>
+                                    <field name="commercial_partner_id"/>
+                                </div>
+                                <div>
+                                    <field name="ticket_type_id"/>
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                                 <div t-if="record.sla_deadline.raw_value">
                                     <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red" t-value="'oe_kanban_text_red'"/>
@@ -509,8 +521,7 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Ticket">
                 <header>
-                    <field name="is_self_assigned" invisible="1"/>
-                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('is_self_assigned', '=', True)]}"/>
+                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('user_id', '!=', False)]}"/>
                     <field name="stage_id" widget="statusbar"
                         options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>
@@ -536,14 +547,14 @@
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
-                            <field name="team_id"/>
+                            <field name="team_id" required="1"/>
                             <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="sla_deadline" widget="remaining_days" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
                             <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="sla_deadline" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
                         </group>
                         <group>
                             <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>
@@ -573,7 +584,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and status on tickets. <br/>
+                </p><p>To get things done, use activities and statuses on tickets. <br/>
                 Chat in real-time or by email to collaborate efficiently.
             </p>
         </field>
@@ -588,7 +599,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and status on tickets. <br/>
+                </p><p>To get things done, use activities and statuses on tickets. <br/>
                 Chat in real-time or by email to collaborate efficiently.
             </p>
         </field>
@@ -618,7 +629,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found
-                </p><p>To get things done, use activities and status on tickets.<br/>
+                </p><p>To get things done, use activities and statuses on tickets.<br/>
                 Chat in real-time or by email to collaborate efficiently.
             </p>
         </field>
@@ -691,7 +702,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and status on tickets. <br/>
+                </p><p>To get things done, use activities and statuses on tickets. <br/>
                 Chat in real-time or by email to collaborate efficiently.
             </p>
         </field>
@@ -706,7 +717,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No tickets found. Let's create one!
-                </p><p>To get things done, use activities and status on tickets. <br/>
+                </p><p>To get things done, use activities and statuses on tickets. <br/>
                 Chat in real-time or by email to collaborate efficiently.
             </p>
         </field>

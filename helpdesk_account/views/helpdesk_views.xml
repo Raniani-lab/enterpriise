@@ -3,6 +3,7 @@
     <record id="helpdesk_ticket_view_form_inherit_helpdesk_invoicing" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.form.inherit.invoicing</field>
         <field name="model">helpdesk.ticket</field>
+        <field name="priority">30</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="before">

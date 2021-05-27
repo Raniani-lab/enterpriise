@@ -27,6 +27,7 @@
     <record id="helpdesk_ticket_view_form_inherit_stock_user" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.form.inherit.return.stock.user</field>
         <field name="model">helpdesk.ticket</field>
+        <field name="priority">45</field>
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
@@ -46,6 +47,18 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="arch" type="xml">
             <div id="use_product_returns" position="replace"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_tree_inherit_helpdesk_stock" model="ir.ui.view">
+        <field name='name'>helpdesk.ticket.tree.inherit.stock</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="priority">40</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+        <field name="arch" type="xml">
+            <field name='partner_id' position="after">
+                <field name="product_id" optional="hide"/>
+            </field>
         </field>
     </record>
 </odoo>

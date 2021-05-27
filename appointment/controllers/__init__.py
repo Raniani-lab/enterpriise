@@ -3,3 +3,4 @@
 
 from . import main
 from . import calendar
+from . import portal

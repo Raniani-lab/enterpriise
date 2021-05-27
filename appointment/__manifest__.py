@@ -24,6 +24,7 @@
         'views/calendar_templates_appointments.xml',
         'views/calendar_templates_registration.xml',
         'views/calendar_templates_validation.xml',
+        'views/portal_templates.xml',
         'wizard/calendar_appointment_share_views.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',

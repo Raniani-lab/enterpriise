@@ -16,7 +16,7 @@ class SocialMedia(models.Model):
     _description = 'Social Media'
     _inherit = ['mail.thread']
 
-    _DEFAULT_SOCIAL_IAP_ENDPOINT = 'https://iap-services.odoo.com'
+    _DEFAULT_SOCIAL_IAP_ENDPOINT = 'https://social.api.odoo.com'
 
     name = fields.Char('Name', readonly=True, required=True, translate=True)
     description = fields.Char('Description', readonly=True)

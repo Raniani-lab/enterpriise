@@ -70,7 +70,7 @@ class SocialMediaLinkedin(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
-        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_linkedin/add_accounts'), params={
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/linkedin/1/add_accounts'), params={
             'state': self._compute_linkedin_csrf(),
             'scope': 'r_liteprofile r_emailaddress w_member_social rw_organization_admin w_organization_social r_organization_social',
             'o_redirect_uri': o_redirect_uri,

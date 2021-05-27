@@ -77,7 +77,7 @@ class SocialMediaTwitter(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
 
-        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'iap/social_twitter/add_accounts'), params={
+        iap_add_accounts_url = requests.get(url_join(social_iap_endpoint, 'api/social/twitter/1/add_accounts'), params={
             'returning_url': url_join(base_url, 'social_twitter/callback'),
             'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid')
         }).text
@@ -179,7 +179,7 @@ class SocialMediaTwitter(models.Model):
             self.env['social.media']._DEFAULT_SOCIAL_IAP_ENDPOINT
         )
         try:
-            return iap_tools.iap_jsonrpc(url_join(social_iap_endpoint, 'iap/social_twitter/get_signature'), params=json_params)
+            return iap_tools.iap_jsonrpc(url_join(social_iap_endpoint, 'api/social/twitter/1/get_signature'), params=json_params)
         except AccessError:
             return None
 

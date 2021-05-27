@@ -436,21 +436,23 @@ class AccountReport(models.AbstractModel):
         if not self.filter_analytic:
             return
 
-        options['analytic'] = self.filter_analytic
+        enable_analytic_accounts = self.user_has_groups('analytic.group_analytic_accounting')
+        enable_analytic_tags = self.user_has_groups('analytic.group_analytic_tags')
+        if not enable_analytic_accounts and not enable_analytic_tags:
+            return
 
-        if self.user_has_groups('analytic.group_analytic_accounting'):
-            options['analytic_accounts'] = previous_options and previous_options.get('analytic_accounts') or []
-            analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]
-            selected_analytic_accounts = analytic_account_ids \
-                                         and self.env['account.analytic.account'].browse(analytic_account_ids) \
-                                         or self.env['account.analytic.account']
+        if enable_analytic_accounts:
+            previous_analytic_accounts = (previous_options or {}).get('analytic_accounts', [])
+            analytic_account_ids = [int(x) for x in previous_analytic_accounts]
+            selected_analytic_accounts = self.env['account.analytic.account'].search([('id', 'in', analytic_account_ids)])
+            options['analytic_accounts'] = selected_analytic_accounts.ids
             options['selected_analytic_account_names'] = selected_analytic_accounts.mapped('name')
-        if self.user_has_groups('analytic.group_analytic_tags'):
-            options['analytic_tags'] = previous_options and previous_options.get('analytic_tags') or []
-            analytic_tag_ids = [int(tag) for tag in options['analytic_tags']]
-            selected_analytic_tags = analytic_tag_ids \
-                                     and self.env['account.analytic.tag'].browse(analytic_tag_ids) \
-                                     or self.env['account.analytic.tag']
+
+        if enable_analytic_tags:
+            previous_analytic_tags = (previous_options or {}).get('analytic_tags', [])
+            analytic_tag_ids = [int(x) for x in previous_analytic_tags]
+            selected_analytic_tags = self.env['account.analytic.tag'].search([('id', 'in', analytic_tag_ids)])
+            options['analytic_tags'] = selected_analytic_tags.ids
             options['selected_analytic_tag_names'] = selected_analytic_tags.mapped('name')
 
     @api.model
@@ -721,6 +723,7 @@ class AccountReport(models.AbstractModel):
 
         filter_list = [attr for attr in dir(self)
                        if (attr.startswith('filter_') or attr.startswith('order_')) and attr not in ('filter_date', 'filter_comparison', 'filter_multi_company') and len(attr) > 7 and not callable(getattr(self, attr))]
+
         for filter_key in filter_list:
             options_key = filter_key[7:]
             init_func = getattr(self, '_init_%s' % filter_key, None)

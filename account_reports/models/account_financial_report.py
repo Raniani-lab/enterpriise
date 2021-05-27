@@ -46,17 +46,11 @@ class ReportAccountFinancialReport(models.Model):
 
     @property
     def filter_analytic(self):
-        if self.analytic and self.filter_analytic_accounts is None and self.filter_analytic_tags is None:
+        enable_filter_analytic_accounts = self.env.user.id in self.env.ref('analytic.group_analytic_accounting').users.ids
+        enable_filter_analytic_tags = self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids
+        if self.analytic and not enable_filter_analytic_accounts and not enable_filter_analytic_tags:
             return None
         return self.analytic or None
-
-    @property
-    def filter_analytic_accounts(self):
-        return [] if self.analytic and self.env.user.id in self.env.ref('analytic.group_analytic_accounting').users.ids else None
-
-    @property
-    def filter_analytic_tags(self):
-        return [] if self.analytic and self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids else None
 
     @property
     def filter_ir_filters(self):

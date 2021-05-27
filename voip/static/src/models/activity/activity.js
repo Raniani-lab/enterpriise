@@ -18,6 +18,9 @@ registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activi
      */
     convertData(data) {
         const data2 = this._super(data);
+        if ('mobile' in data) {
+            data2.mobile = data.mobile;
+        }
         if ('phone' in data) {
             data2.phone = data.phone;
         }
@@ -26,6 +29,13 @@ registerClassPatchModel('mail.activity', 'voip/static/src/models/activity/activi
 });
 
 registerFieldPatchModel('mail.activity', 'voip/static/src/models/activity/activity.js', {
+    /**
+     * String to store the mobile number in a call activity.
+     */
+    mobile: attr(),
+    /**
+     * String to store the phone number in a call activity.
+     */
     phone: attr(),
 });
 

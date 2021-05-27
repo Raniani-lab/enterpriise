@@ -148,8 +148,10 @@
                         }
                     }
 
-                    + .nav-item > .nav-link {
-                        border-left: 0;
+                    &:not(.o_invisible_modifier) {
+                        + .nav-item > .nav-link {
+                            border-left: 0;
+                        }
                     }
                 }
             }

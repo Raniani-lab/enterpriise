@@ -155,7 +155,7 @@ class TestUi(odoo.tests.HttpCase):
             'default_car_value': 2000,
             'default_recurring_cost_amount_depreciated': 50,
         })
-        model_a3 = self.env.ref("fleet.model_a3")
+        model_a3 = self.env.ref("fleet.model_a3").with_company(company_id)
         model_a3.default_recurring_cost_amount_depreciated = 450
         model_a3.can_be_requested = True
 

@@ -225,7 +225,7 @@ class HrContractSalary(main.HrContractSalary):
         )
 
         # Car stuff
-        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
+        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().with_company(contract.company_id).search(
         contract._get_possible_model_domain()).sorted(key=lambda model: model.default_total_depreciated_cost)
 
         force_new_car = request.httprequest.args.get('new_car', False)
@@ -254,7 +254,7 @@ class HrContractSalary(main.HrContractSalary):
             initial_values['wishlist_car_total_depreciated_cost'] = 0
 
         # Bike stuff
-        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().search(
+        can_be_requested_models = request.env['fleet.vehicle.model'].sudo().with_company(contract.company_id).search(
         contract._get_possible_model_domain(vehicle_type='bike')).sorted(key=lambda model: model.default_total_depreciated_cost)
         if bike_advantage.display_type == 'dropdown-group':
             dropdown_group_options['company_bike_depreciated_cost'] = \

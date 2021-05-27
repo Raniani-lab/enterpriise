@@ -115,7 +115,6 @@ class HelpdeskSLAStatus(models.Model):
 
     @api.depends('deadline', 'reached_datetime')
     def _compute_status(self):
-        """ Note: this computed field depending on 'now()' is stored, but refreshed by a cron """
         for status in self:
             if status.reached_datetime and status.deadline:  # if reached_datetime, SLA is finished: either failed or succeeded
                 status.status = 'reached' if status.reached_datetime < status.deadline else 'failed'

@@ -201,11 +201,13 @@ class AccountAsset(models.Model):
                 record.original_value
                 - record.salvage_value
                 - record.already_depreciated_amount_import
-                - abs(sum(
+                - sum(
                     record.depreciation_move_ids
                           .filtered(lambda m: m.state == 'posted' and not m.reversal_move_id)
-                          .mapped('amount_total')
-                ))
+                          .line_ids
+                          .filtered(lambda l: l.account_id == record.account_depreciation_id)
+                          .mapped('credit' if record.asset_type in ('expense', 'purchase') else 'debit')
+                )
             )
             # When closing the asset, an additional depreciation line is created, exceeding the amount by
             # record.salvage_value + record.already_depreciated_amount_import. We want it to bring

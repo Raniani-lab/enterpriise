@@ -56,7 +56,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         cls.truck.validate()
         cls.env['account.move']._autopost_draft_entries()
-        cls.assert_counterpart_account_id = cls.company_data['default_account_revenue'].id,
+        cls.assert_counterpart_account_id = cls.company_data['default_account_revenue'].id
 
         cls.account_asset_model_fixedassets = cls.env['account.asset'].create({
             'account_depreciation_id': cls.company_data['default_account_assets'].id,
@@ -326,6 +326,67 @@ class TestAccountAsset(TestAccountReportsCommon):
             'book_value': 2000,
             'value_residual': 0,
             'salvage_value': 2000,
+        }])
+
+    @patch('odoo.fields.Date.today', return_value=today())
+    @patch('odoo.fields.Date.context_today', context_today)
+    def test_03_account_asset(self, today_mock):
+        """Test the salvage of an asset with gain"""
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+            'acquisition_date': '2010-01-31',
+            'already_depreciated_amount_import': 12000.0,
+            'depreciation_number_import': 5,
+            'first_depreciation_date_import': '2010-01-31',
+        })
+        CEO_car._onchange_model_id()
+
+        CEO_car.validate()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 0,
+            'value_residual': 0,
+            'salvage_value': 0,
+        }])
+        self.assertFalse(CEO_car.depreciation_move_ids)
+        CEO_car.company_id.gain_account_id = self.assert_counterpart_account_id
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 0,
+            'value_residual': 0,
+            'salvage_value': 0,
+        }])
+        closing_move = CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 12000,
+            'account_id': CEO_car.account_asset_id.id,
+        }, {
+            'debit': 12000,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_id.id,
+        }, {
+            'debit': 100,
+            'credit': 0,
+            'account_id': self.closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 0,
+            'credit': 100,
+            'account_id': self.assert_counterpart_account_id,
+        }])
+        closing_move.action_post()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 0,
+            'value_residual': 0,
+            'salvage_value': 0,
         }])
 
     @patch('odoo.fields.Date.today', return_value=today())

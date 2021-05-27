@@ -9,7 +9,7 @@
                 <field name="check_ids" invisible="1"/>
                 <field name="quality_check_fail" invisible="1"/>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="pending,ready,progress,done"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,waiting,ready,progress,done"/>
                 </header>
             </xpath>
             <page name='workorder_page_work_instruction' position="before">

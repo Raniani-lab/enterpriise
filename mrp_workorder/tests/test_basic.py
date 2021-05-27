@@ -447,7 +447,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # ----------------------------------------------------------
 
         workorder = production_table.workorder_ids[0]
-        self.assertEqual(workorder.state, 'ready', "workorder state should be ready.")
+        self.assertEqual(workorder.state, 'waiting', "workorder state should be waiting.")
 
         # --------------------------------------------------------------
         # Process assembly line
@@ -568,7 +568,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # ----------------------------------------------------------
 
         workorders = production_table.workorder_ids
-        self.assertEqual(workorders[0].state, 'ready', "First workorder state should be ready.")
+        self.assertEqual(workorders[0].state, 'waiting', "First workorder state should be waiting.")
         self.assertEqual(workorders[1].state, 'pending')
         self.assertEqual(workorders[2].state, 'pending')
 
@@ -643,7 +643,6 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         self.bom_3.operation_ids[0].time_cycle_manual = 10
         self.bom_3.operation_ids[1].time_cycle_manual = 10
         self.bom_2.operation_ids.time_cycle_manual = 20
-
         man_order_form = Form(self.env['mrp.production'])
         man_order_form.product_id = self.product_6
         man_order_form.bom_id = self.bom_3
@@ -721,7 +720,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         kit_wo = man_order.workorder_ids.filtered(lambda wo: wo.operation_id.name == "Gift Wrap Maching")
         door_wo_1 = man_order.workorder_ids.filtered(lambda wo: wo.operation_id.name == "Cutting Machine")
         door_wo_2 = man_order.workorder_ids.filtered(lambda wo: wo.operation_id.name == "Weld Machine")
-
+        workorders._compute_state()
         for workorder in workorders:
             self.assertEqual(workorder.workcenter_id, self.workcenter_1, "Workcenter does not match.")
         self.assertEqual(kit_wo.state, 'ready', "Workorder should be in ready state.")
@@ -1592,7 +1591,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         workorders = production_table.workorder_ids
         wo1, wo2, wo3 = workorders[0], workorders[1], workorders[2]
 
-        self.assertEqual(wo1.state, 'ready', "First workorder state should be ready.")
+        self.assertEqual(wo1.state, 'waiting', "First workorder state should be ready.")
         self.assertEqual(wo1.workcenter_id.id, self.mrp_workcenter_3.id)
         self.assertEqual(wo2.state, 'pending')
         self.assertEqual(wo3.state, 'pending')
@@ -1863,7 +1862,7 @@ class TestRoutingAndKits(TransactionCase):
 
         mo.action_confirm()
         mo.button_plan()
-        wo1 = mo.workorder_ids.filtered(lambda wo: wo.state == 'ready')[0]
+        wo1 = mo.workorder_ids.filtered(lambda wo: wo.state == 'waiting')[0]
         wo1.button_start()
         wo1.qty_producing = 4
         wo1.finished_lot_id = lot1
@@ -1875,9 +1874,9 @@ class TestRoutingAndKits(TransactionCase):
         self.assertEqual(ba_wo1.qty_remaining, 6)
         ba_wo1.finished_lot_id = lot1
         ba_wo1.record_production()
-        wo2 = mo.workorder_ids.filtered(lambda wo: wo.state == 'ready')[0]
+        wo2 = mo.workorder_ids.filtered(lambda wo: wo.state == 'waiting')[0]
         wo2.button_start()
-        ba_wo2 = backorder.workorder_ids.filtered(lambda wo: wo.state == 'ready')[0]
+        ba_wo2 = backorder.workorder_ids.filtered(lambda wo: wo.state == 'waiting')[0]
         ba_wo2.button_start()
         self.assertEqual(wo2.qty_producing, 4)
         self.assertEqual(wo2.finished_lot_id, lot1)

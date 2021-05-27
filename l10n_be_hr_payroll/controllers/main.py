@@ -63,7 +63,7 @@ class L10nBeHrPayrollEcoVoucherController(http.Controller):
                 lang = 'EN'
 
             rows.append((
-                employee.ssnid.replace('.', '').replace('-', '') if employee.ssnid else '',
+                employee.niss.replace('.', '').replace('-', '') if employee.niss else '',
                 employee_name.split(' ')[0],
                 ' '.join(employee_name.split(' ')[1:]),
                 ' ',

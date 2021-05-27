@@ -136,6 +136,6 @@ class L10nBeEcoVouchersLineWizard(models.TransientModel):
 
     wizard_id = fields.Many2one('l10n.be.eco.vouchers.wizard')
     employee_id = fields.Many2one('hr.employee', required=True)
-    niss = fields.Char(string="NISS", related='employee_id.ssnid')
+    niss = fields.Char(string="NISS", related='employee_id.niss')
     amount = fields.Monetary()
     currency_id = fields.Many2one(related='wizard_id.currency_id')

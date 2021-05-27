@@ -47,8 +47,8 @@ class CrossoveredBudget(models.Model):
 
     name = fields.Char('Budget Name', required=True, states={'done': [('readonly', True)]})
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user)
-    date_from = fields.Date('Start Date', required=True, states={'done': [('readonly', True)]})
-    date_to = fields.Date('End Date', required=True, states={'done': [('readonly', True)]})
+    date_from = fields.Date('Start Date', states={'done': [('readonly', True)]})
+    date_to = fields.Date('End Date', states={'done': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'),
         ('cancel', 'Cancelled'),
@@ -280,9 +280,9 @@ class CrossoveredBudgetLines(models.Model):
             budget_date_to = line.crossovered_budget_id.date_to
             if line.date_from:
                 date_from = line.date_from
-                if date_from < budget_date_from or date_from > budget_date_to:
+                if (budget_date_from and date_from < budget_date_from) or (budget_date_to and date_from > budget_date_to):
                     raise ValidationError(_('"Start Date" of the budget line should be included in the Period of the budget'))
             if line.date_to:
                 date_to = line.date_to
-                if date_to < budget_date_from or date_to > budget_date_to:
+                if (budget_date_from and date_to < budget_date_from) or (budget_date_to and date_to > budget_date_to):
                     raise ValidationError(_('"End Date" of the budget line should be included in the Period of the budget'))

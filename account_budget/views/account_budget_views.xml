@@ -91,11 +91,14 @@ Budgets
                         <group>
                             <label for="date_from" string="Period"/>
                             <div>
-                                <field name="date_from" class="oe_inline"
-                                       attrs="{'readonly':[('state','!=','draft')]}"/>
-                                -
-                                <field name="date_to" class="oe_inline" attrs="{'readonly':[('state','!=','draft')]}"
-                                       nolabel="1"/>
+                                <div name="date_edit_only" class="o_row oe_edit_only">
+                                    <span>From <field name="date_from" class='oe_inline' attrs="{'readonly':[('state','!=','draft')]}"/></span>
+                                    <span>To <field name="date_to" class='oe_inline' attrs="{'readonly':[('state','!=','draft')]}"/></span>
+                                </div>
+                                <div name="date_read_only" class="o_row oe_read_only">
+                                    <span attrs="{'invisible': [('date_from', '=', False)]}">From <field name="date_from" class='oe_inline'/></span>
+                                    <span attrs="{'invisible': [('date_to', '=', False)]}">To <field name="date_to" class='oe_inline'/></span>
+                                </div>
                             </div>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                         </group>

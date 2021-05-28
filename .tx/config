@@ -762,6 +762,11 @@ file_filter = sale_coupon_taxcloud/i18n/<lang>.po
 source_file = sale_coupon_taxcloud/i18n/sale_coupon_taxcloud.pot
 source_lang = en
 
+[odoo-master.sale_amazon_spapi]
+file_filter = sale_amazon_spapi/i18n/<lang>.po
+source_file = sale_amazon_spapi/i18n/sale_amazon_spapi.pot
+source_lang = en
+
 [odoo-master.sale_ebay]
 file_filter = sale_ebay/i18n/<lang>.po
 source_file = sale_ebay/i18n/sale_ebay.pot

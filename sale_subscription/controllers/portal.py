@@ -95,7 +95,7 @@ class CustomerPortal(portal.CustomerPortal):
 class SaleSubscription(http.Controller):
 
     @http.route(
-        ['/my/subscription/<int:subscription_id>/',
+        ['/my/subscription/<int:subscription_id>',
          '/my/subscription/<int:subscription_id>/<string:access_token>'],
         type='http', methods=['GET'], auth='public', website=True
     )

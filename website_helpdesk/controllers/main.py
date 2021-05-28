@@ -18,7 +18,7 @@ class WebsiteHelpdesk(http.Controller):
             partner_values['email'] = partner.email
         return partner_values
 
-    @http.route(['/helpdesk/', '/helpdesk/<model("helpdesk.team"):team>'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/helpdesk', '/helpdesk/<model("helpdesk.team"):team>'], type='http', auth="public", website=True, sitemap=True)
     def website_helpdesk_teams(self, team=None, **kwargs):
         search = kwargs.get('search')
         # For breadcrumb index: get all team

@@ -10,7 +10,7 @@ import binascii
 
 
 class CustomerPortal(portal.CustomerPortal):
-    @http.route(['/my/task/<int:task_id>/worksheet/',
+    @http.route(['/my/task/<int:task_id>/worksheet',
                  '/my/task/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
     def portal_my_worksheet(self, task_id, access_token=None, source=False, report_type=None, download=False, message=False, **kw):
 

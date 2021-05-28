@@ -125,6 +125,10 @@ class Employee(models.Model):
 
         return result
 
+    def _get_user_m2o_to_empty_on_archived_employees(self):
+        return super()._get_user_m2o_to_empty_on_archived_employees() + ['timesheet_manager_id']
+
+
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 

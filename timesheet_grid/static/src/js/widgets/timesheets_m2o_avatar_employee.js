@@ -84,7 +84,7 @@ import { qweb, _lt } from 'web.core';
          */
         _renderHoursFromCache(attachNewTemplate = false) {
             if (attachNewTemplate) {
-                this.$templateHtml.appendTo(this.avatarWidget.$el);
+                this.avatarWidget.$el.find('.o_m2o_avatar').append(this.$templateHtml);
             } else {
                 this.avatarWidget.$el.find(this.$className).replaceWith(this.$templateHtml);
             }

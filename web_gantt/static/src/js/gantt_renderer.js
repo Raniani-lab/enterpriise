@@ -247,13 +247,14 @@ var GanttRenderer = AbstractRenderer.extend({
 
             self._replaceElement(QWeb.render('GanttView', {widget: self, isMobile: config.device.isMobile}));
             const $containment = $('<div id="o_gantt_containment"/>');
-            self.$('.o_gantt_row_container').append($containment);
+            const $rowContainer = self.$('.o_gantt_row_container');
+            $rowContainer.append($containment);
             if (!self.state.groupedBy.length) {
                 $containment.css(self.isRTL ? {right: 0} : {left: 0})
             }
 
             rows.forEach(function (row) {
-                row.$el.appendTo(self.$('.o_gantt_row_container'));
+                row.$el.appendTo($rowContainer);
             });
             if (totalRow) {
                 totalRow.$el.appendTo(self.$('.o_gantt_total_row_container'));

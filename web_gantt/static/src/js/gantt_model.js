@@ -5,6 +5,7 @@ var AbstractModel = require('web.AbstractModel');
 var concurrency = require('web.concurrency');
 var core = require('web.core');
 var fieldUtils = require('web.field_utils');
+const utils = require('web.utils');
 var session = require('web.session');
 
 var _t = core._t;
@@ -427,17 +428,16 @@ var GanttModel = AbstractModel.extend({
             // Some groups might be empty (thanks to expand_groups), so we can't
             // simply group the data, we need to keep all returned groups
             var groupedByField = groupedBy[0];
-            var currentLevelGroups = _.groupBy(groups, groupedByField);
+            var currentLevelGroups = utils.groupBy(groups, groupedByField);
+            const groupedRecords = utils.groupBy(params.records, groupedByField);
             rows = Object.keys(currentLevelGroups).map(function (key) {
                 var subGroups = currentLevelGroups[key];
-                var groupRecords = _.filter(params.records, function (record) {
-                    return _.isEqual(record[groupedByField], subGroups[0][groupedByField]);
-                });
+                var groupRecords = groupedRecords[key];
 
                 // For empty groups, we can't look at the record to get the
                 // formatted value of the field, we have to trust expand_groups
                 var value;
-                if (groupRecords.length) {
+                if (groupRecords && groupRecords.length) {
                     value = groupRecords[0][groupedByField];
                 } else {
                     value = subGroups[0][groupedByField];
@@ -452,9 +452,9 @@ var GanttModel = AbstractModel.extend({
                     groupedBy: groupedBy,
                     groupedByField: groupedByField,
                     id: _.uniqueId('row'),
-                    resId: _.isArray(value) ? value[0] : value,
+                    resId: Array.isArray(value) ? value[0] : value,
                     isGroup: isGroup,
-                    isOpen: !_.findWhere(params.oldRows, {path: path, isOpen: false}),
+                    isOpen: !utils.findWhere(params.oldRows, { path: path, isOpen: false }),
                     path: path,
                     records: groupRecords,
                 };

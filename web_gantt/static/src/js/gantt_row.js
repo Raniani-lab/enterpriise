@@ -6,6 +6,7 @@ var config = require('web.config');
 var session = require('web.session');
 var Widget = require('web.Widget');
 const pyUtils = require('web.py_utils');
+let pyUtilsContext = null;
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -471,7 +472,8 @@ var GanttRow = Widget.extend({
      */
     _getDecorationEvalContext: function (pillData) {
         return Object.assign(
-            pyUtils.context(),
+            {},
+            this._getPyUtilsContext(),
             session.user_context,
             this._getPillEvalContext(pillData),
         );
@@ -493,14 +495,16 @@ var GanttRow = Widget.extend({
     _getPillEvalContext: function (pillData) {
         var pillContext = _.clone(pillData);
         for (var fieldName in pillContext) {
-            if (this.fieldsInfo[fieldName]) {
-                var fieldType = this.fieldsInfo[fieldName].type;
-                if (pillContext[fieldName]._isAMomentObject) {
-                    pillContext[fieldName] = pillContext[fieldName].format(pillContext[fieldName].f);
+            const field = this.fieldsInfo[fieldName];
+            if (field) {
+                const pillCurrentField = pillContext[fieldName];
+                if (pillCurrentField instanceof moment) {
+                    // Replace by ISO formatted string only, without computing it as it is already avalaible in the Moment object interns.
+                    pillContext[fieldName] = pillCurrentField._i;
                 }
-                else if (fieldType === 'date' || fieldType === 'datetime') {
-                    if (pillContext[fieldName]) {
-                        pillContext[fieldName] = JSON.parse(JSON.stringify(pillContext[fieldName]));
+                else if (field.type === 'date' || field.type === 'datetime') {
+                    if (pillCurrentField) {
+                        pillContext[fieldName] = JSON.parse(JSON.stringify(pillCurrentField));
                     }
                     continue;
                 }
@@ -520,6 +524,21 @@ var GanttRow = Widget.extend({
         data.userTimezoneStartDate = this._convertToUserTime(data[this.state.dateStartField]);
         data.userTimezoneStopDate = this._convertToUserTime(data[this.state.dateStopField]);
         return data;
+    },
+    /**
+    * Get pyUtils context
+    * When in the same tick, the same pyUtils.context in returned.
+    *
+    * @returns {Object} the pyUtils context
+     */
+    _getPyUtilsContext() {
+        if (!pyUtilsContext) {
+            pyUtilsContext = pyUtils.context();
+            Promise.resolve().then(() => {
+                pyUtilsContext = null;
+            });
+        }
+        return pyUtilsContext;
     },
     /**
      * @private

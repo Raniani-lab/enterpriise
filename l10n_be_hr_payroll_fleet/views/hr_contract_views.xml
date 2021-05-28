@@ -44,6 +44,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
                 <field name="car_id" optional="hide"/>
+                <field name="car_model_name" optional="hide"/>
                 <field name="fuel_type" optional="hide"/>
             </xpath>
         </field>

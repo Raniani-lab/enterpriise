@@ -39,6 +39,8 @@ class HrContract(models.Model):
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
     new_car = fields.Boolean('Requested a new car')
     new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model", domain=lambda self: self._get_possible_model_domain())
+    # Useful on sign to use only one box to sign the contract instead of 2
+    car_model_name = fields.Char(compute='_compute_car_model_name')
     max_unused_cars = fields.Integer(compute='_compute_max_unused_cars')
     acquisition_date = fields.Date(related='car_id.acquisition_date', readonly=False, groups="fleet.fleet_group_manager")
     car_value = fields.Float(related="car_id.car_value", readonly=False, groups="fleet.fleet_group_manager")
@@ -59,6 +61,16 @@ class HrContract(models.Model):
     company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
     new_bike_model_id = fields.Many2one(
         'fleet.vehicle.model', string="Requested New Bike Model", domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'))
+
+    @api.depends('car_id', 'new_car_model_id')
+    def _compute_car_model_name(self):
+        for contract in self:
+            if contract.car_id:
+                contract.car_model_name = contract.car_id.model_id.display_name
+            elif contract.new_car_model_id:
+                contract.car_model_name = contract.new_car_model_id.display_name
+            else:
+                contract.car_model_name = False
 
     @api.depends('employee_id')
     def _compute_car_id(self):

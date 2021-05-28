@@ -13,7 +13,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.http import request
 from odoo.tools import hmac as hmac_tool
 
-from odoo.addons.sale_amazon_spapi import utils as amazon_utils
+from odoo.addons.sale_amazon import utils as amazon_utils
 
 
 _logger = logging.getLogger(__name__)
@@ -23,12 +23,13 @@ def compute_oauth_signature(account_id):
     """ Compute a signature for the OAuth flow.
 
     :param int account_id: The account being authorized, as an `amazon.account` id.
+    :param odoo.api.Environment env: The current environment.
     :return: The computed signature.
     :rtype: str
     """
     secret = request.env['ir.config_parameter'].sudo().get_param('database.secret')
     message = repr(('amazon_compute_oauth_signature', str(account_id)))
-    return hmac.new(secret.encode(), message.encode(), hashlib.sha256).hexdigest()
+    return hmac_tool(request.env(su=True), secret.encode(), message.encode(), hashlib.sha256)
 
 
 class AmazonController(http.Controller):
@@ -52,9 +53,7 @@ class AmazonController(http.Controller):
         received_signature = state['signature']
 
         # Compare the received signature with the expected signature.
-        expected_signature = hmac_tool(
-            request.env(su=True), 'amazon_compute_oauth_signature', str(account_id)
-        )
+        expected_signature = compute_oauth_signature(account_id)
         if not hmac.compare_digest(received_signature, expected_signature):
             _logger.warning("Signature computed from data does not match the expected signature.")
             raise Forbidden()
@@ -62,7 +61,7 @@ class AmazonController(http.Controller):
         # Store the Amazon data on the account.
         account = request.env['amazon.account'].browse(account_id).exists()
         if not account:
-            raise ValidationError(_("Could not find Amazon account with id %s") % account_id)
+            raise ValidationError(_("Could not find Amazon account with id %s", account_id))
         account.seller_key = seller_key
 
         # Craft the URL of the Amazon account.
@@ -74,7 +73,7 @@ class AmazonController(http.Controller):
             account.action_update_available_marketplaces()
         except (UserError, ValidationError) as e:
             return request.render(
-                'sale_amazon_spapi.authorization_error',
+                'sale_amazon.authorization_error',
                 qcontext={'error_message': e['name'], 'account_url': account_url},
             )
 

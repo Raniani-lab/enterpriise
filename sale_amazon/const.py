@@ -1,5 +1,76 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+# The SellerCentral application ID of Odoo S.A.
+APP_ID = 'amzn1.sp.solution.1cab4d17-1dba-47d1-968f-66b10b614b01'
+
+
+# The URL of the Amazon proxy.
+PROXY_URL = 'https://iap-services.odoo.com/'
+
+
+# The endpoints of the Amazon proxy.
+PROXY_ENDPOINTS = {
+    'authorization': '/amazon/v1/forward_authorization_request',  # Exchange LWA tokens
+    'aws_tokens': '/amazon/v1/forward_aws_credentials_request',  # Request AWS credentials
+}
+
+
+# Base URLs of the API.
+API_DOMAINS_MAPPING = {
+    'us-east-1': 'https://sellingpartnerapi-na.amazon.com',  # SP-API specific to NA marketplaces.
+    'eu-west-1': 'https://sellingpartnerapi-eu.amazon.com',  # SP-API specific to EU marketplaces.
+    'us-west-2': 'https://sellingpartnerapi-fe.amazon.com',  # SP-API specific to FE marketplaces.
+}
+
+# Mapping of API operation to URL paths and restricted resource paths.
+API_PATHS_MAPPING = {
+    'createFeed': {
+        'url_path': '/feeds/2021-06-30/feeds',
+        'restricted_resource_path': None,
+    },
+    'createFeedDocument': {
+        'url_path': '/feeds/2021-06-30/documents',
+        'restricted_resource_path': None,
+    },
+    'createRestrictedDataToken': {
+        'url_path': '/tokens/2021-03-01/restrictedDataToken',
+        'restricted_resource_path': None,
+    },
+    'getMarketplaceParticipations': {
+        'url_path': '/sellers/v1/marketplaceParticipations',
+        'restricted_resource_path': None,
+    },
+    'getOrders': {
+        'url_path': '/orders/v0/orders',
+        'restricted_resource_path': None,
+    },
+    'getOrderAddress': {
+        'url_path': '/orders/v0/orders/{param}/address',
+        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/address',
+    },
+    'getOrderBuyerInfo': {
+        'url_path': '/orders/v0/orders/{param}/buyerInfo',
+        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/buyerInfo',
+    },
+    'getOrderItems': {
+        'url_path': '/orders/v0/orders/{param}/orderItems',
+        'restricted_resource_path': None,
+    },
+    'getOrderItemsBuyerInfo': {
+        'url_path': '/orders/v0/orders/{param}/orderItems/buyerInfo',
+        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/orderItems/buyerInfo',
+    },
+}
+
+
+# Mapping of Amazon fulfillment channels to Amazon status to synchronize.
+STATUS_TO_SYNCHRONIZE = {
+    'AFN': ['Shipped'],
+    'MFN': ['Unshipped'],
+}
+
+
+# Mapping of Amazon Carrier Names
 # See https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_4_1/amzn-base.xsd
 
 AMAZON_CARRIER_NAMES_MAPPING = {

@@ -59,6 +59,16 @@
                     </div>
                     <notebook>
                         <page string="Credentials" name="credentials">
+                            <field name="refresh_token" invisible="1"/>
+                            <p class="text-muted"
+                               attrs="{'invisible': [('refresh_token', '!=', False)]}">
+                                Link your Amazon account with Odoo to start synchronizing your
+                                Amazon orders.
+                            </p>
+                            <p class="text-muted"
+                               attrs="{'invisible': [('refresh_token', '=', False)]}">
+                                Your Amazon account is linked with Odoo.
+                            </p>
                             <group attrs="{'invisible': [('id', '!=', False)]}">
                                 <group>
                                     <label for="base_marketplace_id"/>
@@ -78,9 +88,6 @@
                             </group>
                             <group>
                                 <group>
-                                    <field name="seller_key"
-                                           attrs="{'readonly': [('id', '!=', False)]}"/>
-                                    <field name="auth_token" password="True"/>
                                     <field name="base_marketplace_id"
                                            readonly="True"
                                            force_save="True"
@@ -90,15 +97,24 @@
                                 </group>
                             </group>
                             <div attrs="{'invisible': [('id', '=', False)]}">
-                            <button name="action_check_credentials"
-                                    string="Test Credentials"
-                                    type="object"
-                                    class="btn-secondary"
-                                    icon="fa-television"/>
+                            <button string="Link with Amazon"
+                                type="object"
+                                name="action_redirect_to_oauth_url"
+                                class="btn-primary"
+                                attrs="{'invisible': [('refresh_token', '!=', False)]}"/>
+                            <button string="Unlink account"
+                                type="object"
+                                name="action_reset_refresh_token"
+                                class="btn-secondary pl-0"
+                                groups="base.group_no_one"
+                                attrs="{'invisible': [('refresh_token', '=', False)]}"
+                                confirm="This action will disconnect your account with Amazon and
+                                         cannot be undone. Are you sure you want to proceed?"/>
                             </div>
                         </page>
                         <page string="Marketplaces"
-                              name="marketplaces" attrs="{'invisible': [('id', '=', False)]}">
+                              name="marketplaces" attrs="{'invisible': [
+                              '|', ('id', '=', False), ('refresh_token', '=', False)]}">
                             <group>
                                 <label for="active_marketplace_ids"/>
                                 <div>
@@ -153,9 +169,7 @@
             <search>
                 <field name="name" string="Account"/>
                 <field name="active_marketplace_ids"
-                       filter_domain="['|', '|', ('active_marketplace_ids.name', 'ilike', self),
-                       ('active_marketplace_ids.code', 'ilike', self),
-                       ('active_marketplace_ids.domain', 'ilike', self)]"/>
+                       filter_domain="[('active_marketplace_ids.name', 'ilike', self)]"/>
                 <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
                 <filter name="filter_inactive" string="Inactive" domain="[('active', '=', False)]"/>
             </search>

@@ -7,8 +7,6 @@
         <field name="arch" type="xml">
             <tree string="Amazon Marketplaces" delete="false">
                 <field name="name"/>
-                <field name="code"/>
-                <field name="domain"/>
             </tree>
         </field>
     </record>
@@ -25,9 +23,9 @@
                     </div>
                     <group>
                         <group>
-                            <field name="code"/>
-                            <field name="domain"/>
                             <field name="api_ref"/>
+                            <field name="region"/>
+                            <field name="seller_central_url"/>
                             <field name="tax_included" groups="base.group_no_one"/>
                         </group>
                     </group>

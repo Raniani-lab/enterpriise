@@ -30,6 +30,7 @@ Key Features
         'views/amazon_account_views.xml',
         'views/amazon_marketplace_views.xml',
         'views/amazon_offer_views.xml',
+        'views/amazon_templates.xml',
         'views/product_views.xml',
         'views/res_config_settings_views.xml',
         'views/sale_order_views.xml',

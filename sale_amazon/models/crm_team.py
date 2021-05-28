@@ -7,4 +7,5 @@ class CrmTeam(models.Model):
     _inherit = 'crm.team'
 
     amazon_team = fields.Boolean(
-        help="True if this sales team is associated with Amazon orders", default=False)
+        help="Whether this sales team is associated with Amazon orders or not."
+    )

@@ -4,76 +4,128 @@ from unittest.mock import patch
 
 from odoo.tests import TransactionCase
 
-
-BASE_ORDER_DATA = {
-    'AmazonOrderId': {'value': '123456789'},
-    'PurchaseDate': {'value': '1378-04-08T00:00:00.000Z'},
-    'LastUpdateDate': {'value': '1976-08-21T07:00:00.000Z'},
-    'OrderStatus': {'value': 'Unshipped'},
-    'FulfillmentChannel': {'value': 'MFN'},
-    'ShipServiceLevel': {'value': 'SHIPPING-CODE'},
-    'ShippingAddress': {
-        'City': {'value': 'OdooCity'},
-        'AddressType': {'value': 'Commercial'},
-        'PostalCode': {'value': '12345-1234'},
-        'StateOrRegion': {'value': 'CA'},
-        'Phone': {'value': '+1 234-567-8910 ext. 12345'},
-        'CountryCode': {'value': 'US'},
-        'Name': {'value': 'Gederic Frilson'},
-        'AddressLine1': {'value': '123 RainBowMan Street'},
+AWS_RESPONSE_MOCK = {
+    'AssumeRoleResponse': {
+        'AssumeRoleResult': {
+            'Credentials': {
+                'AccessKeyId': 'dummy_access_key',
+                'SecretAccessKey': 'dummy_secret_key',
+                'SessionToken': 'dummy_session_token',
+            },
+        },
     },
-    'OrderTotal': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'MarketplaceId': {'value': 'ATVPDKIKX0DER'},
-    'BuyerEmail': {'value': 'iliketurtles@marketplace.amazon.com'},
-    'BuyerName': {'value': 'Gederic Frilson'},
-    'EarliestDeliveryDate': {'value': '1979-04-20T00:00:00.000Z'},
 }
 
-BASE_ITEM_DATA = {
-    'OrderItemId': {'value': '123456789'},
-    'SellerSKU': {'value': 'SKU'},
-    'ConditionId': {'value': 'Used'},
-    'ConditionSubtypeId': {'value': 'Good'},
-    'Title': {'value': 'OdooBike Spare Wheel, 26x2.1, Pink, 200-Pack'},
-    'QuantityOrdered': {'value': '2'},
-    'ItemPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '100.00'}},
-    'ShippingPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '12.50'}},
-    'GiftWrapPrice': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '3.33'}},
-    'ItemTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'ShippingTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'GiftWrapTax': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'ShippingDiscount': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'PromotionDiscount': {'CurrencyCode': {'value': 'USD'}, 'Amount': {'value': '0.00'}},
-    'IsGift': {'value': 'true'},
-    'GiftWrapLevel': {'value': 'WRAP-CODE'},
-    'GiftMessageText': {'value': 'Hi,\nEnjoy your gift!\nFrom Gederic Frilson'},
+ORDER_MOCK = {
+    'AmazonOrderId': '123456789',
+    'PurchaseDate': '1378-04-08T00:00:00Z',
+    'LastUpdateDate': '2017-01-20T00:00:00Z',
+    'OrderStatus': 'Unshipped',
+    'FulfillmentChannel': 'MFN',
+    'ShipServiceLevel': 'SHIPPING-CODE',
+    'OrderTotal': {'CurrencyCode': 'USD', 'Amount': '120.00'},
+    'MarketplaceId': 'ATVPDKIKX0DER',
+}
+
+GET_ORDERS_RESPONSE_MOCK = {
+    'payload': {
+        'LastUpdatedBefore': '2020-01-01T00:00:00Z',
+        'Orders': [ORDER_MOCK],
+    },
+}
+
+GET_ORDER_ITEMS_MOCK = {
+    'payload': {
+        'AmazonOrderId': '123456789',
+        'OrderItems': [
+            {
+                'ItemTax': {'CurrencyCode': 'USD', 'Amount': '20.00'},
+                'ItemPrice': {'CurrencyCode': 'USD', 'Amount': '100.00'},
+                'ShippingTax': {'CurrencyCode': 'USD', 'Amount': '2.50'},
+                'ShippingPrice': {'CurrencyCode': 'USD', 'Amount': '12.50'},
+                'PromotionDiscountTax': {'CurrencyCode': 'USD', 'Amount': '0.00'},
+                'PromotionDiscount': {'CurrencyCode': 'USD', 'Amount': '0.00'},
+                'SellerSKU': 'TEST',
+                'Title': 'Run Test, Run!',
+                'IsGift': 'true',
+                'ConditionNote': 'DO NOT BUY THIS',
+                'ConditionId': 'Used',
+                'ConditionSubtypeId': 'Acceptable',
+                'QuantityOrdered': 2,
+                'OrderItemId': '987654321',
+            },
+        ],
+    },
+}
+
+GET_ORDER_BUYER_INFO_MOCK = {
+    'payload': {
+        'BuyerEmail': 'iliketurtles@marketplace.amazon.com',
+        'BuyerName': 'Gederic Frilson',
+    },
+}
+
+GET_ORDER_ADDRESS_MOCK = {
+    'payload': {
+        'ShippingAddress': {
+            'AddressLine1': '123 RainBowMan Street',
+            'Phone': '+1 234-567-8910 ext. 12345',
+            'PostalCode': '12345-1234',
+            'City': 'New Duck City DC',
+            'StateOrRegion': 'CA',
+            'CountryCode': 'US',
+            'Name': 'Gederic Frilson',
+            'AddressType': 'Commercial',
+        },
+    },
+}
+
+GET_ORDER_ITEMS_BUYER_INFO_MOCK = {
+    'payload': {
+        'AmazonOrderId': '123456789',
+        'OrderItems': [
+            {
+                'OrderItemId': '987654321',
+                'GiftMessageText': 'Wrapped Hello',
+                'GiftWrapLevel': 'WRAP-CODE',
+                'GiftWrapTax': {'CurrencyCode': 'USD', 'Amount': '1.33'},
+                'GiftWrapPrice': {'CurrencyCode': 'USD', 'Amount': '3.33'},
+            },
+        ],
+    },
+}
+
+OPERATIONS_RESPONSES_MAP = {
+    'getOrders': GET_ORDERS_RESPONSE_MOCK,
+    'getOrderItems': GET_ORDER_ITEMS_MOCK,
+    'getOrderBuyerInfo': GET_ORDER_BUYER_INFO_MOCK,
+    'getOrderAddress': GET_ORDER_ADDRESS_MOCK,
+    'getOrderItemsBuyerInfo': GET_ORDER_ITEMS_BUYER_INFO_MOCK,
+    'createFeedDocument': {'feedDocumentId': '123123', 'url': 'my_amazing_feed_url.test'},
+    'createFeed': None,
 }
 
 
 class TestAmazonCommon(TransactionCase):
 
     def setUp(self):
-
-        def _get_available_marketplace_api_refs_mock(*_args, **_kwargs):
-            """ Return the API ref of all marketplaces without calling MWS API. """
-            return self.env['amazon.marketplace'].search([]).mapped('api_ref'), False
-
         super().setUp()
-
-        # Create account
-        with patch('odoo.addons.sale_amazon.models.mws_connector.get_api_connector',
-                   new=lambda *args, **kwargs: None), \
-            patch('odoo.addons.sale_amazon.models.mws_connector.get_available_marketplace_api_refs',
-                  new=_get_available_marketplace_api_refs_mock):
-            self.account = self.env['amazon.account'].create({
-                'name': "TestAccountName",
-                **dict.fromkeys(('seller_key', 'auth_token'), ''),
-                'base_marketplace_id': 1,
-                'company_id': self.env.company.id,
-            })
+        marketplace = self.env['amazon.marketplace'].search(
+            [('api_ref', '=', ORDER_MOCK['MarketplaceId'])]
+        )
+        self.account = self.env['amazon.account'].create({
+            'name': 'TestAccountName',
+            'seller_key': 'Random Seller Key',
+            'refresh_token': 'A refresh token',
+            'base_marketplace_id': marketplace.id,
+            'available_marketplace_ids': [marketplace.id],
+            'active_marketplace_ids': [marketplace.id],
+            'company_id': self.env.company.id,
+        })
 
         # Create a delivery carrier
         product = self.env['product.product'].create({'name': "This is a product"})
         self.carrier = self.env['delivery.carrier'].create(
             {'name': "My Truck", 'product_id': product.id}  # delivery_type == 'fixed'
         )
+        self.tracking_ref = "dummy tracking ref"

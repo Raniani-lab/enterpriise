@@ -981,6 +981,7 @@ class PlanningRole(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
+    active = fields.Boolean('Active', default=True)
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=_get_default_color)
     employee_ids = fields.Many2many('hr.employee', string='Employees')

@@ -390,7 +390,7 @@
         <field name="name">quality.check.view.tree</field>
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
-            <tree sample="1">
+            <tree sample="1" decoration-info="quality_state == 'none'">
                 <field name="name" decoration-bf="1"/>
                 <field name='product_id' optional="show"/>
                 <field name="picking_id" optional="hide" string="Transfer"/>

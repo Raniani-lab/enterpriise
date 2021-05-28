@@ -49,12 +49,12 @@
         <field name="model">approval.request</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <tree create="false" sample="1">
+            <tree create="false" sample="1" decoration-info="request_status == 'new'">
                 <field name="name"/>
                 <field name="request_owner_id" widget="many2one_avatar_user"/>
                 <field name="category_id"/>
                 <field name="activity_ids" widget="list_activity"/>
-                <field name="request_status" decoration-warning="request_status == 'pending'" decoration-success="request_status == 'approved'" decoration-danger="request_status == 'refused'" widget="badge"/>
+                <field name="request_status" decoration-info="request_status == 'new'" decoration-warning="request_status == 'pending'" decoration-success="request_status == 'approved'" decoration-danger="request_status == 'refused'" widget="badge"/>
             </tree>
         </field>
     </record>

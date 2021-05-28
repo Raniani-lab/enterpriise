@@ -142,7 +142,7 @@
       <field name="name">rental.order.tree</field>
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
-        <tree sample="1">
+        <tree sample="1" decoration-info="rental_status in ['draft', 'sent']" decoration-muted="rental_status == 'cancel'">
           <field name="has_late_lines" invisible="1"/>
           <field name="name" readonly="1" decoration-bf="1"/>
           <field name="date_order" widget='date'/>

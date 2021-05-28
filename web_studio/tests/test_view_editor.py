@@ -73,7 +73,7 @@ class TestEditView(TestStudioController):
 
         self.edit_view(base_view, operations=[add_binary_op])
         self.assertViewArchEqual(
-            base_view.read_combined()['arch'],
+            base_view.get_combined_arch(),
             """
               <form>
                 <field name="display_name"/>
@@ -106,7 +106,7 @@ class TestEditView(TestStudioController):
         ]
         self.edit_view(base_view, operations=ops)
         self.assertViewArchEqual(
-            base_view.read_combined()['arch'],
+            base_view.get_combined_arch(),
             """
               <form>
                 <field name="display_name"/>
@@ -178,7 +178,7 @@ class TestEditView(TestStudioController):
         # The filename field is still present in the view
         # this is not intentional rather, it is way easier to leave this invisible field there
         self.assertViewArchEqual(
-            base_view.read_combined()['arch'],
+            base_view.get_combined_arch(),
             """
               <form>
                 <field name="display_name"/>

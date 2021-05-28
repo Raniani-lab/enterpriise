@@ -509,8 +509,8 @@ class View(models.Model):
         # Beware ! By its reasoning, this function assumes that the view you
         # want to normalize is the last one to be applied on its root view.
         # This could be improved by deactivating all views that would be applied
-        # after this one when calling the read_combined to get the old_view then
-        # re-enabling them all afterwards.
+        # after this one when calling the get_combined_arch to get the old_view
+        # then re-enabling them all afterwards.
 
 
         def is_moved(node):
@@ -523,14 +523,14 @@ class View(models.Model):
             root_view = root_view.inherit_id
 
         parser = etree.XMLParser(remove_blank_text=True)
-        new_view = root_view.read_combined()['arch']
+        new_view = root_view.get_combined_arch()
 
         # Get the result of the xpath applications without this view
         self.active = False
-        old_view = root_view.read_combined()['arch']
+        old_view = root_view.get_combined_arch()
         self.active = True
 
-        # The parent data tag is missing from read_combined
+        # The parent data tag is missing from get_combined_arch
         new_view_tree = etree.Element('data')
         new_view_tree.append(etree.parse(io.StringIO(new_view), parser).getroot())
         old_view_tree = etree.Element('data')

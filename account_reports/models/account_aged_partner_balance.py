@@ -37,6 +37,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
     period3 = fields.Monetary(string='61 - 90')
     period4 = fields.Monetary(string='91 - 120')
     period5 = fields.Monetary(string='Older')
+    amount_currency = fields.Monetary(currency_field='currency_id')
 
     @api.model
     def _get_templates(self):
@@ -102,6 +103,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             )
             SELECT
                 {move_line_fields},
+                account_move_line.amount_currency as amount_currency,
                 account_move_line.partner_id AS partner_id,
                 partner.name AS partner_name,
                 COALESCE(trust_property.value_text, 'normal') AS partner_trust,
@@ -189,7 +191,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
     ####################################################
     @api.model
     def _get_column_details(self, options):
-        return [
+        columns = [
             self._header_column(),
             self._field_column('report_date'),
             self._field_column('journal_code', name="Journal"),
@@ -210,9 +212,16 @@ class ReportAccountAgedPartner(models.AbstractModel):
             ),
         ]
 
+        if self.user_has_groups('base.group_multi_currency'):
+            columns[2:2] = [
+                self._field_column('amount_currency'),
+                self._field_column('currency_id'),
+            ]
+        return columns
+
     def _get_hierarchy_details(self, options):
         return [
-            self._hierarchy_level('partner_id', foldable=True, namespan=5),
+            self._hierarchy_level('partner_id', foldable=True, namespan=len(self._get_column_details(options)) - 7),
             self._hierarchy_level('id'),
         ]
 
@@ -238,8 +247,8 @@ class ReportAccountAgedPartner(models.AbstractModel):
 
     def _format_total_line(self, res, value_dict, options):
         res['name'] = _('Total')
-        res['colspan'] = 5
-        res['columns'] = res['columns'][4:]
+        res['colspan'] = len(self._get_column_details(options)) - 7
+        res['columns'] = res['columns'][res['colspan']-1:]
 
 
 class ReportAccountAgedReceivable(models.Model):

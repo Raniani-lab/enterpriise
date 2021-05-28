@@ -409,6 +409,52 @@ class TestTaxReport(TestAccountReportsCommon):
             ],
         })
 
+    def test_vat_closing_generic(self):
+        """ VAT closing for the generic report should create one closing move per fiscal position + a domestic one.
+        One closing move should then be generated per fiscal position.
+        """
+        for generic_report in ('generic', 'generic_grouped_tax_account', 'generic_grouped_account_tax'):
+            options = self._init_options(
+                self.env['account.generic.tax.report'], fields.Date.from_string('2021-01-15'), fields.Date.from_string('2021-02-01'),
+                {'tax_report': generic_report}
+            )
+
+            self._assert_vat_closing(options, {
+                # From test_vat_closing_domestic
+                self.env['account.fiscal.position']: [
+                    # pylint: disable=C0326
+                    # sales: 200 * 0.5 * 0.7 - 20 * 0.5 * 0.7
+                    {'debit': 63,       'credit': 0.0,      'account_id': self.tax_account_1.id},
+                    # sales: 200 * 0.5 * (-0.1) - 20 * 0.5 * (-0.1)
+                    {'debit': 0,        'credit': 9,        'account_id': self.tax_account_2.id},
+                    # purchases: 400 * 0.5 * 0.6 - 60 * 0.5 * 0.6
+                    {'debit': 0,        'credit': 102,      'account_id': self.tax_account_1.id},
+                    # purchases: 400 * 0.5 * (-0.05) - 60 * 0.5 * (-0.05)
+                    {'debit': 8.5,      'credit': 0,        'account_id': self.tax_account_2.id},
+                    # For sales operations
+                    {'debit': 0,        'credit': 54,       'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                    # For purchase operations
+                    {'debit': 93.5,     'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                ],
+
+                # From test_vat_closing_single_fpos
+                self.foreign_vat_fpos: [
+                    # pylint: disable=C0326
+                    # sales: 800 * 0.5 * 0.7 - 200 * 0.5 * 0.7
+                    {'debit': 210,      'credit': 0.0,      'account_id': self.tax_account_1.id},
+                    # sales: 800 * 0.5 * (-0.1) - 200 * 0.5 * (-0.1)
+                    {'debit': 0,        'credit': 30,       'account_id': self.tax_account_2.id},
+                    # purchases: 1000 * 0.5 * 0.6 - 600 * 0.5 * 0.6
+                    {'debit': 0,        'credit': 120,      'account_id': self.tax_account_1.id},
+                    # purchases: 1000 * 0.5 * (-0.05) - 600 * 0.5 * (-0.05)
+                    {'debit': 10,       'credit': 0,        'account_id': self.tax_account_2.id},
+                    # For sales operations
+                    {'debit': 0,        'credit': 180,      'account_id': self.tax_group_1.property_tax_payable_account_id.id},
+                    # For purchase operations
+                    {'debit': 110,      'credit': 0,        'account_id': self.tax_group_2.property_tax_receivable_account_id.id},
+                ],
+            })
+
     def test_tax_report_fpos_domestic(self):
         """ Test tax report's content for 'domestic' foreign VAT fiscal position option.
         """

@@ -352,8 +352,11 @@ class generic_tax_report(models.AbstractModel):
         fiscal_positions = self.env['account.fiscal.position'].browse(fpos_ids)
 
         if options['fiscal_position'] == 'all':
+            report_country = self._get_country_for_fiscal_position_filter(options)
             fiscal_country = company.account_fiscal_country_id
-            include_domestic = not fiscal_positions or fiscal_country == fiscal_positions[0].country_id
+            include_domestic = not fiscal_positions \
+                               or not report_country \
+                               or fiscal_country == fiscal_positions[0].country_id
         else:
             include_domestic = options['fiscal_position'] == 'domestic'
 

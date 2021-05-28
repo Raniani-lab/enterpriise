@@ -631,25 +631,23 @@ class AccountReport(models.AbstractModel):
     ####################################################
 
     def _init_filter_fiscal_position(self, options, previous_options=None):
+        vat_fpos_domain = [
+            ('company_id', 'in', self.env.company.ids),
+            ('foreign_vat', '!=', False),
+        ]
         country = self._get_country_for_fiscal_position_filter(options)
         if country:
             vat_fiscal_positions = self.env['account.fiscal.position'].search([
+                *vat_fpos_domain,
                 ('country_id', '=', country.id),
-                ('foreign_vat', '!=', False),
-                ('company_id', 'in', self.env.company.ids),
             ])
-
-            options['available_vat_fiscal_positions'] = [{
-                'id': fiscal_pos.id,
-                'name': fiscal_pos.name,
-            } for fiscal_pos in vat_fiscal_positions]
 
             options['allow_domestic'] = self.env.company.account_fiscal_country_id == country
 
             accepted_prev_vals = {*vat_fiscal_positions.ids}
             if options['allow_domestic']:
                 accepted_prev_vals.add('domestic')
-            if len(options['available_vat_fiscal_positions']) > (0 if options['allow_domestic'] else 1) or not accepted_prev_vals:
+            if len(vat_fiscal_positions) > (0 if options['allow_domestic'] else 1) or not accepted_prev_vals:
                 accepted_prev_vals.add('all')
 
             if previous_options and previous_options.get('fiscal_position') in accepted_prev_vals:
@@ -662,9 +660,14 @@ class AccountReport(models.AbstractModel):
                 # Multiple possible values; by default, show the values of the company's area (if allowed), or everything
                 options['fiscal_position'] = options['allow_domestic'] and 'domestic' or 'all'
         else:
-            options['available_vat_fiscal_positions'] = []
+            vat_fiscal_positions = self.env['account.fiscal.position'].search(vat_fpos_domain)
             options['allow_domestic'] = False
             options['fiscal_position'] = 'all'
+
+        options['available_vat_fiscal_positions'] = [{
+            'id': fiscal_pos.id,
+            'name': fiscal_pos.name,
+        } for fiscal_pos in vat_fiscal_positions]
 
     def _get_country_for_fiscal_position_filter(self, options):
         """ Gets the country to use to fetch the available foreign VAT fiscal positions for the

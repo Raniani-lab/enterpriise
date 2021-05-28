@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from http.client import BadStatusLine
 from logging import getLogger
 from psycopg2 import InternalError, OperationalError
-from werkzeug.urls import url_join
+from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _
 from odoo.addons.http_routing.models.ir_http import slug
@@ -57,7 +57,7 @@ class WebsiteTwitterWall(models.Model):
             if fields.Datetime.from_string(self.last_search) < datetime.now() - timedelta(minutes=1):
                 self._cr.execute("SELECT value FROM ir_config_parameter WHERE key='twitter_wall_search' FOR UPDATE NOWAIT")
                 for tweet in self.search_tweets():
-                    self.process_tweet(tweet['id'], [self.id])
+                    self.process_tweet(tweet['id'], [self.id], author_id=tweet.get('user', {}).get('id_str'))
                 self.last_search = fields.Datetime.now()
         except InternalError:
             pass
@@ -109,14 +109,22 @@ class WebsiteTwitterWall(models.Model):
         else:
             return response.json().get('statuses')
 
-    def process_tweet(self, tweet_id, wall_ids):
+    def process_tweet(self, tweet_id, wall_ids, author_id=False):
         Tweet = self.env['website.twitter.tweet']
         tweet = Tweet.search([('tweet_id', '=', tweet_id)])
         if tweet:
             tweet.write({'wall_ids': [(4, wall_id) for wall_id in wall_ids if wall_id not in tweet.wall_ids.ids]})
         else:
             try:
-                card_url = 'https://api.twitter.com/1/statuses/oembed.json?id=%s&omit_script=true' % (tweet_id)
+                if not author_id:
+                    # kept for retro-compatibility with the old method signature but will be deprecated by Twitter
+                    # https://twittercommunity.com/t/consolidating-the-oembed-functionality/154690
+                    card_url = 'https://api.twitter.com/1/statuses/oembed.json?id=%s&omit_script=true' % (tweet_id)
+                else:
+                    card_url = 'https://publish.twitter.com/oembed?%s' % url_encode({
+                        'url': 'https://twitter.com/%s/statuses/%s' % (author_id, tweet_id),
+                        'omit_script': True
+                    })
                 response = requests.get(card_url, headers={'Content-Type': 'application/json'})
                 card_tweet = response.json()
                 if card_tweet:

@@ -67,7 +67,7 @@ class MulticurrencyRevaluationWizard(models.TransientModel):
         if line_dict and line_dict['children']:
             for (_key1, _key2, currency_id), account_info in line_dict['children'].items():
                 for (_key1, _key2, account_id), values in account_info['children'].items():
-                    balance = value_getter(values['values'])
+                    balance = value_getter(values['values'])[0]
                     if not float_is_zero(balance, precision_digits=self.company_id.currency_id.decimal_places):
                         move_lines.append((0, 0, {
                             'name': _('Provision for {for_cur} (1 {comp_cur} = {rate} {for_cur})').format(

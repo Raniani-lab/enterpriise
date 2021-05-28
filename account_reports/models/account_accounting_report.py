@@ -98,7 +98,7 @@ class AccountingReport(models.AbstractModel):
 
     # COLUMN/CELL FORMATTING ###################################################
     # ##########################################################################
-    def _field_column(self, field_name, sortable=False, name=None, ellipsis=False):
+    def _field_column(self, field_name, sortable=False, name=None, ellipsis=False, blank_if_zero=False):
         """Build a column based on a field.
 
         The type of the field determines how it is displayed.
@@ -106,18 +106,39 @@ class AccountingReport(models.AbstractModel):
         :param field_name: The name of the fields.Field to use
         :param sortable: Allow the user to sort data based on this column
         :param name: Use a specific name for display.
+        :param ellispsis (bool): The text displayed can be truncated in the web browser.
+        :param blank_if_zero (bool): For numeric fields, do not display a value if it is equal to zero.
+        :return (ColumnDetail): A usable column declaration to build the html
         """
         classes = ['text-nowrap']
-        def getter(v): return v.get(field_name, '')
-        if self._fields[field_name].type in ['monetary', 'float']:
+        def getter(v):
+            return self._fields[field_name].convert_to_cache(v.get(field_name, ''), self)
+        if self._fields[field_name].type in ['float']:
             classes += ['number']
-            def formatter(v): return self.format_value(v)
+            def formatter(v):
+                return v if v or not blank_if_zero else ''
+        elif self._fields[field_name].type in ['monetary']:
+            classes += ['number']
+            def m_getter(v):
+                return (v.get(field_name, ''), self.env['res.currency'].browse(
+                    v.get(self._fields[field_name].currency_field, (False,))[0])
+                )
+            getter = m_getter
+            def formatter(v):
+                return self.format_value(v[0], v[1], blank_if_zero=blank_if_zero)
         elif self._fields[field_name].type in ['char']:
             classes += ['text-center']
             def formatter(v): return v
         elif self._fields[field_name].type in ['date']:
             classes += ['date']
             def formatter(v): return format_date(self.env, v)
+        elif self._fields[field_name].type in ['many2one']:
+            classes += ['text-center']
+            def r_getter(v):
+                return v.get(field_name, False)
+            getter = r_getter
+            def formatter(v):
+                return v[1] if v else ''
         return self._custom_column(name=name or self._fields[field_name].string,
                                    getter=getter,
                                    formatter=formatter,
@@ -128,7 +149,16 @@ class AccountingReport(models.AbstractModel):
     def _custom_column(self, name, getter, formatter=None, classes=None, sortable=False, ellipsis=False):
         """Build custom column.
 
-        :return ColumnDetail: A usable column declaration to build the html
+        :param name (str): The displayed title of the column.
+        :param getter (function<dict,object>): A function that gets the unformatted value to
+            display in this column out of the dictionary containing all the info about a row.
+            If the value is a tuple, the first element is taken as `no_format` value.
+        :param formatter (function<object,str>): A function that transforms the value from the
+            getter function and returns the displayed string, according to locale etc.
+        :param classes (list<str>): All the html classes used for that column.
+        :param sortable (bool): Allow the user to sort data based on this column.
+        :param ellispsis (bool): The text displayed can be truncated in the web browser.
+        :return (ColumnDetail): A usable column declaration to build the html
         """
         if not formatter:
             formatter = lambda v: v
@@ -432,7 +462,7 @@ class AccountingReport(models.AbstractModel):
             'level': len(current),
             'colspan': hierarchy_detail.namespan,
             'columns': [
-                {'name': formatter(v), 'no_format': v}
+                {'name': formatter(v), 'no_format': v[0] if isinstance(v, tuple) else v}
                 for v, formatter in zip(
                     [getter(value_dict) for getter in value_getters],
                     value_formatters,

@@ -78,6 +78,7 @@
     const AUTOFILL_EDGE_LENGTH = 8;
     const ICON_EDGE_LENGTH = 18;
     const UNHIDE_ICON_EDGE_LENGTH = 14;
+    const MIN_CF_ICON_MARGIN = 4;
     // Fonts
     const DEFAULT_FONT_WEIGHT = "400";
     const DEFAULT_FONT_SIZE = 10;
@@ -1269,23 +1270,30 @@
         CommandResult[CommandResult["InvalidAutofillSelection"] = 25] = "InvalidAutofillSelection";
         CommandResult[CommandResult["WrongComposerSelection"] = 26] = "WrongComposerSelection";
         CommandResult[CommandResult["MinBiggerThanMax"] = 27] = "MinBiggerThanMax";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 28] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 29] = "MinBiggerThanMid";
-        CommandResult[CommandResult["InvalidNumberOfArgs"] = 30] = "InvalidNumberOfArgs";
-        CommandResult[CommandResult["MinNaN"] = 31] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 32] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 33] = "MaxNaN";
-        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 34] = "MinAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 35] = "MidAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 36] = "MaxAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MinInvalidFormula"] = 37] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 38] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 39] = "MaxInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 40] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 41] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 42] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 43] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 44] = "Readonly";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 28] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 29] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 30] = "MinBiggerThanMid";
+        CommandResult[CommandResult["InvalidNumberOfArgs"] = 31] = "InvalidNumberOfArgs";
+        CommandResult[CommandResult["MinNaN"] = 32] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 33] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 34] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 35] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 36] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 37] = "MinAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 38] = "MidAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 39] = "MaxAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 40] = "ValueUpperAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 41] = "ValueLowerAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MinInvalidFormula"] = 42] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 43] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 44] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 45] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 46] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 47] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 48] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 49] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 50] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 51] = "Readonly";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -2367,19 +2375,19 @@
     });
 
     const colors$1 = [
-        "#ff851b",
+        "#eb6d00",
         "#0074d9",
-        "#ffdc00",
-        "#7fdbff",
+        "#ad8e00",
+        "#169ed4",
         "#b10dc9",
-        "#0ecc40",
-        "#39cccc",
+        "#00a82d",
+        "#00a3a3",
         "#f012be",
         "#3d9970",
         "#111111",
-        "#01ff70",
+        "#62A300",
         "#ff4136",
-        "#aaaaaa",
+        "#949494",
         "#85144b",
         "#001f3f",
     ];
@@ -2470,6 +2478,20 @@
         ];
     }
 
+    const MAX_DELAY = 140;
+    const MIN_DELAY = 20;
+    const ACCELERATION = 0.035;
+    /**
+     * Decreasing exponential function used to determine the "speed" of edge-scrolling
+     * as the timeout delay.
+     *
+     * Returns a timeout delay in milliseconds.
+     */
+    function scrollDelay(value) {
+        // decreasing exponential from MAX_DELAY to MIN_DELAY
+        return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
+    }
+
     const fontSizes = [
         { pt: 7.5, px: 10 },
         { pt: 8, px: 11 },
@@ -2530,6 +2552,11 @@
         const size = fontSizeMap[sizeInPt];
         context.font = `${italic}${weight} ${size}px ${DEFAULT_FONT}`;
         return context.measureText(text).width;
+    }
+    function computeIconWidth(context, style) {
+        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
+        const size = fontSizeMap[sizeInPt];
+        return size + 2 * MIN_CF_ICON_MARGIN;
     }
     /**
      * Create a range from start (included) to end (excluded).
@@ -2951,13 +2978,48 @@
         newZone[end] += by;
         return newZone;
     }
-    // returns an Zone array with unique occurrence of each zone
+    /**
+     * Returns a Zone array with unique occurrence of each zone.
+     * For each multiple occurrence, the occurrence with the largest index is kept.
+     * This allows to always have the last selection made in the last position.
+     * */
     function uniqueZones(zones) {
-        return zones.filter((zone, index, self) => index ===
+        return zones
+            .reverse()
+            .filter((zone, index, self) => index ===
             self.findIndex((z) => z.top === zone.top &&
                 z.bottom === zone.bottom &&
                 z.left === zone.left &&
-                z.right === zone.right));
+                z.right === zone.right))
+            .reverse();
+    }
+    /**
+     * This function will compare the modifications of selection to determine
+     * a cell that is part of the new zone and not the previous one.
+     */
+    function findCellInNewZone(oldZone, currentZone, viewport) {
+        let col, row;
+        const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
+        const { left, right, top, bottom } = currentZone;
+        if (left != oldLeft) {
+            col = left;
+        }
+        else if (right != oldRight) {
+            col = right;
+        }
+        else {
+            col = viewport.left;
+        }
+        if (top != oldTop) {
+            row = top;
+        }
+        else if (bottom != oldBottom) {
+            row = bottom;
+        }
+        else {
+            row = viewport.top;
+        }
+        return [col, row];
     }
 
     /*
@@ -9050,7 +9112,7 @@
         checkCFRule(rule) {
             switch (rule.type) {
                 case "CellIsRule":
-                    return this.checkValidations(rule, this.checkOperatorArgsNumber(2, ["Between", "NotBetween"]), this.checkOperatorArgsNumber(1, [
+                    return this.checkValidations(rule, this.checkOperatorArgsNumber(2, ["Between", "NotBetween"]), this.checkOperatorArgsNumberEqual(["Equal", "NotEqual"]), this.checkOperatorArgsNumber(1, [
                         "BeginsWith",
                         "ContainsText",
                         "EndsWith",
@@ -9065,15 +9127,28 @@
                     // ☝️ Those three validations can be factorized further
                     );
                 }
+                case "IconSetRule": {
+                    return this.checkValidations(rule, this.checkInflationPoints(this.checkNaN), this.checkInflationPoints(this.checkFormulaCompilation), this.checkInflationPoints(this.checkAsyncFormula), this.checkLowerBiggerThanUpper);
+                }
             }
             return 0 /* Success */;
+        }
+        checkOperatorArgsNumberEqual(operators) {
+            return (rule) => {
+                const isEmpty = (value) => value === "" || value === undefined;
+                if (operators.includes(rule.operator) &&
+                    (!isEmpty(rule.values[1]) || rule.values.length > 2)) {
+                    return 31 /* InvalidNumberOfArgs */;
+                }
+                return 0 /* Success */;
+            };
         }
         checkOperatorArgsNumber(expectedNumber, operators) {
             return (rule) => {
                 if (operators.includes(rule.operator)) {
                     for (let i = 0; i < expectedNumber; i++) {
                         if (rule.values[i] === undefined || rule.values[i] === "") {
-                            return 30 /* InvalidNumberOfArgs */;
+                            return 31 /* InvalidNumberOfArgs */;
                         }
                     }
                 }
@@ -9085,11 +9160,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 31 /* MinNaN */;
+                        return 32 /* MinNaN */;
                     case "max":
-                        return 33 /* MaxNaN */;
+                        return 34 /* MaxNaN */;
                     case "mid":
-                        return 32 /* MidNaN */;
+                        return 33 /* MidNaN */;
+                    case "upperInflectionPoint":
+                        return 35 /* ValueUpperInflectionNaN */;
+                    case "lowerInflectionPoint":
+                        return 36 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -9103,11 +9182,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 37 /* MinInvalidFormula */;
+                        return 42 /* MinInvalidFormula */;
                     case "max":
-                        return 39 /* MaxInvalidFormula */;
+                        return 44 /* MaxInvalidFormula */;
                     case "mid":
-                        return 38 /* MidInvalidFormula */;
+                        return 43 /* MidInvalidFormula */;
+                    case "upperInflectionPoint":
+                        return 45 /* ValueUpperInvalidFormula */;
+                    case "lowerInflectionPoint":
+                        return 46 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -9119,17 +9202,34 @@
             if (compiledFormula.async) {
                 switch (thresholdName) {
                     case "min":
-                        return 34 /* MinAsyncFormulaNotSupported */;
+                        return 37 /* MinAsyncFormulaNotSupported */;
                     case "max":
-                        return 36 /* MaxAsyncFormulaNotSupported */;
+                        return 39 /* MaxAsyncFormulaNotSupported */;
                     case "mid":
-                        return 35 /* MidAsyncFormulaNotSupported */;
+                        return 38 /* MidAsyncFormulaNotSupported */;
+                    case "upperInflectionPoint":
+                        return 40 /* ValueUpperAsyncFormulaNotSupported */;
+                    case "lowerInflectionPoint":
+                        return 41 /* ValueLowerAsyncFormulaNotSupported */;
                 }
             }
             return 0 /* Success */;
         }
         checkThresholds(check) {
             return this.combineValidations((rule) => check(rule.minimum, "min"), (rule) => check(rule.maximum, "max"), (rule) => (rule.midpoint ? check(rule.midpoint, "mid") : 0 /* Success */));
+        }
+        checkInflationPoints(check) {
+            return this.combineValidations((rule) => check(rule.lowerInflectionPoint, "lowerInflectionPoint"), (rule) => check(rule.upperInflectionPoint, "upperInflectionPoint"));
+        }
+        checkLowerBiggerThanUpper(rule) {
+            const minValue = rule.lowerInflectionPoint.value;
+            const maxValue = rule.upperInflectionPoint.value;
+            if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
+                rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
+                Number(minValue) > Number(maxValue)) {
+                return 28 /* LowerBiggerThanUpper */;
+            }
+            return 0 /* Success */;
         }
         checkMinBiggerThanMax(rule) {
             const minValue = rule.minimum.value;
@@ -9149,7 +9249,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 Number(midValue) >= Number(maxValue)) {
-                return 28 /* MidBiggerThanMax */;
+                return 29 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -9161,7 +9261,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 Number(minValue) >= Number(midValue)) {
-                return 29 /* MinBiggerThanMid */;
+                return 30 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -9473,7 +9573,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 42 /* MergeOverlap */;
+                        return 49 /* MergeOverlap */;
                     }
                 }
             }
@@ -9701,7 +9801,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 43 /* TooManyHiddenElements */;
+                        : 50 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -11964,9 +12064,9 @@
     }
     const otRegistry = new OTRegistry();
 
-    const { Component: Component$i } = owl__namespace;
-    const { xml: xml$l, css: css$k } = owl__namespace.tags;
-    const TEMPLATE$i = xml$l /* xml */ `
+    const { Component: Component$k } = owl__namespace;
+    const { xml: xml$n, css: css$m } = owl__namespace.tags;
+    const TEMPLATE$j = xml$n /* xml */ `
   <div class="o-selection">
     <t t-foreach="ranges" t-as="range" t-key="range.id">
       <input
@@ -11995,7 +12095,7 @@
         t-on-click="disable">OK</button>
     </div>
   </div>`;
-    const CSS$h = css$k /* scss */ `
+    const CSS$i = css$m /* scss */ `
   .o-selection {
     input {
       padding: 4px 6px;
@@ -12039,7 +12139,7 @@
      * A `selection-changed` event is triggered every time the input value
      * changes.
      */
-    class SelectionInput extends Component$i {
+    class SelectionInput extends Component$k {
         constructor() {
             super(...arguments);
             this.id = uuidv4();
@@ -12136,50 +12236,68 @@
             }
         }
     }
-    SelectionInput.template = TEMPLATE$i;
-    SelectionInput.style = CSS$h;
+    SelectionInput.template = TEMPLATE$j;
+    SelectionInput.style = CSS$i;
 
-    const conditionalFormatingTerms = {
+    const conditionalFormattingTerms = {
         CF_TITLE: _lt("Format rules"),
         IS_RULE: _lt("Format cells if..."),
         FORMATTING_STYLE: _lt("Formatting style"),
         BOLD: _lt("Bold"),
         ITALIC: _lt("Italic"),
-        STRIKETHROUGH: _lt("Strikethrough"),
-        TEXTCOLOR: _lt("Text Color"),
-        FILLCOLOR: _lt("Fill Color"),
+        STRIKE_THROUGH: _lt("Strikethrough"),
+        TEXT_COLOR: _lt("Text Color"),
+        FILL_COLOR: _lt("Fill Color"),
         CANCEL: _lt("Cancel"),
         SAVE: _lt("Save"),
-        PREVIEWTEXT: _lt("Preview text"),
+        PREVIEW_TEXT: _lt("Preview text"),
         Errors: {
-            [30 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
-            [31 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [32 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [33 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [31 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
+            [32 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [33 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [34 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [35 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [36 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
             [27 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [29 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [28 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [37 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [39 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [38 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [34 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
-            [36 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
-            [35 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
+            [30 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [29 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [28 /* LowerBiggerThanUpper */]: _lt("Lower inflation point must be smaller then upper inflation point"),
+            [42 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [44 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [43 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [45 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflation point formula"),
+            [46 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflation point formula"),
+            [37 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
+            [39 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
+            [38 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
+            [40 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
+            [41 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
             unexpected: _lt("The rule is invalid for an unknown reason"),
         },
-    };
-    const colorScale = {
-        CellValues: _lt("Cell values"),
-        FixedNumber: _lt("Fixed number"),
+        SingleColor: _lt("Single color"),
+        ColorScale: _lt("Color scale"),
+        IconSet: _lt("Icon set"),
+        newRule: _lt("Add another rule"),
+        FixedNumber: _lt("Number"),
         Percentage: _lt("Percentage"),
         Percentile: _lt("Percentile"),
         Formula: _lt("Formula"),
-        FormatRules: _lt("Format rules"),
+    };
+    const colorScale = {
+        CellValues: _lt("Cell values"),
         None: _lt("None"),
         Preview: _lt("Preview"),
         Minpoint: _lt("Minpoint"),
-        MaxPoint: _lt("MaxPoint"),
-        MidPoint: _lt("MidPoint"),
+        MaxPoint: _lt("Maxpoint"),
+        MidPoint: _lt("Midpoint"),
+    };
+    const iconSetRule = {
+        WhenValueIs: _lt("When value is"),
+        Else: _lt("Else"),
+        ReverseIcons: _lt("Reverse icons"),
+        Icons: _lt("Icons"),
+        Type: _lt("Type"),
+        Value: _lt("Value"),
     };
     const cellIsOperators = {
         IsEmpty: _lt("Is empty"),
@@ -12211,7 +12329,7 @@
         CreateChart: _lt("Create chart"),
         TitlePlaceholder: _lt("New Chart"),
         Errors: {
-            [21 /* EmptyDataSet */]: _lt("Invalid or no Dataset given"),
+            [21 /* EmptyDataSet */]: _lt("No Dataset given"),
             [22 /* EmptyLabelRange */]: _lt("No Labels given"),
             [23 /* InvalidDataSet */]: _lt("Invalid dataSet"),
             [24 /* InvalidLabelRange */]: _lt("Invalid Labels"),
@@ -12229,10 +12347,13 @@
         ReplaceAll: _lt("Replace all"),
         ReplaceFormulas: _lt("Also modify formulas"),
     };
+    const GenericWords = {
+        And: _lt("and"),
+    };
 
-    const { Component: Component$h, useState: useState$h } = owl__namespace;
-    const { xml: xml$k } = owl__namespace.tags;
-    const TEMPLATE$h = xml$k /* xml */ `
+    const { Component: Component$j, useState: useState$i } = owl__namespace;
+    const { xml: xml$m } = owl__namespace.tags;
+    const TEMPLATE$i = xml$m /* xml */ `
   <div class="o-chart">
     <div class="o-section">
       <div class="o-section-title"><t t-esc="env._t('${chartTerms.ChartType}')"/></div>
@@ -12273,11 +12394,11 @@
     </div>
   </div>
 `;
-    class ChartPanel extends Component$h {
+    class ChartPanel extends Component$j {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$h(this.initialState(this.props.figure));
+            this.state = useState$i(this.initialState(this.props.figure));
         }
         async willUpdateProps(nextProps) {
             var _a, _b;
@@ -12348,11 +12469,122 @@
             }
         }
     }
-    ChartPanel.template = TEMPLATE$h;
+    ChartPanel.template = TEMPLATE$i;
     ChartPanel.components = { SelectionInput };
 
-    const { Component: Component$g } = owl__namespace;
-    const { css: css$j, xml: xml$j } = owl__namespace.tags;
+    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    const UNDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="matrix(-1 0 0 1 17 5)"/></svg>`;
+    const REDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="translate(1 5)"/></svg>`;
+    const PAINT_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M9,0 L1,0 C0.45,0 0,0.45 0,1 L0,4 C0,4.55 0.45,5 1,5 L9,5 C9.55,5 10,4.55 10,4 L10,3 L11,3 L11,6 L4,6 L4,14 L6,14 L6,8 L13,8 L13,2 L10,2 L10,1 C10,0.45 9.55,0 9,0 Z" transform="translate(3 2)"/></svg>`;
+    const CLEAR_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0.27,1.55 L5.43,6.7 L3,12 L5.5,12 L7.14,8.42 L11.73,13 L13,11.73 L1.55,0.27 L0.27,1.55 L0.27,1.55 Z M3.82,0 L5.82,2 L7.58,2 L7.03,3.21 L8.74,4.92 L10.08,2 L14,2 L14,0 L3.82,0 L3.82,0 Z" transform="translate(2 3)"/></svg>`;
+    const TRIANGLE_DOWN_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 8 0" transform="translate(5 7)"/></svg>`;
+    const TRIANGLE_UP_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 8 4" transform="translate(5 7)"/></svg>`;
+    const TRIANGLE_RIGHT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 3)"/></svg>`;
+    const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 3)"/></svg>`;
+    const BOLD_ICON = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M9,3.5 C9,1.57 7.43,0 5.5,0 L1.77635684e-15,0 L1.77635684e-15,12 L6.25,12 C8.04,12 9.5,10.54 9.5,8.75 C9.5,7.45 8.73,6.34 7.63,5.82 C8.46,5.24 9,4.38 9,3.5 Z M5,2 C5.82999992,2 6.5,2.67 6.5,3.5 C6.5,4.33 5.82999992,5 5,5 L3,5 L3,2 L5,2 Z M3,10 L3,7 L5.5,7 C6.32999992,7 7,7.67 7,8.5 C7,9.33 6.32999992,10 5.5,10 L3,10 Z" transform="translate(4 3)"/></svg>`;
+    const ITALIC_ICON = `<svg class="o-icon"><polygon fill="#000000" fill-rule="evenodd" points="4 0 4 2 6.58 2 2.92 10 0 10 0 12 8 12 8 10 5.42 10 9.08 2 12 2 12 0" transform="translate(3 3)"/></svg>`;
+    const STRIKE_ICON = `<svg class="o-icon"><path fill="#010101" fill-rule="evenodd" d="M2.8875,3.06 C2.8875,2.6025 2.985,2.18625 3.18375,1.8075 C3.3825,1.42875 3.66,1.10625 4.02,0.84 C4.38,0.57375 4.80375,0.3675 5.29875,0.22125 C5.79375,0.075 6.33375,0 6.92625,0 C7.53375,0 8.085,0.0825 8.58,0.25125 C9.075,0.42 9.49875,0.6525 9.85125,0.95625 C10.20375,1.25625 10.47375,1.6125 10.665,2.02875 C10.85625,2.44125 10.95,2.895 10.95,3.38625 L8.6925,3.38625 C8.6925,3.1575 8.655,2.94375 8.58375,2.74875 C8.5125,2.55 8.4,2.38125 8.25,2.2425 C8.1,2.10375 7.9125,1.99125 7.6875,1.91625 C7.4625,1.8375 7.19625,1.8 6.88875,1.8 C6.5925,1.8 6.3375,1.83375 6.11625,1.8975 C5.89875,1.96125 5.71875,2.05125 5.57625,2.1675 C5.43375,2.28375 5.325,2.41875 5.25375,2.5725 C5.1825,2.72625 5.145,2.895 5.145,3.0675 C5.145,3.4275 5.32875,3.73125 5.69625,3.975 C5.71780203,3.98908066 5.73942012,4.00311728 5.76118357,4.01733315 C6.02342923,4.18863185 6.5,4.5 7,5 L4,5 C4,5 3.21375,4.37625 3.17625,4.30875 C2.985,3.9525 2.8875,3.53625 2.8875,3.06 Z M14,6 L0,6 L0,8 L7.21875,8 C7.35375,8.0525 7.51875,8.105 7.63125,8.15375 C7.90875,8.2775 8.12625,8.40875 8.28375,8.53625 C8.44125,8.6675 8.54625,8.81 8.6025,8.96 C8.65875,9.11375 8.685,9.28625 8.685,9.47375 C8.685,9.65 8.65125,9.815 8.58375,9.965 C8.51625,10.11875 8.41125,10.25 8.2725,10.35875 C8.13375,10.4675 7.95375,10.55375 7.74,10.6175 C7.5225,10.68125 7.27125,10.71125 6.97875,10.71125 C6.6525,10.71125 6.35625,10.6775 6.09,10.61375 C5.82375,10.55 5.59875,10.445 5.41125,10.3025 C5.22375,10.16 5.0775,9.9725 4.9725,9.74375 C4.8675,9.515 4.78125,9.17 4.78125,9 L2.55,9 C2.55,9.2525 2.61,9.6875 2.72625,10.025 C2.8425,10.3625 3.0075,10.66625 3.21375,10.9325 C3.42,11.19875 3.6675,11.4275 3.94875,11.6225 C4.23,11.8175 4.53375,11.9825 4.86375,12.11 C5.19375,12.24125 5.535,12.33875 5.89875,12.39875 C6.25875,12.4625 6.6225,12.4925 6.9825,12.4925 C7.5825,12.4925 8.13,12.425 8.6175,12.28625 C9.105,12.1475 9.525,11.94875 9.87,11.69375 C10.215,11.435 10.48125,11.12 10.6725,10.74125 C10.86375,10.3625 10.95375,9.935 10.95375,9.455 C10.95375,9.005 10.875,8.6 10.72125,8.24375 C10.68375,8.1575 10.6425,8.075 10.59375,7.9925 L14,8 L14,6 Z" transform="translate(2 3)"/></svg>`;
+    const TEXT_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M7,0 L5,0 L0.5,12 L2.5,12 L3.62,9 L8.37,9 L9.49,12 L11.49,12 L7,0 L7,0 Z M4.38,7 L6,2.67 L7.62,7 L4.38,7 L4.38,7 Z" transform="translate(3 1)"/></svg>`;
+    const FILL_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M14.5,8.87 C14.5,8.87 13,10.49 13,11.49 C13,12.32 13.67,12.99 14.5,12.99 C15.33,12.99 16,12.32 16,11.49 C16,10.5 14.5,8.87 14.5,8.87 L14.5,8.87 Z M12.71,6.79 L5.91,0 L4.85,1.06 L6.44,2.65 L2.29,6.79 C1.9,7.18 1.9,7.81 2.29,8.2 L6.79,12.7 C6.99,12.9 7.24,13 7.5,13 C7.76,13 8.01,12.9 8.21,12.71 L12.71,8.21 C13.1,7.82 13.1,7.18 12.71,6.79 L12.71,6.79 Z M4.21,7 L7.5,3.71 L10.79,7 L4.21,7 L4.21,7 Z"/></svg>`;
+    const MERGE_CELL_ICON = `<svg class="o-icon"><path fill="#000000" d="M3,6 L1,6 L1,2 L8,2 L8,4 L3,4 L3,6 Z M10,4 L10,2 L17,2 L17,6 L15,6 L15,4 L10,4 Z M10,14 L15,14 L15,12 L17,12 L17,16 L10,16 L10,14 Z M1,12 L3,12 L3,14 L8,14 L8,16 L1,16 L1,12 Z M1,8 L5,8 L5,6 L8,9 L5,12 L5,10 L1,10 L1,8 Z M10,9 L13,6 L13,8 L17,8 L17,10 L13,10 L13,12 L10,9 Z"/></svg>`;
+    const ALIGN_LEFT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,14 L10,14 L10,12 L0,12 L0,14 Z M10,4 L0,4 L0,6 L10,6 L10,4 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z" transform="translate(2 2)"/></svg>`;
+    const ALIGN_CENTER_ICON = `<svg class="o-icon"><path fill="#000000" d="M2,12 L2,14 L12,14 L12,12 L2,12 Z M2,4 L2,6 L12,6 L12,4 L2,4 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z" transform="translate(2 2)"/></svg>`;
+    const ALIGN_RIGHT_ICON = `<svg class="o-icon"><path fill="#000000" d="M4,14 L14,14 L14,12 L4,12 L4,14 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M4,6 L14,6 L14,4 L4,4 L4,6 Z" transform="translate(2 2)"/></svg>`;
+    // export const ALIGN_TOP_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,2 L12,2 L12,0 L0,0 L0,0 Z M2.5,7 L5,7 L5,14 L7,14 L7,7 L9.5,7 L6,3.5 L2.5,7 L2.5,7 Z" transform="translate(3 2)"/></svg>`;
+    const ALIGN_MIDDLE_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,3 L7,3 L7,0 L5,0 L5,3 L2.5,3 L6,6.5 L9.5,3 L9.5,3 Z M0,8 L0,10 L12,10 L12,8 L0,8 L0,8 Z M2.5,15 L5,15 L5,18 L7,18 L7,15 L9.5,15 L6,11.5 L2.5,15 L2.5,15 Z" transform="translate(3)"/></svg>`;
+    // export const ALIGN_BOTTOM_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,7 L7,7 L7,0 L5,0 L5,7 L2.5,7 L6,10.5 L9.5,7 L9.5,7 Z M0,12 L0,14 L12,14 L12,12 L0,12 L0,12 Z" transform="translate(3 2)"/></svg>`;
+    const TEXT_WRAPPING_ICON = `<svg class="o-icon"><path fill="#000000" d="M14,0 L0,0 L0,2 L14,2 L14,0 Z M0,12 L4,12 L4,10 L0,10 L0,12 Z M11.5,5 L0,5 L0,7 L11.75,7 C12.58,7 13.25,7.67 13.25,8.5 C13.25,9.33 12.58,10 11.75,10 L9,10 L9,8 L6,11 L9,14 L9,12 L11.5,12 C13.43,12 15,10.43 15,8.5 C15,6.57 13.43,5 11.5,5 Z" transform="translate(2 3)"/></svg>`;
+    const BORDERS_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,14 L14,14 L14,0 L0,0 L0,0 Z M6,12 L2,12 L2,8 L6,8 L6,12 L6,12 Z M6,6 L2,6 L2,2 L6,2 L6,6 L6,6 Z M12,12 L8,12 L8,8 L12,8 L12,12 L12,12 Z M12,6 L8,6 L8,2 L12,2 L12,6 L12,6 Z" transform="translate(2 2)"/></svg>`;
+    const BORDER_HV = `<svg class="o-icon"><g fill="#000000"><path d="M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z" opacity=".54"/><polygon points="8 0 6 0 6 6 0 6 0 8 6 8 6 14 8 14 8 8 14 8 14 6 8 6"/></g></svg>`;
+    const BORDER_H = `<svg class="o-icon"><g fill="#000000"><path d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z" opacity=".54"/><polygon points="0 8 14 8 14 6 0 6"/></g></svg>`;
+    const BORDER_V = `<svg class="o-icon"><g fill="#000000"><path d="M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="6 14 8 14 8 0 6 0"/></g></svg>`;
+    const BORDER_EXTERNAL = `<svg class="o-icon"><g fill="#000000"><path d="M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z" opacity=".54"/><path d="M0,0 L14,0 L14,14 L0,14 L0,0 Z M12,12 L12,2 L2,2 L2,12 L12,12 Z"/></g></svg>`;
+    const BORDER_LEFT = `<svg class="o-icon"><g fill="#000000"><path d="M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="0 14 2 14 2 0 0 0"/></g></svg>`;
+    const BORDER_TOP = `<svg class="o-icon"><g fill="#000000"><path d="M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z" opacity=".54"/><polygon points="0 0 0 2 14 2 14 0"/></g></svg>`;
+    const BORDER_RIGHT = `<svg class="o-icon"><g fill="#000000"><path d="M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z" opacity=".54"/><polygon points="12 0 12 14 14 14 14 0"/></g></svg>`;
+    const BORDER_BOTTOM = `<svg class="o-icon"><g fill="#000000"><path d="M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M8,0 L6,0 L6,2 L8,2 L8,0 L8,0 Z M2,9 L0,9 L0,11 L2,11 L2,9 L2,9 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M2,6 L0,6 L0,8 L2,8 L2,6 L2,6 Z" opacity=".54"/><polygon points="0 14 14 14 14 12 0 12"/></g></svg>`;
+    const BORDER_CLEAR = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z" transform="translate(2 2)" opacity=".54"/></svg>`;
+    const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
+    const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
+    /** Font Awesome by Dave Gandy
+     *  http://fontawesome.io/
+     *  https://fontawesome.com/license
+     */
+    const TRASH = '<svg xmlns ="http://www.w3.org/2000/svg" class="o-cf-icon trash" viewBox = "0 0 448 512" > <path fill="currentColor" d = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" > </path></svg >';
+    const REFRESH = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon refresh" viewBox="0 0 512 512"><path fill="currentColor" d="M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 8C134.73 8 33.91 94.92 12.29 209.82A12 12 0 0 0 24.09 224h49.05a12 12 0 0 0 11.67-9.26 175.91 175.91 0 0 1 317-56.94l-101.46-4.86a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12H500a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12h-47.37a12 12 0 0 0-11.98 12.57zM255.83 432a175.61 175.61 0 0 1-146-77.8l101.8 4.87a12 12 0 0 0 12.57-12v-47.4a12 12 0 0 0-12-12H12a12 12 0 0 0-12 12V500a12 12 0 0 0 12 12h47.35a12 12 0 0 0 12-12.6l-4.15-82.57A247.17 247.17 0 0 0 255.83 504c121.11 0 221.93-86.92 243.55-201.82a12 12 0 0 0-11.8-14.18h-49.05a12 12 0 0 0-11.67 9.26A175.86 175.86 0 0 1 255.83 432z"></path></svg>';
+    const ARROW_DOWN = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-down" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
+    const ARROW_UP = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-up" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
+    const ARROW_RIGHT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-right" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
+    const SMILE = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon smile" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
+    const MEH = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon meh" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
+    const FROWN = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon frown" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
+    const GREEN_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon green-dot" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const YELLOW_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon yellow-dot" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const RED_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon red-dot" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    function loadIconImage(svg) {
+        const image = new Image();
+        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
+        return image;
+    }
+    const ICONS = {
+        arrowGood: {
+            img: loadIconImage(ARROW_UP),
+            svg: ARROW_UP,
+        },
+        arrowNeutral: {
+            img: loadIconImage(ARROW_RIGHT),
+            svg: ARROW_RIGHT,
+        },
+        arrowBad: {
+            img: loadIconImage(ARROW_DOWN),
+            svg: ARROW_DOWN,
+        },
+        smileyGood: {
+            img: loadIconImage(SMILE),
+            svg: SMILE,
+        },
+        smileyNeutral: {
+            img: loadIconImage(MEH),
+            svg: MEH,
+        },
+        smileyBad: {
+            img: loadIconImage(FROWN),
+            svg: FROWN,
+        },
+        dotGood: {
+            img: loadIconImage(GREEN_DOT),
+            svg: GREEN_DOT,
+        },
+        dotNeutral: {
+            img: loadIconImage(YELLOW_DOT),
+            svg: YELLOW_DOT,
+        },
+        dotBad: {
+            img: loadIconImage(RED_DOT),
+            svg: RED_DOT,
+        },
+    };
+    const ICON_SETS = {
+        arrows: {
+            good: "arrowGood",
+            neutral: "arrowNeutral",
+            bad: "arrowBad",
+        },
+        smiley: {
+            good: "smileyGood",
+            neutral: "smileyNeutral",
+            bad: "smileyBad",
+        },
+        dots: {
+            good: "dotGood",
+            neutral: "dotNeutral",
+            bad: "dotBad",
+        },
+    };
+
+    const { Component: Component$i } = owl__namespace;
+    const { css: css$l, xml: xml$l } = owl__namespace.tags;
     const COLORS = [
         [
             "#000000",
@@ -12451,10 +12683,13 @@
             "#4c1130",
         ],
     ];
-    class ColorPicker extends Component$g {
+    class ColorPicker extends Component$i {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
+        }
+        isDropdownRight() {
+            return this.props.dropdownDirection !== "left";
         }
         onColorClick(ev) {
             const color = ev.target.dataset.color;
@@ -12463,19 +12698,21 @@
             }
         }
     }
-    ColorPicker.template = xml$j /* xml */ `
-  <div class="o-color-picker" t-on-click="onColorClick">
+    ColorPicker.template = xml$l /* xml */ `
+  <div class="o-color-picker" t-att-class="{
+    'right': isDropdownRight(),
+    'left': !isDropdownRight()
+    }" t-on-click="onColorClick">
     <div class="o-color-picker-line" t-foreach="COLORS" t-as="colors" t-key="colors">
       <t t-foreach="colors" t-as="color" t-key="color">
         <div class="o-color-picker-line-item" t-att-data-color="color" t-attf-style="background-color:{{color}};"></div>
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css$j /* scss */ `
+    ColorPicker.style = css$l /* scss */ `
     .o-color-picker {
       position: absolute;
       top: calc(100% + 5px);
-      left: 0;
       z-index: 10;
       box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
       background-color: white;
@@ -12491,67 +12728,39 @@
           border-radius: 50px;
           border: 1px solid #c0c0c0;
           &:hover {
+            cursor: pointer;
             background-color: rgba(0, 0, 0, 0.08);
             outline: 1px solid gray;
           }
         }
       }
+
+      &.right {
+        left: 0;
+      }
+
+      &.left {
+        right: 0;
+      }
     }
   `;
 
-    // -----------------------------------------------------------------------------
-    // Icons
-    // -----------------------------------------------------------------------------
-    const UNDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="matrix(-1 0 0 1 17 5)"/></svg>`;
-    const REDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="translate(1 5)"/></svg>`;
-    const PAINT_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M9,0 L1,0 C0.45,0 0,0.45 0,1 L0,4 C0,4.55 0.45,5 1,5 L9,5 C9.55,5 10,4.55 10,4 L10,3 L11,3 L11,6 L4,6 L4,14 L6,14 L6,8 L13,8 L13,2 L10,2 L10,1 C10,0.45 9.55,0 9,0 Z" transform="translate(3 2)"/></svg>`;
-    const CLEAR_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0.27,1.55 L5.43,6.7 L3,12 L5.5,12 L7.14,8.42 L11.73,13 L13,11.73 L1.55,0.27 L0.27,1.55 L0.27,1.55 Z M3.82,0 L5.82,2 L7.58,2 L7.03,3.21 L8.74,4.92 L10.08,2 L14,2 L14,0 L3.82,0 L3.82,0 Z" transform="translate(2 3)"/></svg>`;
-    const TRIANGLE_DOWN_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 8 0" transform="translate(5 7)"/></svg>`;
-    const TRIANGLE_UP_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 8 4" transform="translate(5 7)"/></svg>`;
-    const TRIANGLE_RIGHT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 3)"/></svg>`;
-    const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 3)"/></svg>`;
-    const BOLD_ICON = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M9,3.5 C9,1.57 7.43,0 5.5,0 L1.77635684e-15,0 L1.77635684e-15,12 L6.25,12 C8.04,12 9.5,10.54 9.5,8.75 C9.5,7.45 8.73,6.34 7.63,5.82 C8.46,5.24 9,4.38 9,3.5 Z M5,2 C5.82999992,2 6.5,2.67 6.5,3.5 C6.5,4.33 5.82999992,5 5,5 L3,5 L3,2 L5,2 Z M3,10 L3,7 L5.5,7 C6.32999992,7 7,7.67 7,8.5 C7,9.33 6.32999992,10 5.5,10 L3,10 Z" transform="translate(4 3)"/></svg>`;
-    const ITALIC_ICON = `<svg class="o-icon"><polygon fill="#000000" fill-rule="evenodd" points="4 0 4 2 6.58 2 2.92 10 0 10 0 12 8 12 8 10 5.42 10 9.08 2 12 2 12 0" transform="translate(3 3)"/></svg>`;
-    const STRIKE_ICON = `<svg class="o-icon"><path fill="#010101" fill-rule="evenodd" d="M2.8875,3.06 C2.8875,2.6025 2.985,2.18625 3.18375,1.8075 C3.3825,1.42875 3.66,1.10625 4.02,0.84 C4.38,0.57375 4.80375,0.3675 5.29875,0.22125 C5.79375,0.075 6.33375,0 6.92625,0 C7.53375,0 8.085,0.0825 8.58,0.25125 C9.075,0.42 9.49875,0.6525 9.85125,0.95625 C10.20375,1.25625 10.47375,1.6125 10.665,2.02875 C10.85625,2.44125 10.95,2.895 10.95,3.38625 L8.6925,3.38625 C8.6925,3.1575 8.655,2.94375 8.58375,2.74875 C8.5125,2.55 8.4,2.38125 8.25,2.2425 C8.1,2.10375 7.9125,1.99125 7.6875,1.91625 C7.4625,1.8375 7.19625,1.8 6.88875,1.8 C6.5925,1.8 6.3375,1.83375 6.11625,1.8975 C5.89875,1.96125 5.71875,2.05125 5.57625,2.1675 C5.43375,2.28375 5.325,2.41875 5.25375,2.5725 C5.1825,2.72625 5.145,2.895 5.145,3.0675 C5.145,3.4275 5.32875,3.73125 5.69625,3.975 C5.71780203,3.98908066 5.73942012,4.00311728 5.76118357,4.01733315 C6.02342923,4.18863185 6.5,4.5 7,5 L4,5 C4,5 3.21375,4.37625 3.17625,4.30875 C2.985,3.9525 2.8875,3.53625 2.8875,3.06 Z M14,6 L0,6 L0,8 L7.21875,8 C7.35375,8.0525 7.51875,8.105 7.63125,8.15375 C7.90875,8.2775 8.12625,8.40875 8.28375,8.53625 C8.44125,8.6675 8.54625,8.81 8.6025,8.96 C8.65875,9.11375 8.685,9.28625 8.685,9.47375 C8.685,9.65 8.65125,9.815 8.58375,9.965 C8.51625,10.11875 8.41125,10.25 8.2725,10.35875 C8.13375,10.4675 7.95375,10.55375 7.74,10.6175 C7.5225,10.68125 7.27125,10.71125 6.97875,10.71125 C6.6525,10.71125 6.35625,10.6775 6.09,10.61375 C5.82375,10.55 5.59875,10.445 5.41125,10.3025 C5.22375,10.16 5.0775,9.9725 4.9725,9.74375 C4.8675,9.515 4.78125,9.17 4.78125,9 L2.55,9 C2.55,9.2525 2.61,9.6875 2.72625,10.025 C2.8425,10.3625 3.0075,10.66625 3.21375,10.9325 C3.42,11.19875 3.6675,11.4275 3.94875,11.6225 C4.23,11.8175 4.53375,11.9825 4.86375,12.11 C5.19375,12.24125 5.535,12.33875 5.89875,12.39875 C6.25875,12.4625 6.6225,12.4925 6.9825,12.4925 C7.5825,12.4925 8.13,12.425 8.6175,12.28625 C9.105,12.1475 9.525,11.94875 9.87,11.69375 C10.215,11.435 10.48125,11.12 10.6725,10.74125 C10.86375,10.3625 10.95375,9.935 10.95375,9.455 C10.95375,9.005 10.875,8.6 10.72125,8.24375 C10.68375,8.1575 10.6425,8.075 10.59375,7.9925 L14,8 L14,6 Z" transform="translate(2 3)"/></svg>`;
-    const TEXT_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M7,0 L5,0 L0.5,12 L2.5,12 L3.62,9 L8.37,9 L9.49,12 L11.49,12 L7,0 L7,0 Z M4.38,7 L6,2.67 L7.62,7 L4.38,7 L4.38,7 Z" transform="translate(3 1)"/></svg>`;
-    const FILL_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M14.5,8.87 C14.5,8.87 13,10.49 13,11.49 C13,12.32 13.67,12.99 14.5,12.99 C15.33,12.99 16,12.32 16,11.49 C16,10.5 14.5,8.87 14.5,8.87 L14.5,8.87 Z M12.71,6.79 L5.91,0 L4.85,1.06 L6.44,2.65 L2.29,6.79 C1.9,7.18 1.9,7.81 2.29,8.2 L6.79,12.7 C6.99,12.9 7.24,13 7.5,13 C7.76,13 8.01,12.9 8.21,12.71 L12.71,8.21 C13.1,7.82 13.1,7.18 12.71,6.79 L12.71,6.79 Z M4.21,7 L7.5,3.71 L10.79,7 L4.21,7 L4.21,7 Z"/></svg>`;
-    const MERGE_CELL_ICON = `<svg class="o-icon"><path fill="#000000" d="M3,6 L1,6 L1,2 L8,2 L8,4 L3,4 L3,6 Z M10,4 L10,2 L17,2 L17,6 L15,6 L15,4 L10,4 Z M10,14 L15,14 L15,12 L17,12 L17,16 L10,16 L10,14 Z M1,12 L3,12 L3,14 L8,14 L8,16 L1,16 L1,12 Z M1,8 L5,8 L5,6 L8,9 L5,12 L5,10 L1,10 L1,8 Z M10,9 L13,6 L13,8 L17,8 L17,10 L13,10 L13,12 L10,9 Z"/></svg>`;
-    const ALIGN_LEFT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,14 L10,14 L10,12 L0,12 L0,14 Z M10,4 L0,4 L0,6 L10,6 L10,4 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z" transform="translate(2 2)"/></svg>`;
-    const ALIGN_CENTER_ICON = `<svg class="o-icon"><path fill="#000000" d="M2,12 L2,14 L12,14 L12,12 L2,12 Z M2,4 L2,6 L12,6 L12,4 L2,4 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z" transform="translate(2 2)"/></svg>`;
-    const ALIGN_RIGHT_ICON = `<svg class="o-icon"><path fill="#000000" d="M4,14 L14,14 L14,12 L4,12 L4,14 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M4,6 L14,6 L14,4 L4,4 L4,6 Z" transform="translate(2 2)"/></svg>`;
-    // export const ALIGN_TOP_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,2 L12,2 L12,0 L0,0 L0,0 Z M2.5,7 L5,7 L5,14 L7,14 L7,7 L9.5,7 L6,3.5 L2.5,7 L2.5,7 Z" transform="translate(3 2)"/></svg>`;
-    const ALIGN_MIDDLE_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,3 L7,3 L7,0 L5,0 L5,3 L2.5,3 L6,6.5 L9.5,3 L9.5,3 Z M0,8 L0,10 L12,10 L12,8 L0,8 L0,8 Z M2.5,15 L5,15 L5,18 L7,18 L7,15 L9.5,15 L6,11.5 L2.5,15 L2.5,15 Z" transform="translate(3)"/></svg>`;
-    // export const ALIGN_BOTTOM_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,7 L7,7 L7,0 L5,0 L5,7 L2.5,7 L6,10.5 L9.5,7 L9.5,7 Z M0,12 L0,14 L12,14 L12,12 L0,12 L0,12 Z" transform="translate(3 2)"/></svg>`;
-    const TEXT_WRAPPING_ICON = `<svg class="o-icon"><path fill="#000000" d="M14,0 L0,0 L0,2 L14,2 L14,0 Z M0,12 L4,12 L4,10 L0,10 L0,12 Z M11.5,5 L0,5 L0,7 L11.75,7 C12.58,7 13.25,7.67 13.25,8.5 C13.25,9.33 12.58,10 11.75,10 L9,10 L9,8 L6,11 L9,14 L9,12 L11.5,12 C13.43,12 15,10.43 15,8.5 C15,6.57 13.43,5 11.5,5 Z" transform="translate(2 3)"/></svg>`;
-    const BORDERS_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,14 L14,14 L14,0 L0,0 L0,0 Z M6,12 L2,12 L2,8 L6,8 L6,12 L6,12 Z M6,6 L2,6 L2,2 L6,2 L6,6 L6,6 Z M12,12 L8,12 L8,8 L12,8 L12,12 L12,12 Z M12,6 L8,6 L8,2 L12,2 L12,6 L12,6 Z" transform="translate(2 2)"/></svg>`;
-    const BORDER_HV = `<svg class="o-icon"><g fill="#000000"><path d="M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z" opacity=".54"/><polygon points="8 0 6 0 6 6 0 6 0 8 6 8 6 14 8 14 8 8 14 8 14 6 8 6"/></g></svg>`;
-    const BORDER_H = `<svg class="o-icon"><g fill="#000000"><path d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z" opacity=".54"/><polygon points="0 8 14 8 14 6 0 6"/></g></svg>`;
-    const BORDER_V = `<svg class="o-icon"><g fill="#000000"><path d="M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="6 14 8 14 8 0 6 0"/></g></svg>`;
-    const BORDER_EXTERNAL = `<svg class="o-icon"><g fill="#000000"><path d="M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z" opacity=".54"/><path d="M0,0 L14,0 L14,14 L0,14 L0,0 Z M12,12 L12,2 L2,2 L2,12 L12,12 Z"/></g></svg>`;
-    const BORDER_LEFT = `<svg class="o-icon"><g fill="#000000"><path d="M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="0 14 2 14 2 0 0 0"/></g></svg>`;
-    const BORDER_TOP = `<svg class="o-icon"><g fill="#000000"><path d="M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z" opacity=".54"/><polygon points="0 0 0 2 14 2 14 0"/></g></svg>`;
-    const BORDER_RIGHT = `<svg class="o-icon"><g fill="#000000"><path d="M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z" opacity=".54"/><polygon points="12 0 12 14 14 14 14 0"/></g></svg>`;
-    const BORDER_BOTTOM = `<svg class="o-icon"><g fill="#000000"><path d="M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M8,0 L6,0 L6,2 L8,2 L8,0 L8,0 Z M2,9 L0,9 L0,11 L2,11 L2,9 L2,9 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M2,6 L0,6 L0,8 L2,8 L2,6 L2,6 Z" opacity=".54"/><polygon points="0 14 14 14 14 12 0 12"/></g></svg>`;
-    const BORDER_CLEAR = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z" transform="translate(2 2)" opacity=".54"/></svg>`;
-    const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
-    const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
-
-    const { Component: Component$f, useState: useState$g, hooks: hooks$2 } = owl__namespace;
-    const { useExternalListener: useExternalListener$5 } = hooks$2;
-    const { xml: xml$i, css: css$i } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$2 = xml$i /* xml */ `
+    const { Component: Component$h, useState: useState$h, hooks: hooks$3 } = owl__namespace;
+    const { useExternalListener: useExternalListener$6 } = hooks$3;
+    const { xml: xml$k, css: css$k } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$2 = xml$k /* xml */ `
     <div class="o-cf-preview-line"
          t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
                        text-decoration:{{currentStyle.strikethrough ? 'line-through':'none'}};
                        font-style:{{currentStyle.italic?'italic':'normal'}};
                        color:{{currentStyle.textColor}};
+                       border-radius: 4px;
                        background-color:{{currentStyle.fillColor}};"
-         t-esc="previewText || env._t('${conditionalFormatingTerms.PREVIEWTEXT}')" />
+         t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
 `;
-    const TEMPLATE$g = xml$i /* xml */ `
+    const TEMPLATE$h = xml$k /* xml */ `
 <div>
-    <div class="o-section-title" t-esc="env._t('${conditionalFormatingTerms.CF_TITLE}')"></div>
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormatingTerms.IS_RULE}')"></div>
+    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
     <select t-model="state.condition.operator" class="o-input o-cell-is-operator">
         <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
             <option t-att-value="op" t-esc="cellIsOperators[op]"/>
@@ -12566,85 +12775,117 @@
           <input type="text"
                  placeholder="and value"
                  t-model="state.condition.value2"
-                 class="o-input"/>
+                 class="o-input o-cell-is-value"/>
       </t>
     </t>
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormatingTerms.FORMATTING_STYLE}')"></div>
+    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.FORMATTING_STYLE}')"></div>
 
     <t t-call="${PREVIEW_TEMPLATE$2}">
         <t t-set="currentStyle" t-value="state.style"/>
     </t>
     <div class="o-tools">
-        <div class="o-tool" t-att-title="env._t('${conditionalFormatingTerms.BOLD}')" t-att-class="{active:state.style.bold}" t-on-click="toggleTool('bold')">
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:state.style.bold}" t-on-click="toggleTool('bold')">
             ${BOLD_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormatingTerms.ITALIC}')" t-att-class="{active:state.style.italic}" t-on-click="toggleTool('italic')">
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:state.style.italic}" t-on-click="toggleTool('italic')">
             ${ITALIC_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormatingTerms.STRIKETHROUGH}')" t-att-class="{active:state.style.strikethrough}"
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:state.style.strikethrough}"
              t-on-click="toggleTool('strikethrough')">${STRIKE_ICON}
         </div>
-        <div class="o-tool o-dropdown o-with-color">
-              <span t-att-title="env._t('${conditionalFormatingTerms.TEXTCOLOR}')" t-attf-style="border-color:{{state.style.textColor}}"
-                    t-on-click.stop="toggleMenu('textColorTool')">${TEXT_COLOR_ICON}</span>
-                    <ColorPicker t-if="state.textColorTool" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
+        <div class="o-tool o-with-color">
+              <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{state.style.textColor}}"
+                    t-on-click.stop="toggleMenu('textColorTool')">
+                    ${TEXT_COLOR_ICON}
+              </span>
+              <div class="o-colorpicker-container" >
+                <ColorPicker t-if="state.textColorTool" dropdownDirection="'left'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
+              </div>
         </div>
         <div class="o-divider"/>
-        <div class="o-tool  o-dropdown o-with-color">
-              <span t-att-title="env._t('${conditionalFormatingTerms.FILLCOLOR}')" t-attf-style="border-color:{{state.style.fillColor}}"
-                    t-on-click.stop="toggleMenu('fillColorTool')">${FILL_COLOR_ICON}</span>
-                    <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
+        <div class="o-tool o-with-color">
+          <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{state.style.fillColor}}"
+                t-on-click.stop="toggleMenu('fillColorTool')">
+                ${FILL_COLOR_ICON}
+          </span>
+          <div class="o-colorpicker-container" >
+            <ColorPicker t-if="state.fillColorTool" dropdownDirection="'left'" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
+          </div>
         </div>
-    </div>
-    <div class="o-cf-error" t-if="props.error">
-        <t t-esc="props.error"/>
-      </div>
-    <div class="o-sidePanelButtons">
-      <button t-on-click="onCancel" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormatingTerms.CANCEL}')"></button>
-      <button t-on-click="onSave" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormatingTerms.SAVE}')"></button>
     </div>
 </div>
 `;
-    const CSS$g = css$i /* scss */ `
-  .o-cf-title-text {
-    font-size: 12px;
-    line-height: 14px;
-    margin-bottom: 6px;
-    margin-top: 18px;
-  }
+    const CSS$h = css$k /* scss */ `
   .o-cf-preview-line {
     border: 1px solid darkgrey;
     padding: 10px;
   }
-  .o-cf-error {
-    color: red;
-    margin-top: 10px;
+  .o-cell-is-operator {
+    margin-bottom: 5px;
+    width: 96%;
+  }
+  .o-cell-is-value {
+    margin-bottom: 5px;
+    width: 96%;
+  }
+  .o-colorpicker-container {
+    position: absolute;
+    padding-left: 20px;
+    padding-bottom: 18px;
+    pointer-events: none;
+
+    .o-color-picker {
+      pointer-events: all;
+    }
   }
 `;
-    class CellIsRuleEditor extends Component$f {
+    class CellIsRuleEditor extends Component$h {
         constructor() {
             super(...arguments);
-            // @ts-ignore   used in XML template
+            // @ts-ignore used in XML template
             this.cellIsOperators = cellIsOperators;
-            this.cf = this.props.conditionalFormat;
-            this.rule = this.cf.rule;
-            this.state = useState$g({
+            this.state = useState$h({
                 condition: {
-                    operator: this.rule && this.rule.operator ? this.rule.operator : "IsNotEmpty",
-                    value1: this.rule && this.rule.values.length > 0 ? this.rule.values[0] : "",
-                    value2: this.cf && this.rule.values.length > 1 ? this.rule.values[1] : "",
+                    operator: this.props.rule && this.props.rule.operator ? this.props.rule.operator : "IsNotEmpty",
+                    value1: this.props.rule && this.props.rule.values.length > 0 ? this.props.rule.values[0] : "",
+                    value2: this.props.rule.values.length > 1 ? this.props.rule.values[1] : "",
                 },
                 textColorTool: false,
                 fillColorTool: false,
                 style: {
-                    fillColor: this.cf && this.rule.style.fillColor,
-                    textColor: this.cf && this.rule.style.textColor,
-                    bold: this.cf && this.rule.style.bold,
-                    italic: this.cf && this.rule.style.italic,
-                    strikethrough: this.cf && this.rule.style.strikethrough,
+                    fillColor: this.props.rule.style.fillColor,
+                    textColor: this.props.rule.style.textColor,
+                    bold: this.props.rule.style.bold,
+                    italic: this.props.rule.style.italic,
+                    strikethrough: this.props.rule.style.strikethrough,
                 },
             });
-            useExternalListener$5(window, "click", this.closeMenus);
+            useExternalListener$6(window, "click", this.closeMenus);
+        }
+        getRule() {
+            const newStyle = {};
+            const style = this.state.style;
+            if (style.bold !== undefined) {
+                newStyle.bold = style.bold;
+            }
+            if (style.italic !== undefined) {
+                newStyle.italic = style.italic;
+            }
+            if (style.strikethrough !== undefined) {
+                newStyle.strikethrough = style.strikethrough;
+            }
+            if (style.fillColor) {
+                newStyle.fillColor = style.fillColor;
+            }
+            if (style.textColor) {
+                newStyle.textColor = style.textColor;
+            }
+            return {
+                type: "CellIsRule",
+                operator: this.state.condition.operator,
+                values: [this.state.condition.value1, this.state.condition.value2],
+                style: newStyle,
+            };
         }
         toggleMenu(tool) {
             const current = this.state[tool];
@@ -12664,60 +12905,33 @@
             this.state.textColorTool = false;
             this.state.fillColorTool = false;
         }
-        onSave() {
-            const newStyle = {};
-            const style = this.state.style;
-            if (style.bold !== undefined) {
-                newStyle.bold = style.bold;
-            }
-            if (style.italic !== undefined) {
-                newStyle.italic = style.italic;
-            }
-            if (style.strikethrough !== undefined) {
-                newStyle.strikethrough = style.strikethrough;
-            }
-            if (style.fillColor) {
-                newStyle.fillColor = style.fillColor;
-            }
-            if (style.textColor) {
-                newStyle.textColor = style.textColor;
-            }
-            this.trigger("modify-rule", {
-                rule: {
-                    type: "CellIsRule",
-                    operator: this.state.condition.operator,
-                    values: [this.state.condition.value1, this.state.condition.value2],
-                    stopIfTrue: false,
-                    style: newStyle,
-                },
-            });
-        }
-        onCancel() {
-            this.trigger("cancel-edit");
+        /**
+         * Get a default rule for "CellIsRule"
+         */
+        static getDefaultRule() {
+            return {
+                type: "CellIsRule",
+                operator: "IsNotEmpty",
+                values: [],
+                style: { fillColor: "#b6d7a8" },
+            };
         }
     }
-    CellIsRuleEditor.template = TEMPLATE$g;
-    CellIsRuleEditor.style = CSS$g;
+    CellIsRuleEditor.template = TEMPLATE$h;
+    CellIsRuleEditor.style = CSS$h;
     CellIsRuleEditor.components = { ColorPicker };
 
-    const { Component: Component$e, useState: useState$f, hooks: hooks$1 } = owl__namespace;
-    const { useExternalListener: useExternalListener$4 } = hooks$1;
-    const { xml: xml$h, css: css$h } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$1 = xml$h /* xml */ `
+    const { Component: Component$g, useState: useState$g, hooks: hooks$2 } = owl__namespace;
+    const { useExternalListener: useExternalListener$5 } = hooks$2;
+    const { xml: xml$j, css: css$j } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$1 = xml$j /* xml */ `
   <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
-    <t t-esc="env._t('${conditionalFormatingTerms.PREVIEWTEXT}')"/>
+    <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
   </div>
 `;
-    const THRESHOLD_TEMPLATE = xml$h /* xml */ `
+    const THRESHOLD_TEMPLATE = xml$j /* xml */ `
   <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
-      <div class="o-tools">
-        <div class="o-tool  o-dropdown o-with-color">
-          <span title="Fill Color"  t-attf-style="border-color:#{{colorNumberString(threshold.color)}}"
-                t-on-click.stop="toggleMenu(thresholdType+'ColorTool')">${FILL_COLOR_ICON}</span>
-          <ColorPicker t-if="stateColorScale[thresholdType+'ColorTool']" t-on-color-picked="setColor(thresholdType)"/>
-        </div>
-      </div>
-      <select name="valueType" t-model="threshold.type" t-on-click="closeMenus">
+      <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
         <option value="value" t-if="thresholdType!=='midpoint'">
           <t t-esc="env._t('${colorScale.CellValues}')"/>
         </option>
@@ -12725,31 +12939,35 @@
           <t t-esc="env._t('${colorScale.None}')"/>
         </option>
         <option value="number">
-          <t t-esc="env._t('${colorScale.FixedNumber}')"/>
+          <t t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
         </option>
         <option value="percentage">
-          <t t-esc="env._t('${colorScale.Percentage}')"/>
+          <t t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
         </option>
         <option value="percentile">
-          <t t-esc="env._t('${colorScale.Percentile}')"/>
+          <t t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
         </option>
         <option value="formula">
-          <t t-esc="env._t('${colorScale.Formula}')"/>
+          <t t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
         </option>
       </select>
-      <input type="text" class="o-threshold-value"
+      <input type="text" class="o-input o-threshold-value"
         t-model="stateColorScale[thresholdType].value"
         t-if="['number', 'percentage', 'percentile', 'formula'].includes(threshold.type)"
       />
-      <input type="text" class="o-threshold-value"
+      <input type="text" class="o-input o-threshold-value"
         t-else="" disabled="1"
       />
-  </div>`;
-    const TEMPLATE$f = xml$h /* xml */ `
-  <div>
-      <div class="o-section-title">
-        <t t-esc="env._t('${colorScale.FormatRules}')"/>
+      <div class="o-tools">
+        <div class="o-tool  o-dropdown o-with-color">
+          <span title="Fill Color"  t-attf-style="border-color:#{{colorNumberString(threshold.color)}}"
+                t-on-click.stop="toggleMenu(thresholdType+'ColorTool')">${FILL_COLOR_ICON}</span>
+          <ColorPicker t-if="stateColorScale[thresholdType+'ColorTool']" dropdownDirection="'left'" t-on-color-picked="setColor(thresholdType)"/>
+        </div>
       </div>
+  </div>`;
+    const TEMPLATE$g = xml$j /* xml */ `
+  <div>
       <div class="o-cf-title-text">
         <t t-esc="env._t('${colorScale.Preview}')"/>
       </div>
@@ -12775,69 +12993,60 @@
           <t t-set="threshold" t-value="stateColorScale.maximum" ></t>
           <t t-set="thresholdType" t-value="'maximum'" ></t>
       </t>
-      <div class="o-cf-error" t-if="props.error">
-        <t t-esc="props.error"/>
-      </div>
-      <div class="o-sidePanelButtons">
-        <button t-on-click="onCancel" class="o-sidePanelButton o-cf-cancel">
-          <t t-esc="env._t('${conditionalFormatingTerms.CANCEL}')"/>
-        </button>
-        <button class="o-sidePanelButton o-cf-save"
-          t-on-click="onSave"
-        >
-          <t t-esc="env._t('${conditionalFormatingTerms.SAVE}')"/>
-        </button>
-      </div>
   </div>`;
-    const CSS$f = css$h /* scss */ `
-  .o-cf-title-text {
-    font-size: 12px;
-    line-height: 14px;
-    margin-bottom: 6px;
-    margin-top: 18px;
-  }
+    const CSS$g = css$j /* scss */ `
   .o-threshold {
     display: flex;
     flex-direction: horizontal;
-
-    .o-threshold-value {
-      margin-left: 15px;
+    select {
       width: 100%;
+    }
+    .o-threshold-value {
+      margin-left: 2%;
+      width: 20%;
       min-width: 0px; // input overflows in Firefox otherwise
+    }
+    .o-threshold-value:disabled {
+      background-color: #edebed;
     }
   }
   .o-cf-preview-gradient {
     border: 1px solid darkgrey;
     padding: 10px;
-  }
-  .o-cf-error {
-    color: red;
-    margin-top: 10px;
+    border-radius: 4px;
   }
 `;
-    class ColorScaleRuleEditor extends Component$e {
+    class ColorScaleRuleEditor extends Component$g {
         constructor() {
             super(...arguments);
-            this.cf = this.props.conditionalFormat;
             this.colorNumberString = colorNumberString;
-            this.rule = this.cf.rule;
-            this.stateColorScale = useState$f({
-                minimum: this.rule.minimum,
-                maximum: this.rule.maximum,
-                midpoint: this.rule.midpoint ? this.rule.midpoint : { color: 0x444, type: "none" },
+            this.stateColorScale = useState$g({
+                minimum: this.props.rule.minimum,
+                maximum: this.props.rule.maximum,
+                midpoint: this.props.rule.midpoint
+                    ? this.props.rule.midpoint
+                    : { color: 0xb6d7a8, type: "none" },
                 maximumColorTool: false,
                 minimumColorTool: false,
                 midpointColorTool: false,
             });
-            useExternalListener$4(window, "click", this.closeMenus);
+            useExternalListener$5(window, "click", this.closeMenus);
+        }
+        getRule() {
+            const minimum = { ...this.stateColorScale.minimum };
+            const midpoint = { ...this.stateColorScale.midpoint };
+            const maximum = { ...this.stateColorScale.maximum };
+            return {
+                type: "ColorScaleRule",
+                minimum,
+                maximum,
+                midpoint: midpoint.type === "none" ? undefined : midpoint,
+            };
         }
         toggleMenu(tool) {
             const current = this.stateColorScale[tool];
             this.closeMenus();
             this.stateColorScale[tool] = !current;
-        }
-        toggleTool(tool) {
-            this.closeMenus();
         }
         setColor(target, ev) {
             const color = ev.detail.color;
@@ -12858,43 +13067,377 @@
             this.stateColorScale.midpointColorTool = false;
             this.stateColorScale.maximumColorTool = false;
         }
-        cleanRule(rule) {
-            if (rule.midpoint.type === "none") {
-                return {
-                    ...rule,
-                    midpoint: undefined,
-                };
-            }
-            return rule;
-        }
-        onSave() {
-            const minimum = { ...this.stateColorScale.minimum };
-            const midpoint = { ...this.stateColorScale.midpoint };
-            const maximum = { ...this.stateColorScale.maximum };
-            const rule = {
+        /**
+         * Get a default rule for "ColorScaleRule"
+         */
+        static getDefaultRule() {
+            return {
                 type: "ColorScaleRule",
-                minimum,
-                maximum,
-                midpoint,
+                minimum: { type: "value", color: 0xffffff },
+                midpoint: undefined,
+                maximum: { type: "value", color: 0x6aa84f },
             };
-            this.trigger("modify-rule", { rule: this.cleanRule(rule) });
-        }
-        onCancel() {
-            this.trigger("cancel-edit");
         }
     }
-    ColorScaleRuleEditor.template = TEMPLATE$f;
-    ColorScaleRuleEditor.style = CSS$f;
+    ColorScaleRuleEditor.template = TEMPLATE$g;
+    ColorScaleRuleEditor.style = CSS$g;
     ColorScaleRuleEditor.components = { ColorPicker };
+
+    const { Component: Component$f } = owl__namespace;
+    const { css: css$i, xml: xml$i } = owl__namespace.tags;
+    class IconPicker extends Component$f {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.iconSets = ICON_SETS;
+        }
+        onIconClick(icon) {
+            if (icon) {
+                this.trigger("icon-picked", { icon });
+            }
+        }
+    }
+    IconPicker.template = xml$i /* xml */ `
+  <div class="o-icon-picker" >
+    <t t-foreach="iconSets" t-as="iconSet" t-key="iconset">
+      <div class="o-cf-icon-line">
+        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].good)">
+          <t t-raw="icons[iconSets[iconSet].good].svg"/>
+        </div>
+        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].neutral)">
+          <t t-raw="icons[iconSets[iconSet].neutral].svg"/>
+        </div>
+        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].bad)">
+          <t t-raw="icons[iconSets[iconSet].bad].svg"/>
+        </div>
+      </div>
+    </t>
+  </div>`;
+    IconPicker.style = css$i /* scss */ `
+    .o-icon-picker {
+      position: absolute;
+      z-index: 10;
+      box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+      background-color: white;
+      padding: 2px 1px;
+    }
+    .o-cf-icon-line {
+      display: flex;
+      padding: 3px 6px;
+    }
+    .o-icon-picker-item {
+      margin: 0px 2px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+        outline: 1px solid gray;
+      }
+    }
+  `;
+
+    const { Component: Component$e, useState: useState$f, hooks: hooks$1 } = owl__namespace;
+    const { useExternalListener: useExternalListener$4 } = hooks$1;
+    const { xml: xml$h, css: css$h } = owl__namespace.tags;
+    const ICON_SETS_TEMPLATE = xml$h /* xml */ `
+  <div>
+  <div class="o-cf-title-text">
+    <t t-esc="env._t('${iconSetRule.Icons}')"/>
+  </div>
+    <div class="o-cf-iconsets">
+      <div class="o-cf-iconset" t-foreach="['arrows', 'smiley', 'dots']" t-as="iconSet" t-on-click="setIconSet(iconSet)">
+        <div class="o-cf-icon">
+          <t t-raw="icons[iconSets[iconSet].good].svg"/>
+        </div>
+        <div class="o-cf-icon">
+          <t t-raw="icons[iconSets[iconSet].neutral].svg"/>
+        </div>
+        <div class="o-cf-icon">
+          <t t-raw="icons[iconSets[iconSet].bad].svg"/>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+    const INFLECTION_POINTS_TEMPLATE_ROW = xml$h /* xml */ `
+  <tr>
+    <td>
+      <div t-on-click.stop="toggleMenu(icon+'IconTool')">
+        <div class="o-cf-icon-button">
+          <t t-raw="icons[iconValue].svg"/>
+        </div>
+      </div>
+      <IconPicker t-if="stateIconSetCF[icon+'IconTool']" t-on-icon-picked="setIcon(icon)"/>
+    </td>
+    <td>
+      <t t-esc="env._t('${iconSetRule.WhenValueIs}')"/>
+    </td>
+    <td>
+      <select class="o-input" name="valueType" t-model="inflectionPointValue.operator">
+        <option value="gt">
+          <span>&#62;</span>
+        </option>
+        <option value="ge">
+          <span>&#8805;</span>
+        </option>
+      </select>
+    </td>
+    <td>
+      <input type="text" class="o-input"
+        t-model="stateIconSetCF[inflectionPoint].value"
+      />
+    </td>
+    <td>
+      <select class="o-input" name="valueType" t-model="inflectionPointValue.type">
+      <option value="number">
+        <t t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
+      </option>
+      <option value="percentage">
+        <t t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
+      </option>
+      <option value="percentile">
+        <t t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
+      </option>
+      <option value="formula">
+        <t t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
+      </option>
+      </select>
+    </td>
+  </tr>
+`;
+    const INFLECTION_POINTS_TEMPLATE = xml$h /* xml */ `
+  <div class="o-inflection">
+    <table>
+    <tr>
+      <th class="o-cf-iconset-icons"></th>
+      <th class="o-cf-iconset-text"></th>
+      <th class="o-cf-iconset-operator"></th>
+      <th class="o-cf-iconset-value">
+      <t t-esc="env._t('${iconSetRule.Value}')"/>
+      </th>
+      <th class="o-cf-iconset-type">
+      <t t-esc="env._t('${iconSetRule.Type}')"/>
+      </th>
+    </tr>
+    <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
+      <t t-set="iconValue" t-value="stateIconSetCF.upperIcon" ></t>
+      <t t-set="icon" t-value="'upper'" ></t>
+      <t t-set="inflectionPointValue" t-value="stateIconSetCF.upperInflectionPoint" ></t>
+      <t t-set="inflectionPoint" t-value="'upperInflectionPoint'" ></t>
+    </t>
+    <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
+      <t t-set="iconValue" t-value="stateIconSetCF.middleIcon" ></t>
+      <t t-set="icon" t-value="'middle'" ></t>
+      <t t-set="inflectionPointValue" t-value="stateIconSetCF.lowerInflectionPoint" ></t>
+      <t t-set="inflectionPoint" t-value="'lowerInflectionPoint'" ></t>
+    </t>
+    <tr>
+      <td>
+        <div t-on-click.stop="toggleMenu('lowerIconTool')">
+          <div class="o-cf-icon-button" >
+            <t t-raw="icons[stateIconSetCF.lowerIcon].svg"/>
+          </div>
+        </div>
+        <IconPicker t-if="stateIconSetCF['lowerIconTool']" t-on-icon-picked="setIcon('lower')"/>
+      </td>
+      <td><t t-esc="env._t('${iconSetRule.Else}')"/></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  </div>`;
+    const TEMPLATE$f = xml$h /* xml */ `
+  <div class="o-cf-iconset-rule">
+      <t t-call="${ICON_SETS_TEMPLATE}"/>
+      <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
+      <div class="btn btn-link o_refresh_measures o-cf-iconset-reverse" t-on-click="reverseIcons">
+        <div class="mr-1 d-inline-block">
+          <t t-raw="reverseIcon"/>
+        </div>
+        <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
+      </div>
+  </div>`;
+    const CSS$f = css$h /* scss */ `
+  .o-cf-iconset-rule {
+    font-size: 12;
+    .o-cf-iconsets {
+      display: flex;
+      justify-content: space-between;
+      .o-cf-iconset {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        display: inline-flex;
+        padding: 5px 8px;
+        width: 25%;
+        cursor: pointer;
+        justify-content: space-between;
+        .o-cf-icon {
+          display: inline;
+          margin-left: 1%;
+          margin-right: 1%;
+        }
+        svg {
+          vertical-align: baseline;
+        }
+      }
+      .o-cf-iconset:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+    .o-inflection {
+      .o-cf-icon-button {
+        display: inline-block;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 1px 2px;
+      }
+      .o-cf-icon-button:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      table {
+        table-layout: fixed;
+        margin-top: 2%;
+        display: table;
+        text-align: left;
+        font-size: 12px;
+        line-height: 18px;
+        width: 100%;
+      }
+      th.o-cf-iconset-icons {
+        width: 8%;
+      }
+      th.o-cf-iconset-text {
+        width: 28%;
+      }
+      th.o-cf-iconset-operator {
+        width: 14%;
+      }
+      th.o-cf-iconset-type {
+        width: 28%;
+      }
+      th.o-cf-iconset-value {
+        width: 26%;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+    .o-cf-iconset-reverse {
+      margin-bottom: 2%;
+      margin-top: 2%;
+      .o-cf-label {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-bottom: 2px;
+      }
+    }
+  }
+`;
+    class IconSetRuleEditor extends Component$e {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.iconSets = ICON_SETS;
+            this.reverseIcon = REFRESH;
+            this.stateIconSetCF = useState$f({
+                reversed: false,
+                upperInflectionPoint: this.props.rule.upperInflectionPoint,
+                lowerInflectionPoint: this.props.rule.lowerInflectionPoint,
+                upperIcon: this.props.rule.icons.upper,
+                middleIcon: this.props.rule.icons.middle,
+                lowerIcon: this.props.rule.icons.lower,
+                upperIconTool: false,
+                middleIconTool: false,
+                lowerIconTool: false,
+            });
+            useExternalListener$4(window, "click", this.closeMenus);
+        }
+        toggleMenu(tool) {
+            const current = this.stateIconSetCF[tool];
+            this.closeMenus();
+            this.stateIconSetCF[tool] = !current;
+        }
+        closeMenus() {
+            this.stateIconSetCF.upperIconTool = false;
+            this.stateIconSetCF.middleIconTool = false;
+            this.stateIconSetCF.lowerIconTool = false;
+        }
+        setIconSet(iconSet) {
+            this.stateIconSetCF.upperIcon = this.iconSets[iconSet].good;
+            this.stateIconSetCF.middleIcon = this.iconSets[iconSet].neutral;
+            this.stateIconSetCF.lowerIcon = this.iconSets[iconSet].bad;
+        }
+        setIcon(target, ev) {
+            this.stateIconSetCF[target + "Icon"] = ev.detail.icon;
+        }
+        getRule() {
+            const upperInflectionPoint = { ...this.stateIconSetCF.upperInflectionPoint };
+            const lowerInflectionPoint = { ...this.stateIconSetCF.lowerInflectionPoint };
+            return {
+                type: "IconSetRule",
+                lowerInflectionPoint,
+                upperInflectionPoint,
+                icons: {
+                    upper: this.stateIconSetCF.upperIcon,
+                    middle: this.stateIconSetCF.middleIcon,
+                    lower: this.stateIconSetCF.lowerIcon,
+                },
+            };
+        }
+        getIconsSelction() {
+            return Object.keys(this.icons);
+        }
+        reverseIcons() {
+            const upperIcon = this.stateIconSetCF.upperIcon;
+            this.stateIconSetCF.upperIcon = this.stateIconSetCF.lowerIcon;
+            this.stateIconSetCF.lowerIcon = upperIcon;
+        }
+        static getDefaultRule() {
+            return {
+                type: "IconSetRule",
+                icons: {
+                    upper: "arrowGood",
+                    middle: "arrowNeutral",
+                    lower: "arrowBad",
+                },
+                upperInflectionPoint: {
+                    type: "percentage",
+                    value: "66",
+                    operator: "gt",
+                },
+                lowerInflectionPoint: {
+                    type: "percentage",
+                    value: "33",
+                    operator: "gt",
+                },
+            };
+        }
+    }
+    IconSetRuleEditor.template = TEMPLATE$f;
+    IconSetRuleEditor.style = CSS$f;
+    IconSetRuleEditor.components = { IconPicker };
 
     const { Component: Component$d, useState: useState$e } = owl__namespace;
     const { xml: xml$g, css: css$g } = owl__namespace.tags;
+    const { useRef: useRef$6 } = owl__namespace.hooks;
     // TODO vsc: add ordering of rules
     const PREVIEW_TEMPLATE = xml$g /* xml */ `
 <div class="o-cf-preview">
-  <div t-att-style="getStyle(cf.rule)" class="o-cf-preview-image">
-    123
-  </div>
+  <t t-if="cf.rule.type==='IconSetRule'">
+    <div class="o-cf-preview-icon">
+      <t t-raw="icons[cf.rule.icons.upper].svg"/>
+      <t t-raw="icons[cf.rule.icons.middle].svg"/>
+      <t t-raw="icons[cf.rule.icons.lower].svg"/>
+    </div>
+  </t>
+  <t t-else="">
+    <div t-att-style="getStyle(cf.rule)" class="o-cf-preview-image">
+      123
+    </div>
+  </t>
   <div class="o-cf-preview-description">
     <div class="o-cf-preview-ruletype">
       <div class="o-cf-preview-description-rule">
@@ -12904,7 +13447,7 @@
       <t t-if="cf.rule.values">
         <t t-esc="cf.rule.values[0]" />
         <t t-if="cf.rule.values[1]">
-          and <t t-esc="cf.rule.values[1]"/>
+        <t t-esc="' ' + env._t('${GenericWords.And}')"/> <t t-esc="cf.rule.values[1]"/>
         </t>
       </t>
       </div>
@@ -12912,8 +13455,8 @@
     <div class="o-cf-preview-range" t-esc="cf.ranges"/>
   </div>
   <div class="o-cf-delete">
-    <div class="o-cf-delete-button" t-on-click.stop="onDeleteClick(cf)" aria-label="Remove rule">
-      x
+    <div class="o-cf-delete-button" t-on-click.stop="deleteConditionalFormat(cf)" aria-label="Remove rule">
+    <t t-raw="trashIcon"/>
     </div>
   </div>
 </div>`;
@@ -12921,49 +13464,90 @@
   <div class="o-cf">
     <t t-if="state.mode === 'list'">
       <div class="o-cf-preview-list" >
-          <div t-on-click="onRuleClick(cf)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
-              <t t-call="${PREVIEW_TEMPLATE}"/>
-          </div>
+        <div t-on-click="editConditionalFormat(cf)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
+            <t t-call="${PREVIEW_TEMPLATE}"/>
+        </div>
+      </div>
+      <div class="btn btn-link o-cf-add" t-on-click.prevent.stop="addConditionalFormat">
+        <t t-esc="'+ ' + env._t('${conditionalFormattingTerms.newRule}')"/>
       </div>
     </t>
     <t t-if="state.mode === 'edit' || state.mode === 'add'" t-key="state.currentCF.id">
-        <div class="o-cf-type-selector">
-          <div class="o-cf-type-tab" t-att-class="{'o-cf-tab-selected': state.toRuleType === 'CellIsRule'}" t-on-click="setRuleType('CellIsRule')">Single Color</div>
-          <div class="o-cf-type-tab" t-att-class="{'o-cf-tab-selected': state.toRuleType === 'ColorScaleRule'}" t-on-click="setRuleType('ColorScaleRule')">Color Scale</div>
-        </div>
         <div class="o-cf-ruleEditor">
             <div class="o-section o-cf-range">
               <div class="o-section-title">Apply to range</div>
-              <SelectionInput ranges="state.currentRanges" class="o-range" t-on-selection-changed="onRangesChanged"/>
+              <div class="o-selection-cf">
+                <SelectionInput ranges="state.currentCF.ranges" class="o-range" t-on-selection-changed="onRangesChanged"/>
+              </div>
+              <div class="o-section-title" t-esc="env._t('${conditionalFormattingTerms.CF_TITLE}')"></div>
+              <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('CellIsRule')">
+                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'CellIsRule'}}" type="radio" id="cellIsRule" name="ruleType" value="CellIsRule"/>
+                  <label for="cellIsRule" class="custom-control-label o_form_label">
+                    <t t-esc="env._t('${conditionalFormattingTerms.SingleColor}')"/>
+                  </label>
+                </div>
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('ColorScaleRule')">
+                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'ColorScaleRule'}}" type="radio" id="colorScaleRule" name="ruleType" value="ColorScaleRule"/>
+                  <label for="colorScaleRule" class="custom-control-label o_form_label">
+                  <t t-esc="env._t('${conditionalFormattingTerms.ColorScale}')"/>
+                  </label>
+                </div>
+
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('IconSetRule')">
+                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'IconSetRule'}}" type="radio" id="iconSetRule" name="ruleType" value="IconSetRule"/>
+                  <label for="iconSetRule" class="custom-control-label o_form_label">
+                  <t t-esc="env._t('${conditionalFormattingTerms.IconSet}')"/>
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="o-cf-editor o-section">
-              <t t-component="editors[state.currentCF.rule.type]"
-                  t-key="state.currentCF.id"
-                  conditionalFormat="state.currentCF"
-                  error="state.error"
-                  t-on-cancel-edit="onCancel"
-                  t-on-modify-rule="onSave" />
+            <div class="o-section o-cf-editor">
+              <t t-component="editors[state.currentCFType]"
+                 t-ref="editorRef"
+                 t-key="state.currentCF.id + state.currentCFType"
+                 rule="state.rules[state.currentCFType]"/>
+              <div class="o-cf-error" t-if="state.error" t-esc="state.error"/>
+              <div class="o-sidePanelButtons">
+                <button t-on-click="switchToList" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormattingTerms.CANCEL}')"></button>
+                <button t-on-click="saveConditionalFormat" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormattingTerms.SAVE}')"></button>
+              </div>
             </div>
         </div>
     </t>
-    <div class="o-cf-add" t-if="state.mode === 'list'" t-on-click.prevent.stop="onAdd">
-    + Add another rule
-    </div>
   </div>`;
     const CSS$e = css$g /* scss */ `
+  label{
+    vertical-align: middle;
+  }
+  .o_cf_radio_item{
+      margin-right: 10%;
+  }
+  .radio input:checked {
+    color: #e9ecef;
+    border-color: #00A09D;
+    background-color: #00A09D;
+  }
+  .o-cf-editor{
+    border-bottom: solid;
+    border-color: lightgrey;
+  }
   .o-cf {
-    min-width: 350px;
     .o-cf-type-selector{
-      margin-top: 20px;
+      *, ::after, ::before {
+        box-sizing: border-box;
+      }
+      margin-top: 10px;
       display: flex;
-      .o-cf-type-tab{
-        cursor:pointer;
-        flex-grow: 1;
-        text-align: center;
-      }
-      .o-cf-tab-selected{
-        text-decoration: underline;
-      }
+    }
+    .o-cf-title-text {
+      color: gray;
+      font-size: 12px;
+      line-height: 14px;
+      margin: 8px 0 4px 0;
+    }
+    .o-cf-title-text:first-child {
+      margin-top: 0px;
     }
     .o-cf-preview {
       background-color: #fff;
@@ -12988,6 +13572,16 @@
         text-align: center;
         width: 50px;
       }
+      .o-cf-preview-icon{
+        border: 1px solid lightgrey;
+        position: absolute;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
       .o-cf-preview-description {
         left: 65px;
         margin-bottom: auto;
@@ -13009,13 +13603,18 @@
         }
       }
       .o-cf-delete{
-        height: 56px;
+        color:dimgrey;
         left: 90%;
-        line-height: 56px;
+        top: 39%;
         position: absolute;
       }
     }
     .o-cf-ruleEditor {
+      font-size: 12px;
+      line-height: 1.5;
+      .o-selection-cf{
+        margin-bottom: 3%;
+      }
       .o-dropdown {
         position: relative;
         .o-dropdown-content {
@@ -13093,179 +13692,205 @@
     }
     .o-cf-add {
       font-size: 14px;
-      height: 36px;
       padding: 20px 24px 11px 24px;
       height: 44px;
       cursor: pointer;
+      text-decoration: none;
+    }
+    .o-cf-add:hover {
+      color: #003a39;
+      text-decoration: none;
+    }
+    .o-cf-error {
+      color: red;
+      margin-top: 10px;
     }
   }
   }`;
     class ConditionalFormattingPanel extends Component$d {
         constructor(parent, props) {
             super(parent, props);
-            this.colorNumberString = colorNumberString;
-            this.getters = this.env.getters;
+            this.icons = ICONS;
+            this.trashIcon = TRASH;
             //@ts-ignore --> used in XML template
             this.cellIsOperators = cellIsOperators;
+            this.editor = useRef$6("editorRef");
+            this.getters = this.env.getters;
             this.state = useState$e({
-                currentCF: undefined,
-                currentRanges: [],
                 mode: "list",
-                toRuleType: "CellIsRule",
-                error: undefined,
+                rules: {},
             });
             this.editors = {
                 CellIsRule: CellIsRuleEditor,
                 ColorScaleRule: ColorScaleRuleEditor,
+                IconSetRule: IconSetRuleEditor,
             };
             const sheetId = this.getters.getActiveSheetId();
-            if (props.selection && this.getters.getRulesSelection(sheetId, props.selection).length === 1) {
-                this.openCf(this.getters.getRulesSelection(sheetId, props.selection)[0]);
+            const rules = this.getters.getRulesSelection(sheetId, props.selection || []);
+            if (rules.length === 1) {
+                const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                if (cf) {
+                    this.editConditionalFormat(cf);
+                }
             }
         }
         get conditionalFormats() {
             return this.getters.getConditionalFormats(this.getters.getActiveSheetId());
         }
         async willUpdateProps(nextProps) {
-            if (nextProps.selection && nextProps.selection !== this.props.selection) {
+            if (nextProps.selection !== this.props.selection) {
                 const sheetId = this.getters.getActiveSheetId();
-                if (nextProps.selection &&
-                    this.getters.getRulesSelection(sheetId, nextProps.selection).length === 1) {
-                    this.openCf(this.getters.getRulesSelection(sheetId, nextProps.selection)[0]);
+                const rules = this.getters.getRulesSelection(sheetId, nextProps.selection || []);
+                if (rules.length === 1) {
+                    const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                    if (cf) {
+                        this.editConditionalFormat(cf);
+                    }
                 }
                 else {
-                    this.resetState();
+                    this.switchToList();
                 }
             }
         }
-        resetState() {
-            this.state.currentCF = undefined;
-            this.state.currentRanges = [];
+        /**
+         * Switch to the list view
+         */
+        switchToList() {
             this.state.mode = "list";
-            this.state.toRuleType = "CellIsRule";
+            this.state.currentCF = undefined;
+            this.state.currentCFType = undefined;
+            this.state.error = undefined;
+            this.state.rules = {};
         }
         getStyle(rule) {
             if (rule.type === "CellIsRule") {
-                const cellRule = rule;
-                const fontWeight = cellRule.style.bold ? "bold" : "normal";
-                const fontDecoration = cellRule.style.strikethrough ? "line-through" : "none";
-                const fontStyle = cellRule.style.italic ? "italic" : "normal";
-                const color = cellRule.style.textColor || "none";
-                const backgroundColor = cellRule.style.fillColor || "none";
+                const fontWeight = rule.style.bold ? "bold" : "normal";
+                const fontDecoration = rule.style.strikethrough ? "line-through" : "none";
+                const fontStyle = rule.style.italic ? "italic" : "normal";
+                const color = rule.style.textColor || "none";
+                const backgroundColor = rule.style.fillColor || "none";
                 return `font-weight:${fontWeight};
                text-decoration:${fontDecoration};
                font-style:${fontStyle};
                color:${color};
                background-color:${backgroundColor};`;
             }
-            else {
-                const colorScale = rule;
-                const minColor = colorNumberString(colorScale.minimum.color);
-                const midColor = colorScale.midpoint ? colorNumberString(colorScale.midpoint.color) : null;
-                const maxColor = colorNumberString(colorScale.maximum.color);
+            else if (rule.type === "ColorScaleRule") {
+                const minColor = colorNumberString(rule.minimum.color);
+                const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
+                const maxColor = colorNumberString(rule.maximum.color);
                 const baseString = "background-image: linear-gradient(to right, #";
                 return midColor
                     ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
                     : baseString + minColor + ", #" + maxColor + ")";
             }
+            return "";
         }
         getDescription(cf) {
-            return cf.rule.type === "CellIsRule" ? cellIsOperators[cf.rule.operator] : "Color scale";
+            //TODO Fix translations of this
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    return cellIsOperators[cf.rule.operator];
+                case "ColorScaleRule":
+                    return "Color scale";
+                case "IconSetRule":
+                    return "Icon Set";
+                default:
+                    return "";
+            }
         }
-        onSave(ev) {
+        saveConditionalFormat() {
             if (this.state.currentCF) {
                 const result = this.env.dispatch("ADD_CONDITIONAL_FORMAT", {
                     cf: {
-                        rule: ev.detail.rule,
+                        rule: this.getEditorRule(),
                         id: this.state.mode === "edit" ? this.state.currentCF.id : uuidv4(),
                     },
-                    target: this.state.currentRanges.map(toZone),
+                    target: this.state.currentCF.ranges.map(toZone),
                     sheetId: this.getters.getActiveSheetId(),
                 });
                 if (result !== 0 /* Success */) {
-                    this.state.error = this.env._t(conditionalFormatingTerms.Errors[result] || conditionalFormatingTerms.Errors.unexpected);
+                    this.state.error = this.env._t(conditionalFormattingTerms.Errors[result] || conditionalFormattingTerms.Errors.unexpected);
                 }
                 else {
-                    this.state.error = undefined;
-                    this.state.mode = "list";
+                    this.switchToList();
                 }
             }
         }
-        onCancel() {
-            this.state.mode = "list";
-            this.state.currentCF = undefined;
+        /**
+         * Get the rule currently edited with the editor
+         */
+        getEditorRule() {
+            return this.editor.comp.getRule();
         }
-        onDeleteClick(cf) {
+        /**
+         * Create a new CF, a CellIsRule by default
+         */
+        addConditionalFormat() {
+            this.state.mode = "add";
+            this.state.currentCFType = "CellIsRule";
+            this.state.rules["CellIsRule"] = CellIsRuleEditor.getDefaultRule();
+            this.state.currentCF = {
+                id: uuidv4(),
+                ranges: this.getters
+                    .getSelectedZones()
+                    .map((zone) => this.getters.zoneToXC(this.getters.getActiveSheetId(), zone)),
+            };
+        }
+        /**
+         * Delete a CF
+         */
+        deleteConditionalFormat(cf) {
             this.env.dispatch("REMOVE_CONDITIONAL_FORMAT", {
                 id: cf.id,
                 sheetId: this.getters.getActiveSheetId(),
             });
         }
-        onRuleClick(cf) {
+        /**
+         * Edit an existing CF
+         */
+        editConditionalFormat(cf) {
             this.state.mode = "edit";
             this.state.currentCF = cf;
-            this.state.toRuleType = cf.rule.type === "CellIsRule" ? "CellIsRule" : "ColorScaleRule";
-            this.state.currentRanges = this.state.currentCF.ranges;
+            this.state.currentCFType =
+                cf.rule.type === "CellIsRule"
+                    ? "CellIsRule"
+                    : cf.rule.type === "ColorScaleRule"
+                        ? "ColorScaleRule"
+                        : "IconSetRule";
+            this.state.rules[cf.rule.type] = cf.rule;
         }
-        openCf(cfId) {
-            const cfIndex = this.conditionalFormats.findIndex((c) => c.id === cfId);
-            const cf = this.conditionalFormats[cfIndex];
-            if (cf) {
-                this.state.mode = "edit";
-                this.state.currentCF = cf;
-                this.state.toRuleType = cf.rule.type === "CellIsRule" ? "CellIsRule" : "ColorScaleRule";
-                this.state.currentRanges = this.state.currentCF.ranges;
+        changeRuleType(ruleType) {
+            if (this.state.currentCFType === ruleType) {
+                return;
             }
-        }
-        defaultCellIsRule() {
-            return {
-                rule: {
-                    type: "CellIsRule",
-                    operator: "IsNotEmpty",
-                    values: [],
-                    style: { fillColor: "#FF0000" },
-                },
-                ranges: this.getters
-                    .getSelectedZones()
-                    .map((zone) => this.getters.zoneToXC(this.getters.getActiveSheetId(), zone)),
-                id: uuidv4(),
-            };
-        }
-        defaultColorScaleRule() {
-            return {
-                rule: {
-                    minimum: { type: "value", color: 0 },
-                    midpoint: undefined,
-                    maximum: { type: "value", color: 0xeeffee },
-                    type: "ColorScaleRule",
-                },
-                ranges: this.getters
-                    .getSelectedZones()
-                    .map((zone) => this.getters.zoneToXC(this.getters.getActiveSheetId(), zone)),
-                id: uuidv4(),
-            };
-        }
-        onAdd() {
-            this.state.mode = "add";
-            this.state.currentCF = this.defaultCellIsRule();
-            this.state.currentRanges = this.state.currentCF.ranges;
-        }
-        setRuleType(ruleType) {
-            if (ruleType === "ColorScaleRule") {
-                this.state.currentCF = this.defaultColorScaleRule();
+            if (this.state.currentCFType) {
+                this.state.rules[this.state.currentCFType] = this.getEditorRule();
             }
-            if (ruleType === "CellIsRule") {
-                this.state.currentCF = this.defaultCellIsRule();
+            this.state.currentCFType = ruleType;
+            if (!(ruleType in this.state.rules)) {
+                switch (ruleType) {
+                    case "CellIsRule":
+                        this.state.rules["CellIsRule"] = CellIsRuleEditor.getDefaultRule();
+                        break;
+                    case "ColorScaleRule":
+                        this.state.rules["ColorScaleRule"] = ColorScaleRuleEditor.getDefaultRule();
+                        break;
+                    case "IconSetRule":
+                        this.state.rules["IconSetRule"] = IconSetRuleEditor.getDefaultRule();
+                        break;
+                }
             }
-            this.state.toRuleType = ruleType;
         }
         onRangesChanged({ detail }) {
-            this.state.currentRanges = detail.ranges;
+            if (this.state.currentCF) {
+                this.state.currentCF.ranges = detail.ranges;
+            }
         }
     }
     ConditionalFormattingPanel.template = TEMPLATE$e;
     ConditionalFormattingPanel.style = CSS$e;
-    ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, SelectionInput };
+    ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, IconSetRuleEditor, SelectionInput };
 
     const { Component: Component$c, useState: useState$d } = owl__namespace;
     const { xml: xml$f, css: css$f } = owl__namespace.tags;
@@ -13282,20 +13907,26 @@
         <t t-esc="env.getters.getSearchMatches().length"/>
       </div>
     </div>
-    <label class="o-far-checkbox">
-      <input type="checkbox" t-model="state.searchOptions.matchCase" t-on-change="updateSearch()"/>
-      <t t-esc="env._t('${FindAndReplaceTerms.MatchCase}')"/>
-    </label>
-
-    <label class="o-far-checkbox">
-      <input type="checkbox" t-model="state.searchOptions.exactMatch" t-on-change="updateSearch()"/>
-      <t t-esc="env._t('${FindAndReplaceTerms.ExactMatch}')"/>
-    </label>inputSearch
-
-    <label class="o-far-checkbox">
-      <input type="checkbox" t-model="state.searchOptions.searchFormulas" t-on-change="searchFormulas"/>
-      <t t-esc="env._t('${FindAndReplaceTerms.SearchFormulas}')"/>
-    </label>
+    <div>
+      <div class="o-far-item">
+        <label class="o-far-checkbox">
+          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch()" class="o-far-input" type="checkbox" />
+          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.MatchCase}')"/></span>
+        </label>
+      </div>
+      <div class="o-far-item">
+        <label class="o-far-checkbox">
+          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch()" class="o-far-input" type="checkbox" />
+          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ExactMatch}')"/></span>
+        </label>                                                                            
+      </div>
+      <div class="o-far-item">
+        <label class="o-far-checkbox">
+          <input t-model="state.searchOptions.searchFormulas" t-on-change="searchFormulas" class="o-far-input" type="checkbox" />
+          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.SearchFormulas}')"/></span>
+        </label>
+      </div>
+    </div>
   </div>
   <div class="o-sidePanelButtons">
     <button t-att-disabled="!hasSearchResult" t-on-click="onSelectPreviousCell" class="o-sidePanelButton"
@@ -13306,12 +13937,18 @@
 
   <div class="o-section" t-if="!getters.isReadonly()">
     <div t-esc="env._t('${FindAndReplaceTerms.Replace}')" class="o-section-title"/>
-    <input type="text" class="o-input" t-model="state.replaceWith" t-on-keydown="onKeydownReplace"/>
-    <label class="o-far-checkbox">
-      <input t-att-disabled="state.searchOptions.searchFormulas" type="checkbox"
-             t-model="state.replaceOptions.modifyFormulas"/>
-      <t t-esc="env._t('${FindAndReplaceTerms.ReplaceFormulas}')"/>
-    </label>
+    <div class="o-input-search-container">
+      <input type="text" class="o-input o-input-without-count" t-model="state.replaceWith" t-on-keydown="onKeydownReplace"/>
+    </div>
+    
+
+    <div class="o-far-item">
+      <label class="o-far-checkbox">
+        <input class="o-far-input" t-att-disabled="state.searchOptions.searchFormulas" type="checkbox"
+        t-model="state.replaceOptions.modifyFormulas"/>
+        <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ReplaceFormulas}')"/></span>
+      </label>                                                                            
+    </div>
   </div>
 
   <div class="o-sidePanelButtons" t-if="!getters.isReadonly()">
@@ -13325,6 +13962,20 @@
 `;
     const CSS$d = css$f /* scss */ `
   .o-find-and-replace {
+    .o-far-item {
+      display: block;
+      .o-far-checkbox {
+        display: inline-block;
+        .o-far-input {
+          vertical-align: middle;
+        }
+        .o-far-label {
+          position: relative;
+          top: 1.5px;
+          padding-left: 4px;
+        }
+      }
+    }
     outline: none;
     height: 100%;
     .o-input-search-container {
@@ -13332,6 +13983,9 @@
       .o-input-with-count {
         flex-grow: 1;
         width: auto;
+      }
+      .o-input-without-count {
+        width: 100%;
       }
       .o-input-count {
         width: fit-content;
@@ -14717,6 +15371,643 @@
     ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
     ClipboardPlugin.modes = ["normal", "readonly"];
 
+    var SelectionMode;
+    (function (SelectionMode) {
+        SelectionMode[SelectionMode["idle"] = 0] = "idle";
+        SelectionMode[SelectionMode["selecting"] = 1] = "selecting";
+        SelectionMode[SelectionMode["readyToExpand"] = 2] = "readyToExpand";
+        SelectionMode[SelectionMode["expanding"] = 3] = "expanding";
+    })(SelectionMode || (SelectionMode = {}));
+    /**
+     * SelectionPlugin
+     */
+    class SelectionPlugin extends UIPlugin {
+        constructor(getters, state, dispatch, config) {
+            super(getters, state, dispatch, config);
+            this.selection = {
+                zones: [{ top: 0, left: 0, bottom: 0, right: 0 }],
+                anchor: [0, 0],
+            };
+            this.selectedFigureId = null;
+            this.activeCol = 0;
+            this.activeRow = 0;
+            this.mode = SelectionMode.idle;
+            this.sheetsData = {};
+            // This flag is used to avoid to historize the ACTIVE_SHEET command when it's
+            // the main command.
+            this.activeSheet = null;
+            this.moveClient = config.moveClient;
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "MOVE_POSITION": {
+                    const { cols, rows, id: sheetId } = this.getters.getActiveSheet();
+                    let targetCol = this.activeCol;
+                    let targetRow = this.activeRow;
+                    if (this.getters.isInMerge(sheetId, this.activeCol, this.activeRow)) {
+                        while (this.getters.isInSameMerge(sheetId, this.activeCol, this.activeRow, targetCol + cmd.deltaX, targetRow + cmd.deltaY)) {
+                            targetCol += cmd.deltaX;
+                            targetRow += cmd.deltaY;
+                        }
+                    }
+                    const outOfBound = (cmd.deltaY < 0 && targetRow === 0) ||
+                        (cmd.deltaY > 0 && targetRow === rows.length - 1) ||
+                        (cmd.deltaX < 0 && targetCol === 0) ||
+                        (cmd.deltaX > 0 && targetCol === cols.length - 1);
+                    if (outOfBound) {
+                        return 12 /* SelectionOutOfBound */;
+                    }
+                    break;
+                }
+                case "SELECT_COLUMN": {
+                    const { index } = cmd;
+                    if (index < 0 || index >= this.getters.getActiveSheet().cols.length) {
+                        return 12 /* SelectionOutOfBound */;
+                    }
+                    break;
+                }
+                case "SELECT_ROW": {
+                    const { index } = cmd;
+                    if (index < 0 || index >= this.getters.getActiveSheet().rows.length) {
+                        return 12 /* SelectionOutOfBound */;
+                    }
+                    break;
+                }
+                case "ACTIVATE_SHEET":
+                    try {
+                        this.getters.getSheet(cmd.sheetIdTo);
+                        break;
+                    }
+                    catch (error) {
+                        return 17 /* InvalidSheetId */;
+                    }
+            }
+            return 0 /* Success */;
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                // some commands should not remove the current selection
+                case "CREATE_SHEET":
+                case "DELETE_SHEET":
+                case "CREATE_FIGURE":
+                case "CREATE_CHART":
+                case "UPDATE_FIGURE":
+                case "EVALUATE_CELLS":
+                case "DISABLE_SELECTION_INPUT":
+                case "HIGHLIGHT_SELECTION":
+                case "RESET_PENDING_HIGHLIGHT":
+                case "REMOVE_ALL_HIGHLIGHTS":
+                case "ENABLE_NEW_SELECTION_INPUT":
+                    break;
+                case "DELETE_FIGURE":
+                    if (this.selectedFigureId === cmd.id) {
+                        this.selectedFigureId = null;
+                    }
+                    break;
+                default:
+                    this.selectedFigureId = null;
+            }
+            switch (cmd.type) {
+                case "START":
+                    const firstSheet = this.getters.getSheets()[0];
+                    const firstVisiblePosition = getNextVisibleCellCoords(firstSheet, 0, 0);
+                    this.activeCol = firstVisiblePosition[0];
+                    this.activeRow = firstVisiblePosition[1];
+                    this.dispatch("ACTIVATE_SHEET", {
+                        sheetIdTo: this.getters.getSheets()[0].id,
+                        sheetIdFrom: this.getters.getSheets()[0].id,
+                    });
+                    this.selectCell(...firstVisiblePosition);
+                    break;
+                case "ACTIVATE_SHEET":
+                    //TODO Change the way selectCell work, perhaps take the sheet as argument ?
+                    this.setActiveSheet(cmd.sheetIdTo);
+                    this.sheetsData[cmd.sheetIdFrom] = {
+                        selection: JSON.parse(JSON.stringify(this.selection)),
+                        activeCol: this.activeCol,
+                        activeRow: this.activeRow,
+                    };
+                    if (cmd.sheetIdTo in this.sheetsData) {
+                        Object.assign(this, this.sheetsData[cmd.sheetIdTo]);
+                    }
+                    else {
+                        this.selectCell(...getNextVisibleCellCoords(this.getters.getSheets()[0], 0, 0));
+                    }
+                    break;
+                case "SET_SELECTION":
+                    this.setSelection(cmd.anchor, cmd.zones, cmd.strict);
+                    break;
+                case "START_SELECTION":
+                    this.mode = SelectionMode.selecting;
+                    break;
+                case "PREPARE_SELECTION_EXPANSION":
+                    this.mode = SelectionMode.readyToExpand;
+                    break;
+                case "START_SELECTION_EXPANSION":
+                    this.mode = SelectionMode.expanding;
+                    break;
+                case "STOP_SELECTION":
+                    this.mode = SelectionMode.idle;
+                    break;
+                case "MOVE_POSITION":
+                    this.movePosition(cmd.deltaX, cmd.deltaY);
+                    break;
+                case "SELECT_CELL":
+                    this.selectCell(cmd.col, cmd.row);
+                    break;
+                case "SELECT_COLUMN":
+                    this.selectColumn(cmd.index, cmd.createRange || false, cmd.updateRange || false);
+                    break;
+                case "SELECT_ROW":
+                    this.selectRow(cmd.index, cmd.createRange || false, cmd.updateRange || false);
+                    break;
+                case "SELECT_ALL":
+                    this.selectAll();
+                    break;
+                case "ALTER_SELECTION":
+                    if (cmd.delta) {
+                        this.moveSelection(cmd.delta[0], cmd.delta[1]);
+                    }
+                    if (cmd.cell) {
+                        this.addCellToSelection(...cmd.cell);
+                    }
+                    break;
+                case "UNDO":
+                case "REDO":
+                case "DELETE_SHEET":
+                    if (!this.getters.tryGetSheet(this.getActiveSheetId())) {
+                        const currentSheets = this.getters.getVisibleSheets();
+                        this.activeSheet = this.getters.getSheet(currentSheets[0]);
+                        this.selectCell(0, 0);
+                    }
+                    this.ensureSelectionValidity();
+                    break;
+                case "REMOVE_COLUMNS_ROWS":
+                    if (cmd.sheetId === this.getActiveSheetId()) {
+                        if (cmd.dimension === "COL") {
+                            this.onColumnsRemoved(cmd);
+                        }
+                        else {
+                            this.onRowsRemoved(cmd);
+                        }
+                    }
+                    break;
+                case "ADD_COLUMNS_ROWS":
+                    if (cmd.sheetId === this.getActiveSheetId()) {
+                        this.onAddElements(cmd);
+                    }
+                    break;
+                case "UPDATE_CHART":
+                case "SELECT_FIGURE":
+                    this.selectedFigureId = cmd.id;
+                    break;
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getActiveSheet() {
+            return this.activeSheet;
+        }
+        getActiveSheetId() {
+            return this.activeSheet.id;
+        }
+        getActiveCell() {
+            const sheetId = this.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, this.activeCol, this.activeRow);
+            return this.getters.getCell(sheetId, mainCol, mainRow);
+        }
+        getActiveCols() {
+            const activeCols = new Set();
+            for (let zone of this.selection.zones) {
+                if (zone.top === 0 && zone.bottom === this.getters.getActiveSheet().rows.length - 1) {
+                    for (let i = zone.left; i <= zone.right; i++) {
+                        activeCols.add(i);
+                    }
+                }
+            }
+            return activeCols;
+        }
+        getActiveRows() {
+            const activeRows = new Set();
+            for (let zone of this.selection.zones) {
+                if (zone.left === 0 && zone.right === this.getters.getActiveSheet().cols.length - 1) {
+                    for (let i = zone.top; i <= zone.bottom; i++) {
+                        activeRows.add(i);
+                    }
+                }
+            }
+            return activeRows;
+        }
+        getCurrentStyle() {
+            const cell = this.getters.getActiveCell();
+            return cell ? this.getters.getCellStyle(cell) : {};
+        }
+        getSelectedZones() {
+            return this.selection.zones;
+        }
+        getSelectedZone() {
+            return this.selection.zones[this.selection.zones.length - 1];
+        }
+        getSelection() {
+            return this.selection;
+        }
+        getSelectedFigureId() {
+            return this.selectedFigureId;
+        }
+        getPosition() {
+            return [this.activeCol, this.activeRow];
+        }
+        getSheetPosition(sheetId) {
+            if (sheetId === this.getters.getActiveSheetId()) {
+                return this.getPosition();
+            }
+            else {
+                const sheetData = this.sheetsData[sheetId];
+                return sheetData
+                    ? [sheetData.activeCol, sheetData.activeRow]
+                    : getNextVisibleCellCoords(this.getters.getSheet(sheetId), 0, 0);
+            }
+        }
+        getAggregate() {
+            let aggregate = 0;
+            let n = 0;
+            for (let zone of this.selection.zones) {
+                for (let row = zone.top; row <= zone.bottom; row++) {
+                    const r = this.getters.getRow(this.getters.getActiveSheetId(), row);
+                    if (r === undefined) {
+                        continue;
+                    }
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        const cell = r.cells[col];
+                        if (cell && cell.type !== "text" && !cell.error && typeof cell.value === "number") {
+                            n++;
+                            aggregate += cell.value;
+                        }
+                    }
+                }
+            }
+            return n < 2 ? null : formatStandardNumber(aggregate);
+        }
+        getSelectionMode() {
+            return this.mode;
+        }
+        isSelected(zone) {
+            return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
+        }
+        getVisibleFigures(sheetId) {
+            const result = [];
+            const figures = this.getters.getFigures(sheetId);
+            const { offsetX, offsetY } = this.getters.getSnappedViewport(sheetId);
+            const { width, height } = this.getters.getViewportDimension();
+            for (let figure of figures) {
+                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
+                    continue;
+                }
+                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
+                    continue;
+                }
+                result.push(figure);
+            }
+            return result;
+        }
+        /**
+         * Returns a sorted array of indexes of all columns (respectively rows depending
+         * on the dimension parameter) intersected by the currently selected zones.
+         *
+         * example:
+         * assume selectedZones: [{left:0, right: 2, top :2, bottom: 4}, {left:5, right: 6, top :3, bottom: 5}]
+         *
+         * if dimension === "COL" => [0,1,2,5,6]
+         * if dimension === "ROW" => [2,3,4,5]
+         */
+        getElementsFromSelection(dimension) {
+            if (dimension === "COL" && this.getters.getActiveCols().size === 0) {
+                return [];
+            }
+            if (dimension === "ROW" && this.getters.getActiveRows().size === 0) {
+                return [];
+            }
+            const zones = this.getters.getSelectedZones();
+            let elements = [];
+            const start = dimension === "COL" ? "left" : "top";
+            const end = dimension === "COL" ? "right" : "bottom";
+            for (const zone of zones) {
+                const zoneRows = Array.from({ length: zone[end] - zone[start] + 1 }, (_, i) => zone[start] + i);
+                elements = elements.concat(zoneRows);
+            }
+            return [...new Set(elements)].sort();
+        }
+        // ---------------------------------------------------------------------------
+        // Other
+        // ---------------------------------------------------------------------------
+        selectColumn(index, createRange, updateRange) {
+            const bottom = this.getters.getActiveSheet().rows.length - 1;
+            const zone = { left: index, right: index, top: 0, bottom };
+            const current = this.selection.zones;
+            let zones, anchor;
+            const top = this.getters.getActiveSheet().rows.findIndex((row) => !row.isHidden);
+            if (updateRange) {
+                const [col, row] = this.selection.anchor;
+                const updatedZone = union(zone, { left: col, right: col, top, bottom });
+                zones = current.slice(0, -1).concat(updatedZone);
+                anchor = [col, row];
+            }
+            else {
+                zones = createRange ? current.concat(zone) : [zone];
+                anchor = [index, top];
+            }
+            this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
+        }
+        selectRow(index, createRange, updateRange) {
+            const right = this.getters.getActiveSheet().cols.length - 1;
+            const zone = { top: index, bottom: index, left: 0, right };
+            const current = this.selection.zones;
+            let zones, anchor;
+            const left = this.getters.getActiveSheet().cols.findIndex((col) => !col.isHidden);
+            if (updateRange) {
+                const [col, row] = this.selection.anchor;
+                const updatedZone = union(zone, { left, right, top: row, bottom: row });
+                zones = current.slice(0, -1).concat(updatedZone);
+                anchor = [col, row];
+            }
+            else {
+                zones = createRange ? current.concat(zone) : [zone];
+                anchor = [left, index];
+            }
+            this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
+        }
+        selectAll() {
+            const bottom = this.getters.getActiveSheet().rows.length - 1;
+            const right = this.getters.getActiveSheet().cols.length - 1;
+            const zone = { left: 0, top: 0, bottom, right };
+            this.dispatch("SET_SELECTION", { zones: [zone], anchor: [0, 0] });
+        }
+        /**
+         * Change the anchor of the selection active cell to an absolute col and row index.
+         *
+         * This is a non trivial task. We need to stop the editing process and update
+         * properly the current selection.  Also, this method can optionally create a new
+         * range in the selection.
+         */
+        selectCell(col, row) {
+            const sheet = this.getters.getActiveSheet();
+            this.moveClient({ sheetId: sheet.id, col, row });
+            let zone = this.getters.expandZone(sheet.id, { left: col, right: col, top: row, bottom: row });
+            if (this.mode === SelectionMode.expanding) {
+                // It is important to add the zone at the end of the array.
+                // It is a way to easily find the last selection made by the user.
+                this.selection.zones.push(zone);
+            }
+            else {
+                this.selection.zones = [zone];
+            }
+            this.selection.zones = uniqueZones(this.selection.zones);
+            this.selection.anchor = [col, row];
+            this.activeCol = col;
+            this.activeRow = row;
+        }
+        setActiveSheet(id) {
+            const sheet = this.getters.getSheet(id);
+            this.activeSheet = sheet;
+        }
+        /**
+         * Moves the position of either the active cell of the anchor of the current selection by a number of rows / cols delta
+         */
+        movePosition(deltaX, deltaY) {
+            var _a, _b, _c, _d;
+            const sheet = this.getters.getActiveSheet();
+            if (this.getters.isInMerge(sheet.id, this.activeCol, this.activeRow)) {
+                let targetCol = this.activeCol;
+                let targetRow = this.activeRow;
+                while (this.getters.isInSameMerge(sheet.id, this.activeCol, this.activeRow, targetCol, targetRow)) {
+                    targetCol += deltaX;
+                    targetRow += deltaY;
+                }
+                if (targetCol >= 0 && targetRow >= 0) {
+                    this.selectCell(targetCol, targetRow);
+                }
+            }
+            else if (((_a = sheet.cols[this.activeCol + deltaX]) === null || _a === void 0 ? void 0 : _a.isHidden) || ((_b = sheet.rows[this.activeRow + deltaY]) === null || _b === void 0 ? void 0 : _b.isHidden)) {
+                let targetCol = this.activeCol + deltaX;
+                let targetRow = this.activeRow + deltaY;
+                while ((_c = sheet.cols[targetCol]) === null || _c === void 0 ? void 0 : _c.isHidden) {
+                    targetCol += deltaX;
+                }
+                while ((_d = sheet.rows[targetRow]) === null || _d === void 0 ? void 0 : _d.isHidden) {
+                    targetRow += deltaY;
+                }
+                if (targetCol >= 0 &&
+                    targetCol < sheet.cols.length &&
+                    targetRow >= 0 &&
+                    targetRow < sheet.rows.length) {
+                    this.selectCell(targetCol, targetRow);
+                }
+            }
+            else {
+                this.selectCell(this.activeCol + deltaX, this.activeRow + deltaY);
+            }
+        }
+        setSelection(anchor, zones, strict = false) {
+            this.selectCell(...anchor);
+            if (strict) {
+                this.selection.zones = zones;
+            }
+            else {
+                const sheetId = this.getters.getActiveSheetId();
+                this.selection.zones = zones.map((zone) => this.getters.expandZone(sheetId, zone));
+            }
+            this.selection.zones = uniqueZones(this.selection.zones);
+            this.selection.anchor = anchor;
+        }
+        moveSelection(deltaX, deltaY) {
+            const selection = this.selection;
+            const zones = selection.zones.slice();
+            const lastZone = zones[selection.zones.length - 1];
+            const [anchorCol, anchorRow] = selection.anchor;
+            const { left, right, top, bottom } = lastZone;
+            let result = lastZone;
+            const activeSheet = this.getters.getActiveSheet();
+            const expand = (z) => {
+                const { left, right, top, bottom } = this.getters.expandZone(activeSheet.id, z);
+                return {
+                    left: Math.max(0, left),
+                    right: Math.min(activeSheet.cols.length - 1, right),
+                    top: Math.max(0, top),
+                    bottom: Math.min(activeSheet.rows.length - 1, bottom),
+                };
+            };
+            // check if we can shrink selection
+            let n = 0;
+            while (result !== null) {
+                n++;
+                if (deltaX < 0) {
+                    result = anchorCol <= right - n ? expand({ top, left, bottom, right: right - n }) : null;
+                }
+                if (deltaX > 0) {
+                    result = left + n <= anchorCol ? expand({ top, left: left + n, bottom, right }) : null;
+                }
+                if (deltaY < 0) {
+                    result = anchorRow <= bottom - n ? expand({ top, left, bottom: bottom - n, right }) : null;
+                }
+                if (deltaY > 0) {
+                    result = top + n <= anchorRow ? expand({ top: top + n, left, bottom, right }) : null;
+                }
+                if (result && !isEqual(result, lastZone)) {
+                    zones[zones.length - 1] = result;
+                    this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
+                    return;
+                }
+            }
+            const currentZone = { top: anchorRow, bottom: anchorRow, left: anchorCol, right: anchorCol };
+            const zoneWithDelta = {
+                top: top + deltaY,
+                left: left + deltaX,
+                bottom: bottom + deltaY,
+                right: right + deltaX,
+            };
+            result = expand(union(currentZone, zoneWithDelta));
+            if (!isEqual(result, lastZone)) {
+                zones[zones.length - 1] = result;
+                this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
+            }
+        }
+        addCellToSelection(col, row) {
+            const selection = this.selection;
+            const [anchorCol, anchorRow] = selection.anchor;
+            const zone = {
+                left: Math.min(anchorCol, col),
+                top: Math.min(anchorRow, row),
+                right: Math.max(anchorCol, col),
+                bottom: Math.max(anchorRow, row),
+            };
+            const zones = selection.zones.slice(0, -1).concat(zone);
+            this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
+        }
+        /**
+         * Ensure selections are not outside sheet boundaries.
+         * They are clipped to fit inside the sheet if needed.
+         */
+        ensureSelectionValidity() {
+            const { anchor, zones } = this.clipSelection(this.getActiveSheetId(), this.selection);
+            this.setSelection(anchor, zones);
+            const deletedSheetIds = Object.keys(this.sheetsData).filter((sheetId) => !this.getters.tryGetSheet(sheetId));
+            for (const sheetId of deletedSheetIds) {
+                delete this.sheetsData[sheetId];
+            }
+            for (const sheetId in this.sheetsData) {
+                const { anchor, zones } = this.clipSelection(sheetId, this.sheetsData[sheetId].selection);
+                this.sheetsData[sheetId] = {
+                    selection: { anchor, zones },
+                    activeCol: anchor[0],
+                    activeRow: anchor[1],
+                };
+            }
+        }
+        /**
+         * Clip the selection if it spans outside the sheet
+         */
+        clipSelection(sheetId, selection) {
+            const sheet = this.getters.getSheet(sheetId);
+            const cols = sheet.cols.length - 1;
+            const rows = sheet.rows.length - 1;
+            const zones = selection.zones.map((z) => ({
+                left: clip(z.left, 0, cols),
+                right: clip(z.right, 0, cols),
+                top: clip(z.top, 0, rows),
+                bottom: clip(z.bottom, 0, rows),
+            }));
+            const anchorCol = zones[zones.length - 1].left;
+            const anchorRow = zones[zones.length - 1].top;
+            return {
+                anchor: [anchorCol, anchorRow],
+                zones,
+            };
+        }
+        onColumnsRemoved(cmd) {
+            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "left", cmd.elements);
+            this.setSelection([zone.left, zone.top], [zone], true);
+            this.ensureSelectionValidity();
+        }
+        onRowsRemoved(cmd) {
+            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "top", cmd.elements);
+            this.setSelection([zone.left, zone.top], [zone], true);
+            this.ensureSelectionValidity();
+        }
+        onAddElements(cmd) {
+            const selection = this.getSelectedZone();
+            const zone = updateSelectionOnInsertion(selection, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
+            this.setSelection([zone.left, zone.top], [zone], true);
+        }
+        // ---------------------------------------------------------------------------
+        // Grid rendering
+        // ---------------------------------------------------------------------------
+        drawGrid(renderingContext) {
+            const { viewport, ctx, thinLineWidth } = renderingContext;
+            // selection
+            const zones = this.getSelectedZones();
+            ctx.fillStyle = "#f3f7fe";
+            const onlyOneCell = zones.length === 1 && zones[0].left === zones[0].right && zones[0].top === zones[0].bottom;
+            ctx.fillStyle = onlyOneCell ? "#f3f7fe" : "#e9f0ff";
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
+            ctx.lineWidth = 1.5 * thinLineWidth;
+            ctx.globalCompositeOperation = "multiply";
+            for (const zone of zones) {
+                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                if (width > 0 && height > 0) {
+                    ctx.fillRect(x, y, width, height);
+                    ctx.strokeRect(x, y, width, height);
+                }
+            }
+            ctx.globalCompositeOperation = "source-over";
+            // active zone
+            const activeSheet = this.getters.getActiveSheetId();
+            const [col, row] = this.getPosition();
+            ctx.strokeStyle = "#3266ca";
+            ctx.lineWidth = 3 * thinLineWidth;
+            let zone;
+            if (this.getters.isInMerge(activeSheet, col, row)) {
+                zone = this.getters.getMerge(activeSheet, col, row);
+            }
+            else {
+                zone = {
+                    top: row,
+                    bottom: row,
+                    left: col,
+                    right: col,
+                };
+            }
+            const [x, y, width, height] = this.getters.getRect(zone, viewport);
+            if (width > 0 && height > 0) {
+                ctx.strokeRect(x, y, width, height);
+            }
+        }
+    }
+    SelectionPlugin.layers = [5 /* Selection */];
+    SelectionPlugin.modes = ["normal", "readonly"];
+    SelectionPlugin.getters = [
+        "getActiveSheet",
+        "getActiveSheetId",
+        "getActiveCell",
+        "getActiveCols",
+        "getActiveRows",
+        "getCurrentStyle",
+        "getSelectedZones",
+        "getSelectedZone",
+        "getAggregate",
+        "getSelectedFigureId",
+        "getVisibleFigures",
+        "getSelection",
+        "getPosition",
+        "getSheetPosition",
+        "getSelectionMode",
+        "isSelected",
+        "getElementsFromSelection",
+    ];
+
     const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
     const SelectionIndicator = "␣";
     class EditionPlugin extends UIPlugin {
@@ -14731,6 +16022,7 @@
             this.selectionStart = 0;
             this.selectionEnd = 0;
             this.selectionInitialStart = 0;
+            this.multiSelectionInitialStart = 0;
             this.initialContent = "";
         }
         // ---------------------------------------------------------------------------
@@ -14739,16 +16031,23 @@
         allowDispatch(cmd) {
             switch (cmd.type) {
                 case "CHANGE_COMPOSER_CURSOR_SELECTION":
-                    const length = this.currentContent.length;
-                    const { start, end } = cmd;
-                    return start >= 0 && start <= length && end >= 0 && end <= length && start <= end
-                        ? 0 /* Success */
-                        : 26 /* WrongComposerSelection */;
+                    return this.validateSelection(this.currentContent.length, cmd.start, cmd.end);
                 case "SET_CURRENT_CONTENT":
+                    if (cmd.selection) {
+                        return this.validateSelection(cmd.content.length, cmd.selection.start, cmd.selection.end);
+                    }
+                    else {
+                        return 0 /* Success */;
+                    }
                 case "START_EDITION":
-                    return cmd.selection && cmd.selection.start > cmd.selection.end
-                        ? 26 /* WrongComposerSelection */
-                        : 0 /* Success */;
+                    if (cmd.selection) {
+                        const cell = this.getters.getActiveCell();
+                        const content = cmd.text || (cell && this.getCellContent(cell)) || "";
+                        return this.validateSelection(content.length, cmd.selection.start, cmd.selection.end);
+                    }
+                    else {
+                        return 0 /* Success */;
+                    }
                 default:
                     return 0 /* Success */;
             }
@@ -14806,14 +16105,42 @@
                 case "SELECT_CELL":
                 case "SET_SELECTION":
                 case "MOVE_POSITION":
-                    if (this.mode === "editing") {
-                        this.dispatch("STOP_EDITION");
-                    }
-                    else if (this.mode === "waitingForRangeSelection" || this.mode === "rangeSelected") {
-                        this.insertSelectedRange();
-                    }
-                    if (this.mode === "inactive") {
-                        this.setActiveContent();
+                    switch (this.mode) {
+                        case "editing":
+                            this.dispatch("STOP_EDITION");
+                            break;
+                        case "inactive":
+                            this.setActiveContent();
+                            break;
+                        case "waitingForRangeSelection":
+                            this.insertSelectedRange();
+                            break;
+                        case "rangeSelected":
+                            switch (cmd.type) {
+                                case "MOVE_POSITION":
+                                    this.replaceAllSelectedRanges();
+                                    break;
+                                case "SELECT_CELL":
+                                    if (this.getters.getSelectionMode() === SelectionMode.expanding) {
+                                        this.insertSelectedRange();
+                                    }
+                                    else {
+                                        this.replaceAllSelectedRanges();
+                                    }
+                                    break;
+                                case "SET_SELECTION":
+                                    if (!cmd.strict) {
+                                        this.replaceSelectedRange();
+                                    }
+                                    else if (this.getters.getSelectionMode() === SelectionMode.expanding) {
+                                        this.insertSelectedRange();
+                                    }
+                                    else {
+                                        this.replaceAllSelectedRanges();
+                                    }
+                                    break;
+                            }
+                            break;
                     }
                     break;
                 case "ADD_COLUMNS_ROWS":
@@ -14870,8 +16197,8 @@
          * Return the (enriched) token just before the cursor.
          */
         getTokenAtCursor() {
-            const start = this.selectionStart;
-            const end = this.selectionEnd;
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
             if (start === end && end === 0) {
                 return undefined;
             }
@@ -14882,6 +16209,11 @@
         // ---------------------------------------------------------------------------
         // Misc
         // ---------------------------------------------------------------------------
+        validateSelection(length, start, end) {
+            return start >= 0 && start <= length && end >= 0 && end <= length
+                ? 0 /* Success */
+                : 26 /* WrongComposerSelection */;
+        }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
                 this.dispatch("STOP_EDITION", { cancel: true });
@@ -14917,10 +16249,11 @@
                 row: this.row,
             });
             this.mode = "waitingForRangeSelection";
-            // We set this variable to store the start of the selection, to allow
-            // to replace selections (ex: select twice a cell should only be added
-            // once)
-            this.selectionInitialStart = this.selectionStart;
+            // We set this variable to store the start of the multiple range
+            // selection. This is useful for example when we select multiple
+            // cells with ctrl, release the ctrl and select a new cell.
+            // This should result in deletions of previously selected cells.
+            this.multiSelectionInitialStart = this.selectionStart;
         }
         getCellContent(cell) {
             var _a;
@@ -15017,47 +16350,76 @@
             else {
                 this.selectionStart = this.selectionEnd = text.length;
             }
-            if (isNewCurrentContent) {
+            if (isNewCurrentContent || this.mode !== "inactive") {
                 this.currentTokens = text.startsWith("=") ? composerTokenize(text) : [];
             }
-            if (this.canstartComposerRangeSelection()) {
+            if (this.canStartComposerRangeSelection()) {
                 this.startComposerRangeSelection();
             }
         }
         /**
-         * Insert the currently selected zone XC in the composer content.
-         * The XC replaces the following section:
-         *  - start:  where the cursor was when the edition mode was
-         *            changed to `selecting`.
-         *  - end:    the current end of the selection.
+         * Insert reference of the currently selected zone in the composer content.
+         * Separates references with commas when more than one is selected.
          */
         insertSelectedRange() {
-            this.mode = "rangeSelected";
-            const [zone] = this.getters.getSelectedZones();
-            const sheetId = this.getters.getActiveSheetId();
-            let selectedXc = this.getters.zoneToXC(sheetId, zone);
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            if (this.mode === "waitingForRangeSelection") {
+                this.insertText(this.getZoneReference(), start);
+                this.selectionInitialStart = start;
+                this.mode = "rangeSelected";
+                return;
+            }
+            // range already present (mean this.mode === "rangeSelected")
+            this.insertText("," + this.getZoneReference(), start);
+            this.selectionInitialStart = start + 1;
+        }
+        /**
+         * Replace the last reference by the new one.
+         * This function is particularly useful when multiple cells selection is
+         * enabled and we need to change the last reference (eg: change the cell
+         * reference to a range reference)
+         */
+        replaceSelectedRange() {
             const { end } = this.getters.getComposerSelection();
             this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
                 start: this.selectionInitialStart,
                 end,
             });
+            this.replaceSelection(this.getZoneReference());
+        }
+        /**
+         * Replace all references selected by the new one.
+         * */
+        replaceAllSelectedRanges() {
+            const { end } = this.getters.getComposerSelection();
+            this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
+                start: this.multiSelectionInitialStart,
+                end,
+            });
+            this.replaceSelection(this.getZoneReference());
+            this.selectionInitialStart = this.multiSelectionInitialStart;
+        }
+        getZoneReference() {
+            const zone = this.getters.getSelectedZone();
+            const sheetId = this.getters.getActiveSheetId();
+            let selectedXc = this.getters.zoneToXC(sheetId, zone);
             if (this.getters.getEditionSheet() !== this.getters.getActiveSheetId()) {
                 const sheetName = getComposerSheetName(this.getters.getSheetName(this.getters.getActiveSheetId()));
                 selectedXc = `${sheetName}!${selectedXc}`;
             }
-            this.replaceSelection(selectedXc);
+            return selectedXc;
         }
         /**
          * Replace the current selection by a new text.
          * The cursor is then set at the end of the text.
          */
         replaceSelection(text) {
-            const start = this.selectionStart;
-            const end = this.selectionEnd;
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
             this.currentContent =
                 this.currentContent.slice(0, start) +
                     this.currentContent.slice(end, this.currentContent.length);
-            this.insertText(text, this.selectionStart);
+            this.insertText(text, start);
         }
         /**
          * Insert a text at the given position.
@@ -15118,9 +16480,10 @@
          * - the next token is missing or is among ["COMMA", "RIGHT_PAREN", "OPERATOR"]
          * - Previous and next tokens can be separated by spaces
          */
-        canstartComposerRangeSelection() {
-            if (this.mode !== "editing")
+        canStartComposerRangeSelection() {
+            if (this.mode !== "editing" && this.selectionStart === this.selectionEnd) {
                 return false;
+            }
             if (this.currentContent.startsWith("=")) {
                 const tokenAtCursor = this.getTokenAtCursor();
                 if (tokenAtCursor) {
@@ -15128,27 +16491,27 @@
                         .map((token) => token.start)
                         .indexOf(tokenAtCursor.start);
                     let count = tokenIdex;
-                    let curentToken = tokenAtCursor;
+                    let currentToken = tokenAtCursor;
                     // check previous token
-                    while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(curentToken.type)) {
-                        if (curentToken.type !== "SPACE" || count < 1) {
+                    while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                        if (currentToken.type !== "SPACE" || count < 1) {
                             return false;
                         }
                         count--;
-                        curentToken = this.currentTokens[count];
+                        currentToken = this.currentTokens[count];
                     }
                     count = tokenIdex + 1;
-                    curentToken = this.currentTokens[count];
+                    currentToken = this.currentTokens[count];
                     // check next token
-                    while (curentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(curentToken.type)) {
-                        if (curentToken.type !== "SPACE") {
+                    while (currentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                        if (currentToken.type !== "SPACE") {
                             return false;
                         }
                         count++;
-                        curentToken = this.currentTokens[count];
+                        currentToken = this.currentTokens[count];
                     }
                     count++;
-                    curentToken = this.currentTokens[count];
+                    currentToken = this.currentTokens[count];
                 }
                 return true;
             }
@@ -15839,6 +17202,7 @@
             this.isStale = true;
             // stores the computed styles in the format of computedStyles.sheetName[col][row] = Style
             this.computedStyles = {};
+            this.computedIcons = {};
             /**
              * Execute the predicate to know if a conditional formatting rule should be applied to a cell
              */
@@ -15912,7 +17276,8 @@
             switch (cmd.type) {
                 case "ACTIVATE_SHEET":
                     const activeSheet = cmd.sheetIdTo;
-                    this.computedStyles[activeSheet] = this.computedStyles[activeSheet] || {}; // ?
+                    this.computedStyles[activeSheet] = this.computedStyles[activeSheet] || {};
+                    this.computedIcons[activeSheet] = this.computedIcons[activeSheet] || {};
                     this.isStale = true;
                     break;
                 case "AUTOFILL_CELL":
@@ -15961,6 +17326,12 @@
             const styles = this.computedStyles[activeSheet];
             return styles && ((_a = styles[col]) === null || _a === void 0 ? void 0 : _a[row]);
         }
+        getConditionalIcon(col, row) {
+            var _a;
+            const activeSheet = this.getters.getActiveSheetId();
+            const icon = this.computedIcons[activeSheet];
+            return icon && ((_a = icon[col]) === null || _a === void 0 ? void 0 : _a[row]);
+        }
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
@@ -15978,6 +17349,7 @@
             var _a;
             const activeSheetId = this.getters.getActiveSheetId();
             this.computedStyles[activeSheetId] = {};
+            this.computedIcons[activeSheetId] = {};
             const computedStyle = this.computedStyles[activeSheetId];
             for (let cf of this.getters.getConditionalFormats(activeSheetId)) {
                 try {
@@ -15985,6 +17357,11 @@
                         case "ColorScaleRule":
                             for (let range of cf.ranges) {
                                 this.applyColorScale(range, cf.rule);
+                            }
+                            break;
+                        case "IconSetRule":
+                            for (let range of cf.ranges) {
+                                this.applyIcon(range, cf.rule);
                             }
                             break;
                         default:
@@ -16030,6 +17407,56 @@
                 default:
                     return null;
             }
+        }
+        applyIcon(range, rule) {
+            const lowerInflectionPoint = this.parsePoint(range, rule.lowerInflectionPoint);
+            const upperInflectionPoint = this.parsePoint(range, rule.upperInflectionPoint);
+            if (lowerInflectionPoint === null ||
+                upperInflectionPoint === null ||
+                lowerInflectionPoint > upperInflectionPoint) {
+                return;
+            }
+            const zone = toZone(range);
+            const activeSheetId = this.getters.getActiveSheetId();
+            const computedIcons = this.computedIcons[activeSheetId];
+            const iconSet = [rule.icons.upper, rule.icons.middle, rule.icons.lower];
+            for (let row = zone.top; row <= zone.bottom; row++) {
+                for (let col = zone.left; col <= zone.right; col++) {
+                    const cell = this.getters.getCell(activeSheetId, col, row);
+                    let value;
+                    if (cell) {
+                        switch (cell.type) {
+                            case CellType.formula:
+                            case CellType.number:
+                                value = cell.value;
+                                break;
+                            case CellType.text:
+                            case CellType.empty:
+                            case CellType.invalidFormula:
+                                continue;
+                        }
+                    }
+                    const icon = this.computeIcon(value, upperInflectionPoint, rule.upperInflectionPoint.operator, lowerInflectionPoint, rule.lowerInflectionPoint.operator, iconSet);
+                    if (!computedIcons[col]) {
+                        computedIcons[col] = [];
+                    }
+                    computedIcons[col][row] = icon;
+                }
+            }
+        }
+        computeIcon(value, upperInflectionPoint, upperOperator, lowerInflectionPoint, lowerOperator, icons) {
+            if (value === undefined) {
+                return undefined;
+            }
+            if ((upperOperator === "ge" && value >= upperInflectionPoint) ||
+                (upperOperator === "gt" && value > upperInflectionPoint)) {
+                return icons[0];
+            }
+            else if ((lowerOperator === "ge" && value >= lowerInflectionPoint) ||
+                (lowerOperator === "gt" && value > lowerInflectionPoint)) {
+                return icons[1];
+            }
+            return icons[2];
         }
         applyColorScale(range, rule) {
             var _a;
@@ -16166,7 +17593,7 @@
             }
         }
     }
-    EvaluationConditionalFormatPlugin.getters = ["getConditionalStyle"];
+    EvaluationConditionalFormatPlugin.getters = ["getConditionalStyle", "getConditionalIcon"];
     EvaluationConditionalFormatPlugin.modes = ["normal", "readonly"];
 
     const BORDER_COLOR = "#8B008B";
@@ -16684,6 +18111,45 @@
             const height = rows[bottom].end - offsetY - y;
             return [x, y, width, height];
         }
+        // nouvelle implémentation
+        getEdgeScrollCol(x) {
+            let canEdgeScroll = false;
+            let direction = 0;
+            let delay = 0;
+            const { width } = this.getters.getViewportDimension();
+            const { width: gridWidth } = this.getters.getGridDimension(this.getters.getActiveSheet());
+            const { left, offsetX } = this.getters.getActiveSnappedViewport();
+            if (x < HEADER_WIDTH && left > 0) {
+                canEdgeScroll = true;
+                direction = -1;
+                delay = scrollDelay(HEADER_WIDTH - x);
+            }
+            else if (x > width && offsetX < gridWidth - width) {
+                canEdgeScroll = true;
+                direction = +1;
+                delay = scrollDelay(x - width);
+            }
+            return { canEdgeScroll, direction, delay };
+        }
+        getEdgeScrollRow(y) {
+            let canEdgeScroll = false;
+            let direction = 0;
+            let delay = 0;
+            const { height } = this.getters.getViewportDimension();
+            const { height: gridHeight } = this.getters.getGridDimension(this.getters.getActiveSheet());
+            const { top, offsetY } = this.getters.getActiveSnappedViewport();
+            if (y < HEADER_HEIGHT && top > 0) {
+                canEdgeScroll = true;
+                direction = -1;
+                delay = scrollDelay(HEADER_HEIGHT - y);
+            }
+            else if (y > height && offsetY < gridHeight - height) {
+                canEdgeScroll = true;
+                direction = +1;
+                delay = scrollDelay(y - height);
+            }
+            return { canEdgeScroll, direction, delay };
+        }
         // ---------------------------------------------------------------------------
         // Grid rendering
         // ---------------------------------------------------------------------------
@@ -16695,6 +18161,7 @@
                     this.drawCellBackground(renderingContext);
                     this.drawBorders(renderingContext);
                     this.drawTexts(renderingContext);
+                    this.drawIcon(renderingContext);
                     break;
                 case 7 /* Headers */:
                     this.drawHeaders(renderingContext);
@@ -16817,7 +18284,7 @@
                     let x;
                     let y = box.y + box.height / 2 + 1;
                     if (align === "left") {
-                        x = box.x + 3;
+                        x = box.x + 3 + (box.image ? box.image.size : 0);
                     }
                     else if (align === "right") {
                         x = box.x + box.width - 3;
@@ -16843,6 +18310,28 @@
                         ctx.fillRect(x, y, box.textWidth, 2.6 * thinLineWidth);
                     }
                     if (box.clipRect) {
+                        ctx.restore();
+                    }
+                }
+            }
+        }
+        async drawIcon(renderingContext) {
+            const { ctx } = renderingContext;
+            for (let box of this.boxes) {
+                if (box.image) {
+                    let x = box.x;
+                    let y = box.y;
+                    const icon = box.image.image;
+                    const size = box.image.size;
+                    const margin = (box.height - size) / 2;
+                    if (box.image.clipIcon) {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.rect(...box.image.clipIcon);
+                        ctx.clip();
+                    }
+                    ctx.drawImage(icon, x + MIN_CF_ICON_MARGIN, y + margin, size, size);
+                    if (box.image.clipIcon) {
                         ctx.restore();
                     }
                 }
@@ -16943,10 +18432,11 @@
                     let cell = row.cells[colNumber];
                     const border = this.getters.getCellBorder(sheetId, colNumber, rowNumber);
                     const conditionalStyle = this.getters.getConditionalStyle(colNumber, rowNumber);
+                    const iconStyle = this.getters.getConditionalIcon(colNumber, rowNumber);
                     if (!this.getters.isInMerge(sheetId, colNumber, rowNumber)) {
                         if (cell) {
                             const text = this.getters.getCellText(cell, sheetId, showFormula);
-                            const textWidth = this.getters.getCellWidth(cell);
+                            const textWidth = this.getters.getTextWidth(cell);
                             let style = this.getters.getCellStyle(cell);
                             if (conditionalStyle) {
                                 style = Object.assign({}, style, conditionalStyle);
@@ -16955,7 +18445,12 @@
                                 ? (style && style.align) || computeAlign(cell, showFormula)
                                 : undefined;
                             let clipRect = null;
-                            if (text && textWidth > cols[colNumber].size) {
+                            let clipIcon = null;
+                            const fontsize = style.fontSize || DEFAULT_FONT_SIZE;
+                            const iconWidth = fontSizeMap[fontsize];
+                            if ((text && textWidth > cols[colNumber].size) ||
+                                iconStyle ||
+                                fontSizeMap[fontsize] > row.size) {
                                 if (align === "left") {
                                     let c = colNumber;
                                     while (c < right && !this.hasContent(c + 1, rowNumber)) {
@@ -16972,7 +18467,22 @@
                                         c--;
                                     }
                                     const width = col.end - cols[c].start;
-                                    if (width < textWidth) {
+                                    if (iconStyle) {
+                                        const colWidth = col.end - col.start;
+                                        clipRect = [
+                                            col.start - offsetX + iconWidth + 2 * MIN_CF_ICON_MARGIN,
+                                            row.start - offsetY,
+                                            Math.max(0, colWidth - iconWidth + 2 * MIN_CF_ICON_MARGIN),
+                                            row.size,
+                                        ];
+                                        clipIcon = [
+                                            col.start - offsetX,
+                                            row.start - offsetY,
+                                            Math.min(iconWidth + 2 * MIN_CF_ICON_MARGIN, colWidth),
+                                            row.size,
+                                        ];
+                                    }
+                                    else {
                                         clipRect = [cols[c].start - offsetX, row.start - offsetY, width, row.size];
                                     }
                                 }
@@ -16989,6 +18499,14 @@
                                 align,
                                 clipRect,
                                 error: cell.error,
+                                image: iconStyle
+                                    ? {
+                                        type: "icon",
+                                        size: iconWidth,
+                                        clipIcon,
+                                        image: ICONS[iconStyle].img,
+                                    }
+                                    : undefined,
                             });
                         }
                         else {
@@ -17024,7 +18542,7 @@
                     style = refCell ? this.getters.getCellStyle(refCell) : null;
                     if (refCell || borderBottomRight || borderTopLeft) {
                         text = refCell ? this.getters.getCellText(refCell, activeSheetId, showFormula) : "";
-                        textWidth = refCell ? this.getters.getCellWidth(refCell) : null;
+                        textWidth = refCell ? this.getters.getTextWidth(refCell) : null;
                         const conditionalStyle = this.getters.getConditionalStyle(merge.topLeft.col, merge.topLeft.row);
                         if (conditionalStyle) {
                             style = Object.assign({}, style, conditionalStyle);
@@ -17049,6 +18567,20 @@
                     const x = cols[merge.left].start - offsetX;
                     const y = rows[merge.top].start - offsetY;
                     const height = rows[merge.bottom].end - rows[merge.top].start;
+                    const iconStyle = this.getters.getConditionalIcon(merge.left, merge.top);
+                    const fontsize = style.fontSize || DEFAULT_FONT_SIZE;
+                    const iconWidth = fontSizeMap[fontsize];
+                    const clipRect = iconStyle
+                        ? [
+                            x + iconWidth + 2 * MIN_CF_ICON_MARGIN,
+                            y,
+                            Math.max(0, width - iconWidth + 2 * MIN_CF_ICON_MARGIN),
+                            height,
+                        ]
+                        : [x, y, width, height];
+                    const clipIcon = iconStyle
+                        ? [x, y, Math.min(iconWidth + 2 * MIN_CF_ICON_MARGIN, width), height]
+                        : null;
                     result.push({
                         x: x,
                         y: y,
@@ -17059,8 +18591,16 @@
                         border,
                         style,
                         align,
-                        clipRect: [x, y, width, height],
+                        clipRect,
                         error: refCell ? refCell.error : undefined,
+                        image: iconStyle
+                            ? {
+                                type: "icon",
+                                clipIcon,
+                                size: iconWidth,
+                                image: ICONS[iconStyle].img,
+                            }
+                            : undefined,
                     });
                 }
             }
@@ -17068,643 +18608,14 @@
         }
     }
     RendererPlugin.layers = [0 /* Background */, 7 /* Headers */];
-    RendererPlugin.getters = ["getColIndex", "getRowIndex", "getRect"];
-    RendererPlugin.modes = ["normal", "readonly"];
-
-    var SelectionMode;
-    (function (SelectionMode) {
-        SelectionMode[SelectionMode["idle"] = 0] = "idle";
-        SelectionMode[SelectionMode["selecting"] = 1] = "selecting";
-        SelectionMode[SelectionMode["readyToExpand"] = 2] = "readyToExpand";
-        SelectionMode[SelectionMode["expanding"] = 3] = "expanding";
-    })(SelectionMode || (SelectionMode = {}));
-    /**
-     * SelectionPlugin
-     */
-    class SelectionPlugin extends UIPlugin {
-        constructor(getters, state, dispatch, config) {
-            super(getters, state, dispatch, config);
-            this.selection = {
-                zones: [{ top: 0, left: 0, bottom: 0, right: 0 }],
-                anchor: [0, 0],
-            };
-            this.selectedFigureId = null;
-            this.activeCol = 0;
-            this.activeRow = 0;
-            this.mode = SelectionMode.idle;
-            this.sheetsData = {};
-            // This flag is used to avoid to historize the ACTIVE_SHEET command when it's
-            // the main command.
-            this.activeSheet = null;
-            this.moveClient = config.moveClient;
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        allowDispatch(cmd) {
-            switch (cmd.type) {
-                case "MOVE_POSITION": {
-                    const { cols, rows, id: sheetId } = this.getters.getActiveSheet();
-                    let targetCol = this.activeCol;
-                    let targetRow = this.activeRow;
-                    if (this.getters.isInMerge(sheetId, this.activeCol, this.activeRow)) {
-                        while (this.getters.isInSameMerge(sheetId, this.activeCol, this.activeRow, targetCol + cmd.deltaX, targetRow + cmd.deltaY)) {
-                            targetCol += cmd.deltaX;
-                            targetRow += cmd.deltaY;
-                        }
-                    }
-                    const outOfBound = (cmd.deltaY < 0 && targetRow === 0) ||
-                        (cmd.deltaY > 0 && targetRow === rows.length - 1) ||
-                        (cmd.deltaX < 0 && targetCol === 0) ||
-                        (cmd.deltaX > 0 && targetCol === cols.length - 1);
-                    if (outOfBound) {
-                        return 12 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "SELECT_COLUMN": {
-                    const { index } = cmd;
-                    if (index < 0 || index >= this.getters.getActiveSheet().cols.length) {
-                        return 12 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "SELECT_ROW": {
-                    const { index } = cmd;
-                    if (index < 0 || index >= this.getters.getActiveSheet().rows.length) {
-                        return 12 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "ACTIVATE_SHEET":
-                    try {
-                        this.getters.getSheet(cmd.sheetIdTo);
-                        break;
-                    }
-                    catch (error) {
-                        return 17 /* InvalidSheetId */;
-                    }
-            }
-            return 0 /* Success */;
-        }
-        handle(cmd) {
-            switch (cmd.type) {
-                // some commands should not remove the current selection
-                case "CREATE_SHEET":
-                case "DELETE_SHEET":
-                case "CREATE_FIGURE":
-                case "CREATE_CHART":
-                case "UPDATE_FIGURE":
-                case "EVALUATE_CELLS":
-                case "DISABLE_SELECTION_INPUT":
-                case "HIGHLIGHT_SELECTION":
-                case "RESET_PENDING_HIGHLIGHT":
-                case "REMOVE_ALL_HIGHLIGHTS":
-                case "ENABLE_NEW_SELECTION_INPUT":
-                    break;
-                case "DELETE_FIGURE":
-                    if (this.selectedFigureId === cmd.id) {
-                        this.selectedFigureId = null;
-                    }
-                    break;
-                default:
-                    this.selectedFigureId = null;
-            }
-            switch (cmd.type) {
-                case "START":
-                    const firstSheet = this.getters.getSheets()[0];
-                    const firstVisiblePosition = getNextVisibleCellCoords(firstSheet, 0, 0);
-                    this.activeCol = firstVisiblePosition[0];
-                    this.activeRow = firstVisiblePosition[1];
-                    this.dispatch("ACTIVATE_SHEET", {
-                        sheetIdTo: this.getters.getSheets()[0].id,
-                        sheetIdFrom: this.getters.getSheets()[0].id,
-                    });
-                    this.selectCell(...firstVisiblePosition);
-                    break;
-                case "ACTIVATE_SHEET":
-                    //TODO Change the way selectCell work, perhaps take the sheet as argument ?
-                    this.setActiveSheet(cmd.sheetIdTo);
-                    this.sheetsData[cmd.sheetIdFrom] = {
-                        selection: JSON.parse(JSON.stringify(this.selection)),
-                        activeCol: this.activeCol,
-                        activeRow: this.activeRow,
-                    };
-                    if (cmd.sheetIdTo in this.sheetsData) {
-                        Object.assign(this, this.sheetsData[cmd.sheetIdTo]);
-                    }
-                    else {
-                        this.selectCell(...getNextVisibleCellCoords(this.getters.getSheets()[0], 0, 0));
-                    }
-                    break;
-                case "SET_SELECTION":
-                    this.setSelection(cmd.anchor, cmd.zones, cmd.strict);
-                    break;
-                case "START_SELECTION":
-                    this.mode = SelectionMode.selecting;
-                    break;
-                case "PREPARE_SELECTION_EXPANSION":
-                    this.mode = SelectionMode.readyToExpand;
-                    break;
-                case "START_SELECTION_EXPANSION":
-                    this.mode = SelectionMode.expanding;
-                    break;
-                case "STOP_SELECTION":
-                    this.mode = SelectionMode.idle;
-                    break;
-                case "MOVE_POSITION":
-                    this.movePosition(cmd.deltaX, cmd.deltaY);
-                    break;
-                case "SELECT_CELL":
-                    this.selectCell(cmd.col, cmd.row);
-                    break;
-                case "SELECT_COLUMN":
-                    this.selectColumn(cmd.index, cmd.createRange || false, cmd.updateRange || false);
-                    break;
-                case "SELECT_ROW":
-                    this.selectRow(cmd.index, cmd.createRange || false, cmd.updateRange || false);
-                    break;
-                case "SELECT_ALL":
-                    this.selectAll();
-                    break;
-                case "ALTER_SELECTION":
-                    if (cmd.delta) {
-                        this.moveSelection(cmd.delta[0], cmd.delta[1]);
-                    }
-                    if (cmd.cell) {
-                        this.addCellToSelection(...cmd.cell);
-                    }
-                    break;
-                case "UNDO":
-                case "REDO":
-                case "DELETE_SHEET":
-                    if (!this.getters.tryGetSheet(this.getActiveSheetId())) {
-                        const currentSheets = this.getters.getVisibleSheets();
-                        this.activeSheet = this.getters.getSheet(currentSheets[0]);
-                        this.selectCell(0, 0);
-                    }
-                    this.ensureSelectionValidity();
-                    break;
-                case "REMOVE_COLUMNS_ROWS":
-                    if (cmd.sheetId === this.getActiveSheetId()) {
-                        if (cmd.dimension === "COL") {
-                            this.onColumnsRemoved(cmd);
-                        }
-                        else {
-                            this.onRowsRemoved(cmd);
-                        }
-                    }
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    if (cmd.sheetId === this.getActiveSheetId()) {
-                        this.onAddElements(cmd);
-                    }
-                    break;
-                case "UPDATE_CHART":
-                case "SELECT_FIGURE":
-                    this.selectedFigureId = cmd.id;
-                    break;
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        getActiveSheet() {
-            return this.activeSheet;
-        }
-        getActiveSheetId() {
-            return this.activeSheet.id;
-        }
-        getActiveCell() {
-            const sheetId = this.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, this.activeCol, this.activeRow);
-            return this.getters.getCell(sheetId, mainCol, mainRow);
-        }
-        getActiveCols() {
-            const activeCols = new Set();
-            for (let zone of this.selection.zones) {
-                if (zone.top === 0 && zone.bottom === this.getters.getActiveSheet().rows.length - 1) {
-                    for (let i = zone.left; i <= zone.right; i++) {
-                        activeCols.add(i);
-                    }
-                }
-            }
-            return activeCols;
-        }
-        getActiveRows() {
-            const activeRows = new Set();
-            for (let zone of this.selection.zones) {
-                if (zone.left === 0 && zone.right === this.getters.getActiveSheet().cols.length - 1) {
-                    for (let i = zone.top; i <= zone.bottom; i++) {
-                        activeRows.add(i);
-                    }
-                }
-            }
-            return activeRows;
-        }
-        getCurrentStyle() {
-            const cell = this.getters.getActiveCell();
-            return cell ? this.getters.getCellStyle(cell) : {};
-        }
-        getSelectedZones() {
-            return this.selection.zones;
-        }
-        getSelectedZone() {
-            return this.selection.zones[this.selection.zones.length - 1];
-        }
-        getSelection() {
-            return this.selection;
-        }
-        getSelectedFigureId() {
-            return this.selectedFigureId;
-        }
-        getPosition() {
-            return [this.activeCol, this.activeRow];
-        }
-        getSheetPosition(sheetId) {
-            if (sheetId === this.getters.getActiveSheetId()) {
-                return this.getPosition();
-            }
-            else {
-                const sheetData = this.sheetsData[sheetId];
-                return sheetData
-                    ? [sheetData.activeCol, sheetData.activeRow]
-                    : getNextVisibleCellCoords(this.getters.getSheet(sheetId), 0, 0);
-            }
-        }
-        getAggregate() {
-            let aggregate = 0;
-            let n = 0;
-            for (let zone of this.selection.zones) {
-                for (let row = zone.top; row <= zone.bottom; row++) {
-                    const r = this.getters.getRow(this.getters.getActiveSheetId(), row);
-                    if (r === undefined) {
-                        continue;
-                    }
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        const cell = r.cells[col];
-                        if (cell && cell.type !== "text" && !cell.error && typeof cell.value === "number") {
-                            n++;
-                            aggregate += cell.value;
-                        }
-                    }
-                }
-            }
-            return n < 2 ? null : formatStandardNumber(aggregate);
-        }
-        getSelectionMode() {
-            return this.mode;
-        }
-        isSelected(zone) {
-            return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
-        }
-        getVisibleFigures(sheetId) {
-            const result = [];
-            const figures = this.getters.getFigures(sheetId);
-            const { offsetX, offsetY } = this.getters.getSnappedViewport(sheetId);
-            const { width, height } = this.getters.getViewportDimension();
-            for (let figure of figures) {
-                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
-                    continue;
-                }
-                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
-                    continue;
-                }
-                result.push(figure);
-            }
-            return result;
-        }
-        /**
-         * Returns a sorted array of indexes of all columns (respectively rows depending
-         * on the dimension parameter) intersected by the currently selected zones.
-         *
-         * example:
-         * assume selectedZones: [{left:0, right: 2, top :2, bottom: 4}, {left:5, right: 6, top :3, bottom: 5}]
-         *
-         * if dimension === "COL" => [0,1,2,5,6]
-         * if dimension === "ROW" => [2,3,4,5]
-         */
-        getElementsFromSelection(dimension) {
-            if (dimension === "COL" && this.getters.getActiveCols().size === 0) {
-                return [];
-            }
-            if (dimension === "ROW" && this.getters.getActiveRows().size === 0) {
-                return [];
-            }
-            const zones = this.getters.getSelectedZones();
-            let elements = [];
-            const start = dimension === "COL" ? "left" : "top";
-            const end = dimension === "COL" ? "right" : "bottom";
-            for (const zone of zones) {
-                const zoneRows = Array.from({ length: zone[end] - zone[start] + 1 }, (_, i) => zone[start] + i);
-                elements = elements.concat(zoneRows);
-            }
-            return [...new Set(elements)].sort();
-        }
-        // ---------------------------------------------------------------------------
-        // Other
-        // ---------------------------------------------------------------------------
-        selectColumn(index, createRange, updateRange) {
-            const bottom = this.getters.getActiveSheet().rows.length - 1;
-            const zone = { left: index, right: index, top: 0, bottom };
-            const current = this.selection.zones;
-            let zones, anchor;
-            const top = this.getters.getActiveSheet().rows.findIndex((row) => !row.isHidden);
-            if (updateRange) {
-                const [col, row] = this.selection.anchor;
-                const updatedZone = union(zone, { left: col, right: col, top, bottom });
-                zones = current.slice(0, -1).concat(updatedZone);
-                anchor = [col, row];
-            }
-            else {
-                zones = createRange ? current.concat(zone) : [zone];
-                anchor = [index, top];
-            }
-            this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
-        }
-        selectRow(index, createRange, updateRange) {
-            const right = this.getters.getActiveSheet().cols.length - 1;
-            const zone = { top: index, bottom: index, left: 0, right };
-            const current = this.selection.zones;
-            let zones, anchor;
-            const left = this.getters.getActiveSheet().cols.findIndex((col) => !col.isHidden);
-            if (updateRange) {
-                const [col, row] = this.selection.anchor;
-                const updatedZone = union(zone, { left, right, top: row, bottom: row });
-                zones = current.slice(0, -1).concat(updatedZone);
-                anchor = [col, row];
-            }
-            else {
-                zones = createRange ? current.concat(zone) : [zone];
-                anchor = [left, index];
-            }
-            this.dispatch("SET_SELECTION", { zones, anchor, strict: true });
-        }
-        selectAll() {
-            const bottom = this.getters.getActiveSheet().rows.length - 1;
-            const right = this.getters.getActiveSheet().cols.length - 1;
-            const zone = { left: 0, top: 0, bottom, right };
-            this.dispatch("SET_SELECTION", { zones: [zone], anchor: [0, 0] });
-        }
-        /**
-         * Change the anchor of the selection active cell to an absolute col and row index.
-         *
-         * This is a non trivial task. We need to stop the editing process and update
-         * properly the current selection.  Also, this method can optionally create a new
-         * range in the selection.
-         */
-        selectCell(col, row) {
-            const sheet = this.getters.getActiveSheet();
-            this.moveClient({ sheetId: sheet.id, col, row });
-            let zone = this.getters.expandZone(sheet.id, { left: col, right: col, top: row, bottom: row });
-            if (this.mode === SelectionMode.expanding) {
-                this.selection.zones.push(zone);
-            }
-            else {
-                this.selection.zones = [zone];
-            }
-            this.selection.zones = uniqueZones(this.selection.zones);
-            this.selection.anchor = [col, row];
-            this.activeCol = col;
-            this.activeRow = row;
-        }
-        setActiveSheet(id) {
-            const sheet = this.getters.getSheet(id);
-            this.activeSheet = sheet;
-        }
-        /**
-         * Moves the position of either the active cell of the anchor of the current selection by a number of rows / cols delta
-         */
-        movePosition(deltaX, deltaY) {
-            var _a, _b, _c, _d;
-            const sheet = this.getters.getActiveSheet();
-            if (this.getters.isInMerge(sheet.id, this.activeCol, this.activeRow)) {
-                let targetCol = this.activeCol;
-                let targetRow = this.activeRow;
-                while (this.getters.isInSameMerge(sheet.id, this.activeCol, this.activeRow, targetCol, targetRow)) {
-                    targetCol += deltaX;
-                    targetRow += deltaY;
-                }
-                if (targetCol >= 0 && targetRow >= 0) {
-                    this.selectCell(targetCol, targetRow);
-                }
-            }
-            else if (((_a = sheet.cols[this.activeCol + deltaX]) === null || _a === void 0 ? void 0 : _a.isHidden) || ((_b = sheet.rows[this.activeRow + deltaY]) === null || _b === void 0 ? void 0 : _b.isHidden)) {
-                let targetCol = this.activeCol + deltaX;
-                let targetRow = this.activeRow + deltaY;
-                while ((_c = sheet.cols[targetCol]) === null || _c === void 0 ? void 0 : _c.isHidden) {
-                    targetCol += deltaX;
-                }
-                while ((_d = sheet.rows[targetRow]) === null || _d === void 0 ? void 0 : _d.isHidden) {
-                    targetRow += deltaY;
-                }
-                if (targetCol >= 0 &&
-                    targetCol < sheet.cols.length &&
-                    targetRow >= 0 &&
-                    targetRow < sheet.rows.length) {
-                    this.selectCell(targetCol, targetRow);
-                }
-            }
-            else {
-                this.selectCell(this.activeCol + deltaX, this.activeRow + deltaY);
-            }
-        }
-        setSelection(anchor, zones, strict = false) {
-            this.selectCell(...anchor);
-            if (strict) {
-                this.selection.zones = zones;
-            }
-            else {
-                const sheetId = this.getters.getActiveSheetId();
-                this.selection.zones = zones.map((zone) => this.getters.expandZone(sheetId, zone));
-            }
-            this.selection.zones = uniqueZones(this.selection.zones);
-            this.selection.anchor = anchor;
-        }
-        moveSelection(deltaX, deltaY) {
-            const selection = this.selection;
-            const zones = selection.zones.slice();
-            const lastZone = zones[selection.zones.length - 1];
-            const [anchorCol, anchorRow] = selection.anchor;
-            const { left, right, top, bottom } = lastZone;
-            let result = lastZone;
-            const activeSheet = this.getters.getActiveSheet();
-            const expand = (z) => {
-                const { left, right, top, bottom } = this.getters.expandZone(activeSheet.id, z);
-                return {
-                    left: Math.max(0, left),
-                    right: Math.min(activeSheet.cols.length - 1, right),
-                    top: Math.max(0, top),
-                    bottom: Math.min(activeSheet.rows.length - 1, bottom),
-                };
-            };
-            // check if we can shrink selection
-            let n = 0;
-            while (result !== null) {
-                n++;
-                if (deltaX < 0) {
-                    result = anchorCol <= right - n ? expand({ top, left, bottom, right: right - n }) : null;
-                }
-                if (deltaX > 0) {
-                    result = left + n <= anchorCol ? expand({ top, left: left + n, bottom, right }) : null;
-                }
-                if (deltaY < 0) {
-                    result = anchorRow <= bottom - n ? expand({ top, left, bottom: bottom - n, right }) : null;
-                }
-                if (deltaY > 0) {
-                    result = top + n <= anchorRow ? expand({ top: top + n, left, bottom, right }) : null;
-                }
-                if (result && !isEqual(result, lastZone)) {
-                    zones[zones.length - 1] = result;
-                    this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
-                    return;
-                }
-            }
-            const currentZone = { top: anchorRow, bottom: anchorRow, left: anchorCol, right: anchorCol };
-            const zoneWithDelta = {
-                top: top + deltaY,
-                left: left + deltaX,
-                bottom: bottom + deltaY,
-                right: right + deltaX,
-            };
-            result = expand(union(currentZone, zoneWithDelta));
-            if (!isEqual(result, lastZone)) {
-                zones[zones.length - 1] = result;
-                this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
-            }
-        }
-        addCellToSelection(col, row) {
-            const selection = this.selection;
-            const [anchorCol, anchorRow] = selection.anchor;
-            const zone = {
-                left: Math.min(anchorCol, col),
-                top: Math.min(anchorRow, row),
-                right: Math.max(anchorCol, col),
-                bottom: Math.max(anchorRow, row),
-            };
-            const zones = selection.zones.slice(0, -1).concat(zone);
-            this.dispatch("SET_SELECTION", { zones, anchor: [anchorCol, anchorRow] });
-        }
-        /**
-         * Ensure selections are not outside sheet boundaries.
-         * They are clipped to fit inside the sheet if needed.
-         */
-        ensureSelectionValidity() {
-            const { anchor, zones } = this.clipSelection(this.getActiveSheetId(), this.selection);
-            this.setSelection(anchor, zones);
-            const deletedSheetIds = Object.keys(this.sheetsData).filter((sheetId) => !this.getters.tryGetSheet(sheetId));
-            for (const sheetId of deletedSheetIds) {
-                delete this.sheetsData[sheetId];
-            }
-            for (const sheetId in this.sheetsData) {
-                const { anchor, zones } = this.clipSelection(sheetId, this.sheetsData[sheetId].selection);
-                this.sheetsData[sheetId] = {
-                    selection: { anchor, zones },
-                    activeCol: anchor[0],
-                    activeRow: anchor[1],
-                };
-            }
-        }
-        /**
-         * Clip the selection if it spans outside the sheet
-         */
-        clipSelection(sheetId, selection) {
-            const sheet = this.getters.getSheet(sheetId);
-            const cols = sheet.cols.length - 1;
-            const rows = sheet.rows.length - 1;
-            const zones = selection.zones.map((z) => ({
-                left: clip(z.left, 0, cols),
-                right: clip(z.right, 0, cols),
-                top: clip(z.top, 0, rows),
-                bottom: clip(z.bottom, 0, rows),
-            }));
-            const anchorCol = zones[zones.length - 1].left;
-            const anchorRow = zones[zones.length - 1].top;
-            return {
-                anchor: [anchorCol, anchorRow],
-                zones,
-            };
-        }
-        onColumnsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "left", cmd.elements);
-            this.setSelection([zone.left, zone.top], [zone], true);
-            this.ensureSelectionValidity();
-        }
-        onRowsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "top", cmd.elements);
-            this.setSelection([zone.left, zone.top], [zone], true);
-            this.ensureSelectionValidity();
-        }
-        onAddElements(cmd) {
-            const selection = this.getSelectedZone();
-            const zone = updateSelectionOnInsertion(selection, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
-            this.setSelection([zone.left, zone.top], [zone], true);
-        }
-        // ---------------------------------------------------------------------------
-        // Grid rendering
-        // ---------------------------------------------------------------------------
-        drawGrid(renderingContext) {
-            const { viewport, ctx, thinLineWidth } = renderingContext;
-            // selection
-            const zones = this.getSelectedZones();
-            ctx.fillStyle = "#f3f7fe";
-            const onlyOneCell = zones.length === 1 && zones[0].left === zones[0].right && zones[0].top === zones[0].bottom;
-            ctx.fillStyle = onlyOneCell ? "#f3f7fe" : "#e9f0ff";
-            ctx.strokeStyle = SELECTION_BORDER_COLOR;
-            ctx.lineWidth = 1.5 * thinLineWidth;
-            ctx.globalCompositeOperation = "multiply";
-            for (const zone of zones) {
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
-                if (width > 0 && height > 0) {
-                    ctx.fillRect(x, y, width, height);
-                    ctx.strokeRect(x, y, width, height);
-                }
-            }
-            ctx.globalCompositeOperation = "source-over";
-            // active zone
-            const activeSheet = this.getters.getActiveSheetId();
-            const [col, row] = this.getPosition();
-            ctx.strokeStyle = "#3266ca";
-            ctx.lineWidth = 3 * thinLineWidth;
-            let zone;
-            if (this.getters.isInMerge(activeSheet, col, row)) {
-                zone = this.getters.getMerge(activeSheet, col, row);
-            }
-            else {
-                zone = {
-                    top: row,
-                    bottom: row,
-                    left: col,
-                    right: col,
-                };
-            }
-            const [x, y, width, height] = this.getters.getRect(zone, viewport);
-            if (width > 0 && height > 0) {
-                ctx.strokeRect(x, y, width, height);
-            }
-        }
-    }
-    SelectionPlugin.layers = [5 /* Selection */];
-    SelectionPlugin.modes = ["normal", "readonly"];
-    SelectionPlugin.getters = [
-        "getActiveSheet",
-        "getActiveSheetId",
-        "getActiveCell",
-        "getActiveCols",
-        "getActiveRows",
-        "getCurrentStyle",
-        "getSelectedZones",
-        "getSelectedZone",
-        "getAggregate",
-        "getSelectedFigureId",
-        "getVisibleFigures",
-        "getSelection",
-        "getPosition",
-        "getSheetPosition",
-        "getSelectionMode",
-        "isSelected",
-        "getElementsFromSelection",
+    RendererPlugin.getters = [
+        "getColIndex",
+        "getRowIndex",
+        "getRect",
+        "getEdgeScrollCol",
+        "getEdgeScrollRow",
     ];
+    RendererPlugin.modes = ["normal", "readonly"];
 
     /**
      * Selection input Plugin
@@ -17997,7 +18908,9 @@
          * are ignored.
          */
         inputToHighlights(id, { xc, color }) {
-            const ranges = this.cleanInputs([xc]).filter((reference) => this.shouldBeHighlighted(this.activeSheets[id], reference));
+            const ranges = this.cleanInputs([xc])
+                .filter((range) => this.isRangeValid(range))
+                .filter((reference) => this.shouldBeHighlighted(this.activeSheets[id], reference));
             if (ranges.length === 0)
                 return {};
             const [fromInput, ...otherRanges] = ranges;
@@ -18014,8 +18927,7 @@
                 .map((xc) => xc.split(","))
                 .flat()
                 .map((xc) => xc.trim())
-                .filter((xc) => xc !== "")
-                .filter((range) => this.isRangeValid(range));
+                .filter((xc) => xc !== "");
         }
         /**
          * Check if a cell or range reference should be highlighted.
@@ -18028,7 +18940,7 @@
             const sheetName = reference.split("!").reverse()[1];
             const sheetId = this.getters.getSheetIdByName(sheetName);
             const activeSheetId = this.getters.getActiveSheet().id;
-            const valid = this.cleanInputs([reference]).length === 1;
+            const valid = this.isRangeValid(reference);
             return (valid &&
                 (sheetId === activeSheetId || (sheetId === undefined && activeSheetId === inputSheetId)));
         }
@@ -18195,7 +19107,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 40 /* InvalidSortZone */;
+                        return 47 /* InvalidSortZone */;
                     }
                 }
             }
@@ -18216,7 +19128,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 40 /* InvalidSortZone */;
+                return 47 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -18277,7 +19189,7 @@
             }
             if (result !== 0 /* Success */) {
                 switch (result) {
-                    case 40 /* InvalidSortZone */:
+                    case 47 /* InvalidSortZone */:
                         this.dispatch("SET_SELECTION", {
                             anchor: anchor,
                             zones: [zone],
@@ -18629,6 +19541,15 @@
         // Getters
         // ---------------------------------------------------------------------------
         getCellWidth(cell) {
+            let width = this.getTextWidth(cell);
+            const cellPosition = this.getters.getCellPosition(cell.id);
+            const icon = this.getters.getConditionalIcon(cellPosition.col, cellPosition.row);
+            if (icon) {
+                width += computeIconWidth(this.ctx, this.getters.getCellStyle(cell));
+            }
+            return width;
+        }
+        getTextWidth(cell) {
             const text = this.getters.getCellText(cell, this.getters.getActiveSheetId(), this.getters.shouldShowFormulas());
             return computeTextWidth(this.ctx, text, this.getters.getCellStyle(cell));
         }
@@ -18680,7 +19601,7 @@
             }
         }
     }
-    SheetUIPlugin.getters = ["getCellWidth", "getCellHeight"];
+    SheetUIPlugin.getters = ["getCellWidth", "getCellHeight", "getTextWidth"];
 
     /**
      * Viewport plugin.
@@ -18751,6 +19672,12 @@
                 case "MOVE_POSITION":
                     this.refreshViewport(this.getters.getActiveSheetId());
                     break;
+            }
+        }
+        finalize() {
+            if (this.updateSnap) {
+                this.snapViewportToCell(this.getters.getActiveSheetId());
+                this.updateSnap = false;
             }
         }
         // ---------------------------------------------------------------------------
@@ -18907,11 +19834,12 @@
          * In order to keep the coherence of both viewports, it is also necessary to update the standard viewport
          * if the zones of both viewports don't match.
          */
-        adjustViewportsPosition(sheetId) {
+        adjustViewportsPosition(sheetId, position) {
             const sheet = this.getters.getSheet(sheetId);
             const { cols, rows } = sheet;
             const adjustedViewport = this.getSnappedViewport(sheetId);
-            const [col, row] = this.getters.getMainCell(sheetId, ...getNextVisibleCellCoords(sheet, ...this.getters.getSheetPosition(sheetId)));
+            position = position || this.getters.getSheetPosition(sheetId);
+            const [col, row] = this.getters.getMainCell(sheetId, ...getNextVisibleCellCoords(sheet, position[0], position[1]));
             while (cols[col].end > adjustedViewport.offsetX + this.clientWidth - HEADER_WIDTH &&
                 adjustedViewport.offsetX < cols[col].start) {
                 adjustedViewport.offsetX = cols[adjustedViewport.left].end;
@@ -18952,12 +19880,6 @@
             adjustedViewport.offsetY = rows[viewport.top].start;
             this.adjustViewportZone(sheetId, adjustedViewport);
             this.snappedViewports[sheetId] = adjustedViewport;
-        }
-        finalize() {
-            if (this.updateSnap) {
-                this.snapViewportToCell(this.getters.getActiveSheetId());
-                this.updateSnap = false;
-            }
         }
     }
     ViewportPlugin.getters = [
@@ -20525,7 +21447,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 41 /* WaitingSessionConfirmation */;
+                return 48 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -21004,7 +21926,7 @@
                 const command = { type, ...payload };
                 let status = command.interactive ? 4 /* Interactive */ : this.status;
                 if (this.config.isReadonly && !canExecuteInReadonly(command)) {
-                    return 44 /* Readonly */;
+                    return 51 /* Readonly */;
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -22028,6 +22950,7 @@
             if (start == end && start === 0) {
                 range.setStart(this.el, 0);
                 range.setEnd(this.el, 0);
+                selection.addRange(range);
             }
             else {
                 if (start < 0 || end > this.el.textContent.length) {
@@ -22040,9 +22963,9 @@
                 let startNode = this.findChildAtCharacterIndex(start);
                 let endNode = this.findChildAtCharacterIndex(end);
                 range.setStart(startNode.node, startNode.offset);
-                range.setEnd(endNode.node, endNode.offset);
+                selection.addRange(range);
+                selection.extend(endNode.node, endNode.offset);
             }
-            selection.addRange(range);
         }
         /**
          * finds the dom element that contains the character at `offset`
@@ -22080,21 +23003,23 @@
             }
         }
         /**
-         * insert text at the current selection point. If a selection of 1 or more elements is done,
-         * the selection is replaced by the text to be inserted
-         * */
-        insertText(value, color) {
-            if (!value)
+         * Sets (or Replaces all) the text inside the root element in the form of distinctive
+         * span for each element provided in `contents`.
+         *
+         * Each span will have its own fontcolor and specific class if provided in the HtmlContent object.
+         */
+        setText(contents) {
+            if (contents.length === 0) {
                 return;
-            if (document.activeElement === this.el) {
-                document.execCommand("foreColor", false, color);
-                document.execCommand("insertText", false, value);
             }
-            else {
+            for (const content of contents) {
                 const span = document.createElement("span");
-                span.innerText = value;
-                if (color) {
-                    span.style.color = color;
+                span.innerText = content.value;
+                if (content.color) {
+                    span.style.color = content.color;
+                }
+                if (content.class) {
+                    span.classList.add(content.class);
                 }
                 this.el.appendChild(span);
             }
@@ -22141,12 +23066,11 @@
         }
         getStartAndEndSelection() {
             const selection = document.getSelection();
-            const range = selection.getRangeAt(0);
             return {
-                startElement: range.startContainer,
-                startSelectionOffset: range.startOffset,
-                endElement: range.endContainer,
-                endSelectionOffset: range.endOffset,
+                startElement: selection.anchorNode || this.el,
+                startSelectionOffset: selection.anchorOffset,
+                endElement: selection.focusNode || this.el,
+                endSelectionOffset: selection.focusOffset,
             };
         }
     }
@@ -22302,9 +23226,10 @@
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
     const StringColor = "#f6cd61";
-    const SelectionIndicatorColor = "lightgrey";
+    const SelectionIndicatorColor = "darkgrey";
     const NumberColor = "#02c39a";
     const MatchingParenColor = "pink";
+    const SelectionIndicatorClass = "selector-flag";
     const tokenColor = {
         OPERATOR: OperatorColor,
         NUMBER: NumberColor,
@@ -22317,41 +23242,39 @@
     };
     const TEMPLATE$6 = xml$8 /* xml */ `
 <div class="o-composer-container">
-    <div class="o-composer"
-      t-att-style="props.inputStyle"
-      t-ref="o_composer"
-      tabindex="1"
-      contenteditable="true"
-      spellcheck="false"
+  <div class="o-composer"
+    t-att-style="props.inputStyle"
+    t-ref="o_composer"
+    tabindex="1"
+    contenteditable="true"
+    spellcheck="false"
 
-      t-on-keydown="onKeydown"
-      t-on-beforeinput="onBeforeinput"
-      t-on-mousedown="onMousedown"
-      t-on-input="onInput"
-      t-on-keyup="onKeyup"
+    t-on-keydown="onKeydown"
+    t-on-mousedown="onMousedown"
+    t-on-input="onInput"
+    t-on-keyup="onKeyup"
+    t-on-click.stop="onClick"
+  />
 
-      t-on-click.stop="onClick"
+  <div t-if="props.focus and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
+    class="o-composer-assistant" t-att-style="assistantStyle">
+    <TextValueProvider
+        t-if="autoCompleteState.showProvider"
+        t-ref="o_autocomplete_provider"
+        search="autoCompleteState.search"
+        provider="autoCompleteState.provider"
+        t-on-completed="onCompleted"
+        borderStyle="borderStyle"
     />
-
-    <div t-if="props.focus and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
-      class="o-composer-assistant" t-att-style="assistantStyle">
-      <TextValueProvider
-          t-if="autoCompleteState.showProvider"
-          t-ref="o_autocomplete_provider"
-          search="autoCompleteState.search"
-          provider="autoCompleteState.provider"
-          t-on-completed="onCompleted"
-          borderStyle="borderStyle"
-      />
-      <FunctionDescriptionProvider
-          t-if="functionDescriptionState.showDescription"
-          t-ref="o_function_description_provider"
-          functionName = "functionDescriptionState.functionName"
-          functionDescription = "functionDescriptionState.functionDescription"
-          argToFocus = "functionDescriptionState.argToFocus"
-          borderStyle="borderStyle"
-      />
-    </div>
+    <FunctionDescriptionProvider
+        t-if="functionDescriptionState.showDescription"
+        t-ref="o_function_description_provider"
+        functionName = "functionDescriptionState.functionName"
+        functionDescription = "functionDescriptionState.functionDescription"
+        argToFocus = "functionDescriptionState.argToFocus"
+        borderStyle="borderStyle"
+    />
+  </div>
 </div>
   `;
     const CSS$6 = css$8 /* scss */ `
@@ -22364,11 +23287,18 @@
     max-height: inherit;
     .o-composer {
       caret-color: black;
-      padding-left: 2px;
+      padding-left: 8px;
       padding-right: 2px;
       word-break: break-all;
       &:focus {
         outline: none;
+      }
+      span {
+        white-space: pre;
+        &.${SelectionIndicatorClass}:after {
+          content: "${SelectionIndicator}";
+          color: ${SelectionIndicatorColor};
+        }
       }
     }
     .o-composer-assistant {
@@ -22376,6 +23306,11 @@
       margin: 4px;
       pointer-events: none;
     }
+  }
+
+  /* Custom css to highlight topbar composer on focus */
+  .o-topbar-toolbar .o-composer-container:focus-within {
+    box-shadow: 0px 0px 4px 5px rgba(60, 64, 67, 0.35);
   }
 `;
     class Composer extends Component$6 {
@@ -22385,6 +23320,10 @@
             this.autoCompleteRef = useRef$4("o_autocomplete_provider");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
+            this.composerState = useState$8({
+                positionStart: 0,
+                positionEnd: 0,
+            });
             this.autoCompleteState = useState$8({
                 showProvider: false,
                 provider: "functions",
@@ -22437,14 +23376,14 @@
             DEBUG.composer = this;
             const el = this.composerRef.el;
             this.contentHelper.updateEl(el);
-            this.processContent(this.props.focus);
+            this.processContent();
         }
         willUnmount() {
             delete DEBUG.composer;
             this.trigger("composer-unmounted");
         }
-        async willUpdateProps(nextProps) {
-            this.processContent(nextProps.focus);
+        patched() {
+            this.processContent();
         }
         // ---------------------------------------------------------------------------
         // Handlers
@@ -22515,14 +23454,6 @@
             }
             ev.stopPropagation();
         }
-        onBeforeinput() {
-            // Remove the selector flag to not include the flag-text in the
-            // current content during the "onInput" event.
-            const newSelection = this.contentHelper.getCurrentSelection();
-            this.removeSelectorFlag();
-            this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            this.contentHelper.selectRange(newSelection.start, newSelection.end);
-        }
         /*
          * Triggered automatically by the content-editable between the keydown and key up
          * */
@@ -22530,6 +23461,7 @@
             if (!this.props.focus || !this.shouldProcessInputEvents) {
                 return;
             }
+            this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             const el = this.composerRef.el;
             this.dispatch("SET_CURRENT_CONTENT", {
                 content: el.childNodes.length ? el.textContent : "",
@@ -22548,6 +23480,7 @@
                 return; // already processed in keydown
             }
             ev.preventDefault();
+            ev.stopPropagation();
             this.autoCompleteState.showProvider = false;
             if (ev.ctrlKey && ev.key === " ") {
                 this.autoCompleteState.search = "";
@@ -22555,7 +23488,11 @@
                 this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
                 return;
             }
-            this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
+            const { start: oldStart, end: oldEnd } = this.getters.getComposerSelection();
+            const { start, end } = this.contentHelper.getCurrentSelection();
+            if (start !== oldStart || end !== oldEnd) {
+                this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
+            }
             this.processTokenAtCursor();
         }
         onMousedown(ev) {
@@ -22567,7 +23504,6 @@
         }
         onClick() {
             const newSelection = this.contentHelper.getCurrentSelection();
-            this.removeSelectorFlag();
             this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             if (!this.props.focus) {
                 this.trigger("composer-focused", {
@@ -22583,79 +23519,87 @@
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
-        processContent(isFocused) {
+        processContent() {
+            this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
             this.shouldProcessInputEvents = false;
-            let value = this.getters.getCurrentContent();
-            this.contentHelper.removeAll(); // remove the content of the composer, to be added just after
-            if (isFocused) {
+            if (this.props.focus) {
                 this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
             }
-            const { start, end } = this.getters.getComposerSelection();
-            if (value.startsWith("=")) {
-                const tokens = this.getters.getCurrentTokens();
-                const tokenAtCursor = this.getters.getTokenAtCursor();
-                for (let token of tokens) {
-                    switch (token.type) {
-                        case "OPERATOR":
-                        case "NUMBER":
-                        case "FUNCTION":
-                        case "COMMA":
-                        case "STRING":
-                            this.contentHelper.insertText(token.value, this.tokenColor(token.type));
-                            break;
-                        case "SYMBOL":
-                            let value = token.value;
-                            const [xc, sheet] = value.split("!").reverse();
-                            if (rangeReference.test(xc)) {
-                                this.contentHelper.insertText(value, this.rangeColor(xc, sheet));
-                            }
-                            else if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
-                                this.contentHelper.insertText(value, NumberColor);
-                            }
-                            else {
-                                this.contentHelper.insertText(value, "#000");
-                            }
-                            break;
-                        case "LEFT_PAREN":
-                        case "RIGHT_PAREN":
-                            // Compute the matching parenthesis
-                            if (tokenAtCursor &&
-                                ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
-                                tokenAtCursor.parenIndex &&
-                                tokenAtCursor.parenIndex === token.parenIndex) {
-                                this.contentHelper.insertText(token.value, this.parenthesisColor());
-                            }
-                            else {
-                                this.contentHelper.insertText(token.value, this.tokenColor(token.type));
-                            }
-                            break;
-                        default:
-                            this.contentHelper.insertText(token.value);
-                            break;
-                    }
+            const content = this.getContent();
+            if (content.length !== 0) {
+                this.contentHelper.setText(content);
+                const { start, end } = this.getters.getComposerSelection();
+                if (this.props.focus) {
+                    // Put the cursor back where it was before the rendering
+                    this.contentHelper.selectRange(start, end);
                 }
-                if (this.getters.getEditionMode() === "waitingForRangeSelection") {
-                    this.insertSelectorFlag();
-                }
-            }
-            else {
-                this.contentHelper.insertText(value);
-            }
-            if (isFocused) {
-                // Put the cursor back where it was
-                this.contentHelper.selectRange(start, end);
-            }
-            if (this.composerRef.el.clientWidth !== this.composerRef.el.scrollWidth) {
-                this.trigger("content-width-changed", {
-                    newWidth: this.composerRef.el.scrollWidth,
-                });
-            }
-            if (this.composerRef.el.clientHeight !== this.composerRef.el.scrollHeight) {
-                this.trigger("content-height-changed", {
-                    newHeight: this.composerRef.el.scrollHeight,
-                });
             }
             this.shouldProcessInputEvents = true;
+        }
+        getContent() {
+            let content;
+            let value = this.getters.getCurrentContent();
+            if (value === "") {
+                content = [];
+            }
+            else if (value.startsWith("=") && this.getters.getEditionMode() !== "inactive") {
+                content = this.getColoredTokens();
+            }
+            else {
+                content = [{ value, color: "#000" }];
+            }
+            return content;
+        }
+        getColoredTokens() {
+            const tokens = this.getters.getCurrentTokens();
+            const tokenAtCursor = this.getters.getTokenAtCursor();
+            const result = [];
+            const { end } = this.getters.getComposerSelection();
+            for (let token of tokens) {
+                switch (token.type) {
+                    case "OPERATOR":
+                    case "NUMBER":
+                    case "FUNCTION":
+                    case "COMMA":
+                    case "STRING":
+                        result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        break;
+                    case "SYMBOL":
+                        let value = token.value;
+                        const [xc, sheet] = value.split("!").reverse();
+                        if (rangeReference.test(xc)) {
+                            result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
+                        }
+                        else if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
+                            result.push({ value: token.value, color: NumberColor });
+                        }
+                        else {
+                            result.push({ value: token.value, color: "#000" });
+                        }
+                        break;
+                    case "LEFT_PAREN":
+                    case "RIGHT_PAREN":
+                        // Compute the matching parenthesis
+                        if (tokenAtCursor &&
+                            ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
+                            tokenAtCursor.parenIndex &&
+                            tokenAtCursor.parenIndex === token.parenIndex) {
+                            result.push({ value: token.value, color: MatchingParenColor  });
+                        }
+                        else {
+                            result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        }
+                        break;
+                    default:
+                        result.push({ value: token.value, color: "#000" });
+                        break;
+                }
+                // Note: mode === waitingForRangeSelection implies end === start
+                if (this.getters.getEditionMode() === "waitingForRangeSelection" && end === token.end) {
+                    result[result.length - 1].class = SelectionIndicatorClass;
+                }
+            }
+            return result;
         }
         rangeColor(xc, sheetName) {
             if (this.getters.getEditionMode() === "inactive") {
@@ -22667,12 +23611,6 @@
                 : this.getters.getEditionSheet();
             const highlight = highlights.find((highlight) => zoneToXc(highlight.zone) == xc.replace(/\$/g, "") && highlight.sheet === refSheet);
             return highlight && highlight.color ? highlight.color : undefined;
-        }
-        tokenColor(tokenType) {
-            return this.getters.getEditionMode() !== "inactive" ? tokenColor[tokenType] : undefined;
-        }
-        parenthesisColor() {
-            return this.getters.getEditionMode() !== "inactive" ? MatchingParenColor : undefined;
         }
         /**
          * Compute the state of the composer from the tokenAtCursor.
@@ -22739,23 +23677,6 @@
                 });
             }
             this.processTokenAtCursor();
-        }
-        /**
-         * Insert a selector flag to indicate the range selection has started
-         * */
-        insertSelectorFlag() {
-            const { start, end } = this.getters.getComposerSelection();
-            this.contentHelper.selectRange(start, end);
-            this.contentHelper.insertText(SelectionIndicator, SelectionIndicatorColor);
-            this.contentHelper.selectRange(start, end);
-        }
-        removeSelectorFlag() {
-            if (this.getters.getEditionMode() !== "waitingForRangeSelection") {
-                return;
-            }
-            const { start, end } = this.getters.getComposerSelection();
-            this.contentHelper.selectRange(start, end + 1);
-            this.contentHelper.removeSelection();
         }
     }
     Composer.template = TEMPLATE$6;
@@ -23395,15 +24316,37 @@
             }
             const initialIndex = this._getClientPosition(ev);
             const initialOffset = this._getEvOffset(ev);
+            let timeOutId = null;
+            let currentEv;
             const onMouseMoveSelect = (ev) => {
-                const offset = this._getClientPosition(ev) - initialIndex + initialOffset;
-                const index = this._getElementIndex(offset);
+                currentEv = ev;
+                if (timeOutId) {
+                    return;
+                }
+                const offset = this._getClientPosition(currentEv) - initialIndex + initialOffset;
+                const EdgeScrollInfo = this._getEdgeScroll(offset);
+                const { first, last } = this._getBoundaries();
+                let index;
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    index = EdgeScrollInfo.direction > 0 ? last : first - 1;
+                }
+                else {
+                    index = this._getElementIndex(offset);
+                }
                 if (index !== this.lastElement && index !== -1) {
                     this._increaseSelection(index);
                     this.lastElement = index;
                 }
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    this._adjustViewport(EdgeScrollInfo.direction);
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMoveSelect(currentEv);
+                    }, Math.round(EdgeScrollInfo.delay));
+                }
             };
             const onMouseUpSelect = () => {
+                clearTimeout(timeOutId);
                 this.lastElement = null;
                 this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
             };
@@ -23448,6 +24391,13 @@
         _getElementIndex(index) {
             return this.getters.getColIndex(index, this.getters.getActiveSnappedViewport().left);
         }
+        _getEdgeScroll(position) {
+            return this.getters.getEdgeScrollCol(position);
+        }
+        _getBoundaries() {
+            const { left, right } = this.getters.getActiveSnappedViewport();
+            return { first: left, last: right };
+        }
         _getElement(index) {
             return this.getters.getCol(this.getters.getActiveSheetId(), index);
         }
@@ -23476,6 +24426,12 @@
         }
         _increaseSelection(index) {
             this.dispatch("SELECT_COLUMN", { index, updateRange: true });
+        }
+        _adjustViewport(direction) {
+            const { left, offsetY } = this.getters.getActiveSnappedViewport();
+            const { cols } = this.getters.getActiveSheet();
+            const offsetX = cols[left + direction].start;
+            this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
             const cols = this.getters.getActiveCols();
@@ -23594,6 +24550,13 @@
         _getElementIndex(index) {
             return this.getters.getRowIndex(index, this.getters.getActiveSnappedViewport().top);
         }
+        _getEdgeScroll(position) {
+            return this.getters.getEdgeScrollRow(position);
+        }
+        _getBoundaries() {
+            const { top, bottom } = this.getters.getActiveSnappedViewport();
+            return { first: top, last: bottom };
+        }
         _getElement(index) {
             return this.getters.getRow(this.getters.getActiveSheetId(), index);
         }
@@ -23619,6 +24582,12 @@
         }
         _increaseSelection(index) {
             this.dispatch("SELECT_ROW", { index, updateRange: true });
+        }
+        _adjustViewport(direction) {
+            const { top, offsetX } = this.getters.getActiveSnappedViewport();
+            const { rows } = this.getters.getActiveSheet();
+            const offsetY = rows[top + direction].start;
+            this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
             const rows = this.getters.getActiveRows();
@@ -24165,10 +25134,17 @@
         // ---------------------------------------------------------------------------
         // Zone selection with mouse
         // ---------------------------------------------------------------------------
-        getCartesianCoordinates(ev) {
+        /**
+         * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
+         */
+        getCoordinates(ev) {
             const rect = this.el.getBoundingClientRect();
             const x = ev.pageX - rect.left;
             const y = ev.pageY - rect.top;
+            return [x, y];
+        }
+        getCartesianCoordinates(ev) {
+            const [x, y] = this.getCoordinates(ev);
             const { left, top } = this.getters.getActiveSnappedViewport();
             const colIndex = this.getters.getColIndex(x, left);
             const rowIndex = this.getters.getRowIndex(y, top);
@@ -24195,18 +25171,56 @@
             }
             let prevCol = col;
             let prevRow = row;
+            let isEdgeScrolling = false;
+            let timeOutId = null;
+            let timeoutDelay = 0;
+            let currentEv;
+            const sheet = this.getters.getActiveSheet();
             const onMouseMove = (ev) => {
-                const [col, row] = this.getCartesianCoordinates(ev);
-                if (col < 0 || row < 0) {
+                currentEv = ev;
+                if (timeOutId) {
                     return;
                 }
+                const [x, y] = this.getCoordinates(currentEv);
+                isEdgeScrolling = false;
+                timeoutDelay = 0;
+                const colEdgeScroll = this.getters.getEdgeScrollCol(x);
+                const rowEdgeScroll = this.getters.getEdgeScrollRow(y);
+                const { left, right, top, bottom } = this.getters.getActiveSnappedViewport();
+                let col, row;
+                if (colEdgeScroll.canEdgeScroll) {
+                    col = colEdgeScroll.direction > 0 ? right : left - 1;
+                }
+                else {
+                    col = this.getters.getColIndex(x, left);
+                    col = col === -1 ? prevCol : col;
+                }
+                if (rowEdgeScroll.canEdgeScroll) {
+                    row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
+                }
+                else {
+                    row = this.getters.getRowIndex(y, top);
+                    row = row === -1 ? prevRow : row;
+                }
+                isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
+                timeoutDelay = Math.min(colEdgeScroll.canEdgeScroll ? colEdgeScroll.delay : MAX_DELAY, rowEdgeScroll.canEdgeScroll ? rowEdgeScroll.delay : MAX_DELAY);
                 if (col !== prevCol || row !== prevRow) {
                     prevCol = col;
                     prevRow = row;
                     this.dispatch("ALTER_SELECTION", { cell: [col, row] });
                 }
+                if (isEdgeScrolling) {
+                    const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
+                    const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
+                    this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMove(currentEv);
+                    }, Math.round(timeoutDelay));
+                }
             };
             const onMouseUp = (ev) => {
+                clearTimeout(timeOutId);
                 this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
                 this.canvas.el.removeEventListener("mousemove", onMouseMove);
                 if (this.getters.isPaintingFormat()) {
@@ -24242,7 +25256,19 @@
             };
             const delta = deltaMap[ev.key];
             if (ev.shiftKey) {
+                const oldZone = this.getters.getSelectedZone();
                 this.dispatch("ALTER_SELECTION", { delta });
+                const newZone = this.getters.getSelectedZone();
+                const viewport = this.getters.getActiveSnappedViewport();
+                const sheet = this.getters.getActiveSheet();
+                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
+                const { left, right, top, bottom, offsetX, offsetY } = viewport;
+                const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
+                const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
+                debugger;
+                if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
+                    this.dispatch("SET_VIEWPORT_OFFSET", { offsetX: newOffsetX, offsetY: newOffsetY });
+                }
             }
             else {
                 this.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
@@ -24365,11 +25391,12 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid darkgray;
+      border-top: 1px solid darkgray;
       font-weight: bold;
       .o-sidePanelTitle {
         font-weight: bold;
         padding: 5px 10px;
-        font-size: 1.2rem;
+        color: dimgrey;
       }
       .o-sidePanelClose {
         font-size: 1.5rem;
@@ -24392,7 +25419,7 @@
     }
 
     .o-sidePanelButtons {
-      padding: 5px 16px;
+      padding: 16px;
       text-align: right;
       .o-sidePanelButton {
         border: 1px solid lightgrey;
@@ -24416,10 +25443,13 @@
       }
     }
     .o-input {
+      color: #666666;
       border-radius: 4px;
+      min-width: 0px;
       border: 1px solid lightgrey;
       padding: 4px 6px;
-      width: 96%;
+      height: 15.5px;
+      line-height: 1;
       .o-type-selector {
         background-position: right 5px top 11px;
       }
@@ -24430,14 +25460,14 @@
     }
 
     .o-section {
-      padding: 16px;
+      padding-top: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
       .o-section-title {
         font-weight: bold;
+        color: dimgrey;
         margin-bottom: 5px;
       }
-    }
-    label {
-      display: block;
     }
   }
 `;
@@ -24876,9 +25906,6 @@
             .o-text-icon {
               height: 100%;
               line-height: 30px;
-              > svg {
-                margin-bottom: -5px;
-              }
             }
 
             .o-text-options > div {
@@ -24993,6 +26020,12 @@
     width: ${ICON_EDGE_LENGTH}px;
     height: ${ICON_EDGE_LENGTH}px;
     opacity: 0.6;
+  }
+
+  .o-cf-icon {
+    width: 15px;
+    height: 15px;
+    vertical-align: sub;
   }
 `;
     const t = (s) => s;
@@ -25242,8 +26275,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-05-25T12:51:50.572Z';
-    exports.__info__.hash = '042718c';
+    exports.__info__.date = '2021-05-28T14:29:49.669Z';
+    exports.__info__.hash = 'd3f95bb';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

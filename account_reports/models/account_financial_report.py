@@ -1390,16 +1390,17 @@ class AccountFinancialReportLine(models.Model):
                     copied_formulas = copied_formulas.replace(k + suffix, v + suffix)
             copy_line_id.formulas = copied_formulas
 
-    def action_view_journal_entries(self, options, calling_financial_report):
+    def action_view_journal_entries(self, options, calling_financial_report_id):
         ''' Action when clicking on the "View Journal Items" in the debug info popup.
 
         :param options:                     The report options.
-        :param calling_financial_report:    The financial report called by the user to be rendered.
+        :param calling_financial_report_id: The financial report's id called by the user to be rendered.
         :return:                            An action showing the account.move.lines for the current financial report
                                             line.
         '''
         self.ensure_one()
         parent_financial_report = self._get_financial_report()
+        calling_financial_report = self.env['account.financial.html.report'].browse(calling_financial_report_id)
         new_options = self._get_options_financial_line(options, calling_financial_report, parent_financial_report)
         domain = self._get_domain(new_options, parent_financial_report) + parent_financial_report._get_options_domain(new_options)
         return {

@@ -114,10 +114,6 @@ class GenerateSimulationLink(models.TransientModel):
             template_applicant_id = self.env.ref('hr_contract_salary.mail_template_send_offer_applicant').id
         except ValueError:
             template_applicant_id = False
-        try:
-            compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
-        except ValueError:
-            compose_form_id = False
         partner_to = False
         if self.employee_id:
             partner_to = self.employee_id.address_home_id
@@ -166,8 +162,7 @@ class GenerateSimulationLink(models.TransientModel):
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             'res_model': 'mail.compose.message',
-            'views': [(compose_form_id, 'form')],
-            'view_id': compose_form_id,
+            'views': [[False, 'form']],
             'target': 'new',
             'context': ctx,
         }

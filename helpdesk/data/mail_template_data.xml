@@ -7,7 +7,7 @@
         <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
         <field name="email_to">${(object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') | safe}</field>
         <field name="partner_to">${object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else ''}</field>
-        <field name="body_html" type="xml">
+        <field name="body_html" type="html">
 <div>
     Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
     Your request
@@ -38,7 +38,7 @@
         <field name="email_from">${(object.user_id.email_formatted or user.email_formatted) | safe}</field>
         <field name="email_to">${(object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') | safe}</field>
         <field name="partner_to">${object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else ''}</field>
-        <field name="body_html" type="xml">
+        <field name="body_html" type="html">
 <div>
     Dear ${object.sudo().partner_id.name or 'Madam/Sir'},<br /><br />
     This automatic message informs you that we have closed your ticket (reference ${object.id}).
@@ -60,7 +60,7 @@
         <field name="email_from">${object.rating_get_rated_partner_id().email_formatted | safe}</field>
         <field name="email_to">${(object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') | safe}</field>
         <field name="partner_to">${object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else ''}</field>
-        <field name="body_html" type="xml">
+        <field name="body_html" type="html">
 <div>
     % set access_token = object.rating_get_access_token()
     % set partner = object.rating_get_partner_id()

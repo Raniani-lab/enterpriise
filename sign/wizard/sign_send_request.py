@@ -54,6 +54,7 @@ class SignSendRequest(models.TransientModel):
     subject = fields.Char(string="Subject", required=True)
     message = fields.Html("Message", help="Message to be sent to signers of the specified document")
     message_cc = fields.Html("CC Message", help="Message to be sent to followers of the signed document")
+    attachment_ids = fields.Many2many('ir.attachment', string='Attachments')
     filename = fields.Char("Filename", required=True)
 
     @api.onchange('template_id')
@@ -99,6 +100,7 @@ class SignSendRequest(models.TransientModel):
         subject = self.subject
         message = self.message
         message_cc = self.message_cc
+        attachment_ids = self.attachment_ids
         return self.env['sign.request'].initialize_new(
             template_id=template_id,
             signers=signers,
@@ -107,6 +109,7 @@ class SignSendRequest(models.TransientModel):
             subject=subject,
             message=message,
             message_cc=message_cc,
+            attachment_ids=attachment_ids,
             send=send,
             without_mail=without_mail
         )

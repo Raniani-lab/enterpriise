@@ -20,15 +20,15 @@
                     <field name="is_user_signer" invisible="1"/>
                     <field name="follower_ids" widget="many2many_tags" invisible="not context.get('sign_directly_without_mail',False)" string="CC Signed Document to" placeholder="Write email or search contact..." context="{'show_email': True}"/>
                     <field name="subject" placeholder="Signature Request"/>
+                    <field name="filename" placeholder="Name for the file"  colspan="2"/>
                 </group>
 
                 <div invisible="not context.get('sign_directly_without_mail',False)">
                     <div attrs="{'invisible' :[('follower_ids', '=', [])]}">
                         <field name="message_cc" placeholder="Optional Message..."/>
-                        <label for="filename"/>
-                        <div class="o_row">
-                            <field name="filename" placeholder="Name for the file" nolabel="1"/>
-                        </div>
+                        <group>
+                                <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
+                        </group>
                     </div>
                 </div>
 
@@ -39,16 +39,16 @@
                         </div>
                     </page>
                     <page name="cc_signed_document" string="CC Signed Document">
-                    <group>
+                        <group>
                             <field name="follower_ids" string="CC Signed Document to" widget="many2many_tags" placeholder="Write email or search contact..." context="{'show_email': True}"/>
-                    </group>
-                            <field name="message_cc" placeholder="Optional Message..."/>
-                            <label for="filename"/>
-                            <div class="o_row">
-                                <field name="filename"  placeholder="Name for the file" nolabel="1" />
-                            </div>
+                        </group>
+                        <field name="message_cc" placeholder="Optional Message..."/>
                     </page>
                 </notebook>
+
+                <group invisible="context.get('sign_directly_without_mail',False)">
+                    <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
+                </group>
 
                 <footer>
                     <button string="Sign Now" name="sign_directly" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" attrs="{'invisible': [('is_user_signer', '=', False)]}"/>

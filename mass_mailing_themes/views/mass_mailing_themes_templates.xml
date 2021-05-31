@@ -218,7 +218,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_two_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Gibson Les Paul Junior</h4>
@@ -231,7 +231,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_two_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Sony BDVE210</h4>
@@ -284,10 +284,10 @@
         </div>
         <div class="o_mail_block_three_cols" data-snippet="s_mail_block_three_cols">
             <div class="o_mail_snippet_general">
-                <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
+                <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table o_mail_no_colorpicker">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_three_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">1958 Royal</h4>
@@ -297,7 +297,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_three_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Classic D8 Skate</h4>
@@ -307,7 +307,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_airmail/s_default_image_block_three_cols_3.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Puccini Jar</h4>
@@ -522,7 +522,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_three_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h5 class="text-center">Tomato Soup</h5>
@@ -532,7 +532,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_three_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h5 class="text-center">Captain’s Salad</h5>
@@ -542,7 +542,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_three_cols_3.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h5 class="text-center">Mini Hamburgers</h5>
@@ -589,7 +589,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_two_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h5 class="text-center">Tagliatelle Boscaiola</h5>
@@ -599,7 +599,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_resto/s_default_image_block_two_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h5 class="text-center">BBQ Mix</h5>
@@ -764,7 +764,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div class="text-center">
                                     <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_three_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4><strong>John Doe</strong></h4>
@@ -772,7 +772,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div class="text-center">
                                     <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_three_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4><strong>Anna Smith</strong></h4>
@@ -780,7 +780,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div class="text-center">
                                     <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_three_cols_3.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4><strong>Clark Hans</strong></h4>
@@ -830,7 +830,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_two_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4><strong>John Doe</strong></h4>
@@ -841,7 +841,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:270px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_expo/s_default_image_block_two_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4><strong>John Doe</strong></h4>
@@ -965,7 +965,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" class="o_mail_table_styles o_mail_v_padding o_mail_col_table">
                     <tbody>
                         <tr>
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_block_three_cols_1.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Precision engineered</h4>
@@ -975,7 +975,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_col_container o_mail_no_colorpicker">
                                 <div>
                                     <img src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_block_three_cols_2.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Ecologically sustainable</h4>
@@ -985,7 +985,7 @@
                                 </div>
                             </td>
 
-                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv">
+                            <td style="vertical-align:top;width:180px;" class="o_mail_col_mv o_mail_no_colorpicker">
                                 <div class="o_mail_col_container">
                                     <img src="/mass_mailing_themes/static/src/img/theme_solar/s_default_image_block_three_cols_3.jpg" class="d-block mx-auto" alt="Photo"/>
                                     <h4 class="text-center">Greatly suits any need</h4>

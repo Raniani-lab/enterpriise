@@ -142,8 +142,6 @@ $o-mm-airmail-color-6: #a17e92;
             margin: 0 $tmp-gap;
 
             div:first-child {
-                border-top: 1px solid darken($o-mm-airmail-color-2, 10%);
-                border-bottom: 1px solid darken($o-mm-airmail-color-1, 5%);
                 background-color: $o-mm-airmail-color-2;
 
                 > * {

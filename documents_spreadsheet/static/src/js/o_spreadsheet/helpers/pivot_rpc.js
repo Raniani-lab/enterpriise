@@ -75,7 +75,7 @@ export default class PivotRPC {
                         if (params.toFetch.length) {
                             promises[model] = this.rpc({
                                 model,
-                                args: params.toFetch,
+                                args: [params.toFetch],
                                 method: "name_get"
                             }).then((result) => {
                                 for (const r of result) {

@@ -40,9 +40,9 @@ module("documents_spreadsheet > pivot_rpc", {}, () => {
         assert.expect(7);
 
         const rpc = async (params) => {
-            assert.step(`rpc-${params.model}-${params.args.join("-")}`);
+            assert.step(`rpc-${params.model}-${params.args[0].join("-")}`);
             const result = [];
-            for (const arg of params.args) {
+            for (const arg of params.args[0]) {
                 result.push([arg, arg]);
             }
             return result;

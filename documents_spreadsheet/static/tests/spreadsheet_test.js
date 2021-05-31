@@ -1120,7 +1120,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             `,
             mockRPC: function (route, args) {
                 if (args.method === "name_get" && args.model === "product") {
-                    assert.step(`name_get_product_${args.args.join("-")}`)
+                    assert.step(`name_get_product_${args.args[0].join("-")}`)
                 }
                 return this._super(...arguments);
             },

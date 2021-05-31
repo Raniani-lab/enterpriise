@@ -549,8 +549,8 @@
                                 <group name="online">
                                     <group>
                                         <field name="user_closable"/>
-                                        <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}"/>
-                                        <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice'])]}">
+                                        <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}"/>
+                                        <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}">
                                             <field name="auto_close_limit"/>
                                             <span class="ml-1">days</span>
                                         </div>

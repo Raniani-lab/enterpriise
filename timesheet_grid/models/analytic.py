@@ -430,16 +430,20 @@ class AnalyticLine(models.Model):
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        domain_search = []
 
         # We force the date rules to be always met
         for rule in domain:
             if len(rule) == 3 and rule[0] == 'date':
-                if rule[1] == '=':
-                    rule[1] = '<='
-                rule[2] = '1-1-2250' if rule[1] in ['<', '<='] else '1-1-1970'
+                name, operator, _rule = rule
+                if operator == '=':
+                    operator = '<='
+                domain_search.append((name, operator, '1-1-2250' if operator in ['<', '<='] else '1-1-1970'))
+            else:
+                domain_search.append(rule)
 
-        domain = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], domain])
-        return self.search(domain).project_id
+        domain_search = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], domain_search])
+        return self.search(domain_search).project_id
 
     def _group_expand_employee_ids(self, employees, domain, order):
         """ Group expand by employee_ids in grid view
@@ -480,19 +484,23 @@ class AnalyticLine(models.Model):
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
         last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
-        # We force the date rules to be always met
+        domain_search = []
+
         for rule in domain:
             if len(rule) == 3 and rule[0] == 'date':
-                if rule[1] == '=':
-                    rule[1] = '<='
-                rule[2] = '1-1-2250' if rule[1] in ['<', '<='] else '1-1-1970'
-        domain = expression.AND([
+                name, operator, _rule = rule
+                if operator == '=':
+                    operator = '<='
+                domain_search.append((name, operator, '1-1-2250' if operator in ['<', '<='] else '1-1-1970'))
+            else:
+                domain_search.append(rule)
+        domain_search = expression.AND([
             [('project_id', '!=', False),
              ('date', '>=', last_month),
              ('date', '<=', grid_anchor)
-            ], domain])
+            ], domain_search])
 
-        return self.search(domain).employee_id
+        return self.search(domain_search).employee_id
 
     # ----------------------------------------------------
     # Timer Methods

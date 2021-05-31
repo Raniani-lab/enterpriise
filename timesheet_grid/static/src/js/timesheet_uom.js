@@ -4,7 +4,7 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
     const gridComponentRegistry = require('web_grid.component_registry');
     const gridComponent = require('web_grid.components');
     const session = require('web.session');
-    const AbstractWebClient = require('web.AbstractWebClient');
+    const { registry } = require("@web/core/registry");
 
     const TimesheetUOMMultiCompanyMixin = (component) => class extends component {
         willStart() {
@@ -60,38 +60,37 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
         }
     }
 
+    const timesheetUomGridService = {
+        dependencies: ["timesheet_uom"],
+        start(env, { timesheet_uom }) {
+            const widgetName = timesheet_uom.widget || 'float_factor';
 
-AbstractWebClient.include({
+            /**
+             * Binding depending on Company Preference
+             *
+             * determine which component will be the timesheet one.
+             * Simply match the 'timesheet_uom' component key with the correct
+             * implementation (float_time, float_toggle, ...). The default
+             * value will be 'float_factor'.
+             **/
 
-    init: function () {
-        this._super(...arguments);
-        const widgetName = this.currentCompanyTimesheetUOM && this.currentCompanyTimesheetUOM.timesheet_widget || 'float_factor';
-
-        /**
-         * Binding depending on Company Preference
-         *
-         * determine which component will be the timesheet one.
-         * Simply match the 'timesheet_uom' component key with the correct
-         * implementation (float_time, float_toggle, ...). The default
-         * value will be 'float_factor'.
-         **/
-
-        let FieldTimesheetUom;
-        if (widgetName === "float_toggle") {
-            FieldTimesheetUom = FloatToggleComponentTimesheet;
-        } else if (widgetName === "float_factor") {
-            FieldTimesheetUom = FloatFactorComponentTimesheet;
-        } else {
-            FieldTimesheetUom = (gridComponentRegistry.get(widgetName) || FloatFactorComponentTimesheet);
-        }
-        gridComponentRegistry.add('timesheet_uom', FieldTimesheetUom);
-    },
-
-});
+            let FieldTimesheetUom;
+            if (widgetName === "float_toggle") {
+                FieldTimesheetUom = FloatToggleComponentTimesheet;
+            } else if (widgetName === "float_factor") {
+                FieldTimesheetUom = FloatFactorComponentTimesheet;
+            } else {
+                FieldTimesheetUom = (gridComponentRegistry.get(widgetName) || FloatFactorComponentTimesheet);
+            }
+            gridComponentRegistry.add('timesheet_uom', FieldTimesheetUom);
+        },
+    };
+    registry.category("services").add("timesheet_uom_grid", timesheetUomGridService);
 
 return {
     FloatFactorComponentTimesheet,
     FloatToggleComponentTimesheet,
+    timesheetUomGridService,
 };
 
 });

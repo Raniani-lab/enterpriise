@@ -8,6 +8,10 @@ const gridComponentRegistry = require('web_grid.component_registry');
 const GridTimesheetUOM = require('timesheet_grid.timesheet_uom');
 const TimerTimesheetUOM = require('thimesheet_grid.timesheet_uom_timer');
 const TimesheetUOM = require('hr_timesheet.timesheet_uom');
+const { registry } = require("@web/core/registry");
+const { timesheetUomGridService } = GridTimesheetUOM;
+const { timesheetUomTimerService } = TimerTimesheetUOM;
+
 
 QUnit.module('Timesheet UOM Widgets', function (hooks) {
     let env;
@@ -17,13 +21,24 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
     let sessionUIDBackup;
     hooks.before(function (assert) {
         env = new SetupTimesheetUOMWidgetsTestEnvironment();
+        const originalPatch = env.patchSessionAndStartServices.bind(env);
+        env.patchSessionAndStartServices = (...args) => {
+            const serviceRegistry = registry.category("services");
+            if (!serviceRegistry.contains("timesheet_uom_grid")) {
+                serviceRegistry.add("timesheet_uom_grid", timesheetUomGridService);
+            }
+            if (!serviceRegistry.contains("timesheet_uom_timer")) {
+                serviceRegistry.add("timesheet_uom_timer", timesheetUomTimerService);
+            }
+            return originalPatch(...args);
+        }
         // Backups session parts that this testing module will alter in order to restore it at the end.
         sessionUserCompaniesBackup = session.user_companies || false;
         sessionUserContextBackup = session.user_context || false;
         sessionUOMIdsBackup = session.uom_ids || false;
         sessionUIDBackup = session.uid || false;
     });
-    hooks.after(function (assert) {
+    hooks.after(async function (assert) {
         // Restores the session
         const sessionToApply = Object.assign(
             { },
@@ -39,10 +54,10 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
             sessionUIDBackup && {
                 uid: sessionUIDBackup
             } || { });
-        env.triggerAbstractWebClientInit(sessionToApply, true);
+        await env.patchSessionAndStartServices(sessionToApply, true);
     });
     QUnit.module('GridView timesheet_uom', function (hooks) {
-        QUnit.module('fieldRegistry', function (hooks) {
+        QUnit.module('fieldRegistry', async function (hooks) {
             QUnit.test('the timesheet_uom widget added to the WebGrid fieldRegistry is company related', async function (assert) {
                 assert.expect(2);
                 let sessionToApply = {
@@ -54,7 +69,7 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
                             },
                         }),
                 };
-                env.triggerAbstractWebClientInit(sessionToApply);
+                await env.patchSessionAndStartServices(sessionToApply);
                 assert.ok(gridComponentRegistry.get('timesheet_uom') == GridTimesheetUOM.FloatFactorComponentTimesheet, 'FloatFactorComponentTimesheet is rendered when company uom has float_factor as timesheet_widget');
 
                 sessionToApply = {
@@ -66,7 +81,7 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
                             },
                         }),
                 };
-                env.triggerAbstractWebClientInit(sessionToApply);
+                await env.patchSessionAndStartServices(sessionToApply);
                 assert.ok(gridComponentRegistry.get('timesheet_uom') == GridTimesheetUOM.FloatToggleComponentTimesheet, 'FloatToggleComponentTimesheet is rendered when company uom has float_toggle as timesheet_widget');
             });
         });
@@ -179,11 +194,11 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
                     },
                 });
             });
-            hooks.after(function (hooks) {
+            hooks.after(async function (hooks) {
                 // Restores the widgets and trigger reload in FieldRegistry.
                 TimerTimesheetUOM.FieldTimesheetTimeTimer = FieldTimesheetTimeTimerBackup;
                 TimesheetUOM.FieldTimesheetToggle = FieldTimesheetToggleBackup;
-                env.triggerAbstractWebClientInit({ }, true);
+                await env.patchSessionAndStartServices({ }, true);
             });
             QUnit.test('the timesheet_uom_timer widget added to the fieldRegistry is company related', async function (assert) {
                 assert.expect(2);

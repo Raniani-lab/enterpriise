@@ -41,7 +41,7 @@ Install this if you are using the Point of Sale app in Germany.
             'l10n_de_pos_cert/static/src/js/utils.js',
         ],
         'web.assets_qweb': [
-            'l10n_de_pos_res_cert/static/src/xml/**/*',
+            'l10n_de_pos_cert/static/src/xml/**/*',
         ],
     },
 }

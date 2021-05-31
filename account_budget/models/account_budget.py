@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from odoo.osv.expression import AND
 
 # ---------------------------------------------------------
 # Budgets
@@ -245,6 +246,16 @@ class CrossoveredBudgetLines(models.Model):
                 line.percentage = float((line.practical_amount or 0.0) / line.theoritical_amount)
             else:
                 line.percentage = 0.00
+
+    @api.onchange('date_from', 'date_to')
+    def _onchange_dates(self):
+        domain_list = []
+        if self.date_from:
+            domain_list.append(['|', ('date_from', '<=', self.date_from), ('date_from', '=', False)])
+        if self.date_to:
+            domain_list.append(['|', ('date_to', '>=', self.date_to), ('date_to', '=', False)])
+        if domain_list:
+            self.crossovered_budget_id = self.env['crossovered.budget'].search(AND(domain_list), limit=1)
 
     @api.constrains('general_budget_id', 'analytic_account_id')
     def _must_have_analytical_or_budgetary_or_both(self):

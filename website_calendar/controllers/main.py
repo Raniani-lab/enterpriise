@@ -129,7 +129,7 @@ class WebsiteCalendar(http.Controller):
             'employee_id': employee_id,
         })
 
-    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, method=["POST"])
+    @http.route(['/calendar/<model("calendar.appointment.type"):appointment_type>/submit'], type='http', auth="public", website=True, methods=["POST"])
     def calendar_appointment_submit(self, appointment_type, datetime_str, employee_id, name, phone, email, **kwargs):
         """
         Create the event for the appointment and redirect on the validation page with a summary of the appointment.

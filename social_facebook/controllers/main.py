@@ -118,7 +118,7 @@ class SocialFacebookController(http.Controller):
         return extended_token_request.json().get('access_token')
 
     def _get_profile_image(self, account_id):
-        profile_image_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v3.3/%s/picture?height=300' % account_id)
+        profile_image_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v10.0/%s/picture?height=300' % account_id)
         return base64.b64encode(requests.get(profile_image_url).content)
 
     def _get_existing_accounts(self, media_id, json_response):
@@ -180,7 +180,7 @@ class SocialFacebookController(http.Controller):
         """
         account = request.env['social.account'].browse(account_id)
 
-        endpoint_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v4.0/%s?fields=name,link' % facebook_user_id)
+        endpoint_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v10.0/%s?fields=name,link' % facebook_user_id)
 
         json_response = requests.get(endpoint_url, params={
             'access_token': account.facebook_access_token

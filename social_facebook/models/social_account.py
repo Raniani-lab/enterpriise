@@ -41,11 +41,11 @@ class SocialAccountFacebook(models.Model):
         super(SocialAccountFacebook, (self - facebook_accounts))._compute_statistics()
 
         for account in facebook_accounts:
-            insights_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/insights" % account.facebook_account_id)
+            insights_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/insights" % account.facebook_account_id)
             statistics_30d = account._compute_statistics_facebook(insights_endpoint_url)
             statistics_360d = account._compute_statistics_facebook_360d(insights_endpoint_url)
 
-            page_global_stats = requests.get(url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s" % account.facebook_account_id), params={
+            page_global_stats = requests.get(url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % account.facebook_account_id), params={
                 'fields': 'fan_count',
                 'access_token': account.facebook_access_token
             })
@@ -79,7 +79,7 @@ class SocialAccountFacebook(models.Model):
         return total_statistics
 
     def _compute_statistics_facebook(self, endpoint_url, date_preset='last_30d', since=None, until=None):
-        """ Check https://developers.facebook.com/docs/graph-api/reference/v3.3/insights for more information
+        """ Check https://developers.facebook.com/docs/graph-api/reference/v10.0/insights for more information
         about the endpoint used. """
         params = {
             'metric': 'page_post_engagements,page_fan_adds,page_fan_removes,page_content_activity',

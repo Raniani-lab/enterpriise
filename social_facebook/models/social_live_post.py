@@ -18,7 +18,7 @@ class SocialLivePostFacebook(models.Model):
         accounts = self.env['social.account'].search([('media_type', '=', 'facebook')])
 
         for account in accounts:
-            posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/%s" % (account.facebook_account_id, 'feed'))
+            posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (account.facebook_account_id, 'feed'))
             result = requests.get(posts_endpoint_url, {
                 'access_token': account.facebook_access_token,
                 'fields': 'id,shares,insights.metric(post_impressions),likes.limit(1).summary(true),comments.summary(true)'
@@ -58,7 +58,7 @@ class SocialLivePostFacebook(models.Model):
     def _post_facebook(self, facebook_target_id):
         self.ensure_one()
         account = self.account_id
-        post_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/feed" % facebook_target_id)
+        post_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/feed" % facebook_target_id)
 
         post = self.post_id
 
@@ -74,14 +74,14 @@ class SocialLivePostFacebook(models.Model):
                 # gifs are posted on the '/videos' endpoint, with a different base url
                 endpoint_url = url_join(
                     "https://graph-video.facebook.com",
-                    f'/v3.2/{facebook_target_id}/videos'
+                    f'/v10.0/{facebook_target_id}/videos'
                 )
                 params['description'] = params['message']
             else:
                 # a single regular image is posted on the '/photos' endpoint
                 endpoint_url = url_join(
                     self.env['social.media']._FACEBOOK_ENDPOINT,
-                    f'/v3.2/{facebook_target_id}/photos'
+                    f'/v10.0/{facebook_target_id}/photos'
                 )
                 params['caption'] = params['message']
 

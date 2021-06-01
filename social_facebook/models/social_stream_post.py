@@ -46,7 +46,7 @@ class SocialStreamPostFacebook(models.Model):
     def get_facebook_comments(self, next_records_token=False):
         self.ensure_one()
 
-        comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/comments" % (self.facebook_post_id))
+        comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/comments" % (self.facebook_post_id))
         params = {
             'fields': self.FACEBOOK_COMMENT_FIELDS,
             'access_token': self.stream_id.account_id.facebook_access_token,
@@ -110,7 +110,7 @@ class SocialStreamPostFacebook(models.Model):
 
     def delete_facebook_comment(self, comment_id):
         self.ensure_one()
-        comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s" % comment_id)
+        comments_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % comment_id)
         requests.delete(comments_endpoint_url, data={
             'access_token': self.stream_id.account_id.facebook_access_token,
         })
@@ -119,7 +119,7 @@ class SocialStreamPostFacebook(models.Model):
         self.ensure_one()
 
         return self._post_facebook_comment(
-            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s" % comment_id),
+            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s" % comment_id),
             message,
             existing_attachment_id=existing_attachment_id,
             attachment=attachment
@@ -129,7 +129,7 @@ class SocialStreamPostFacebook(models.Model):
         self.ensure_one()
 
         return self._post_facebook_comment(
-            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/comments" % (comment_id)),
+            url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/comments" % (comment_id)),
             message,
             existing_attachment_id=existing_attachment_id,
             attachment=attachment
@@ -165,7 +165,7 @@ class SocialStreamPostFacebook(models.Model):
 
     def _like_facebook_object(self, object_id, like):
         params = {'access_token': self.stream_id.account_id.facebook_access_token}
-        comments_like_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v3.3/%s/likes" % (object_id))
+        comments_like_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/likes" % (object_id))
         if like:
             requests.post(comments_like_endpoint_url, params)
         else:

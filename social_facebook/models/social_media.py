@@ -36,12 +36,20 @@ class SocialMediaFacebook(models.Model):
             return self._add_facebook_accounts_from_iap()
 
     def _add_facebook_accounts_from_configuration(self, facebook_app_id):
-        base_facebook_url = 'https://www.facebook.com/v3.3/dialog/oauth?%s'
+        base_facebook_url = 'https://www.facebook.com/v10.0/dialog/oauth?%s'
         params = {
             'client_id': facebook_app_id,
             'redirect_uri': url_join(self.get_base_url(), "social_facebook/callback"),
             'response_type': 'token',
-            'scope': 'manage_pages,publish_pages,read_insights'
+            'scope': ','.join([
+                'pages_manage_ads',
+                'pages_manage_metadata',
+                'pages_read_engagement',
+                'pages_read_user_content',
+                'pages_manage_engagement',
+                'pages_manage_posts',
+                'read_insights'
+            ])
         }
 
         return {

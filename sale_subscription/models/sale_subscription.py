@@ -988,7 +988,8 @@ class SaleSubscription(models.Model):
                                     _logger.error('Fail to create recurring invoice for subscription %s', subscription.code)
                                     if auto_commit:
                                         cr.rollback()
-                                    new_invoice.unlink()
+                                    # Check that the invoice still exists before unlinking. It might already have been deleted by `reconcile_pending_transaction`.
+                                    new_invoice.exists().unlink()
                             if tx is None or not tx.renewal_allowed:
                                 amount = subscription.recurring_total
                                 auto_close_limit = subscription.template_id.auto_close_limit or 15

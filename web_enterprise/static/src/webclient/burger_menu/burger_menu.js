@@ -15,8 +15,9 @@ export class BurgerMenu extends owl.Component {
         return env.isSmall;
     }
 
-    constructor() {
-        super(...arguments);
+    setup() {
+        super.setup();
+        this.company = useService("company");
         this.user = useService("user");
         this.menuRepo = useService("menu");
         this.hm = useService("home_menu");

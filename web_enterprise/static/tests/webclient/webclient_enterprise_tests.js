@@ -1,6 +1,11 @@
 /** @odoo-module **/
 
-import { click, legacyExtraNextTick, nextTick } from "@web/../tests/helpers/utils";
+import {
+    click,
+    legacyExtraNextTick,
+    nextTick,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import {
     doAction,
     getActionManagerTestConfig,
@@ -358,7 +363,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 webIcon: "bloop,bloop",
             },
         };
-        testConfig.debug = "1";
+        patchWithCleanup(odoo, { debug: "1" });
         const webClient = await createEnterpriseWebClient({ testConfig });
         assert.containsOnce(webClient, ".o_home_menu");
     });
@@ -382,7 +387,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                     return true;
                 }
             };
-            testConfig.debug = "1";
+            patchWithCleanup(odoo, { debug: "1" });
             const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
             await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
             assert.containsOnce(

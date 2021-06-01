@@ -21,7 +21,7 @@
         <div class="o_burger_menu_content flex-grow-1 flex-shrink-1 overflow-auto"
             t-att-class="{o_burger_menu_dark: !state.isUserMenuOpened and currentApp}">
             <div t-if="!currentApp or state.isUserMenuOpened" class="o_burger_menu_user">
-                <MobileSwitchCompanyMenu t-if="Object.values(user.allowed_companies).length > 1" />
+                <MobileSwitchCompanyMenu t-if="Object.values(company.availableCompanies).length > 1" />
                 <BurgerUserMenu/>
             </div>
 

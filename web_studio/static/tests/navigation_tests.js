@@ -7,6 +7,7 @@ import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { studioService } from "@web_studio/studio_service";
 import { StudioSystray } from "@web_studio/systray_item/systray_item";
+import { companyService } from "@web/webclient/company_service";
 import testUtils from "web.test_utils";
 
 // -----------------------------------------------------------------------------
@@ -41,6 +42,7 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("enterprise", fakeEnterpriseService);
         serviceRegistry.add("home_menu", homeMenuService);
         serviceRegistry.add("studio", studioService);
+        serviceRegistry.add("company", companyService);
 
         // tweak a bit the default config to better fit with studio needs:
         //  - add some menu items we can click on to test the navigation

@@ -17,18 +17,10 @@ export const MODES = {
 
 export class NotEditableActionError extends Error {}
 
-function studioContext(context, on = true) {
-    if (on) {
-        context.studio = 1;
-    } else {
-        delete context.studio;
-    }
-}
-
 export const studioService = {
     name: "studio",
     dependencies: ["action", "home_menu", "router", "user"],
-    async start(env) {
+    async start(env, { user }) {
         function _getCurrentAction() {
             const currentController = env.services.action.currentController;
             return currentController ? currentController.action : null;
@@ -75,9 +67,9 @@ export const studioService = {
 
         async function _loadParamsFromURL() {
             const currentHash = env.services.router.current.hash;
-            studioContext(env.services.user.context, false);
+            user.removeFromContext("studio");
             if (currentHash.action === "studio") {
-                studioContext(env.services.user.context, true);
+                user.updateContext({ studio: 1 });
                 state.studioMode = currentHash[URL_MODE_KEY];
                 state.editedViewType = currentHash[URL_VIEW_KEY] || null;
                 state.editorTab = currentHash[URL_TAB_KEY] || null;
@@ -136,7 +128,7 @@ export const studioService = {
                 options.stackPosition = "replaceCurrentAction";
             }
             state.studioMode = targetMode;
-            studioContext(env.services.user.context, true);
+            user.updateContext({ studio: 1 });
             // LPE: we don't manage errors during do action.....
             return env.services.action.doAction("studio", options);
         }
@@ -174,7 +166,7 @@ export const studioService = {
             } else {
                 actionId = "menu";
             }
-            studioContext(env.services.user.context, false);
+            user.removeFromContext("studio");
             await env.services.action.doAction(actionId, options);
             state.studioMode = null;
             state.x2mEditorPath = [];

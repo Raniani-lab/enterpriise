@@ -10,7 +10,7 @@ patch(HomeMenu.prototype, "web_studio.HomeMenuBackground", {
             return;
         }
         this.backgroundImageUrl = url("/web/image", {
-            id: this.env.services.user.current_company.id,
+            id: this.env.services.company.currentCompany.id,
             model: "res.company",
             field: "background_image",
         });

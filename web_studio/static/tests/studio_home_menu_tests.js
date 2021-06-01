@@ -4,10 +4,8 @@ import { StudioHomeMenu } from "@web_studio/client_action/studio_home_menu/studi
 import { MODES } from "@web_studio/studio_service";
 
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
-import {
-    makeFakeNotificationService,
-    makeFakeUserService,
-} from "@web/../tests/helpers/mock_services";
+import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
+import { userService } from "@web/core/user_service";
 import { hotkeyService } from "@web/webclient/hotkeys/hotkey_service";
 
 import { getFixture } from "@web/../tests/helpers/utils";
@@ -64,7 +62,6 @@ QUnit.module("Studio", (hooks) => {
 
         const fakeEnterpriseService = makeFakeEnterpriseService();
         const fakeNotificationService = makeFakeNotificationService();
-        const fakeUserService = makeFakeUserService();
         const fakeHomeMenuService = {
             start() {
                 return {
@@ -108,7 +105,7 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("http", fakeHTTPService);
         serviceRegistry.add("menu", fakeMenuService);
         serviceRegistry.add("notification", fakeNotificationService);
-        serviceRegistry.add("user", fakeUserService);
+        serviceRegistry.add("user", userService);
         serviceRegistry.add("studio", fakeStudioService);
         serviceRegistry.add("hotkey", hotkeyService);
         serviceRegistry.add("dialog", dialogService);

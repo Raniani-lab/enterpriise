@@ -6,12 +6,13 @@ import { download } from "@web/core/network/download";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class HomeMenuCustomizer extends owl.Component {
-    constructor() {
-        super(...arguments);
+    setup() {
+        super.setup();
         this.fileUploader = owl.hooks.useRef("fileUploader");
         this.rpc = useService("rpc");
         this.ui = useService("ui");
         this.notification = useService("notification");
+        this.company = useService("company");
         this.user = useService("user");
         this.actionManager = useService("action");
         this.menus = useService("menu");

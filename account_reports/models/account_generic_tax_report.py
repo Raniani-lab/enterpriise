@@ -242,25 +242,29 @@ class generic_tax_report(models.AbstractModel):
         # If the tax report is completely empty, we add two 0-valued lines, using the first in in and out
         # account id we find on the taxes.
         if len(move_vals_lines) == 0:
-            tax_out_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'sale'), ('company_id', '=', company.id)], limit=1)\
-                .invoice_repartition_line_ids.account_id
-            tax_in_account_id = self.env['account.tax'].search([('type_tax_use', '=', 'purchase'), ('company_id', '=', company.id)], limit=1)\
-                .invoice_repartition_line_ids.account_id
+            rep_ln_in = self.env['account.tax.repartition.line'].search([
+                ('account_id.deprecated', '=', False), ('repartition_type', '=', 'tax'),
+                ('company_id', '=', company.id), ('invoice_tax_id.type_tax_use', '=', 'purchase')
+            ], limit=1)
+            rep_ln_out = self.env['account.tax.repartition.line'].search([
+                ('account_id.deprecated', '=', False), ('repartition_type', '=', 'tax'),
+                ('company_id', '=', company.id), ('invoice_tax_id.type_tax_use', '=', 'sale')
+            ], limit=1)
 
-            if tax_out_account_id and tax_in_account_id:
+            if rep_ln_out.account_id and rep_ln_in.account_id:
                 move_vals_lines = [
                     Command.create({
                         'name': _('Tax Received Adjustment'),
                         'debit': 0,
                         'credit': 0.0,
-                        'account_id': tax_out_account_id.id
+                        'account_id': rep_ln_out.account_id.id
                     }),
 
                     Command.create({
                         'name': _('Tax Paid Adjustment'),
                         'debit': 0.0,
                         'credit': 0,
-                        'account_id': tax_in_account_id.id
+                        'account_id': rep_ln_in.account_id.id
                     })
                 ]
 

@@ -1,20 +1,19 @@
-odoo.define('project_enterprise.TaskGanttView', function (require) {
-'use strict';
-var GanttView = require('web_gantt.GanttView');
-var GanttController = require('web_gantt.GanttController');
-var GanttRenderer = require('web_gantt.GanttRenderer');
-var TaskGanttModel = require('project_enterprise.TaskGanttModel');
+/** @odoo-module **/
 
-var view_registry = require('web.view_registry');
+import viewRegistry from 'web.view_registry';
+import GanttView from 'web_gantt.GanttView';
+import GanttController from 'web_gantt.GanttController';
+import GanttRenderer from 'web_gantt.GanttRenderer';
+import { TaskGanttModel } from '@project_enterprise/js/task_gantt_model';
+import { ProjectControlPanel } from '@project/js/project_control_panel';
 
-var TaskGanttView = GanttView.extend({
-    config: _.extend({}, GanttView.prototype.config, {
+export const TaskGanttView = GanttView.extend({
+    config: Object.assign({}, GanttView.prototype.config, {
         Controller: GanttController,
         Renderer: GanttRenderer,
         Model: TaskGanttModel,
+        ControlPanel: ProjectControlPanel,
     }),
 });
 
-view_registry.add('task_gantt', TaskGanttView);
-return TaskGanttView;
-});
+viewRegistry.add('task_gantt', TaskGanttView);

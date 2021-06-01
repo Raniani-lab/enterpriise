@@ -43,7 +43,7 @@
         <field name="model">project.task</field>
         <field name="priority">12</field>
         <field name="arch" type="xml">
-            <map res_partner="partner_id" default_order="planned_date_begin" routing="true">
+            <map res_partner="partner_id" default_order="planned_date_begin" routing="true" js_class="project_map">
                 <field name="planned_date_begin" string="Date"/>
                 <field name="partner_phone" string="Phone"/>
             </map>
@@ -55,7 +55,7 @@
         <field name="model">project.task</field>
         <field name="priority">12</field>
         <field name="arch" type="xml">
-            <map res_partner="partner_id" default_order="planned_date_begin" routing="true" hide_title="true">
+            <map res_partner="partner_id" default_order="planned_date_begin" routing="true" hide_title="true" js_class="project_map">
                 <field name="planned_date_begin" string="Date"/>
                 <field name="partner_phone" string="Phone"/>
             </map>

@@ -30,6 +30,9 @@
             <optional>
                 <attribute name="limit"/>
             </optional>
+            <optional>
+                <attribute name="js_class"/>
+            </optional>
             <zeroOrMore>
                 <optional>
                     <ref name="field"/>

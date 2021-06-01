@@ -16,6 +16,9 @@ import { registry } from "@web/core/registry";
 
 import testUtils from "web.test_utils";
 
+import { DialogContainer } from "@web/core/dialog/dialog_container";
+import { dialogService } from "@web/core/dialog/dialog_service";
+
 const { Component, core, hooks, mount, tags } = owl;
 const { EventBus } = core;
 const serviceRegistry = registry.category("services");
@@ -32,11 +35,12 @@ async function createStudioHomeMenu(homeMenuProps) {
             this.homeMenuProps = homeMenuProps;
         }
     }
-    Parent.components = { StudioHomeMenu };
+    Parent.components = { StudioHomeMenu, DialogContainer };
     Parent.template = tags.xml`
         <div>
             <StudioHomeMenu t-ref="home-menu" t-props="homeMenuProps"/>
             <div class="o_dialog_container"/>
+            <DialogContainer/>
         </div>`;
     const env = await makeTestEnv();
     const target = getFixture();
@@ -107,6 +111,7 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("user", fakeUserService);
         serviceRegistry.add("studio", fakeStudioService);
         serviceRegistry.add("hotkey", hotkeyService);
+        serviceRegistry.add("dialog", dialogService);
 
         homeMenuProps = {
             apps: [

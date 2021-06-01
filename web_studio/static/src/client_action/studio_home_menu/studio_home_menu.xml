@@ -11,28 +11,19 @@
     </xpath>
     <!-- Edit icons -->
     <xpath expr="//div[@class='o_apps']/a[@class='o_app o_menuitem']" position="inside">
-        <a t-if="!app.isNewAppButton" class="o_web_studio_edit_icon" t-on-click.stop.prevent="_onEditIconClick(app)">
+        <a t-if="!app.isNewAppButton" class="o_web_studio_edit_icon" t-on-click.stop.prevent="onEditIconClick(app)">
             <i class="fa fa-pencil-square"/>
         </a>
-    </xpath>
-    <!-- Icon creator dialog -->
-    <xpath expr="//div[@class='o_home_menu']" position="inside">
-        <StudioHomeMenuDialog t-if="state.iconCreatorDialogShown"
-            _onSave="_onSave"
-            _closeDialog="_closeDialog"
-            _onIconChanged="_onIconChanged"
-            t-on-dialog-closed.stop="_closeDialog"
-            editedAppData="state.editedAppData"/>
     </xpath>
 </t>
 
 <t t-name="web_studio.StudioHomeMenuDialogBody" owl="1">
-    <IconCreator editable="true" t-props="props.editedAppData" t-on-icon-changed.stop="props._onIconChanged"/>
+    <IconCreator editable="true" t-props="props.editedAppData" t-on-icon-changed.stop="props.onIconChanged"/>
 </t>
 
 <t t-name="web_studio.StudioHomeMenuDialogFooter" owl="1">
-    <button class="btn btn-primary" t-on-click="props._onSave()">Confirm</button>
-    <button class="btn btn-secondary" t-on-click="props._closeDialog()">Cancel</button>
+    <button class="btn btn-primary" t-on-click="props.onSave()">Confirm</button>
+    <button class="btn btn-secondary" t-on-click="props.closeDialog()">Cancel</button>
 </t>
 
 </templates>

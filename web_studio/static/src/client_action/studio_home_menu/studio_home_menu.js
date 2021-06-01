@@ -47,12 +47,13 @@ export class StudioHomeMenu extends HomeMenu {
         this.user = useService("user");
         this.studio = useService("studio");
         this.notifications = useService("notification");
+        this.dialog = useService("dialog");
+        this.dialogId = null;
 
-        this.state.iconCreatorDialogShown = false;
         this.state.editedAppData = {};
-        this._closeDialog = this._closeDialog.bind(this);
-        this._onSave = this._onSave.bind(this);
-        this._onIconChanged = this._onIconChanged.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onIconChanged = this.onIconChanged.bind(this);
     }
 
     mounted() {
@@ -82,8 +83,8 @@ export class StudioHomeMenu extends HomeMenu {
     /**
      * @private
      */
-    _closeDialog() {
-        this.state.iconCreatorDialogShown = false;
+    closeDialog() {
+        this.dialog.close(this.dialogId);
         delete this.initialAppData;
     }
 
@@ -120,7 +121,7 @@ export class StudioHomeMenu extends HomeMenu {
     /**
      * @private
      */
-    async _onSave() {
+    async onSave() {
         const { appId, type } = this.initialAppData;
         let iconValue;
         if (this.state.editedAppData.type !== type) {
@@ -154,14 +155,14 @@ export class StudioHomeMenu extends HomeMenu {
             });
             await this.menus.reload();
         }
-        this._closeDialog();
+        this.closeDialog();
     }
 
     /**
      * @private
      * @param {Object} app
      */
-    _onEditIconClick(app) {
+    onEditIconClick(app) {
         if (!this.canEditIcons) {
             return;
         }
@@ -184,14 +185,24 @@ export class StudioHomeMenu extends HomeMenu {
             },
             this.state.editedAppData
         );
-        this.state.iconCreatorDialogShown = true;
+        const dialogProps = {
+            onSave: this.onSave,
+            closeDialog: this.closeDialog,
+            onIconChanged: this.onIconChanged,
+            editedAppData: this.state.editedAppData,
+        };
+        this.dialogId = this.dialog.open(StudioHomeMenuDialog, dialogProps, {
+            onCloseCallback: () => {
+                delete this.initialAppData;
+            },
+        });
     }
 
     /**
      * @private
      * @param {CustomEvent} ev
      */
-    _onIconChanged(ev) {
+    onIconChanged(ev) {
         for (const key in this.state.editedAppData) {
             delete this.state.editedAppData[key];
         }

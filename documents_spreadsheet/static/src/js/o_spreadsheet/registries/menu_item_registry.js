@@ -81,18 +81,17 @@ topbarMenuRegistry.add("pivots", {
 
 cellMenuRegistry.add("reinsert_pivot", {
     name: _t("Re-insert pivot"),
-    sequence: 122,
+    sequence: 160,
     children: REINSERT_PIVOT_CHILDREN,
     isVisible: (env) => env.getters.getPivots().length,
 }).add("insert_pivot_cell", {
     name: _t("Insert pivot cell"),
-    sequence: 123,
+    sequence: 170,
     children: INSERT_PIVOT_CELL_CHILDREN,
     isVisible: (env) => env.getters.getPivots().length,
-    separator: true,
 }).add("pivot_properties", {
     name: _t("Pivot properties"),
-    sequence: 121,
+    sequence: 150,
     action(env) {
         const [col, row] = env.getters.getPosition();
         const pivotId = env.getters.getPivotFromPosition(col, row);

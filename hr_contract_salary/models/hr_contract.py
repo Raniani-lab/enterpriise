@@ -217,10 +217,6 @@ class HrContract(models.Model):
                 template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
             except ValueError:
                 template_id = False
-            try:
-                compose_form_id = self.env.ref('mail.email_compose_message_wizard_form').id
-            except ValueError:
-                compose_form_id = False
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             path = '/salary_package/contract/' + str(self.id)
             ctx = {
@@ -236,8 +232,7 @@ class HrContract(models.Model):
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'mail.compose.message',
-                'views': [(compose_form_id, 'form')],
-                'view_id': compose_form_id,
+                'views': [[False, 'form']],
                 'target': 'new',
                 'context': ctx,
             }

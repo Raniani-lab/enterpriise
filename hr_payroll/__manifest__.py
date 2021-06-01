@@ -28,6 +28,8 @@
         'data/hr_payroll_sequence.xml',
         'views/hr_payroll_report.xml',
         'data/hr_payroll_data.xml',
+        'data/mail_data.xml',
+        'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
         'views/res_config_settings_views.xml',
         'views/report_contributionregister_templates.xml',

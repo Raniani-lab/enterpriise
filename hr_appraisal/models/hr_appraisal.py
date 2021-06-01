@@ -148,16 +148,16 @@ class HrAppraisal(models.Model):
                 **{manager: managers_mail_template for manager in appraisal.manager_ids}
             }
             for employee, mail_template in mapped_data.items():
-                if not employee.work_email or not self.env.user.email:
+                if not employee.work_email or not self.env.user.email or not mail_template:
                     continue
                 ctx = {
                     'employee_to_name': employee.name,
                     'recipient_users': employee.user_id,
                     'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
                 }
-                RenderMixin = self.env['mail.render.mixin'].with_context(**ctx)
-                subject = RenderMixin._render_template(mail_template.subject, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
-                body = RenderMixin._render_template(mail_template.body_html, 'hr.appraisal', appraisal.ids, post_process=True)[appraisal.id]
+                mail_template = mail_template.with_context(**ctx)
+                subject = mail_template._render_field('subject', appraisal.ids, post_process=False)[appraisal.id]
+                body = mail_template._render_field('body_html', appraisal.ids, post_process=True)[appraisal.id]
                 # post the message
                 mail_values = {
                     'email_from': self.env.user.email_formatted,

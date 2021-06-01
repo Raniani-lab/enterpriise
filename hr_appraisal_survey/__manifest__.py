@@ -3,7 +3,7 @@
 
 {
     'name': 'Appraisal - Survey',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Human Resources/Appraisals',
     'sequence': 31,
     'summary': '360 Feedback',
@@ -21,7 +21,7 @@ This module adds an integration with Survey to ask feedbacks to any employee, ba
         'security/ir.model.access.csv',
         'security/hr_appraisal_survey_security.xml',
         'data/hr_appraisal_survey_data.xml',
-        'data/mail_data.xml',
+        'data/mail_template_data.xml',
     ],
     "demo": [
         'data/hr_appraisal_survey_demo.xml',

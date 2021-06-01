@@ -37,13 +37,9 @@
                         % if object.deadline:
                             Please answer the survey before ${format_date(object.deadline)}.<br/><br/>
                         % endif
-                        <br/><br/>
-                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
                     </p>
                 </div>
             </field>
-            <field name="report_name">${(object.name or '').replace('/','_')}</field>
-            <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
         </record>
     </data>

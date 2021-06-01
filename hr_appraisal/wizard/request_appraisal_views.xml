@@ -8,6 +8,7 @@
                 <form string="Compose Email">
                     <group col="1">
                         <group col="2">
+                            <field name="render_model" invisible="1"/>
                             <field name="recipient_ids"
                                 widget="many2many_tags"
                                 placeholder="Add existing contacts..."

@@ -26,7 +26,7 @@
         'data/l10n_latam.document.type.csv',
         'template/dte_template.xml',
         'template/dd_template.xml',
-        'template/email_template.xml',
+        'data/mail_template_data.xml',
         'views/dte_caf_view.xml',
         'views/res_partner_view.xml',
         'views/stock_picking_views.xml',

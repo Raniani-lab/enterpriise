@@ -17,6 +17,8 @@ from odoo.osv import expression
 class AnalyticLine(models.Model):
     _name = 'account.analytic.line'
     _inherit = ['account.analytic.line', 'timer.mixin']
+    # As this model has his own data merge, avoid to enable the generic data_merge on that model.
+    _disable_data_merge = True
 
     employee_id = fields.Many2one(group_expand="_group_expand_employee_ids")
 

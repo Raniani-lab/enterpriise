@@ -139,8 +139,9 @@ odoo.define('data_merge.ListView', function (require) {
                     }
 
                     self.do_action(res);
-                }
-                else {
+                } else if (res && res.back_to_model) {
+                    window.history.back();
+                } else {
                     if(action === 'merge_records') {
                         const records_merged = res && 'records_merged' in res ? res.records_merged : 'The selected';
                         self._showMergeNotification(records_merged);

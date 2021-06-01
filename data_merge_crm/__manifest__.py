@@ -11,6 +11,7 @@
     'depends': ['data_merge', 'crm'],
     'data': [
         'data/data_merge_data.xml',
+        'data/ir_model_data.xml',
     ],
     'auto_install': True,
 }

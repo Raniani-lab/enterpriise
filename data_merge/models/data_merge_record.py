@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields, tools
-from odoo.exceptions import ValidationError
+from odoo import models, api, fields, _
+from odoo.exceptions import ValidationError, UserError
 from odoo.models import MAGIC_COLUMNS
 from odoo.osv.expression import OR
+from odoo.tools import get_lang
 from odoo.tools.misc import format_datetime, format_date
 
 from datetime import datetime, date
@@ -417,3 +418,83 @@ class DataMergeRecord(models.Model):
                 'edit': False
             }
         }
+
+    def action_deduplicates(self, records):
+        """ This action is called when hitting the contextual merge action
+        and redirects the user to the 'Deduplication' view of the data_merge
+        module, using the selected contextual data.
+        In order to be able to merge the selected records via the existing
+        deduplication flow, all the necessary data_merge.record,
+        data_merge.group and data_merge.model are created (or reused if
+        already existing).
+
+        :param records: contextual active (or selected) records.
+        :return: ir.actions.act_window that redirects to the deduplicate view.
+        """
+        MergeRecord = self.env['data_merge.record']
+        MergeModel = self.env['data_merge.model']
+        MergeGroup = self.env['data_merge.group']
+
+        active_ids = records.ids
+        active_model = records._name
+
+        if len(active_ids) < 2:
+            translated_desc = records.with_context(lang=get_lang(self.env).code)._description
+            raise UserError(_("You must select at least two %s in order to merge them.") % translated_desc)
+        if active_model not in self.env:
+            raise ValidationError(_('The target model does not exists.'))
+
+        # prepare action to return
+        view = self.env.ref('data_merge.data_merge_record_view_search_merge_action')
+        action = {
+            'name': _('Deduplicate'),
+            'view_mode': 'tree',
+            'res_model': 'data_merge.record',
+            'type': 'ir.actions.act_window',
+            'search_view_id': [view.id, 'search'],
+            'domain': [('res_id', 'in', active_ids), ('res_model_name', '=', active_model)],
+            'context': {'group_by': ['group_id']},
+        }
+
+        # ensure merge action specific record is created in data_merge.model
+        merge_model = MergeModel.with_context(active_test=False).search([
+            ('res_model_name', '=', active_model),
+            ('is_contextual_merge_action', '=', True)
+        ])
+        if not merge_model:
+            merge_model = MergeModel.create({
+                'name': _("Merge Action - %s", active_model),
+                'res_model_id': self.env['ir.model']._get(active_model).id,
+                'active': False,
+                'is_contextual_merge_action': True,
+            })
+
+        # creates a new group to put every selected records inside it.
+        merge_group = MergeGroup.create({'model_id': merge_model.id})
+
+        # get records from data_merge.records model related to active records
+        results = MergeRecord.search_read([
+            ('res_id', 'in', active_ids),
+            ('res_model_name', '=', active_model)
+        ], fields=['res_id'])
+        existing_records = {result['res_id']: result['id'] for result in results}
+
+        records_to_create = []
+        records_to_update = []
+        for record in records:
+            if record.id not in existing_records.keys():
+                records_to_create.append({
+                    'res_id': record.id,
+                    'model_id': merge_model.id,
+                    'group_id': merge_group.id
+                })
+            else:
+                records_to_update.append(existing_records[record.id])
+
+        MergeRecord.browse(records_to_update).write({
+            'group_id': merge_group.id,
+            'is_master': False
+        })
+        MergeRecord.create(records_to_create)
+
+        return action

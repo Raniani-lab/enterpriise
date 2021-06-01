@@ -111,7 +111,7 @@
             <field name="name">Deduplication Rules</field>
             <field name="res_model">data_merge.model</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">['|', ('active', '=', False), ('active', '=', True)]</field>
+            <field name="domain">[('is_contextual_merge_action', '=', False), '|', ('active', '=', False), ('active', '=', True)]</field>
         </record>
     </data>
 </odoo>

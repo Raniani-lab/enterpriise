@@ -162,9 +162,16 @@ class DataMergeGroup(models.Model):
         if res.get('post_merge'):
             self._post_merge(master_record, to_merge)
 
+        is_merge_action = master_record.model_id.is_contextual_merge_action
         (master_record + to_merge).unlink()
 
-        return {'records_merged': res['records_merged'] if res.get('records_merged') else to_merge_count}
+        return {
+            'records_merged': res['records_merged'] if res.get('records_merged') else to_merge_count,
+            # Used to get back to the functional model if deduplicate was
+            # called from contextual action menu - instead of staying on
+            # the deduplicate view.
+            'back_to_model': is_merge_action
+        }
 
     def _log_merge(self, master_record, merged_records, chatter_data):
         """
@@ -187,8 +194,8 @@ class DataMergeGroup(models.Model):
                 'archived': rec._original_records().exists(),
             })
             if self.model_id.removal_mode == 'archive':
-                rec._original_records().message_post_with_view('data_merge.data_merge_merged', values=values)
-            master_record._original_records().message_post_with_view('data_merge.data_merge_main', values=master_values)
+                rec._original_records()._message_log_with_view('data_merge.data_merge_merged', values=values)
+            master_record._original_records()._message_log_with_view('data_merge.data_merge_main', values=master_values)
 
 
     ## Generic Merge

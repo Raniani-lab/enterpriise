@@ -281,7 +281,7 @@ class Planning(models.Model):
         return (self.end_datetime - self.start_datetime).total_seconds() / 3600.0
 
     def _get_domain_template_slots(self):
-        domain = ['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
+        domain = []
         if self.role_id:
             domain += ['|', ('role_id', '=', self.role_id.id), ('role_id', '=', False)]
         elif self.employee_id and self.employee_id.sudo().planning_role_ids:
@@ -338,11 +338,11 @@ class Planning(models.Model):
 
     @api.depends('recurrency_id.repeat_interval')
     def _compute_repeat_interval(self):
-        for slot in self:
+        recurrency_slots = self.filtered('recurrency_id')
+        for slot in recurrency_slots:
             if slot.recurrency_id:
                 slot.repeat_interval = slot.recurrency_id.repeat_interval
-            else:
-                slot.repeat_interval = False
+        (self - recurrency_slots).update(self.default_get(['repeat_interval']))
 
     @api.depends('recurrency_id.repeat_until')
     def _compute_repeat_until(self):
@@ -354,11 +354,11 @@ class Planning(models.Model):
 
     @api.depends('recurrency_id.repeat_type')
     def _compute_repeat_type(self):
-        for slot in self:
+        recurrency_slots = self.filtered('recurrency_id')
+        for slot in recurrency_slots:
             if slot.recurrency_id:
                 slot.repeat_type = slot.recurrency_id.repeat_type
-            else:
-                slot.repeat_type = False
+        (self - recurrency_slots).update(self.default_get(['repeat_type']))
 
     def _inverse_repeat(self):
         for slot in self:
@@ -448,8 +448,11 @@ class Planning(models.Model):
     def _company_working_hours(self, start, end):
         company = self.company_id or self.env.company
         work_interval = company.resource_calendar_id._work_intervals_batch(start, end)[False]
-        intervals = [(start, stop) for start, stop, attendance in work_interval]
-        start_datetime, end_datetime = (intervals[0][0], intervals[-1][-1]) if intervals else (start, end)
+        intervals = [(date_start, date_stop) for date_start, date_stop, attendance in work_interval]
+        start_datetime, end_datetime = (start, end)
+        if intervals:  # Then we want the first working day and keep the end hours of this day
+            start_datetime = intervals[0][0]
+            end_datetime = [stop for start, stop in intervals if stop.date() == start_datetime.date()][-1]
 
         return (start_datetime, end_datetime)
 
@@ -732,24 +735,55 @@ class Planning(models.Model):
                 values['is_published'] = False
                 new_slot_values.append(values)
         slots_to_copy.write({'was_copied': True})
-        return self.create(new_slot_values)
+        if new_slot_values:
+            self.create(new_slot_values)
+            return True
+        return False
 
     # ----------------------------------------------------
     # Sending Shifts
     # ----------------------------------------------------
 
-    def action_send(self):
+    def get_employees_without_work_email(self):
+        """ Check if the employees to send the slot have a work email set.
+
+            This method is used in a rpc call.
+
+            :returns: a dictionnary containing the all needed information to continue the process.
+                Returns None, if no employee or all employees have an email set.
+        """
+        self.ensure_one()
+        if not self.employee_id.check_access_rights('write', raise_exception=False):
+            return None
+        employees = self.employee_id or self._get_employees_to_send_slot()
+        employee_ids_without_work_email = employees.filtered(lambda employee: not employee.work_email).ids
+        if not employee_ids_without_work_email:
+            return None
+        context = dict(self._context)
+        context['force_email'] = True
+        return {
+            'relation': 'hr.employee',
+            'res_ids': employee_ids_without_work_email,
+            'context': context,
+        }
+
+    def _get_employees_to_send_slot(self):
         self.ensure_one()
         if not self.employee_id or not self.employee_id.work_email:
-            self.is_published = True
             domain = [('company_id', '=', self.company_id.id), ('work_email', '!=', False)]
             if self.role_id:
                 domain = expression.AND([
                     domain,
                     ['|', ('planning_role_ids', '=', False), ('planning_role_ids', 'in', self.role_id.id)]])
-            employee_ids = self.env['hr.employee'].sudo().search(domain)
-            return self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
-        self._send_slot(self.employee_id, self.start_datetime, self.end_datetime)
+            return self.env['hr.employee'].sudo().search(domain)
+        return self.employee_id
+
+    def action_send(self):
+        self.ensure_one()
+        if not self.employee_id or not self.employee_id.work_email:
+            self.is_published = True
+        employee_ids = self._get_employees_to_send_slot()
+        self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
         return True
 
     def action_publish(self):
@@ -981,6 +1015,7 @@ class PlanningRole(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
+    active = fields.Boolean('Active', default=True)
     name = fields.Char('Name', required=True)
     color = fields.Integer("Color", default=_get_default_color)
     employee_ids = fields.Many2many('hr.employee', string='Employees')

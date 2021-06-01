@@ -47,12 +47,7 @@
                     <field name="recurrency_id" invisible='1'/>
                     <group>
                         <group>
-                            <label for="employee_id" />
-                            <div class="o_row">
-                                <span attrs="{'invisible': ['|', ('employee_id', '=', False), ('work_email', '!=', False)]}" class="fa fa-exclamation-triangle text-danger" role="alert"
-                                    title="There is no work email address configured for this employee. You will not be able to send the planning to them."> </span>
-                                <field name="employee_id"/>
-                            </div>
+                            <field name="employee_id"/>
                             <field name="role_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
@@ -67,7 +62,7 @@
                             <field name="allocated_hours" widget="float_time"/>
                         </group>
                     </group>
-                    <group>
+                    <group groups="planning.group_planning_manager">
                         <div colspan="2" class="o_checkbox_optional_field" groups="planning.group_planning_manager">
                             <label for="repeat"/>
                             <field name="repeat"/>
@@ -79,10 +74,11 @@
                                 <field name="repeat_until" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}" class="col-auto col-lg-2 flex-shrink-1" nolabel="1"/>
                             </div>
                         </div>
-                    </group>
-                    <group>
                         <field name="allow_template_creation" invisible="1"/>
-                        <field name="template_creation" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager"/>
+                        <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager">
+                            <label for="template_creation"/>
+                            <field name="template_creation"/>
+                        </div>
                     </group>
                     <group>
                         <field name="name" string="" placeholder="Additional message" nolabel="1"/>
@@ -150,7 +146,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='shift_templates']" position="replace">
-                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}">
+                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}" class="oe_edit_only">
                     <label for="template_id" class="oe_edit_only"/>
                     <div class="o_row">
                         <field name="template_id" nolabel="1" class="text-break flex-wrap"
@@ -192,9 +188,9 @@
                 <field name="employee_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
                 <field name="job_title" groups="planning.group_planning_user"/>
-                <filter name="open_shifts" string="Open Shifts" domain="[('employee_id', '=', False)]" groups="planning.group_planning_user"/>
-                <filter name="open_shifts_my_role" string="Open Shifts for my Roles" domain="[('employee_id', '=', False), ('role_id.employee_ids.user_id', 'in', [uid])]" groups="planning.group_planning_user"/>
-                <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" groups="planning.group_planning_user"/>
+                <filter name="open_shifts" string="Open Shifts" domain="[('employee_id', '=', False)]" />
+                <filter name="open_shifts_my_role" string="Open Shifts for my Roles" domain="[('employee_id', '=', False), ('role_id.employee_ids.user_id', 'in', [uid])]" />
+                <filter name="my_shifts" string="My Shifts" domain="[('user_id', '=', uid)]" />
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="published_shifts" string="Published" domain="[('is_published', '=', True)]" groups="planning.group_planning_manager"/>
@@ -339,7 +335,9 @@
         <field name="arch" type="xml">
             <form string="Planning Role">
                 <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <group>
+                        <field name="active" invisible="1" />
                         <field name="name"/>
                         <field name="color" widget="color_picker"/>
                         <field name="employee_ids" widget="many2many_tags"/>
@@ -350,7 +348,60 @@
         </field>
     </record>
 
+    <record id="planning_role_view_kanban" model="ir.ui.view">
+        <field name="name">planning.role.view.kanban</field>
+        <field name="model">planning.role</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard" sample="1">
+                <field name="name"/>
+                <field name="color"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <field name="name" />
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section o_dropdown_kanban">
+                                    <a role="button" class="o_kanban_manage_toggle_button" href="#" title="Dropdown menu">
+                                        <i class="fa fa-ellipsis-v" aria-label="Manage" title="Manage"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <div class="o_kanban_card_manage_section" t-if="widget.editable or widget.deletable">
+                                    <div role="menuitem">
+                                        <a t-if="widget.editable" role="menuitem" type="edit">Edit</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a t-if="widget.deletable" role="menuitem" type="delete">Delete</a>
+                                    </div>
+                                </div>
+                                <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                </div>
+                            </div>
+                            <field name="employee_ids" widget="many2many_tags" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
+    <record id="planning_role_view_search" model="ir.ui.view">
+        <field name="name">planning.role.view.search</field>
+        <field name="model">planning.role</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
 
     <!--
         Actions
@@ -367,21 +418,8 @@
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found
+                No shifts found. Let's create one!
             </p><p>
-                Let's start your planning by adding a new shift.
-            </p>
-        </field>
-    </record>
-
-    <record id="planning_action_my_gantt" model="ir.actions.act_window">
-        <field name="name">My Planning</field>
-        <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt,calendar,tree,form,kanban</field>
-        <field name="context">{'search_default_my_shifts': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No shifts found</p><p>
                 Let's start your planning by adding a new shift.
             </p>
         </field>
@@ -408,7 +446,9 @@
         <field name="context">{'search_default_group_by_employee': 1, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found</p><p>
+                No shifts found. Let's create one!
+            </p>
+            <p>
                 Let's start your planning by adding a new shift.
             </p>
         </field>
@@ -428,7 +468,9 @@
         <field name="context">{'search_default_group_by_role': 1, 'search_default_group_by_employee': 2, 'planning_groupby_role': True, 'planning_expand_employee': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found</p><p>
+                No shifts found. Let's create one!
+            </p>
+            <p>
                 Let's start your planning by adding a new shift.
             </p>
         </field>
@@ -452,10 +494,12 @@
     <record id="planning_action_roles" model="ir.actions.act_window">
         <field name="name">Roles</field>
         <field name="res_model">planning.role</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No roles found</p><p>
+                No roles found. Let's create one!
+            </p>
+            <p>
                 Define the different roles filled by your employees.
             </p>
         </field>
@@ -464,11 +508,13 @@
     <record id="planning_action_shift_template" model="ir.actions.act_window">
         <field name="name">Shift Templates</field>
         <field name="res_model">planning.slot.template</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="planning_slot_template_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shift templates found</p><p>
+                No shift templates found. Let's create one!
+            </p>
+            <p>
                 Encode your shifts in one click by using templates.
             </p>
         </field>

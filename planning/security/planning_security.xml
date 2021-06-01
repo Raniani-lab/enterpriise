@@ -20,9 +20,14 @@
     </record>
 
     <record id="planning_rule_internal_user_read" model="ir.rule">
-        <field name="name">Planning: internal user can read their own shifts only</field>
+        <field name="name">Planning: internal user can read their own shifts only and open shifts</field>
         <field name="model_id" ref="planning.model_planning_slot"/>
-        <field name="domain_force">[('user_id', '=', user.id), ('is_published', '=', True)]</field>
+        <field name="domain_force">[
+            '|',
+                ('user_id', '=', user.id),
+                ('employee_id', '=', False),
+            ('is_published', '=', True),
+        ]</field>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>

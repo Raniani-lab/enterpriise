@@ -11,11 +11,14 @@ from odoo.addons.resource.models.resource import float_to_time
 class PlanningTemplate(models.Model):
     _name = 'planning.slot.template'
     _description = "Shift Template"
+    _order = "sequence"
 
+    active = fields.Boolean('Active', default=True)
+    name = fields.Char('Hours', compute="_compute_name")
+    sequence = fields.Integer('Sequence', index=True)
     role_id = fields.Many2one('planning.role', string="Role")
     start_time = fields.Float('Start Hour', default=0, group_operator=None)
     duration = fields.Float('Duration (Hours)', default=0, group_operator=None)
-    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'You cannot have a start hour greater than 24'),
@@ -23,16 +26,23 @@ class PlanningTemplate(models.Model):
         ('check_duration_positive', 'CHECK(duration >= 0)', 'You cannot have a negative duration')
     ]
 
-    def name_get(self):
-        result = []
+    @api.depends('start_time', 'duration')
+    def _compute_name(self):
         for shift_template in self:
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
             duration = timedelta(hours=int(shift_template.duration), minutes=round(math.modf(shift_template.duration)[0] / (1 / 60.0)))
             end_time = datetime.combine(date.today(), start_time) + duration
-            name = '%s - %s %s %s' % (
+            shift_template.name = '%s - %s %s' % (
                 format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
                 format_time(shift_template.env, end_time.time(), time_format='short').replace(':00 ', ' '),
-                _('(%s days span)') % (duration.days + 1) if duration.days > 0 else '',
+                _('(%s days span)') % (duration.days + 1) if duration.days > 0 else ''
+            )
+
+    def name_get(self):
+        result = []
+        for shift_template in self:
+            name = '%s %s' % (
+                shift_template.name,
                 shift_template.role_id.name if shift_template.role_id.name is not False else ''
             )
             result.append([shift_template.id, name])

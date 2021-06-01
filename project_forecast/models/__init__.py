@@ -4,4 +4,3 @@
 from . import project
 from . import planning_template
 from . import project_forecast
-from . import res_config_settings

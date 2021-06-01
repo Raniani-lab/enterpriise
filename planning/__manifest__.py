@@ -33,12 +33,14 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
+            'planning/static/src/js/planning_mixins.js',
             'planning/static/src/js/planning_gantt_controller.js',
             'planning/static/src/js/planning_gantt_row.js',
             'planning/static/src/js/planning_gantt_renderer.js',
             'planning/static/src/js/planning_gantt_model.js',
             'planning/static/src/js/planning_gantt_view.js',
             'planning/static/src/js/planning_calendar.js',
+            'planning/static/src/js/planning_send/*',
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',
         ],

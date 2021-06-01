@@ -5,7 +5,7 @@
         <field name="name">planning.send.form</field>
         <field name="model">planning.send</field>
         <field name="arch" type="xml">
-            <form>
+            <form js_class="planning_send_form">
                     <group>
                         <group>
                             <label for="start_datetime">Period</label>

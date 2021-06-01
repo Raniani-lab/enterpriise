@@ -122,20 +122,6 @@
         </field>
     </record>
 
-    <!-- When the setting group_project_forecast_display_allocate_time is enabled, the consolidation are displayed-->
-    <record id="planning_view_gantt_inherit" model="ir.ui.view">
-        <field name="name">planning.slot.gantt.inherit</field>
-        <field name="model">planning.slot</field>
-        <field name="groups_id" eval="[(4, ref('project_forecast.group_project_forecast_display_allocate_time'))]"/>
-        <field name="inherit_id" ref="planning_view_gantt"/>
-        <field name="arch" type="xml">
-            <xpath expr="/gantt" position="attributes">
-                <attribute name="consolidation">allocated_percentage</attribute>
-                <attribute name="consolidation_max">{'employee_id': 100}</attribute>
-            </xpath>
-        </field>
-    </record>
-
     <record id="planning_view_gantt_no_sample" model="ir.ui.view">
         <field name="name">planning.slot.gantt.inherit.nosample</field>
         <field name="model">planning.slot</field>
@@ -159,7 +145,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found
+                No shifts found. Let's create one!
             </p><p>
                 Let's start your planning by adding a new shift.
             </p>
@@ -184,7 +170,7 @@
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    No shifts found
+                    No shifts found. Let's create one!
                 </p><p>
                     Let's start your planning by adding a new shift.
                 </p>
@@ -206,7 +192,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found
+                No shifts found. Let's create one!
             </p><p>
                 Let's start your planning by adding a new shift.
             </p>
@@ -220,7 +206,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found
+                No shifts found. Let's create one!
             </p><p>
                 Let's start your planning by adding a new shift.
             </p>
@@ -234,7 +220,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No shifts found
+                No shifts found. Let's create one!
             </p><p>
                 Let's start your planning by adding a new shift.
             </p>

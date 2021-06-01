@@ -1,10 +1,10 @@
-odoo.define('planning.PlanningGanttModel', function (require) {
-    "use strict";
+/** @odoo-module alias=planning.PlanningGanttModel **/
 
-    var GanttModel = require('web_gantt.GanttModel');
-    var _t = require('web.core')._t;
+import GanttModel from 'web_gantt.GanttModel';
+import { _t } from 'web.core';
+import { PlanningModelMixin } from './planning_mixins';
 
-    var PlanningGanttModel = GanttModel.extend({
+    var PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
         /**
          * @override
          */
@@ -237,5 +237,4 @@ odoo.define('planning.PlanningGanttModel', function (require) {
         },
     });
 
-    return PlanningGanttModel;
-});
+export default PlanningGanttModel;

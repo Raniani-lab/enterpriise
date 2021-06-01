@@ -4,6 +4,7 @@
 from odoo import api, fields, models, _
 from odoo.tools import pycompat
 from odoo.exceptions import UserError
+from odoo.tools.sql import column_exists, create_column
 
 from datetime import datetime
 import json
@@ -41,6 +42,97 @@ class AccountMoveL10NDe(models.Model):
 
     l10n_de_datev_main_account_id = fields.Many2one('account.account', compute='_get_datev_account',
         help='Technical field needed for datev export', store=True)
+
+    def _auto_init(self):
+        if column_exists(self.env.cr, "account_move", "l10n_de_datev_main_account_id"):
+            return super()._auto_init()
+
+        cr = self.env.cr
+        create_column(cr, "account_move", "l10n_de_datev_main_account_id", "int4")
+        # If move has an invoice, return invoice's account_id
+        cr.execute(
+            """
+                UPDATE account_move
+                   SET l10n_de_datev_main_account_id = r.aid
+                  FROM (
+                          SELECT l.move_id mid,
+                                 FIRST_VALUE(l.account_id) OVER(PARTITION BY l.move_id ORDER BY l.id DESC) aid
+                            FROM account_move_line l
+                            JOIN account_move m
+                              ON m.id = l.move_id
+                            JOIN account_account a
+                              ON a.id = l.account_id
+                            JOIN account_account_type t
+                              ON t.id = a.user_type_id
+                           WHERE m.move_type in ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt')
+                             AND t.type in ('receivable', 'payable')
+                       ) r
+                WHERE id = r.mid
+            """)
+
+        # If move belongs to a bank journal, return the journal's account (debit/credit should normally be the same)
+        cr.execute(
+            """
+            UPDATE account_move
+               SET l10n_de_datev_main_account_id = r.aid
+              FROM (
+                    SELECT m.id mid,
+                           j.default_account_id aid
+                     FROM account_move m
+                     JOIN account_journal j
+                       ON m.journal_id = j.id
+                    WHERE j.type = 'bank'
+                      AND j.default_account_id IS NOT NULL
+                   ) r
+             WHERE id = r.mid
+               AND l10n_de_datev_main_account_id IS NULL
+            """)
+
+        # If the move is an automatic exchange rate entry, take the gain/loss account set on the exchange journal
+        cr.execute("""
+            UPDATE account_move m
+               SET l10n_de_datev_main_account_id = r.aid
+              FROM (
+                    SELECT l.move_id AS mid,
+                           l.account_id AS aid
+                      FROM account_move_line l
+                      JOIN account_move m
+                        ON l.move_id = m.id
+                      JOIN account_journal j
+                        ON m.journal_id = j.id
+                      JOIN res_company c
+                        ON c.currency_exchange_journal_id = j.id
+                     WHERE j.type='general'
+                       AND l.account_id = j.default_account_id
+                     GROUP BY l.move_id,
+                              l.account_id
+                    HAVING count(*)=1
+                   ) r
+             WHERE id = r.mid
+               AND l10n_de_datev_main_account_id IS NULL
+            """)
+
+        # Look for an account used a single time in the move, that has no originator tax
+        query = """
+            UPDATE account_move m
+               SET l10n_de_datev_main_account_id = r.aid
+              FROM (
+                    SELECT l.move_id AS mid,
+                           min(l.account_id) AS aid
+                      FROM account_move_line l
+                     WHERE {}
+                     GROUP BY move_id
+                    HAVING count(*)=1
+                   ) r
+             WHERE id = r.mid
+               AND m.l10n_de_datev_main_account_id IS NULL
+            """
+        cr.execute(query.format("l.debit > 0"))
+        cr.execute(query.format("l.credit > 0"))
+        cr.execute(query.format("l.debit > 0 AND l.tax_line_id IS NULL"))
+        cr.execute(query.format("l.credit > 0 AND l.tax_line_id IS NULL"))
+
+        return super()._auto_init()
 
     @api.depends('journal_id', 'line_ids', 'journal_id.default_account_id')
     def _get_datev_account(self):

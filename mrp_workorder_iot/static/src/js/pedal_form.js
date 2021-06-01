@@ -4,7 +4,7 @@ odoo.define('mrp_workorder_iot.pedal_form', function(require) {
 var PDFViewerNoReload = require('mrp_workorder.PDFViewerNoReload');
 var FormController = require('web.FormController');
 var view_registry = require('web.view_registry');
-var DeviceProxy = require('iot.widgets').DeviceProxy;
+var DeviceProxy = require('iot.DeviceProxy');
 
 var TabletPDFViewer = PDFViewerNoReload.TabletPDFViewer;
 var PDFViewerNoReloadRenderer = PDFViewerNoReload.PDFViewerNoReloadRenderer;

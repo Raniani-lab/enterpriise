@@ -37,7 +37,16 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         if (functionName === "PIVOT") {
             builder = this._autofillPivotValue.bind(this);
         } else if (functionName === "PIVOT.HEADER") {
-            if (pivot.rowGroupBys.includes(args[1])) {
+            if (args.length === 1) {
+                // Total
+                if (isColumn) {
+                    // LEFT-RIGHT
+                    builder = this._autofillPivotRowHeader.bind(this);
+                } else {
+                    // UP-DOWN
+                    builder = this._autofillPivotColHeader.bind(this);
+                }
+            } else if (pivot.rowGroupBys.includes(args[1])) {
                 builder = this._autofillPivotRowHeader.bind(this);
             } else {
                 builder = this._autofillPivotColHeader.bind(this);

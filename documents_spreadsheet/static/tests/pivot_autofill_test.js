@@ -11,7 +11,7 @@ const { module, test } = QUnit;
 
 module("documents_spreadsheet > pivot_autofill", {}, () => {
     test("Autofill pivot values", async function (assert) {
-        assert.expect(26);
+        assert.expect(28);
 
         const { actionManager, model } = await createSpreadsheetFromPivot();
         // From value to value
@@ -104,6 +104,15 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
             getCellFormula(model, "F3")
         );
         assert.strictEqual(getAutofillValue(model, "A3", { direction: "right", steps: 6 }), "");
+        // From total row header to value
+        assert.strictEqual(
+            getAutofillValue(model, "A5", { direction: "right", steps: 1 }),
+            getCellFormula(model, "B5")
+        );
+        assert.strictEqual(
+            getAutofillValue(model, "A5", { direction: "right", steps: 5 }),
+            getCellFormula(model, "F5")
+        );
         actionManager.destroy();
     });
 

@@ -100,6 +100,7 @@
     const DEBOUNCE_TIME = 200;
     const MESSAGE_VERSION = 1;
     const DEFAULT_ERROR_MESSAGE = _lt("Invalid expression");
+    const FORBIDDEN_IN_EXCEL_REGEX = /'|\*|\?|\/|\\|\[|\]/;
 
     /**
      * This regexp is supposed to be as close as possible as the numberRegexp, but
@@ -1254,49 +1255,51 @@
         CommandResult[CommandResult["EmptyRedoStack"] = 6] = "EmptyRedoStack";
         CommandResult[CommandResult["NotEnoughElements"] = 7] = "NotEnoughElements";
         CommandResult[CommandResult["NotEnoughSheets"] = 8] = "NotEnoughSheets";
-        CommandResult[CommandResult["WrongSheetName"] = 9] = "WrongSheetName";
-        CommandResult[CommandResult["WrongSheetMove"] = 10] = "WrongSheetMove";
-        CommandResult[CommandResult["WrongSheetPosition"] = 11] = "WrongSheetPosition";
-        CommandResult[CommandResult["SelectionOutOfBound"] = 12] = "SelectionOutOfBound";
-        CommandResult[CommandResult["TargetOutOfSheet"] = 13] = "TargetOutOfSheet";
-        CommandResult[CommandResult["WrongPasteSelection"] = 14] = "WrongPasteSelection";
-        CommandResult[CommandResult["EmptyClipboard"] = 15] = "EmptyClipboard";
-        CommandResult[CommandResult["InvalidRange"] = 16] = "InvalidRange";
-        CommandResult[CommandResult["InvalidSheetId"] = 17] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 18] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 19] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 20] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 21] = "EmptyDataSet";
-        CommandResult[CommandResult["EmptyLabelRange"] = 22] = "EmptyLabelRange";
-        CommandResult[CommandResult["InvalidDataSet"] = 23] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 24] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 25] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 26] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 27] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 28] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 29] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 30] = "MinBiggerThanMid";
-        CommandResult[CommandResult["InvalidNumberOfArgs"] = 31] = "InvalidNumberOfArgs";
-        CommandResult[CommandResult["MinNaN"] = 32] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 33] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 34] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 35] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 36] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 37] = "MinAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 38] = "MidAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 39] = "MaxAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 40] = "ValueUpperAsyncFormulaNotSupported";
-        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 41] = "ValueLowerAsyncFormulaNotSupported";
-        CommandResult[CommandResult["MinInvalidFormula"] = 42] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 43] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 44] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 45] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 46] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 47] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 48] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 49] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 50] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 51] = "Readonly";
+        CommandResult[CommandResult["MissingSheetName"] = 9] = "MissingSheetName";
+        CommandResult[CommandResult["DuplicatedSheetName"] = 10] = "DuplicatedSheetName";
+        CommandResult[CommandResult["ForbiddenCharactersInSheetName"] = 11] = "ForbiddenCharactersInSheetName";
+        CommandResult[CommandResult["WrongSheetMove"] = 12] = "WrongSheetMove";
+        CommandResult[CommandResult["WrongSheetPosition"] = 13] = "WrongSheetPosition";
+        CommandResult[CommandResult["SelectionOutOfBound"] = 14] = "SelectionOutOfBound";
+        CommandResult[CommandResult["TargetOutOfSheet"] = 15] = "TargetOutOfSheet";
+        CommandResult[CommandResult["WrongPasteSelection"] = 16] = "WrongPasteSelection";
+        CommandResult[CommandResult["EmptyClipboard"] = 17] = "EmptyClipboard";
+        CommandResult[CommandResult["InvalidRange"] = 18] = "InvalidRange";
+        CommandResult[CommandResult["InvalidSheetId"] = 19] = "InvalidSheetId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 20] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 21] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 22] = "InvalidChartDefinition";
+        CommandResult[CommandResult["EmptyDataSet"] = 23] = "EmptyDataSet";
+        CommandResult[CommandResult["EmptyLabelRange"] = 24] = "EmptyLabelRange";
+        CommandResult[CommandResult["InvalidDataSet"] = 25] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 26] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 27] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 28] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 29] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 30] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 31] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 32] = "MinBiggerThanMid";
+        CommandResult[CommandResult["InvalidNumberOfArgs"] = 33] = "InvalidNumberOfArgs";
+        CommandResult[CommandResult["MinNaN"] = 34] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 35] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 36] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 37] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 38] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinAsyncFormulaNotSupported"] = 39] = "MinAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MidAsyncFormulaNotSupported"] = 40] = "MidAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MaxAsyncFormulaNotSupported"] = 41] = "MaxAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueUpperAsyncFormulaNotSupported"] = 42] = "ValueUpperAsyncFormulaNotSupported";
+        CommandResult[CommandResult["ValueLowerAsyncFormulaNotSupported"] = 43] = "ValueLowerAsyncFormulaNotSupported";
+        CommandResult[CommandResult["MinInvalidFormula"] = 44] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 45] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 46] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 47] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 48] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 49] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 50] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 51] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 52] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 53] = "Readonly";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -2628,11 +2631,13 @@
         return sheetName;
     }
     /**
-     * Add quotes around the sheet name if it contains a space
+     * Add quotes around the sheet name if it contains at least one non alphanumeric character
+     * '\w' captures [0-9][a-z][A-Z] and _.
      * @param sheetName Name of the sheet
      */
     function getComposerSheetName(sheetName) {
-        if (sheetName.includes(" ")) {
+        var _a;
+        if (((_a = sheetName.match(/\w/g)) === null || _a === void 0 ? void 0 : _a.length) !== sheetName.length) {
             sheetName = `'${sheetName}'`;
         }
         return sheetName;
@@ -8852,7 +8857,7 @@
                 bottom: sheet.rows.length - 1,
                 right: sheet.cols.length - 1,
             };
-            return isInside(col, row, sheetZone) ? 0 /* Success */ : 13 /* TargetOutOfSheet */;
+            return isInside(col, row, sheetZone) ? 0 /* Success */ : 15 /* TargetOutOfSheet */;
         }
     }
     CellPlugin.getters = [
@@ -10020,32 +10025,21 @@
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
             if (cmd.type !== "CREATE_SHEET" && "sheetId" in cmd && this.sheets[cmd.sheetId] === undefined) {
-                return 17 /* InvalidSheetId */;
+                return 19 /* InvalidSheetId */;
             }
             switch (cmd.type) {
                 case "CREATE_SHEET": {
-                    const { visibleSheets, sheets } = this;
+                    const { visibleSheets } = this;
                     if (cmd.position > visibleSheets.length || cmd.position < 0) {
-                        return 11 /* WrongSheetPosition */;
+                        return 13 /* WrongSheetPosition */;
                     }
-                    return !cmd.name || !visibleSheets.find((id) => sheets[id].name === cmd.name)
-                        ? 0 /* Success */
-                        : 9 /* WrongSheetName */;
-                }
-                case "DUPLICATE_SHEET": {
-                    const { visibleSheets, sheets } = this;
-                    return !cmd.name || !visibleSheets.find((id) => sheets[id].name === cmd.name)
-                        ? 0 /* Success */
-                        : 9 /* WrongSheetName */;
+                    return 0 /* Success */;
                 }
                 case "MOVE_SHEET":
                     const currentIndex = this.visibleSheets.findIndex((id) => id === cmd.sheetId);
-                    if (currentIndex === -1) {
-                        return 9 /* WrongSheetName */;
-                    }
                     return (cmd.direction === "left" && currentIndex === 0) ||
                         (cmd.direction === "right" && currentIndex === this.visibleSheets.length - 1)
-                        ? 10 /* WrongSheetMove */
+                        ? 12 /* WrongSheetMove */
                         : 0 /* Success */;
                 case "RENAME_SHEET":
                     return this.isRenameAllowed(cmd);
@@ -10065,7 +10059,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 50 /* TooManyHiddenElements */;
+                        : 52 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -10080,7 +10074,7 @@
                     this.clearZones(cmd.sheetId, cmd.target);
                     break;
                 case "CREATE_SHEET":
-                    const sheet = this.createSheet(cmd.sheetId, cmd.name || this.generateSheetName(), cmd.cols || 26, cmd.rows || 100, cmd.position);
+                    const sheet = this.createSheet(cmd.sheetId, this.generateSheetName(), cmd.cols || 26, cmd.rows || 100, cmd.position);
                     this.history.update("sheetIds", sheet.name, sheet.id);
                     break;
                 case "RESIZE_COLUMNS_ROWS":
@@ -10098,7 +10092,7 @@
                     }
                     break;
                 case "DUPLICATE_SHEET":
-                    this.duplicateSheet(cmd.sheetId, cmd.sheetIdTo, cmd.name);
+                    this.duplicateSheet(cmd.sheetId, cmd.sheetIdTo);
                     break;
                 case "DELETE_SHEET":
                     this.deleteSheet(this.sheets[cmd.sheetId]);
@@ -10387,17 +10381,26 @@
             visibleSheets.splice(currentIndex + (direction === "left" ? -1 : 1), 0, sheet[0]);
             this.history.update("visibleSheets", visibleSheets);
         }
+        checkSheetName(cmd) {
+            const { visibleSheets, sheets } = this;
+            const name = cmd.name && cmd.name.trim().toLowerCase();
+            if (visibleSheets.find((id) => { var _a; return ((_a = sheets[id]) === null || _a === void 0 ? void 0 : _a.name.toLowerCase()) === name; })) {
+                return 10 /* DuplicatedSheetName */;
+            }
+            if (FORBIDDEN_IN_EXCEL_REGEX.test(name)) {
+                return 11 /* ForbiddenCharactersInSheetName */;
+            }
+            return 0 /* Success */;
+        }
         isRenameAllowed(cmd) {
             if (cmd.interactive) {
                 return 0 /* Success */;
             }
             const name = cmd.name && cmd.name.trim().toLowerCase();
             if (!name) {
-                return 9 /* WrongSheetName */;
+                return 9 /* MissingSheetName */;
             }
-            return this.visibleSheets.findIndex((id) => { var _a; return ((_a = this.sheets[id]) === null || _a === void 0 ? void 0 : _a.name.toLowerCase()) === name; }) === -1
-                ? 0 /* Success */
-                : 9 /* WrongSheetName */;
+            return this.checkSheetName(cmd);
         }
         renameSheet(sheet, name) {
             const oldName = sheet.name;
@@ -10407,8 +10410,9 @@
             delete sheetIds[oldName];
             this.history.update("sheetIds", sheetIds);
         }
-        duplicateSheet(fromId, toId, toName) {
-            const sheet = this.sheets[fromId];
+        duplicateSheet(fromId, toId) {
+            const sheet = this.getSheet(fromId);
+            const toName = this.getDuplicateSheetName(sheet.name);
             const newSheet = JSON.parse(JSON.stringify(sheet));
             newSheet.id = toId;
             newSheet.name = toName;
@@ -10438,6 +10442,17 @@
             const sheetIds = Object.assign({}, this.sheetIds);
             sheetIds[newSheet.name] = newSheet.id;
             this.history.update("sheetIds", sheetIds);
+        }
+        getDuplicateSheetName(sheetName) {
+            let i = 1;
+            const names = this.getters.getSheets().map((s) => s.name);
+            const baseName = _lt("Copy of %s", sheetName);
+            let name = baseName.toString();
+            while (names.includes(name)) {
+                name = `${baseName} (${i})`;
+                i++;
+            }
+            return name;
         }
         deleteSheet(sheet) {
             const name = sheet.name;
@@ -11978,17 +11993,6 @@
     });
 
     const sheetMenuRegistry = new MenuItemRegistry();
-    function getDuplicateSheetName(env, sheet) {
-        let i = 1;
-        const names = env.getters.getSheets().map((s) => s.name);
-        const baseName = _lt("Copy of %s", sheet);
-        let name = baseName.toString();
-        while (names.includes(name)) {
-            name = `${baseName} (${i})`;
-            i++;
-        }
-        return name;
-    }
     sheetMenuRegistry
         .add("delete", {
         name: _lt("Delete"),
@@ -12003,12 +12007,10 @@
         sequence: 20,
         action: (env) => {
             const sheetIdFrom = env.getters.getActiveSheetId();
-            const name = getDuplicateSheetName(env, env.getters.getSheets().find((s) => s.id === sheetIdFrom).name);
             const sheetIdTo = uuidv4();
             env.dispatch("DUPLICATE_SHEET", {
                 sheetId: sheetIdFrom,
                 sheetIdTo,
-                name,
             });
             env.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo });
         },
@@ -15691,21 +15693,21 @@
                         (cmd.deltaX < 0 && targetCol === 0) ||
                         (cmd.deltaX > 0 && targetCol === cols.length - 1);
                     if (outOfBound) {
-                        return 12 /* SelectionOutOfBound */;
+                        return 14 /* SelectionOutOfBound */;
                     }
                     break;
                 }
                 case "SELECT_COLUMN": {
                     const { index } = cmd;
                     if (index < 0 || index >= this.getters.getActiveSheet().cols.length) {
-                        return 12 /* SelectionOutOfBound */;
+                        return 14 /* SelectionOutOfBound */;
                     }
                     break;
                 }
                 case "SELECT_ROW": {
                     const { index } = cmd;
                     if (index < 0 || index >= this.getters.getActiveSheet().rows.length) {
-                        return 12 /* SelectionOutOfBound */;
+                        return 14 /* SelectionOutOfBound */;
                     }
                     break;
                 }
@@ -15715,7 +15717,7 @@
                         break;
                     }
                     catch (error) {
-                        return 17 /* InvalidSheetId */;
+                        return 19 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -16485,7 +16487,7 @@
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
-                : 26 /* WrongComposerSelection */;
+                : 28 /* WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -19400,7 +19402,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 47 /* InvalidSortZone */;
+                        return 49 /* InvalidSortZone */;
                     }
                 }
             }
@@ -19421,7 +19423,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 47 /* InvalidSortZone */;
+                return 49 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -19482,7 +19484,7 @@
             }
             if (result !== 0 /* Success */) {
                 switch (result) {
-                    case 47 /* InvalidSortZone */:
+                    case 49 /* InvalidSortZone */:
                         this.dispatch("SET_SELECTION", {
                             anchor: anchor,
                             zones: [zone],
@@ -19782,7 +19784,7 @@
                         break;
                     }
                     catch (error) {
-                        return 17 /* InvalidSheetId */;
+                        return 19 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -20571,7 +20573,7 @@
      * a breaking change is made in the way the state is handled, and an upgrade
      * function should be defined
      */
-    const CURRENT_VERSION = 7;
+    const CURRENT_VERSION = 8;
     /**
      * This function tries to load anything that could look like a valid
      * workbookData object. It applies any migrations, if needed, and return a
@@ -20690,6 +20692,75 @@
                         newData.dataSetsHaveTitle = Boolean(dataSets[0].labelCell);
                         newData.dataSets = newDataSets;
                         sheet.figures[f].data = newData;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "remove single quotes in sheet names",
+            from: 7,
+            to: 8,
+            applyMigration(data) {
+                var _a;
+                const namesTaken = [];
+                const globalForbiddenInExcel = new RegExp(FORBIDDEN_IN_EXCEL_REGEX, "g");
+                for (let sheet of data.sheets || []) {
+                    if (!sheet.name) {
+                        continue;
+                    }
+                    const oldName = sheet.name;
+                    const escapedName = oldName.replace(globalForbiddenInExcel, "_");
+                    let i = 1;
+                    let newName = escapedName;
+                    while (namesTaken.includes(newName)) {
+                        newName = `${escapedName}${i}`;
+                        i++;
+                    }
+                    sheet.name = newName;
+                    namesTaken.push(newName);
+                    const replaceName = (str) => {
+                        if (str === undefined) {
+                            return str;
+                        }
+                        // replaceAll is only available in next Typescript version
+                        let newString = str.replace(oldName, newName);
+                        let currentString = str;
+                        while (currentString !== newString) {
+                            currentString = newString;
+                            newString = currentString.replace(oldName, newName);
+                        }
+                        return currentString;
+                    };
+                    //cells
+                    for (let xc in sheet.cells) {
+                        const cell = sheet.cells[xc];
+                        if (cell.formula) {
+                            cell.formula.dependencies = cell.formula.dependencies.map(replaceName);
+                        }
+                    }
+                    //charts
+                    for (let figure of sheet.figures || []) {
+                        if (figure.type === "chart") {
+                            const dataSets = figure.data.dataSets.map(replaceName);
+                            const labelRange = replaceName(figure.data.labelRange);
+                            figure.data = { ...figure.data, dataSets, labelRange };
+                        }
+                    }
+                    //ConditionalFormats
+                    for (let cf of sheet.conditionalFormats || []) {
+                        cf.ranges = cf.ranges.map(replaceName);
+                        for (const thresholdName of [
+                            "minimum",
+                            "maximum",
+                            "midpoint",
+                            "upperInflectionPoint",
+                            "lowerInflectionPoint",
+                        ]) {
+                            if (((_a = cf.rule[thresholdName]) === null || _a === void 0 ? void 0 : _a.type) === "formula") {
+                                cf.rule[thresholdName].value = replaceName(cf.rule[thresholdName].value);
+                            }
+                        }
                     }
                 }
                 return data;
@@ -21752,7 +21823,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 48 /* WaitingSessionConfirmation */;
+                return 50 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -21919,7 +21990,6 @@
                     }, cmd.sheetId);
                     break;
                 }
-                case "CREATE_SHEET":
                 case "RENAME_SHEET": {
                     this.executeOnAllRanges((range) => {
                         if (range.sheetId === cmd.sheetId) {
@@ -22528,10 +22598,11 @@
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&apos;");
     }
     function formatAttributes(attrs) {
-        return attrs.map(([key, val]) => `${key}="${val}"`).join(" ");
+        return attrs.map(([key, val]) => `${key}="${xmlEscape(val)}"`).join(" ");
     }
     function parseXML(xmlString) {
         const document = new DOMParser().parseFromString(xmlString, "text/xml");
@@ -22900,14 +22971,14 @@
     function stringRef(reference) {
         return /*xml*/ `
     <c:strRef>
-      <c:f>${reference}</c:f>
+      <c:f>${xmlEscape(reference)}</c:f>
     </c:strRef>
   `;
     }
     function numberRef(reference) {
         return /*xml*/ `
     <c:numRef>
-      <c:f>${reference}</c:f>
+      <c:f>${xmlEscape(reference)}</c:f>
       <c:numCache />
     </c:numRef>
   `;
@@ -23023,7 +23094,7 @@
                     return `"${formatDateTime({ value: internalDate.value, format: format.join(" ") })}"`;
                 }
                 else {
-                    return ast.value;
+                    return ast.value.replace(/\\"/g, `""`);
                 }
             case "BOOLEAN":
                 return ast.value ? "TRUE" : "FALSE";
@@ -23076,7 +23147,7 @@
     function addCellIsRule(cf, rule, dxfs) {
         const ruleAttributes = commonCfAttributes(cf);
         ruleAttributes.push(["type", "cellIs"], ["operator", convertOperator(rule.operator)]);
-        const formulas = rule.values.map((value) => /*xml*/ `<formula>${value}</formula>`);
+        const formulas = rule.values.map((value) => /*xml*/ `<formula>${xmlEscape(value)}</formula>`);
         const dxf = {};
         if (rule.style.textColor) {
             dxf.font = { color: rule.style.textColor };
@@ -23841,7 +23912,7 @@
                 const command = { type, ...payload };
                 let status = command.interactive ? 4 /* Interactive */ : this.status;
                 if (this.config.isReadonly && !canExecuteInReadonly(command)) {
-                    return 51 /* Readonly */;
+                    return 53 /* Readonly */;
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -27220,7 +27291,6 @@
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
-                debugger;
                 if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
                     this.dispatch("SET_VIEWPORT_OFFSET", { offsetX: newOffsetX, offsetY: newOffsetY });
                 }
@@ -28232,8 +28302,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-05-31T09:15:24.170Z';
-    exports.__info__.hash = 'f5fcd44';
+    exports.__info__.date = '2021-06-02T10:40:47.342Z';
+    exports.__info__.hash = '7cf08c3';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

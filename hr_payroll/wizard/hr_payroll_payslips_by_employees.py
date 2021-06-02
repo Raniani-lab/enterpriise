@@ -20,6 +20,9 @@ class HrPayslipEmployees(models.TransientModel):
         return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
 
     def _get_employees(self):
+        active_employee_ids = self.env.context.get('active_employee_ids', False)
+        if active_employee_ids:
+            return self.env['hr.employee'].browse(active_employee_ids)
         # YTI check dates too
         return self.env['hr.employee'].search(self._get_available_contracts_domain())
 

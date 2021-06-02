@@ -48,11 +48,19 @@ odoo.define('hr_payroll.WorkEntryPayrollControllerMixin', function (require) {
             return buttons.prepend(this._renderGeneratePayslipButton());
         },
 
+        _getActiveEmployeeIds: function () {
+            const records = this._fetchRecords();
+            const employees_datas = _.pluck(records, "employee_id");
+            const employee_ids = _.map(employees_datas, employee_datas => employee_datas[0]);
+            return _.uniq(employee_ids);
+        },
+
         _generatePayslips: function () {
             this.do_action('hr_payroll.action_generate_payslips_from_work_entries', {
                 additional_context: {
                     default_date_start: time.date_to_str(this.firstDay),
                     default_date_end: time.date_to_str(this.lastDay),
+                    active_employee_ids: this._getActiveEmployeeIds(),
                 },
             });
         },

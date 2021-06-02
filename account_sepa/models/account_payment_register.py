@@ -13,7 +13,7 @@ class AccountPaymentRegister(models.TransientModel):
         lines = batch_result['lines']
 
         moves_wo_partner_bank = lines.move_id.filtered(lambda move: not move.partner_bank_id)
-        if self.payment_method_id.code == 'sepa_ct' and moves_wo_partner_bank:
+        if self.payment_method_id.code == 'sepa_ct' and moves_wo_partner_bank and not lines.partner_id.commercial_partner_id.bank_ids:
             raise UserError(
                 '{} {}'.format(
                     _('A bank account must be set on the following documents: '),

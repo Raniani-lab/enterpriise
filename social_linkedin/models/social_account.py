@@ -139,7 +139,7 @@ class SocialAccountLinkedin(models.Model):
 
     def _create_linkedin_accounts(self, access_token, media):
         linkedin_accounts = self._get_linkedin_accounts(access_token)
-        social_accounts = self.search([
+        social_accounts = self.sudo().with_context(active_test=False).search([
             ('media_id', '=', media.id),
             ('linkedin_account_urn', 'in', [l.get('linkedin_account_urn') for l in linkedin_accounts])])
 
@@ -153,6 +153,7 @@ class SocialAccountLinkedin(models.Model):
         for account in linkedin_accounts:
             if account['linkedin_account_urn'] in existing_accounts:
                 existing_accounts[account['linkedin_account_urn']].write({
+                    'active': True,
                     'linkedin_access_token': account.get('linkedin_access_token'),
                     'is_media_disconnected': False,
                     'image': account.get('image')

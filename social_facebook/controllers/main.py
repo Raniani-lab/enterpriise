@@ -78,6 +78,7 @@ class SocialFacebookController(http.Controller):
                 # update access token
                 # TODO awa: maybe check for name/picture update?
                 existing_accounts.get(account_id).write({
+                    'active': True,
                     'facebook_access_token': access_token,
                     'is_media_disconnected': False
                 })
@@ -126,7 +127,7 @@ class SocialFacebookController(http.Controller):
 
         facebook_accounts_ids = [account['id'] for account in json_response.get('data', [])]
         if facebook_accounts_ids:
-            existing_accounts = request.env['social.account'].search([
+            existing_accounts = request.env['social.account'].sudo().with_context(active_test=False).search([
                 ('media_id', '=', int(media_id)),
                 ('facebook_account_id', 'in', facebook_accounts_ids)
             ])

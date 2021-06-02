@@ -157,6 +157,7 @@ class SocialYoutubeController(http.Controller):
 
             account_id = channel['id']
             base_values = {
+                'active': True,
                 'name': channel['snippet']['title'],
                 'youtube_access_token': access_token,
                 'youtube_refresh_token': refresh_token,

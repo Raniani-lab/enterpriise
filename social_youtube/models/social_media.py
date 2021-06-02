@@ -16,11 +16,11 @@ class SocialMediaYoutube(models.Model):
 
     media_type = fields.Selection(selection_add=[('youtube', 'YouTube')])
 
-    def action_add_account(self):
+    def _action_add_account(self):
         self.ensure_one()
 
         if self.media_type != 'youtube':
-            return super(SocialMediaYoutube, self).action_add_account()
+            return super(SocialMediaYoutube, self)._action_add_account()
 
         youtube_oauth_client_id = self.env['ir.config_parameter'].sudo().get_param('social.youtube_oauth_client_id')
         youtube_oauth_client_secret = self.env['ir.config_parameter'].sudo().get_param('social.youtube_oauth_client_secret')

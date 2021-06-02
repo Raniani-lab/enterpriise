@@ -5,7 +5,7 @@ import json
 import re
 
 from odoo import _, api, fields, models
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 
 class SocialPost(models.Model):
@@ -20,15 +20,6 @@ class SocialPost(models.Model):
     _description = 'Social Post'
     _order = 'create_date desc'
 
-    def _get_default_account_ids(self):
-        """
-        If there are less than 3 social accounts available, select them all by default.
-        """
-        all_accounts = self.env['social.account'].search(self._get_default_accounts_domain())
-        if len(all_accounts) <= 3:
-            return all_accounts
-        return False
-
     message = fields.Text("Message")
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -41,7 +32,13 @@ class SocialPost(models.Model):
     account_ids = fields.Many2many('social.account', 'social_post_social_account', 'post_id', 'account_id',
                                    string='Social Accounts',
                                    help="The accounts on which this post will be published.",
-                                   default=_get_default_account_ids)
+                                   domain="[('id', 'in', account_allowed_ids)]",
+                                   compute='_compute_account_ids', store=True, readonly=False)
+    account_allowed_ids = fields.Many2many('social.account', string='Allowed Accounts', compute='_compute_account_allowed_ids',
+                                           help='List of the accounts which can be selected for this post.')
+    company_id = fields.Many2one('res.company', string='Company',
+                                 default=lambda self: self.env.company,
+                                 domain=lambda self: [('id', 'in', self.env.companies.ids)])
     has_active_accounts = fields.Boolean('Are Accounts Available?', compute='_compute_has_active_accounts')
     media_ids = fields.Many2many('social.media', compute='_compute_media_ids', store=True,
         help="The social medias linked to the selected social accounts.")
@@ -101,17 +98,48 @@ class SocialPost(models.Model):
         for post in self:
             post.engagement = engagement_per_post.get(post.id, 0)
 
-    # TODO awa: this shouldn't depend on account_ids but it doesn't work without it
-    @api.depends('account_ids')
+    @api.constrains('account_ids')
+    def _check_account_ids(self):
+        """All social accounts must be in the same company."""
+        for post in self.sudo():  # SUDO to bypass multi-company ACLs
+            if post.account_allowed_ids < post.account_ids:
+                raise ValidationError(_(
+                    'Selected accounts (%s) do not match the selected company (%s)',
+                    ','.join((post.account_ids - post.account_allowed_ids).mapped('name')),
+                    post.company_id.name
+                ))
+
+    @api.depends('account_allowed_ids')
     def _compute_has_active_accounts(self):
-        has_active_accounts = self.env['social.account'].search_count([]) > 0
         for post in self:
-            post.has_active_accounts = has_active_accounts
+            post.has_active_accounts = bool(post.account_allowed_ids)
 
     @api.depends('live_post_ids')
     def _compute_stream_posts_count(self):
         for post in self:
             post.stream_posts_count = 0
+
+    @api.depends('company_id')
+    def _compute_account_ids(self):
+        """If there are less than 3 social accounts available, select them all by default."""
+        all_account_ids = self.env['social.account'].sudo().search([])
+
+        for post in self:
+            accounts = all_account_ids.filtered_domain(post._get_default_accounts_domain())
+            post.account_ids = accounts if len(accounts) <= 3 else False
+
+    @api.depends('company_id')
+    def _compute_account_allowed_ids(self):
+        """Compute the allowed social accounts for this social post.
+
+        If the company is set on the post, we can attach to it account in the same company
+        or without a company. If no company is set on this post, we can attach to it any
+        social account.
+        """
+        all_account_allowed_ids = self.env['social.account'].search([])
+
+        for post in self:
+            post.account_allowed_ids = all_account_allowed_ids.filtered_domain(post._get_company_domain())
 
     @api.depends('live_post_ids.state')
     def _compute_has_post_errors(self):
@@ -144,18 +172,24 @@ class SocialPost(models.Model):
             post.live_posts_by_media = json.dumps(accounts_by_media)
 
     def _compute_click_count(self):
-        if not self.utm_source_id.ids:
+        # Filter by `medium_id` so we can compute the click count based
+        # on the current companies (1 account == 1 medium)
+        medium_ids = self.account_ids.mapped('utm_medium_id')
+
+        if not self.utm_source_id.ids or not medium_ids.ids:
             # not "utm_source_id", the records are not yet created
             for post in self:
                 post.click_count = 0
         else:
-            query = """SELECT COUNT(DISTINCT(click.id)) as click_count, link.source_id
-                        FROM link_tracker_click click
-                        INNER JOIN link_tracker link ON link.id = click.link_id
-                        WHERE link.source_id IN %s
-                        GROUP BY link.source_id"""
+            query = """
+                SELECT COUNT(DISTINCT(click.id)) as click_count, link.source_id
+                  FROM link_tracker_click click
+            INNER JOIN link_tracker link ON link.id = click.link_id
+                 WHERE link.source_id IN %s AND link.medium_id IN %s
+              GROUP BY link.source_id
+            """
 
-            self.env.cr.execute(query, [tuple(self.utm_source_id.ids)])
+            self.env.cr.execute(query, [tuple(self.utm_source_id.ids), tuple(medium_ids.ids)])
             click_data = self.env.cr.dictfetchall()
             mapped_data = {datum['source_id']: datum['click_count'] for datum in click_data}
             for post in self:
@@ -268,7 +302,10 @@ class SocialPost(models.Model):
 
     def action_redirect_to_clicks(self):
         action = self.env["ir.actions.actions"]._for_xml_id("link_tracker.link_tracker_action")
-        action['domain'] = [('source_id', '=', self.utm_source_id.id)]
+        action['domain'] = [
+            ('source_id', '=', self.utm_source_id.id),
+            ('medium_id', 'in', self.account_ids.mapped('utm_medium_id').ids),
+        ]
         return action
 
     def _action_post(self):
@@ -304,10 +341,16 @@ class SocialPost(models.Model):
             'account_id': account.id,
         } for account in self.account_ids]
 
+    def _get_company_domain(self):
+        self.ensure_one()
+        if self.company_id:
+            return ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
+        return ['|', ('company_id', '=', False), ('company_id', 'in', self.env.companies.ids)]
+
     def _get_default_accounts_domain(self):
         """ Can be overridden by underlying social.media implementation to remove default accounts.
         It's used to filter the default accounts to tick when creating a new social.post. """
-        return []
+        return self._get_company_domain()
 
     def _get_stream_post_domain(self):
         return []

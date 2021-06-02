@@ -69,13 +69,18 @@ class SocialTwitterController(http.Controller):
             for response_value in response.text.split('&')
         }
 
-        existing_account = request.env['social.account'].search([
+        existing_account = request.env['social.account'].sudo().with_context(active_test=False).search([
             ('media_id', '=', media.id),
             ('twitter_user_id', '=', response_values['user_id'])
         ])
 
+        error_message = existing_account._get_multi_company_error_message()
+        if error_message:
+            raise SocialValidationException(error_message)
+
         if existing_account:
             existing_account.write({
+                'active': True,
                 'is_media_disconnected': False,
                 'twitter_screen_name': response_values['screen_name'],
                 'twitter_oauth_token': response_values['oauth_token'],

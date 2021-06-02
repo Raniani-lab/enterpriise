@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from odoo.http import request
 
 
 class SocialMedia(models.Model):
@@ -35,7 +36,14 @@ class SocialMedia(models.Model):
         for media in self:
             media.accounts_count = len(media.account_ids)
 
-    def action_add_account(self):
+    def action_add_account(self, company_id=None):
+        # Set the company of the futures new accounts (see <social.account>::_get_default_company)
+        if company_id is None:
+            company_id = self.env.company.id
+        request.session['social_company_id'] = company_id
+        return self._action_add_account()
+
+    def _action_add_account(self):
         """ Every social module should override this method.
         Usually redirects to the social media links that allows accounts to be read by our app. """
         pass

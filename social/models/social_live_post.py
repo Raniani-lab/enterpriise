@@ -29,6 +29,7 @@ class SocialLivePost(models.Model):
         help="""Most social.live.posts directly go from Ready to Posted/Failed since they result of a single call to the third party API.
         A 'Posting' state is also available for those that are sent through batching (like push notifications).""")
     engagement = fields.Integer("Engagement", help="Number of people engagements with the post (Likes, comments...)")
+    company_id = fields.Many2one('res.company', 'Company', related='account_id.company_id')
 
     @api.depends(lambda self:
         ['post_id.message', 'post_id.utm_campaign_id', 'account_id.media_type', 'account_id.utm_medium_id', 'post_id.utm_source_id'] +

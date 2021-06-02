@@ -58,5 +58,38 @@
         <field name="perm_read" eval="0"/>
         <field name="perm_create" eval="1"/>
     </record>
+
+
+    <!-- Multi-company rules -->
+    <record id="social_account_rule_company" model="ir.rule">
+        <field name="name">Social Account - Multi-Company</field>
+        <field name="model_id" ref="model_social_account"/>
+        <field name="domain_force">['|', ('company_id','=',False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="social_post_rule_company" model="ir.rule">
+        <field name="name">Social Post - Multi-Company</field>
+        <field name="model_id" ref="model_social_post"/>
+        <field name="domain_force">['|', ('company_id','=',False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="social_live_post_rule_company" model="ir.rule">
+        <field name="name">Social Live Post - Multi-Company</field>
+        <field name="model_id" ref="model_social_live_post"/>
+        <field name="domain_force">['|', ('company_id','=',False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="social_stream_rule_company" model="ir.rule">
+        <field name="name">Social Stream - Multi-Company</field>
+        <field name="model_id" ref="model_social_stream"/>
+        <field name="domain_force">['|', ('company_id','=',False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="social_stream_post_rule_company" model="ir.rule">
+        <field name="name">Social Stream Post - Multi-Company</field>
+        <field name="model_id" ref="model_social_stream_post"/>
+        <field name="domain_force">['|', ('company_id','=',False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
     </data>
 </odoo>

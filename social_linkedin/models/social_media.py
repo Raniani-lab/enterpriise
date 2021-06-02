@@ -30,11 +30,11 @@ class SocialMediaLinkedin(models.Model):
             self.env['ir.config_parameter'].sudo().get_param('database.secret').encode('utf-8'),
             str((self.env.cr.dbname, 'social.account', self.id)).encode('utf-8'), hashlib.sha256).hexdigest()
 
-    def action_add_account(self):
+    def _action_add_account(self):
         self.ensure_one()
 
         if self.media_type != 'linkedin':
-            return super(SocialMediaLinkedin, self).action_add_account()
+            return super(SocialMediaLinkedin, self)._action_add_account()
 
         linkedin_use_own_account = self.env['ir.config_parameter'].sudo().get_param('social.linkedin_use_own_account')
         linkedin_app_id = self.env['ir.config_parameter'].sudo().get_param('social.linkedin_app_id')

@@ -33,11 +33,12 @@ class SocialPost(models.Model):
                         WHERE move.state not in ('draft', 'cancel')
                             AND move.source_id IN %s
                             AND move.move_type IN ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')
+                            AND move.company_id IN %s
                             AND line.account_id IS NOT NULL
                             AND NOT line.exclude_from_invoice_tab
                         GROUP BY move.source_id
                         """
-            self._cr.execute(query, [tuple(self.utm_source_id.ids)])
+            self._cr.execute(query, [tuple(self.utm_source_id.ids), tuple(self.env.companies.ids)])
             query_res = self._cr.dictfetchall()
             mapped_data = {datum['source_id']: datum['price_subtotal'] for datum in query_res}
 

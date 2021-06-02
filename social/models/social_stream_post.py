@@ -35,6 +35,7 @@ class SocialStreamPost(models.Model):
     published_date = fields.Datetime('Published date', help="The post published date based on third party information.")
     formatted_published_date = fields.Char('Formatted Published Date', compute='_compute_formatted_published_date')
     account_id = fields.Many2one(related='stream_id.account_id', string='Related social Account')
+    company_id = fields.Many2one('res.company', 'Company', related='account_id.company_id')
 
     stream_post_image_ids = fields.One2many('social.stream.post.image', 'stream_post_id', string="Stream Post Images",
         help="Images that were shared with this post.")

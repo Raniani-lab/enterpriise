@@ -15,7 +15,7 @@ class SocialMediaFacebook(models.Model):
 
     media_type = fields.Selection(selection_add=[('facebook', 'Facebook')])
 
-    def action_add_account(self):
+    def _action_add_account(self):
         """ Builds the URL to Facebook with the appropriate page rights request, then redirects the client.
         Redirect is done in 'self' since Facebook will then return back to the app with the 'redirect_uri' param.
 
@@ -26,7 +26,7 @@ class SocialMediaFacebook(models.Model):
         self.ensure_one()
 
         if self.media_type != 'facebook':
-            return super(SocialMediaFacebook, self).action_add_account()
+            return super(SocialMediaFacebook, self)._action_add_account()
 
         facebook_app_id = self.env['ir.config_parameter'].sudo().get_param('social.facebook_app_id')
         facebook_client_secret = self.env['ir.config_parameter'].sudo().get_param('social.facebook_client_secret')

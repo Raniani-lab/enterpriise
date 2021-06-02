@@ -171,6 +171,9 @@ class MailThread(models.AbstractModel):
         :param body: original body of current mail.message record
         :return: a array with the list of ids for the @Mention partners
         """
+        if isinstance(body, bytes):
+            body = body.decode('utf-8')
+
         at_mention_ids = []
         regex = r"<a[^>]+data-oe-id=['\"](?P<id>\d+)['\"][^>]+data-oe-model=['\"](?P<model>[\w.]+)['\"][^>]+>@[^<]+<\/a>"
         matches = re.finditer(regex, body)

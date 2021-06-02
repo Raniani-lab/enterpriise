@@ -111,7 +111,7 @@ class FetchmailServer(models.Model):
             _logger.info('Processing attachment %s' % attachment.fname)
             attachment_ext = os.path.splitext(attachment.fname)[1]
             format_content = attachment.content.encode() if isinstance(attachment.content, str) else attachment.content
-            if attachment_ext != '.xml' or not self._is_dte_email(format_content):
+            if attachment_ext.lower() != '.xml' or not self._is_dte_email(format_content):
                 _logger.info('Attachment %s has been discarded! It is not a xml file or is not a DTE email' %
                              attachment.fname)
                 continue

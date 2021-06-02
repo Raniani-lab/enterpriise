@@ -65,12 +65,13 @@ class BpostRequest():
             return _("Your company/warehouse address must be in Belgium to ship with bpost")
 
         if order:
-            if order.order_line and all(order.order_line.mapped(lambda l: l.product_id.type in ['service', 'digital'])):
-                return _("The estimated shipping price cannot be computed because all your products are service/digital.")
+            if order.order_line and all(order.order_line.mapped(lambda l: l.product_id.type == 'service')):
+                return _("The estimated shipping price cannot be computed because all your products are service.")
             if not order.order_line:
                 return _("Please provide at least one item to ship.")
-            if order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital'] and not line.display_type):
-                return _('The estimated shipping cannot be computed because the weight of your product is missing.')
+            error_lines = order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type != 'service' and not line.display_type)
+            if error_lines:
+                return _("The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n %s") % ", ".join(error_lines.product_id.mapped('name'))
         return False
 
     def _parse_address(self, partner):

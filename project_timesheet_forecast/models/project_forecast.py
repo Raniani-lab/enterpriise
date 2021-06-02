@@ -33,7 +33,7 @@ class Forecast(models.Model):
                     ('date', '<=', forecast.end_datetime.date())
                 ]
                 if forecast.task_id:
-                    all_task = forecast.task_id + forecast.task_id._get_all_subtasks()
+                    all_task = forecast.task_id + forecast.task_id.with_context(active_test=False)._get_all_subtasks()
                     timesheets = Timesheet.search(expression.AND([[('task_id', 'in', all_task.ids)], domain]))
                 elif forecast.project_id:
                     timesheets = Timesheet.search(expression.AND([[('account_id', '=', forecast.project_id.analytic_account_id.id)], domain]))

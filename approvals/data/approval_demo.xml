@@ -48,35 +48,35 @@
         </record>
 
         <record id="approval_category_data_business_trip" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_borrow_items" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_general_approval" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_contract_approval" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_payment_application" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_car_rental_application" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_job_referral_award" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
 
         <record id="approval_category_data_procurement" model="approval.category">
-            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="approver_ids" eval="[(0, 0, {'user_id': ref('base.user_admin')})]"/>
         </record>
     </data>
 </odoo>

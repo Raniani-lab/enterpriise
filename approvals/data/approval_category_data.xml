@@ -20,7 +20,7 @@
             <field name="has_location">required</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">True</field>
+            <field name="manager_approval">approver</field>
         </record>
         <record id="approval_category_data_borrow_items" model="approval.category">
             <field name="name">Borrow Items</field>
@@ -37,7 +37,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
         <record id="approval_category_data_general_approval" model="approval.category">
             <field name="name">General Approval</field>
@@ -54,7 +53,7 @@
             <field name="has_location">optional</field>
             <field name="requirer_document">required</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">True</field>
+            <field name="manager_approval">approver</field>
         </record>
         <record id="approval_category_data_contract_approval" model="approval.category">
             <field name="name">Contract Approval</field>
@@ -71,7 +70,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
         <record id="approval_category_data_payment_application" model="approval.category">
             <field name="name">Payment Application</field>
@@ -88,7 +86,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
         <record id="approval_category_data_car_rental_application" model="approval.category">
             <field name="name">Car Rental Application</field>
@@ -105,7 +102,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
         <record id="approval_category_data_job_referral_award" model="approval.category">
             <field name="name">Job Referral Award</field>
@@ -122,7 +118,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
         <record id="approval_category_data_procurement" model="approval.category">
             <field name="name">Procurement</field>
@@ -139,7 +134,6 @@
             <field name="has_location">no</field>
             <field name="requirer_document">optional</field>
             <field name="approval_minimum">1</field>
-            <field name="is_manager_approver">False</field>
         </record>
     </data>
 </odoo>

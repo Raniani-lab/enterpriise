@@ -105,7 +105,6 @@
                     <field name="requirer_document" invisible="1"/>
                     <field name="approval_minimum" invisible="1"/>
                     <field name="approval_type" invisible="1"/>
-                    <field name="is_manager_approver" invisible="1"/>
                     <div class="o_not_full oe_button_box">
                         <button name="action_get_attachment_view"
                             class="oe_stat_button"
@@ -174,7 +173,9 @@
                             <field name="approver_ids" mode="tree,kanban">
                                 <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
                                     <field name="existing_request_user_ids" invisible="1"/>
+                                    <field name="can_edit" invisible="1"/>
                                     <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
+                                    <field name="required" attrs="{'readonly': [('can_edit', '=', False)]}" force_save="1"/>
                                     <field name="status"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>

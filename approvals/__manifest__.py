@@ -26,6 +26,7 @@ creates next activities for the related approvers.
         'data/mail_activity_data.xml',
 
         'views/approval_category_views.xml',
+        'views/approval_category_approver_views.xml',
         'views/approval_product_line_views.xml',
         'views/approval_request_views.xml',
         'views/res_users_views.xml',

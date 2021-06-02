@@ -4,6 +4,7 @@
 import base64
 
 from odoo import api, fields, models, tools, _
+from odoo.exceptions import ValidationError
 from odoo.modules.module import get_module_resource
 
 
@@ -47,13 +48,20 @@ class ApprovalCategory(models.Model):
         help="Additional products that should be specified on the request.")
     requirer_document = fields.Selection([('required', 'Required'), ('optional', 'Optional')], string="Documents", default="optional", required=True)
     approval_minimum = fields.Integer(string="Minimum Approval", default="1", required=True)
+    invalid_minimum = fields.Boolean(compute='_compute_invalid_minimum')
+    invalid_minimum_warning = fields.Char(compute='_compute_invalid_minimum')
     approval_type = fields.Selection(string="Approval Type", selection=[],
         help="Allows you to define which documents you would like to create once the request has been approved")
-    is_manager_approver = fields.Boolean(
+    manager_approval = fields.Selection([('approver', 'Is Approver'), ('required', 'Is Required Approver')],
         string="Employee's Manager",
-        help="Automatically add the manager as approver on the request.")
-    user_ids = fields.Many2many('res.users', string="Approvers",
-        check_company=True, domain="[('company_ids', 'in', company_id)]")
+        help="""How the employee's manager interacts with this type of approval.
+
+        Empty: do nothing
+        Is Approver: the employee's manager will be in the approver list
+        Is Required Approver: the employee's manager will be required to approve the request.
+    """)
+    user_ids = fields.Many2many('res.users', compute='_compute_user_ids', string="Approver Users")
+    approver_ids = fields.One2many('approval.category.approver', 'category_id', string="Approvers")
     request_to_validate_count = fields.Integer("Number of requests to validate", compute="_compute_request_to_validate_count")
     automated_sequence = fields.Boolean('Automated Sequence?',
         help="If checked, the Approval Requests will have an automated generated name based on the given code.")
@@ -67,6 +75,37 @@ class ApprovalCategory(models.Model):
         requests_mapped_data = dict((data['category_id'][0], data['category_id_count']) for data in requests_data)
         for category in self:
             category.request_to_validate_count = requests_mapped_data.get(category.id, 0)
+
+    @api.depends_context('lang')
+    @api.depends('approval_minimum', 'approver_ids', 'manager_approval')
+    def _compute_invalid_minimum(self):
+        for record in self:
+            if record.approval_minimum > len(record.approver_ids) + int(bool(record.manager_approval)):
+                record.invalid_minimum = True
+            else:
+                record.invalid_minimum = False
+            record.invalid_minimum_warning = record.invalid_minimum and _('Your minimum approval exceeds the total of default approvers.')
+
+    @api.depends('approver_ids')
+    def _compute_user_ids(self):
+        for record in self:
+            record.user_ids = record.approver_ids.user_id
+
+    @api.constrains('approval_minimum', 'approver_ids')
+    def _constrains_approval_minimum(self):
+        for record in self:
+            if record.approval_minimum < len(record.approver_ids.filtered('required')):
+                raise ValidationError(_('Minimum Approval must be equal or superior to the sum of required Approvers.'))
+
+    @api.constrains('approver_ids')
+    def _constrains_approver_ids(self):
+        # There seems to be a problem with how the database is updated which doesn't let use to an sql constraint for this
+        # Issue is: records seem to be created before others are saved, meaning that if you originally have only user a
+        #  change user a to user b and add a new line with user a, the second line will be created and will trigger the constraint
+        #  before the first line will be updated which wouldn't trigger a ValidationError
+        for record in self:
+            if len(record.approver_ids) != len(record.approver_ids.user_id):
+                raise ValidationError(_('An user may not be in the approver list multiple times.'))
 
     @api.model
     def create(self, vals):

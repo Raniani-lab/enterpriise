@@ -4,6 +4,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
+from collections import defaultdict
+
 
 class ApprovalRequest(models.Model):
     _name = 'approval.request'
@@ -68,7 +70,6 @@ class ApprovalRequest(models.Model):
     requirer_document = fields.Selection(related="category_id.requirer_document")
     approval_minimum = fields.Integer(related="category_id.approval_minimum")
     approval_type = fields.Selection(related="category_id.approval_type")
-    is_manager_approver = fields.Boolean(related="category_id.is_manager_approver")
     automated_sequence = fields.Boolean(related="category_id.automated_sequence")
 
     def _compute_has_access_to_request(self):
@@ -91,6 +92,16 @@ class ApprovalRequest(models.Model):
         return res
 
     def action_confirm(self):
+        # make sure that the manager is present in the list if he is required
+        self.ensure_one()
+        if self.category_id.manager_approval == 'required':
+            employee = self.env['hr.employee'].search([('user_id', '=', self.request_owner_id.id)], limit=1)
+            if not employee.parent_id:
+                raise UserError(_('This request needs to be approved by your manager. There is no manager linked to your employee profile.'))
+            if not employee.parent_id.user_id:
+                raise UserError(_('This request needs to be approved by your manager. There is no user linked to your manager.'))
+            if not self.approver_ids.filtered(lambda a: a.user_id.id == employee.parent_id.user_id.id):
+                raise UserError(_('This request needs to be approved by your manager. Your manager is not in the approvers list.'))
         if len(self.approver_ids) < self.approval_minimum:
             raise UserError(_("You have to add at least %s approvers to confirm your request.", self.approval_minimum))
         if self.requirer_document == 'required' and not self.attachment_number:
@@ -145,10 +156,12 @@ class ApprovalRequest(models.Model):
         for approval in self:
             approval.user_status = approval.approver_ids.filtered(lambda approver: approver.user_id == self.env.user).status
 
-    @api.depends('approver_ids.status')
+    @api.depends('approver_ids.status', 'approver_ids.required')
     def _compute_request_status(self):
         for request in self:
             status_lst = request.mapped('approver_ids.status')
+            required_statuses = request.approver_ids.filtered('required').mapped('status')
+            required_approved = not required_statuses or (len(required_statuses) == 1 and required_statuses[0] == 'approved')
             minimal_approver = request.approval_minimum if len(status_lst) >= request.approval_minimum else len(status_lst)
             if status_lst:
                 if status_lst.count('cancel'):
@@ -157,7 +170,7 @@ class ApprovalRequest(models.Model):
                     status = 'refused'
                 elif status_lst.count('new'):
                     status = 'new'
-                elif status_lst.count('approved') >= minimal_approver:
+                elif status_lst.count('approved') >= minimal_approver and required_approved:
                     status = 'approved'
                 else:
                     status = 'pending'
@@ -167,17 +180,33 @@ class ApprovalRequest(models.Model):
 
     @api.onchange('category_id', 'request_owner_id')
     def _onchange_category_id(self):
-        current_users = self.approver_ids.mapped('user_id')
+        users_to_approver = defaultdict(lambda: self.env['approval.approver'])
+        for approver in self.approver_ids:
+            users_to_approver[approver.user_id.id] |= approver
+        users_to_category_approver = defaultdict(lambda: self.env['approval.category.approver'])
+        for approver in self.category_id.approver_ids:
+            users_to_category_approver[approver.user_id.id] |= approver
         new_users = self.category_id.user_ids
-        if self.category_id.is_manager_approver:
+        manager_user = 0
+        if self.category_id.manager_approval:
             employee = self.env['hr.employee'].search([('user_id', '=', self.request_owner_id.id)], limit=1)
             if employee.parent_id.user_id:
                 new_users |= employee.parent_id.user_id
-        for user in new_users - current_users:
-            self.approver_ids += self.env['approval.approver'].new({
-                'user_id': user.id,
-                'request_id': self.id,
-                'status': 'new'})
+                manager_user = employee.parent_id.user_id.id
+        for user in new_users:
+            # Force require on the manager if he is explicitely in the list
+            required = users_to_category_approver[user.id].required or \
+                (self.category_id.manager_approval == 'required' if manager_user == user.id else False)
+            current_approver = users_to_approver[user.id]
+            if current_approver and current_approver.required != required:
+                current_approver.update({'required': required})
+            elif not current_approver:
+                self.approver_ids += self.env['approval.approver'].new({
+                    'user_id': user.id,
+                    'request_id': self.id,
+                    'status': 'new',
+                    'required': required,
+                })
 
 class ApprovalApprover(models.Model):
     _name = 'approval.approver'
@@ -198,6 +227,8 @@ class ApprovalApprover(models.Model):
     company_id = fields.Many2one(
         string='Company', related='request_id.company_id',
         store=True, readonly=True, index=True)
+    required = fields.Boolean(default=False, readonly=True)
+    can_edit = fields.Boolean(compute='_compute_can_edit')
 
     def action_approve(self):
         self.request_id.action_approve(self)
@@ -217,3 +248,7 @@ class ApprovalApprover(models.Model):
             approver.existing_request_user_ids = \
                 self.mapped('request_id.approver_ids.user_id')._origin \
               | self.request_id.request_owner_id._origin
+
+    @api.depends_context('uid')
+    def _compute_can_edit(self):
+        self.update({'can_edit': self.env.user.has_group('approvals.group_approval_user')})

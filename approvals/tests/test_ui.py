@@ -10,6 +10,6 @@ class TestUi(HttpCaseWithUserDemo):
 
     def test_ui(self):
         self.env.ref('approvals.approval_category_data_business_trip').write({
-            'user_ids': [(4, self.env.ref('base.user_admin').id)],
+            'approver_ids': [(5, 0, 0), (0, 0, {'user_id': self.env.ref('base.user_admin').id})],
         })
         self.start_tour("/web", 'approvals_tour', login='admin')

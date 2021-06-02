@@ -801,10 +801,23 @@ class AccountMove(models.Model):
                             raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
 
                     with move_form.invoice_line_ids.edit(i) as line:
+                        taxes_dict = {}
+                        for tax in line.tax_ids:
+                            taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {
+                                'found_by_OCR': False,
+                                'tax_record': tax,
+                            }
                         for taxes_record in line_val['tax_ids']:
-                            if taxes_record.price_include:
-                                line.price_unit *= 1 + taxes_record.amount/100
-                            line.tax_ids.add(taxes_record)
+                            tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
+                            if tax_tuple not in taxes_dict:
+                                if taxes_record.price_include:
+                                    line.price_unit *= 1 + taxes_record.amount/100
+                                line.tax_ids.add(taxes_record)
+                            else:
+                                taxes_dict[tax_tuple]['found_by_OCR'] = True
+                        for (tax_amount, _, tax_price_include), tax_info in taxes_dict.items():
+                            if not tax_info['found_by_OCR'] and (tax_amount == 0 or not tax_price_include):
+                                line.tax_ids.remove(tax_info['tax_record'].id)
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
                 for i in range(len(move_form.line_ids)):

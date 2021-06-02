@@ -7,14 +7,13 @@
                 <ENC_3>213.123.432</ENC_3>
                 <ENC_4>UBL 2.1</ENC_4>
                 <ENC_5>DIAN 2.1</ENC_5>
-                <ENC_6>TEST/00001</ENC_6>
-                
-                
+                <ENC_6>INV/2020/08/0001</ENC_6>
+                <ENC_7>2020-08-27</ENC_7>
+                <ENC_8>19:00:00-05:00</ENC_8>
                 <ENC_9>01</ENC_9>
                 <ENC_10>COP</ENC_10>
-                <ENC_15>2</ENC_15>
-                
-                
+                <ENC_15>1</ENC_15>
+                <ENC_16>2020-09-30</ENC_16>
                 <ENC_20>2</ENC_20>
                 <ENC_21>10</ENC_21>
             </ENC>
@@ -42,7 +41,7 @@
                 <EMI_24>company_1_data</EMI_24>
 
                 <TAC>
-                    <TAC_1>O-47;A-01</TAC_1>
+                    <TAC_1>O-47</TAC_1>
                 </TAC>
 
                 <ICC>
@@ -100,7 +99,7 @@
                 <ADQ_26>1</ADQ_26>
 
                 <TCR>
-                    <TCR_1>O-47;A-01</TCR_1>
+                    <TCR_1>O-47</TCR_1>
                 </TCR>
 
                 <ILA>
@@ -132,13 +131,13 @@
                 </GTA>
             </ADQ>
             <TOT>
-                <TOT_1>33750.20</TOT_1>
+                <TOT_1>33750.00</TOT_1>
                 <TOT_2>COP</TOT_2>
-                <TOT_3>33750.20</TOT_3>
+                <TOT_3>33750.00</TOT_3>
                 <TOT_4>COP</TOT_4>
-                <TOT_5>43875.26</TOT_5>
+                <TOT_5>43875.00</TOT_5>
                 <TOT_6>COP</TOT_6>
-                <TOT_7>43875.26</TOT_7>
+                <TOT_7>43875.00</TOT_7>
                 <TOT_8>COP</TOT_8>
             </TOT>
             
@@ -147,14 +146,14 @@
             
             <TIM>
                 <TIM_1>false</TIM_1>
-                <TIM_2>5062.53</TIM_2>
+                <TIM_2>5062.50</TIM_2>
                 <TIM_3>COP</TIM_3>
 
                 <IMP>
                     <IMP_1>01</IMP_1>
-                    <IMP_2>33750.20</IMP_2>
+                    <IMP_2>33750.00</IMP_2>
                     <IMP_3>COP</IMP_3>
-                    <IMP_4>5062.53</IMP_4>
+                    <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
                     
                         <IMP_6>15.0</IMP_6>
@@ -166,14 +165,14 @@
                 </IMP>
             </TIM><TIM>
                 <TIM_1>false</TIM_1>
-                <TIM_2>5062.53</TIM_2>
+                <TIM_2>5062.50</TIM_2>
                 <TIM_3>COP</TIM_3>
 
                 <IMP>
                     <IMP_1>22</IMP_1>
-                    <IMP_2>33750.20</IMP_2>
+                    <IMP_2>33750.00</IMP_2>
                     <IMP_3>COP</IMP_3>
-                    <IMP_4>5062.53</IMP_4>
+                    <IMP_4>5062.50</IMP_4>
                     <IMP_5>COP</IMP_5>
                     
                         <IMP_6>15.0</IMP_6>
@@ -189,20 +188,20 @@
                 <TDC_1>COP</TDC_1>
                 <TDC_2>COP</TDC_2>
                 <TDC_3>1.00</TDC_3>
-                <TDC_4>2020-08-31</TDC_4>
+                <TDC_4>2020-08-27</TDC_4>
                 <TDC_5>1.00</TDC_5>
                 <TDC_6>1.00</TDC_6>
             </TDC>
             <DRF>
-                
-                
-                
-                <DRF_4>TEST/</DRF_4>
+                <DRF_1>42</DRF_1>
+                <DRF_2>2020-08-27</DRF_2>
+                <DRF_3>2020-08-27</DRF_3>
+                <DRF_4>INV/2020/08/</DRF_4>
                 <DRF_5>0</DRF_5>
                 <DRF_6>0</DRF_6>
             </DRF>
             <ITD>
-                <ITD_5>43875.26</ITD_5>
+                <ITD_5>43875.00</ITD_5>
                 <ITD_6>COP</ITD_6>
             </ITD>
 
@@ -213,7 +212,7 @@
             </NOT><NOT>
                 <NOT_1>3.- N/A</NOT_1>
             </NOT><NOT>
-                <NOT_1>6.- Payment terms: End of Following Month|Forty-Three Thousand, Eight Hundred And Seventy-Five Peso and Twenty-Six Centavos</NOT_1>
+                <NOT_1>6.- Payment terms: End of Following Month|Forty-Three Thousand, Eight Hundred And Seventy-Five Peso</NOT_1>
             </NOT><NOT>
                 <NOT_1>7.- http://www.example.com</NOT_1>
             </NOT><NOT>
@@ -221,7 +220,7 @@
             </NOT><NOT>
                 <NOT_1>10.- | | | |N/A</NOT_1>
             </NOT><NOT>
-                <NOT_1>11.- |1| |0|0</NOT_1>
+                <NOT_1>11.- |0| |0|0</NOT_1>
             </NOT>
 
             <ORC>
@@ -239,7 +238,7 @@
                 <IEN_4>Medellín</IEN_4>
                 <IEN_6>CO</IEN_6>
                 <IEN_7>company_2_data</IEN_7>
-                <IEN_8>2020-09-01</IEN_8>
+                <IEN_8>2020-08-28</IEN_8>
                 <IEN_12>00000</IEN_12>
             </IEN>
 
@@ -290,7 +289,7 @@
 
                     <IRF>
                         <IRF_1>IV</IRF_1>
-                        <IRF_2>TEST/00001</IRF_2>
+                        <IRF_2>INV/2020/08/0001</IRF_2>
                         <IRF_3>1</IRF_3>
                     </IRF>
 
@@ -335,89 +334,6 @@
                             <IIM_2>5062.50</IIM_2>
                             <IIM_3>COP</IIM_3>
                             <IIM_4>33750.00</IIM_4>
-                            <IIM_5>COP</IIM_5>
-                            
-                                <IIM_6>15.0</IIM_6>
-                                <IIM_7></IIM_7>
-                                <IIM_8></IIM_8>
-                                <IIM_9></IIM_9>
-                                <IIM_10></IIM_10>
-                            
-                        </IIM>
-                    </TII>
-                    <IAE>
-                        
-                        <IAE_1>P0000</IAE_1>
-                        <IAE_2>999</IAE_2>
-                    </IAE>
-                    
-                    
-            </ITE><ITE>
-                    <ITE_1>2</ITE_1>
-                    <ITE_2></ITE_2>
-                    <ITE_3>1.0</ITE_3>
-                    <ITE_4>S7</ITE_4>
-                    <ITE_5>0.20</ITE_5>
-                    <ITE_6>COP</ITE_6>
-                    <ITE_7>0.20</ITE_7>
-                    <ITE_8>COP</ITE_8>
-                    <ITE_10>Line 2</ITE_10>
-                    <ITE_11>Line 2</ITE_11>
-                    <ITE_18>P0000</ITE_18>
-                    <ITE_19>0.20</ITE_19>
-                    <ITE_20>COP</ITE_20>
-                    <ITE_21>0.20</ITE_21>
-                    <ITE_22>COP</ITE_22>
-                    <ITE_27>1.0</ITE_27>
-                    <ITE_28>S7</ITE_28>
-
-                    <IRF>
-                        <IRF_1>IV</IRF_1>
-                        <IRF_2>TEST/00001</IRF_2>
-                        <IRF_3>2</IRF_3>
-                    </IRF>
-
-                    <MYM>
-                        
-                        <MYM_2>[P0000] product_a</MYM_2>
-                    </MYM>
-
-                    <IDE>
-                        <IDE_1>false</IDE_1>
-                        <IDE_2>0.00</IDE_2>
-                        <IDE_3>COP</IDE_3>
-                        <IDE_6>0.0</IDE_6>
-                        <IDE_7>0.20</IDE_7>
-                        <IDE_8>COP</IDE_8>
-                        <IDE_10>1</IDE_10>
-                    </IDE>
-                    <TII>
-                        <TII_1>0.03</TII_1>
-                        <TII_2>COP</TII_2>
-                        <TII_3>false</TII_3>
-                        <IIM>
-                            <IIM_1>01</IIM_1>
-                            <IIM_2>0.03</IIM_2>
-                            <IIM_3>COP</IIM_3>
-                            <IIM_4>0.20</IIM_4>
-                            <IIM_5>COP</IIM_5>
-                            
-                                <IIM_6>15.0</IIM_6>
-                                <IIM_7></IIM_7>
-                                <IIM_8></IIM_8>
-                                <IIM_9></IIM_9>
-                                <IIM_10></IIM_10>
-                            
-                        </IIM>
-                    </TII><TII>
-                        <TII_1>0.03</TII_1>
-                        <TII_2>COP</TII_2>
-                        <TII_3>false</TII_3>
-                        <IIM>
-                            <IIM_1>22</IIM_1>
-                            <IIM_2>0.03</IIM_2>
-                            <IIM_3>COP</IIM_3>
-                            <IIM_4>0.20</IIM_4>
                             <IIM_5>COP</IIM_5>
                             
                                 <IIM_6>15.0</IIM_6>

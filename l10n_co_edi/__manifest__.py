@@ -7,11 +7,11 @@
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Colombian Localization for EDI documents',
     'author': 'Odoo Sa',
-    'depends': ['account', 'l10n_co', 'product_unspsc'],
+    'depends': ['account_edi', 'l10n_co', 'product_unspsc'],
     'data': [
         'security/ir.model.access.csv',
+        'data/account_edi_data.xml',
         'data/account.tax.group.csv',
-        'data/account_invoice.xml',
         'data/l10n_co_edi.type_code.csv',
         'data/l10n_co_edi.tax.type.csv',
         'data/account.tax.template.csv',
@@ -30,7 +30,6 @@
         'views/tax_type_views.xml',
         'views/res_config_settings_views.xml',
         'views/electronic_invoice.xml',
-        'views/res_country_state_views.xml',
         'wizards/account_move_reversal_view.xml',
         'wizards/account_debit_note_view.xml'
     ],

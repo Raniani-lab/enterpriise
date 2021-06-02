@@ -1,4 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, models
 
 
@@ -6,26 +7,15 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     l10n_co_edi_large_taxpayer = fields.Boolean(string='Gran Contribuyente')
-
-    l10n_co_edi_representation_type_id = fields.Many2one('l10n_co_edi.type_code', string='Tipo de Representación', domain=[('type', '=', 'representation')])
-    l10n_co_edi_establishment_type_id = fields.Many2one('l10n_co_edi.type_code', string='Tipo Establecimiento', domain=[('type', '=', 'establishment')])
-
-    l10n_co_edi_obligation_type_ids = fields.Many2many('l10n_co_edi.type_code',
-                                                       'partner_l10n_co_edi_obligation_types',
-                                                       'partner_id', 'type_id',
-                                                       string='Obligaciones y Responsabilidades',
-                                                       domain=[('type', '=', 'obligation')])
-    l10n_co_edi_customs_type_ids = fields.Many2many('l10n_co_edi.type_code',
-                                                    'partner_l10n_co_edi_customs_types',
-                                                    'partner_id', 'type_id',
-                                                    string='Usuario Aduanero',
-                                                    domain=[('type', '=', 'customs')])
-    l10n_co_edi_simplified_regimen = fields.Boolean('Simplified Regimen')
     l10n_co_edi_fiscal_regimen = fields.Selection([
         ('48', 'Responsable del Impuesto sobre las ventas - IVA'),
         ('49', 'No responsables del IVA'),
     ], string="Fiscal Regimen", required=True, default='48')
     l10n_co_edi_commercial_name = fields.Char('Commercial Name')
+    l10n_co_edi_obligation_type_ids = fields.Many2many('l10n_co_edi.type_code',
+                                                       'partner_l10n_co_edi_obligation_types',
+                                                       'partner_id', 'type_id',
+                                                       string='Obligaciones y Responsabilidades')
 
     def _get_vat_without_verification_code(self):
         self.ensure_one()
@@ -45,5 +35,36 @@ class ResPartner(models.Model):
             return self.vat.split('-')[1]
         return self.vat[-1] if self.vat else ''
 
-    def _l10n_co_edi_get_fiscal_values(self):
-        return self.l10n_co_edi_obligation_type_ids | self.l10n_co_edi_customs_type_ids
+    def _l10n_co_edi_get_partner_type(self):
+        self.ensure_one()
+        if self.is_company:
+            return '3' if self.l10n_co_edi_large_taxpayer else '1'
+        else:
+            return '2'
+
+    def _l10n_co_edi_get_carvajal_code_for_identification_type(self):
+        self.ensure_one()
+        IDENTIFICATION_TYPE_TO_CARVAJAL_CODE = {
+            'rut': '31',
+            'id_card': '12',
+            'national_citizen_id': '13',
+            'id_document': '12',
+            'passport': '41',
+            'external_id': '21',
+            'foreign_id_card': '22',
+            'diplomatic_card': 'O-99',
+            'residence_document': 'O-99',
+            'civil_registration': '11',
+        }
+
+        identification_type = self.l10n_latam_identification_type_id.l10n_co_document_code
+        return IDENTIFICATION_TYPE_TO_CARVAJAL_CODE[identification_type] if identification_type else ''
+
+    def _l10n_co_edi_get_company_address(self):
+        """
+        Function forms address of the company avoiding duplicity. contact_address attribute holds the complete address
+        of company, which should not be used.
+        Information like city, state which is already sent in other tags should be excluded from the company's address.
+        """
+        self.ensure_one()
+        return '%s %s' % (self.street or '', self.street2 or '')

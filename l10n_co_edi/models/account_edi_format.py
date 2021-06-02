@@ -2,12 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, api, models, _
 from odoo.tools.float_utils import float_compare
-from odoo.tools import DEFAULT_SERVER_TIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_TIME_FORMAT, float_repr
+from odoo.tools import html2plaintext
 from .carvajal_request import CarvajalRequest
 
 import pytz
 import base64
-from collections import defaultdict
 from datetime import timedelta
 
 
@@ -24,21 +24,21 @@ class AccountEdiFormat(models.Model):
         sequence is used because Carvajal requires the invoice number
         to only contain digits.
         '''
-        SEQUENCE_CODE = 'l10n_co_edi.filename'
+        seq_code = 'l10n_co_edi.filename'
         IrSequence = self.env['ir.sequence'].with_company(invoice.company_id)
-        invoice_number = IrSequence.next_by_code(SEQUENCE_CODE)
+        invoice_number = IrSequence.next_by_code(seq_code)
 
         # if a sequence does not yet exist for this company create one
         if not invoice_number:
             IrSequence.sudo().create({
                 'name': 'Colombian electronic invoicing sequence for company %s' % invoice.company_id.id,
-                'code': SEQUENCE_CODE,
+                'code': seq_code,
                 'implementation': 'no_gap',
                 'padding': 10,
                 'number_increment': 1,
                 'company_id': invoice.company_id.id,
             })
-            invoice_number = IrSequence.next_by_code(SEQUENCE_CODE)
+            invoice_number = IrSequence.next_by_code(seq_code)
 
         return 'face_{}{:0>10}{:010x}.xml'.format(invoice._l10n_co_edi_get_electronic_invoice_type(),
                                                   invoice.company_id.vat,
@@ -50,6 +50,10 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_co_edi_generate_xml(self, invoice):
         '''Renders the XML that will be sent to Carvajal.'''
+
+        def format_monetary(number, currency):
+            # Format the monetary values to avoid trailing decimals (e.g. 90.85000000000001).
+            return float_repr(number, currency.decimal_places)
 
         def get_notas():
             '''This generates notes in a particular format. These notes are pieces
@@ -63,23 +67,20 @@ class AccountEdiFormat(models.Model):
             instead of some extra simple XML tags but such questions are best
             left to philosophers, not dumb developers like myself.
             '''
-            def get_total_volume():
-                '''Volume has to be reported in l (not e.g. ml).'''
-                lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_vol'))
-                l = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_litre')) for line in lines)
-                return int(l)
+            # Volume has to be reported in l (not e.g. ml).
+            lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_vol'))
+            liters = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_litre')) for line in lines)
+            total_volume = int(liters)
 
-            def get_total_weight():
-                '''Weight has to be reported in kg (not e.g. g).'''
-                lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_kgm'))
-                kg = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_kgm')) for line in lines)
-                return int(kg)
+            # Weight has to be reported in kg (not e.g. g).
+            lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_kgm'))
+            kg = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_kgm')) for line in lines)
+            total_weight = int(kg)
 
-            def get_total_units():
-                '''Units have to be reported as units (not e.g. boxes of 12).'''
-                lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'))
-                units = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_unit')) for line in lines)
-                return int(units)
+            # Units have to be reported as units (not e.g. boxes of 12).
+            lines = invoice.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'))
+            units = sum(line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_unit')) for line in lines)
+            total_units = int(units)
 
             withholding_amount = invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
             amount_in_words = invoice.currency_id.with_context(lang=invoice.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
@@ -92,12 +93,12 @@ class AccountEdiFormat(models.Model):
                                           invoice.company_id.l10n_co_edi_header_resolucion_aplicable or '',
                                           invoice.company_id.l10n_co_edi_header_actividad_economica or ''),
                 '2.-%s' % (invoice.company_id.l10n_co_edi_header_bank_information or '').replace('\n', '|'),
-                '3.- %s' % (invoice.narration or 'N/A'),
-                '6.- %s|%s' % (invoice.invoice_payment_term_id.note, amount_in_words),
+                '3.- %s' % (html2plaintext(invoice.narration or 'N/A')),
+                '6.- %s|%s' % (html2plaintext(invoice.invoice_payment_term_id.note), amount_in_words),
                 '7.- %s' % (invoice.company_id.website),
                 '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', shipping_partner.phone or '', invoice.invoice_origin or ''),
                 '10.- | | | |%s' % (invoice.invoice_origin or 'N/A'),
-                '11.- |%s| |%s|%s' % (get_total_units(), get_total_weight(), get_total_volume())
+                '11.- |%s| |%s|%s' % (total_units, total_weight, total_volume)
             ]
 
             return notas
@@ -105,14 +106,6 @@ class AccountEdiFormat(models.Model):
         invoice = invoice.with_context(lang=invoice.partner_id.lang)
 
         move_lines_with_tax_type = invoice.line_ids.filtered('tax_line_id.l10n_co_edi_type')
-        retention_lines = move_lines_with_tax_type.filtered(lambda move: move.tax_line_id.l10n_co_edi_type.retention)
-        retention_lines_dict = defaultdict(list)
-        for line in retention_lines:
-            retention_lines_dict[line.tax_line_id.l10n_co_edi_type].append(line)
-        regular_lines = move_lines_with_tax_type - retention_lines
-        regular_lines_dict = defaultdict(list)
-        for line in regular_lines:
-            regular_lines_dict[line.tax_line_id.l10n_co_edi_type].append(line)
 
         ovt_tax_codes = ('01C', '02C', '03C')
         ovt_taxes = move_lines_with_tax_type.filtered(lambda move: move.tax_line_id.l10n_co_edi_type.code in ovt_tax_codes).tax_line_id
@@ -122,29 +115,20 @@ class AccountEdiFormat(models.Model):
             'out_refund': 'NC',
         }
 
-        taxes_amount_dict = {}
+        def group_tax_retention(tax_values):
+            return {'tax': tax_values['tax_id'], 'l10n_co_edi_type': tax_values['tax_id'].l10n_co_edi_type}
+
+        tax_details = invoice._prepare_edi_tax_details(grouping_key_generator=group_tax_retention)
+        retention_taxes = [(group, detail) for group, detail in tax_details['tax_details'].items() if detail['l10n_co_edi_type'].retention]
+        regular_taxes = [(group, detail) for group, detail in tax_details['tax_details'].items() if not detail['l10n_co_edi_type'].retention]
+
         exempt_tax_dict = {}
         tax_group_covered_goods = self.env.ref('l10n_co.tax_group_covered_goods', raise_if_not_found=False)
         for line in invoice.invoice_line_ids:
-            price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_ids.compute_all(price_unit, quantity=line.quantity, currency=line.currency_id,
-                                             product=line.product_id, partner=line.partner_id)
-            taxes_amount_dict[line.id] = []
-            for tax in taxes['taxes']:
-                tax_rec = self.env['account.tax'].browse(tax['id'])
-                taxes_amount_dict[line.id].append({'base': "%.2f" % tax['base'],
-                                                   'tax': tax['amount'],
-                                                   'code': tax_rec.l10n_co_edi_type.code,
-                                                   'retention': tax_rec.l10n_co_edi_type.retention,
-                                                   'rate': tax_rec.amount,
-                                                   'amount_type': tax_rec.amount_type})
             if tax_group_covered_goods and tax_group_covered_goods in line.mapped('tax_ids.tax_group_id'):
                 exempt_tax_dict[line.id] = True
         # The rate should indicate how many pesos is one foreign currency
-        term_lines = invoice.line_ids.filtered(lambda line: line.account_id.internal_type == 'receivable')
-        rate = sum(abs(term_lines.mapped('balance'))) / sum(abs(term_lines.mapped('amount_currency')))
-
-        currency_rate = "%.2f" % rate
+        currency_rate = "%.2f" % (tax_details['base_amount'] / tax_details['base_amount_currency'])
 
         withholding_amount = '%.2f' % (invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda move: move.tax_line_id and not move.tax_line_id.l10n_co_edi_type.retention).mapped('price_total')))
 
@@ -178,8 +162,9 @@ class AccountEdiFormat(models.Model):
             'company_partner': invoice.company_id.partner_id,
             'sales_partner': invoice.user_id,
             'invoice_partner': invoice.partner_id.commercial_partner_id,
-            'retention_lines_dict': retention_lines_dict,
-            'regular_lines_dict': regular_lines_dict,
+            'retention_taxes': retention_taxes,
+            'regular_taxes': regular_taxes,
+            'tax_details': tax_details,
             'tax_types': invoice.mapped('line_ids.tax_ids.l10n_co_edi_type'),
             'exempt_tax_dict': exempt_tax_dict,
             'currency_rate': currency_rate,
@@ -188,12 +173,12 @@ class AccountEdiFormat(models.Model):
             'ovt_taxes': ovt_taxes,
             'float_compare': float_compare,
             'notas': get_notas(),
-            'taxes_amount_dict': taxes_amount_dict,
             'withholding_amount': withholding_amount,
             'validation_time': validation_time,
             'delivery_date': invoice.invoice_date + timedelta(1),
             'description_code': description_code,
             'description': description,
+            'format_monetary': format_monetary,
         })
         return '<?xml version="1.0" encoding="utf-8"?>'.encode() + xml_content
 
@@ -210,7 +195,7 @@ class AccountEdiFormat(models.Model):
             'type': 'binary',
             'datas': base64.encodebytes(xml),
             'mimetype': 'application/xml',
-            'description': _('Colombian invoice UBL generated for the %s document.') % invoice.name,
+            'description': _('Colombian invoice UBL generated for the %s document.', invoice.name),
         })
 
         # == Upload ==
@@ -253,7 +238,7 @@ class AccountEdiFormat(models.Model):
                     'type': 'binary',
                     'datas': base64.b64encode(response['xml_file']),
                     'mimetype': 'application/xml',
-                    'description': _('Colombian invoice UBL generated for the %s document.') % invoice.name,
+                    'description': _('Colombian invoice UBL generated for the %s document.', invoice.name),
                 })
 
             # == Chatter ==
@@ -320,12 +305,11 @@ class AccountEdiFormat(models.Model):
 
         return edi_result
 
-    def _post_invoice_edi(self, invoices, test_mode=False):
+    def _post_invoice_edi(self, invoices):
         # OVERRIDE
         self.ensure_one()
-        edi_result = super()._post_invoice_edi(invoices, test_mode=test_mode)
         if self.code != 'ubl_carvajal':
-            return edi_result
+            return super()._post_invoice_edi(invoices)
 
         invoice = invoices  # No batching ensures that only one invoice is given as parameter
         if not invoice.l10n_co_edi_transaction:
@@ -333,7 +317,7 @@ class AccountEdiFormat(models.Model):
         else:
             return {invoice: self._l10n_co_post_invoice_step_2(invoice)}
 
-    def _cancel_invoice_edi(self, invoices, test_mode=False):
+    def _cancel_invoice_edi(self, invoices):
         # OVERRIDE
         self.ensure_one()
         return {invoice: {'success': True} for invoice in invoices}  # By default, cancel succeeds doing nothing.

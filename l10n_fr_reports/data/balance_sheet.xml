@@ -3,6 +3,9 @@
 <odoo>
     <record id="account_financial_report_l10n_fr_bilan" model="account.financial.html.report">
         <field name="name">Bilan comptable</field>
+        <field name="unfold_all_filter" eval="True"/>
+        <field name="date_range" eval="False" />
+        <field name="show_journal_filter" eval="True"/>
         <field name='parent_id' ref='l10n_fr.account_reports_fr_statements_menu'/>
         <field name="country_id" ref="base.fr"/>
     </record>
@@ -78,6 +81,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '201%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_1_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -89,6 +93,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2801%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -109,6 +114,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '203%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_2_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -120,6 +126,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2803%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -139,6 +146,7 @@
         <field name="parent_id" ref='account_financial_report_line_03_0_3_fr_bilan_actif'/>
         <field name="domain" eval="[('account_id.code', '=like', '205%')]"/>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_3_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -151,6 +159,7 @@
                                     ('account_id.code', '=like', '2905%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_4_fr_bilan_actif" model="account.financial.html.report.line">
@@ -172,6 +181,7 @@
                                    ('account_id.code', '=like', '207%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_4_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -184,6 +194,7 @@
                                    ('account_id.code', '=like', '2907%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_5_fr_bilan_actif" model="account.financial.html.report.line">
@@ -204,6 +215,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '208%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_5_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -216,6 +228,7 @@
                                    ('account_id.code', '=like', '2908%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_6_fr_bilan_actif" model="account.financial.html.report.line">
@@ -236,6 +249,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '232%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_6_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -247,6 +261,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2932%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_7_fr_bilan_actif" model="account.financial.html.report.line">
@@ -267,6 +282,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '237%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_0_7_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -277,6 +293,7 @@
         <field name="parent_id" ref='account_financial_report_line_03_0_7_fr_bilan_actif'/>
         <field name="domain" eval="[('account_id.code', '=like', '2937%')]"/>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_02_4_fr_bilan_actif" model="account.financial.html.report.line">
@@ -306,6 +323,7 @@
                                    ('account_id.code', '=like', '212%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_1_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -319,6 +337,7 @@
                                    ('account_id.code', '=like', '2911%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -340,6 +359,7 @@
                                    ('account_id.code', '=like', '214%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_2_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -352,6 +372,7 @@
                                    ('account_id.code', '=like', '2814%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -372,6 +393,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '215%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_3_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -383,6 +405,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2815%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_4_fr_bilan_actif" model="account.financial.html.report.line">
@@ -403,6 +426,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '218%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_4_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -415,6 +439,7 @@
                                    ('account_id.code', '=like', '282%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_5_fr_bilan_actif" model="account.financial.html.report.line">
@@ -435,6 +460,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '231%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_5_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -446,6 +472,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2931%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_6_fr_bilan_actif" model="account.financial.html.report.line">
@@ -466,6 +493,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '238%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_1_6_amor_fr_bilan_actif" model="account.financial.html.report.line">
@@ -476,6 +504,7 @@
         <field name="parent_id" ref='account_financial_report_line_03_1_6_fr_bilan_actif'/>
         <field name="domain" eval="[('account_id.code', '=like', '2938%')]"/>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_02_5_fr_bilan_actif" model="account.financial.html.report.line">
@@ -506,6 +535,7 @@
                                    ('account_id.code', '=like', '266%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_1a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -518,6 +548,7 @@
                                    ('account_id.code', '=like', '2966%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">-sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -538,6 +569,7 @@
         <field name="domain" eval="['|', ('account_id.code', '=like', '267%'), ('account_id.code', '=like', '268%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_2a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -549,6 +581,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2967%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -569,6 +602,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '273%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_3a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -580,6 +614,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2973%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_4_fr_bilan_actif" model="account.financial.html.report.line">
@@ -603,6 +638,7 @@
                                    ('account_id.code', '=like', '278%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_4a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -615,6 +651,7 @@
                                    ('account_id.code', '=like', '2972%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_5_fr_bilan_actif" model="account.financial.html.report.line">
@@ -636,6 +673,7 @@
                                    ('account_id.code', '=like', '27684%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_5a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -647,6 +685,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '2974%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_6_fr_bilan_actif" model="account.financial.html.report.line">
@@ -671,6 +710,7 @@
                                    ('account_id.code', '=like', '27684%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_2_6a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -683,6 +723,7 @@
                                    ('account_id.code', '=like', '2976%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_02_6_fr_bilan_actif" model="account.financial.html.report.line">
@@ -729,6 +770,7 @@
                                    ('account_id.code', '=like', '32%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_1a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -741,6 +783,7 @@
                                    ('account_id.code', '=like', '392%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -762,6 +805,7 @@
                                    ('account_id.code', '=like', '34%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_2a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -774,6 +818,7 @@
                                    ('account_id.code', '=like', '394%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -794,6 +839,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '35%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_3as_fr_bilan_actif" model="account.financial.html.report.line">
@@ -805,6 +851,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '395%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_4_fr_bilan_actif" model="account.financial.html.report.line">
@@ -825,6 +872,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '37%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_4a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -836,6 +884,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '397%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_3_5_fr_bilan_actif" model="account.financial.html.report.line">
@@ -880,6 +929,7 @@
                                    ('account_id.code', '=like', '418%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_4_1a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -891,6 +941,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '491%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_4_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -923,6 +974,7 @@
                                    ('account_id.code', '=like', '475%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum + AUTRES_CREANCES_BRUTD</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_4_2bd_fr_bilan_actif" model="account.financial.html.report.line">
@@ -952,6 +1004,7 @@
                                    ('account_id.code', '=like', '4686%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum_if_pos_groupby</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_4_2a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -964,6 +1017,7 @@
                                    ('account_id.code', '=like', '496%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_4_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -1003,6 +1057,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '502%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_5_1a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -1014,6 +1069,7 @@
         <field name="domain" eval="[('account_id.code', '=like', '5903%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">- sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_5_2_fr_bilan_actif" model="account.financial.html.report.line">
@@ -1036,6 +1092,7 @@
                                    ('account_id.code', '=like', '509%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_5_2a_fr_bilan_actif" model="account.financial.html.report.line">
@@ -1048,6 +1105,7 @@
                                    '!', ('account_id.code', '=like', '5903%')]"/>
         <field name="groupby">account_id</field>
         <field name="formulas">sum</field>
+        <field name="hide_if_zero" eval="True"/>
     </record>
 
     <record id="account_financial_report_line_03_5_3_fr_bilan_actif" model="account.financial.html.report.line">
@@ -1294,9 +1352,16 @@
         <field name="level" eval="3" />
         <field name="sequence" eval="6"/>
         <field name="parent_id" ref='account_financial_report_line_02_2_fr_bilan_passif'/>
-        <field name="domain" eval="[('account_id.code', '=like', '110%')]"/>
+        <field name="domain" eval="[
+                                   '|', ('account_id.code', '=like', '7%'),
+                                   '|', ('account_id.code', '=like', '6%'),
+                                   '|', ('account_id.code', '=like', '11%'),
+                                   ('account_id.code', '=like', '12%')
+                                   ]"/>
         <field name="groupby">account_id</field>
-        <field name="formulas">-sum</field>
+        <field name="formulas">-sum - RESULT_LEXERCICE</field>
+        <field name="show_domain">never</field>
+        <field name="special_date_changer">from_beginning</field>
     </record>
 
     <record id="account_financial_report_line_03_1_7_fr_bilan_passif" model="account.financial.html.report.line">
@@ -1305,9 +1370,10 @@
         <field name="level" eval="3" />
         <field name="sequence" eval="7"/>
         <field name="parent_id" ref='account_financial_report_line_02_2_fr_bilan_passif'/>
-        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]" />
-        <field name="formulas">total_products - total_charges - sum</field>
-        <field name="special_date_changer">from_beginning</field>
+        <field name="domain" eval="['|', ('account_id.code', '=like', '7%'), ('account_id.code', '=like', '6%')]" />
+        <field name="formulas">-sum</field>
+        <field name="show_domain">never</field>
+        <field name="special_date_changer">from_fiscalyear</field>
     </record>
 
     <record id="account_financial_report_line_03_1_8_fr_bilan_passif" model="account.financial.html.report.line">
@@ -1588,7 +1654,7 @@
                                    '|', ('account_id.code', '=like', '448%'),
                                    '|', ('account_id.code', '=like', '4457%'),
                                    ('account_id.code', '=like', '4458%'),
-                                   '!', '|', ('account_id.code', '=like', '4287%'), 
+                                   '!', '|', ('account_id.code', '=like', '4287%'),
                                    '|', ('account_id.code', '=like', '44584%'),
                                    ('account_id.code', '=like', '44587%')]"/>
         <field name="groupby">account_id</field>

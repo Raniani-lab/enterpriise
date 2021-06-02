@@ -8,6 +8,8 @@ import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_s
 import { studioService } from "@web_studio/studio_service";
 import { StudioSystray } from "@web_studio/systray_item/systray_item";
 import { companyService } from "@web/webclient/company_service";
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
+
 import testUtils from "web.test_utils";
 
 // -----------------------------------------------------------------------------
@@ -115,6 +117,16 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.module("Studio Navigation");
+
+    QUnit.test("Studio not available for non system users", async function (assert) {
+        assert.expect(2);
+
+        patchWithCleanup(odoo.session_info, { is_system: false });
+        const webClient = await createEnterpriseWebClient({ testConfig });
+        assert.containsOnce(webClient, ".o_main_navbar");
+
+        assert.containsNone(webClient, ".o_main_navbar .o_web_studio_navbar_item a");
+    });
 
     QUnit.test("open Studio with act_window", async function (assert) {
         assert.expect(22);

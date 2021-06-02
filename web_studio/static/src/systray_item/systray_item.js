@@ -3,6 +3,10 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/service_hook";
 
 export class StudioSystray extends owl.Component {
+    static isDisplayed(env) {
+        return env.services.user.isSystem;
+    }
+
     constructor() {
         super(...arguments);
         this.actionManager = useService("action");

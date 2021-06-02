@@ -393,6 +393,43 @@ class AccountEdiFormat(models.Model):
     # CFDI: PACs
     # -------------------------------------------------------------------------
 
+    def _l10n_mx_edi_post_invoice_pac(self, invoice, exported):
+        pac_name = invoice.company_id.l10n_mx_edi_pac
+
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
+        if credentials.get('errors'):
+            return {
+                'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
+                'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(exported['cfdi_str'])),
+            }
+
+        res = getattr(self, '_l10n_mx_edi_%s_sign_invoice' % pac_name)(invoice, credentials, exported['cfdi_str'])
+        if res.get('errors'):
+            return {
+                'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
+                'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(exported['cfdi_str'])),
+            }
+
+        return res
+
+    def _l10n_mx_edi_post_payment_pac(self, move, exported):
+        pac_name = move.company_id.l10n_mx_edi_pac
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
+        if credentials.get('errors'):
+            return {
+                'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
+                'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(exported['cfdi_str'])),
+            }
+
+        res = getattr(self, '_l10n_mx_edi_%s_sign_payment' % pac_name)(move, credentials, exported['cfdi_str'])
+        if res.get('errors'):
+            return {
+                'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
+                'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(exported['cfdi_str'])),
+            }
+
+        return res
+
     def _l10n_mx_edi_get_finkok_credentials(self, move):
         if move.company_id.l10n_mx_edi_pac_test_env:
             return {
@@ -822,9 +859,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         reconciled_invoices = move._get_reconciled_invoices()
         return 'PPD' in reconciled_invoices.mapped('l10n_mx_edi_payment_policy')
 
-    def _post_invoice_edi(self, invoices, test_mode=False):
+    def _post_invoice_edi(self, invoices):
         # OVERRIDE
-        edi_result = super()._post_invoice_edi(invoices, test_mode=test_mode)
+        edi_result = super()._post_invoice_edi(invoices)
         if self.code != 'cfdi_3_3':
             return edi_result
 
@@ -845,30 +882,12 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
                 }
                 continue
-            cfdi_str = res['cfdi_str']
 
             # == Call the web-service ==
-            if test_mode:
-                res['cfdi_signed'] = res['cfdi_str']
-                res['cfdi_encoding'] = 'str'
-            else:
-                pac_name = invoice.company_id.l10n_mx_edi_pac
-
-                credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
-                if credentials.get('errors'):
-                    edi_result[invoice] = {
-                        'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
-                        'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
-                    }
-                    continue
-
-                res = getattr(self, '_l10n_mx_edi_%s_sign_invoice' % pac_name)(invoice, credentials, res['cfdi_str'])
-                if res.get('errors'):
-                    edi_result[invoice] = {
-                        'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
-                        'attachment': self._create_invoice_cfdi_attachment(invoice, base64.encodebytes(cfdi_str)),
-                    }
-                    continue
+            res = self._l10n_mx_edi_post_invoice_pac(invoice, res)
+            if res.get('error'):
+                edi_result[invoice] = res
+                continue
 
             addenda = invoice.partner_id.l10n_mx_edi_addenda or invoice.partner_id.commercial_partner_id.l10n_mx_edi_addenda
             if addenda:
@@ -919,9 +938,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         else:
             return IrAttachment.create(values)
 
-    def _cancel_invoice_edi(self, invoices, test_mode=False):
+    def _cancel_invoice_edi(self, invoices):
         # OVERRIDE
-        edi_result = super()._cancel_invoice_edi(invoices, test_mode=test_mode)
+        edi_result = super()._cancel_invoice_edi(invoices)
         if self.code != 'cfdi_3_3':
             return edi_result
 
@@ -934,23 +953,20 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 continue
 
             # == Call the web-service ==
-            if test_mode:
-                res = {'success': True}
-            else:
-                pac_name = invoice.company_id.l10n_mx_edi_pac
+            pac_name = invoice.company_id.l10n_mx_edi_pac
 
-                credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
-                if credentials.get('errors'):
-                    edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
-                    continue
+            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice)
+            if credentials.get('errors'):
+                edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
+                continue
 
-                signed_edi = invoice._get_l10n_mx_edi_signed_edi_document()
-                if signed_edi:
-                    cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
-                res = getattr(self, '_l10n_mx_edi_%s_cancel_invoice' % pac_name)(invoice, credentials, cfdi_data)
-                if res.get('errors'):
-                    edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
-                    continue
+            signed_edi = invoice._get_l10n_mx_edi_signed_edi_document()
+            if signed_edi:
+                cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
+            res = getattr(self, '_l10n_mx_edi_%s_cancel_invoice' % pac_name)(invoice, credentials, cfdi_data)
+            if res.get('errors'):
+                edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
+                continue
 
             edi_result[invoice] = res
 
@@ -962,9 +978,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
 
         return edi_result
 
-    def _post_payment_edi(self, payments, test_mode=False):
+    def _post_payment_edi(self, payments):
         # OVERRIDE
-        edi_result = super()._post_payment_edi(payments, test_mode=test_mode)
+        edi_result = super()._post_payment_edi(payments)
         if self.code != 'cfdi_3_3':
             return edi_result
 
@@ -985,30 +1001,12 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                     'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
                 }
                 continue
-            cfdi_str = res['cfdi_str']
 
             # == Call the web-service ==
-            if test_mode:
-                res['cfdi_signed'] = res['cfdi_str']
-                res['cfdi_encoding'] = 'str'
-            else:
-                pac_name = move.company_id.l10n_mx_edi_pac
-
-                credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
-                if credentials.get('errors'):
-                    edi_result[move] = {
-                        'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors']),
-                        'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(cfdi_str)),
-                    }
-                    continue
-
-                res = getattr(self, '_l10n_mx_edi_%s_sign_payment' % pac_name)(move, credentials, res['cfdi_str'])
-                if res.get('errors'):
-                    edi_result[move] = {
-                        'error': self._l10n_mx_edi_format_error_message(_("PAC failed to sign the CFDI:"), res['errors']),
-                        'attachment': self._create_payment_cfdi_attachment(move, base64.encodebytes(cfdi_str)),
-                    }
-                    continue
+            res = self._l10n_mx_edi_post_payment_pac(move, res)
+            if res.get('error'):
+                edi_result[move] = res
+                continue
 
             # == Create the attachment ==
             cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
@@ -1028,9 +1026,9 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         descritpion = _('Mexican payment CFDI generated for the %s document.') % move.name
         return self._create_cfdi_attachment(cfdi_filename, descritpion, move, data)
 
-    def _cancel_payment_edi(self, moves, test_mode=False):
+    def _cancel_payment_edi(self, moves, ):
         # OVERRIDE
-        edi_result = super()._cancel_payment_edi(moves, test_mode=test_mode)
+        edi_result = super()._cancel_payment_edi(moves)
         if self.code != 'cfdi_3_3':
             return edi_result
 
@@ -1043,23 +1041,20 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 continue
 
             # == Call the web-service ==
-            if test_mode:
-                res = {'success': True}
-            else:
-                pac_name = move.company_id.l10n_mx_edi_pac
+            pac_name = move.company_id.l10n_mx_edi_pac
 
-                credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
-                if credentials.get('errors'):
-                    edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
-                    continue
+            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move)
+            if credentials.get('errors'):
+                edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
+                continue
 
-                signed_edi = move._get_l10n_mx_edi_signed_edi_document()
-                if signed_edi:
-                    cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
-                res = getattr(self, '_l10n_mx_edi_%s_cancel_payment' % pac_name)(move, credentials, cfdi_data)
-                if res.get('errors'):
-                    edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
-                    continue
+            signed_edi = move._get_l10n_mx_edi_signed_edi_document()
+            if signed_edi:
+                cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
+            res = getattr(self, '_l10n_mx_edi_%s_cancel_payment' % pac_name)(move, credentials, cfdi_data)
+            if res.get('errors'):
+                edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
+                continue
 
             edi_result[move] = res
 

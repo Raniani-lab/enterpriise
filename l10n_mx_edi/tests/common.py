@@ -10,6 +10,12 @@ import datetime
 from pytz import timezone
 
 
+def mocked_l10n_mx_edi_pac(edi_format, invoice, exported):
+    exported['cfdi_signed'] = exported['cfdi_str']
+    exported['cfdi_encoding'] = 'str'
+    return exported
+
+
 @tagged('-at_install', 'post_install')
 class TestMxEdiCommon(AccountEdiTestCommon):
 
@@ -126,7 +132,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
 
         # ==== Records needing CFDI ====
 
-        cls.invoice = cls.env['account.move'].with_context(edi_test_mode=True).create({
+        cls.invoice = cls.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': cls.partner_a.id,
             'invoice_date': '2017-01-01',
@@ -211,7 +217,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             </Comprobante>
         '''
 
-        cls.payment = cls.env['account.payment'].with_context(edi_test_mode=True).create({
+        cls.payment = cls.env['account.payment'].create({
             'date': '2017-01-01',
             'amount': cls.invoice.amount_total,
             'payment_type': 'inbound',
@@ -222,7 +228,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'journal_id': cls.company_data['default_journal_bank'].id,
         })
 
-        cls.statement = cls.env['account.bank.statement'].with_context(edi_test_mode=True).create({
+        cls.statement = cls.env['account.bank.statement'].create({
             'name': 'test_statement',
             'date': '2017-01-01',
             'journal_id': cls.company_data['default_journal_bank'].id,

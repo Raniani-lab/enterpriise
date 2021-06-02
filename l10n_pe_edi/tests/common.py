@@ -8,6 +8,22 @@ from odoo.tools import misc
 from odoo.modules import module as modules
 from odoo.addons.account_edi.tests.common import AccountEdiTestCommon
 
+
+def mocked_l10n_pe_edi_post_invoice_web_service(edi_format, invoice, edi_filename, edi_str):
+    # simulate the EDI always success.
+    zip_edi_str = edi_format._l10n_pe_edi_zip_edi_document([('%s.xml' % edi_filename, edi_str)])
+    return {
+        'attachment': edi_format.env['ir.attachment'].create({
+            'res_model': invoice._name,
+            'res_id': invoice.id,
+            'type': 'binary',
+            'name': '%s.zip' % edi_filename,
+            'datas': base64.encodebytes(zip_edi_str),
+            'mimetype': 'application/zip',
+        })
+    }
+
+
 @tagged('-at_install', 'post_install')
 class TestPeEdiCommon(AccountEdiTestCommon):
 

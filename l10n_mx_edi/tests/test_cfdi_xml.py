@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from .common import TestMxEdiCommon
+from .common import TestMxEdiCommon, mocked_l10n_mx_edi_pac
 from odoo.tests import tagged
-from odoo.exceptions import ValidationError
 
 from freezegun import freeze_time
+from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
@@ -14,7 +14,9 @@ class TestEdiResults(TestMxEdiCommon):
     # -------------------------------------------------------------------------
 
     def test_invoice_cfdi_no_external_trade(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.invoice.action_post()
 
             generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
@@ -26,7 +28,9 @@ class TestEdiResults(TestMxEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_group_of_taxes(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.invoice.write({
                 'invoice_line_ids': [(1, self.invoice.invoice_line_ids.id, {'tax_ids': [(6, 0, self.tax_group.ids)]})],
             })
@@ -41,7 +45,9 @@ class TestEdiResults(TestMxEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_invoice_cfdi_addenda(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
 
             # Setup an addenda on the partner.
             self.invoice.partner_id.l10n_mx_edi_addenda = self.env['ir.ui.view'].create({
@@ -78,7 +84,11 @@ class TestEdiResults(TestMxEdiCommon):
     # -------------------------------------------------------------------------
 
     def test_payment_cfdi(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.payment.payment_id.action_l10n_mx_edi_force_generate_cfdi()
             self.invoice.action_post()
             self.payment.action_post()
@@ -100,7 +110,11 @@ class TestEdiResults(TestMxEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_payment_cfdi_another_currency_invoice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             invoice = self.env['account.move'].with_context(edi_test_mode=True).create({
                 'move_type': 'out_invoice',
                 'partner_id': self.partner_a.id,
@@ -164,7 +178,11 @@ class TestEdiResults(TestMxEdiCommon):
     # -------------------------------------------------------------------------
 
     def test_statement_line_cfdi(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.statement_line.action_l10n_mx_edi_force_generate_cfdi()
             self.invoice.action_post()
             self.statement.button_post()

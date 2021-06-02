@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
-from .common import TestMxEdiCommon
+from .common import TestMxEdiCommon, mocked_l10n_mx_edi_pac
+from odoo.addons.account_edi.tests.common import _mocked_cancel_success
 
 from odoo.tests import tagged
 from odoo.exceptions import UserError
 
 from freezegun import freeze_time
+from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
 class TestEdiFlows(TestMxEdiCommon):
 
     def test_invoice_flow_not_sent(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.invoice.action_post()
 
             document = self.invoice.edi_document_ids.filtered(lambda d: d.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
@@ -33,7 +37,11 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertFalse(document.attachment_id)
 
     def test_invoice_flow_sent_twice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_invoice_edi',
+                   new=_mocked_cancel_success):
             self.invoice.action_post()
 
             document = self.invoice.edi_document_ids.filtered(lambda d: d.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
@@ -80,7 +88,11 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertTrue(document.attachment_id)
 
     def test_payment_flow_PUE_invoice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.payment.action_post()
 
             self.assertFalse(self.payment.edi_document_ids)
@@ -122,7 +134,11 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertTrue(document.attachment_id)
 
     def test_payment_flow_PPD_invoice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             # Set the payment method of invoice to PPD.
             self.payment.action_post()
 
@@ -160,7 +176,13 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertTrue(document.attachment_id)
 
     def test_payment_flow_unreconcile(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_payment_edi',
+                   new=_mocked_cancel_success):
             self.payment.action_post()
             self.invoice.action_post()
 
@@ -211,7 +233,15 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertFalse(document.attachment_id)
 
     def test_payment_flow_cancel_reconciled_invoice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_invoice_edi',
+                   new=_mocked_cancel_success), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_payment_edi',
+                   new=_mocked_cancel_success):
             self.payment.action_post()
             self.invoice.action_post()
 
@@ -268,7 +298,11 @@ class TestEdiFlows(TestMxEdiCommon):
             self.assertFalse(document.attachment_id)
 
     def test_statement_flow_PUE_invoice(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
             self.statement.button_post()
 
             self.assertFalse(self.statement_line.edi_document_ids)

@@ -354,6 +354,37 @@ class AccountEdiFormat(models.Model):
     # EDI: SUNAT / DIGIFLOW services
     # -------------------------------------------------------------------------
 
+    def _l10n_pe_edi_post_invoice_web_service(self, invoice, edi_filename, edi_str):
+        provider = invoice.company_id.l10n_pe_edi_provider
+        res = getattr(self, '_l10n_pe_edi_sign_invoices_%s' % provider)(invoice, edi_filename, edi_str)
+
+        if res.get('error'):
+            return {invoice: res}
+
+        # Chatter.
+        documents = []
+        if res.get('xml_document'):
+            documents.append(('%s.xml' % edi_filename, res['xml_document']))
+        if res.get('cdr'):
+            documents.append(('CDR-%s.xml' % edi_filename, res['cdr']))
+        if documents:
+            zip_edi_str = self._l10n_pe_edi_zip_edi_document(documents)
+            res['attachment'] = self.env['ir.attachment'].create({
+                'res_model': invoice._name,
+                'res_id': invoice.id,
+                'type': 'binary',
+                'name': '%s.zip' % edi_filename,
+                'datas': base64.encodebytes(zip_edi_str),
+                'mimetype': 'application/zip',
+            })
+            message = _("The EDI document was successfully created and signed by the government.")
+            invoice.with_context(no_new_invoice=True).message_post(
+                body=message,
+                attachment_ids=res['attachment'].ids,
+            )
+
+        return res
+
     def _l10n_pe_edi_get_digiflow_credentials(self, company):
         self.ensure_one()
         res = {'fault_ns': 's'}
@@ -567,10 +598,10 @@ class AccountEdiFormat(models.Model):
             return super()._is_compatible_with_journal(journal)
         return journal.type == 'sale' and journal.country_code == 'PE' and journal.l10n_latam_use_documents
 
-    def _post_invoice_edi(self, invoices, test_mode=False):
+    def _post_invoice_edi(self, invoices):
         # OVERRIDE
         if self.code != 'pe_ubl_2_1':
-            return super()._post_invoice_edi(invoices, test_mode=test_mode)
+            return super()._post_invoice_edi(invoices)
 
         template_by_latam_type_mapping = {
             '07': 'pe_ubl_2_1_credit_note',
@@ -580,7 +611,6 @@ class AccountEdiFormat(models.Model):
         }
 
         invoice = invoices # Batching is disabled for this EDI.
-        provider = invoice.company_id.l10n_pe_edi_provider
 
         edi_filename = '%s-%s-%s' % (
             invoice.company_id.vat,
@@ -595,48 +625,7 @@ class AccountEdiFormat(models.Model):
         edi_values = self._l10n_pe_edi_get_edi_values(invoice)
         edi_str = self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values)
 
-        # test_mode indicates this method is called from odoo tests in order to check the xml values. In that case,
-        # simulate the EDI always success.
-        if test_mode:
-            res = {}
-            for invoice in invoices:
-                zip_edi_str = self._l10n_pe_edi_zip_edi_document([('%s.xml' % edi_filename, edi_str)])
-                res[invoice] = {'attachment': self.env['ir.attachment'].create({
-                    'res_model': invoice._name,
-                    'res_id': invoice.id,
-                    'type': 'binary',
-                    'name': '%s.zip' % edi_filename,
-                    'datas': base64.encodebytes(zip_edi_str),
-                    'mimetype': 'application/zip',
-                })}
-            return res
-
-        res = getattr(self, '_l10n_pe_edi_sign_invoices_%s' % provider)(invoice, edi_filename, edi_str)
-
-        if res.get('error'):
-            return {invoice: res}
-
-        # Chatter.
-        documents = []
-        if res.get('xml_document'):
-            documents.append(('%s.xml' % edi_filename, res['xml_document']))
-        if res.get('cdr'):
-            documents.append(('CDR-%s.xml' % edi_filename, res['cdr']))
-        if documents:
-            zip_edi_str = self._l10n_pe_edi_zip_edi_document(documents)
-            res['attachment'] = self.env['ir.attachment'].create({
-                'res_model': invoice._name,
-                'res_id': invoice.id,
-                'type': 'binary',
-                'name': '%s.zip' % edi_filename,
-                'datas': base64.encodebytes(zip_edi_str),
-                'mimetype': 'application/zip',
-            })
-            message = _("The EDI document was successfully created and signed by the government.")
-            invoice.with_context(no_new_invoice=True).message_post(
-                body=message,
-                attachment_ids=res['attachment'].ids,
-            )
+        res = self._l10n_pe_edi_post_invoice_web_service(invoice, edi_filename, edi_str)
 
         return {invoice: res}
 
@@ -716,10 +705,10 @@ class AccountEdiFormat(models.Model):
         invoices.write({'l10n_pe_edi_cancel_cdr_number': False})
         return {invoice: {'success': True} for invoice in invoices}
 
-    def _cancel_invoice_edi(self, invoices, test_mode=False):
+    def _cancel_invoice_edi(self, invoices):
         # OVERRIDE
         if self.code != 'pe_ubl_2_1':
-            return super()._cancel_invoice_edi(invoices, test_mode=test_mode)
+            return super()._cancel_invoice_edi(invoices)
 
         company = invoices[0].company_id # documents are always batched by company in account_edi.
         edi_attachments = self.env['ir.attachment']
@@ -728,10 +717,6 @@ class AccountEdiFormat(models.Model):
 
             if not invoice.l10n_pe_edi_cancel_reason:
                 res[invoice] = {'error': _("Please put a cancel reason")}
-                continue
-
-            if test_mode:
-                res[invoice] = {'success': True}
                 continue
 
             edi_attachments |= invoice._get_edi_attachment(self)

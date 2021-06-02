@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*
 from odoo.tests import tagged
-from .common import TestPeEdiCommon
+from .common import TestPeEdiCommon, mocked_l10n_pe_edi_post_invoice_web_service
+from unittest.mock import patch
 
 from freezegun import freeze_time
 
@@ -9,8 +10,10 @@ from freezegun import freeze_time
 class TestEdiXmls(TestPeEdiCommon):
 
     def test_invoice_simple_case(self):
-        with freeze_time(self.frozen_today):
-            move = self._create_invoice().with_context(edi_test_mode=True)
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_pe_edi.models.account_edi_format.AccountEdiFormat._l10n_pe_edi_post_invoice_web_service',
+                   new=mocked_l10n_pe_edi_post_invoice_web_service):
+            move = self._create_invoice()
             move.action_post()
 
             generated_files = self._process_documents_web_services(move, {'pe_ubl_2_1'})
@@ -23,7 +26,9 @@ class TestEdiXmls(TestPeEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_refund_simple_case(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_pe_edi.models.account_edi_format.AccountEdiFormat._l10n_pe_edi_post_invoice_web_service',
+                   new=mocked_l10n_pe_edi_post_invoice_web_service):
             move = self._create_refund()
             (move.reversed_entry_id + move).action_post()
 
@@ -37,7 +42,9 @@ class TestEdiXmls(TestPeEdiCommon):
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
     def test_debit_note_simple_case(self):
-        with freeze_time(self.frozen_today):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_pe_edi.models.account_edi_format.AccountEdiFormat._l10n_pe_edi_post_invoice_web_service',
+                   new=mocked_l10n_pe_edi_post_invoice_web_service):
             move = self._create_debit_note()
             (move.debit_origin_id + move).action_post()
 

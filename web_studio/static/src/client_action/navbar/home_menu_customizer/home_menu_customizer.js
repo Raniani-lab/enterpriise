@@ -25,7 +25,7 @@ export class HomeMenuCustomizer extends owl.Component {
 
     async bgImageUploaded(payload) {
         if (payload.error || !payload.id) {
-            this.notification.create(payload); // FIXME
+            this.notification.add(payload); // FIXME
         } else {
             this.ui.block();
             try {

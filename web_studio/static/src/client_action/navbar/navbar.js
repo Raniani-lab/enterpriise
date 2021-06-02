@@ -33,7 +33,7 @@ export class StudioNavbar extends EnterpriseNavBar {
             } catch (e) {
                 if (e instanceof NotEditableActionError) {
                     const options = { type: "danger" };
-                    this.notification.create(
+                    this.notification.add(
                         this.env._t("This action is not editable by Studio"),
                         options
                     );

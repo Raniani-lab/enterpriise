@@ -103,7 +103,7 @@ export class StudioHomeMenu extends HomeMenu {
             } catch (e) {
                 if (e instanceof NotEditableActionError) {
                     const options = { type: "danger" };
-                    this.notifications.create(
+                    this.notifications.add(
                         this.env._t("This action is not editable by Studio"),
                         options
                     );

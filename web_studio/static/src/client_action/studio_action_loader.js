@@ -22,7 +22,7 @@ const loadStudioAction = memoize(async (env) => {
             "studio",
             () => {
                 const msg = env._t("Studio couldn't be loaded");
-                env.services.notification.create(msg, { type: "danger" });
+                env.services.notification.add(msg, { type: "danger" });
             },
             { force: true }
         );

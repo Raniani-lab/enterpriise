@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import _, models, fields, api
+from odoo.http import request
 
 
 class SocialAccount(models.Model):
@@ -47,6 +48,9 @@ class SocialAccount(models.Model):
         Account with stats are displayed on the dashboard.""")
     utm_medium_id = fields.Many2one('utm.medium', string="UTM Medium", required=True, ondelete='restrict',
         help="Every time an account is created, a utm.medium is also created and linked to the account")
+    company_id = fields.Many2one('res.company', 'Company',
+                                 domain=lambda self: [('id', 'in', self.env.companies.ids)],
+                                 help="Link an account to a company to restrict its usage or keep empty to let all companies use it.")
 
     def _compute_statistics(self):
         """ Every social module should override this method if it 'has_account_stats'.
@@ -93,3 +97,24 @@ class SocialAccount(models.Model):
 
     def _compute_trend(self, value, delta_30d):
         return 0.0 if value - delta_30d <= 0 else (delta_30d / (value - delta_30d)) * 100
+
+    def _get_multi_company_error_message(self):
+        """Return an error message if the social accounts information can not be updated by the current user."""
+        if not self.env.user.has_group('base.group_multi_company'):
+            return
+
+        cids = request.httprequest.cookies.get('cids')
+        if cids:
+            allowed_company_ids = {int(cid) for cid in cids.split(',')}
+        else:
+            allowed_company_ids = {self.env.company.id}
+
+        accounts_other_companies = self.filtered(
+            lambda account: account.company_id and account.company_id.id not in allowed_company_ids)
+
+        if accounts_other_companies:
+            return _(
+                'Create other accounts for %(media_names)s for this company or ask %(company_names)s to share their accounts',
+                media_names=', '.join(accounts_other_companies.mapped('media_id.name')),
+                company_names=', '.join(accounts_other_companies.mapped('company_id.name')),
+            )

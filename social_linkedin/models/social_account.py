@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from werkzeug.urls import url_join
 
 from odoo import models, fields, api
+from odoo.addons.social.controllers.main import SocialValidationException
 
 
 class SocialAccountLinkedin(models.Model):
@@ -142,6 +143,10 @@ class SocialAccountLinkedin(models.Model):
         social_accounts = self.sudo().with_context(active_test=False).search([
             ('media_id', '=', media.id),
             ('linkedin_account_urn', 'in', [l.get('linkedin_account_urn') for l in linkedin_accounts])])
+
+        error_message = social_accounts._get_multi_company_error_message()
+        if error_message:
+            raise SocialValidationException(error_message)
 
         existing_accounts = {
             account.linkedin_account_urn: account

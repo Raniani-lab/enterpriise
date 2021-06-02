@@ -37,13 +37,14 @@ class SocialLinkedin(http.Controller):
                 return request.render('social.social_http_error_view',
                                       {'error_message': _('There was a security issue during your request.')})
 
-            if not access_token:
-                try:
+            try:
+                if not access_token:
                     access_token = self._get_linkedin_access_token(code, media)
-                except SocialValidationException as e:
-                    return request.render('social.social_http_error_view', {'error_message': str(e)})
 
-            request.env['social.account']._create_linkedin_accounts(access_token, media)
+                request.env['social.account']._create_linkedin_accounts(access_token, media)
+
+            except SocialValidationException as e:
+                return request.render('social.social_http_error_view', {'error_message': str(e)})
 
         url_params = {
             'action': request.env.ref('social.action_social_stream_post').id,

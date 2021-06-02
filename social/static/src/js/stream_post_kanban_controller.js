@@ -187,7 +187,7 @@ var StreamPostKanbanController = KanbanController.extend({
         this._rpc({
             model: 'social.media',
             method: 'action_add_account',
-            args: [[event.data.mediaId]]
+            args: [[event.data.mediaId], event.data.companyId],
         }).then(function (action) {
             document.location = action.url;
         });
@@ -245,7 +245,7 @@ var StreamPostKanbanController = KanbanController.extend({
     /**
      * Display a notification when creating an empty stream (with no post)
      * this function is used as the on_saved method for view_dialogs._save
-     * 
+     *
      * @param {*} stream_data : this is the model data + the id from social.stream.create
      * @private
      */
@@ -278,7 +278,7 @@ var StreamPostKanbanController = KanbanController.extend({
      * - If the count is 0 and we subtract 1 (it can happen with Facebook's 'reactions'), keep 0
      *
      * Adds thousand separators when updating the $target text.
-     * 
+     *
      * @param {$.Element} $target
      * @private
      */
@@ -301,7 +301,7 @@ var StreamPostKanbanController = KanbanController.extend({
         if (likesCount === 0) {
             likesCount = '';
         }
-        
+
         $target.find('.o_social_kanban_likes_count').text(utils.insert_thousand_seps(likesCount.toString()));
     },
 
@@ -316,7 +316,8 @@ var StreamPostKanbanController = KanbanController.extend({
             new AddStreamModal(self, {
                 isSocialManager: self.isSocialManager,
                 socialMedia: socialMedia,
-                socialAccounts: self.renderer.state.socialAccountsStats
+                socialAccounts: self.renderer.state.socialAccountsStats,
+                companies: self._getCompanies(),
             }).open();
         });
     },
@@ -347,7 +348,24 @@ var StreamPostKanbanController = KanbanController.extend({
                 });
             });
         }
-    }
+    },
+
+    /**
+     * Return the list of allowed companies for the current users.
+     * The first element of the array is the current selected company.
+     *
+     * @private
+     * @param {Array} [{id: company_id, name: company_name}, ...]
+     */
+    _getCompanies: function () {
+        const session = this.getSession();
+
+        // Dictionary which contains the name of the companies
+        const companies = session.user_companies.allowed_companies;
+
+        // Array of companies ID, first element is the selected company
+        return session.user_context.allowed_company_ids.map(companyId => companies[companyId]);
+    },
 });
 
 return StreamPostKanbanController;

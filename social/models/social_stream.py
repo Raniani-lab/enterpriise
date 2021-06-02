@@ -23,6 +23,7 @@ class SocialStream(models.Model):
     stream_type_id = fields.Many2one('social.stream.type', string="Type", required=True, ondelete='cascade')
     stream_type_type = fields.Char(related='stream_type_id.stream_type')
     stream_post_ids = fields.One2many('social.stream.post', 'stream_id', 'Posts')
+    company_id = fields.Many2one('res.company', 'Company', related='account_id.company_id', store=True)
 
     @api.onchange('media_id', 'account_id')
     def _onchange_media_id(self):

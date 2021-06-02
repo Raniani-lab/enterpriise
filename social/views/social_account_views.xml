@@ -19,6 +19,7 @@
             <tree string="Social Accounts" create="0">
                 <field name="name" />
                 <field name="media_id" />
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -40,11 +41,28 @@
                             <field name="active" invisible="1"/>
                             <field name="name" string="Name"/>
                             <field name="media_id" options="{'no_open': True}" />
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
+
+    <record id="social_account_view_search" model="ir.ui.view">
+        <field name="name">social.account.view.search</field>
+        <field name="model">social.account</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter name="filter_active" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Company" name="filter_company_id" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
 </data>
 </odoo>

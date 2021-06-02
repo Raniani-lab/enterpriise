@@ -132,6 +132,10 @@ class SocialFacebookController(http.Controller):
                 ('facebook_account_id', 'in', facebook_accounts_ids)
             ])
 
+            error_message = existing_accounts._get_multi_company_error_message()
+            if error_message:
+                raise SocialValidationException(error_message)
+
             return {
                 existing_account.facebook_account_id: existing_account
                 for existing_account in existing_accounts

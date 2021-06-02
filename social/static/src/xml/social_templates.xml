@@ -271,6 +271,15 @@
         </t>
     </div>
 
+    <t t-name="social.AddStreamCompany" t-if="widget.companies &amp;&amp; widget.companies.length &gt; 1">
+        for
+        <select class="o_social_add_stream_form_select custom-select w-25 ml-1" name="company_id">
+            <option t-att-value="widget.companies[0].id" t-esc="widget.companies[0].name" selected="1"/>
+            <option t-foreach="widget.companies.slice(1)" t-as="company" t-att-value="company.id" t-esc="company.name"/>
+            <option value="0">All Companies</option>
+        </select>
+    </t>
+
     <div t-name="social.AddStreamModal">
         <div class="o_social_add_stream_form bg-200">
             <t t-if="widget.socialAccounts.length !== 0">
@@ -285,12 +294,12 @@
                     </button>
                 </div>
                 <t t-if="widget.isSocialManager">
-                    <h4 class="mt-5">Or link a new account</h4>
+                    <h4 class="mt-5">Or link a new account <t t-call="social.AddStreamCompany"/></h4>
                     <t t-call="social.AddStreamMedia" />
                 </t>
             </t>
             <t t-else="">
-                <h5 class="mb-4">To add a stream, you must first link a social media.</h5>
+                <h5 class="mb-4">To add a stream<t t-call="social.AddStreamCompany"/>, you must first link a social media.</h5>
                 <t t-call="social.AddStreamMedia" />
             </t>
         </div>

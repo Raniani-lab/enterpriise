@@ -184,10 +184,14 @@ class SocialYoutubeController(http.Controller):
     def _get_existing_accounts(self, youtube_channels):
         youtube_accounts_ids = [account['id'] for account in youtube_channels.get('items', [])]
         if youtube_accounts_ids:
-            existing_accounts = request.env['social.account'].search([
+            existing_accounts = request.env['social.account'].sudo().with_context(active_test=False).search([
                 ('media_id', '=', request.env.ref('social_youtube.social_media_youtube').id),
                 ('youtube_channel_id', 'in', youtube_accounts_ids)
             ])
+
+            error_message = existing_accounts._get_multi_company_error_message()
+            if error_message:
+                raise SocialValidationException(error_message)
 
             return {
                 existing_account.youtube_channel_id: existing_account

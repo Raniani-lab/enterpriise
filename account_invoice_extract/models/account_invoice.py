@@ -767,7 +767,11 @@ class AccountMove(models.Model):
                     move_form.date = self.company_id.tax_lock_date + timedelta(days=1)
                     self.add_warning(WARNING_DATE_PRIOR_OF_LOCK_DATE)
             if due_date_ocr and (not due_date_move_form or due_date_move_form == context_create_date):
-                move_form.invoice_date_due = due_date_ocr
+                if date_ocr == due_date_ocr and move_form.partner_id and move_form.partner_id.property_supplier_payment_term_id:
+                    # if the invoice date and the due date found by the OCR are the same, we use the payment terms of the detected supplier instead, if there is one
+                    move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
+                else:
+                    move_form.invoice_date_due = due_date_ocr
             if not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr
 

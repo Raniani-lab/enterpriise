@@ -23,7 +23,7 @@ class SocialMediaTwitter(models.Model):
 
     media_type = fields.Selection(selection_add=[('twitter', 'Twitter')])
 
-    def action_add_account(self):
+    def _action_add_account(self):
         """ Builds the URL to Twitter in order to allow account access, then redirects the client.
         Redirect is done in 'self' since Twitter will then return back to the app with the 'oauth_callback' param.
 
@@ -35,7 +35,7 @@ class SocialMediaTwitter(models.Model):
         self.ensure_one()
 
         if self.media_type != 'twitter':
-            return super(SocialMediaTwitter, self).action_add_account()
+            return super(SocialMediaTwitter, self)._action_add_account()
 
         twitter_consumer_key = self.env['ir.config_parameter'].sudo().get_param('social.twitter_consumer_key')
         twitter_consumer_secret_key = self.env['ir.config_parameter'].sudo().get_param('social.twitter_consumer_secret_key')

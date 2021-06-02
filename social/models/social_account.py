@@ -20,6 +20,23 @@ class SocialAccount(models.Model):
     _description = 'Social Account'
     _inherits = {'utm.medium': 'utm_medium_id'}
 
+    def _get_default_company(self):
+        """When the user is redirected to the callback URL of the different media,
+        the company in the environment is always the company of the current user and not
+        necessarily the selected company.
+
+        So, before the authentication process, we store the selected company in the
+        user session (see <social.media>::action_add_account) to be able to retrieve it
+        here.
+        """
+        if request and 'social_company_id' in request.session:
+            company_id = request.session['social_company_id']
+            if not company_id:  # All companies
+                return False
+            if company_id in self.env.companies.ids:
+                return company_id
+        return self.env.company
+
     active = fields.Boolean("Active", default=True)
     media_id = fields.Many2one('social.media', string="Social Media", required=True, readonly=True,
         help="Related Social Media (Facebook, Twitter, ...).", ondelete='cascade')
@@ -48,7 +65,7 @@ class SocialAccount(models.Model):
         Account with stats are displayed on the dashboard.""")
     utm_medium_id = fields.Many2one('utm.medium', string="UTM Medium", required=True, ondelete='restrict',
         help="Every time an account is created, a utm.medium is also created and linked to the account")
-    company_id = fields.Many2one('res.company', 'Company',
+    company_id = fields.Many2one('res.company', 'Company', default=_get_default_company,
                                  domain=lambda self: [('id', 'in', self.env.companies.ids)],
                                  help="Link an account to a company to restrict its usage or keep empty to let all companies use it.")
 

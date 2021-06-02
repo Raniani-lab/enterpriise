@@ -1205,18 +1205,19 @@ class SaleSubscriptionLine(models.Model):
 
     def _amount_line_tax(self):
         self.ensure_one()
-        val = 0.0
-        product = self.product_id
-        product_tmp = product.sudo().product_tmpl_id
-        for tax in product_tmp.taxes_id.filtered(lambda t: t.company_id == self.analytic_account_id.company_id):
-            fpos_obj = self.env['account.fiscal.position']
-            partner = self.analytic_account_id.partner_id
-            fpos = fpos_obj.with_company(self.analytic_account_id.company_id).get_fiscal_position(partner.id)
-            tax = fpos.map_tax(tax, product, partner)
-            compute_vals = tax.compute_all(self.price_unit * (1 - (self.discount or 0.0) / 100.0), self.analytic_account_id.currency_id, self.quantity, product, partner)['taxes']
-            if compute_vals:
-                val += compute_vals[0].get('amount', 0)
-        return val
+        partner = self.analytic_account_id.partner_id
+        product_taxes = self.product_id.sudo().taxes_id.filtered(
+            lambda t: t.company_id == self.analytic_account_id.company_id)
+        fpos = self.env['account.fiscal.position'].with_company(
+            self.analytic_account_id.company_id).get_fiscal_position(partner.id)
+        taxes = fpos.map_tax(product_taxes)
+        tax_values = taxes.compute_all(
+            self.price_unit * (1 - (self.discount or 0.0) / 100.0),
+            self.analytic_account_id.currency_id,
+            self.quantity,
+            self.product_id,
+            partner)['taxes']
+        return sum(tax.get('amount', 0.0) for tax in tax_values)
 
     @api.model
     def create(self, values):

@@ -268,7 +268,10 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         self.wizard._import_files(['account.account', 'account.journal', 'res.partner', 'account.move'])
 
         # Verify moves data
-        new_moves = self.env['account.move'].search([('company_id', '=', self.company_export.id)], order="name")
+        new_moves = self.env['account.move'].search([
+            ('company_id', '=', self.company_export.id),
+            ('tax_closing_end_date', '=', False),  # exclude automatic tax closing  entries
+        ], order="name")
         columns = ['company_id', 'name', 'journal_id', 'partner_id', 'date']
         moves_data = [
             (self.company_export.id, 'INV/001/123456', self.company_data_2['default_journal_sale'].id, self.partner_a.id, datetime.date(2010, 1, 1)),

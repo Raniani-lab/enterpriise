@@ -60,7 +60,7 @@
                             <t t-set="has_attachments" t-value="record.image_ids.raw_value.length !== 0"/>
                             <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'border-bottom'}">
                                 <div name="o_social_stream_post_message_text" t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
-                                    <field name="message"  widget="text_emojis" />
+                                    <field name="message"/>
                                 </div>
 
                                 <div t-if="has_attachments"

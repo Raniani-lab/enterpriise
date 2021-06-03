@@ -85,7 +85,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 // Kanban Views (Both Feed & Posts)
 // ===================================================
 .o_social_stream_post_message_body {
-    .o_social_stream_post_message_text {
+    .o_social_stream_post_message_text,
+    .o_social_stream_post_message_text span {
         display: -webkit-box;
         max-height: 9.8rem;
         // Doesn't work in all browser but we have no real solutions here
@@ -474,6 +475,9 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_social_load_more_comments {
         display: block;
+    }
+    a {
+        text-decoration: none!important;
     }
 }
 

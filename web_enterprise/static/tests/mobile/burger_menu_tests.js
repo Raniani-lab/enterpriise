@@ -20,7 +20,7 @@ QUnit.module("Burger Menu", {
         serviceRegistry.add("company", companyService);
         serviceRegistry.add("home_menu", homeMenuService);
 
-        registry.category("systray").add("burgerMenu", BurgerMenu);
+        registry.category("systray").add("burgerMenu", { Component: BurgerMenu });
     },
 });
 

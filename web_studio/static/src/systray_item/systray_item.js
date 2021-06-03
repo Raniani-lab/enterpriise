@@ -2,13 +2,8 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/service_hook";
 
-export class StudioSystray extends owl.Component {
-    static isDisplayed(env) {
-        return env.services.user.isSystem;
-    }
-
-    constructor() {
-        super(...arguments);
+class StudioSystray extends owl.Component {
+    setup() {
         this.actionManager = useService("action");
         this.hm = useService("home_menu");
         this.studio = useService("studio");
@@ -31,4 +26,9 @@ export class StudioSystray extends owl.Component {
 }
 StudioSystray.template = "web_studio.SystrayItem";
 
-registry.category("systray").add("StudioSystrayItem", StudioSystray, { sequence: 1 });
+export const systrayItem = {
+    Component: StudioSystray,
+    isDisplayed: (env) => env.services.user.isSystem,
+};
+
+registry.category("systray").add("StudioSystrayItem", systrayItem, { sequence: 1 });

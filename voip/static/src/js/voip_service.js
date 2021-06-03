@@ -21,7 +21,7 @@ export const voipService = {
     async start(env, { user }) {
         const isEmployee = await user.hasGroup('base.group_user');
         if (isEmployee) {
-            systrayRegistry.add('voip', VoipSystrayItem);
+            systrayRegistry.add('voip', { Component: VoipSystrayItem });
             mainComponentRegistry.add('voip.DialingPanelContainer', {
                 Component: DialingPanelContainer,
             });

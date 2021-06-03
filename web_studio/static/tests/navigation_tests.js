@@ -6,7 +6,7 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { studioService } from "@web_studio/studio_service";
-import { StudioSystray } from "@web_studio/systray_item/systray_item";
+import { systrayItem } from "@web_studio/systray_item/systray_item";
 import { companyService } from "@web/webclient/company_service";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
@@ -39,7 +39,7 @@ let serverData;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
-        registry.category("systray").add("StudioSystrayItem", StudioSystray);
+        registry.category("systray").add("StudioSystrayItem", systrayItem);
         const fakeEnterpriseService = makeFakeEnterpriseService();
         serviceRegistry.add("enterprise", fakeEnterpriseService);
         serviceRegistry.add("home_menu", homeMenuService);

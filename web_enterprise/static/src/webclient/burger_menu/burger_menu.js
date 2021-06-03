@@ -1,4 +1,5 @@
 /** @odoo-module **/
+
 import { useService } from "@web/core/service_hook";
 import { registry } from "@web/core/registry";
 import { BurgerUserMenu } from "./user_menu/user_menu";
@@ -11,10 +12,6 @@ import { MenuDropdown, MenuItem } from "@web/webclient/navbar/navbar";
  */
 
 export class BurgerMenu extends owl.Component {
-    static isDisplayed(env) {
-        return env.isSmall;
-    }
-
     setup() {
         this.company = useService("company");
         this.user = useService("user");
@@ -76,4 +73,9 @@ BurgerMenu.components = {
     MobileSwitchCompanyMenu,
 };
 
-registry.category("systray").add("burger_menu", BurgerMenu, { sequence: 0 });
+const systrayItem = {
+    Component: BurgerMenu,
+    isDisplayed: (env) => env.isSmall,
+};
+
+registry.category("systray").add("burger_menu", systrayItem, { sequence: 0 });

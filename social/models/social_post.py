@@ -83,6 +83,17 @@ class SocialPost(models.Model):
             if any(not image.mimetype.startswith('image') for image in social_post.image_ids):
                 raise UserError(_('Uploaded file does not seem to be a valid image.'))
 
+    @api.constrains('account_ids')
+    def _check_account_ids(self):
+        """All social accounts must be in the same company."""
+        for post in self.sudo():  # SUDO to bypass multi-company ACLs
+            if not (post.account_ids <= post.account_allowed_ids):
+                raise ValidationError(_(
+                    'Selected accounts (%s) do not match the selected company (%s)',
+                    ','.join((post.account_ids - post.account_allowed_ids).mapped('name')),
+                    post.company_id.name
+                ))
+
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
         results = self.env['social.live.post'].read_group(
@@ -97,17 +108,6 @@ class SocialPost(models.Model):
         }
         for post in self:
             post.engagement = engagement_per_post.get(post.id, 0)
-
-    @api.constrains('account_ids')
-    def _check_account_ids(self):
-        """All social accounts must be in the same company."""
-        for post in self.sudo():  # SUDO to bypass multi-company ACLs
-            if post.account_allowed_ids < post.account_ids:
-                raise ValidationError(_(
-                    'Selected accounts (%s) do not match the selected company (%s)',
-                    ','.join((post.account_ids - post.account_allowed_ids).mapped('name')),
-                    post.company_id.name
-                ))
 
     @api.depends('account_allowed_ids')
     def _compute_has_active_accounts(self):

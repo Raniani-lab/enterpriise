@@ -77,7 +77,10 @@ class QualityPoint(models.Model):
         'mrp.routing.workcenter', 'Step', check_company=True)
     bom_id = fields.Many2one(related='operation_id.bom_id')
     component_ids = fields.One2many('product.product', compute='_compute_component_ids')
-    product_ids = fields.Many2many(default=_default_product_ids)
+    product_ids = fields.Many2many(
+        default=_default_product_ids,
+        domain="is_workorder_step and [('id', 'in', bom_product_ids)] or [('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    bom_product_ids = fields.One2many('product.product', compute="_compute_bom_product_ids")
     test_type_id = fields.Many2one(
         'quality.point.test_type',
         domain="[('allow_registration', '=', operation_id and is_workorder_step)]")
@@ -90,41 +93,40 @@ class QualityPoint(models.Model):
     # Used with type register_consumed_materials the product raw to encode.
     component_id = fields.Many2one('product.product', 'Product To Register', check_company=True)
 
+    @api.onchange('bom_product_ids', 'is_workorder_step')
+    def _onchange_bom_product_ids(self):
+        if self.is_workorder_step:
+            self.product_ids = self.product_ids._origin & self.bom_product_ids
+
     @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step', 'bom_id')
-    def _compute_available_product_ids(self):
-        super()._compute_available_product_ids()
+    def _compute_bom_product_ids(self):
+        self.bom_product_ids = False
         points_for_workorder_step = self.filtered(lambda p: p.is_workorder_step and p.bom_id)
         for point in points_for_workorder_step:
-            point.available_product_ids = point.bom_id.product_id or point.bom_id.product_tmpl_id.product_variant_ids
+            bom_product_ids = point.bom_id.product_id or point.bom_id.product_tmpl_id.product_variant_ids
+            point.bom_product_ids = bom_product_ids.filtered(lambda p: not p.company_id or p.company_id == point.company_id._origin)
 
-    @api.depends('product_ids', 'test_type_id')
+    @api.depends('product_ids', 'test_type_id', 'is_workorder_step')
     def _compute_component_ids(self):
         self.component_ids = False
-        points = self.filtered(
-            lambda p: p.is_workorder_step and p.test_type in [
-                'register_consumed_materials',
-                'register_byproducts'
-            ])
-        bom_domain = self.env['mrp.bom']._bom_find_domain(points.product_ids._origin)
-        bom_ids = self.env['mrp.bom'].search(bom_domain)
-        product_by_points = defaultdict(lambda: self.env['quality.point'])
-        for point in points:
-            for product in point.product_ids:
-                product_by_points[product._origin] |= point
+        for point in self:
+            if not point.is_workorder_step or not self.bom_id:
+                continue
+            if point.test_type not in ('register_consumed_materials', 'register_byproducts'):
+                continue
+            if point.test_type == 'register_byproducts':
+                point.component_ids = point.bom_id.byproduct_ids.product_id
+            else:
+                bom_products = point.bom_id.product_id or point.bom_id.product_tmpl_id.product_variant_ids
+                # If product_ids is set the step will exist only for these product variant then we can filter out for the bom explode
+                if point.product_ids:
+                    bom_products &= point.product_ids._origin
 
-        for bom in bom_ids:
-            bom_products = bom.product_id or bom.product_tmpl_id.product_variant_ids
-            byproducts = bom.byproduct_ids.product_id
-            for product in bom_products:
-                if product not in product_by_points:
-                    continue
-                dummy, lines_done = bom.explode(product, 1.0)
-                components = self.env['product.product'].browse([line[0].product_id.id for line in lines_done])
-            for point in product_by_points[product]:
-                if point.test_type == 'register_consumed_materials':
-                    point.component_ids |= components
-                else:
-                    point.component_ids |= byproducts
+                component_product_ids = set()
+                for product in bom_products:
+                    dummy, lines_done = point.bom_id.explode(product, 1.0)
+                    component_product_ids |= {line[0].product_id.id for line in lines_done}
+                point.component_ids = self.env['product.product'].browse(component_product_ids)
 
     @api.depends('operation_id', 'picking_type_ids')
     def _compute_is_workorder_step(self):

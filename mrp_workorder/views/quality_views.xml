@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="test_type_id" position="after">
                 <field name="component_ids" invisible="1"/>
+                <field name="bom_product_ids" invisible="1"/>
                 <field name="component_id" attrs="{'required': [('test_type', 'in', ('register_byproducts', 'register_consumed_materials'))], 'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('test_type', 'not in', ('register_byproducts', 'register_consumed_materials'))]}" domain="[('id', 'in', component_ids), '|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
                 <field name="test_report_type" widget="selection" attrs="{'invisible': [('test_type','!=','print_label')]}"/>
             </field>
@@ -18,11 +19,6 @@
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('is_workorder_step', '=', False), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>
-            <xpath expr="//field[@name='product_ids']" position="attributes">
-                <attribute name="domain">
-                  [('id', 'in', available_product_ids), '|', ('company_id', '=', company_id), ('company_id', '=', False)],
-                </attribute>
-            </xpath>
         </field>
     </record>
 

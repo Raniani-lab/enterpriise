@@ -31,5 +31,4 @@ export class WebClientEnterprise extends WebClient {
         return this.hm.toggle(true);
     }
 }
-WebClientEnterprise.template = "web_enterprise.WebClientEnterprise";
-WebClientEnterprise.components = { ...WebClient.components, EnterpriseNavBar };
+WebClientEnterprise.components = { ...WebClient.components, NavBar: EnterpriseNavBar };

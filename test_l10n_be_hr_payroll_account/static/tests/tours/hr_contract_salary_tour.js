@@ -832,7 +832,7 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             content: "Applicant\'s Name",
             trigger: '.oe_title input[name="partner_name"]',
-            run: 'text Mitchell Admin 2',
+            run: 'text Mitchell Admin 3',
         },
         {
             content: "Create Employee",
@@ -870,7 +870,7 @@ Tour.register('hr_contract_salary_tour_2', {
             content: "Address",
             trigger: '.o_field_widget.o_field_many2one[name=address_home_id]',
             run: function (actions) {
-                actions.text("Mitchell", this.$anchor.find("input"));
+                actions.text("Mitchell Admin 3", this.$anchor.find("input"));
             },
         },
         {

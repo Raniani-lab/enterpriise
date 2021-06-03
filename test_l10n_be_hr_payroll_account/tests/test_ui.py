@@ -244,7 +244,7 @@ class TestUi(odoo.tests.HttpCase):
         self.env['ir.config_parameter'].sudo().set_param('l10n_be_hr_payroll_fleet.max_unused_cars', 1)
 
         self.start_tour("/", 'hr_contract_salary_tour_2', login='admin', timeout=300)
-        new_contract_id = self.env['hr.contract'].search([('name', 'ilike', 'Mitchell Admin 2')])
+        new_contract_id = self.env['hr.contract'].search([('name', 'ilike', 'Mitchell Admin 3')])
         self.assertTrue(new_contract_id, 'A contract has been created')
         new_employee_id = new_contract_id.employee_id
         self.assertTrue(new_employee_id, 'An employee has been created')

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
-import { doAction, getActionManagerTestConfig } from "@web/../tests/webclient/actions/helpers";
+import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { BurgerMenu } from "@web_enterprise/webclient/burger_menu/burger_menu";
@@ -8,13 +8,13 @@ import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_s
 import { companyService } from "@web/webclient/company_service";
 import { makeFakeEnterpriseService } from "../mocks";
 
-let testConfig;
+let serverData;
 
 const serviceRegistry = registry.category("services");
 
 QUnit.module("Burger Menu", {
     beforeEach() {
-        testConfig = getActionManagerTestConfig();
+        serverData = getActionManagerServerData();
 
         serviceRegistry.add("enterprise", makeFakeEnterpriseService());
         serviceRegistry.add("company", companyService);
@@ -27,7 +27,7 @@ QUnit.module("Burger Menu", {
 QUnit.test("Burger menu can be opened and closed", async (assert) => {
     assert.expect(2);
 
-    const wc = await createEnterpriseWebClient({ testConfig });
+    const wc = await createEnterpriseWebClient({ serverData });
 
     await click(wc.el, ".o_mobile_menu_toggle");
     assert.containsOnce(wc, ".o_burger_menu");
@@ -39,7 +39,7 @@ QUnit.test("Burger menu can be opened and closed", async (assert) => {
 QUnit.test("Burger Menu on home menu", async (assert) => {
     assert.expect(7);
 
-    const wc = await createEnterpriseWebClient({ testConfig });
+    const wc = await createEnterpriseWebClient({ serverData });
     assert.containsNone(wc, ".o_burger_menu");
     assert.isVisible(wc.el.querySelector(".o_home_menu"));
 
@@ -55,8 +55,8 @@ QUnit.test("Burger Menu on home menu", async (assert) => {
 QUnit.test("Burger Menu on an App", async (assert) => {
     assert.expect(8);
 
-    testConfig.serverData.menus[1].children = [99];
-    testConfig.serverData.menus[99] = {
+    serverData.menus[1].children = [99];
+    serverData.menus[99] = {
         id: 99,
         children: [],
         name: "SubMenu",
@@ -67,7 +67,7 @@ QUnit.test("Burger Menu on an App", async (assert) => {
         webIcon: false,
     };
 
-    const wc = await createEnterpriseWebClient({ testConfig });
+    const wc = await createEnterpriseWebClient({ serverData });
     await click(wc.el, ".o_app:first-of-type");
     await legacyExtraNextTick();
 
@@ -94,7 +94,7 @@ QUnit.test("Burger Menu on an App", async (assert) => {
 QUnit.test("Burger menu closes when an action is requested", async (assert) => {
     assert.expect(3);
 
-    const wc = await createEnterpriseWebClient({ testConfig });
+    const wc = await createEnterpriseWebClient({ serverData });
 
     await click(wc.el, ".o_mobile_menu_toggle");
     assert.containsOnce(wc, ".o_burger_menu");

@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
+import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
 import { hotkeyService } from "@web/webclient/hotkeys/hotkey_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { makeFakeRouterService, makeFakeUIService } from "@web/../tests/helpers/mock_services";
+import { makeFakeUIService } from "@web/../tests/helpers/mock_services";
 import { click, getFixture, makeDeferred, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { MobileSwitchCompanyMenu } from "@web_enterprise/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
 import { companyService } from "@web/webclient/company_service";
@@ -14,8 +15,18 @@ const serviceRegistry = registry.category("services");
 
 async function createSwitchCompanyMenu(routerParams = {}, toggleDelay = 0) {
     patchWithCleanup(MobileSwitchCompanyMenu, { toggleDelay });
-    if (routerParams.onPushState || routerParams.initialRoute) {
-        serviceRegistry.add("router", makeFakeRouterService(routerParams));
+    if (routerParams.onPushState) {
+        const pushState = browser.history.pushState;
+        patchWithCleanup(browser, {
+            history: Object.assign({}, browser.history, {
+                pushState(state, title, url) {
+                    pushState(...arguments);
+                    if (routerParams.onPushState) {
+                        routerParams.onPushState(url);
+                    }
+                },
+            }),
+        });
     }
     const env = await makeTestEnv();
     const target = getFixture();
@@ -209,8 +220,8 @@ QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
         function onPushState(url) {
             assert.step(url.split("#")[1]);
         }
-        const initialRoute = { hash: "cids=3%2C1" };
-        const scMenu = await createSwitchCompanyMenu({ onPushState, initialRoute });
+        Object.assign(browser.location, { hash: "cids=3%2C1" });
+        const scMenu = await createSwitchCompanyMenu({ onPushState });
 
         /**
          *   [x] Company 1
@@ -238,8 +249,8 @@ QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
         function onPushState(url) {
             assert.step(url.split("#")[1]);
         }
-        const initialRoute = { hash: "cids=2%2C3" };
-        const scMenu = await createSwitchCompanyMenu({ onPushState, initialRoute });
+        Object.assign(browser.location, { hash: "cids=2%2C3" });
+        const scMenu = await createSwitchCompanyMenu({ onPushState });
 
         /**
          *   [ ] Company 1

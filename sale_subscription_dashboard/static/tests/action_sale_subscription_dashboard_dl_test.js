@@ -1,16 +1,16 @@
 /** @odoo-module */
 import { mockDownload } from "@web/../tests/helpers/utils";
-import { createWebClient, getActionManagerTestConfig, doAction } from "@web/../tests/webclient/actions/helpers";
+import { createWebClient, getActionManagerServerData, doAction } from "@web/../tests/webclient/helpers";
 
-let testConfig;
+let serverData;
 QUnit.module("Sale Subscription Dashboard Download Reports", {
     beforeEach: function () {
-        testConfig = getActionManagerTestConfig();
+        serverData = getActionManagerServerData();
     },
 }, function () {
     QUnit.test("can execute sale subscription dashboard report download actions", async function (assert) {
         assert.expect(5);
-        testConfig.serverData.actions[1] = {
+        serverData.actions[1] = {
             id: 1,
             data: {
                 model: "sale.subscription",
@@ -27,7 +27,7 @@ QUnit.module("Sale Subscription Dashboard Download Reports", {
             return Promise.resolve();
         });
         const webClient = await createWebClient({
-            testConfig,
+            serverData,
             mockRPC: function (route, args) {
                 assert.step(args.method || route);
             },

@@ -1,15 +1,16 @@
 /** @odoo-module **/
-import { createWebClient, doAction, getActionManagerTestConfig, loadState } from "@web/../tests/webclient/actions/helpers";
+
+import { createWebClient, doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 
 const { loadJS } = owl.utils;
 
-let testConfig;
+let serverData;
 
 QUnit.module('ActionManager', {
     beforeEach() {
-        testConfig = getActionManagerTestConfig();
-        Object.assign(testConfig.serverData, {
+        serverData = getActionManagerServerData();
+        Object.assign(serverData, {
             actions: {
                 1: {
                     id: 1,
@@ -63,7 +64,7 @@ QUnit.module('ActionManager', {
 QUnit.test('uses a mobile-friendly view by default (if possible)', async function (assert) {
     assert.expect(4);
 
-    const webClient = await createWebClient({ testConfig });
+    const webClient = await createWebClient({ serverData });
     // should default on a mobile-friendly view (kanban) for action 1
     await doAction(webClient, 1);
 
@@ -84,7 +85,7 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
         assert.step(args.method || route);
     };
 
-    const webClient = await createWebClient({ testConfig, mockRPC });
+    const webClient = await createWebClient({ serverData, mockRPC });
 
     await loadState(webClient, {
         action: 1,
@@ -117,7 +118,7 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
 QUnit.test('view switcher button should be displayed in dropdown on mobile screens', async function (assert) {
     assert.expect(7);
 
-    const webClient = await createWebClient({ testConfig });
+    const webClient = await createWebClient({ serverData });
 
     await doAction(webClient, 1);
 

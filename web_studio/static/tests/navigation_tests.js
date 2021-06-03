@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { legacyExtraNextTick } from "@web/../tests/helpers/utils";
-import { getActionManagerTestConfig } from "@web/../tests/webclient/actions/helpers";
+import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
@@ -34,11 +34,11 @@ async function leaveStudio(webClient) {
 // Tests
 // -----------------------------------------------------------------------------
 
-let testConfig;
+let serverData;
 
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
-        testConfig = getActionManagerTestConfig();
+        serverData = getActionManagerServerData();
         registry.category("systray").add("StudioSystrayItem", StudioSystray);
         const fakeEnterpriseService = makeFakeEnterpriseService();
         serviceRegistry.add("enterprise", fakeEnterpriseService);
@@ -49,7 +49,7 @@ QUnit.module("Studio", (hooks) => {
         // tweak a bit the default config to better fit with studio needs:
         //  - add some menu items we can click on to test the navigation
         //  - add a one2many field in a form view to test the one2many edition
-        testConfig.serverData.menus = {
+        serverData.menus = {
             root: { id: "root", children: [1, 2, 3], name: "root", appID: "root" },
             1: {
                 id: 1,
@@ -92,18 +92,18 @@ QUnit.module("Studio", (hooks) => {
                 xmlid: "app_3",
             },
         };
-        testConfig.serverData.models.partner.fields.pony_id = {
+        serverData.models.partner.fields.pony_id = {
             string: "Pony",
             type: "many2one",
             relation: "pony",
         };
-        testConfig.serverData.models.pony.fields.partner_ids = {
+        serverData.models.pony.fields.partner_ids = {
             string: "Partners",
             type: "one2many",
             relation: "partner",
             relation_field: "pony_id",
         };
-        testConfig.serverData.views["pony,false,form"] = `
+        serverData.views["pony,false,form"] = `
             <form>
                 <field name="name"/>
                 <field name='partner_ids'>
@@ -122,7 +122,7 @@ QUnit.module("Studio", (hooks) => {
         assert.expect(2);
 
         patchWithCleanup(odoo.session_info, { is_system: false });
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         assert.containsOnce(webClient, ".o_main_navbar");
 
         assert.containsNone(webClient, ".o_main_navbar .o_web_studio_navbar_item a");
@@ -134,7 +134,7 @@ QUnit.module("Studio", (hooks) => {
         const mockRPC = async (route) => {
             assert.step(route);
         };
-        const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
         assert.containsOnce(webClient, ".o_home_menu");
 
         // open app Partners (act window action)
@@ -201,7 +201,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("open Studio with act_window and viewType", async function (assert) {
         assert.expect(4);
 
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
 
         // open app Partners (act window action), sub menu Partners (action 3)
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
@@ -236,7 +236,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("switch view and close Studio", async function (assert) {
         assert.expect(6);
 
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         // open app Partners (act window action)
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
@@ -280,7 +280,7 @@ QUnit.module("Studio", (hooks) => {
             assert.step(route);
         };
 
-        const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
         // open app Partners (act window action)
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
@@ -386,10 +386,10 @@ QUnit.module("Studio", (hooks) => {
                 }
             }
         };
-        testConfig.serverData.actions[4].context = "{'active_id': 1}";
+        serverData.actions[4].context = "{'active_id': 1}";
 
         const webClient = await createEnterpriseWebClient({
-            testConfig,
+            serverData,
             mockRPC,
         });
         // open app Partners (act window action)
@@ -413,7 +413,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("open same record when leaving form", async function (assert) {
         assert.expect(5);
 
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         // open app Ponies (act window action)
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_2]"));
         await legacyExtraNextTick();
@@ -449,7 +449,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.skip("open Studio with non editable view", async function (assert) {
         assert.expect(1);
 
-        testConfig.serverData.menus[99] = {
+        serverData.menus[99] = {
             id: 9,
             children: [],
             name: "Action with Grid view",
@@ -457,8 +457,8 @@ QUnit.module("Studio", (hooks) => {
             actionID: 99,
             xmlid: "app_9",
         };
-        testConfig.serverData.menus.root.children.push(99);
-        testConfig.serverData.actions.push({
+        serverData.menus.root.children.push(99);
+        serverData.actions.push({
             id: 99,
             name: "Partners Action 99",
             res_model: "partner",
@@ -469,7 +469,7 @@ QUnit.module("Studio", (hooks) => {
                 [false, "form"],
             ],
         });
-        testConfig.serverData.views["partner,42,grid"] = `
+        serverData.views["partner,42,grid"] = `
             <grid>
                 <field name="foo" type="row"/>
                 <field name="id" type="measure"/>
@@ -478,7 +478,7 @@ QUnit.module("Studio", (hooks) => {
                 </field>
             </grid>`;
 
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_9]"));
         await legacyExtraNextTick();
 
@@ -500,13 +500,11 @@ QUnit.module("Studio", (hooks) => {
         async function (assert) {
             assert.expect(2);
 
-            testConfig.serverData.models.pony.records = [];
-            testConfig.serverData.views[
-                "pony,false,list"
-            ] = `<tree sample="1"><field name="name"/></tree>`;
+            serverData.models.pony.records = [];
+            serverData.views["pony,false,list"] = `<tree sample="1"><field name="name"/></tree>`;
 
             const webClient = await createEnterpriseWebClient({
-                testConfig,
+                serverData,
             });
             // open app Ponies (act window action)
             await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_2]"));
@@ -534,7 +532,7 @@ QUnit.module("Studio", (hooks) => {
         async function (assert) {
             assert.expect(7);
 
-            testConfig.serverData.menus[43] = {
+            serverData.menus[43] = {
                 id: 43,
                 children: [],
                 name: "Form with context",
@@ -542,8 +540,8 @@ QUnit.module("Studio", (hooks) => {
                 actionID: 43,
                 xmlid: "app_43",
             };
-            testConfig.serverData.menus.root.children.push(43);
-            testConfig.serverData.actions[43] = {
+            serverData.menus.root.children.push(43);
+            serverData.actions[43] = {
                 id: 43,
                 name: "Pony Action 43",
                 res_model: "pony",
@@ -569,7 +567,7 @@ QUnit.module("Studio", (hooks) => {
             };
 
             const webClient = await createEnterpriseWebClient({
-                testConfig,
+                serverData,
                 mockRPC,
             });
             await testUtils.dom.click(webClient.el.querySelector(".o_app[data-menu-xmlid=app_43]"));
@@ -606,7 +604,7 @@ QUnit.module("Studio", (hooks) => {
 
     QUnit.module("Report Editor", (hooks) => {
         hooks.beforeEach(() => {
-            testConfig.serverData.models["ir.actions.report"] = {
+            serverData.models["ir.actions.report"] = {
                 fields: {
                     model: { type: "char", string: "Model" },
                 },
@@ -619,12 +617,12 @@ QUnit.module("Studio", (hooks) => {
                 ],
             };
 
-            testConfig.serverData.models["ir.model"] = {
+            serverData.models["ir.model"] = {
                 fields: {},
                 records: [],
             };
 
-            Object.assign(testConfig.serverData.views, {
+            Object.assign(serverData.views, {
                 "ir.actions.report,false,kanban": `
           <kanban class="o_web_studio_report_kanban" js_class="studio_report_kanban">
             <field name="display_name"/>
@@ -673,7 +671,7 @@ QUnit.module("Studio", (hooks) => {
                 // /web_studio/create_new_report not in this test though
             };
             const webClient = await createEnterpriseWebClient({
-                testConfig,
+                serverData,
                 mockRPC,
             });
             await legacyExtraNextTick();

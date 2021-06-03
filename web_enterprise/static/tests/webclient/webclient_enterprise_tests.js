@@ -6,11 +6,7 @@ import {
     nextTick,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
-import {
-    doAction,
-    getActionManagerTestConfig,
-    loadState,
-} from "@web/../tests/webclient/actions/helpers";
+import { doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { debugService } from "@web/core/debug/debug_service";
 import { registry } from "@web/core/registry";
 import { editView } from "@web/legacy/debug_manager";
@@ -19,14 +15,14 @@ import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_s
 import testUtils from "web.test_utils";
 import { makeFakeEnterpriseService } from "../mocks";
 
-let testConfig;
+let serverData;
 const serviceRegistry = registry.category("services");
 
 // Should test ONLY the webClient and features present in Enterprise
 // Those tests rely on hidden view to be in CSS: display: none
 QUnit.module("WebClient Enterprise", (hooks) => {
     hooks.beforeEach(() => {
-        testConfig = getActionManagerTestConfig();
+        serverData = getActionManagerServerData();
         serviceRegistry.add("home_menu", homeMenuService);
         const fakeEnterpriseService = makeFakeEnterpriseService();
         serviceRegistry.add("enterprise", fakeEnterpriseService);
@@ -34,9 +30,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.module("basic flow with home menu", (hooks) => {
         let mockRPC;
         hooks.beforeEach((assert) => {
-            testConfig.serverData.menus[1].actionID = 4;
-            testConfig.serverData.menus.root.children = [1];
-            testConfig.serverData.views["partner,false,form"] = `<form>
+            serverData.menus[1].actionID = 4;
+            serverData.menus.root.children = [1];
+            serverData.views["partner,false,form"] = `<form>
           <field name="display_name"/>
           <field name="m2o"/>'
       </form>`;
@@ -57,7 +53,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
         QUnit.test("1 -- start up", async function (assert) {
             assert.expect(7);
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             assert.ok(webClient.el.classList.contains("o_home_menu_background"));
             assert.ok(webClient.el.classList.contains("o_has_home_menu"));
@@ -67,7 +63,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
         QUnit.test("2 -- navbar updates on displaying an action", async function (assert) {
             assert.expect(12);
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
             await nextTick(); // there is another tick to update navar and destroy HomeMenu
@@ -89,7 +85,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
         QUnit.test("3 -- push another action in the breadcrumb", async function (assert) {
             assert.expect(11);
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
             await nextTick();
@@ -112,7 +108,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
         QUnit.test("4 -- push a third action in the breadcrumb", async function (assert) {
             assert.expect(15);
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
             await nextTick();
@@ -145,7 +141,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             "5 -- switch to HomeMenu from an action with 2 breadcrumbs",
             async function (assert) {
                 assert.expect(17);
-                const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+                const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
                 assert.verifySteps(["/web/webclient/load_menus"]);
                 await click(webClient.el.querySelector(".o_app.o_menuitem"));
                 await nextTick();
@@ -179,7 +175,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         );
         QUnit.test("6 -- back to underlying action with many breadcrumbs", async function (assert) {
             assert.expect(20);
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(webClient.el.querySelector(".o_app.o_menuitem"));
             await nextTick();
@@ -230,10 +226,10 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
         QUnit.test("restore the newly created record in form view (legacy)", async (assert) => {
             assert.expect(7);
-            const action = testConfig.serverData.actions[6];
+            const action = serverData.actions[6];
             delete action.res_id;
             action.target = "current";
-            const webClient = await createEnterpriseWebClient({ testConfig });
+            const webClient = await createEnterpriseWebClient({ serverData });
 
             await doAction(webClient, 6);
             let formEl = webClient.el.querySelector(".o_form_view");
@@ -278,8 +274,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         //       }
         //     }
         //   }
-        //   testConfig.actionRegistry.add('DelayedClientAction', DelayedClientAction);
-        //   const webClient = await createEnterpriseWebClient({testConfig});
+        //   serverData.actionRegistry.add('DelayedClientAction', DelayedClientAction);
+        //   const webClient = await createEnterpriseWebClient({serverData});
         //   await doAction(webClient, 'DelayedClientAction');
         //   await nextTick();
         //   await click(webClient.el.querySelector(".o_menu_toggle"));
@@ -319,7 +315,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
         await doAction(webClient, 3, { viewType: "form" });
         await legacyExtraNextTick();
         assert.containsOnce(webClient, ".o_form_view.o_form_editable");
@@ -335,7 +331,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     });
     QUnit.test("can have HomeMenu and dialog action", async function (assert) {
         assert.expect(6);
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         await nextTick();
         assert.containsOnce(webClient, ".o_home_menu");
         assert.containsNone(webClient, ".modal .o_form_view");
@@ -350,7 +346,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         assert.expect(1);
         // When doing a pg_restore without the filestore
         // LPE fixme: may not be necessary anymore since menus are not HomeMenu props anymore
-        testConfig.serverData.menus = {
+        serverData.menus = {
             root: { id: "root", children: [1], name: "root", appID: "root" },
             1: {
                 id: 1,
@@ -364,7 +360,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             },
         };
         patchWithCleanup(odoo, { debug: "1" });
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
         assert.containsOnce(webClient, ".o_home_menu");
     });
     QUnit.test(
@@ -388,7 +384,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 }
             };
             patchWithCleanup(odoo, { debug: "1" });
-            const webClient = await createEnterpriseWebClient({ testConfig, mockRPC });
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             await click(webClient.el.querySelector(".o_debug_manager .o_dropdown_toggler"));
             assert.containsOnce(
                 webClient.el,
@@ -441,7 +437,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         async function (assert) {
             assert.expect(4);
 
-            const webClient = await createEnterpriseWebClient({ testConfig });
+            const webClient = await createEnterpriseWebClient({ serverData });
             await nextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, { action: "menu" });
 
@@ -470,8 +466,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         "underlying action's menu items are invisible when HomeMenu is displayed",
         async function (assert) {
             assert.expect(10);
-            testConfig.serverData.menus[1].children = [99];
-            testConfig.serverData.menus[99] = {
+            serverData.menus[1].children = [99];
+            serverData.menus[99] = {
                 id: 99,
                 children: [],
                 name: "SubMenu",
@@ -481,7 +477,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 webIconData: undefined,
                 webIcon: false,
             };
-            const webClient = await createEnterpriseWebClient({ testConfig });
+            const webClient = await createEnterpriseWebClient({ serverData });
             assert.containsNone(webClient.el, "nav .o_menu_sections");
             assert.containsNone(webClient.el, "nav .o_menu_brand");
             await click(webClient.el.querySelector(".o_app.o_menuitem:nth-child(1)"));
@@ -500,7 +496,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test("loadState back and forth keeps relevant keys in state", async function (assert) {
         assert.expect(9);
 
-        const webClient = await createEnterpriseWebClient({ testConfig });
+        const webClient = await createEnterpriseWebClient({ serverData });
 
         await click(webClient.el.querySelector(".o_app.o_menuitem:nth-child(2)"));
         await legacyExtraNextTick();
@@ -530,7 +526,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         async function (assert) {
             assert.expect(7);
 
-            const webClient = await createEnterpriseWebClient({ testConfig });
+            const webClient = await createEnterpriseWebClient({ serverData });
             assert.containsOnce(webClient, ".o_home_menu");
             assert.isNotVisible(webClient.el.querySelector(".o_main_navbar .o_menu_toggle"));
 

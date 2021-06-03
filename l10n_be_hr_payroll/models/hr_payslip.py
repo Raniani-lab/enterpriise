@@ -731,11 +731,11 @@ def compute_double_holiday_withholding_taxes(payslip, categories, worked_days, i
 
     # Exoneration
     children = employee.dependent_children
-    if children and yearly_revenue <= children_exoneration.get(children, children_exoneration[12]):
+    if children > 0 and yearly_revenue <= children_exoneration.get(children, children_exoneration[12]):
         yearly_revenue -= children_exoneration.get(children, children_exoneration[12]) - yearly_revenue
 
     # Reduction
-    if children and yearly_revenue <= children_reduction.get(children, children_reduction[5])[1]:
+    if children > 0 and yearly_revenue <= children_reduction.get(children, children_reduction[5])[1]:
         withholding_tax_amount = gross * find_rates(yearly_revenue, rates) * (1 - children_reduction.get(children, children_reduction[5])[0] / 100.0)
     else:
         withholding_tax_amount = gross * find_rates(yearly_revenue, rates)

@@ -634,9 +634,9 @@ class HrContract(models.Model):
             date_to = contract.date_end
             history = self.env['hr.contract.history'].search([('employee_id', '=', contract.employee_id.id)], limit=1)
             all_contracts = history.contract_ids.filtered(
-                lambda c: c.state in ['open', 'close'] and c != contract) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
+                lambda c: c.active and c.state in ['open', 'close'] and c != contract) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
             before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
-            after_contracts = history.contract_ids.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
+            after_contracts = all_contracts.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
             work_time_rate = contract.resource_calendar_id.work_time_rate
 
             for before_contract in before_contracts:

@@ -26,11 +26,7 @@ result = (inputs.GROSS_REF.amount if inputs.GROSS_REF else 0) * qty
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-if inputs.TIME_OFF_TAKEN and inputs.TIME_OFF_TAKEN.amount and inputs.ALLOCATION and inputs.ALLOCATION.amount:
-    if inputs.TIME_OFF_TAKEN.amount &lt; (inputs.ALLOCATION.amount / 2):
-        result_qty = 1
-    else:
-        result_qty = 0
+result_qty = 1
 result_rate = 6.8
 result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
         </field>
@@ -69,11 +65,7 @@ result=result_rules['DOUBLE_BASIC']['total'] + result_rules['EUROPEAN']['total']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-if inputs.TIME_OFF_TAKEN and inputs.TIME_OFF_TAKEN.amount and inputs.ALLOCATION and inputs.ALLOCATION.amount:
-    if inputs.TIME_OFF_TAKEN.amount &lt; (inputs.ALLOCATION.amount / 2):
-        result_qty = 1
-    else:
-        result_qty = 0
+result_qty = 1
 result_rate = 0.87
 result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
         </field>
@@ -112,7 +104,8 @@ result = categories.TERMINAISON_SIMPLE + categories.TERMINAISON_DOUBLE
         <field name="name">ONSS (Double Holiday)</field>
         <field name="code">ONSS2</field>
         <field name="sequence">25</field>
-        <field name="condition_select">none</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_onss</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = result_rules['PAY DOUBLE']['total']
@@ -153,7 +146,8 @@ result = BASIC + result_rules['ONSS1']['total'] + result_rules['ONSS2']['total']
         <field name="name">Professional Tax</field>
         <field name="code">PROF_TAX</field>
         <field name="sequence">40</field>
-        <field name="condition_select">none</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result=not contract.no_withholding_taxes</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 result = GROSS
@@ -190,7 +184,7 @@ result = -result_rules['PROF_TAX']['total']
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = GROSS + PROF_TAX
+result = GROSS + result_rules['PROF_TAX']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays"/>
     </record>

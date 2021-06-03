@@ -547,6 +547,10 @@ class AccountMove(models.Model):
                               '   - Set an exempt fiscal position to remove taxes automatically.\n'
                               '   - Use products without taxes.\n'
                               '   - Remove taxes from product lines.') % self.name)
+        if self.l10n_latam_document_type_id.code == '33' and self.amount_untaxed == self.amount_total:
+            raise UserError(_('All the items you are billing in invoice %s, have no taxes.\n'
+                              ' If you need to bill exempt items you must either use exempt invoice document type (34),'
+                              ' or at least one of the items should have vat tax.') % self.name)
 
     def _l10n_cl_get_sii_reception_status_message(self, sii_response_status):
         """

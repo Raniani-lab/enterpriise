@@ -1354,6 +1354,15 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"All the items you are billing in invoice %s, have no taxes.\n"
+" If you need to bill exempt items you must either use exempt invoice document type (34),"
+" or at least one of the items should have vat tax."
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model,name:l10n_cl_edi.model_account_journal
 msgid "Journal"
 msgstr ""

@@ -422,7 +422,9 @@ class FetchmailServer(models.Model):
     def _get_doc_number_padding(self, company_id):
         """Returns the document number padding used to create the name of the account move"""
         move = self.env['account.move'].sudo().search([
-            ('company_id', '=', company_id)], order='create_date desc', limit=1)
+            ('company_id', '=', company_id),
+            ('name', 'not in', (False, '/', ''))
+        ], order='create_date desc', limit=1)
         if not move:
             return DEFAULT_DOC_NUMBER_PADDING
         doc_number = move.name.split(' ')[1]

@@ -442,8 +442,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(move_lines[0].qty_done, 1.0)
 
     def test_receipt_reserved_1(self):
-        """ Open a receipt. Move a unit of `self.product1` into shelf1, shelf2, shelf3 and shelf 4.
-        Move a unit of `self.product2` into shelf1, shelf2, shelf3 and shelf4 too.
+        """ Open a receipt. Move four units of `self.product1` and four units of
+        unit of `self.product2` into shelf1.
         """
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
@@ -478,16 +478,12 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         receipt_picking.action_assign()
 
         # Mock the calls to write and run the phantomjs script.
-        product1 = self.product1
-        product2 = self.product2
-        shelf1 = self.shelf1
-        shelf2 = self.shelf2
-        shelf3 = self.shelf3
-        sehfl4 = self.shelf4
         assertEqual = self.assertEqual
         ml1 = move1.move_line_ids
         ml2 = move2.move_line_ids
-        def picking_write_mock (self, vals):
+        shelf1 = self.shelf1
+
+        def picking_write_mock(self, vals):
             global CALL_COUNT
             CALL_COUNT += 1
             if CALL_COUNT == 1:
@@ -499,6 +495,68 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
             self.start_tour(url, 'test_receipt_reserved_1', login='admin', timeout=180)
             self.assertEqual(CALL_COUNT, 1)
+            self.assertEqual(receipt_picking.move_line_ids[0].location_dest_id.id, shelf1.id)
+            self.assertEqual(receipt_picking.move_line_ids[1].location_dest_id.id, shelf1.id)
+
+    def test_receipt_reserved_2(self):
+        """ Open a receipt. Move an unit of `self.product1` into shelf1, shelf2, shelf3 and shelf 4.
+        Move an unit of `self.product2` into shelf1, shelf2, shelf3 and shelf4 too.
+        """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        receipt_picking = self.env['stock.picking'].create({
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+        picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
+        url = self._get_client_action_url(receipt_picking.id)
+
+        self.env['stock.move'].create({
+            'name': 'test_receipt_reserved_1_1',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 4,
+            'picking_id': receipt_picking.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_receipt_reserved_1_2',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 4,
+            'picking_id': receipt_picking.id,
+        })
+        receipt_picking.action_confirm()
+        receipt_picking.action_assign()
+
+        # Mock the calls to write and run the phantomjs script.
+        product1, product2 = self.product1, self.product2
+        assertEqual = self.assertEqual
+        locations = [self.shelf1, self.shelf2, self.shelf3, self.shelf4]
+
+        def picking_write_mock(self, vals):
+            global CALL_COUNT
+            assertEqual(len(vals['move_line_ids']), 2)
+            vml1 = vals['move_line_ids'][0][2]
+            vml2 = vals['move_line_ids'][1][2]
+            assertEqual(vml1['product_id'], product2.id)
+            assertEqual(vml2['product_id'], product1.id)
+            assertEqual(vml1['location_dest_id'], locations[CALL_COUNT].id)
+            assertEqual(vml2['location_dest_id'], locations[CALL_COUNT].id)
+            CALL_COUNT += 1
+            return picking_write_orig(self, vals)
+
+        self.assertEqual(len(receipt_picking.move_line_ids), 2)
+        with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
+            self.start_tour(url, 'test_receipt_reserved_2', login='admin', timeout=180)
+            self.assertEqual(CALL_COUNT, 4)
+            self.assertEqual(len(receipt_picking.move_line_ids), 10)
+            self.assertEqual(sum(receipt_picking.move_line_ids.mapped('qty_done')), 8)
 
     def test_delivery_lot_with_package(self):
         """ Have a delivery for on product tracked by SN, scan a non-reserved SN

@@ -1192,31 +1192,275 @@ tour.register('test_receipt_reserved_1', {test: true}, [
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_products');
-            // not relevant in receipt mode
-            // helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('1/1');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-
-            $('.o_barcode_line .fa-cubes').parent().each(function() {
-                var qty = $(this).text().trim();
-                if (qty !== '1 / 4') {
-                    helper.fail();
-                }
-            });
         }
     },
 
     {
         trigger: '.o_add_line',
     },
-
     {
         trigger: '.o_field_widget[name="product_id"]',
         run: function() {
             helper.assertFormLocationDest('WH/Stock/Section 1');
+        },
+    },
+]);
+
+
+tour.register('test_receipt_reserved_2', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertPageSummary(' To WH/Stock');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(false);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            helper.assertLocationHighlight(false);
+            helper.assertDestinationLocationHighlight(false);
+            helper.assertPager('1/1');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(false);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00'
+    },
+
+    {
+        trigger: '.o_current_dest_location:contains("WH/Stock/Section 1")',
+        run: function() {
+            helper.assertPageSummary(' To WH/Stock/Section 1');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            helper.assertDestinationLocationHighlight(true);
+            helper.assertPager('2/2');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateEnabled(true);
+
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line2, "1");
+        }
+    },
+
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function() {
+            helper.assertFormLocationDest('WH/Stock/Section 1');
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(true);
+            helper.assertLinesCount(4);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00'
+    },
+
+    {
+        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
+        run: function() {
+            helper.assertPageSummary(' To WH/Stock/Section 2');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            helper.assertDestinationLocationHighlight(true);
+            helper.assertPager('3/3');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateEnabled(true);
+
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line2, "1");
+        }
+    },
+
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function() {
+            helper.assertFormLocationDest('WH/Stock/Section 2');
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(true);
+            helper.assertLinesCount(4);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan shelf3'
+    },
+
+    {
+        trigger: '.o_current_dest_location:contains("WH/Stock/Section 3")',
+        run: function() {
+            helper.assertPageSummary(' To WH/Stock/Section 3');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            helper.assertDestinationLocationHighlight(true);
+            helper.assertPager('4/4');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateEnabled(true);
+
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line2, "1");
+        }
+    },
+
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function() {
+            helper.assertFormLocationDest('WH/Stock/Section 3');
+        },
+    },
+    {
+        trigger: '.o_discard',
+    },
+
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertValidateIsHighlighted(true);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan shelf4'
+    },
+
+    {
+        trigger: '.o_current_dest_location:contains("WH/Stock/Section 4")',
+        run: function() {
+            helper.assertPageSummary(' To WH/Stock/Section 4');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(true);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_products');
+            helper.assertDestinationLocationHighlight(true);
+            helper.assertPager('5/5');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateEnabled(true);
+
+            const $line1 = helper.getLine({barcode: 'product1'});
+            const $line2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line2, "1");
+        }
+    },
+
+    {
+        trigger: '.o_add_line',
+    },
+    {
+        trigger: '.o_field_widget[name="product_id"]',
+        run: function() {
+            helper.assertFormLocationDest('WH/Stock/Section 4');
         },
     },
 ]);

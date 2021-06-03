@@ -7,7 +7,6 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 
 export class HomeMenuCustomizer extends owl.Component {
     setup() {
-        super.setup();
         this.fileUploader = owl.hooks.useRef("fileUploader");
         this.rpc = useService("rpc");
         this.ui = useService("ui");

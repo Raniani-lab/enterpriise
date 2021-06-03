@@ -16,7 +16,6 @@ export class BurgerMenu extends owl.Component {
     }
 
     setup() {
-        super.setup();
         this.company = useService("company");
         this.user = useService("user");
         this.menuRepo = useService("menu");

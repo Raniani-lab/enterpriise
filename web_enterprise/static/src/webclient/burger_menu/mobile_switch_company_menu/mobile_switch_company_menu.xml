@@ -7,15 +7,15 @@
         <div t-foreach="Object.values(companyService.availableCompanies)" t-as="company">
             <t t-set="id" t-value="company.id"/>
             <t t-set="displayName" t-value="company.name"/>
-            <t t-set="isCompanySelected" t-value="companyService.allowedCompanyIds.includes(id)"/>
+            <t t-set="isCompanySelected" t-value="selectedCompanies.includes(id)"/>
             <t t-set="checkIcon" t-value="isCompanySelected ? 'fa-check-square text-primary' : 'fa-square-o text-muted'"/>
             <t t-set="isCompanyCurrent" t-value="companyService.currentCompany.id === id"/>
             <t t-set="companyStatusClasses" t-value="isCompanyCurrent ? 'font-weight-bold' : 'text-muted'"/>
             <div class="d-flex align-items-center menu_companies_item mb-2" t-att-data-company-id="id">
-                <div class="py-1 pr-3 border-right toggle_company o_py" t-on-click="toggleCompany(company.id)">
+                <div class="py-1 pr-3 border-right toggle_company o_py" t-on-click="toggleCompany(id)">
                     <i t-attf-class="fa fa-fw {{checkIcon}}"></i>
                 </div>
-                <div t-attf-class="py-1 flex-grow-1 log_into px-3 o_py {{companyStatusClasses}}" t-on-click="logIntoCompany(company.id)" style="min-width:0">
+                <div t-attf-class="py-1 flex-grow-1 log_into px-3 o_py {{companyStatusClasses}}" t-on-click="logIntoCompany(id)" style="min-width:0">
                     <span t-esc="displayName" t-attf-class="company_label"/>
                     <small t-if="isCompanyCurrent" class="ml-2 text-muted">(current)</small>
                 </div>

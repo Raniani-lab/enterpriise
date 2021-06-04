@@ -210,15 +210,15 @@ export class EditorAdapter extends ComponentAdapter {
             // To restore the default view from an inherited one, we need first to retrieve the default view id
             const fieldsView = await this.viewService.loadViews(
                 {
-                    model: res_model,
+                    resModel: res_model,
                     views,
                     context: newContext,
                 },
-                { withFilters: true }
+                { loadIrFilters: true }
             );
 
             return this.rpc("/web_studio/restore_default_view", {
-                view_id: fieldsView[viewType].view_id,
+                view_id: fieldsView[viewType].viewId,
             });
         };
 

@@ -106,6 +106,14 @@
         <field name="default_recurring_cost_amount_depreciated">450.00</field>
     </record>
 
+    <record id="fleet_vehicle_model_category_family_car" model="fleet.vehicle.model.category">
+        <field name="name">Small Family Car</field>
+    </record>
+
+    <record id="fleet.model_a3" model="fleet.vehicle.model">
+        <field name="category_id" ref="l10n_be_hr_contract_salary.fleet_vehicle_model_category_family_car"/>
+    </record>
+
     <record id="fleet_vehicle_audi_a3_laurie_poiret" model="fleet.vehicle">
         <field name="model_id" ref="fleet.model_a3"/>
         <field name="license_plate">1-JFC-095</field>
@@ -114,6 +122,7 @@
         <field name="driver_id" ref="res_partner_laurie_poiret_private_address"/>
         <field name="car_value">38000</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="transmission">manual</field>
     </record>
 
     <record id="fleet_vehicle_log_contract_audi_a3_laurie_poiret" model="fleet.vehicle.log.contract">

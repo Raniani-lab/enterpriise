@@ -315,15 +315,21 @@ class Payslip(models.Model):
             invalid_days_by_months[day.month][day.date()] = True
 
         for contract in contracts:
+            # In case the 1rst/2nd days are saturday/sunday, be kinder on the
+            # notion of complete months
+            if contract.date_start.day <= 3:
+                contract_start = contract.date_start + relativedelta(day=1)
+            else:
+                contract_start = contract.date_start
             work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
 
-            previous_week_start = max(contract.date_start + relativedelta(weeks=-1, weekday=MO(-1)), date_from)
+            previous_week_start = max(contract_start + relativedelta(weeks=-1, weekday=MO(-1)), date_from)
             next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date_to)
             days_to_check = rrule.rrule(rrule.DAILY, dtstart=previous_week_start, until=next_week_end)
             for day in days_to_check:
                 day = day.date()
                 out_of_schedule = True
-                if contract.date_start <= day <= (contract.date_end or date.max):
+                if contract_start <= day <= (contract.date_end or date.max):
                     out_of_schedule = False
                 elif day.weekday() not in work_days:
                     out_of_schedule = False

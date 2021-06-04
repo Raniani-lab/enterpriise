@@ -44,7 +44,7 @@ class Test13thMonth(TestPayslipBase):
         self.assertEqual(self.payslip._get_paid_amount(), 2500, 'It should be the full December wage')
 
     def test_13th_month_paid_amount_after_july(self):
-        contract = self.create_contract(date(2019, 7, 2))
+        contract = self.create_contract(date(2019, 7, 4))
         work_entries = self.employee.contract_ids._generate_work_entries(datetime(2018, 12, 31), datetime(2019, 12, 31))
         work_entries.action_validate()
         self.payslip.contract_id = contract

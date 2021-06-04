@@ -214,19 +214,23 @@ class AccountMove(models.Model):
         carvajal_type = False
         if self.move_type == 'out_refund':
             carvajal_type = 'NC'
-        elif self.move_type == 'in_refund':
-            carvajal_type = 'ND'
-        else:
-            odoo_type_to_carvajal_type = {
-                '1': 'FV',
-                '2': 'FE',
-                '3': 'FC',
-            }
-            carvajal_type = odoo_type_to_carvajal_type[self.l10n_co_edi_type]
-
+        elif self.move_type == 'out_invoice':
+            if self.l10n_co_edi_debit_note or self.l10n_co_edi_operation_type in ['30', '32', '33']:
+                carvajal_type = 'ND'
+            else:
+                odoo_type_to_carvajal_type = {
+                    '1': 'FV',
+                    '2': 'FE',
+                    '3': 'FC',
+                    '4': 'FC',
+                }
+                carvajal_type = odoo_type_to_carvajal_type[self.l10n_co_edi_type]
+        prefix = self.sequence_prefix
+        if self.move_type == 'out_invoice' and self.l10n_co_edi_debit_note:
+            prefix = 'ND'
         try:
             request = self._l10n_co_edi_create_carvajal_request()
-            response = request.download(self.sequence_prefix, self.name, carvajal_type)
+            response = request.download(prefix, self.name, carvajal_type)
         except CarvajalException as e:
             invoice_download_msg = _('Electronic invoice download failed. Message from Carvajal:<br/>%s', e)
             attachments = []

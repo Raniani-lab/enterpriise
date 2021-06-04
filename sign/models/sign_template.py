@@ -275,6 +275,7 @@ class SignItemParty(models.Model):
     _description = "Signature Item Party"
 
     name = fields.Char(required=True, translate=True)
+    color = fields.Integer()
 
     sms_authentification = fields.Boolean('SMS Authentication', default=False,)
 

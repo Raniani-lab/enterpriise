@@ -746,6 +746,10 @@ odoo.define('sign.template', function(require) {
 
             if(this.editMode) {
                 var responsibleName = this.parties[$signatureItem.data('responsible')].name;
+                const colorIndex = this.parties[$signatureItem.data('responsible')].color;
+                const currentColor = $signatureItem.attr('class').match(/o_color_responsible_\d+/);
+                $signatureItem.removeClass((currentColor && currentColor[0]));
+                $signatureItem.addClass("o_color_responsible_" + colorIndex);
                 $signatureItem.find('.o_sign_responsible_display').text(responsibleName).prop('title', responsibleName);
                 var option_ids = $signatureItem.data('option_ids') || [];
                 var $options_display = $signatureItem.find('.o_sign_select_options_display');

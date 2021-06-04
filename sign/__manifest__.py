@@ -61,6 +61,8 @@ Let your customers follow the signature process easily.
             'web_enterprise/static/src/legacy/scss/primary_variables.scss',
             'web_tour/static/src/scss/tip.scss',
             'sign/static/src/css/iframe.css',
+            'web/static/src/legacy/scss/secondary_variables.scss',
+            'sign/static/src/scss/iframe.scss',
         ],
         'web.assets_common': [
             'sign/static/src/js/sign_common.js',

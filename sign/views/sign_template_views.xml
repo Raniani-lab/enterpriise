@@ -295,6 +295,7 @@
             <tree editable="bottom">
                 <field name="name" string="Role Name"/>
                 <field name="sms_authentification"/>
+                <field name="color" widget="color_picker"/>
             </tree>
         </field>
     </record>

@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { link } from '@mail/model/model_field_command';
+
 import {
     afterEach,
     afterNextRender,
@@ -19,9 +21,9 @@ QUnit.module('attachment_tests.js', {
     beforeEach() {
         beforeEach(this);
 
-        this.createAttachmentComponent = async (attachment, otherProps) => {
-            const props = Object.assign({ attachmentLocalId: attachment.localId }, otherProps);
-            await createRootMessagingComponent(this, 'Attachment', {
+        this.createMessageComponent = async (message, otherProps) => {
+            const props = Object.assign({ messageLocalId: message.localId }, otherProps);
+            await createRootMessagingComponent(this, "Message", {
                 props,
                 target: this.widget.el,
             });
@@ -62,13 +64,15 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         mimetype: 'image/png',
         name: "test.png",
     });
-    await this.createAttachmentComponent(attachment, {
-        detailsMode: 'hover',
-        isDownloadable: false,
-        isEditable: false,
+    const message = this.messaging.models['mail.message'].create({
+        attachments: link(attachment),
+        author: link(this.messaging.currentPartner),
+        body: "<p>Test</p>",
+        id: 100,
     });
+    await this.createMessageComponent(message);
 
-    await afterNextRender(() => document.querySelector('.o_Attachment_image').click());
+    await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     await afterNextRender(() => {
         // simulate 'backbutton' event triggered by the mobile app
         const backButtonEvent = new Event('backbutton');
@@ -109,13 +113,15 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         mimetype: 'image/png',
         name: "test.png",
     });
-    await this.createAttachmentComponent(attachment, {
-        detailsMode: 'hover',
-        isDownloadable: false,
-        isEditable: false,
+    const message = this.messaging.models['mail.message'].create({
+        attachments: link(attachment),
+        author: link(this.messaging.currentPartner),
+        body: "<p>Test</p>",
+        id: 100,
     });
+    await this.createMessageComponent(message);
 
-    await afterNextRender(() => document.querySelector('.o_Attachment_image').click());
+    await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     assert.verifySteps(
         ['overrideBackButton: true'],
         "the overrideBackButton method should be called with true when the attachment viewer is mounted"

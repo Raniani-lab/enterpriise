@@ -212,6 +212,13 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'))]"/>
     </record>
 
+    <record id="input_double_holiday_nbr_months" model="hr.payslip.input.type">
+        <field name="name">Force number of months</field>
+        <field name="code">MONTHS</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday'))]"/>
+    </record>
+
     <record id="input_double_holiday_european_leave_deduction" model="hr.payslip.input.type">
         <field name="name">European Leaves Deduction</field>
         <field name="code">EULEAVEDEDUC</field>

@@ -266,12 +266,13 @@ class Applicant(models.Model):
 
         today = fields.Date.today()
         messages = self.env['hr.referral.alert'].search([
-            ('active', '=', True),
+            ('active', '=', True), ('dismissed_user_ids', 'not in', self.env.user.id),
             '|', ('date_from', '<=', today), ('date_from', '=', False),
             '|', ('date_to', '>', today), ('date_to', '=', False)])
 
         action_name = 'hr_referral.action_hr_job_employee_referral'
         result['message'] = [{
+            'id': message.id,
             'text': message.name,
             'action': action_name if message.onclick == 'all_jobs' else False,
             'url': message.url if message.onclick == 'url' else False

@@ -69,14 +69,14 @@
                 <div class="o_hr_referral container d-flex flex-column">
                     <div class="space_restart" t-if="widget.debug and widget.dashboardData.message.length"/>
                     <t t-foreach="widget.dashboardData.message" t-as="message">
-                        <a t-if="message.url" style="display:block" t-att-href="message.url" target="_blank">
-                            <div class="message" t-att-title="message.url">
-                                <img src="/hr_referral/static/src/img/new.png" class="img align-self-start mx-2"/>
-                                <span><t t-esc="message.text"/></span>
-                            </div>
+                        <a t-if="message.url" class="message" style="display:block" t-att-href="message.url" t-att-title="message.url" target="_blank">
+                            <img src="/hr_referral/static/src/img/new.png" class="img align-self-start mx-2"/>
+                            <button class="btn float-right fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
+                            <span><t t-esc="message.text"/></span>
                         </a>
                         <div t-else="" t-att-class="message.action and 'message o_referral_action' or 'message'" t-att-name="message.action" t-att-title="message.action and 'View Jobs' or ''">
                             <img src="/hr_referral/static/src/img/new.png" class="img align-self-start mx-2"/>
+                            <button class="btn float-right fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
                             <span><t t-esc="message.text"/></span>
                         </div>
                     </t>

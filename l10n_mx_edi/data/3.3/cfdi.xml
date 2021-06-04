@@ -99,7 +99,7 @@
                                 </t>
                             </cfdi:Retenciones>
                         </t>
-                        <t t-if="tax_detail_vals_list_transferred">
+                        <t t-if="tax_detail_vals_list_transferred and total_tax_transferred > 0">
                             <cfdi:Traslados>
                                 <t t-foreach="tax_detail_vals_list_transferred" t-as="tax_detail_vals">
                                     <t t-set="tax" t-value="tax_detail_vals['tax']"/>

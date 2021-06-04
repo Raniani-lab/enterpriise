@@ -1072,6 +1072,38 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.deepEqual(globalFilter.fields[1], { field: "product", type: "many2one" });
     });
 
+    QUnit.test("Prevent selection of a Field Matching before the Related model", async function (assert) {
+        assert.expect(2);
+        const { webClient } = await createSpreadsheetFromPivot({
+            pivotView: {
+                model: "partner",
+                data: this.data,
+                arch: `
+                      <pivot string="Partners">
+                          <field name="foo" type="col"/>
+                          <field name="product" type="row"/>
+                          <field name="probability" type="measure"/>
+                      </pivot>`,
+              },
+            mockRPC: async function (route, args) {
+              if (args.method === "search_read" && args.model === "ir.model") {
+                return [{ name: "Product", model: "product" }];
+              }
+              return this._super.apply(this, arguments);
+            },
+          });
+          await dom.click(".o_topbar_filter_icon");
+          await dom.click(".o_global_filter_new_relation");
+          let relatedModelSelector = `.o_field_many2one[name="ir.model"] input`;
+          let fieldMatchingSelector = `.o_pivot_field_matching`;
+          assert.containsNone(webClient, fieldMatchingSelector);
+          await dom.click(webClient.el.querySelector(relatedModelSelector));
+          let $dropdown = $(relatedModelSelector).autocomplete("widget");
+          let $target = $dropdown.find(`li:contains(Product)`).first();
+          await dom.click($target);
+          assert.containsOnce(webClient, fieldMatchingSelector);
+    });
+
     QUnit.test("Display with an existing 'Relation' global filter", async function (assert) {
         assert.expect(8);
 

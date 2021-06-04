@@ -193,7 +193,7 @@
                 t-on-value-changed="onValuesSelected"
                 t-key="state.relation.relatedModelName"/>
         </div>
-        <div class="o_side_panel_section">
+        <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModelName">
             <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
             <div class="text-muted">
                 For each pivot, match this filter to the relevant field

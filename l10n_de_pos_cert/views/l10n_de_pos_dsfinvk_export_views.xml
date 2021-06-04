@@ -180,7 +180,7 @@
                         "item":{
                             "number": "<t t-esc="l.product_id.id"/>",
                             "quantity": <t t-esc="float_repr(l.qty, 3)"/>,
-                            "price_per_unit": <t t-esc="float_repr(l.price_subtotal_incl / l.qty, 5)"/>
+                            "price_per_unit": <t t-esc="float_repr(l.price_unit, 5) if l.qty == 0 else float_repr(l.price_subtotal_incl / l.qty, 5)"/>
                         }
                     },</t> ]
                 },

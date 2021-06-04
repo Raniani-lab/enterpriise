@@ -9184,21 +9184,21 @@
         }
         checkEmptyDataset(createCommand) {
             return createCommand.definition.dataSets.length === 0
-                ? 21 /* EmptyDataSet */
+                ? 23 /* EmptyDataSet */
                 : 0 /* Success */;
         }
         checkDataset(createCommand) {
             const invalidRanges = createCommand.definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
-            return invalidRanges ? 23 /* InvalidDataSet */ : 0 /* Success */;
+            return invalidRanges ? 25 /* InvalidDataSet */ : 0 /* Success */;
         }
         checkEmptyLabelRange(createCommand) {
             return createCommand.definition.labelRange
                 ? 0 /* Success */
-                : 22 /* EmptyLabelRange */;
+                : 24 /* EmptyLabelRange */;
         }
         checkLabelRange(createCommand) {
             const invalidLabels = !rangeReference.test(createCommand.definition.labelRange || "");
-            return invalidLabels ? 24 /* InvalidLabelRange */ : 0 /* Success */;
+            return invalidLabels ? 26 /* InvalidLabelRange */ : 0 /* Success */;
         }
     }
     ChartPlugin.getters = ["getChartDefinition", "getChartDefinitionUI", "getChartsIdBySheet"];
@@ -9401,7 +9401,7 @@
                 const isEmpty = (value) => value === "" || value === undefined;
                 if (operators.includes(rule.operator) &&
                     (!isEmpty(rule.values[1]) || rule.values.length > 2)) {
-                    return 31 /* InvalidNumberOfArgs */;
+                    return 33 /* InvalidNumberOfArgs */;
                 }
                 return 0 /* Success */;
             };
@@ -9411,7 +9411,7 @@
                 if (operators.includes(rule.operator)) {
                     for (let i = 0; i < expectedNumber; i++) {
                         if (rule.values[i] === undefined || rule.values[i] === "") {
-                            return 31 /* InvalidNumberOfArgs */;
+                            return 33 /* InvalidNumberOfArgs */;
                         }
                     }
                 }
@@ -9423,15 +9423,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 32 /* MinNaN */;
+                        return 34 /* MinNaN */;
                     case "max":
-                        return 34 /* MaxNaN */;
+                        return 36 /* MaxNaN */;
                     case "mid":
-                        return 33 /* MidNaN */;
+                        return 35 /* MidNaN */;
                     case "upperInflectionPoint":
-                        return 35 /* ValueUpperInflectionNaN */;
+                        return 37 /* ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 36 /* ValueLowerInflectionNaN */;
+                        return 38 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -9445,15 +9445,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 42 /* MinInvalidFormula */;
+                        return 44 /* MinInvalidFormula */;
                     case "max":
-                        return 44 /* MaxInvalidFormula */;
+                        return 46 /* MaxInvalidFormula */;
                     case "mid":
-                        return 43 /* MidInvalidFormula */;
+                        return 45 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 45 /* ValueUpperInvalidFormula */;
+                        return 47 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 46 /* ValueLowerInvalidFormula */;
+                        return 48 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -9465,15 +9465,15 @@
             if (compiledFormula.async) {
                 switch (thresholdName) {
                     case "min":
-                        return 37 /* MinAsyncFormulaNotSupported */;
+                        return 39 /* MinAsyncFormulaNotSupported */;
                     case "max":
-                        return 39 /* MaxAsyncFormulaNotSupported */;
+                        return 41 /* MaxAsyncFormulaNotSupported */;
                     case "mid":
-                        return 38 /* MidAsyncFormulaNotSupported */;
+                        return 40 /* MidAsyncFormulaNotSupported */;
                     case "upperInflectionPoint":
-                        return 40 /* ValueUpperAsyncFormulaNotSupported */;
+                        return 42 /* ValueUpperAsyncFormulaNotSupported */;
                     case "lowerInflectionPoint":
-                        return 41 /* ValueLowerAsyncFormulaNotSupported */;
+                        return 43 /* ValueLowerAsyncFormulaNotSupported */;
                 }
             }
             return 0 /* Success */;
@@ -9490,7 +9490,7 @@
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 28 /* LowerBiggerThanUpper */;
+                return 30 /* LowerBiggerThanUpper */;
             }
             return 0 /* Success */;
         }
@@ -9500,7 +9500,7 @@
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
                 Number(minValue) >= Number(maxValue)) {
-                return 27 /* MinBiggerThanMax */;
+                return 29 /* MinBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -9512,7 +9512,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 Number(midValue) >= Number(maxValue)) {
-                return 29 /* MidBiggerThanMax */;
+                return 31 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -9524,7 +9524,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 Number(minValue) >= Number(midValue)) {
-                return 30 /* MinBiggerThanMid */;
+                return 32 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -9839,7 +9839,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 49 /* MergeOverlap */;
+                        return 51 /* MergeOverlap */;
                     }
                 }
             }
@@ -12527,26 +12527,26 @@
         SAVE: _lt("Save"),
         PREVIEW_TEXT: _lt("Preview text"),
         Errors: {
-            [31 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
-            [32 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [33 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [34 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [35 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [36 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [27 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [30 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [29 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [28 /* LowerBiggerThanUpper */]: _lt("Lower inflation point must be smaller then upper inflation point"),
-            [42 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [44 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [43 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [45 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflation point formula"),
-            [46 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflation point formula"),
-            [37 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
-            [39 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
-            [38 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
-            [40 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
-            [41 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
+            [33 /* InvalidNumberOfArgs */]: _lt("Invalid number of arguments"),
+            [34 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [35 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [36 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [37 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [38 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [29 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [32 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [31 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [30 /* LowerBiggerThanUpper */]: _lt("Lower inflation point must be smaller then upper inflation point"),
+            [44 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [46 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [45 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [47 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflation point formula"),
+            [48 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflation point formula"),
+            [39 /* MinAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Minpoint"),
+            [41 /* MaxAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Maxpoint"),
+            [40 /* MidAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the Midpoint"),
+            [42 /* ValueUpperAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the upper inflection point"),
+            [43 /* ValueLowerAsyncFormulaNotSupported */]: _lt("Some formulas are not supported for the lower inflection point"),
             unexpected: _lt("The rule is invalid for an unknown reason"),
         },
         SingleColor: _lt("Single color"),
@@ -12604,11 +12604,11 @@
         CreateChart: _lt("Create chart"),
         TitlePlaceholder: _lt("New Chart"),
         Errors: {
-            [21 /* EmptyDataSet */]: _lt("No Dataset given"),
-            [22 /* EmptyLabelRange */]: _lt("No Labels given"),
-            [23 /* InvalidDataSet */]: _lt("Invalid dataSet"),
-            [24 /* InvalidLabelRange */]: _lt("Invalid Labels"),
-            unexpected: _lt("The chartdefinition is invalid for an unknown reason"),
+            [23 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
+            [24 /* EmptyLabelRange */]: _lt("Labels need to be defined"),
+            [25 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [26 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            unexpected: _lt("The chart definition is invalid for an unknown reason"),
         },
     };
     const FindAndReplaceTerms = {
@@ -14479,7 +14479,7 @@
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* Success */;
                     }
-                    return 25 /* InvalidAutofillSelection */;
+                    return 27 /* InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -15370,13 +15370,13 @@
         isPasteAllowed(state, target, force) {
             const sheetId = this.getters.getActiveSheetId();
             if (!state) {
-                return 15 /* EmptyClipboard */;
+                return 17 /* EmptyClipboard */;
             }
             if (target.length > 1) {
                 // cannot paste if we have a clipped zone larger than a cell and multiple
                 // zones selected
                 if (state.cells.length > 1 || state.cells[0].length > 1) {
-                    return 14 /* WrongPasteSelection */;
+                    return 16 /* WrongPasteSelection */;
                 }
             }
             if (!force) {
@@ -15608,7 +15608,7 @@
         interactivePaste(state, target, cmd) {
             const result = this.isPasteAllowed(state, target, false);
             if (result !== 0 /* Success */) {
-                if (result === 14 /* WrongPasteSelection */) {
+                if (result === 16 /* WrongPasteSelection */) {
                     this.ui.notifyUser(_lt("This operation is not allowed with multiple selections."));
                 }
                 if (result === 2 /* WillRemoveExistingMerge */) {
@@ -18937,12 +18937,12 @@
                 case "FOCUS_RANGE":
                     const index = this.getIndex(cmd.id, cmd.rangeId);
                     if (this.focusedInputId === cmd.id && this.focusedRange === index) {
-                        return 18 /* InputAlreadyFocused */;
+                        return 20 /* InputAlreadyFocused */;
                     }
                     break;
                 case "ADD_EMPTY_RANGE":
                     if (this.inputs[cmd.id].length === this.inputMaximums[cmd.id]) {
-                        return 19 /* MaximumRangesReached */;
+                        return 21 /* MaximumRangesReached */;
                     }
                     break;
             }
@@ -28302,8 +28302,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2021-06-02T10:40:47.342Z';
-    exports.__info__.hash = '7cf08c3';
+    exports.__info__.date = '2021-06-04T07:29:32.190Z';
+    exports.__info__.hash = 'dbf0d71';
 
 }(this.o_spreadsheet = this.o_spreadsheet || {}, owl));
 //# sourceMappingURL=o_spreadsheet.js.map

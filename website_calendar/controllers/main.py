@@ -201,6 +201,7 @@ class WebsiteCalendar(http.Controller):
         # When creating a meeting from your own calendar in the backend, there is no need to notify yourself
         event = request.env['calendar.event'].with_context(
             mail_notify_author=True,
+            allowed_company_ids=employee.user_id.company_ids.ids,
         ).sudo().create({
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),

@@ -58,9 +58,10 @@ class purchase_order(models.Model):
 
             # create the SO and generate its lines from the PO lines
             # read it as sudo, because inter-compagny user can not have the access right on PO
+            direct_delivery_address = rec.picking_type_id.warehouse_id.partner_id.id or rec.dest_address_id
             sale_order_data = rec.sudo()._prepare_sale_order_data(
                 rec.name, company_partner, company,
-                rec.dest_address_id and rec.dest_address_id.id or False)
+                direct_delivery_address or False)
             inter_user = self.env['res.users'].sudo().browse(intercompany_uid)
             # lines are browse as sudo to access all data required to be copied on SO line (mainly for company dependent field like taxes)
             for line in rec.order_line.sudo():

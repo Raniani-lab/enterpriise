@@ -43,6 +43,8 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
         self.assertEqual(sale_order.order_line[0].name, 'Service', "Product name is incorrect.")
         self.assertEqual(sale_order.order_line[0].product_uom_qty, 1, "Product qty is incorrect.")
         self.assertEqual(sale_order.order_line[0].price_unit, 450, "Unit Price in line is incorrect.")
+        self.assertTrue(sale_order.partner_shipping_id == purchase_order.picking_type_id.warehouse_id.partner_id, "Partner shipping is incorrect.")
+
 
     def test_00_inter_company_sale_purchase(self):
         """ Configure "Sale/Purchase" option and then Create purchase order and find related
@@ -189,3 +191,55 @@ class TestInterCompanyPurchaseToSale(TestInterCompanyRulesCommonSOPO):
         self.assertEqual(po.partner_id, supplier)
         self.assertEqual(po.order_line.product_id, product_storable)
         self.assertEqual(po.order_line.price_unit, 200)
+
+
+    def test_04_inter_company_purchase_order_with_stock_picking(self):
+        partner = self.env['res.partner'].create({
+            'name': 'Odoo',
+            'child_ids': [
+                (0, 0, {'name': 'Farm 1', 'type': 'delivery'}),
+                (0, 0, {'name': 'Farm 2', 'type': 'delivery'}),
+                (0, 0, {'name': 'Farm 3', 'type': 'delivery'}),
+            ]
+        })
+        self.company_b.update({'partner_id': partner.id})
+        (self.company_b | self.company_a).update({'rule_type': 'sale_purchase'})
+        children = partner.child_ids
+        warehouses = self.env['stock.warehouse'].sudo().create([
+            {
+                'name': 'Farm 1 warehouse',
+                'code': 'FWH1',
+                'company_id': self.company_b.id,
+                'partner_id': children[0].id,
+            },
+            {
+                'name': 'Farm 2 warehouse',
+                'code': 'FWH2',
+                'company_id': self.company_b.id,
+                'partner_id': children[1].id,
+            },
+            {
+                'name': 'Farm 3 warehouse',
+                'code': 'FWH3',
+                'company_id': self.company_b.id,
+                'partner_id': children[2].id,
+            },
+        ])
+        def generate_purchase_and_validate_sale_order(first_company, second_company, warehouse_id):
+            stock_picking_type = self.env['stock.picking.type'].search(['&', ('warehouse_id', '=', warehouse_id), ('name', '=', 'Receipts')])
+            purchase_order = Form(self.env['purchase.order'])
+            purchase_order.partner_id = second_company.partner_id
+            purchase_order.company_id = first_company
+            purchase_order.currency_id = second_company.currency_id
+            purchase_order = purchase_order.save()
+            purchase_order.picking_type_id = stock_picking_type
+            with Form(purchase_order) as po:
+                with po.order_line.new() as line:
+                    line.name = 'Service'
+                    line.product_id = self.product_consultant
+                    line.price_unit = 450.0
+            purchase_order.with_company(first_company).button_confirm()
+            self.validate_generated_sale_order(purchase_order, first_company, second_company)
+
+        for warehouse in warehouses:
+            generate_purchase_and_validate_sale_order(self.company_b, self.company_a, warehouse.id)

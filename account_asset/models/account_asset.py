@@ -482,6 +482,7 @@ class AccountAsset(models.Model):
             'res_model': 'account.asset',
             'type': 'ir.actions.act_window',
             'context': {
+                'default_asset_type': self.asset_type,
                 'default_state': 'model',
                 'default_account_asset_id': self.account_asset_id.id,
                 'default_account_depreciation_id': self.account_depreciation_id.id,

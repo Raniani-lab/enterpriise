@@ -51,8 +51,10 @@ class PaymentTransaction(models.Model):
 
             # As the transaction is set in pending, the processing of the
             # `_finalize_post_processing` method is reproduced here as well.
+            payment_method_line = mandate.payment_journal_id.inbound_payment_method_line_ids\
+                .filtered(lambda l: l.code == 'sdd')
             self._create_payment(
-                payment_method_id=self.env.ref('account_sepa_direct_debit.payment_method_sdd').id,
+                payment_method_line_id=payment_method_line.id,
                 sdd_mandate_id=mandate.id,
             )
 

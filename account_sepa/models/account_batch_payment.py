@@ -75,7 +75,7 @@ class AccountBatchPayment(models.Model):
     def check_payments_for_warnings(self):
         rslt = super(AccountBatchPayment, self).check_payments_for_warnings()
 
-        if self.payment_method_id.code == 'sepa_ct':
+        if self.payment_method_code == 'sepa_ct':
             rslt += self._get_sct_genericity_warnings()
 
         return rslt

@@ -8,9 +8,9 @@ class account_journal(models.Model):
     def get_journal_dashboard_datas(self):
         domain_sepa_ct_to_send = [
             ('journal_id', '=', self.id),
-            ('payment_method_id.code', '=', 'sepa_ct'),
+            ('payment_method_line_id.code', '=', 'sepa_ct'),
             ('state', '=', 'posted'),
-            ('is_move_sent','=', False),
+            ('is_move_sent', '=', False),
             ('is_matched', '=', False),
         ]
         return dict(
@@ -19,6 +19,7 @@ class account_journal(models.Model):
         )
 
     def action_sepa_ct_to_send(self):
+        payment_method_line = self.outbound_payment_method_line_ids.filtered(lambda l: l.code == 'sepa_ct')
         return {
             'name': _('SEPA Credit Transfers to Send'),
             'type': 'ir.actions.act_window',
@@ -31,6 +32,6 @@ class account_journal(models.Model):
                 default_journal_id=self.id,
                 search_default_journal_id=self.id,
                 default_payment_type='outbound',
-                default_payment_method_id=self.env.ref('account_sepa.account_payment_method_sepa_ct').id,
+                default_payment_method_line_id=payment_method_line.id,
             ),
         }

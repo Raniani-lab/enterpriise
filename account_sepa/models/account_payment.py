@@ -19,7 +19,7 @@ class AccountPayment(models.Model):
         res += ['sepa_ct']
         return res
 
-    @api.constrains('payment_method_id', 'journal_id')
+    @api.constrains('payment_method_line_id', 'journal_id')
     def _check_sepa_bank_account(self):
         sepa_payment_method = self.env.ref('account_sepa.account_payment_method_sepa_ct')
         for rec in self:

@@ -52,10 +52,11 @@ class SDDTest(AccountTestInvoicingCommon):
         return invoice
 
     def pay_with_mandate(self, invoice, mandate):
+        sdd_method_line = mandate.payment_journal_id.inbound_payment_method_line_ids.filtered(lambda l: l.code == 'sdd')
         self.env['account.payment.register'].with_context(active_model='account.move', active_ids=invoice.ids).create({
             'payment_date': invoice.invoice_date_due or invoice.invoice_date,
             'journal_id': mandate.payment_journal_id.id,
-            'payment_method_id': self.env.ref('account_sepa_direct_debit.payment_method_sdd').id,
+            'payment_method_line_id': sdd_method_line.id,
         })._create_payments()
 
     def test_sdd(self):

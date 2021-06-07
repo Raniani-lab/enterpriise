@@ -1101,10 +1101,10 @@ class TestTaxReport(TestAccountReportsCommon):
         def register_payment_for_invoice(invoice):
             """ Fully pay the invoice, so that the cash basis entries are created
             """
-            payment_method_id = self.inbound_payment_method if invoice.is_inbound() else self.outbound_payment_method
+            payment_method_id = self.inbound_payment_method_line if invoice.is_inbound() else self.outbound_payment_method_line
             self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
                 'payment_date': invoice.date,
-                'payment_method_id': payment_method_id.id,
+                'payment_method_line_id': payment_method_id.id,
             })._create_payments()
 
         # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
@@ -1218,10 +1218,10 @@ class TestTaxReport(TestAccountReportsCommon):
         def register_payment_for_invoice(invoice):
             """ Fully pay the invoice, so that the cash basis entries are created
             """
-            payment_method_id = self.inbound_payment_method if invoice.is_inbound() else self.outbound_payment_method
+            payment_method_id = self.inbound_payment_method_line if invoice.is_inbound() else self.outbound_payment_method_line
             self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
                 'payment_date': invoice.date,
-                'payment_method_id': payment_method_id.id,
+                'payment_method_line_id': payment_method_id.id,
             })._create_payments()
 
         # -100 (base, invoice) + 100 (base, refund) - 20 (tax, invoice) + 5 (25% tax, refund) = -15

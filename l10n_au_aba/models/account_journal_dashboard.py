@@ -19,6 +19,7 @@ class AccountJournalDashboard(models.Model):
         )
 
     def action_aba_ct_to_send(self):
+        payment_method_line = self.outbound_payment_method_line_ids.filtered(lambda l: l.code == 'aba_ct')
         return {
             'name': _('ABA Credit Transfers to Send'),
             'type': 'ir.actions.act_window',
@@ -30,6 +31,6 @@ class AccountJournalDashboard(models.Model):
                 journal_id=self.id,
                 default_journal_id=self.id,
                 default_payment_type='outbound',
-                default_payment_method_id=self.env.ref('l10n_au_aba.account_payment_method_aba_ct').id,
+                default_payment_method_line_id=payment_method_line.id,
             ),
         }

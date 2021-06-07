@@ -21,8 +21,6 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             'vat': 'BE0477472701',
         })
 
-        cls.sepa_ct = cls.env.ref('account_sepa.account_payment_method_sepa_ct')
-
         # Create an IBAN bank account and its journal
         cls.bank_ing = cls.env['res.bank'].create({
             'name': 'ING',
@@ -39,6 +37,8 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             'bank_acc_number': 'BE48363523682327',
             'currency_id': cls.env.ref('base.EUR').id,
         })
+        cls.sepa_ct = cls.bank_journal.outbound_payment_method_line_ids.filtered(lambda l: l.code == 'sepa_ct')
+        cls.sepa_ct_method = cls.env.ref('account_sepa.account_payment_method_sepa_ct')
 
         # Make sure all suppliers have exactly one bank account
         cls.env['res.partner.bank'].create({
@@ -64,7 +64,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
         """ Create a SEPA credit transfer payment """
         return cls.env['account.payment'].create({
             'journal_id': cls.company_data['default_journal_bank'].id,
-            'payment_method_id': cls.sepa_ct.id,
+            'payment_method_line_id': cls.sepa_ct.id,
             'payment_type': 'outbound',
             'date': '2015-04-28',
             'amount': amount,
@@ -83,7 +83,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             batch = self.env['account.batch.payment'].create({
                 'journal_id': self.bank_journal.id,
                 'payment_ids': [(4, payment.id, None) for payment in (payment_1 | payment_2)],
-                'payment_method_id': self.sepa_ct.id,
+                'payment_method_id': self.sepa_ct_method.id,
                 'batch_type': 'outbound',
             })
 
@@ -110,7 +110,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             batch = self.env['account.batch.payment'].create({
                 'journal_id': self.bank_journal.id,
                 'payment_ids': [(4, payment.id, None) for payment in (payment_1 | payment_2)],
-                'payment_method_id': self.sepa_ct.id,
+                'payment_method_id': self.sepa_ct_method.id,
                 'batch_type': 'outbound',
             })
 

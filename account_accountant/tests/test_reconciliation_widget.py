@@ -245,7 +245,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         inv2 = self.create_invoice(move_type="out_refund", invoice_amount=140, currency_id=self.currency_usd_id)
 
         payment = self.env['account.payment'].create({
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
             'payment_type': 'inbound',
             'partner_type': 'customer',
             'partner_id': inv1.partner_id.id,

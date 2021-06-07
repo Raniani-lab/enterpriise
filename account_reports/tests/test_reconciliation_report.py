@@ -72,7 +72,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'date': '2015-01-01',
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
 
         payment_2 = self.env['account.payment'].create({
@@ -82,7 +82,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'date': '2015-01-02',
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
-            'payment_method_id': self.outbound_payment_method.id,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
         })
 
         payment_3 = self.env['account.payment'].create({
@@ -92,7 +92,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'date': '2015-01-03',
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
 
         payment_4 = self.env['account.payment'].create({
@@ -102,7 +102,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'date': '2015-01-04',
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
-            'payment_method_id': self.outbound_payment_method.id,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
         })
 
         (payment_1 + payment_2 + payment_3 + payment_4).action_post()
@@ -220,7 +220,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
             'currency_id': company_currency.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
         payment_1.action_post()
 
@@ -233,7 +233,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
             'currency_id': journal_currency.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
         payment_2.action_post()
 
@@ -246,7 +246,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'journal_id': bank_journal.id,
             'partner_id': self.partner_a.id,
             'currency_id': choco_currency.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
         payment_3.action_post()
 

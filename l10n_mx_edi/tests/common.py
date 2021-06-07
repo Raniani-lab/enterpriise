@@ -225,7 +225,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'partner_type': 'customer',
             'partner_id': cls.partner_a.id,
             'currency_id': cls.currency_data['currency'].id,
-            'payment_method_id': cls.outbound_payment_method.id,
+            'payment_method_line_id': cls.outbound_payment_method_line.payment_method_id.id,
             'journal_id': cls.company_data['default_journal_bank'].id,
         })
 

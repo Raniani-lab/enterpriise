@@ -28,7 +28,8 @@ class AccountBatchPayment(models.Model):
         compute='_compute_payment_method_id',
         domain="[('id', 'in', available_payment_method_ids)]",
         help="The payment method used by the payments in this batch.")
-    available_payment_method_ids = fields.Many2many('account.payment.method',
+    available_payment_method_ids = fields.Many2many(
+        comodel_name='account.payment.method',
         compute='_compute_available_payment_method_ids')
     payment_method_code = fields.Char(related='payment_method_id.code', readonly=False)
     export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.", copy=False)
@@ -37,20 +38,31 @@ class AccountBatchPayment(models.Model):
 
     file_generation_enabled = fields.Boolean(help="Whether or not this batch payment should display the 'Generate File' button instead of 'Print' in form view.", compute='_compute_file_generation_enabled')
 
-    @api.depends('batch_type', 'journal_id')
+    @api.depends('batch_type',
+                 'journal_id.inbound_payment_method_line_ids',
+                 'journal_id.outbound_payment_method_line_ids',
+                 'payment_ids.payment_method_line_id')
     def _compute_payment_method_id(self):
-        ''' Compute the 'payment_method_id' field.
-        This field is not computed in '_compute_available_payment_method_ids' because it's a stored editable one.
+        ''' Compute the 'payment_method_line_id' field.
+        This field is not computed in '_compute_available_payment_method_line_ids' because it's a stored editable one.
         '''
         for batch in self:
-            if batch.batch_type == 'inbound':
-                available_payment_methods = batch.journal_id.inbound_payment_method_line_ids.mapped('payment_method_id')
-            else:
-                available_payment_methods = batch.journal_id.outbound_payment_method_line_ids.mapped('payment_method_id')
+            if batch.payment_ids:
+                batch.payment_method_id = batch.payment_ids.payment_method_line_id[0].payment_method_id
+                continue
+
+            if not batch.journal_id:
+                batch.available_payment_method_ids = False
+                batch.payment_method_id = False
+                continue
+
+            available_payment_method_lines = batch.journal_id._get_available_payment_method_lines(batch.batch_type)
+
+            batch.available_payment_method_ids = available_payment_method_lines.mapped('payment_method_id')
 
             # Select the first available one by default.
-            if available_payment_methods:
-                batch.payment_method_id = available_payment_methods[0]._origin
+            if batch.available_payment_method_ids:
+                batch.payment_method_id = batch.available_payment_method_ids[0]._origin
             else:
                 batch.payment_method_id = False
 
@@ -59,10 +71,8 @@ class AccountBatchPayment(models.Model):
                  'journal_id.outbound_payment_method_line_ids')
     def _compute_available_payment_method_ids(self):
         for batch in self:
-            if batch.batch_type == 'inbound':
-                batch.available_payment_method_ids = batch.journal_id.inbound_payment_method_line_ids.mapped('payment_method_id')
-            else:
-                batch.available_payment_method_ids = batch.journal_id.outbound_payment_method_line_ids.mapped('payment_method_id')
+            available_payment_method_lines = batch.journal_id._get_available_payment_method_lines(batch.batch_type)
+            batch.available_payment_method_ids = available_payment_method_lines.mapped('payment_method_id')
 
     @api.depends('payment_ids.move_id.is_move_sent', 'payment_ids.is_matched')
     def _compute_state(self):
@@ -121,7 +131,7 @@ class AccountBatchPayment(models.Model):
             all_types = set(record.payment_ids.mapped('payment_type'))
             if all_types and record.batch_type not in all_types:
                 raise ValidationError(_("The batch must have the same type as the payments it contains."))
-            all_payment_methods = set(record.payment_ids.mapped('payment_method_id'))
+            all_payment_methods = set(record.payment_ids.mapped('payment_method_line_id').mapped('payment_method_id'))
             if len(all_payment_methods) > 1:
                 raise ValidationError(_("All payments in the batch must share the same payment method."))
             if all_payment_methods and record.payment_method_id not in all_payment_methods:

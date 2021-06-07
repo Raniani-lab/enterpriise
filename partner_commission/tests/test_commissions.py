@@ -91,10 +91,12 @@ class TestCommissions(TestCommissionsSetup):
         inv.action_post()
 
         # pay 10 out of 20
-        payment_register =self.env['account.payment.register'].with_context(active_model='account.move', active_ids=inv.ids).create({
+        manual_in = self.bank_journal.inbound_payment_method_line_ids.filtered(lambda l: l.code == 'manual')[0]
+
+        payment_register = self.env['account.payment.register'].with_context(active_model='account.move', active_ids=inv.ids).create({
             'payment_date': fields.Date.today(),
             'journal_id': self.bank_journal.id,
-            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'payment_method_line_id': manual_in.id,
             'amount': 10,
         })
         payment = payment_register._create_payments()

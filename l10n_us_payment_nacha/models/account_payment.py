@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    @api.constrains("ref", "payment_method_id")
+    @api.constrains("ref", "payment_method_line_id")
     def _check_ref(self):
         for payment in self:
             if not payment.ref and payment.payment_method_code == "nacha":

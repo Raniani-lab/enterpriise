@@ -21,10 +21,11 @@ class TestBatchPayment(AccountTestInvoicingCommon):
             {'name': 'beta'},
             {'name': 'gamma'},
         ])
-        cls.batch_deposit = cls.env.ref('account_batch_payment.account_payment_method_batch_deposit')
 
         # Create a bank journal
         cls.journal = cls.company_data['default_journal_bank']
+        cls.batch_deposit_method = cls.env.ref('account_batch_payment.account_payment_method_batch_deposit')
+        cls.batch_deposit = cls.journal.inbound_payment_method_line_ids.filtered(lambda l: l.code == 'batch_payment')
 
         # Create some payments
         cls.payments = [
@@ -38,7 +39,7 @@ class TestBatchPayment(AccountTestInvoicingCommon):
         """ Create a batch deposit payment """
         payment = cls.env['account.payment'].create({
             'journal_id': cls.journal.id,
-            'payment_method_id': cls.batch_deposit.id,
+            'payment_method_line_id': cls.batch_deposit.id,
             'payment_type': 'inbound',
             'date': time.strftime('%Y') + '-07-15',
             'amount': amount,
@@ -53,7 +54,7 @@ class TestBatchPayment(AccountTestInvoicingCommon):
         batch = self.env['account.batch.payment'].create({
             'journal_id': self.journal.id,
             'payment_ids': [(4, payment.id, None) for payment in self.payments],
-            'payment_method_id': self.batch_deposit.id,
+            'payment_method_id': self.batch_deposit_method.id,
         })
         batch.validate_batch()
         error_action = batch.print_batch_payment()
@@ -91,6 +92,6 @@ class TestBatchPayment(AccountTestInvoicingCommon):
         batch_vals = {
             'journal_id': self.journal.id,
             'payment_ids': [(4, zero_payment.id, None)],
-            'payment_method_id': self.batch_deposit.id,
+            'payment_method_id': self.batch_deposit_method.id,
         }
         self.assertRaises(ValidationError, self.env['account.batch.payment'].create, batch_vals)

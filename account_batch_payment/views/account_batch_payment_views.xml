@@ -33,8 +33,8 @@ if records:
                             <field name="journal_id" domain="[('type', '=', 'bank')]" options="{'no_open': True, 'no_create': True}"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="available_payment_method_ids" invisible="1"/>
-                            <field name="payment_method_id" required="1"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="payment_method_id" required="1" options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('payment_ids', '!=', [])]}"/>
                             <field name="payment_method_code" invisible="1"/> <!--For use in modules depending on this one-->
                         </group><group>
                             <field name="date"/>
@@ -58,6 +58,7 @@ if records:
                                     <field name="amount_signed" sum="Total" string="Amount"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="state" invisible="1"/>
+                                    <field name="payment_method_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

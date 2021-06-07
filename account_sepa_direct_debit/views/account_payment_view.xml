@@ -18,7 +18,7 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='payment_method_id']" position="after">
+                <xpath expr="//field[@name='payment_method_line_id']" position="after">
                     <field name="sdd_mandate_id"
                            string="Originating SEPA mandate"
                            attrs="{'invisible':[('sdd_mandate_id', '=', False)]}"/>
@@ -58,7 +58,7 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='payment_method_id']" position="after">
+                <xpath expr="//field[@name='payment_method_line_id']" position="after">
                     <field name="sdd_mandate_scheme" optional="hide"/>
                 </xpath>
             </field>

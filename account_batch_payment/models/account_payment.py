@@ -12,7 +12,7 @@ class AccountPayment(models.Model):
     amount_signed = fields.Monetary(
         currency_field='currency_id', compute='_compute_amount_signed',
         help='Negative value of amount field if payment_type is outbound')
-    payment_method_name = fields.Char(related='payment_method_id.name')
+    payment_method_name = fields.Char(related='payment_method_line_id.name')
 
     @api.depends('state')
     def _compute_batch_payment_id(self):
@@ -34,7 +34,7 @@ class AccountPayment(models.Model):
         batch = self.env['account.batch.payment'].create({
             'journal_id': self[0].journal_id.id,
             'payment_ids': [(4, payment.id, None) for payment in self],
-            'payment_method_id': self[0].payment_method_id.id,
+            'payment_method_line_id': self[0].payment_method_line_id.id,
             'batch_type': self[0].payment_type,
         })
 

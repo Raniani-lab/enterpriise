@@ -123,7 +123,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                 'journal_id': self.company_data['default_journal_bank'].id,
                 'date': fields.Date.from_string('200%s-05-12' % i),
                 'partner_id': self.partner_a.id,
-                'payment_method_id': self.outbound_payment_method.id,
+                'payment_method_line_id': self.outbound_payment_method_line.id,
                 'partner_type': 'supplier'
             })
 
@@ -170,7 +170,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             'journal_id': self.company_data['default_journal_bank'].id,
             'date': fields.Date.from_string('2000-05-12'),
             'partner_id': self.partner_a.id,
-            'payment_method_id': self.outbound_payment_method.id,
+            'payment_method_line_id': self.outbound_payment_method_line.id,
             'partner_type': 'supplier'
         })
         payment.action_post()

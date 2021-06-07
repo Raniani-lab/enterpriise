@@ -67,7 +67,7 @@ class TestAccountBankStatement(TestAccountBankStatementCommon):
             'currency_id': self.currency_2.id,
             'partner_id': self.partner_a.id,
             'journal_id': self.statement.line_ids.journal_id.id,
-            'payment_method_id': self.inbound_payment_method.id,
+            'payment_method_line_id': self.inbound_payment_method_line.id,
         })
         test_payment_2 = test_payment_1.copy()
 

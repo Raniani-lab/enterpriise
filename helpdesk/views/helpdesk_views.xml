@@ -306,9 +306,7 @@
                 <field name="user_id"/>
                 <templates>
                     <div t-name="activity-box">
-                        <img t-if="record.user_id.raw_value"
-                             t-att-src="activity_image('res.users', 'avatar_128', record.user_id.raw_value)"
-                             t-att-title="record.user_id.value" t-att-alt="record.user_id.value"/>
+                        <field name="user_id" widget="many2one_avatar_user"/>
                         <div class="w-100">
                             <div class="d-flex justify-content-between">
                                 <div style="min-width: 0;">

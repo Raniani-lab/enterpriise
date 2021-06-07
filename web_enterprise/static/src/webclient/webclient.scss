@@ -145,27 +145,25 @@ select {
 
 
 .rounded {
-  border-radius: $o-border-radius !important;
+  $sizes: (null: $o-border-radius, '-sm': $o-border-radius-sm, '-lg': $o-border-radius-lg);
 
-  &-sm {
-    border-radius: $o-border-radius-sm !important;
-  }
-
-  &-lg {
-    border-radius: $o-border-radius-lg !important;
-  }
-
-  @each $side in ('left', 'right') {
-    &-#{$side} {
-      border-top-#{$side}-radius: $o-border-radius !important;
-      border-bottom-#{$side}-radius: $o-border-radius !important;
+  @each $size, $radius in $sizes {
+    &#{$size} {
+      border-radius: $radius !important;
     }
-  }
 
-  @each $direction in ('top', 'bottom') {
-    &-#{$direction} {
-      border-#{$direction}-left-radius: $o-border-radius !important;
-      border-#{$direction}-right-radius: $o-border-radius !important;
+    @each $side in ('left', 'right') {
+      &#{$size}-#{$side} {
+        border-top-#{$side}-radius: $radius !important;
+        border-bottom-#{$side}-radius: $radius !important;
+      }
+    }
+
+    @each $direction in ('top', 'bottom') {
+      &#{$size}-#{$direction} {
+        border-#{$direction}-left-radius: $radius !important;
+        border-#{$direction}-right-radius: $radius !important;
+      }
     }
   }
 }

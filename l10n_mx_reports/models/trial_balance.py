@@ -106,7 +106,7 @@ class MxReportAccountTrial(models.AbstractModel):
             if not options.get('coa_only'):
                 lines.append({
                     'id': self._get_generic_line_id(None, line.code, markup='total'),
-                    'name': _('Total %s', line.name)[2:],
+                    'name': _('Total %s', line.name[2:]),
                     'level': 0,
                     'class': 'hierarchy_total',
                     'columns': [{'name': self.format_value(v)} for v in total_line],

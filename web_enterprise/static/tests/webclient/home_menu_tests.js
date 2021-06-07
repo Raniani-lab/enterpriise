@@ -6,7 +6,7 @@ import { ormService } from "@web/core/orm_service";
 import testUtils from "web.test_utils";
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import { makeFakeEnterpriseService } from "../mocks";
-import { uiService } from "@web/core/ui_service";
+import { uiService } from "@web/core/ui/ui_service";
 
 const { Component, core, hooks, mount, tags } = owl;
 const { EventBus } = core;

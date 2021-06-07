@@ -8,7 +8,7 @@ import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { click, getFixture, makeDeferred, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { MobileSwitchCompanyMenu } from "@web_enterprise/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
 import { companyService } from "@web/webclient/company_service";
-import { uiService } from "@web/core/ui_service";
+import { uiService } from "@web/core/ui/ui_service";
 
 const { mount } = owl;
 const serviceRegistry = registry.category("services");

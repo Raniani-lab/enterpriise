@@ -10,7 +10,7 @@ import { patch, unpatch } from "@web/core/utils/patch";
 import testUtils from "web.test_utils";
 import { ExpirationPanel } from "@web_enterprise/webclient/home_menu/expiration_panel";
 import { makeFakeEnterpriseService } from "../mocks";
-import { uiService } from "@web/core/ui_service";
+import { uiService } from "@web/core/ui/ui_service";
 
 const { mount } = owl;
 const patchDate = testUtils.mock.patchDate;

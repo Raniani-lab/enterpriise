@@ -6,7 +6,7 @@ import { MODES } from "@web_studio/studio_service";
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { userService } from "@web/core/user_service";
-import { uiService } from "@web/core/ui_service";
+import { uiService } from "@web/core/ui/ui_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 
 import { getFixture } from "@web/../tests/helpers/utils";
@@ -15,7 +15,6 @@ import { registry } from "@web/core/registry";
 
 import testUtils from "web.test_utils";
 
-import { DialogContainer } from "@web/core/dialog/dialog_container";
 import { dialogService } from "@web/core/dialog/dialog_service";
 
 const { Component, core, hooks, mount, tags } = owl;
@@ -33,13 +32,16 @@ async function createStudioHomeMenu(homeMenuProps) {
             this.homeMenuRef = hooks.useRef("home-menu");
             this.homeMenuProps = homeMenuProps;
         }
+        get DialogContainer() {
+            return registry.category("main_components").get("DialogContainer");
+        }
     }
-    Parent.components = { StudioHomeMenu, DialogContainer };
+    Parent.components = { StudioHomeMenu };
     Parent.template = tags.xml`
         <div>
             <StudioHomeMenu t-ref="home-menu" t-props="homeMenuProps"/>
             <div class="o_dialog_container"/>
-            <DialogContainer/>
+            <t t-component="DialogContainer.Component" t-props="DialogContainer.props"/>
         </div>`;
     const env = await makeTestEnv();
     const target = getFixture();

@@ -152,6 +152,8 @@ class L10nBe274XX(models.Model):
 
             line_values = payslips._get_line_values(['GROSS', 'PPTOTAL'], compute_sum=True)
 
+            payslips = payslips.filtered(lambda p: line_values['PPTOTAL'][p.id]['total'])
+
             # Total
             sheet.taxable_amount = line_values['GROSS']['sum']['total']
             sheet.pp_amount = line_values['PPTOTAL']['sum']['total']
@@ -231,6 +233,9 @@ class L10nBe274XX(models.Model):
         return '%s' % int(amount * 100)
 
     def _get_rendering_data(self):
+        def _to_eurocent(amount):
+            return '%s' % int(amount * 100)
+
         # https://finances.belgium.be/sites/default/files/downloads/Sp%C3%A9cification%20XML.doc
         result = {
             'creation_date': fields.Date.today().strftime("%Y-%m-%d"),
@@ -335,9 +340,9 @@ class L10nBe274XX(models.Model):
 
         for payslip in payslips:
             pp_total = line_values['PPTOTAL'][payslip.id]['total']
-            if pp_total >= 0:
-                pp_total_eurocent = int(pp_total * 100)
-                taxable_eurocent = int(line_values['GROSS'][payslip.id]['total'] * 100)
+            if pp_total:
+                pp_total_eurocent = pp_total
+                taxable_eurocent = line_values['GROSS'][payslip.id]['total']
                 declaration_10['prepayment'] += pp_total_eurocent
                 declaration_10['taxable_revenue'] += taxable_eurocent
                 result['positive_total'] += pp_total_eurocent
@@ -346,8 +351,8 @@ class L10nBe274XX(models.Model):
                 employee = payslip.employee_id
                 deduction = - payslip.contract_id.rd_percentage / 100 * 0.8 * line_values['PPTOTAL'][payslip.id]['total']
                 if deduction:
-                    pp_total_eurocent = int(deduction * 100)
-                    taxable_eurocent = int(line_values['GROSS'][payslip.id]['total'] * 100)
+                    pp_total_eurocent = deduction
+                    taxable_eurocent = line_values['GROSS'][payslip.id]['total']
                     if employee.certificate in ['doctor', 'civil_engineer']:
                         declaration_32['prepayment'] += pp_total_eurocent
                         declaration_32['taxable_revenue'] += taxable_eurocent
@@ -357,23 +362,26 @@ class L10nBe274XX(models.Model):
                     elif employee.certificate == 'bachelor':
                         declaration_34['prepayment'] += pp_total_eurocent
                         declaration_34['taxable_revenue'] += taxable_eurocent
-                    result['negative_total'] += int(deduction * 100)
+                    result['negative_total'] += deduction
 
-            # The total amount of the exemption from payment of the withholding tax granted to
-            # researchers who have a bachelor's degree is limited to 25% of the total amount of
-            # the exemption from the payment of the withholding tax granted to researchers who have
-            # a diploma qualifying as a doctorate or Master. This percentage will be doubled for
-            # small companies (article 15 §§, 1 to 6 of the Companies Code). This limitation has
-            # not changed on January 1, 2020.
-            # https://www.belspo.be/belspo/organisation/fisc_dipl_fr.stm
-            declaration_34['prepayment'] = -min(
-                - declaration_34['prepayment'],
-                round(- declaration_32['prepayment'] - declaration_33['prepayment'] / 4.0))
+        # The total amount of the exemption from payment of the withholding tax granted to
+        # researchers who have a bachelor's degree is limited to 25% of the total amount of
+        # the exemption from the payment of the withholding tax granted to researchers who have
+        # a diploma qualifying as a doctorate or Master. This percentage will be doubled for
+        # small companies (article 15 §§, 1 to 6 of the Companies Code). This limitation has
+        # not changed on January 1, 2020.
+        # https://www.belspo.be/belspo/organisation/fisc_dipl_fr.stm
+        declaration_34['prepayment'] = -min(
+            - declaration_34['prepayment'],
+            (- declaration_32['prepayment'] - declaration_33['prepayment']) / 4.0)
 
+        for declaration in [declaration_10, declaration_32, declaration_33, declaration_34]:
+            declaration['prepayment'] = _to_eurocent(declaration['prepayment'])
+            declaration['taxable_revenue'] = _to_eurocent(declaration['taxable_revenue'])
 
         result['declarations'] = [declaration_10, declaration_32, declaration_33, declaration_34]
-        result['positive_total'] = str(result['positive_total'])
-        result['negative_total'] = str(result['negative_total'])
+        result['positive_total'] = _to_eurocent(result['positive_total'])
+        result['negative_total'] = _to_eurocent(result['negative_total'])
         return result
 
     def action_generate_xml(self):

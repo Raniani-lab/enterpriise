@@ -5,7 +5,7 @@
         <field name="name">report.project.task.user.pivot</field>
         <field name="model">report.project.task.user.fsm</field>
         <field name="arch" type="xml">
-            <pivot string="Tasks Analysis" display_quantity="true" disable_linking="True" sample="1">
+            <pivot string="Tasks Analysis" display_quantity="true" sample="1">
                 <field name="project_id" type="row"/>
                 <field name="hours_effective" widget="timesheet_uom" type="measure"/>
                 <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
@@ -22,7 +22,7 @@
         <field name="name">report.project.task.user.graph</field>
         <field name="model">report.project.task.user.fsm</field>
         <field name="arch" type="xml">
-            <graph string="Tasks Analysis" type="bar" sample="1" disable_linking="1" js_class="hr_timesheet_graphview">
+            <graph string="Tasks Analysis" type="bar" sample="1" js_class="hr_timesheet_graphview">
                 <field name="project_id" type="row"/>
                 <field name="nbr" type="measure" invisible="1"/>
                 <field name="delay_endings_days" type="measure" invisible="1"/>
@@ -32,6 +32,21 @@
                 <field name="working_days_open" type="measure" string="Working Days to Assign"/>
                 <field name="hours_planned" widget="timesheet_uom" type="measure"/>
             </graph>
+        </field>
+    </record>
+
+    <record id="report_project_task_user_fsm_view_tree" model="ir.ui.view">
+        <field name="name">report.project.task.user.fsm.view.tree</field>
+        <field name="model">report.project.task.user.fsm</field>
+        <field name="arch" type="xml">
+            <tree string="Tasks Analysis">
+                <field name="name"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="project_id" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="hours_effective" optional="show" widget="float_time" sum="Sum of Effective Hours"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company"/>
+            </tree>
         </field>
     </record>
 

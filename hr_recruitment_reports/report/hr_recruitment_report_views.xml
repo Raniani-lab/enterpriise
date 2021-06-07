@@ -34,7 +34,7 @@
             <field name="name">hr.recruitment.report.pivot</field>
             <field name="model">hr.recruitment.report</field>
             <field name="arch" type="xml">
-                <pivot string="Recruitment Analysis" disable_linking="True" sample="1">
+                <pivot string="Recruitment Analysis" sample="1">
                     <field name="job_id" type="row"/>
                     <field name="count" type="measure"/>
                     <field name="hired" type="measure"/>
@@ -47,10 +47,24 @@
             <field name="name">hr.recruitment.report.graph</field>
             <field name="model">hr.recruitment.report</field>
             <field name="arch" type="xml">
-                <graph string="Recruitment Analysis" type="line" sample="1" disable_linking="1">
+                <graph string="Recruitment Analysis" type="line" sample="1">
                     <field name="create_date" type="row"/>
                     <field name="count" type="measure"/>
                 </graph>
+            </field>
+        </record>
+
+        <record id="hr_recruitment_report_view_tree" model="ir.ui.view">
+            <field name="name">hr.recruitment.report.view.tree</field>
+            <field name="model">hr.recruitment.report</field>
+            <field name="arch" type="xml">
+                <tree string="Recruitment Analysis">
+                    <field name="name"/>
+                    <field name="job_id" optional="show"/>
+                    <field name="medium_id" optional="show"/>
+                    <field name="create_date" optional="show"/>
+                    <field name="stage_id" optional="show"/>
+                </tree>
             </field>
         </record>
 

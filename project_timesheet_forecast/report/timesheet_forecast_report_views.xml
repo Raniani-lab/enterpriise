@@ -35,6 +35,23 @@
         </field>
     </record>
 
+    <record id="project_timesheet_forecast_report_analysis_view_tree" model="ir.ui.view">
+         <field name="name">project.timesheet.forecast.report.analysis.view.tree</field>
+         <field name="model">project.timesheet.forecast.report.analysis</field>
+         <field name="arch" type="xml">
+            <tree string="Timesheet and Planning Analysis">
+                <field name="entry_date"/>
+                <field name="project_id" optional="show"/>
+                <field name="task_id" optional="hide"/>
+                <field name="employee_id" optional="show" widget="many2one_avatar_employee"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company"/>
+                <field name="planned_hours" optional="show" sum="Sum of Planned Hours"/>
+                <field name="effective_hours" optional="show" sum="Sum of Effective Hours"/>
+                <field name="difference" optional="show" sum="Sum of Difference"/>
+            </tree>
+         </field>
+    </record>
+
     <record id="project_timesheet_forecast_report_view_search" model="ir.ui.view">
         <field name="name">timesheet.forecast.report.search</field>
         <field name="model">project.timesheet.forecast.report.analysis</field>

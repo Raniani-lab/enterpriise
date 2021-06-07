@@ -5,7 +5,7 @@
         <field name="name">helpdesk.sla.report.analysis.pivot</field>
         <field name="model">helpdesk.sla.report.analysis</field>
         <field name="arch" type="xml">
-        <pivot string="SLA Status Analysis" disable_linking="True" sample="1">
+        <pivot string="SLA Status Analysis"  sample="1">
             <field name="team_id" type="row"/>
             <field name="create_date" interval="month" type="col"/>
             <field name="ticket_failed" type="measure"/>
@@ -18,11 +18,34 @@
         <field name="name">helpdesk.sla.report.analysis.graph</field>
         <field name="model">helpdesk.sla.report.analysis</field>
         <field name="arch" type="xml">
-            <graph string="SLA Status Analysis" sample="1" disable_linking="1">
+            <graph string="SLA Status Analysis" sample="1">
                  <field name="team_id" type="row"/>
                  <field name="create_date" interval="month" type="col"/>
              </graph>
          </field>
+    </record>
+
+    <record id="helpdesk_sla_report_analysis_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.sla.report.analysis.view.tree</field>
+        <field name="model">helpdesk.sla.report.analysis</field>
+        <field name="arch" type="xml">
+            <tree string="SLA Status Analysis">
+                <field name="team_id"/>
+                <field name="ticket_id" optional="show"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="create_date" optional="show"/>
+                <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                <field name="ticket_type_id" optional="show"/>
+                <field name="ticket_failed" optional="hide"/>
+                <field name="sla_status_failed" optional="hide"/>
+                <field name="ticket_assignation_hours" optional="hide"/>
+                <field name="ticket_close_hours" optional="hide"/>
+                <field name="priority" optional="hide"/>
+                <field name="sla_stage_id" optional="show"/>
+                <field name="sla_status" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
     </record>
 
     <record id="helpdesk_sla_report_analysis_view_search" model="ir.ui.view">

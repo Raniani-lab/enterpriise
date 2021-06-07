@@ -155,7 +155,10 @@ class Applicant(models.Model):
                 ('use_in_referral', '=', True),
                 ('sequence', '>', old_state_sequence), ('sequence', '<=', new_state.sequence),
                 '|', ('job_ids', '=', False), ('job_ids', '=', self.job_id.id)])
+            gained_points = 0
+            available_points = sum(self.env['hr.referral.points'].search([('ref_user_id', '=', self.ref_user_id.id), ('company_id', '=', self.company_id.id)]).mapped('points'))
             for stage in stages_to_add:
+                gained_points += stage.points
                 point_stage.append({
                     'applicant_id': self.id,
                     'stage_id': stage.id,
@@ -164,11 +167,16 @@ class Applicant(models.Model):
                     'ref_user_id': self.ref_user_id.id,
                     'company_id': self.company_id.id
                 })
+            available_points += gained_points
+            url = '/web#%s' % url_encode({'action': 'hr_referral.action_hr_referral_reward', 'active_model': 'hr.referral.reward'})
+            additional_message = (gained_points > 0 and _(" You've gained %(gained)s points with this progress.<br/>"
+                "It makes you a new total of %(total)s points. Visit <a href=\"%(url)s\">this link</a> to pick a gift!",
+                gained=gained_points, total=available_points, url=url)) or ''
             if self.stage_id.hired_stage:
                 self.referral_state = 'hired'
-                self._send_notification(_('Your referrer is hired!'))
+                self._send_notification(_('Your referrer is hired!') + additional_message)
             else:
-                self._send_notification(_('Your referrer got a step further!'))
+                self._send_notification(_('Your referrer got a step further!') + additional_message)
 
         self.env['hr.referral.points'].create(point_stage)
 

@@ -72,7 +72,7 @@ class HrPayrollStructure(models.Model):
     type_id = fields.Many2one(
         'hr.payroll.structure.type', required=True)
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
-    note = fields.Text(string='Description')
+    note = fields.Html(string='Description')
     rule_ids = fields.One2many(
         'hr.salary.rule', 'struct_id',
         string='Salary Rules', default=_get_default_rule_ids)
@@ -157,7 +157,7 @@ class HrSalaryRuleCategory(models.Model):
     parent_id = fields.Many2one('hr.salary.rule.category', string='Parent',
         help="Linking a salary category to its parent is used only for the reporting purpose.")
     children_ids = fields.One2many('hr.salary.rule.category', 'parent_id', string='Children')
-    note = fields.Text(string='Description')
+    note = fields.Html(string='Description')
 
     @api.constrains('parent_id')
     def _check_parent_id(self):
@@ -246,7 +246,7 @@ result = rules.NET > categories.NET * 0.10''',
     amount_percentage_base = fields.Char(string='Percentage based on', help='result will be affected to a variable')
     partner_id = fields.Many2one('res.partner', string='Partner',
         help="Eventual third party involved in the salary payment of the employees.")
-    note = fields.Text(string='Description')
+    note = fields.Html(string='Description')
 
     def _compute_rule(self, localdict):
         """

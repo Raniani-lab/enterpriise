@@ -6,6 +6,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools.misc import formatLang, format_date, parse_date
+from odoo.tools import html2plaintext
 
 
 class AccountReconciliation(models.AbstractModel):
@@ -879,7 +880,7 @@ class AccountReconciliation(models.AbstractModel):
         data = {
             'id': st_line.id,
             'ref': st_line.ref,
-            'note': st_line.narration or "",
+            'note': html2plaintext(st_line.narration) or "",
             'name': st_line.payment_ref,
             'date': format_date(self.env, st_line.date),
             'amount': amount,

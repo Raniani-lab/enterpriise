@@ -4,6 +4,7 @@ from logging import getLogger
 
 from odoo import http
 from odoo.http import request
+from odoo.tools import is_html_empty
 
 _logger = getLogger(__name__)
 
@@ -16,7 +17,8 @@ class WebsiteTwitterWall(http.Controller):
     @http.route('/twitter_walls', type='http', auth='public', website=True, sitemap=True)
     def twitter_wall_walls(self, **kwargs):
         return request.render('website_twitter_wall.twitter_walls', {
-            'walls': request.env['website.twitter.wall'].search([('website_published', '=', True)] if request.env.uid == request.website.user_id.id else [])
+            'walls': request.env['website.twitter.wall'].search([('website_published', '=', True)] if request.env.uid == request.website.user_id.id else []),
+            'is_html_empty': is_html_empty,
         })
 
     @http.route(['/twitter_wall/view/<model("website.twitter.wall"):wall>',
@@ -28,7 +30,8 @@ class WebsiteTwitterWall(http.Controller):
         return request.render('website_twitter_wall.twitter_wall_view', {
             'wall': wall,
             'tweets': tweets,
-            'pager': pager
+            'pager': pager,
+            'is_html_empty': is_html_empty,
         })
 
     @http.route(['/twitter_wall/get_tweet/<model("website.twitter.wall"):wall>'], type='json', auth='public', website=True)

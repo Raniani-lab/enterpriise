@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_compare, float_is_zero, plaintext2html
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -69,8 +69,8 @@ class HrPayslip(models.Model):
                 }
 
                 for slip in slip_mapped_data[journal_id][slip_date]:
-                    move_dict['narration'] += slip.number or '' + ' - ' + slip.employee_id.name or ''
-                    move_dict['narration'] += '\n'
+                    move_dict['narration'] += plaintext2html(slip.number or '' + ' - ' + slip.employee_id.name or '')
+                    move_dict['narration'] += '<br/>'
                     for line in slip.line_ids.filtered(lambda line: line.category_id):
                         amount = line.total
                         if line.code == 'NET': # Check if the line is the 'Net Salary'.

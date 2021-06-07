@@ -11,7 +11,7 @@ from os import listdir
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
-from odoo.tools import DEFAULT_SERVER_TIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_TIME_FORMAT, html2plaintext
 from odoo.tools.float_utils import float_compare
 from .carvajal_request import CarvajalRequest, CarvajalException
 
@@ -381,7 +381,7 @@ class AccountMove(models.Model):
                                       self.company_id.l10n_co_edi_header_resolucion_aplicable or '',
                                       self.company_id.l10n_co_edi_header_actividad_economica or ''),
             '2.-%s' % (self.company_id.l10n_co_edi_header_bank_information or '').replace('\n', '|'),
-            '3.- %s' % (self.narration or 'N/A'),
+            '3.- %s' % (html2plaintext(self.narration) or 'N/A'),
             '6.- %s|%s' % (self.invoice_payment_term_id.note, amount_in_words),
             '7.- %s' % (self.company_id.website),
             '8.-%s|%s|%s' % (self.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', shipping_partner.phone or '', self.invoice_origin or ''),

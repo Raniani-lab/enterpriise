@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div t-if="event.description" class="col-lg-6 row">
+                            <div t-if="not is_html_empty(event.description)" class="col-lg-6 row">
                                 <div class="col-4">
                                     <label>Description:</label>
                                 </div>

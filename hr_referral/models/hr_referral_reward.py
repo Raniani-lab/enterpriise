@@ -21,7 +21,7 @@ class HrReferralReward(models.Model):
     cost = fields.Integer('Cost', required=True, tracking=True)
     awarded_employees = fields.Integer(compute='_compute_awarded_employees')
     points_missing = fields.Integer(compute='_compute_points_missing')
-    description = fields.Text(required=True)
+    description = fields.Html(required=True)
     gift_manager_id = fields.Many2one('res.users', string='Gift Responsible',
         domain=_group_hr_referral_domain, help="User responsible of this gift.")
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company, required=True)

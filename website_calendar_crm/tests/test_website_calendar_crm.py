@@ -44,7 +44,7 @@ class WebsiteCalendarCRMTest(TestCrmCommon):
             'stop': datetime.now() + timedelta(hours=1),
             'allday': False,
             'duration': appointment_type.appointment_duration,
-            'description': "Test",
+            'description': "<p>Test</p>",
             'location': appointment_type.location,
             'partner_ids': [(4, pid, False) for pid in partner_ids],
             'categ_ids': [(4, self.categ_id.id, False)],

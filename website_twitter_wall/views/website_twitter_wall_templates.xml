@@ -23,7 +23,7 @@
                                 <h4 class="mt4 mb8 o-tw-ellipsis">
                                     <a t-att-title="wall.name" t-attf-href="/twitter_wall/view/#{wall.id}" t-field="wall.name" />
                                 </h4>
-                                <h5 t-if="wall.description" t-att-title="wall.description" t-field="wall.description" class="o-tw-ellipsis" />
+                                <h5 t-if="not is_html_empty(wall.description)" t-att-title="wall.description" t-field="wall.description" class="o-tw-ellipsis" />
                             </div>
                         </div>
                     </div>
@@ -68,9 +68,9 @@
                 <div class="container-fluid">
                     <div class="row mt8 mb8 container-fluid">
                         <div class="col-4 o-tw-hashtag">
-                            <div class="mb4" t-if="wall.description">
+                            <div class="mb4" t-if="not is_html_empty(wall.description)">
                                 <h4><i class="fa fa-twitter" /> <strong> Join the wall</strong></h4>
-                                <label class="label" t-esc="'%s' % (wall.description)" />
+                                <label class="label" t-esc="wall.description" />
                             </div>
                         </div>
                         <div class="o-tw-options col-4 mt16">

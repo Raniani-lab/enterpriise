@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round, date_utils, convert_file
+from odoo.tools import float_round, date_utils, convert_file, html2plaintext
 from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -507,7 +507,7 @@ class HrPayslip(models.Model):
                     'sequence': rule.sequence,
                     'code': rule.code,
                     'name': rule_name,
-                    'note': rule.note,
+                    'note': html2plaintext(rule.note),
                     'salary_rule_id': rule.id,
                     'contract_id': localdict['contract'].id,
                     'employee_id': localdict['employee'].id,

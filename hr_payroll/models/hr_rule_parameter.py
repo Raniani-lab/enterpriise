@@ -30,7 +30,7 @@ class HrSalaryRuleParameter(models.Model):
 
     name = fields.Char(required=True)
     code = fields.Char(required=True, help="This code is used in salary rules to refer to this parameter.")
-    description = fields.Text()
+    description = fields.Html()
     country_id = fields.Many2one('res.country', string='Country', default=lambda self: self.env.company.country_id)
     parameter_version_ids = fields.One2many('hr.rule.parameter.value', 'rule_parameter_id', string='Versions')
 

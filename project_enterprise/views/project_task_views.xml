@@ -23,6 +23,8 @@
                         <div class="row no-gutters">
                             <div class="col">
                                 <ul class="pl-1 mb-0">
+                                    <li t-if="project_id"><strong>Project: </strong> <t t-esc="project_id[1]"/></li>
+                                    <li t-if="user_id"><strong>Assigned to: </strong> <t t-esc="user_id[1]"/></li>
                                     <li t-if="partner_id"><strong>Customer: </strong> <t t-esc="partner_id[1]"/></li>
                                     <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('L LTS')"/></li>
                                     <li><strong>End Date: </strong> <t t-esc="userTimezoneStopDate.format('L LTS')"/></li>
@@ -31,6 +33,8 @@
                         </div>
                     </div>
                 </templates>
+                <field name="project_id"/>
+                <field name="user_id"/>
                 <field name="partner_id"/>
                 <field name="project_color" />
             </gantt>
@@ -58,9 +62,10 @@
         <field name="model">project.task</field>
         <field name="priority">12</field>
         <field name="arch" type="xml">
-            <map res_partner="partner_id" default_order="planned_date_begin" routing="true" hide_title="true" js_class="project_map">
-                <field name="planned_date_begin" string="Date"/>
+            <map res_partner="partner_id" routing="true" js_class="project_map">
+                <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
+                <field name="user_id" string="Assigned to"/>
             </map>
         </field>
     </record>

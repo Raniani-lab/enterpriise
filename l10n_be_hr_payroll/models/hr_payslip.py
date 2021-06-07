@@ -351,16 +351,15 @@ class Payslip(models.Model):
             date_from = date(year, 1, 1)
             date_to = date(year, 12, 31)
 
-            # 1. Number of months
             force_months = self.input_line_ids.filtered(lambda l: l.code == 'MONTHS')
             if force_months:
                 n_months = force_months[0].amount
+                presence_prorata = 1
             else:
+                # 1. Number of months
                 n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
-
-            # 2. Deduct absences
-            presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
-
+                # 2. Deduct absences
+                presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
             fixed_salary = basic * n_months / 12 * presence_prorata
         else:
             fixed_salary = basic

@@ -5,10 +5,10 @@ import { registry } from "@web/core/registry";
 import { hotkeyService } from "@web/webclient/hotkeys/hotkey_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { makeFakeUIService } from "@web/../tests/helpers/mock_services";
 import { click, getFixture, makeDeferred, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { MobileSwitchCompanyMenu } from "@web_enterprise/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu";
 import { companyService } from "@web/webclient/company_service";
+import { uiService } from "@web/core/ui_service";
 
 const { mount } = owl;
 const serviceRegistry = registry.category("services");
@@ -45,7 +45,7 @@ QUnit.module("MobileMobileSwitchCompanyMenu", (hooks) => {
             },
             current_company: 1,
         });
-        serviceRegistry.add("ui", makeFakeUIService());
+        serviceRegistry.add("ui", uiService);
         serviceRegistry.add("company", companyService);
         serviceRegistry.add("hotkey", hotkeyService);
     });

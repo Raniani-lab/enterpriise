@@ -3,7 +3,6 @@
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { registry } from "@web/core/registry";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { makeFakeUIService } from "@web/../tests/helpers/mock_services";
 import { getFixture } from "@web/../tests/helpers/utils";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
@@ -11,6 +10,7 @@ import { patch, unpatch } from "@web/core/utils/patch";
 import testUtils from "web.test_utils";
 import { ExpirationPanel } from "@web_enterprise/webclient/home_menu/expiration_panel";
 import { makeFakeEnterpriseService } from "../mocks";
+import { uiService } from "@web/core/ui_service";
 
 const { mount } = owl;
 const patchDate = testUtils.mock.patchDate;
@@ -32,7 +32,7 @@ async function createExpirationPanel(params = {}) {
     };
 
     serviceRegistry.add(mockedCookieService.name, mockedCookieService);
-    serviceRegistry.add("ui", makeFakeUIService(params.ui));
+    serviceRegistry.add("ui", uiService);
     serviceRegistry.add("orm", ormService);
     const mockedEnterpriseService = makeFakeEnterpriseService(params.enterprise);
     serviceRegistry.add(mockedEnterpriseService.name, mockedEnterpriseService);
@@ -42,6 +42,15 @@ async function createExpirationPanel(params = {}) {
     const env = await makeTestEnv({
         mockRPC: params.mockRPC,
     });
+
+    if (params.ui) {
+        if (params.ui.block) {
+            env.services.ui.bus.on("BLOCK", null, params.ui.block);
+        }
+        if (params.ui.unblock) {
+            env.services.ui.bus.on("UNBLOCK", null, params.ui.unblock);
+        }
+    }
 
     const target = getFixture();
     return mount(ExpirationPanel, { env, target });

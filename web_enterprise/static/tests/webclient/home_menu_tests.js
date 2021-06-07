@@ -1,12 +1,12 @@
 /** @odoo-module **/
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { makeFakeUIService } from "@web/../tests/helpers/mock_services";
 import { getFixture } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
 import testUtils from "web.test_utils";
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import { makeFakeEnterpriseService } from "../mocks";
+import { uiService } from "@web/core/ui_service";
 
 const { Component, core, hooks, mount, tags } = owl;
 const { EventBus } = core;
@@ -179,7 +179,7 @@ QUnit.module(
                     };
                 },
             };
-            serviceRegistry.add("ui", makeFakeUIService());
+            serviceRegistry.add("ui", uiService);
             serviceRegistry.add(fakeEnterpriseService.name, fakeEnterpriseService);
             serviceRegistry.add(fakeHomeMenuService.name, fakeHomeMenuService);
             serviceRegistry.add(fakeMenuService.name, fakeMenuService);

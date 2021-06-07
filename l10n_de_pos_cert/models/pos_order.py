@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class PosOrder(models.Model):
@@ -80,3 +81,9 @@ class PosOrder(models.Model):
             GROUP BY account_tax.amount
         """, [self.id])
         return self.env.cr.dictfetchall()
+
+    def refund(self):
+        for order in self:
+            if order.config_id.l10n_de_fiskaly_tss_id:
+                raise UserError(_("You can only refund a customer from the POS Cashier interface"))
+        return super().refund()

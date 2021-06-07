@@ -61,7 +61,7 @@
                             <field name="book_value" widget="monetary" required="1" attrs="{'invisible': [('state', '=', 'model')]}" options="{'currency_field': 'currency_id'}"/>
                         </group>
                         <group string="Depreciation Method">
-                            <field name="method" widget="radio" attrs="{'invisible': [('asset_type', '!=', 'purchase')]}" options="{'horizontal': true}"/>
+                            <field name="method" attrs="{'invisible': [('asset_type', '!=', 'purchase')]}" required="1" />
                             <field name="method_progress_factor" attrs="{'invisible':[('method','=','linear')], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
                             <label for="method_number" string="Duration"/>
                             <div class="o_row">

@@ -3,10 +3,28 @@
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
+from odoo.tools.sql import column_exists, create_column
+
 
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move", "l10n_es_reports_mod349_available"):
+            create_column(self.env.cr, "account_move", "l10n_es_reports_mod349_available", "bool")
+            mod349_countries = self.env.ref('base.europe').country_ids - self.env.ref('base.es')
+            if mod349_countries:
+                self.env.cr.execute(
+                    """
+                        UPDATE account_move
+                        SET l10n_es_reports_mod349_available = true
+                        FROM res_partner partner
+                        WHERE partner.id = account_move.partner_id
+                        AND partner.country_id IN %s
+                    """, [tuple(mod349_countries.ids)]
+                )
+        return super()._auto_init()
 
     def _default_mod_349_invoice_type(self):
         invoice_type = self.env.context.get('move_type', False)

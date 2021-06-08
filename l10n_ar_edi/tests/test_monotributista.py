@@ -31,7 +31,7 @@ class TestFE(TestMono):
             'invoice_c': cls.env.ref('l10n_ar.dc_c_f'),
             'debit_note_c': cls.env.ref('l10n_ar.dc_c_nd'),
             'credit_note_c': cls.env.ref('l10n_ar.dc_c_nc'),
-            'invoice_mipyme_c': cls.env.ref('l10n_ar.dc_fce_c_f')})
+        })
 
     def test_00_connection(self):
         self._test_connection()
@@ -71,6 +71,18 @@ class TestFE(TestMono):
     def test_09_credit_note_c_product_service(self):
         invoice = self._test_case('invoice_c', 'product_service')
         self._test_case_credit_note('credit_note_c', invoice)
+
+
+@tagged('fe', 'mono', '-at_install', 'post_install', '-standard', 'external')
+class TestMiPyME(TestMono):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestMiPyME, cls).setUpClass()
+        cls.partner = cls.partner_ri
+        cls.journal = cls._create_journal(cls, 'wsfe')
+        cls.document_type.update({
+            'invoice_mipyme_c': cls.env.ref('l10n_ar.dc_fce_c_f')})
 
     def test_10_invoice_mipyme_c_product(self):
         self._test_case('invoice_mipyme_c', 'product')

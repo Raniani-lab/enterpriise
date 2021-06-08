@@ -46,17 +46,9 @@
       font-size: $h2-font-size;
     }
 
-    .dropdown-toggle {
-      &:after {
-        transform: rotate(-90deg);
-      }
-
-      &.active {
-        background: $o-view-background-color;
-        color: $o-main-headings-color;
-
-        &:after {transform: none}
-      }
+    .dropdown-toggle.active {
+      background: $o-view-background-color;
+      color: $o-main-headings-color;
     }
   }
 
@@ -168,8 +160,6 @@
 body.o_home_menu_background .o_burger_menu_topbar .dropdown-toggle {
   background: $o-view-background-color;
   color: $o-main-headings-color;
-
-  &:after {display: none}
 }
 
 @include media-breakpoint-down(sm) {

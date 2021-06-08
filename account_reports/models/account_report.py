@@ -1140,14 +1140,14 @@ class AccountReport(models.AbstractModel):
             })
 
         if options:
+            domain = expression.normalize_domain(ast.literal_eval(action.get('domain') or '[]'))
             if options.get('journals'):
                 selected_journals = [journal['id'] for journal in options['journals'] if journal.get('selected')]
-                if selected_journals: # Otherwise, nothing is selected, so we want to display everything
-                    ctx.update({
-                        'search_default_journal_id': selected_journals,
-                    })
+                if len(selected_journals) == 1:
+                    ctx['search_default_journal_id'] = selected_journals
+                elif selected_journals:  # Otherwise, nothing is selected, so we want to display everything
+                    domain = expression.AND([domain, [('journal_id', 'in', selected_journals)]])
 
-            domain = expression.normalize_domain(ast.literal_eval(action.get('domain') or '[]'))
             if options.get('analytic_accounts'):
                 analytic_ids = [int(r) for r in options['analytic_accounts']]
                 domain = expression.AND([domain, [('analytic_account_id', 'in', analytic_ids)]])

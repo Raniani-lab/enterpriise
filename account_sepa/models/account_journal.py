@@ -166,6 +166,8 @@ class AccountJournal(models.Model):
         InitgPty = etree.Element("InitgPty")
         if pain_version == 'pain.001.001.03.se':
             InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False, issr=False, nm=False, schme_nm='BANK'))
+        elif pain_version == 'pain.001.001.03.austrian.004':
+            InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False, issr=False))
         else:
             InitgPty.extend(self._get_company_PartyIdentification32(sct_generic, org_id=True, postal_address=False, issr=True))
         return InitgPty
@@ -282,7 +284,7 @@ class AccountJournal(models.Model):
         partner_bank = self.env['res.partner.bank'].sudo().browse(partner_bank_id)
 
         if local_instrument != 'CH01' and not self.env.context.get('skip_bic', False):
-            CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic))
+            CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic, pain_version))
 
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
@@ -304,13 +306,17 @@ class AccountJournal(models.Model):
         ChrgBr.text = sct_generic and "SHAR" or "SLEV"
         return ChrgBr
 
-    def _get_CdtrAgt(self, bank_account, sct_generic):
+    def _get_CdtrAgt(self, bank_account, sct_generic, pain_version):
         CdtrAgt = etree.Element("CdtrAgt")
         FinInstnId = etree.SubElement(CdtrAgt, "FinInstnId")
         if bank_account.bank_bic:
             BIC = etree.SubElement(FinInstnId, "BIC")
             BIC.text = bank_account.bank_bic.replace(' ', '').upper()
         else:
+            if pain_version == 'pain.001.001.03.austrian.004':
+                # Othr and NOTPROVIDED are not supported in CdtrAgt by this variant
+                raise UserError(_("The bank defined on account %s (from partner %s) has no BIC. Please first set one.", bank_account.acc_number, bank_account.partner_id.name))
+
             Othr = etree.SubElement(FinInstnId, "Othr")
             Id = etree.SubElement(Othr, "Id")
             Id.text = "NOTPROVIDED"

@@ -974,7 +974,7 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('list editor invisible to visible on field', async function (assert) {
         assert.expect(3);
 
-        testUtils.patch(session.user_context, {
+        testUtils.mock.patch(session.user_context, {
             lang: 'fr_FR',
             tz: 'Europe/Brussels',
         });
@@ -1016,7 +1016,7 @@ QUnit.module('ViewEditorManager', {
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
-        testUtils.unpatch(session.user_context);
+        testUtils.mock.unpatch(session.user_context);
         vem.destroy();
     });
 
@@ -1842,7 +1842,7 @@ QUnit.module('ViewEditorManager', {
         });
 
         fieldsView = $.extend(true, {}, vem.fields_view);
-        await testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_integer'), $('.o_web_studio_hook'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_integer'), $('.o_web_studio_hook'));
         await testUtils.nextTick();
         vem.destroy();
     });
@@ -5413,7 +5413,7 @@ QUnit.module('ViewEditorManager', {
 
         // create a new field before existing one
         fieldsView = $.extend(true, {}, vem.fields_view);
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
         await testUtils.nextTick();
         assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
 
@@ -5482,7 +5482,7 @@ QUnit.module('ViewEditorManager', {
 
         // create a new field before existing one
         fieldsView = $.extend(true, {}, vem.fields_view);
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
         await testUtils.nextTick();
         assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
 

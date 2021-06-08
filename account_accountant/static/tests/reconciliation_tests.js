@@ -669,12 +669,12 @@ var testUtilsMock = require('web.test_utils_mock');
 QUnit.module('account', {
     beforeEach: function () {
         this.params = demoData.getParams();
-        testUtils.patch(ReconciliationRenderer.LineRenderer, {
+        testUtilsMock.patch(ReconciliationRenderer.LineRenderer, {
             MV_LINE_DEBOUNCE: 0,
         });
     },
     afterEach: function () {
-        testUtils.unpatch(ReconciliationRenderer.LineRenderer);
+        testUtilsMock.unpatch(ReconciliationRenderer.LineRenderer);
     },
 }, function () {
     QUnit.module('Reconciliation');
@@ -1437,7 +1437,7 @@ QUnit.module('account', {
 
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
 
-        await testUtils.addMockEnvironment(clientAction, {
+        await testUtilsMock.addMockEnvironment(clientAction, {
             data: this.params.data,
             mockRPC: async function (route, args) {
                 if (args.model === 'account.reconcile.model' && args.method === 'search_read') {
@@ -2169,7 +2169,7 @@ QUnit.module('account', {
         assert.expect(6);
 
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
-        await testUtils.addMockEnvironment(clientAction, {
+        await testUtilsMock.addMockEnvironment(clientAction, {
             data: this.params.data,
             mockRPC: function (route, args) {
                 if (args.method === 'process_bank_statement_line') {

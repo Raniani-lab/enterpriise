@@ -15,6 +15,7 @@
         'security/hr_referral_security.xml',
         'security/ir.model.access.csv',
         'views/hr_applicant_views.xml',
+        'wizard/hr_referral_alert_mail_wizard_views.xml',
         'wizard/hr_referral_link_to_share_views.xml',
         'wizard/hr_referral_send_mail_views.xml',
         'views/hr_job_views.xml',

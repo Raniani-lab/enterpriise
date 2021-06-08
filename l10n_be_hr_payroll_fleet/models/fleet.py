@@ -19,7 +19,7 @@ class FleetVehicle(models.Model):
         help="This includes all the depreciated costs and the CO2 fee")
     total_cost = fields.Float(compute='_compute_total_cost', string="Total Cost", help="This include all the costs and the CO2 fee")
     fuel_type = fields.Selection(required=True, default='diesel')
-    atn = fields.Float(compute='_compute_car_atn', string="ATN")
+    atn = fields.Float(compute='_compute_car_atn', string="BIK")
     acquisition_date = fields.Date(required=True)
     tax_deduction = fields.Float(compute='_compute_tax_deduction')
 
@@ -54,24 +54,22 @@ class FleetVehicle(models.Model):
                 elif contract.cost_frequency == "yearly":
                     car.total_cost += contract.cost_generated / 12.0
 
+    def _get_tax_deduction(self, co2, fuel, coefficients):
+        if fuel == 'electric':
+            return 1
+        elif co2 >= 200:
+            return 0.4
+        elif coefficients and fuel in coefficients:
+            return min(max(1.2 - (0.005 * coefficients.get(fuel) * co2), 0.5), 1)
+        return 0
+
     @api.depends('fuel_type', 'co2')
     def _compute_tax_deduction(self):
         be_vehicles = self.filtered(lambda vehicle: vehicle.company_id.country_id.code == "BE")
         (self - be_vehicles).tax_deduction = 0
-        coefficients = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('tax_deduction_fuel_coefficients', raise_if_not_found=False)
+        coefficients = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('tax_deduction_fuel_coefficients', raise_if_not_found=False) if be_vehicles else None
         for vehicle in be_vehicles:
-            fuel = vehicle.fuel_type
-            co2 = vehicle.co2
-            if fuel == 'electric':
-                deduction = 1
-            elif co2 >= 200:
-                deduction = 0.4
-            elif coefficients and fuel in coefficients:
-                deduction = 1.2 - (0.005 * coefficients.get(fuel) * co2)
-                deduction = min(max(deduction, 0.5), 1)
-            else:
-                deduction = 0
-            vehicle.tax_deduction = deduction
+            vehicle.tax_deduction = vehicle._get_tax_deduction(vehicle.co2, vehicle.fuel_type, coefficients)
 
     def _get_co2_fee(self, co2, fuel_type):
         # Reference: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/companycar.html
@@ -195,26 +193,16 @@ class FleetVehicleModel(models.Model):
 
     default_recurring_cost_amount_depreciated = fields.Float(string="Cost (Depreciated)",
         help="Default recurring cost amount that should be applied to a new vehicle from this model")
-    default_co2 = fields.Float(string="CO2 emissions")
-    default_fuel_type = fields.Selection([
-        ('gasoline', 'Gasoline'),
-        ('diesel', 'Diesel'),
-        ('lpg', 'LPG'),
-        ('electric', 'Electric'),
-        ('hybrid', 'Hybrid'),
-        ('plug_in_hybrid_diesel', 'Plug-in Hybrid Diesel'),
-        ('plug_in_hybrid_gasoline', 'Plug-in Hybrid Gasoline'),
-        ('full_hybrid_gasoline', 'Full Hybrid Gasoline'),
-        ('cng', 'CNG'),
-        ('hydrogen', 'Hydrogen'),
-        ], 'Default Fuel Type', default='diesel', help='Fuel Used by the vehicle')
     default_car_value = fields.Float(string="Catalog Value (VAT Incl.)")
     can_be_requested = fields.Boolean(
         string="Can be requested", company_dependent=True,
         help="Can be requested on a contract as a new vehicle")
-    default_atn = fields.Float(compute='_compute_atn', string="ATN")
+    default_atn = fields.Float(compute='_compute_atn', string="BIK")
     default_total_depreciated_cost = fields.Float(compute='_compute_default_total_depreciated_cost', compute_sudo=True, string="Total Cost (Depreciated)")
     co2_fee = fields.Float(compute='_compute_co2_fee', string="CO2 fee")
+    tax_deduction = fields.Float(compute='_compute_tax_deduction')
+
+    current_country_code = fields.Char(compute='_compute_current_country_code')
 
     @api.depends('default_car_value', 'default_co2', 'default_fuel_type')
     def _compute_atn(self):
@@ -234,3 +222,15 @@ class FleetVehicleModel(models.Model):
                 model.co2_fee = 0
             else:
                 model.co2_fee = self.env['fleet.vehicle']._get_co2_fee(model.default_co2, model.default_fuel_type)
+
+    @api.depends('default_co2', 'default_fuel_type')
+    def _compute_tax_deduction(self):
+        coefficients = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('tax_deduction_fuel_coefficients', raise_if_not_found=False)
+        FleetVehicle = self.env['fleet.vehicle']
+        for model in self:
+            model.tax_deduction = FleetVehicle._get_tax_deduction(model.default_co2, model.default_fuel_type, coefficients)
+
+    @api.depends_context('uid')
+    def _compute_current_country_code(self):
+        for model in self:
+            model.current_country_code = self.env.company.country_id.code

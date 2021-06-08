@@ -6,7 +6,7 @@ from odoo import models, fields
 class FleetVehicle(models.Model):
     _inherit = 'fleet.vehicle'
 
-    rate_ids = fields.One2many('fleet.disallowed.expenses.rate', 'vehicle_id', string='Rate')
+    rate_ids = fields.One2many('fleet.disallowed.expenses.rate', 'vehicle_id', string='Disallowed Expenses Rate')
 
 
 class FleetDisallowedExpensesRate(models.Model):

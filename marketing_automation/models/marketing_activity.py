@@ -471,6 +471,7 @@ class MarketingActivity(models.Model):
         """Generate child traces for child activities and compute their schedule date except for mail_open,
         mail_click, mail_reply, mail_bounce which are computed when processing the mail event """
         child_traces = self.env['marketing.trace']
+        cron_trigger_dates = set()
         for activity in self.child_ids:
             activity_offset = relativedelta(**{activity.interval_type: activity.interval_number})
 
@@ -481,8 +482,17 @@ class MarketingActivity(models.Model):
                     'activity_id': activity.id
                 }
                 if activity.trigger_type in ['activity', 'mail_not_open', 'mail_not_click', 'mail_not_reply']:
-                    vals['schedule_date'] = Datetime.from_string(trace.schedule_date) + activity_offset
+                    schedule_date = Datetime.from_string(trace.schedule_date) + activity_offset
+                    vals['schedule_date'] = schedule_date
+                    cron_trigger_dates.add(schedule_date)
                 child_traces |= child_traces.create(vals)
+
+        if cron_trigger_dates:
+            # based on created activities, we schedule CRON triggers that match the scheduled_dates
+            # we use a set to only trigger the CRON once per timeslot event if there are multiple
+            # marketing.participants
+            cron = self.env.ref('marketing_automation.ir_cron_campaign_execute_activities')
+            cron._trigger(cron_trigger_dates)
 
         return child_traces
 

@@ -85,6 +85,7 @@ class MarketingParticipant(models.Model):
     def create(self, vals_list):
         participants = super().create(vals_list)
         now = Datetime.now()
+        cron_trigger_dates = set()
         for res in participants:
             # prepare first traces related to begin activities
             primary_activities = res.campaign_id.marketing_activity_ids.filtered(lambda act: act.trigger_type == 'begin')
@@ -94,6 +95,20 @@ class MarketingParticipant(models.Model):
                     'schedule_date': now + relativedelta(**{activity.interval_type: activity.interval_number}),
                 }) for activity in primary_activities]
             res.write({'trace_ids': trace_ids})
+
+            cron_trigger_dates |= set([
+                now + relativedelta(**{activity.interval_type: activity.interval_number})
+                for activity in primary_activities
+            ])
+
+        if cron_trigger_dates:
+            # based on activities with 'begin' trigger_type, we schedule CRON triggers
+            # that match the scheduled_dates of created marketing.traces
+            # we use a set to only trigger the CRON once per timeslot event if there are multiple
+            # marketing.participants
+            cron = self.env.ref('marketing_automation.ir_cron_campaign_execute_activities')
+            cron._trigger(cron_trigger_dates)
+
         return participants
 
     def action_set_completed(self):

@@ -6,7 +6,7 @@ import threading
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, tools, _
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError
 
@@ -226,6 +226,10 @@ class MarketingCampaign(models.Model):
     def action_start_campaign(self):
         if any(not campaign.marketing_activity_ids for campaign in self):
             raise ValidationError(_('You must set up at least one activity to start this campaign.'))
+
+        # trigger CRON job ASAP so that participants are synced
+        cron = self.env.ref('marketing_automation.ir_cron_campaign_sync_participants')
+        cron._trigger(at=Datetime.now())
         self.write({'state': 'running'})
 
     def action_stop_campaign(self):
@@ -304,12 +308,13 @@ class MarketingCampaign(models.Model):
                 to_create = without_duplicates
 
             BATCH_SIZE = 100
-            for index, rec_id in enumerate(to_create, start=1):
-                participants |= participants.create({
+            for to_create_batch in tools.split_every(BATCH_SIZE, to_create, piece_maker=list):
+                participants |= participants.create([{
                     'campaign_id': campaign.id,
                     'res_id': rec_id,
-                })
-                if not index % BATCH_SIZE and auto_commit:
+                } for rec_id in to_create_batch])
+
+                if auto_commit:
                     self.env.cr.commit()
 
             if to_remove:

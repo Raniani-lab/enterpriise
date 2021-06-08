@@ -77,6 +77,7 @@ class MarketingTrace(models.Model):
 
         opened_child = self.child_ids.filtered(lambda trace: trace.state == 'scheduled')
 
+        cron_trigger_dates = set()
         for next_trace in opened_child.filtered(lambda trace: trace.activity_id.trigger_type == action):
             if next_trace.activity_id.interval_number == 0:
                 next_trace.write({
@@ -84,11 +85,20 @@ class MarketingTrace(models.Model):
                 })
                 next_trace.activity_id.execute_on_traces(next_trace)
             else:
-                next_trace.write({
-                    'schedule_date': now + relativedelta(**{
-                        next_trace.activity_id.interval_type: next_trace.activity_id.interval_number
-                    }),
+                schedule_date = now + relativedelta(**{
+                    next_trace.activity_id.interval_type: next_trace.activity_id.interval_number
                 })
+                next_trace.write({
+                    'schedule_date': schedule_date,
+                })
+                cron_trigger_dates.add(schedule_date)
+
+        if cron_trigger_dates:
+            # based on updated activities, we schedule CRON triggers that match the scheduled_dates
+            # we use a set to only trigger the CRON once per timeslot event if there are multiple
+            # marketing.participants
+            cron = self.env.ref('marketing_automation.ir_cron_campaign_execute_activities')
+            cron._trigger(cron_trigger_dates)
 
         if action in ['mail_reply', 'mail_click', 'mail_open']:
             opposite_trigger = action.replace('_', '_not_')

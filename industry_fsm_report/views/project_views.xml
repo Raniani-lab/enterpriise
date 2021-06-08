@@ -297,6 +297,13 @@
                 'default_res_model_name': 'project.task',
             }
         </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No worksheet templates found. Let's create one!
+            </p><p>
+                Customize worksheet templates for each type of intervention.<br/>
+            </p>
+        </field>
     </record>
 
     <record id="industry_fsm.project_project_action_only_fsm" model="ir.actions.act_window">
@@ -323,9 +330,9 @@
         <field name="context" eval="{'search_default_groupby_worksheet_template': 1, 'search_default_groupby_user': 2, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>
-                No tasks found
+                No tasks found. Let's create one!
             </p><p>
-                Let's start your planning by adding a new task.
+                Schedule tasks and assign them to your workers.
             </p>
         </field>
     </record>

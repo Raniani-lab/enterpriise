@@ -11,23 +11,23 @@ tour.register('industry_fsm_tour', {
     url: "/web",
 }, [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
-    content: _t('Here is the <b>Field Service app</b>. Click on the icon to start managing your onsite interventions.'),
+    content: _t('Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to start.</i>'),
     position: 'bottom',
 }, {
     trigger: '.o-kanban-button-new',
     extra_trigger: '.o_fsm_kanban',
-    content: _t('Here is the view of the users who are on the field. Click CREATE to start your first task.'),
+    content: _t('Let\'s create your first <b>task</b>.'),
     position: 'bottom',
 }, {
     trigger: 'input.o_task_name',
     extra_trigger: '.o_form_editable',
-    content: _t('Add a task title <i>(e.g. Boiler replacement).</i>'),
+    content: _t('Add a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>'),
     position: 'right',
     width: 200,
 }, {
     trigger: ".o_form_view .o_task_customer_field",
     extra_trigger: '.o_form_project_tasks.o_form_editable',
-    content: _t('Select or create a customer.'),
+    content: _t('Select the <b>customer</b> of your task.'),
     position: "bottom",
     run: function (actions) {
         actions.text("Brandon Freeman", this.$anchor.find("input"));
@@ -38,22 +38,22 @@ tour.register('industry_fsm_tour', {
 }, {
     trigger: 'button[name="action_timer_start"]',
     extra_trigger: '.o_form_project_tasks',
-    content: _t('Start recording your time.'),
+    content: _t('Launch the timer to <b>track the time spent</b> on your task.'),
     position: "bottom",
     id: 'fsm_start',
 }, {
     trigger: 'button[name="action_timer_stop"]',
-    content: _t('Stop the timer and save your timesheet.'),
+    content: _t('Stop the <b>timer</b> when you are done.'),
     position: 'bottom',
 }, {
     trigger: 'button[name="save_timesheet"]',
-    content: _t('<b>Save</b> the time spent on your intervention. <i>Notice that a rounding of 15min was applied. You can customize this value from the settings of the Timesheets app.</i>'),
+    content: _t('Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has automatically been applied.</i>'),
     position: 'bottom',
     id: 'fsm_save_timesheet',
 }, {
     trigger: "button[name='action_fsm_validate']",
     extra_trigger: '.o_form_project_tasks',
-    content: _t('If everything looks good to you, mark the task as done. When doing so, your stock will automatically be updated and your task will move to the next stage.'),
+    content: _t('Let\'s <b>mark your task as done!</b> <i>Tip: when doing so, your stock will automatically be updated, and your task will move to the next stage.</i>'),
     position: 'bottom',
     id: 'fsm_invoice_create',
 }]);

@@ -18,6 +18,8 @@ function isChildOf(locationParent, locationChild) {
     return _.str.startsWith(locationChild.parent_path, locationParent.parent_path);
 }
 
+var cache = {};
+
 var ClientAction = AbstractAction.extend({
     custom_events: {
         show_information: '_onShowInformation',
@@ -219,12 +221,18 @@ var ClientAction = AbstractAction.extend({
      */
     _getProductBarcodes: function () {
         var self = this;
+        if (cache.productsByBarcode) {
+            self.productsByBarcode = cache.productsByBarcode;
+            return $.when();
+        }
+
         return this._rpc({
             'model': 'product.product',
             'method': 'get_all_products_by_barcode',
             'args': [],
         }).then(function (res) {
             self.productsByBarcode = res;
+            cache.productsByBarcode = res;
         });
     },
 
@@ -277,12 +285,18 @@ var ClientAction = AbstractAction.extend({
      */
     _getLocationBarcodes: function () {
         var self = this;
+        if (cache.locationsByBarcode) {
+            self.locationsByBarcode = cache.locationsByBarcode;
+            return $.when();
+        }
+
         return this._rpc({
             'model': 'stock.location',
             'method': 'get_all_locations_by_barcode',
             'args': [],
         }).then(function (res) {
             self.locationsByBarcode = res;
+            cache.locationsByBarcode = res;
         });
     },
 

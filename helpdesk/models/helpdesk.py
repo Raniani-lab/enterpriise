@@ -43,12 +43,17 @@ class HelpdeskTeam(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     sequence = fields.Integer("Sequence", default=10)
     color = fields.Integer('Color Index', default=1)
+    privacy = fields.Selection([
+        ('user', 'All Users'),
+        ('invite', 'Invited Users')],
+        string="Users Assign", default="user")
+
     stage_ids = fields.Many2many(
         'helpdesk.stage', relation='team_stage_rel', string='Stages',
         default=_default_stage_ids,
         help="Stages the team will use. This team's tickets will only be able to be in these stages.")
     assign_method = fields.Selection([
-        ('manual', 'Manually'),
+        ('manual', 'Manual'),
         ('randomly', 'Random'),
         ('balanced', 'Balanced')], string='Assignment Method', default='manual',
         required=True, help='Automatic assignment method for new tickets:\n'
@@ -60,33 +65,36 @@ class HelpdeskTeam(models.Model):
         help="Team Members to whom this team will be visible. Keep empty for everyone to see this team.")
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
-    use_alias = fields.Boolean('Email alias', default=True)
+    use_alias = fields.Boolean('Email Alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers', help="Allow customers to close their tickets")
     use_website_helpdesk_form = fields.Boolean('Website Form')
-    use_website_helpdesk_livechat = fields.Boolean('Live chat',
+    use_website_helpdesk_livechat = fields.Boolean('Live Chat',
         help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],.")
-    use_website_helpdesk_forum = fields.Boolean('Help Center')
+    use_website_helpdesk_forum = fields.Boolean('Community Forum')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
-    use_helpdesk_timesheet = fields.Boolean('Timesheet on Ticket', help="This required to have project module installed.")
+    use_helpdesk_timesheet = fields.Boolean(
+        'Timesheets', compute='_compute_use_helpdesk_timesheet',
+        store=True, readonly=False, help="This requires to have project module installed.")
     use_helpdesk_sale_timesheet = fields.Boolean(
-        'Time Reinvoicing', compute='_compute_use_helpdesk_sale_timesheet', store=True,
+        'Time Billing', compute='_compute_use_helpdesk_sale_timesheet', store=True,
         readonly=False, help="Reinvoice the time spent on ticket through tasks.")
     use_credit_notes = fields.Boolean('Refunds')
     use_coupons = fields.Boolean('Coupons')
+    use_fsm = fields.Boolean('Field Service', help='Convert tickets into Field Service tasks')
     use_product_returns = fields.Boolean('Returns')
     use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
-    use_rating = fields.Boolean('Ratings on tickets')
+    use_rating = fields.Boolean('Customer Ratings')
     portal_show_rating = fields.Boolean(
-        'Display Rating on Customer Portal', compute='_compute_portal_show_rating', store=True,
+        'Public Rating', compute='_compute_portal_show_rating', store=True,
         readonly=False)
-    portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')
     use_sla = fields.Boolean('SLA Policies')
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
-        default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        help="Working hours used to determine the deadline of SLA Policies.")
     open_ticket_count = fields.Integer("# Open Tickets", compute='_compute_open_ticket_count')
     sla_policy_count = fields.Integer("# SLA Policy", compute='_compute_sla_policy_count')
     # auto close ticket
@@ -100,16 +108,27 @@ class HelpdeskTeam(models.Model):
         help="Inactive tickets in these stages will be automatically closed. Leave empty to take into account all the stages from the team.")
     to_stage_id = fields.Many2one('helpdesk.stage',
         string='Move to Stage',
+        compute="_compute_assign_stage_id", readonly=False, store=True,
         domain="[('id', 'in', stage_ids)]",
         help="Stage to which inactive tickets will be automatically moved once the period of inactivity is reached.")
+    display_alias_name = fields.Char(string='Alias email', compute='_compute_display_alias_name')
 
-    @api.depends('name', 'portal_show_rating')
-    def _compute_portal_rating_url(self):
+    @api.depends('auto_close_ticket', 'stage_ids')
+    def _compute_assign_stage_id(self):
+        stages_dict = {stage['id']: 1 if stage['is_close'] else 2 for stage in self.env['helpdesk.stage'].search_read([('id', 'in', self.stage_ids.ids), '|', ('is_close', '=', True), ('fold', '=', True)], ['id', 'is_close'])}
         for team in self:
-            if team.name and team.portal_show_rating and team.id:
-                team.portal_rating_url = '%s/helpdesk/rating/%s' % (team.get_base_url(), slug(team))
-            else:
-                team.portal_rating_url = False
+            stage_ids = sorted([
+                (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
+            ])
+            team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids.ids[-1]
+
+    @api.depends('alias_name', 'alias_domain')
+    def _compute_display_alias_name(self):
+        for team in self:
+            alias_name = ''
+            if team.alias_name and team.alias_domain:
+                alias_name = "%s@%s" % (team.alias_name, team.alias_domain)
+            team.display_alias_name = alias_name
 
     def _compute_has_external_mail_server(self):
         self.has_external_mail_server = self.env['ir.config_parameter'].sudo().get_param('base_setup.default_external_email_server')
@@ -153,6 +172,11 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_alias(self):
         if not self.use_alias:
             self.alias_name = False
+
+    @api.depends('use_helpdesk_sale_timesheet')
+    def _compute_use_helpdesk_timesheet(self):
+        sale_timesheet = self.filtered('use_helpdesk_sale_timesheet')
+        sale_timesheet.update({'use_helpdesk_timesheet': True})
 
     @api.depends('use_helpdesk_timesheet')
     def _compute_use_helpdesk_sale_timesheet(self):
@@ -230,6 +254,7 @@ class HelpdeskTeam(models.Model):
             'use_product_returns': 'helpdesk_stock',
             'use_product_repairs': 'helpdesk_repair',
             'use_coupons': 'helpdesk_sale_coupon',
+            'use_fsm': 'helpdesk_fsm',
         }
 
     def _check_modules_to_install(self):
@@ -244,14 +269,6 @@ class HelpdeskTeam(models.Model):
             STATES = ('installed', 'to install', 'to upgrade')
             modules = modules.search([('name', 'in', expected)])
             modules = modules.filtered(lambda module: module.state not in STATES)
-
-        # other stuff
-        template = self.env.ref('helpdesk.rating_ticket_request_email_template', raise_if_not_found= False)
-        stages_to_update = self.filtered('use_rating').stage_ids.filtered(
-            lambda stage: stage.is_close and not stage.fold
-        )
-        if stages_to_update and template:
-            stages_to_update.template_id = template
 
         if modules:
             modules.button_immediate_install()
@@ -269,6 +286,8 @@ class HelpdeskTeam(models.Model):
         if self.id:
             values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
             defaults['team_id'] = self.id
+            if not self.alias_name:
+                values['alias_name'] = self.name.replace(' ', '-')
         return values
 
     # ------------------------------------------------------------

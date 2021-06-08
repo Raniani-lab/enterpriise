@@ -10,7 +10,6 @@ from odoo.addons.http_routing.models.ir_http import slug
 class HelpdeskTeam(models.Model):
     _inherit = ['helpdesk.team']
 
-    feature_form_url = fields.Char('URL to Submit Issue', readonly=True, compute='_compute_form_url')
     website_form_view_id = fields.Many2one('ir.ui.view', string="Form")
 
     @api.model_create_multi
@@ -50,9 +49,3 @@ class HelpdeskTeam(models.Model):
                 })
 
                 team.write({'website_form_view_id': form_template.id})
-
-    @api.depends('name', 'use_website_helpdesk_form', 'company_id')
-    def _compute_form_url(self):
-        for team in self:
-            base_url = team.get_base_url()
-            team.feature_form_url = (team.use_website_helpdesk_form and team.name and team.id) and (base_url + '/helpdesk/' + slug(team)) or False

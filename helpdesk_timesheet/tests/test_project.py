@@ -59,27 +59,27 @@ class TestProject(TestHelpdeskTimesheetCommon):
         helpdeskTeam_1 = HelpdeskTeam.create({
             'name': 'Team #1',
             'project_id': project_1.id,
-            'timesheet_timer': False,
+            'use_helpdesk_timesheet': False,
         })
 
         self.assertTrue(
             helpdeskTeam_1.project_id.allow_timesheet_timer,
-            "If 'allow_timesheets' is TRUE and 'timesheet_timer' is FALSE, 'allow_timesheet_timer' shall be set to TRUE")
+            "If 'allow_timesheets' is TRUE and 'use_helpdesk_timesheet' is FALSE, 'allow_timesheet_timer' shall be set to TRUE")
 
         # case 5: a helpdesk team with a timesheet timer
         helpdeskTeam_2 = HelpdeskTeam.create({
             'name': 'Team #2',
             'project_id': project_2.id,
-            'timesheet_timer': True,
+            'use_helpdesk_timesheet': True,
         })
 
         self.assertTrue(
             helpdeskTeam_2.project_id.allow_timesheet_timer,
-            "If 'allow_timesheets' is FALSE and 'timesheet_timer' is TRUE,"
+            "If 'allow_timesheets' is FALSE and 'use_helpdesk_timesheet' is TRUE,"
             " 'allow_timesheet_timer' shall be set to TRUE")
 
         # case 6: project with 'allow_timesheets' set to FALSE and team with
-        # 'timesheet_timer' set to FALSE.
+        # 'use_helpdesk_timesheet' set to FALSE.
         project_3 = Project.create({
             'name': 'Project 3',
             'allow_timesheets': False,
@@ -89,10 +89,10 @@ class TestProject(TestHelpdeskTimesheetCommon):
         helpdeskTeam_3 = HelpdeskTeam.create({
             'name': 'Team #3',
             'project_id': project_3.id,
-            'timesheet_timer': False,
+            'use_helpdesk_timesheet': False,
         })
 
         self.assertFalse(
             helpdeskTeam_3.project_id.allow_timesheet_timer,
-            "If 'allow_timesheets' is FALSE and 'timesheet_timer' is FALSE,"
+            "If 'allow_timesheets' is FALSE and 'use_helpdesk_timesheet' is FALSE,"
             " 'allow_timesheet_timer' shall be set to FALSE")

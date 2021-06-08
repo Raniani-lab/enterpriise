@@ -12,7 +12,6 @@ class HelpdeskTeam(models.Model):
         project = self.env['project.project'].search([('is_fsm', '=', True)], limit=1)
         return project
 
-    use_fsm = fields.Boolean('Onsite Interventions', help='Convert tickets into Field Service tasks')
     fsm_project_id = fields.Many2one('project.project', string='FSM Project', domain=[('is_fsm', '=', True)],
     default=_default_fsm_project_id)
 

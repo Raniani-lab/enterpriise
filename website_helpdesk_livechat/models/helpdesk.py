@@ -11,8 +11,6 @@ class HelpdeskTeam(models.Model):
     _inherit = ['helpdesk.team']
 
     feature_livechat_channel_id = fields.Many2one('im_livechat.channel', string='Live Chat Channel', compute='_get_livechat_channel', store=True)
-    feature_livechat_web_page = fields.Char(related='feature_livechat_channel_id.web_page', string='Live Chat Test Page', readonly=True)
-    is_canned_response = fields.Boolean()
 
     @api.depends('use_website_helpdesk_livechat')
     def _get_livechat_channel(self):

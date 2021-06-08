@@ -33,9 +33,9 @@ class Project(models.Model):
         for project in self:
             project.has_helpdesk_team = data.get(project.id, False)
 
-    @api.depends('helpdesk_team.timesheet_timer')
+    @api.depends('helpdesk_team.use_helpdesk_timesheet')
     def _compute_allow_timesheet_timer(self):
         super(Project, self)._compute_allow_timesheet_timer()
 
         for project in self:
-            project.allow_timesheet_timer = project.allow_timesheet_timer or project.helpdesk_team.timesheet_timer
+            project.allow_timesheet_timer = project.allow_timesheet_timer or project.helpdesk_team.use_helpdesk_timesheet

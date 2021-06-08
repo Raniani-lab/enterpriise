@@ -27,20 +27,6 @@
                     <field name="project_id" class="oe_inline" context="{'default_allow_timesheets': 1, 'default_allow_billable': use_helpdesk_sale_timesheet}"/>
                 </div>
             </xpath>
-            <xpath expr="//div[@id='timesheet']" position='after'>
-                <field name="display_timesheet_timer" invisible="1"/>
-                <div class="col-lg-6 o_setting_box" attrs="{'invisible': [('display_timesheet_timer', '=', False)]}"  id="timer_timesheet">
-                    <div class="o_setting_left_pane">
-                        <field name="timesheet_timer"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="timesheet_timer"/>
-                        <div class="text-muted">
-                            Track your time using a timer
-                        </div>
-                    </div>
-                </div>
-            </xpath>
         </field>
     </record>
 

@@ -11,21 +11,8 @@ class HelpdeskTeam(models.Model):
 
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the tickets (and the timesheets) will be linked by default.")
-    timesheet_timer = fields.Boolean('Timesheet Timer', default=True)
-    display_timesheet_timer = fields.Boolean(compute='_compute_display_timesheet_timer')
     timesheet_encode_uom_id = fields.Many2one('uom.uom', related='company_id.timesheet_encode_uom_id')
     total_timesheet_time = fields.Integer(compute="_compute_total_timesheet_time")
-
-    @api.depends('use_helpdesk_timesheet')
-    def _compute_display_timesheet_timer(self):
-        is_uom_hour = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_hour')
-        for team in self:
-            team.display_timesheet_timer = team.use_helpdesk_timesheet and is_uom_hour
-
-    @api.depends('use_helpdesk_timesheet')
-    def _compute_timesheet_timer(self):
-        for team in self:
-            team.timesheet_timer = team.use_helpdesk_timesheet
 
     @api.depends('ticket_ids')
     def _compute_total_timesheet_time(self):
@@ -108,7 +95,6 @@ class HelpdeskTicket(models.Model):
     project_id = fields.Many2one("project.project", related="team_id.project_id", readonly=True, store=True)
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
-    timesheet_timer = fields.Boolean(related='team_id.timesheet_timer')
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
     total_hours_spent = fields.Float("Spent Hours", compute='_compute_total_hours_spent', default=0, compute_sudo=True, store=True)
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
@@ -149,10 +135,10 @@ class HelpdeskTicket(models.Model):
         else:
             self.display_timer = False
 
-    @api.depends('use_helpdesk_timesheet', 'timesheet_timer', 'timesheet_ids', 'encode_uom_in_days')
+    @api.depends('use_helpdesk_timesheet', 'timesheet_ids', 'encode_uom_in_days')
     def _compute_display_timesheet_timer(self):
         for ticket in self:
-            ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and ticket.timesheet_timer and not ticket.encode_uom_in_days
+            ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and not ticket.encode_uom_in_days
 
     @api.depends('timesheet_ids')
     def _compute_total_hours_spent(self):

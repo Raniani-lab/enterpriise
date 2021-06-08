@@ -5,7 +5,7 @@ import math
 from dateutil.relativedelta import relativedelta
 from random import randint
 
-from odoo import api, fields, models, tools, _
+from odoo import api, Command, fields, models, tools, _
 from odoo.addons.iap.tools import iap_tools
 from odoo.osv import expression
 from odoo.exceptions import AccessError
@@ -281,23 +281,31 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('stage_id', 'kanban_state')
     def _compute_kanban_state_label(self):
-        for task in self:
-            if task.kanban_state == 'normal':
-                task.kanban_state_label = task.legend_normal
-            elif task.kanban_state == 'blocked':
-                task.kanban_state_label = task.legend_blocked
+        for ticket in self:
+            if ticket.kanban_state == 'normal':
+                ticket.kanban_state_label = ticket.legend_normal
+            elif ticket.kanban_state == 'blocked':
+                ticket.kanban_state_label = ticket.legend_blocked
             else:
-                task.kanban_state_label = task.legend_done
+                ticket.kanban_state_label = ticket.legend_done
 
     @api.depends('team_id')
     def _compute_domain_user_ids(self):
-        for task in self:
-            if task.team_id and task.team_id.visibility_member_ids:
-                helpdesk_manager = self.env['res.users'].search([('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_manager').id)])
-                task.domain_user_ids = [(6, 0, (helpdesk_manager + task.team_id.visibility_member_ids).ids)]
+        helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
+        helpdesk_manager_group_id = self.env.ref('helpdesk.group_helpdesk_manager').id
+        users_data = self.env['res.users'].read_group(
+            [('groups_id', 'in', [helpdesk_user_group_id, helpdesk_manager_group_id])],
+            ['ids:array_agg(id)', 'groups_id'],
+            ['groups_id'],
+        )
+        mapped_data = {data['groups_id']: data['ids'] for data in users_data}
+        for ticket in self:
+            if ticket.team_id and ticket.team_id.privacy == 'invite' and ticket.team_id.visibility_member_ids:
+                manager_ids = mapped_data.get(helpdesk_manager_group_id, [])
+                ticket.domain_user_ids = [Command.set(manager_ids + ticket.team_id.visibility_member_ids.ids)]
             else:
-                helpdesk_users = self.env['res.users'].search([('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]).ids
-                task.domain_user_ids = [(6, 0, helpdesk_users)]
+                user_ids = mapped_data.get(helpdesk_user_group_id, [])
+                ticket.domain_user_ids = [Command.set(user_ids)]
 
     def _compute_access_url(self):
         super(HelpdeskTicket, self)._compute_access_url()

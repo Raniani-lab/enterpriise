@@ -89,6 +89,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <field name="team_ids"/>
                 <filter string="Archived" name="active" domain="[('active', '=' ,False)]"/>
             </search>
         </field>

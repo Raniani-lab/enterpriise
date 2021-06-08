@@ -8,8 +8,9 @@
         <field name="arch" type="xml">
             <tree string="Helpdesk Team" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
-                <field name="name" class="field_name"/>
-                <field name="alias_id"/>
+                <field name="name" class="field_name" string="Name"/>
+                <field name="use_alias" invisible="1"/>
+                <field name="display_alias_name" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -71,45 +72,43 @@
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title" id='title'>
-                        <label for="name" string="Team Name"/>
+                        <label for="name" string="Name"/>
                         <h1 id="name"><field name="name" placeholder="e.g. Customer Care"/></h1>
                     </div>
                     <field name="active" invisible="1"/>
                     <field name="description" placeholder="Description for customer portal"/>
-                    <field name="company_id" groups="base.group_multi_company" required="1"/>
-                    <h2>Productivity &amp; Visibility</h2>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1"/>
+                        </group>
+                    </group>
+                    <h2>Assignment &amp; Visibility</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
                         <div class="col-lg-6 o_setting_box" title="With random assignation, every user gets the same number of tickets. With balanced assignation, tickets are assigned to the user with the least amount of open tickets.">
                             <div class="o_setting_right_pane">
                                 <label for="assign_method"/>
                                 <div class="text-muted">
-                                    How to assign newly created tickets to the right person
+                                    Assign new tickets to the right persons
                                 </div>
                                 <div>
                                     <field name="assign_method" class="mt16 o_light_label" widget="radio"/>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box" attrs="{'invisible': [('assign_method', '=', 'manual')]}">
-                            <div class="o_setting_right_pane">
-                                <label for="member_ids"/>
-                                <div class="text-muted">
-                                    Individuals to whom the tickets will be automatically assigned.
-                                </div>
-                                <div>
-                                    <field name="member_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="mt16"/>
+                                <div attrs="{'invisible': [('assign_method', '=', 'manual')]}">
+                                    <field name="member_ids" widget="many2many_avatar_user"
+                                    class="mt16" placeholder="Add team members..." options="{'no_quick_create': True'}"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <label for="visibility_member_ids"/>
+                                <label for="privacy" string="Team Visibility"/>
                                 <div class="text-muted">
-                                    Team Members to whom this team will be visible. Keep empty for everyone to see this team.
+                                    Users to whom this team will be visible
                                 </div>
                                 <div>
-                                    <field name="visibility_member_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="mt16"/>
+                                    <field name="privacy" class="mt16 o_light_label" widget="radio"/>
                                 </div>
+                                <field name="visibility_member_ids" widget="many2many_avatar_user" options="{'color_field': 'color', 'no_quick_create': True}" attrs="{'invisible': [('privacy', '!=', 'invite')]}" class="mt16" placeholder="Add users..."/>
                             </div>
                         </div>
                     </div>
@@ -122,23 +121,20 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_alias"/>
                                 <div class="text-muted">
-                                    Incoming emails create tickets
+                                    Create tickets by sending an email to an alias
                                 </div>
                                 <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
                                     <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
-                                        <label for="alias_id" string="Send emails to:"/>
-                                        <field name="alias_name"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
-                                            to create tickets
+                                        <strong>Alias </strong>
+                                        <field name="alias_name" class="w-25"/>@
+                                        <field name="alias_domain" class="oe_inline" readonly="1"/>
                                     </div>
-                                    <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">Send emails to
-                                        <strong>
-                                            <field name="alias_id" class="oe_read_only oe_inline" required="False"/>
-                                        </strong>
-                                        to create tickets
+                                    <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                                    <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
                                     </p>
                                     <field name="has_external_mail_server" invisible="1"/>
                                     <p class="text-muted" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
-                                        <i class="fa fa-lightbulb-o" role='img'/> Enable the External Email Servers feature in the General Settings and indicate an alias domain
+                                        <i class="fa fa-lightbulb-o" role='img'/> Enable the <i>Custom Email Servers</i> feature in the <i>General Settings</i> and indicate an <i>alias domain</i>
                                     </p>
                                     <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
                                         <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure a custom domain" icon="fa-arrow-right" class="btn-link"/>
@@ -152,7 +148,6 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="use_website_helpdesk_livechat"/>
-                                <a href="https://www.odoo.com/documentation/14.0/applications/websites/livechat.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
                                     Get in touch with your website visitors
                                 </div>
@@ -172,17 +167,12 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_website_helpdesk_form"/>
                                 <div class="text-muted">
-                                    Submit tickets with an online form
-                                </div>
-                                <div id='website_form' attrs="{'invisible': [('use_website_helpdesk_form','=',False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                                    Get tickets through an online form
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h2 class="mt32">Sell &amp; Track Hours</h2>
+                    <h2 class="mt32">Track &amp; Bill Time</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="col-lg-6 o_setting_box" id="timesheet">
                             <div class="o_setting_left_pane">
@@ -192,7 +182,7 @@
                                 <label for="use_helpdesk_timesheet"/>
                                 <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/timesheet_and_invoice/invoice_time.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
-                                    Record timesheets on your tickets
+                                    Track the time spent on tickets
                                 </div>
                                 <div id='helpdesk_timesheet' attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -201,7 +191,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 o_setting_box" id="sale_timesheet" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
+                        <div class="col-lg-6 o_setting_box" id="sale_timesheet">
                             <div class="o_setting_left_pane">
                                 <field name="use_helpdesk_sale_timesheet"/>
                             </div>
@@ -209,7 +199,7 @@
                                 <label for="use_helpdesk_sale_timesheet"/>
                                 <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/timesheet_and_invoice/reinvoice_from_project.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
-                                    Reinvoice time to your customer through tasks
+                                    Bill the time spent on your tickets to your customers
                                 </div>
                                 <div id='helpdesk_sale_timesheet' attrs="{'invisible': [('use_helpdesk_sale_timesheet', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -229,19 +219,12 @@
                                 <label for="use_sla"/>
                                 <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/overview/getting_started.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
-                                    Set up your Service Level Agreements to track performance
+                                    Make sure tickets are handled on time
+
                                 </div>
-                                <div attrs="{'invisible': [('use_sla','=',False)]}" class="mt16">
-                                    <button name="%(helpdesk_sla_action)d" type="action" string="Configure SLA Policies" icon="fa-arrow-right" class="btn-link"/>
-                                </div>
-                                <div attrs="{'invisible': [('use_sla', '=', False)]}" class="mt16">
+                                <div class="mt16" attrs="{'invisible': [('use_sla', '=', False)]}">
                                     <label for="resource_calendar_id"/>
-                                    <div class="text-muted">
-                                        Set the calendar used to compute SLA target
-                                    </div>
-                                    <div class="mt16">
-                                        <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
-                                    </div>
+                                    <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
                                 </div>
                             </div>
                         </div>
@@ -252,23 +235,14 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_rating"/>
                                 <div class="text-muted">
-                                    Allow your customers to easily rate your services. Activate this option will add a default email template on non folded closing stages
+                                   Track customer satisfaction on tickets
                                 </div>
-                            </div>
-                        </div>
-                        <div id="website_rating" class="col-lg-6 o_setting_box" attrs="{'invisible': [('use_rating', '=', False)]}">
-                            <div class="o_setting_left_pane">
-                                <field name="portal_show_rating"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="portal_show_rating"/>
-                                <div class="text-muted">
-                                    Publish this team's ratings on your website
-                                </div>
-                                <div attrs="{'invisible': ['|', ('portal_show_rating', '=', False), ('portal_rating_url','=',False)]}" class="mt16">
-                                    <button class="btn-link" role="button" icon="fa-arrow-right">
-                                        <field name="portal_rating_url" nolabel="1" readonly="1" class="oe_inline" widget="url" text="View this team's ratings"/>
-                                    </button>
+                                <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
+                                    <field name="portal_show_rating" class="oe_inline"/>
+                                    <label for="portal_show_rating" string="Publish this team's ratings on your website"/>
+                                    <div class="mt-3">
+                                        <button name="%(helpdesk.helpdesk_stage_action)d" type="action" string="Set an Email Template on Stages" icon="fa-arrow-right" class="btn-link" context="{'search_default_team_ids': name}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -282,7 +256,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_website_helpdesk_forum"/>
                                 <div class="text-muted">
-                                    Question and answer section on your website
+                                    Let your customers answer each other's questions on a forum
                                 </div>
                                 <div id="use_website_helpdesk_forum" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -340,12 +314,12 @@
                                 <label for="allow_portal_ticket_closing"/>
                                 <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/advanced/close_tickets.html" title="Documentation" class="o_doc_link" target="_blank"></a>
                                 <div class="text-muted">
-                                    Allow customers to close their tickets
+                                    Allow your customers to close their own tickets
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h2>After Sales <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
+                    <h2>After-Sales <a href="https://www.odoo.com/documentation/14.0/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
                     <div class="row mt32 o_settings_container" id="after-sales">
                         <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
@@ -354,7 +328,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_credit_notes"/>
                                 <div class="text-muted">
-                                    Generate credit notes from tickets
+                                    Issue credits notes
                                 </div>
                                 <div id="use_credit_notes" attrs="{'invisible': [('use_credit_notes', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -370,7 +344,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_coupons"/>
                                 <div class="text-muted">
-                                    Grant coupons from tickets
+                                    Grant discounts or free products
                                 </div>
                                 <div id="use_coupons" attrs="{'invisible': [('use_coupons', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -386,7 +360,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_product_returns"/>
                                 <div class="text-muted">
-                                    Allow product returns from tickets
+                                    Return faulty products
                                 </div>
                                 <div id="use_product_returns" attrs="{'invisible': [('use_product_returns', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
@@ -402,9 +376,25 @@
                             <div class="o_setting_right_pane">
                                 <label for="use_product_repairs"/>
                                 <div class="text-muted">
-                                    Repair broken products
+                                    Send broken products for repair
                                 </div>
                                 <div id="use_product_repairs" attrs="{'invisible': [('use_product_repairs', '=', False)]}">
+                                    <div class="text-warning mb4 mt16">
+                                        Save this page and refresh to activate the feature.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="use_fsm"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="use_fsm"/>
+                                <div class="text-muted">
+                                    Plan onsite interventions
+                                </div>
+                                <div id="field_service" attrs="{'invisible': [('use_fsm', '=', False)]}">
                                     <div class="text-warning mb4 mt16">
                                         Save this page and refresh to activate the feature.
                                     </div>

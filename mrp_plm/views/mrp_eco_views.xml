@@ -458,7 +458,7 @@
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                 </tree>
@@ -469,7 +469,7 @@
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
@@ -483,7 +483,7 @@
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
                                     <field name="product_id"/>
-                                    <field name="upd_product_qty"/>
+                                    <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
@@ -498,7 +498,7 @@
                                     <field name="operation_name"/>
                                     <field name="change_type"/>
                                     <field name="workcenter_id"/>
-                                    <field name="upd_time_cycle_manual"/>
+                                    <field name="upd_time_cycle_manual" widget="plm_upd_qty"/>
                                 </tree>
                             </field>
                         </page>
@@ -654,7 +654,7 @@
             <form>
                 <group>
                     <group string="Duration">
-                        <field name="upd_time_cycle_manual"/>
+                        <field name="upd_time_cycle_manual" widget="plm_upd_qty"/>
                         <field name="old_time_cycle_manual"/>
                         <field name="new_time_cycle_manual"/>
                     </group>

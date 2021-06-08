@@ -1163,15 +1163,15 @@ class View(models.Model):
             arch_tree = subtree[0]
 
         # copy translation from view combinations
-        combined_views = self.browse()
-        views_to_process = [self]
-        while views_to_process:
-            view = views_to_process.pop()
-            if not view or view in combined_views:
-                continue
-            combined_views += view
-            views_to_process += view.inherit_id
-            views_to_process += view.get_inheriting_views_arch(view.model)
+        root = self
+        view_ids = []
+        while True:
+            view_ids.append(root.id)
+            if not root.inherit_id:
+                break
+            root = root.inherit_id
+        combined_views = self.browse(view_ids).with_context(check_view_ids=[])._get_inheriting_views()
+
         fields_to_ignore = (field for field in self._fields if field != 'arch_base')
         for view in (combined_views - self).with_context(from_copy_translation=True):
             view.copy_translations(new, fields_to_ignore)

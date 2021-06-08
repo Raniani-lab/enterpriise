@@ -24,8 +24,7 @@ class TestRequest(common.TransactionCase):
             'user_id': 2,
             'request_id': record.id,
             'status': 'new'})
-        record.approver_ids += first_approver
-        record.approver_ids += second_approver
+        record.approver_ids = (first_approver | second_approver)
 
         self.assertEqual(record.request_status, 'new')
 
@@ -92,8 +91,7 @@ class TestRequest(common.TransactionCase):
             'user_id': 2,
             'request_id': record.id,
             'status': 'new'})
-        record.approver_ids += first_approver
-        record.approver_ids += second_approver
+        record.approver_ids = (first_approver | second_approver)
 
         self.assertEqual(record.request_status, 'new')
 

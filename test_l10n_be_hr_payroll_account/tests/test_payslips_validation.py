@@ -5234,12 +5234,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         payslip_results = {
-            'BASIC': 2135.16,
-            'SALARY': 1972.71,
-            'ONSS': -257.83,
-            'GROSS': 1877.33,
-            'P.P': -739.11,
-            'NET': 1138.23,
+            'BASIC': 2058.5,
+            'SALARY': 1901.88,
+            'ONSS': -248.58,
+            'GROSS': 1809.92,
+            'P.P': -712.57,
+            'NET': 1097.36,
         }
         self._validate_payslip(payslip, payslip_results)
 

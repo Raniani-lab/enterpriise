@@ -189,7 +189,7 @@ class Payslip(models.Model):
             ('employee_id', '=', self.employee_id.id),
             ('state', 'in', ['done', 'paid']),
             ('date_from', '>=', date_from + relativedelta(months=-12, day=1)),
-            ('date_from', '<', date_from),
+            ('date_from', '<=', date_from),
         ], order="date_from asc")
         complete_payslips = payslips.filtered(
             lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
@@ -364,9 +364,13 @@ class Payslip(models.Model):
         else:
             fixed_salary = basic
 
-        avg_variable_revenues = self.with_context(
-            variable_revenue_date_from=self.date_from + relativedelta(day=1, month=1)
-        )._get_last_year_average_variable_revenues()
+        force_avg_variable_revenues = self.input_line_ids.filtered(lambda l: l.code == 'VARIABLE')
+        if force_avg_variable_revenues:
+            avg_variable_revenues = force_avg_variable_revenues[0].amount
+        else:
+            avg_variable_revenues = self.with_context(
+                variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+            )._get_last_year_average_variable_revenues()
         return fixed_salary + avg_variable_revenues
 
     def _get_paid_amount(self):

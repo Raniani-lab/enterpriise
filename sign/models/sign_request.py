@@ -619,7 +619,6 @@ class SignRequestItem(models.Model):
         self.mapped('sign_request_id')._check_after_compute()
 
     def send_signature_accesses(self, subject=None, message=None):
-        base_url = self[0].get_base_url()
         tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
             if not signer.partner_id or not signer.partner_id.email:
@@ -630,7 +629,7 @@ class SignRequestItem(models.Model):
             tpl = tpl.with_context(lang=signer_lang)
             body = tpl._render({
                 'record': signer,
-                'link': url_join(base_url, "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
+                'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,
                 'body': message if not is_html_empty(message) else False,
             }, engine='ir.qweb', minimal_qcontext=True)

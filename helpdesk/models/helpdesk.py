@@ -18,7 +18,7 @@ class HelpdeskTeam(models.Model):
     _inherit = ['mail.alias.mixin', 'mail.thread', 'rating.parent.mixin']
     _description = "Helpdesk Team"
     _order = 'sequence,name'
-    _rating_satisfaction_days = False  # takes all existing ratings
+    _rating_satisfaction_days = 30  # include only last 30 days to compute satisfaction
 
     _sql_constraints = [('not_portal_show_rating_if_not_use_rating',
                          'check (portal_show_rating = FALSE OR use_rating = TRUE)',
@@ -87,6 +87,8 @@ class HelpdeskTeam(models.Model):
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
         default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    open_ticket_count = fields.Integer("# Open Tickets", compute='_compute_open_ticket_count')
+    sla_policy_count = fields.Integer("# SLA Policy", compute='_compute_sla_policy_count')
     # auto close ticket
     auto_close_ticket = fields.Boolean('Automatic Closing')
     auto_close_day = fields.Integer('Inactive Period(days)',
@@ -127,6 +129,20 @@ class HelpdeskTeam(models.Model):
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
             team.unassigned_tickets = mapped_data.get(team.id, 0)
+
+    def _compute_open_ticket_count(self):
+        ticket_data = self.env['helpdesk.ticket'].read_group([
+            ('team_id', 'in', self.ids), ('stage_id.is_close', '=', False)
+        ], ['team_id'], ['team_id'])
+        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
+        for team in self:
+            team.open_ticket_count = mapped_data.get(team.id, 0)
+
+    def _compute_sla_policy_count(self):
+        sla_data = self.env['helpdesk.sla'].read_group([('team_id', 'in', self.ids)], ['team_id'], ['team_id'])
+        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in sla_data)
+        for team in self:
+            team.sla_policy_count = mapped_data.get(team.id, 0)
 
     @api.depends('use_rating')
     def _compute_portal_show_rating(self):
@@ -393,6 +409,41 @@ class HelpdeskTeam(models.Model):
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
         return self._action_view_rating()
+
+    def action_view_team_rating(self):
+        self.ensure_one()
+        action = self._action_view_rating()
+        rating_ids = self.rating_ids.filtered(lambda x: x.rating >= 1 and x.consumed).ids
+        if len(rating_ids) == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': rating_ids[0],
+                'views': [(False, 'form')],
+            })
+        return action
+
+    def action_view_open_ticket_view(self):
+        action = self.action_view_ticket()
+        action.update({
+            'display_name': _("Tickets"),
+            'domain': [('team_id', '=', self.id), ('stage_id.is_close', '=', False)],
+        })
+        return action
+
+    def action_view_sla_policy(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_sla_action")
+        if self.sla_policy_count == 1:
+            action.update({
+                'view_mode': 'form',
+                'res_id': self.env['helpdesk.sla'].search([('team_id', '=', self.id)], limit=1).id,
+                'views': [(False, 'form')],
+            })
+        action.update({
+            'context': {'default_team_id': self.id},
+            'domain': [('team_id', '=', self.id)],
+        })
+        return action
 
     @api.model
     def _compute_activity_avg(self, activity):

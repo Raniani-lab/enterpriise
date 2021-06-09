@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
@@ -12,6 +13,8 @@ class HelpdeskTeam(models.Model):
         help="Project to which the tickets (and the timesheets) will be linked by default.")
     timesheet_timer = fields.Boolean('Timesheet Timer', default=True)
     display_timesheet_timer = fields.Boolean(compute='_compute_display_timesheet_timer')
+    timesheet_encode_uom_id = fields.Many2one('uom.uom', related='company_id.timesheet_encode_uom_id')
+    total_timesheet_time = fields.Integer(compute="_compute_total_timesheet_time")
 
     @api.depends('use_helpdesk_timesheet')
     def _compute_display_timesheet_timer(self):
@@ -23,6 +26,39 @@ class HelpdeskTeam(models.Model):
     def _compute_timesheet_timer(self):
         for team in self:
             team.timesheet_timer = team.use_helpdesk_timesheet
+
+    @api.depends('ticket_ids')
+    def _compute_total_timesheet_time(self):
+        helpdesk_timesheet_teams = self.filtered('use_helpdesk_timesheet')
+        if not helpdesk_timesheet_teams:
+            self.total_timesheet_time = 0.0
+            return
+        timesheets_read_group = self.env['account.analytic.line'].read_group(
+            [('helpdesk_ticket_id', 'in', helpdesk_timesheet_teams.ticket_ids.filtered(lambda x: not x.stage_id.is_close).ids)],
+            ['helpdesk_ticket_id', 'unit_amount', 'product_uom_id'],
+            ['helpdesk_ticket_id', 'product_uom_id'],
+            lazy=False)
+        timesheet_data_dict = defaultdict(list)
+        uom_ids = set(helpdesk_timesheet_teams.timesheet_encode_uom_id.ids)
+        for result in timesheets_read_group:
+            uom_id = result['product_uom_id'] and result['product_uom_id'][0]
+            if uom_id:
+                uom_ids.add(uom_id)
+            timesheet_data_dict[result['helpdesk_ticket_id'][0]].append((uom_id, result['unit_amount']))
+
+        uoms_dict = {uom.id: uom for uom in self.env['uom.uom'].browse(uom_ids)}
+        for team in helpdesk_timesheet_teams:
+            total_time = sum([
+                sum([
+                    unit_amount * uoms_dict.get(product_uom_id, team.timesheet_encode_uom_id).factor_inv
+                    for product_uom_id, unit_amount in timesheet_data
+                ], 0.0)
+                for ticket_id, timesheet_data in timesheet_data_dict.items()
+                if ticket_id in team.ticket_ids.ids
+            ], 0.0)
+            total_time *= team.timesheet_encode_uom_id.factor
+            team.total_timesheet_time = int(round(total_time))
+        (self - helpdesk_timesheet_teams).total_timesheet_time = 0
 
     def _create_project(self, name, allow_billable, other):
         return self.env['project.project'].create({
@@ -51,6 +87,18 @@ class HelpdeskTeam(models.Model):
         for team in self.filtered(lambda team: team.use_helpdesk_timesheet and not team.project_id):
             team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {})
         return result
+
+    def action_view_timesheets(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_timesheet.act_hr_timesheet_line_helpdesk")
+        action.update({
+            'domain': [('helpdesk_ticket_id', 'in', self.ticket_ids.filtered(lambda x: not x.stage_id.is_close).ids)],
+            'context': {
+                'default_project_id': self.project_id.id,
+                'graph_groupbys': ['date:week', 'employee_id'],
+            },
+        })
+        return action
 
 
 class HelpdeskTicket(models.Model):

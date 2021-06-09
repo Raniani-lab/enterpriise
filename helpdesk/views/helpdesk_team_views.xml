@@ -18,7 +18,7 @@
     <record id="helpdesk_sla_action" model="ir.actions.act_window">
         <field name="name">SLA Policies</field>
         <field name="res_model">helpdesk.sla</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'default_team_id': active_id, 'search_default_team_id': active_id}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -48,7 +48,27 @@
         <field name="arch" type="xml">
             <form string="team search" class="oe_form_configuration">
                 <sheet>
-                    <div class="oe_button_box" name="button_box"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_open_ticket_view" type="object" icon="fa-life-ring" class="oe_stat_button">
+                            <field name="open_ticket_count" string="Tickets" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_percentage_satisfaction', '=', -1)]}">
+                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_percentage_satisfaction', '&lt;', 66)]}" title="Satisfied"/>
+                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_percentage_satisfaction', '&lt;', 33), ('rating_percentage_satisfaction', '&gt;=', 65)]}" title="Okay"/>
+                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_percentage_satisfaction', '&gt;', 32)]}" title="Dissatisfied"/>
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="rating_percentage_satisfaction" nolabel="1"/>%
+                                </span>
+                                <span class="o_stat_text">
+                                    Satisfaction
+                                </span>
+                            </div>
+                        </button>
+                        <button name="action_view_sla_policy" type="object" icon="fa-calendar-check-o" class="oe_stat_button" attrs="{'invisible': [('use_sla', '=', False)]}">
+                            <field name="sla_policy_count" string="SLA Policies" widget="statinfo"/>
+                        </button>
+                    </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title" id='title'>
                         <label for="name" string="Team Name"/>
@@ -233,11 +253,6 @@
                                 <label for="use_rating"/>
                                 <div class="text-muted">
                                     Allow your customers to easily rate your services. Activate this option will add a default email template on non folded closing stages
-                                </div>
-                                <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
-                                    <field name="rating_percentage_satisfaction" invisible="1"/>
-                                    <div attrs="{'invisible': [('use_rating', '=', True), ('rating_percentage_satisfaction', '!=', -1)]}" class="mt16">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -429,7 +444,6 @@
                 <field name="alias_domain"/>
                 <field name="alias_id"/>
                 <field name="use_rating"/>
-                <field name="rating_percentage_satisfaction" invisible="1"/>
                 <field name="use_sla"/>
                 <field name="upcoming_sla_fail_tickets"/>
                 <field name="unassigned_tickets"/>

@@ -1943,7 +1943,7 @@ class TestRoutingAndKits(TransactionCase):
             move.product_uom_qty = 2
             move.operation_id = mo.bom_id.operation_ids[0]
         mo = mo_form.save()
-        new_move = mo.move_raw_ids.filtered(lambda move: move.additional)
+        new_move = mo.move_raw_ids.filtered(lambda move: move.product_id == add_product)
         self.assertEqual(len(mo.move_raw_ids), 3)
         self.assertEqual(len(new_move), 1)
         self.assertEqual(mo.move_raw_ids.mapped('state'), ['confirmed'] * 3)

@@ -112,7 +112,7 @@ export class EditorAdapter extends ComponentAdapter {
                     // display warning dialog
                     resolve(false);
                 }
-                this.dialog.open(DialogClass, dialogProps);
+                this.dialog.add(DialogClass, dialogProps);
             });
         }
         return viewAdded;
@@ -218,7 +218,7 @@ export class EditorAdapter extends ComponentAdapter {
             });
         };
 
-        this.dialog.open(ConfirmationDialog, {
+        this.dialog.add(ConfirmationDialog, {
             body: message,
             confirm,
         });

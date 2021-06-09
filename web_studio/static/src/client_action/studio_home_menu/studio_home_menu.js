@@ -48,7 +48,7 @@ export class StudioHomeMenu extends HomeMenu {
         this.studio = useService("studio");
         this.notifications = useService("notification");
         this.dialog = useService("dialog");
-        this.dialogId = null;
+        this.dialogRemove = null;
 
         this.state.editedAppData = {};
         this.closeDialog = this.closeDialog.bind(this);
@@ -84,7 +84,7 @@ export class StudioHomeMenu extends HomeMenu {
      * @private
      */
     closeDialog() {
-        this.dialog.close(this.dialogId);
+        this.dialogRemove();
         delete this.initialAppData;
     }
 
@@ -191,8 +191,8 @@ export class StudioHomeMenu extends HomeMenu {
             onIconChanged: this.onIconChanged,
             editedAppData: this.state.editedAppData,
         };
-        this.dialogId = this.dialog.open(StudioHomeMenuDialog, dialogProps, {
-            onCloseCallback: () => {
+        this.dialogRemove = this.dialog.add(StudioHomeMenuDialog, dialogProps, {
+            onClose: () => {
                 delete this.initialAppData;
             },
         });

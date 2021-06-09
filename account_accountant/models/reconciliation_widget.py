@@ -62,7 +62,6 @@ class AccountReconciliation(models.AbstractModel):
         else:
             domain = []
 
-        partner_id = partner_id or statement_line.partner_id.id
         if partner_id:
             domain.append(('partner_id', '=', partner_id))
 

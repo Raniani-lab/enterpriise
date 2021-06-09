@@ -902,6 +902,7 @@ class AccountReport(models.AbstractModel):
                 'line_template': 'account_reports.line_template',
                 'footnotes_template': 'account_reports.footnotes_template',
                 'search_template': 'account_reports.search_template',
+                'line_caret_options': 'account_reports.line_caret_options',
         }
 
     #TO BE OVERWRITTEN

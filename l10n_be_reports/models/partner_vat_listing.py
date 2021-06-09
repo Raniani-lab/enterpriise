@@ -14,11 +14,37 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
 
     filter_date = {'mode': 'range', 'filter': 'this_month'}
 
+    def _get_templates(self):
+        res = super()._get_templates()
+        res['line_caret_options'] = 'l10n_be_reports.line_caret_options'
+        return res
+
+    def l10n_be_open_invoices(self, options, params=None):
+        return {
+            'name': _('VAT Listing Audit'),
+            'type': 'ir.actions.act_window',
+            'views': [(False, 'tree'), (False, 'form')],
+            'res_model': 'account.move.line',
+            'context': {
+                'search_default_partner_id': params['id'],
+                'search_default_group_by_partner': 1,
+                'expand': 1,
+            },
+            'domain': [
+                ('move_id.partner_id.vat', 'ilike', 'BE%'),
+                ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
+                ('move_id.amount_tax_signed', '>', 0),
+                ('move_id.date', '>=', options['date']['date_from']),
+                ('move_id.date', '<=', options['date']['date_to']),
+                ('tax_ids', '!=', False),
+            ]
+        }
+
     @api.model
     def _get_lines(self, options, line_id=None):
         lines = []
         context = self.env.context
-        partner_ids = self.env['res.partner'].search([('vat', 'ilike', 'BE%')]).ids
+        partner_ids = self.env['res.partner'].with_context(active_test=False).search([('vat', 'ilike', 'BE%')]).ids
         if not partner_ids:
             return lines
 
@@ -72,6 +98,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                 GROUP BY l2.partner_id) AS refund_base_sub
               ON turnover_sub.partner_id = refund_base_sub.partner_id
            WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0
+           ORDER BY turnover_sub.vat, turnover_sub.turnover DESC
         """
         params = {
             'tags': tuple(tag_ids),

@@ -10,7 +10,7 @@ Create Reports for Field Service
 ================================
 
 """,
-    'depends': ['worksheet', 'industry_fsm'],
+    'depends': ['worksheet', 'industry_fsm', 'web_studio'],
     'data': [
         'security/industry_fsm_report_security.xml',
         'security/ir.model.access.csv',
@@ -23,6 +23,7 @@ Create Reports for Field Service
     ],
     'demo': ['data/fsm_report_demo.xml'],
     'post_init_hook': 'post_init',
+    'auto_install': ['industry_fsm', 'web_studio'],
     'assets': {
         'web.assets_backend': [
             'industry_fsm_report/static/**/*',

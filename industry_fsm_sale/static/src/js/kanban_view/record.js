@@ -6,7 +6,22 @@ const KanbanRecord = require('web.KanbanRecord');
 return KanbanRecord.extend({
     events: _.extend({}, KanbanRecord.prototype.events, {
         'click': '_onKanbanRecordClicked',
+        'click .o_dropdown_kanban > *': '_toggleDropDownMenu',
     }),
+
+    /**
+     * The only purpose of this method is to prevent the call to _onKanbanRecordClicked.
+     * As Bootstrap dropdown is managed after the call to _onKanbanRecordClicked, we need to handle it here.
+     * @param {Event} e
+     * @private
+     */
+    _toggleDropDownMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.currentTarget.classList.contains('dropdown-toggle')) {
+            $(e.currentTarget).dropdown('toggle');
+        }
+    },
 
     /**
      * Kanban record click listener

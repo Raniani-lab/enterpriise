@@ -73,6 +73,7 @@
     <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.inherit.project.forecast</field>
         <field name="model">project.task</field>
+        <field name="priority" eval="15"/>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">

@@ -3,7 +3,7 @@
     <data noupdate="1">
 
         <record id="fsm_worksheet_template2" model="worksheet.template">
-            <field name="name">Device Installation &amp; Maintenance</field>
+            <field name="name">Device Installation and Maintenance</field>
             <field name="res_model_id" ref="project.model_project_task"/>
             <field name="color">3</field>
         </record>

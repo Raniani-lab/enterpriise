@@ -296,3 +296,7 @@ class Task(models.Model):
             if current_id:
                 domain_mapping[task.id] = expression.AND([domain_mapping[task.id], [('id', '!=', current_id)]])
         return domain_mapping
+
+    @api.model
+    def get_unusual_days(self, date_from, date_to=None):
+        return self.env.user.employee_id._get_unusual_days(date_from, date_to)

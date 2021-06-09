@@ -17,7 +17,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="module_industry_fsm_sale"/>
                                 <div class="text-muted">
-                                    Keep track of the products used during your interventions and invoice your time and material
+                                    Keep track of the products used for your tasks, and invoice your time and material to your customers
                                 </div>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                             <div class="o_setting_right_pane">
                                 <label for="group_industry_fsm_quotations"/>
                                 <div class="text-muted">
-                                    Create new quotations directly from the tasks
+                                    Create new quotations directly from your tasks
                                 </div>
                             </div>
                         </div>

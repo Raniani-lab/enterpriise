@@ -25,7 +25,7 @@
                                 <ul class="pl-1 mb-0">
                                     <li t-if="partner_id"><strong>Customer: </strong> <t t-esc="partner_id[1]"/></li>
                                     <li><strong>Start Date: </strong> <t t-esc="userTimezoneStartDate.format('L LTS')"/></li>
-                                    <li><strong>Stop Date: </strong> <t t-esc="userTimezoneStopDate.format('L LTS')"/></li>
+                                    <li><strong>End Date: </strong> <t t-esc="userTimezoneStopDate.format('L LTS')"/></li>
                                 </ul>
                             </div>
                         </div>
@@ -44,8 +44,11 @@
         <field name="priority">12</field>
         <field name="arch" type="xml">
             <map res_partner="partner_id" default_order="planned_date_begin" routing="true" js_class="project_map">
-                <field name="planned_date_begin" string="Date"/>
+                <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
+                <field name="project_id" string="Project"/>
+                <field name="user_id" string="Assigned To"/>
+                <field name="planned_date_begin" string="Date"/>
             </map>
         </field>
     </record>

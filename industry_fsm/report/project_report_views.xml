@@ -10,6 +10,10 @@
                 <field name="hours_effective" widget="timesheet_uom" type="measure"/>
                 <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
                 <field name="hours_planned" widget="timesheet_uom" type="measure"/>
+                <field name="working_days_close" type="measure" string="Working Days to Close"/>
+                <field name="working_days_open" type="measure" string="working days to assign"/>
+                <field name="nbr" invisible="1"/>
+                <field name="delay_endings_days" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -19,12 +23,14 @@
         <field name="model">report.project.task.user.fsm</field>
         <field name="arch" type="xml">
             <graph string="Tasks Analysis" type="bar" sample="1" disable_linking="1" js_class="hr_timesheet_graphview">
-                    <field name="project_id" type="row"/>
-                    <field name="user_id" type="col"/>
-                    <field name="nbr" type="measure"/>
-                    <field name="hours_effective" widget="timesheet_uom" type="measure"/>
-                    <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
-                    <field name="hours_planned" widget="timesheet_uom" type="measure"/>
+                <field name="project_id" type="row"/>
+                <field name="nbr" type="measure" invisible="1"/>
+                <field name="delay_endings_days" type="measure" invisible="1"/>
+                <field name="hours_effective" widget="timesheet_uom" type="measure"/>
+                <field name="remaining_hours" widget="timesheet_uom" type="measure"/>
+                <field name="working_days_close" type="measure" string="Working Days to Close"/>
+                <field name="working_days_open" type="measure" string="Working Days to Assign"/>
+                <field name="hours_planned" widget="timesheet_uom" type="measure"/>
             </graph>
         </field>
     </record>
@@ -34,7 +40,12 @@
         <field name="res_model">report.project.task.user.fsm</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="project.view_task_project_user_search"/>
-        <field name="context">{'group_by_no_leaf':1,'group_by':[]}</field>
+        <field name="context">{
+            'group_by_no_leaf': 1,
+            'group_by': [],
+            'pivot_measures': ['__count__', 'hours_planned', 'hours_effective', 'remaining_hours'],
+            'graph_measure': '__count__',
+        }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No data yet!

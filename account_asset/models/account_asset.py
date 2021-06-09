@@ -42,8 +42,13 @@ class AccountAsset(models.Model):
     method_period = fields.Selection([('1', 'Months'), ('12', 'Years')], string='Number of Months in a Period', readonly=True, default='12', states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         help="The amount of time between two depreciations")
     method_progress_factor = fields.Float(string='Declining Factor', readonly=True, default=0.3, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
-    prorata = fields.Boolean(string='Prorata Temporis', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
-        help='Indicates that the first depreciation entry for this asset have to be done from the asset date (purchase date) instead of the first January / Start date of fiscal year')
+    prorata = fields.Boolean(
+        string='Prorata Temporis',
+        readonly=True,
+        states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
+        help="If set, specifies the start date for the first period's computation. By default, it"
+             " is set to the day's date rather than the Start Date of the fiscal year."
+    )
     prorata_date = fields.Date(
         string='Prorata Date',
         readonly=True, states={'draft': [('readonly', False)]})

@@ -895,6 +895,31 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         actionManager.destroy();
     });
 
+    test("Check pivot measures with m2o field", async function (assert) {
+        assert.expect(3);
+        this.data.partner.records.push(
+            {id: 3, foo: 12, bar: 110, product: 37, probability: 50},
+            {id: 4, foo: 18, bar: 110, product: 41, probability: 12},
+            {id: 5, foo: 18, bar: 110, product: 37, probability: 13},
+            {id: 6, foo: 18, bar: 110, product: 37, probability: 14},
+        )
+        const { actionManager, model } = await createSpreadsheetFromPivot({
+            model: "partner",
+            data: this.data,
+            arch: `
+            <pivot string="Partners">
+                <field name="foo" type="col"/>
+                <field name="bar" type="row"/>
+                <field name="product" type="measure"/>
+            </pivot>`,
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        assert.equal(model.getters.getCell(sheetId, 1, 2).value, 1, "[Cell B3] There is one distinct product for 'foo - 1' and 'bar - 110'");
+        assert.equal(model.getters.getCell(sheetId, 2, 2).value, 1, "[Cell C3] There is one distinct product for 'foo - 12' and 'bar - 110'");
+        assert.equal(model.getters.getCell(sheetId, 3, 2).value, 2, "[Cell D3] There are two distinct products for 'foo - 18' and 'bar - 110'");
+        actionManager.destroy();
+    });
+
     module("Global filters panel");
 
     test("Simple display", async function (assert) {

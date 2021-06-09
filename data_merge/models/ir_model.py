@@ -18,7 +18,7 @@ class IrModel(models.Model):
         help="Contextual menu action that redirects to the deduplicate view of data_merge."
     )
     is_merge_enabled = fields.Boolean(
-        string="Merge Action Enabled", compute='_compute_is_merge_enabled',
+        string="Can Be Merged", compute='_compute_is_merge_enabled',
         help="""If True, the generic data merge tool is available in the contextual menu of this model."""
     )
 

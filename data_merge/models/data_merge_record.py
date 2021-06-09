@@ -454,6 +454,7 @@ class DataMergeRecord(models.Model):
             'search_view_id': [view.id, 'search'],
             'domain': [('res_id', 'in', active_ids), ('res_model_name', '=', active_model)],
             'context': {'group_by': ['group_id']},
+            'help': '<p class="o_view_nocontent_smiling_face">%s</p>' % _('No duplicates found')
         }
 
         # ensure merge action specific record is created in data_merge.model
@@ -462,8 +463,9 @@ class DataMergeRecord(models.Model):
             ('is_contextual_merge_action', '=', True)
         ])
         if not merge_model:
+            model_name = self.env['ir.model']._get(active_model).with_context(lang=self.env.user.lang).display_name
             merge_model = MergeModel.create({
-                'name': _("Merge Action - %s", active_model),
+                'name': _("Manual Selection - %s", model_name),
                 'res_model_id': self.env['ir.model']._get(active_model).id,
                 'active': False,
                 'is_contextual_merge_action': True,

@@ -24,6 +24,7 @@
     'installable': True,
     'application': False,
     'post_init_hook': 'post_init',
+    'uninstall_hook': 'uninstall_hook',
     'assets': {
         'web.assets_backend': [
             'data_merge/static/src/js/data_merge_list_view.js',

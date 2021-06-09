@@ -3,11 +3,6 @@
 
 from odoo import api, fields, models, _
 from odoo.tools import format_date
-import copy
-import binascii
-import struct
-import time
-import itertools
 from itertools import groupby
 from collections import defaultdict
 
@@ -48,7 +43,7 @@ class assets_report(models.AbstractModel):
                 {'name': _('Acquisition Date'), 'class': 'text-center'},  # Characteristics
                 {'name': _('First Depreciation'), 'class': 'text-center'},
                 {'name': _('Method'), 'class': 'text-center'},
-                {'name': _('Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-toggle': 'tooltip'},
+                {'name': _('Duration / Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-toggle': 'tooltip'},
                 {'name': start_date, 'class': 'number'},  # Assets
                 {'name': _('+'), 'class': 'number'},
                 {'name': _('-'), 'class': 'number'},
@@ -147,9 +142,15 @@ class assets_report(models.AbstractModel):
                     parent_lines += [al]
             for al in parent_lines:
                 if al['asset_method'] == 'linear' and al['asset_method_number']:  # some assets might have 0 depreciations because they dont lose value
-                    asset_depreciation_rate = ('{:.2f} %').format((100.0 / al['asset_method_number']) * (12 / int(al['asset_method_period'])))
+                    total_months = int(al['asset_method_number']) * int(al['asset_method_period'])
+                    months = total_months % 12
+                    years = total_months // 12
+                    asset_depreciation_rate = " ".join(part for part in [
+                        years and _("%s y", years),
+                        months and _("%s m", months),
+                    ] if part)
                 elif al['asset_method'] == 'linear':
-                    asset_depreciation_rate = ('{:.2f} %').format(0.0)
+                    asset_depreciation_rate = '0.00 %'
                 else:
                     asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 

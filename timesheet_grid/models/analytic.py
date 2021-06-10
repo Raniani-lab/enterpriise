@@ -7,7 +7,7 @@ from lxml import etree
 from collections import defaultdict
 from pytz import utc
 
-from odoo import models, fields, api, _
+from odoo import tools, models, fields, api, _
 from odoo.addons.web_grid.models.models import END_OF, STEP_BY, START_OF
 from odoo.addons.resource.models.resource import make_aware
 from odoo.exceptions import UserError, AccessError
@@ -500,7 +500,14 @@ class AnalyticLine(models.Model):
              ('date', '<=', grid_anchor)
             ], domain_search])
 
-        return self.search(domain_search).employee_id
+        group_order = self.env['hr.employee']._order
+        if order == group_order:
+            order = 'employee_id'
+        elif order == tools.reverse_order(group_order):
+            order = 'employee_id desc'
+        else:
+            order = None
+        return self.search(domain_search, order=order).employee_id
 
     # ----------------------------------------------------
     # Timer Methods

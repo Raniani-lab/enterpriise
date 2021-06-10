@@ -37,6 +37,8 @@ class AnalyticLine(models.Model):
 
     project_id = fields.Many2one(group_expand="_group_expand_project_ids")
     duration_unit_amount = fields.Float(related="unit_amount", readonly=True, string="Timesheet Init Amount")
+    unit_amount_validate = fields.Float(related="unit_amount", readonly=True, string="Timesheet Unit Time")
+
 
     display_timer = fields.Boolean(
         compute='_compute_display_timer',
@@ -64,6 +66,9 @@ class AnalyticLine(models.Model):
         """
             Override method to manage the group_expand in project_id and employee_id fields
         """
+        if not orderby and row_fields:
+            orderby = ','.join([r for r in row_fields])
+
         result = super(AnalyticLine, self).read_grid(row_fields, col_field, cell_field, domain, range, readonly_field, orderby)
 
         if not self.env.context.get('group_expand', False):
@@ -76,10 +81,10 @@ class AnalyticLine(models.Model):
         #       -   project_id = value
         #       -   employee_id = value
         #   2) search in account.analytic.line if the user timesheeted
-        #      in the past 30 days. We reuse the actual domain and
+        #      in the past 7 days. We reuse the actual domain and
         #      modify it to enforce its validity concerning the dates,
         #      while keeping the restrictions about other fields.
-        #      Example: Filter timesheet from my team this month:
+        #      Example: Filter timesheet from my team this week:
         #      [['project_id', '!=', False],
         #       '|',
         #           ['employee_id.timesheet_manager_id', '=', 2],
@@ -90,12 +95,12 @@ class AnalyticLine(models.Model):
         #                   ['user_id', '=', 2]]
         #       '&',
         #           ['date', '>=', '2020-06-01'],
-        #           ['date', '<=', '2020-06-30']
+        #           ['date', '<=', '2020-06-07']
 
         #      Becomes:
         #      [('project_id', '!=', False),
-        #       ('date', '>=', datetime.date(2020, 5, 9)),
-        #       ('date', '<=', '2020-06-08'),
+        #       ('date', '>=', datetime.date(2020, 5, 28)),
+        #       ('date', '<=', '2020-06-04'),
         #       ['project_id', '!=', False],
         #       '|',
         #           ['employee_id.timesheet_manager_id', '=', 2],
@@ -112,11 +117,11 @@ class AnalyticLine(models.Model):
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
 
-        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = [
             ('project_id', '!=', False),
             ('task_id.active', '=', True),
-            ('date', '>=', last_month),
+            ('date', '>=', last_week),
             ('date', '<=', grid_anchor)
         ]
 
@@ -416,7 +421,7 @@ class AnalyticLine(models.Model):
             if view_type == 'grid':
                 node.set('string', encoding_uom.name)
             else:
-                node.set('string', _('Duration (%s)') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
+                node.set('string', _('%s Spent') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
         return etree.tostring(doc, encoding='unicode')
 
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
@@ -461,12 +466,12 @@ class AnalyticLine(models.Model):
 
             This group expand allow to add some record grouped by project,
             where the current user (= the current employee) has been
-            timesheeted in the past 30 days.
+            timesheeted in the past 7 days.
             
             We keep the actual domain and modify it to enforce its validity
             concerning the dates, while keeping the restrictions about other
             fields.
-            Example: Filter timesheet from my team this month:
+            Example: Filter timesheet from my team this week:
             [['project_id', '!=', False],
              '|',
                  ['employee_id.timesheet_manager_id', '=', 2],
@@ -477,12 +482,12 @@ class AnalyticLine(models.Model):
                          ['user_id', '=', 2]]
              '&',
                  ['date', '>=', '2020-06-01'],
-                 ['date', '<=', '2020-06-30']
+                 ['date', '<=', '2020-06-07']
 
             Becomes:
             [('project_id', '!=', False),
-             ('date', '>=', datetime.date(2020, 5, 9)),
-             ('date', '<=', '2020-06-08'),
+             ('date', '>=', datetime.date(2020, 5, 28)),
+             ('date', '<=', '2020-06-04'),
              ['project_id', '!=', False],
              '|',
                  ['employee_id.timesheet_manager_id', '=', 2],
@@ -498,7 +503,7 @@ class AnalyticLine(models.Model):
 
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
-        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = []
 
         # We force the date rules to be always met
@@ -511,7 +516,7 @@ class AnalyticLine(models.Model):
             else:
                 domain_search.append(rule)
 
-        domain_search = expression.AND([[('date', '>=', last_month), ('date', '<=', grid_anchor)], domain_search])
+        domain_search = expression.AND([[('date', '>=', last_week), ('date', '<=', grid_anchor)], domain_search])
         return self.search(domain_search).project_id
 
     def _group_expand_employee_ids(self, employees, domain, order):
@@ -519,9 +524,9 @@ class AnalyticLine(models.Model):
 
             This group expand allow to add some record by employee, where
             the employee has been timesheeted in a task of a project in the
-            past 30 days.
+            past 7 days.
 
-            Example: Filter timesheet from my team this month:
+            Example: Filter timesheet from my team this week:
             [['project_id', '!=', False],
              '|',
                  ['employee_id.timesheet_manager_id', '=', 2],
@@ -532,12 +537,12 @@ class AnalyticLine(models.Model):
                          ['user_id', '=', 2]]
              '&',
                  ['date', '>=', '2020-06-01'],
-                 ['date', '<=', '2020-06-30']
+                 ['date', '<=', '2020-06-07']
 
             Becomes:
             [('project_id', '!=', False),
-             ('date', '>=', datetime.date(2020, 5, 9)),
-             ('date', '<=', '2020-06-08'),
+             ('date', '>=', datetime.date(2020, 5, 28)),
+             ('date', '<=', '2020-06-04'),
              ['project_id', '!=', False],
              '|',
                  ['employee_id.timesheet_manager_id', '=', 2],
@@ -552,7 +557,7 @@ class AnalyticLine(models.Model):
         """
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
-        last_month = (fields.Datetime.from_string(grid_anchor) - timedelta(days=30)).date()
+        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = []
 
         for rule in domain:
@@ -565,7 +570,7 @@ class AnalyticLine(models.Model):
                 domain_search.append(rule)
         domain_search = expression.AND([
             [('project_id', '!=', False),
-             ('date', '>=', last_month),
+             ('date', '>=', last_week),
              ('date', '<=', grid_anchor)
             ], domain_search])
 
@@ -824,6 +829,7 @@ class AnalyticLine(models.Model):
                 'tag': 'display_notification',
                 'params': {
                     'message': _('There are no timesheet entries to merge.'),
+                    'type': 'warning',
                     'sticky': False,
                 }
             }

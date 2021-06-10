@@ -108,6 +108,9 @@
                             <field name="is_timer_running" widget="timer_toggle_button"/>
                         </span>
                     </span>
+                    <div attrs="{'invisible': [('validated', '=', False)]}">
+                        <field name="unit_amount_validate" widget="timesheet_uom"/>
+                    </div>
                  </xpath>
                  <xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="inside">
                     <xpath expr="//span[hasclass('o_timesheet_status_bubble')]" position="move"/>
@@ -171,15 +174,11 @@
                                 <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" context="{'form_view_ref': 'project.project_project_view_form_simplified',}" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="task_with_hours"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
-                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                             </group>
                             <group>
+                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="date" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
-                                <label for="unit_amount" string="Time Spent"/>
-                                <div class="o_row">
-                                    <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}" decoration-danger="unit_amount &gt; 24"/>
-                                    <field name="encoding_uom_id" options="{'no_open': true}"/>
-                                </div>
+                                <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}" decoration-danger="unit_amount &gt; 24"/>
                             </group>
                         </group>
                         <group>
@@ -187,6 +186,18 @@
                         </group>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="my_timesheet_form_view" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.inherit</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
 
@@ -355,10 +366,10 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
             <field name="arch" type="xml">
-                <xpath expr="/search" position="inside">
-                    <separator/>
-                    <filter name="validated" string="Validated" domain="[('validated', '=', True)]"/>
+                <xpath expr="//filter[@name='month']" position="before">
                     <filter name="nonvalidated" string="Draft" domain="[('validated', '=', False)]"/>
+                    <filter name="validated" string="Validated" domain="[('validated', '=', True)]"/>
+                    <separator/>
                 </xpath>
                 <xpath expr="//filter[@name='mine']" position="after">
                     <filter name="my_team_timesheet" string="My Team" domain="[
@@ -556,7 +567,7 @@
         </record>
 
         <record id="hr_timesheet.act_hr_timesheet_line_view_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="view_id" ref="timesheet_grid.my_timesheet_form_view"/>
         </record>
 
 

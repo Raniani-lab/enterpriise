@@ -73,7 +73,7 @@ table > tbody.o_grid_section > tr {
         }
     }
     .o_grid_timer_header {
-        padding-left: 16px;
+        padding-left: 32px;
         width: 23px !important;
         @include media-breakpoint-up(md) {
             width: 2% !important;

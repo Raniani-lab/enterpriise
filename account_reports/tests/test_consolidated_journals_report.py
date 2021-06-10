@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
 from .common import TestAccountReportsCommon
 
 from odoo import fields
@@ -65,7 +66,7 @@ class TestConsolidatedJournalsReport(TestAccountReportsCommon):
                 ('journal (0)',                         2100.0,         2100.0,         0.0),
                 ('0_1 account_0_1',                     1050.0,         0.0,            1050.0),
                 ('0_2 account_0_1',                     1050.0,         0.0,            1050.0),
-                ('400000 Product Sales',                0.0,            10500.0,        -10500.0),
+                ('400000 Product Sales',                0.0,            2100.0,         -2100.0),
                 ('journal (1)',                         2100.0,         2100.0,         0.0),
                 ('journal (2)',                         2100.0,         2100.0,         0.0),
                 ('journal (3)',                         2100.0,         2100.0,         0.0),

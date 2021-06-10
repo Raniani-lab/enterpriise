@@ -1415,7 +1415,7 @@ class AccountReport(models.AbstractModel):
         """
         new_context = self.env.context.copy()
         new_context['account_report_generation_options'] = options
-        new_wizard = self.with_context(new_context).env['account_reports.export.wizard'].create({'report_model': self._name, 'report_id': self.id})
+        new_wizard = self.with_context(new_context).env['account_reports.export.wizard'].create({'report_model': self._name, 'report_id': getattr(self, 'id', 0)})
         view_id = self.env.ref('account_reports.view_report_export_wizard').id
         return {
             'type': 'ir.actions.act_window',

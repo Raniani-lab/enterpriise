@@ -12,3 +12,8 @@ class Website(models.Model):
         suggested_controllers = super(Website, self).get_suggested_controllers()
         suggested_controllers.append((_('Helpdesk Customer Satisfaction'), url_for('/helpdesk/rating'), 'helpdesk'))
         return suggested_controllers
+
+    def configurator_get_footer_links(self):
+        links = super().configurator_get_footer_links()
+        links.append({'text': _("Help"), 'href': '/help'})
+        return links

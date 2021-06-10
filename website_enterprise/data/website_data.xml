@@ -8,6 +8,9 @@
             <field name="website_config_preselection">schedule_appointments</field>
             <field name="module_id" ref="base.module_website_calendar"/>
             <field name="icon">fa-address-card</field>
+            <field name="menu_company">False</field>
+            <field name="menu_sequence">55</field>
+            <field name="feature_url">/calendar</field>
         </record>
     </data>
 </odoo>

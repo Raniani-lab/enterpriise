@@ -15,12 +15,14 @@ class IrUiMenu(models.Model):
         for menu in menus.values():
             # web icons for app root menus
             if menu['id'] == menu['appID']:
-                webIconlist = menu.get('webIcon', '').split(',')
+                webIcon = menu.get('webIcon', '')
+                webIconlist = webIcon and webIcon.split(',')
                 iconClass = color = backgroundColor = None
-                if len(webIconlist) >= 2:
-                    iconClass, color = webIconlist[:2]
-                if len(webIconlist) == 3:
-                    backgroundColor = webIconlist[2]
+                if webIconlist:
+                    if len(webIconlist) >= 2:
+                        iconClass, color = webIconlist[:2]
+                    if len(webIconlist) == 3:
+                        backgroundColor = webIconlist[2]
 
                 if menu.get('webIconData'):
                     menu['webIconData'] = re.sub(r'\s/g', "", ('data:image/png;base64,%s' % menu['webIconData'].decode('utf-8')))

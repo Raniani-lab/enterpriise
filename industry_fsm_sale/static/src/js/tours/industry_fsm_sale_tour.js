@@ -33,7 +33,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: ".btn-primary",
     content: _t("Use the breadcrumbs to go back to your <b>list of products</b>."),
-    position: "right",
+    position: "bottom",
 }, {
     trigger: "button[name='fsm_add_quantity']",
     alt_trigger: ".o_fsm_industry_product",
@@ -44,7 +44,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: '.o_fsm_material_kanban',
     content: _t("Use the breadcrumbs to go back to your <b>task</b>."),
-    position: "right"
+    position: "bottom"
 });
 
 var fsmCreateInvoiceStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {

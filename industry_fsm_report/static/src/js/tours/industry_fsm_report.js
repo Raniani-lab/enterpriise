@@ -20,13 +20,13 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
 }, {
     trigger: ".o_form_button_save",
     content: _t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>'),
-    extra_trigger: '.o_fsm_worksheet_form',
+    extra_trigger: '.o_form_view',
     position: 'bottom'
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
-    extra_trigger: '.o_fsm_worksheet_form',
+    extra_trigger: '.o_form_view',
     content: _t("Use the breadcrumbs to go back to your <b>task</b>."),
-    position: "right"
+    position: 'bottom'
 
 });
 

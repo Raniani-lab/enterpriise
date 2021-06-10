@@ -9,7 +9,6 @@ from odoo.addons.account_invoice_extract.models.account_invoice import SUCCESS, 
 from odoo.addons.account_invoice_extract.tests import common as account_invoice_extract_common
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
-from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
@@ -36,6 +35,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
     def get_default_extract_response(self):
         return {
             'results': [{
+                'client': {'selected_value': {'content': "Test"}, 'words': []},
                 'supplier': {'selected_value': {'content': "Test"}, 'words': []},
                 'total': {'selected_value': {'content': 330}, 'words': []},
                 'subtotal': {'selected_value': {'content': 300}, 'words': []},
@@ -82,66 +82,68 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_no_merge_check_status(self):
         # test check_status without lines merging
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        self.env.company.extract_single_line_per_tax = False
-        extract_response = self.get_default_extract_response()
+        for move_type in ('in_invoice', 'out_invoice'):
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'waiting_extraction'})
+            self.env.company.extract_single_line_per_tax = False
+            extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+            with self.mock_iap_extract(extract_response, {}):
+                invoice._check_status()
 
-        self.assertEqual(invoice.extract_state, 'waiting_validation')
-        self.assertEqual(invoice.extract_status_code, SUCCESS)
-        self.assertEqual(invoice.amount_total, 330)
-        self.assertEqual(invoice.amount_untaxed, 300)
-        self.assertEqual(invoice.amount_tax, 30)
-        self.assertEqual(invoice.ref, 'INV0001')
-        self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
-        self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
-        self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
+            self.assertEqual(invoice.extract_state, 'waiting_validation')
+            self.assertEqual(invoice.extract_status_code, SUCCESS)
+            self.assertEqual(invoice.amount_total, 330)
+            self.assertEqual(invoice.amount_untaxed, 300)
+            self.assertEqual(invoice.amount_tax, 30)
+            self.assertEqual(invoice.ref, 'INV0001')
+            self.assertEqual(invoice.invoice_date, fields.Date.from_string('2019-04-12'))
+            self.assertEqual(invoice.invoice_date_due, fields.Date.from_string('2019-04-19'))
+            self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
 
-        self.assertEqual(len(invoice.invoice_line_ids), 3)
-        for i, invoice_line in enumerate(invoice.invoice_line_ids):
-            self.assertEqual(invoice_line.name, extract_response['results'][0]['invoice_lines'][i]['description']['selected_value']['content'])
-            self.assertEqual(invoice_line.price_unit, extract_response['results'][0]['invoice_lines'][i]['unit_price']['selected_value']['content'])
-            self.assertEqual(invoice_line.quantity, extract_response['results'][0]['invoice_lines'][i]['quantity']['selected_value']['content'])
-            tax = extract_response['results'][0]['invoice_lines'][i]['taxes']['selected_values'][0]
-            if tax['content'] == 0:
-                self.assertEqual(len(invoice_line.tax_ids), 0)
-            else:
-                self.assertEqual(len(invoice_line.tax_ids), 1)
-                self.assertEqual(invoice_line.tax_ids[0].amount, tax['content'])
-                self.assertEqual(invoice_line.tax_ids[0].amount_type, 'percent')
-            self.assertEqual(invoice_line.price_subtotal, extract_response['results'][0]['invoice_lines'][i]['subtotal']['selected_value']['content'])
-            self.assertEqual(invoice_line.price_total, extract_response['results'][0]['invoice_lines'][i]['total']['selected_value']['content'])
+            self.assertEqual(len(invoice.invoice_line_ids), 3)
+            for i, invoice_line in enumerate(invoice.invoice_line_ids):
+                self.assertEqual(invoice_line.name, extract_response['results'][0]['invoice_lines'][i]['description']['selected_value']['content'])
+                self.assertEqual(invoice_line.price_unit, extract_response['results'][0]['invoice_lines'][i]['unit_price']['selected_value']['content'])
+                self.assertEqual(invoice_line.quantity, extract_response['results'][0]['invoice_lines'][i]['quantity']['selected_value']['content'])
+                tax = extract_response['results'][0]['invoice_lines'][i]['taxes']['selected_values'][0]
+                if tax['content'] == 0:
+                    self.assertEqual(len(invoice_line.tax_ids), 0)
+                else:
+                    self.assertEqual(len(invoice_line.tax_ids), 1)
+                    self.assertEqual(invoice_line.tax_ids[0].amount, tax['content'])
+                    self.assertEqual(invoice_line.tax_ids[0].amount_type, 'percent')
+                self.assertEqual(invoice_line.price_subtotal, extract_response['results'][0]['invoice_lines'][i]['subtotal']['selected_value']['content'])
+                self.assertEqual(invoice_line.price_total, extract_response['results'][0]['invoice_lines'][i]['total']['selected_value']['content'])
 
     def test_merge_check_status(self):
         # test check_status with lines merging
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        self.env.company.extract_single_line_per_tax = True
-        extract_response = self.get_default_extract_response()
+        for move_type in ('in_invoice', 'out_invoice'):
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'waiting_extraction'})
+            self.env.company.extract_single_line_per_tax = True
+            extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+            with self.mock_iap_extract(extract_response, {}):
+                invoice._check_status()
 
-        self.assertEqual(len(invoice.invoice_line_ids), 2)
+            self.assertEqual(len(invoice.invoice_line_ids), 2)
 
-        # line 1 and 3 should be merged as they both have a 15% tax
-        self.assertEqual(invoice.invoice_line_ids[0].name, "Test 1\nTest 3")
-        self.assertEqual(invoice.invoice_line_ids[0].price_unit, 200)
-        self.assertEqual(invoice.invoice_line_ids[0].quantity, 1)
-        self.assertEqual(len(invoice.invoice_line_ids[0].tax_ids), 1)
-        self.assertEqual(invoice.invoice_line_ids[0].tax_ids[0].amount, 15)
-        self.assertEqual(invoice.invoice_line_ids[0].tax_ids[0].amount_type, 'percent')
-        self.assertEqual(invoice.invoice_line_ids[0].price_subtotal, 200)
-        self.assertEqual(invoice.invoice_line_ids[0].price_total, 230)
+            # line 1 and 3 should be merged as they both have a 15% tax
+            self.assertEqual(invoice.invoice_line_ids[0].name, "Test 1\nTest 3")
+            self.assertEqual(invoice.invoice_line_ids[0].price_unit, 200)
+            self.assertEqual(invoice.invoice_line_ids[0].quantity, 1)
+            self.assertEqual(len(invoice.invoice_line_ids[0].tax_ids), 1)
+            self.assertEqual(invoice.invoice_line_ids[0].tax_ids[0].amount, 15)
+            self.assertEqual(invoice.invoice_line_ids[0].tax_ids[0].amount_type, 'percent')
+            self.assertEqual(invoice.invoice_line_ids[0].price_subtotal, 200)
+            self.assertEqual(invoice.invoice_line_ids[0].price_total, 230)
 
-        # line 2 has no tax
-        self.assertEqual(invoice.invoice_line_ids[1].name, "Test 2")
-        self.assertEqual(invoice.invoice_line_ids[1].price_unit, 100)
-        self.assertEqual(invoice.invoice_line_ids[1].quantity, 1)
-        self.assertEqual(len(invoice.invoice_line_ids[1].tax_ids), 0)
-        self.assertEqual(invoice.invoice_line_ids[1].price_subtotal, 100)
-        self.assertEqual(invoice.invoice_line_ids[1].price_total, 100)
+            # line 2 has no tax
+            self.assertEqual(invoice.invoice_line_ids[1].name, "Test 2")
+            self.assertEqual(invoice.invoice_line_ids[1].price_unit, 100)
+            self.assertEqual(invoice.invoice_line_ids[1].quantity, 1)
+            self.assertEqual(len(invoice.invoice_line_ids[1].tax_ids), 0)
+            self.assertEqual(invoice.invoice_line_ids[1].price_subtotal, 100)
+            self.assertEqual(invoice.invoice_line_ids[1].price_total, 100)
 
     def test_partner_creation_from_vat(self):
         # test that the partner isn't created if the VAT number isn't valid
@@ -404,7 +406,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         self.assertEqual(invoice.get_validation('date')['content'], str(invoice.invoice_date))
         self.assertEqual(invoice.get_validation('due_date')['content'], str(invoice.invoice_date_due))
         self.assertEqual(invoice.get_validation('invoice_id')['content'], invoice.ref)
-        self.assertEqual(invoice.get_validation('supplier')['content'], invoice.partner_id.name)
+        self.assertEqual(invoice.get_validation('partner')['content'], invoice.partner_id.name)
         self.assertEqual(invoice.get_validation('VAT_Number')['content'], invoice.partner_id.vat)
         self.assertEqual(invoice.get_validation('currency')['content'], invoice.currency_id.name)
         self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.payment_reference)
@@ -425,63 +427,63 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             })
 
     def test_automatic_sending(self):
-        # test that the invoice is automatically sent to the OCR server when the option is enabled
+        # test that a vendor bill or a customer invoice is automatically sent to the OCR server when the option is enabled
+        for move_type in ('in_invoice', 'out_invoice'):
+            # test with message_post()
+            self.env.company.extract_show_ocr_option_selection = 'auto_send'
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
+            test_attachment = self.env['ir.attachment'].create({
+                'name': "an attachment",
+                'datas': base64.b64encode(b'My attachment'),
+            })
 
-        # test with message_post()
-        self.env.company.extract_show_ocr_option_selection = 'auto_send'
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
-        test_attachment = self.env['ir.attachment'].create({
-            'name': "an attachment",
-            'datas': base64.b64encode(b'My attachment'),
-        })
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+                invoice.message_post(attachment_ids=[test_attachment.id])
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-            invoice.message_post(attachment_ids=[test_attachment.id])
+            self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
-        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+            # test with register_as_main_attachment()
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
+            test_attachment = self.env['ir.attachment'].create({
+                'name': "an attachment",
+                'datas': base64.b64encode(b'My attachment'),
+                'res_model': 'account.move',
+                'res_id': invoice.id,
+            })
 
-        # test with register_as_main_attachment()
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
-        test_attachment = self.env['ir.attachment'].create({
-            'name': "an attachment",
-            'datas': base64.b64encode(b'My attachment'),
-            'res_model': 'account.move',
-            'res_id': invoice.id,
-        })
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+                test_attachment.register_as_main_attachment()
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-            test_attachment.register_as_main_attachment()
+            self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
-        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+            # test that the invoice is not automatically sent to the OCR server when the option is disabled
 
-        # test that the invoice is not automatically sent to the OCR server when the option is disabled
+            # test with message_post()
+            self.env.company.extract_show_ocr_option_selection = 'manual_send'
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
+            test_attachment = self.env['ir.attachment'].create({
+                'name': "an attachment",
+                'datas': base64.b64encode(b'My attachment'),
+            })
 
-        # test with message_post()
-        self.env.company.extract_show_ocr_option_selection = 'manual_send'
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
-        test_attachment = self.env['ir.attachment'].create({
-            'name': "an attachment",
-            'datas': base64.b64encode(b'My attachment'),
-        })
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+                invoice.message_post(attachment_ids=[test_attachment.id])
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-            invoice.message_post(attachment_ids=[test_attachment.id])
+            self.assertEqual(invoice.extract_state, 'no_extract_requested')
 
-        self.assertEqual(invoice.extract_state, 'no_extract_requested')
+            # test with register_as_main_attachment()
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})
+            test_attachment = self.env['ir.attachment'].create({
+                'name': "another attachment",
+                'datas': base64.b64encode(b'My other attachment'),
+                'res_model': 'account.move',
+                'res_id': invoice.id,
+            })
 
-        # test with register_as_main_attachment()
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
-        test_attachment = self.env['ir.attachment'].create({
-            'name': "another attachment",
-            'datas': base64.b64encode(b'My other attachment'),
-            'res_model': 'account.move',
-            'res_id': invoice.id,
-        })
+            with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+                test_attachment.register_as_main_attachment()
 
-        with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-            test_attachment.register_as_main_attachment()
-
-        self.assertEqual(invoice.extract_state, 'no_extract_requested')
+            self.assertEqual(invoice.extract_state, 'no_extract_requested')
 
     def test_bank_account(self):
         # test that the bank account is set when an iban is found

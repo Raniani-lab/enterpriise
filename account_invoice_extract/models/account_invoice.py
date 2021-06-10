@@ -104,7 +104,7 @@ class AccountMove(models.Model):
             can_show = False
         if self.state != 'draft':
             can_show = False
-        if self.move_type not in ('in_invoice', 'in_refund'):
+        if not self.is_invoice():
             can_show = False
         if self.message_main_attachment_id is None or len(self.message_main_attachment_id) == 0:
             can_show = False
@@ -171,7 +171,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         res = super()._get_update_invoice_from_attachment_decoders(invoice)
         if invoice.company_id.extract_show_ocr_option_selection == 'auto_send' and \
-           invoice.is_purchase_document() and \
+           invoice.is_invoice() and \
            invoice.extract_state == "no_extract_requested":
             res.append((20, self._ocr_update_invoice_from_attachment))
         return res
@@ -183,6 +183,7 @@ class AccountMove(models.Model):
             'user_company_country_code': self.company_id.country_id.code,
             'user_lang': self.env.user.lang,
             'user_email': self.env.user.email,
+            'perspective': 'supplier' if self.move_type in {'out_invoice', 'out_refund'} else 'client',
         }
         return user_infos
 
@@ -192,7 +193,7 @@ class AccountMove(models.Model):
         if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
-        if attachments and attachments.exists() and self.move_type in ['in_invoice', 'in_refund'] and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
+        if attachments and attachments.exists() and self.is_invoice() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             user_infos = self.get_user_infos()
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
@@ -286,7 +287,7 @@ class AccountMove(models.Model):
             text_to_send["content"] = str(self.invoice_date_due)
         elif field == "invoice_id":
             text_to_send["content"] = self.ref
-        elif field == "supplier":
+        elif field == "partner":
             text_to_send["content"] = self.partner_id.name
         elif field == "VAT_Number":
             text_to_send["content"] = self.partner_id.vat
@@ -325,7 +326,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         posted = super()._post(soft)
-        for record in posted.filtered(lambda move: move.move_type in ['in_invoice', 'in_refund']):
+        for record in posted.filtered(lambda move: move.is_invoice()):
             if record.extract_state == 'waiting_validation':
                 values = {
                     'total': record.get_validation('total'),
@@ -335,7 +336,7 @@ class AccountMove(models.Model):
                     'date': record.get_validation('date'),
                     'due_date': record.get_validation('due_date'),
                     'invoice_id': record.get_validation('invoice_id'),
-                    'partner': record.get_validation('supplier'),
+                    'partner': record.get_validation('partner'),
                     'VAT_Number': record.get_validation('VAT_Number'),
                     'currency': record.get_validation('currency'),
                     'payment_ref': record.get_validation('payment_ref'),
@@ -504,7 +505,8 @@ class AccountMove(models.Model):
         partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partners_matched:
             partner = min(partners_matched, key=lambda rec: len(rec.name))
-            return partner.id
+            if partner != self.company_id.partner_id:
+                return partner.id
 
         # clean the partner name of non discriminating words
         words_to_remove = {"Europe", "Euro", "Asia", "America", "Africa", "Service", "Services", "SAS", "SARL", "SPRL", "SRL", "SA", "SCS", "GCV", "BV", "BVBA",
@@ -518,7 +520,8 @@ class AccountMove(models.Model):
         partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
         if partners_matched:
             partner = min(partners_matched, key=lambda rec: len(rec.name))
-            return partner.id
+            if partner != self.company_id.partner_id:
+                return partner.id
 
         partners = {}
         for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
@@ -526,8 +529,9 @@ class AccountMove(models.Model):
             for partner in partners_matched:
                 partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
         if partners:
-            key_max = max(partners.keys(), key=(lambda k: partners[k]))
-            return key_max
+            partner_id = max(partners.keys(), key=(lambda k: partners[k]))
+            if partner_id != self.company_id.partner_id.id:
+                return partner_id
         return 0
 
     def _get_taxes_record(self, taxes_ocr, taxes_type_ocr):
@@ -694,6 +698,7 @@ class AccountMove(models.Model):
 
     def _save_form(self, ocr_results, no_ref=False):
         supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
         due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
         total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
@@ -732,14 +737,14 @@ class AccountMove(models.Model):
                         move_form.partner_id = partner_vat
 
                 if not move_form.partner_id:
-                    partner_id = self.find_partner_id_with_name(supplier_ocr)
+                    partner_id = self.find_partner_id_with_name(client_ocr if self.move_type in {'out_invoice', 'out_refund'} else supplier_ocr)
                     if partner_id != 0:
                         move_form.partner_id = self.env["res.partner"].browse(partner_id)
                 if not move_form.partner_id and vat_number_ocr:
                     created_supplier = self._create_supplier_from_vat(vat_number_ocr)
                     if created_supplier:
                         move_form.partner_id = created_supplier
-                        if iban_ocr and not move_form.partner_bank_id:
+                        if iban_ocr and not move_form.partner_bank_id and self.move_type in {'in_invoice', 'in_refund'}:
                             bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
                             if bank_account.exists():
                                 if bank_account.partner_id == move_form.partner_id.id:

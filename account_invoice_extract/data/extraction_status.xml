@@ -17,14 +17,14 @@
                 <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
                 <div role="status" class="o_success_ocr"
                      attrs="{'invisible':['|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
                     <!-- Extraction processed with success. Don't forget to validate the different fields. -->
                 </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -35,7 +35,7 @@
                 </div>
                 <div role="status" class="alert alert-info mb8" name="waiting_extraction"
                      attrs="{'invisible':['|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_extraction'])]}">
                     <button string="Refresh" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -45,7 +45,7 @@
                 <field name="extract_status_code" invisible="1" options="{'format': false}"/>
                 <div role="status" class="alert alert-info mb8" name="extraction_status"
                      attrs="{'invisible':['|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
                     <button string="Refresh" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
@@ -54,7 +54,7 @@
                 </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|', '|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
                             ('extract_status_code', '&gt;', 99)]}">
@@ -64,7 +64,7 @@
                 </div>
                 <div role="status" class="alert alert-warning mb8"
                      attrs="{'invisible':['|', '|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund')),
+                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status', 'waiting_validation']),
                             ('extract_status_code', '&lt;', 100)]}">
@@ -84,7 +84,7 @@
             <xpath expr="//page[@id='other_tab']//group[@name='accounting_info_group']" position="after">
                 <group string="Extraction Information"
                        name="extraction_info_group"
-                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"
+                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"
                        groups="base.group_no_one">
                     <field name="extract_remote_id"/>
                 </group>
@@ -101,10 +101,10 @@
             <field name="code">
                 if records:
                     for rec in records:
-                        if rec.move_type == 'in_invoice' :
+                        if rec.is_invoice():
                             action = rec.retry_ocr()
-                        else :
-                            raise UserError("This action is only possible for Vendor Bills and Vendor Credit Notes")
+                        else:
+                            raise UserError("This action is only possible for invoices")
             </field>
     </record>
 

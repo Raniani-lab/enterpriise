@@ -19,6 +19,11 @@
                     <field name="l10n_mx_edi_umt_aduana_id" attrs="{'column_invisible': [('parent.l10n_mx_edi_external_trade', '=', False)]}"/>
                     <field name="l10n_mx_edi_customs_number" attrs="{'column_invisible': [('parent.move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
                 </xpath>
+                <xpath expr="//field[@name='line_ids']/tree" position="inside">
+                    <field name="l10n_mx_edi_qty_umt" invisible="1"/>
+                    <field name="l10n_mx_edi_umt_aduana_id" invisible="1"/>
+                    <field name="l10n_mx_edi_customs_number" invisible="1"/>
+                </xpath>
             </field>
         </record>
     </data>

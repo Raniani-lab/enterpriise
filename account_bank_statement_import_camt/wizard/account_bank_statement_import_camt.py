@@ -495,27 +495,27 @@ def _generic_get(*nodes, xpath, namespaces, placeholder=None):
     return False
 
 _amount_getters = [
-    partial(_generic_get, xpath='ns:Amt/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/text()'),
+    partial(_generic_get, xpath='ns:Amt/text()'),
 ]
 
 _amount_currency_getters = [
-    partial(_generic_get, xpath='ns:Amt/@Ccy'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:Amt/@Ccy'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:Amt/@Ccy'),
+    partial(_generic_get, xpath='ns:Amt/@Ccy'),
 ]
 
 _rate_getters = [
-    partial(_generic_get, xpath='ns:XchgRate/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:XchgRate/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:XchgRate/text()'),
+    partial(_generic_get, xpath='ns:XchgRate/text()'),
 ]
 
 _rate_currency_getters = [
-    partial(_generic_get, xpath='ns:TrgtCcy/text()'),
-    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
     partial(_generic_get, xpath='ns:AmtDtls/ns:CntrValAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
+    partial(_generic_get, xpath='ns:AmtDtls/ns:TxAmt/ns:CcyXchg/ns:TrgtCcy/text()'),
+    partial(_generic_get, xpath='ns:TrgtCcy/text()'),
 ]
 
 _get_credit_debit_indicator = partial(_generic_get,

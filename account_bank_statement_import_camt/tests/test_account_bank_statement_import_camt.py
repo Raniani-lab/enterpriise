@@ -101,9 +101,7 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         self.assertEqual(self.env.company.currency_id.id, self.env.ref('base.USD').id)
         self._test_minimal_camt_file_import('camt_053_minimal_EUR.xml', self.env.ref('base.EUR'))
 
-    def _test_minimal_camt_file_import(self, camt_file_name, currency):
-        # Create a bank account and journal corresponding to the CAMT
-        # file (same currency and account number)
+    def _import_camt_file(self, camt_file_name, currency):
         bank_journal = self.env['account.journal'].create({
             'name': "Bank 112233",
             'code': 'BNK68',
@@ -111,7 +109,6 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             'bank_acc_number': '112233',
             'currency_id': currency.id,
         })
-
         # Use an import wizard to process the file
         camt_file_path = get_module_resource(
             'account_bank_statement_import_camt',
@@ -119,12 +116,15 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             camt_file_name,
         )
         camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
-
         self.env['account.bank.statement.import']\
             .with_context(journal_id=bank_journal.id)\
             .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})\
             .import_file()
 
+    def _test_minimal_camt_file_import(self, camt_file_name, currency):
+        # Create a bank account and journal corresponding to the CAMT
+        # file (same currency and account number)
+        self._import_camt_file(camt_file_name, currency)
         # Check the imported bank statement
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])
         self.assertRecordValues(imported_statement, [{
@@ -133,6 +133,19 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
             'balance_end_real': 1500.00,
         }])
         self.assertRecordValues(imported_statement.line_ids.sorted('ref'), [{'amount': 500.00}])
+
+    def test_camt_with_several_tx_details(self):
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._import_camt_file('camt_053_several_tx_details.xml', usd_currency)
+        imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])
+        self.assertEqual(len(imported_statement.line_ids), 3)
+        self.assertEqual(imported_statement.line_ids[0].payment_ref, 'label01')
+        self.assertEqual(imported_statement.line_ids[0].amount, 100)
+        self.assertEqual(imported_statement.line_ids[1].payment_ref, 'label02')
+        self.assertEqual(imported_statement.line_ids[1].amount, 150)
+        self.assertEqual(imported_statement.line_ids[2].payment_ref, 'label03')
+        self.assertEqual(imported_statement.line_ids[2].amount, 250)
 
     def test_several_ibans_match_journal_camt_file_import(self):
         # Create a bank account and journal corresponding to the CAMT

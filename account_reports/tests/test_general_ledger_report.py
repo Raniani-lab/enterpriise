@@ -14,9 +14,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        # Archive 'default_journal_bank' to ensure archived entries are not filtered out.
-        cls.company_data_2['default_journal_bank'].active = False
-
         # Entries in 2016 for company_1 to test the initial balance.
         cls.move_2016_1 = cls.env['account.move'].create({
             'move_type': 'entry',
@@ -72,6 +69,9 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             ],
         })
         cls.move_2017_2.action_post()
+
+        # Archive 'default_journal_bank' to ensure archived entries are not filtered out.
+        cls.company_data_2['default_journal_bank'].active = False
 
     # -------------------------------------------------------------------------
     # TESTS: General Ledger

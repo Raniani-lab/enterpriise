@@ -240,7 +240,7 @@ class ShareRoute(http.Controller):
         return response
 
     @http.route(['/document/zip'], type='http', auth='user')
-    def get_zip(self, file_ids, zip_name, token=None):
+    def get_zip(self, file_ids, zip_name, **kw):
         """route to get the zip file of the selection in the document's Kanban view (Document inspector).
         :param file_ids: if of the files to zip.
         :param zip_name: name of the zip file.
@@ -248,8 +248,6 @@ class ShareRoute(http.Controller):
         ids_list = [int(x) for x in file_ids.split(',')]
         env = request.env
         response = self._make_zip(zip_name, env['documents.document'].browse(ids_list))
-        if token:
-            response.set_cookie('fileToken', token)
         return response
 
     @http.route(["/document/download/all/<int:share_id>/<access_token>"], type='http', auth='public')

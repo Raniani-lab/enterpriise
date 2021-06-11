@@ -13,7 +13,7 @@ from odoo.tools.misc import xlsxwriter
 class WebCohort(http.Controller):
 
     @http.route('/web/cohort/export', type='http', auth='user')
-    def export_xls(self, data, token):
+    def export_xls(self, data, **kw):
         result = json.loads(data)
 
         output = io.BytesIO()
@@ -99,6 +99,5 @@ class WebCohort(http.Controller):
             xlsx_data,
             headers=[('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
                     ('Content-Disposition', content_disposition(filename + '.xlsx'))],
-            cookies={'fileToken': token}
         )
         return response

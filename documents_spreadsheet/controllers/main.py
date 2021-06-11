@@ -29,7 +29,7 @@ class SpreadsheetShareRoute(ShareRoute):
         return stream.getvalue()
 
     @http.route('/documents/xlsx', type='http', auth="user", methods=["POST"])
-    def get_xlsx_file(self, zip_name, files, token=None):
+    def get_xlsx_file(self, zip_name, files, **kw):
         files = json.loads(files)
 
         content = self._generate_xlsx_content(files)
@@ -41,6 +41,4 @@ class SpreadsheetShareRoute(ShareRoute):
         ]
 
         response = request.make_response(content, headers)
-        if token:
-            response.set_cookie('fileToken', token)
         return response

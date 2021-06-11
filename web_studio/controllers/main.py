@@ -754,7 +754,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 return False
 
     @http.route('/web_studio/export', type='http', auth='user')
-    def export(self, token):
+    def export(self, **kw):
         """ Exports a zip file containing the 'studio_customization' module
             gathering all customizations done with Studio (customizations of
             existing apps and freshly created apps).
@@ -767,7 +767,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             ('Content-Disposition', content_disposition('customizations.zip')),
             ('Content-Type', 'application/zip'),
             ('Content-Length', len(content)),
-        ], cookies={'fileToken': token})
+        ])
 
     @http.route('/web_studio/create_default_view', type='json', auth='user')
     def create_default_view(self, model, view_type, attrs):

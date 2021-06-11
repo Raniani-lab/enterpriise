@@ -12,7 +12,7 @@ import json
 class FinancialReportController(http.Controller):
 
     @http.route('/account_reports', type='http', auth='user', methods=['POST'], csrf=False)
-    def get_report(self, model, options, output_format, token, financial_id=None, **kw):
+    def get_report(self, model, options, output_format, financial_id=None, **kw):
         uid = request.session.uid
         account_report_model = request.env['account.report']
         options = json.loads(options)
@@ -93,7 +93,6 @@ class FinancialReportController(http.Controller):
                 # as content means that we will stream the content of the file to the user
                 # Which will prevent having the whole file in memory
                 response.direct_passthrough = True
-            response.set_cookie('fileToken', token)
             return response
         except Exception as e:
             se = _serialize_exception(e)

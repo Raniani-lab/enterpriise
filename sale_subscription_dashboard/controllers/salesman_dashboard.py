@@ -57,7 +57,7 @@ class SalemanDashboard(http.Controller):
         return {'salespersons_statistics': request.env['sale.subscription'].get_salespersons_statistics(salesman_ids, start_date, end_date)}
 
     @http.route('/salesman_subscription_reports', type='http', auth='user', methods=['POST'], csrf=False)
-    def get_report(self, body_html, output_format, token, **kw):
+    def get_report(self, body_html, output_format, **kw):
         uid = request.session.uid
         report_obj = request.env['sale.subscription'].with_user(uid)
         report_name = report_obj.get_report_filename()
@@ -70,7 +70,6 @@ class SalemanDashboard(http.Controller):
                         ('Content-Disposition', content_disposition(report_name + '.pdf'))
                     ]
                 )
-            response.set_cookie('fileToken', token)
             return response
         except Exception as e:
             se = _serialize_exception(e)

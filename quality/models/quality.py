@@ -333,7 +333,7 @@ class QualityAlert(models.Model):
         domain = ['|', ('company_id', '=', company_id), ('company_id', '=', False)]
         return self.team_id._get_quality_team(domain)
 
-    name = fields.Char('Name', default=lambda self: _('New'))
+    name = fields.Char('Name', default=lambda self: _('New'), copy=False)
     description = fields.Html('Description')
     stage_id = fields.Many2one(
         'quality.alert.stage', 'Stage', ondelete='restrict',

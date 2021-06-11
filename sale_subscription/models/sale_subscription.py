@@ -8,6 +8,7 @@ import traceback
 from ast import literal_eval
 from collections import Counter
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 from uuid import uuid4
 
 from odoo import api, fields, models, _
@@ -588,10 +589,10 @@ class SaleSubscription(models.Model):
         partner_shipping_id = sale_order.partner_shipping_id.id if use_sale_order else self.partner_shipping_id.id or addr['delivery']
         fpos = self.env['account.fiscal.position'].with_company(company).get_fiscal_position(self.partner_id.id, partner_shipping_id)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))
-        if self.description:
-            narration += '<br/>' + self.description
+        if not is_html_empty(self.description):
+            narration += Markup('<br/>') + self.description
         elif self.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms') and not is_html_empty(self.company_id.invoice_terms):
-            narration += '<br/>' + self.company_id.invoice_terms
+            narration += Markup('<br/>') + self.company_id.invoice_terms
         res = {
             'move_type': 'out_invoice',
             'partner_id': partner_id,

@@ -109,7 +109,7 @@ class EasypostRequest():
         address = {'order[%s][%s]' % (addr_type, field_name): addr_obj[addr_obj_field]
                    for field_name, addr_obj_field in addr_fields.items()
                    if addr_obj[addr_obj_field]}
-        address['order[%s][name]' % addr_type] = addr_obj.name or addr_obj.display_name
+        address['order[%s][name]' % addr_type] = (addr_obj.name or addr_obj.display_name)[:25]
         if addr_obj.state_id:
             address['order[%s][state]' % addr_type] = addr_obj.state_id.name
         address['order[%s][country]' % addr_type] = addr_obj.country_id.code

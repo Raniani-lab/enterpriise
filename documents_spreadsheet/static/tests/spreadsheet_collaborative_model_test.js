@@ -119,7 +119,6 @@ test("Add a filter with a default value", async (assert) => {
         label: "41",
         defaultValue: [41],
         fields: { 1: { field: "product_id", type: "many2one" } },
-        modelID: undefined,
         modelName: undefined,
         rangeType: undefined,
     };

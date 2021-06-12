@@ -206,7 +206,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                 fields: filter.fields,
                 value: filter.defaultValue,
                 defaultValue: filter.defaultValue,
-                modelID: filter.modelID,
                 modelName: filter.modelName,
             });
             this.history.update("globalFilters", gb);
@@ -255,7 +254,6 @@ odoo.define("documents_spreadsheet.FiltersPlugin", function (require) {
                           fields: newFilter.fields,
                           defaultValue: newFilter.defaultValue,
                           value: newFilter.defaultValue,
-                          modelID: newFilter.modelID,
                           modelName: newFilter.modelName,
                       }
             );

@@ -942,7 +942,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         actionManager.destroy();
     });
 
-    test("Display with an existing global filter", async function (assert) {
+    test("Display with an existing 'Date' global filter", async function (assert) {
         assert.expect(4);
 
         const { actionManager, model } = await createSpreadsheetFromPivot({
@@ -1031,6 +1031,54 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.deepEqual(globalFilter.defaultValue, []);
         assert.deepEqual(globalFilter.fields[1], { field: "product", type: "many2one" });
 
+        actionManager.destroy();
+    });
+
+    test("Display with an existing 'Relation' global filter", async function (assert) {
+        assert.expect(8);
+
+        const { actionManager, model } = await createSpreadsheetFromPivot({
+            model: "partner",
+            data: this.data,
+            arch: `
+            <pivot string="Partners">
+                <field name="foo" type="col"/>
+                <field name="bar" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        });
+        const label = "MyFoo";
+        const pivots =model.getters.getPivots();
+        model.dispatch("ADD_PIVOT", {
+            anchor: [15, 15],
+            pivot: { ...pivots[0], id: 2 },
+        })
+        const filter = {
+            id: "42",
+            type: "relation",
+            modelName: "product",
+            label,
+            fields: {
+                1: { type:"many2one", field:"product" }, // first pivotId
+                2: { type:"many2one", field:"product" } // second pivotId
+            },
+            defaultValue: {},
+        }
+        model.dispatch("ADD_PIVOT_FILTER", { filter });
+        const searchIcon = actionManager.el.querySelector(".o_topbar_filter_icon");
+        await dom.click(searchIcon);
+        const items = actionManager.el.querySelectorAll(".o_spreadsheet_global_filters_side_panel .o_side_panel_section");
+        assert.equal(items.length, 2);
+        const labelElement = items[0].querySelector(".o_side_panel_filter_label");
+        assert.equal(labelElement.innerText, label);
+        await dom.click(items[0].querySelector(".o_side_panel_filter_icon"));
+        assert.ok(actionManager.el.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
+        assert.equal(actionManager.el.querySelector(".o_global_filter_label").value, label);
+        assert.equal(actionManager.el.querySelector(`.o_field_many2one[name="ir.model"] input`).value, "Product");
+        const fieldsMatchingElements = actionManager.el.querySelectorAll("span.o_field_selector_chain_part")
+        assert.equal(fieldsMatchingElements.length, 2);
+        assert.equal(fieldsMatchingElements[0].innerText, "Product");
+        assert.equal(fieldsMatchingElements[1].innerText, "Product");
         actionManager.destroy();
     });
 

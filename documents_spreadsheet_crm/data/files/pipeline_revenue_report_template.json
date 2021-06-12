@@ -22684,7 +22684,6 @@
         }
       },
       "defaultValue": [],
-      "modelID": 90,
       "modelName": "res.users"
     },
     {

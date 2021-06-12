@@ -116,13 +116,13 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             if (globalFilter) {
                 this.state[this.state.type].defaultValue = globalFilter.defaultValue;
                 if (this.state.type === "relation") {
-                    this.state.relation.relatedModelID = globalFilter.modelID;
+                    this.state.relation.relatedModelName = globalFilter.modelName;
                 }
             }
         }
 
         async willStart() {
-            await this.fetchModel();
+            await this.fetchModelFromName();
         }
 
         async onModelSelected(ev) {
@@ -130,7 +130,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 this.state.relation.defaultValue = [];
             }
             this.state.relation.relatedModelID = ev.detail.value;
-            await this.fetchModel();
+            await this.fetchModelFromId();
             const getters = this.env.getters;
             for (const pivot of this.pivots.filter((pivot) => getters.isCacheLoaded(pivot.id))) {
                 const [field, fieldDesc] =
@@ -145,7 +145,24 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
         }
 
-        async fetchModel() {
+        async fetchModelFromName() {
+            if (!this.state.relation.relatedModelName) {
+                this.state.relation.relatedModelID = undefined;
+                return;
+            }
+            const result = await this.rpc({
+                model: "ir.model",
+                method: "search_read",
+                fields: ["id", "name"],
+                domain: [["model", "=", this.state.relation.relatedModelName]],
+            });
+            this.state.relation.relatedModelID = result[0] && result[0].id;
+            if (!this.state.label) {
+                this.state.label = result[0] && result[0].name;
+            }
+        }
+
+        async fetchModelFromId() {
             if (!this.state.relation.relatedModelID) {
                 this.state.relation.relatedModelName = undefined;
                 return;
@@ -191,7 +208,6 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 id,
                 type: this.state.type,
                 label: this.state.label,
-                modelID: this.state.relation.relatedModelID,
                 modelName: this.state.relation.relatedModelName,
                 defaultValue: this.state[this.state.type].defaultValue,
                 defaultValueDisplayNames: this.state[this.state.type].displayNames,

@@ -539,6 +539,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
+        extra_trigger: ".o_loading_indicator:not(.o_loading)",
         trigger: '.o_validate_page',
     }
 ]);

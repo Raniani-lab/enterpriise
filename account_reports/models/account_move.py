@@ -13,12 +13,14 @@ class AccountMove(models.Model):
             new_context = self.env['account.generic.tax.report']._set_context(options)
             report_lines = self.env['account.generic.tax.report'].with_context(new_context)._get_lines(options)
 
+            AccountGenericTaxReport = self.env['account.generic.tax.report']
             for line in [line for line in report_lines if line['columns'][0].get('carryover_bounds', False)]:
                 line_balance = line['columns'][0]['balance']
                 carryover_bounds = line['columns'][0].get('carryover_bounds')
-                tax_line = self.env['account.tax.report.line'].browse(line['id'])
+                tax_line_id = AccountGenericTaxReport._parse_line_id(line['id'])[-1][2]
+
+                tax_line = self.env['account.tax.report.line'].browse(tax_line_id)
                 carry_to_line = tax_line.carry_over_destination_line_id or tax_line
-                AccountGenericTaxReport = self.env['account.generic.tax.report']
 
                 country_id = self.env['account.tax.report'].browse(options['tax_report']).country_id
 

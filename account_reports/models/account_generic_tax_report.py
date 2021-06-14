@@ -655,32 +655,40 @@ class generic_tax_report(models.AbstractModel):
 
         # Build the report, line by line
         lines = []
+        lines_mapping = {}
         deferred_total_lines = []  # list of tuples (index where to add the total in lines, tax report line object)
         for current_line in report.get_lines_in_hierarchy():
 
             hierarchy_level = self._get_hierarchy_level(current_line)
+            parent_line_id = lines_mapping[current_line.parent_id.id]['id'] if current_line.parent_id.id else None
 
             if current_line.formula:
                 # Then it's a total line
                 # We defer the adding of total lines, since their balance depends
                 # on the rest of the report. We use a special dictionnary for that,
                 # keeping track of hierarchy level
-                lines.append({'id': 'deferred_total', 'level': hierarchy_level})
-                deferred_total_lines.append((len(lines)-1, current_line))
+                line = self._prepare_total_line(current_line, parent_line_id, hierarchy_level)
+                # Using len(lines) since the line is appended later
+                deferred_total_lines.append((len(lines), current_line))
             elif current_line.tag_name:
                 # Then it's a tax grid line
-                lines.append(self._build_tax_grid_line(grids[current_line.id][0], hierarchy_level, options))
+                line = self._build_tax_grid_line(grids[current_line.id][0], parent_line_id, hierarchy_level, options)
             else:
                 # Then it's a title line
-                lines.append(self._build_tax_section_line(current_line, hierarchy_level))
+                line = self._build_tax_section_line(current_line, parent_line_id, hierarchy_level)
+            lines.append(line)
+            lines_mapping[current_line.id] = line
 
         # Fill in in the total for each title line and get a mapping linking line codes to balances
         balances_by_code = self._postprocess_lines(lines, options)
         for (index, total_line) in deferred_total_lines:
-            hierarchy_level = self._get_hierarchy_level(total_line)
             # number_period option contains 1 if no comparison, or the number of periods to compare with if there is one.
             total_period_number = 1 + (options['comparison'].get('periods') and options['comparison']['number_period'] or 0)
-            lines[index] = self._build_total_line(total_line, balances_by_code, formulas_dict, hierarchy_level, total_period_number, options)
+            parent_line_id = lines_mapping[total_line.parent_id.id]['id'] if total_line.parent_id.id else None
+            line = self._build_total_line(total_line, parent_line_id, balances_by_code, formulas_dict,
+                                          total_period_number, lines[index], options)
+            lines[index] = line
+            lines_mapping[total_line.id] = line
 
         return lines
 
@@ -722,9 +730,11 @@ class generic_tax_report(models.AbstractModel):
             while active_sections_stack and line['level'] <= active_sections_stack[-1]['level']:
                 assign_active_section(col_nber)
 
-            if line['id'] == 'deferred_total':
+            markup = self._parse_line_id(line['id'])[-1][0]
+
+            if markup == 'total':
                 pass
-            elif str(line['id']).startswith('section_'):
+            elif markup == 'section':
                 active_sections_stack.append(line)
             else:
                 if line.get('line_code'):
@@ -789,7 +799,15 @@ class generic_tax_report(models.AbstractModel):
         """
         return period_balances_by_code
 
-    def _build_total_line(self, report_line, balances_by_code, formulas_dict, hierarchy_level, number_periods, options):
+    def _prepare_total_line(self, current_line, parent_line_id, hierarchy_level):
+        return {
+            'id': self._get_generic_line_id('account.tax.report.line', current_line.id,
+                                            parent_line_id=parent_line_id,
+                                            markup='total'),
+            'level': hierarchy_level
+        }
+
+    def _build_total_line(self, report_line, parent_id, balances_by_code, formulas_dict, number_periods, deferred_line, options):
         """Return the report line dictionary corresponding to a given total line.
 
         Compute if from its formula.
@@ -811,21 +829,23 @@ class generic_tax_report(models.AbstractModel):
             columns.append({'name': '' if period_total is None else self.format_value(period_total), 'style': 'white-space:nowrap;', 'balance': period_total or 0.0})
 
         return {
-            'id': 'total_' + str(report_line.id),
+            'id': deferred_line['id'],
             'name': report_line.name,
             'unfoldable': False,
             'columns': columns,
-            'level': hierarchy_level,
+            'level': deferred_line['level'],
             'line_code': report_line.code
         }
 
-    def _build_tax_section_line(self, section, hierarchy_level):
+    def _build_tax_section_line(self, section, parent_id, hierarchy_level):
         """Return the report line dictionary corresponding to a given section.
 
         Used when grouping the report by tax grid.
         """
+        line_id = self._get_generic_line_id('account.tax.report.line', section.id, parent_line_id=parent_id, markup='section')
+
         return {
-            'id': 'section_' + str(section.id),
+            'id': line_id,
             'name': section.name,
             'unfoldable': False,
             'columns': [],
@@ -833,7 +853,7 @@ class generic_tax_report(models.AbstractModel):
             'line_code': section.code,
         }
 
-    def _build_tax_grid_line(self, grid_data, hierarchy_level, options):
+    def _build_tax_grid_line(self, grid_data, parent_id, hierarchy_level, options):
         """Return the report line dictionary corresponding to a given tax grid.
 
         Used when grouping the report by tax grid.
@@ -846,8 +866,10 @@ class generic_tax_report(models.AbstractModel):
                          'balance': period['balance'],
                          'carryover_bounds': grid_data['obj']._get_carryover_bounds(options, period['balance'], carryover_account_balance)}]
 
+        line_id = self._get_generic_line_id('account.tax.report.line', grid_data['obj'].id, parent_line_id=parent_id)
+
         rslt = {
-            'id': grid_data['obj'].id,
+            'id': line_id,
             'name': grid_data['obj'].name,
             'unfoldable': False,
             'columns': columns,
@@ -938,8 +960,10 @@ class generic_tax_report(models.AbstractModel):
             if not any(tax.get('show') for group in groups[tp].values() for tax in group.values()):
                 continue
             sign = tp == 'sale' and -1 or 1
+
+            type_line_id = self._get_generic_line_id(None, None, parent_line_id=None, markup=tp)
             type_line = {
-                'id': tp,
+                'id': type_line_id,
                 'name': self._get_type_tax_use_string(tp),
                 'unfoldable': False,
                 'columns': [{'no_format': 0} for k in range(0, 2 * (period_number + 1))],
@@ -948,9 +972,13 @@ class generic_tax_report(models.AbstractModel):
             lines.append(type_line)
             for header_level_1, group_level_1 in groups[tp].items():
                 header_level_1_line = False
+                header_1_line_id = type_line_id
+
                 if header_level_1:
+                    header_1_line_id = self._get_generic_line_id(header_level_1._name, header_level_1.id,
+                                                                 parent_line_id=type_line_id, markup=tp)
                     header_level_1_line = {
-                        'id': header_level_1.id,
+                        'id': header_1_line_id,
                         'name': get_name_from_record(header_level_1),
                         'unfoldable': False,
                         'columns': [{'no_format': 0} for k in range(0, 2 * (period_number + 1))],
@@ -961,9 +989,11 @@ class generic_tax_report(models.AbstractModel):
                 for header_level_2, group_level_2 in sorted(group_level_1.items(), key=lambda g: g[1]['obj'].sequence):
                     if group_level_2['show']:
                         all_vals, show = get_vals_from_tax_and_add(group_level_2, type_line, header_level_1_line)
+                        header_2_line_id = self._get_generic_line_id(header_level_2._name, header_level_2.id,
+                                                                     parent_line_id=header_1_line_id)
                         if show:
                             lines.append({
-                                'id': header_level_2.id,
+                                'id': header_2_line_id,
                                 'name': get_name_from_record(header_level_2),
                                 'unfoldable': False,
                                 'columns': [{'no_format': v, 'style': 'white-space:nowrap;'} for v in all_vals],
@@ -973,8 +1003,10 @@ class generic_tax_report(models.AbstractModel):
                         for child in group_level_2.get('children', []):
                             all_vals, show = get_vals_from_tax_and_add(child, type_line, header_level_1_line)
                             if show:
+                                child_line_id = self._get_generic_line_id(child['obj']._name, child['obj'].id,
+                                                                          parent_line_id=header_2_line_id)
                                 lines.append({
-                                    'id': child['obj'].id,
+                                    'id': child_line_id,
                                     'name': '   ' + get_name_from_record(child['obj']),
                                     'unfoldable': False,
                                     'columns': [{'no_format': v, 'style': 'white-space:nowrap;'} for v in all_vals],

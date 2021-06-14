@@ -15,20 +15,6 @@ class ResCompany(models.Model):
         help="Entity that assigns the identification (eg. KBE-BCO or Finanzamt Muenchen IV).")
     sepa_initiating_party_name = fields.Char('Your Company Name', size=70, copy=False,
         help="Will appear in SEPA payments as the name of the party initiating the payment. Limited to 70 characters.")
-    sepa_pain_version = fields.Selection(
-        [
-            ('pain.001.001.03', 'Generic'),
-            ('pain.001.001.03.ch.02', 'Swiss Version'),
-            ('pain.001.003.03', 'German Version'),
-            ('pain.001.001.03.se', 'Sweden Version'),
-            ('pain.001.001.03.austrian.004', 'Austrian Version')
-        ],
-        string='SEPA Pain Version',
-        required=True,
-        default='pain.001.001.03',
-        compute='_compute_sepa_pain_version',
-        help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.'
-    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -54,18 +40,6 @@ class ResCompany(models.Model):
             else:
                 company.sepa_orgid_issr = ''
                 company.sepa_orgid_id = ''
-
-    @api.depends('country_id')
-    def _compute_sepa_pain_version(self):
-        """ Set default value for the field sepa_pain_version"""
-        pains_by_country = {
-            'DE': 'pain.001.003.03',
-            'CH': 'pain.001.001.03.ch.02',
-            'SE': 'pain.001.001.03.se',
-            'AT': 'pain.001.001.03.austrian.004',
-        }
-        for company in self:
-            company.sepa_pain_version = pains_by_country.get(company.account_fiscal_country_id.code, 'pain.001.001.03')
 
     @api.constrains('sepa_orgid_id', 'sepa_orgid_issr', 'sepa_initiating_party_name')
     def _check_sepa_fields(self):

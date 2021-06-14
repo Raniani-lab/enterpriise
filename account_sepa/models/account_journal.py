@@ -36,6 +36,53 @@ def sanitize_communication(communication):
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
+    sepa_pain_version = fields.Selection(
+        [
+            ('pain.001.001.03', 'Generic'),
+            ('pain.001.001.03.austrian.004', 'Austrian'),
+            ('pain.001.003.03', 'German'),
+            ('pain.001.001.03.se', 'Swedish'),
+            ('pain.001.001.03.ch.02', 'Swiss'),
+        ],
+        string='SEPA Pain Version',
+        readonly=False,
+        store=True,
+        compute='_compute_sepa_pain_version',
+        help='SEPA may be a generic format, some countries differ from the '
+             'SEPA recommendations made by the EPC (European Payment Council) '
+             'and thus the XML created need some tweaking.'
+    )
+    has_sepa_ct_payment_method = fields.Boolean(compute='_compute_has_sepa_ct_payment_method')
+
+    @api.depends('bank_acc_number', 'country_code', 'company_id.country_code')
+    def _compute_sepa_pain_version(self):
+        """ Set default value for the field sepa_pain_version"""
+
+        pains_by_country = {
+            'DE': 'pain.001.003.03',
+            'CH': 'pain.001.001.03.ch.02',
+            'SE': 'pain.001.001.03.se',
+            'AT': 'pain.001.001.03.austrian.004',
+        }
+
+        for rec in self:
+            # First try to retrieve the country_code from the IBAN
+            if rec.bank_acc_number and re.match('^[A-Z]{2}[0-9]{2}.*', rec.bank_acc_number):
+                country_code = rec.bank_acc_number[:2]
+            # Then try from the company's fiscal country, and finally from the company's country
+            else:
+                country_code = rec.country_code or rec.company_id.country_code or ""
+
+            rec.sepa_pain_version = pains_by_country.get(country_code, 'pain.001.001.03')
+
+    @api.depends('outbound_payment_method_line_ids.payment_method_id.code')
+    def _compute_has_sepa_ct_payment_method(self):
+        for rec in self:
+            rec.has_sepa_ct_payment_method = any(
+                payment_method.payment_method_id.code == 'sepa_ct'
+                for payment_method in rec.outbound_payment_method_line_ids
+            )
+
     def _default_outbound_payment_methods(self):
         res = super()._default_outbound_payment_methods()
         return res | self.env.ref('account_sepa.account_payment_method_sepa_ct')
@@ -45,7 +92,7 @@ class AccountJournal(models.Model):
             This method creates the body of the XML file for the SEPA document.
             It returns the content of the XML file.
         """
-        pain_version = self.company_id.sepa_pain_version
+        pain_version = self.sepa_pain_version
         Document = self._get_document(pain_version)
         CstmrCdtTrfInitn = etree.SubElement(Document, "CstmrCdtTrfInitn")
 

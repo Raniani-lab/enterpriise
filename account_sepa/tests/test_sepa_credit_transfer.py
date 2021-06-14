@@ -129,3 +129,21 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
             self.assertTrue(payment_1.is_move_sent)
             self.assertTrue(payment_2.is_move_sent)
+
+    def testSEPAPainVersion(self):
+        # Test to make sure the initial version is 'Generic' since it is a belgian IBAN
+        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.001.03')
+
+        # Change IBAN prefix to Germany and check that the pain version is updated accordingly
+        self.bank_journal.bank_acc_number = 'DE48363523682327'
+        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.003.03')
+
+        # Provide an invalid IBAN to see if the pain version falls back to the company's fiscal country
+        self.bank_journal.bank_acc_number = 'DEL48363523682327'
+        self.env.company.account_fiscal_country_id = self.env.company.country_id = self.env.ref('base.ch')
+        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.001.03.ch.02')
+
+        # Remove the company's fiscal country and verify that the pain version now corresponds to the company's country
+        self.env.company.country_id = self.env.company.country_id = self.env.ref('base.se')
+        self.env.company.account_fiscal_country_id = None
+        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.001.03.se')

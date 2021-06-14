@@ -129,6 +129,43 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
             'url': '/export/ecovouchers/%s' % (self.id),
         }
 
+    def generate_payslips(self):
+        self.ensure_one()
+        eco_voucher_type = self.env.ref('l10n_be_hr_payroll.cp200_employee_eco_vouchers')
+        monthly_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
+        payslips = self.env['hr.payslip']
+        for line in self.line_ids:
+            payslip = self.env['hr.payslip'].search([
+                ('employee_id', '=', line.employee_id.id),
+                ('state', '=', 'verify'),
+                ('struct_id', '=', monthly_pay.id),
+            ], limit=1)
+            if payslip:
+                payslips |= payslip
+                voucher_line = payslip.input_line_ids.filtered(lambda line: line.code == "ECOVOUCHERS")
+                if voucher_line:
+                    voucher_line[0].amount = line.amount
+                else:
+                    payslip.write({'input_line_ids': [(0, 0, {
+                        'input_type_id': eco_voucher_type.id,
+                        'amount': line.amount,
+                    })]})
+            else:
+                payslip = self.env['hr.payslip'].create({
+                    'name': _('Eco-Vouchers'),
+                    'employee_id': line.employee_id.id,
+                    'contract_id': line.employee_id.contract_id.id,
+                    'struct_id': monthly_pay.id,
+                    'input_line_ids': [(0, 0, {
+                        'input_type_id': eco_voucher_type.id,
+                        'amount': line.amount,
+                    })],
+                })
+                payslips |= payslip
+                payslip.compute_sheet()
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_view_hr_payslip_month_form")
+        action.update({'domain': [('id', 'in', payslips.ids)]})
+        return action
 
 class L10nBeEcoVouchersLineWizard(models.TransientModel):
     _name = 'l10n.be.eco.vouchers.line.wizard'

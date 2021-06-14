@@ -127,3 +127,7 @@ class Payslips(BrowsableObject):
     @property
     def paid_amount(self):
         return self.dict._get_paid_amount()
+
+    @property
+    def is_outside_contract(self):
+        return self.dict._is_outside_contract_dates()

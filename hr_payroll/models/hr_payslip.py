@@ -773,6 +773,10 @@ class HrPayslip(models.Model):
         wds = self.worked_days_line_ids.filtered(lambda wd: wd.code == code)
         return sum([wd.number_of_days for wd in wds])
 
+    def _get_input_line_amount(self, code):
+        lines = self.input_line_ids.filtered(lambda line: line.code == code)
+        return sum([line.amount for line in lines])
+
     def action_print_payslip(self):
         return {
             'name': 'Payslip',
@@ -804,6 +808,12 @@ class HrPayslip(models.Model):
     def _get_unpaid_amount(self):
         self.ensure_one()
         return self._get_contract_wage() - self._get_paid_amount()
+
+    def _is_outside_contract_dates(self):
+        self.ensure_one()
+        payslip = self
+        contract = self.contract_id
+        return contract.date_start > payslip.date_to or (contract.date_end and contract.date_end < payslip.date_from)
 
     def _get_data_files_to_update(self):
         # Note: Use lists as modules/files order should be maintained

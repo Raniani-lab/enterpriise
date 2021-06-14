@@ -25,6 +25,7 @@
                 </sheet>
                 <footer>
                     <button string="Export XLS" name="action_export_xls" type="object" class="btn-primary"/>
+                    <button string="Generate Payslips" name="generate_payslips" type="object" class="btn-primary" confirm="This will add the eco-vouchers amount on the payslips in waiting state, and create a new payslip for the employees without such a payslip. Are you sure you want to proceed ?"/>
                     <button special="cancel" string="Close" type="object" class="btn-primary"/>
                 </footer>
             </form>

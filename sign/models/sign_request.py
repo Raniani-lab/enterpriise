@@ -203,7 +203,8 @@ class SignRequest(models.Model):
         self.action_sent(subject=subject)
 
     def action_draft(self):
-        self.write({'completed_document': None, 'access_token': self._default_access_token()})
+        for sign_request in self:
+            sign_request.write({'completed_document': None, 'access_token': self._default_access_token()})
 
     def action_sent_without_mail(self):
         self.write({'state': 'sent'})
@@ -248,9 +249,9 @@ class SignRequest(models.Model):
         return old_pdf.isEncrypted
 
     def action_canceled(self):
-        self.write({'completed_document': None, 'access_token': self._default_access_token(), 'state': 'canceled'})
-        for request_item in self.mapped('request_item_ids'):
-            request_item.action_draft()
+        for sign_request in self:
+            sign_request.write({'completed_document': None, 'access_token': self._default_access_token(), 'state': 'canceled'})
+        self.mapped('request_item_ids').action_draft()
 
     def set_signers(self, signers):
         SignRequestItem = self.env['sign.request.item']
@@ -594,14 +595,14 @@ class SignRequestItem(models.Model):
     longitude = fields.Float(digits=(10, 7))
 
     def action_draft(self):
-        self.write({
-            'signature': None,
-            'signing_date': None,
-            'access_token': self._default_access_token(),
-            'state': 'draft',
-            'is_mail_sent': False,
-        })
         for request_item in self:
+            request_item.write({
+                'signature': None,
+                'signing_date': None,
+                'access_token': self._default_access_token(),
+                'state': 'draft',
+                'is_mail_sent': False,
+            })
             itemsToClean = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id or not r.responsible_id)
             self.env['sign.request.item.value'].search([('sign_item_id', 'in', itemsToClean.mapped('id')), ('sign_request_id', '=', request_item.sign_request_id.id)]).unlink()
         self.mapped('sign_request_id')._check_after_compute()

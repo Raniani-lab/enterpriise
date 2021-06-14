@@ -3,7 +3,7 @@
 
 from datetime import date, datetime
 from collections import defaultdict
-from odoo import _, fields, models
+from odoo import api, _, fields, models
 from odoo.tools import date_utils
 from odoo.osv import expression
 
@@ -21,6 +21,7 @@ class HrContract(models.Model):
     wage_type = fields.Selection(related='structure_type_id.wage_type')
     hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
     payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
+    calendar_changed = fields.Boolean(help="Whether the previous or next contract has a different schedule or not")
 
     def _compute_payslips_count(self):
         count_data = self.env['hr.payslip'].read_group(
@@ -31,11 +32,14 @@ class HrContract(models.Model):
         for contract in self:
             contract.payslips_count = mapped_counts.get(contract.id, 0)
 
-    def _get_occupation_dates(self):
+    def _get_occupation_dates(self, include_future_contracts=False):
         # Takes several contracts and returns all the contracts under the same occupation (i.e. the same
-        # work rate + the date_from and date_to)
+        #  work rate + the date_from and date_to)
+        # include_futur_contracts will use draft contracts if the start_date is posterior compared to current date
+        #  NOTE: this does not take kanban_state in account
         result = []
         done_contracts = self.env['hr.contract']
+        date_today = fields.Date.today()
 
         for contract in self:
             if contract in done_contracts:
@@ -45,7 +49,11 @@ class HrContract(models.Model):
             date_to = contract.date_end
             history = self.env['hr.contract.history'].search([('employee_id', '=', contract.employee_id.id)], limit=1)
             all_contracts = history.contract_ids.filtered(
-                lambda c: c.active and c.state in ['open', 'close'] and c != contract) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
+                lambda c: (
+                    c.active and c != contract and
+                    (c.state in ['open', 'close'] or (include_future_contracts and c.state == 'draft' and c.date_start >= date_today))
+                )
+            ) # hr.contract(29, 37, 38, 39, 41) -> hr.contract(29, 37, 39, 41)
             before_contracts = all_contracts.filtered(lambda c: c.date_start < contract.date_start) # hr.contract(39, 41)
             after_contracts = all_contracts.filtered(lambda c: c.date_start > contract.date_start).sorted(key='date_start') # hr.contract(37, 29)
             work_time_rate = contract.resource_calendar_id.work_time_rate
@@ -66,6 +74,39 @@ class HrContract(models.Model):
             result.append((contracts, date_from, date_to))
             done_contracts |= contracts
         return result
+
+    def _compute_calendar_changed(self):
+        date_today = fields.Date.today()
+        contract_resets = self.filtered(
+            lambda c: (
+                not c.date_start or not c.employee_id or not c.resource_calendar_id or not c.active or
+                not (c.state in ('open', 'close') or (c.state == 'draft' and c.date_start >= date_today)) # make sure to include futur contracts
+            )
+        )
+        contract_resets.write({'calendar_changed': False})
+        self -= contract_resets
+        occupation_dates = self._get_occupation_dates(include_future_contracts=True)
+        occupation_by_employee = defaultdict(list)
+        for row in occupation_dates:
+            occupation_by_employee[row[0][0].employee_id.id].append(row)
+        contract_changed = self.env['hr.contract']
+        for occupations in occupation_by_employee.values():
+            if len(occupations) == 1:
+                continue
+            for i in range(len(occupations) - 1):
+                current_row = occupations[i]
+                next_row = occupations[i + 1]
+                contract_changed |= current_row[0][-1]
+                contract_changed |= next_row[0][0]
+        contract_changed.write({'calendar_changed': True})
+        (self - contract_changed).write({'calendar_changed': False})
+
+    @api.model
+    def _recompute_calendar_changed(self, employee_ids):
+        contract_ids = self.search([('employee_id', 'in', employee_ids.ids)], order='date_start asc')
+        if not contract_ids:
+            return
+        contract_ids._compute_calendar_changed()
 
     def action_open_payslips(self):
         self.ensure_one()
@@ -154,6 +195,18 @@ class HrContract(models.Model):
         # Returns the fields that should recompute the payslip
         return [self._get_contract_wage]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        self._recompute_calendar_changed(res.mapped('employee_id'))
+        return res
+
+    def unlink(self):
+        employee_ids = self.mapped('employee_id')
+        res = super().unlink()
+        self._recompute_calendar_changed(employee_ids)
+        return res
+
     def write(self, vals):
         if 'state' in vals and vals['state'] == 'cancel':
             self.env['hr.payslip'].search([
@@ -169,6 +222,8 @@ class HrContract(models.Model):
         if any(key in dependendant_fields for key in vals.keys()):
             for contract in self:
                 contract._recompute_payslips(self.date_start, self.date_end or date.max)
+        if any(key in vals for key in ('state', 'date_start', 'resource_calendar_id', 'employee_id')):
+            self._recompute_calendar_changed(self.mapped('employee_id'))
         return res
 
     def _recompute_work_entries(self, date_from, date_to):

@@ -477,7 +477,7 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickTransferCall() {
         var number = cleanNumber($('#input_transfer').val());
-        if (number && number.length >= 10){
+        if (number && number.length > 0) {
             $('.o_dial_transfer_button').popover('hide');
             core.bus.trigger('transfer_call', number);
         } else {
@@ -526,9 +526,9 @@ const PhoneCallDetails = Widget.extend({
             if (indexOf >= 0) {
                 // We matched the name, we made the following line to keep the upper cases
                 nameBolt = name.slice(0, indexOf) + '<b>' + name.slice(indexOf, indexOf + value.length) + '</b>' + name.slice(indexOf + value.length)
-            } else if (phone.includes(number)) {
+            } else if (phone && phone.includes(number)) {
                 nameBolt = name + ' (' + phone.replace(number, '<b>' + number + '</b>') + ')';
-            } else if (mobile.includes(number)) {
+            } else if (mobile && mobile.includes(number)) {
                 nameBolt = name + ' (' + mobile.replace(number, '<b>' + number + '</b>') + ')';
                 default_phone = mobile;
             }

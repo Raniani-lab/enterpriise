@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Roles -->
+        <record id="planning_role_housekeeper" model="planning.role">
+            <field name="name">Housekeeper</field>
+            <field name="color">9</field>
+        </record>
+
+        <record id="domestic_help_product" model="product.product">
+            <field name="name">Home Help (Plan services)</field>
+            <field name="categ_id" ref="product.product_category_3"/>
+            <field name="standard_price">14</field>
+            <field name="list_price">20</field>
+            <field name="type">service</field>
+            <field name="planning_enabled" eval="True"/>
+            <field name="planning_role_id" ref="planning_role_housekeeper"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">Take a rest. We'll do our best.</field>
+        </record>
+
+        <record id="cocktail_shaking_performance_product" model="product.product">
+            <field name="name">Cocktail Shaking Performance (Plan services)</field>
+            <field name="categ_id" ref="product.product_category_3"/>
+            <field name="standard_price">150</field>
+            <field name="list_price">200</field>
+            <field name="type">service</field>
+            <field name="planning_enabled" eval="True"/>
+            <field name="planning_role_id" ref="planning.planning_role_bartender"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">Enjoy your Cosmopolitan with style.</field>
+        </record>
+    </data>
+</odoo>

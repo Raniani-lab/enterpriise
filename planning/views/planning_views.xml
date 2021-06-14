@@ -405,7 +405,6 @@
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_dashboard" sample="1">
-                <field name="name"/>
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-box">
@@ -449,6 +448,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
+                <field name="employee_ids"/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
             </search>
         </field>

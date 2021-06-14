@@ -100,7 +100,7 @@ $grid-pill-height: 3rem;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 text-align: left;
-                &:before {
+                &.o_grid_row_header_part:before {
                     content: "/\00a0";
                     padding: 0 2px;
                 }

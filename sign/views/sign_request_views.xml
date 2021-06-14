@@ -85,10 +85,17 @@
         <field name="arch" type="xml">
             <tree sample="1">
                 <field name="reference"/>
-                <field name="template_id"/>
+                <field name="template_id" optional="hide"/>
                 <field name="state"/>
+                <field name="request_item_ids" string="Contacts" widget="many2many_tags"/>
                 <field name="progress"/>
+                <field name="need_my_signature" invisible="1"/>
+                <field name="create_uid" invisible="1"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
+                <button name="get_completed_document" states="signed" string="Download" type="object"/>
+                <button name="go_to_signable_document" string="sign" type="object" attrs="{'invisible': ['|', ('need_my_signature', '=', False), ('state', '!=', 'sent')]}"/>
+                <button name="action_send" string="Resend" type="object" groups="sign.group_sign_employee" attrs="{'invisible': &quot;['|', ('state', '!=', 'sent'), ('create_uid', '!=', uid)]&quot;}"/>
+                <button name="action_send" string="Resend" type="object" groups="sign.group_sign_manager" attrs="{'invisible': &quot;['|', ('state', '!=', 'sent'), ('create_uid', '=', uid)]&quot;}"/>
             </tree>
         </field>
     </record>
@@ -159,12 +166,18 @@
                 <field name="reference" string="Document/Signer" filter_domain="['|', '|', ('reference', 'ilike', self), ('request_item_ids.partner_id.email', 'ilike', self), ('request_item_ids.partner_id.name', 'ilike', self)]"/>
                 <field name="template_id" string="Template or Tag" filter_domain="['|', ('template_id.attachment_id.name', 'ilike', self), ('template_id.tag_ids.name', 'ilike', self)]"/>
                 <filter name="my_docs" string="My Documents" domain="[('create_uid', '=', uid)]"/>
-                <filter name="my_sign_request" string="My Requests" domain="[('request_item_ids.partner_id.user_ids', 'like', uid)]"/>
+                <filter name="my_sign_request" string="My Requests" domain="[('request_item_ids.partner_id.user_ids', 'in', uid)]"/>
                 <separator/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
                 <separator/>
-                <filter name="in_progress" string="To Sign" domain="[('state', '=', 'sent')]"/>
-                <filter name="signed" string="Signed" domain="[('state', '=', 'signed')]"/>
+                <filter name="activities_expiring_soon" string="Expiring Soon" domain="[('activity_ids.date_deadline', '&lt;',(context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="waiting_for_me" string="Waiting for me" domain="[('need_my_signature', '=', True)]"/>
+                <filter name="waiting_for_others" string="Waiting for others" domain="[('create_uid', '=', uid), ('state', '=', 'sent'), '|', ('need_my_signature', '=', False), ('nb_wait', '>', 1)]"/>
+                <separator/>
+                <filter name="sent" string="Sent" domain="[('state', '=', 'sent')]"/>
+                <filter name="signed" string="Fully Signed" domain="[('state', '=', 'signed')]"/>
+                <filter name="canceled" string="Canceled" domain="[('state', '=', 'canceled')]"/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>
@@ -174,10 +187,15 @@
                         domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                         ]"/>
                 <separator/>
-                <filter name="all_documents" string="All Documents" domain="['|', ('active', '=', False), ('active', '=', True)]"/>
+                <filter name="archived_documents" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_template" string="Template" domain="[]" context="{'group_by': 'template_id'}"/>
+                    <filter name="group_by_state" string="State" domain="[]" context="{'group_by': 'state'}"/>
                 </group>
+                <searchpanel>
+                    <field name="state" select="multi" icon="fa-inbox" enable_counters="1"/>
+                    <field name="template_tags" string="tags" select="multi" icon="fa-tag" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>

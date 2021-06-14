@@ -91,6 +91,22 @@ class SignRequest(models.Model):
     message_cc = fields.Html('sign.message_cc')
     attachment_ids = fields.Many2many('ir.attachment', string='Attachments', readonly=True, ondelete="restrict")
 
+    need_my_signature = fields.Boolean(compute='_compute_need_my_signature', search='_search_need_my_signature')
+
+    def _compute_need_my_signature(self):
+        my_partner_id = self.env.user.partner_id
+        for sign_request in self:
+            sign_request.need_my_signature = any(sri.partner_id.id == my_partner_id.id and sri.state == 'sent' for sri in sign_request.request_item_ids)
+
+    @api.model
+    def _search_need_my_signature(self, operator, value):
+        my_partner_id = self.env.user.partner_id
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            return []
+        domain_operator = 'not in' if (operator == '=') ^ value else 'in'
+        documents_ids = self.env['sign.request.item'].search([('partner_id.id', '=', my_partner_id.id), ('state', '=', 'sent')]).mapped('sign_request_id').ids
+        return [('id', domain_operator, documents_ids)]
+
     @api.depends('request_item_ids.state')
     def _compute_count(self):
         for rec in self:
@@ -150,6 +166,23 @@ class SignRequest(models.Model):
             'context': {
                 'id': self.id,
                 'token': self.access_token,
+                'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
+                'create_uid': self.create_uid.id,
+                'state': self.state,
+                'request_item_states': dict((item.id, item.is_mail_sent) for item in self.request_item_ids),
+            },
+        }
+
+    def go_to_signable_document(self):
+        self.ensure_one()
+        request_item = self.request_item_ids.filtered(lambda r: r.partner_id and r.partner_id.id == self.env.user.partner_id.id)[:1]
+        return {
+            'name': self.reference,
+            'type': 'ir.actions.client',
+            'tag': 'sign.SignableDocument',
+            'context': {
+                'id': self.id,
+                'token': request_item.access_token if request_item and request_item.state == "sent" else None,
                 'sign_token': request_item.access_token if request_item and request_item.state == "sent" else None,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
@@ -241,7 +274,7 @@ class SignRequest(models.Model):
             if sign_request.send_signature_accesses(ignored_partners=ignored_partners):
                 self.env['sign.log']._create_log(sign_request, "create", is_request=True)
                 included_request_items.action_sent()
-                body = _("The signature mail is sent to: ")
+                body = _("The signature mail has been sent to: ")
                 for signer, role in included_request_items.mapped(lambda sri: (sri.partner_id, sri.role_id)):
                     body += " %s(%s)," % (signer.name, role.name)
                 body = body.strip(',')
@@ -250,6 +283,18 @@ class SignRequest(models.Model):
                 sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
             else:
                 sign_request.action_draft()
+
+    def action_send(self):
+        for sign_request in self.filtered(lambda sr: sr.state == 'sent'):
+            request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
+            request_items.send_signature_accesses()
+            body = _("The signature mail has been sent to: ")
+            for signer, role in request_items.mapped(lambda sri: (sri.partner_id, sri.role_id)):
+                body += " %s(%s)," % (signer.name, role.name)
+            body = body.strip(',')
+            if not is_html_empty(sign_request.message):
+                body += sign_request.message
+            sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
 
     def action_signed(self):
         self.write({'state': 'signed'})
@@ -724,7 +769,7 @@ class SignRequestItem(models.Model):
         sign_request_item = self.browse(id)
         sign_request_item.write({'is_mail_sent': True})
         sign_request_item.send_signature_accesses()
-        body = _("The signature mail is sent to: %s(%s)", sign_request_item.partner_id.name, sign_request_item.role_id.name)
+        body = _("The signature mail has been sent to: %s(%s)", sign_request_item.partner_id.name, sign_request_item.role_id.name)
         if not is_html_empty(sign_request_item.sign_request_id.message):
             body += sign_request_item.sign_request_id.message
         sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)

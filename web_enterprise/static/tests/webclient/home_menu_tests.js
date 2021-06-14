@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { getFixture } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
 import testUtils from "web.test_utils";
@@ -718,5 +718,21 @@ QUnit.module(
 
             homeMenu.destroy();
         });
+
+        QUnit.test("The HomeMenu input takes the focus when you press a key only if no other element is the activeElement", async function (assert) {
+            const homeMenu = await createHomeMenu(homeMenuProps);
+
+            homeMenu.env.services.ui.activateElement("");
+            await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+            await nextTick();
+            const input = homeMenu.el.querySelector(".o_menu_search_input");
+            assert.notEqual(document.activeElement, input);
+
+            homeMenu.env.services.ui.deactivateElement("");
+            await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
+            await nextTick();
+            assert.strictEqual(document.activeElement, input);
+        });
+
     }
 );

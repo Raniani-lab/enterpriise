@@ -42,6 +42,7 @@ export class HomeMenu extends Component {
         this.menus = useService("menu");
 
         this.homeMenuService = useService("home_menu");
+        this.ui = useService('ui');
 
         this.availableApps = this.props.apps;
         this.displayedMenuItems = [];
@@ -335,6 +336,9 @@ export class HomeMenu extends Component {
         if (isEditable && ev.target !== input) {
             return;
         }
+        if (this.ui.activeElement !== document) {
+            return;
+        }
 
         switch (ev.key) {
             case "ArrowDown":
@@ -382,6 +386,7 @@ export class HomeMenu extends Component {
             case "Alt":
             case "AltGraph":
             case "Control":
+            case "Meta":
             case "PageDown":
             case "PageUp":
             case "Shift":

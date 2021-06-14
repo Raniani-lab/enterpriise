@@ -17,6 +17,16 @@ const FormRenderer = require('web.FormRenderer');
 const qweb = core.qweb;
 
 FormRenderer.include({
+
+    /**
+     * Reset the 'state' of the drop down
+     * @override
+     */
+    updateState: function () {
+        this.isStatusbarButtonsDropdownOpen = undefined;
+        return this._super(...arguments);
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -37,7 +47,15 @@ FormRenderer.include({
         });
 
         if ($visibleButtons.length > 1) {
-            const $statusbarButtonsDropdown = $(qweb.render('StatusbarButtonsDropdown'));
+            const $statusbarButtonsDropdown = $(qweb.render('StatusbarButtonsDropdown', {
+                open: this.isStatusbarButtonsDropdownOpen,
+            }));
+            $statusbarButtonsDropdown.find('.btn-group').on('show.bs.dropdown', () => {
+                this.isStatusbarButtonsDropdownOpen = true;
+            });
+            $statusbarButtonsDropdown.find('.btn-group').on('hide.bs.dropdown', () => {
+                this.isStatusbarButtonsDropdownOpen = false;
+            });
             const $dropdownMenu = $statusbarButtonsDropdown.find('.dropdown-menu');
             buttons.forEach(button => {
                 const dropdownButton = $(button).addClass('dropdown-item');

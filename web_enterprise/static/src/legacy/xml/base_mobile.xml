@@ -3,10 +3,10 @@
 
 <t t-name="StatusbarButtonsDropdown">
     <div class="o_statusbar_buttons">
-        <div class="btn-group">
+        <div t-attf-class="btn-group #{open ? 'show' : ''}">
             <a role="button" class="btn btn-primary dropdown-toggle" href="#"
                 data-toggle="dropdown" aria-expanded="false">Action</a>
-            <div class="dropdown-menu" role="menu"/>
+            <div t-attf-class="dropdown-menu #{open ? 'show' : ''}" role="menu"/>
         </div>
     </div>
 </t>

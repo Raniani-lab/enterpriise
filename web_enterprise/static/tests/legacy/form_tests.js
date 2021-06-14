@@ -271,6 +271,99 @@ QUnit.module('web_enterprise', {
         form.destroy();
     });
 
+    QUnit.test('statusbar "Action" dropdown should keep its open/close state', async function (assert) {
+        assert.expect(5);
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <header>
+                        <button string="Just more than one"/>
+                        <button string="Confirm" attrs='{"invisible": [["display_name", "=", ""]]}'/>
+                        <button string="Do it" attrs='{"invisible": [["display_name", "!=", ""]]}'/>
+                    </header>
+                    <sheet>
+                        <field name="display_name"/>
+                    </sheet>
+                </form>
+            `,
+        });
+
+        const dropdownMenuSelector = '.o_statusbar_buttons .dropdown-menu';
+        assert.containsOnce(form, dropdownMenuSelector,
+            "statusbar should contain a dropdown");
+        assert.doesNotHaveClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should be closed");
+
+        // open the dropdown
+        await testUtils.dom.click(form.el.querySelector('.o_statusbar_buttons .dropdown-toggle'));
+        assert.hasClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should be opened");
+
+        // change display_name to update buttons' modifiers
+        await testUtils.fields.editInput(form.el.querySelector('input[name="display_name"]'), 'test');
+        assert.containsOnce(form, dropdownMenuSelector,
+            "statusbar should contain a dropdown");
+        assert.hasClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should still be opened");
+
+        form.destroy();
+    });
+
+    QUnit.test(`statusbar "Action" dropdown's open/close state shouldn't be modified after 'onchange'`, async function (assert) {
+        assert.expect(5);
+
+        let resolveOnchange;
+        const onchangePromise = new Promise(resolve => {
+            resolveOnchange = resolve;
+        });
+
+        this.data.partner.onchanges = {
+            display_name: async () => {},
+        };
+
+        const form = await createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: `
+                <form>
+                    <header>
+                        <button name="create" string="Create Invoice" type="action"/>
+                        <button name="send" string="Send by Email" type="action"/>
+                    </header>
+                    <sheet>
+                        <field name="display_name" />
+                    </sheet>
+                </form>
+            `,
+            async mockRPC(route, { method, args: [, , changedField] }) {
+                return method === 'onchange' && changedField === 'display_name' ? onchangePromise : this._super(...arguments);
+            },
+        });
+
+        const dropdownMenuSelector = '.o_statusbar_buttons .dropdown-menu';
+        assert.containsOnce(form, dropdownMenuSelector,
+            "statusbar should contain a dropdown");
+        assert.doesNotHaveClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should be closed");
+
+        await testUtils.fields.editInput(form.el.querySelector('input[name="display_name"]'), 'before onchange');
+        await testUtils.dom.click(form.el.querySelector('.o_statusbar_buttons .dropdown-toggle'));
+        assert.hasClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should be opened");
+        resolveOnchange({ value: { display_name: 'after onchange' } });
+        await testUtils.nextTick();
+        assert.strictEqual(form.el.querySelector('input[name="display_name"]').value, 'after onchange');
+        assert.hasClass(form.el.querySelector(dropdownMenuSelector), 'show',
+            "dropdown should still be opened");
+
+        form.destroy();
+    });
+
 });
 
 });

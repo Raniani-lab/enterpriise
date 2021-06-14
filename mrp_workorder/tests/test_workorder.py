@@ -1354,3 +1354,71 @@ class TestWorkOrder(common.TestMrpCommon):
         wo.button_start()
         self.assertEqual(production.move_raw_ids.move_line_ids.lot_id, self.elon2, "Lot should be assigned.")
         self.assertEqual(wo.lot_id, self.elon2, "Lot should be set in the step")
+
+    def test_step_by_product_variant(self):
+        who_attr = self.env['product.attribute'].create({'name': 'Who ?'})
+        a1 = self.env['product.attribute.value'].create({'name': 'V0hFCg==', 'attribute_id': who_attr.id})
+        a2 = self.env['product.attribute.value'].create({'name': 'QVJN', 'attribute_id': who_attr.id})
+        a3 = self.env['product.attribute.value'].create({'name': 'UllW', 'attribute_id': who_attr.id})
+        product_who = self.env['product.template'].create({
+            'name': 'Odoo staff',
+            'attribute_line_ids': [(0, 0, {
+                'attribute_id': who_attr.id,
+                'value_ids': [(6, 0, [a1.id, a2.id, a3.id])],
+            })]
+        })
+        product_a1 = product_who.product_variant_ids.filtered(lambda v: a1 in v.product_template_attribute_value_ids.product_attribute_value_id)
+        product_a2 = product_who.product_variant_ids.filtered(lambda v: a2 in v.product_template_attribute_value_ids.product_attribute_value_id)
+        product_a3 = product_who.product_variant_ids.filtered(lambda v: a3 in v.product_template_attribute_value_ids.product_attribute_value_id)
+
+        bom_who = self.env['mrp.bom'].create({
+            'code': 'To be ready',
+            'product_tmpl_id': product_who.id,
+            'product_qty': 1.0,
+            'bom_line_ids': [
+                (0, 0, {'product_id': self.trapped_child.id, 'product_qty': 1}),
+            ],
+            'operation_ids': [
+                (0, 0, {'name': 'Be ready', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 60, 'sequence': 1}),
+            ]
+        })
+
+        p1 = self.env['quality.point'].create({
+            'product_ids': [(4, product_a1.id)],
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'operation_id': bom_who.operation_ids[0].id,
+            'test_type_id': self.env.ref('quality.test_type_instructions').id,
+            'note': 'Installing VIM (pcs xi ipzth adi du ixbt)',
+        })
+        p2 = self.env['quality.point'].create({
+            'product_ids': [(4, product_a2.id)],
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'operation_id': bom_who.operation_ids[0].id,
+            'test_type_id': self.env.ref('quality.test_type_instructions').id,
+            'note': 'Taking lot of coffee with UElN',
+        })
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = product_a1
+        production_a1 = mrp_order_form.save()
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = product_a2
+        production_a2 = mrp_order_form.save()
+
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = product_a3
+        production_a3 = mrp_order_form.save()
+
+        self.assertEqual(production_a1.bom_id, bom_who)
+        self.assertEqual(production_a2.bom_id, bom_who)
+        self.assertEqual(production_a3.bom_id, bom_who)
+
+        production_a1.action_confirm()
+        (production_a2 | production_a3).action_confirm()
+
+        self.assertEqual(len(production_a1.workorder_ids.check_ids), 1)
+        self.assertEqual(production_a1.workorder_ids.check_ids.point_id, p1)
+        self.assertEqual(len(production_a2.workorder_ids.check_ids), 1)
+        self.assertEqual(production_a2.workorder_ids.check_ids.point_id, p2)
+        self.assertEqual(len(production_a3.workorder_ids.check_ids), 0)

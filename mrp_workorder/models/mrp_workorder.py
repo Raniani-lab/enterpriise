@@ -70,8 +70,9 @@ class MrpProductionWorkcenterLine(models.Model):
     @api.depends('operation_id')
     def _compute_quality_point_ids(self):
         for workorder in self:
-            quality_point = workorder.operation_id.quality_point_ids
-            workorder.quality_point_ids = quality_point
+            quality_points = workorder.operation_id.quality_point_ids
+            quality_points = quality_points.filtered(lambda qp: not qp.product_ids or workorder.production_id.product_id in qp.product_ids)
+            workorder.quality_point_ids = quality_points
 
     @api.depends('operation_id')
     def _compute_quality_point_count(self):

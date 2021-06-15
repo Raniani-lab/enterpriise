@@ -34,6 +34,14 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
         return this._super(handle, params);
     },
     /**
+     * Check if the given groupedBy includes fields for which an empty fake group will be created
+     * @param {string[]} groupedBy
+     * @returns {boolean}
+     */
+    _allowCreateEmptyGroups(groupedBy) {
+        return groupedBy.includes("resource_id");
+    },
+    /**
      * Check if the given groupBy is in the list that has to generate empty lines
      * @param {string[]} groupedBy
      * @returns {boolean}
@@ -52,7 +60,7 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
             if (parentPath.length === 0) {
                 // _generateRows is a recursive function.
                 // Here, we are generating top level rows.
-                if (groupedBy.includes("resource_id")) {
+                if (this._allowCreateEmptyGroups(groupedBy)) {
                     // The group with false values for every groupby can be absent from
                     // groups (= groups returned by read_group basically).
                     // Here we add the fake group {} in groups in any case (this simulates the group

@@ -59,10 +59,10 @@ class Planning(models.Model):
 
     start_datetime = fields.Datetime(
         "Start Date", compute='_compute_datetime', store=True, readonly=False, required=True,
-        copy=True, default=_default_start_datetime)
+        copy=True)
     end_datetime = fields.Datetime(
         "End Date", compute='_compute_datetime', store=True, readonly=False, required=True,
-        copy=True, default=_default_end_datetime)
+        copy=True)
     # UI fields and warnings
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')
     self_unassign_days_before = fields.Integer(
@@ -307,6 +307,8 @@ class Planning(models.Model):
         """Return the slot (effective) duration expressed in hours.
         """
         self.ensure_one()
+        if not self.start_datetime:
+            return False
         return (self.end_datetime - self.start_datetime).total_seconds() / 3600.0
 
     def _get_domain_template_slots(self):
@@ -337,6 +339,8 @@ class Planning(models.Model):
 
     def _different_than_template(self, check_empty=True):
         self.ensure_one()
+        if not self.start_datetime:
+            return True
         template_fields = self._get_template_fields().items()
         for template_field, slot_field in template_fields:
             if self.template_id[template_field] or not check_empty:
@@ -351,7 +355,7 @@ class Planning(models.Model):
                         return True
         return False
 
-    @api.depends('template_id', 'role_id', 'allocated_hours')
+    @api.depends('template_id', 'role_id', 'allocated_hours', 'start_datetime')
     def _compute_allow_template_creation(self):
         for slot in self:
             if not (slot.start_datetime and slot.end_datetime):
@@ -544,8 +548,8 @@ class Planning(models.Model):
                                                                                        res.get('template_reset'))
         else:
             if 'start_datetime' in fields_list:
-                start_datetime = fields.Datetime.from_string(res.get('start_datetime'))
-                end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else False
+                start_datetime = fields.Datetime.from_string(res.get('start_datetime')) if res.get('start_datetime') else self._default_start_datetime()
+                end_datetime = fields.Datetime.from_string(res.get('end_datetime')) if res.get('end_datetime') else self._default_end_datetime()
                 start = pytz.utc.localize(start_datetime)
                 end = pytz.utc.localize(end_datetime) if end_datetime else self._default_end_datetime()
                 opening_hours = self._company_working_hours(start, end)

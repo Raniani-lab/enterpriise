@@ -6,7 +6,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import http
 from odoo.exceptions import ValidationError
-from odoo.fields import Command
 from odoo.http import request
 from odoo.tools.translate import _
 
@@ -238,23 +237,24 @@ class PaymentPortal(payment_portal.PaymentPortal):
             'callback_res_id': subscription.id,
         }
         if not validation_route:  # Renewal transaction
+            # Create an invoice to compute the total amount with tax, and the currency
             invoice_values = subscription.sudo().with_context(lang=subscription.partner_id.lang) \
                 ._prepare_invoice()  # In sudo mode to read on account.fiscal.position fields
             invoice_sudo = request.env['account.move'].sudo().create(invoice_values)
-            invoice_sudo.message_post_with_view(
-                'mail.message_origin_link',
-                values={'self': invoice_sudo, 'origin': subscription},
-                subtype_id=request.env.ref('mail.mt_note').id
-            )
             kwargs.update({
                 'reference_prefix': subscription.code,  # There is no sub_id field to rely on
                 'amount': invoice_sudo.amount_total,
                 'currency_id': invoice_sudo.currency_id.id,
                 'tokenization_requested': True,  # Renewal transactions are always tokenized
             })
+
+            # Delete the invoice to avoid bloating the DB with draft invoices. It is re-created on
+            # the fly in the callback when the payment is confirmed.
+            invoice_sudo.unlink()
+
+            # Create the transaction. The `invoice_ids` field is populated later with the final inv.
             tx_sudo = self._create_transaction(
                 custom_create_values={
-                    'invoice_ids': [Command.set([invoice_sudo.id])],
                     **common_callback_values,
                     'callback_method': '_reconcile_and_assign_token',
                 },

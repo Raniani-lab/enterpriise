@@ -903,26 +903,26 @@ class SaleSubscription(models.Model):
         """
         self.ensure_one()
 
-        success = False
-        invoice = tx.invoice_ids[0]
-        if tx.state == 'pending':
-            # A pending status is not enough to tell that the transaction is unsuccessful. It could
-            # indicate that the customer had to go through a 3DS authentication. So we keep the
-            # invoice for post-processing. This might cause a lot of draft invoices to stay alive
-            # but this can't be helped since the invoice must survive until the transaction is
-            # eventually confirmed.
-            pass
-        elif not tx.renewal_allowed:  # Unconfirmed transaction
-            invoice.unlink()
-        else:
-            invoice.write({
+        if tx.renewal_allowed:  # The payment is confirmed, it can be reconciled
+            # Re-create the invoice that was deleted in the controller and post it immediately
+            invoice_values = self.with_context(lang=self.partner_id.lang)._prepare_invoice()
+            invoice_values.update({
                 'ref': tx.reference,
                 'payment_reference': tx.reference
             })
+            invoice = self.env['account.move'].create(invoice_values)
+            invoice.message_post_with_view(
+                'mail.message_origin_link',
+                values={'self': invoice, 'origin': self},
+                subtype_id=self.env.ref('mail.mt_note').id
+            )
+            tx.invoice_ids = invoice.id,
+
+            # Renew the subscription
             self.increment_period(renew=self.to_renew)
             self.set_open()
-            success = True
-        return success
+            return True
+        return False
 
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)

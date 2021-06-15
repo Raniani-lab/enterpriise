@@ -134,14 +134,59 @@ class AccountEdiFormat(models.Model):
         }
 
     @api.model
+    def _l10n_pe_edi_response_code_digiflow(self, cdr_tree):
+        """
+        Digiflow (our OSE)+IAP vs SUNAT have different responses, for digiflow:
+        Example part of xml from Digiflow.-
+        <s:Body>
+            <s:Fault>
+            <faultcode>s:Client</faultcode>
+            <faultstring xml:lang="es-PE">2800</faultstring>
+            <detail>
+                <message xmlns="http://service.sunat.gob.pe">El dato ingresado en el tipo de documento de identidad del receptor no esta permitido. - Detalle: xxx.xxx.xxx ticket : 20210000000000070486326 error: Error Factura (codigo: 2800): 2800 (nodo: "cbc:ID/schemeID" valor: "7")</message>
+            </detail>
+            </s:Fault>
+        </s:Body>
+        """
+        message_element = cdr_tree.find('.//{*}message')
+        code_element = cdr_tree.find('.//{*}faultcode')
+        code = False
+        if code_element is not None: # faultcode is only when it is errored
+            code = cdr_tree.find('.//{*}faultstring').text
+        return message_element, code
+
+    @api.model
+    def _l10n_pe_edi_response_code_sunat(self, cdr_tree):
+        """
+        Digiflow (our OSE)+IAP vs SUNAT have different responses
+        Example part of xml from SUNAT:
+        <soap-env:Body>
+            <soap-env:Fault xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+            <faultcode>soap-env:Client.2800</faultcode>
+            <faultstring>El dato ingresado en el tipo de documento de identidad del receptor no esta permitido. - Detalle: xxx.xxx.xxx value=\'ticket: 1623742208882 error: INFO : 2800 (nodo: "cbc:ID/schemeID" valor: "7")\'</faultstring>
+            </soap-env:Fault>
+        </soap-env:Body>
+        """
+        message_element = cdr_tree.find('.//{*}faultstring')
+        code_element = cdr_tree.find('.//{*}faultcode')
+        code = False
+        if code_element is not None: # faultcode is only when it is errored
+            code_parsed = code_element.text.split('.')
+            if len(code_parsed) == 2:  # Coming from SUNAT: "soap-env:Client.2800"
+                code = code_parsed[1]
+        return message_element, code
+
+    @api.model
     def _l10n_pe_edi_decode_cdr(self, cdr_str):
         self.ensure_one()
 
         cdr_tree = etree.fromstring(cdr_str)
-        code_element = cdr_tree.find('.//{*}Fault/{*}faultstring')
-        message_element = cdr_tree.find('.//{*}message') or cdr_tree.find('.//{*}faultcode')
-        if code_element is not None:
-            code = code_element.text
+        if cdr_tree.find('.//{*}message') is not None:  # It comes from Digiflow
+            message_element, code = self._l10n_pe_edi_response_code_digiflow(cdr_tree)
+        else: # It comes from SUNAT
+            message_element, code = self._l10n_pe_edi_response_code_sunat(cdr_tree)
+
+        if code:
             message = message_element.text
             error_messages_map = self._l10n_pe_edi_get_cdr_error_messages()
             error_message = '%s<br/><br/><b>%s</b><br/>%s|%s' % (

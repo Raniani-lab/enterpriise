@@ -11,7 +11,13 @@
             </field>
             <field name="struct_id" position="after">
                 <field name="l10n_be_is_double_pay" invisible="1"/>
+                <field name="l10n_be_max_seizable_amount" invisible="1"/>
             </field>
+            <header position="after">
+                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('l10n_be_max_seizable_warning','=',False)]}">
+                    <field name="l10n_be_max_seizable_warning"/>
+                </div>
+            </header>
         </field>
     </record>
 </odoo>

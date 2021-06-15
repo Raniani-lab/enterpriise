@@ -24,6 +24,8 @@ class Payslip(models.Model):
         string='Days Not Granting Representation Fees',
         compute='_compute_work_entry_dependent_benefits')
     l10n_be_is_double_pay = fields.Boolean(compute='_compute_l10n_be_is_double_pay')
+    l10n_be_max_seizable_amount = fields.Float(compute='_compute_l10n_be_max_seizable_amount')
+    l10n_be_max_seizable_warning = fields.Char(compute='_compute_l10n_be_max_seizable_amount')
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_input_line_ids(self):
@@ -119,6 +121,58 @@ class Payslip(models.Model):
     def _compute_l10n_be_is_double_pay(self):
         for payslip in self:
             payslip.l10n_be_is_double_pay = payslip.struct_id.code == "CP200DOUBLE"
+
+    @api.depends('date_to', 'line_ids.total', 'input_line_ids.code')
+    def _compute_l10n_be_max_seizable_amount(self):
+        # Source: https://emploi.belgique.be/fr/themes/remuneration/protection-de-la-remuneration/saisie-et-cession-sur-salaires
+        all_payslips = self.env['hr.payslip'].search([
+            ('employee_id', 'in', self.employee_id.ids),
+            ('state', '!=', 'cancel')])
+        payslip_values = all_payslips._get_line_values(['NET'])
+        for payslip in self:
+            if payslip.struct_id.country_id.code != 'BE':
+                payslip.l10n_be_max_seizable_amount = 0
+                payslip.l10n_be_max_seizable_warning = False
+                continue
+
+            rates = self.env['hr.rule.parameter']._get_parameter_from_code('cp200_seizable_percentages', payslip.date_to, raise_if_not_found=False)
+            child_increase = self.env['hr.rule.parameter']._get_parameter_from_code('cp200_seizable_amount_child', payslip.date_to, raise_if_not_found=False)
+            if not rates or not child_increase:
+                payslip.l10n_be_max_seizable_amount = 0
+                payslip.l10n_be_max_seizable_warning = False
+                continue
+
+            # Note: the ceiling amounts are based on the net revenues
+            period_payslips = all_payslips.filtered(
+                lambda p: p.employee_id == payslip.employee_id and p.date_from == payslip.date_from and p.date_to == payslip.date_to)
+            net_amount = sum([payslip_values['NET'][p.id]['total'] for p in period_payslips])
+            seized_amount = sum([period_payslips._get_input_line_amount(code) for code in ['ATTACH_SALARY', 'ASSIG_SALARY', 'CHILD_SUPPORT']])
+            net_amount += seized_amount
+            # Note: The reduction for dependant children is not applied most of the time because
+            #       the process is too complex.
+            # To benefit from this increase in the elusive or non-transferable quotas, the worker
+            # whose remuneration is subject to seizure or transfer, must declare it using a form,
+            # the model of which has been published in the Belgian Official Gazette. of 30 November
+            # 2006.
+            # He must attach to this form the documents establishing the reality of the
+            # charge invoked.
+            # Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, of
+            # the Royal Decree of 27 December 2004 implementing Articles 1409, § 1, paragraph 4,
+            # and 1409, § 1 bis, paragraph 4 , of the Judicial Code relating to the limitation of
+            # seizure when there are dependent children, MB, December 13, 2019.
+            dependent_children = payslip.employee_id.l10n_be_dependent_children_attachment
+            max_seizable_amount = 0
+            for left, right, rate in rates:
+                if dependent_children:
+                    left += dependent_children * child_increase
+                    right += dependent_children * child_increase
+                if left <= net_amount:
+                    max_seizable_amount += (min(net_amount, right) - left) * rate
+            payslip.l10n_be_max_seizable_amount = max_seizable_amount
+            if max_seizable_amount and seized_amount > max_seizable_amount:
+                payslip.l10n_be_max_seizable_warning = _('The seized amount (%s€) is above the belgian ceilings. Given a global net salary of %s€ for the pay period and %s dependent children, the maximum seizable amount is equal to %s€', round(seized_amount, 2), round(net_amount, 2), round(dependent_children, 2), round(max_seizable_amount, 2))
+            else:
+                payslip.l10n_be_max_seizable_warning = False
 
     def _get_worked_day_lines_hours_per_day(self):
         self.ensure_one()

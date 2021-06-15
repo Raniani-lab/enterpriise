@@ -728,5 +728,35 @@
             <field name="rule_parameter_id" ref="rule_parameter_cp200_salary_scale"/>
             <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
         </record>
+
+        <record id="rule_parameter_cp200_seizable_amount_percentages" model="hr.rule.parameter">
+            <field name="name">CP200: Seizable Amount Percentages</field>
+            <field name="code">cp200_seizable_percentages</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_seizable_amount_percentages_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (   0.00,      1149.00,   0.00),
+    (1149.01,      1235.00,   0.20),
+    (1235.01,      1362.00,   0.30),
+    (1362.01,      1490.00,   0.40),
+    (1490.01, 999999999.00,   1.00),
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_seizable_amount_percentages"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_seizable_amount_child" model="hr.rule.parameter">
+            <field name="name">CP200: Seizable Amount Child</field>
+            <field name="code">cp200_seizable_amount_child</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_seizable_amount_child_2021" model="hr.rule.parameter.value">
+            <field name="parameter_value">71.00</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_seizable_amount_child"/>
+            <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
+        </record>
     </data>
+
 </odoo>

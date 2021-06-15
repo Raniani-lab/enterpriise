@@ -5449,6 +5449,16 @@ msgid "To Allocate"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_dependent_children_attachment
+msgid ""
+"To benefit from this increase in the elusive or non-transferable quotas, the worker whose remuneration is subject to seizure or transfer, must declare it using a form, the model of which has been published in the Belgian Official Gazette. of 30 November 2006.\n"
+"\n"
+"He must attach to this form the documents establishing the reality of the charge invoked.\n"
+"\n"
+"Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, of the Royal Decree of 27 December 2004 implementing Articles 1409, § 1, paragraph 4, and 1409, § 1 bis, paragraph 4 , of the Judicial Code relating to the limitation of seizure when there are dependent children, MB, December 13, 2019."
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n1
 msgid "To the attention of the next employer"

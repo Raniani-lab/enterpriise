@@ -28,6 +28,13 @@ class HrEmployee(models.Model):
     resident_bool = fields.Boolean(string='Nonresident', help='if recipient lives in a foreign country', groups="hr.group_hr_user")
     disabled_children_number = fields.Integer('Number of disabled children', groups="hr.group_hr_user")
     dependent_children = fields.Integer(compute='_compute_dependent_children', string='Considered number of dependent children', groups="hr.group_hr_user")
+    l10n_be_dependent_children_attachment = fields.Integer(
+        string="# dependent children for salary attachement", groups="hr.group_hr_user",
+        help="""To benefit from this increase in the elusive or non-transferable quotas, the worker whose remuneration is subject to seizure or transfer, must declare it using a form, the model of which has been published in the Belgian Official Gazette. of 30 November 2006.
+
+He must attach to this form the documents establishing the reality of the charge invoked.
+
+Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, of the Royal Decree of 27 December 2004 implementing Articles 1409, § 1, paragraph 4, and 1409, § 1 bis, paragraph 4 , of the Judicial Code relating to the limitation of seizure when there are dependent children, MB, December 13, 2019.""")
     other_dependent_people = fields.Boolean(string="Other Dependent People", help="If other people are dependent on the employee", groups="hr.group_hr_user")
     other_senior_dependent = fields.Integer('# seniors (>=65)', help="Number of seniors dependent on the employee, including the disabled ones", groups="hr.group_hr_user")
     other_disabled_senior_dependent = fields.Integer('# disabled seniors (>=65)', groups="hr.group_hr_user")

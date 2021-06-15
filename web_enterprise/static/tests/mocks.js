@@ -13,7 +13,7 @@ export function makeFakeEnterpriseService(params = {}) {
                 warning: "warning" in params ? params.warning : false,
                 expirationDate: "expirationDate" in params ? params.expirationDate : false,
                 expirationReason: "expirationReason" in params ? params.expirationReason : false,
-                moduleList: "moduleList" in params ? params.moduleList : [],
+                isMailInstalled: "isMailInstalled" in params ? params.isMailInstalled : false,
             };
         },
     };

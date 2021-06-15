@@ -62,9 +62,7 @@ export class ExpirationPanel extends Component {
         this.expirationReason = this.enterprise.expirationReason;
         this.notYetRegistered = ["trial", "demo", false].includes(this.expirationReason);
 
-        // Check if mail (discuss) is installed
-        // (this is a way to check that there is an app different from Apps or Settings installed)
-        this.mailInstalled = this.enterprise.moduleList.some((m) => m === "mail");
+        this.isMailInstalled = this.enterprise.isMailInstalled;
 
         // Type of logged-in accounts addressed by message
         this.warning = this.enterprise.warning;

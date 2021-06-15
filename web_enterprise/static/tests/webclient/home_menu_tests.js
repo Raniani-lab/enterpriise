@@ -361,7 +361,7 @@ QUnit.module(
                     return {
                         expirationDate: "2019-11-01 12:00:00",
                         expirationReason: "",
-                        moduleList: [],
+                        isMailInstalled: false,
                         warning: "admin",
                     };
                 },

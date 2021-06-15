@@ -68,7 +68,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-11-09 12:00:00",
                 expirationReason: "",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
         });
@@ -99,7 +99,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-24 12:00:00",
                 expirationReason: "demo",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             mockRPC(route) {
@@ -152,7 +152,7 @@ QUnit.module("web_enterprise", {}, function () {
                 enterprise: {
                     expirationDate: "2019-10-15 12:00:00",
                     expirationReason: "trial",
-                    moduleList: ["mail"],
+                    isMailInstalled: true,
                     warning: "admin",
                 },
                 cookie: {
@@ -355,7 +355,7 @@ QUnit.module("web_enterprise", {}, function () {
                 enterprise: {
                     expirationDate: "2019-10-15 12:00:00",
                     expirationReason: "trial",
-                    moduleList: ["mail"],
+                    isMailInstalled: true,
                     warning: "admin",
                 },
                 cookie: {
@@ -470,7 +470,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-08 12:00:00",
                 expirationReason: "trial",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             cookie: {
@@ -550,7 +550,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-20 12:00:00",
                 expirationReason: "renewal",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             cookie: {
@@ -631,7 +631,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-20 12:00:00",
                 expirationReason: "renewal",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             ui: {
@@ -682,7 +682,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-20 12:00:00",
                 expirationReason: "renewal",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             browser: {
@@ -720,7 +720,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-10-20 12:00:00",
                 expirationReason: "upsell",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "admin",
             },
             browser: {
@@ -770,7 +770,7 @@ QUnit.module("web_enterprise", {}, function () {
             enterprise: {
                 expirationDate: "2019-11-08 12:00:00",
                 expirationReason: "",
-                moduleList: ["mail"],
+                isMailInstalled: true,
                 warning: "user",
             },
         });

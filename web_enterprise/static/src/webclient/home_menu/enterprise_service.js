@@ -11,7 +11,11 @@ export const enterpriseService = {
         return {
             expirationDate: session_info.expiration_date,
             expirationReason: session_info.expiration_reason,
-            moduleList: session_info.module_list || [],
+            // Hack: we need to know if there is at least an app installed (except from App and
+            // Settings). We use mail to do that, as it is a dependency of almost every addon. To
+            // determine whether mail is installed or not, we check for the presence of the key
+            // "notification_type" in session_info, as it is added in mail for internal users.
+            isMailInstalled: "notification_type" in session_info,
             warning: session_info.warning,
         };
     },

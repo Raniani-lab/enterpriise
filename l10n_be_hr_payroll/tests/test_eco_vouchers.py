@@ -144,4 +144,4 @@ class TestEcoVouchers(TransactionCase):
             'reference_year': 2021,
         })
         employee_line = wizard.line_ids.filtered(lambda l: l.employee_id == employee)
-        self.assertAlmostEqual(employee_line.amount, 204.17)
+        self.assertAlmostEqual(employee_line.amount, 215.48)

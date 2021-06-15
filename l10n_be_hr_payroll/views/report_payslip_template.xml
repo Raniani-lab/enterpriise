@@ -115,5 +115,16 @@
             <t t-esc="o.employee_id.children + o.employee_id.other_senior_dependent + o.employee_id.other_juniors_dependent"/>
         </td>
     </xpath>
+    <xpath expr="//table[@name='employee-infos']" position="inside">
+        <t t-if="o._get_input_line_amount('ECOVOUCHERS')">
+            <tr>
+                <td class="w-25"><strong>Eco-Vouchers Amount</strong></td>
+            </tr>
+            <tr>
+                <t t-set="ecovouchers" t-value="o._get_input_line_amount('ECOVOUCHERS')"/>
+                <td><span><t t-esc="ecovouchers"/>€ (= <t t-esc="int(ecovouchers // 10)"/>*10€ + 1*<t t-esc="ecovouchers % 10"/>€)</span></td>
+            </tr>
+        </t>
+    </xpath>
 </template>
 </odoo>

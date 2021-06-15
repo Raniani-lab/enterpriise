@@ -62,6 +62,7 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
             'l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'
         ).unpaid_work_entry_type_ids.filtered(lambda wet: wet.code not in ['LEAVE210', 'LEAVE230'])
 
+
         for wizard in self:
             date_from = date(wizard.reference_year - 1, 6, 1)
             date_to = date(wizard.reference_year, 5, 31)
@@ -105,18 +106,18 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
                     employee_worked_days = employee_payslips.mapped('worked_days_line_ids').filtered(
                         lambda wd: wd.work_entry_type_id in unpaid_work_entry_types)
                     invalid_hours = sum(employee_worked_days.mapped('number_of_hours'))
-                    hours_per_week = contract.resource_calendar_id.hours_per_week
-                    invalid_weeks = math.ceil(invalid_hours / hours_per_week) if hours_per_week else 0
+                    hours_per_day = contract.resource_calendar_id.hours_per_day
+                    invalid_days = math.ceil(invalid_hours / hours_per_day) if hours_per_day else 0
                     # Compute complete months
-                    delta = relativedelta(occupation_to + relativedelta(days=-7 * invalid_weeks), occupation_from)
+                    days = (occupation_to - occupation_from).days - invalid_days
                     work_time_rate = contract.resource_calendar_id.work_time_rate
                     for rate, amount in amount_from_rate:
                         if work_time_rate < rate:
-                            total_amount += max(0, (delta.years + delta.months / 12) * amount)
+                            total_amount += max(0, (days / 365.0) * amount)
                             break
                 result.append((0, 0, {
                     'employee_id': employee.id,
-                    'amount': total_amount,
+                    'amount': min(250, total_amount),
                     'wizard_id': wizard.id,
                 }))
             wizard.line_ids = result

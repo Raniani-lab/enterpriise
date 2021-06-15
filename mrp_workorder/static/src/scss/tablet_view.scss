@@ -129,6 +129,10 @@
             font-size: 1.2em;
         }
 
+        .o_form_label {
+            color: $o-wo-tablet-text;
+        }
+
         // Step's info block
         .o_workorder_data {
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding 0;

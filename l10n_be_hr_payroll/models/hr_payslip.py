@@ -23,6 +23,7 @@ class Payslip(models.Model):
     representation_fees_missing_days = fields.Integer(
         string='Days Not Granting Representation Fees',
         compute='_compute_work_entry_dependent_benefits')
+    l10n_be_is_double_pay = fields.Boolean(compute='_compute_l10n_be_is_double_pay')
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_input_line_ids(self):
@@ -113,6 +114,11 @@ class Payslip(models.Model):
                 payslip.private_car_missing_days = nb_of_days_to_work - (benefits['private_car'] if 'private_car' in benefits else 0)
                 payslip.representation_fees_missing_days = nb_of_days_to_work - (benefits['representation_fees'] if 'representation_fees' in benefits else 0)
                 payslip.meal_voucher_count = benefits['meal_voucher']
+
+    @api.depends('struct_id')
+    def _compute_l10n_be_is_double_pay(self):
+        for payslip in self:
+            payslip.l10n_be_is_double_pay = payslip.struct_id.code == "CP200DOUBLE"
 
     def _get_worked_day_lines_hours_per_day(self):
         self.ensure_one()

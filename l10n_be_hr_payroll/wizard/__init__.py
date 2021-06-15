@@ -11,3 +11,4 @@ from . import hr_payroll_index_wizard
 from . import l10n_be_social_balance_sheet
 from . import l10n_be_social_security_certificate
 from . import l10n_be_eco_vouchers_wizard
+from . import l10n_be_double_pay_recovery_wizard

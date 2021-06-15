@@ -5840,7 +5840,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-    def test_aa_public_holiday_right_maternity_full_time_credit_time(self):
+    def test_public_holiday_right_maternity_full_time_credit_time(self):
         # Note: Always unpaid
         self.contract.write({
             'resource_calendar_id': self.resource_calendar_0_hours_per_week.id,
@@ -6049,3 +6049,112 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE300'), 30.4, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE210'), 114.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 15.2, places=2)
+
+    def test_double_holiday_recovery(self):
+        self.contract.write({
+            'date_start': datetime.date(2020, 8, 3),
+            'wage_on_signature': 1956.69,
+        })
+
+        double_pay_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2021, 6, 1),
+            'date_to': datetime.datetime(2021, 6, 30),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_nbr_months').id,
+                'amount': 11,
+            })],
+        })
+
+        wizard = self.env['l10n.be.double.pay.recovery.wizard'].with_context(
+            active_id=double_pay_payslip.id,
+            active_model="hr.payslip"
+        ).create({
+            'line_ids': [(0, 0, {
+                'months_count': 6,
+                'amount': 2781.82,
+                'occupation_rate': 100,
+            })],
+        })
+        wizard.action_validate()
+        double_pay_payslip.compute_sheet()
+
+        self.assertAlmostEqual(wizard.months_count, 5, places=2)
+        self.assertAlmostEqual(wizard.double_pay_to_recover, 900.47, places=2)
+        self.assertAlmostEqual(double_pay_payslip.input_line_ids.filtered(lambda l: l.code == 'DOUBLERECOVERY').amount, 900.47)
+
+        self.assertEqual(len(double_pay_payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(double_pay_payslip.input_line_ids), 2)
+        self.assertEqual(len(double_pay_payslip.line_ids), 7)
+
+        payslip_results = {
+            'BASIC': 1650.14,
+            'DOUBLERECOVERY': -900.47,
+            'SALARY': 692.63,
+            'ONSS': -90.53,
+            'GROSS': 659.14,
+            'P.P': -239.53,
+            'NET': 419.61,
+        }
+        self._validate_payslip(double_pay_payslip, payslip_results)
+
+    def test_double_holiday_recovery_half_time_multi_attest(self):
+        # Note: The employee was occupied with 2 half times over the same period
+        self.contract.write({
+            'date_start': datetime.date(2020, 8, 3),
+            'wage_on_signature': 2322.22,
+        })
+
+        double_pay_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2021, 6, 1),
+            'date_to': datetime.datetime(2021, 6, 30),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'company_id': self.env.company.id,
+            'input_line_ids': [(0, 0, {
+                'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_nbr_months').id,
+                'amount': 7,
+            })],
+        })
+
+        wizard = self.env['l10n.be.double.pay.recovery.wizard'].with_context(
+            active_id=double_pay_payslip.id,
+            active_model="hr.payslip"
+        ).create({
+            'line_ids': [(0, 0, {
+                'months_count': 2,
+                'amount': 520.89,
+                'occupation_rate': 50,
+            }), (0, 0, {
+                'months_count': 2,
+                'amount': 491.62,
+                'occupation_rate': 50,
+            })],
+        })
+        wizard.action_validate()
+        double_pay_payslip.compute_sheet()
+
+        self.assertAlmostEqual(wizard.months_count, 5, places=2)
+        self.assertAlmostEqual(wizard.double_pay_to_recover, 356.23, places=2)
+        self.assertAlmostEqual(double_pay_payslip.input_line_ids.filtered(lambda l: l.code == 'DOUBLERECOVERY').amount, 356.23)
+
+        self.assertEqual(len(double_pay_payslip.worked_days_line_ids), 0)
+        self.assertEqual(len(double_pay_payslip.input_line_ids), 2)
+        self.assertEqual(len(double_pay_payslip.line_ids), 7)
+
+        payslip_results = {
+            'BASIC': 1246.26,
+            'DOUBLERECOVERY': -356.23,
+            'SALARY': 822.31,
+            'ONSS': -107.48,
+            'GROSS': 782.55,
+            'P.P': -308.09,
+            'NET': 474.46,
+        }
+        self._validate_payslip(double_pay_payslip, payslip_results)
